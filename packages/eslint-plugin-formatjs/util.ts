@@ -1,6 +1,15 @@
 import type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
-import type {TSESTree} from '@typescript-eslint/utils'
-import {type RuleContext} from '@typescript-eslint/utils/ts-eslint'
+import type {Rule} from 'eslint'
+import type {
+  BinaryExpression,
+  Expression,
+  Literal,
+  Node,
+  ObjectExpression,
+  Property,
+  TemplateLiteral,
+} from 'estree-jsx'
+import type {JSXAttribute, JSXOpeningElement} from 'estree-jsx'
 
 export interface MessageDescriptor {
   id?: string
@@ -20,52 +29,47 @@ export interface Settings {
 }
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor
-  messageDescriptorNode: TSESTree.ObjectExpression | TSESTree.JSXOpeningElement
-  messageNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
-  messagePropNode?: TSESTree.Property | TSESTree.JSXAttribute
-  descriptionNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
-  idValueNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value']
-  idPropNode?: TSESTree.Property | TSESTree.JSXAttribute
+  messageDescriptorNode: ObjectExpression | JSXOpeningElement
+  messageNode?: Property['value'] | JSXAttribute['value']
+  messagePropNode?: Property | JSXAttribute
+  descriptionNode?: Property['value'] | JSXAttribute['value']
+  idValueNode?: Property['value'] | JSXAttribute['value']
+  idPropNode?: Property | JSXAttribute
 }
 
-export function getSettings<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
->({settings}: RuleContext<TMessageIds, TOptions>): Settings {
+export function getSettings({settings}: Rule.RuleContext): Settings {
   return settings.formatjs ?? settings
 }
 
-function isStringLiteral(node: TSESTree.Node): node is TSESTree.StringLiteral {
+function isStringLiteral(node: Node): node is Literal & {value: string} {
   return node.type === 'Literal' && typeof node.value === 'string'
 }
 
-function isTemplateLiteralWithoutVar(
-  node: TSESTree.Node
-): node is TSESTree.TemplateLiteral {
+function isTemplateLiteralWithoutVar(node: Node): node is TemplateLiteral {
   return node.type === 'TemplateLiteral' && node.quasis.length === 1
 }
 
 function staticallyEvaluateStringConcat(
-  node: TSESTree.BinaryExpression
+  node: BinaryExpression
 ): [result: string, isStaticallyEvaluatable: boolean] {
-  if (!isStringLiteral(node.right)) {
+  const right = node.right as Node
+  const left = node.left as Node
+  if (!isStringLiteral(right)) {
     return ['', false]
   }
-  if (isStringLiteral(node.left)) {
-    return [String(node.left.value) + node.right.value, true]
+  if (isStringLiteral(left)) {
+    return [left.value + right.value, true]
   }
   if (node.left.type === 'BinaryExpression') {
     const [result, isStaticallyEvaluatable] = staticallyEvaluateStringConcat(
       node.left
     )
-    return [result + node.right.value, isStaticallyEvaluatable]
+    return [result + right.value, isStaticallyEvaluatable]
   }
   return ['', false]
 }
 
-export function isIntlFormatMessageCall(
-  node: TSESTree.Node
-): node is TSESTree.CallExpression {
+export function isIntlFormatMessageCall(node: Node): boolean {
   // GH #4890: Check for both MemberExpression (intl.formatMessage) and Identifier (formatMessage) patterns
   if (node.type !== 'CallExpression') {
     return false
@@ -102,7 +106,7 @@ export function isIntlFormatMessageCall(
 }
 
 function isSingleMessageDescriptorDeclaration(
-  node: TSESTree.Node,
+  node: Node,
   functionNames: Set<string>
 ) {
   return (
@@ -112,7 +116,7 @@ function isSingleMessageDescriptorDeclaration(
   )
 }
 
-function isMultipleMessageDescriptorDeclaration(node: TSESTree.Node) {
+function isMultipleMessageDescriptorDeclaration(node: Node) {
   return (
     node.type === 'CallExpression' &&
     node.callee.type === 'Identifier' &&
@@ -121,7 +125,7 @@ function isMultipleMessageDescriptorDeclaration(node: TSESTree.Node) {
 }
 
 export function extractMessageDescriptor(
-  node?: TSESTree.Expression
+  node?: Expression
 ): MessageDescriptorNodeInfo | undefined {
   if (!node || node.type !== 'ObjectExpression') {
     return
@@ -152,20 +156,20 @@ export function extractMessageDescriptor(
 
     const valueNode = prop.value
     let value: string | undefined = undefined
-    if (isStringLiteral(valueNode)) {
-      value = valueNode.value
+    if (isStringLiteral(valueNode as Node)) {
+      value = (valueNode as Literal & {value: string}).value
     }
     // like "`asd`"
-    else if (isTemplateLiteralWithoutVar(valueNode)) {
-      value = valueNode.quasis[0].value.cooked
+    else if (isTemplateLiteralWithoutVar(valueNode as Node)) {
+      value = (valueNode as TemplateLiteral).quasis[0].value.cooked ?? undefined
     }
     // like "dedent`asd`"
     else if (valueNode.type === 'TaggedTemplateExpression') {
       const {quasi} = valueNode
-      if (!isTemplateLiteralWithoutVar(quasi)) {
+      if (!isTemplateLiteralWithoutVar(quasi as Node)) {
         throw new Error('Tagged template expression must be no substitution')
       }
-      value = quasi.quasis[0].value.cooked
+      value = quasi.quasis[0].value.cooked ?? undefined
     }
     // like "`asd` + `asd`"
     else if (valueNode.type === 'BinaryExpression') {
@@ -196,14 +200,12 @@ export function extractMessageDescriptor(
 }
 
 function extractMessageDescriptorFromJSXElement(
-  node?: TSESTree.JSXOpeningElement
-):
-  | [MessageDescriptorNodeInfo, TSESTree.ObjectExpression | undefined]
-  | undefined {
+  node?: JSXOpeningElement
+): [MessageDescriptorNodeInfo, ObjectExpression | undefined] | undefined {
   if (!node || !node.attributes) {
     return
   }
-  let values: TSESTree.ObjectExpression | undefined
+  let values: ObjectExpression | undefined
   const result: MessageDescriptorNodeInfo = {
     messageDescriptorNode: node,
     message: {},
@@ -236,8 +238,8 @@ function extractMessageDescriptorFromJSXElement(
     let valueNode = prop.value
     let value: string | undefined = undefined
     if (valueNode && isMessageProp) {
-      if (isStringLiteral(valueNode)) {
-        value = valueNode.value
+      if (isStringLiteral(valueNode as Node)) {
+        value = (valueNode as Literal & {value: string}).value
       } else if (valueNode?.type === 'JSXExpressionContainer') {
         const {expression} = valueNode
         if (expression.type === 'BinaryExpression') {
@@ -247,18 +249,19 @@ function extractMessageDescriptorFromJSXElement(
           }
         }
         // like "`asd`"
-        else if (isTemplateLiteralWithoutVar(expression)) {
-          value = expression.quasis[0].value.cooked
+        else if (isTemplateLiteralWithoutVar(expression as Node)) {
+          value =
+            (expression as TemplateLiteral).quasis[0].value.cooked ?? undefined
         }
         // like "dedent`asd`"
         else if (expression.type === 'TaggedTemplateExpression') {
           const {quasi} = expression
-          if (!isTemplateLiteralWithoutVar(quasi)) {
+          if (!isTemplateLiteralWithoutVar(quasi as Node)) {
             throw new Error(
               'Tagged template expression must be no substitution'
             )
           }
-          value = quasi.quasis[0].value.cooked
+          value = quasi.quasis[0].value.cooked ?? undefined
         }
       }
     }
@@ -305,7 +308,7 @@ function extractMessageDescriptorFromJSXElement(
   return [result, values]
 }
 
-function extractMessageDescriptors(node?: TSESTree.Expression) {
+function extractMessageDescriptors(node?: Expression) {
   if (!node || node.type !== 'ObjectExpression' || !node.properties.length) {
     return []
   }
@@ -318,7 +321,7 @@ function extractMessageDescriptors(node?: TSESTree.Expression) {
     if (msg.type !== 'ObjectExpression') {
       continue
     }
-    const nodeInfo = extractMessageDescriptor(msg)
+    const nodeInfo = extractMessageDescriptor(msg as Expression)
     if (nodeInfo) {
       msgs.push(nodeInfo)
     }
@@ -327,13 +330,13 @@ function extractMessageDescriptors(node?: TSESTree.Expression) {
 }
 
 export function extractMessages(
-  node: TSESTree.Node,
+  node: Node,
   {
     additionalComponentNames,
     additionalFunctionNames,
     excludeMessageDeclCalls,
   }: Settings = {}
-): Array<[MessageDescriptorNodeInfo, TSESTree.Expression | undefined]> {
+): Array<[MessageDescriptorNodeInfo, Expression | undefined]> {
   const allFormatFunctionNames = Array.isArray(additionalFunctionNames)
     ? new Set([
         ...Array.from(FORMAT_FUNCTION_NAMES),
@@ -344,9 +347,8 @@ export function extractMessages(
     ? new Set([...Array.from(COMPONENT_NAMES), ...additionalComponentNames])
     : COMPONENT_NAMES
   if (node.type === 'CallExpression') {
-    const expr = node
-    const args0 = expr.arguments[0]
-    const args1 = expr.arguments[1]
+    const args0 = node.arguments[0]
+    const args1 = node.arguments[1]
     // We can't really analyze spread element
     if (!args0 || args0.type === 'SpreadElement') {
       return []
@@ -362,7 +364,7 @@ export function extractMessages(
     ) {
       const msgDescriptorNodeInfo = extractMessageDescriptor(args0)
       if (msgDescriptorNodeInfo && (!args1 || args1.type !== 'SpreadElement')) {
-        return [[msgDescriptorNodeInfo, args1]]
+        return [[msgDescriptorNodeInfo, args1 as Expression]]
       }
     } else if (
       !excludeMessageDeclCalls &&
@@ -390,7 +392,7 @@ export function extractMessages(
  * it means that the patch cannot be applied.
  */
 export function patchMessage(
-  messageNode: TSESTree.Node,
+  messageNode: Node,
   ast: MessageFormatElement[],
   patcher: (messageContent: string, ast: MessageFormatElement[]) => string
 ): string | null {
@@ -409,7 +411,7 @@ export function patchMessage(
   ) {
     return (
       '`' +
-      patcher(messageNode.quasis[0].value.cooked, ast)
+      patcher(messageNode.quasis[0].value.cooked!, ast)
         .replace(/\\/g, '\\\\')
         .replace(/`/g, '\\`') +
       '`'

@@ -1,12 +1,10 @@
-import type {TSESTree} from '@typescript-eslint/utils'
-import {type RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {JSXElement} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import {isIntlFormatMessageCall} from '../util.js'
-
-type MessageIds = 'jsxChildren'
 
 export const name = 'prefer-formatted-message'
 
-export const rule: RuleModule<MessageIds> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -20,11 +18,10 @@ export const rule: RuleModule<MessageIds> = {
     },
     schema: [],
   },
-  defaultOptions: [],
   // TODO: Vue support
   create(context) {
     return {
-      JSXElement: (node: TSESTree.JSXElement) => {
+      JSXElement: (node: JSXElement) => {
         node.children.forEach(child => {
           if (
             child.type !== 'JSXExpressionContainer' ||

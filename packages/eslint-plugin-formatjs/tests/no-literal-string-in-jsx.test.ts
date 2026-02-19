@@ -331,7 +331,7 @@ ruleTester.run(name, rule, {
       errors: [{messageId: 'noLiteralStringInJsx'}],
     },
     {
-      code: '<div>{a && "b" ?? "c"}</div>',
+      code: '<div>{(a && "b") ?? "c"}</div>',
       errors: [
         {messageId: 'noLiteralStringInJsx'},
         {messageId: 'noLiteralStringInJsx'},

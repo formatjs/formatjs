@@ -10,10 +10,8 @@ import {
   isTimeElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import type {TSESTree} from '@typescript-eslint/utils'
-import {ESLintUtils} from '@typescript-eslint/utils'
-import {type RuleContext} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat.js'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util.js'
 import {type CoreMessageIds, CORE_MESSAGES} from '../messages.js'
 
@@ -89,10 +87,7 @@ function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
   return errors
 }
 
-function checkNode(
-  context: RuleContext<MessageIds, unknown[]>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const settings = getSettings(context)
   const msgs = extractMessages(node, settings)
   if (!msgs.length) {
@@ -137,17 +132,7 @@ function checkNode(
   }
 }
 
-const createRule = ESLintUtils.RuleCreator(
-  _ => 'https://formatjs.github.io/docs/tooling/linter#blocklist-elements'
-)
-
-export const rule: ESLintUtils.RuleModule<
-  MessageIds,
-  Element[][],
-  unknown,
-  ESLintUtils.RuleListener
-> = createRule({
-  name,
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -169,15 +154,12 @@ export const rule: ESLintUtils.RuleModule<
       blocklist: `{{type}} element is blocklisted`,
     },
   },
-  defaultOptions: [],
   create(context) {
-    const callExpressionVisitor: ESLintUtils.RuleListener['CallExpression'] =
-      node => checkNode(context, node)
+    const callExpressionVisitor: Rule.RuleListener['CallExpression'] = node =>
+      checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -192,4 +174,4 @@ export const rule: ESLintUtils.RuleModule<
       CallExpression: callExpressionVisitor,
     }
   },
-})
+}

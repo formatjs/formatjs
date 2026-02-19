@@ -9,7 +9,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: '1 should be valid',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -17,7 +16,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: '<strong>1</strong> should be valid',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -25,7 +23,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: '{gender, select, male{1 male} female{1 female} other{other}} should be valid',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -33,7 +30,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: 'thanks to {1, plural, one {{1} photo} other {{1}+ photos}} plus',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -41,7 +37,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: 'maximum of {1, plural, one {# item} other {# items}}',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -49,7 +44,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: 'maximum of {1, plural, one {{1} # item} other {{1} # items}}',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -57,7 +51,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: 'maximum of {1, plural, one {<strong>#</strong> item} other {# items}}',
                 description: 'asd'
             })`,
-      options: [],
     },
     {
       code: `import {defineMessage} from 'react-intl'
@@ -65,7 +58,6 @@ ruleTester.run(name, rule, {
                 defaultMessage: 'another {1, plural, one {#-day} other {#-day}} trial',
                 description: 'asd'
             })`,
-      options: [],
     },
   ],
   invalid: [
@@ -75,7 +67,7 @@ ruleTester.run(name, rule, {
                 defaultMessage: "maximum of {0, plural, one {1 item} other {# items}}",
                 description: 'asd'
             })`,
-      options: [],
+
       errors: [
         {
           messageId: 'noMissingIcuPluralOnePlaceholders',
@@ -93,7 +85,7 @@ ruleTester.run(name, rule, {
                 defaultMessage: "maximum of {0, plural, one {{2} 1 item} other {{2} # items}}",
                 description: 'asd'
             })`,
-      options: [],
+
       errors: [
         {
           messageId: 'noMissingIcuPluralOnePlaceholders',
@@ -111,7 +103,7 @@ ruleTester.run(name, rule, {
                 defaultMessage: "maximum of {0, plural, one {<strong>1</strong> item} other {# items}}",
                 description: 'asd'
             })`,
-      options: [],
+
       errors: [
         {
           messageId: 'noMissingIcuPluralOnePlaceholders',
@@ -129,7 +121,7 @@ ruleTester.run(name, rule, {
                 defaultMessage: "another {0, plural, one {1-day} other {#-day}} trial",
                 description: 'asd'
             })`,
-      options: [],
+
       errors: [
         {
           messageId: 'noMissingIcuPluralOnePlaceholders',

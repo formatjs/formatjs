@@ -1,19 +1,13 @@
-import {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat.js'
+import type {Property, PrivateIdentifier} from 'estree-jsx'
+import type {Rule} from 'eslint'
 
-type MessageIds = 'untranslatedProperty'
 type PropertyConfig = {
   include: string[]
 }
-type Options = [PropertyConfig?]
 
 export const name = 'no-literal-string-in-object'
 
-export const rule: RuleModule<MessageIds, Options> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -38,16 +32,13 @@ export const rule: RuleModule<MessageIds, Options> = {
         'Object property: `{{propertyKey}}` might contain an untranslated literal string',
     },
   },
-  defaultOptions: [],
   create(context) {
-    const propertyVisitor = (node: TSESTree.Property) => {
+    const propertyVisitor = (node: Property) => {
       checkProperty(context, node)
     }
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           Property: propertyVisitor,
@@ -63,20 +54,16 @@ export const rule: RuleModule<MessageIds, Options> = {
   },
 }
 
-function checkProperty(
-  context: RuleContext<MessageIds, Options>,
-  node: TSESTree.Property
-) {
+function checkProperty(context: Rule.RuleContext, node: Property) {
   const config: PropertyConfig = {
     include: ['label'],
     ...context.options[0],
   }
 
   const propertyKey =
-    node.key.type === TSESTree.AST_NODE_TYPES.Identifier
+    node.key.type === 'Identifier'
       ? node.key.name
-      : node.key.type === TSESTree.AST_NODE_TYPES.Literal &&
-          typeof node.key.value === 'string'
+      : node.key.type === 'Literal' && typeof node.key.value === 'string'
         ? node.key.value
         : null
 
@@ -88,8 +75,8 @@ function checkProperty(
 }
 
 function checkPropertyValue(
-  context: RuleContext<MessageIds, Options>,
-  node: TSESTree.Property['value'] | TSESTree.PrivateIdentifier,
+  context: Rule.RuleContext,
+  node: Property['value'] | PrivateIdentifier,
   propertyKey: string
 ) {
   if (

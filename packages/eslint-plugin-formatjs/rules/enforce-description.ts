@@ -1,9 +1,5 @@
-import type {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat.js'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util.js'
 
 export enum Option {
@@ -11,13 +7,7 @@ export enum Option {
   anything = 'anything',
 }
 
-type MessageIds = 'enforceDescription' | 'enforceDescriptionLiteral'
-type Options = [`${Option}`?]
-
-function checkNode(
-  context: RuleContext<MessageIds, Options>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const msgs = extractMessages(node, getSettings(context))
   const {
     options: [type],
@@ -47,7 +37,7 @@ function checkNode(
 
 export const name = 'enforce-description'
 
-export const rule: RuleModule<MessageIds, Options> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -68,15 +58,11 @@ export const rule: RuleModule<MessageIds, Options> = {
         '`description` has to be a string literal (not function call or variable)',
     },
   },
-  defaultOptions: [],
   create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -87,7 +73,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },
