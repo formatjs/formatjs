@@ -6,20 +6,15 @@ import {
   type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import type {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import MagicString from 'magic-string'
-import {getParserServices} from '../context-compat.js'
 import {extractMessages, patchMessage} from '../util.js'
 import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 
 export const name = 'no-missing-icu-plural-one-placeholders'
 
 export type MessageIds = 'noMissingIcuPluralOnePlaceholders' | CoreMessageIds
-type Options = []
 
 type MessagePatch =
   | {type: 'remove'; start: number; end: number}
@@ -27,8 +22,8 @@ type MessagePatch =
   | {type: 'update'; start: number; end: number; content: string}
 
 function verifyAst(
-  context: RuleContext<MessageIds, Options>,
-  messageNode: TSESTree.Node,
+  context: Rule.RuleContext,
+  messageNode: Node,
   ast: MessageFormatElement[]
 ) {
   const patches: MessagePatch[] = []
@@ -89,10 +84,7 @@ function verifyAst(
   }
 }
 
-function checkNode(
-  context: RuleContext<MessageIds, Options>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const msgs = extractMessages(node)
 
   for (const [
@@ -123,7 +115,7 @@ function checkNode(
   }
 }
 
-export const rule: RuleModule<MessageIds, Options> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -139,15 +131,11 @@ export const rule: RuleModule<MessageIds, Options> = {
     },
     schema: [],
   },
-  defaultOptions: [],
   create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -158,7 +146,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },

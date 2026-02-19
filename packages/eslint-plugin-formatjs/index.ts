@@ -76,45 +76,25 @@ const {name, version} = packageJson
 
 // All rules
 const rules: ESLint.Plugin['rules'] = {
-  // @ts-expect-error
   [blocklistElementRuleName]: blocklistElements,
-  // @ts-expect-error
   [enforceDefaultMessageName]: enforceDefaultMessage,
-  // @ts-expect-error
   [enforceDescriptionName]: enforceDescription,
-  // @ts-expect-error
   [enforceIdName]: enforceId,
-  // @ts-expect-error
   [enforcePlaceholdersName]: enforcePlaceholders,
-  // @ts-expect-error
   [enforcePluralRulesName]: enforcePluralRules,
-  // @ts-expect-error
   [noCamelCaseName]: noCamelCase,
-  // @ts-expect-error
   [noComplexSelectorsName]: noComplexSelectors,
-  // @ts-expect-error
   [noEmojiName]: noEmoji,
-  // @ts-expect-error
   [noIdName]: noId,
-  // @ts-expect-error
   [noInvalidICUName]: noInvalidICU,
-  // @ts-expect-error
   [noLiteralStringInJsxName]: noLiteralStringInJsx,
-  // @ts-expect-error
   [noMultiplePluralsName]: noMultiplePlurals,
-  // @ts-expect-error
   [noMultipleWhitespacesName]: noMultipleWhitespaces,
-  // @ts-expect-error
   [noOffsetName]: noOffset,
-  // @ts-expect-error
   [noUselessMessageName]: noUselessMessage,
-  // @ts-expect-error
   [preferFormattedMessageName]: preferFormattedMessage,
-  // @ts-expect-error
   [preferPoundInPluralName]: preferPoundInPlural,
-  // @ts-expect-error
   [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
-  // @ts-expect-error
   [noLiteralStringInObjectName]: noLiteralStringInObject,
 }
 

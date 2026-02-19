@@ -1,10 +1,6 @@
 import {interpolateName} from '@formatjs/ts-transformer'
-import type {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat.js'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util.js'
 
 export type Option = {
@@ -27,11 +23,9 @@ type MatchingMessageData = {
   idWhitelist?: string
 }
 
-type Options = [Option]
-
 function checkNode(
-  context: RuleContext<MessageIds, Options>,
-  node: TSESTree.Node,
+  context: Rule.RuleContext,
+  node: Node,
   {
     idInterpolationPattern,
     idWhitelistRegexps,
@@ -151,7 +145,7 @@ function checkNode(
 
 export const name = 'enforce-id'
 
-export const rule: RuleModule<MessageIds, Options> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -199,12 +193,6 @@ Expected: {{expected}}
 Actual: {{actual}}`,
     },
   },
-  defaultOptions: [
-    {
-      idInterpolationPattern: '[sha512:contenthash:base64:6]',
-      quoteStyle: 'single',
-    },
-  ],
   create(context) {
     const tmp = context.options[0]
     let opts: {
@@ -222,13 +210,10 @@ Actual: {{actual}}`,
       )
     }
 
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node, opts)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node, opts)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -239,8 +224,7 @@ Actual: {{actual}}`,
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) =>
-        checkNode(context, node, opts),
+      JSXOpeningElement: (node: Node) => checkNode(context, node, opts),
       CallExpression: callExpressionVisitor,
     }
   },

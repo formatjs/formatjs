@@ -3,12 +3,8 @@ import {
   parse,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import type {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat.js'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import {extractMessages, getSettings} from '../util.js'
 import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 type MessageIds =
@@ -35,10 +31,7 @@ function verifyAst(ast: MessageFormatElement[]): MessageIds | undefined {
   }
 }
 
-function checkNode(
-  context: RuleContext<MessageIds, unknown[]>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const settings = getSettings(context)
   const msgs = extractMessages(node, settings)
 
@@ -78,7 +71,7 @@ function checkNode(
 
 export const name = 'no-useless-message'
 
-export const rule: RuleModule<MessageIds> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -98,15 +91,11 @@ export const rule: RuleModule<MessageIds> = {
         'Unnecessary formatted message: just use FormattedTime or intl.formatTime.',
     },
   },
-  defaultOptions: [],
   create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -117,7 +106,7 @@ export const rule: RuleModule<MessageIds> = {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },

@@ -89,7 +89,6 @@ ruleTester.run(name, rule, {
           defaultMessage: '{count, plural, one {#} other {# more}}',
           description: 'asd'
       })`,
-      options: [],
     },
     {
       code: `
@@ -97,7 +96,6 @@ ruleTester.run(name, rule, {
           defaultMessage: '<b>foo</b>',
           description: 'asd'
       })`,
-      options: [],
     },
   ],
   invalid: [
