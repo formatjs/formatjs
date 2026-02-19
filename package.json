@@ -93,7 +93,7 @@
     "json-stable-stringify": "^1.3.0",
     "lefthook": "^2.0.13",
     "lodash-es": "^4.17.22",
-    "lucide-react": "^0.468.0",
+    "lucide-react": "^0.575.0",
     "magic-string": "^0.30.0",
     "minimist": "^1.2.8",
     "oxc-parser": "^0.114.0",
