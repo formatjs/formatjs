@@ -108,6 +108,13 @@
         "formatjs-repo"
       ],
       "pinVersion": "5.8.2"
+    },
+    {
+      "label": "Vite",
+      "dependencies": [
+        "vite"
+      ],
+      "isIgnored": true
     }
   ]
 }

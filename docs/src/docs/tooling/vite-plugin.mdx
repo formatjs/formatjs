@@ -1,0 +1,134 @@
+Process string messages for translation from modules that use react-intl, specifically:
+
+- Parse and verify that messages are ICU-compliant w/o any syntax issues.
+- Remove `description` from message descriptor to save bytes since it isn't used at runtime.
+- Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
+- Automatically inject message ID based on specific pattern.
+
+This is a native [Vite](https://vitejs.dev) plugin that provides the same transformations as [babel-plugin-formatjs](/docs/tooling/babel-plugin) and [@formatjs/ts-transformer](/docs/tooling/ts-transformer) without requiring Babel or TypeScript custom transformers. It uses `oxc-parser` + `magic-string` for fast, compiler-agnostic builds.
+
+## Installation
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @formatjs/vite-plugin
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/vite-plugin
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add -D @formatjs/vite-plugin
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+The plugin processes message descriptors from: `defineMessages()`, `defineMessage()`, `intl.formatMessage`, `$t`, `$formatMessage` and `<FormattedMessage>`.
+
+**vite.config.ts**
+
+```ts
+import {defineConfig} from 'vite'
+import formatjs from '@formatjs/vite-plugin'
+
+export default defineConfig({
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+})
+```
+
+For example, given this component:
+
+```tsx
+<FormattedMessage
+  description="A message"
+  defaultMessage="My name is {name}"
+  values={{
+    name: userName,
+  }}
+/>
+```
+
+The plugin will produce:
+
+```js
+React.createElement(FormattedMessage, {
+  id: '179jda',
+  defaultMessage: 'My name is {name}',
+  values: {
+    name: userName,
+  },
+})
+```
+
+<Admonition type="info" title="description">
+  Our plugin also removes `description` because it's only for translator, not
+  end-user.
+</Admonition>
+
+## Options
+
+### **`overrideIdFn`**
+
+A function with the signature `(id: string, defaultMessage: string, description: string, filePath: string) => string` which allows you to override the ID both in the extracted javascript and messages.
+
+### **`idInterpolationPattern`**
+
+If certain message descriptors don't have id, this `pattern` will be used to automatically generate IDs for them. Default to `[sha512:contenthash:base64:6]`. See [nodejs crypto createHash](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm_options) for hash algorithms & [nodejs buffer docs](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings) for digest encodings.
+
+### **`removeDefaultMessage`**
+
+Remove `defaultMessage` field in generated js after extraction.
+
+### **`additionalComponentNames`**
+
+Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`.
+
+```ts
+formatjs({
+  idInterpolationPattern: '[sha512:contenthash:base64:6]',
+  additionalComponentNames: ['CustomButton'],
+})
+```
+
+### **`additionalFunctionNames`**
+
+Additional function names to extract messages from, e.g: `['$formatMessage']`.
+
+```ts
+formatjs({
+  idInterpolationPattern: '[sha512:contenthash:base64:6]',
+  additionalFunctionNames: ['t', '$formatMessage'],
+})
+```
+
+### **`ast`**
+
+Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't do anything when `removeDefaultMessage` is `true`.
+
+### **`preserveWhitespace`**
+
+When set to true, message trimming is disabled.
