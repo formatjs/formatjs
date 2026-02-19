@@ -61,6 +61,22 @@ export { msg };
 "
 `;
 
+exports[`@formatjs/vite-plugin integration > compiled JSX: generates ids and removes descriptions 1`] = `
+"import { FormattedMessage } from "react-intl";
+import { jsx } from "react/jsx-runtime";
+function App() {
+	return jsx("div", { children: [jsx(FormattedMessage, {
+		id: "wdf0o2",
+		defaultMessage: "Welcome to our app"
+	}), jsx(FormattedMessage, {
+		id: "custom.id",
+		defaultMessage: "Custom ID message"
+	})] });
+}
+export { App };
+"
+`;
+
 exports[`@formatjs/vite-plugin integration > defineMessage: processes single descriptor 1`] = `
 "function defineMessage(msg$1) {
 	return msg$1;
@@ -146,5 +162,26 @@ exports[`@formatjs/vite-plugin integration > removeDefaultMessage option 1`] = `
 const greeting = intl.formatMessage({ id: "YyDw8T" });
 const farewell = intl.formatMessage({ id: "73dImr" });
 export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/vite-plugin integration > removeDescription for TSX 1`] = `
+"import { Component } from "react";
+import { FormattedMessage } from "react-intl";
+import { jsxDEV } from "react/jsx-dev-runtime";
+var _jsxFileName = "<source>";
+var Foo = class extends Component {
+	render() {
+		return /* @__PURE__ */ jsxDEV(FormattedMessage, {
+			id: "greeting-world",
+			defaultMessage: "Hello World!"
+		}, void 0, false, {
+			fileName: _jsxFileName,
+			lineNumber: 7,
+			columnNumber: 7
+		}, this);
+	}
+};
+export { Foo as default };
 "
 `;

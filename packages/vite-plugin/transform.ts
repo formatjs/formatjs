@@ -61,6 +61,16 @@ export function transform(
     'defineMessages',
     ...additionalFunctionNames,
   ])
+  // Compiled JSX runtime functions: _jsx(Component, props), React.createElement(Component, props)
+  const jsxRuntimeFunctions = new Set([
+    'jsx',
+    '_jsx',
+    'jsxs',
+    '_jsxs',
+    'jsxDEV',
+    '_jsxDEV',
+    'createElement',
+  ])
 
   const result = parseSync(id, code, {sourceType: 'module'})
   const program = result.program
@@ -371,6 +381,23 @@ export function transform(
       node.type === 'OptionalCallExpression'
     ) {
       const calleeName = getCalleeName(node.callee)
+
+      // Handle compiled JSX: _jsx(FormattedMessage, { id, description, defaultMessage })
+      if (calleeName && jsxRuntimeFunctions.has(calleeName)) {
+        const firstArg = node.arguments?.[0]
+        const componentName =
+          firstArg?.type === 'Identifier' ? firstArg.name : undefined
+        if (componentName && componentNames.has(componentName)) {
+          const propsArg = node.arguments?.[1]
+          if (propsArg?.type === 'ObjectExpression') {
+            const result = extractDescriptor(propsArg)
+            if (result) {
+              processDescriptor(result.descriptor, result.locations, false)
+            }
+          }
+        }
+      }
+
       if (calleeName && functionNames.has(calleeName)) {
         if (calleeName === 'defineMessages') {
           // Process each value in the object

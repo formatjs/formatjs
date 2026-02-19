@@ -22,7 +22,12 @@ async function buildFixture(
         formats: ['es'],
       },
       rollupOptions: {
-        external: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
+        external: [
+          'react',
+          'react/jsx-runtime',
+          'react/jsx-dev-runtime',
+          'react-intl',
+        ],
       },
       minify: false,
       outDir,
@@ -82,6 +87,16 @@ describe('@formatjs/vite-plugin integration', () => {
       overrideIdFn: (_id, defaultMessage, _description, _filePath) =>
         `custom_${defaultMessage?.replace(/\s+/g, '_')}`,
     })
+    expect(code).toMatchSnapshot()
+  })
+
+  test('compiled JSX: generates ids and removes descriptions', async () => {
+    const code = await buildFixture('compiledJsx.js')
+    expect(code).toMatchSnapshot()
+  })
+
+  test('removeDescription for TSX', async () => {
+    const code = await buildFixture('removeDescription.tsx')
     expect(code).toMatchSnapshot()
   })
 
