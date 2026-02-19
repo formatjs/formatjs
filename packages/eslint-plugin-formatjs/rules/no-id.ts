@@ -1,26 +1,16 @@
-import type {TSESTree} from '@typescript-eslint/utils'
-import type {SourceCode} from '@typescript-eslint/utils/ts-eslint'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
-import {getParserServices} from '../context-compat.js'
+import type {Comment, Node} from 'estree-jsx'
+import type {Rule, SourceCode} from 'eslint'
 import {extractMessages, getSettings} from '../util.js'
 
 function isComment(
   token: ReturnType<SourceCode['getTokenAfter']>
-): token is TSESTree.Comment {
+): token is Comment {
   return !!token && (token.type === 'Block' || token.type === 'Line')
 }
 
-type MessageIds = 'noId'
-
 export const name = 'no-id'
 
-function checkNode(
-  context: RuleContext<MessageIds, unknown[]>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const msgs = extractMessages(node, getSettings(context))
   for (const [{idPropNode}] of msgs) {
     if (idPropNode) {
@@ -41,7 +31,7 @@ function checkNode(
   }
 }
 
-export const rule: RuleModule<MessageIds> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -54,15 +44,11 @@ export const rule: RuleModule<MessageIds> = {
       noId: 'Manual `id` are not allowed in message descriptor',
     },
   },
-  defaultOptions: [],
   create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -73,7 +59,7 @@ export const rule: RuleModule<MessageIds> = {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },

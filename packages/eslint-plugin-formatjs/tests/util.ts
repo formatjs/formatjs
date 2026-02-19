@@ -1,25 +1,52 @@
-import * as tsParser from '@typescript-eslint/parser'
-import {RuleTester} from '@typescript-eslint/rule-tester'
+import {RuleTester} from 'oxlint/plugins-dev'
+import {RuleTester as EslintRuleTester} from 'eslint'
+import type {Rule} from 'eslint'
 import * as vueParser from 'vue-eslint-parser'
-import {afterAll, describe, it} from 'vitest'
+import {describe, it} from 'vitest'
 
-RuleTester.afterAll = afterAll
 RuleTester.describe = describe
 RuleTester.it = it
-export const ruleTester: RuleTester = new RuleTester({
+
+interface TestCaseBase {
+  code: string
+  output?: string
+  options?: unknown[]
+  settings?: Record<string, unknown>
+}
+
+interface ValidTestCase extends TestCaseBase {}
+
+interface InvalidTestCase extends TestCaseBase {
+  errors: Array<{
+    message?: string
+    messageId?: string
+    data?: Record<string, unknown>
+  }>
+}
+
+interface EslintCompatRuleTester {
+  run(
+    name: string,
+    rule: Rule.RuleModule,
+    tests: {
+      valid: Array<string | ValidTestCase>
+      invalid: Array<InvalidTestCase>
+    }
+  ): void
+}
+
+// @ts-expect-error oxlint RuleTester accepts ESLint Rule.RuleModule in eslintCompat mode
+export const ruleTester: EslintCompatRuleTester = new RuleTester({
+  eslintCompat: true,
   languageOptions: {
-    parser: tsParser,
-    ecmaVersion: 6,
     sourceType: 'module',
     parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
-      },
+      lang: 'tsx',
     },
   },
 })
 
-export const vueRuleTester: RuleTester = new RuleTester({
+export const vueRuleTester: EslintRuleTester = new EslintRuleTester({
   languageOptions: {
     parser: vueParser,
     ecmaVersion: 6,

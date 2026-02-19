@@ -1,8 +1,5 @@
-import type {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import {
   extractEmojis,
   filterEmojis,
@@ -10,19 +7,14 @@ import {
   isValidEmojiVersion,
   type EmojiVersion,
 } from '../emoji-utils.js'
-import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings} from '../util.js'
 
 export const name = 'no-emoji'
-type MessageIds = 'notAllowed' | 'notAllowedAboveVersion'
 
 type NoEmojiConfig = {versionAbove: string}
 export type Options = [NoEmojiConfig?]
 
-function checkNode(
-  context: RuleContext<MessageIds, Options>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const msgs = extractMessages(node, getSettings(context))
 
   let versionAbove: EmojiVersion | undefined
@@ -87,7 +79,7 @@ const versionAboveEnums: EmojiVersion[] = [
   '17.0',
 ]
 
-export const rule: RuleModule<MessageIds, Options> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -108,15 +100,11 @@ export const rule: RuleModule<MessageIds, Options> = {
         'Emojis above version {{versionAbove}} are not allowed - Emoji: {{emoji}}',
     },
   },
-  defaultOptions: [],
   create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -127,7 +115,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },

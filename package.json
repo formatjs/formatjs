@@ -49,6 +49,7 @@
     "@types/babel__helper-plugin-utils": "^7.10.3",
     "@types/babel__traverse": "^7.28.0",
     "@types/estree": "^1.0.8",
+    "@types/estree-jsx": "^1.0.5",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash-es": "^4.17.12",
     "@types/minimist": "^1.2.5",
@@ -96,7 +97,7 @@
     "minimist": "^1.2.8",
     "oxc-transform": "^0.110.0",
     "oxfmt": "^0.26.0",
-    "oxlint": "^1.38.0",
+    "oxlint": "^1.48.0",
     "prismjs": "^1.30.0",
     "react": "19",
     "react-dom": "19",
@@ -182,7 +183,8 @@
       "@types/mdx": "patches/@types__mdx.patch",
       "@vue/compiler-sfc": "patches/@vue+compiler-sfc.patch",
       "unicode-match-property-value-ecmascript@2.2.1": "patches/unicode-match-property-value-ecmascript@2.2.1.patch",
-      "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch"
+      "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch",
+      "oxlint@1.48.0": "patches/oxlint@1.48.0.patch"
     }
   },
   "repository": "formatjs/formatjs"

@@ -4,21 +4,15 @@ import {
   type PluralElement,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import type {TSESTree} from '@typescript-eslint/utils'
-import {
-  type RuleContext,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint'
+import type {Node} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import MagicString from 'magic-string'
-import {getParserServices} from '../context-compat.js'
 import {extractMessages, getSettings, patchMessage} from '../util.js'
-import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
-
-type MessageIds = 'preferPoundInPlurals' | CoreMessageIds
+import {CORE_MESSAGES} from '../messages.js'
 
 function verifyAst(
-  context: RuleContext<MessageIds, unknown[]>,
-  messageNode: TSESTree.Node,
+  context: Rule.RuleContext,
+  messageNode: Node,
   ast: MessageFormatElement[]
 ): void {
   type MessagePatch =
@@ -189,10 +183,7 @@ function verifyAst(
   }
 }
 
-function checkNode(
-  context: RuleContext<MessageIds, unknown[]>,
-  node: TSESTree.Node
-) {
+function checkNode(context: Rule.RuleContext, node: Node) {
   const msgs = extractMessages(node, getSettings(context))
 
   for (const [
@@ -223,7 +214,7 @@ function checkNode(
 
 export const name = 'prefer-pound-in-plural'
 
-export const rule: RuleModule<MessageIds> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
@@ -239,16 +230,12 @@ export const rule: RuleModule<MessageIds> = {
     fixable: 'code',
     schema: [],
   },
-  defaultOptions: [],
   // TODO: Vue support
   create(context) {
-    const callExpressionVisitor = (node: TSESTree.Node) =>
-      checkNode(context, node)
+    const callExpressionVisitor = (node: Node) => checkNode(context, node)
 
-    const parserServices = getParserServices(context)
-    //@ts-expect-error defineTemplateBodyVisitor exists in Vue parser
+    const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
-      //@ts-expect-error
       return parserServices.defineTemplateBodyVisitor(
         {
           CallExpression: callExpressionVisitor,
@@ -259,7 +246,7 @@ export const rule: RuleModule<MessageIds> = {
       )
     }
     return {
-      JSXOpeningElement: (node: TSESTree.Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkNode(context, node),
       CallExpression: callExpressionVisitor,
     }
   },

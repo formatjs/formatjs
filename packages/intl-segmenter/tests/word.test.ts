@@ -40,6 +40,7 @@ const isRegionalIndicatorWithExtendTest = (comment: string, input: string) => {
   // Also check the input for RI emoji (🇦-🇿 range: U+1F1E6-U+1F1FF)
   // followed by combining/format characters
   const riWithExtendPattern =
+    // oxlint-disable-next-line no-misleading-character-class
     /[\u{1F1E6}-\u{1F1FF}][\u0300-\u036F\u0483-\u0489\u{200D}\u00AD]/u
   const inputMatches = riWithExtendPattern.test(input)
 

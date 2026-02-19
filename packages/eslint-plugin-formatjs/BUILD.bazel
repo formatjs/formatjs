@@ -46,7 +46,6 @@ SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
     "messages.ts",
-    "context-compat.ts",
     "emoji-utils.ts",
     "emoji-data.generated.ts",
     "package.json",
@@ -59,7 +58,7 @@ SRC_DEPS = [
     ":node_modules/magic-string",
     ":node_modules/picomatch",
     "//:node_modules/@types/node",
-    "//:node_modules/@typescript-eslint/utils",
+    "//:node_modules/@types/estree-jsx",
     "//:node_modules/@unicode/unicode-17.0.0",
     "//:node_modules/eslint",
     "//:node_modules/typescript",
@@ -86,8 +85,8 @@ vitest(
     name = "unit_test",
     srcs = TESTS_BASE_SRCS + TEST_FILES,
     deps = SRC_DEPS + [
-        "//:node_modules/@typescript-eslint/parser",
-        "//:node_modules/@typescript-eslint/rule-tester",
+        "//:node_modules/@typescript-eslint/utils",
+        "//:node_modules/oxlint",
         "//:node_modules/vue-eslint-parser",
     ],
 )

@@ -1,6 +1,17 @@
-import {TSESTree} from '@typescript-eslint/utils'
-import {type JSONSchema4ArraySchema} from '@typescript-eslint/utils/json-schema'
-import {type RuleModule} from '@typescript-eslint/utils/ts-eslint'
+import type {
+  Expression,
+  JSXAttribute,
+  JSXElement,
+  JSXExpressionContainer,
+  JSXFragment,
+  JSXIdentifier,
+  JSXMemberExpression,
+  JSXNamespacedName,
+  JSXText,
+  Node,
+  PrivateIdentifier,
+} from 'estree-jsx'
+import type {Rule} from 'eslint'
 import * as picomatchNs from 'picomatch'
 
 const picomatch = (picomatchNs as any).default ?? picomatchNs
@@ -19,10 +30,7 @@ type Config = {
   }
 }
 
-type MessageIds = 'noLiteralStringInJsx'
-type Options = [Config?]
-
-const propMatcherSchema: JSONSchema4ArraySchema = {
+const propMatcherSchema = {
   type: 'array',
   items: {
     type: 'array',
@@ -38,13 +46,15 @@ const defaultPropIncludePattern: PropMatcher = [
 
 const defaultPropExcludePattern: PropMatcher = []
 
-function stringifyJsxTagName(tagName: TSESTree.JSXTagNameExpression): string {
+function stringifyJsxTagName(
+  tagName: JSXIdentifier | JSXMemberExpression | JSXNamespacedName
+): string {
   switch (tagName.type) {
-    case TSESTree.AST_NODE_TYPES.JSXIdentifier:
+    case 'JSXIdentifier':
       return tagName.name
-    case TSESTree.AST_NODE_TYPES.JSXMemberExpression:
+    case 'JSXMemberExpression':
       return `${stringifyJsxTagName(tagName.object)}.${tagName.property.name}`
-    case TSESTree.AST_NODE_TYPES.JSXNamespacedName:
+    case 'JSXNamespacedName':
       return `${tagName.namespace.name}:${tagName.name.name}`
   }
 }
@@ -60,7 +70,7 @@ function compilePropMatcher(propMatcher: PropMatcher): CompiledPropMatcher {
 
 export const name = 'no-literal-string-in-jsx'
 
-export const rule: RuleModule<MessageIds, Options> = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
@@ -91,7 +101,6 @@ export const rule: RuleModule<MessageIds, Options> = {
       noLiteralStringInJsx: 'Cannot have untranslated text in JSX',
     },
   },
-  defaultOptions: [],
   // TODO: Vue support
   create(context) {
     const userConfig: Config = context.options[0] || {}
@@ -106,7 +115,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       ...(userConfig.props?.exclude ?? []),
     ])
 
-    const lexicalJsxStack: (TSESTree.JSXElement | TSESTree.JSXFragment)[] = []
+    const lexicalJsxStack: (JSXElement | JSXFragment)[] = []
 
     const shouldSkipCurrentJsxElement = () => {
       const currentJsxNode = lexicalJsxStack[lexicalJsxStack.length - 1]!
@@ -129,7 +138,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       return false
     }
 
-    const shouldSkipCurrentJsxAttribute = (node: TSESTree.JSXAttribute) => {
+    const shouldSkipCurrentJsxAttribute = (node: JSXAttribute) => {
       const currentJsxNode = lexicalJsxStack[lexicalJsxStack.length - 1]!
       if (currentJsxNode.type === 'JSXFragment') {
         return false
@@ -164,9 +173,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       return true
     }
 
-    const checkJSXExpression = (
-      node: TSESTree.Expression | TSESTree.PrivateIdentifier
-    ) => {
+    const checkJSXExpression = (node: Expression | PrivateIdentifier) => {
       // Check if this is either a string literal / template literal, or the concat of them.
       // It also ignores the empty string.
       if (
@@ -193,21 +200,21 @@ export const rule: RuleModule<MessageIds, Options> = {
     }
 
     return {
-      JSXElement: (node: TSESTree.Node) => {
-        lexicalJsxStack.push(node as TSESTree.JSXElement)
+      JSXElement: (node: Node) => {
+        lexicalJsxStack.push(node as JSXElement)
       },
       'JSXElement:exit': () => {
         lexicalJsxStack.pop()
       },
 
-      JSXFragment: (node: TSESTree.Node) => {
-        lexicalJsxStack.push(node as TSESTree.JSXFragment)
+      JSXFragment: (node: Node) => {
+        lexicalJsxStack.push(node as JSXFragment)
       },
       'JSXFragment:exit': () => {
         lexicalJsxStack.pop()
       },
 
-      JSXAttribute: (node: TSESTree.JSXAttribute) => {
+      JSXAttribute: (node: JSXAttribute) => {
         if (shouldSkipCurrentJsxAttribute(node)) {
           return
         }
@@ -233,7 +240,7 @@ export const rule: RuleModule<MessageIds, Options> = {
         }
       },
 
-      JSXText: (node: TSESTree.JSXText) => {
+      JSXText: (node: JSXText) => {
         // Ignore purely spacing fragments
         if (!node.value.replace(/\s*/gm, '')) {
           return
@@ -250,9 +257,7 @@ export const rule: RuleModule<MessageIds, Options> = {
       },
 
       // Children expression container
-      'JSXElement > JSXExpressionContainer': (
-        node: TSESTree.JSXExpressionContainer
-      ) => {
+      'JSXElement > JSXExpressionContainer': (node: JSXExpressionContainer) => {
         if (shouldSkipCurrentJsxElement()) {
           return
         }
