@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.12.2...@formatjs/cli@6.13.0) (2026-02-19)
+
+### Bug Fixes
+
+* **formatjs_cli:** fix newlines/whitespace handling to conform with TS version, fix [#6021](https://github.com/formatjs/formatjs/issues/6021) ([#6022](https://github.com/formatjs/formatjs/issues/6022)) ([3ca6e76](https://github.com/formatjs/formatjs/commit/3ca6e762cb8236f9627eb328132071cbe4fe61e6)) - by @longlho
+
+### Features
+
+* **@formatjs/cli-lib:** migrate from chalk to native Node styleText, bump min Node version to 20.12.0 ([49bd2ad](https://github.com/formatjs/formatjs/commit/49bd2ad2c4f2625bcab467a0d4d193ebbe002587)) - by @longlho
+
 ## [6.12.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.12.1...@formatjs/cli@6.12.2) (2026-02-03)
 
 ### Bug Fixes

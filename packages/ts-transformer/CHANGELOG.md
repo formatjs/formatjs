@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.3.3...@formatjs/ts-transformer@4.4.0) (2026-02-19)
+
+### Features
+
+* **@formatjs/cli-lib:** migrate from chalk to native Node styleText, bump min Node version to 20.12.0 ([49bd2ad](https://github.com/formatjs/formatjs/commit/49bd2ad2c4f2625bcab467a0d4d193ebbe002587)) - by @longlho
+
 ## [4.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.3.2...@formatjs/ts-transformer@4.3.3) (2026-02-03)
 
 ### Bug Fixes
