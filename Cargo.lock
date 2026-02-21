@@ -1659,9 +1659,9 @@ checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 
 [[package]]
 name = "swc_icu_messageformat_parser"
-version = "15.0.0"
+version = "18.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04feed5b9a831f31ee999723ca853b93fcd1ea66c9474a3ae34594f2ae65e009"
+checksum = "67523d5369c8910f1da536e98b84d88ff53103bbba12ac141522a8d5f9479b88"
 dependencies = [
  "langtag",
  "once_cell",
