@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.1.4...eslint-plugin-formatjs@6.2.0) (2026-02-23)
+
+### Features
+
+* **eslint-plugin-formatjs:** add prefer-full-sentence rule ([#6034](https://github.com/formatjs/formatjs/issues/6034)) ([2d47bee](https://github.com/formatjs/formatjs/commit/2d47bee3b51b0036cfc7d578122930b4d7413040)) - by @longlho
+
 ## [6.1.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.1.3...eslint-plugin-formatjs@6.1.4) (2026-02-19)
 
 ### Bug Fixes
