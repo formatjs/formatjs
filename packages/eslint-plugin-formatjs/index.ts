@@ -68,6 +68,10 @@ import {
   rule as noLiteralStringInObject,
   name as noLiteralStringInObjectName,
 } from './rules/no-literal-string-in-object.js'
+import {
+  rule as preferFullSentence,
+  name as preferFullSentenceName,
+} from './rules/prefer-full-sentence.js'
 
 import * as packageJsonNs from './package.json' with {type: 'json'}
 
@@ -96,6 +100,7 @@ const rules: ESLint.Plugin['rules'] = {
   [preferPoundInPluralName]: preferPoundInPlural,
   [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
   [noLiteralStringInObjectName]: noLiteralStringInObject,
+  [preferFullSentenceName]: preferFullSentence,
 }
 
 type Plugin = {
@@ -156,6 +161,7 @@ const configs: Plugin['configs'] = {
         },
       ],
       'formatjs/blocklist-elements': ['error', ['selectordinal']],
+      'formatjs/prefer-full-sentence': 'error',
     },
   },
   recommended: {
@@ -189,6 +195,7 @@ const configs: Plugin['configs'] = {
         },
       ],
       'formatjs/blocklist-elements': ['error', ['selectordinal']],
+      'formatjs/prefer-full-sentence': 'error',
     },
   },
 }
