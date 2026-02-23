@@ -823,6 +823,33 @@ Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if 
 
 Consistent coding style in JSX and less syntax clutter.
 
+### `prefer-full-sentence`
+
+Messages should be self-contained, full sentences. Leading or trailing whitespace in a message suggests it is a fragment being concatenated with other strings, which is an anti-pattern for localization.
+
+#### Why
+
+- String concatenation breaks translation because different languages have different word orders, grammar rules, and sentence structures.
+- Translators need the full sentence to produce an accurate translation.
+- Leading/trailing whitespace is a code smell indicating the message is a fragment.
+
+```tsx
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage: 'Hello {name}, welcome back!',
+  },
+  // FAILS — leading whitespace
+  bar: {
+    defaultMessage: ' items in your cart',
+  },
+  // FAILS — trailing whitespace
+  baz: {
+    defaultMessage: 'You have ',
+  },
+})
+```
+
 ### `prefer-pound-in-plural`
 
 Use `#` in the plural argument to reference the count instead of repeating the argument.
