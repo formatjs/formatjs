@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.3](https://github.com/formatjs/formatjs/compare/vue-intl@7.1.2...vue-intl@7.1.3) (2026-02-25)
+
+### Bug Fixes
+
+* **vue-intl:** loosen vue peer dependency to allow newer versions ([#6043](https://github.com/formatjs/formatjs/issues/6043)) ([88afa55](https://github.com/formatjs/formatjs/commit/88afa55da4422a4a3a6f7e43826f24f2534689e5)), closes [#6040](https://github.com/formatjs/formatjs/issues/6040) - by @longlho
+
 ## [7.1.2](https://github.com/formatjs/formatjs/compare/vue-intl@7.1.1...vue-intl@7.1.2) (2026-02-01)
 
 **Note:** Version bump only for package vue-intl

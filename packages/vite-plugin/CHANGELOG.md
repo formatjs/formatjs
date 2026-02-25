@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/vite-plugin@1.0.2...@formatjs/vite-plugin@1.0.3) (2026-02-25)
+
+### Bug Fixes
+
+* **@formatjs/vite-plugin:** wrap JSX defaultMessage AST in expression container ([#6044](https://github.com/formatjs/formatjs/issues/6044)) ([3832fd6](https://github.com/formatjs/formatjs/commit/3832fd68cc62b36e766ca618dec3c9590262c579)), closes [#6042](https://github.com/formatjs/formatjs/issues/6042) - by @longlho
+
 ## [1.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/vite-plugin@1.0.1...@formatjs/vite-plugin@1.0.2) (2026-02-19)
 
 ### Bug Fixes
