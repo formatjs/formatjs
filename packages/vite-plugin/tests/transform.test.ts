@@ -109,6 +109,14 @@ describe('@formatjs/vite-plugin transform', () => {
       expect(output).toContain('"type"')
       expect(output).not.toContain('description')
     })
+
+    test('wraps JSX defaultMessage AST in expression container', () => {
+      const input = `<FormattedMessage id="test" defaultMessage="Hello World" />`
+      const output = t(input, {ast: true})
+      expect(output).toBe(
+        `<FormattedMessage id="test" defaultMessage={[{"type":0,"value":"Hello World"}]} />`
+      )
+    })
   })
 
   describe('defineMessages', () => {

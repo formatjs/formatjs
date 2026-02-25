@@ -259,10 +259,11 @@ export function transform(
       } else if (defaultMessage) {
         if (preParseAst) {
           const parsed = parse(defaultMessage)
+          const jsonStr = JSON.stringify(parsed)
           s.overwrite(
             locations.defaultMessage.start,
             locations.defaultMessage.end,
-            JSON.stringify(parsed)
+            isJSX ? `{${jsonStr}}` : jsonStr
           )
         } else if (defaultMessage !== locations.defaultMessage.value) {
           // Whitespace was normalized, update the value
