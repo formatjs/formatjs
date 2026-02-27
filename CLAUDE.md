@@ -24,12 +24,22 @@ bazel test //packages/intl-localematcher:unit_test
 # Build a package
 bazel build //packages/intl-localematcher:dist
 
-# Run a benchmark
+# Build all packages
+bazel build //packages/...
+
+# Run a benchmark (JS/TS)
 bazel run //packages/intl-localematcher/benchmark:benchmark
 bazel run //packages/intl-localematcher/benchmark:bestfit_benchmark
 
 # Run with profiling
 bazel run //packages/intl-localematcher/benchmark:profile_cpu
+
+# Test with verbose output
+bazel test //packages/intl-localematcher:unit_test --test_output=all
+bazel test <target> --test_output=errors
+
+# Query test targets
+bazel query 'kind(test, //packages/...)'
 ```
 
 ### 3. Package Structure
@@ -41,17 +51,27 @@ bazel run //packages/intl-localematcher/benchmark:profile_cpu
   - `src/` - Source code
   - `tests/` - Unit tests
   - `benchmark/` (optional) - Performance benchmarks
+- Rust crates are in `crates/`
+
+### 4. Polyfill Development
+
+- When working on polyfills, always cross-check with the [LDML spec](https://unicode.org/reports/tr35/) and [ICU4J](https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/) source
+- Each Intl polyfill follows the ECMA-402 specification
+- Polyfills only activate when native support is missing or buggy
+- Uses CLDR data for locale-specific formatting rules
+- Data is tree-shakeable and can be selectively imported
 
 ### 5. Testing
 
 - Tests use Vitest and are defined in `BUILD.bazel` files
 - Run all tests: `bazel test //...`
 - Tests must pass before merging PRs
+- Conformance tests: `bazel test //packages/cli/integration-tests:conformance_test`
+- Rust CLI tests: `bazel test //crates/formatjs_cli:formatjs_cli_test`
 
 ### 6. Performance Benchmarks
 
-- Benchmarks are in `packages/*/benchmark/` directories
-- Use `tinybench` for JavaScript/TypeScript benchmarks
+- JS/TS benchmarks are in `packages/*/benchmark/` directories using `tinybench`
 - Rust benchmarks are in `crates/*/benches/` directories using Criterion
 - **CRITICAL**: Always use `-c opt` for Rust benchmarks to enable release optimizations
   - Example: `bazel run -c opt //crates/icu_messageformat_parser:comparison_bench`
@@ -193,33 +213,30 @@ This optimization was critical for fixing issue #4936, where React Native/Hermes
 - Each package has its own `BUILD.bazel` file
 - Tests use Vitest via Bazel's vitest rule
 
-### Development Workflow
+### Rust CLI Development
 
-1. **Making Changes**: Edit source files in `packages/*/src/`
-2. **Testing**: `bazel test //packages/package-name:unit_test`
-3. **Building**: `bazel build //packages/package-name:dist`
-4. **Benchmarking**: `bazel run //packages/package-name/benchmark:benchmark`
-5. **All Tests**: `bazel test //...` (runs all tests across all packages)
+- Location: `crates/formatjs_cli/`
+- Binary: `bazel-bin/crates/formatjs_cli/formatjs_cli`
+- 176 unit tests
 
-### Common Tasks
+### Conformance Testing (Rust CLI vs TypeScript CLI)
 
-```bash
-# Test a specific package
-bazel test //packages/intl-localematcher:unit_test
+- Test suite: `packages/cli/integration-tests/conformance-tests/`
+- 20 test cases, 60 total tests (20 TS CLI, 20 Rust CLI, 20 cross-comparisons)
+- Current status: 60/60 passing (100% conformance)
 
-# Test with verbose output
-bazel test //packages/intl-localematcher:unit_test --test_output=all
+**Key issues resolved:**
 
-# Build all packages
-bazel build //packages/...
+1. **Whitespace Normalization (#6021)**: `normalize_whitespace()` in `crates/formatjs_cli/src/extractor.rs` — normalizes newlines/tabs/multiple spaces to single spaces while preserving non-breaking spaces (U+00A0) via placeholder technique
+2. **Hash Generation Timing**: TypeScript hashes AFTER flattening; Rust CLI must match — hash the flattened message in `crates/formatjs_cli/src/extract.rs`
+3. **Non-Breaking Space**: `split_whitespace()` treats U+00A0 as whitespace; use placeholder replacement before/after normalization
 
-# Run a specific benchmark
-bazel run //packages/intl-localematcher/benchmark:bestfit_benchmark
+### Formatter Output Differences
 
-# Check what changed
-git status
-bazel query 'kind(test, //packages/...)'
-```
+- **Crowdin**: `"message"` and `"description"` fields
+- **Lokalise**: `"translation"` and `"notes"` fields
+- **Transifex**: `"string"` and `"developer_comment"` fields
+- **Smartling**: Adds metadata with `"string_format"`, `"translate_paths"`, `"variants_enabled"`
 
 ### Key Files
 
