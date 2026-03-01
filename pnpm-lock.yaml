@@ -559,7 +559,7 @@ importers:
         specifier: ^1.6.16
         version: 1.6.16
       eslint:
-        specifier: '9'
+        specifier: 9 || 10
         version: 9.39.2(jiti@2.6.1)
       magic-string:
         specifier: ^0.30.0
