@@ -97,7 +97,7 @@
       "packages": [
         "eslint-plugin-formatjs"
       ],
-      "pinVersion": "9"
+      "pinVersion": "9 || 10"
     },
     {
       "label": "Typescript root",

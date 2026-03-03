@@ -16,7 +16,7 @@
     "tslib": "^2.8.1"
   },
   "peerDependencies": {
-    "eslint": "9"
+    "eslint": "9 || 10"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",
