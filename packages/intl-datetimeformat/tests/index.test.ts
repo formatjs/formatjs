@@ -727,3 +727,30 @@ describe('Intl.DateTimeFormat', function () {
     expect(result).toBe('04/01/2025, 09:00')
   })
 })
+
+// https://github.com/formatjs/formatjs/issues/6020
+describe('hourCycle override', function () {
+  it('should allow explicit hourCycle override for locales with only h23', function () {
+    const date = new Date('2024-01-01T15:00:00Z')
+
+    // en-GB defaults to h23 (like Icelandic)
+    const dtf24 = new DateTimeFormat('en-GB', {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'UTC',
+      hourCycle: 'h23',
+    })
+    expect(dtf24.resolvedOptions().hourCycle).toBe('h23')
+    expect(dtf24.format(date)).toMatch(/15/)
+
+    // Explicitly requesting h12 should be respected
+    const dtf12 = new DateTimeFormat('en-GB', {
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'UTC',
+      hourCycle: 'h12',
+    })
+    expect(dtf12.resolvedOptions().hourCycle).toBe('h12')
+    expect(dtf12.format(date)).toMatch(/3/)
+  })
+})
