@@ -7520,7 +7520,7 @@ Intl.DateTimeFormat.__addLocaleData(
       hourCycle: 'h23',
       nu: ['latn'],
       ca: ['gregory'],
-      hc: ['h23', ''],
+      hc: ['h23', '', 'h12'],
     },
     locale: 'de',
   },
