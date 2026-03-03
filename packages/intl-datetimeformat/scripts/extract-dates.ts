@@ -201,6 +201,15 @@ async function loadDatesFields(
       processedTimeData[`${locale}-001`] ||
       processedTimeData['001']
     ).map(resolveDateTimeSymbolTable)
+    // Ensure all locales support at least one 24-hour and one 12-hour format
+    // This allows users to explicitly override via hourCycle option per ECMA-402 spec
+    // See: https://github.com/formatjs/formatjs/issues/6020
+    if (!hc.includes('h23') && !hc.includes('h24')) {
+      hc.push('h23')
+    }
+    if (!hc.includes('h12') && !hc.includes('h11')) {
+      hc.push('h12')
+    }
   } catch (e) {
     console.error(`Issue extracting hourCycle for ${locale}`)
     throw e
