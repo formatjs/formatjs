@@ -107,7 +107,7 @@
       "packages": [
         "formatjs-repo"
       ],
-      "pinVersion": "5.8.2"
+      "pinVersion": "5.9.3"
     },
     {
       "label": "Vue",

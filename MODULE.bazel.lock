@@ -656,9 +656,9 @@
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
         "bzlTransitiveDigest": "Sc7aQa6g7ahlDQkjOmGxXPdCRihodnBqKM4XBOjxPWk=",
-        "usagesDigest": "tsxRjH5DN8xUnGoUELCp/xuIp04EwwlFAtYpnGb6Y+4=",
+        "usagesDigest": "Poc6aR0RvidJ/IlCHO+XuhdTUb8PcIKz/zhczsNKsEc=",
         "recordedFileInputs": {
-          "@@//package.json": "55b9bf48ab6c7c9c56eeef2e3c8c29d46b28889e68749c6d89841d7a7862b29a"
+          "@@//package.json": "3a1505db089cd57e0532e91982cfb4f27cd22cea84489312bf6d6459c2cf3501"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -668,7 +668,7 @@
             "attributes": {
               "version": "",
               "version_from": "@@//:package.json",
-              "integrity": "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+              "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
               "urls": [
                 "https://registry.npmjs.org/typescript/-/typescript-{}.tgz"
               ]
@@ -1968,7 +1968,7 @@
         "recordedFileInputs": {
           "@@//Cargo.lock": "026cd07c4cf155a0d7fc4da3e79bd221bc311d7f061fb4212685563f856f0014",
           "@@//Cargo.toml": "4e0e0629ddbf521db0ad31e9ad8cd8805f29b141f7edaaa560af34e5f325f882",
-          "@@//MODULE.bazel": "69e68bc92ee5fb9b6cfab9c606886646298b57cd37e78763d6b8ef22b4d77d40",
+          "@@//MODULE.bazel": "e2856c44f57c794f2669758f5733671dbb5ebdcd23b3416174b57b8f921900fb",
           "@@//crates/formatjs_cli/Cargo.toml": "b0388672e1a7a56668b8b2f1448c4fbcc36695c2f5fb60740dcc4c233d7da543",
           "@@//crates/icu_messageformat_parser/Cargo.toml": "1c2096e9a8853568596e65ebbb56af73feef324883c36b9fec7fa2ab7a7621ed",
           "@@//crates/icu_skeleton_parser/Cargo.toml": "eac4ca44b47b0fde5ae7f4afcdb6e7d4951eac75eb44db7349b2ba912a9840da",

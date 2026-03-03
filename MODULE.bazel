@@ -60,7 +60,7 @@ bazel_dep(name = "aspect_rules_ts", version = "3.8.3")
 
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
 rules_ts_ext.deps(
-    ts_integrity = "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==",
+    ts_integrity = "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
     ts_version_from = "//:package.json",
 )
 use_repo(rules_ts_ext, "npm_typescript")
