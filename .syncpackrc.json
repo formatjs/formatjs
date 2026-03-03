@@ -110,6 +110,13 @@
       "pinVersion": "5.8.2"
     },
     {
+      "label": "Vue",
+      "dependencies": [
+        "vue"
+      ],
+      "isIgnored": true
+    },
+    {
       "label": "Vite",
       "dependencies": [
         "vite"
