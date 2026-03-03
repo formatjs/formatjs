@@ -70,17 +70,6 @@ rust_binary(
     ],
 )
 
-rust_binary(
-    name = "comparison_bench",
-    srcs = ["benches/comparison_bench.rs"],
-    crate_name = "comparison_bench",
-    deps = [
-        ":icu_messageformat_parser",
-        "@crates//:criterion",
-        "@crates//:swc_icu_messageformat_parser",
-    ],
-)
-
 # WASM binary using platform parameter
 rust_shared_library(
     name = "_wasm_lib",
