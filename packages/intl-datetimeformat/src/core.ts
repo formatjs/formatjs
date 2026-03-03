@@ -328,6 +328,32 @@ DateTimeFormat.relevantExtensionKeys = ['nu', 'ca', 'hc']
 DateTimeFormat.__defaultTimeZone = DEFAULT_TIMEZONE
 DateTimeFormat.getDefaultTimeZone = () => DateTimeFormat.__defaultTimeZone
 
+/**
+ * GH #4535: When a format skeleton uses raw pattern form (e.g., "MMMEd, h:mm a")
+ * instead of canonical form (e.g., "MMMEd, hm"), interval formats won't match
+ * by exact key. This function finds the matching canonical interval format by
+ * normalizing the time portion of the skeleton.
+ */
+function findIntervalFormat(
+  skeleton: string,
+  intervalFormats: Record<string, any>
+): Record<string, string> | undefined {
+  const commaIdx = skeleton.indexOf(', ')
+  if (commaIdx === -1) return undefined
+  const datePart = skeleton.slice(0, commaIdx)
+  const timePart = skeleton.slice(commaIdx + 2)
+  // Canonicalize the time part: strip non-skeleton chars (colons, spaces),
+  // remove AM/PM markers (a/b/B are implied by h/K hour symbols),
+  // and collapse repeated field chars (hh→h, mm→m, ss→s)
+  const canonical = timePart
+    .replace(/[^a-zA-Z]/g, '')
+    .replace(/[abB]/g, '')
+    .replace(/(.)\1+/g, '$1')
+  if (canonical === timePart) return undefined
+  const canonicalKey = `${datePart}, ${canonical}`
+  return intervalFormats[canonicalKey]
+}
+
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
@@ -370,7 +396,8 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
           parseDateTimeSkeleton(
             skeleton,
             formats[calendar][skeleton],
-            intervalFormats[skeleton],
+            intervalFormats[skeleton] ||
+              findIntervalFormat(skeleton, intervalFormats),
             intervalFormats.intervalFormatFallback
           )
       )

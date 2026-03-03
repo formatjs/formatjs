@@ -422,8 +422,6 @@ test('GH issue #4168', function () {
 })
 
 test('GH issue #4535 - same day range should not duplicate date', function () {
-  // Fixed: When formatting a date range on the same day with different times,
-  // the date should only appear once, not twice
   const dtf = new DateTimeFormat('en-GB', {
     weekday: 'short',
     year: 'numeric',
@@ -433,25 +431,14 @@ test('GH issue #4535 - same day range should not duplicate date', function () {
     minute: 'numeric',
   })
 
-  // Same day (Sept 22, 2024), different times (14:00 to 16:00)
   const result = dtf.formatRange(
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-
-  // Expected behavior: show date once with time range
-  // The date "Sun, 22 Sept 2024" should only appear once
-  // Note: CLDR uses en dash (–) without spaces for time intervals
-  expect(result).toBe('Sun, 22 Sept 2024, 14:00–16:00')
-
-  // Verify the date appears only once
-  const dateString = 'Sun, 22 Sept 2024'
-  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
-  expect(occurrences).toBe(1)
+  expect(result).toBe('Sun, 22 Sept 2024, 14:00\u201316:00')
 })
 
 test('GH issue #4535 - same day range with hour12:true should not duplicate date (same period)', function () {
-  // Bug report: date/day duplication always occurs when hour12 is set to true
   const dtf = new DateTimeFormat('en-GB', {
     weekday: 'short',
     year: 'numeric',
@@ -462,22 +449,14 @@ test('GH issue #4535 - same day range with hour12:true should not duplicate date
     hour12: true,
   })
 
-  // Same day, different times (14:00-16:00, both PM)
   const result = dtf.formatRange(
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-
-  // Date should only appear once, with AM/PM markers
-  // Expected format: "Sun, 22 Sept 2024, 2:00 PM – 4:00 PM" or similar
-  // The date "Sun, 22 Sept 2024" should only appear once
-  const dateString = 'Sun, 22 Sept 2024'
-  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
-  expect(occurrences).toBe(1)
+  expect(result).toBe('Sun, 22 Sept 2024, 2:00\u2009\u2013\u20094:00 pm')
 })
 
 test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not duplicate date', function () {
-  // Bug report: longer time range crossing AM/PM boundary shows duplication
   const dtf = new DateTimeFormat('en-GB', {
     weekday: 'short',
     year: 'numeric',
@@ -488,23 +467,14 @@ test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not
     hour12: true,
   })
 
-  // Same day, crossing AM/PM (07:00 AM - 16:00 PM / 4:00 PM)
   const result = dtf.formatRange(
     new Date('2026-02-18T07:00:00'),
     new Date('2026-02-18T16:00:00')
   )
-
-  // Date should only appear once
-  const dateString = 'Wed, 18 Feb 2026'
-  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
-  expect(occurrences).toBe(1)
-  // Should have AM and PM markers
-  expect(result).toContain('am')
-  expect(result).toContain('pm')
+  expect(result).toBe('Wed, 18 Feb 2026, 7:00 am\u2009\u2013\u20094:00 pm')
 })
 
 test('GH issue #4535 - longer same day range should not duplicate date', function () {
-  // Bug report: longer time range (07:00-16:00) shows duplication
   const dtf = new DateTimeFormat('en-GB', {
     weekday: 'short',
     year: 'numeric',
@@ -519,17 +489,10 @@ test('GH issue #4535 - longer same day range should not duplicate date', functio
     new Date('2026-02-18T07:00:00'),
     new Date('2026-02-18T16:00:00')
   )
-
-  // Date should only appear once
-  const dateString = 'Wed, 18 Feb 2026'
-  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
-  expect(occurrences).toBe(1)
+  expect(result).toBe('Wed, 18 Feb 2026, 07:00\u201316:00')
 })
 
 test('GH issue #4535 - midnight should be 00:00 not 24:00 on next day', function () {
-  // Bug report: range crossing midnight shows "24:00" for midnight on the next day
-  // Output: "Sun, May 3, 2026, 22:00 – Mon, May 4, 2026, 24:00"
-  // Expected: "Sun, May 3, 2026, 22:00 – Mon, May 4, 2026, 00:00"
   const dtf = new DateTimeFormat('en-GB', {
     weekday: 'short',
     year: 'numeric',
@@ -545,11 +508,185 @@ test('GH issue #4535 - midnight should be 00:00 not 24:00 on next day', function
     new Date('2026-05-04T00:00:00')
   )
 
-  // Should show 00:00, not 24:00
-  expect(result).not.toContain('24:00')
-  expect(result).toContain('00:00')
-  // en-GB formats as "4 May" not "May 4"
-  expect(result).toContain('4 May')
+  expect(result).toBe(
+    'Sun, 3 May 2026, 22:00\u2009\u2013\u2009Mon, 4 May 2026, 00:00'
+  )
+})
+
+test('GH issue #4535 - en locale with hour12:true should not duplicate date (numeric)', function () {
+  const dtf = new DateTimeFormat('en', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  })
+  const result = dtf.formatRange(
+    new Date('2024-09-22T14:00:00'),
+    new Date('2024-09-22T16:00:00')
+  )
+  expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00 PM')
+})
+
+test('GH issue #4535 - en locale with hour12:true should not duplicate date (2-digit)', function () {
+  const dtf = new DateTimeFormat('en', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  })
+  const result = dtf.formatRange(
+    new Date('2024-09-22T14:00:00'),
+    new Date('2024-09-22T16:00:00')
+  )
+  expect(result).toBe('Sun, Sep 22, 02:00\u2009\u2013\u200904:00\u202fPM')
+})
+
+describe('GH issue #4535 - shared parts in formatRange', function () {
+  // Verify that shared date fields are not duplicated across various granularities
+  it('same year, different month', function () {
+    const dtf = new DateTimeFormat('en', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:00:00'),
+      new Date('2024-10-22T16:00:00')
+    )
+    expect(result).toBe(
+      'Sep 22, 2024, 2:00 PM\u2009\u2013\u2009Oct 22, 2024, 4:00 PM'
+    )
+  })
+
+  it('same month, different day', function () {
+    const dtf = new DateTimeFormat('en', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-20T14:00:00'),
+      new Date('2024-09-22T16:00:00')
+    )
+    expect(result).toBe('Sep 20, 2:00 PM\u2009\u2013\u2009Sep 22, 4:00 PM')
+  })
+
+  it('same day, different hour (hour12)', function () {
+    const dtf = new DateTimeFormat('en', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:00:00'),
+      new Date('2024-09-22T16:00:00')
+    )
+    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20094:00 PM')
+  })
+
+  it('same day, different hour (24h)', function () {
+    const dtf = new DateTimeFormat('en', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:00:00'),
+      new Date('2024-09-22T16:00:00')
+    )
+    expect(result).toBe('Sep 22, 14:00\u2009\u2013\u200916:00')
+  })
+
+  it('same day, crossing AM/PM boundary', function () {
+    const dtf = new DateTimeFormat('en', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T07:00:00'),
+      new Date('2024-09-22T16:00:00')
+    )
+    expect(result).toBe('Sep 22, 7:00 AM\u2009\u2013\u20094:00 PM')
+  })
+
+  it('same hour, different minute', function () {
+    const dtf = new DateTimeFormat('en', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:00:00'),
+      new Date('2024-09-22T14:30:00')
+    )
+    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20092:30 PM')
+  })
+
+  it('same minute, different second', function () {
+    const dtf = new DateTimeFormat('en', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:30:00'),
+      new Date('2024-09-22T14:30:45')
+    )
+    expect(result).toBe('2:30:00 PM\u2009\u2013\u20092:30:45 PM')
+  })
+
+  it('different year', function () {
+    const dtf = new DateTimeFormat('en', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:00:00'),
+      new Date('2025-09-22T16:00:00')
+    )
+    expect(result).toBe(
+      'Sep 22, 2024, 2:00 PM\u2009\u2013\u2009Sep 22, 2025, 4:00 PM'
+    )
+  })
+
+  it('same day with weekday and 2-digit hour (original user report)', function () {
+    const dtf = new DateTimeFormat('en', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+    const result = dtf.formatRange(
+      new Date('2024-09-22T14:00:00'),
+      new Date('2024-09-22T16:00:00')
+    )
+    expect(result).toBe('Sun, Sep 22, 02:00\u2009\u2013\u200904:00\u202fPM')
+  })
 })
 
 test('GH issue #4535 - same day midnight should show 00:00 not 24:00', function () {
@@ -570,13 +707,5 @@ test('GH issue #4535 - same day midnight should show 00:00 not 24:00', function 
     new Date('2026-05-03T00:00:00'),
     new Date('2026-05-03T00:45:00')
   )
-
-  // Should show 00:00, not 24:00 (times are at START of day, not end)
-  expect(result).not.toContain('24:00')
-  expect(result).toContain('00:00')
-  expect(result).toContain('00:45')
-  // Date should appear only once
-  const dateString = '3 May 2026'
-  const occurrences = (result.match(new RegExp(dateString, 'g')) || []).length
-  expect(occurrences).toBe(1)
+  expect(result).toBe('Sun, 3 May 2026, 00:00\u201300:45')
 })
