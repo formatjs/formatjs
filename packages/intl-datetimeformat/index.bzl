@@ -15,7 +15,7 @@ ZIC_FILES = [
     "southamerica",
 ]
 
-IANA_TZ_VERSION = "2025c"
+IANA_TZ_VERSION = "2026a"
 
 def generate_dockerfile(name):
     """
