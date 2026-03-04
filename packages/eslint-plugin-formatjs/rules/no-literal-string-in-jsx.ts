@@ -175,13 +175,15 @@ export const rule: Rule.RuleModule = {
 
     const checkJSXExpression = (node: Expression | PrivateIdentifier) => {
       // Check if this is either a string literal / template literal, or the concat of them.
-      // It also ignores the empty string.
+      // It also ignores an empty string, and a string with only one space.
       if (
         (node.type === 'Literal' &&
           typeof node.value === 'string' &&
-          node.value.length > 0) ||
+          node.value.length > 0 &&
+          node.value !== ' ') ||
         (node.type === 'TemplateLiteral' &&
-          (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0))
+          (node.quasis.length > 1 || node.quasis[0].value.raw.length > 0) &&
+          (node.quasis.length > 1 || node.quasis[0].value.raw !== ' '))
       ) {
         context.report({
           node,

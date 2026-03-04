@@ -170,6 +170,14 @@ ruleTester.run(name, rule, {
       // Ignores empty attributes (as template literal expression in the attribute value).
       code: '<img alt={``} role="presentational" />',
     },
+    {
+      // Ignores a string with only one space (as literal expression in the attribute value).
+      code: '<p>{" "}</p>',
+    },
+    {
+      // Ignores a string with only one space(as template literal expression in the attribute value).
+      code: '<p>{` `}</p>',
+    },
   ],
   invalid: [
     {
