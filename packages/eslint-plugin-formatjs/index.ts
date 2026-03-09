@@ -61,6 +61,10 @@ import {
   name as preferFormattedMessageName,
 } from './rules/prefer-formatted-message.js'
 import {
+  rule as preferDirectionAgnostic,
+  name as preferDirectionAgnosticName,
+} from './rules/prefer-direction-agnostic.js'
+import {
   rule as preferPoundInPlural,
   name as preferPoundInPluralName,
 } from './rules/prefer-pound-in-plural.js'
@@ -96,6 +100,7 @@ const rules: ESLint.Plugin['rules'] = {
   [noMultipleWhitespacesName]: noMultipleWhitespaces,
   [noOffsetName]: noOffset,
   [noUselessMessageName]: noUselessMessage,
+  [preferDirectionAgnosticName]: preferDirectionAgnostic,
   [preferFormattedMessageName]: preferFormattedMessage,
   [preferPoundInPluralName]: preferPoundInPlural,
   [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,

@@ -1,4 +1,4 @@
-This eslint plugin allows you to enforce certain rules in your ICU message.
+This eslint plugin allows you to enforce rules for ICU messages and related localization patterns in your source files.
 
 ## Usage
 
@@ -822,6 +822,53 @@ Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if 
 #### Why
 
 Consistent coding style in JSX and less syntax clutter.
+
+### `prefer-direction-agnostic`
+
+Prefer CSS logical properties and direction-agnostic values over physical left/right styles so layouts work in both LTR and RTL contexts.
+
+This rule supports `.css`, `.scss`, `.sass`, and `.less` files and provides autofixes.
+
+#### Why
+
+- Physical directional styles such as `margin-left` and `right` do not adapt automatically for RTL layouts.
+- Logical properties like `margin-inline-start` and values like `text-align: start` are more robust across writing directions.
+- Autofix helps migrate existing stylesheets incrementally.
+
+#### Example
+
+```js
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/prefer-direction-agnostic': 'error',
+    },
+  },
+]
+```
+
+```css
+/* Bad */
+.card {
+  margin-left: 1rem;
+  padding-right: 2rem;
+  text-align: left;
+  right: 0;
+}
+
+/* Good */
+.card {
+  margin-inline-start: 1rem;
+  padding-inline-end: 2rem;
+  text-align: start;
+  inset-inline-end: 0;
+}
+```
+
+The rule also rewrites other physical directional properties, including border side properties and corner radii such as `border-top-left-radius` to `border-start-start-radius`.
 
 ### `prefer-full-sentence`
 
