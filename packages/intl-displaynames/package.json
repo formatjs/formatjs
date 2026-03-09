@@ -11,7 +11,8 @@
     "./polyfill.js": "./polyfill.js",
     "./polyfill-force.js": "./polyfill-force.js",
     "./should-polyfill.js": "./should-polyfill.js",
-    "./locale-data/*": "./locale-data/*"
+    "./locale-data/*": "./locale-data/*",
+    "./locale-data": "./locale-data"
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
