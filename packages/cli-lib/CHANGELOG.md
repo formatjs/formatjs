@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.3.0...@formatjs/cli-lib@8.3.1) (2026-03-09)
+
+### Bug Fixes
+
+* use vue ^3.5.0 range in peer dependencies ([#6064](https://github.com/formatjs/formatjs/issues/6064)) ([022ccbf](https://github.com/formatjs/formatjs/commit/022ccbf7c1244bf6ab9f3c13165098be6f83e43a)), closes [#6062](https://github.com/formatjs/formatjs/issues/6062) - by @longlho
+
 # [8.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.2.3...@formatjs/cli-lib@8.3.0) (2026-02-19)
 
 ### Features

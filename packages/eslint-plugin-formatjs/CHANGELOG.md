@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.2.0...eslint-plugin-formatjs@6.3.0) (2026-03-09)
+
+### Features
+
+* **eslint-plugin-formatjs:** add ESLint v10 support ([#6054](https://github.com/formatjs/formatjs/issues/6054)) ([b7a3723](https://github.com/formatjs/formatjs/commit/b7a3723e030b1a7d8f7dab5c223ba8ace02b0e46)), closes [#6047](https://github.com/formatjs/formatjs/issues/6047) - by @longlho
+
 # [6.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.1.4...eslint-plugin-formatjs@6.2.0) (2026-02-23)
 
 ### Features

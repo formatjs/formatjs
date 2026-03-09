@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.2.2...@formatjs/intl-numberformat@9.2.3) (2026-03-09)
+
+### Bug Fixes
+
+* add locale-data directory export for variable dynamic imports ([#6063](https://github.com/formatjs/formatjs/issues/6063)) ([0492f8b](https://github.com/formatjs/formatjs/commit/0492f8bf5c7cefb561b2bc7b9f7363d218bd0641)), closes [#6060](https://github.com/formatjs/formatjs/issues/6060) - by @longlho
+
 ## [9.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.2.1...@formatjs/intl-numberformat@9.2.2) (2026-02-01)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

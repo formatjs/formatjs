@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.2](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.1...@formatjs/intl-listformat@8.2.2) (2026-03-09)
+
+### Bug Fixes
+
+* add locale-data directory export for variable dynamic imports ([#6063](/github.com/formatjs/formatjs/issues/6063)) ([0492f8b](github.com/formatjs/formatjs/commits/0492f8bf5c7cefb561b2bc7b9f7363d218bd0641)), closes [#6060](github.com/formatjs/formatjs/issues/6060) - by @longlho
+
 ## [8.2.1](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.0...@formatjs/intl-listformat@8.2.1) (2026-02-01)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
