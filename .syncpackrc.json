@@ -112,9 +112,11 @@
     {
       "label": "Vue",
       "dependencies": [
-        "vue"
+        "vue",
+        "@vue/compiler-core",
+        "@vue/compiler-dom"
       ],
-      "isIgnored": true
+      "pinVersion": "^3.5.0"
     },
     {
       "label": "Vite",
