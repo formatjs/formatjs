@@ -359,10 +359,10 @@ importers:
         version: 1.0.4
       vike:
         specifier: ^0.4.251
-        version: 0.4.252(react-streaming@0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 0.4.252(react-streaming@0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       vike-react:
         specifier: ^0.6.18
-        version: 0.6.18(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.252(react-streaming@0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
+        version: 0.6.21(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.252(react-streaming@0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)))
       vite:
         specifier: npm:rolldown-vite@7.3.1
         version: rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
@@ -1730,6 +1730,9 @@ packages:
 
   '@brillout/json-serializer@0.5.21':
     resolution: {integrity: sha512-pzzT4U4A9rk7eZpFjloRoMrGG2jnptwNGAhPIH7ZVjCMHd6TaJ29hrERPaY6Bp3Xdzu8JWlHI1o3x7PysxkaHQ==}
+
+  '@brillout/json-serializer@0.5.22':
+    resolution: {integrity: sha512-jzcOqcbysKICCeZNlwa755tffF+HfMj8G+ZSuvHe06aCpp4xQiU2D91RHFUeJpF0/RNyfa5uWZ0pRuvFoeoqow==}
 
   '@brillout/picocolors@1.0.30':
     resolution: {integrity: sha512-xJjdgyN1H0qh2nB2xlzazIipiDixuUd9oD5msh/Qv5bXJG9j8MSD/m4lREt6Z10ej6FF31b8vB4tdT7lDUbiyA==}
@@ -6953,8 +6956,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-streaming@0.4.15:
-    resolution: {integrity: sha512-3/olKmuCRYNLy0nFGXI54ErYKK1cfxJ3UoKn6pPZkknaHSn1APvJHE9MkKow/2s2CG94emxXoj/RMVpGF4Lxzg==}
+  react-streaming@0.4.16:
+    resolution: {integrity: sha512-qaDUklKjpmPStven+MvFFk3SWN+UaeIugBNwKgd97UPIR8IMUzk68gIg2iPR1fN7+HkrpLmTVwZE9dGoLZTcCA==}
     peerDependencies:
       react: '>=19'
       react-dom: '>=19'
@@ -7936,8 +7939,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vike-react@0.6.18:
-    resolution: {integrity: sha512-kMoRGhdP7nSE59iWMQ3SkC9O4ISdHhnxJlwwH03VUFuUpZp2OgLUCPmlgBeIj7TU0z+P2KHhschmojvcZanL4w==}
+  vike-react@0.6.21:
+    resolution: {integrity: sha512-mZyskc8xXJbUbK8/Lsztgd0MhrCxnQjHhCpruMVokA+jJC1uuZEAgwoO5Fptoiyqm2pjDfqtAGDw+1pZ97d9OA==}
     peerDependencies:
       react: '>=19'
       react-dom: '>=19'
@@ -9167,6 +9170,8 @@ snapshots:
   '@brillout/import@0.2.6': {}
 
   '@brillout/json-serializer@0.5.21': {}
+
+  '@brillout/json-serializer@0.5.22': {}
 
   '@brillout/picocolors@1.0.30': {}
 
@@ -15085,10 +15090,10 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.8
 
-  react-streaming@0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  react-streaming@0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@brillout/import': 0.2.6
-      '@brillout/json-serializer': 0.5.21
+      '@brillout/json-serializer': 0.5.22
       '@brillout/picocolors': 1.0.30
       isbot-fast: 1.2.0
       react: 19.2.3
@@ -16206,14 +16211,14 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vike-react@0.6.18(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.252(react-streaming@0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))):
+  vike-react@0.6.21(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.252(react-streaming@0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))):
     dependencies:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
-      react-streaming: 0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      vike: 0.4.252(react-streaming@0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      react-streaming: 0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      vike: 0.4.252(react-streaming@0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
 
-  vike@0.4.252(react-streaming@0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)):
+  vike@0.4.252(react-streaming@0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       '@babel/core': 7.28.6
       '@babel/types': 7.28.6
@@ -16233,7 +16238,7 @@ snapshots:
       source-map-support: 0.5.21
       tinyglobby: 0.2.15
     optionalDependencies:
-      react-streaming: 0.4.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react-streaming: 0.4.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       vite: rolldown-vite@7.3.1(@types/node@22.19.7)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
