@@ -58,6 +58,9 @@ export function getNavigationTree(): NavSection[] {
         {title: 'Upgrade Guide 3.x', path: 'react-intl/upgrade-guide-3.x'},
         {title: 'Upgrade Guide 4.x', path: 'react-intl/upgrade-guide-4.x'},
         {title: 'Upgrade Guide 5.x', path: 'react-intl/upgrade-guide-5.x'},
+        {title: 'Upgrade Guide 6.x', path: 'react-intl/upgrade-guide-6.x'},
+        {title: 'Upgrade Guide 7.x', path: 'react-intl/upgrade-guide-7.x'},
+        {title: 'Upgrade Guide 8.x', path: 'react-intl/upgrade-guide-8.x'},
       ],
     },
     {

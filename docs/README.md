@@ -130,6 +130,13 @@ Each document in Typesense has the following fields:
   - 🟠 Example - Code examples and samples
 - **Section labels**: Shows which part of docs each result is from
 
+## Adding Documentation Pages
+
+When adding new MDX pages to `src/docs/`, you must also:
+
+1. Add the page to the sidebar navigation in `src/utils/navigation.ts`
+2. Regenerate docs metadata: `bazel run //docs:docs_metadata`
+
 ## File Structure
 
 ```
@@ -140,6 +147,8 @@ docs/
 ├── src/
 │   ├── components/
 │   │   └── SearchBar.tsx            # Typesense search UI
+│   ├── utils/
+│   │   └── navigation.ts           # Sidebar navigation tree
 │   └── docs/                        # MDX documentation files
 ├── .env.example                     # Environment variable template
 ├── .env                            # Your keys (gitignored)

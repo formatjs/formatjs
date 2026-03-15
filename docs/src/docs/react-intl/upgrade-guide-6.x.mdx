@@ -1,0 +1,29 @@
+## Breaking API Changes
+
+### React 18 type fixes
+
+`react-intl` v6 fixes type compatibility issues with React 18. If you are using TypeScript, you may see new type errors if you were relying on the previous (incorrect) types.
+
+### `@formatjs/cli` packaged as a single file
+
+`@formatjs/cli` is now packaged into a single file. `@vue/compiler-core` has been moved to `peerDependencies`, so if you use Vue you need to install it manually:
+
+```bash
+npm install @vue/compiler-core
+```
+
+## New Features
+
+### `onWarn` callback
+
+`IntlProvider` now accepts an `onWarn` prop for handling warning messages (added in 5.25.0, available from 6.x):
+
+```tsx
+<IntlProvider locale="en" onWarn={msg => console.warn(msg)}>
+  {children}
+</IntlProvider>
+```
+
+### Global context memoization
+
+Starting in 6.3.0, the `IntlContext` is memoized into a global (`window.__REACT_INTL_CONTEXT__`) to handle cases where multiple copies of `react-intl` exist in the bundle. You can opt out of this behavior by setting `window.__REACT_INTL_BYPASS_GLOBAL_CONTEXT__ = true` before mounting.

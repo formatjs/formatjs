@@ -147,6 +147,18 @@
     "title": "Upgrade Guide 5.x",
     "description": "- Rich text formatting callback function is no longer variadic."
   },
+  "react-intl/upgrade-guide-6.x": {
+    "title": "Upgrade Guide 6.x",
+    "description": "react-intl v6 fixes type compatibility issues with React 18. If you are using TypeScript, you may see new type errors if you were relying on the previou..."
+  },
+  "react-intl/upgrade-guide-7.x": {
+    "title": "Upgrade Guide 7.x",
+    "description": "@formatjs/intl-displaynames and @formatjs/intl-listformat have been removed from react-intl's dependencies. This reduces the package size, but means you..."
+  },
+  "react-intl/upgrade-guide-8.x": {
+    "title": "Upgrade Guide 8.x",
+    "description": "react-intl v8 requires React 19. If you are using React 18 or below, stay on react-intl v7."
+  },
   "tooling/babel-plugin": {
     "title": "Babel Plugin",
     "description": "Process string messages for translation from modules that use react-intl, specifically:"
