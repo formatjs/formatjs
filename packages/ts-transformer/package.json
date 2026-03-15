@@ -6,6 +6,9 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "engines": {
     "node": ">= 20.12.0"
   },

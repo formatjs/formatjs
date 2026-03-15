@@ -5,6 +5,10 @@
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
   "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "engines": {
     "node": ">= 20.12.0"
   },
