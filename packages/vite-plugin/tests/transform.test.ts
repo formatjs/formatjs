@@ -315,6 +315,90 @@ describe('@formatjs/vite-plugin transform', () => {
     })
   })
 
+  describe('nested AST traversal', () => {
+    test('processes descriptors inside arrow functions', () => {
+      const input = `const fn = () => intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('processes descriptors inside nested function calls', () => {
+      const input = `console.log(intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'}))`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('processes descriptors inside class methods', () => {
+      const input = `class Foo {
+  render() {
+    return intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})
+  }
+}`
+      const output = t(input)
+      expect(output).toContain('id:')
+      expect(output).not.toContain('description')
+    })
+
+    test('processes descriptors inside conditional expressions', () => {
+      const input = `const msg = condition ? intl.formatMessage({defaultMessage: 'Yes', description: 'd1'}) : intl.formatMessage({defaultMessage: 'No', description: 'd2'})`
+      const output = t(input)
+      const idMatches = output.match(/id:\s*"[^"]+"/g)
+      expect(idMatches).toHaveLength(2)
+      expect(output).not.toContain('description')
+    })
+
+    test('processes deeply nested JSX', () => {
+      const input = `<div><span><FormattedMessage defaultMessage="Hello" description="greeting" /></span></div>`
+      const output = t(input)
+      expect(output).toContain('id=')
+      expect(output).not.toContain('description')
+    })
+
+    test('processes mixed call types in one file', () => {
+      const input = `
+const msg1 = intl.formatMessage({defaultMessage: 'Hello', description: 'd1'})
+const msg2 = defineMessage({defaultMessage: 'World', description: 'd2'})
+const msgs = defineMessages({
+  a: {defaultMessage: 'A', description: 'd3'},
+  b: {defaultMessage: 'B', description: 'd4'}
+})
+const el = <FormattedMessage defaultMessage="JSX" description="d5" />
+const compiled = _jsx(FormattedMessage, {defaultMessage: 'Compiled', description: 'd6'})
+`
+      const output = t(input)
+      const idMatches = output.match(/id[=:]\s*"[^"]+"/g)
+      expect(idMatches).toHaveLength(6)
+      expect(output).not.toContain('description')
+    })
+
+    test('processes descriptors inside if/else blocks', () => {
+      const input = `function foo() {
+  if (condition) {
+    return intl.formatMessage({defaultMessage: 'Yes', description: 'd1'})
+  } else {
+    return intl.formatMessage({defaultMessage: 'No', description: 'd2'})
+  }
+}`
+      const output = t(input)
+      const idMatches = output.match(/id:\s*"[^"]+"/g)
+      expect(idMatches).toHaveLength(2)
+      expect(output).not.toContain('description')
+    })
+
+    test('processes descriptors inside array/object literals', () => {
+      const input = `const arr = [
+  intl.formatMessage({defaultMessage: 'First', description: 'd1'}),
+  intl.formatMessage({defaultMessage: 'Second', description: 'd2'}),
+]`
+      const output = t(input)
+      const idMatches = output.match(/id:\s*"[^"]+"/g)
+      expect(idMatches).toHaveLength(2)
+      expect(output).not.toContain('description')
+    })
+  })
+
   describe('overrideIdFn', () => {
     test('receives all arguments', () => {
       let receivedArgs: any
