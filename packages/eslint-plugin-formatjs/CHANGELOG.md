@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.3.0...eslint-plugin-formatjs@6.4.0) (2026-03-15)
+
+### Features
+
+* **eslint-plugin-formatjs:** support minimum description length in `enforce-description` rule ([#6066](https://github.com/formatjs/formatjs/issues/6066)) ([08bb74c](https://github.com/formatjs/formatjs/commit/08bb74c6e0761272d596c422e53966b65f6ed943)) - by @William-Feng
+
 # [6.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.2.0...eslint-plugin-formatjs@6.3.0) (2026-03-09)
 
 ### Features

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/vite-plugin@1.0.3...@formatjs/vite-plugin@1.0.4) (2026-03-15)
+
+### Performance Improvements
+
+* **@formatjs/vite-plugin:** apply Vite performance improvements ([#6070](https://github.com/formatjs/formatjs/issues/6070)) ([184e249](https://github.com/formatjs/formatjs/commit/184e24963934249df35dc83ea95e3c1cb089ac5d)), closes [#6069](https://github.com/formatjs/formatjs/issues/6069) - by @longlho
+* **@formatjs/vite-plugin:** use oxc-parser Visitor for AST traversal ([#6071](https://github.com/formatjs/formatjs/issues/6071)) ([6072c3d](https://github.com/formatjs/formatjs/commit/6072c3d5158ecf25fca0c7111e97f2c71d5116ca)), closes [#6069](https://github.com/formatjs/formatjs/issues/6069) - by @longlho
+
 ## [1.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/vite-plugin@1.0.2...@formatjs/vite-plugin@1.0.3) (2026-02-25)
 
 ### Bug Fixes
