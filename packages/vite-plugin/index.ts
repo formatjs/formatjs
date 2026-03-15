@@ -5,10 +5,11 @@ export default function formatjsPlugin(options: Options = {}): Plugin {
   return {
     name: 'formatjs',
     enforce: 'pre',
-    transform(code, id) {
-      if (/node_modules/.test(id)) return
-      if (!/\.[jt]sx?$/.test(id)) return
-      return transform(code, id, options)
+    transform: {
+      filter: {id: {include: /\.[jt]sx?$/, exclude: /node_modules/}},
+      handler(code, id) {
+        return transform(code, id, options)
+      },
     },
   }
 }
