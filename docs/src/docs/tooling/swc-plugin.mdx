@@ -1,1 +1,201 @@
-This has been migrated over to the swc repo itself. You can find the plugin [here](https://www.npmjs.com/package/@swc/plugin-formatjs).
+Process string messages for translation from modules that use react-intl, specifically:
+
+- Parse and verify that messages are ICU-compliant w/o any syntax issues.
+- Remove `description` from message descriptor to save bytes since it isn't used at runtime.
+- Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
+- Automatically inject message ID based on specific pattern.
+
+This plugin has been migrated to the SWC repository and is maintained by the SWC team. It provides the same transformations as [babel-plugin-formatjs](/docs/tooling/babel-plugin) and [@formatjs/ts-transformer](/docs/tooling/ts-transformer) but runs natively inside SWC — making it significantly faster and the recommended choice for Next.js projects.
+
+## Installation
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @swc/plugin-formatjs
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @swc/plugin-formatjs
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add -D @swc/plugin-formatjs
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="caution" title="Version Compatibility">
+  SWC plugins must match the exact `@swc/core` version used by your toolchain.
+  If you use Next.js, install the plugin version that corresponds to your
+  Next.js version's built-in SWC version. Check the [SWC plugin-formatjs
+  releases](https://github.com/nicolo-ribaudo/swc-plugin-formatjs/releases) for
+  the compatibility matrix.
+</Admonition>
+
+## Usage with Next.js
+
+Next.js uses SWC by default. Add the plugin to the `experimental.swcPlugins` array in your Next.js config:
+
+**next.config.js**
+
+```js
+module.exports = {
+  experimental: {
+    swcPlugins: [
+      [
+        '@swc/plugin-formatjs',
+        {
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+          ast: true,
+        },
+      ],
+    ],
+  },
+}
+```
+
+For example, given this component:
+
+```tsx
+<FormattedMessage
+  description="A message"
+  defaultMessage="My name is {name}"
+  values={{
+    name: userName,
+  }}
+/>
+```
+
+The plugin will produce:
+
+```js
+React.createElement(FormattedMessage, {
+  id: '179jda',
+  defaultMessage: 'My name is {name}',
+  values: {
+    name: userName,
+  },
+})
+```
+
+<Admonition type="info" title="description">
+  The plugin also removes `description` because it's only for translators, not
+  end-users.
+</Admonition>
+
+## Usage with .swcrc
+
+If you use SWC directly (without Next.js), configure the plugin in your `.swcrc` file:
+
+**.swcrc**
+
+```json
+{
+  "jsc": {
+    "experimental": {
+      "plugins": [
+        [
+          "@swc/plugin-formatjs",
+          {
+            "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+            "ast": true
+          }
+        ]
+      ]
+    }
+  }
+}
+```
+
+## Options
+
+### **`idInterpolationPattern`**
+
+If certain message descriptors don't have id, this `pattern` will be used to automatically generate IDs for them. Default to `[sha512:contenthash:base64:6]`. See [nodejs crypto createHash](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm_options) for hash algorithms & [nodejs buffer docs](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings) for digest encodings.
+
+### **`removeDefaultMessage`**
+
+Remove `defaultMessage` field in generated js after extraction.
+
+### **`additionalComponentNames`**
+
+Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`.
+
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    swcPlugins: [
+      [
+        '@swc/plugin-formatjs',
+        {
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+          additionalComponentNames: ['CustomButton'],
+        },
+      ],
+    ],
+  },
+}
+```
+
+### **`additionalFunctionNames`**
+
+Additional function names to extract messages from, e.g: `['$formatMessage']`.
+
+### **`ast`**
+
+Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't do anything when `removeDefaultMessage` is `true`. See the [Performance Tuning guide](/docs/guides/performance) for details on how AST pre-compilation improves runtime performance.
+
+### **`preserveWhitespace`**
+
+When set to true, message trimming is disabled.
+
+### **`extractSourceLocation`**
+
+When set to true, extracts metadata about the source file location of each message.
+
+## Migrating from babel-plugin-formatjs
+
+If you're currently using `babel-plugin-formatjs` and want to switch to the SWC plugin:
+
+1. Install `@swc/plugin-formatjs` and remove `babel-plugin-formatjs`.
+2. Move your plugin options from `babel.config.json` to `next.config.js` (or `.swcrc`).
+3. The options are the same, with one exception: `overrideIdFn` is not supported as a function since SWC plugins cannot accept JavaScript functions. Use `idInterpolationPattern` instead.
+
+```diff
+- // babel.config.json
+- {
+-   "plugins": [
+-     ["formatjs", { "idInterpolationPattern": "[sha512:contenthash:base64:6]", "ast": true }]
+-   ]
+- }
++ // next.config.js
++ module.exports = {
++   experimental: {
++     swcPlugins: [
++       ['@swc/plugin-formatjs', { idInterpolationPattern: '[sha512:contenthash:base64:6]', ast: true }],
++     ],
++   },
++ }
+```
+
+<Admonition type="caution" title="overrideIdFn">
+  The SWC plugin does not support `overrideIdFn` as a JavaScript function. Use
+  `idInterpolationPattern` for automatic ID generation instead.
+</Admonition>

@@ -1,0 +1,228 @@
+This guide helps you migrate from [i18next](https://www.i18next.com/) / [react-i18next](https://react.i18next.com/) to FormatJS / `react-intl`. Both libraries solve the same problem but use different syntax, APIs, and file conventions.
+
+## Concept mapping
+
+| i18next                                      | FormatJS                                               | Notes                            |
+| -------------------------------------------- | ------------------------------------------------------ | -------------------------------- |
+| `i18next.init()`                             | `<IntlProvider>`                                       | FormatJS uses React context      |
+| `t('key')`                                   | `intl.formatMessage({id: 'key'})`                      | Imperative API                   |
+| `<Trans>`                                    | `<FormattedMessage>`                                   | Declarative component            |
+| `useTranslation()`                           | `useIntl()`                                            | React hook                       |
+| `i18next-http-backend`                       | Dynamic `import()`                                     | No plugin needed                 |
+| `i18next-browser-languagedetector`           | `@formatjs/intl-localematcher` + `navigator.languages` | Or use middleware (Next.js)      |
+| Namespace files (`common.json`, `home.json`) | Single file per locale (`en.json`)                     | Can split manually               |
+| `interpolation.escapeValue`                  | Built-in XSS safety                                    | FormatJS escapes by default      |
+| Plugins / backends                           | Bundler plugins                                        | SWC, Babel, Vite, TS transformer |
+
+## Syntax differences
+
+### Interpolation
+
+```
+# i18next
+Hello, {{name}}!
+
+# FormatJS (ICU MessageFormat)
+Hello, {name}!
+```
+
+ICU MessageFormat uses single braces. No special escaping config is needed.
+
+### Plurals
+
+```
+# i18next (separate keys)
+"item": "{{count}} item"
+"item_plural": "{{count}} items"
+"item_zero": "No items"        # optional
+
+# FormatJS (ICU MessageFormat — single key)
+"item": "{count, plural, zero {No items} one {# item} other {# items}}"
+```
+
+ICU plural syntax keeps all variants in a single string, making it easier for translators to see the full context. The `#` symbol is replaced with the formatted number.
+
+### Ordinals
+
+```
+# i18next (suffix keys)
+"rank_ordinal_one": "{{count}}st"
+"rank_ordinal_two": "{{count}}nd"
+"rank_ordinal_few": "{{count}}rd"
+"rank_ordinal_other": "{{count}}th"
+
+# FormatJS (ICU MessageFormat)
+"rank": "{count, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}"
+```
+
+### Select (gender / enum)
+
+```
+# i18next (context)
+"greeting_male": "He left"
+"greeting_female": "She left"
+
+# FormatJS (ICU MessageFormat)
+"greeting": "{gender, select, male {He left} female {She left} other {They left}}"
+```
+
+### Rich text / HTML
+
+```tsx
+// i18next — uses <Trans> with indexed or named components
+<Trans i18nKey="welcome" components={{bold: <strong />, link: <a href="/terms" />}}>
+  Welcome! Read our <bold>terms</bold> and <link>conditions</link>.
+</Trans>
+
+// FormatJS — uses XML-like tags in the ICU message
+<FormattedMessage
+  defaultMessage="Welcome! Read our <bold>terms</bold> and <link>conditions</link>."
+  values={{
+    bold: chunks => <strong>{chunks}</strong>,
+    link: chunks => <a href="/terms">{chunks}</a>,
+  }}
+/>
+```
+
+## Translation file format
+
+### i18next (nested JSON)
+
+```json
+{
+  "home": {
+    "title": "Welcome",
+    "description": "The best app"
+  },
+  "nav": {
+    "about": "About us"
+  }
+}
+```
+
+### FormatJS (flat JSON)
+
+```json
+{
+  "home.title": "Welcome",
+  "home.description": "The best app",
+  "nav.about": "About us"
+}
+```
+
+FormatJS uses flat key-value pairs by default. If you prefer, you can use the [`@formatjs/cli`](/docs/tooling/cli) `--format` option to work with nested structures during extraction and compilation, but the runtime always expects a flat map.
+
+## Step-by-step migration
+
+### 1. Install FormatJS
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i react-intl
+npm i -D @formatjs/cli
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add react-intl
+yarn add -D @formatjs/cli
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add react-intl
+pnpm add -D @formatjs/cli
+```
+
+</TabItem>
+</Tabs>
+
+### 2. Convert translation files
+
+Convert your i18next JSON files to FormatJS format. The main changes:
+
+- Flatten nested keys with dot separators (e.g. `home.title` → `"home.title"`)
+- Convert `{{variable}}` to `{variable}`
+- Merge plural suffix keys (`_one`, `_other`, `_zero`) into ICU plural syntax
+- Merge context suffix keys (`_male`, `_female`) into ICU select syntax
+
+### 3. Replace the provider
+
+```diff
+- import {I18nextProvider} from 'react-i18next'
+- import i18n from './i18n'
++ import {IntlProvider} from 'react-intl'
++ import messages from './messages/en.json'
+
+  function App() {
+    return (
+-     <I18nextProvider i18n={i18n}>
++     <IntlProvider locale="en" messages={messages}>
+        <MyApp />
+-     </I18nextProvider>
++     </IntlProvider>
+    )
+  }
+```
+
+### 4. Replace hooks and components
+
+```diff
+- import {useTranslation} from 'react-i18next'
++ import {useIntl, FormattedMessage} from 'react-intl'
+
+  function MyComponent() {
+-   const {t} = useTranslation()
++   const intl = useIntl()
+
+    return (
+      <div>
+-       <h1>{t('home.title')}</h1>
++       <h1>{intl.formatMessage({id: 'home.title'})}</h1>
+-       <Trans i18nKey="home.welcome" components={{bold: <strong />}}>
+-         Welcome <bold>friend</bold>
+-       </Trans>
++       <FormattedMessage
++         id="home.welcome"
++         defaultMessage="Welcome <bold>friend</bold>"
++         values={{bold: chunks => <strong>{chunks}</strong>}}
++       />
+      </div>
+    )
+  }
+```
+
+### 5. Set up message extraction
+
+Replace any i18next scanner with [`@formatjs/cli extract`](/docs/tooling/cli):
+
+```sh
+formatjs extract 'src/**/*.{ts,tsx}' --out-file messages/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+```
+
+### 6. Incremental migration
+
+You can run both libraries side by side during migration:
+
+1. Keep `i18next` and `react-intl` installed together.
+2. Migrate one page/component at a time.
+3. Both providers can coexist in the component tree.
+4. Once all components are migrated, remove `i18next`, `react-i18next`, and any plugins.
+
+<Admonition type="info" title="Bundler plugin">
+  Set up a [bundler plugin](/docs/guides/bundler-plugins) early in the migration
+  to get automatic ID injection and AST pre-compilation from the start.
+</Admonition>
