@@ -6,6 +6,9 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",
   "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
   "dependencies": {
     "@babel/core": "^7.28.5",
     "@babel/helper-plugin-utils": "^7.27.1",
