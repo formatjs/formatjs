@@ -64,7 +64,7 @@
     "@typescript-eslint/utils": "^8.52.0",
     "@typescript/native-preview": "7.0.0-dev.20260315.1",
     "@unicode/unicode-17.0.0": "^1.6.16",
-    "@vitejs/plugin-react-oxc": "^0.4.3",
+    "@vitejs/plugin-react": "^6.0.1",
     "@vue/compiler-core": "^3.5.0",
     "@vue/compiler-dom": "^3.5.0",
     "@vue/server-renderer": "^3.5.26",
@@ -126,7 +126,7 @@
     "unidiff": "^1.0.4",
     "vike": "^0.4.251",
     "vike-react": "^0.6.18",
-    "vite": "npm:rolldown-vite@7.3.1",
+    "vite": "^8.0.0",
     "vitest": "^3.2.4",
     "vue": "^3.5.0",
     "vue-class-component": "8.0.0-rc.1",
@@ -143,6 +143,10 @@
   "packageManager": "pnpm@10.32.1",
   "pnpm": {
     "onlyBuiltDependencies": [],
+    "overrides": {
+      "@tailwindcss/vite>vite": "$vite",
+      "vitest>vite": "$vite"
+    },
     "packageExtensions": {
       "@vue/compiler-core": {
         "dependencies": {
