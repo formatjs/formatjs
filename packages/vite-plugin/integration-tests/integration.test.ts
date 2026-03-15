@@ -21,7 +21,7 @@ async function buildFixture(
         entry: join(import.meta.dirname, 'fixtures', fixture),
         formats: ['es'],
       },
-      rollupOptions: {
+      rolldownOptions: {
         external: [
           'react',
           'react/jsx-runtime',
