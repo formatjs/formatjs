@@ -197,6 +197,10 @@ const messages = defineMessages({
 
 #### Options
 
+The rule accepts a single option, which can be either a string or an object.
+
+**String option:**
+
 ```js
 export default [
   {
@@ -210,7 +214,30 @@ export default [
 ]
 ```
 
-Setting `literal` forces `description` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `description` to always be a literal
+Setting `literal` forces `description` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `description` to always be a literal.
+
+**Object option:**
+
+```js
+export default [
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/enforce-description': [
+        'error',
+        {minLength: 10, mode: 'literal'},
+      ],
+    },
+  },
+]
+```
+
+| Property    | Type      | Required | Description                                                         |
+| ----------- | --------- | -------- | ------------------------------------------------------------------- |
+| `minLength` | `integer` | No       | Minimum character length for the `description` string.              |
+| `mode`      | `string`  | No       | Set to `'literal'` to require `description` to be a string literal. |
 
 ### `enforce-default-message`
 
