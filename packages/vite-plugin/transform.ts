@@ -1,4 +1,5 @@
-import {parseSync} from 'oxc-parser'
+import {parseSync, Visitor} from 'oxc-parser'
+import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
 import MagicString from 'magic-string'
 import {interpolateName} from '@formatjs/ts-transformer'
 import {parse} from '@formatjs/icu-messageformat-parser'
@@ -374,94 +375,71 @@ export function transform(
     return undefined
   }
 
-  function walk(node: any): void {
-    if (!node || typeof node !== 'object') return
+  function handleCallExpression(node: CallExpression): void {
+    const calleeName = getCalleeName(node.callee)
 
-    if (
-      node.type === 'CallExpression' ||
-      node.type === 'OptionalCallExpression'
-    ) {
-      const calleeName = getCalleeName(node.callee)
-
-      // Handle compiled JSX: _jsx(FormattedMessage, { id, description, defaultMessage })
-      if (calleeName && jsxRuntimeFunctions.has(calleeName)) {
-        const firstArg = node.arguments?.[0]
-        const componentName =
-          firstArg?.type === 'Identifier' ? firstArg.name : undefined
-        if (componentName && componentNames.has(componentName)) {
-          const propsArg = node.arguments?.[1]
-          if (propsArg?.type === 'ObjectExpression') {
-            const result = extractDescriptor(propsArg)
-            if (result) {
-              processDescriptor(result.descriptor, result.locations, false)
-            }
+    // Handle compiled JSX: _jsx(FormattedMessage, { id, description, defaultMessage })
+    if (calleeName && jsxRuntimeFunctions.has(calleeName)) {
+      const firstArg = node.arguments?.[0]
+      const componentName =
+        firstArg?.type === 'Identifier' ? firstArg.name : undefined
+      if (componentName && componentNames.has(componentName)) {
+        const propsArg = node.arguments?.[1]
+        if (propsArg?.type === 'ObjectExpression') {
+          const result = extractDescriptor(propsArg)
+          if (result) {
+            processDescriptor(result.descriptor, result.locations, false)
           }
         }
       }
+    }
 
-      if (calleeName && functionNames.has(calleeName)) {
-        if (calleeName === 'defineMessages') {
-          // Process each value in the object
-          const arg = node.arguments?.[0]
-          if (arg?.type === 'ObjectExpression') {
-            for (const prop of arg.properties) {
-              if (
-                (prop.type === 'Property' || prop.type === 'ObjectProperty') &&
-                prop.value?.type === 'ObjectExpression'
-              ) {
-                const result = extractDescriptor(prop.value)
-                if (result) {
-                  processDescriptor(result.descriptor, result.locations, false)
-                }
+    if (calleeName && functionNames.has(calleeName)) {
+      if (calleeName === 'defineMessages') {
+        // Process each value in the object
+        const arg = node.arguments?.[0]
+        if (arg?.type === 'ObjectExpression') {
+          for (const prop of arg.properties) {
+            if (
+              prop.type === 'Property' &&
+              prop.value?.type === 'ObjectExpression'
+            ) {
+              const result = extractDescriptor(prop.value)
+              if (result) {
+                processDescriptor(result.descriptor, result.locations, false)
               }
             }
           }
-        } else if (
-          calleeName === 'defineMessage' ||
-          calleeName === 'formatMessage' ||
-          calleeName === '$t' ||
-          calleeName === '$formatMessage' ||
-          functionNames.has(calleeName)
-        ) {
-          const arg = node.arguments?.[0]
-          if (arg?.type === 'ObjectExpression') {
-            const result = extractDescriptor(arg)
-            if (result) {
-              processDescriptor(result.descriptor, result.locations, false)
-            }
+        }
+      } else {
+        const arg = node.arguments?.[0]
+        if (arg?.type === 'ObjectExpression') {
+          const result = extractDescriptor(arg)
+          if (result) {
+            processDescriptor(result.descriptor, result.locations, false)
           }
         }
-      }
-    }
-
-    if (node.type === 'JSXOpeningElement') {
-      const name =
-        node.name?.type === 'JSXIdentifier' ? node.name.name : undefined
-      if (name && componentNames.has(name)) {
-        const result = extractJSXDescriptor(node)
-        if (result) {
-          processDescriptor(result.descriptor, result.locations, true)
-        }
-      }
-    }
-
-    // Walk children
-    for (const key of Object.keys(node)) {
-      if (key === 'start' || key === 'end' || key === 'type') continue
-      const child = node[key]
-      if (Array.isArray(child)) {
-        for (const item of child) {
-          if (item && typeof item === 'object' && item.type) {
-            walk(item)
-          }
-        }
-      } else if (child && typeof child === 'object' && child.type) {
-        walk(child)
       }
     }
   }
 
-  walk(program)
+  function handleJSXOpeningElement(node: JSXOpeningElement): void {
+    const name =
+      node.name?.type === 'JSXIdentifier' ? node.name.name : undefined
+    if (name && componentNames.has(name)) {
+      const result = extractJSXDescriptor(node)
+      if (result) {
+        processDescriptor(result.descriptor, result.locations, true)
+      }
+    }
+  }
+
+  const visitor = new Visitor({
+    CallExpression: handleCallExpression,
+    JSXOpeningElement: handleJSXOpeningElement,
+  })
+
+  visitor.visit(program)
 
   if (!s) return undefined
 
