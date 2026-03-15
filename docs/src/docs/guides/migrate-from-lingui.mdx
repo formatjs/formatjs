@@ -1,0 +1,243 @@
+This guide helps you migrate from [Lingui](https://lingui.dev/) to FormatJS / `react-intl`. Both libraries use ICU MessageFormat for message syntax, making migration relatively straightforward compared to other i18n libraries.
+
+## Concept mapping
+
+| Lingui                         | FormatJS                             | Notes                   |
+| ------------------------------ | ------------------------------------ | ----------------------- |
+| `<I18nProvider>`               | `<IntlProvider>`                     | React context provider  |
+| `<Trans>` macro                | `<FormattedMessage>`                 | Declarative component   |
+| `t` macro                      | `intl.formatMessage()`               | Imperative API          |
+| `useLingui()`                  | `useIntl()`                          | React hook              |
+| `@lingui/cli extract`          | `@formatjs/cli extract`              | Message extraction      |
+| `@lingui/cli compile`          | `@formatjs/cli compile`              | Message compilation     |
+| `lingui.config.ts`             | Bundler plugin config                | SWC, Babel, Vite        |
+| `.po` / `.json` catalogs       | `.json` message files                | FormatJS uses flat JSON |
+| `@lingui/macro` (compile-time) | `babel-plugin-formatjs` / SWC plugin | Build-time transforms   |
+| `plural()` macro               | ICU `{count, plural, ...}` syntax    | Same ICU standard       |
+| `select()` macro               | ICU `{val, select, ...}` syntax      | Same ICU standard       |
+
+## Syntax comparison
+
+Since both libraries use ICU MessageFormat, the runtime message syntax is nearly identical. The main difference is in how you author messages in source code.
+
+### Simple messages
+
+```tsx
+// Lingui — uses macros that are compiled away
+import {Trans, t} from '@lingui/macro'
+
+;<Trans>Hello, world!</Trans>
+const msg = t`Hello, world!`
+
+// FormatJS — uses components and imperative API
+import {FormattedMessage, useIntl} from 'react-intl'
+
+;<FormattedMessage defaultMessage="Hello, world!" />
+const intl = useIntl()
+const msg = intl.formatMessage({defaultMessage: 'Hello, world!'})
+```
+
+### Interpolation
+
+```tsx
+// Lingui
+<Trans>Hello, {name}!</Trans>
+
+// FormatJS
+<FormattedMessage defaultMessage="Hello, {name}!" values={{name}} />
+```
+
+### Plurals
+
+```tsx
+// Lingui — plural() macro
+import {plural} from '@lingui/macro'
+const msg = plural(count, {
+  one: '# item',
+  other: '# items',
+})
+
+// FormatJS — ICU syntax in message string
+const msg = intl.formatMessage(
+  {defaultMessage: '{count, plural, one {# item} other {# items}}'},
+  {count}
+)
+```
+
+### Rich text
+
+```tsx
+// Lingui
+<Trans>
+  Read the <a href="/docs">documentation</a>
+</Trans>
+
+// FormatJS
+<FormattedMessage
+  defaultMessage="Read the <link>documentation</link>"
+  values={{
+    link: chunks => <a href="/docs">{chunks}</a>,
+  }}
+/>
+```
+
+Lingui macros allow JSX elements directly in `<Trans>`. FormatJS uses XML-like tags in the message string with render functions in `values`.
+
+## CLI comparison
+
+### Extraction
+
+```sh
+# Lingui
+lingui extract
+
+# FormatJS
+formatjs extract 'src/**/*.{ts,tsx}' --out-file messages/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+```
+
+### Compilation
+
+```sh
+# Lingui — compiles .po to optimized JS catalogs
+lingui compile
+
+# FormatJS — compiles JSON to AST-optimized JSON
+formatjs compile messages/en.json --ast --out-file compiled/en.json
+```
+
+FormatJS uses JSON throughout. Lingui supports PO (gettext), PO + JSON, and its own JSON format.
+
+## Step-by-step migration
+
+### 1. Install FormatJS
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i react-intl
+npm i -D @formatjs/cli
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add react-intl
+yarn add -D @formatjs/cli
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add react-intl
+pnpm add -D @formatjs/cli
+```
+
+</TabItem>
+</Tabs>
+
+### 2. Convert message catalogs
+
+If you use PO files, convert them to FormatJS JSON:
+
+```sh
+# Export from Lingui to JSON first (if using PO)
+lingui extract --format json
+
+# Then reshape the JSON to FormatJS flat format:
+# Lingui: { "messageId": { "message": "Hello", "origin": [...] } }
+# FormatJS: { "messageId": "Hello" }
+```
+
+If you already use Lingui's JSON format, the conversion is straightforward — extract just the `message` field from each entry.
+
+### 3. Replace the provider
+
+```diff
+- import {I18nProvider} from '@lingui/react'
+- import {i18n} from '@lingui/core'
++ import {IntlProvider} from 'react-intl'
++ import messages from './messages/en.json'
+
+  function App() {
+    return (
+-     <I18nProvider i18n={i18n}>
++     <IntlProvider locale="en" messages={messages}>
+        <MyApp />
+-     </I18nProvider>
++     </IntlProvider>
+    )
+  }
+```
+
+### 4. Replace macros with components/hooks
+
+```diff
+- import {Trans, t} from '@lingui/macro'
+- import {useLingui} from '@lingui/react'
++ import {FormattedMessage, useIntl} from 'react-intl'
+
+  function MyComponent() {
+-   const {i18n} = useLingui()
++   const intl = useIntl()
+
+    return (
+      <div>
+-       <Trans>Welcome back</Trans>
++       <FormattedMessage defaultMessage="Welcome back" />
+-       <p>{t`You have ${count} notifications`}</p>
++       <p>
++         {intl.formatMessage(
++           {defaultMessage: 'You have {count} notifications'},
++           {count}
++         )}
++       </p>
+      </div>
+    )
+  }
+```
+
+### 5. Set up a bundler plugin
+
+Replace the Lingui Babel/SWC plugin with the FormatJS equivalent:
+
+- **Babel**: [babel-plugin-formatjs](/docs/tooling/babel-plugin)
+- **SWC (Next.js)**: [@swc/plugin-formatjs](/docs/tooling/swc-plugin)
+- **Vite**: [@formatjs/vite-plugin](/docs/tooling/vite-plugin)
+
+These handle automatic ID generation and AST pre-compilation (with `ast: true`).
+
+### 6. Update extraction scripts
+
+```diff
+  // package.json scripts
+  {
+-   "extract": "lingui extract",
+-   "compile": "lingui compile"
++   "extract": "formatjs extract 'src/**/*.{ts,tsx}' --out-file messages/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'",
++   "compile": "formatjs compile messages/en.json --ast --out-file compiled/en.json"
+  }
+```
+
+### 7. Incremental migration
+
+Both libraries can coexist during migration:
+
+1. Keep `@lingui/react` and `react-intl` providers in your component tree simultaneously.
+2. Migrate components one at a time — replace `<Trans>` with `<FormattedMessage>` and `t` macro calls with `intl.formatMessage()`.
+3. Once all components are migrated, remove `@lingui/core`, `@lingui/react`, `@lingui/macro`, and `lingui.config.ts`.
+
+<Admonition type="info" title="Shared ICU syntax">
+  Since both Lingui and FormatJS use ICU MessageFormat, your translated message
+  strings (the actual translations) usually need no syntax changes — only the
+  wrapper format (PO vs JSON) and key structure need to be converted.
+</Admonition>

@@ -25,8 +25,3 @@
 
 ### 7. Framework Integrations: Svelte, Solid
 - Only React and Vue have first-party integrations. Lingui already supports Svelte. Thin wrappers around `@formatjs/intl` core would be straightforward.
-
-## Maintenance / Cleanup
-
-### 8. Documentation Gaps
-No guides for: Next.js App Router + RSC, React Native + Hermes, migration from i18next/Lingui, performance tuning. The SWC plugin docs are a 1-line stub.

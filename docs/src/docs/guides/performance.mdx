@@ -1,0 +1,156 @@
+`react-intl` and the FormatJS ecosystem are designed for high-performance i18n. This guide consolidates all the techniques for optimizing bundle size and runtime performance.
+
+## Pre-compile messages to AST
+
+The biggest single optimization is pre-compiling ICU messages to AST at build time using [`@formatjs/cli compile`](/docs/tooling/cli):
+
+```sh
+formatjs compile lang/en.json --ast --out-file compiled/en.json
+```
+
+This eliminates runtime parsing of ICU message strings. The gains are most noticeable when:
+
+- You have many messages with complex ICU syntax (plurals, selects, nested constructs).
+- You render many formatted messages on initial load (e.g. SSR or large forms).
+
+Pass the compiled JSON directly to `IntlProvider`:
+
+```tsx
+import messages from './compiled/en.json'
+
+;<IntlProvider locale="en" messages={messages}>
+  <App />
+</IntlProvider>
+```
+
+<Admonition type="caution" title="Cache Invalidation">
+  Since this approach uses AST as the data source, changes to
+  `@formatjs/icu-messageformat-parser`'s AST will require re-compilation.
+</Admonition>
+
+You can also pre-compile at build time using a bundler plugin instead of the CLI. All FormatJS bundler plugins support an `ast: true` option:
+
+- [babel-plugin-formatjs](/docs/tooling/babel-plugin) — `"ast": true`
+- [SWC Plugin](/docs/tooling/swc-plugin) — `ast: true` (recommended for Next.js)
+- [Vite Plugin](/docs/tooling/vite-plugin) — `ast: true`
+- [@formatjs/ts-transformer](/docs/tooling/ts-transformer) — `ast: true`
+
+## Remove the parser (~40% smaller)
+
+If **all** your messages and `defaultMessage`s are pre-compiled as AST (via the CLI or a bundler plugin with `ast: true`), you can alias `@formatjs/icu-messageformat-parser` to its no-parser variant. This removes the parser code entirely and shrinks `react-intl` by ~40%.
+
+### webpack / Next.js
+
+```js
+// next.config.js or webpack.config.js
+module.exports = {
+  webpack(config) {
+    config.resolve.alias['@formatjs/icu-messageformat-parser'] =
+      '@formatjs/icu-messageformat-parser/no-parser.js'
+    return config
+  },
+}
+```
+
+### Vite / Rollup
+
+```ts
+// vite.config.ts
+import {defineConfig} from 'vite'
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@formatjs/icu-messageformat-parser':
+        '@formatjs/icu-messageformat-parser/no-parser.js',
+    },
+  },
+})
+```
+
+<Admonition type="caution" title="All messages must be pre-compiled">
+  If any message is still a raw string (not AST), it will fail at runtime
+  because the parser has been removed. Make sure every message path goes through
+  pre-compilation before enabling this alias.
+</Admonition>
+
+## Tree-shake locale data
+
+Polyfill packages (e.g. `@formatjs/intl-numberformat`) ship locale data for 700+ locales. Only import the locales your app actually supports:
+
+```ts
+// Good — only loads the locales you need
+import '@formatjs/intl-numberformat/polyfill'
+import '@formatjs/intl-numberformat/locale-data/en'
+import '@formatjs/intl-numberformat/locale-data/fr'
+import '@formatjs/intl-numberformat/locale-data/de'
+```
+
+Never use wildcard imports like `@formatjs/intl-numberformat/locale-data/all` in production — this pulls in every locale and can add hundreds of kilobytes to your bundle.
+
+For apps that support many locales, load locale data dynamically:
+
+```ts
+async function loadLocaleData(locale: string) {
+  await import(`@formatjs/intl-numberformat/locale-data/${locale}`)
+}
+```
+
+## Selective polyfills
+
+Not all environments need all polyfills. Check what your target runtime already supports and only polyfill what's missing:
+
+```ts
+import {shouldPolyfill as shouldPolyfillNumberFormat} from '@formatjs/intl-numberformat/should-polyfill'
+import {shouldPolyfill as shouldPolyfillPluralRules} from '@formatjs/intl-pluralrules/should-polyfill'
+
+async function polyfill(locale: string) {
+  if (shouldPolyfillPluralRules(locale)) {
+    await import('@formatjs/intl-pluralrules/polyfill-force')
+    await import(`@formatjs/intl-pluralrules/locale-data/${locale}`)
+  }
+  if (shouldPolyfillNumberFormat(locale)) {
+    await import('@formatjs/intl-numberformat/polyfill-force')
+    await import(`@formatjs/intl-numberformat/locale-data/${locale}`)
+  }
+}
+```
+
+Each polyfill package exports a `shouldPolyfill` function that detects whether the polyfill is needed in the current environment. This is especially important for [React Native + Hermes](/docs/guides/react-native-hermes) where only some Intl APIs are available natively.
+
+## Locale matching performance
+
+`@formatjs/intl-localematcher` uses a three-tier optimization:
+
+1. **Tier 1** — O(1) exact match via Set lookup
+2. **Tier 2** — Locale maximization + progressive subtag removal
+3. **Tier 3** — Full UTS #35 CLDR distance calculation with memoization
+
+In most cases, Tier 1 or 2 resolves the match without ever reaching the expensive Tier 3 path. This optimization reduced locale matching from ~610ms to ~1.4ms (439x faster) in environments with 700+ locales loaded (e.g. React Native with auto-loaded polyfill data).
+
+If you control which locales are available, list them from most-specific to least-specific for the best cache hit rate.
+
+## Prefer imperative APIs
+
+Imperative APIs like `intl.formatMessage()` are faster than `<FormattedMessage>` components because they avoid creating extra React element nodes:
+
+```tsx
+// Faster — no extra React elements
+const title = intl.formatMessage({defaultMessage: 'Welcome, {name}'}, {name})
+
+// Slower — creates wrapper React elements
+<FormattedMessage defaultMessage="Welcome, {name}" values={{name}} />
+```
+
+Both have the same capabilities. Use imperative APIs in hot paths, loops, or when you don't need rich text (XML tags in messages). `<FormattedMessage>` is still the better choice when you need rich text interpolation with React components.
+
+## Summary checklist
+
+| Technique                              | Impact                              | Effort                                                 |
+| -------------------------------------- | ----------------------------------- | ------------------------------------------------------ |
+| Pre-compile messages (`ast: true`)     | High — eliminates runtime parsing   | Low — one config change                                |
+| Remove parser (no-parser alias)        | High — ~40% bundle reduction        | Low — one alias + verify all messages are pre-compiled |
+| Tree-shake locale data                 | High — saves hundreds of KB         | Low — selective imports                                |
+| Selective polyfills (`shouldPolyfill`) | Medium — skip unnecessary polyfills | Low — conditional imports                              |
+| Imperative APIs in hot paths           | Medium — fewer React elements       | Low — use `intl.formatMessage()`                       |
+| Locale matcher (automatic)             | High in RN/Hermes — 439x faster     | None — built-in optimization                           |

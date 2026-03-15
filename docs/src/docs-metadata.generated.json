@@ -43,6 +43,26 @@
     "title": "Distribute Libraries",
     "description": "In larger scale applications/monorepos, not all components/libraries live within the same repo/project and they might get distributed differently. While..."
   },
+  "guides/migrate-from-i18next": {
+    "title": "Migrate From I18next",
+    "description": "This guide helps you migrate from i18next / react-i18next to FormatJS / react-intl. Both libraries solve the same problem but use different syntax, APIs..."
+  },
+  "guides/migrate-from-lingui": {
+    "title": "Migrate From Lingui",
+    "description": "This guide helps you migrate from Lingui to FormatJS / react-intl. Both libraries use ICU MessageFormat for message syntax, making migration relatively ..."
+  },
+  "guides/nextjs-app-router": {
+    "title": "Nextjs App Router",
+    "description": "This guide covers using react-intl with the Next.js App Router and React Server Components (RSC). The key challenge is that react-intl's main entry poin..."
+  },
+  "guides/performance": {
+    "title": "Performance",
+    "description": "react-intl and the FormatJS ecosystem are designed for high-performance i18n. This guide consolidates all the techniques for optimizing bundle size and ..."
+  },
+  "guides/react-native-hermes": {
+    "title": "React Native Hermes",
+    "description": "This guide covers setting up FormatJS polyfills for React Native with the Hermes JavaScript engine. Hermes ships with partial Intl support, so you need ..."
+  },
   "guides/runtime-requirements": {
     "title": "Runtime Requirements",
     "description": "We support IE11 & **2 most recent versions of Edge, Chrome, Firefox &"
@@ -189,7 +209,7 @@
   },
   "tooling/swc-plugin": {
     "title": "Swc Plugin",
-    "description": "This has been migrated over to the swc repo itself. You can find the plugin here."
+    "description": "Process string messages for translation from modules that use react-intl, specifically:"
   },
   "tooling/ts-transformer": {
     "title": "Ts Transformer",

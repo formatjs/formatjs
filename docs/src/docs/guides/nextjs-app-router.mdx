@@ -1,0 +1,286 @@
+This guide covers using `react-intl` with the Next.js App Router and React Server Components (RSC). The key challenge is that `react-intl`'s main entry point is marked `'use client'`, so Server Components need a different import path.
+
+## Architecture overview
+
+| Layer             | Import              | Use case                                              |
+| ----------------- | ------------------- | ----------------------------------------------------- |
+| Client Components | `react-intl`        | `<IntlProvider>`, `<FormattedMessage>`, `useIntl()`   |
+| Server Components | `react-intl/server` | `createIntl()`, `defineMessage()`, `defineMessages()` |
+
+## Project setup
+
+### 1. Install dependencies
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i react-intl
+npm i -D @swc/plugin-formatjs @formatjs/cli
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add react-intl
+yarn add -D @swc/plugin-formatjs @formatjs/cli
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add react-intl
+pnpm add -D @swc/plugin-formatjs @formatjs/cli
+```
+
+</TabItem>
+</Tabs>
+
+### 2. Configure the SWC plugin
+
+Add the [SWC plugin](/docs/tooling/swc-plugin) to your Next.js config for automatic ID generation and AST pre-compilation:
+
+**next.config.js**
+
+```js
+module.exports = {
+  experimental: {
+    swcPlugins: [
+      [
+        '@swc/plugin-formatjs',
+        {
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+          ast: true,
+        },
+      ],
+    ],
+  },
+}
+```
+
+### 3. Organize your messages
+
+Create a `messages/` directory at the project root:
+
+```
+messages/
+  en.json
+  fr.json
+  de.json
+```
+
+**messages/en.json**
+
+```json
+{
+  "home.title": "Welcome to our app",
+  "home.description": "The best internationalized app"
+}
+```
+
+Pre-compile your messages for production using [`@formatjs/cli`](/docs/tooling/cli):
+
+```sh
+formatjs compile messages/en.json --ast --out-file compiled-messages/en.json
+```
+
+See the [Performance Tuning guide](/docs/guides/performance) for more on AST pre-compilation.
+
+## Loading messages by locale
+
+Create a helper to load messages for a given locale:
+
+**lib/i18n.ts**
+
+```ts
+export async function getMessages(locale: string) {
+  return (await import(`../messages/${locale}.json`)).default
+}
+
+export const locales = ['en', 'fr', 'de'] as const
+export const defaultLocale = 'en'
+```
+
+## Locale detection middleware
+
+Use Next.js middleware to detect the user's locale and redirect:
+
+**middleware.ts**
+
+```ts
+import {match} from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
+import {type NextRequest, NextResponse} from 'next/server'
+import {defaultLocale, locales} from './lib/i18n'
+
+function getLocale(request: NextRequest): string {
+  const headers = {
+    'accept-language': request.headers.get('accept-language') ?? '',
+  }
+  const languages = new Negotiator({headers}).languages()
+  return match(languages, locales as unknown as string[], defaultLocale)
+}
+
+export function middleware(request: NextRequest) {
+  const {pathname} = request.nextUrl
+  const hasLocale = locales.some(
+    locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  )
+  if (hasLocale) return
+
+  const locale = getLocale(request)
+  request.nextUrl.pathname = `/${locale}${pathname}`
+  return NextResponse.redirect(request.nextUrl)
+}
+
+export const config = {
+  matcher: ['/((?!_next|api|favicon.ico).*)'],
+}
+```
+
+## Layout with IntlProvider (Client Boundary)
+
+Since `IntlProvider` is a client component, wrap it in a thin client boundary:
+
+**app/[locale]/providers.tsx**
+
+```tsx
+'use client'
+
+import {IntlProvider} from 'react-intl'
+
+export default function Providers({
+  locale,
+  messages,
+  children,
+}: {
+  locale: string
+  messages: Record<string, string>
+  children: React.ReactNode
+}) {
+  return (
+    <IntlProvider locale={locale} messages={messages}>
+      {children}
+    </IntlProvider>
+  )
+}
+```
+
+**app/[locale]/layout.tsx**
+
+```tsx
+import {getMessages} from '@/lib/i18n'
+import Providers from './providers'
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{locale: string}>
+}) {
+  const {locale} = await params
+  const messages = await getMessages(locale)
+
+  return (
+    <html lang={locale}>
+      <body>
+        <Providers locale={locale} messages={messages}>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+## Client Components
+
+Client Components use `react-intl` normally via `useIntl()` or `<FormattedMessage>`:
+
+**app/[locale]/client-example.tsx**
+
+```tsx
+'use client'
+
+import {FormattedMessage, useIntl} from 'react-intl'
+
+export default function ClientExample() {
+  const intl = useIntl()
+  const title = intl.formatMessage({defaultMessage: 'Hello'})
+
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>
+        <FormattedMessage defaultMessage="This is a client component" />
+      </p>
+    </div>
+  )
+}
+```
+
+## Server Components
+
+Server Components cannot use React context, so they cannot access `IntlProvider`. Instead, use `createIntl` from `react-intl/server`:
+
+**app/[locale]/page.tsx**
+
+```tsx
+import {createIntl, createIntlCache} from 'react-intl/server'
+import {getMessages} from '@/lib/i18n'
+import ClientExample from './client-example'
+
+const cache = createIntlCache()
+
+export default async function Home({
+  params,
+}: {
+  params: Promise<{locale: string}>
+}) {
+  const {locale} = await params
+  const messages = await getMessages(locale)
+  const intl = createIntl({locale, messages}, cache)
+
+  return (
+    <main>
+      <h1>{intl.formatMessage({defaultMessage: 'Welcome'})}</h1>
+      <p>
+        {intl.formatMessage(
+          {defaultMessage: 'Today is {date, date, long}'},
+          {date: new Date()}
+        )}
+      </p>
+      <ClientExample />
+    </main>
+  )
+}
+```
+
+<Admonition type="info" title="react-intl/server">
+  The `react-intl/server` export provides `createIntl`, `createIntlCache`,
+  `defineMessage`, and `defineMessages` — everything you need for imperative
+  formatting without the `'use client'` directive.
+</Admonition>
+
+## Why two entry points?
+
+The main `react-intl` entry point is marked `'use client'` because it exports React hooks and context providers. Importing it in a Server Component would force the entire component tree to become a client boundary.
+
+`react-intl/server` re-exports only the non-React parts (`createIntl`, `createIntlCache`, `defineMessage`, `defineMessages`), so it's safe to use in Server Components without triggering client bundling.
+
+## Performance tips
+
+- Use the [SWC plugin](/docs/tooling/swc-plugin) with `ast: true` instead of `babel-plugin-formatjs` — it's faster and natively supported by Next.js.
+- Pre-compile messages and alias the no-parser build for ~40% smaller bundles. See the [Performance Tuning guide](/docs/guides/performance).
+- Load messages per-locale with dynamic `import()` so only the active locale's messages are included in each page's bundle.
+- Use `createIntlCache()` to share the Intl format cache across multiple `createIntl` calls in Server Components.

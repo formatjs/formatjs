@@ -1,0 +1,237 @@
+This guide covers setting up FormatJS polyfills for React Native with the Hermes JavaScript engine. Hermes ships with partial Intl support, so you need to polyfill the missing APIs.
+
+## Hermes Intl support
+
+Hermes includes built-in support for some Intl APIs but not all. The following table shows what's available natively and what needs polyfilling:
+
+| API                        | Hermes support  | Polyfill package                                        |
+| -------------------------- | --------------- | ------------------------------------------------------- |
+| `Intl.NumberFormat`        | Partial (basic) | `@formatjs/intl-numberformat`                           |
+| `Intl.DateTimeFormat`      | Partial (basic) | `@formatjs/intl-datetimeformat`                         |
+| `Intl.PluralRules`         | Yes             | `@formatjs/intl-pluralrules` (for older Hermes)         |
+| `Intl.Locale`              | Yes             | `@formatjs/intl-locale` (for older Hermes)              |
+| `Intl.RelativeTimeFormat`  | No              | `@formatjs/intl-relativetimeformat`                     |
+| `Intl.ListFormat`          | No              | `@formatjs/intl-listformat`                             |
+| `Intl.DisplayNames`        | No              | `@formatjs/intl-displaynames`                           |
+| `Intl.DurationFormat`      | No              | `@formatjs/intl-durationformat`                         |
+| `Intl.Segmenter`           | No              | `@formatjs/intl-segmenter`                              |
+| `Intl.getCanonicalLocales` | Yes             | `@formatjs/intl-getcanonicallocales` (for older Hermes) |
+
+<Admonition type="info" title="Check your Hermes version">
+  Hermes Intl support evolves between versions. Use the `shouldPolyfill`
+  function from each package to detect at runtime whether a polyfill is actually
+  needed.
+</Admonition>
+
+## Installation
+
+Install only the polyfills your app requires:
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-locale @formatjs/intl-pluralrules @formatjs/intl-numberformat @formatjs/intl-datetimeformat @formatjs/intl-relativetimeformat @formatjs/intl-getcanonicallocales react-intl
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-locale @formatjs/intl-pluralrules @formatjs/intl-numberformat @formatjs/intl-datetimeformat @formatjs/intl-relativetimeformat @formatjs/intl-getcanonicallocales react-intl
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add @formatjs/intl-locale @formatjs/intl-pluralrules @formatjs/intl-numberformat @formatjs/intl-datetimeformat @formatjs/intl-relativetimeformat @formatjs/intl-getcanonicallocales react-intl
+```
+
+</TabItem>
+</Tabs>
+
+## Polyfill load order
+
+Polyfills must be loaded in dependency order. Some polyfills depend on others being present first. Load them in your app entry point **before** any formatting code runs.
+
+**polyfills.ts**
+
+```ts
+import {shouldPolyfill as shouldPolyfillGetCanonicalLocales} from '@formatjs/intl-getcanonicallocales/should-polyfill'
+import {shouldPolyfill as shouldPolyfillLocale} from '@formatjs/intl-locale/should-polyfill'
+import {shouldPolyfill as shouldPolyfillPluralRules} from '@formatjs/intl-pluralrules/should-polyfill'
+import {shouldPolyfill as shouldPolyfillNumberFormat} from '@formatjs/intl-numberformat/should-polyfill'
+import {shouldPolyfill as shouldPolyfillDateTimeFormat} from '@formatjs/intl-datetimeformat/should-polyfill'
+import {shouldPolyfill as shouldPolyfillRelativeTimeFormat} from '@formatjs/intl-relativetimeformat/should-polyfill'
+
+export async function loadPolyfills(locale: string) {
+  // 1. getCanonicalLocales — no deps
+  if (shouldPolyfillGetCanonicalLocales()) {
+    await import('@formatjs/intl-getcanonicallocales/polyfill')
+  }
+
+  // 2. Locale — depends on getCanonicalLocales
+  if (shouldPolyfillLocale()) {
+    await import('@formatjs/intl-locale/polyfill')
+  }
+
+  // 3. PluralRules — depends on Locale
+  if (shouldPolyfillPluralRules(locale)) {
+    await import('@formatjs/intl-pluralrules/polyfill-force')
+    await import(`@formatjs/intl-pluralrules/locale-data/${locale}`)
+  }
+
+  // 4. NumberFormat — depends on PluralRules, Locale
+  if (shouldPolyfillNumberFormat(locale)) {
+    await import('@formatjs/intl-numberformat/polyfill-force')
+    await import(`@formatjs/intl-numberformat/locale-data/${locale}`)
+  }
+
+  // 5. DateTimeFormat — depends on Locale
+  if (shouldPolyfillDateTimeFormat(locale)) {
+    await import('@formatjs/intl-datetimeformat/polyfill-force')
+    await import(`@formatjs/intl-datetimeformat/locale-data/${locale}`)
+    // Add timezone data if needed
+    await import('@formatjs/intl-datetimeformat/add-all-tz')
+  }
+
+  // 6. RelativeTimeFormat — depends on PluralRules, Locale
+  if (shouldPolyfillRelativeTimeFormat(locale)) {
+    await import('@formatjs/intl-relativetimeformat/polyfill-force')
+    await import(`@formatjs/intl-relativetimeformat/locale-data/${locale}`)
+  }
+}
+```
+
+<Admonition type="caution" title="Load Order Matters">
+  `Intl.NumberFormat` depends on `Intl.PluralRules`, which depends on
+  `Intl.Locale`, which depends on `Intl.getCanonicalLocales`. Loading them out
+  of order will cause errors.
+</Admonition>
+
+## Selective locale data
+
+Each polyfill ships locale data for 700+ locales. In React Native, **bundle every locale data file you import** — there's no tree-shaking at the file level.
+
+Only import the locales your app supports:
+
+```ts
+// Good — only 3 locales
+import '@formatjs/intl-numberformat/locale-data/en'
+import '@formatjs/intl-numberformat/locale-data/fr'
+import '@formatjs/intl-numberformat/locale-data/de'
+```
+
+If your app supports many locales, use dynamic `import()` to load them on demand (see the polyfills.ts example above).
+
+For `@formatjs/intl-datetimeformat`, timezone data is also significant. If you only need a few timezones, import them selectively instead of using `add-all-tz`:
+
+```ts
+import '@formatjs/intl-datetimeformat/add-golden-tz'
+```
+
+## Locale matching performance
+
+In React Native, some polyfills auto-register all supported locales. When `@formatjs/intl-localematcher` performs locale matching against 700+ available locales, the naive algorithm was extremely slow (~610ms on Hermes).
+
+`@formatjs/intl-localematcher` includes a three-tier optimization that reduced this to ~1.4ms (439x faster):
+
+1. **O(1) exact match** — Set lookup for exact locale strings
+2. **Subtag fallback** — Maximize locale and remove subtags progressively
+3. **CLDR distance** — Full UTS #35 algorithm with memoization (rare path)
+
+This optimization is automatic — no configuration needed. See the [Performance Tuning guide](/docs/guides/performance) for more details.
+
+## Metro bundler configuration
+
+React Native uses Metro. If you pre-compile messages to AST and want to alias away the parser (see [Performance Tuning](/docs/guides/performance)), configure Metro's resolver:
+
+**metro.config.js**
+
+```js
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config')
+
+const config = {
+  resolver: {
+    // Alias the parser to the no-parser build
+    resolveRequest(context, moduleName, platform) {
+      if (moduleName === '@formatjs/icu-messageformat-parser') {
+        return context.resolveRequest(
+          context,
+          '@formatjs/icu-messageformat-parser/no-parser',
+          platform
+        )
+      }
+      return context.resolveRequest(context, moduleName, platform)
+    },
+  },
+}
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config)
+```
+
+## Using react-intl
+
+Once polyfills are loaded, `react-intl` works the same as on the web:
+
+**App.tsx**
+
+```tsx
+import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
+import {Text, View} from 'react-native'
+import {useEffect, useState} from 'react'
+import {loadPolyfills} from './polyfills'
+
+const messages = {
+  greeting: 'Hello, {name}!',
+  itemCount: 'You have {count, plural, one {# item} other {# items}}.',
+}
+
+function HomeScreen() {
+  const intl = useIntl()
+  return (
+    <View>
+      <Text>{intl.formatMessage({id: 'greeting'}, {name: 'World'})}</Text>
+      <Text>{intl.formatMessage({id: 'itemCount'}, {count: 5})}</Text>
+    </View>
+  )
+}
+
+export default function App() {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    loadPolyfills('en').then(() => setReady(true))
+  }, [])
+
+  if (!ready) return null
+
+  return (
+    <IntlProvider locale="en" messages={messages}>
+      <HomeScreen />
+    </IntlProvider>
+  )
+}
+```
+
+## Troubleshooting
+
+### `RangeError: invalid locale` at startup
+
+A polyfill dependency is missing. Check the load order — make sure `@formatjs/intl-getcanonicallocales` and `@formatjs/intl-locale` are loaded first.
+
+### Slow initial render
+
+If your app loads many locales eagerly, the locale matcher may be doing expensive CLDR distance calculations. The `@formatjs/intl-localematcher` optimization handles this automatically since v0.5.10, but verify you're on a recent version.
+
+### Missing timezone data
+
+`@formatjs/intl-datetimeformat` requires explicit timezone data imports. If you see incorrect timezone behavior, add `@formatjs/intl-datetimeformat/add-all-tz` or selectively import the timezones you need.
