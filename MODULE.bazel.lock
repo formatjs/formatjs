@@ -42,8 +42,8 @@
     "https://bcr.bazel.build/modules/aspect_rules_lint/0.12.0/MODULE.bazel": "e767c5dbfeb254ec03275a7701b5cfde2c4d2873676804bc7cb27ddff3728fed",
     "https://bcr.bazel.build/modules/aspect_rules_lint/1.10.2/MODULE.bazel": "a4e49c029f1e2b3d7c412c45f10e03ab5cc80f9a579737868554044b03c90365",
     "https://bcr.bazel.build/modules/aspect_rules_lint/1.10.2/source.json": "82465c804422f39e7a7dddeaf05857dafbe308e54312c2ebd8508c22b22f5e6f",
-    "https://bcr.bazel.build/modules/aspect_rules_ts/3.8.3/MODULE.bazel": "a26c28ebcd0c0d50ab0708ac21fa48bd2dced3a4dad4c31a2fa48588b42ad762",
-    "https://bcr.bazel.build/modules/aspect_rules_ts/3.8.3/source.json": "d17304791281168c42c5532b4b9e01dfb4bdb42d7bf784597b75f401211efc63",
+    "https://bcr.bazel.build/modules/aspect_rules_ts/3.8.6/MODULE.bazel": "371bacab13c9c36323384b56c7cabfde1982b69674e78729e1ddd1edd54d984e",
+    "https://bcr.bazel.build/modules/aspect_rules_ts/3.8.6/source.json": "b87a583fa2aa5c546221e3c514c883b2344c9284f27347759a5ff700deceb012",
     "https://bcr.bazel.build/modules/aspect_tools_telemetry/0.2.6/MODULE.bazel": "cafb8781ad591bc57cc765dca5fefab08cf9f65af363d162b79d49205c7f8af7",
     "https://bcr.bazel.build/modules/aspect_tools_telemetry/0.2.8/MODULE.bazel": "aa975a83e72bcaac62ee61ab12b788ea324a1d05c4aab28aadb202f647881679",
     "https://bcr.bazel.build/modules/aspect_tools_telemetry/0.3.3/MODULE.bazel": "37c764292861c2f70314efa9846bb6dbb44fc0308903b3285da6528305450183",
@@ -656,7 +656,7 @@
     },
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
-        "bzlTransitiveDigest": "Sc7aQa6g7ahlDQkjOmGxXPdCRihodnBqKM4XBOjxPWk=",
+        "bzlTransitiveDigest": "na+5Su2V30iaLQCC3VoaneTLpArN3Of9pXPpDwtv3a0=",
         "usagesDigest": "Poc6aR0RvidJ/IlCHO+XuhdTUb8PcIKz/zhczsNKsEc=",
         "recordedFileInputs": {
           "@@//package.json": "024fd1a39ed98f05ff2807df4d92b2a131507928bbf23d7b6948822a49baec9c"
@@ -693,7 +693,7 @@
     "@@aspect_tools_telemetry+//:extension.bzl%telemetry": {
       "general": {
         "bzlTransitiveDigest": "cl5A2O84vDL6Tt+Qga8FCj1DUDGqn+e7ly5rZ+4xvcc=",
-        "usagesDigest": "x/Of4a9YMFo4phtDsob5zyCXfcEldm+BoGW3HO7CB1s=",
+        "usagesDigest": "gFwUtUpkjicW1SzeDalBFTsdG82wRWLtayEzgJpH5s0=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -704,7 +704,7 @@
               "deps": {
                 "aspect_rules_js": "2.9.2",
                 "aspect_rules_esbuild": "0.25.1",
-                "aspect_rules_ts": "3.8.3",
+                "aspect_rules_ts": "3.8.6",
                 "aspect_rules_lint": "1.10.2",
                 "aspect_tools_telemetry": "0.3.3"
               }
@@ -2045,7 +2045,7 @@
         "recordedFileInputs": {
           "@@//Cargo.lock": "026cd07c4cf155a0d7fc4da3e79bd221bc311d7f061fb4212685563f856f0014",
           "@@//Cargo.toml": "4e0e0629ddbf521db0ad31e9ad8cd8805f29b141f7edaaa560af34e5f325f882",
-          "@@//MODULE.bazel": "1c9ba5bbd15c2c3e0b5d31bf474fb7f3fcf8ceb41308beccb8ee3a236de825a5",
+          "@@//MODULE.bazel": "92b25ed9a4f4026cd3927c1a2913f9889e608ea726136204a48f75c1f367b0d2",
           "@@//crates/formatjs_cli/Cargo.toml": "b0388672e1a7a56668b8b2f1448c4fbcc36695c2f5fb60740dcc4c233d7da543",
           "@@//crates/icu_messageformat_parser/Cargo.toml": "1c2096e9a8853568596e65ebbb56af73feef324883c36b9fec7fa2ab7a7621ed",
           "@@//crates/icu_skeleton_parser/Cargo.toml": "eac4ca44b47b0fde5ae7f4afcdb6e7d4951eac75eb44db7349b2ba912a9840da",
