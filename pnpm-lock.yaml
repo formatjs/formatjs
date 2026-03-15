@@ -835,15 +835,9 @@ importers:
       '@formatjs/intl':
         specifier: workspace:*
         version: link:../intl
-      '@types/hoist-non-react-statics':
-        specifier: ^3.3.1
-        version: 3.3.7(@types/react@19.2.8)
       '@types/react':
         specifier: '19'
         version: 19.2.8
-      hoist-non-react-statics:
-        specifier: ^3.3.2
-        version: 3.3.2
       intl-messageformat:
         specifier: workspace:*
         version: link:../intl-messageformat
@@ -886,15 +880,9 @@ importers:
       '@formatjs/intl-pluralrules':
         specifier: workspace:*
         version: link:../../intl-pluralrules
-      '@types/hoist-non-react-statics':
-        specifier: ^3.3.1
-        version: 3.3.7(@types/react@19.2.8)
       '@types/react':
         specifier: '19'
         version: 19.2.8
-      hoist-non-react-statics:
-        specifier: ^3.3.2
-        version: 3.3.2
       intl-messageformat:
         specifier: workspace:*
         version: link:../../intl-messageformat
@@ -3668,11 +3656,6 @@ packages:
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
-  '@types/hoist-non-react-statics@3.3.7':
-    resolution: {integrity: sha512-PQTyIulDkIDro8P+IHbKCsw7U2xxBYflVzW/FgWdCAePD9xGSidgA76/GeJ6lBKoblyhf9pBY763gbrN+1dI8g==}
-    peerDependencies:
-      '@types/react': '*'
-
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
 
@@ -5379,9 +5362,6 @@ packages:
   headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
 
-  hoist-non-react-statics@3.3.2:
-    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
-
   hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
 
@@ -6999,9 +6979,6 @@ packages:
     resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
     peerDependencies:
       react: ^19.2.3
-
-  react-is@16.13.1:
-    resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -11170,11 +11147,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  '@types/hoist-non-react-statics@3.3.7(@types/react@19.2.8)':
-    dependencies:
-      '@types/react': 19.2.8
-      hoist-non-react-statics: 3.3.2
-
   '@types/istanbul-lib-coverage@2.0.6': {}
 
   '@types/istanbul-lib-report@3.0.3':
@@ -13119,10 +13091,6 @@ snapshots:
 
   headers-polyfill@4.0.3:
     optional: true
-
-  hoist-non-react-statics@3.3.2:
-    dependencies:
-      react-is: 16.13.1
 
   hosted-git-info@2.8.9: {}
 
@@ -15212,8 +15180,6 @@ snapshots:
     dependencies:
       react: 19.2.3
       scheduler: 0.27.0
-
-  react-is@16.13.1: {}
 
   react-is@17.0.2: {}
 

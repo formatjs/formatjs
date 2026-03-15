@@ -1,5 +1,4 @@
-import * as React from 'react'
-import {defineMessages, injectIntl, type IntlShape, useIntl} from '../../'
+import {defineMessages, useIntl} from '../../'
 import {describe, it} from 'vitest'
 describe('types', () => {
   // https://github.com/formatjs/formatjs/issues/3856
@@ -69,23 +68,5 @@ describe('types', () => {
 
     // This test only need to pass the type checking.
     ;<Test />
-  })
-
-  it('injectIntl works with union prop types', () => {
-    type TestProps = {intl: IntlShape; base: string} & (
-      | {type: 'a'; text: string}
-      | {type: 'b'; value: number}
-    )
-
-    class _Test extends React.Component<TestProps> {
-      render() {
-        return null
-      }
-    }
-
-    const Test = injectIntl(_Test)
-
-    // This test only need to pass the type checking.
-    ;<Test base="base" type="a" text="text" />
   })
 })

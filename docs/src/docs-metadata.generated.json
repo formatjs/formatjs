@@ -159,6 +159,10 @@
     "title": "Upgrade Guide 8.x",
     "description": "react-intl v8 requires React 19. If you are using React 18 or below, stay on react-intl v7."
   },
+  "react-intl/upgrade-guide-9.x": {
+    "title": "Upgrade Guide 9.x",
+    "description": "The injectIntl higher-order component has been removed. Use the useIntl() hook instead."
+  },
   "tooling/babel-plugin": {
     "title": "Babel Plugin",
     "description": "Process string messages for translation from modules that use react-intl, specifically:"

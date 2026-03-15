@@ -1,7 +1,5 @@
 import {cleanup, render} from '@testing-library/react'
-import * as React from 'react'
-import {FormattedDate, FormattedMessage} from '../../..'
-import withIntl from '../../../src/components/injectIntl'
+import {FormattedDate, FormattedMessage, useIntl} from '../../..'
 import IntlProvider from '../../../src/components/provider'
 import type {IntlConfig} from '../../../src/types'
 import {
@@ -18,13 +16,10 @@ import '@testing-library/jest-dom/vitest'
 describe('<IntlProvider>', () => {
   const now = Date.now()
 
-  class Child extends React.Component<any> {
-    render() {
-      return <span data-testid="foo">{'foo'}</span>
-    }
+  function IntlChild() {
+    useIntl()
+    return <span data-testid="foo">{'foo'}</span>
   }
-
-  const IntlChild = withIntl(Child)
 
   let dateNow: MockInstance<typeof Date.now>
 

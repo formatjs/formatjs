@@ -1,0 +1,69 @@
+## Breaking API Changes
+
+### `injectIntl` HOC removed
+
+The `injectIntl` higher-order component has been removed. Use the `useIntl()` hook instead.
+
+Before:
+
+```tsx
+import {injectIntl, WrappedComponentProps} from 'react-intl'
+
+class MyComponent extends React.Component<WrappedComponentProps> {
+  render() {
+    const {intl} = this.props
+    return <div>{intl.formatMessage({defaultMessage: 'Hello'})}</div>
+  }
+}
+
+export default injectIntl(MyComponent)
+```
+
+After:
+
+```tsx
+import {useIntl} from 'react-intl'
+
+function MyComponent() {
+  const intl = useIntl()
+  return <div>{intl.formatMessage({defaultMessage: 'Hello'})}</div>
+}
+
+export default MyComponent
+```
+
+The `WithIntlProps` and `WrappedComponentProps` types have also been removed.
+
+### `hoist-non-react-statics` removed
+
+The `hoist-non-react-statics` package is no longer a dependency since it was only used by `injectIntl`.
+
+### `window.__REACT_INTL_CONTEXT__` and `window.__REACT_INTL_BYPASS_GLOBAL_CONTEXT__` removed
+
+The global window context workaround for multiple copies of `react-intl` has been removed. If you have multiple copies of `react-intl`, ensure they are deduplicated in your bundler.
+
+### `IntlProvider` is now a functional component
+
+`IntlProvider` has been converted from a `PureComponent` class to a functional component. This should be a transparent change for most users, but if you were relying on class component APIs (e.g., `ref` to access the instance), you will need to update your code.
+
+## New Features
+
+### `"use client"` directive
+
+The main `react-intl` entry now includes a `"use client"` directive, making it compatible with React Server Components in frameworks like Next.js App Router.
+
+### `react-intl/server` export
+
+A new `react-intl/server` entry point is available for use in React Server Components:
+
+```tsx
+import {createIntl, createIntlCache, defineMessage} from 'react-intl/server'
+
+const cache = createIntlCache()
+const intl = createIntl({locale: 'en', messages: {}}, cache)
+
+const message = defineMessage({defaultMessage: 'Hello'})
+const formatted = intl.formatMessage(message)
+```
+
+This export does not include a `"use client"` directive, so it can be safely imported from server components.
