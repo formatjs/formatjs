@@ -769,7 +769,6 @@ esbuild(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     deps = [
-        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 

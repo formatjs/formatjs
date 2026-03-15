@@ -31,7 +31,7 @@ BASE_TSCONFIG = {
         "allowSyntheticDefaultImports": False,
         "noFallthroughCasesInSwitch": True,
         "verbatimModuleSyntax": True,
-        "importHelpers": True,
+        "importHelpers": False,
         "isolatedDeclarations": True,
         "rewriteRelativeImportExtensions": True,
         "jsx": "react-jsx",

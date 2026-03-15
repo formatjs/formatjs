@@ -417,7 +417,6 @@ esbuild(
     target = "es6",
     # TODO: fix this and set it back to es5
     deps = [
-        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 

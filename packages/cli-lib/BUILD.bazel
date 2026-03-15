@@ -101,7 +101,6 @@ esbuild(
     target = "node16",
     visibility = ["//packages/cli:__pkg__"],
     deps = [
-        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 

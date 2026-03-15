@@ -10,8 +10,7 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@formatjs/fast-memoize": "workspace:*",
-    "tslib": "^2.8.1"
+    "@formatjs/fast-memoize": "workspace:*"
   },
   "devDependencies": {
     "fast-xml-parser": "^5.0.9"

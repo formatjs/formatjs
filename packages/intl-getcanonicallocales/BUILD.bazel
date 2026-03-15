@@ -92,7 +92,6 @@ esbuild(
     entry_point = "polyfill.ts",
     target = "es6",
     deps = [
-        "//:node_modules/tslib",
     ] + SRC_DEPS,
 )
 

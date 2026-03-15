@@ -18,7 +18,6 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         data: add data deps like internal transitive deps
         visibility: visibility
     """
-    deps = deps + ["//:node_modules/tslib"]
 
     # Type check only with tsgo (fast, parallel)
     ts_project(
@@ -60,7 +59,6 @@ def ts_compile(name, srcs, deps = [], visibility = None):
         deps: deps
         visibility: visibility
     """
-    deps = deps + ["//:node_modules/tslib"]
 
     # Always build ESM bundle
     # Type check only with tsgo (fast, parallel)

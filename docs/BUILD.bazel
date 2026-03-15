@@ -53,7 +53,6 @@ ts_project(
         "//:node_modules/react-dom",
         "//:node_modules/react-live",
         "//:node_modules/tailwind-merge",
-        "//:node_modules/tslib",
         "//:node_modules/typesense",
         "//:node_modules/vike",
         "//:node_modules/vike-react",

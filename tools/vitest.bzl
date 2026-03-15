@@ -42,7 +42,6 @@ def vitest(
     """
 
     deps = deps + [
-        "//:node_modules/tslib",
         "//:node_modules/vitest",
         "//:node_modules/vite",
         "//:node_modules/@types/node",
