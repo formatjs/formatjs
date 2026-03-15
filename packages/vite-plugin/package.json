@@ -13,8 +13,7 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "magic-string": "^0.30.0",
-    "oxc-parser": "^0.114.0",
-    "tslib": "^2.8.1"
+    "oxc-parser": "^0.114.0"
   },
   "peerDependencies": {
     "vite": ">=7"

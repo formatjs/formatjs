@@ -10,9 +10,7 @@
   "exports": {
     ".": "./index.js"
   },
-  "dependencies": {
-    "tslib": "^2.8.1"
-  },
+  "dependencies": {},
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "keywords": [

@@ -120,7 +120,6 @@
     "tinybench": "^6.0.0",
     "ts-loader": "^9.5.4",
     "tsd": "^0.33.0",
-    "tslib": "^2.8.1",
     "typescript": "5.9.3",
     "typesense": "2.1.0",
     "unidiff": "^1.0.4",

@@ -16,8 +16,7 @@
     "@formatjs/intl": "workspace:*",
     "@types/hoist-non-react-statics": "^3.3.1",
     "hoist-non-react-statics": "^3.3.2",
-    "intl-messageformat": "workspace:*",
-    "tslib": "^2.8.1"
+    "intl-messageformat": "workspace:*"
   },
   "peerDependencies": {
     "@types/react": "19",

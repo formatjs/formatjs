@@ -12,8 +12,7 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "workspace:*",
-    "@formatjs/icu-skeleton-parser": "workspace:*",
-    "tslib": "^2.8.1"
+    "@formatjs/icu-skeleton-parser": "workspace:*"
   },
   "repository": {
     "type": "git",

@@ -8,8 +8,7 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
-    "tslib": "^2.8.1"
+    "@formatjs/ecma402-abstract": "workspace:*"
   },
   "repository": {
     "type": "git",

@@ -15,8 +15,7 @@
     "@types/picomatch": "^4.0.0",
     "@unicode/unicode-17.0.0": "^1.6.16",
     "magic-string": "^0.30.0",
-    "picomatch": "2 || 3 || 4",
-    "tslib": "^2.8.1"
+    "picomatch": "2 || 3 || 4"
   },
   "peerDependencies": {
     "eslint": "9 || 10"

@@ -14,8 +14,7 @@
     "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
-    "intl-messageformat": "workspace:*",
-    "tslib": "^2.8.1"
+    "intl-messageformat": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.6.0"

@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": false,
     "declaration": true,
     "esModuleInterop": false,
-    "importHelpers": true,
+    "importHelpers": false,
     "isolatedDeclarations": true,
     "jsx": "react-jsx",
     "lib": [
