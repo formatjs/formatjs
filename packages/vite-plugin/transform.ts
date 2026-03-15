@@ -467,6 +467,6 @@ export function transform(
 
   return {
     code: s.toString(),
-    map: s.generateMap({hires: true}),
+    map: s.generateMap({hires: 'boundary'}),
   }
 }
