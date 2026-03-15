@@ -1,3 +1,4 @@
+'use client'
 /*
  * Copyright 2015, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
@@ -16,13 +17,11 @@ import {
   createFormattedDateTimePartsComponent,
 } from './src/components/createFormattedComponent.js'
 import {createIntl} from './src/components/createIntl.js'
-import FormattedDateTimeRange from './src/components/dateTimeRange.js'
-import injectIntl, {
+import {
   Context as IntlContext,
   Provider as RawIntlProvider,
-  type WithIntlProps,
-  type WrappedComponentProps,
-} from './src/components/injectIntl.js'
+} from './src/components/context.js'
+import FormattedDateTimeRange from './src/components/dateTimeRange.js'
 import FormattedMessage from './src/components/message.js'
 import FormattedPlural from './src/components/plural.js'
 import IntlProvider from './src/components/provider.js'
@@ -62,13 +61,10 @@ export {
   FormattedMessage,
   FormattedPlural,
   FormattedRelativeTime,
-  injectIntl,
   IntlContext,
   IntlProvider,
   RawIntlProvider,
   useIntl,
-  type WithIntlProps,
-  type WrappedComponentProps,
 }
 
 export function defineMessages<

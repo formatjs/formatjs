@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {type IntlShape} from '../types.js'
 import {invariantIntlContext} from '../utils.js'
-import {Context} from './injectIntl.js'
+import {Context} from './context.js'
 
 export default function useIntl(this: void): IntlShape {
   const intl = React.useContext(Context)

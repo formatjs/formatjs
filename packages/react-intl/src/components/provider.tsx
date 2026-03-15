@@ -9,29 +9,11 @@ import * as React from 'react'
 import type {IntlConfig, IntlShape} from '../types.js'
 import {
   DEFAULT_INTL_CONFIG,
-  type DefaultIntlConfig,
   invariantIntlContext,
   shallowEqual,
 } from '../utils.js'
 import {createIntl} from './createIntl.js'
-import {Provider} from './injectIntl.js'
-
-interface State {
-  /**
-   * Explicit intl cache to prevent memory leaks
-   */
-  cache: IntlCache
-  /**
-   * Intl object we created
-   */
-  intl?: IntlShape
-  /**
-   * list of memoized config we care about.
-   * This is important since creating intl is
-   * very expensive
-   */
-  prevConfig: IntlConfig
-}
+import {Provider} from './context.js'
 
 function processIntlConfig<P extends IntlConfig = IntlConfig>(
   config: P
@@ -52,37 +34,38 @@ function processIntlConfig<P extends IntlConfig = IntlConfig>(
   }
 }
 
-export default class IntlProvider extends React.PureComponent<
-  // Exporting children props so it is composable with other HOCs.
-  // See: https://github.com/formatjs/formatjs/issues/1697
-  React.PropsWithChildren<IntlConfig>,
-  State
-> {
-  static displayName = 'IntlProvider'
-  static defaultProps: DefaultIntlConfig = DEFAULT_INTL_CONFIG
-  private cache: IntlCache = createIntlCache()
-  state: State = {
-    cache: this.cache,
-    intl: createIntl(processIntlConfig(this.props), this.cache),
-    prevConfig: processIntlConfig(this.props),
-  }
+function IntlProviderImpl(
+  props: React.PropsWithChildren<IntlConfig>
+): React.JSX.Element {
+  const cacheRef = React.useRef<IntlCache>(createIntlCache())
+  const prevConfigRef = React.useRef<IntlConfig | undefined>(undefined)
+  const intlRef = React.useRef<IntlShape | undefined>(undefined)
 
-  static getDerivedStateFromProps(
-    props: Readonly<IntlConfig>,
-    {prevConfig, cache}: State
-  ): Partial<State> | null {
-    const config = processIntlConfig(props)
-    if (!shallowEqual(prevConfig, config)) {
-      return {
-        intl: createIntl(config, cache),
-        prevConfig: config,
-      }
+  // Filter out undefined values from props so they don't override defaults.
+  // React's defaultProps treated `prop={undefined}` as "not provided"; we
+  // replicate that behaviour here after converting to a function component.
+  const filteredProps: Record<string, unknown> = {}
+  for (const key in props) {
+    if ((props as any)[key] !== undefined) {
+      filteredProps[key] = (props as any)[key]
     }
-    return null
+  }
+  const config = processIntlConfig({
+    ...DEFAULT_INTL_CONFIG,
+    ...filteredProps,
+  } as IntlConfig)
+
+  if (!prevConfigRef.current || !shallowEqual(prevConfigRef.current, config)) {
+    prevConfigRef.current = config
+    intlRef.current = createIntl(config, cacheRef.current)
   }
 
-  render(): React.JSX.Element {
-    invariantIntlContext(this.state.intl)
-    return <Provider value={this.state.intl}>{this.props.children}</Provider>
-  }
+  invariantIntlContext(intlRef.current)
+  return <Provider value={intlRef.current}>{props.children}</Provider>
 }
+
+IntlProviderImpl.displayName = 'IntlProvider'
+
+const IntlProvider: React.FC<React.PropsWithChildren<IntlConfig>> =
+  IntlProviderImpl
+export default IntlProvider

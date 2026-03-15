@@ -11,10 +11,6 @@ describe('react-intl', () => {
       expect(typeof ReactIntl.defineMessage).toBe('function')
     })
 
-    it('exports `injectIntl`', () => {
-      expect(typeof ReactIntl.injectIntl).toBe('function')
-    })
-
     it('exports `useIntl`', () => {
       expect(typeof ReactIntl.useIntl).toBe('function')
     })
