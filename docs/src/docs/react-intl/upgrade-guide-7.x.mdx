@@ -1,0 +1,43 @@
+## Breaking API Changes
+
+### Polyfill packages removed from dependencies
+
+`@formatjs/intl-displaynames` and `@formatjs/intl-listformat` have been removed from `react-intl`'s dependencies. This reduces the package size, but means you need to install these polyfills separately if your target environments don't support `Intl.DisplayNames` or `Intl.ListFormat` natively.
+
+### TypeScript 5 required
+
+Since the polyfill packages were removed, `react-intl` now relies on the native TypeScript type definitions for `Intl.DisplayNames` and `Intl.ListFormat`, which are only available starting from TypeScript 5.
+
+Before:
+
+```json
+{
+  "devDependencies": {
+    "typescript": "^4.7"
+  }
+}
+```
+
+After:
+
+```json
+{
+  "devDependencies": {
+    "typescript": "^5.0"
+  }
+}
+```
+
+### `@formatjs/ecma402-abstract` removed from direct dependencies
+
+`react-intl` no longer directly depends on `@formatjs/ecma402-abstract`. Instead, it uses native TypeScript `Intl` type definitions. If you were importing types from `@formatjs/ecma402-abstract` through `react-intl`, import them directly instead.
+
+## New Features
+
+### React 19 support
+
+Starting in 7.0.2, `react-intl` supports React 19 as a peer dependency. The React peer dependency was relaxed in 7.1.4 to include React 19.
+
+### `dateTimeRange` format key
+
+Starting in 7.1.0, a new `dateTimeRange` format key is available for use with `FormattedDateTimeRange`.

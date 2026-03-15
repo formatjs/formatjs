@@ -1,0 +1,68 @@
+## Breaking API Changes
+
+### React 18 and below no longer supported
+
+`react-intl` v8 requires React 19. If you are using React 18 or below, stay on `react-intl` v7.
+
+Before:
+
+```json
+{
+  "dependencies": {
+    "react": "^16.6.0 || ^17 || ^18",
+    "react-intl": "^7"
+  }
+}
+```
+
+After:
+
+```json
+{
+  "dependencies": {
+    "react": "^19",
+    "react-intl": "^8"
+  }
+}
+```
+
+### Converted to ESM
+
+`react-intl` is now a pure ESM package (`"type": "module"` in package.json). If you are using CommonJS, you will need to use dynamic `import()` or update your project to ESM.
+
+### Rich text wraps with Fragment instead of cloneElement
+
+Rich text elements are now wrapped with `React.Fragment` instead of using `React.cloneElement`. This fixes [#5135](https://github.com/formatjs/formatjs/issues/5135) and avoids deprecation warnings in React 19 where `cloneElement` is discouraged.
+
+If you were relying on props being merged via `cloneElement` in rich text callbacks, you may need to update your code:
+
+Before (v7 — used cloneElement internally):
+
+```tsx
+intl.formatMessage(
+  {defaultMessage: 'Hello <b>world</b>'},
+  {b: chunks => <strong className="bold">{chunks}</strong>}
+)
+```
+
+After (v8 — same API, but internal wrapping uses Fragment):
+
+The API is the same. This is only a breaking change if you relied on internal cloneElement behavior for prop merging.
+
+### `@types/react` moved to peer dependencies
+
+`@types/react` is now a peer dependency instead of a direct dependency. Make sure it's installed in your project:
+
+```bash
+npm install --save-dev @types/react
+```
+
+### Polyfill sub-dependencies converted to ESM
+
+Several transitive dependencies (`@formatjs/intl-getcanonicallocales`, `@formatjs/intl-pluralrules`, `@formatjs/intl-locale`, `@formatjs/intl-numberformat`, `@formatjs/intl-datetimeformat`) have also been converted to ESM.
+
+## New Features
+
+### Strict `format` overrides typing
+
+`FormattedDate`, `FormattedTime`, `FormattedDateParts`, and `FormattedTimeParts` now support strict typing for the `format` prop via global `FormatjsIntl.Formats` type overrides. `FormattedTime` and `FormattedTimeParts` now correctly use the `time` Formats override instead of `date`.
