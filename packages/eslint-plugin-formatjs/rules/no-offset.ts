@@ -11,7 +11,7 @@ import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 type MessageIds = 'noOffset' | CoreMessageIds
 
 function verifyAst(ast: MessageFormatElement[]) {
-  const errors: {messageId: MessageIds; data: Record<string, unknown>}[] = []
+  const errors: {messageId: MessageIds; data: Record<string, string>}[] = []
   for (const el of ast) {
     if (isPluralElement(el)) {
       if (el.offset) {

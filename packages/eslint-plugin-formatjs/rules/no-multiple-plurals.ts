@@ -11,7 +11,7 @@ import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
 type MessageIds = 'noMultiplePlurals' | CoreMessageIds
 
 function verifyAst(ast: MessageFormatElement[], pluralCount = {count: 0}) {
-  const errors: {messageId: MessageIds; data: Record<string, unknown>}[] = []
+  const errors: {messageId: MessageIds; data: Record<string, string>}[] = []
   for (const el of ast) {
     if (isPluralElement(el)) {
       pluralCount.count++

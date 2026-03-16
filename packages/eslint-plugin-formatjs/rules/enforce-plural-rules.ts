@@ -23,7 +23,7 @@ export type Options = [PluralConfig?]
 type MessageIds = 'missingPlural' | 'forbidden' | CoreMessageIds
 
 function verifyAst(plConfig: PluralConfig, ast: MessageFormatElement[]) {
-  const errors: {messageId: MessageIds; data: Record<string, unknown>}[] = []
+  const errors: {messageId: MessageIds; data: Record<string, string>}[] = []
   for (const el of ast) {
     if (isPluralElement(el)) {
       const rules = Object.keys(plConfig) as Array<LDML>
