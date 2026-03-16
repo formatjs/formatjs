@@ -1,0 +1,28 @@
+{
+  "name": "@formatjs/svelte-intl",
+  "description": "formatjs intl binding for svelte",
+  "version": "1.0.0",
+  "license": "ISC",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/intl": "workspace:*"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "homepage": "https://formatjs.github.io/docs/svelte-intl",
+  "keywords": [
+    "formatjs",
+    "i18n",
+    "internationalization",
+    "intl",
+    "svelte"
+  ],
+  "repository": "formatjs/formatjs.git"
+}

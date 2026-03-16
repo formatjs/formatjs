@@ -281,6 +281,7 @@ def is_internal_dep(s):
         "//:node_modules/intl-messageformat",
         "//:node_modules/react-intl",
         "//:node_modules/vue-intl",
+        "//:node_modules/@formatjs/svelte-intl",
     ]
 
 def package_json_test(name, packageJson = "package.json", deps = []):

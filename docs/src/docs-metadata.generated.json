@@ -183,6 +183,10 @@
     "title": "Upgrade Guide 8.x",
     "description": "react-intl v8 requires React 19. If you are using React 18 or below, stay on react-intl v7."
   },
+  "svelte-intl": {
+    "title": "Svelte Intl",
+    "description": "This library provides FormatJS internationalization bindings for Svelte 5."
+  },
   "tooling/babel-plugin": {
     "title": "Babel Plugin",
     "description": "Process string messages for translation from modules that use react-intl, specifically:"

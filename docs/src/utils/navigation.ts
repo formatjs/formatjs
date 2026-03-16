@@ -146,6 +146,7 @@ export function getNavigationTree(): NavSection[] {
       order: 7,
       items: [
         {title: '@formatjs/intl', path: 'intl'},
+        {title: '@formatjs/svelte-intl', path: 'svelte-intl'},
         {title: 'Vue Intl', path: 'vue-intl'},
         {title: 'Intl MessageFormat', path: 'intl-messageformat'},
         {title: 'ICU MessageFormat Parser', path: 'icu-messageformat-parser'},

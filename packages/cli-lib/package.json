@@ -30,6 +30,7 @@
     "@glimmer/syntax": "^0.84.3 || ^0.95.0",
     "@vue/compiler-core": "^3.5.0",
     "content-tag": "^4.1.0",
+    "svelte": "^5.0.0",
     "vue": "^3.5.0"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
@@ -72,6 +73,9 @@
       "optional": true
     },
     "content-tag": {
+      "optional": true
+    },
+    "svelte": {
       "optional": true
     }
   },

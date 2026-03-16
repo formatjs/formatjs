@@ -1,0 +1,221 @@
+This library provides FormatJS internationalization bindings for Svelte 5.
+
+## Installation
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -S @formatjs/svelte-intl
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/svelte-intl
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add @formatjs/svelte-intl
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+Create an intl instance and provide it to the component tree using Svelte's [Context API](https://svelte.dev/docs/svelte/context).
+
+### Provider setup
+
+In your root component (e.g. `App.svelte`):
+
+```svelte
+<script>
+  import {createIntl, provideIntl} from '@formatjs/svelte-intl'
+
+  const intl = createIntl({
+    locale: 'en',
+    defaultLocale: 'en',
+    messages: {
+      greeting: 'Hello, {name}!',
+    },
+  })
+
+  provideIntl(intl)
+</script>
+
+<slot />
+```
+
+### Consuming intl
+
+In any descendant component, use `useIntl()` to access the intl object:
+
+```svelte
+<script>
+  import {useIntl} from '@formatjs/svelte-intl'
+
+  const intl = useIntl()
+</script>
+
+<p>
+  {intl.formatMessage({id: 'greeting'}, {name: 'World'})}
+</p>
+<p>
+  {intl.formatNumber(1000, {style: 'currency', currency: 'USD'})}
+</p>
+<p>
+  {intl.formatDate(new Date(), {dateStyle: 'full'})}
+</p>
+```
+
+See [@formatjs/intl](/docs/intl#IntlShape) for the full list of `IntlShape` methods.
+
+### Standalone usage (without context)
+
+You can also use `createIntl` directly without Svelte context, useful for utility files or server-side code:
+
+```ts
+import {createIntl, createIntlCache} from '@formatjs/svelte-intl'
+
+const cache = createIntlCache()
+const intl = createIntl(
+  {
+    locale: 'en',
+    defaultLocale: 'en',
+    messages: {greeting: 'Hello, {name}!'},
+  },
+  cache
+)
+
+intl.formatMessage({id: 'greeting'}, {name: 'World'})
+```
+
+## Rich Text / HTML Formatting
+
+Unlike `react-intl` which uses React elements for rich text, Svelte does not have a VNode-like type. There are two approaches:
+
+### Using `{@html}` (simple)
+
+Use `{@html}` to render HTML returned by `formatMessage`:
+
+```svelte
+<script>
+  import {useIntl} from '@formatjs/svelte-intl'
+
+  const intl = useIntl()
+  // Message: "Welcome, <b>{name}</b>!"
+</script>
+
+<p>
+  {@html intl.formatMessage(
+    {id: 'welcome', defaultMessage: 'Welcome, <b>{name}</b>!'},
+    {name: userName}
+  )}
+</p>
+```
+
+<Admonition type="caution">
+  `{@html}` renders unescaped HTML. Make sure interpolated values are trusted or
+  sanitized to avoid XSS vulnerabilities.
+</Admonition>
+
+### Using rich text callbacks (safe)
+
+For XSS-safe rich text, use `formatMessage`'s tag callbacks to split the message into parts, then render each part with Svelte markup:
+
+```svelte
+<script>
+  import {useIntl} from '@formatjs/svelte-intl'
+
+  const intl = useIntl()
+  // Message: "Read the <link>docs</link> for more info."
+
+  const parts = intl.formatMessage(
+    {
+      id: 'info',
+      defaultMessage: 'Read the <link>docs</link> for more info.',
+    },
+    {
+      link: (chunks) => `<a href="/docs">${chunks}</a>`,
+    }
+  )
+</script>
+
+<p>{@html parts}</p>
+```
+
+Since `T = string` in `@formatjs/svelte-intl`, rich text tag callbacks receive and return strings. You still need `{@html}` to render the result, but the message structure is preserved for translators.
+
+## Message Declaration
+
+Use `defineMessages` and `defineMessage` for static analysis and extraction:
+
+```svelte
+<script>
+  import {defineMessages, useIntl} from '@formatjs/svelte-intl'
+
+  const messages = defineMessages({
+    greeting: {
+      id: 'app.greeting',
+      defaultMessage: 'Hello, {name}!',
+      description: 'Greeting shown on homepage',
+    },
+    farewell: {
+      id: 'app.farewell',
+      defaultMessage: 'Goodbye!',
+    },
+  })
+
+  const intl = useIntl()
+</script>
+
+<h1>{intl.formatMessage(messages.greeting, {name: 'World'})}</h1>
+<p>{intl.formatMessage(messages.farewell)}</p>
+```
+
+## API Reference
+
+| Export            | Description                                                                 |
+| ----------------- | --------------------------------------------------------------------------- |
+| `provideIntl`     | Set intl context via Svelte's `setContext`. Call in a parent component.     |
+| `useIntl`         | Get intl context via Svelte's `getContext`. Call in a descendant component. |
+| `intlKey`         | The Symbol used as the context key.                                         |
+| `createIntl`      | Create an `IntlShape` instance. Re-exported from `@formatjs/intl`.          |
+| `createIntlCache` | Create a cache for `createIntl`. Re-exported from `@formatjs/intl`.         |
+| `defineMessages`  | Identity function for message extraction tooling.                           |
+| `defineMessage`   | Identity function for single message extraction.                            |
+
+All types and error classes from `@formatjs/intl` are also re-exported.
+
+## Tooling
+
+`formatjs` toolchain supports `.svelte` files:
+
+- [eslint-plugin-formatjs](/docs/tooling/linter): Works with `.svelte` files via `eslint-plugin-svelte`.
+- [@formatjs/cli](/docs/tooling/cli): Supports extracting messages from `.svelte` SFC files (both `<script>` blocks and template expressions).
+- [babel-plugin-formatjs](/docs/tooling/babel-plugin): Compile messages during bundling for `babel`.
+- [@formatjs/ts-transformer](/docs/tooling/ts-transformer): Compile messages during bundling for `TypeScript`.
+
+### Extracting messages
+
+```sh
+formatjs extract "src/**/*.{ts,svelte}" --out-file lang.json
+```
+
+The CLI extracts messages from:
+
+- `<script>` and `<script module>` blocks
+- Template expressions: `{intl.formatMessage(...)}`, attribute bindings, `{#if}`, `{#each}`, `{@const}`, etc.

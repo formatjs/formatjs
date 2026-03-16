@@ -162,6 +162,10 @@ async function processFile(
     debug('Processing %s using vue extractor', fn)
     const {parseFile} = await import('./vue_extractor.js')
     parseFile(source, fn, scriptParseFn)
+  } else if (fn.endsWith('.svelte')) {
+    debug('Processing %s using svelte extractor', fn)
+    const {parseFile} = await import('./svelte_extractor.js')
+    parseFile(source, fn, scriptParseFn)
   } else if (fn.endsWith('.hbs')) {
     debug('Processing %s using hbs extractor', fn)
     const {parseFile} = await import('./hbs_extractor.js')

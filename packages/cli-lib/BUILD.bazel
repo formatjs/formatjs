@@ -35,6 +35,10 @@ VUE_DEPS = [
     "//:node_modules/vue",
 ]
 
+SVELTE_DEPS = [
+    "//:node_modules/svelte",
+]
+
 GLIMMER_HBS_DEPS = [
     "//:node_modules/@glimmer/syntax",
     "//:node_modules/content-tag",
@@ -53,7 +57,7 @@ SRC_DEPS = [
     "//:node_modules/fs-extra",
     "//:node_modules/json-stable-stringify",
     "//:node_modules/typescript",
-] + VUE_DEPS + GLIMMER_HBS_DEPS
+] + VUE_DEPS + SVELTE_DEPS + GLIMMER_HBS_DEPS
 
 ts_compile_node(
     name = "dist",
@@ -94,6 +98,7 @@ esbuild(
         "@glimmer/syntax",
         "@glimmer/validator",
         "@vue/compiler-core",
+        "svelte",
         "content-tag",
         "source-map-support",
     ],
