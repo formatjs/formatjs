@@ -149,7 +149,9 @@
       "esbuild"
     ],
     "overrides": {
-      "@tailwindcss/vite>vite": "$vite"
+      "@tailwindcss/vite>vite": "$vite",
+      "react": "19.2.4",
+      "react-dom": "19.2.4"
     },
     "packageExtensions": {
       "@vue/compiler-core": {
