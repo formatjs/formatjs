@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](github.com/formatjs/formatjs/compare/react-intl@8.1.4...react-intl@8.2.0) (2026-03-16)
+
+### Bug Fixes
+
+* **react-intl:** fix vitest DOM tests failing in Bazel sandbox ([#6099](/github.com/formatjs/formatjs/issues/6099)) ([d364a33](github.com/formatjs/formatjs/commits/d364a3393615bd5837b1678351b53178f0c697cf)) - by @longlho
+
+### Features
+
+* **react-intl:** modernize for React 19 and RSC support ([#6083](/github.com/formatjs/formatjs/issues/6083)) ([4ecc046](github.com/formatjs/formatjs/commits/4ecc0468350681a9f33e9a1488a5bea99dc50783)) - by @longlho
+
 ## [8.1.4](github.com/formatjs/formatjs/compare/react-intl@8.1.3...react-intl@8.1.4) (2026-03-15)
 
 **Note:** Version bump only for package react-intl

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.1.2](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.1.1...@formatjs/intl-segmenter@12.1.2) (2026-03-16)
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** rm typescript-eslint dep ([#6028](/github.com/formatjs/formatjs/issues/6028)) ([db3a76b](github.com/formatjs/formatjs/commits/db3a76bb67865716067deffbbb3f3f683382029c)) - by @
+
 ## [12.1.1](github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.1.0...@formatjs/intl-segmenter@12.1.1) (2026-02-01)
 
 **Note:** Version bump only for package @formatjs/intl-segmenter
