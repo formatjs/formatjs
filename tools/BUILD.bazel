@@ -6,6 +6,12 @@ exports_files([
 ])
 
 copy_to_bin(
+    name = "vitest_config_mjs",
+    srcs = ["vitest.config.mjs"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
     name = "check-package-json",
     srcs = ["check-package-json.ts"],
     visibility = ["//visibility:public"],

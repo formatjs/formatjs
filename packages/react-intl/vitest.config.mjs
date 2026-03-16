@@ -5,4 +5,7 @@ export default defineConfig({
     jsx: 'automatic',
     jsxDev: true,
   },
+  resolve: {
+    preserveSymlinks: true,
+  },
 })
