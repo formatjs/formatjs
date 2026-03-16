@@ -73,16 +73,23 @@ def vitest(
         transpiler = tsgo_bin.tsgo,
     )
 
+    # Use the shared base config for Bazel sandbox compatibility (preserveSymlinks).
+    # Packages with custom configs must also include resolve.preserveSymlinks: true.
+    base_config = "//tools:vitest_config_mjs"
+    actual_config = config if config else base_config
+
     vitest_bin.vitest_test(
         name = name,
-        data = srcs + deps + data + snapshots + fixtures + ([config] if config else []),
+        data = srcs + deps + data + snapshots + fixtures + [actual_config],
         size = size,
         flaky = flaky,
         tags = tags,
         no_copy_to_bin = no_copy_to_bin,
         args = [
             "run",
-        ] + (["--config", "$(rootpath %s)" % config] if config else []) + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),
+            "--config",
+            "$(rootpath %s)" % actual_config,
+        ] + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),
         **kwargs
     )
 
