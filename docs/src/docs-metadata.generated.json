@@ -151,6 +151,10 @@
     "title": "Components",
     "description": "React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a..."
   },
+  "react-intl/upgrade-guide-10.x": {
+    "title": "Upgrade Guide 10.x",
+    "description": "The injectIntl higher-order component has been removed. Use the useIntl() hook instead."
+  },
   "react-intl/upgrade-guide-2.x": {
     "title": "Upgrade Guide 2.x",
     "description": "React Intl v2 has a peer dependency on react@^0.14.0 || ^15.0.0-0 and now takes advantage of features and changes in React 0.14 and also works with Reac..."
@@ -178,10 +182,6 @@
   "react-intl/upgrade-guide-8.x": {
     "title": "Upgrade Guide 8.x",
     "description": "react-intl v8 requires React 19. If you are using React 18 or below, stay on react-intl v7."
-  },
-  "react-intl/upgrade-guide-9.x": {
-    "title": "Upgrade Guide 9.x",
-    "description": "The injectIntl higher-order component has been removed. Use the useIntl() hook instead."
   },
   "tooling/babel-plugin": {
     "title": "Babel Plugin",

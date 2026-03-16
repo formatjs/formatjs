@@ -12,7 +12,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### BREAKING CHANGES
 
 * **react-intl:** Major version bump for react-intl.
-See https://formatjs.github.io/docs/react-intl/upgrade-guide-9.x for
+See https://formatjs.github.io/docs/react-intl/upgrade-guide-10.x for
 migration instructions.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
