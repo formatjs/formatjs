@@ -85,7 +85,7 @@
     "conventional-changelog-angular": "^8.1.0",
     "decimal.js": "^10.6.0",
     "esbuild": "^0.25.0",
-    "eslint": "9.39.2",
+    "eslint": "9.39.4",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",
     "gray-matter": "^4.0.3",
