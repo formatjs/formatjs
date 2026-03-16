@@ -130,7 +130,7 @@
     "vike": "^0.4.251",
     "vike-react": "^0.6.18",
     "vite": "^8.0.0",
-    "vitest": "^3.2.4",
+    "vitest": "^4.1.0",
     "vue": "^3.5.0",
     "vue-class-component": "8.0.0-rc.1",
     "vue-eslint-parser": "^10.4.0",
@@ -149,8 +149,7 @@
       "esbuild"
     ],
     "overrides": {
-      "@tailwindcss/vite>vite": "$vite",
-      "vitest>vite": "$vite"
+      "@tailwindcss/vite>vite": "$vite"
     },
     "packageExtensions": {
       "@vue/compiler-core": {
