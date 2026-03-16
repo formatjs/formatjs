@@ -176,6 +176,110 @@ React.createElement(FormattedMessage, {
   not end-user.
 </Admonition>
 
+## Using @formatjs/unplugin (Recommended)
+
+[`@formatjs/unplugin`](/docs/tooling/unplugin) is a universal build plugin that supports **Vite**, **Webpack**, **Rollup**, **esbuild**, and **Rspack** with one package. It provides the same transformations as `babel-plugin-formatjs` without requiring Babel.
+
+<Tabs
+  groupId="bundler"
+  defaultValue="vite"
+  values={[
+  {label: 'Vite', value: 'vite'},
+  {label: 'Webpack', value: 'webpack'},
+  {label: 'Rollup', value: 'rollup'},
+  {label: 'esbuild', value: 'esbuild'},
+  {label: 'Rspack', value: 'rspack'},
+]}>
+<TabItem value="vite">
+
+```ts
+// vite.config.ts
+import {defineConfig} from 'vite'
+import formatjs from '@formatjs/unplugin/vite'
+
+export default defineConfig({
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+})
+```
+
+</TabItem>
+<TabItem value="webpack">
+
+```js
+// webpack.config.js
+const formatjs = require('@formatjs/unplugin/webpack').default
+
+module.exports = {
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+}
+```
+
+</TabItem>
+<TabItem value="rollup">
+
+```js
+// rollup.config.js
+import formatjs from '@formatjs/unplugin/rollup'
+
+export default {
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+}
+```
+
+</TabItem>
+<TabItem value="esbuild">
+
+```js
+import esbuild from 'esbuild'
+import formatjs from '@formatjs/unplugin/esbuild'
+
+esbuild.build({
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+})
+```
+
+</TabItem>
+<TabItem value="rspack">
+
+```js
+// rspack.config.js
+const formatjs = require('@formatjs/unplugin/rspack').default
+
+module.exports = {
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+}
+```
+
+</TabItem>
+</Tabs>
+
+See the [Unplugin docs](/docs/tooling/unplugin) for all options.
+
 ## Using @formatjs/vite-plugin
 
-If you're using [Vite](https://vitejs.dev), you can use our native [@formatjs/vite-plugin](/docs/tooling/vite-plugin) which provides the same transformations without needing Babel. See the [Vite Plugin docs](/docs/tooling/vite-plugin) for full details.
+If you're using [Vite](https://vitejs.dev), you can also use [@formatjs/vite-plugin](/docs/tooling/vite-plugin) which re-exports from `@formatjs/unplugin/vite`. See the [Vite Plugin docs](/docs/tooling/vite-plugin) for full details.

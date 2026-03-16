@@ -1,9 +1,4 @@
-<Admonition type="tip" title="Recommendation">
-  For new projects, we recommend using
-  [`@formatjs/unplugin`](/docs/tooling/unplugin) which supports Vite, Webpack,
-  Rollup, esbuild, and Rspack with a single package. `@formatjs/vite-plugin` now
-  re-exports from `@formatjs/unplugin/vite` internally.
-</Admonition>
+Universal build plugin for FormatJS — supports **Vite**, **Webpack**, **Rollup**, **esbuild**, and **Rspack** with one codebase.
 
 Process string messages for translation from modules that use react-intl, specifically:
 
@@ -12,7 +7,7 @@ Process string messages for translation from modules that use react-intl, specif
 - Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
 - Automatically inject message ID based on specific pattern.
 
-This is a native [Vite](https://vitejs.dev) plugin that provides the same transformations as [babel-plugin-formatjs](/docs/tooling/babel-plugin) and [@formatjs/ts-transformer](/docs/tooling/ts-transformer) without requiring Babel or TypeScript custom transformers. It uses `oxc-parser` + `magic-string` for fast, compiler-agnostic builds.
+This plugin provides the same transformations as [babel-plugin-formatjs](/docs/tooling/babel-plugin) and [@formatjs/ts-transformer](/docs/tooling/ts-transformer) without requiring Babel or TypeScript custom transformers. It uses `oxc-parser` + `magic-string` for fast, compiler-agnostic builds.
 
 ## Installation
 
@@ -27,21 +22,21 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i -D @formatjs/vite-plugin
+npm i -D @formatjs/unplugin
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add -D @formatjs/vite-plugin
+yarn add -D @formatjs/unplugin
 ```
 
 </TabItem>
 <TabItem value="pnpm">
 
 ```sh
-pnpm add -D @formatjs/vite-plugin
+pnpm add -D @formatjs/unplugin
 ```
 
 </TabItem>
@@ -51,11 +46,12 @@ pnpm add -D @formatjs/vite-plugin
 
 The plugin processes message descriptors from: `defineMessages()`, `defineMessage()`, `intl.formatMessage`, `$t`, `$formatMessage` and `<FormattedMessage>`.
 
-**vite.config.ts**
+### Vite
 
 ```ts
+// vite.config.ts
 import {defineConfig} from 'vite'
-import formatjs from '@formatjs/vite-plugin'
+import formatjs from '@formatjs/unplugin/vite'
 
 export default defineConfig({
   plugins: [
@@ -65,6 +61,70 @@ export default defineConfig({
     }),
   ],
 })
+```
+
+### Webpack
+
+```js
+// webpack.config.js
+const formatjs = require('@formatjs/unplugin/webpack').default
+
+module.exports = {
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+}
+```
+
+### Rollup
+
+```js
+// rollup.config.js
+import formatjs from '@formatjs/unplugin/rollup'
+
+export default {
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+}
+```
+
+### esbuild
+
+```js
+import esbuild from 'esbuild'
+import formatjs from '@formatjs/unplugin/esbuild'
+
+esbuild.build({
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+})
+```
+
+### Rspack
+
+```js
+// rspack.config.js
+const formatjs = require('@formatjs/unplugin/rspack').default
+
+module.exports = {
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+}
 ```
 
 For example, given this component:
@@ -95,6 +155,20 @@ React.createElement(FormattedMessage, {
   Our plugin also removes `description` because it's only for translator, not
   end-user.
 </Admonition>
+
+## Migrating from babel-plugin-formatjs
+
+Replace your Babel plugin configuration with the appropriate bundler import from `@formatjs/unplugin`. The options are the same.
+
+## Migrating from @formatjs/vite-plugin
+
+`@formatjs/vite-plugin` now re-exports from `@formatjs/unplugin/vite` internally. You can switch your import with no configuration changes:
+
+```diff
+// vite.config.ts
+- import formatjs from '@formatjs/vite-plugin'
++ import formatjs from '@formatjs/unplugin/vite'
+```
 
 ## Options
 

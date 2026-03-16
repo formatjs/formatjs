@@ -215,9 +215,13 @@
     "title": "Ts Transformer",
     "description": "Process string messages for translation from modules that use react-intl, specifically:"
   },
+  "tooling/unplugin": {
+    "title": "Unplugin",
+    "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, and Rspack with one codebase."
+  },
   "tooling/vite-plugin": {
     "title": "Vite Plugin",
-    "description": "Process string messages for translation from modules that use react-intl, specifically:"
+    "description": "For new projects, we recommend using"
   },
   "vue-intl": {
     "title": "Vue Intl",

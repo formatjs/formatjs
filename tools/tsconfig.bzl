@@ -66,3 +66,10 @@ DOCS_TSCONFIG = BASE_TSCONFIG | {
         "skipLibCheck": True,
     },
 }
+
+# ESNext + skipLibCheck configuration - for packages with deps that have unresolvable type imports
+ESNEXT_SKIP_LIB_CHECK_TSCONFIG = ESNEXT_TSCONFIG | {
+    "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
+        "skipLibCheck": True,
+    },
+}
