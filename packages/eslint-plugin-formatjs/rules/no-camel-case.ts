@@ -15,7 +15,7 @@ export const name = 'no-camel-case'
 const CAMEL_CASE_REGEX = /[A-Z]/
 
 function verifyAst(ast: MessageFormatElement[]) {
-  const errors: {messageId: MessageIds; data: Record<string, unknown>}[] = []
+  const errors: {messageId: MessageIds; data: Record<string, string>}[] = []
   for (const el of ast) {
     if (isArgumentElement(el)) {
       if (CAMEL_CASE_REGEX.test(el.value)) {
