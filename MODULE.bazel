@@ -77,7 +77,7 @@ bazel_dep(name = "rules_multirun", version = "0.13.0")
 
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "8.2.1.1",
+    version = "8.5.1",
     dev_dependency = True,
 )
 
