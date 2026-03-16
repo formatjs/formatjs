@@ -7,24 +7,35 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
-PACKAGE_NAME = "@formatjs/vite-plugin"
+PACKAGE_NAME = "@formatjs/unplugin"
 
 SRCS = [
+    "esbuild.ts",
     "index.ts",
+    "rollup.ts",
+    "rspack.ts",
+    "transform.ts",
+    "vite.ts",
+    "webpack.ts",
     "package.json",
 ]
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/unplugin",
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/magic-string",
+    ":node_modules/oxc-parser",
+    ":node_modules/unplugin",
     "//:node_modules/@types/node",
     "//:node_modules/vite",
 ]
 
 # Type check only with tsgo (fast, parallel)
-# Uses skipLibCheck because @formatjs/unplugin transitively imports unplugin's types
+# Uses skipLibCheck because unplugin's .d.ts imports types from many optional peer deps
 ts_project(
     name = "dist-esm-esnext-typecheck",
     srcs = [":srcs"],
@@ -54,6 +65,12 @@ js_library(
         "package.json",
         ":dist-esm-esnext",
     ],
+)
+
+vitest(
+    name = "unit_test",
+    srcs = SRCS + glob(["tests/**/*.ts"]),
+    deps = SRC_DEPS,
 )
 
 npm_package(

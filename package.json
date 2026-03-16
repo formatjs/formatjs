@@ -41,6 +41,7 @@
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
+    "@rspack/core": "^1.3.12",
     "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
@@ -83,6 +84,7 @@
     "content-tag": "^4.1.0",
     "conventional-changelog-angular": "^8.1.0",
     "decimal.js": "^10.6.0",
+    "esbuild": "^0.25.0",
     "eslint": "9.39.2",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",
@@ -112,6 +114,7 @@
     "rehype-slug": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
+    "rollup": "^4.40.0",
     "serialize-javascript": "^7.0.2",
     "syncpack": "^13.0.4",
     "tailwind-merge": "^3.4.0",
@@ -123,6 +126,7 @@
     "typescript": "5.9.3",
     "typesense": "2.1.0",
     "unidiff": "^1.0.4",
+    "unplugin": "^2.3.0",
     "vike": "^0.4.251",
     "vike-react": "^0.6.18",
     "vite": "^8.0.0",
@@ -141,7 +145,9 @@
   },
   "packageManager": "pnpm@10.32.1",
   "pnpm": {
-    "onlyBuiltDependencies": [],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
     "overrides": {
       "@tailwindcss/vite>vite": "$vite",
       "vitest>vite": "$vite"

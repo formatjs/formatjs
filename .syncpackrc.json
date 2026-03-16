@@ -124,6 +124,15 @@
         "vite"
       ],
       "isIgnored": true
+    },
+    {
+      "label": "Unplugin bundler peer deps",
+      "dependencies": [
+        "@rspack/core",
+        "esbuild",
+        "rollup"
+      ],
+      "isIgnored": true
     }
   ]
 }

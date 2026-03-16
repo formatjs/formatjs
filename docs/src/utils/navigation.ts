@@ -100,6 +100,7 @@ export function getNavigationTree(): NavSection[] {
         {title: 'Bazel', path: 'tooling/bazel'},
         {title: 'Babel Plugin', path: 'tooling/babel-plugin'},
         {title: 'TypeScript Transformer', path: 'tooling/ts-transformer'},
+        {title: 'Unplugin', path: 'tooling/unplugin'},
         {title: 'Vite Plugin', path: 'tooling/vite-plugin'},
         {title: 'SWC Plugin', path: 'tooling/swc-plugin'},
         {title: 'ESLint Plugin', path: 'tooling/linter'},
