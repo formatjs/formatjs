@@ -239,7 +239,7 @@ importers:
         version: 2.1.1
       content-tag:
         specifier: ^4.1.0
-        version: 4.1.0
+        version: 4.1.1
       conventional-changelog-angular:
         specifier: ^8.1.0
         version: 8.3.0
@@ -4920,6 +4920,9 @@ packages:
 
   content-tag@4.1.0:
     resolution: {integrity: sha512-On6gUuvI1l5MScHO+Xbwjeq1Pk9H6HOipDWkzqGGUGmKpq6K5TRmQuCl1LGSHbdIo2l+lSsgLKrLgCl5kKYA+A==}
+
+  content-tag@4.1.1:
+    resolution: {integrity: sha512-LyIbq4ZY+WbN0NoyHmg0w1kLPHyXZkZZrTDJZm/HW+MVurnKJy7U3m8WlpKm6lqbYbUSWP6ATNacE5dL2eH8+g==}
 
   conventional-changelog-angular@8.3.0:
     resolution: {integrity: sha512-DOuBwYSqWzfwuRByY9O4oOIvDlkUCTDzfbOgcSbkY+imXXj+4tmrEFao3K+FxemClYfYnZzsvudbwrhje9VHDA==}
@@ -12625,6 +12628,8 @@ snapshots:
       proto-list: 1.2.4
 
   content-tag@4.1.0: {}
+
+  content-tag@4.1.1: {}
 
   conventional-changelog-angular@8.3.0:
     dependencies:
