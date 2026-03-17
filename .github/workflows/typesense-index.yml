@@ -22,7 +22,7 @@ jobs:
       - uses: bazel-contrib/setup-bazel@0.18.0
         with:
           # Avoid downloading Bazel every time.
-          bazelisk-cache: false
+          bazelisk-cache: true
           # Store build cache per workflow.
           disk-cache: ${{ github.workflow }}
           # Share repository cache between workflows.
