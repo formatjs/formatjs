@@ -127,7 +127,7 @@
     "ts-loader": "^9.5.4",
     "tsd": "^0.33.0",
     "typescript": "5.9.3",
-    "typesense": "2.1.0",
+    "typesense": "3.0.3",
     "unidiff": "^1.0.4",
     "unplugin": "^2.3.0",
     "vike": "^0.4.251",
