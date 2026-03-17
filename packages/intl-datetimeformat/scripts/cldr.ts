@@ -19,6 +19,8 @@ function main(args: Args) {
 // prettier-ignore
 if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.__addLocaleData === 'function') {
   Intl.DateTimeFormat.__addLocaleData(${data})
+} else {
+  (globalThis.__FORMATJS_DATETIMEFORMAT_DATA__ = globalThis.__FORMATJS_DATETIMEFORMAT_DATA__ || []).push(${data})
 }
 `
     )

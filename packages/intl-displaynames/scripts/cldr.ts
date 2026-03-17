@@ -21,6 +21,8 @@ function main(args: Args) {
 // prettier-ignore
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(${data})
+} else {
+  (globalThis.__FORMATJS_DISPLAYNAMES_DATA__ = globalThis.__FORMATJS_DISPLAYNAMES_DATA__ || []).push(${data})
 }`
     )
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')

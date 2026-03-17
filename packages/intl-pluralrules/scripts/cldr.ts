@@ -19,6 +19,8 @@ function main(args: Args) {
 // prettier-ignore
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
   Intl.PluralRules.__addLocaleData(${data})
+} else {
+  (globalThis.__FORMATJS_PLURALRULES_DATA__ = globalThis.__FORMATJS_PLURALRULES_DATA__ || []).push(${data})
 }
 `
     )

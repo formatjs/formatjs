@@ -18,6 +18,8 @@ function main(args: Args) {
 // prettier-ignore
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(${data})
+} else {
+  (globalThis.__FORMATJS_RELATIVETIMEFORMAT_DATA__ = globalThis.__FORMATJS_RELATIVETIMEFORMAT_DATA__ || []).push(${data})
 }
 `
     )

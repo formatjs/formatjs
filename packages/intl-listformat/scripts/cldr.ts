@@ -21,6 +21,8 @@ function main(args: Args) {
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${data})
+} else {
+  (globalThis.__FORMATJS_LISTFORMAT_DATA__ = globalThis.__FORMATJS_LISTFORMAT_DATA__ || []).push(${data})
 }`
     )
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')

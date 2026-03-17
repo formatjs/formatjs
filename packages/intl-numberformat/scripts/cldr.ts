@@ -20,6 +20,8 @@ function main(args: Args) {
 // prettier-ignore
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(${data})
+} else {
+  (globalThis.__FORMATJS_NUMBERFORMAT_DATA__ = globalThis.__FORMATJS_NUMBERFORMAT_DATA__ || []).push(${data})
 }`
     )
     outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
