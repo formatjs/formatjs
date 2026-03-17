@@ -19,7 +19,7 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "magic-string": "^0.30.0",
-    "oxc-parser": "^0.114.0",
+    "oxc-parser": "^0.120.0",
     "unplugin": "^3.0.0"
   },
   "peerDependencies": {
