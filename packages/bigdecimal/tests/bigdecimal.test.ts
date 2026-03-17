@@ -492,6 +492,12 @@ describe('BigDecimal', () => {
       // log10(0.0099) ≈ -2.004 → floor = -3
       expect(new BigDecimal('0.0099').log(10).floor().toString()).toBe('-3')
     })
+
+    it('log10 handles very large mantissa (>10^325) without overflow', () => {
+      // Regression: Math.pow(10, shift) overflows to Infinity for shift > 308
+      const big = '1' + '0'.repeat(350)
+      expect(new BigDecimal(big).log(10).floor().toString()).toBe('350')
+    })
   })
 
   // --- Comparison ---

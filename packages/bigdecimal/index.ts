@@ -479,19 +479,18 @@ export class BigDecimal {
     // Total = (digits-1) + log10(normalized) + exponent
 
     // Get the leading ~17 significant digits for Math.log10
-    let normalizedNum: number
+    // Use log laws: log10(leading × 10^shift) = log10(leading) + shift
+    // This avoids Math.pow(10, shift) overflow for shift > 308
+    let log10Mantissa: number
     if (digits <= 15) {
-      normalizedNum = Number(absMantissa)
+      log10Mantissa = Math.log10(Number(absMantissa))
     } else {
-      // Take leading 17 digits
       const shift = digits - 17
       const leading = absMantissa / bigintPow10(shift)
-      normalizedNum = Number(leading) * Math.pow(10, shift)
+      log10Mantissa = Math.log10(Number(leading)) + shift
     }
 
-    // log10(mantissa) using floating point
-    const log10Mantissa = Math.log10(normalizedNum)
-    // Total log10 = log10Mantissa + exponent
+    // Total log10 = log10(mantissa) + exponent
     const totalLog10 = log10Mantissa + this._exponent
 
     // Convert to BigDecimal with ~18 digits of precision
