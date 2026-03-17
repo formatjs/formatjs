@@ -115,7 +115,7 @@ crate.from_cargo(
 )
 use_repo(crate, "crates")
 
-bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.68.1")
+bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.69.0")
 
 # Register wasm32 toolchain
 register_toolchains(
