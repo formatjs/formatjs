@@ -122,10 +122,6 @@ register_toolchains(
     "@rules_rust//rust/private/dummy_cc_toolchain:dummy_cc_wasm32_toolchain",
 )
 
-######### Lint rules #########
-
-bazel_dep(name = "aspect_rules_lint", version = "1.10.2")
-
 ######### Java rules #########
 
 bazel_dep(name = "rules_java", version = "9.6.1")
