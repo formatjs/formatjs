@@ -2,7 +2,8 @@ import {
   type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import {outputFile, readJSON} from 'fs-extra/esm'
+import {outputFile} from 'fs-extra/esm'
+import {readFile} from 'fs/promises'
 import * as stringifyNs from 'json-stable-stringify'
 import {debug, warn, writeStdout} from './console_utils.js'
 import {type Formatter, resolveBuiltinFormatter} from './formatters/index.js'
@@ -52,6 +53,10 @@ export interface Opts {
    * any attributes
    */
   ignoreTag?: boolean
+  /**
+   * An AbortSignal to cancel the compilation
+   */
+  signal?: AbortSignal
 }
 
 /**
@@ -68,14 +73,19 @@ export async function compile(
   opts: Opts = {}
 ): Promise<string> {
   debug('Compiling files:', inputFiles)
-  const {ast, format, pseudoLocale, skipErrors, ignoreTag} = opts
+  const {ast, format, pseudoLocale, skipErrors, ignoreTag, signal} = opts
+  signal?.throwIfAborted()
   const formatter = await resolveBuiltinFormatter(format)
 
   const messages: Record<string, string> = {}
   const messageAsts: Record<string, MessageFormatElement[]> = {}
   const idsWithFileName: Record<string, string> = {}
   const compiledFiles = await Promise.all(
-    inputFiles.map(f => readJSON(f).then(formatter.compile))
+    inputFiles.map(f =>
+      readFile(f, {encoding: 'utf8', signal})
+        .then(content => JSON.parse(content))
+        .then(formatter.compile)
+    )
   )
   debug('Compiled files:', compiledFiles)
   for (let i = 0; i < inputFiles.length; i++) {

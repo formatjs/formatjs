@@ -78,6 +78,10 @@ export type ExtractOpts = Opts & {
    * Whether to hoist selectors & flatten sentences
    */
   flatten?: boolean
+  /**
+   * An AbortSignal to cancel the extraction
+   */
+  signal?: AbortSignal
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>
 
 function calculateLineColFromOffset(
@@ -197,7 +201,7 @@ export async function extract(
   files: readonly string[],
   extractOpts: ExtractOpts
 ): Promise<string> {
-  const {throws, readFromStdin, ...opts} = extractOpts
+  const {throws, readFromStdin, signal, ...opts} = extractOpts
   // When throws is not explicitly true, we want to collect partial results
   const shouldThrow = throws === true
   // Pass throws option to transformer for per-message error handling
@@ -224,7 +228,7 @@ export async function extract(
         const settledResults = await Promise.allSettled(
           files.map(async fn => {
             debug('Extracting file:', fn)
-            const source = await readFile(fn, 'utf8')
+            const source = await readFile(fn, {encoding: 'utf8', signal})
             return processFile(source, fn, optsWithThrows)
           })
         )
@@ -240,7 +244,7 @@ export async function extract(
         rawResults = await Promise.all(
           files.map(async fn => {
             debug('Extracting file:', fn)
-            const source = await readFile(fn, 'utf8')
+            const source = await readFile(fn, {encoding: 'utf8', signal})
             return processFile(source, fn, optsWithThrows)
           })
         )
