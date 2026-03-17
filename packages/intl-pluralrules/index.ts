@@ -7,7 +7,7 @@ import {
   SupportedLocales,
   ToIntlMathematicalValue,
 } from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 import {type OperandsRecord} from './abstract/GetOperands.js'
 import {InitializePluralRules} from './abstract/InitializePluralRules.js'
 import {ResolvePlural} from './abstract/ResolvePlural.js'

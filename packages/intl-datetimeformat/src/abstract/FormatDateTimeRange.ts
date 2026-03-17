@@ -1,4 +1,4 @@
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 import {type FormatDateTimePatternImplDetails} from './FormatDateTimePattern.js'
 import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern.js'
 import {type ToLocalTimeImplDetails} from './ToLocalTime.js'

@@ -1,13 +1,10 @@
-import {Decimal} from 'decimal.js'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type DecimalFormatNum,
   type NumberFormatInternal,
 } from '../types/number.js'
 import {invariant} from '../utils.js'
 import {getPowerOf10} from './decimal-cache.js'
-Decimal.set({
-  toExpPos: 100,
-})
 /**
  * The abstract operation ComputeExponentForMagnitude computes an exponent by which to scale a
  * number of the given magnitude (power of ten of the most significant digit) according to the

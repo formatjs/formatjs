@@ -2,7 +2,7 @@ import {
   ArrayCreate,
   type IntlDateTimeFormatPart,
 } from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 import {PartitionDateTimePattern} from './PartitionDateTimePattern.js'
 
 /**

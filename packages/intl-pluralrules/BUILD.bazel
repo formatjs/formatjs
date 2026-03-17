@@ -267,7 +267,7 @@ TESTS = glob([
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
-    "//:node_modules/decimal.js",
+    ":node_modules/@formatjs/bigdecimal",
 ]
 
 ts_compile(
@@ -375,7 +375,7 @@ esbuild(
     name = "test262-polyfill",
     srcs = [":srcs"],
     entry_point = "test262-main.ts",
-    target = "es6",
+    target = "es2020",
     deps = SRC_DEPS,
 )
 
@@ -414,7 +414,7 @@ esbuild(
     name = "polyfill.iife",
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
-    target = "es6",
+    target = "es2020",
     # TODO: fix this and set it back to es5
     deps = [
     ] + SRC_DEPS,

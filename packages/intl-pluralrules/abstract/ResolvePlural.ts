@@ -6,7 +6,7 @@ import {
   type PluralRulesInternal,
   Type,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import Decimal from '@formatjs/bigdecimal'
 import {GetOperands, type OperandsRecord} from './GetOperands.js'
 
 /**

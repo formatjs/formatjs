@@ -4,7 +4,7 @@ import {
   type PluralRulesInternal,
   Type,
 } from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 import {type OperandsRecord} from './GetOperands.js'
 import {ResolvePluralInternal} from './ResolvePlural.js'
 

@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js'
+import Decimal from '@formatjs/bigdecimal'
 import {ToRawFixed} from '../NumberFormat/ToRawFixed'
 import {expect, it, test} from 'vitest'
 test('ToRawFixed(9.99, 0, 1)', () => {

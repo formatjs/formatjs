@@ -13,7 +13,7 @@ import {
   defineProperty,
   invariant,
 } from '@formatjs/ecma402-abstract'
-import Decimal from 'decimal.js'
+import Decimal from '@formatjs/bigdecimal'
 import {FormatDateTime} from './abstract/FormatDateTime.js'
 import {FormatDateTimeRange} from './abstract/FormatDateTimeRange.js'
 import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts.js'

@@ -1,4 +1,4 @@
-import {Decimal} from 'decimal.js'
+import {Decimal} from '@formatjs/bigdecimal'
 import {S_UNICODE_REGEX} from '../regex.generated.js'
 import {
   type DecimalFormatNum,

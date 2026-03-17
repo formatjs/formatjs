@@ -60,7 +60,7 @@ esbuild(
         "globalName": "IntlMessageFormat",
     },
     entry_point = "index.ts",
-    target = "es6",
+    target = "es2020",
     deps = SRC_DEPS,
 )
 

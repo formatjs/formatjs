@@ -1,5 +1,5 @@
 import {type IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
-import type {Decimal} from 'decimal.js'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {type FormatDateTimePatternImplDetails} from './FormatDateTimePattern.js'
 import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern.js'
 import {type ToLocalTimeImplDetails} from './ToLocalTime.js'

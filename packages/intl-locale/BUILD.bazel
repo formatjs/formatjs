@@ -54,7 +54,7 @@ esbuild(
     name = "test262-polyfill",
     srcs = [":srcs"],
     entry_point = "polyfill-force.ts",
-    target = "es6",
+    target = "es2020",
     deps = SRC_DEPS,
 )
 
@@ -88,7 +88,7 @@ esbuild(
     name = "polyfill.iife",
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
-    target = "es6",
+    target = "es2020",
     deps = [
     ] + SRC_DEPS,
 )

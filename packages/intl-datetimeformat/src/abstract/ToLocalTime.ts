@@ -10,7 +10,7 @@ import {
   invariant,
   msFromTime,
 } from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 
 // Cached regex patterns for performance
 const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/

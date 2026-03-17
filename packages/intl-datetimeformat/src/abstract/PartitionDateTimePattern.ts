@@ -6,7 +6,7 @@ import {
   PartitionPattern,
   TimeClip,
 } from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 import {
   FormatDateTimePattern,
   type FormatDateTimePatternImplDetails,

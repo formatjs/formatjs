@@ -1,4 +1,4 @@
-import type {Decimal} from 'decimal.js'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {type NumberFormatInternal} from '../types/number.js'
 import {PartitionNumberPattern} from './PartitionNumberPattern.js'
 

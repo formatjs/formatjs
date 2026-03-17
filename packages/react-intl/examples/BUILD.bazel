@@ -46,6 +46,7 @@ esbuild(
     },
     entry_point = "examples-lib/index.js",
     format = "iife",
+    target = "es2020",
     deps = [":examples-esm"] + EXAMPLES_SRC_DEPS,
 )
 

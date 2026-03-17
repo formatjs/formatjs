@@ -1,4 +1,4 @@
-import type {Decimal} from 'decimal.js'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {NEGATIVE_ZERO, ZERO} from '../constants.js'
 import {
   type NumberFormatDigitInternalSlots,

@@ -17,7 +17,7 @@ import {
 import {currencyDigitsData} from './currency-digits.generated.js'
 import {numberingSystemNames} from './numbering-systems.generated.js'
 // eslint-disable-next-line import/no-cycle
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 import getInternalSlots from './get_internal_slots.js'
 import {
   type NumberFormatConstructor,

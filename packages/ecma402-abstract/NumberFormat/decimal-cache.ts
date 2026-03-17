@@ -1,4 +1,4 @@
-import {Decimal} from 'decimal.js'
+import {Decimal} from '@formatjs/bigdecimal'
 import {memoize} from '@formatjs/fast-memoize'
 
 /**

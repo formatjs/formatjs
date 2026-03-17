@@ -221,9 +221,15 @@ export class BigDecimal {
     return bd
   }
 
+  // Auto-coerce to BigDecimal for decimal.js compat
+  private static _coerce(v: BigDecimal | number | string | bigint): BigDecimal {
+    return v instanceof BigDecimal ? v : new BigDecimal(v)
+  }
+
   // --- Arithmetic ---
 
-  times(other: BigDecimal): BigDecimal {
+  times(y: BigDecimal | number | string | bigint): BigDecimal {
+    const other = BigDecimal._coerce(y)
     if (this._special || other._special) {
       return this._specialArith(other, 'times')
     }
@@ -239,7 +245,8 @@ export class BigDecimal {
     return BigDecimal._create(nm, ne, SpecialValue.NONE, false)
   }
 
-  div(other: BigDecimal): BigDecimal {
+  div(y: BigDecimal | number | string | bigint): BigDecimal {
+    const other = BigDecimal._coerce(y)
     if (this._special || other._special) {
       return this._specialArith(other, 'div')
     }
@@ -267,7 +274,8 @@ export class BigDecimal {
     return BigDecimal._create(nm, ne, SpecialValue.NONE, false)
   }
 
-  plus(other: BigDecimal): BigDecimal {
+  plus(y: BigDecimal | number | string | bigint): BigDecimal {
+    const other = BigDecimal._coerce(y)
     if (this._special || other._special) {
       return this._specialArith(other, 'plus')
     }
@@ -296,11 +304,12 @@ export class BigDecimal {
     return BigDecimal._create(nm, ne, SpecialValue.NONE, false)
   }
 
-  minus(other: BigDecimal): BigDecimal {
-    return this.plus(other.negated())
+  minus(y: BigDecimal | number | string | bigint): BigDecimal {
+    return this.plus(BigDecimal._coerce(y).negated())
   }
 
-  mod(other: BigDecimal): BigDecimal {
+  mod(y: BigDecimal | number | string | bigint): BigDecimal {
+    const other = BigDecimal._coerce(y)
     if (this._special || other._special) {
       if (
         this._special === SpecialValue.NAN ||
@@ -500,7 +509,8 @@ export class BigDecimal {
 
   // --- Comparison ---
 
-  eq(other: BigDecimal): boolean {
+  eq(y: BigDecimal | number | string | bigint): boolean {
+    const other = BigDecimal._coerce(y)
     if (
       this._special === SpecialValue.NAN ||
       other._special === SpecialValue.NAN
@@ -559,23 +569,23 @@ export class BigDecimal {
     return 0
   }
 
-  lessThan(other: BigDecimal): boolean {
-    const c = this._compareTo(other)
+  lessThan(y: BigDecimal | number | string | bigint): boolean {
+    const c = this._compareTo(BigDecimal._coerce(y))
     return c === -1
   }
 
-  greaterThan(other: BigDecimal): boolean {
-    const c = this._compareTo(other)
+  greaterThan(y: BigDecimal | number | string | bigint): boolean {
+    const c = this._compareTo(BigDecimal._coerce(y))
     return c === 1
   }
 
-  lessThanOrEqualTo(other: BigDecimal): boolean {
-    const c = this._compareTo(other)
+  lessThanOrEqualTo(y: BigDecimal | number | string | bigint): boolean {
+    const c = this._compareTo(BigDecimal._coerce(y))
     return c === 0 || c === -1
   }
 
-  greaterThanOrEqualTo(other: BigDecimal): boolean {
-    const c = this._compareTo(other)
+  greaterThanOrEqualTo(y: BigDecimal | number | string | bigint): boolean {
+    const c = this._compareTo(BigDecimal._coerce(y))
     return c === 0 || c === 1
   }
 
@@ -616,6 +626,10 @@ export class BigDecimal {
   }
 
   // --- Conversion ---
+
+  toJSON(): string {
+    return this.toString()
+  }
 
   toNumber(): number {
     if (this._special === SpecialValue.NAN) return NaN
@@ -659,13 +673,14 @@ export class BigDecimal {
 
   // --- Static ---
 
-  static pow(base: number | BigDecimal, exp: number): BigDecimal {
+  static pow(base: number | BigDecimal, exp: number | BigDecimal): BigDecimal {
+    const n = typeof exp === 'number' ? exp : exp.toNumber()
     if (typeof base === 'number' && base === 10) {
       // Trivial: 10^n = mantissa=1, exponent=n
-      return BigDecimal._create(1n, exp, SpecialValue.NONE, false)
+      return BigDecimal._create(1n, n, SpecialValue.NONE, false)
     }
     const bd = base instanceof BigDecimal ? base : new BigDecimal(base)
-    return bd.pow(exp)
+    return bd.pow(n)
   }
 
   static set(_config: Record<string, unknown>): void {
@@ -755,3 +770,7 @@ export class BigDecimal {
     return BigDecimal._create(0n, 0, SpecialValue.NAN, false)
   }
 }
+
+// Alias for drop-in decimal.js compatibility
+export {BigDecimal as Decimal}
+export default BigDecimal

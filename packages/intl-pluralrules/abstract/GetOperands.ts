@@ -1,5 +1,5 @@
 import {invariant, ToNumber, ZERO} from '@formatjs/ecma402-abstract'
-import type Decimal from 'decimal.js'
+import type Decimal from '@formatjs/bigdecimal'
 
 /**
  * CLDR Spec: Operands as defined in https://unicode.org/reports/tr35/tr35-numbers.html#Operands

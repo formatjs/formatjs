@@ -1,4 +1,4 @@
-import type {Decimal} from 'decimal.js'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {ArrayCreate} from '../262.js'
 import {
   type NumberFormatInternal,

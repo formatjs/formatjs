@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js'
+import Decimal from '@formatjs/bigdecimal'
 import {FormatNumericRangeToParts} from '../NumberFormat/FormatNumericRangeToParts.js'
 import {getInternalSlots} from './utils.js'
 import {describe, expect, it} from 'vitest'

@@ -66,7 +66,7 @@ TESTS = glob([
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
-    "//:node_modules/decimal.js",
+    ":node_modules/@formatjs/bigdecimal",
 ]
 
 TEST_DEPS = SRC_DEPS + [
@@ -897,7 +897,7 @@ esbuild(
     name = "polyfill.iife",
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
-    target = "es6",
+    target = "es2020",
     deps = [
     ] + SRC_DEPS,
 )

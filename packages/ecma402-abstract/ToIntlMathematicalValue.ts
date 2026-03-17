@@ -1,4 +1,4 @@
-import {Decimal} from 'decimal.js'
+import {Decimal} from '@formatjs/bigdecimal'
 import {ToPrimitive} from './262.js'
 
 /**

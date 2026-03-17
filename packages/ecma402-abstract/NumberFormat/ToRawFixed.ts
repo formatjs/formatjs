@@ -1,4 +1,4 @@
-import {Decimal} from 'decimal.js'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type RawNumberFormatResult,
   type UnsignedRoundingModeType,
@@ -6,11 +6,6 @@ import {
 import {repeat} from '../utils.js'
 import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
 import {getPowerOf10} from './decimal-cache.js'
-
-//IMPL: Setting Decimal configuration
-Decimal.set({
-  toExpPos: 100,
-})
 
 //IMPL: Helper function to calculate raw fixed value
 function ToRawFixedFn(n: Decimal, f: number) {

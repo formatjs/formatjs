@@ -124,6 +124,7 @@ esbuild(
     name = "polyfill.iife",
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
+    target = "es2020",
     deps = [
     ] + SRC_DEPS,
 )
