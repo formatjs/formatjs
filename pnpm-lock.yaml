@@ -456,6 +456,8 @@ importers:
         specifier: workspace:*
         version: link:..
 
+  packages/bigdecimal: {}
+
   packages/cli:
     dependencies:
       '@glimmer/syntax':
