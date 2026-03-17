@@ -140,12 +140,12 @@ export const segmentationTests: {
   }[]
 } = {
   grapheme: loadUCDTestFile(
-    runfiles.resolve('+_repo_rules2+GraphemeBreakTest/file/downloaded')
+    runfiles.resolve('+http_file+GraphemeBreakTest/file/downloaded')
   ),
   sentence: loadUCDTestFile(
-    runfiles.resolve('+_repo_rules2+SentenceBreakTest/file/downloaded')
+    runfiles.resolve('+http_file+SentenceBreakTest/file/downloaded')
   ),
   word: loadUCDTestFile(
-    runfiles.resolve('+_repo_rules2+WordBreakTest/file/downloaded')
+    runfiles.resolve('+http_file+WordBreakTest/file/downloaded')
   ),
 }
