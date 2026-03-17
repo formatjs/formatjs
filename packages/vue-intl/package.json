@@ -10,7 +10,7 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@babel/types": "^7.28.5",
+    "@babel/types": "^7.29.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*"
   },

@@ -14,7 +14,7 @@
     "@babel/helper-plugin-utils": "^7.27.1",
     "@babel/plugin-syntax-jsx": "^7.27.1",
     "@babel/traverse": "^7.28.5",
-    "@babel/types": "^7.28.5",
+    "@babel/types": "^7.29.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@types/babel__core": "^7.20.5",

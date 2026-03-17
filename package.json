@@ -20,7 +20,7 @@
     "@babel/preset-env": "^7.28.5",
     "@babel/preset-react": "^7.28.5",
     "@babel/traverse": "^7.28.5",
-    "@babel/types": "^7.28.5",
+    "@babel/types": "^7.29.0",
     "@bazel/bazelisk": "^1.26.0",
     "@bazel/ibazel": "^0.28.0",
     "@bazel/runfiles": "^6.5.0",
