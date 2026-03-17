@@ -124,7 +124,7 @@ register_toolchains(
 
 ######### Lint rules #########
 
-bazel_dep(name = "aspect_rules_lint", version = "1.10.2")
+bazel_dep(name = "aspect_rules_lint", version = "2.3.0")
 
 ######### Java rules #########
 
