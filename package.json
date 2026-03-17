@@ -129,7 +129,7 @@
     "typescript": "5.9.3",
     "typesense": "2.1.0",
     "unidiff": "^1.0.4",
-    "unplugin": "^2.3.0",
+    "unplugin": "^3.0.0",
     "vike": "^0.4.251",
     "vike-react": "^0.6.18",
     "vite": "^8.0.0",
