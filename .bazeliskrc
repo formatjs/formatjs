@@ -1,9 +1,0 @@
-# See https://github.com/bazelbuild/bazelisk#bazeliskrc-configuration-file
-
-# This file is used by developers who installed 'bazel' on their PATH using Bazelisk,
-
-# as the Bazel installation docs recommend.
-
-# We use it to register the Aspect CLI so that everyone has the same commands available.
-
-USE_BAZEL_VERSION=8.1.0
