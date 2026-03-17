@@ -9,21 +9,20 @@ load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
 
 npm_link_all_packages()
 
+# Shared copy_to_bin for all source/public files to avoid conflicting actions
+# in aspect_rules_js v3 (where ts_project/js_run_binary auto-copy srcs to bin)
+copy_to_bin(
+    name = "srcs",
+    srcs = glob([
+        "src/**/*",
+        "public/**/*",
+    ]),
+)
+
 # TypeScript type checking
 ts_project(
     name = "typecheck",
-    srcs = glob(
-        [
-            "src/**/*.ts",
-            "src/**/*.tsx",
-        ],
-        exclude = [
-            "src/**/*.test.ts",
-            "src/**/*.test.tsx",
-        ],
-    ) + [
-        "src/docs-metadata.generated.json",
-    ],
+    srcs = [":srcs"],
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
@@ -91,7 +90,7 @@ ts_binary(
 # Build Typesense index from MDX docs
 ts_run_binary(
     name = "typesense_index",
-    srcs = glob(["src/docs/**/*.mdx"]),
+    srcs = [":srcs"],
     outs = ["typesense-index.jsonl"],
     args = [
         "--out",
@@ -143,6 +142,7 @@ vite_bin.vite(
         ":config_files",
         ":docs_metadata",
         ":index_html",
+        ":srcs",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
         "//:node_modules/@mdx-js/react",
@@ -181,10 +181,7 @@ vite_bin.vite(
         "//:node_modules/vike",
         "//:node_modules/vike-react",
         "//:node_modules/vite",
-    ] + glob([
-        "src/**/*",
-        "public/**/*",
-    ]),
+    ],
     args = ["build"],
     chdir = package_name(),
     env = {
@@ -203,6 +200,7 @@ vite_bin.vite_binary(
         ":config_files",
         ":docs_metadata",
         ":index_html",
+        ":srcs",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
         "//:node_modules/@mdx-js/react",
@@ -241,10 +239,7 @@ vite_bin.vite_binary(
         "//:node_modules/vike",
         "//:node_modules/vike-react",
         "//:node_modules/vite",
-    ] + glob([
-        "src/**/*",
-        "public/**/*",
-    ]),
+    ],
 )
 
 # Preview production build (serves static files from dist/client)
