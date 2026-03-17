@@ -43,7 +43,7 @@ jobs:
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.18.0
         with:
-          bazelisk-cache: true
+          bazelisk-cache: false
           disk-cache: ${{ github.workflow }}-${{ matrix.platform }}
           repository-cache: true
 
