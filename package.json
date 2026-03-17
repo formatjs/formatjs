@@ -119,7 +119,7 @@
     "rollup": "^4.40.0",
     "serialize-javascript": "^7.0.2",
     "svelte": "^5.0.0",
-    "syncpack": "^13.0.4",
+    "syncpack": "^14.0.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18",
     "test262-harness": "^10.0.0",
