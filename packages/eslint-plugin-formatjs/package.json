@@ -7,7 +7,8 @@
   "type": "module",
   "types": "index.d.ts",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./util": "./util.js"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
