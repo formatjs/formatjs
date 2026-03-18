@@ -81,6 +81,18 @@ describe('@formatjs/unplugin transform', () => {
       expect(output).not.toContain('description')
       expect(output).toContain('defaultMessage')
     })
+
+    test('removes description from single-line JSX when description precedes defaultMessage', () => {
+      // Regression test for: https://github.com/formatjs/formatjs/issues/6164
+      // When description comes before defaultMessage on the same line, the
+      // generated code must preserve a space between the tag name and defaultMessage.
+      const input = `<FormattedMessage description="Test" defaultMessage="Test" />`
+      const output = t(input)
+      expect(output).not.toContain('description')
+      expect(output).toContain('defaultMessage')
+      // Must not produce <FormattedMessagedefaultMessage=...>
+      expect(output).toMatch(/FormattedMessage\s+/)
+    })
   })
 
   describe('removeDefaultMessage', () => {

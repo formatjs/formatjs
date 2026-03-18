@@ -350,15 +350,17 @@ export function transform(
     while (i >= 0 && /[a-zA-Z0-9_$]/.test(code[i])) i--
     const attrStart = i + 1
 
-    let attrEnd = loc.end
-    // Skip trailing whitespace
-    let j = attrEnd
-    while (j < code.length && (code[j] === ' ' || code[j] === '\t')) j++
-    attrEnd = j
+    const attrEnd = loc.end
 
-    // Also remove leading whitespace
+    // Remove leading whitespace/newline before attribute name.
+    // We intentionally do NOT consume trailing whitespace so that when attributes
+    // are on the same line the space before the next attribute is preserved.
+    // e.g. `<FM description="x" defaultMessage="y" />` → `<FM defaultMessage="y" />`
     let k = attrStart - 1
     while (k >= 0 && (code[k] === ' ' || code[k] === '\t')) k--
+    // Also include the preceding newline for multi-line JSX so the whole line is removed.
+    if (k >= 0 && code[k] === '\n') k--
+    if (k >= 0 && code[k] === '\r') k--
     const removeStart = k + 1
 
     s.remove(removeStart, attrEnd)
