@@ -223,10 +223,6 @@
     "title": "Unplugin",
     "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, and Rspack with one codebase."
   },
-  "tooling/vite-plugin": {
-    "title": "Vite Plugin",
-    "description": "For new projects, we recommend using"
-  },
   "vue-intl": {
     "title": "Vue Intl",
     "description": "This library contains our plugin for Vue."

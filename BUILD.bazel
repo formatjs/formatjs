@@ -55,7 +55,6 @@ PACKAGES_TO_DIST = [
     "//packages/ts-transformer",
     "//packages/unplugin",
     "//packages/utils",
-    "//packages/vite-plugin",
     "//packages/vue-intl",
 ]
 

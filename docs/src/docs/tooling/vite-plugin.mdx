@@ -1,10 +1,3 @@
-<Admonition type="tip" title="Recommendation">
-  For new projects, we recommend using
-  [`@formatjs/unplugin`](/docs/tooling/unplugin) which supports Vite, Webpack,
-  Rollup, esbuild, and Rspack with a single package. `@formatjs/vite-plugin` now
-  re-exports from `@formatjs/unplugin/vite` internally.
-</Admonition>
-
 Process string messages for translation from modules that use react-intl, specifically:
 
 - Parse and verify that messages are ICU-compliant w/o any syntax issues.
@@ -12,7 +5,7 @@ Process string messages for translation from modules that use react-intl, specif
 - Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
 - Automatically inject message ID based on specific pattern.
 
-This is a native [Vite](https://vitejs.dev) plugin that provides the same transformations as [babel-plugin-formatjs](/docs/tooling/babel-plugin) and [@formatjs/ts-transformer](/docs/tooling/ts-transformer) without requiring Babel or TypeScript custom transformers. It uses `oxc-parser` + `magic-string` for fast, compiler-agnostic builds.
+This plugin provides the same transformations as [babel-plugin-formatjs](/docs/tooling/babel-plugin) and [@formatjs/ts-transformer](/docs/tooling/ts-transformer) without requiring Babel or TypeScript custom transformers. It uses `oxc-parser` + `magic-string` for fast, compiler-agnostic builds.
 
 ## Installation
 
@@ -27,21 +20,21 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i -D @formatjs/vite-plugin
+npm i -D @formatjs/unplugin
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add -D @formatjs/vite-plugin
+yarn add -D @formatjs/unplugin
 ```
 
 </TabItem>
 <TabItem value="pnpm">
 
 ```sh
-pnpm add -D @formatjs/vite-plugin
+pnpm add -D @formatjs/unplugin
 ```
 
 </TabItem>
@@ -55,7 +48,7 @@ The plugin processes message descriptors from: `defineMessages()`, `defineMessag
 
 ```ts
 import {defineConfig} from 'vite'
-import formatjs from '@formatjs/vite-plugin'
+import formatjs from '@formatjs/unplugin/vite'
 
 export default defineConfig({
   plugins: [

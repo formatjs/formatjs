@@ -24,7 +24,6 @@ SRC_DEPS = [
 ]
 
 # Type check only with tsgo (fast, parallel)
-# Uses skipLibCheck because @formatjs/unplugin transitively imports unplugin's types
 ts_project(
     name = "dist-esm-esnext-typecheck",
     srcs = [":srcs"],
