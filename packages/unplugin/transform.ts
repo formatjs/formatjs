@@ -148,12 +148,9 @@ export function transform(
     const descriptor: MessageDescriptor = {}
     const locations: DescriptorLocation = {}
 
-    // Use the position right after the element name as the insertion point
-    // Find the first attribute start, or use the end of the element name
-    const firstAttr = attributes[0]
-    locations.insertionPoint = firstAttr
-      ? firstAttr.start
-      : elementNode.name.end
+    // Always insert after the element name so the id survives even when the
+    // first attribute (e.g. description) is removed.
+    locations.insertionPoint = elementNode.name.end
 
     for (const attr of attributes) {
       if (attr.type !== 'JSXAttribute') continue
@@ -228,7 +225,7 @@ export function transform(
       } else if (locations.insertionPoint != null) {
         // Insert id at a stable position (after `{` for objects, before first attr for JSX)
         if (isJSX) {
-          s.appendLeft(locations.insertionPoint, `id=${JSON.stringify(newId)} `)
+          s.appendLeft(locations.insertionPoint, ` id=${JSON.stringify(newId)}`)
         } else {
           s.appendRight(
             locations.insertionPoint,

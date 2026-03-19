@@ -14,118 +14,112 @@ describe('@formatjs/unplugin transform', () => {
   describe('id generation', () => {
     test('inserts generated id into formatMessage call', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello World', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "zsxcPt", defaultMessage: 'Hello World',})`
+      )
     })
 
     test('inserts generated id into FormattedMessage JSX', () => {
       const input = `<FormattedMessage defaultMessage="Hello World" description="greeting" />`
-      const output = t(input)
-      expect(output).toContain('id=')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `<FormattedMessage id="zsxcPt" defaultMessage="Hello World" />`
+      )
     })
 
     test('preserves existing id when no overrideIdFn', () => {
       const input = `intl.formatMessage({id: 'my.id', defaultMessage: 'Hello'})`
-      const output = t(input)
-      expect(output).toContain('"my.id"')
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "my.id", defaultMessage: 'Hello'})`
+      )
     })
 
     test('overrideIdFn takes precedence over idInterpolationPattern', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input, {
-        overrideIdFn: (_id, defaultMessage, _description, filePath) =>
-          `${filePath}:${defaultMessage}`,
-        idInterpolationPattern: '[sha512:contenthash:base64:6]',
-      })
-      expect(output).toContain('/path/to/file.tsx:Hello')
+      expect(
+        t(input, {
+          overrideIdFn: (_id, defaultMessage, _description, filePath) =>
+            `${filePath}:${defaultMessage}`,
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        })
+      ).toBe(
+        `intl.formatMessage({id: "/path/to/file.tsx:Hello", defaultMessage: 'Hello',})`
+      )
     })
 
     test('custom idInterpolationPattern', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output1 = t(input, {
-        idInterpolationPattern: '[sha512:contenthash:base64:6]',
-      })
-      const output2 = t(input, {
-        idInterpolationPattern: '[sha512:contenthash:hex:8]',
-      })
-      // Both should have ids but different ones
-      expect(output1).toContain('id:')
-      expect(output2).toContain('id:')
-      expect(output1).not.toEqual(output2)
+      expect(
+        t(input, {idInterpolationPattern: '[sha512:contenthash:base64:6]'})
+      ).toBe(`intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',})`)
+      expect(
+        t(input, {idInterpolationPattern: '[sha512:contenthash:hex:8]'})
+      ).toBe(`intl.formatMessage({id: "2be5444d", defaultMessage: 'Hello',})`)
     })
 
     test('generates same id as babel-plugin for same content', () => {
       // The default pattern is [sha512:contenthash:base64:6]
       // Content is `defaultMessage#description` or just `defaultMessage`
       const input = `intl.formatMessage({defaultMessage: 'Hello World', description: 'greeting'})`
-      const output = t(input)
-      // Just verify an id is generated
-      expect(output).toMatch(/id:\s*"[^"]+"/)
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "zsxcPt", defaultMessage: 'Hello World',})`
+      )
     })
   })
 
   describe('description removal', () => {
     test('removes description from call expression', () => {
       const input = `intl.formatMessage({id: 'test', defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).not.toContain('description')
-      expect(output).toContain('defaultMessage')
-      expect(output).toContain('"test"')
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "test", defaultMessage: 'Hello',})`
+      )
     })
 
     test('removes description from JSX', () => {
       const input = `<FormattedMessage id="test" defaultMessage="Hello" description="greeting" />`
-      const output = t(input)
-      expect(output).not.toContain('description')
-      expect(output).toContain('defaultMessage')
+      expect(t(input)).toBe(
+        `<FormattedMessage id="test" defaultMessage="Hello" />`
+      )
     })
 
     test('removes description from single-line JSX when description precedes defaultMessage', () => {
       // Regression test for: https://github.com/formatjs/formatjs/issues/6164
       // When description comes before defaultMessage on the same line, the
-      // generated code must preserve a space between the tag name and defaultMessage.
+      // generated code must preserve a space between the tag name and defaultMessage,
+      // and the generated id must not be swallowed by the description removal.
       const input = `<FormattedMessage description="Test" defaultMessage="Test" />`
-      const output = t(input)
-      expect(output).not.toContain('description')
-      expect(output).toContain('defaultMessage')
-      // Must not produce <FormattedMessagedefaultMessage=...>
-      expect(output).toMatch(/FormattedMessage\s+/)
+      expect(t(input)).toBe(
+        `<FormattedMessage id="Sz8KN3" defaultMessage="Test" />`
+      )
     })
   })
 
   describe('removeDefaultMessage', () => {
     test('removes defaultMessage when option is true', () => {
       const input = `intl.formatMessage({id: 'test', defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input, {removeDefaultMessage: true})
-      expect(output).not.toContain('defaultMessage')
-      expect(output).not.toContain('description')
-      expect(output).toContain('"test"')
+      expect(t(input, {removeDefaultMessage: true})).toBe(
+        `intl.formatMessage({id: "test",})`
+      )
     })
 
     test('removes defaultMessage from JSX', () => {
       const input = `<FormattedMessage id="test" defaultMessage="Hello" description="greeting" />`
-      const output = t(input, {removeDefaultMessage: true})
-      expect(output).not.toContain('defaultMessage')
-      expect(output).not.toContain('description')
+      expect(t(input, {removeDefaultMessage: true})).toBe(
+        `<FormattedMessage id="test" />`
+      )
     })
   })
 
   describe('ast mode', () => {
     test('replaces defaultMessage with parsed AST', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello {name}', description: 'greeting'})`
-      const output = t(input, {ast: true})
-      // Should contain parsed AST (array)
-      expect(output).toContain('[')
-      expect(output).toContain('"type"')
-      expect(output).not.toContain('description')
+      expect(t(input, {ast: true})).toBe(
+        `intl.formatMessage({id: "5M51BK", defaultMessage: [{"type":0,"value":"Hello "},{"type":1,"value":"name"}],})`
+      )
     })
 
     test('wraps JSX defaultMessage AST in expression container', () => {
       const input = `<FormattedMessage id="test" defaultMessage="Hello World" />`
-      const output = t(input, {ast: true})
-      expect(output).toBe(
+      expect(t(input, {ast: true})).toBe(
         `<FormattedMessage id="test" defaultMessage={[{"type":0,"value":"Hello World"}]} />`
       )
     })
@@ -143,57 +137,60 @@ describe('@formatjs/unplugin transform', () => {
     description: 'farewell'
   }
 })`
-      const output = t(input)
-      expect(output).not.toContain('description')
-      // Both descriptors should have ids
-      const idMatches = output.match(/id:\s*"[^"]+"/g)
-      expect(idMatches).toHaveLength(2)
+      expect(t(input)).toBe(`defineMessages({
+  greeting: {id: "K+VETU",${' '}
+    defaultMessage: 'Hello',
+
+  },
+  farewell: {id: "LELdIQ",${' '}
+    defaultMessage: 'Goodbye',
+
+  }
+})`)
     })
   })
 
   describe('defineMessage', () => {
     test('processes single descriptor in defineMessage', () => {
       const input = `defineMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `defineMessage({id: "K+VETU", defaultMessage: 'Hello',})`
+      )
     })
   })
 
   describe('function names', () => {
     test('handles $t', () => {
       const input = `$t({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(`$t({id: "K+VETU", defaultMessage: 'Hello',})`)
     })
 
     test('handles $formatMessage', () => {
       const input = `$formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
+      expect(t(input)).toBe(
+        `$formatMessage({id: "K+VETU", defaultMessage: 'Hello',})`
+      )
     })
 
     test('additional function names', () => {
       const input = `myCustomFn({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input, {additionalFunctionNames: ['myCustomFn']})
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input, {additionalFunctionNames: ['myCustomFn']})).toBe(
+        `myCustomFn({id: "K+VETU", defaultMessage: 'Hello',})`
+      )
     })
   })
 
   describe('component names', () => {
     test('additional component names', () => {
       const input = `<CustomMessage defaultMessage="Hello" description="greeting" />`
-      const output = t(input, {additionalComponentNames: ['CustomMessage']})
-      expect(output).toContain('id=')
-      expect(output).not.toContain('description')
+      expect(t(input, {additionalComponentNames: ['CustomMessage']})).toBe(
+        `<CustomMessage id="K+VETU" defaultMessage="Hello" />`
+      )
     })
 
     test('does not process unknown components', () => {
       const input = `<UnknownComponent defaultMessage="Hello" description="greeting" />`
-      const output = t(input)
-      expect(output).toContain('description')
+      expect(t(input)).toBe(input)
     })
   })
 
@@ -201,115 +198,114 @@ describe('@formatjs/unplugin transform', () => {
     test('handles template literals without substitutions', () => {
       const input =
         'intl.formatMessage({defaultMessage: `Hello World`, description: `greeting`})'
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        'intl.formatMessage({id: "zsxcPt", defaultMessage: `Hello World`,})'
+      )
     })
 
     test('skips template literals with substitutions', () => {
       const input = 'intl.formatMessage({defaultMessage: `Hello ${name}`})'
-      const output = t(input)
-      // Should not be processed since we can't statically evaluate
-      expect(output).not.toContain('id:')
+      expect(t(input)).toBe(input)
     })
 
     test('handles string concatenation', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello' + ' World', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "zsxcPt", defaultMessage: 'Hello' + ' World',})`
+      )
     })
 
     test('skips non-static expressions', () => {
       const input = `intl.formatMessage({defaultMessage: getMessage()})`
-      const output = t(input)
-      expect(output).not.toContain('id:')
+      expect(t(input)).toBe(input)
     })
   })
 
   describe('whitespace', () => {
     test('normalizes whitespace in defaultMessage by default', () => {
       const input = `intl.formatMessage({id: 'test', defaultMessage: '  Hello   World  '})`
-      const output = t(input)
-      expect(output).toContain('Hello World')
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "test", defaultMessage: "Hello World"})`
+      )
     })
 
     test('preserves whitespace when option is set', () => {
       const input = `intl.formatMessage({id: 'test', defaultMessage: '  Hello   World  '})`
-      const output = t(input, {preserveWhitespace: true})
-      expect(output).toContain('  Hello   World  ')
+      expect(t(input, {preserveWhitespace: true})).toBe(
+        `intl.formatMessage({id: "test", defaultMessage: '  Hello   World  '})`
+      )
     })
   })
 
   describe('member expressions', () => {
     test('handles intl.formatMessage', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
+      expect(t(input)).toBe(
+        `intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',})`
+      )
     })
 
     test('handles this.props.intl.formatMessage', () => {
       const input = `this.props.intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
+      expect(t(input)).toBe(
+        `this.props.intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',})`
+      )
     })
   })
 
   describe('compiled JSX', () => {
     test('handles _jsx(FormattedMessage, { ... })', () => {
       const input = `_jsx(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `_jsx(FormattedMessage, {id: "zsxcPt",  defaultMessage: 'Hello World',})`
+      )
     })
 
     test('handles jsxDEV(FormattedMessage, { ... })', () => {
       const input = `jsxDEV(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `jsxDEV(FormattedMessage, {id: "zsxcPt",  defaultMessage: 'Hello World',})`
+      )
     })
 
     test('handles _jsxs(FormattedMessage, { ... })', () => {
       const input = `_jsxs(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `_jsxs(FormattedMessage, {id: "zsxcPt",  defaultMessage: 'Hello World',})`
+      )
     })
 
     test('handles React.createElement(FormattedMessage, { ... })', () => {
       const input = `React.createElement(FormattedMessage, { defaultMessage: 'Hello World', description: 'greeting' })`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `React.createElement(FormattedMessage, {id: "zsxcPt",  defaultMessage: 'Hello World',})`
+      )
     })
 
     test('preserves existing id in compiled JSX', () => {
       const input = `_jsx(FormattedMessage, { id: 'my.id', defaultMessage: 'Hello', description: 'greeting' })`
-      const output = t(input)
-      expect(output).toContain('"my.id"')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `_jsx(FormattedMessage, { id: "my.id", defaultMessage: 'Hello',})`
+      )
     })
 
     test('does not process unknown components in compiled JSX', () => {
       const input = `_jsx(UnknownComponent, { defaultMessage: 'Hello', description: 'greeting' })`
-      const output = t(input)
-      expect(output).toContain('description')
+      expect(t(input)).toBe(input)
     })
 
     test('handles additional component names in compiled JSX', () => {
       const input = `_jsx(CustomMessage, { defaultMessage: 'Hello', description: 'greeting' })`
-      const output = t(input, {additionalComponentNames: ['CustomMessage']})
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input, {additionalComponentNames: ['CustomMessage']})).toBe(
+        `_jsx(CustomMessage, {id: "K+VETU",  defaultMessage: 'Hello',})`
+      )
     })
 
     test('removeDefaultMessage works with compiled JSX', () => {
       const input = `_jsx(FormattedMessage, { id: 'test', defaultMessage: 'Hello', description: 'greeting' })`
-      const output = t(input, {removeDefaultMessage: true})
-      expect(output).not.toContain('defaultMessage')
-      expect(output).not.toContain('description')
-      expect(output).toContain('"test"')
+      expect(t(input, {removeDefaultMessage: true})).toBe(
+        `_jsx(FormattedMessage, { id: "test",})`
+      )
     })
   })
 
@@ -322,24 +318,23 @@ describe('@formatjs/unplugin transform', () => {
 
     test('$t with no arguments', () => {
       const input = `$t()`
-      const output = t(input)
-      expect(output).toBe('$t()')
+      expect(t(input)).toBe('$t()')
     })
   })
 
   describe('nested AST traversal', () => {
     test('processes descriptors inside arrow functions', () => {
       const input = `const fn = () => intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `const fn = () => intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',})`
+      )
     })
 
     test('processes descriptors inside nested function calls', () => {
       const input = `console.log(intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'}))`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `console.log(intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',}))`
+      )
     })
 
     test('processes descriptors inside class methods', () => {
@@ -348,24 +343,25 @@ describe('@formatjs/unplugin transform', () => {
     return intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})
   }
 }`
-      const output = t(input)
-      expect(output).toContain('id:')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(`class Foo {
+  render() {
+    return intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',})
+  }
+}`)
     })
 
     test('processes descriptors inside conditional expressions', () => {
       const input = `const msg = condition ? intl.formatMessage({defaultMessage: 'Yes', description: 'd1'}) : intl.formatMessage({defaultMessage: 'No', description: 'd2'})`
-      const output = t(input)
-      const idMatches = output.match(/id:\s*"[^"]+"/g)
-      expect(idMatches).toHaveLength(2)
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `const msg = condition ? intl.formatMessage({id: "4dbqwv", defaultMessage: 'Yes',}) : intl.formatMessage({id: "g0IRkc", defaultMessage: 'No',})`
+      )
     })
 
     test('processes deeply nested JSX', () => {
       const input = `<div><span><FormattedMessage defaultMessage="Hello" description="greeting" /></span></div>`
-      const output = t(input)
-      expect(output).toContain('id=')
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(
+        `<div><span><FormattedMessage id="K+VETU" defaultMessage="Hello" /></span></div>`
+      )
     })
 
     test('processes mixed call types in one file', () => {
@@ -377,12 +373,16 @@ const msgs = defineMessages({
   b: {defaultMessage: 'B', description: 'd4'}
 })
 const el = <FormattedMessage defaultMessage="JSX" description="d5" />
-const compiled = _jsx(FormattedMessage, {defaultMessage: 'Compiled', description: 'd6'})
-`
-      const output = t(input)
-      const idMatches = output.match(/id[=:]\s*"[^"]+"/g)
-      expect(idMatches).toHaveLength(6)
-      expect(output).not.toContain('description')
+const compiled = _jsx(FormattedMessage, {defaultMessage: 'Compiled', description: 'd6'})`
+      expect(t(input)).toBe(`
+const msg1 = intl.formatMessage({id: "nVcyBV", defaultMessage: 'Hello',})
+const msg2 = defineMessage({id: "XeyjKd", defaultMessage: 'World',})
+const msgs = defineMessages({
+  a: {id: "b5o52y", defaultMessage: 'A',},
+  b: {id: "ExuBU3", defaultMessage: 'B',}
+})
+const el = <FormattedMessage id="fLUJfK" defaultMessage="JSX" />
+const compiled = _jsx(FormattedMessage, {id: "iWft3o", defaultMessage: 'Compiled',})`)
     })
 
     test('processes descriptors inside if/else blocks', () => {
@@ -393,10 +393,13 @@ const compiled = _jsx(FormattedMessage, {defaultMessage: 'Compiled', description
     return intl.formatMessage({defaultMessage: 'No', description: 'd2'})
   }
 }`
-      const output = t(input)
-      const idMatches = output.match(/id:\s*"[^"]+"/g)
-      expect(idMatches).toHaveLength(2)
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(`function foo() {
+  if (condition) {
+    return intl.formatMessage({id: "4dbqwv", defaultMessage: 'Yes',})
+  } else {
+    return intl.formatMessage({id: "g0IRkc", defaultMessage: 'No',})
+  }
+}`)
     })
 
     test('processes descriptors inside array/object literals', () => {
@@ -404,10 +407,10 @@ const compiled = _jsx(FormattedMessage, {defaultMessage: 'Compiled', description
   intl.formatMessage({defaultMessage: 'First', description: 'd1'}),
   intl.formatMessage({defaultMessage: 'Second', description: 'd2'}),
 ]`
-      const output = t(input)
-      const idMatches = output.match(/id:\s*"[^"]+"/g)
-      expect(idMatches).toHaveLength(2)
-      expect(output).not.toContain('description')
+      expect(t(input)).toBe(`const arr = [
+  intl.formatMessage({id: "4uLuio", defaultMessage: 'First',}),
+  intl.formatMessage({id: "f2LszX", defaultMessage: 'Second',}),
+]`)
     })
   })
 
@@ -431,11 +434,9 @@ const compiled = _jsx(FormattedMessage, {defaultMessage: 'Compiled', description
 
     test('updates existing id with overrideIdFn result', () => {
       const input = `intl.formatMessage({id: 'old', defaultMessage: 'Hello'})`
-      const output = t(input, {
-        overrideIdFn: () => 'new-id',
-      })
-      expect(output).toContain('"new-id"')
-      expect(output).not.toContain('"old"')
+      expect(t(input, {overrideIdFn: () => 'new-id'})).toBe(
+        `intl.formatMessage({id: "new-id", defaultMessage: 'Hello'})`
+      )
     })
   })
 })
@@ -475,8 +476,9 @@ describe('@formatjs/unplugin factory', () => {
       '/src/App.tsx'
     )
     expect(result).toBeDefined()
-    expect(result.code).toContain('id:')
-    expect(result.code).not.toContain('description')
+    expect(result.code).toBe(
+      `intl.formatMessage({id: "K+VETU", defaultMessage: 'Hello',})`
+    )
   })
 
   test('transform returns undefined for non-formatjs code', async () => {
