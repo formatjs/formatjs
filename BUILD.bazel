@@ -28,6 +28,7 @@ genrule(
 
 PACKAGES_TO_DIST = [
     "//packages/babel-plugin-formatjs",
+    "//packages/bigdecimal",
     "//packages/cli-lib",
     "//packages/cli",
     "//packages/ecma376",
@@ -52,6 +53,7 @@ PACKAGES_TO_DIST = [
     "//packages/intl-segmenter",
     "//packages/intl",
     "//packages/react-intl",
+    "//packages/svelte-intl",
     "//packages/ts-transformer",
     "//packages/unplugin",
     "//packages/utils",
