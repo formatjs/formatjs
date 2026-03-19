@@ -1,5 +1,0 @@
-// @generated
-{
-  // This is purely for IDE, not for compilation
-  "extends": "../../tsconfig.json"
-}

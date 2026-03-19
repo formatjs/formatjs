@@ -160,16 +160,6 @@ React.createElement(FormattedMessage, {
 
 Replace your Babel plugin configuration with the appropriate bundler import from `@formatjs/unplugin`. The options are the same.
 
-## Migrating from @formatjs/vite-plugin
-
-`@formatjs/vite-plugin` now re-exports from `@formatjs/unplugin/vite` internally. You can switch your import with no configuration changes:
-
-```diff
-// vite.config.ts
-- import formatjs from '@formatjs/vite-plugin'
-+ import formatjs from '@formatjs/unplugin/vite'
-```
-
 ## Options
 
 ### **`overrideIdFn`**

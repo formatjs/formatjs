@@ -25,13 +25,11 @@ Since both libraries use ICU MessageFormat, the runtime message syntax is nearly
 ```tsx
 // Lingui — uses macros that are compiled away
 import {Trans, t} from '@lingui/macro'
-
 ;<Trans>Hello, world!</Trans>
 const msg = t`Hello, world!`
 
 // FormatJS — uses components and imperative API
 import {FormattedMessage, useIntl} from 'react-intl'
-
 ;<FormattedMessage defaultMessage="Hello, world!" />
 const intl = useIntl()
 const msg = intl.formatMessage({defaultMessage: 'Hello, world!'})
@@ -212,7 +210,7 @@ Replace the Lingui Babel/SWC plugin with the FormatJS equivalent:
 
 - **Babel**: [babel-plugin-formatjs](/docs/tooling/babel-plugin)
 - **SWC (Next.js)**: [@swc/plugin-formatjs](/docs/tooling/swc-plugin)
-- **Vite**: [@formatjs/vite-plugin](/docs/tooling/vite-plugin)
+- **Vite**: [@formatjs/unplugin](/docs/tooling/unplugin)
 
 These handle automatic ID generation and AST pre-compilation (with `ast: true`).
 

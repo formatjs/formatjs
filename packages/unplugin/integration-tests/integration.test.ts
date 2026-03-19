@@ -37,7 +37,12 @@ async function buildWithVite(
         formats: ['es'],
       },
       rolldownOptions: {
-        external: ['react', 'react-intl'],
+        external: [
+          'react',
+          'react/jsx-runtime',
+          'react/jsx-dev-runtime',
+          'react-intl',
+        ],
       },
       minify: false,
       outDir,
@@ -50,7 +55,11 @@ async function buildWithVite(
     const chunk = output.output.find(
       (o: any) => o.type === 'chunk' && o.isEntry
     ) as any
-    return chunk?.code ?? ''
+    // Sanitize sandbox-specific paths for stable snapshots
+    return (chunk?.code ?? '').replace(
+      /var _jsxFileName = "[^"]*"/g,
+      'var _jsxFileName = "<source>"'
+    )
   }
   throw new Error('Unexpected Vite build result')
 }
@@ -166,6 +175,11 @@ for (const {name, build} of bundlers) {
       expect(code).toMatchSnapshot()
     })
 
+    test('defineMessages: processes multiple descriptors', async () => {
+      const code = await build('defineMessages.js')
+      expect(code).toMatchSnapshot()
+    })
+
     test('removeDefaultMessage option', async () => {
       const code = await build('formatMessage.js', {
         removeDefaultMessage: true,
@@ -177,5 +191,38 @@ for (const {name, build} of bundlers) {
       const code = await build('defineMessage.js', {ast: true})
       expect(code).toMatchSnapshot()
     })
+
+    test('overrideIdFn option', async () => {
+      const code = await build('formatMessage.js', {
+        overrideIdFn: (_id, defaultMessage, _description, _filePath) =>
+          `custom_${defaultMessage?.replace(/\s+/g, '_')}`,
+      })
+      expect(code).toMatchSnapshot()
+    })
+
+    test('idInterpolationPattern option', async () => {
+      const code = await build('formatMessage.js', {
+        idInterpolationPattern: '[sha512:contenthash:hex:8]',
+      })
+      expect(code).toMatchSnapshot()
+    })
   })
 }
+
+// JSX/TSX tests — Vite only (handles TSX natively and externalizes react-intl)
+describe('@formatjs/unplugin — vite (JSX)', () => {
+  test('JSX: generates ids and removes descriptions', async () => {
+    const code = await buildWithVite('jsx.tsx')
+    expect(code).toMatchSnapshot()
+  })
+
+  test('compiled JSX: generates ids and removes descriptions', async () => {
+    const code = await buildWithVite('compiledJsx.js')
+    expect(code).toMatchSnapshot()
+  })
+
+  test('removeDescription for TSX', async () => {
+    const code = await buildWithVite('removeDescription.tsx')
+    expect(code).toMatchSnapshot()
+  })
+})

@@ -17,7 +17,6 @@ Pass the compiled JSON directly to `IntlProvider`:
 
 ```tsx
 import messages from './compiled/en.json'
-
 ;<IntlProvider locale="en" messages={messages}>
   <App />
 </IntlProvider>
@@ -32,7 +31,7 @@ You can also pre-compile at build time using a bundler plugin instead of the CLI
 
 - [babel-plugin-formatjs](/docs/tooling/babel-plugin) — `"ast": true`
 - [SWC Plugin](/docs/tooling/swc-plugin) — `ast: true` (recommended for Next.js)
-- [Vite Plugin](/docs/tooling/vite-plugin) — `ast: true`
+- [Unplugin (Vite, Webpack, Rollup, esbuild, Rspack)](/docs/tooling/unplugin) — `ast: true`
 - [@formatjs/ts-transformer](/docs/tooling/ts-transformer) — `ast: true`
 
 ## Remove the parser (~40% smaller)
