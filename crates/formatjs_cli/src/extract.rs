@@ -1,9 +1,9 @@
 use anyhow::{Context, Result};
-use glob::Pattern;
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
+use walkdir::WalkDir;
 
 use crate::extractor::{MessageDescriptor, determine_source_type, extract_messages_from_source};
 use crate::formatters::Formatter;
@@ -155,34 +155,69 @@ fn read_file_list(path: &Path) -> Result<Vec<PathBuf>> {
         .collect())
 }
 
-/// Resolve files from glob patterns, excluding ignore patterns
+/// Extract the base directory from a glob pattern (the prefix before the first wildcard).
+/// For example, `src/components/**/*.ts` returns `src/components`.
+/// If the pattern starts with a wildcard, returns `.` (current directory).
+pub fn extract_base_dir(pattern: &str) -> PathBuf {
+    // Find the first wildcard character (*, ?, [, {)
+    let wildcard_pos = pattern
+        .find(|c: char| c == '*' || c == '?' || c == '[' || c == '{')
+        .unwrap_or(pattern.len());
+
+    let prefix = &pattern[..wildcard_pos];
+
+    // Find the last path separator in the prefix
+    if let Some(sep_pos) = prefix.rfind('/') {
+        let dir = &pattern[..sep_pos];
+        if dir.is_empty() {
+            PathBuf::from("/")
+        } else {
+            PathBuf::from(dir)
+        }
+    } else {
+        PathBuf::from(".")
+    }
+}
+
+/// Resolve files from glob patterns, excluding ignore patterns.
+/// Uses `walkdir` for filesystem traversal and `fast_glob::glob_match` for pattern matching.
 fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String]) -> Result<Vec<PathBuf>> {
     let mut files = Vec::new();
-    let ignore_patterns: Vec<Pattern> = ignore
-        .iter()
-        .map(|p| Pattern::new(p))
-        .collect::<Result<Vec<_>, _>>()
-        .context("Invalid ignore pattern")?;
 
     for glob_path in globs {
         let glob_str = glob_path
             .to_str()
             .context("Invalid UTF-8 in glob pattern")?;
 
-        let entries =
-            glob::glob(glob_str).with_context(|| format!("Invalid glob pattern: {}", glob_str))?;
+        let base_dir = extract_base_dir(glob_str);
 
-        for entry in entries {
-            let path = entry.context("Failed to read glob entry")?;
+        if !base_dir.exists() {
+            continue;
+        }
 
-            // Skip if matches ignore pattern
-            if should_ignore(&path, &ignore_patterns) {
+        for entry in WalkDir::new(&base_dir).into_iter().filter_map(|e| e.ok()) {
+            let path = entry.path();
+
+            // Skip directories
+            if path.is_dir() {
+                continue;
+            }
+
+            let path_str = path.to_string_lossy();
+
+            // Match against the glob pattern
+            if !fast_glob::glob_match(glob_str, path_str.as_ref()) {
+                continue;
+            }
+
+            // Skip if matches any ignore pattern
+            if should_ignore(path, ignore) {
                 continue;
             }
 
             // Only process supported file types
-            if is_supported_file(&path) {
-                files.push(path);
+            if is_supported_file(path) {
+                files.push(path.to_path_buf());
             }
         }
     }
@@ -191,9 +226,11 @@ fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String]) -> Result<Vec<
 }
 
 /// Check if a path should be ignored
-fn should_ignore(path: &Path, patterns: &[Pattern]) -> bool {
+fn should_ignore(path: &Path, patterns: &[String]) -> bool {
     let path_str = path.to_string_lossy();
-    patterns.iter().any(|p| p.matches(&path_str))
+    patterns
+        .iter()
+        .any(|p| fast_glob::glob_match(p, path_str.as_ref()))
 }
 
 /// Check if file has supported extension
@@ -359,8 +396,8 @@ import { FormattedMessage } from 'react-intl';
     #[test]
     fn test_should_ignore() {
         let patterns = vec![
-            Pattern::new("**/node_modules/**").unwrap(),
-            Pattern::new("**/*.test.ts").unwrap(),
+            "**/node_modules/**".to_string(),
+            "**/*.test.ts".to_string(),
         ];
 
         assert!(should_ignore(
@@ -369,6 +406,117 @@ import { FormattedMessage } from 'react-intl';
         ));
         assert!(should_ignore(&PathBuf::from("src/app.test.ts"), &patterns));
         assert!(!should_ignore(&PathBuf::from("src/app.ts"), &patterns));
+    }
+
+    #[test]
+    fn test_resolve_files_with_brace_expansion() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let src_dir = temp_dir.path().join("src");
+        fs::create_dir_all(&src_dir).unwrap();
+
+        fs::write(src_dir.join("app.ts"), "// ts file").unwrap();
+        fs::write(src_dir.join("app.tsx"), "// tsx file").unwrap();
+        fs::write(src_dir.join("app.js"), "// js file").unwrap();
+        fs::write(src_dir.join("app.py"), "// py file").unwrap();
+
+        let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
+        let globs = vec![PathBuf::from(&pattern)];
+        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+
+        assert_eq!(files.len(), 2);
+        let extensions: Vec<String> = files
+            .iter()
+            .map(|f| f.extension().unwrap().to_string_lossy().to_string())
+            .collect();
+        assert!(extensions.contains(&"ts".to_string()));
+        assert!(extensions.contains(&"tsx".to_string()));
+    }
+
+    #[test]
+    fn test_extract_brace_expansion_e2e() {
+        // End-to-end test reproducing issue #6168:
+        // `formatjs extract "src/**/*.{ts,tsx}"` should find both .ts and .tsx files
+        let temp_dir = tempfile::tempdir().unwrap();
+        let src_dir = temp_dir.path().join("src");
+        fs::create_dir_all(&src_dir).unwrap();
+
+        // Create .ts file with a message
+        fs::write(
+            src_dir.join("utils.ts"),
+            r#"
+import { defineMessage } from 'react-intl';
+const msg = defineMessage({
+    id: 'from.ts',
+    defaultMessage: 'From TypeScript',
+});
+"#,
+        )
+        .unwrap();
+
+        // Create .tsx file with a message
+        fs::write(
+            src_dir.join("App.tsx"),
+            r#"
+import { defineMessage } from 'react-intl';
+const msg = defineMessage({
+    id: 'from.tsx',
+    defaultMessage: 'From TSX',
+});
+"#,
+        )
+        .unwrap();
+
+        // Create .js file that should NOT be matched by the {ts,tsx} pattern
+        fs::write(
+            src_dir.join("legacy.js"),
+            r#"
+import { defineMessage } from 'react-intl';
+const msg = defineMessage({
+    id: 'from.js',
+    defaultMessage: 'From JavaScript',
+});
+"#,
+        )
+        .unwrap();
+
+        let output_file = temp_dir.path().join("output.json");
+
+        // Use brace expansion pattern like the issue describes
+        let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
+        extract(
+            &[PathBuf::from(&pattern)],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        // Should have exactly 2 messages (from .ts and .tsx, but NOT from .js)
+        assert_eq!(json.as_object().unwrap().len(), 2);
+        assert!(json.get("from.ts").is_some(), "Should find message from .ts file");
+        assert!(json.get("from.tsx").is_some(), "Should find message from .tsx file");
+        assert!(json.get("from.js").is_none(), "Should NOT find message from .js file");
+    }
+
+    #[test]
+    fn test_extract_base_dir() {
+        assert_eq!(extract_base_dir("src/**/*.ts"), PathBuf::from("src"));
+        assert_eq!(extract_base_dir("src/components/**/*.tsx"), PathBuf::from("src/components"));
+        assert_eq!(extract_base_dir("**/*.ts"), PathBuf::from("."));
+        assert_eq!(extract_base_dir("*.ts"), PathBuf::from("."));
+        assert_eq!(extract_base_dir("/absolute/path/**/*.ts"), PathBuf::from("/absolute/path"));
     }
 
     #[test]

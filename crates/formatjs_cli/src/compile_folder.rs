@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
-use glob::glob;
 use std::path::PathBuf;
+use walkdir::WalkDir;
 
 use crate::compile;
 use crate::formatters::Formatter;
@@ -64,17 +64,17 @@ pub fn compile_folder(
     })?;
 
     // Find all .json files in the source folder (recursively)
-    let pattern = folder.join("**/*.json");
-    let pattern_str = pattern
-        .to_str()
-        .context("Folder path contains invalid UTF-8")?;
-
-    let json_files: Vec<PathBuf> = match glob(pattern_str) {
-        Ok(paths) => paths.filter_map(Result::ok).collect(),
-        Err(e) => {
-            anyhow::bail!("Failed to read folder pattern '{}': {}", pattern_str, e);
-        }
-    };
+    let json_files: Vec<PathBuf> = WalkDir::new(folder)
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| {
+            e.path().is_file()
+                && e.path()
+                    .extension()
+                    .is_some_and(|ext| ext == "json")
+        })
+        .map(|e| e.path().to_path_buf())
+        .collect();
 
     if json_files.is_empty() {
         eprintln!(

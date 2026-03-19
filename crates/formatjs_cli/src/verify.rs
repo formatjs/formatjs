@@ -1,8 +1,8 @@
 use anyhow::{Context, Result};
-use glob::glob;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
+use walkdir::WalkDir;
 
 /// Run a series of checks on translation files to validate correctness and consistency.
 ///
@@ -72,20 +72,15 @@ pub fn verify(
             .to_str()
             .context("Pattern path contains invalid UTF-8")?;
 
-        // Try to expand as glob pattern
-        match glob(pattern_str) {
-            Ok(paths) => {
-                for entry in paths {
-                    match entry {
-                        Ok(path) => expanded_files.push(path),
-                        Err(e) => eprintln!("Warning: Failed to read glob entry: {}", e),
+        let base_dir = crate::extract::extract_base_dir(pattern_str);
+        if base_dir.exists() {
+            for entry in WalkDir::new(&base_dir).into_iter().filter_map(|e| e.ok()) {
+                if entry.path().is_file() {
+                    let path_str = entry.path().to_string_lossy();
+                    if fast_glob::glob_match(pattern_str, path_str.as_ref()) {
+                        expanded_files.push(entry.path().to_path_buf());
                     }
                 }
-            }
-            Err(e) => {
-                // If glob pattern is invalid, treat as literal path
-                eprintln!("Warning: Invalid glob pattern '{}': {}", pattern_str, e);
-                expanded_files.push(pattern.clone());
             }
         }
     }
@@ -167,11 +162,9 @@ fn extract_locale_from_path(path: &Path) -> Result<String> {
 /// Check if a file should be ignored based on ignore patterns
 fn should_ignore(file: &Path, ignore_patterns: &[String]) -> bool {
     let file_str = file.to_string_lossy();
-    ignore_patterns.iter().any(|pattern| {
-        // Simple glob matching - just check if pattern is substring
-        // TODO: Implement proper glob matching
-        file_str.contains(pattern)
-    })
+    ignore_patterns
+        .iter()
+        .any(|pattern| fast_glob::glob_match(pattern, file_str.as_ref()))
 }
 
 /// Extract all keys from a JSON value recursively with dot notation
@@ -606,7 +599,7 @@ mod tests {
     #[test]
     fn test_should_ignore() {
         let file = Path::new("/path/to/file.json");
-        let ignore_patterns = vec!["node_modules".to_string(), "test".to_string()];
+        let ignore_patterns = vec!["**/node_modules/**".to_string(), "**/*test*/**".to_string(), "**/*test*.json".to_string()];
         assert!(!should_ignore(file, &ignore_patterns));
 
         let file = Path::new("/path/node_modules/file.json");

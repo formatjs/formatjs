@@ -1,8 +1,8 @@
 use anyhow::{Context, Result};
-use glob::glob;
 use serde_json::{Map, Value, json};
 use std::collections::BTreeMap;
 use std::path::PathBuf;
+use walkdir::WalkDir;
 
 use crate::formatters::Formatter;
 
@@ -93,18 +93,15 @@ pub fn compile(
             .to_str()
             .context("Pattern path contains invalid UTF-8")?;
 
-        match glob(pattern_str) {
-            Ok(paths) => {
-                for entry in paths {
-                    match entry {
-                        Ok(path) => expanded_files.push(path),
-                        Err(e) => eprintln!("Warning: Failed to read glob entry: {}", e),
+        let base_dir = crate::extract::extract_base_dir(pattern_str);
+        if base_dir.exists() {
+            for entry in WalkDir::new(&base_dir).into_iter().filter_map(|e| e.ok()) {
+                if entry.path().is_file() {
+                    let path_str = entry.path().to_string_lossy();
+                    if fast_glob::glob_match(pattern_str, path_str.as_ref()) {
+                        expanded_files.push(entry.path().to_path_buf());
                     }
                 }
-            }
-            Err(e) => {
-                eprintln!("Warning: Invalid glob pattern '{}': {}", pattern_str, e);
-                expanded_files.push(pattern.clone());
             }
         }
     }
