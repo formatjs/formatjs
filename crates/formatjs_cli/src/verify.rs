@@ -881,4 +881,134 @@ mod tests {
 
         assert!(!check_structural_equality(&locales, "en"));
     }
+
+    #[test]
+    fn test_verify_with_brace_expansion_glob() {
+        use tempfile::tempdir;
+
+        let dir = tempdir().unwrap();
+        let lang = dir.path().join("lang");
+        std::fs::create_dir_all(&lang).unwrap();
+
+        // Create source and target locale files
+        std::fs::write(
+            lang.join("en.json"),
+            json!({
+                "greeting": "Hello {name}!",
+                "farewell": "Goodbye!"
+            })
+            .to_string(),
+        )
+        .unwrap();
+        std::fs::write(
+            lang.join("es.json"),
+            json!({
+                "greeting": "Hola {name}!",
+                "farewell": "Adiós!"
+            })
+            .to_string(),
+        )
+        .unwrap();
+
+        // Also create a .txt file that should NOT be matched
+        std::fs::write(lang.join("notes.txt"), "not a translation file").unwrap();
+
+        // Use brace expansion glob
+        let pattern = PathBuf::from(format!("{}/**/*.{{json}}", dir.path().display()));
+
+        let result = verify(
+            &[pattern],
+            Some("en"),
+            &[],
+            true,
+            true,
+            false,
+        );
+
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_verify_with_nested_directory_glob() {
+        use tempfile::tempdir;
+
+        let dir = tempdir().unwrap();
+
+        // Create nested locale directories
+        let en_dir = dir.path().join("locales/en");
+        let fr_dir = dir.path().join("locales/fr");
+        std::fs::create_dir_all(&en_dir).unwrap();
+        std::fs::create_dir_all(&fr_dir).unwrap();
+
+        std::fs::write(
+            en_dir.join("en.json"),
+            json!({"greeting": "Hello!"}).to_string(),
+        )
+        .unwrap();
+        std::fs::write(
+            fr_dir.join("fr.json"),
+            json!({"greeting": "Bonjour!"}).to_string(),
+        )
+        .unwrap();
+
+        let pattern = PathBuf::from(format!("{}/**/*.json", dir.path().display()));
+
+        let result = verify(
+            &[pattern],
+            Some("en"),
+            &[],
+            true,
+            true,
+            false,
+        );
+
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_verify_with_literal_file_paths() {
+        use tempfile::tempdir;
+
+        let dir = tempdir().unwrap();
+
+        std::fs::write(
+            dir.path().join("en.json"),
+            json!({"greeting": "Hello!"}).to_string(),
+        )
+        .unwrap();
+        std::fs::write(
+            dir.path().join("es.json"),
+            json!({"greeting": "Hola!"}).to_string(),
+        )
+        .unwrap();
+
+        // Pass literal file paths (no globs)
+        let result = verify(
+            &[
+                dir.path().join("en.json"),
+                dir.path().join("es.json"),
+            ],
+            Some("en"),
+            &[],
+            true,
+            true,
+            false,
+        );
+
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_should_ignore_with_glob_patterns() {
+        // Verify glob-based ignore patterns work correctly
+        let patterns = vec!["**/node_modules/**".to_string()];
+
+        assert!(should_ignore(Path::new("/project/node_modules/pkg/en.json"), &patterns));
+        assert!(!should_ignore(Path::new("/project/locales/en.json"), &patterns));
+
+        // Extension-based ignore
+        let patterns = vec!["**/*.bak".to_string()];
+        assert!(should_ignore(Path::new("/project/en.bak"), &patterns));
+        assert!(!should_ignore(Path::new("/project/en.json"), &patterns));
+    }
 }

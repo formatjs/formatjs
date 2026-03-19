@@ -517,6 +517,82 @@ const msg = defineMessage({
         assert_eq!(extract_base_dir("**/*.ts"), PathBuf::from("."));
         assert_eq!(extract_base_dir("*.ts"), PathBuf::from("."));
         assert_eq!(extract_base_dir("/absolute/path/**/*.ts"), PathBuf::from("/absolute/path"));
+        // Brace expansion: wildcard is `{`
+        assert_eq!(extract_base_dir("src/**/*.{ts,tsx}"), PathBuf::from("src"));
+        // Literal path (no wildcards) returns parent dir
+        assert_eq!(extract_base_dir("src/app.ts"), PathBuf::from("src"));
+        // Question mark wildcard
+        assert_eq!(extract_base_dir("src/?.ts"), PathBuf::from("src"));
+        // Bracket wildcard
+        assert_eq!(extract_base_dir("src/[abc].ts"), PathBuf::from("src"));
+    }
+
+    #[test]
+    fn test_resolve_files_with_ignore_patterns() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let src_dir = temp_dir.path().join("src");
+        let node_modules = src_dir.join("node_modules/pkg");
+        fs::create_dir_all(&src_dir).unwrap();
+        fs::create_dir_all(&node_modules).unwrap();
+
+        fs::write(src_dir.join("app.ts"), "// app").unwrap();
+        fs::write(src_dir.join("app.test.ts"), "// test").unwrap();
+        fs::write(node_modules.join("lib.ts"), "// lib").unwrap();
+
+        let pattern = format!("{}/**/*.ts", temp_dir.path().display());
+        let globs = vec![PathBuf::from(&pattern)];
+        let ignore = vec![
+            "**/node_modules/**".to_string(),
+            "**/*.test.ts".to_string(),
+        ];
+        let files = resolve_files_from_globs(&globs, &ignore).unwrap();
+
+        assert_eq!(files.len(), 1);
+        assert!(files[0].to_string_lossy().contains("app.ts"));
+        assert!(!files[0].to_string_lossy().contains("test"));
+    }
+
+    #[test]
+    fn test_resolve_files_nested_directories() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let deep = temp_dir.path().join("a/b/c");
+        fs::create_dir_all(&deep).unwrap();
+
+        fs::write(temp_dir.path().join("a/top.ts"), "// top").unwrap();
+        fs::write(deep.join("deep.tsx"), "// deep").unwrap();
+
+        let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
+        let globs = vec![PathBuf::from(&pattern)];
+        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+
+        assert_eq!(files.len(), 2);
+        let names: Vec<String> = files
+            .iter()
+            .map(|f| f.file_name().unwrap().to_string_lossy().to_string())
+            .collect();
+        assert!(names.contains(&"top.ts".to_string()));
+        assert!(names.contains(&"deep.tsx".to_string()));
+    }
+
+    #[test]
+    fn test_resolve_files_nonexistent_base_dir() {
+        let globs = vec![PathBuf::from("/nonexistent/path/**/*.ts")];
+        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+        assert!(files.is_empty());
+    }
+
+    #[test]
+    fn test_resolve_files_literal_path() {
+        // Literal file paths (no glob characters) should also resolve
+        let temp_dir = tempfile::tempdir().unwrap();
+        let file = temp_dir.path().join("app.ts");
+        fs::write(&file, "// app").unwrap();
+
+        let globs = vec![file.clone()];
+        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+
+        assert_eq!(files.len(), 1);
+        assert_eq!(files[0], file);
     }
 
     #[test]

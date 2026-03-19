@@ -1052,4 +1052,115 @@ mod tests {
         assert_eq!(output_json["greeting"], "Hello!");
         assert_eq!(output_json["farewell"], "Goodbye!");
     }
+
+    #[test]
+    fn test_compile_with_brace_expansion_glob() {
+        let dir = tempdir().unwrap();
+        let sub = dir.path().join("lang");
+        fs::create_dir_all(&sub).unwrap();
+
+        // Create .json and .jsonc files
+        fs::write(
+            sub.join("en.json"),
+            json!({"greeting": {"defaultMessage": "Hello!"}}).to_string(),
+        )
+        .unwrap();
+        fs::write(
+            sub.join("fr.json"),
+            json!({"farewell": {"defaultMessage": "Au revoir!"}}).to_string(),
+        )
+        .unwrap();
+        fs::write(sub.join("readme.txt"), "not a json file").unwrap();
+
+        let output_file = dir.path().join("compiled.json");
+        // Use brace expansion to match only .json files
+        let pattern = PathBuf::from(format!("{}/**/*.{{json}}", dir.path().display()));
+
+        compile(
+            &[pattern],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["greeting"], "Hello!");
+        assert_eq!(output_json["farewell"], "Au revoir!");
+    }
+
+    #[test]
+    fn test_compile_with_nested_directory_glob() {
+        let dir = tempdir().unwrap();
+
+        // Create nested directories
+        let nested = dir.path().join("a/b/c");
+        fs::create_dir_all(&nested).unwrap();
+
+        fs::write(
+            dir.path().join("a/top.json"),
+            json!({"top": {"defaultMessage": "Top level"}}).to_string(),
+        )
+        .unwrap();
+        fs::write(
+            nested.join("deep.json"),
+            json!({"deep": {"defaultMessage": "Deep nested"}}).to_string(),
+        )
+        .unwrap();
+
+        let output_file = dir.path().join("compiled.json");
+        let pattern = PathBuf::from(format!("{}/**/*.json", dir.path().display()));
+
+        compile(
+            &[pattern],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["top"], "Top level");
+        assert_eq!(output_json["deep"], "Deep nested");
+    }
+
+    #[test]
+    fn test_compile_with_literal_file_path() {
+        // Ensure literal (non-glob) paths still work
+        let dir = tempdir().unwrap();
+        let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        fs::write(
+            &input_file,
+            json!({"msg": {"defaultMessage": "Literal path"}}).to_string(),
+        )
+        .unwrap();
+
+        compile(
+            &[input_file],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+        )
+        .unwrap();
+
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["msg"], "Literal path");
+    }
 }
