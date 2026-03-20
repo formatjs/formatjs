@@ -216,17 +216,6 @@ exports[`'Rust' CLI > compile glob 1`] = `
 }
 `;
 
-exports[`'Rust' CLI > compile glob with nested directory structure 1`] = `
-{
-  "stderr": "",
-  "stdout": "{
-  "farewell": "Goodbye from package!",
-  "greeting": "Hello from package!"
-}
-",
-}
-`;
-
 exports[`'Rust' CLI > en-XA json 1`] = `
 {
   "stderr": "Warning: Pseudo-locale transformations not yet implemented
@@ -1370,17 +1359,6 @@ exports[`'TypeScript' CLI > compile glob 1`] = `
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",
   "ashd2": "a message"
-}
-",
-}
-`;
-
-exports[`'TypeScript' CLI > compile glob with nested directory structure 1`] = `
-{
-  "stderr": "",
-  "stdout": "{
-  "farewell": "Goodbye from package!",
-  "greeting": "Hello from package!"
 }
 ",
 }

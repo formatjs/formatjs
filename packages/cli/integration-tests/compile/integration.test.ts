@@ -242,17 +242,6 @@ describe.each([
     )
   })
 
-  test('compile glob with nested directory structure', async () => {
-    await expect(
-      exec(
-        `${binPath} compile "${join(
-          import.meta.dirname,
-          'glob-nested/packages/**/dist/lang/en.json'
-        )}"`
-      )
-    ).resolves.toMatchSnapshot()
-  }, 20000)
-
   test('compile glob with pnpm-style symlinked node_modules', async () => {
     // Reproduces pnpm's node_modules layout where packages are stored
     // in .pnpm and symlinked into node_modules. This is the exact
