@@ -17,4 +17,4 @@ local_path_override(
 )
 
 # Test utilities (not required by rules_formatjs users)
-bazel_dep(name = "aspect_bazel_lib", version = "2.22.2")
+bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
