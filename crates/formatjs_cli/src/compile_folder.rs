@@ -115,6 +115,7 @@ pub fn compile_folder(
             skip_errors,
             pseudo_locale,
             ignore_tag,
+            true,
         ) {
             Ok(_) => {
                 success_count += 1;

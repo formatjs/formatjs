@@ -10,6 +10,11 @@ export interface VerifyOpts {
   extraKeys: boolean
   structuralEquality: boolean
   ignore?: string[]
+  /**
+   * Whether to follow symbolic links when traversing directories.
+   * Defaults to true for compatibility with pnpm symlinked node_modules.
+   */
+  followLinks?: boolean
 }
 
 export async function verify(

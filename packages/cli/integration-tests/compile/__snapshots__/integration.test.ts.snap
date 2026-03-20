@@ -186,6 +186,12 @@ Options:
       --ignore-tag
           Treat HTML/XML tags as string literals instead of parsing them as tag tokens
 
+      --follow-links <FOLLOW_LINKS>
+          Whether to follow symbolic links when traversing directories. Defaults to true for compatibility with fast-glob behavior (e.g., pnpm symlinked node_modules). Use --no-follow-links to disable
+          
+          [default: true]
+          [possible values: true, false]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -205,6 +211,17 @@ exports[`'Rust' CLI > compile glob 1`] = `
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",
   "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'Rust' CLI > compile glob with nested directory structure 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "farewell": "Goodbye from package!",
+  "greeting": "Hello from package!"
 }
 ",
 }
@@ -1333,6 +1350,11 @@ Options:
                                   string literal instead of parsing them as tag
                                   token. When this is false we only allow simple
                                   tags without any attributes.
+  --follow-links                  Whether to follow symbolic links when
+                                  traversing directories. Defaults to true for
+                                  compatibility with pnpm symlinked
+                                  node_modules. Use --no-follow-links to
+                                  disable. (default: true)
   -h, --help                      display help for command
 ",
 }
@@ -1348,6 +1370,17 @@ exports[`'TypeScript' CLI > compile glob 1`] = `
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",
   "ashd2": "a message"
+}
+",
+}
+`;
+
+exports[`'TypeScript' CLI > compile glob with nested directory structure 1`] = `
+{
+  "stderr": "",
+  "stdout": "{
+  "farewell": "Goodbye from package!",
+  "greeting": "Hello from package!"
 }
 ",
 }

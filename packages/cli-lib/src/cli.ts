@@ -121,6 +121,11 @@ becomes "{count, plural, one{I have a dog} other{I have many dogs}}".
 The goal is to provide as many full sentences as possible since fragmented
 sentences are not translator-friendly.`
     )
+    .option(
+      '--follow-links',
+      `Whether to follow symbolic links when traversing directories. Defaults to true for compatibility with pnpm symlinked node_modules. Use --no-follow-links to disable.`,
+      true
+    )
     .action(async (filePatterns: string[], cmdObj: ExtractCLIOptions) => {
       debug('File pattern:', filePatterns)
       debug('Options:', cmdObj)
@@ -129,6 +134,7 @@ sentences are not translator-friendly.`
         files.push(
           ...globSync(filePatterns, {
             ignore: cmdObj.ignore,
+            followSymbolicLinks: cmdObj.followLinks ?? true,
           })
         )
       }
@@ -202,10 +208,17 @@ This is especially useful to convert from a TMS-specific format back to react-in
       '--ignore-tag',
       `Whether the parser to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is false we only allow simple tags without any attributes.`
     )
+    .option(
+      '--follow-links',
+      `Whether to follow symbolic links when traversing directories. Defaults to true for compatibility with pnpm symlinked node_modules. Use --no-follow-links to disable.`,
+      true
+    )
     .action(async (filePatterns: string[], opts: CompileCLIOpts) => {
       debug('File pattern:', filePatterns)
       debug('Options:', opts)
-      const files = globSync(filePatterns)
+      const files = globSync(filePatterns, {
+        followSymbolicLinks: opts.followLinks ?? true,
+      })
       if (!files.length) {
         throw new Error(`No input file found with pattern ${filePatterns}`)
       }
@@ -280,14 +293,20 @@ This is especially useful to convert from a TMS-specific format back to react-in
     )
     .option(
       '--structural-equality',
-      `Whether to check for structural equality of messages between source and target locale. 
+      `Whether to check for structural equality of messages between source and target locale.
       This makes sure translations are formattable and are not missing any tokens.`
+    )
+    .option(
+      '--follow-links',
+      `Whether to follow symbolic links when traversing directories. Defaults to true for compatibility with pnpm symlinked node_modules. Use --no-follow-links to disable.`,
+      true
     )
     .action(async (filePatterns: string[], opts: VerifyOpts) => {
       debug('File pattern:', filePatterns)
       debug('Options:', opts)
       const files = globSync(filePatterns, {
         ignore: opts.ignore,
+        followSymbolicLinks: opts.followLinks ?? true,
       })
       if (!files.length) {
         throw new Error(`No input file found with pattern ${filePatterns}`)

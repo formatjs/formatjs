@@ -239,4 +239,15 @@ describe.each([
       'Conflicting ID "a1d12" with different translation found in these 2 files'
     )
   })
+
+  test('compile glob with nested directory structure', async () => {
+    await expect(
+      exec(
+        `${binPath} compile "${join(
+          import.meta.dirname,
+          'glob-nested/packages/**/dist/lang/en.json'
+        )}"`
+      )
+    ).resolves.toMatchSnapshot()
+  }, 20000)
 })

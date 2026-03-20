@@ -144,6 +144,12 @@ enum Commands {
         /// Whether to hoist selectors and flatten sentences
         #[arg(long)]
         flatten: bool,
+
+        /// Whether to follow symbolic links when traversing directories.
+        /// Defaults to true for compatibility with fast-glob behavior (e.g., pnpm symlinked node_modules).
+        /// Use --no-follow-links to disable.
+        #[arg(long, default_value_t = true, action = clap::ArgAction::Set)]
+        follow_links: bool,
     },
 
     /// Compile extracted translation files into react-intl consumable JSON.
@@ -177,6 +183,12 @@ enum Commands {
         /// Treat HTML/XML tags as string literals instead of parsing them as tag tokens
         #[arg(long)]
         ignore_tag: bool,
+
+        /// Whether to follow symbolic links when traversing directories.
+        /// Defaults to true for compatibility with fast-glob behavior (e.g., pnpm symlinked node_modules).
+        /// Use --no-follow-links to disable.
+        #[arg(long, default_value_t = true, action = clap::ArgAction::Set)]
+        follow_links: bool,
     },
 
     /// Batch compile all extracted translation JSON files in a folder.
@@ -239,6 +251,12 @@ enum Commands {
         /// Check for structural equality of messages between source and target locales
         #[arg(long)]
         structural_equality: bool,
+
+        /// Whether to follow symbolic links when traversing directories.
+        /// Defaults to true for compatibility with fast-glob behavior (e.g., pnpm symlinked node_modules).
+        /// Use --no-follow-links to disable.
+        #[arg(long, default_value_t = true, action = clap::ArgAction::Set)]
+        follow_links: bool,
     },
 }
 
@@ -260,6 +278,7 @@ fn main() -> Result<()> {
             pragma,
             preserve_whitespace,
             flatten,
+            follow_links,
         } => {
             extract::extract(
                 files,
@@ -275,6 +294,7 @@ fn main() -> Result<()> {
                 pragma.as_deref(),
                 *preserve_whitespace,
                 *flatten,
+                *follow_links,
             )?;
         }
         Commands::Compile {
@@ -285,6 +305,7 @@ fn main() -> Result<()> {
             skip_errors,
             pseudo_locale,
             ignore_tag,
+            follow_links,
         } => {
             compile::compile(
                 translation_files,
@@ -294,6 +315,7 @@ fn main() -> Result<()> {
                 *skip_errors,
                 pseudo_locale.map(|p| p.into()),
                 *ignore_tag,
+                *follow_links,
             )?;
         }
         Commands::CompileFolder {
@@ -322,6 +344,7 @@ fn main() -> Result<()> {
             missing_keys,
             extra_keys,
             structural_equality,
+            follow_links,
         } => {
             verify::verify(
                 translation_files,
@@ -330,6 +353,7 @@ fn main() -> Result<()> {
                 *missing_keys,
                 *extra_keys,
                 *structural_equality,
+                *follow_links,
             )?;
         }
     }

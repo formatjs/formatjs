@@ -26,6 +26,11 @@ export interface CompileCLIOpts extends Opts {
    * The target file that contains compiled messages.
    */
   outFile?: string
+  /**
+   * Whether to follow symbolic links when traversing directories.
+   * Defaults to true for compatibility with pnpm symlinked node_modules.
+   */
+  followLinks?: boolean
 }
 export interface Opts {
   /**

@@ -54,6 +54,11 @@ export type ExtractCLIOptions = Omit<
    * Ignore file glob pattern
    */
   ignore?: string[]
+  /**
+   * Whether to follow symbolic links when traversing directories.
+   * Defaults to true for compatibility with pnpm symlinked node_modules.
+   */
+  followLinks?: boolean
 }
 
 export type ExtractOpts = Opts & {

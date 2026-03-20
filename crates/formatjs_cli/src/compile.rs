@@ -59,6 +59,7 @@ pub enum PseudoLocale {
 ///     false,
 ///     Some(PseudoLocale::EnXa),
 ///     false,
+///     true,
 /// ).unwrap();
 /// ```
 #[allow(clippy::too_many_arguments)]
@@ -70,6 +71,7 @@ pub fn compile(
     skip_errors: bool,
     pseudo_locale: Option<PseudoLocale>,
     ignore_tag: bool,
+    follow_links: bool,
 ) -> Result<()> {
     use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
 
@@ -95,7 +97,7 @@ pub fn compile(
 
         let base_dir = crate::extract::extract_base_dir(pattern_str);
         if base_dir.exists() {
-            for entry in WalkDir::new(&base_dir).into_iter().filter_map(|e| e.ok()) {
+            for entry in WalkDir::new(&base_dir).follow_links(follow_links).into_iter().filter_map(|e| e.ok()) {
                 if entry.path().is_file() {
                     let path_str = entry.path().to_string_lossy();
                     if fast_glob::glob_match(pattern_str, path_str.as_ref()) {
@@ -256,6 +258,7 @@ mod tests {
             false, // don't skip errors
             None,  // no pseudo-locale
             false, // don't ignore tags
+            true,  // follow links
         )
         .unwrap();
 
@@ -295,6 +298,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -332,6 +336,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -370,6 +375,7 @@ mod tests {
             false, // don't skip errors
             None,
             false,
+            true,  // follow links
         );
 
         assert!(result.is_err());
@@ -405,6 +411,7 @@ mod tests {
             true, // skip errors
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -444,6 +451,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -483,6 +491,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         );
 
         assert!(result.is_err());
@@ -517,6 +526,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -555,6 +565,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -596,6 +607,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -623,6 +635,7 @@ mod tests {
             false,
             Some(PseudoLocale::EnXa), // pseudo-locale specified
             false,
+            true,  // follow links
         );
 
         assert!(result.is_err());
@@ -670,6 +683,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -728,6 +742,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -776,6 +791,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -827,6 +843,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -866,6 +883,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -912,6 +930,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -951,6 +970,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -992,6 +1012,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1042,6 +1063,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1084,6 +1106,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1124,6 +1147,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1155,6 +1179,7 @@ mod tests {
             false,
             None,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1162,5 +1187,43 @@ mod tests {
         let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
 
         assert_eq!(output_json["msg"], "Literal path");
+    }
+
+    #[test]
+    fn test_compile_with_node_modules_glob() {
+        // Regression test for #6173: glob patterns with node_modules-like structure
+        let dir = tempdir().unwrap();
+
+        // Create node_modules/some-pkg/dist/lang/en.json
+        let pkg_lang = dir.path().join("node_modules/some-pkg/dist/lang");
+        fs::create_dir_all(&pkg_lang).unwrap();
+        fs::write(
+            pkg_lang.join("en.json"),
+            json!({"greeting": {"defaultMessage": "Hello from package!"}}).to_string(),
+        )
+        .unwrap();
+
+        let output_file = dir.path().join("compiled.json");
+        let pattern = PathBuf::from(format!(
+            "{}/node_modules/**/dist/lang/en.json",
+            dir.path().display()
+        ));
+
+        compile(
+            &[pattern],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+            true,  // follow links
+        )
+        .unwrap();
+
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["greeting"], "Hello from package!");
     }
 }

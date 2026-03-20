@@ -25,12 +25,13 @@ pub fn extract(
     pragma: Option<&str>,
     preserve_whitespace: bool,
     flatten: bool,
+    follow_links: bool,
 ) -> Result<()> {
     // Step 1: Resolve file list from glob patterns or in_file
     let file_list = if let Some(in_f) = in_file {
         read_file_list(in_f)?
     } else {
-        resolve_files_from_globs(files, ignore)?
+        resolve_files_from_globs(files, ignore, follow_links)?
     };
 
     // Step 2: Extract messages from all files
@@ -181,7 +182,7 @@ pub fn extract_base_dir(pattern: &str) -> PathBuf {
 
 /// Resolve files from glob patterns, excluding ignore patterns.
 /// Uses `walkdir` for filesystem traversal and `fast_glob::glob_match` for pattern matching.
-fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String]) -> Result<Vec<PathBuf>> {
+fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String], follow_links: bool) -> Result<Vec<PathBuf>> {
     let mut files = Vec::new();
 
     for glob_path in globs {
@@ -195,7 +196,7 @@ fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String]) -> Result<Vec<
             continue;
         }
 
-        for entry in WalkDir::new(&base_dir).into_iter().filter_map(|e| e.ok()) {
+        for entry in WalkDir::new(&base_dir).follow_links(follow_links).into_iter().filter_map(|e| e.ok()) {
             let path = entry.path();
 
             // Skip directories
@@ -421,7 +422,7 @@ import { FormattedMessage } from 'react-intl';
 
         let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
         let globs = vec![PathBuf::from(&pattern)];
-        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
 
         assert_eq!(files.len(), 2);
         let extensions: Vec<String> = files
@@ -497,6 +498,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -545,7 +547,7 @@ const msg = defineMessage({
             "**/node_modules/**".to_string(),
             "**/*.test.ts".to_string(),
         ];
-        let files = resolve_files_from_globs(&globs, &ignore).unwrap();
+        let files = resolve_files_from_globs(&globs, &ignore, true).unwrap();
 
         assert_eq!(files.len(), 1);
         assert!(files[0].to_string_lossy().contains("app.ts"));
@@ -563,7 +565,7 @@ const msg = defineMessage({
 
         let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
         let globs = vec![PathBuf::from(&pattern)];
-        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
 
         assert_eq!(files.len(), 2);
         let names: Vec<String> = files
@@ -577,7 +579,7 @@ const msg = defineMessage({
     #[test]
     fn test_resolve_files_nonexistent_base_dir() {
         let globs = vec![PathBuf::from("/nonexistent/path/**/*.ts")];
-        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
         assert!(files.is_empty());
     }
 
@@ -589,7 +591,7 @@ const msg = defineMessage({
         fs::write(&file, "// app").unwrap();
 
         let globs = vec![file.clone()];
-        let files = resolve_files_from_globs(&globs, &[]).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0], file);
@@ -642,6 +644,7 @@ const messages = defineMessages({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -714,6 +717,7 @@ const messages = defineMessages({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -773,6 +777,7 @@ const greeting = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -828,6 +833,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -847,6 +853,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -907,6 +914,7 @@ const messages = defineMessages({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -965,6 +973,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -984,6 +993,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1003,6 +1013,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1076,6 +1087,7 @@ const messages = defineMessages({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1142,6 +1154,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1160,6 +1173,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1220,6 +1234,7 @@ const messages = defineMessages({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1279,6 +1294,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1327,6 +1343,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1374,6 +1391,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1437,6 +1455,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1485,6 +1504,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1544,6 +1564,7 @@ function MyComponent() {
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1589,6 +1610,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1608,6 +1630,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         )
         .unwrap();
 
@@ -1679,6 +1702,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         );
 
         // Should succeed despite one file failing
@@ -1748,6 +1772,7 @@ const msg = defineMessage({
             None,
             false,
             false,
+            true,  // follow links
         );
 
         // Should fail because of the invalid file

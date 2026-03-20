@@ -61,6 +61,7 @@ pub fn verify(
     missing_keys: bool,
     extra_keys: bool,
     structural_equality: bool,
+    follow_links: bool,
 ) -> Result<()> {
     // Ensure source locale is provided
     let source_locale = source_locale.context("--source-locale is required for verify command")?;
@@ -74,7 +75,7 @@ pub fn verify(
 
         let base_dir = crate::extract::extract_base_dir(pattern_str);
         if base_dir.exists() {
-            for entry in WalkDir::new(&base_dir).into_iter().filter_map(|e| e.ok()) {
+            for entry in WalkDir::new(&base_dir).follow_links(follow_links).into_iter().filter_map(|e| e.ok()) {
                 if entry.path().is_file() {
                     let path_str = entry.path().to_string_lossy();
                     if fast_glob::glob_match(pattern_str, path_str.as_ref()) {
@@ -923,6 +924,7 @@ mod tests {
             true,
             true,
             false,
+            true,
         );
 
         assert!(result.is_ok());
@@ -960,6 +962,7 @@ mod tests {
             true,
             true,
             false,
+            true,
         );
 
         assert!(result.is_ok());
@@ -993,6 +996,7 @@ mod tests {
             true,
             true,
             false,
+            true,
         );
 
         assert!(result.is_ok());
