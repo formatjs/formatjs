@@ -1,5 +1,5 @@
 import {exec as nodeExec} from 'child_process'
-import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'fs'
+import {mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync} from 'fs'
 import {tmpdir} from 'os'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
@@ -251,6 +251,56 @@ describe.each([
         )}"`
       )
     ).resolves.toMatchSnapshot()
+  }, 20000)
+
+  test('compile glob with pnpm-style symlinked node_modules', async () => {
+    // Reproduces pnpm's node_modules layout where packages are stored
+    // in .pnpm and symlinked into node_modules. This is the exact
+    // scenario from issue #6173 that fails without --follow-links.
+    const tmp = mkdtempSync(join(tmpdir(), 'formatjs-pnpm-'))
+    try {
+      // Real package lives in .pnpm store
+      const realPkgDir = join(
+        tmp,
+        'node_modules',
+        '.pnpm',
+        'some-pkg@1.0.0',
+        'node_modules',
+        'some-pkg',
+        'dist',
+        'lang'
+      )
+      mkdirSync(realPkgDir, {recursive: true})
+      writeFileSync(
+        join(realPkgDir, 'en.json'),
+        JSON.stringify({
+          hello: {
+            defaultMessage: 'Hello from symlinked package!',
+            description: 'Symlink test',
+          },
+        })
+      )
+      // Symlink node_modules/some-pkg -> .pnpm/some-pkg@1.0.0/node_modules/some-pkg
+      symlinkSync(
+        join(
+          tmp,
+          'node_modules',
+          '.pnpm',
+          'some-pkg@1.0.0',
+          'node_modules',
+          'some-pkg'
+        ),
+        join(tmp, 'node_modules', 'some-pkg')
+      )
+      const result = await exec(
+        `${binPath} compile "${join(tmp, 'node_modules/some-pkg/**/lang/en.json')}"`
+      )
+      expect(JSON.parse(result.stdout)).toEqual({
+        hello: 'Hello from symlinked package!',
+      })
+    } finally {
+      rmSync(tmp, {recursive: true, force: true})
+    }
   }, 20000)
 
   test('compile glob with node_modules structure', async () => {
