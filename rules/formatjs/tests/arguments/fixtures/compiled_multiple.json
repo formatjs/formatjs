@@ -20,7 +20,7 @@
   "test.whitespace": [
     {
       "type": 0,
-      "value": "This    has     multiple     spaces"
+      "value": "This has multiple spaces"
     }
   ]
 }
