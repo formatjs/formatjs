@@ -1,4 +1,6 @@
 import {exec as nodeExec} from 'child_process'
+import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'fs'
+import {tmpdir} from 'os'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
 import {describe, expect, test} from 'vitest'
@@ -249,5 +251,38 @@ describe.each([
         )}"`
       )
     ).resolves.toMatchSnapshot()
+  }, 20000)
+
+  test('compile glob with node_modules structure', async () => {
+    // Create a temp dir with node_modules structure on the fly
+    // to avoid Bazel glob() excluding node_modules directories.
+    // This reproduces the exact scenario from issue #6173.
+    const tmp = mkdtempSync(join(tmpdir(), 'formatjs-test-'))
+    try {
+      const langDir = join(tmp, 'node_modules', 'some-pkg', 'dist', 'lang')
+      mkdirSync(langDir, {recursive: true})
+      writeFileSync(
+        join(langDir, 'en.json'),
+        JSON.stringify({
+          greeting: {
+            defaultMessage: 'Hello from package!',
+            description: 'Greeting from a nested package',
+          },
+          farewell: {
+            defaultMessage: 'Goodbye from package!',
+            description: 'Farewell from a nested package',
+          },
+        })
+      )
+      const result = await exec(
+        `${binPath} compile "${join(tmp, 'node_modules/**/dist/lang/en.json')}"`
+      )
+      expect(JSON.parse(result.stdout)).toEqual({
+        farewell: 'Goodbye from package!',
+        greeting: 'Hello from package!',
+      })
+    } finally {
+      rmSync(tmp, {recursive: true, force: true})
+    }
   }, 20000)
 })
