@@ -3,6 +3,8 @@ import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
 import MagicString from 'magic-string'
 import {interpolateName} from '@formatjs/ts-transformer'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 
 export interface Options {
   overrideIdFn?: (
@@ -17,6 +19,7 @@ export interface Options {
   additionalFunctionNames?: string[]
   ast?: boolean
   preserveWhitespace?: boolean
+  flatten?: boolean
 }
 
 const DEFAULT_ID_INTERPOLATION_PATTERN = '[sha512:contenthash:base64:6]'
@@ -48,6 +51,7 @@ export function transform(
     additionalFunctionNames = [],
     ast: preParseAst = false,
     preserveWhitespace = false,
+    flatten = false,
   } = options
 
   const componentNames = new Set([
@@ -195,6 +199,16 @@ export function transform(
     // Normalize whitespace on defaultMessage
     if (defaultMessage && !preserveWhitespace) {
       defaultMessage = defaultMessage.trim().replace(/\s+/gm, ' ')
+    }
+
+    // Apply flatten transformation (hoist selectors + normalize ICU format via printAST)
+    // This must happen before ID generation so the ID matches formatjs extract and babel-plugin-formatjs
+    if (flatten && defaultMessage) {
+      try {
+        defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
+      } catch (e) {
+        // If parsing fails, keep the original message
+      }
     }
 
     // Generate ID
