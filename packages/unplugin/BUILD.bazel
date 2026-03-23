@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
@@ -10,6 +11,14 @@ load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
+
+# Copy Rust CLI binary for conformance tests
+copy_file(
+    name = "rust_cli_copy",
+    src = "//crates/formatjs_cli",
+    out = "formatjs_cli",
+    visibility = ["//visibility:private"],
+)
 
 PACKAGE_NAME = "@formatjs/unplugin"
 
@@ -71,6 +80,19 @@ vitest(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
     deps = SRC_DEPS,
+)
+
+vitest(
+    name = "conformance_test",
+    srcs = SRCS + [
+        ":rust_cli_copy",
+    ] + glob(["conformance-tests/**/*.ts"]),
+    data = [
+        "//crates/formatjs_cli",
+    ],
+    deps = SRC_DEPS + [
+        "//:node_modules/@bazel/runfiles",
+    ],
 )
 
 npm_package(
