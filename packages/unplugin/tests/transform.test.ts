@@ -1,5 +1,6 @@
 import {describe, expect, test} from 'vitest'
 import {transform, type Options} from '../transform.js'
+import {interpolateName} from '@formatjs/ts-transformer'
 
 function t(
   code: string,
@@ -226,24 +227,27 @@ describe('@formatjs/unplugin transform', () => {
       // Message is a top-level plural: ICU format is normalized (spaces removed around commas/braces)
       // This ensures the ID matches formatjs extract with --flatten (Rust CLI: 14X+wqft)
       const input = `<FormattedMessage defaultMessage="{numberOfConsultations, plural, one {# consultation} other {# consultations}}" />`
-      const result = t(input, {
-        idInterpolationPattern: '[sha512:contenthash:base64:8]',
-        flatten: true,
-      })
-      // The flattened message removes spaces in structural positions
-      expect(result).toContain(
-        `defaultMessage="{numberOfConsultations,plural,one{# consultation} other{# consultations}}"`
+      expect(
+        t(input, {
+          idInterpolationPattern: '[sha512:contenthash:base64:8]',
+          flatten: true,
+        })
+      ).toBe(
+        `<FormattedMessage id="14X+wqft" defaultMessage="{numberOfConsultations,plural,one{# consultation} other{# consultations}}" />`
       )
-      // ID is generated from the flattened message (matches Rust CLI formatjs extract --flatten)
-      expect(result).toContain('id="14X+wqft"')
     })
 
     test('hoists select/plural patterns to full sentences', () => {
       const input = `<FormattedMessage defaultMessage="Are you sure you want to delete {count,plural,one {this report template} other {these # report templates}}?" />`
-      const result = t(input, {flatten: true})
-      // Hoisted form: plural wraps the full sentence
-      expect(result).toContain(
-        `defaultMessage="{count,plural,one{Are you sure you want to delete this report template?} other{Are you sure you want to delete these # report templates?}}"`
+      const flattenedMsg =
+        '{count,plural,one{Are you sure you want to delete this report template?} other{Are you sure you want to delete these # report templates?}}'
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {content: flattenedMsg}
+      )
+      expect(t(input, {flatten: true})).toBe(
+        `<FormattedMessage id="${expectedId}" defaultMessage="${flattenedMsg}" />`
       )
     })
 

@@ -51,7 +51,7 @@ export function transform(
     additionalFunctionNames = [],
     ast: preParseAst = false,
     preserveWhitespace = false,
-    flatten = false,
+    flatten = true,
   } = options
 
   const componentNames = new Set([
