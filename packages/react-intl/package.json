@@ -19,8 +19,7 @@
   },
   "peerDependencies": {
     "@types/react": "19",
-    "react": "19",
-    "typescript": "^5.6.0"
+    "react": "19"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "contributors": [
@@ -137,10 +136,5 @@
     "translate",
     "translation"
   ],
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
-  },
   "repository": "git@github.com:formatjs/formatjs.git"
 }
