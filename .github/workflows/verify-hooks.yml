@@ -22,7 +22,7 @@ jobs:
           version: 10.32.1
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'pnpm'
@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.18.0
+        uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
