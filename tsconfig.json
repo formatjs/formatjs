@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
     "declaration": true,
-    "esModuleInterop": false,
     "importHelpers": false,
     "isolatedDeclarations": true,
     "jsx": "react-jsx",
@@ -29,7 +27,7 @@
     "resolveJsonModule": true,
     "rewriteRelativeImportExtensions": true,
     "strict": true,
-    "target": "es5",
+    "target": "ES2017",
     "verbatimModuleSyntax": true
   },
   "exclude": ["packages/react-intl/example-sandboxes", "**/*.test-d.ts"]

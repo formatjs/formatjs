@@ -6,7 +6,7 @@ BASE_TSCONFIG = {
     "compilerOptions": {
         "module": "esnext",
         "moduleResolution": "bundler",
-        "target": "es5",
+        "target": "ES2017",
         "lib": [
             "dom",
             "ES2015",
@@ -25,10 +25,8 @@ BASE_TSCONFIG = {
         "strict": True,
         "resolveJsonModule": True,
         "noUnusedLocals": True,
-        "esModuleInterop": False,
         "noUnusedParameters": True,
         "preserveConstEnums": True,
-        "allowSyntheticDefaultImports": False,
         "noFallthroughCasesInSwitch": True,
         "verbatimModuleSyntax": True,
         "importHelpers": False,

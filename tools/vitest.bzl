@@ -52,12 +52,9 @@ def vitest(
     # Filter out snapshot files from srcs
     srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
 
-    # Create a test-specific tsconfig that allows synthetic default imports
-    # This is needed for happy-dom and other test dependencies
     # skipLibCheck avoids type errors from transitive deps with unresolvable type imports
     test_tsconfig = ESNEXT_TSCONFIG | {
         "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
-            "allowSyntheticDefaultImports": True,
             "skipLibCheck": True,
         },
     }
