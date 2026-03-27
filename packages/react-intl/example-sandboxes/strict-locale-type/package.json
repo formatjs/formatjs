@@ -1,23 +1,25 @@
 {
   "name": "strict-locale-type",
-  "version": "1.0.0",
   "description": "React and TypeScript example starter project",
-  "keywords": [
-    "typescript",
-    "react",
-    "starter"
-  ],
+  "version": "1.0.0",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "tsc": "tsc --noEmit"
+  },
   "dependencies": {
     "parcel": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "19",
     "@types/react-dom": "19",
-    "typescript": "5"
+    "typescript": "6"
   },
-  "scripts": {
-    "start": "parcel src/index.html",
-    "tsc": "tsc --noEmit"
+  "alias": {
+    "@formatjs/*": "../../../../bazel-out/darwin-fastbuild/bin/packages/$1",
+    "intl-messageformat": "../../../../bazel-out/darwin-fastbuild/bin/packages/intl-messageformat",
+    "babel-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/babel-plugin-formatjs",
+    "eslint-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs",
+    "react-intl": "../../../../bazel-out/darwin-fastbuild/bin/packages/react-intl"
   },
   "browserslist": [
     ">0.2%",
@@ -25,11 +27,9 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "alias": {
-    "@formatjs/*": "../../../../bazel-out/darwin-fastbuild/bin/packages/$1",
-    "intl-messageformat": "../../../../bazel-out/darwin-fastbuild/bin/packages/intl-messageformat",
-    "babel-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/babel-plugin-formatjs",
-    "eslint-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs",
-    "react-intl": "../../../../bazel-out/darwin-fastbuild/bin/packages/react-intl"
-  }
+  "keywords": [
+    "react",
+    "starter",
+    "typescript"
+  ]
 }

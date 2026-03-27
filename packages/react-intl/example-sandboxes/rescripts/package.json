@@ -1,9 +1,13 @@
 {
   "name": "react-app-rewired",
-  "version": "1.0.0",
   "description": "",
-  "keywords": [],
-  "main": "src/index.tsx",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rescripts build",
+    "eject": "react-scripts eject",
+    "start": "rescripts start",
+    "test": "rescripts test --env=jsdom"
+  },
   "dependencies": {
     "@rescripts/cli": "0.0.15",
     "@rescripts/rescript-env": "0.0.12",
@@ -17,19 +21,15 @@
   "devDependencies": {
     "@types/react": "19",
     "@types/react-dom": "19",
-    "typescript": "5",
-    "babel-plugin-react-require": "3.1.3"
-  },
-  "scripts": {
-    "start": "rescripts start",
-    "build": "rescripts build",
-    "test": "rescripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "babel-plugin-react-require": "3.1.3",
+    "typescript": "6"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "keywords": [],
+  "main": "src/index.tsx"
 }

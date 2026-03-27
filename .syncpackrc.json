@@ -1,10 +1,4 @@
 {
-  "dependencyTypes": [
-    "dev",
-    "engines",
-    "peer",
-    "prod"
-  ],
   "sortFirst": [
     "name",
     "description",
@@ -57,6 +51,11 @@
       "dependencies": [
         "$LOCAL"
       ],
+      "packages": [
+        "!react-app-rewired",
+        "!strict-locale-type",
+        "!strict-message-types"
+      ],
       "pinVersion": "workspace:*"
     },
     {
@@ -85,9 +84,12 @@
         "typescript"
       ],
       "packages": [
-        "!formatjs-repo"
+        "!formatjs-repo",
+        "!react-app-rewired",
+        "!strict-locale-type",
+        "!strict-message-types"
       ],
-      "pinVersion": "^5.6.0"
+      "pinVersion": "^5.6 || 6"
     },
     {
       "label": "ESLint",
@@ -107,7 +109,7 @@
       "packages": [
         "formatjs-repo"
       ],
-      "pinVersion": "5.9.3"
+      "pinVersion": "6.0.2"
     },
     {
       "label": "Vue",

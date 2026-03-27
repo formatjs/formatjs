@@ -125,7 +125,7 @@
     "tinybench": "^6.0.0",
     "ts-loader": "^9.5.4",
     "tsd": "^0.33.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "typesense": "3.0.3",
     "unidiff": "^1.0.4",
     "unplugin": "^3.0.0",
