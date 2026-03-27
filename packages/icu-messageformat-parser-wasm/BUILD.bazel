@@ -3,6 +3,7 @@ load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
+load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG")
 
 npm_link_all_packages()
 
@@ -30,6 +31,7 @@ ts_compile(
         ":srcs",
         ":wasm_files",
     ],
+    tsconfig = BASE_NODE_TSCONFIG,
     deps = SRC_DEPS,
 )
 

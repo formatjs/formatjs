@@ -206,7 +206,7 @@ export function transform(
     if (flatten && defaultMessage) {
       try {
         defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
-      } catch (e) {
+      } catch {
         // If parsing fails, keep the original message
       }
     }

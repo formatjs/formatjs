@@ -6,7 +6,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary"
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
 
 def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
@@ -50,7 +50,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         visibility = visibility,
     )
 
-def ts_compile(name, srcs, deps = [], visibility = None):
+def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None):
     """Compile TS with prefilled args.
 
     Args:
@@ -58,7 +58,10 @@ def ts_compile(name, srcs, deps = [], visibility = None):
         srcs: src files
         deps: deps
         visibility: visibility
+        tsconfig: optional tsconfig dict override (defaults to BASE_TSCONFIG)
     """
+
+    effective_tsconfig = tsconfig or BASE_TSCONFIG
 
     # Always build ESM bundle
     # Type check only with tsgo (fast, parallel)
@@ -66,7 +69,7 @@ def ts_compile(name, srcs, deps = [], visibility = None):
         name = "%s-esm-typecheck" % name,
         srcs = srcs,
         declaration = True,
-        tsconfig = BASE_TSCONFIG,
+        tsconfig = effective_tsconfig,
         resolve_json_module = True,
         deps = deps,
         transpiler = tsgo_bin.tsgo,
@@ -78,7 +81,7 @@ def ts_compile(name, srcs, deps = [], visibility = None):
         name = "%s-esm" % name,
         srcs = srcs,
         declaration = True,
-        tsconfig = BASE_TSCONFIG,
+        tsconfig = effective_tsconfig,
         resolve_json_module = True,
         deps = deps + ["//:node_modules/oxc-transform"],
         transpiler = oxc_transpiler,

@@ -40,6 +40,13 @@ BASE_TSCONFIG = {
     ],
 }
 
+# Base + Node types - for packages that import Node builtins (fs, path, etc.)
+BASE_NODE_TSCONFIG = BASE_TSCONFIG | {
+    "compilerOptions": BASE_TSCONFIG["compilerOptions"] | {
+        "types": ["node"],
+    },
+}
+
 # ESM ESNext configuration (tsconfig.esm.esnext.json) - merges with base
 ESNEXT_TSCONFIG = BASE_TSCONFIG | {
     "compilerOptions": BASE_TSCONFIG["compilerOptions"] | {
