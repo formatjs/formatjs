@@ -1,12 +1,13 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_binary", "ts_compile", "ts_run_binary")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -23,13 +24,14 @@ exports_files(
 
 PACKAGE_NAME = "intl-numberformat"
 
-ts_binary(
+js_binary(
     name = "generate-locale-test",
     data = [
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
     entry_point = "scripts/generate-locale-test.ts",
+    node_options = ["--experimental-transform-types"],
 )
 
 TEST_LOCALES = [
@@ -980,11 +982,6 @@ esbuild(
     target = "es2020",
     deps = [
     ] + SRC_DEPS,
-)
-
-package_json_test(
-    name = "package_json_test",
-    deps = SRC_DEPS,
 )
 
 copy_to_bin(

@@ -1,5 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("//tools:index.bzl", "ts_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 
 exports_files([
     "supported-locales-gen.ts",
@@ -17,12 +17,13 @@ copy_to_bin(
     visibility = ["//visibility:public"],
 )
 
-ts_binary(
+js_binary(
     name = "generate-supported-locales",
     data = [
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
     entry_point = "generate-supported-locales.ts",
+    node_options = ["--experimental-transform-types"],
     visibility = ["//visibility:public"],
 )

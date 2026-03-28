@@ -5,7 +5,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test")
+load("//tools:index.bzl", "generate_ide_tsconfig_json")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
@@ -113,8 +113,3 @@ copy_to_bin(
 )
 
 generate_ide_tsconfig_json()
-
-package_json_test(
-    name = "package_json_test",
-    deps = SRC_DEPS,
-)

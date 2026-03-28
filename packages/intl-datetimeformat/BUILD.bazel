@@ -6,7 +6,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_dockerfile")
@@ -914,11 +914,6 @@ js_binary(
         "--experimental-transform-types",
     ],
     tags = ["manual"],
-)
-
-package_json_test(
-    name = "package_json_test",
-    deps = SRC_DEPS,
 )
 
 multirun(

@@ -1,9 +1,9 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "ts_binary")
 
 npm_link_all_packages()
 
-ts_binary(
+js_binary(
     name = "benchmark",
     data = [
         ":node_modules/@formatjs/icu-messageformat-parser",
@@ -11,4 +11,5 @@ ts_binary(
         "//:node_modules/tinybench",
     ],
     entry_point = "benchmark.ts",
+    node_options = ["--experimental-transform-types"],
 )

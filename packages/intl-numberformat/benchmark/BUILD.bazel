@@ -1,9 +1,9 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "ts_binary")
 
 npm_link_all_packages()
 
-ts_binary(
+js_binary(
     name = "benchmark",
     data = [
         "en.json",
@@ -11,18 +11,20 @@ ts_binary(
         "//:node_modules/tinybench",
     ],
     entry_point = "benchmark.ts",
+    node_options = ["--experimental-transform-types"],
 )
 
-ts_binary(
+js_binary(
     name = "profile",
     data = [
         "en.json",
         ":node_modules/@formatjs/intl-numberformat",
     ],
     entry_point = "profile.ts",
+    node_options = ["--experimental-transform-types"],
 )
 
-ts_binary(
+js_binary(
     name = "profile_cpu",
     data = [
         "en.json",
@@ -30,13 +32,14 @@ ts_binary(
     ],
     entry_point = "profile.ts",
     node_options = [
+        "--experimental-transform-types",
         "--cpu-prof",
         "--cpu-prof-interval=100",
         "--cpu-prof-dir=/tmp",
     ],
 )
 
-ts_binary(
+js_binary(
     name = "analyze_profile",
     data = [
         "//:node_modules/@types/minimist",
@@ -44,4 +47,5 @@ ts_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "analyze-profile.ts",
+    node_options = ["--experimental-transform-types"],
 )

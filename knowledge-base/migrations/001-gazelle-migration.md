@@ -88,13 +88,13 @@ Currently dead code — the actual test logic is commented out. Only does `copy_
 
 ## Migration Phases
 
-### Phase 1: Inline thin wrappers
+### Phase 1: Inline thin wrappers (**DONE**)
 
 **Effort:** Low | **Risk:** Low
 
-- Replace `ts_binary` calls with `js_binary` + `--experimental-transform-types` directly in BUILD files
-- Remove `package_json_test` (dead code — test body is commented out)
-- Keep the `copy_to_bin(name = "package", srcs = ["package.json"])` if anything depends on it
+- ~~Replace `ts_binary` calls with `js_binary` + `--experimental-transform-types` directly in BUILD files~~ Done (9 BUILD files, 22 calls)
+- ~~Remove `package_json_test` (dead code — test body is commented out)~~ Done (28 BUILD files)
+- `copy_to_bin(name = "package", ...)` was only created inside the macro, nothing external depended on it — removed with the macro call
 
 ### Phase 2: Decompose `ts_compile` into stock rules
 

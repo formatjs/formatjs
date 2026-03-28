@@ -1,10 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_binary", "ts_run_binary")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_run_binary")
 load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
 
 npm_link_all_packages()
@@ -63,7 +64,7 @@ ts_project(
 generate_ide_tsconfig_json()
 
 # Build Typesense index tool
-ts_binary(
+js_binary(
     name = "build_typesense_index_tool",
     data = [
         "//:node_modules/@types/minimist",
@@ -73,10 +74,11 @@ ts_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "scripts/build-typesense-index.ts",
+    node_options = ["--experimental-transform-types"],
 )
 
 # Upload Typesense index tool
-ts_binary(
+js_binary(
     name = "upload_typesense_index_tool",
     data = [
         "//:node_modules/@types/minimist",
@@ -85,6 +87,7 @@ ts_binary(
         "//:node_modules/typesense",
     ],
     entry_point = "scripts/upload-typesense-index.ts",
+    node_options = ["--experimental-transform-types"],
 )
 
 # Build Typesense index from MDX docs
@@ -100,7 +103,7 @@ ts_run_binary(
 )
 
 # Extract metadata tool
-ts_binary(
+js_binary(
     name = "extract_metadata_tool",
     data = [
         "//:node_modules/@types/minimist",
@@ -109,6 +112,7 @@ ts_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "scripts/extract-metadata.ts",
+    node_options = ["--experimental-transform-types"],
 )
 
 # Extract metadata from MDX docs
