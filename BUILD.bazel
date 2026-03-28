@@ -137,7 +137,6 @@ multirun(
 multirun(
     name = "cldr-gen",
     testonly = True,
-    jobs = 0,  # Run all targets in parallel
     commands = [
         "//packages/icu-messageformat-parser:time-data",
         "//packages/intl-datetimeformat:all-tz",
@@ -177,6 +176,7 @@ multirun(
         "//packages/utils:default-currency",
         "//packages/utils:default-locale",
     ],
+    jobs = 0,  # Run all targets in parallel
 )
 
 copy_to_bin(
