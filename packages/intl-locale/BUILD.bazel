@@ -2,12 +2,13 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-locale"
 
@@ -185,4 +186,84 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "intl-locale_lib",
+    srcs = [
+        "calendars.generated.ts",
+        "character-orders.generated.ts",
+        "get_internal_slots.ts",
+        "hour-cycles.generated.ts",
+        "index.ts",
+        "numbering-systems.generated.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "preference-data.ts",
+        "scripts/calendars.ts",
+        "scripts/character-orders.ts",
+        "scripts/common-types.ts",
+        "scripts/hour-cycles.ts",
+        "scripts/numbering-systems.ts",
+        "scripts/timezones.ts",
+        "scripts/utils.ts",
+        "scripts/week-data.ts",
+        "should-polyfill.ts",
+        "timezones.generated.ts",
+        "week-data.generated.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/intl-getcanonicallocales",
+        ":node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/cldr-bcp47",
+        "//:node_modules/cldr-core",
+        "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
+)
+
+ts_project(
+    name = "intl-locale_tests",
+    testonly = True,
+    srcs = [
+        "tests/index.test.ts",
+        "tests/likely-subtags.test.ts",
+        "tests/minimize.test.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":intl-locale_lib",
+        ":node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "intl-locale",
+    srcs = [
+        "package.json",
+        ":intl-locale_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

@@ -1,7 +1,8 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 vitest(
     name = "vue_integration_test",
@@ -16,6 +17,24 @@ vitest(
         "//:node_modules/babel-loader",
         "//:node_modules/typescript",
         "//:node_modules/vue",
+        "//:node_modules/vue-loader",
+        "//:node_modules/webpack",
+    ],
+)
+
+ts_project(
+    name = "integration-tests_tests",
+    testonly = True,
+    srcs = ["vue/integration.test.ts"],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = "//packages/babel-plugin-formatjs:tsconfig",
+    deps = [
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/webpack",
+        "//:node_modules/vitest",
         "//:node_modules/vue-loader",
         "//:node_modules/webpack",
     ],

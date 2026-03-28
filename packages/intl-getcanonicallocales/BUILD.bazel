@@ -1,11 +1,12 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 exports_files([
     "package.json",
@@ -103,4 +104,68 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "intl-getcanonicallocales_lib",
+    srcs = [
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "scripts/aliases.ts",
+        "scripts/likely-subtags.ts",
+        "should-polyfill.ts",
+        "src/aliases.generated.ts",
+        "src/canonicalizer.ts",
+        "src/emitter.ts",
+        "src/likelySubtags.generated.ts",
+        "src/parser.ts",
+        "src/types.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/cldr-core",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
+)
+
+ts_project(
+    name = "intl-getcanonicallocales_tests",
+    testonly = True,
+    srcs = [
+        "tests/index.test.ts",
+        "tests/parser.test.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":intl-getcanonicallocales_lib",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "intl-getcanonicallocales",
+    srcs = [
+        "package.json",
+        ":intl-getcanonicallocales_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

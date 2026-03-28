@@ -3,13 +3,15 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "unicode_file_name")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-segmenter"
 
@@ -173,4 +175,72 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "intl-segmenter",
+    srcs = [
+        "benchmark.ts",
+        "debug.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "scripts/generate-cldr-segmentation-rules.ts",
+        "scripts/test262-main-gen.ts",
+        "should-polyfill.ts",
+        "src/cldr-segmentation-rules.generated.ts",
+        "src/segmentation-utils.ts",
+        "src/segmenter.ts",
+        "test262-main.ts",
+        "tests/test-utils.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+        "//:node_modules/regexpu-core",
+        "//:node_modules/tinybench",
+    ],
+)
+
+ts_project(
+    name = "intl-segmenter_tests",
+    testonly = True,
+    srcs = [
+        "tests/grapheme.test.ts",
+        "tests/isWordLike.test.ts",
+        "tests/sentence.test.ts",
+        "tests/word.test.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":intl-segmenter",
+        "//:node_modules/vitest",
+    ],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
+)
+
+bzl_library(
+    name = "index",
+    srcs = ["index.bzl"],
+    visibility = ["//visibility:public"],
 )

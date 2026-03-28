@@ -1,10 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "ecma402-abstract"
 
@@ -83,4 +84,132 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "ecma402-abstract_lib",
+    srcs = [
+        "262.ts",
+        "CanonicalizeLocaleList.ts",
+        "CanonicalizeTimeZoneName.ts",
+        "CoerceOptionsToObject.ts",
+        "DefaultNumberOption.ts",
+        "GetNumberOption.ts",
+        "GetOption.ts",
+        "GetOptionsObject.ts",
+        "GetStringOrBooleanOption.ts",
+        "IsSanctionedSimpleUnitIdentifier.ts",
+        "IsValidTimeZoneName.ts",
+        "IsWellFormedCurrencyCode.ts",
+        "IsWellFormedUnitIdentifier.ts",
+        "NumberFormat/ApplyUnsignedRoundingMode.ts",
+        "NumberFormat/CollapseNumberRange.ts",
+        "NumberFormat/ComputeExponent.ts",
+        "NumberFormat/ComputeExponentForMagnitude.ts",
+        "NumberFormat/CurrencyDigits.ts",
+        "NumberFormat/FormatApproximately.ts",
+        "NumberFormat/FormatNumeric.ts",
+        "NumberFormat/FormatNumericRange.ts",
+        "NumberFormat/FormatNumericRangeToParts.ts",
+        "NumberFormat/FormatNumericToParts.ts",
+        "NumberFormat/FormatNumericToString.ts",
+        "NumberFormat/GetUnsignedRoundingMode.ts",
+        "NumberFormat/InitializeNumberFormat.ts",
+        "NumberFormat/PartitionNumberPattern.ts",
+        "NumberFormat/PartitionNumberRangePattern.ts",
+        "NumberFormat/SetNumberFormatDigitOptions.ts",
+        "NumberFormat/SetNumberFormatUnitOptions.ts",
+        "NumberFormat/ToRawFixed.ts",
+        "NumberFormat/ToRawPrecision.ts",
+        "NumberFormat/decimal-cache.ts",
+        "NumberFormat/digit-mapping.generated.ts",
+        "NumberFormat/format_to_parts.ts",
+        "PartitionPattern.ts",
+        "SupportedLocales.ts",
+        "ToIntlMathematicalValue.ts",
+        "constants.ts",
+        "data.ts",
+        "index.ts",
+        "regex.generated.ts",
+        "scripts/digit-mapping.ts",
+        "scripts/regex-gen.ts",
+        "tests/utils.ts",
+        "types/core.ts",
+        "types/date-time.ts",
+        "types/displaynames.ts",
+        "types/list.ts",
+        "types/number.ts",
+        "types/plural-rules.ts",
+        "types/relative-time.ts",
+        "utils.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/bigdecimal",
+        ":node_modules/@formatjs/fast-memoize",
+        ":node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/regenerate",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+        "//:node_modules/regenerate",
+    ],
+)
+
+ts_project(
+    name = "ecma402-abstract_tests",
+    testonly = True,
+    srcs = [
+        "tests/262.test.ts",
+        "tests/ApplyUnsignedRoundingMode.test.ts",
+        "tests/CanonicalizeTimeZoneName.test.ts",
+        "tests/CollapseNumberRange.test.ts",
+        "tests/FormatApproximately.test.ts",
+        "tests/FormatNumericRange.test.ts",
+        "tests/FormatNumericRangeToParts.test.ts",
+        "tests/GetStringOrBooleanOption.test.ts",
+        "tests/GetUnsignedRoundingMode.test.ts",
+        "tests/IsValidTimeZoneName.test.ts",
+        "tests/PartitionNumberPattern.test.ts",
+        "tests/PartitionNumberRangePattern.test.ts",
+        "tests/PartitionPattern.test.ts",
+        "tests/SetNumberFormatDigitOptions.test.ts",
+        "tests/ToRawFixed.test.tsx",
+        "tests/ToRawPrecision.test.tsx",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":ecma402-abstract_lib",
+        ":node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "ecma402-abstract",
+    srcs = [
+        "package.json",
+        ":ecma402-abstract_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

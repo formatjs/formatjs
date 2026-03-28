@@ -2,12 +2,13 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "react-intl"
 
@@ -133,4 +134,93 @@ tsd_bin.tsd_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "react-intl_lib",
+    srcs = [
+        "index.ts",
+        "server.ts",
+        "src/components/context.ts",
+        "src/components/createFormattedComponent.tsx",
+        "src/components/createIntl.ts",
+        "src/components/dateTimeRange.tsx",
+        "src/components/message.tsx",
+        "src/components/plural.tsx",
+        "src/components/provider.tsx",
+        "src/components/relative.tsx",
+        "src/components/useIntl.ts",
+        "src/types.ts",
+        "src/utils.tsx",
+        "tests/global_type_overrides.test-d.ts",
+        "tests/perf/index.tsx",
+        "tests/unit/testUtils.tsx",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/@formatjs/intl",
+        ":node_modules/@types/react",
+        ":node_modules/intl-messageformat",
+        ":node_modules/react",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/@types/react-dom",
+        "//:node_modules/react-dom",
+        "//:node_modules/tinybench",
+        "//:node_modules/tsd",
+    ],
+)
+
+ts_project(
+    name = "react-intl_tests",
+    testonly = True,
+    srcs = [
+        "tests/unit/components/date.test.tsx",
+        "tests/unit/components/dateTimeRange.test.tsx",
+        "tests/unit/components/displayName.test.tsx",
+        "tests/unit/components/message.test.tsx",
+        "tests/unit/components/number.test.tsx",
+        "tests/unit/components/plural.test.tsx",
+        "tests/unit/components/provider.test.tsx",
+        "tests/unit/components/relative.test.tsx",
+        "tests/unit/components/time.test.tsx",
+        "tests/unit/components/useIntl.test.tsx",
+        "tests/unit/react-19-key-warning.test.tsx",
+        "tests/unit/react-intl.test.tsx",
+        "tests/unit/types.test.tsx",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/intl",
+        ":node_modules/@types/react",
+        ":node_modules/react",
+        ":react-intl_lib",
+        "//:node_modules/@testing-library/jest-dom",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "react-intl",
+    srcs = [
+        "package.json",
+        ":react-intl_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

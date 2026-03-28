@@ -1,4 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//tools:index.bzl", "ts_binary")
 
 exports_files([
@@ -24,5 +26,69 @@ ts_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "generate-supported-locales.ts",
+    visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "index",
+    srcs = ["index.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":oxc_transpiler",
+        ":tsconfig",
+        "@aspect_bazel_lib//lib:copy_to_bin",
+        "@aspect_bazel_lib//lib:write_source_files",
+        "@aspect_rules_js//js:defs",
+        "@aspect_rules_ts//ts:defs",
+        "@npm//:@typescript/native-preview/package_json",
+    ],
+)
+
+bzl_library(
+    name = "vitest",
+    srcs = ["vitest.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":tsconfig",
+        "@aspect_bazel_lib//lib:write_source_files",
+        "@aspect_rules_ts//ts:defs",
+        "@npm//:@typescript/native-preview/package_json",
+        "@npm//:vitest/package_json",
+    ],
+)
+
+ts_project(
+    name = "tools",
+    srcs = [
+        "check-package-json.ts",
+        "generate-supported-locales.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = "//:tsconfig",
+    deps = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/lodash-es",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/lodash-es",
+        "//:node_modules/minimist",
+        "//:node_modules/unidiff",
+    ],
+)
+
+bzl_library(
+    name = "oxc_transpiler",
+    srcs = ["oxc_transpiler.bzl"],
+    visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "tsconfig",
+    srcs = ["tsconfig.bzl"],
     visibility = ["//visibility:public"],
 )

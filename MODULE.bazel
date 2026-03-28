@@ -90,6 +90,15 @@ bazel_dep(
     dev_dependency = True,
 )
 
+######### Gazelle (aspect-gazelle) #########
+
+bazel_dep(name = "gazelle", version = "0.48.0")
+bazel_dep(name = "rules_multitool", version = "1.11.1")
+
+multitool = use_extension("@rules_multitool//multitool:extension.bzl", "multitool")
+multitool.hub(lockfile = "//:multitool.lock.json")
+use_repo(multitool, "multitool")
+
 ######### Rust rules #########
 
 bazel_dep(name = "rules_rust", version = "0.69.0")

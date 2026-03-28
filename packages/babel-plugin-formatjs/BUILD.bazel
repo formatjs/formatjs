@@ -1,10 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile_node")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "babel-plugin-formatjs"
 
@@ -70,4 +71,66 @@ generate_ide_tsconfig_json()
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "babel-plugin-formatjs_lib",
+    srcs = [
+        "global.d.ts",
+        "index.ts",
+        "types.ts",
+        "utils.ts",
+        "visitors/call-expression.ts",
+        "visitors/jsx-opening-element.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@babel/core",
+        ":node_modules/@babel/helper-plugin-utils",
+        ":node_modules/@babel/plugin-syntax-jsx",
+        ":node_modules/@babel/traverse",
+        ":node_modules/@babel/types",
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/@formatjs/ts-transformer",
+        ":node_modules/@types/babel__core",
+        ":node_modules/@types/babel__helper-plugin-utils",
+        ":node_modules/@types/babel__traverse",
+    ],
+)
+
+ts_project(
+    name = "babel-plugin-formatjs_tests",
+    testonly = True,
+    srcs = ["tests/index.test.ts"],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":babel-plugin-formatjs_lib",
+        ":node_modules/@babel/core",
+        ":node_modules/@types/babel__core",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "babel-plugin-formatjs",
+    srcs = [
+        "package.json",
+        ":babel-plugin-formatjs_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

@@ -2,12 +2,13 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 ALL_LOCALES = [
     "af",
@@ -428,4 +429,82 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "intl-pluralrules_lib",
+    srcs = [
+        "abstract/GetOperands.ts",
+        "abstract/InitializePluralRules.ts",
+        "abstract/ResolvePlural.ts",
+        "abstract/ResolvePluralRange.ts",
+        "get_internal_slots.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "scripts/cldr.ts",
+        "scripts/cldr-raw.ts",
+        "scripts/plural-rules-compiler.ts",
+        "scripts/test262-main-gen.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+        "test262-main.ts",
+        "tests/locale-data/en.ts",
+        "tests/locale-data/fr.ts",
+        "tests/locale-data/zh.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/bigdecimal",
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/serialize-javascript",
+        "//:node_modules/cldr-core",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+        "//:node_modules/serialize-javascript",
+        "//:node_modules/typescript",
+    ],
+)
+
+ts_project(
+    name = "intl-pluralrules_tests",
+    testonly = True,
+    srcs = [
+        "tests/index.test.ts",
+        "tests/supported-locales-of.test.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":intl-pluralrules_lib",
+        ":node_modules/@formatjs/intl-getcanonicallocales",
+        ":node_modules/@formatjs/intl-locale",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "intl-pluralrules",
+    srcs = [
+        "package.json",
+        ":intl-pluralrules_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

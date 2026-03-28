@@ -1,3 +1,4 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("//tools:index.bzl", "ts_binary")
 
 ts_binary(
@@ -24,5 +25,31 @@ ts_binary(
     visibility = [
         "//crates/icu_messageformat_parser:__pkg__",
         "//packages/icu-messageformat-parser:__subpackages__",
+    ],
+)
+
+ts_project(
+    name = "tools",
+    srcs = [
+        "global.ts",
+        "regex-gen.ts",
+        "time-data-gen.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = "//packages/icu-messageformat-parser:tsconfig",
+    deps = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/regenerate",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/cldr-core",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+        "//:node_modules/regenerate",
     ],
 )

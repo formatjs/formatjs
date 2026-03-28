@@ -2,12 +2,13 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl"
 
@@ -100,4 +101,78 @@ tsd_bin.tsd_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "intl_lib",
+    srcs = [
+        "index.ts",
+        "src/create-intl.ts",
+        "src/dateTime.ts",
+        "src/displayName.ts",
+        "src/error.ts",
+        "src/list.ts",
+        "src/message.ts",
+        "src/number.ts",
+        "src/plural.ts",
+        "src/relativeTime.ts",
+        "src/types.ts",
+        "src/utils.ts",
+        "tests/global_type_overrides.test-d.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/fast-memoize",
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/intl-messageformat",
+        "//:node_modules/tsd",
+    ],
+)
+
+ts_project(
+    name = "intl_tests",
+    testonly = True,
+    srcs = [
+        "tests/create-intl.test.ts",
+        "tests/error.test.ts",
+        "tests/formatDate.test.ts",
+        "tests/formatDisplayNames.test.ts",
+        "tests/formatList.test.ts",
+        "tests/formatMessage.test.ts",
+        "tests/formatNumber.test.ts",
+        "tests/formatPlural.test.ts",
+        "tests/formatRelativeTime.test.ts",
+        "tests/formatTime.test.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":intl_lib",
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/intl-messageformat",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "intl",
+    srcs = [
+        "package.json",
+        ":intl_lib",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

@@ -1,9 +1,10 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_rust//rust:defs.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 TEST_CASES = glob(["test_cases/*"])
 
@@ -70,5 +71,37 @@ vitest(
     ],
     deps = [
         ":node_modules/@formatjs/icu-messageformat-parser-wasm",
+    ],
+)
+
+ts_project(
+    name = "integration-tests",
+    srcs = ["run-parser.ts"],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = "//packages/icu-messageformat-parser:tsconfig",
+    deps = [
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+)
+
+ts_project(
+    name = "integration-tests_tests",
+    testonly = True,
+    srcs = ["wasm-integration.test.ts"],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = "//packages/icu-messageformat-parser:tsconfig",
+    deps = [
+        ":node_modules/@formatjs/icu-messageformat-parser-wasm",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
     ],
 )

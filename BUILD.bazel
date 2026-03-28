@@ -2,12 +2,23 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
+load("@gazelle//:def.bzl", "gazelle")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
-npm_link_all_packages()
+# gazelle:js enabled
+# gazelle:js_pnpm_lockfile pnpm-lock.yaml
+# gazelle:generation_mode update_only
+# gazelle:js_validate_import_statements off
+
+gazelle(
+    name = "gazelle",
+    gazelle = "@multitool//tools/gazelle",
+)
+
+npm_link_all_packages(name = "node_modules")
 
 exports_files(
     [
@@ -124,7 +135,6 @@ multirun(
 multirun(
     name = "cldr-gen",
     testonly = True,
-    jobs = 0,  # Run all targets in parallel
     commands = [
         "//packages/icu-messageformat-parser:time-data",
         "//packages/intl-datetimeformat:all-tz",
@@ -164,6 +174,7 @@ multirun(
         "//packages/utils:default-currency",
         "//packages/utils:default-locale",
     ],
+    jobs = 0,  # Run all targets in parallel
 )
 
 copy_to_bin(

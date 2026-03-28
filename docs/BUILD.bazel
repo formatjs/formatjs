@@ -1,3 +1,5 @@
+# gazelle:js disabled
+
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
@@ -142,9 +144,9 @@ vite_bin.vite(
         ":config_files",
         ":docs_metadata",
         ":index_html",
-        ":srcs",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
+        ":srcs",
         "//:node_modules/@mdx-js/react",
         "//:node_modules/@mdx-js/rollup",
         "//:node_modules/@radix-ui/react-accordion",
@@ -200,9 +202,9 @@ vite_bin.vite_binary(
         ":config_files",
         ":docs_metadata",
         ":index_html",
-        ":srcs",
         ":node_modules/intl-messageformat",
         ":node_modules/react-intl",
+        ":srcs",
         "//:node_modules/@mdx-js/react",
         "//:node_modules/@mdx-js/rollup",
         "//:node_modules/@radix-ui/react-accordion",

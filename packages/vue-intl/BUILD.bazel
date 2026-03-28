@@ -1,10 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "package_json_test", "ts_compile_node")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages()
+npm_link_all_packages(name = "node_modules")
 
 npm_package(
     name = "pkg",
@@ -55,4 +56,48 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+ts_project(
+    name = "vue-intl",
+    srcs = [
+        "index.ts",
+        "injection-key.ts",
+        "plugin.ts",
+        "provider.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/@formatjs/intl",
+        ":node_modules/vue",
+    ],
+)
+
+ts_project(
+    name = "vue-intl_tests",
+    testonly = True,
+    srcs = ["tests/index.test.ts"],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/intl",
+        ":node_modules/vue",
+        ":vue-intl",
+        "//:node_modules/@vue/test-utils",
+        "//:node_modules/vitest",
+    ],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )
