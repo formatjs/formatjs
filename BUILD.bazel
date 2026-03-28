@@ -20,7 +20,7 @@ gazelle(
     gazelle = "@multitool//tools/gazelle",
 )
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 exports_files(
     [
@@ -137,6 +137,7 @@ multirun(
 multirun(
     name = "cldr-gen",
     testonly = True,
+    jobs = 0,  # Run all targets in parallel
     commands = [
         "//packages/icu-messageformat-parser:time-data",
         "//packages/intl-datetimeformat:all-tz",
@@ -176,7 +177,6 @@ multirun(
         "//packages/utils:default-currency",
         "//packages/utils:default-locale",
     ],
-    jobs = 0,  # Run all targets in parallel
 )
 
 copy_to_bin(

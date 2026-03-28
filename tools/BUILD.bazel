@@ -1,5 +1,4 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//tools:index.bzl", "ts_binary")
 
 exports_files([
@@ -25,45 +24,5 @@ ts_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "generate-supported-locales.ts",
-    visibility = ["//visibility:public"],
-)
-
-bzl_library(
-    name = "index",
-    srcs = ["index.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":oxc_transpiler",
-        ":tsconfig",
-        "@aspect_bazel_lib//lib:copy_to_bin",
-        "@aspect_bazel_lib//lib:write_source_files",
-        "@aspect_rules_js//js:defs",
-        "@aspect_rules_ts//ts:defs",
-        "@npm//:@typescript/native-preview/package_json",
-    ],
-)
-
-bzl_library(
-    name = "vitest",
-    srcs = ["vitest.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":tsconfig",
-        "@aspect_bazel_lib//lib:write_source_files",
-        "@aspect_rules_ts//ts:defs",
-        "@npm//:@typescript/native-preview/package_json",
-        "@npm//:vitest/package_json",
-    ],
-)
-
-bzl_library(
-    name = "oxc_transpiler",
-    srcs = ["oxc_transpiler.bzl"],
-    visibility = ["//visibility:public"],
-)
-
-bzl_library(
-    name = "tsconfig",
-    srcs = ["tsconfig.bzl"],
     visibility = ["//visibility:public"],
 )
