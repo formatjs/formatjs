@@ -1,127 +1,64 @@
-# Intl Polyfill Packages
+# Intl Polyfill Packages — Shared Architecture
 
-All polyfill packages share a common architecture. This doc covers the shared patterns and per-polyfill specifics.
+All 11 polyfill packages share a common architecture. See individual docs (007a-007k) for per-polyfill CLDR data pipeline details.
 
-## Shared Architecture
-
-### Polyfill Strategy
+## Polyfill Strategy
 
 - Polyfills only activate when native support is missing or buggy
 - Each package exports: `index` (main), `polyfill` (auto-install if needed), `polyfill-force` (always install), `should-polyfill` (detection only)
 - Uses CLDR data for locale-specific formatting rules
 
-### Tree-Shaking
+## Tree-Shaking
 
 - Locale data is separately importable: `import '@formatjs/intl-numberformat/locale-data/en'`
 - Only imported locales are bundled — critical for mobile where bundle size matters
 - All packages use ES modules with `"type": "module"`
 
-### Data Generation
+## Two Data Loading Patterns
 
-Each polyfill has scripts in `scripts/` that extract data from CLDR JSON packages (`cldr-numbers-full`, `cldr-dates-full`, etc.):
+### Dynamic per-locale (numberformat, datetimeformat, pluralrules, displaynames, listformat, relativetimeformat)
 
-1. Raw extraction scripts produce `cldr-raw/` intermediate files
-2. Compilation scripts transform raw data into optimized `locale-data/` files (788 locales)
-3. All generated via Bazel `generate_src_file` targets
+- Locale data in separate `locale-data/{locale}.js` files (tree-shakeable)
+- Registration via `Intl.{API}.__addLocaleData()` static method
+- Buffered via `globalThis.__FORMATJS_{API}_DATA__` if polyfill not yet loaded
+- Two-stage build: `cldr-raw` (extraction) → `locale-data` (distribution)
 
-### Test Strategy
+### Static compilation (durationformat, segmenter, locale, getcanonicallocales, supportedvaluesof)
+
+- Data compiled directly into the main bundle as `.generated.ts` files
+- No per-locale dynamic loading needed
+- Single-stage build via `generate_src_file` targets
+
+## CLDR Data Generation Pipeline
+
+Each polyfill has scripts in `scripts/` that extract data from CLDR npm packages:
+
+1. **Extract**: Scripts read CLDR JSON (from `cldr-*-full` npm packages) and produce intermediate files
+2. **Transform**: Raw data is optimized and formatted for runtime consumption
+3. **Generate**: Output as `.generated.ts` (static) or `locale-data/{locale}.js` (dynamic)
+4. **All orchestrated via Bazel** `generate_src_file` and `ts_run_binary` targets
+
+## Test Strategy
 
 - **Vitest unit tests** — Core functionality
 - **Test262 conformance** — tc39/test262 suite for standards compliance
 - **Generated locale tests** — Per-locale snapshot tests for data correctness
 - **ICU4J conformance** — Cross-reference with ICU4J 78.1 (Java reference implementation)
 
-### Common Dependencies
+## Common Dependencies
 
-All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localematcher`.
+All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localematcher`. NumberFormat, DateTimeFormat, and PluralRules additionally depend on `@formatjs/bigdecimal`.
 
----
+## Individual Polyfill Docs
 
-## @formatjs/intl-numberformat
-
-**ECMA-402 Section 11** — `Intl.NumberFormat`
-
-- Full number formatting: decimal, currency, percent, unit, compact notation
-- Uses `@formatjs/bigdecimal` for arbitrary precision arithmetic (required for correct rounding per spec)
-- 788 locales supported with full CLDR number data
-- Generated: `currency-digits.generated.ts` (ISO 4217), `numbering-systems.generated.ts` (35+ systems)
-- Extra dep: `@formatjs/bigdecimal`
-
-## @formatjs/intl-datetimeformat
-
-**ECMA-402 Section 12** — `Intl.DateTimeFormat`
-
-- Full date/time formatting with timezone and calendar support
-- Integrates IANA timezone database via `tz_data.tar.gz`
-- Supports multiple calendar systems (gregorian, islamic, buddhist, etc.)
-- Most complex polyfill — largest BUILD.bazel (950+ lines)
-- Uses `@formatjs/bigdecimal` for date calculations
-- Extra dep: `@formatjs/bigdecimal`
-
-## @formatjs/intl-pluralrules
-
-**ECMA-402 Section 16** — `Intl.PluralRules`
-
-- Evaluates CLDR plural rules: zero, one, two, few, many, other
-- 293+ locales with rule data
-- Uses `@formatjs/bigdecimal` for precise operand calculation
-- Extra dep: `@formatjs/bigdecimal`
-
-## @formatjs/intl-displaynames
-
-**ECMA-402 Section 12** — `Intl.DisplayNames`
-
-- Localized display names for languages, regions, scripts, currencies, calendars, date/time fields
-- CLDR-backed display name database
-
-## @formatjs/intl-listformat
-
-**ECMA-402 Section 13** — `Intl.ListFormat`
-
-- Locale-aware list formatting with conjunction, disjunction, and unit styles
-- CLDR list patterns for separator and conjunction rules
-
-## @formatjs/intl-relativetimeformat
-
-**ECMA-402 Section 17** — `Intl.RelativeTimeFormat`
-
-- Formats relative time expressions (e.g., "2 days ago", "in 3 hours")
-- Supports numeric and auto styles
-
-## @formatjs/intl-durationformat
-
-**ECMA-402 Stage 3 Proposal** — `Intl.DurationFormat`
-
-- Formats durations (hours, minutes, seconds)
-- Generated: `time-separators.generated.ts` (3900+ lines), `numbering-systems.generated.ts`
-
-## @formatjs/intl-segmenter
-
-**ECMA-402 Section 18** — `Intl.Segmenter`
-
-- Text segmentation: grapheme, word, sentence boundaries
-- Uses CLDR segmentation rules (generated via `generate-cldr-segmentation-rules.ts`)
-- Processes Unicode break property data files (GraphemeBreakProperty, WordBreakProperty, SentenceBreakProperty)
-
-## @formatjs/intl-locale
-
-**ECMA-402 Section 14** — `Intl.Locale`
-
-- Locale information and manipulation API
-- Generated: calendars, character-orders, hour-cycles, numbering-systems, timezones, week-data
-- Dependencies: ecma402-abstract, intl-getcanonicallocales, intl-supportedvaluesof
-
-## @formatjs/intl-getcanonicallocales
-
-**ECMA-402 Section 8.2.1** — `Intl.getCanonicalLocales`
-
-- Canonicalizes locale identifier strings
-- Generated: CLDR likely subtags + language aliases (7700+ lines)
-- No internal dependencies (leaf package)
-
-## @formatjs/intl-supportedvaluesof
-
-**ECMA-402 Section 8.3.2** — `Intl.supportedValuesOf`
-
-- Returns supported values for: calendar, collation, currency, numberingSystem, timeZone, unit
-- Generated: one file per value type from CLDR
+- [007a — intl-numberformat](./007a-polyfill-intl-numberformat.md) — ECMA-402 §11
+- [007b — intl-datetimeformat](./007b-polyfill-intl-datetimeformat.md) — ECMA-402 §12 (+ IANA timezone pipeline)
+- [007c — intl-pluralrules](./007c-polyfill-intl-pluralrules.md) — ECMA-402 §16 (CLDR rule compiler)
+- [007d — intl-displaynames](./007d-polyfill-intl-displaynames.md) — ECMA-402 §12
+- [007e — intl-listformat](./007e-polyfill-intl-listformat.md) — ECMA-402 §13
+- [007f — intl-relativetimeformat](./007f-polyfill-intl-relativetimeformat.md) — ECMA-402 §17
+- [007g — intl-durationformat](./007g-polyfill-intl-durationformat.md) — Stage 3 Proposal
+- [007h — intl-segmenter](./007h-polyfill-intl-segmenter.md) — ECMA-402 §18 (Unicode segmentation rules)
+- [007i — intl-locale](./007i-polyfill-intl-locale.md) — ECMA-402 §14 (6 CLDR data sources)
+- [007j — intl-getcanonicallocales](./007j-polyfill-intl-getcanonicallocales.md) — ECMA-402 §8.2.1
+- [007k — intl-supportedvaluesof](./007k-polyfill-intl-supportedvaluesof.md) — ECMA-402 §8.3.2
