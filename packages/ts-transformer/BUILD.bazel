@@ -1,12 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile_node")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 exports_files([
     "package.json",
@@ -78,89 +77,4 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-ts_project(
-    name = "ts-transformer_lib",
-    srcs = [
-        "examples/compile.ts",
-        "index.ts",
-        "src/console_utils.ts",
-        "src/interpolate-name.ts",
-        "src/transform.ts",
-        "src/types.ts",
-        "tests/fixtures/FormattedMessage.tsx",
-        "tests/fixtures/additionalComponentNames.tsx",
-        "tests/fixtures/additionalFunctionNames.tsx",
-        "tests/fixtures/ast.tsx",
-        "tests/fixtures/defineMessages.tsx",
-        "tests/fixtures/defineMessagesPreserveWhitespace.tsx",
-        "tests/fixtures/descriptionsAsObjects.tsx",
-        "tests/fixtures/extractFromFormatMessage.tsx",
-        "tests/fixtures/extractFromFormatMessageStateless.tsx",
-        "tests/fixtures/extractSourceLocation.tsx",
-        "tests/fixtures/flattenError.tsx",
-        "tests/fixtures/formatMessageCall.tsx",
-        "tests/fixtures/inline.tsx",
-        "tests/fixtures/nested.tsx",
-        "tests/fixtures/noImport.tsx",
-        "tests/fixtures/nonStaticMessages.tsx",
-        "tests/fixtures/optionalChaining.tsx",
-        "tests/fixtures/overrideIdFn.tsx",
-        "tests/fixtures/removeDefaultMessage.tsx",
-        "tests/fixtures/removeDescription.tsx",
-        "tests/fixtures/resourcePath.tsx",
-        "tests/fixtures/stringConcat.tsx",
-        "tests/fixtures/templateLiteral.tsx",
-        "ts-jest-integration.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@types/node",
-        ":node_modules/json-stable-stringify",
-        ":node_modules/ts-jest",
-        ":node_modules/typescript",
-        "//:node_modules/@types/react",
-        "//:node_modules/react",
-    ],
-)
-
-ts_project(
-    name = "ts-transformer_tests",
-    testonly = True,
-    srcs = [
-        "tests/index.test.ts",
-        "tests/interpolate-name.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@types/node",
-        ":node_modules/typescript",
-        ":ts-transformer_lib",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "ts-transformer",
-    srcs = [
-        "package.json",
-        ":ts-transformer_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

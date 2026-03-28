@@ -1,12 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-localematcher"
 
@@ -64,77 +63,4 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-ts_project(
-    name = "intl-localematcher_lib",
-    srcs = [
-        "abstract/BestAvailableLocale.ts",
-        "abstract/BestFitMatcher.ts",
-        "abstract/CanonicalizeLocaleList.ts",
-        "abstract/CanonicalizeUValue.ts",
-        "abstract/CanonicalizeUnicodeLocaleId.ts",
-        "abstract/InsertUnicodeExtensionAndCanonicalize.ts",
-        "abstract/LookupMatcher.ts",
-        "abstract/LookupSupportedLocales.ts",
-        "abstract/ResolveLocale.ts",
-        "abstract/UnicodeExtensionComponents.ts",
-        "abstract/UnicodeExtensionValue.ts",
-        "abstract/languageMatching.ts",
-        "abstract/regions.generated.ts",
-        "abstract/types.ts",
-        "abstract/utils.ts",
-        "index.ts",
-        "scripts/regions-gen.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/cldr-core",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/minimist",
-    ],
-)
-
-ts_project(
-    name = "intl-localematcher_tests",
-    testonly = True,
-    srcs = [
-        "tests/BestFitMatcher.test.ts",
-        "tests/LookupMatcher.test.ts",
-        "tests/ResolveLocale.test.ts",
-        "tests/index.test.ts",
-        "tests/utils.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":intl-localematcher_lib",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "intl-localematcher",
-    srcs = [
-        "package.json",
-        ":intl-localematcher_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

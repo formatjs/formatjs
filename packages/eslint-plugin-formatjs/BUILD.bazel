@@ -1,12 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile_node")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "eslint-plugin-formatjs"
 
@@ -103,114 +102,4 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-ts_project(
-    name = "eslint-plugin-formatjs_lib",
-    srcs = [
-        "emoji-data.generated.ts",
-        "emoji-utils.ts",
-        "index.ts",
-        "messages.ts",
-        "package.json",
-        "rules/blocklist-elements.ts",
-        "rules/enforce-default-message.ts",
-        "rules/enforce-description.ts",
-        "rules/enforce-id.ts",
-        "rules/enforce-placeholders.ts",
-        "rules/enforce-plural-rules.ts",
-        "rules/no-camel-case.ts",
-        "rules/no-complex-selectors.ts",
-        "rules/no-emoji.ts",
-        "rules/no-id.ts",
-        "rules/no-invalid-icu.ts",
-        "rules/no-literal-string-in-jsx.ts",
-        "rules/no-literal-string-in-object.ts",
-        "rules/no-missing-icu-plural-one-placeholders.ts",
-        "rules/no-multiple-plurals.ts",
-        "rules/no-multiple-whitespaces.ts",
-        "rules/no-offset.ts",
-        "rules/no-useless-message.ts",
-        "rules/prefer-formatted-message.ts",
-        "rules/prefer-full-sentence.ts",
-        "rules/prefer-pound-in-plural.ts",
-        "scripts/generate-emoji-data.ts",
-        "tests/fixtures.ts",
-        "tests/util.ts",
-        "util.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/@types/picomatch",
-        ":node_modules/@unicode/unicode-17.0.0",
-        ":node_modules/eslint",
-        ":node_modules/magic-string",
-        ":node_modules/picomatch",
-        "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
-        "//:node_modules/oxlint",
-        "//:node_modules/vitest",
-        "//:node_modules/vue-eslint-parser",
-    ],
-)
-
-ts_project(
-    name = "eslint-plugin-formatjs_tests",
-    testonly = True,
-    srcs = [
-        "tests/blocklist-elements.test.ts",
-        "tests/emoji-utils.test.ts",
-        "tests/enforce-default-message.test.ts",
-        "tests/enforce-description.test.ts",
-        "tests/enforce-id.test.ts",
-        "tests/enforce-placeholders.test.ts",
-        "tests/enforce-plural-rules.test.ts",
-        "tests/no-camel-case.test.ts",
-        "tests/no-complex-selectors.test.ts",
-        "tests/no-emoji.test.ts",
-        "tests/no-id.test.ts",
-        "tests/no-invalid-icu.test.ts",
-        "tests/no-literal-string-in-jsx.test.ts",
-        "tests/no-literal-string-in-object.test.ts",
-        "tests/no-missing-icu-plural-one-placeholders.test.ts",
-        "tests/no-multiple-plurals.test.ts",
-        "tests/no-multiple-whitespaces.test.ts",
-        "tests/no-offset.test.ts",
-        "tests/no-useless-message.test.ts",
-        "tests/prefer-formatted-message.test.ts",
-        "tests/prefer-full-sentence.test.ts",
-        "tests/prefer-pound-in-plural.test.ts",
-        "tests/tagged-template-substitutions.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":eslint-plugin-formatjs_lib",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "eslint-plugin-formatjs",
-    srcs = [":eslint-plugin-formatjs_lib"],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

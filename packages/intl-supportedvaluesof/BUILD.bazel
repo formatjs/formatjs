@@ -2,13 +2,12 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-supportedvaluesof"
 
@@ -133,78 +132,4 @@ esbuild(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-ts_project(
-    name = "intl-supportedvaluesof_lib",
-    srcs = [
-        "index.ts",
-        "polyfill.ts",
-        "polyfill-force.ts",
-        "scripts/calendars.ts",
-        "scripts/collations.ts",
-        "scripts/currencies.ts",
-        "scripts/timezones.ts",
-        "scripts/units.ts",
-        "should-polyfill.ts",
-        "src/calendars.generated.ts",
-        "src/collations.generated.ts",
-        "src/currencies.generated.ts",
-        "src/get-supported-calendars.ts",
-        "src/get-supported-collations.ts",
-        "src/get-supported-currencies.ts",
-        "src/get-supported-numbering-systems.ts",
-        "src/get-supported-timezones.ts",
-        "src/get-supported-units.ts",
-        "src/index.ts",
-        "src/memoize.ts",
-        "src/numbering-systems.generated.ts",
-        "src/timezones.generated.ts",
-        "src/units.generated.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/cldr-bcp47",
-        "//:node_modules/cldr-numbers-full",
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
-    ],
-)
-
-ts_project(
-    name = "intl-supportedvaluesof_tests",
-    testonly = True,
-    srcs = ["tests/index.test.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":intl-supportedvaluesof_lib",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "intl-supportedvaluesof",
-    srcs = [
-        "package.json",
-        ":intl-supportedvaluesof_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

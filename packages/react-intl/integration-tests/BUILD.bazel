@@ -1,8 +1,7 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 TEST_DEPS = [
     ":node_modules/react-intl",
@@ -21,34 +20,4 @@ vitest(
     srcs = glob(["*.ts*"]),
     dom = True,
     deps = TEST_DEPS,
-)
-
-ts_project(
-    name = "integration-tests_tests",
-    testonly = True,
-    srcs = ["format.test.tsx"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    source_map = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/react-intl",
-        "//:node_modules/@testing-library/jest-dom",
-        "//:node_modules/@testing-library/react",
-        "//:node_modules/vitest",
-        "//packages/react-intl:node_modules/@types/react",
-        "//packages/react-intl:node_modules/react",
-    ],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
-    deps = [
-        "//:node_modules/@testing-library/jest-dom",
-        "//:node_modules/@types/node",
-    ],
 )

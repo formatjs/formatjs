@@ -1,12 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile_node")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "cli-lib"
 
@@ -118,98 +117,4 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-ts_project(
-    name = "cli-lib_lib",
-    srcs = [
-        "index.ts",
-        "main.ts",
-        "src/cli.ts",
-        "src/compile.ts",
-        "src/compile_folder.ts",
-        "src/console_utils.ts",
-        "src/extract.ts",
-        "src/formatters/crowdin.ts",
-        "src/formatters/default.ts",
-        "src/formatters/index.ts",
-        "src/formatters/lokalise.ts",
-        "src/formatters/simple.ts",
-        "src/formatters/smartling.ts",
-        "src/formatters/transifex.ts",
-        "src/gts_extractor.ts",
-        "src/hbs_extractor.ts",
-        "src/parse_script.ts",
-        "src/pseudo_locale.ts",
-        "src/svelte_extractor.ts",
-        "src/verify/checkExtraKeys.ts",
-        "src/verify/checkMissingKeys.ts",
-        "src/verify/checkStructuralEquality.ts",
-        "src/verify/index.ts",
-        "src/vue_extractor.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/@glimmer/syntax",
-        ":node_modules/@types/fs-extra",
-        ":node_modules/@types/node",
-        ":node_modules/@vue/compiler-core",
-        ":node_modules/commander",
-        ":node_modules/content-tag",
-        ":node_modules/fast-glob",
-        ":node_modules/fs-extra",
-        ":node_modules/json-stable-stringify",
-        ":node_modules/loud-rejection",
-        ":node_modules/svelte",
-        ":node_modules/typescript",
-        ":node_modules/vue",
-    ],
-)
-
-ts_project(
-    name = "cli-lib_tests",
-    testonly = True,
-    srcs = [
-        "tests/unit/abort_signal.test.ts",
-        "tests/unit/gts_extractor.test.ts",
-        "tests/unit/hbs_extractor.test.ts",
-        "tests/unit/pseudo_locale.test.ts",
-        "tests/unit/svelte_extractor.test.ts",
-        "tests/unit/unit.test.ts",
-        "tests/unit/vue_extractor.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":cli-lib_lib",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/@types/node",
-        ":node_modules/fast-glob",
-        ":node_modules/typescript",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "cli-lib",
-    srcs = [
-        "package.json",
-        ":cli-lib_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

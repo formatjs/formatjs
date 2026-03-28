@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test")
@@ -10,7 +10,7 @@ load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 # Copy Rust CLI binary for conformance tests
 copy_file(
@@ -117,67 +117,4 @@ generate_ide_tsconfig_json()
 package_json_test(
     name = "package_json_test",
     deps = SRC_DEPS,
-)
-
-ts_project(
-    name = "unplugin_lib",
-    srcs = [
-        "conformance-tests/rust-binary-utils.ts",
-        "esbuild.ts",
-        "index.ts",
-        "rollup.ts",
-        "rspack.ts",
-        "transform.ts",
-        "vite.ts",
-        "webpack.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/magic-string",
-        ":node_modules/oxc-parser",
-        ":node_modules/unplugin",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-    ],
-)
-
-ts_project(
-    name = "unplugin_tests",
-    testonly = True,
-    srcs = [
-        "conformance-tests/cli-unplugin-conformance.test.ts",
-        "tests/transform.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/ts-transformer",
-        ":unplugin_lib",
-        "//:node_modules/@types/node",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "unplugin",
-    srcs = [
-        "package.json",
-        ":unplugin_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

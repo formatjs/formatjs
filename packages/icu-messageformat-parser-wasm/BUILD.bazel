@@ -1,12 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
 load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "icu-messageformat-parser-wasm"
 
@@ -59,34 +58,4 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-ts_project(
-    name = "icu-messageformat-parser-wasm_lib",
-    srcs = ["index.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/icu-skeleton-parser",
-        "//:node_modules/@types/node",
-    ],
-)
-
-npm_package(
-    name = "icu-messageformat-parser-wasm",
-    srcs = [
-        "package.json",
-        ":icu-messageformat-parser-wasm_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

@@ -1,8 +1,7 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 vitest(
     name = "integration_test",
@@ -16,44 +15,5 @@ vitest(
         "//:node_modules/react",
         "//:node_modules/rollup",
         "//:node_modules/webpack",
-    ],
-)
-
-ts_project(
-    name = "integration-tests",
-    srcs = [
-        "fixtures/jsx.tsx",
-        "fixtures/removeDescription.tsx",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = "//packages/unplugin:tsconfig",
-    deps = [
-        "//:node_modules/@types/react",
-        "//:node_modules/react",
-    ],
-)
-
-ts_project(
-    name = "integration-tests_tests",
-    testonly = True,
-    srcs = ["integration.test.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = "//packages/unplugin:tsconfig",
-    deps = [
-        ":node_modules/@formatjs/unplugin",
-        "//:node_modules/@types/node",
-        "//:node_modules/@types/webpack",
-        "//:node_modules/vitest",
-        "//packages/unplugin:node_modules/@rspack/core",
-        "//packages/unplugin:node_modules/esbuild",
-        "//packages/unplugin:node_modules/rollup",
-        "//packages/unplugin:node_modules/vite",
-        "//packages/unplugin:node_modules/webpack",
     ],
 )

@@ -3,7 +3,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
@@ -13,7 +12,7 @@ load("//tools:vitest.bzl", "vitest")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_dockerfile")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-datetimeformat"
 
@@ -956,132 +955,6 @@ bzl_library(
     srcs = ["index.bzl"],
     visibility = ["//visibility:public"],
     deps = [":defs"],
-)
-
-ts_project(
-    name = "intl-datetimeformat_lib",
-    srcs = [
-        "add-all-tz.d.ts",
-        "add-golden-tz.d.ts",
-        "index.ts",
-        "polyfill.ts",
-        "polyfill-force.ts",
-        "scripts/cldr.ts",
-        "scripts/cldr-raw.ts",
-        "scripts/extract-dates.ts",
-        "scripts/link.ts",
-        "scripts/process-zdump.ts",
-        "scripts/test-locale-data-gen.ts",
-        "scripts/test262-main-gen.ts",
-        "scripts/zic.ts",
-        "scripts/zone.ts",
-        "should-polyfill.ts",
-        "src/abstract/BasicFormatMatcher.ts",
-        "src/abstract/BestFitFormatMatcher.ts",
-        "src/abstract/DateTimeStyleFormat.ts",
-        "src/abstract/FormatDateTime.ts",
-        "src/abstract/FormatDateTimePattern.ts",
-        "src/abstract/FormatDateTimeRange.ts",
-        "src/abstract/FormatDateTimeRangeToParts.ts",
-        "src/abstract/FormatDateTimeToParts.ts",
-        "src/abstract/InitializeDateTimeFormat.ts",
-        "src/abstract/PartitionDateTimePattern.ts",
-        "src/abstract/PartitionDateTimeRangePattern.ts",
-        "src/abstract/ToDateTimeOptions.ts",
-        "src/abstract/ToLocalTime.ts",
-        "src/abstract/skeleton.ts",
-        "src/abstract/utils.ts",
-        "src/core.ts",
-        "src/data/all-tz.generated.ts",
-        "src/data/links.generated.ts",
-        "src/get_internal_slots.ts",
-        "src/packer.ts",
-        "src/to_locale_string.ts",
-        "src/types.ts",
-        "supported-locales.generated.ts",
-        "test262-main.ts",
-        "tests/benchmark.ts",
-        "tests/locale-data/en.json",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/bigdecimal",
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-locale",
-        ":node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/lodash-es",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/cldr-core",
-        "//:node_modules/cldr-dates-full",
-        "//:node_modules/cldr-numbers-full",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/lodash-es",
-        "//:node_modules/minimist",
-        "//:node_modules/tinybench",
-    ],
-)
-
-ts_project(
-    name = "intl-datetimeformat_tests",
-    testonly = True,
-    srcs = [
-        "tests/abstract/BestFitFormatMatcher.test.ts",
-        "tests/abstract/skeleton.test.ts",
-        "tests/format.test.ts",
-        "tests/format-range.test.ts",
-        "tests/ftp-main.test.ts",
-        "tests/index.test.ts",
-        "tests/locale-data/ar.json",
-        "tests/locale-data/bs.json",
-        "tests/locale-data/de.json",
-        "tests/locale-data/en-CA.json",
-        "tests/locale-data/en-GB.json",
-        "tests/locale-data/fa.json",
-        "tests/locale-data/ja.json",
-        "tests/locale-data/ko.json",
-        "tests/locale-data/nl.json",
-        "tests/locale-data/pl.json",
-        "tests/locale-data/ru.json",
-        "tests/locale-data/zh-Hans.json",
-        "tests/offset-timezone.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":intl-datetimeformat_lib",
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "intl-datetimeformat",
-    srcs = [
-        "add-all-tz.js",
-        "add-golden-tz.js",
-        "package.json",
-        ":intl-datetimeformat_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )
 
 bzl_library(

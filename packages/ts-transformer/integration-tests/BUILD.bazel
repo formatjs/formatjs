@@ -1,8 +1,7 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 # vitest(
 #     name = "integration_test",
@@ -43,51 +42,5 @@ vitest(
         "//:node_modules/vue-class-component",
         "//:node_modules/vue-loader",
         "//:node_modules/webpack",
-    ],
-)
-
-ts_project(
-    name = "integration-tests",
-    srcs = [
-        "integration/comp.tsx",
-        "vue/fixtures/main.ts",
-    ],
-    assets = ["vue/fixtures/index.vue"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = "//packages/ts-transformer:tsconfig",
-    deps = [
-        "//:node_modules/@types/react",
-        "//:node_modules/react",
-        "//:node_modules/vue",
-    ],
-)
-
-ts_project(
-    name = "integration-tests_tests",
-    testonly = True,
-    srcs = [
-        "integration/ts-jest.test.tsx",
-        "vue/integration.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = "//packages/ts-transformer:tsconfig",
-    deps = [
-        ":integration-tests",
-        ":node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@types/react",
-        "//:node_modules/@types/react-dom",
-        "//:node_modules/@types/webpack",
-        "//:node_modules/react",
-        "//:node_modules/react-dom",
-        "//:node_modules/vitest",
-        "//:node_modules/vue-loader",
-        "//:node_modules/webpack",
-        "//packages/ts-transformer:node_modules/@types/node",
     ],
 )

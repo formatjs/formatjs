@@ -1,12 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-durationformat"
 
@@ -86,74 +85,3 @@ copy_to_bin(
 #     name="package_json_test",
 #     deps=SRC_DEPS
 # )
-
-ts_project(
-    name = "intl-durationformat_lib",
-    srcs = [
-        "index.ts",
-        "polyfill.ts",
-        "polyfill-force.ts",
-        "scripts/time-separators.ts",
-        "scripts/utils.ts",
-        "should-polyfill.ts",
-        "src/abstract/DurationRecordSign.ts",
-        "src/abstract/GetDurationUnitOptions.ts",
-        "src/abstract/IsValidDurationRecord.ts",
-        "src/abstract/PartitionDurationFormatPattern.ts",
-        "src/abstract/ToDurationRecord.ts",
-        "src/abstract/ToIntegerIfIntegral.ts",
-        "src/constants.ts",
-        "src/core.ts",
-        "src/get_internal_slots.ts",
-        "src/numbering-systems.generated.ts",
-        "src/time-separators.generated.ts",
-        "src/types.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/cldr-numbers-full",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/minimist",
-    ],
-)
-
-ts_project(
-    name = "intl-durationformat_tests",
-    testonly = True,
-    srcs = ["tests/index.test.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = ":tsconfig",
-    deps = [
-        ":intl-durationformat_lib",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "intl-durationformat",
-    srcs = [
-        "package.json",
-        ":intl-durationformat_lib",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
-)
