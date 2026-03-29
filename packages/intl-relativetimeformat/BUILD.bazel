@@ -1,21 +1,21 @@
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
-
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_run_binary")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-npm_link_all_packages()
+# gazelle:js_project_naming_convention dist
+# gazelle:js_tests_naming_convention unit_test
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "intl-relativetimeformat"
 
@@ -61,64 +61,11 @@ SRC_DEPS = [
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
-formatjs_ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS,
-)
+formatjs_t
 
-formatjs_ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = [":srcs"],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
+formatjs_t
 
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
-)
-
-formatjs_ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = SRC_DEPS + [
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-        ":node_modules/@formatjs/intl-pluralrules",
-    ] + VITEST_DEPS,
-)
-
-vitest_runner(
-    name = "unit_test",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    deps = SRC_DEPS + [
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-        ":node_modules/@formatjs/intl-pluralrules",
-    ],
-)
+formatjs_t
 
 # CLDR
 ALL_LOCALES = [
@@ -824,4 +771,64 @@ esbuild(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+formatjs_ts_project(
+    name = "dist",
+    srcs = [
+        "abstract/FormatRelativeTime.ts",
+        "abstract/FormatRelativeTimeToParts.ts",
+        "abstract/InitializeRelativeTimeFormat.ts",
+        "abstract/MakePartsList.ts",
+        "abstract/PartitionRelativeTimePattern.ts",
+        "abstract/SingularRelativeTimeUnit.ts",
+        "get_internal_slots.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+        "test262-main.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/intl-localematcher",
+    ],
+)
+
+formatjs_ts_project(
+    name = "unit_test",
+    testonly = True,
+    srcs = [
+        "tests/index.test.ts",
+        "tests/locale-data/en.json",
+        "tests/locale-data/en-AI.json",
+        "tests/locale-data/zh.json",
+        "tests/locale-data/zh-Hans.json",
+        "tests/locale-data/zh-Hant.json",
+        "tests/supported-locales-of.test.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":dist",
+        ":node_modules/@formatjs/intl-getcanonicallocales",
+        ":node_modules/@formatjs/intl-locale",
+        ":node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/vitest",
+    ],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

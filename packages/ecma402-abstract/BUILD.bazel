@@ -1,18 +1,18 @@
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
-
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-npm_link_all_packages()
+# gazelle:js_project_naming_convention dist
+# gazelle:js_tests_naming_convention unit_test
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "ecma402-abstract"
 
@@ -44,62 +44,11 @@ SRC_DEPS = [
     ":node_modules/@formatjs/bigdecimal",
 ]
 
-formatjs_ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS,
-)
+formatjs_t
 
-formatjs_ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = [":srcs"],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
+formatjs_t
 
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
-)
-
-formatjs_ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-    ]),
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = SRC_DEPS + VITEST_DEPS,
-)
-
-vitest_runner(
-    name = "unit_test",
-    srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-    ]),
-    deps = SRC_DEPS,
-)
+formatjs_t
 
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
@@ -128,4 +77,121 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+formatjs_ts_project(
+    name = "dist",
+    srcs = [
+        "262.ts",
+        "CanonicalizeLocaleList.ts",
+        "CanonicalizeTimeZoneName.ts",
+        "CoerceOptionsToObject.ts",
+        "DefaultNumberOption.ts",
+        "GetNumberOption.ts",
+        "GetOption.ts",
+        "GetOptionsObject.ts",
+        "GetStringOrBooleanOption.ts",
+        "IsSanctionedSimpleUnitIdentifier.ts",
+        "IsValidTimeZoneName.ts",
+        "IsWellFormedCurrencyCode.ts",
+        "IsWellFormedUnitIdentifier.ts",
+        "NumberFormat/ApplyUnsignedRoundingMode.ts",
+        "NumberFormat/CollapseNumberRange.ts",
+        "NumberFormat/ComputeExponent.ts",
+        "NumberFormat/ComputeExponentForMagnitude.ts",
+        "NumberFormat/CurrencyDigits.ts",
+        "NumberFormat/FormatApproximately.ts",
+        "NumberFormat/FormatNumeric.ts",
+        "NumberFormat/FormatNumericRange.ts",
+        "NumberFormat/FormatNumericRangeToParts.ts",
+        "NumberFormat/FormatNumericToParts.ts",
+        "NumberFormat/FormatNumericToString.ts",
+        "NumberFormat/GetUnsignedRoundingMode.ts",
+        "NumberFormat/InitializeNumberFormat.ts",
+        "NumberFormat/PartitionNumberPattern.ts",
+        "NumberFormat/PartitionNumberRangePattern.ts",
+        "NumberFormat/SetNumberFormatDigitOptions.ts",
+        "NumberFormat/SetNumberFormatUnitOptions.ts",
+        "NumberFormat/ToRawFixed.ts",
+        "NumberFormat/ToRawPrecision.ts",
+        "NumberFormat/decimal-cache.ts",
+        "NumberFormat/digit-mapping.generated.ts",
+        "NumberFormat/format_to_parts.ts",
+        "PartitionPattern.ts",
+        "SupportedLocales.ts",
+        "ToIntlMathematicalValue.ts",
+        "constants.ts",
+        "data.ts",
+        "index.ts",
+        "regex.generated.ts",
+        "tests/utils.ts",
+        "types/core.ts",
+        "types/date-time.ts",
+        "types/displaynames.ts",
+        "types/list.ts",
+        "types/number.ts",
+        "types/plural-rules.ts",
+        "types/relative-time.ts",
+        "utils.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/bigdecimal",
+        ":node_modules/@formatjs/fast-memoize",
+        ":node_modules/@formatjs/intl-localematcher",
+    ],
+)
+
+formatjs_ts_project(
+    name = "unit_test",
+    testonly = True,
+    srcs = [
+        "tests/262.test.ts",
+        "tests/ApplyUnsignedRoundingMode.test.ts",
+        "tests/CanonicalizeTimeZoneName.test.ts",
+        "tests/CollapseNumberRange.test.ts",
+        "tests/FormatApproximately.test.ts",
+        "tests/FormatNumericRange.test.ts",
+        "tests/FormatNumericRangeToParts.test.ts",
+        "tests/GetStringOrBooleanOption.test.ts",
+        "tests/GetUnsignedRoundingMode.test.ts",
+        "tests/IsValidTimeZoneName.test.ts",
+        "tests/PartitionNumberPattern.test.ts",
+        "tests/PartitionNumberRangePattern.test.ts",
+        "tests/PartitionPattern.test.ts",
+        "tests/SetNumberFormatDigitOptions.test.ts",
+        "tests/ToRawFixed.test.tsx",
+        "tests/ToRawPrecision.test.tsx",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":dist",
+        ":node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "ecma402-abstract",
+    srcs = [
+        "package.json",
+        ":dist",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )
