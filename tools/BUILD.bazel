@@ -1,5 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 
 exports_files([
     "supported-locales-gen.ts",
@@ -26,4 +27,28 @@ js_binary(
     entry_point = "generate-supported-locales.ts",
     node_options = ["--experimental-transform-types"],
     visibility = ["//visibility:public"],
+)
+
+formatjs_ts_project(
+    name = "tools",
+    srcs = [
+        "check-package-json.ts",
+        "generate-supported-locales.ts",
+    ],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = "//:tsconfig",
+    deps = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/lodash-es",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/lodash-es",
+        "//:node_modules/minimist",
+        "//:node_modules/unidiff",
+    ],
 )

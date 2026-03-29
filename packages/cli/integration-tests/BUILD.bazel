@@ -1,7 +1,8 @@
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+
 # gazelle:js disabled
 
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
@@ -52,7 +53,7 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "compile_folder_integration_test_typecheck",
     testonly = True,
@@ -120,7 +121,7 @@ vitest_runner(
 #     deps = ["//:node_modules/@bazel/runfiles"],
 # )
 
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "extract_vue_integration_test_typecheck",
     testonly = True,
@@ -159,7 +160,7 @@ vitest_runner(
     ],
 )
 
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "extract_glimmer_integration_test_typecheck",
     testonly = True,
@@ -194,7 +195,7 @@ vitest_runner(
     ] + GLIMMER_HBS_DEPS,
 )
 
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "compile_integration_test_typecheck",
     testonly = True,
@@ -230,7 +231,7 @@ vitest_runner(
     deps = ["//:node_modules/@bazel/runfiles"],
 )
 
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "verify_integration_test_typecheck",
     testonly = True,
@@ -275,7 +276,7 @@ vitest_runner(
     ],
 )
 
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "conformance_test_typecheck",
     testonly = True,

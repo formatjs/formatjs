@@ -8,7 +8,7 @@ load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
-# gazelle:js disabled
+# gazelle:js enabled
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 # gazelle:generation_mode update_only

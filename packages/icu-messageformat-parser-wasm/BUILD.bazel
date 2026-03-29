@@ -1,15 +1,21 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
+# gazelle:js_project_naming_convention dist
+# gazelle:js_tests_naming_convention unit_test
+
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG")
 
-npm_link_all_packages()
+# gazelle:js_project_naming_convention dist
+# gazelle:js_tests_naming_convention unit_test
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "icu-messageformat-parser-wasm"
 
@@ -29,44 +35,6 @@ SRC_DEPS = [
     "//:node_modules/@types/node",
 ]
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
-    srcs = [
-        ":srcs",
-        ":wasm_files",
-    ],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_NODE_TSCONFIG,
-    deps = SRC_DEPS,
-)
-
-ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = [
-        ":srcs",
-        ":wasm_files",
-    ],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_NODE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
-)
-
 npm_package(
     name = "pkg",
     srcs = [
@@ -85,4 +53,34 @@ generate_ide_tsconfig_json()
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+formatjs_ts_project(
+    name = "dist",
+    srcs = ["index.ts"],
+    declaration = True,
+    isolated_typecheck = True,
+    preserve_jsx = False,
+    resolve_json_module = True,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/icu-skeleton-parser",
+        "//:node_modules/@types/node",
+    ],
+)
+
+npm_package(
+    name = "icu-messageformat-parser-wasm",
+    srcs = [
+        "package.json",
+        ":dist",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )

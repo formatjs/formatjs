@@ -1,8 +1,9 @@
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+
 # gazelle:js disabled
 
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", "bin")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
@@ -25,7 +26,7 @@ EXAMPLES_SRC_DEPS = [
     "//:node_modules/react-dom",
 ]
 
-ts_project(
+formatjs_ts_project(
     name = "examples-esm",
     srcs = glob(
         [
