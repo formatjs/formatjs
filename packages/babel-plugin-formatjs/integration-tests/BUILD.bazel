@@ -1,9 +1,12 @@
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+
+# gazelle:js disabled
+
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 formatjs_ts_project(
     # Type-check only (tsgo, no emit)
@@ -42,24 +45,6 @@ vitest_runner(
         "//:node_modules/babel-loader",
         "//:node_modules/typescript",
         "//:node_modules/vue",
-        "//:node_modules/vue-loader",
-        "//:node_modules/webpack",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = ["vue/integration.test.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    tsconfig = "//packages/babel-plugin-formatjs:tsconfig",
-    deps = [
-        "//:node_modules/@types/node",
-        "//:node_modules/@types/webpack",
-        "//:node_modules/vitest",
         "//:node_modules/vue-loader",
         "//:node_modules/webpack",
     ],
