@@ -1,18 +1,10 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
-# gazelle:js_project_naming_convention dist
-# gazelle:js_tests_naming_convention unit_test
-
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
 # gazelle:js_project_naming_convention dist
 # gazelle:js_tests_naming_convention unit_test
@@ -44,10 +36,6 @@ SRCS = glob([
     "src/**/*",
     "*.ts",
 ])
-
-SRC_DEPS = [
-    ":node_modules/@formatjs/fast-memoize",
-]
 
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()

@@ -4,7 +4,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "VITEST_DOM_DEPS", "vitest_runner")
 
 def formatjs_ts_project(

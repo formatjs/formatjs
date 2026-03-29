@@ -10,9 +10,7 @@ load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_run_binary")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
 # gazelle:js_project_naming_convention dist
@@ -113,10 +111,6 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
 ]
 
-formatjs_t
-
-formatjs_t
-
 UNIT_TEST_LOCALES = [
     "en",
     "en-GB",
@@ -193,8 +187,6 @@ multirun(
         for locale in UNIT_TEST_LOCALES
     ],
 )
-
-formatjs_t
 
 [
     [

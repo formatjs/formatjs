@@ -3,17 +3,10 @@ load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
-# gazelle:js_project_naming_convention dist
-# gazelle:js_tests_naming_convention unit_test
-
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "VITEST_DOM_DEPS", "vitest_runner")
 
 # gazelle:js_project_naming_convention dist
 # gazelle:js_tests_naming_convention unit_test
@@ -48,22 +41,6 @@ SRC_DEPS = [
     ":node_modules/intl-messageformat",
     "//:node_modules/@types/react",
     "//:node_modules/react",
-]
-
-TESTS = glob(
-    [
-        "tests/unit/**/*.ts*",
-    ],
-    exclude = ["tests/unit/components/__snapshots__/*"],
-)
-
-TEST_DEPS = SRC_DEPS + [
-    "//:node_modules/@testing-library/jest-dom",
-    "//:node_modules/@testing-library/react",
-    "//:node_modules/@types/aria-query",
-    "//:node_modules/@types/node",
-    "//:node_modules/react-dom",
-    "//:node_modules/typescript",
 ]
 
 esbuild(

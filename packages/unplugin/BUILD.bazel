@@ -2,16 +2,9 @@ load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
-# gazelle:js_project_naming_convention dist
-# gazelle:js_tests_naming_convention unit_test
-
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
 # gazelle:js_project_naming_convention dist
 # gazelle:js_tests_naming_convention unit_test
@@ -37,16 +30,6 @@ SRCS = [
     "vite.ts",
     "webpack.ts",
     "package.json",
-]
-
-SRC_DEPS = [
-    ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@formatjs/ts-transformer",
-    ":node_modules/magic-string",
-    ":node_modules/oxc-parser",
-    ":node_modules/unplugin",
-    "//:node_modules/@types/node",
-    "//:node_modules/vite",
 ]
 
 npm_package(

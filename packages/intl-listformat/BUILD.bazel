@@ -3,14 +3,10 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_run_binary")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 
 # gazelle:js_project_naming_convention dist
 # gazelle:js_tests_naming_convention unit_test
@@ -26,8 +22,6 @@ TEST_LOCALES = [
     "zh-Hant",
     "zh-Hans",
 ]
-
-TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
 npm_package(
     name = "pkg",
@@ -51,26 +45,10 @@ SRCS = glob(
     exclude = ["test*.*"],
 )
 
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
 ]
-
-TEST_DEPS = SRC_DEPS + [
-    ":node_modules/@formatjs/intl-getcanonicallocales",
-    ":node_modules/@formatjs/intl-locale",
-    "//:node_modules/@types/node",
-]
-
-formatjs_t
-
-formatjs_t
-
-formatjs_t
 
 # CLDR
 ALL_LOCALES = [

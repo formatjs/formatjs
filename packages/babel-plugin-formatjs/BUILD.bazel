@@ -1,16 +1,9 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
-# gazelle:js_project_naming_convention dist
-# gazelle:js_tests_naming_convention unit_test
-
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
 # gazelle:js_project_naming_convention dist
 # gazelle:js_tests_naming_convention unit_test
@@ -36,27 +29,8 @@ SRCS = glob(
     exclude = ["tests/**/*"],
 )
 
-SRC_DEPS = [
-    "//:node_modules/@babel/core",
-    "//:node_modules/@babel/helper-plugin-utils",
-    "//:node_modules/@babel/plugin-syntax-jsx",
-    "//:node_modules/@babel/traverse",
-    "//:node_modules/@babel/types",
-    ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@formatjs/ts-transformer",
-    "//:node_modules/@types/babel__core",
-    "//:node_modules/@types/babel__helper-plugin-utils",
-    "//:node_modules/@types/babel__traverse",
-]
-
-formatjs_t
-
-formatjs_t
-
-formatjs_t
-
 # Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
+generate_ide_tsconfig_json(compiler_options = {"target": "ESNext"})
 
 copy_to_bin(
     name = "srcs",

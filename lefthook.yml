@@ -34,7 +34,7 @@ pre-commit:
       glob: "**/*.{bazel,bzl,BUILD}"
       run: |
         set -- {staged_files}
-        bazel run @buildifier_prebuilt//:buildifier -- -mode=fix $(printf "$PWD/%s " "$@")
+        bazel run @buildifier_prebuilt//:buildifier -- -mode=fix -lint=fix -warnings=all $(printf "$PWD/%s " "$@")
       stage_fixed: true
     lint-staged:
       glob: '**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}'
