@@ -554,8 +554,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-localematcher
 
-  packages/ecma402-abstract/scripts: {}
-
   packages/eslint-plugin-formatjs:
     dependencies:
       '@formatjs/icu-messageformat-parser':
@@ -591,8 +589,6 @@ importers:
       react-intl:
         specifier: workspace:*
         version: link:../../react-intl
-
-  packages/eslint-plugin-formatjs/scripts: {}
 
   packages/fast-memoize: {}
 
@@ -644,8 +640,6 @@ importers:
         specifier: workspace:*
         version: link:../ecma402-abstract
 
-  packages/icu-skeleton-parser/scripts: {}
-
   packages/intl:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -680,15 +674,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-locale
 
-  packages/intl-datetimeformat/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
-      '@formatjs/intl-locale':
-        specifier: workspace:*
-        version: link:../../intl-locale
-
   packages/intl-displaynames:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -705,12 +690,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-locale
 
-  packages/intl-displaynames/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
-
   packages/intl-durationformat:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -726,11 +705,7 @@ importers:
         specifier: workspace:*
         version: link:..
 
-  packages/intl-durationformat/scripts: {}
-
   packages/intl-getcanonicallocales: {}
-
-  packages/intl-getcanonicallocales/scripts: {}
 
   packages/intl-listformat:
     dependencies:
@@ -748,12 +723,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-locale
 
-  packages/intl-listformat/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
-
   packages/intl-locale:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -766,8 +735,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-supportedvaluesof
 
-  packages/intl-locale/scripts: {}
-
   packages/intl-localematcher:
     dependencies:
       '@formatjs/fast-memoize':
@@ -779,8 +746,6 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:..
-
-  packages/intl-localematcher/scripts: {}
 
   packages/intl-messageformat:
     dependencies:
@@ -822,12 +787,6 @@ importers:
         specifier: workspace:*
         version: link:..
 
-  packages/intl-numberformat/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
-
   packages/intl-pluralrules:
     dependencies:
       '@formatjs/bigdecimal':
@@ -846,12 +805,6 @@ importers:
       '@formatjs/intl-locale':
         specifier: workspace:*
         version: link:../intl-locale
-
-  packages/intl-pluralrules/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
 
   packages/intl-relativetimeformat:
     dependencies:
@@ -872,12 +825,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-pluralrules
 
-  packages/intl-relativetimeformat/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
-
   packages/intl-segmenter:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -887,8 +834,6 @@ importers:
         specifier: workspace:*
         version: link:../intl-localematcher
 
-  packages/intl-segmenter/scripts: {}
-
   packages/intl-supportedvaluesof:
     dependencies:
       '@formatjs/ecma402-abstract':
@@ -897,12 +842,6 @@ importers:
       '@formatjs/fast-memoize':
         specifier: workspace:*
         version: link:../fast-memoize
-
-  packages/intl-supportedvaluesof/scripts:
-    devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
 
   packages/react-intl:
     dependencies:

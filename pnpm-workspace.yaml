@@ -4,7 +4,6 @@ packages:
   - 'packages/*/integration-tests'
   - 'packages/*/examples'
   - 'packages/*/benchmark'
-  - 'packages/*/scripts'
   - 'website'
   - 'docs'
   - 'benchmarks/*'

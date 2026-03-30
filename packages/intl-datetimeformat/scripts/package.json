@@ -1,9 +1,0 @@
-{
-  "name": "intl-datetimeformat-scripts",
-  "private": true,
-  "type": "module",
-  "devDependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
-    "@formatjs/intl-locale": "workspace:*"
-  }
-}
