@@ -189,7 +189,6 @@ def vitest(
         testonly = True,
         deps = all_deps,
         transpiler = tsgo_bin.tsgo,
-        tags = ["no-typecheck-test"],
     )
 
     vitest_runner(

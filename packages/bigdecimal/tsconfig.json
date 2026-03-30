@@ -1,8 +1,5 @@
 // @generated
 {
   // This is purely for IDE, not for compilation
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "target": "ESNext"
-  }
+  "extends": "../../tsconfig.json"
 }

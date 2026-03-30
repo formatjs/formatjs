@@ -1,10 +1,9 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "VITEST_DOM_DEPS", "vitest_runner")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 TEST_DEPS = [
     ":node_modules/react-intl",
@@ -18,7 +17,7 @@ TEST_DEPS = [
     "//:node_modules/react",
 ]
 
-formatjs_ts_project(
+ts_project(
     # Type-check only (tsgo, no emit)
     name = "test_typecheck",
     testonly = True,
@@ -26,7 +25,6 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
-    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS] + VITEST_DOM_DEPS,
@@ -37,33 +35,4 @@ vitest_runner(
     srcs = glob(["*.ts*"]),
     dom = True,
     deps = TEST_DEPS,
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = ["format.test.tsx"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    source_map = True,
-    deps = [
-        ":node_modules/react-intl",
-        "//:node_modules/@testing-library/jest-dom",
-        "//:node_modules/@testing-library/react",
-        "//:node_modules/vitest",
-        "//packages/react-intl:node_modules/@types/react",
-        "//packages/react-intl:node_modules/react",
-    ],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
-    deps = [
-        "//:node_modules/@testing-library/jest-dom",
-        "//:node_modules/@types/node",
-    ],
 )

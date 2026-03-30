@@ -1,11 +1,11 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_rust//rust:defs.bzl", "rust_test")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
 
@@ -64,7 +64,7 @@ rust_test(
 ) for f in TEST_CASES]
 
 # WASM integration test
-formatjs_ts_project(
+ts_project(
     # Type-check only (tsgo, no emit)
     name = "wasm_integration_test_typecheck",
     testonly = True,
@@ -72,7 +72,6 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
-    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
@@ -88,35 +87,5 @@ vitest_runner(
     ],
     deps = [
         ":node_modules/@formatjs/icu-messageformat-parser-wasm",
-    ],
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = ["run-parser.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/minimist",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = ["wasm-integration.test.ts"],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser-wasm",
-        "//:node_modules/@types/node",
-        "//:node_modules/vitest",
     ],
 )

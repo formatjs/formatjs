@@ -1,5 +1,4 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 
 PACKAGE_NAME = "cli"
 
@@ -20,12 +19,4 @@ npm_package(
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
-)
-
-npm_link_all_packages(name = "node_modules")
-
-npm_package(
-    name = "cli",
-    srcs = ["package.json"],
-    visibility = ["//:__pkg__"],
 )

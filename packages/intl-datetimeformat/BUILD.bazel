@@ -1,5 +1,3 @@
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
@@ -729,6 +727,7 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
+        "scripts/extract-dates.ts",
         "src/abstract/skeleton.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
@@ -742,7 +741,6 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
-        "//packages/intl-datetimeformat/scripts:extract-dates.ts",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -750,7 +748,7 @@ ts_run_binary(
         "cldr-raw",
     ],
     chdir = package_name(),
-    tool = "//packages/intl-datetimeformat/scripts:cldr-raw",
+    entry_point = "scripts/cldr-raw.ts",
 )
 
 generate_src_file(
@@ -777,7 +775,7 @@ ts_run_binary(
         "locale-data",
     ],
     chdir = package_name(),
-    tool = "//packages/intl-datetimeformat/scripts:cldr",
+    entry_point = "scripts/cldr.ts",
     visibility = ["//visibility:public"],
 )
 
@@ -811,8 +809,8 @@ generate_src_file(
         for f in TEST262_LOCALES
     ],
     data = [":cldr-raw"],
+    entry_point = "scripts/test262-main-gen.ts",
     tags = ["cldr"],
-    tool = "//packages/intl-datetimeformat/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],
@@ -831,8 +829,8 @@ generate_src_file(
         ":tz_data_generated/backward",
         "//:node_modules/json-stable-stringify",
     ],
+    entry_point = "scripts/link.ts",
     tags = ["cldr"],
-    tool = "//packages/intl-datetimeformat/scripts:link",
 )
 
 # data.ts
@@ -849,8 +847,8 @@ generate_src_file(
         ":zdumps",
         "//:node_modules/json-stable-stringify",
     ],
+    entry_point = "scripts/process-zdump.ts",
     tags = ["cldr"],
-    tool = "//packages/intl-datetimeformat/scripts:process-zdump",
 )
 
 # "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
@@ -873,7 +871,7 @@ ts_run_binary(
         "--out",
         "$(rootpath add-all-tz.js)",
     ],
-    tool = "//packages/intl-datetimeformat/scripts:process-zdump",
+    entry_point = "scripts/process-zdump.ts",
     visibility = [
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",
@@ -900,7 +898,7 @@ ts_run_binary(
         "--out",
         "$(rootpath add-golden-tz.js)",
     ],
-    tool = "//packages/intl-datetimeformat/scripts:process-zdump",
+    entry_point = "scripts/process-zdump.ts",
 )
 
 genrule(
@@ -976,7 +974,7 @@ generate_dockerfile(
 
 sh_binary(
     name = "update_tz_data",
-    srcs = ["//packages/intl-datetimeformat/scripts:execute_tz_docker.sh"],
+    srcs = ["scripts/execute_tz_docker.sh"],
     data = [
         "tz_data.tar.gz",
         ":dockerfile",

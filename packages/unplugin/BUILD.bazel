@@ -1,16 +1,16 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 # Copy Rust CLI binary for conformance tests
 copy_file(
@@ -33,6 +33,98 @@ SRCS = [
     "package.json",
 ]
 
+SRC_DEPS = [
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/magic-string",
+    ":node_modules/oxc-parser",
+    ":node_modules/unplugin",
+    "//:node_modules/@types/node",
+    "//:node_modules/vite",
+]
+
+# Uses skipLibCheck because unplugin's .d.ts imports types from many optional peer deps
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-esnext-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = ESNEXT_SKIP_LIB_CHECK_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm-esnext",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = ESNEXT_SKIP_LIB_CHECK_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm-esnext",
+    ],
+)
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + glob(["tests/**/*.ts"]),
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + [d for d in VITEST_DEPS if d not in SRC_DEPS],
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + glob(["tests/**/*.ts"]),
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "conformance_test_typecheck",
+    testonly = True,
+    srcs = SRCS + [
+        ":rust_cli_copy",
+    ] + glob(["conformance-tests/**/*.ts"]),
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + [
+        "//:node_modules/@bazel/runfiles",
+    ] + [d for d in VITEST_DEPS if d not in SRC_DEPS],
+)
+
+vitest_runner(
+    name = "conformance_test",
+    srcs = SRCS + [
+        ":rust_cli_copy",
+    ] + glob(["conformance-tests/**/*.ts"]),
+    data = [
+        "//crates/formatjs_cli",
+    ],
+    deps = SRC_DEPS + [
+        "//:node_modules/@bazel/runfiles",
+    ],
+)
+
 npm_package(
     name = "pkg",
     srcs = [
@@ -51,64 +143,3 @@ copy_to_bin(
 )
 
 generate_ide_tsconfig_json()
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = [
-        "conformance-tests/rust-binary-utils.ts",
-        "esbuild.ts",
-        "index.ts",
-        "rollup.ts",
-        "rspack.ts",
-        "transform.ts",
-        "vite.ts",
-        "webpack.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/magic-string",
-        ":node_modules/oxc-parser",
-        ":node_modules/unplugin",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = [
-        "conformance-tests/cli-unplugin-conformance.test.ts",
-        "tests/transform.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":dist",
-        ":node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@types/node",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "unplugin",
-    srcs = [
-        "package.json",
-        ":dist",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
-)

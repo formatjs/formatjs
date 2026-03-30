@@ -1,17 +1,15 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tests_naming_convention unit_test
-# gazelle:js_tsconfig disabled
-# gazelle:js_tsconfig_ignore tsconfig
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 exports_files([
     "package.json",
@@ -35,36 +33,69 @@ SRCS = glob([
     "*.ts",
 ])
 
-generate_ide_tsconfig_json(compiler_options = {"target": "ESNext"})
+SRC_DEPS = [
+]
+
+TESTS = glob([
+    "tests/*.test.ts",
+])
+
+TEST_DEPS = SRC_DEPS
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-esnext-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm-esnext",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm-esnext",
+    ],
+)
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + TESTS,
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = TEST_DEPS + VITEST_DEPS,
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + TESTS,
+    deps = TEST_DEPS,
+)
+
+generate_ide_tsconfig_json()
 
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = ["index.ts"],
-    isolated_typecheck = True,
-    tsconfig = ESNEXT_TSCONFIG,  # keep
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = ["tests/bigdecimal.test.ts"],
-    isolated_typecheck = True,
-    deps = [
-        ":dist",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "bigdecimal",
-    srcs = [
-        "package.json",
-        ":dist",
-    ],
-    visibility = ["//:__pkg__"],
 )

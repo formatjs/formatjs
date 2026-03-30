@@ -2,19 +2,19 @@ load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_src_file")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 load(":index.bzl", "unicode_file_name")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-segmenter"
 
@@ -37,6 +37,17 @@ SRC_DEPS = [
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
+TEST_UNICODE_FILES = [
+    "@GraphemeBreakTest//file",
+    "@WordBreakTest//file",
+    "@SentenceBreakTest//file",
+]
+
+TEST_DEPS = SRC_DEPS + [
+    "//:node_modules/@types/node",
+    "//:node_modules/@bazel/runfiles",
+] + TEST_UNICODE_FILES
+
 SRCS = glob(
     [
         "src/**/*.ts",
@@ -50,11 +61,71 @@ SRCS = glob(
     ],
 )
 
+TESTS = glob([
+    "tests/*.test.ts",
+])
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm",
+    ],
+)
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + TESTS + ["tests/test-utils.ts"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS],
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + TESTS + ["tests/test-utils.ts"],
+    no_copy_to_bin = [
+        "@GraphemeBreakTest//file",
+        "@WordBreakTest//file",
+        "@SentenceBreakTest//file",
+    ],
+    deps = TEST_DEPS,
+)
+
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
+    entry_point = "scripts/test262-main-gen.ts",
     tags = ["cldr"],
-    tool = "//packages/intl-segmenter/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],
@@ -139,69 +210,11 @@ generate_src_file(
             "//:node_modules/json-stable-stringify",
             "//:node_modules/regexpu-core",
         ],
+    entry_point = "scripts/generate-cldr-segmentation-rules.ts",
     tags = ["cldr"],
-    tool = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules",
 )
 
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = [
-        "benchmark.ts",
-        "debug.ts",
-        "polyfill.ts",
-        "polyfill-force.ts",
-        "should-polyfill.ts",
-        "src/cldr-segmentation-rules.generated.ts",
-        "src/segmentation-utils.ts",
-        "src/segmenter.ts",
-        "test262-main.ts",
-        "tests/test-utils.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-        "//:node_modules/tinybench",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = [
-        "tests/grapheme.test.ts",
-        "tests/isWordLike.test.ts",
-        "tests/sentence.test.ts",
-        "tests/word.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    no_copy_to_bin = [
-        # keep
-        "@GraphemeBreakTest//file",
-        "@SentenceBreakTest//file",
-        "@WordBreakTest//file",
-    ],
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":dist",
-        "//:node_modules/vitest",
-    ],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

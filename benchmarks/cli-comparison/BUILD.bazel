@@ -1,7 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 # Generate test files (100K files with mixed message formats)
 # Includes defineMessage, defineMessages, formatMessage, and FormattedMessage patterns
