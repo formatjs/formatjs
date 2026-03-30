@@ -277,6 +277,102 @@ def generate_ide_tsconfig_json(name = "tsconfig_json"):
         files = {"tsconfig.json": name + "_generated"},
     )
 
+def generate_package_json(
+        name = "package_json",
+        package_name = None,
+        version = "0.0.0",
+        description = "",
+        exports = {".": "./index.js"},
+        dependencies = {},
+        dev_dependencies = {},
+        peer_dependencies = {},
+        peer_dependencies_meta = {},
+        keywords = [],
+        sideEffects = None,
+        main = None,
+        contributors = [],
+        extra = {}):
+    """Generate a package.json file from BUILD.bazel metadata.
+
+    Args:
+        name: target name (default: "package_json")
+        package_name: npm package name (e.g. "@formatjs/ecma402-abstract")
+        version: package version
+        description: package description
+        exports: exports map
+        dependencies: production dependencies dict
+        dev_dependencies: dev dependencies dict
+        peer_dependencies: peer dependencies dict
+        peer_dependencies_meta: peer dependencies meta dict
+        keywords: list of keywords
+        sideEffects: whether the package has side effects (None to omit)
+        main: main entry point (None to omit)
+        contributors: list of contributor strings
+        extra: additional fields to merge into the package.json
+    """
+    if not package_name:
+        fail("package_name is required for generate_package_json")
+
+    pkg = {}
+    pkg["name"] = package_name
+    pkg["description"] = description
+    pkg["version"] = version
+    pkg["license"] = "MIT"
+    pkg["author"] = "Long Ho <holevietlong@gmail.com>"
+    pkg["type"] = "module"
+
+    if sideEffects != None:
+        pkg["sideEffects"] = sideEffects
+
+    pkg["types"] = "index.d.ts"
+
+    if exports:
+        pkg["exports"] = exports
+
+    if dependencies:
+        pkg["dependencies"] = dependencies
+
+    if dev_dependencies:
+        pkg["devDependencies"] = dev_dependencies
+
+    if peer_dependencies:
+        pkg["peerDependencies"] = peer_dependencies
+
+    pkg["bugs"] = "https://github.com/formatjs/formatjs/issues"
+
+    if contributors:
+        pkg["contributors"] = contributors
+
+    pkg["homepage"] = "https://github.com/formatjs/formatjs"
+
+    if keywords:
+        pkg["keywords"] = keywords
+
+    if main:
+        pkg["main"] = main
+
+    if peer_dependencies_meta:
+        pkg["peerDependenciesMeta"] = peer_dependencies_meta
+
+    pkg["repository"] = "formatjs/formatjs.git"
+
+    # Merge extra fields
+    for k, v in extra.items():
+        pkg[k] = v
+
+    content = json.encode_indent(pkg, indent = "  ")
+
+    native.genrule(
+        name = name + "_generated",
+        outs = [name + ".generated.json"],
+        cmd = "cat > $@ << 'EOF'\n%s\nEOF" % content,
+    )
+
+    write_source_files(
+        name = name,
+        files = {"package.json": name + "_generated"},
+    )
+
 def is_internal_dep(s):
     return s.startswith("//:node_modules/@formatjs") or s in [
         "//:node_modules/babel-plugin-formatjs",
