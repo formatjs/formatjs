@@ -1,5 +1,3 @@
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
@@ -292,7 +290,7 @@ ts_run_binary(
         "cldr-raw",
     ],
     chdir = package_name(),
-    entry_point = "//packages/intl-pluralrules/scripts:cldr-raw.ts",
+    tool = "//packages/intl-pluralrules/scripts:cldr-raw",
 )
 
 generate_src_file(
@@ -319,7 +317,7 @@ ts_run_binary(
         "locale-data",
     ],
     chdir = package_name(),
-    entry_point = "//packages/intl-pluralrules/scripts:cldr.ts",
+    tool = "//packages/intl-pluralrules/scripts:cldr",
     visibility = ["//visibility:public"],
 )
 
@@ -348,8 +346,8 @@ generate_src_file(
         for f in CLDR_RAW_FILES
     ],
     data = [":cldr-raw"],
-    entry_point = "//packages/intl-pluralrules/scripts:test262-main-gen.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-pluralrules/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],

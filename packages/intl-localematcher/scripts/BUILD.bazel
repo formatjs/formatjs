@@ -1,6 +1,10 @@
 # gazelle:js disabled
 
-exports_files(
-    glob(["*"]),
-    visibility = ["//visibility:public"],
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+
+js_binary(
+    name = "regions-gen",
+    entry_point = "regions-gen.ts",
+    node_options = ["--experimental-transform-types"],
+    visibility = ["//packages/intl-localematcher:__pkg__"],
 )

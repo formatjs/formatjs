@@ -1,15 +1,19 @@
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+
+# gazelle:js disabled
+
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "eslint-plugin-formatjs"
 
@@ -31,7 +35,7 @@ generate_src_file(
     data = [
         ":emoji-data-txt",
     ],
-    entry_point = "scripts/generate-emoji-data.ts",
+    tool = "//packages/eslint-plugin-formatjs/scripts:generate-emoji-data",
 )
 
 npm_package(
@@ -55,118 +59,93 @@ SRCS = glob(["rules/*.ts"]) + [
     "package.json",
 ]
 
-# Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json(compiler_options = {"target": "ESNext"})
+SRC_DEPS = [
+    ":node_modules/@formatjs/icu-messageformat-parser",
+    ":node_modules/@formatjs/ts-transformer",
+    ":node_modules/@types/picomatch",
+    ":node_modules/magic-string",
+    ":node_modules/picomatch",
+    "//:node_modules/@types/node",
+    "//:node_modules/@types/estree-jsx",
+    "//:node_modules/@unicode/unicode-17.0.0",
+    "//:node_modules/eslint",
+    "//:node_modules/typescript",
+]
 
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
+formatjs_ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-esnext-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = SRC_DEPS,
 )
 
 formatjs_ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm-esnext",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
     name = "dist",
     srcs = [
-        "emoji-data.generated.ts",
-        "emoji-utils.ts",
-        "index.ts",
-        "messages.ts",
         "package.json",
-        "rules/blocklist-elements.ts",
-        "rules/enforce-default-message.ts",
-        "rules/enforce-description.ts",
-        "rules/enforce-id.ts",
-        "rules/enforce-placeholders.ts",
-        "rules/enforce-plural-rules.ts",
-        "rules/no-camel-case.ts",
-        "rules/no-complex-selectors.ts",
-        "rules/no-emoji.ts",
-        "rules/no-id.ts",
-        "rules/no-invalid-icu.ts",
-        "rules/no-literal-string-in-jsx.ts",
-        "rules/no-literal-string-in-object.ts",
-        "rules/no-missing-icu-plural-one-placeholders.ts",
-        "rules/no-multiple-plurals.ts",
-        "rules/no-multiple-whitespaces.ts",
-        "rules/no-offset.ts",
-        "rules/no-useless-message.ts",
-        "rules/prefer-formatted-message.ts",
-        "rules/prefer-full-sentence.ts",
-        "rules/prefer-pound-in-plural.ts",
-        "scripts/generate-emoji-data.ts",
-        "tests/fixtures.ts",
-        "tests/util.ts",
-        "util.ts",
+        ":dist-esm-esnext",
     ],
+)
+
+TESTS_BASE_SRCS = [":srcs"] + glob(
+    [
+        "tests/*.ts",
+    ],
+    exclude = ["tests/*.test.ts"],
+)
+
+TEST_FILES = glob([
+    "tests/*.test.ts",
+])
+
+formatjs_ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = TESTS_BASE_SRCS + TEST_FILES,
     declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
+    no_emit = True,
     resolve_json_module = True,
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/@types/picomatch",
-        ":node_modules/@unicode/unicode-17.0.0",
-        ":node_modules/eslint",
-        ":node_modules/magic-string",
-        ":node_modules/picomatch",
-        "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + [
+        "//:node_modules/@typescript-eslint/utils",
         "//:node_modules/oxlint",
-        "//:node_modules/vitest",
+        "//:node_modules/vue-eslint-parser",
+    ] + [d for d in VITEST_DEPS if d not in SRC_DEPS],
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = TESTS_BASE_SRCS + TEST_FILES,
+    deps = SRC_DEPS + [
+        "//:node_modules/@typescript-eslint/utils",
+        "//:node_modules/oxlint",
         "//:node_modules/vue-eslint-parser",
     ],
 )
 
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = [
-        "tests/blocklist-elements.test.ts",
-        "tests/emoji-utils.test.ts",
-        "tests/enforce-default-message.test.ts",
-        "tests/enforce-description.test.ts",
-        "tests/enforce-id.test.ts",
-        "tests/enforce-placeholders.test.ts",
-        "tests/enforce-plural-rules.test.ts",
-        "tests/no-camel-case.test.ts",
-        "tests/no-complex-selectors.test.ts",
-        "tests/no-emoji.test.ts",
-        "tests/no-id.test.ts",
-        "tests/no-invalid-icu.test.ts",
-        "tests/no-literal-string-in-jsx.test.ts",
-        "tests/no-literal-string-in-object.test.ts",
-        "tests/no-missing-icu-plural-one-placeholders.test.ts",
-        "tests/no-multiple-plurals.test.ts",
-        "tests/no-multiple-whitespaces.test.ts",
-        "tests/no-offset.test.ts",
-        "tests/no-useless-message.test.ts",
-        "tests/prefer-formatted-message.test.ts",
-        "tests/prefer-full-sentence.test.ts",
-        "tests/prefer-pound-in-plural.test.ts",
-        "tests/tagged-template-substitutions.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":dist",
-        "//:node_modules/vitest",
-    ],
-)
+# Generate tsconfig.json with correct extends path
+generate_ide_tsconfig_json()
 
-npm_package(
-    name = "eslint-plugin-formatjs",
-    srcs = [":dist"],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
 )

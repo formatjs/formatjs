@@ -1,5 +1,3 @@
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
@@ -52,8 +50,8 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-bcp47",
     ],
-    entry_point = "//packages/intl-supportedvaluesof/scripts:calendars.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-supportedvaluesof/scripts:calendars",
 )
 
 # timezones
@@ -63,8 +61,8 @@ generate_src_file(
     args = ["--zone %s" % z for z in ZONES],
     data = [
     ],
-    entry_point = "//packages/intl-supportedvaluesof/scripts:timezones.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-supportedvaluesof/scripts:timezones",
 )
 
 # numbering-systems
@@ -83,8 +81,8 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-numbers-full",
     ],
-    entry_point = "//packages/intl-supportedvaluesof/scripts:currencies.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-supportedvaluesof/scripts:currencies",
 )
 
 # collations
@@ -94,8 +92,8 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-bcp47",
     ],
-    entry_point = "//packages/intl-supportedvaluesof/scripts:collations.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-supportedvaluesof/scripts:collations",
 )
 
 # units
@@ -106,8 +104,8 @@ generate_src_file(
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/cldr-bcp47",
     ],
-    entry_point = "//packages/intl-supportedvaluesof/scripts:units.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-supportedvaluesof/scripts:units",
 )
 
 esbuild(

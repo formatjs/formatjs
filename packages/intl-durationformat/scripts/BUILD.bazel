@@ -1,6 +1,18 @@
 # gazelle:js disabled
 
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+
 exports_files(
-    glob(["*"]),
-    visibility = ["//visibility:public"],
+    [
+        "time-separators.ts",
+        "utils.ts",
+    ],
+    visibility = ["//packages/intl-durationformat:__pkg__"],
+)
+
+js_binary(
+    name = "time-separators",
+    entry_point = "time-separators.ts",
+    node_options = ["--experimental-transform-types"],
+    visibility = ["//packages/intl-durationformat:__pkg__"],
 )

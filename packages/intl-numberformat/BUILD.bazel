@@ -1,9 +1,6 @@
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
@@ -32,14 +29,9 @@ exports_files(
 
 PACKAGE_NAME = "intl-numberformat"
 
-js_binary(
+alias(
     name = "generate-locale-test",
-    data = [
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
-    ],
-    entry_point = "//packages/intl-numberformat/scripts:generate-locale-test.ts",
-    node_options = ["--experimental-transform-types"],
+    actual = "//packages/intl-numberformat/scripts:generate-locale-test",
 )
 
 TEST_LOCALES = [
@@ -827,7 +819,7 @@ ts_run_binary(
         "cldr-raw",
     ],
     chdir = package_name(),
-    entry_point = "//packages/intl-numberformat/scripts:cldr-raw.ts",
+    tool = "//packages/intl-numberformat/scripts:cldr-raw",
     visibility = [
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",
@@ -858,7 +850,7 @@ ts_run_binary(
         "locale-data",
     ],
     chdir = package_name(),
-    entry_point = "//packages/intl-numberformat/scripts:cldr.ts",
+    tool = "//packages/intl-numberformat/scripts:cldr",
     visibility = ["//visibility:public"],
 )
 
@@ -892,8 +884,8 @@ generate_src_file(
         for f in TEST262_LOCALES
     ],
     data = [":cldr-raw"],
-    entry_point = "//packages/intl-numberformat/scripts:test262-main-gen.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-numberformat/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],
@@ -914,8 +906,8 @@ generate_src_file(
         "//packages/intl-numberformat/scripts:extract-currencies.ts",
         "//packages/intl-numberformat/scripts:utils.ts",
     ],
-    entry_point = "//packages/intl-numberformat/scripts:currency-digits.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-numberformat/scripts:currency-digits",
 )
 
 # numbering-systems
@@ -931,8 +923,8 @@ generate_src_file(
         "//packages/intl-numberformat/scripts:extract-numbers.ts",
         "//packages/intl-numberformat/scripts:utils.ts",
     ],
-    entry_point = "//packages/intl-numberformat/scripts:numbering-systems.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-numberformat/scripts:numbering-systems",
 )
 
 # units-constants

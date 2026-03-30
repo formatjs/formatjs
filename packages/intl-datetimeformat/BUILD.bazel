@@ -1,23 +1,24 @@
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+
 # gazelle:js disabled
 
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_run_binary")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_dockerfile")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-datetimeformat"
 
@@ -36,6 +37,8 @@ TEST_LOCALES = [
     "fa",
     "nl",
 ]
+
+TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
 npm_package(
     name = "pkg",
@@ -63,11 +66,72 @@ SRCS = glob(
     ],
 )
 
+TESTS = glob([
+    "tests/**/*.test.ts",
+])
+
 SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
     ":node_modules/@formatjs/bigdecimal",
 ]
+
+TEST_DEPS = SRC_DEPS + [
+    ":node_modules/@formatjs/intl-getcanonicallocales",
+    ":node_modules/@formatjs/intl-locale",
+    "//:node_modules/@types/node",
+]
+
+formatjs_ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+formatjs_ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm",
+    ],
+)
+
+formatjs_ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS],
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    deps = TEST_DEPS,
+)
 
 # Expand zdump files
 genrule(
@@ -666,6 +730,7 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
+        "scripts/extract-dates.ts",
         "src/abstract/skeleton.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
@@ -679,7 +744,6 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
-        "//packages/intl-datetimeformat/scripts:extract-dates.ts",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -687,7 +751,7 @@ ts_run_binary(
         "cldr-raw",
     ],
     chdir = package_name(),
-    entry_point = "//packages/intl-datetimeformat/scripts:cldr-raw.ts",
+    entry_point = "scripts/cldr-raw.ts",
 )
 
 generate_src_file(
@@ -714,7 +778,7 @@ ts_run_binary(
         "locale-data",
     ],
     chdir = package_name(),
-    entry_point = "//packages/intl-datetimeformat/scripts:cldr.ts",
+    entry_point = "scripts/cldr.ts",
     visibility = ["//visibility:public"],
 )
 
@@ -748,7 +812,7 @@ generate_src_file(
         for f in TEST262_LOCALES
     ],
     data = [":cldr-raw"],
-    entry_point = "//packages/intl-datetimeformat/scripts:test262-main-gen.ts",
+    entry_point = "scripts/test262-main-gen.ts",
     tags = ["cldr"],
     visibility = [
         "//:__pkg__",
@@ -768,7 +832,7 @@ generate_src_file(
         ":tz_data_generated/backward",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "//packages/intl-datetimeformat/scripts:link.ts",
+    entry_point = "scripts/link.ts",
     tags = ["cldr"],
 )
 
@@ -786,7 +850,7 @@ generate_src_file(
         ":zdumps",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "//packages/intl-datetimeformat/scripts:process-zdump.ts",
+    entry_point = "scripts/process-zdump.ts",
     tags = ["cldr"],
 )
 
@@ -810,7 +874,7 @@ ts_run_binary(
         "--out",
         "$(rootpath add-all-tz.js)",
     ],
-    entry_point = "//packages/intl-datetimeformat/scripts:process-zdump.ts",
+    entry_point = "scripts/process-zdump.ts",
     visibility = [
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",
@@ -837,7 +901,7 @@ ts_run_binary(
         "--out",
         "$(rootpath add-golden-tz.js)",
     ],
-    entry_point = "//packages/intl-datetimeformat/scripts:process-zdump.ts",
+    entry_point = "scripts/process-zdump.ts",
 )
 
 genrule(
@@ -913,7 +977,7 @@ generate_dockerfile(
 
 sh_binary(
     name = "update_tz_data",
-    srcs = ["//packages/intl-datetimeformat/scripts:execute_tz_docker.sh"],
+    srcs = ["scripts/execute_tz_docker.sh"],
     data = [
         "tz_data.tar.gz",
         ":dockerfile",
@@ -924,106 +988,4 @@ sh_binary(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = [
-        "add-all-tz.d.ts",
-        "add-golden-tz.d.ts",
-        "index.ts",
-        "polyfill.ts",
-        "polyfill-force.ts",
-        "should-polyfill.ts",
-        "src/abstract/BasicFormatMatcher.ts",
-        "src/abstract/BestFitFormatMatcher.ts",
-        "src/abstract/DateTimeStyleFormat.ts",
-        "src/abstract/FormatDateTime.ts",
-        "src/abstract/FormatDateTimePattern.ts",
-        "src/abstract/FormatDateTimeRange.ts",
-        "src/abstract/FormatDateTimeRangeToParts.ts",
-        "src/abstract/FormatDateTimeToParts.ts",
-        "src/abstract/InitializeDateTimeFormat.ts",
-        "src/abstract/PartitionDateTimePattern.ts",
-        "src/abstract/PartitionDateTimeRangePattern.ts",
-        "src/abstract/ToDateTimeOptions.ts",
-        "src/abstract/ToLocalTime.ts",
-        "src/abstract/skeleton.ts",
-        "src/abstract/utils.ts",
-        "src/core.ts",
-        "src/data/all-tz.generated.ts",
-        "src/data/links.generated.ts",
-        "src/get_internal_slots.ts",
-        "src/packer.ts",
-        "src/to_locale_string.ts",
-        "src/types.ts",
-        "supported-locales.generated.ts",
-        "test262-main.ts",
-        "tests/benchmark.ts",
-        "tests/locale-data/en.json",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":node_modules/@formatjs/bigdecimal",
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = [
-        "tests/abstract/BestFitFormatMatcher.test.ts",
-        "tests/abstract/skeleton.test.ts",
-        "tests/format.test.ts",
-        "tests/format-range.test.ts",
-        "tests/ftp-main.test.ts",
-        "tests/index.test.ts",
-        "tests/locale-data/ar.json",
-        "tests/locale-data/bs.json",
-        "tests/locale-data/de.json",
-        "tests/locale-data/en-CA.json",
-        "tests/locale-data/en-GB.json",
-        "tests/locale-data/fa.json",
-        "tests/locale-data/ja.json",
-        "tests/locale-data/ko.json",
-        "tests/locale-data/nl.json",
-        "tests/locale-data/pl.json",
-        "tests/locale-data/ru.json",
-        "tests/locale-data/zh-Hans.json",
-        "tests/offset-timezone.test.ts",
-    ],
-    declaration = True,
-    isolated_typecheck = True,
-    preserve_jsx = False,
-    resolve_json_module = True,
-    deps = [
-        ":dist",
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "intl-datetimeformat",
-    srcs = [
-        "add-all-tz.js",
-        "add-golden-tz.js",
-        "package.json",
-        ":dist",
-    ],
-    visibility = ["//:__pkg__"],
-)
-
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    visibility = [":__subpackages__"],
 )

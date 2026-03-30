@@ -1,5 +1,3 @@
-# gazelle:js disabled
-
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
@@ -54,8 +52,8 @@ SRCS = glob(
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
-    entry_point = "//packages/intl-segmenter/scripts:test262-main-gen.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-segmenter/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],
@@ -140,8 +138,8 @@ generate_src_file(
             "//:node_modules/json-stable-stringify",
             "//:node_modules/regexpu-core",
         ],
-    entry_point = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules",
 )
 
 copy_to_bin(
@@ -167,7 +165,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":node_modules/@formatjs/ecma402-abstract",
         ":node_modules/@formatjs/intl-localematcher",
@@ -196,7 +193,6 @@ formatjs_ts_project(
     ],
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":dist",
         "//:node_modules/vitest",

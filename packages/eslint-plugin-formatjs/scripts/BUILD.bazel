@@ -1,0 +1,15 @@
+# gazelle:js disabled
+
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+
+exports_files(
+    ["generate-emoji-data.ts"],
+    visibility = ["//packages/eslint-plugin-formatjs:__pkg__"],
+)
+
+js_binary(
+    name = "generate-emoji-data",
+    entry_point = "generate-emoji-data.ts",
+    node_options = ["--experimental-transform-types"],
+    visibility = ["//packages/eslint-plugin-formatjs:__pkg__"],
+)
