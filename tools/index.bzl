@@ -239,7 +239,8 @@ def generate_ide_tsconfig_json(name = "tsconfig_json"):
     """Generate a tsconfig.json file with the correct extends path based on package depth.
 
     This macro calculates the correct relative path to the root tsconfig.json
-    based on the package's location in the repository.
+    based on the package's location in the repository. It also generates
+    path aliases so that #packages/* imports resolve correctly at any depth.
 
     Args:
         name: target name (default: "tsconfig_json")
@@ -250,26 +251,39 @@ def generate_ide_tsconfig_json(name = "tsconfig_json"):
     # Empty string (root) = 0, "docs" = 1, "packages/foo" = 2
     depth = len(package.split("/")) if package else 0
 
-    # Generate the extends path: one "../" per level to reach root
-    # For packages/foo (depth=2): ../../tsconfig.json
-    # For docs (depth=1): ../tsconfig.json
-    extends_path = ("../" * depth) + "tsconfig.json"
+    # Generate the relative path to repo root: one "../" per level
+    # For packages/foo (depth=2): ../..
+    # For packages/foo/scripts (depth=3): ../../..
+    relative_to_root = "/".join([".."] * depth) if depth else "."
 
-    # Create tsconfig as a dict
+    extends_path = relative_to_root + "/tsconfig.json"
+
+    # Build tsconfig with paths for #packages/* alias
+    # Maps #packages/* to the packages/ directory relative to this tsconfig
     tsconfig = {
         "extends": extends_path,
+        "compilerOptions": {
+            "paths": {
+                "#packages/*": [relative_to_root + "/packages/*"],
+            },
+        },
     }
 
-    # Encode to JSON
-    json_content = json.encode_indent(tsconfig, indent = "  ")
+    content = json.encode_indent(tsconfig, indent = "  ")
 
-    # Add comment header
-    content = "// @generated\n{\n  // This is purely for IDE, not for compilation\n  \"extends\": \"%s\"\n}\n" % extends_path
+    tmp_name = name + "_unformatted"
+    native.genrule(
+        name = tmp_name,
+        outs = [tmp_name + ".json"],
+        cmd = "cat > $@ << 'EOF'\n%s\nEOF" % content,
+    )
 
     native.genrule(
         name = name + "_generated",
+        srcs = [tmp_name + ".json"],
         outs = [name + ".generated.json"],
-        cmd = "printf '%s' > $@" % content,
+        cmd = "$(location //:oxfmt) --stdin-filepath=$< < $< > $@",
+        tools = ["//:oxfmt"],
     )
 
     write_source_files(

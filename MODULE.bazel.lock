@@ -398,11 +398,11 @@
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
         "bzlTransitiveDigest": "mgipZzBrc3b7BdA8UsakMd4W6/9h6+GDAUZpx2grCJ4=",
-        "usagesDigest": "Poc6aR0RvidJ/IlCHO+XuhdTUb8PcIKz/zhczsNKsEc=",
+        "usagesDigest": "HMmnOypE3Tj+GItyJdCrFcUM7+x2KPyeTv0JzIFDnwY=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
-          "FILE:@@//package.json 33f628fd1af26e9cf29b160090917c3914cbcbb66af8447b1d3d430749a7a016"
+          "FILE:@@//package.json edc6abdb7665dc09cd62fd097c7c9c065f79500ce7265ddfe152b82061b1e28c"
         ],
         "generatedRepoSpecs": {
           "npm_typescript": {
@@ -1065,7 +1065,7 @@
           "FILE:@@//Cargo.lock b25f6e198c91b5282f93a5c62a3a799917ec7c2f6a03b0488948c4328d6c1c93",
           "FILE:@@//Cargo.toml 4e0e0629ddbf521db0ad31e9ad8cd8805f29b141f7edaaa560af34e5f325f882",
           "FILE:@@rules_rust++rust_host_tools+rust_host_tools//rust_host_tools ENOENT",
-          "FILE:@@//MODULE.bazel b3c52aebfef9abc70f79ec1e3d9c6cb314c360814024c8db82e000c79a4b6e32",
+          "FILE:@@//MODULE.bazel 3f46a8196391cf91ceb155ae04c234b0240c160845b570e125dd740ee1154034",
           "FILE:@@//crates/icu_skeleton_parser/Cargo.toml eac4ca44b47b0fde5ae7f4afcdb6e7d4951eac75eb44db7349b2ba912a9840da",
           "FILE:@@//crates/icu_messageformat_parser/Cargo.toml 1c2096e9a8853568596e65ebbb56af73feef324883c36b9fec7fa2ab7a7621ed",
           "FILE:@@//crates/formatjs_cli/Cargo.toml aec7493b4f9b37ec1d2ee32c7a60814c0e8c0823b0a5596bd69f8400c857b033",

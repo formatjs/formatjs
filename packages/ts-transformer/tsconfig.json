@@ -1,5 +1,8 @@
-// @generated
 {
-  // This is purely for IDE, not for compilation
+  "compilerOptions": {
+    "paths": {
+      "#packages/*": ["../../packages/*"]
+    }
+  },
   "extends": "../../tsconfig.json"
 }

@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "author": "Long Ho <holevietlong@gmail.com>",
   "private": true,
+  "imports": {
+    "#packages/*": "./packages/*"
+  },
   "scripts": {
     "build": "bazel build //...",
     "examples": "bazel run //packages/react-intl/examples",
