@@ -81,6 +81,7 @@ formatjs_ts_project(
         "tests/interpolate-name.test.ts",
     ],
     declaration = True,
+    fixtures = glob(["tests/fixtures/**/*"]),  # keep
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,

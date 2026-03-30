@@ -79,8 +79,11 @@ formatjs_ts_project(
         ":dist",
         ":node_modules/@babel/core",
         ":node_modules/@types/babel__core",
+        "//:node_modules/@babel/preset-env",  # keep
+        "//:node_modules/@babel/preset-react",  # keep
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
+        "//packages/babel-plugin-formatjs/tests/fixtures",  # keep
     ],
 )
 
