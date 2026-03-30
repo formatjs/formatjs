@@ -15,9 +15,9 @@ exports_files([
 ])
 
 # Export test fixtures for use by other packages (e.g., Rust CLI tests)
-filegroup(
+alias(
     name = "test_fixtures",
-    srcs = ["//packages/ts-transformer/tests/fixtures"],
+    actual = "//packages/ts-transformer/tests/fixtures",
     visibility = ["//visibility:public"],
 )
 
@@ -63,7 +63,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":node_modules/@formatjs/icu-messageformat-parser",
         ":node_modules/@types/node",
@@ -81,11 +80,10 @@ formatjs_ts_project(
         "tests/interpolate-name.test.ts",
     ],
     declaration = True,
-    fixtures = glob(["tests/fixtures/**/*"]),  # keep
+    fixtures = [":test_fixtures"],  # keep
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":dist",
         ":node_modules/@types/node",

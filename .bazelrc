@@ -96,6 +96,11 @@ build --@aspect_rules_ts//ts:default_to_tsc_transpiler
 fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
 
+# Exclude auto-generated _typecheck_test from ts_project when using custom transpilers.
+# Our type-checking is done by tsgo via formatjs_ts_project macro; the auto-generated
+# tsc-based _typecheck_test uses file-based tsconfig that doesn't work in sandbox.
+test --test_tag_filters=-no-typecheck-test
+
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this

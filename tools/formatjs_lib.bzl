@@ -97,6 +97,7 @@ def _formatjs_library(name, srcs, deps = [], visibility = None, tsconfig = None)
         transpiler = tsgo_bin.tsgo,
         tsconfig = effective_tsconfig,
         validate = False,
+        tags = ["no-typecheck-test"],
         deps = deps,
     )
 
@@ -110,6 +111,7 @@ def _formatjs_library(name, srcs, deps = [], visibility = None, tsconfig = None)
         transpiler = oxc_transpiler,
         tsconfig = effective_tsconfig,
         validate = False,
+        tags = ["no-typecheck-test"],
         deps = deps + ["//:node_modules/oxc-transform"],
     )
 
@@ -155,6 +157,7 @@ def _formatjs_test(
         transpiler = tsgo_bin.tsgo,
         tsconfig = TEST_TSCONFIG,
         validate = False,
+        tags = ["no-typecheck-test"],
         deps = all_test_deps,
     )
 

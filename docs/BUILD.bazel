@@ -32,6 +32,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = DOCS_TSCONFIG,
     deps = [

@@ -72,6 +72,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
@@ -97,7 +98,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = "//packages/icu-messageformat-parser:tsconfig",
     deps = [
         ":node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/minimist",
@@ -114,7 +114,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = "//packages/icu-messageformat-parser:tsconfig",
     deps = [
         ":node_modules/@formatjs/icu-messageformat-parser-wasm",
         "//:node_modules/@types/node",

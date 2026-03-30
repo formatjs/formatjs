@@ -9,9 +9,9 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 # Test tsconfig: ESNext with skipLibCheck, Node types, and relaxed side-effect imports
 TEST_TSCONFIG = ESNEXT_TSCONFIG | {
     "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
+        "noUncheckedSideEffectImports": False,
         "skipLibCheck": True,
         "types": ["node"],
-        "noUncheckedSideEffectImports": False,
     },
 }
 
@@ -189,6 +189,7 @@ def vitest(
         testonly = True,
         deps = all_deps,
         transpiler = tsgo_bin.tsgo,
+        tags = ["no-typecheck-test"],
     )
 
     vitest_runner(

@@ -44,7 +44,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
 )
 
 formatjs_ts_project(
@@ -55,7 +54,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":ecma376",
         "//:node_modules/vitest",

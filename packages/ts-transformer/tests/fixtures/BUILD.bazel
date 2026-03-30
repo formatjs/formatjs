@@ -1,7 +1,8 @@
 # gazelle:js disabled
 
-exports_files(
-    glob(
+filegroup(
+    name = "fixtures",
+    srcs = glob(
         [
             "**/*.ts",
             "**/*.tsx",

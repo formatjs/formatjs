@@ -71,7 +71,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [":node_modules/@formatjs/fast-memoize"],
 )
 
@@ -89,7 +88,6 @@ formatjs_ts_project(
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":dist",
         "//:node_modules/vitest",

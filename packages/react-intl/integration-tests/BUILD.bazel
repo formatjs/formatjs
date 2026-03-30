@@ -26,6 +26,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS] + VITEST_DOM_DEPS,
@@ -47,7 +48,6 @@ formatjs_ts_project(
     preserve_jsx = False,
     resolve_json_module = True,
     source_map = True,
-    tsconfig = ":tsconfig",
     deps = [
         ":node_modules/react-intl",
         "//:node_modules/@testing-library/jest-dom",

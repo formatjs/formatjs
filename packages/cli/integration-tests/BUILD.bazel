@@ -63,6 +63,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
@@ -131,6 +132,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
@@ -170,6 +172,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
@@ -210,6 +213,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = ["//:node_modules/@bazel/runfiles"] + VITEST_DEPS,
@@ -244,6 +248,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
@@ -290,6 +295,7 @@ formatjs_ts_project(
     declaration = True,
     no_emit = True,
     resolve_json_module = True,
+    tags = ["no-typecheck-test"],
     transpiler = tsgo_bin.tsgo,
     tsconfig = TEST_TSCONFIG,
     deps = [
