@@ -10,7 +10,7 @@
     "format": "lefthook run pre-commit --all-files",
     "prepare": "lefthook install",
     "prerelease": "LEFTHOOK=0 lerna version --yes --no-private",
-    "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel test //...",
+    "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel test //... --build_tag_filters=-no-typecheck-test --test_tag_filters=-no-typecheck-test",
     "website": "ibazel run //docs:serve"
   },
   "devDependencies": {

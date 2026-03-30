@@ -1,13 +1,12 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
-
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tsconfig_ignore tsconfig
-# gazelle:js_tests_naming_convention unit_test
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
 exports_files([
     "package.json",
@@ -36,29 +35,61 @@ SRC_DEPS = [
 
 TESTS = glob(["tests/*"])
 
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm",
+    ],
+)
+
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + TESTS,
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + VITEST_DEPS,
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + TESTS,
+    deps = SRC_DEPS,
+)
 
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-npm_link_all_packages(name = "node_modules")
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = ["index.ts"],
-    isolated_typecheck = True,
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = ["tests/index.test.ts"],
-    isolated_typecheck = True,
-    deps = [
-        ":dist",
-        "//:node_modules/vitest",
-    ],
 )

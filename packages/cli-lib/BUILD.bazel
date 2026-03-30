@@ -1,18 +1,20 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tsconfig_ignore tsconfig
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "cli-lib"
+
+exports_files(["package.json"])
 
 npm_package(
     name = "pkg",
@@ -25,8 +27,6 @@ npm_package(
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
 )
-
-exports_files(["package.json"])
 
 SRCS = glob(["src/**/*.ts"]) + [
     "index.ts",
@@ -64,6 +64,64 @@ SRC_DEPS = [
     "//:node_modules/typescript",
 ] + VUE_DEPS + SVELTE_DEPS + GLIMMER_HBS_DEPS
 
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-esnext-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm-esnext",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm-esnext",
+    ],
+)
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = [":srcs"] + glob(
+        ["tests/unit/**/*.test.ts"],
+    ),
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + [d for d in VITEST_DEPS if d not in SRC_DEPS],
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = [":srcs"] + glob(
+        ["tests/unit/**/*.test.ts"],
+    ),
+    fixtures = glob(
+        ["tests/unit/fixtures/**/*"],
+    ),
+    deps = SRC_DEPS,
+)
+
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
 
@@ -100,84 +158,4 @@ esbuild(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = [
-        "index.ts",
-        "main.ts",
-        "src/cli.ts",
-        "src/compile.ts",
-        "src/compile_folder.ts",
-        "src/console_utils.ts",
-        "src/extract.ts",
-        "src/formatters/crowdin.ts",
-        "src/formatters/default.ts",
-        "src/formatters/index.ts",
-        "src/formatters/lokalise.ts",
-        "src/formatters/simple.ts",
-        "src/formatters/smartling.ts",
-        "src/formatters/transifex.ts",
-        "src/gts_extractor.ts",
-        "src/hbs_extractor.ts",
-        "src/parse_script.ts",
-        "src/pseudo_locale.ts",
-        "src/svelte_extractor.ts",
-        "src/verify/checkExtraKeys.ts",
-        "src/verify/checkMissingKeys.ts",
-        "src/verify/checkStructuralEquality.ts",
-        "src/verify/index.ts",
-        "src/vue_extractor.ts",
-    ],
-    isolated_typecheck = True,
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/@glimmer/syntax",
-        ":node_modules/@types/fs-extra",
-        ":node_modules/@types/node",
-        ":node_modules/@vue/compiler-core",
-        ":node_modules/commander",
-        ":node_modules/content-tag",
-        ":node_modules/fast-glob",
-        ":node_modules/fs-extra",
-        ":node_modules/json-stable-stringify",
-        ":node_modules/loud-rejection",
-        ":node_modules/svelte",
-        ":node_modules/typescript",
-        ":node_modules/vue",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = [
-        "tests/unit/abort_signal.test.ts",
-        "tests/unit/gts_extractor.test.ts",
-        "tests/unit/hbs_extractor.test.ts",
-        "tests/unit/pseudo_locale.test.ts",
-        "tests/unit/svelte_extractor.test.ts",
-        "tests/unit/unit.test.ts",
-        "tests/unit/vue_extractor.test.ts",
-    ],
-    isolated_typecheck = True,
-    deps = [
-        ":dist",
-        ":node_modules/@formatjs/ts-transformer",
-        ":node_modules/@types/node",
-        ":node_modules/fast-glob",
-        ":node_modules/typescript",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "cli-lib",
-    srcs = [
-        "package.json",
-        ":dist",
-    ],
-    visibility = ["//:__pkg__"],
 )

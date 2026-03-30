@@ -1,16 +1,16 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tsconfig_ignore tsconfig
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 exports_files([
     "package.json",
@@ -42,8 +42,63 @@ SRC_DEPS = [
     ":node_modules/@formatjs/fast-memoize",
 ]
 
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm",
+    ],
+)
+
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + glob([
+        "tests/*.ts*",
+    ]),
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + VITEST_DEPS,
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + glob([
+        "tests/*.ts*",
+    ]),
+    deps = SRC_DEPS,
+)
 
 generate_src_file(
     name = "default-currency",
@@ -88,51 +143,4 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = [
-        "index.ts",
-        "src/countryCodes.ts",
-        "src/currencyMinorUnits.generated.ts",
-        "src/defaultCurrency.ts",
-        "src/defaultCurrencyData.generated.ts",
-        "src/defaultLocale.ts",
-        "src/defaultLocaleData.generated.ts",
-        "src/defaultTimezone.ts",
-        "src/iso3166Alpha3CountryCodes.ts",
-        "src/iso4217.ts",
-        "tools/extract-default-currency.ts",
-        "tools/extract-default-locale.ts",
-        "tools/extract-minor-currency-units.ts",
-    ],
-    isolated_typecheck = True,
-    deps = [
-        ":node_modules/@formatjs/fast-memoize",
-        ":node_modules/fast-xml-parser",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/cldr-core",
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = [
-        "tests/countryCodes.test.ts",
-        "tests/currencyMinorUnits.test.ts",
-        "tests/defaultCurrency.test.ts",
-        "tests/defaultLocale.test.ts",
-        "tests/defaultTimezone.test.ts",
-    ],
-    isolated_typecheck = True,
-    deps = [
-        ":dist",
-        "//:node_modules/vitest",
-    ],
 )

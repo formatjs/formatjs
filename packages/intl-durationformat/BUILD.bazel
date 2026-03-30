@@ -1,16 +1,16 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
 
-# gazelle:js_project_naming_convention dist
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
-# gazelle:js_tsconfig_ignore tsconfig
-# gazelle:js_tests_naming_convention unit_test
-
-npm_link_all_packages(name = "node_modules")
+npm_link_all_packages()
 
 PACKAGE_NAME = "intl-durationformat"
 
@@ -35,6 +35,61 @@ SRC_DEPS = [
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
 ]
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "dist-esm-typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    # Transpile to JS + .d.ts (oxc-transform)
+    name = "dist-esm",
+    srcs = [":srcs"],
+    declaration = True,
+    declaration_transpiler = oxc_transpiler,
+    resolve_json_module = True,
+    transpiler = oxc_transpiler,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
+)
+
+js_library(
+    name = "dist",
+    srcs = [
+        "package.json",
+        ":dist-esm",
+    ],
+)
+
+ts_project(
+    # Type-check only (tsgo, no emit)
+    name = "unit_test_typecheck",
+    testonly = True,
+    srcs = SRCS + glob([
+        "tests/**/*.ts",
+    ]),
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TEST_TSCONFIG,
+    deps = SRC_DEPS + VITEST_DEPS,
+)
+
+vitest_runner(
+    name = "unit_test",
+    srcs = SRCS + glob([
+        "tests/**/*.ts",
+    ]),
+    deps = SRC_DEPS,
+)
 
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
@@ -70,61 +125,4 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
-)
-
-formatjs_ts_project(
-    name = "dist",
-    srcs = [
-        "index.ts",
-        "polyfill.ts",
-        "polyfill-force.ts",
-        "scripts/time-separators.ts",
-        "scripts/utils.ts",
-        "should-polyfill.ts",
-        "src/abstract/DurationRecordSign.ts",
-        "src/abstract/GetDurationUnitOptions.ts",
-        "src/abstract/IsValidDurationRecord.ts",
-        "src/abstract/PartitionDurationFormatPattern.ts",
-        "src/abstract/ToDurationRecord.ts",
-        "src/abstract/ToIntegerIfIntegral.ts",
-        "src/constants.ts",
-        "src/core.ts",
-        "src/get_internal_slots.ts",
-        "src/numbering-systems.generated.ts",
-        "src/time-separators.generated.ts",
-        "src/types.ts",
-    ],
-    isolated_typecheck = True,
-    deps = [
-        ":node_modules/@formatjs/ecma402-abstract",
-        ":node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/cldr-numbers-full",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/minimist",
-    ],
-)
-
-formatjs_ts_project(
-    name = "unit_test",
-    testonly = True,
-    srcs = ["tests/index.test.ts"],
-    isolated_typecheck = True,
-    deps = [
-        ":dist",
-        "//:node_modules/vitest",
-    ],
-)
-
-npm_package(
-    name = "intl-durationformat",
-    srcs = [
-        "package.json",
-        ":dist",
-    ],
-    visibility = ["//:__pkg__"],
 )
