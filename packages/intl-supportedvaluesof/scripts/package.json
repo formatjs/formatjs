@@ -1,0 +1,8 @@
+{
+  "name": "intl-supportedvaluesof-scripts",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*"
+  }
+}

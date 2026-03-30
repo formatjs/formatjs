@@ -1,0 +1,8 @@
+{
+  "name": "intl-numberformat-scripts",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@formatjs/ecma402-abstract": "workspace:*"
+  }
+}

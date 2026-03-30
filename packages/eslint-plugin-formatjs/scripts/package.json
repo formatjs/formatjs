@@ -1,0 +1,5 @@
+{
+  "name": "eslint-plugin-formatjs-scripts",
+  "private": true,
+  "type": "module"
+}
