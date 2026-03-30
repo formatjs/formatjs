@@ -1,6 +1,6 @@
 # gazelle:js disabled
 
 exports_files(
-    glob(["*.ts"]),
+    glob(["*"]),
     visibility = ["//visibility:public"],
 )

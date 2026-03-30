@@ -17,9 +17,7 @@ exports_files([
 # Export test fixtures for use by other packages (e.g., Rust CLI tests)
 filegroup(
     name = "test_fixtures",
-    srcs = glob([
-        "tests/fixtures/*",
-    ]),
+    srcs = ["//packages/ts-transformer/tests/fixtures"],
     visibility = ["//visibility:public"],
 )
 

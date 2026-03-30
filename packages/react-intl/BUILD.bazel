@@ -161,7 +161,9 @@ formatjs_ts_project(
         "tests/unit/react-intl.test.tsx",
         "tests/unit/types.test.tsx",
     ],
+    config = "vitest.config.mjs",  # keep
     declaration = True,
+    dom = True,  # keep
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,

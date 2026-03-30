@@ -54,6 +54,7 @@ formatjs_ts_project(
     testonly = True,
     srcs = ["tests/index.test.ts"],
     declaration = True,
+    dom = True,  # keep
     isolated_typecheck = True,
     preserve_jsx = False,
     resolve_json_module = True,

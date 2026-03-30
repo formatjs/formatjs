@@ -52,7 +52,7 @@ SRCS = glob(
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
-    entry_point = "scripts/test262-main-gen.ts",
+    entry_point = "//packages/intl-segmenter/scripts:test262-main-gen.ts",
     tags = ["cldr"],
     visibility = [
         "//:__pkg__",
@@ -138,7 +138,7 @@ generate_src_file(
             "//:node_modules/json-stable-stringify",
             "//:node_modules/regexpu-core",
         ],
-    entry_point = "scripts/generate-cldr-segmentation-rules.ts",
+    entry_point = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules.ts",
     tags = ["cldr"],
 )
 
@@ -186,6 +186,12 @@ formatjs_ts_project(
     ],
     declaration = True,
     isolated_typecheck = True,
+    no_copy_to_bin = [
+        # keep
+        "@GraphemeBreakTest//file",
+        "@SentenceBreakTest//file",
+        "@WordBreakTest//file",
+    ],
     preserve_jsx = False,
     resolve_json_module = True,
     tsconfig = ":tsconfig",

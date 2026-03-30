@@ -87,14 +87,14 @@ generate_src_file(
     name = "character-orders",
     src = "character-orders.generated.ts",
     data = [
-        "scripts/common-types.ts",
-        "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
+        "//packages/intl-locale/scripts:common-types.ts",
+        "//packages/intl-locale/scripts:utils.ts",
     ],
-    entry_point = "scripts/character-orders.ts",
+    entry_point = "//packages/intl-locale/scripts:character-orders.ts",
     tags = ["cldr"],
 )
 
@@ -103,14 +103,14 @@ generate_src_file(
     name = "numbering-systems",
     src = "numbering-systems.generated.ts",
     data = [
-        "scripts/common-types.ts",
-        "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
+        "//packages/intl-locale/scripts:common-types.ts",
+        "//packages/intl-locale/scripts:utils.ts",
     ],
-    entry_point = "scripts/numbering-systems.ts",
+    entry_point = "//packages/intl-locale/scripts:numbering-systems.ts",
     tags = ["cldr"],
 )
 
@@ -119,11 +119,11 @@ generate_src_file(
     name = "timezones",
     src = "timezones.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/json-stable-stringify",
+        "//packages/intl-locale/scripts:common-types.ts",
     ],
-    entry_point = "scripts/timezones.ts",
+    entry_point = "//packages/intl-locale/scripts:timezones.ts",
     tags = ["cldr"],
 )
 
@@ -132,11 +132,11 @@ generate_src_file(
     name = "hour-cycles",
     src = "hour-cycles.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
+        "//packages/intl-locale/scripts:common-types.ts",
     ],
-    entry_point = "scripts/hour-cycles.ts",
+    entry_point = "//packages/intl-locale/scripts:hour-cycles.ts",
     tags = ["cldr"],
 )
 
@@ -145,11 +145,11 @@ generate_src_file(
     name = "calendars",
     src = "calendars.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
+        "//packages/intl-locale/scripts:common-types.ts",
     ],
-    entry_point = "scripts/calendars.ts",
+    entry_point = "//packages/intl-locale/scripts:calendars.ts",
     tags = ["cldr"],
 )
 
@@ -158,11 +158,11 @@ generate_src_file(
     name = "week-data",
     src = "week-data.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
+        "//packages/intl-locale/scripts:common-types.ts",
     ],
-    entry_point = "scripts/week-data.ts",
+    entry_point = "//packages/intl-locale/scripts:week-data.ts",
     tags = ["cldr"],
 )
 

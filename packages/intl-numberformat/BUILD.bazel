@@ -36,7 +36,7 @@ js_binary(
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
-    entry_point = "scripts/generate-locale-test.ts",
+    entry_point = "//packages/intl-numberformat/scripts:generate-locale-test.ts",
     node_options = ["--experimental-transform-types"],
 )
 
@@ -145,7 +145,7 @@ LOCALE_TEST_TYPES = [
 
 [genrule(
     name = "%s_test_update_snapshots_gen" % type,
-    srcs = ["scripts/update_snapshots.sh"],
+    srcs = ["//packages/intl-numberformat/scripts:update_snapshots.sh"],
     outs = ["%s_test_update_snapshots.sh" % type],
     cmd = """
     cat $< > $@\n
@@ -159,7 +159,7 @@ LOCALE_TEST_TYPES = [
 [sh_binary(
     name = "%s_test_update_snapshots" % type,
     srcs = ["%s_test_update_snapshots.sh" % type],
-    data = ["scripts/update_snapshots.sh"],
+    data = ["//packages/intl-numberformat/scripts:update_snapshots.sh"],
     deps = ["@bazel_tools//tools/bash/runfiles"],
 ) for type in LOCALE_TEST_TYPES]
 
@@ -804,10 +804,6 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        "scripts/extract-currencies.ts",
-        "scripts/extract-numbers.ts",
-        "scripts/extract-units.ts",
-        "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
@@ -818,6 +814,10 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
+        "//packages/intl-numberformat/scripts:extract-currencies.ts",
+        "//packages/intl-numberformat/scripts:extract-numbers.ts",
+        "//packages/intl-numberformat/scripts:extract-units.ts",
+        "//packages/intl-numberformat/scripts:utils.ts",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -825,7 +825,7 @@ ts_run_binary(
         "cldr-raw",
     ],
     chdir = package_name(),
-    entry_point = "scripts/cldr-raw.ts",
+    entry_point = "//packages/intl-numberformat/scripts:cldr-raw.ts",
     visibility = [
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",
@@ -856,7 +856,7 @@ ts_run_binary(
         "locale-data",
     ],
     chdir = package_name(),
-    entry_point = "scripts/cldr.ts",
+    entry_point = "//packages/intl-numberformat/scripts:cldr.ts",
     visibility = ["//visibility:public"],
 )
 
@@ -890,7 +890,7 @@ generate_src_file(
         for f in TEST262_LOCALES
     ],
     data = [":cldr-raw"],
-    entry_point = "scripts/test262-main-gen.ts",
+    entry_point = "//packages/intl-numberformat/scripts:test262-main-gen.ts",
     tags = ["cldr"],
     visibility = [
         "//:__pkg__",
@@ -902,8 +902,6 @@ generate_src_file(
     name = "currency-digits",
     src = "src/currency-digits.generated.ts",
     data = [
-        "scripts/extract-currencies.ts",
-        "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
@@ -911,8 +909,10 @@ generate_src_file(
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
+        "//packages/intl-numberformat/scripts:extract-currencies.ts",
+        "//packages/intl-numberformat/scripts:utils.ts",
     ],
-    entry_point = "scripts/currency-digits.ts",
+    entry_point = "//packages/intl-numberformat/scripts:currency-digits.ts",
     tags = ["cldr"],
 )
 
@@ -921,15 +921,15 @@ generate_src_file(
     name = "numbering-systems",
     src = "src/numbering-systems.generated.ts",
     data = [
-        "scripts/extract-numbers.ts",
-        "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/lodash-es",
+        "//packages/intl-numberformat/scripts:extract-numbers.ts",
+        "//packages/intl-numberformat/scripts:utils.ts",
     ],
-    entry_point = "scripts/numbering-systems.ts",
+    entry_point = "//packages/intl-numberformat/scripts:numbering-systems.ts",
     tags = ["cldr"],
 )
 
@@ -941,7 +941,7 @@ generate_src_file(
 #         ":node_modules/@formatjs/ecma402-abstract",
 #
 #     ],
-#     entry_point = "scripts/units-constants.ts",
+#     entry_point = "//packages/intl-numberformat/scripts:units-constants.ts",
 # )
 
 # Test262
@@ -996,19 +996,19 @@ esbuild(
 
 copy_to_bin(
     name = "extract-numbers-scripts",
-    srcs = ["scripts/extract-numbers.ts"],
+    srcs = ["//packages/intl-numberformat/scripts:extract-numbers.ts"],
     visibility = ["//packages/intl-supportedvaluesof:__subpackages__"],
 )
 
 copy_to_bin(
     name = "utils-scripts",
-    srcs = ["scripts/extract-numbers.ts"],
+    srcs = ["//packages/intl-numberformat/scripts:extract-numbers.ts"],
     visibility = ["//packages/intl-supportedvaluesof:__subpackages__"],
 )
 
 copy_to_bin(
     name = "numbering-systems-scripts",
-    srcs = ["scripts/numbering-systems.ts"],
+    srcs = ["//packages/intl-numberformat/scripts:numbering-systems.ts"],
     visibility = [
         "//packages/intl-supportedvaluesof:__subpackages__",
     ],

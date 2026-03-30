@@ -50,7 +50,7 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-bcp47",
     ],
-    entry_point = "scripts/calendars.ts",
+    entry_point = "//packages/intl-supportedvaluesof/scripts:calendars.ts",
     tags = ["cldr"],
 )
 
@@ -61,7 +61,7 @@ generate_src_file(
     args = ["--zone %s" % z for z in ZONES],
     data = [
     ],
-    entry_point = "scripts/timezones.ts",
+    entry_point = "//packages/intl-supportedvaluesof/scripts:timezones.ts",
     tags = ["cldr"],
 )
 
@@ -81,7 +81,7 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-numbers-full",
     ],
-    entry_point = "scripts/currencies.ts",
+    entry_point = "//packages/intl-supportedvaluesof/scripts:currencies.ts",
     tags = ["cldr"],
 )
 
@@ -92,7 +92,7 @@ generate_src_file(
     data = [
         "//:node_modules/cldr-bcp47",
     ],
-    entry_point = "scripts/collations.ts",
+    entry_point = "//packages/intl-supportedvaluesof/scripts:collations.ts",
     tags = ["cldr"],
 )
 
@@ -104,7 +104,7 @@ generate_src_file(
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/cldr-bcp47",
     ],
-    entry_point = "scripts/units.ts",
+    entry_point = "//packages/intl-supportedvaluesof/scripts:units.ts",
     tags = ["cldr"],
 )
 
