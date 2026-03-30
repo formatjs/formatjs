@@ -48,6 +48,12 @@ pre-commit:
         - "pnpm-lock.yaml"
       run: bazel run //:gazelle
       stage_fixed: true
+    format-starlark-post-gazelle:
+      glob: "**/*.{bazel,bzl,BUILD}"
+      run: |
+        set -- {staged_files}
+        bazel run @buildifier_prebuilt//:buildifier -- -mode=fix -lint=fix -warnings=all $(printf "$PWD/%s " "$@")
+      stage_fixed: true
     bazel-lock-regen:
       glob:
         - "pnpm-lock.yaml"
