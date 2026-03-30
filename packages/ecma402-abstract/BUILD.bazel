@@ -51,7 +51,9 @@ vitest(
 )
 
 # Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
+generate_ide_tsconfig_json(
+    composite = True,
+)
 
 # digit-mapping
 generate_src_file(

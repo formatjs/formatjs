@@ -235,7 +235,33 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
         tags = tags + ["codegen"],
     )
 
-def generate_ide_tsconfig_json(name = "tsconfig_json"):
+def _relative_path(target, start):
+    """Compute the relative path from start directory to target directory.
+
+    Args:
+        target: target directory path (e.g. "packages/ecma402-abstract")
+        start: start directory path (e.g. "packages/intl-locale")
+
+    Returns:
+        Relative path string (e.g. "../ecma402-abstract")
+    """
+    t_pieces = target.split("/")
+    s_pieces = start.split("/")
+    common_len = 0
+
+    for tp, sp in zip(t_pieces, s_pieces):
+        if tp == sp:
+            common_len += 1
+        else:
+            break
+
+    result = [".."] * (len(s_pieces) - common_len) + t_pieces[common_len:]
+    path = "/".join(result) if result else "."
+    if not path.startswith("."):
+        path = "./" + path
+    return path
+
+def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, project_references = []):
     """Generate a tsconfig.json file with the correct extends path based on package depth.
 
     This macro calculates the correct relative path to the root tsconfig.json
@@ -244,6 +270,8 @@ def generate_ide_tsconfig_json(name = "tsconfig_json"):
 
     Args:
         name: target name (default: "tsconfig_json")
+        composite: whether to enable TypeScript composite projects (default: False)
+        project_references: list of Bazel package labels to reference (e.g. ["//packages/ecma402-abstract"])
     """
     package = native.package_name()
 
@@ -258,16 +286,29 @@ def generate_ide_tsconfig_json(name = "tsconfig_json"):
 
     extends_path = relative_to_root + "/tsconfig.json"
 
-    # Build tsconfig with paths for #packages/* alias
-    # Maps #packages/* to the packages/ directory relative to this tsconfig
-    tsconfig = {
-        "extends": extends_path,
-        "compilerOptions": {
-            "paths": {
-                "#packages/*": [relative_to_root + "/packages/*"],
-            },
+    compiler_options = {
+        "paths": {
+            "#packages/*": [relative_to_root + "/packages/*"],
         },
     }
+
+    if composite:
+        compiler_options["composite"] = True
+
+    # Build tsconfig
+    tsconfig = {
+        "extends": extends_path,
+        "compilerOptions": compiler_options,
+    }
+
+    # Convert project_references (Bazel labels) to relative tsconfig paths
+    if project_references:
+        refs = []
+        for ref in project_references:
+            ref_path = ref.lstrip("/")
+            relative = _relative_path(ref_path, package)
+            refs.append({"path": relative + "/tsconfig.json"})
+        tsconfig["references"] = refs
 
     content = json.encode_indent(tsconfig, indent = "  ")
 

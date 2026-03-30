@@ -4,5 +4,10 @@
       "#packages/*": ["../../packages/*"]
     }
   },
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../ecma402-abstract/tsconfig.json"
+    }
+  ]
 }

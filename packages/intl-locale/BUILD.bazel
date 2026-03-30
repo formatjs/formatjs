@@ -82,7 +82,11 @@ test262_harness_bin.test262_harness_test(
 )
 
 # Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
+generate_ide_tsconfig_json(
+    project_references = [
+        "//packages/ecma402-abstract",
+    ],
+)
 
 esbuild(
     name = "polyfill.iife",
