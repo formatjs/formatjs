@@ -1,0 +1,22 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "cldr-raw",
+    data = [
+        "extract-relative.ts",
+    ],
+    entry_point = "cldr-raw.ts",
+    visibility = ["//packages/intl-relativetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "cldr",
+    entry_point = "cldr.ts",
+    visibility = ["//packages/intl-relativetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "test262-main-gen",
+    entry_point = "test262-main-gen.ts",
+    visibility = ["//packages/intl-relativetimeformat:__pkg__"],
+)

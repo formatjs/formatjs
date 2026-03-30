@@ -1,0 +1,36 @@
+load("//tools:index.bzl", "ts_binary")
+
+exports_files(glob(["*.sh"]))
+
+ts_binary(
+    name = "cldr-raw",
+    data = [
+        "extract-dates.ts",
+    ],
+    entry_point = "cldr-raw.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "cldr",
+    entry_point = "cldr.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "test262-main-gen",
+    entry_point = "test262-main-gen.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "link",
+    entry_point = "link.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "process-zdump",
+    entry_point = "process-zdump.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)

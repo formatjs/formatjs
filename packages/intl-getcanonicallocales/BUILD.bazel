@@ -66,8 +66,8 @@ generate_src_file(
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/aliases.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-getcanonicallocales/scripts:aliases",
     visibility = ["//:__pkg__"],
 )
 
@@ -78,8 +78,8 @@ generate_src_file(
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/likely-subtags.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-getcanonicallocales/scripts:likely-subtags",
     visibility = ["//:__pkg__"],
 )
 

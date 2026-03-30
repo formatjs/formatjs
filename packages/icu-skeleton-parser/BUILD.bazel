@@ -46,11 +46,10 @@ generate_src_file(
     name = "regex",
     src = "regex.generated.ts",
     data = [
-        "scripts/global.ts",
         "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/regenerate",
     ],
-    entry_point = "scripts/regex-gen.ts",
+    tool = "//packages/icu-skeleton-parser/scripts:regex-gen",
 )
 
 package_json_test(

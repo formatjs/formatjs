@@ -1,0 +1,10 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "regex-gen",
+    data = [
+        "global.ts",
+    ],
+    entry_point = "regex-gen.ts",
+    visibility = ["//packages/icu-skeleton-parser:__pkg__"],
+)

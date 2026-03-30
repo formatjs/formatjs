@@ -1,0 +1,57 @@
+load("//tools:index.bzl", "ts_binary")
+
+exports_files(glob(["*.sh"]))
+
+ts_binary(
+    name = "generate-locale-test",
+    data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-locale-test.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_binary(
+    name = "cldr-raw",
+    data = [
+        "extract-currencies.ts",
+        "extract-numbers.ts",
+        "extract-units.ts",
+        "utils.ts",
+    ],
+    entry_point = "cldr-raw.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_binary(
+    name = "cldr",
+    entry_point = "cldr.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_binary(
+    name = "test262-main-gen",
+    entry_point = "test262-main-gen.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_binary(
+    name = "currency-digits",
+    data = [
+        "extract-currencies.ts",
+        "utils.ts",
+    ],
+    entry_point = "currency-digits.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_binary(
+    name = "numbering-systems",
+    data = [
+        "extract-numbers.ts",
+        "utils.ts",
+    ],
+    entry_point = "numbering-systems.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)

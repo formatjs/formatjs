@@ -1,0 +1,57 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "character-orders",
+    data = [
+        "common-types.ts",
+        "utils.ts",
+    ],
+    entry_point = "character-orders.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+)
+
+ts_binary(
+    name = "numbering-systems",
+    data = [
+        "common-types.ts",
+        "utils.ts",
+    ],
+    entry_point = "numbering-systems.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+)
+
+ts_binary(
+    name = "timezones",
+    data = [
+        "common-types.ts",
+    ],
+    entry_point = "timezones.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+)
+
+ts_binary(
+    name = "hour-cycles",
+    data = [
+        "common-types.ts",
+    ],
+    entry_point = "hour-cycles.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+)
+
+ts_binary(
+    name = "calendars",
+    data = [
+        "common-types.ts",
+    ],
+    entry_point = "calendars.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+)
+
+ts_binary(
+    name = "week-data",
+    data = [
+        "common-types.ts",
+    ],
+    entry_point = "week-data.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+)

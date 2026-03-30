@@ -1,0 +1,7 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "regions-gen",
+    entry_point = "regions-gen.ts",
+    visibility = ["//packages/intl-localematcher:__pkg__"],
+)

@@ -27,7 +27,7 @@ generate_src_file(
     data = [
         ":emoji-data-txt",
     ],
-    entry_point = "scripts/generate-emoji-data.ts",
+    tool = "//packages/eslint-plugin-formatjs/scripts:generate-emoji-data",
 )
 
 npm_package(

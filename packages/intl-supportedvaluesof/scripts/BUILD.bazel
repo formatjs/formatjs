@@ -1,0 +1,31 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "calendars",
+    entry_point = "calendars.ts",
+    visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
+)
+
+ts_binary(
+    name = "timezones",
+    entry_point = "timezones.ts",
+    visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
+)
+
+ts_binary(
+    name = "currencies",
+    entry_point = "currencies.ts",
+    visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
+)
+
+ts_binary(
+    name = "collations",
+    entry_point = "collations.ts",
+    visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
+)
+
+ts_binary(
+    name = "units",
+    entry_point = "units.ts",
+    visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
+)

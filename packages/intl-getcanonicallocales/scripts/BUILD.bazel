@@ -1,0 +1,13 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "aliases",
+    entry_point = "aliases.ts",
+    visibility = ["//packages/intl-getcanonicallocales:__pkg__"],
+)
+
+ts_binary(
+    name = "likely-subtags",
+    entry_point = "likely-subtags.ts",
+    visibility = ["//packages/intl-getcanonicallocales:__pkg__"],
+)

@@ -1,0 +1,10 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "time-separators",
+    data = [
+        "utils.ts",
+    ],
+    entry_point = "time-separators.ts",
+    visibility = ["//packages/intl-durationformat:__pkg__"],
+)

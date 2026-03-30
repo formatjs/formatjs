@@ -103,15 +103,13 @@ generate_src_file(
     name = "character-orders",
     src = "character-orders.generated.ts",
     data = [
-        "scripts/common-types.ts",
-        "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/character-orders.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:character-orders",
 )
 
 # numbering systems
@@ -119,15 +117,13 @@ generate_src_file(
     name = "numbering-systems",
     src = "numbering-systems.generated.ts",
     data = [
-        "scripts/common-types.ts",
-        "scripts/utils.ts",
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/numbering-systems.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:numbering-systems",
 )
 
 # timezones
@@ -135,12 +131,11 @@ generate_src_file(
     name = "timezones",
     src = "timezones.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/timezones.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:timezones",
 )
 
 # hour cycles
@@ -148,12 +143,11 @@ generate_src_file(
     name = "hour-cycles",
     src = "hour-cycles.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/hour-cycles.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:hour-cycles",
 )
 
 # calendars
@@ -161,12 +155,11 @@ generate_src_file(
     name = "calendars",
     src = "calendars.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/calendars.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:calendars",
 )
 
 # week data
@@ -174,12 +167,11 @@ generate_src_file(
     name = "week-data",
     src = "week-data.generated.ts",
     data = [
-        "scripts/common-types.ts",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/week-data.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:week-data",
 )
 
 copy_to_bin(

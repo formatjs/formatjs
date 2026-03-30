@@ -1,0 +1,13 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "test262-main-gen",
+    entry_point = "test262-main-gen.ts",
+    visibility = ["//packages/intl-segmenter:__pkg__"],
+)
+
+ts_binary(
+    name = "generate-cldr-segmentation-rules",
+    entry_point = "generate-cldr-segmentation-rules.ts",
+    visibility = ["//packages/intl-segmenter:__pkg__"],
+)

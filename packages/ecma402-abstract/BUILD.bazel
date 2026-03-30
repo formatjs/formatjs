@@ -25,7 +25,6 @@ SRCS = glob(
         "**/*.ts",
     ],
     exclude = [
-        "scripts/*.ts",
         "tests/*.ts",
     ],
 )
@@ -61,7 +60,7 @@ generate_src_file(
     data = [
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/digit-mapping.ts",
+    tool = "//packages/ecma402-abstract/scripts:digit-mapping",
 )
 
 generate_src_file(
@@ -72,7 +71,7 @@ generate_src_file(
         "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/regenerate",
     ],
-    entry_point = "scripts/regex-gen.ts",
+    tool = "//packages/ecma402-abstract/scripts:regex-gen",
 )
 
 package_json_test(

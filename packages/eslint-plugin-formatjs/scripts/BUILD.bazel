@@ -1,0 +1,7 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "generate-emoji-data",
+    entry_point = "generate-emoji-data.ts",
+    visibility = ["//packages/eslint-plugin-formatjs:__pkg__"],
+)

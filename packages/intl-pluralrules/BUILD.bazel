@@ -291,7 +291,6 @@ CLDR_RAW_FILES = ["cldr-raw/%s.js" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        "scripts/plural-rules-compiler.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/cldr-core",
@@ -307,7 +306,7 @@ ts_run_binary(
         "cldr-raw",
     ],
     chdir = package_name(),
-    entry_point = "scripts/cldr-raw.ts",
+    tool = "//packages/intl-pluralrules/scripts:cldr-raw",
 )
 
 generate_src_file(
@@ -334,7 +333,7 @@ ts_run_binary(
         "locale-data",
     ],
     chdir = package_name(),
-    entry_point = "scripts/cldr.ts",
+    tool = "//packages/intl-pluralrules/scripts:cldr",
     visibility = ["//visibility:public"],
 )
 
@@ -363,8 +362,8 @@ generate_src_file(
         for f in CLDR_RAW_FILES
     ],
     data = [":cldr-raw"],
-    entry_point = "scripts/test262-main-gen.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-pluralrules/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],

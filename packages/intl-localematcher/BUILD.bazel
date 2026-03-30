@@ -57,7 +57,7 @@ generate_src_file(
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
-    entry_point = "scripts/regions-gen.ts",
+    tool = "//packages/intl-localematcher/scripts:regions-gen",
 )
 
 copy_to_bin(

@@ -61,8 +61,6 @@ generate_src_file(
     name = "time-separators",
     src = "src/time-separators.generated.ts",
     data = [
-        "scripts/time-separators.ts",
-        "scripts/utils.ts",
         ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
@@ -72,8 +70,8 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
     ],
-    entry_point = "scripts/time-separators.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-durationformat/scripts:time-separators",
 )
 
 copy_to_bin(

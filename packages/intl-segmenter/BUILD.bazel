@@ -80,8 +80,8 @@ vitest(
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
-    entry_point = "scripts/test262-main-gen.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-segmenter/scripts:test262-main-gen",
     visibility = [
         "//:__pkg__",
     ],
@@ -166,8 +166,8 @@ generate_src_file(
             "//:node_modules/json-stable-stringify",
             "//:node_modules/regexpu-core",
         ],
-    entry_point = "scripts/generate-cldr-segmentation-rules.ts",
     tags = ["cldr"],
+    tool = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules",
 )
 
 copy_to_bin(
