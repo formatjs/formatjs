@@ -730,7 +730,6 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        "scripts/extract-dates.ts",
         "src/abstract/skeleton.ts",
         "src/types.ts",
         ":node_modules/@formatjs/ecma402-abstract",
@@ -744,6 +743,7 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
+        "//packages/intl-datetimeformat/scripts:extract-dates.ts",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -977,7 +977,7 @@ generate_dockerfile(
 
 sh_binary(
     name = "update_tz_data",
-    srcs = ["scripts/execute_tz_docker.sh"],
+    srcs = ["//packages/intl-datetimeformat/scripts:execute_tz_docker.sh"],
     data = [
         "tz_data.tar.gz",
         ":dockerfile",
