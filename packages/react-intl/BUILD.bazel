@@ -1,18 +1,18 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "VITEST_DOM_DEPS", "vitest_runner")
 
-npm_link_all_packages()
+# gazelle:js_project_naming_convention dist
+# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
+# gazelle:js_tsconfig_ignore tsconfig
+# gazelle:js_tests_naming_convention unit_test
+
+npm_link_all_packages(name = "node_modules")
 
 PACKAGE_NAME = "react-intl"
 
@@ -60,38 +60,6 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/typescript",
 ]
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
-    srcs = SRCS,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS,
-)
-
-ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = SRCS,
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
-)
-
 esbuild(
     name = "%s.esbuild.iife" % PACKAGE_NAME,
     srcs = [":srcs"],
@@ -109,29 +77,6 @@ genrule(
     srcs = [":%s.esbuild.iife.js" % PACKAGE_NAME],
     outs = ["%s.iife.js" % PACKAGE_NAME],
     cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
-)
-
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = SRCS +
-           TESTS,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS] + VITEST_DOM_DEPS,
-)
-
-vitest_runner(
-    name = "unit_test",
-    srcs = SRCS +
-           TESTS,
-    config = "vitest.config.mjs",
-    dom = True,
-    deps = TEST_DEPS,
 )
 
 # Generate tsconfig.json with correct extends path
@@ -173,4 +118,79 @@ tsd_bin.tsd_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+formatjs_ts_project(
+    name = "dist",
+    srcs = [
+        "index.ts",
+        "server.ts",
+        "src/components/context.ts",
+        "src/components/createFormattedComponent.tsx",
+        "src/components/createIntl.ts",
+        "src/components/dateTimeRange.tsx",
+        "src/components/message.tsx",
+        "src/components/plural.tsx",
+        "src/components/provider.tsx",
+        "src/components/relative.tsx",
+        "src/components/useIntl.ts",
+        "src/types.ts",
+        "src/utils.tsx",
+        "tests/global_type_overrides.test-d.ts",
+        "tests/perf/index.tsx",
+        "tests/unit/testUtils.tsx",
+    ],
+    isolated_typecheck = True,
+    deps = [
+        ":node_modules/@formatjs/ecma402-abstract",
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/@formatjs/intl",
+        ":node_modules/@types/react",
+        ":node_modules/intl-messageformat",
+        ":node_modules/react",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/@types/react-dom",
+        "//:node_modules/react-dom",
+        "//:node_modules/tinybench",
+        "//:node_modules/tsd",
+    ],
+)
+
+formatjs_ts_project(
+    name = "unit_test",
+    testonly = True,
+    srcs = [
+        "tests/unit/components/date.test.tsx",
+        "tests/unit/components/dateTimeRange.test.tsx",
+        "tests/unit/components/displayName.test.tsx",
+        "tests/unit/components/message.test.tsx",
+        "tests/unit/components/number.test.tsx",
+        "tests/unit/components/plural.test.tsx",
+        "tests/unit/components/provider.test.tsx",
+        "tests/unit/components/relative.test.tsx",
+        "tests/unit/components/time.test.tsx",
+        "tests/unit/components/useIntl.test.tsx",
+        "tests/unit/react-19-key-warning.test.tsx",
+        "tests/unit/react-intl.test.tsx",
+        "tests/unit/types.test.tsx",
+    ],
+    isolated_typecheck = True,
+    deps = [
+        ":dist",
+        ":node_modules/@formatjs/intl",
+        ":node_modules/@types/react",
+        ":node_modules/react",
+        "//:node_modules/@testing-library/jest-dom",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/vitest",
+    ],
+)
+
+npm_package(
+    name = "react-intl",
+    srcs = [
+        "package.json",
+        ":dist",
+    ],
+    visibility = ["//:__pkg__"],
 )

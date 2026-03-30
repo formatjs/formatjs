@@ -8,12 +8,11 @@ load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
-# gazelle:js disabled
+# gazelle:js enabled
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 # gazelle:generation_mode update_only
-# NOTE: map_kind is set per-package, not globally, to avoid converting
-# ts_project in # gazelle:js disabled packages.
+# gazelle:alias_kind formatjs_ts_project ts_project
 # gazelle:js_files src/**/*.ts src/**/*.tsx *.ts *.tsx
 # gazelle:js_test_files tests/**/*.ts tests/**/*.tsx **/*.test.ts **/*.test.tsx
 # gazelle:js_tsconfig disabled

@@ -1,4 +1,7 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
+
+# gazelle:js disabled
+
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_rust//rust:defs.bzl", "rust_test")
@@ -64,7 +67,7 @@ rust_test(
 ) for f in TEST_CASES]
 
 # WASM integration test
-ts_project(
+formatjs_ts_project(
     # Type-check only (tsgo, no emit)
     name = "wasm_integration_test_typecheck",
     testonly = True,
