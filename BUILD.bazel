@@ -12,6 +12,13 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 
+# Exported for Node subpath import resolution (#packages/*) in tests.
+# Node walks up to find package.json with "imports" field.
+exports_files(
+    ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
 gazelle(
     name = "gazelle",
     env = {

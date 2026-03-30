@@ -20,6 +20,7 @@ def vitest(
         snapshots = [],
         test_timeout = None,
         config = None,
+        tsconfig = None,
         **kwargs):
     """
     A rule to define a vitest target.
@@ -38,6 +39,7 @@ def vitest(
         dom (bool, optional): Whether to run the test in a DOM environment. Defaults to False.
         test_timeout (str, optional): Custom timeout for the test in milliseconds. Defaults to None.
         config (Label, optional): Custom vitest config file. Defaults to None.
+        tsconfig (dict, optional): Custom tsconfig dict for typecheck. Merged with defaults. Defaults to None.
         **kwargs: Additional keyword arguments.
     """
 
@@ -55,8 +57,9 @@ def vitest(
     # skipLibCheck avoids type errors from transitive deps with unresolvable type imports
     # types: ["node"] ensures @types/node augmentations (e.g. import.meta.dirname) are available
     # noUncheckedSideEffectImports: disable TS 6 strict check for side-effect imports without types (e.g. locale-data)
-    test_tsconfig = ESNEXT_TSCONFIG | {
-        "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
+    base_test_tsconfig = (tsconfig or ESNEXT_TSCONFIG)
+    test_tsconfig = base_test_tsconfig | {
+        "compilerOptions": base_test_tsconfig.get("compilerOptions", {}) | {
             "skipLibCheck": True,
             "types": ["node"],
             "noUncheckedSideEffectImports": False,

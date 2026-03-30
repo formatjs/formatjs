@@ -1,15 +1,104 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
+
+# tsconfig with #packages/* path alias for tsc resolution
+# From packages/intl-locale/, #packages/* → ../* resolves to sibling packages
+TSCONFIG = BASE_TSCONFIG | {
+    "compilerOptions": BASE_TSCONFIG["compilerOptions"] | {
+        "paths": {
+            "#packages/*": ["../*"],
+        },
+    },
+}
 
 npm_link_all_packages()
 
 PACKAGE_NAME = "intl-locale"
+
+SRCS = glob(["*.ts"])
+
+# Node_modules deps for type checking and downstream consumers
+TYPECHECK_DEPS = [
+    ":node_modules/@formatjs/ecma402-abstract",
+    ":node_modules/@formatjs/intl-supportedvaluesof",
+    ":node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/cldr-core",
+    "//:node_modules/cldr-bcp47",
+    # Source files for #packages/* path resolution in tsc
+    "//packages/ecma402-abstract",
+]
+
+# Deps for esbuild — ecma402-abstract comes via #packages, not node_modules
+BUNDLE_DEPS = [
+    ":node_modules/@formatjs/intl-supportedvaluesof",
+    ":node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/cldr-core",
+    "//:node_modules/cldr-bcp47",
+    "//packages/ecma402-abstract",
+]
+
+# Derive external packages from BUNDLE_DEPS (node_modules only, not project deps)
+EXTERNAL_PACKAGES = [
+    dep.split("node_modules/")[1]
+    for dep in BUNDLE_DEPS
+    if "node_modules/" in dep
+]
+
+# --- Bundle each entry point with esbuild (resolves #packages/* imports) ---
+[esbuild(
+    name = "%s-bundle" % entry.replace(".ts", ""),
+    srcs = [":srcs"],
+    config = "//tools:esbuild-packages-resolve",
+    entry_point = entry,
+    external = EXTERNAL_PACKAGES,
+    format = "esm",
+    output = "%s.js" % entry.replace(".ts", ""),
+    target = "es2020",
+    deps = BUNDLE_DEPS,
+) for entry in [
+    "index.ts",
+    "polyfill.ts",
+    "polyfill-force.ts",
+    "should-polyfill.ts",
+]]
+
+BUNDLES = [
+    ":index-bundle",
+    ":polyfill-bundle",
+    ":polyfill-force-bundle",
+    ":should-polyfill-bundle",
+]
+
+# --- Default target: esbuild bundle (no #packages in output) ---
+# This is what npm_link_all_packages serves to downstream workspace consumers.
+js_library(
+    name = PACKAGE_NAME,
+    srcs = BUNDLES + ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
+# --- Type check only (no emit — esbuild handles JS output) ---
+ts_project(
+    name = "typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TSCONFIG,
+    deps = TYPECHECK_DEPS,
+)
 
 npm_package(
     name = "pkg",
@@ -17,28 +106,18 @@ npm_package(
         "LICENSE.md",
         "README.md",
         "package.json",
-        ":dist",
-        # polyfill-library uses this
+    ] + BUNDLES + [
         "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
 )
 
-SRCS = glob(["*.ts"])
-
-SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
-    ":node_modules/@formatjs/intl-supportedvaluesof",
-    ":node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/cldr-core",
-    "//:node_modules/cldr-bcp47",
-]
-
-ts_compile(
-    name = "dist",
-    srcs = [":srcs"],
-    deps = SRC_DEPS,
+# Ensure no internal path aliases leak into published JS
+sh_test(
+    name = "no_internal_imports_test",
+    srcs = ["//tools:check_no_internal_imports.sh"],
+    data = BUNDLES,
 )
 
 vitest(
@@ -46,16 +125,24 @@ vitest(
     srcs = SRCS + glob([
         "tests/**/*.ts",
     ]),
-    deps = SRC_DEPS,
+    data = [
+        "//:package.json",
+    ],
+    no_copy_to_bin = [
+        "//:package.json",
+    ],
+    tsconfig = TSCONFIG,
+    deps = BUNDLE_DEPS,
 )
 
 # Test262
 esbuild(
     name = "test262-polyfill",
     srcs = [":srcs"],
+    config = "//tools:esbuild-packages-resolve",
     entry_point = "polyfill-force.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = BUNDLE_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
@@ -91,15 +178,15 @@ generate_ide_tsconfig_json(
 esbuild(
     name = "polyfill.iife",
     srcs = [":srcs"],
+    config = "//tools:esbuild-packages-resolve",
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = [
-    ] + SRC_DEPS,
+    deps = BUNDLE_DEPS,
 )
 
 package_json_test(
     name = "package_json_test",
-    deps = SRC_DEPS,
+    deps = TYPECHECK_DEPS,
 )
 
 # character orders

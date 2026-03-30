@@ -2,8 +2,15 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:index.bzl", "ts_binary")
 
 exports_files([
+    "check_no_internal_imports.sh",
     "supported-locales-gen.ts",
 ])
+
+copy_to_bin(
+    name = "esbuild-packages-resolve",
+    srcs = ["esbuild-packages-resolve.mjs"],
+    visibility = ["//visibility:public"],
+)
 
 copy_to_bin(
     name = "vitest_config_mjs",

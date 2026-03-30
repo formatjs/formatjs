@@ -5,7 +5,7 @@ import {
   SameValue,
   createDataProperty,
   invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/index.js'
 import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {

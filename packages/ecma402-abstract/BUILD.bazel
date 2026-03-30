@@ -14,7 +14,7 @@ npm_package(
         "LICENSE.md",
         "README.md",
         "package.json",
-        ":dist",
+        ":%s" % PACKAGE_NAME,
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
@@ -36,8 +36,9 @@ SRC_DEPS = [
 ]
 
 ts_compile(
-    name = "dist",
+    name = PACKAGE_NAME,
     srcs = [":srcs"],
+    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
 
