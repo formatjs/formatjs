@@ -9,6 +9,7 @@ load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 
 # gazelle:js_project_naming_convention dist
+# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
 # gazelle:js_tests_naming_convention unit_test
 
 npm_link_all_packages(name = "node_modules")

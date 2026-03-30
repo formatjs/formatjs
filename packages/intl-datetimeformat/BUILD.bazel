@@ -1,5 +1,3 @@
-load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
-
 # gazelle:js disabled
 
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
@@ -7,6 +5,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
@@ -82,7 +81,7 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
 ]
 
-formatjs_ts_project(
+ts_project(
     # Type-check only (tsgo, no emit)
     name = "dist-esm-typecheck",
     srcs = [":srcs"],
@@ -94,7 +93,7 @@ formatjs_ts_project(
     deps = SRC_DEPS,
 )
 
-formatjs_ts_project(
+ts_project(
     # Transpile to JS + .d.ts (oxc-transform)
     name = "dist-esm",
     srcs = [":srcs"],
@@ -114,7 +113,7 @@ js_library(
     ],
 )
 
-formatjs_ts_project(
+ts_project(
     # Type-check only (tsgo, no emit)
     name = "unit_test_typecheck",
     testonly = True,

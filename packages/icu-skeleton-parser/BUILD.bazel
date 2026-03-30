@@ -6,6 +6,7 @@ load("//tools:formatjs_lib.bzl", "formatjs_ts_project")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
 
 # gazelle:js_project_naming_convention dist
+# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
 # gazelle:js_tests_naming_convention unit_test
 
 npm_link_all_packages(name = "node_modules")

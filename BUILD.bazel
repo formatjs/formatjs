@@ -12,7 +12,8 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 # gazelle:generation_mode update_only
-# gazelle:map_kind ts_project formatjs_ts_project //tools:formatjs_lib.bzl
+# NOTE: map_kind is set per-package, not globally, to avoid converting
+# ts_project in # gazelle:js disabled packages.
 # gazelle:js_files src/**/*.ts src/**/*.tsx *.ts *.tsx
 # gazelle:js_test_files tests/**/*.ts tests/**/*.tsx **/*.test.ts **/*.test.tsx
 # gazelle:js_tsconfig disabled
