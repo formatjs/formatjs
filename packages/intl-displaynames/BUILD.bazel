@@ -1,16 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_run_binary")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -60,52 +55,13 @@ TEST_DEPS = SRC_DEPS + [
     ":node_modules/@formatjs/intl-locale",
 ]
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
+ts_compile(
+    name = "dist",
     srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
     deps = SRC_DEPS,
 )
 
-ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = [":srcs"],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
-)
-
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = TEST_DEPS + VITEST_DEPS,
-)
-
-vitest_runner(
+vitest(
     name = "unit_test",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
@@ -827,6 +783,11 @@ esbuild(
     target = "es2020",
     deps = [
     ] + SRC_DEPS,
+)
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
 )
 
 copy_to_bin(

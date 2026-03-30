@@ -11,8 +11,6 @@ For detailed architecture docs, package dependency hierarchies, CLDR data pipeli
 - `007a-007k` — Individual polyfill CLDR data pipelines
 - `migrations/` — Migration plans (e.g., gazelle migration)
 
-**When making structural changes to the build system, package dependencies, or CLDR data processing, update the relevant knowledge-base docs to keep them in sync.**
-
 ## Critical Rules
 
 ### 1. NEVER Run `bazel clean`

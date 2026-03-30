@@ -1,32 +1,9 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "integration_test_typecheck",
-    testonly = True,
-    srcs = glob(["*.ts"]),
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = [
-        ":node_modules/@formatjs/unplugin",
-        "//:node_modules/@rspack/core",
-        "//:node_modules/@types/react",
-        "//:node_modules/esbuild",
-        "//:node_modules/react",
-        "//:node_modules/rollup",
-        "//:node_modules/webpack",
-    ] + VITEST_DEPS,
-)
-
-vitest_runner(
+vitest(
     name = "integration_test",
     srcs = glob(["*.ts"]),
     fixtures = glob(["fixtures/*"]),

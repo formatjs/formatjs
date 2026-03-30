@@ -6,7 +6,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary"
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
 
 def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
@@ -235,7 +235,7 @@ def generate_src_file(name, src, entry_point = None, tool = None, chdir = None, 
         tags = tags + ["codegen"],
     )
 
-def generate_ide_tsconfig_json(name = "tsconfig_json", compiler_options = {}):
+def generate_ide_tsconfig_json(name = "tsconfig_json"):
     """Generate a tsconfig.json file with the correct extends path based on package depth.
 
     This macro calculates the correct relative path to the root tsconfig.json
@@ -243,7 +243,6 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", compiler_options = {}):
 
     Args:
         name: target name (default: "tsconfig_json")
-        compiler_options: extra compilerOptions to include (e.g. {"target": "ESNext"})
     """
     package = native.package_name()
 
@@ -256,12 +255,16 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", compiler_options = {}):
     # For docs (depth=1): ../tsconfig.json
     extends_path = ("../" * depth) + "tsconfig.json"
 
-    # Build tsconfig content
-    if compiler_options:
-        opts_lines = ",\n".join(['    "%s": "%s"' % (k, v) for k, v in compiler_options.items()])
-        content = '// @generated\n{\n  // This is purely for IDE, not for compilation\n  "extends": "%s",\n  "compilerOptions": {\n%s\n  }\n}\n' % (extends_path, opts_lines)
-    else:
-        content = '// @generated\n{\n  // This is purely for IDE, not for compilation\n  "extends": "%s"\n}\n' % extends_path
+    # Create tsconfig as a dict
+    tsconfig = {
+        "extends": extends_path,
+    }
+
+    # Encode to JSON
+    json_content = json.encode_indent(tsconfig, indent = "  ")
+
+    # Add comment header
+    content = "// @generated\n{\n  // This is purely for IDE, not for compilation\n  \"extends\": \"%s\"\n}\n" % extends_path
 
     native.genrule(
         name = name + "_generated",

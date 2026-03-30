@@ -1,7 +1,5 @@
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -23,34 +21,7 @@ npm_link_all_packages()
 #     ],
 # )
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "vue_integration_test_typecheck",
-    testonly = True,
-    srcs = [
-        "vue/integration.test.ts",
-        # ts-loader deps
-        "//:tsconfig",
-    ],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = [
-        ":node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@babel/types",
-        "//:node_modules/@types/webpack",
-        "//:node_modules/ts-loader",
-        "//:node_modules/typescript",
-        "//:node_modules/vue",
-        "//:node_modules/vue-class-component",
-        "//:node_modules/vue-loader",
-        "//:node_modules/webpack",
-    ] + VITEST_DEPS,
-)
-
-vitest_runner(
+vitest(
     name = "vue_integration_test",
     srcs = [
         "vue/integration.test.ts",

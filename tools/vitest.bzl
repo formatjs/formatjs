@@ -1,4 +1,4 @@
-"Vitest test macros for Bazel."
+"Utility macro the vanilla aspect.dev rules_jest to supply common dependencies."
 
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "write_source_files")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
@@ -6,25 +6,7 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 
-# Test tsconfig: ESNext with skipLibCheck, Node types, and relaxed side-effect imports
-TEST_TSCONFIG = ESNEXT_TSCONFIG | {
-    "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
-        "noUncheckedSideEffectImports": False,
-        "skipLibCheck": True,
-        "types": ["node"],
-    },
-}
-
-# Common test deps added to all vitest targets
-VITEST_DEPS = [
-    "//:node_modules/vitest",
-    "//:node_modules/vite",
-    "//:node_modules/@types/node",
-]
-
-VITEST_DOM_DEPS = ["//:node_modules/happy-dom"]
-
-def vitest_runner(
+def vitest(
         name,
         srcs = [],
         deps = [],
@@ -39,30 +21,60 @@ def vitest_runner(
         test_timeout = None,
         config = None,
         **kwargs):
-    """Run vitest tests with snapshot support. Does NOT include type-checking.
-
-    Type-checking should be done via a separate ts_project target in the
-    BUILD file so gazelle can manage its deps.
+    """
+    A rule to define a vitest target.
 
     Args:
-        name: target name
-        srcs: source and test files
-        deps: dependencies
-        data: additional data dependencies (e.g., binaries)
-        size: test size (default: "small")
-        flaky: whether the test is flaky
-        tags: tags for the target
-        no_copy_to_bin: files not to copy to bin
-        fixtures: fixture files
-        dom: whether to run in a DOM environment (adds happy-dom)
-        snapshots: snapshot files
-        test_timeout: custom timeout in milliseconds
-        config: custom vitest config file
-        **kwargs: additional arguments passed to vitest_test
+        name (str): The name of the target.
+        srcs (list): A list of source files for the target.
+        deps (list): A list of dependencies for the target.
+        data (list, optional): Additional data dependencies (e.g., binaries) for the target. Defaults to an empty list.
+        size (str, optional): The size of the test. Defaults to "small".
+        flaky (bool, optional): Whether the test is flaky. Defaults to False.
+        tags (list, optional): A list of tags for the target. Defaults to an empty list.
+        no_copy_to_bin (list, optional): A list of files not to copy to the bin directory. Defaults to an empty list.
+        snapshots (list, optional): A list of snapshot files for the target. Defaults to an empty list.
+        fixtures (list, optional): A list of fixture files for the target. Defaults to an empty list.
+        dom (bool, optional): Whether to run the test in a DOM environment. Defaults to False.
+        test_timeout (str, optional): Custom timeout for the test in milliseconds. Defaults to None.
+        config (Label, optional): Custom vitest config file. Defaults to None.
+        **kwargs: Additional keyword arguments.
     """
 
-    deps = deps + VITEST_DEPS + (VITEST_DOM_DEPS if dom else [])
+    deps = deps + [
+        "//:node_modules/vitest",
+        "//:node_modules/vite",
+        "//:node_modules/@types/node",
+    ] + (["//:node_modules/happy-dom"] if dom else [])
+
     deps = list(set(deps))
+
+    # Filter out snapshot files from srcs
+    srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
+
+    # skipLibCheck avoids type errors from transitive deps with unresolvable type imports
+    # types: ["node"] ensures @types/node augmentations (e.g. import.meta.dirname) are available
+    # noUncheckedSideEffectImports: disable TS 6 strict check for side-effect imports without types (e.g. locale-data)
+    test_tsconfig = ESNEXT_TSCONFIG | {
+        "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {
+            "skipLibCheck": True,
+            "types": ["node"],
+            "noUncheckedSideEffectImports": False,
+        },
+    }
+
+    # Type check only with tsgo (fast, parallel)
+    ts_project(
+        name = "%s_typecheck" % name,
+        srcs = srcs_no_snapshots,
+        tsconfig = test_tsconfig,
+        resolve_json_module = True,
+        declaration = True,
+        no_emit = True,
+        testonly = True,
+        deps = deps,
+        transpiler = tsgo_bin.tsgo,
+    )
 
     # Use the shared base config for Bazel sandbox compatibility (preserveSymlinks).
     # Packages with custom configs must also include resolve.preserveSymlinks: true.
@@ -83,9 +95,6 @@ def vitest_runner(
         ] + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),
         **kwargs
     )
-
-    # Filter out snapshot files from srcs
-    srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
 
     test_files = [src for src in srcs_no_snapshots if ".test.ts" in src or ".test.tsx" in src]
 
@@ -133,77 +142,4 @@ def vitest_runner(
         name = "%s.update" % name,
         additional_update_targets = snapshot_targets,
         tags = ["snapshot", "manual"],
-    )
-
-def vitest(
-        name,
-        srcs = [],
-        deps = [],
-        data = [],
-        size = "small",
-        flaky = False,
-        tags = [],
-        no_copy_to_bin = [],
-        fixtures = [],
-        dom = False,
-        snapshots = [],
-        test_timeout = None,
-        config = None,
-        **kwargs):
-    """DEPRECATED: Use vitest_runner + explicit ts_project instead.
-
-    Legacy macro that combines type-checking and test execution. Kept for
-    backwards compatibility during migration.
-
-    Args:
-        name: target name
-        srcs: source and test files
-        deps: dependencies
-        data: additional data dependencies
-        size: test size
-        flaky: whether the test is flaky
-        tags: tags
-        no_copy_to_bin: files not to copy to bin
-        fixtures: fixture files
-        dom: whether to run in a DOM environment
-        snapshots: snapshot files
-        test_timeout: custom timeout in milliseconds
-        config: custom vitest config file
-        **kwargs: additional arguments
-    """
-
-    all_deps = deps + VITEST_DEPS + (VITEST_DOM_DEPS if dom else [])
-    all_deps = list(set(all_deps))
-
-    # Filter out snapshot files from srcs
-    srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
-
-    # Type check only with tsgo (fast, parallel)
-    ts_project(
-        name = "%s_typecheck" % name,
-        srcs = srcs_no_snapshots,
-        tsconfig = TEST_TSCONFIG,
-        resolve_json_module = True,
-        declaration = True,
-        no_emit = True,
-        testonly = True,
-        deps = all_deps,
-        transpiler = tsgo_bin.tsgo,
-    )
-
-    vitest_runner(
-        name = name,
-        srcs = srcs,
-        deps = deps,
-        data = data,
-        size = size,
-        flaky = flaky,
-        tags = tags,
-        no_copy_to_bin = no_copy_to_bin,
-        fixtures = fixtures,
-        dom = dom,
-        snapshots = snapshots,
-        test_timeout = test_timeout,
-        config = config,
-        **kwargs
     )

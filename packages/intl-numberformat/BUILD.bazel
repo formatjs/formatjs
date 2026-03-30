@@ -1,18 +1,13 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_binary", "ts_compile", "ts_run_binary")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -28,14 +23,13 @@ exports_files(
 
 PACKAGE_NAME = "intl-numberformat"
 
-js_binary(
+ts_binary(
     name = "generate-locale-test",
     data = [
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
     entry_point = "scripts/generate-locale-test.ts",
-    node_options = ["--experimental-transform-types"],
 )
 
 TEST_LOCALES = [
@@ -109,36 +103,10 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
 ]
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS,
-)
-
-ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = [":srcs"],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
+ts_compile(
     name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
+    srcs = [":srcs"],
+    deps = SRC_DEPS,
 )
 
 UNIT_TEST_LOCALES = [
@@ -218,23 +186,7 @@ multirun(
     ],
 )
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "misc_tests_typecheck",
-    testonly = True,
-    srcs = glob([
-               "tests/*.test.ts",
-           ]) + [":srcs"] +
-           TEST_LOCALE_DATA,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS],
-)
-
-vitest_runner(
+vitest(
     name = "misc_tests",
     size = "large",
     srcs = glob([
@@ -245,38 +197,18 @@ vitest_runner(
 )
 
 [
-    [
-        ts_project(
-            # Type-check only (tsgo, no emit)
-            name = "%s_tests_typecheck" % type,
-            testonly = True,
-            srcs = [
-                "tests/%s/%s.generated.test.ts" % (type, locale)
-                for locale in UNIT_TEST_LOCALES
-            ] + [
-                ":srcs",
-                "tests/%s/%sTest.ts" % (type, type),
-            ] + TEST_LOCALE_DATA,
-            declaration = True,
-            no_emit = True,
-            resolve_json_module = True,
-            transpiler = tsgo_bin.tsgo,
-            tsconfig = TEST_TSCONFIG,
-            deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS],
-        ),
-        vitest_runner(
-            name = "%s_tests" % type,
-            size = "large",
-            srcs = [
-                "tests/%s/%s.generated.test.ts" % (type, locale)
-                for locale in UNIT_TEST_LOCALES
-            ] + [
-                ":srcs",
-                "tests/%s/%sTest.ts" % (type, type),
-            ] + TEST_LOCALE_DATA,
-            deps = TEST_DEPS,
-        ),
-    ]
+    vitest(
+        name = "%s_tests" % type,
+        size = "large",
+        srcs = [
+            "tests/%s/%s.generated.test.ts" % (type, locale)
+            for locale in UNIT_TEST_LOCALES
+        ] + [
+            ":srcs",
+            "tests/%s/%sTest.ts" % (type, type),
+        ] + TEST_LOCALE_DATA,
+        deps = TEST_DEPS,
+    )
     for type in LOCALE_TEST_TYPES
 ]
 
@@ -1048,6 +980,11 @@ esbuild(
     target = "es2020",
     deps = [
     ] + SRC_DEPS,
+)
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
 )
 
 copy_to_bin(

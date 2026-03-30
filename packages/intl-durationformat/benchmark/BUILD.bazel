@@ -1,54 +1,48 @@
-# gazelle:js disabled
-
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "ts_binary")
 
 npm_link_all_packages()
 
-js_binary(
+ts_binary(
     name = "benchmark",
     data = [
         ":node_modules/@formatjs/intl-durationformat",
         "//:node_modules/tinybench",
     ],
     entry_point = "benchmark.ts",
-    node_options = ["--experimental-transform-types"],
 )
 
-js_binary(
+ts_binary(
     name = "instantiation_benchmark",
     data = [
         ":node_modules/@formatjs/intl-durationformat",
         "//:node_modules/tinybench",
     ],
     entry_point = "instantiation-benchmark.ts",
-    node_options = ["--experimental-transform-types"],
 )
 
-js_binary(
+ts_binary(
     name = "profile",
     data = [
         ":node_modules/@formatjs/intl-durationformat",
     ],
     entry_point = "profile.ts",
-    node_options = ["--experimental-transform-types"],
 )
 
-js_binary(
+ts_binary(
     name = "profile_cpu",
     data = [
         ":node_modules/@formatjs/intl-durationformat",
     ],
     entry_point = "profile.ts",
     node_options = [
-        "--experimental-transform-types",
         "--cpu-prof",
         "--cpu-prof-interval=100",
         "--cpu-prof-dir=/tmp",
     ],
 )
 
-js_binary(
+ts_binary(
     name = "analyze_profile",
     data = [
         "//:node_modules/@types/minimist",
@@ -56,5 +50,4 @@ js_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "analyze-profile.ts",
-    node_options = ["--experimental-transform-types"],
 )

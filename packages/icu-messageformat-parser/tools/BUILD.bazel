@@ -1,6 +1,6 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("//tools:index.bzl", "ts_binary")
 
-js_binary(
+ts_binary(
     name = "regex_gen",
     data = [
         "global.ts",
@@ -8,21 +8,19 @@ js_binary(
         "//:node_modules/regenerate",
     ],
     entry_point = "regex-gen.ts",
-    node_options = ["--experimental-transform-types"],
     visibility = [
         "//crates/icu_messageformat_parser:__pkg__",
         "//packages/icu-messageformat-parser:__subpackages__",
     ],
 )
 
-js_binary(
+ts_binary(
     name = "time_data_gen",
     data = [
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
     entry_point = "time-data-gen.ts",
-    node_options = ["--experimental-transform-types"],
     visibility = [
         "//crates/icu_messageformat_parser:__pkg__",
         "//packages/icu-messageformat-parser:__subpackages__",

@@ -5,10 +5,10 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -43,9 +43,9 @@ SRC_DEPS = [
     "//:node_modules/vite",
 ]
 
+# Type check only with tsgo (fast, parallel)
 # Uses skipLibCheck because unplugin's .d.ts imports types from many optional peer deps
 ts_project(
-    # Type-check only (tsgo, no emit)
     name = "dist-esm-esnext-typecheck",
     srcs = [":srcs"],
     declaration = True,
@@ -56,8 +56,8 @@ ts_project(
     deps = SRC_DEPS,
 )
 
+# Transpile with oxc-transform (fast JS and .d.ts generation)
 ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
     name = "dist-esm-esnext",
     srcs = [":srcs"],
     declaration = True,
@@ -76,43 +76,13 @@ js_library(
     ],
 )
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = SRCS + glob(["tests/**/*.ts"]),
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = SRC_DEPS + [d for d in VITEST_DEPS if d not in SRC_DEPS],
-)
-
-vitest_runner(
+vitest(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
     deps = SRC_DEPS,
 )
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "conformance_test_typecheck",
-    testonly = True,
-    srcs = SRCS + [
-        ":rust_cli_copy",
-    ] + glob(["conformance-tests/**/*.ts"]),
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = SRC_DEPS + [
-        "//:node_modules/@bazel/runfiles",
-    ] + [d for d in VITEST_DEPS if d not in SRC_DEPS],
-)
-
-vitest_runner(
+vitest(
     name = "conformance_test",
     srcs = SRCS + [
         ":rust_cli_copy",
@@ -143,3 +113,8 @@ copy_to_bin(
 )
 
 generate_ide_tsconfig_json()
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
+)

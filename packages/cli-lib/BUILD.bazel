@@ -1,14 +1,9 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "vitest_runner")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile_node")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -64,54 +59,13 @@ SRC_DEPS = [
     "//:node_modules/typescript",
 ] + VUE_DEPS + SVELTE_DEPS + GLIMMER_HBS_DEPS
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-esnext-typecheck",
+ts_compile_node(
+    name = "dist",
     srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = ESNEXT_TSCONFIG,
     deps = SRC_DEPS,
 )
 
-ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm-esnext",
-    srcs = [":srcs"],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = ESNEXT_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm-esnext",
-    ],
-)
-
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = [":srcs"] + glob(
-        ["tests/unit/**/*.test.ts"],
-    ),
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = SRC_DEPS + [d for d in VITEST_DEPS if d not in SRC_DEPS],
-)
-
-vitest_runner(
+vitest(
     name = "unit_test",
     srcs = [":srcs"] + glob(
         ["tests/unit/**/*.test.ts"],
@@ -153,6 +107,11 @@ esbuild(
     visibility = ["//packages/cli:__pkg__"],
     deps = [
     ] + SRC_DEPS,
+)
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
 )
 
 copy_to_bin(

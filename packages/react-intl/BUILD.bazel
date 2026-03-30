@@ -1,16 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load("//tools:vitest.bzl", "TEST_TSCONFIG", "VITEST_DEPS", "VITEST_DOM_DEPS", "vitest_runner")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
+load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
@@ -60,36 +55,10 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/typescript",
 ]
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "dist-esm-typecheck",
-    srcs = SRCS,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS,
-)
-
-ts_project(
-    # Transpile to JS + .d.ts (oxc-transform)
-    name = "dist-esm",
-    srcs = SRCS,
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = BASE_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
+ts_compile(
     name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm",
-    ],
+    srcs = SRCS,
+    deps = SRC_DEPS,
 )
 
 esbuild(
@@ -111,21 +80,7 @@ genrule(
     cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
 )
 
-ts_project(
-    # Type-check only (tsgo, no emit)
-    name = "unit_test_typecheck",
-    testonly = True,
-    srcs = SRCS +
-           TESTS,
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = TEST_TSCONFIG,
-    deps = TEST_DEPS + [d for d in VITEST_DEPS if d not in TEST_DEPS] + VITEST_DOM_DEPS,
-)
-
-vitest_runner(
+vitest(
     name = "unit_test",
     srcs = SRCS +
            TESTS,
@@ -136,6 +91,11 @@ vitest_runner(
 
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
+
+package_json_test(
+    name = "package_json_test",
+    deps = SRC_DEPS,
+)
 
 # TODO: make this a macro that paramtrizes on `.test-d.ts` files.
 copy_to_directory(
