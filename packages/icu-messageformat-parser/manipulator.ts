@@ -172,9 +172,6 @@ function collectVariables(
       isTimeElement(el) ||
       isNumberElement(el)
     ) {
-      if (el.value in vars && vars.get(el.value) !== el.type) {
-        throw new Error(`Variable ${el.value} has conflicting types`)
-      }
       vars.set(el.value, el.type)
     }
 

@@ -112,6 +112,34 @@ test('structurally same literal', function () {
   )
 })
 
+// https://github.com/formatjs/formatjs/issues/6212
+test('GH #6212: variable names matching Map prototype properties should not conflict', function () {
+  // 'size' and 'entries' are properties on Map.prototype.
+  // Using `in` operator instead of `Map.has()` caused false positives.
+  expect(
+    isStructurallySame(parse('{size} m²'), parse('{date} · {size}'))
+  ).toEqual({
+    success: false,
+    error: new Error(
+      'Different number of variables: [size] vs [date, size]'
+    ),
+  })
+
+  // Same variables — should succeed without "conflicting types" error
+  expect(
+    isStructurallySame(parse('{size} m²'), parse('{size} sq ft'))
+  ).toEqual({
+    success: true,
+  })
+
+  // 'entries' is also a Map prototype property
+  expect(
+    isStructurallySame(parse('{entries} items'), parse('{entries} records'))
+  ).toEqual({
+    success: true,
+  })
+})
+
 // https://github.com/formatjs/formatjs/issues/4202
 test('GH #4202: multiple plurals with hash placeholders', function () {
   const input =
