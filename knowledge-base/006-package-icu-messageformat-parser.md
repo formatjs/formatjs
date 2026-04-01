@@ -34,7 +34,7 @@ Delegates number/datetime skeleton parsing to `@formatjs/icu-skeleton-parser`. S
 
 ### Rust Mirror + WASM
 
-A parallel Rust implementation exists in `crates/icu_messageformat_parser/` that is 2.6-3.7x faster. It compiles to WASM and ships as `@formatjs/icu-messageformat-parser-wasm`.
+A parallel Rust implementation exists in `crates/icu_messageformat_parser/` that is 2.6-3.7x faster.
 
 ## Generated Data
 
@@ -49,4 +49,3 @@ A parallel Rust implementation exists in `crates/icu_messageformat_parser/` that
 
 - Vitest unit tests with real-world message samples
 - Integration tests comparing TypeScript and Rust parser output
-- WASM integration tests in `packages/icu-messageformat-parser-wasm/`

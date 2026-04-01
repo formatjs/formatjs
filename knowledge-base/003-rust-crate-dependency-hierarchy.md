@@ -109,12 +109,11 @@ formatjs_cli (v0.1.14)
 
 ## Connection to TypeScript Packages
 
-| Rust Crate                        | TypeScript Package                        | Relationship                        |
-| --------------------------------- | ----------------------------------------- | ----------------------------------- |
-| `icu_skeleton_parser`             | `@formatjs/icu-skeleton-parser`           | Rust mirror of TS implementation    |
-| `icu_messageformat_parser`        | `@formatjs/icu-messageformat-parser`      | Rust mirror, also compiled to WASM  |
-| `icu_messageformat_parser` (WASM) | `@formatjs/icu-messageformat-parser-wasm` | WASM build shipped as npm package   |
-| `formatjs_cli`                    | `@formatjs/cli`                           | Drop-in replacement for Node.js CLI |
+| Rust Crate                 | TypeScript Package                   | Relationship                        |
+| -------------------------- | ------------------------------------ | ----------------------------------- |
+| `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation    |
+| `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM  |
+| `formatjs_cli`             | `@formatjs/cli`                      | Drop-in replacement for Node.js CLI |
 
 **Data flow:** TypeScript scripts in `packages/icu-messageformat-parser/tools/` generate Rust source files (`time_data_generated.rs`, `regex_generated.rs`) from CLDR data. These are checked in and used by the Rust crate at compile time.
 

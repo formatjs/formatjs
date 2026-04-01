@@ -25,11 +25,10 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 
 **Parsers:**
 
-| Package                                   | Internal Dependencies                 |
-| ----------------------------------------- | ------------------------------------- |
-| `@formatjs/icu-skeleton-parser`           | ecma402-abstract                      |
-| `@formatjs/icu-messageformat-parser`      | ecma402-abstract, icu-skeleton-parser |
-| `@formatjs/icu-messageformat-parser-wasm` | ecma402-abstract, icu-skeleton-parser |
+| Package                              | Internal Dependencies                 |
+| ------------------------------------ | ------------------------------------- |
+| `@formatjs/icu-skeleton-parser`      | ecma402-abstract                      |
+| `@formatjs/icu-messageformat-parser` | ecma402-abstract, icu-skeleton-parser |
 
 **Intl Polyfills** (all depend on `ecma402-abstract` + `intl-localematcher`):
 

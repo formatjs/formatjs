@@ -1,9 +1,0 @@
-{
-  "name": "icu-messageformat-parser-wasm-benchmark",
-  "version": "1.0.0",
-  "private": true,
-  "devDependencies": {
-    "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@formatjs/icu-messageformat-parser-wasm": "workspace:*"
-  }
-}

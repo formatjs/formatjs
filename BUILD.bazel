@@ -56,7 +56,6 @@ PACKAGES_TO_DIST = [
     "//packages/eslint-plugin-formatjs",
     "//packages/fast-memoize",
     "//packages/icu-messageformat-parser",
-    "//packages/icu-messageformat-parser-wasm",
     "//packages/icu-skeleton-parser",
     "//packages/intl-datetimeformat",
     "//packages/intl-displaynames",

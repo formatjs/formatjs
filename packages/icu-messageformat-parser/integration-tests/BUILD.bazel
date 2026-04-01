@@ -60,15 +60,3 @@ rust_test(
     ],
     entry_point = "run-parser.ts",
 ) for f in TEST_CASES]
-
-# WASM integration test
-vitest(
-    name = "wasm_integration_test",
-    srcs = ["wasm-integration.test.ts"],
-    fixtures = TEST_CASES + [
-        "//packages/icu-messageformat-parser-wasm:pkg",
-    ],
-    deps = [
-        ":node_modules/@formatjs/icu-messageformat-parser-wasm",
-    ],
-)
