@@ -1,12 +1,16 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile", "ts_run_binary")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_run_binary")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_dockerfile")
@@ -33,25 +37,6 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-        "add-all-tz.js",
-        "add-all-tz.d.ts",
-        "add-golden-tz.js",
-        "add-golden-tz.d.ts",
-        ":dist",
-        ":locale-data",
-        # polyfill-library uses this
-        "polyfill.iife.js",
-    ],
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    visibility = ["//visibility:public"],
-)
-
 SRCS = glob(
     [
         "*.ts",
@@ -75,9 +60,89 @@ TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@types/node",
 ]
 
-ts_compile(
-    name = "dist",
+EXTERNAL_PACKAGES = [
+    dep.split("node_modules/")[1]
+    for dep in SRC_DEPS
+    if "node_modules/" in dep
+]
+
+ENTRY_POINTS = [
+    "index.ts",
+    "polyfill.ts",
+    "polyfill-force.ts",
+    "should-polyfill.ts",
+]
+
+[esbuild(
+    name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
+    config = "//tools:esbuild-packages-resolve",
+    entry_point = entry,
+    external = EXTERNAL_PACKAGES,
+    format = "esm",
+    output = "%s.js" % entry.replace(".ts", ""),
+    target = "es2020",
+    deps = SRC_DEPS,
+) for entry in ENTRY_POINTS]
+
+BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
+
+js_library(
+    name = PACKAGE_NAME,
+    srcs = BUNDLES + [
+        "package.json",
+        ":types",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        "LICENSE.md",
+        "README.md",
+        "add-all-tz.d.ts",
+        "add-all-tz.js",
+        "add-golden-tz.d.ts",
+        "add-golden-tz.js",
+        "package.json",
+    ] + BUNDLES + [":types"] + [
+        ":locale-data",
+        # polyfill-library uses this
+        "polyfill.iife.js",
+    ],
+    package = "@formatjs/%s" % PACKAGE_NAME,
+    visibility = ["//visibility:public"],
+)
+
+# Ensure no internal path aliases leak into published JS
+sh_test(
+    name = "no_internal_imports_test",
+    srcs = ["//tools:check_no_internal_imports.sh"],
+    data = BUNDLES,
+)
+
+ts_project(
+    name = "typecheck",
+    srcs = [":srcs"],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    deps = SRC_DEPS,
+)
+
+# --- Generate .d.ts declarations ---
+ts_project(
+    name = "types",
+    srcs = [":srcs"],
+    declaration = True,
+    emit_declaration_only = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = BASE_TSCONFIG,
+    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
 
@@ -895,6 +960,7 @@ write_source_files(
 esbuild(
     name = "polyfill.iife",
     srcs = [":srcs"],
+    config = "//tools:esbuild-packages-resolve",
     entry_point = "polyfill.ts",
     target = "es2020",
     deps = [
