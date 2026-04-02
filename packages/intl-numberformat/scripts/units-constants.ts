@@ -1,5 +1,5 @@
 import minimist from 'minimist'
-import {SIMPLE_UNITS} from '@formatjs/ecma402-abstract'
+import {SIMPLE_UNITS} from '#packages/ecma402-abstract/IsSanctionedSimpleUnitIdentifier.js'
 import {outputFileSync} from 'fs-extra/esm'
 
 function main(args: minimist.ParsedArgs) {

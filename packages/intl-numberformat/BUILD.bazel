@@ -11,10 +11,24 @@ load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_run_binary")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
+
+PACKAGES_PATHS = {
+    "paths": {
+        "#packages/*": ["../*"],
+    },
+}
+
+TSCONFIG = BASE_TSCONFIG | {
+    "compilerOptions": BASE_TSCONFIG["compilerOptions"] | PACKAGES_PATHS,
+}
+
+VITEST_TSCONFIG = ESNEXT_TSCONFIG | {
+    "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | PACKAGES_PATHS,
+}
 
 exports_files(
     [
@@ -72,7 +86,7 @@ SRCS = glob(
 )
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
     ":node_modules/@formatjs/bigdecimal",
 ]
@@ -149,7 +163,7 @@ ts_project(
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = TSCONFIG,
     deps = SRC_DEPS,
 )
 
@@ -161,7 +175,7 @@ ts_project(
     emit_declaration_only = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = TSCONFIG,
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -250,6 +264,9 @@ vitest(
                "tests/*.test.ts",
            ]) + [":srcs"] +
            TEST_LOCALE_DATA,
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = VITEST_TSCONFIG,
     deps = TEST_DEPS,
 )
 
@@ -264,6 +281,9 @@ vitest(
             ":srcs",
             "tests/%s/%sTest.ts" % (type, type),
         ] + TEST_LOCALE_DATA,
+        data = ["//:package.json"],
+        no_copy_to_bin = ["//:package.json"],
+        tsconfig = VITEST_TSCONFIG,
         deps = TEST_DEPS,
     )
     for type in LOCALE_TEST_TYPES
