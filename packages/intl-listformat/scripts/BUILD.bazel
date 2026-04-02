@@ -4,6 +4,7 @@ ts_binary(
     name = "cldr-raw",
     data = [
         "extract-list.ts",
+        "//:package.json",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-listformat:__pkg__"],
