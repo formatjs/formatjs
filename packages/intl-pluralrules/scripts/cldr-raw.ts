@@ -1,7 +1,7 @@
 import {join} from 'path'
 import {outputFileSync} from 'fs-extra/esm'
 import serialize from 'serialize-javascript'
-import {type LDMLPluralRule} from '@formatjs/ecma402-abstract'
+import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 import plurals from 'cldr-core/supplemental/plurals.json' with {type: 'json'}
 import ordinals from 'cldr-core/supplemental/ordinals.json' with {type: 'json'}
 import pluralRanges from 'cldr-core/supplemental/pluralRanges.json' with {type: 'json'}

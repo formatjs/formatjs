@@ -1,9 +1,9 @@
+import {Type} from '#packages/ecma402-abstract/262.js'
 import {
-  invariant,
   type LDMLPluralRule,
   type PluralRulesInternal,
-  Type,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/plural-rules.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'
 import {type OperandsRecord} from './GetOperands.js'
 import {ResolvePluralInternal} from './ResolvePlural.js'
