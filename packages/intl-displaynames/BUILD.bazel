@@ -9,7 +9,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_run_binary")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -36,7 +36,7 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
@@ -110,7 +110,7 @@ ts_project(
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 
@@ -122,7 +122,7 @@ ts_project(
     emit_declaration_only = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -130,6 +130,9 @@ ts_project(
 vitest(
     name = "unit_test",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(),
     deps = TEST_DEPS,
 )
 

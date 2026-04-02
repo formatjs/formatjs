@@ -72,6 +72,27 @@ DOCS_TSCONFIG = BASE_TSCONFIG | {
     },
 }
 
+def packages_tsconfig(base = None):
+    """Return a tsconfig with #packages/* path alias based on current package depth.
+
+    Args:
+        base: base tsconfig dict to extend (defaults to BASE_TSCONFIG)
+
+    Returns:
+        tsconfig dict with paths mapping #packages/* to the packages/ directory
+    """
+    base = base or BASE_TSCONFIG
+    package = native.package_name()
+    depth = len(package.split("/")) if package else 0
+    relative_to_root = "/".join([".."] * depth) if depth else "."
+    return base | {
+        "compilerOptions": base["compilerOptions"] | {
+            "paths": {
+                "#packages/*": [relative_to_root + "/packages/*"],
+            },
+        },
+    }
+
 # ESNext + skipLibCheck configuration - for packages with deps that have unresolvable type imports
 ESNEXT_SKIP_LIB_CHECK_TSCONFIG = ESNEXT_TSCONFIG | {
     "compilerOptions": ESNEXT_TSCONFIG["compilerOptions"] | {

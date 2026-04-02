@@ -10,7 +10,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "unicode_file_name")
 
@@ -123,7 +123,7 @@ ts_project(
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = TSCONFIG,
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 
@@ -135,7 +135,7 @@ ts_project(
     emit_declaration_only = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = TSCONFIG,
+    tsconfig = packages_tsconfig(),
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -152,7 +152,7 @@ vitest(
         "@WordBreakTest//file",
         "@SentenceBreakTest//file",
     ],
-    tsconfig = TSCONFIG,
+    tsconfig = packages_tsconfig(),
     deps = TEST_DEPS,
 )
 
