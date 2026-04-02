@@ -16,10 +16,19 @@ load(":index.bzl", "unicode_file_name")
 
 npm_link_all_packages()
 
+# tsconfig with #packages/* path alias for tsc resolution
+TSCONFIG = BASE_TSCONFIG | {
+    "compilerOptions": BASE_TSCONFIG["compilerOptions"] | {
+        "paths": {
+            "#packages/*": ["../*"],
+        },
+    },
+}
+
 PACKAGE_NAME = "intl-segmenter"
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
@@ -114,7 +123,7 @@ ts_project(
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = TSCONFIG,
     deps = SRC_DEPS,
 )
 
@@ -126,7 +135,7 @@ ts_project(
     emit_declaration_only = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = TSCONFIG,
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -134,11 +143,16 @@ ts_project(
 vitest(
     name = "unit_test",
     srcs = SRCS + TESTS + ["tests/test-utils.ts"],
+    data = [
+        "//:package.json",
+    ],
     no_copy_to_bin = [
+        "//:package.json",
         "@GraphemeBreakTest//file",
         "@WordBreakTest//file",
         "@SentenceBreakTest//file",
     ],
+    tsconfig = TSCONFIG,
     deps = TEST_DEPS,
 )
 

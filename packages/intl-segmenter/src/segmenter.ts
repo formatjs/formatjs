@@ -1,12 +1,12 @@
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
-  CanonicalizeLocaleList,
-  GetOption,
-  GetOptionsObject,
-  SupportedLocales,
   getInternalSlot,
   getMultiInternalSlots,
   setInternalSlot,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {SegmentationRules} from './cldr-segmentation-rules.generated.js'
 import {isSurrogate, replaceVariables} from './segmentation-utils.js'
