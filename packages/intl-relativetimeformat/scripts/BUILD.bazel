@@ -4,6 +4,7 @@ ts_binary(
     name = "cldr-raw",
     data = [
         "extract-relative.ts",
+        "//:package.json",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-relativetimeformat:__pkg__"],

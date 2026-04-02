@@ -12,7 +12,10 @@ import {resolve, dirname} from 'path'
 import {createRequire} from 'node:module'
 
 const require = createRequire(import.meta.url)
-import {type FieldData, type LocaleFieldsData} from '@formatjs/ecma402-abstract'
+import {
+  type FieldData,
+  type LocaleFieldsData,
+} from '#packages/ecma402-abstract/types/relative-time.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 
 // The set of CLDR date field names that are used in FormatJS.
