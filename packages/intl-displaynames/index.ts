@@ -1,17 +1,19 @@
+import {ToString} from '#packages/ecma402-abstract/262.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
+import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
-  CanonicalizeLocaleList,
   type DisplayNamesData,
   type DisplayNamesLocaleData,
-  GetOption,
-  GetOptionsObject,
-  IsWellFormedCurrencyCode,
-  SupportedLocales,
-  ToString,
+} from '#packages/ecma402-abstract/types/displaynames.js'
+import {
   getInternalSlot,
   getMultiInternalSlots,
   invariant,
   setInternalSlot,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/utils.js'
 import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames.js'
 import {IsValidDateTimeFieldCode} from './abstract/IsValidDateTimeFieldCode.js'
 
