@@ -1,18 +1,20 @@
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
+import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
-  CanonicalizeLocaleList,
-  getInternalSlot,
-  GetOption,
-  GetOptionsObject,
-  invariant,
-  isLiteralPart,
   type ListPatternData,
   type ListPatternFieldsData,
   type ListPatternLocaleData,
+} from '#packages/ecma402-abstract/types/list.js'
+import {
   type LiteralPart,
-  PartitionPattern,
+  getInternalSlot,
+  invariant,
+  isLiteralPart,
   setInternalSlot,
-  SupportedLocales,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export interface IntlListFormatOptions {
