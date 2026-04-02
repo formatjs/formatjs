@@ -1,11 +1,11 @@
+import {Type} from '#packages/ecma402-abstract/262.js'
+import {ComputeExponentForMagnitude} from '#packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.js'
+import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {
-  ComputeExponentForMagnitude,
-  FormatNumericToString,
-  invariant,
   type LDMLPluralRule,
   type PluralRulesInternal,
-  Type,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/plural-rules.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import Decimal from '@formatjs/bigdecimal'
 import {GetOperands, type OperandsRecord} from './GetOperands.js'
 
