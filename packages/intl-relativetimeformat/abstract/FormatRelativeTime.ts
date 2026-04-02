@@ -1,4 +1,4 @@
-import {type RelativeTimeFormatInternal} from '@formatjs/ecma402-abstract'
+import {type RelativeTimeFormatInternal} from '#packages/ecma402-abstract/types/relative-time.js'
 import {PartitionRelativeTimePattern} from './PartitionRelativeTimePattern.js'
 
 export function FormatRelativeTime(

@@ -1,13 +1,11 @@
+import {SameValue, ToString, Type} from '#packages/ecma402-abstract/262.js'
+import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 import {
   type FieldData,
-  invariant,
-  type LDMLPluralRule,
   type RelativeTimeField,
   type RelativeTimeFormatInternal,
-  SameValue,
-  ToString,
-  Type,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/relative-time.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit.js'
 import {MakePartsList} from './MakePartsList.js'
 
