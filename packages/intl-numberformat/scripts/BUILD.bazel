@@ -19,6 +19,7 @@ ts_binary(
         "extract-numbers.ts",
         "extract-units.ts",
         "utils.ts",
+        "//:package.json",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -41,6 +42,7 @@ ts_binary(
     data = [
         "extract-currencies.ts",
         "utils.ts",
+        "//:package.json",
     ],
     entry_point = "currency-digits.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -51,6 +53,7 @@ ts_binary(
     data = [
         "extract-numbers.ts",
         "utils.ts",
+        "//:package.json",
     ],
     entry_point = "numbering-systems.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],

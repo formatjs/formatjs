@@ -1,5 +1,5 @@
 import {it, expect} from 'vitest'
-import {_formatToParts} from '@formatjs/ecma402-abstract'
+import _formatToParts from '#packages/ecma402-abstract/NumberFormat/format_to_parts.js'
 import Decimal from '@formatjs/bigdecimal'
 
 function format(...args: Parameters<typeof _formatToParts>): string {

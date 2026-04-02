@@ -11,8 +11,8 @@ import {
   type LDMLPluralRuleMap,
   type DecimalFormatNum,
   type RawCurrencyData,
-  invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
 

@@ -1,7 +1,5 @@
-import {
-  type LDMLPluralRuleMap,
-  type LDMLPluralRule,
-} from '@formatjs/ecma402-abstract'
+import {type LDMLPluralRuleMap} from '#packages/ecma402-abstract/types/number.js'
+import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 import {isEqual} from 'lodash-es'
 export function collapseSingleValuePluralRule<T>(
   rules: LDMLPluralRuleMap<T>
