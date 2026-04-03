@@ -19,6 +19,18 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
+# Root package.json for Node subpath import resolution (#packages/*).
+copy_to_bin(
+    name = "root_package_json",
+    srcs = ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
+exports_files(
+    ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
 gazelle(
     name = "gazelle",
     env = {

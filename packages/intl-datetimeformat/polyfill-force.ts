@@ -1,4 +1,4 @@
-import {defineProperty} from '@formatjs/ecma402-abstract'
+import {defineProperty} from '#packages/ecma402-abstract/utils.js'
 import {DateTimeFormat} from './index.js'
 import {
   toLocaleDateString as _toLocaleDateString,

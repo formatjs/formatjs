@@ -1,18 +1,16 @@
+import {OrdinaryHasInstance, ToNumber} from '#packages/ecma402-abstract/262.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
+import {IsValidTimeZoneName} from '#packages/ecma402-abstract/IsValidTimeZoneName.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
-  CanonicalizeLocaleList,
-  CanonicalizeTimeZoneName,
   type DateTimeFormatLocaleInternalData,
   type DateTimeFormat as IDateTimeFormat,
   type IntlDateTimeFormatInternal,
-  IsValidTimeZoneName,
-  OrdinaryHasInstance,
-  SupportedLocales,
   type TABLE_6,
-  ToNumber,
   type UnpackedZoneData,
-  defineProperty,
-  invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
+import {defineProperty, invariant} from '#packages/ecma402-abstract/utils.js'
 import Decimal from '@formatjs/bigdecimal'
 import {FormatDateTime} from './abstract/FormatDateTime.js'
 import {FormatDateTimeRange} from './abstract/FormatDateTimeRange.js'

@@ -1,10 +1,10 @@
+import {ToString} from '#packages/ecma402-abstract/262.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
-  CanonicalizeLocaleList,
   type LocaleFieldsData,
   type RelativeTimeLocaleData,
-  SupportedLocales,
-  ToString,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/relative-time.js'
 import {InitializeRelativeTimeFormat} from './abstract/InitializeRelativeTimeFormat.js'
 import {PartitionRelativeTimePattern} from './abstract/PartitionRelativeTimePattern.js'
 import getInternalSlots from './get_internal_slots.js'

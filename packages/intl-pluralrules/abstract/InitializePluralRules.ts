@@ -1,11 +1,11 @@
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatDigitOptions.js'
 import {
-  CanonicalizeLocaleList,
-  CoerceOptionsToObject,
-  GetOption,
   type PluralRulesData,
   type PluralRulesInternal,
-  SetNumberFormatDigitOptions,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/plural-rules.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export function InitializePluralRules(

@@ -1,8 +1,6 @@
-import {
-  invariant,
-  type RelativeTimeFormatSingularUnit,
-  Type,
-} from '@formatjs/ecma402-abstract'
+import {Type} from '#packages/ecma402-abstract/262.js'
+import {type RelativeTimeFormatSingularUnit} from '#packages/ecma402-abstract/types/relative-time.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 /**
  * https://tc39.es/proposal-intl-relative-time/#sec-singularrelativetimeunit
