@@ -1,9 +1,7 @@
 import {NumberFormat} from './src/core.js'
 import {toLocaleString as _toLocaleString} from './src/to_locale_string.js'
-import {
-  defineProperty,
-  type NumberFormatOptions,
-} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
+import {defineProperty} from '#packages/ecma402-abstract/utils.js'
 import {shouldPolyfill} from './should-polyfill.js'
 
 if (shouldPolyfill()) {

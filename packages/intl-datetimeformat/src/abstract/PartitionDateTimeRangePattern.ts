@@ -1,12 +1,11 @@
+import {SameValue, TimeClip} from '#packages/ecma402-abstract/262.js'
+import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
   type IntlDateTimeFormatPart,
   type IntlDateTimeFormatPartType,
-  PartitionPattern,
   RangePatternType,
-  SameValue,
   type TABLE_2,
-  TimeClip,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
 import type Decimal from '@formatjs/bigdecimal'
 import {
   FormatDateTimePattern,

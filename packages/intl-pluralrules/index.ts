@@ -1,12 +1,12 @@
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
+import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
+import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
 import {
-  CanonicalizeLocaleList,
   type LDMLPluralRule,
-  type NumberFormatDigitInternalSlots,
   type PluralRulesData,
   type PluralRulesLocaleData,
-  SupportedLocales,
-  ToIntlMathematicalValue,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/plural-rules.js'
 import type Decimal from '@formatjs/bigdecimal'
 import {type OperandsRecord} from './abstract/GetOperands.js'
 import {InitializePluralRules} from './abstract/InitializePluralRules.js'

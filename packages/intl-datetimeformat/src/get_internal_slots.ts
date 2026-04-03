@@ -4,7 +4,7 @@
 import {
   type DateTimeFormat,
   type IntlDateTimeFormatInternal,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
 
 const internalSlotMap = new WeakMap<
   DateTimeFormat,

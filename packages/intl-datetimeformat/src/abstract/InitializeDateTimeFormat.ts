@@ -1,15 +1,15 @@
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
+import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {IsValidTimeZoneName} from '#packages/ecma402-abstract/IsValidTimeZoneName.js'
 import {
-  CanonicalizeLocaleList,
-  CanonicalizeTimeZoneName,
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
   type Formats,
-  GetNumberOption,
-  GetOption,
   type IntlDateTimeFormatInternal,
-  IsValidTimeZoneName,
-  invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {BasicFormatMatcher} from './BasicFormatMatcher.js'
 import {BestFitFormatMatcher} from './BestFitFormatMatcher.js'

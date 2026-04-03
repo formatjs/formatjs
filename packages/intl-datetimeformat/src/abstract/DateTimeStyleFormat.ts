@@ -1,8 +1,8 @@
 import {
   type DateTimeFormatLocaleInternalData,
   type Formats,
-  invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 export function DateTimeStyleFormat(
   dateStyle: Intl.DateTimeFormatOptions['dateStyle'],

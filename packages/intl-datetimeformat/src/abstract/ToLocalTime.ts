@@ -4,12 +4,12 @@ import {
   MinFromTime,
   MonthFromTime,
   SecFromTime,
-  type UnpackedZoneData,
   WeekDay,
   YearFromTime,
-  invariant,
   msFromTime,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/262.js'
+import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'
 
 // Cached regex patterns for performance

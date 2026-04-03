@@ -1,4 +1,5 @@
-import {type Formats, invariant} from '@formatjs/ecma402-abstract'
+import {type Formats} from '#packages/ecma402-abstract/types/date-time.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {
   DATE_TIME_PROPS,
   additionPenalty,

@@ -23,7 +23,7 @@ copy_to_bin(
 ts_project(
     name = "typecheck",
     srcs = [":srcs"],
-    declaration = True,
+    declaration = False,
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,

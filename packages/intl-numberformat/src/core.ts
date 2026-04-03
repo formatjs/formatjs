@@ -1,19 +1,21 @@
+import {OrdinaryHasInstance} from '#packages/ecma402-abstract/262.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
+import {FormatNumericRange} from '#packages/ecma402-abstract/NumberFormat/FormatNumericRange.js'
+import {FormatNumericRangeToParts} from '#packages/ecma402-abstract/NumberFormat/FormatNumericRangeToParts.js'
+import {FormatNumericToParts} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToParts.js'
+import {InitializeNumberFormat} from '#packages/ecma402-abstract/NumberFormat/InitializeNumberFormat.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
+import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {
-  CanonicalizeLocaleList,
-  FormatNumeric,
-  FormatNumericRange,
-  FormatNumericRangeToParts,
-  FormatNumericToParts,
-  InitializeNumberFormat,
   type NumberFormatOptions,
-  OrdinaryHasInstance,
   type RawNumberLocaleData,
-  SupportedLocales,
-  ToIntlMathematicalValue,
+} from '#packages/ecma402-abstract/types/number.js'
+import {
   createMemoizedPluralRules,
   defineProperty,
   invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/utils.js'
 import {currencyDigitsData} from './currency-digits.generated.js'
 import {numberingSystemNames} from './numbering-systems.generated.js'
 // eslint-disable-next-line import/no-cycle
