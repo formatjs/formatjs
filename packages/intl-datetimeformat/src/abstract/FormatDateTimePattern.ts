@@ -1,11 +1,11 @@
+import {TimeClip} from '#packages/ecma402-abstract/262.js'
 import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
   type IntlDateTimeFormatInternal,
   type IntlDateTimeFormatPart,
-  TimeClip,
-  createMemoizedNumberFormat,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
+import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
 
 import Decimal from '@formatjs/bigdecimal'
 import {ToLocalTime, type ToLocalTimeImplDetails} from './ToLocalTime.js'

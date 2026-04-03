@@ -1,5 +1,5 @@
 import {DateTimeFormat} from './index.js'
-import {defineProperty} from '@formatjs/ecma402-abstract'
+import {defineProperty} from '#packages/ecma402-abstract/utils.js'
 import {shouldPolyfill} from './should-polyfill.js'
 import {
   toLocaleString as _toLocaleString,

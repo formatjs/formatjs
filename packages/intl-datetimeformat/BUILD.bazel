@@ -10,7 +10,7 @@ load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_run_binary")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_dockerfile")
@@ -49,6 +49,7 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
     ":node_modules/@formatjs/bigdecimal",
@@ -63,7 +64,7 @@ TEST_DEPS = SRC_DEPS + [
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
     for dep in SRC_DEPS
-    if "node_modules/" in dep
+    if "node_modules/" in dep and "ecma402-abstract" not in dep
 ]
 
 ENTRY_POINTS = [
@@ -129,7 +130,7 @@ ts_project(
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 
@@ -141,7 +142,7 @@ ts_project(
     emit_declaration_only = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -149,6 +150,9 @@ ts_project(
 vitest(
     name = "unit_test",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = TEST_DEPS,
 )
 
@@ -762,6 +766,7 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
+        "//packages/ecma402-abstract",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -867,6 +872,7 @@ generate_src_file(
         ":node_modules/@formatjs/ecma402-abstract",
         ":zdumps",
         "//:node_modules/json-stable-stringify",
+        "//packages/ecma402-abstract",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-datetimeformat/scripts:process-zdump",
@@ -884,6 +890,7 @@ ts_run_binary(
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
+        "//packages/ecma402-abstract",
     ],
     outs = ["add-all-tz.js"],
     args = [
@@ -910,6 +917,7 @@ ts_run_binary(
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
+        "//packages/ecma402-abstract",
     ],
     outs = ["add-golden-tz.js"],
     args = [

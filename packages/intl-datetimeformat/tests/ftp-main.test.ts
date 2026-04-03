@@ -4,7 +4,7 @@ import de from './locale-data/de.json' with {type: 'json'}
 import ar from './locale-data/ar.json' with {type: 'json'}
 import allData from '../src/data/all-tz.generated'
 import {DateTimeFormat} from '../src/core'
-import {type IntlDateTimeFormatPart} from '@formatjs/ecma402-abstract'
+import {type IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, pl, de, ar)

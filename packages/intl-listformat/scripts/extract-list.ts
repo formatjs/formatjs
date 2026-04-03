@@ -13,7 +13,7 @@ const require = createRequire(import.meta.url)
 import {
   type ListPatternFieldsData,
   type ListPattern,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/list.js'
 
 export type ListTypes = (typeof ListPatterns)['main']['en']['listPatterns']
 

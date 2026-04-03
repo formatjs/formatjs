@@ -7,6 +7,7 @@ ts_binary(
     data = [
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
+        "//:root_package_json",
     ],
     entry_point = "generate-locale-test.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -19,6 +20,7 @@ ts_binary(
         "extract-numbers.ts",
         "extract-units.ts",
         "utils.ts",
+        "//:root_package_json",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -26,12 +28,14 @@ ts_binary(
 
 ts_binary(
     name = "cldr",
+    data = ["//:root_package_json"],
     entry_point = "cldr.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
 )
 
 ts_binary(
     name = "test262-main-gen",
+    data = ["//:root_package_json"],
     entry_point = "test262-main-gen.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
 )
@@ -41,6 +45,7 @@ ts_binary(
     data = [
         "extract-currencies.ts",
         "utils.ts",
+        "//:root_package_json",
     ],
     entry_point = "currency-digits.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -51,6 +56,7 @@ ts_binary(
     data = [
         "extract-numbers.ts",
         "utils.ts",
+        "//:root_package_json",
     ],
     entry_point = "numbering-systems.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],

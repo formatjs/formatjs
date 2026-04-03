@@ -1,13 +1,15 @@
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {
-  CanonicalizeLocaleList,
-  CoerceOptionsToObject,
-  createMemoizedNumberFormat,
-  createMemoizedPluralRules,
-  GetOption,
-  invariant,
   type LocaleFieldsData,
   type RelativeTimeFormatInternal,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/relative-time.js'
+import {
+  createMemoizedNumberFormat,
+  createMemoizedPluralRules,
+  invariant,
+} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i

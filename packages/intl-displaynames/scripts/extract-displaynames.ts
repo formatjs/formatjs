@@ -1,4 +1,4 @@
-import {type DisplayNamesData} from '@formatjs/ecma402-abstract'
+import {type DisplayNamesData} from '#packages/ecma402-abstract/types/displaynames.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {dirname, resolve} from 'path'

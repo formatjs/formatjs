@@ -1,4 +1,4 @@
-import {ToObject} from '@formatjs/ecma402-abstract'
+import {ToObject} from '#packages/ecma402-abstract/262.js'
 
 /**
  * https://tc39.es/ecma402/#sec-todatetimeoptions

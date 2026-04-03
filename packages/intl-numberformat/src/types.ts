@@ -5,7 +5,7 @@ import {
   type NumberRangeToParts,
   type RawNumberLocaleData,
   type ResolvedNumberFormatOptions,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/number.js'
 import type Decimal from '@formatjs/bigdecimal'
 
 // Public --------------------------------------------------------------------------------------------------------------

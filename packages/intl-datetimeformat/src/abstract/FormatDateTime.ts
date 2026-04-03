@@ -1,4 +1,4 @@
-import {type DateTimeFormat} from '@formatjs/ecma402-abstract'
+import {type DateTimeFormat} from '#packages/ecma402-abstract/types/date-time.js'
 import type Decimal from '@formatjs/bigdecimal'
 import {PartitionDateTimePattern} from './PartitionDateTimePattern.js'
 

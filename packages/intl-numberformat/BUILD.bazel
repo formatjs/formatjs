@@ -11,7 +11,7 @@ load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_run_binary")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -72,6 +72,7 @@ SRCS = glob(
 )
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
     ":node_modules/@formatjs/bigdecimal",
@@ -87,7 +88,7 @@ TEST_DEPS = SRC_DEPS + [
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
     for dep in SRC_DEPS
-    if "node_modules/" in dep
+    if "node_modules/" in dep and "ecma402-abstract" not in dep
 ]
 
 ENTRY_POINTS = [
@@ -149,7 +150,7 @@ ts_project(
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 
@@ -161,7 +162,7 @@ ts_project(
     emit_declaration_only = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -250,6 +251,9 @@ vitest(
                "tests/*.test.ts",
            ]) + [":srcs"] +
            TEST_LOCALE_DATA,
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = TEST_DEPS,
 )
 
@@ -264,6 +268,9 @@ vitest(
             ":srcs",
             "tests/%s/%sTest.ts" % (type, type),
         ] + TEST_LOCALE_DATA,
+        data = ["//:package.json"],
+        no_copy_to_bin = ["//:package.json"],
+        tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
         deps = TEST_DEPS,
     )
     for type in LOCALE_TEST_TYPES
@@ -849,7 +856,6 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-numbers-full",
@@ -859,6 +865,7 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
+        "//packages/ecma402-abstract",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -943,13 +950,13 @@ generate_src_file(
     name = "currency-digits",
     src = "src/currency-digits.generated.ts",
     data = [
-        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
+        "//packages/ecma402-abstract",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-numberformat/scripts:currency-digits",
@@ -960,11 +967,11 @@ generate_src_file(
     name = "numbering-systems",
     src = "src/numbering-systems.generated.ts",
     data = [
-        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/lodash-es",
+        "//packages/ecma402-abstract",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-numberformat/scripts:numbering-systems",

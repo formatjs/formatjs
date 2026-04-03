@@ -1,7 +1,7 @@
 import {
   type IntlDateTimeFormatInternal,
   type TABLE_6,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/date-time.js'
 
 export const DATE_TIME_PROPS: Array<
   keyof Pick<IntlDateTimeFormatInternal, TABLE_6>

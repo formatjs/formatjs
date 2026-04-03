@@ -113,8 +113,8 @@ generate_src_file(
     name = "units",
     src = "src/units.generated.ts",
     data = [
-        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/cldr-bcp47",
+        "//packages/ecma402-abstract",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:units",
