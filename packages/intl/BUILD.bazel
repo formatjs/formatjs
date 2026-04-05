@@ -5,6 +5,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test", "ts_compile")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -26,7 +27,7 @@ npm_package(
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/fast-memoize",
     ":node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/intl-messageformat",
@@ -44,6 +45,7 @@ TESTS = glob(
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 

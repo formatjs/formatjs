@@ -3,6 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -27,13 +28,14 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
 ]
 
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 
@@ -61,7 +63,6 @@ generate_src_file(
     name = "time-separators",
     src = "src/time-separators.generated.ts",
     data = [
-        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-localenames-full",

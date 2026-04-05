@@ -2,6 +2,7 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_compile")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -27,13 +28,14 @@ npm_package(
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     ":node_modules/@formatjs/icu-skeleton-parser",
 ]
 
 ts_compile(
     name = "dist",
     srcs = [":srcs"],
+    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 

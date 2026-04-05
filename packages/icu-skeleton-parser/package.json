@@ -7,9 +7,7 @@
   "exports": {
     ".": "./index.js"
   },
-  "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/formatjs/formatjs.git",

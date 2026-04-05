@@ -4,7 +4,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
   type CustomFormatConfig,
   type FormatDateOptions,

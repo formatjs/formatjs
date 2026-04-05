@@ -1,9 +1,9 @@
+import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
-  type NumberFormatOptions,
   createMemoizedListFormat,
   createMemoizedNumberFormat,
   invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/utils.js'
 import {TABLE_2} from '../constants.js'
 import {DurationFormat} from '../core.js'
 import {getInternalSlots} from '../get_internal_slots.js'
