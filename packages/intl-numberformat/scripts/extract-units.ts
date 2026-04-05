@@ -4,14 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 import {fromPairs} from 'lodash-es'
+import {removeUnitNamespace} from '#packages/ecma402-abstract/IsSanctionedSimpleUnitIdentifier.js'
+import {IsWellFormedUnitIdentifier} from '#packages/ecma402-abstract/IsWellFormedUnitIdentifier.js'
 import {
-  invariant,
   type LDMLPluralRuleMap,
   type UnitDataTable,
-  removeUnitNamespace,
-  IsWellFormedUnitIdentifier,
   type UnitData,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import UnitsData from 'cldr-units-full/main/en/units.json' with {type: 'json'}
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'

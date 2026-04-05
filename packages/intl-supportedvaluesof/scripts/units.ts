@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 import {outputFileSync} from 'fs-extra/esm'
-import {SIMPLE_UNITS} from '@formatjs/ecma402-abstract'
+import {SIMPLE_UNITS} from '#packages/ecma402-abstract/IsSanctionedSimpleUnitIdentifier.js'
 
 interface Args extends minimist.ParsedArgs {
   zone: string[]

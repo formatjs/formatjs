@@ -4,6 +4,7 @@ ts_binary(
     name = "cldr-raw",
     data = [
         "plural-rules-compiler.ts",
+        "//:root_package_json",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-pluralrules:__pkg__"],
@@ -11,12 +12,14 @@ ts_binary(
 
 ts_binary(
     name = "cldr",
+    data = ["//:root_package_json"],
     entry_point = "cldr.ts",
     visibility = ["//packages/intl-pluralrules:__pkg__"],
 )
 
 ts_binary(
     name = "test262-main-gen",
+    data = ["//:root_package_json"],
     entry_point = "test262-main-gen.ts",
     visibility = ["//packages/intl-pluralrules:__pkg__"],
 )

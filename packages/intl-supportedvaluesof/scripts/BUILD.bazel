@@ -26,6 +26,7 @@ ts_binary(
 
 ts_binary(
     name = "units",
+    data = ["//:root_package_json"],
     entry_point = "units.ts",
     visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
 )

@@ -361,7 +361,6 @@ CLDR_RAW_FILES = ["cldr-raw/%s.js" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        ":node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/cldr-core",
         "//:node_modules/fs-extra",
