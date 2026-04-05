@@ -73,7 +73,6 @@ SRCS = glob(
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    ":node_modules/@formatjs/ecma402-abstract",
     ":node_modules/@formatjs/intl-localematcher",
     ":node_modules/@formatjs/bigdecimal",
 ]
@@ -982,7 +981,7 @@ generate_src_file(
 #     name = "units-constants",
 #     src = "src/units-constants.generated.ts",
 #     data = [
-#         ":node_modules/@formatjs/ecma402-abstract",
+#
 #
 #     ],
 #     tool = "//packages/intl-numberformat/scripts:units-constants",
