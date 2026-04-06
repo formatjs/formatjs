@@ -1,4 +1,4 @@
-import type {Decimal} from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import {ZERO} from '../constants.js'
 import {
   type RawNumberFormatResult,

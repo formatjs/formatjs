@@ -19,7 +19,7 @@ PACKAGE_NAME = "intl"
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/fast-memoize",
     "//:node_modules/@formatjs/icu-messageformat-parser",
     "//:node_modules/intl-messageformat",
@@ -128,12 +128,34 @@ package_json_test(
 )
 
 # TODO: make this a macro that paramtrizes on `.test-d.ts` files.
+
+# Generate a tsconfig for tsd tests with skipLibCheck to avoid resolving #packages/ in .d.ts files
+genrule(
+    name = "tsd_tsconfig",
+    outs = ["tsd_tsconfig.json"],
+    cmd = """cat > $@ << 'EOF'
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "ES2020",
+    "strict": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "#packages/*": ["../../../packages/*"]
+    }
+  }
+}
+EOF""",
+)
+
 copy_to_directory(
     name = "global_type_overrides_test_files",
     srcs = [
         "tests/global_type_overrides.test-d.ts",
-        "tsconfig.json",
         ":pkg",
+        ":tsd_tsconfig",
     ],
     out = "global_type_overrides_test_files",
     # Remove the prefix so the package directory merges with the test file directory.
@@ -141,6 +163,10 @@ copy_to_directory(
         (
             "pkg",
             "",
+        ),
+        (
+            "tsd_tsconfig.json",
+            "tsconfig.json",
         ),
     ]),
 )
@@ -154,7 +180,6 @@ tsd_bin.tsd_test(
     ],
     chdir = "packages/%s/global_type_overrides_test_files" % PACKAGE_NAME,
     data = [
-        "tsconfig.json",
         ":global_type_overrides_test_files",
         "//:node_modules/tsd",
     ] + SRC_DEPS,

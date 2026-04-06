@@ -72,11 +72,17 @@ SRCS = glob(
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/intl-localematcher",
+    "//packages/bigdecimal",
+]
+
+# Runtime deps needed for esbuild external marking
+RUNTIME_DEPS = [
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
 ]
 
-TEST_DEPS = SRC_DEPS + [
+TEST_DEPS = SRC_DEPS + RUNTIME_DEPS + [
     "//:node_modules/@formatjs/intl-pluralrules",
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
@@ -85,8 +91,8 @@ TEST_DEPS = SRC_DEPS + [
 
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep and "ecma402-abstract" not in dep
+    for dep in RUNTIME_DEPS
+    if "node_modules/" in dep
 ]
 
 ENTRY_POINTS = [
@@ -105,7 +111,7 @@ ENTRY_POINTS = [
     format = "esm",
     output = "%s.js" % entry.replace(".ts", ""),
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 ) for entry in ENTRY_POINTS]
 
 BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
@@ -1000,7 +1006,7 @@ rolldown_bundle(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-    ] + SRC_DEPS,
+    ] + SRC_DEPS + RUNTIME_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
@@ -1037,8 +1043,7 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = [
-    ] + SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 )
 
 package_json_test(

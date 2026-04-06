@@ -50,6 +50,7 @@ SRC_DEPS = [
     "//:node_modules/@formatjs/ts-transformer",
     ":node_modules/commander",
     ":node_modules/loud-rejection",
+    "//packages/ecma402-abstract",
     "//:node_modules/@types/estree",
     "//:node_modules/@types/fs-extra",
     "//:node_modules/@types/node",

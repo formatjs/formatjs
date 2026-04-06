@@ -19,7 +19,7 @@ import {
 import {currencyDigitsData} from './currency-digits.generated.js'
 import {numberingSystemNames} from './numbering-systems.generated.js'
 // eslint-disable-next-line import/no-cycle
-import type Decimal from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import getInternalSlots from './get_internal_slots.js'
 import {
   type NumberFormatConstructor,

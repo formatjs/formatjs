@@ -1,6 +1,6 @@
 import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
-import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.ts'
 import type {FormatError, IntlMessageFormat} from 'intl-messageformat'
 import {
   type Formats,

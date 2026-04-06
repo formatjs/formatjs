@@ -7,7 +7,7 @@ import {
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
 
-import Decimal from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {ToLocalTime, type ToLocalTimeImplDetails} from './ToLocalTime.js'
 import {DATE_TIME_PROPS} from './utils.js'
 

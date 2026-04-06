@@ -11,7 +11,7 @@ import {
   type UnpackedZoneData,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {defineProperty, invariant} from '#packages/ecma402-abstract/utils.js'
-import Decimal from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {FormatDateTime} from './abstract/FormatDateTime.js'
 import {FormatDateTimeRange} from './abstract/FormatDateTimeRange.js'
 import {FormatDateTimeRangeToParts} from './abstract/FormatDateTimeRangeToParts.js'

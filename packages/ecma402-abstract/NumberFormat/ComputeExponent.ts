@@ -1,4 +1,4 @@
-import {Decimal} from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {type NumberFormatInternal} from '../types/number.js'
 import {ComputeExponentForMagnitude} from './ComputeExponentForMagnitude.js'
 import {FormatNumericToString} from './FormatNumericToString.js'

@@ -1,5 +1,5 @@
-import {Decimal} from '@formatjs/bigdecimal'
-import {memoize} from '@formatjs/fast-memoize'
+import {Decimal} from '#packages/bigdecimal/index.js'
+import {memoize} from '#packages/fast-memoize/index.js'
 
 /**
  * Cached function to compute powers of 10 for Decimal.js operations.

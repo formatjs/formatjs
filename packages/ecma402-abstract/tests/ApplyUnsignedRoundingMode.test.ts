@@ -1,4 +1,4 @@
-import Decimal from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {ApplyUnsignedRoundingMode} from '../NumberFormat/ApplyUnsignedRoundingMode.js'
 import {describe, expect, it} from 'vitest'
 describe('ApplyUnsignedRoundingMode', () => {

@@ -1,6 +1,6 @@
 import {ArrayCreate} from '#packages/ecma402-abstract/262.js'
 import {type IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
-import type Decimal from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import {PartitionDateTimePattern} from './PartitionDateTimePattern.js'
 
 /**

@@ -22,6 +22,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     "//:node_modules/vue",
     "//:node_modules/@babel/types",
     "//:node_modules/@formatjs/intl",

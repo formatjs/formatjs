@@ -28,6 +28,11 @@ PACKAGE_NAME = "intl-segmenter"
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/intl-localematcher",
+]
+
+# Runtime deps needed for esbuild external marking
+RUNTIME_DEPS = [
     "//:node_modules/@formatjs/intl-localematcher",
 ]
 
@@ -37,7 +42,7 @@ TEST_UNICODE_FILES = [
     "@SentenceBreakTest//file",
 ]
 
-TEST_DEPS = SRC_DEPS + [
+TEST_DEPS = SRC_DEPS + RUNTIME_DEPS + [
     "//:node_modules/@types/node",
     "//:node_modules/@bazel/runfiles",
 ] + TEST_UNICODE_FILES
@@ -61,7 +66,7 @@ TESTS = glob([
 
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
+    for dep in RUNTIME_DEPS
     if "node_modules/" in dep
 ]
 
@@ -80,7 +85,7 @@ ENTRY_POINTS = [
     format = "esm",
     output = "%s.js" % entry.replace(".ts", ""),
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 ) for entry in ENTRY_POINTS]
 
 BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
@@ -176,7 +181,7 @@ rolldown_bundle(
     ],
     entry_point = "test262-main.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 )
 
 test262_harness_bin.test262_harness_test(
@@ -212,8 +217,7 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = [
-    ] + SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 )
 
 UNICODE_FILES = [

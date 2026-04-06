@@ -1,4 +1,4 @@
-import {Decimal} from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 
 export const TEN: Decimal = new Decimal(10)
 export const ZERO: Decimal = new Decimal(0)

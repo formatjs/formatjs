@@ -49,12 +49,17 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    "//:node_modules/@formatjs/ecma402-abstract",  # for src/ files still using barrel imports
+    "//packages/intl-localematcher",
+    "//packages/bigdecimal",
+]
+
+# Runtime deps needed for esbuild external marking
+RUNTIME_DEPS = [
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
 ]
 
-TEST_DEPS = SRC_DEPS + [
+TEST_DEPS = SRC_DEPS + RUNTIME_DEPS + [
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
     "//:node_modules/@types/node",
@@ -62,8 +67,8 @@ TEST_DEPS = SRC_DEPS + [
 
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep and "ecma402-abstract" not in dep
+    for dep in RUNTIME_DEPS
+    if "node_modules/" in dep
 ]
 
 ENTRY_POINTS = [
@@ -82,7 +87,7 @@ ENTRY_POINTS = [
     format = "esm",
     output = "%s.js" % entry.replace(".ts", ""),
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 ) for entry in ENTRY_POINTS]
 
 BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
@@ -756,7 +761,6 @@ ts_run_binary(
     srcs = [
         "src/abstract/skeleton.ts",
         "src/types.ts",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
@@ -971,14 +975,13 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = [
-    ] + SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 )
 
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = [":srcs"] + SRC_DEPS + [
+    data = [":srcs"] + SRC_DEPS + RUNTIME_DEPS + [
         "tests/locale-data/en.json",
         "//:node_modules/tinybench",
     ],

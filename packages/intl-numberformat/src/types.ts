@@ -6,7 +6,7 @@ import {
   type RawNumberLocaleData,
   type ResolvedNumberFormatOptions,
 } from '#packages/ecma402-abstract/types/number.js'
-import type Decimal from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 
 // Public --------------------------------------------------------------------------------------------------------------
 

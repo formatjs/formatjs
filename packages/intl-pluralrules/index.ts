@@ -7,7 +7,7 @@ import {
   type PluralRulesData,
   type PluralRulesLocaleData,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
-import type Decimal from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import {type OperandsRecord} from './abstract/GetOperands.js'
 import {InitializePluralRules} from './abstract/InitializePluralRules.js'
 import {ResolvePlural} from './abstract/ResolvePlural.js'

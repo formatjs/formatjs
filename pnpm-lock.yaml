@@ -635,18 +635,6 @@ importers:
 
   packages/ecma376: {}
 
-  packages/ecma402-abstract:
-    dependencies:
-      '@formatjs/bigdecimal':
-        specifier: workspace:*
-        version: link:../bigdecimal
-      '@formatjs/fast-memoize':
-        specifier: workspace:*
-        version: link:../fast-memoize
-      '@formatjs/intl-localematcher':
-        specifier: workspace:*
-        version: link:../intl-localematcher
-
   packages/eslint-plugin-formatjs:
     dependencies:
       '@formatjs/icu-messageformat-parser':
@@ -687,9 +675,6 @@ importers:
 
   packages/icu-messageformat-parser:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/icu-skeleton-parser':
         specifier: workspace:*
         version: link:../icu-skeleton-parser
@@ -706,17 +691,10 @@ importers:
         specifier: workspace:*
         version: link:..
 
-  packages/icu-skeleton-parser:
-    dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
+  packages/icu-skeleton-parser: {}
 
   packages/intl:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/fast-memoize':
         specifier: workspace:*
         version: link:../fast-memoize
@@ -732,9 +710,6 @@ importers:
       '@formatjs/bigdecimal':
         specifier: workspace:*
         version: link:../bigdecimal
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -748,9 +723,6 @@ importers:
 
   packages/intl-displaynames:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -764,9 +736,12 @@ importers:
 
   packages/intl-durationformat:
     dependencies:
-      '@formatjs/ecma402-abstract':
+      '@formatjs/bigdecimal':
         specifier: workspace:*
-        version: link:../ecma402-abstract
+        version: link:../bigdecimal
+      '@formatjs/fast-memoize':
+        specifier: workspace:*
+        version: link:../fast-memoize
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -781,9 +756,6 @@ importers:
 
   packages/intl-listformat:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -797,9 +769,6 @@ importers:
 
   packages/intl-locale:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-getcanonicallocales':
         specifier: workspace:*
         version: link:../intl-getcanonicallocales
@@ -821,9 +790,6 @@ importers:
 
   packages/intl-messageformat:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/fast-memoize':
         specifier: workspace:*
         version: link:../fast-memoize
@@ -836,9 +802,6 @@ importers:
       '@formatjs/bigdecimal':
         specifier: workspace:*
         version: link:../bigdecimal
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -864,9 +827,6 @@ importers:
       '@formatjs/bigdecimal':
         specifier: workspace:*
         version: link:../bigdecimal
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -880,9 +840,6 @@ importers:
 
   packages/intl-relativetimeformat:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
@@ -899,27 +856,18 @@ importers:
 
   packages/intl-segmenter:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
 
   packages/intl-supportedvaluesof:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/fast-memoize':
         specifier: workspace:*
         version: link:../fast-memoize
 
   packages/react-intl:
     dependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../ecma402-abstract
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
@@ -938,9 +886,6 @@ importers:
 
   packages/react-intl/examples:
     devDependencies:
-      '@formatjs/ecma402-abstract':
-        specifier: workspace:*
-        version: link:../../ecma402-abstract
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../../icu-messageformat-parser

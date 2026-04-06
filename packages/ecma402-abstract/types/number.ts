@@ -1,4 +1,4 @@
-import type {Decimal} from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import {type LocaleData} from './core.js'
 import {type LDMLPluralRule} from './plural-rules.js'
 

@@ -20,14 +20,22 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
+    "//packages/bigdecimal",
+    "//:node_modules/@formatjs/fast-memoize",
+    "//packages/intl-localematcher",
+]
+
+# Runtime deps needed for esbuild external marking
+RUNTIME_DEPS = [
+    "//:node_modules/@formatjs/bigdecimal",
     "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep and "ecma402-abstract" not in dep
+    for dep in SRC_DEPS + RUNTIME_DEPS
+    if "node_modules/" in dep
 ]
 
 ENTRY_POINTS = [
@@ -46,7 +54,7 @@ ENTRY_POINTS = [
     format = "esm",
     output = "%s.js" % entry.replace(".ts", ""),
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 ) for entry in ENTRY_POINTS]
 
 BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
@@ -107,7 +115,7 @@ vitest(
     srcs = SRCS + glob([
         "tests/**/*.ts",
     ]),
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + RUNTIME_DEPS,
 )
 
 # Generate tsconfig.json with correct extends path
@@ -126,7 +134,6 @@ generate_src_file(
     name = "time-separators",
     src = "src/time-separators.generated.ts",
     data = [
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-localenames-full",

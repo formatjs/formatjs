@@ -1,4 +1,4 @@
-import {memoize, strategies} from '@formatjs/fast-memoize'
+import {memoize, strategies} from '#packages/fast-memoize/index.js'
 
 export function repeat(s: string, times: number): string {
   if (typeof s.repeat === 'function') {

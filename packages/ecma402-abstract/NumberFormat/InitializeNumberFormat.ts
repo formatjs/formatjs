@@ -1,4 +1,4 @@
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList.js'
 import {CoerceOptionsToObject} from '../CoerceOptionsToObject.js'
 import {GetOption} from '../GetOption.js'

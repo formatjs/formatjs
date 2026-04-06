@@ -7,7 +7,7 @@ import {
   getMultiInternalSlots,
   setInternalSlot,
 } from '#packages/ecma402-abstract/utils.js'
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 import {SegmentationRules} from './cldr-segmentation-rules.generated.js'
 import {isSurrogate, replaceVariables} from './segmentation-utils.js'
 

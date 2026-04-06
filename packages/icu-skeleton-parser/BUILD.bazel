@@ -17,7 +17,7 @@ PACKAGE_NAME = "icu-skeleton-parser"
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
 ]
 
 EXTERNAL_PACKAGES = [

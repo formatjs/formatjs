@@ -15,7 +15,7 @@ import {
   isLiteralPart,
   setInternalSlot,
 } from '#packages/ecma402-abstract/utils.js'
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 
 export interface IntlListFormatOptions {
   /**

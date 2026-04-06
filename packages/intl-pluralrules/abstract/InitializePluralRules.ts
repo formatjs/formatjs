@@ -6,7 +6,7 @@ import {
   type PluralRulesData,
   type PluralRulesInternal,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 
 export function InitializePluralRules(
   pl: Intl.PluralRules,

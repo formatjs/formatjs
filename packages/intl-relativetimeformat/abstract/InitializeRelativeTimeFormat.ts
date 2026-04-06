@@ -10,7 +10,7 @@ import {
   createMemoizedPluralRules,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 
 const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 

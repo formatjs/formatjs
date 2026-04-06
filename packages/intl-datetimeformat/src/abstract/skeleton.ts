@@ -1,10 +1,10 @@
-import {
-  type Formats,
-  type RangePatternPart,
-  type RangePatterns,
+import type {
+  Formats,
+  RangePatternPart,
+  RangePatterns,
   RangePatternType,
-  type TABLE_2,
-} from '@formatjs/ecma402-abstract'
+  TABLE_2,
+} from '#packages/ecma402-abstract/types/date-time.ts'
 
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -331,17 +331,17 @@ export function splitFallbackRangePattern(
     switch (pattern) {
       case '{0}':
         return {
-          source: RangePatternType.startRange,
+          source: 'startRange' as RangePatternType,
           pattern,
         }
       case '{1}':
         return {
-          source: RangePatternType.endRange,
+          source: 'endRange' as RangePatternType,
           pattern,
         }
       default:
         return {
-          source: RangePatternType.shared,
+          source: 'shared' as RangePatternType,
           pattern,
         }
     }
@@ -365,18 +365,18 @@ export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   if (!splitIndex) {
     return [
       {
-        source: RangePatternType.startRange,
+        source: 'startRange' as RangePatternType,
         pattern,
       },
     ]
   }
   return [
     {
-      source: RangePatternType.startRange,
+      source: 'startRange' as RangePatternType,
       pattern: pattern.slice(0, splitIndex),
     },
     {
-      source: RangePatternType.endRange,
+      source: 'endRange' as RangePatternType,
       pattern: pattern.slice(splitIndex),
     },
   ]

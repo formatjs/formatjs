@@ -3,12 +3,11 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", "bin")
 load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "packages_tsconfig")
 
 npm_link_all_packages()
 
 EXAMPLES_SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
     "//:node_modules/@formatjs/intl-datetimeformat",
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
@@ -35,8 +34,8 @@ ts_project(
     declaration = True,
     out_dir = "examples-lib",
     resolve_json_module = True,
-    tsconfig = BASE_TSCONFIG,
-    deps = EXAMPLES_SRC_DEPS,
+    tsconfig = packages_tsconfig(),
+    deps = EXAMPLES_SRC_DEPS + ["//packages/ecma402-abstract"],
 )
 
 rolldown_bundle(

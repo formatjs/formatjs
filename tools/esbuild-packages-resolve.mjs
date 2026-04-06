@@ -36,6 +36,10 @@ export default {
           if (fs.existsSync(tsPath)) {
             return {path: tsPath}
           }
+          const jsPath = resolved.replace(/\.ts$/, '.js')
+          if (jsPath !== resolved && fs.existsSync(jsPath)) {
+            return {path: jsPath}
+          }
           throw new Error(
             `Cannot resolve '${args.path}': neither ${resolved} nor ${tsPath} exists`
           )

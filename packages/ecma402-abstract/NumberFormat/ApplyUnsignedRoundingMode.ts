@@ -1,4 +1,4 @@
-import type {Decimal} from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import {type UnsignedRoundingModeType} from '../types/number.js'
 import {invariant} from '../utils.js'
 

@@ -33,6 +33,7 @@ SRC_DEPS = [
     "//:node_modules/@babel/types",
     "//:node_modules/@formatjs/icu-messageformat-parser",
     "//:node_modules/@formatjs/ts-transformer",
+    "//packages/ecma402-abstract",
     "//:node_modules/@types/babel__core",
     "//:node_modules/@types/babel__helper-plugin-utils",
     "//:node_modules/@types/babel__traverse",

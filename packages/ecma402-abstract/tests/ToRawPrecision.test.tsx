@@ -1,4 +1,4 @@
-import Decimal from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {ToRawPrecision} from '../NumberFormat/ToRawPrecision'
 import {describe, expect, it} from 'vitest'
 

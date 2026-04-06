@@ -1,7 +1,7 @@
 import {ToNumber} from '#packages/ecma402-abstract/262.js'
 import {ZERO} from '#packages/ecma402-abstract/constants.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import type Decimal from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 
 /**
  * CLDR Spec: Operands as defined in https://unicode.org/reports/tr35/tr35-numbers.html#Operands

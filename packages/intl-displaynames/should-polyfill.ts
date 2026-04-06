@@ -1,4 +1,4 @@
-import {match} from '@formatjs/intl-localematcher'
+import {match} from '#packages/intl-localematcher/index.js'
 import {supportedLocales} from './supported-locales.generated.js'
 
 /**

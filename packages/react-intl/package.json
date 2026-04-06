@@ -12,7 +12,6 @@
     "./server": "./server.js"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
     "intl-messageformat": "workspace:*"

@@ -21,7 +21,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/fast-memoize",
 ]
 

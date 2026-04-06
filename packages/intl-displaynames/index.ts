@@ -17,7 +17,7 @@ import {
 import {CanonicalCodeForDisplayNames} from './abstract/CanonicalCodeForDisplayNames.js'
 import {IsValidDateTimeFieldCode} from './abstract/IsValidDateTimeFieldCode.js'
 
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/index.js'
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit'

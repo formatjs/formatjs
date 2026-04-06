@@ -1,4 +1,4 @@
-import Decimal from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {PartitionNumberRangePattern} from '../NumberFormat/PartitionNumberRangePattern.js'
 import {getInternalSlots} from './utils.js'
 import {describe, expect, test} from 'vitest'

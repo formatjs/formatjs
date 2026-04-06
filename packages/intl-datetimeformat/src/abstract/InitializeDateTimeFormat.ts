@@ -10,7 +10,7 @@ import {
   type IntlDateTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 import {BasicFormatMatcher} from './BasicFormatMatcher.js'
 import {BestFitFormatMatcher} from './BestFitFormatMatcher.js'
 import {DateTimeStyleFormat} from './DateTimeStyleFormat.js'

@@ -1,4 +1,4 @@
-import {LookupSupportedLocales} from '@formatjs/intl-localematcher'
+import {LookupSupportedLocales} from '#packages/intl-localematcher/abstract/LookupSupportedLocales.js'
 import {ToObject} from './262.js'
 import {GetOption} from './GetOption.js'
 

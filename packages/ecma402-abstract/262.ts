@@ -1,4 +1,4 @@
-import {Decimal} from '@formatjs/bigdecimal'
+import {Decimal} from '#packages/bigdecimal/index.js'
 import {ZERO} from './constants.js'
 import {invariant} from './utils.js'
 /**

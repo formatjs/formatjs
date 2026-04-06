@@ -4,7 +4,7 @@ import {
   type PluralRulesInternal,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import type Decimal from '@formatjs/bigdecimal'
+import type {Decimal} from '#packages/bigdecimal/index.js'
 import {type OperandsRecord} from './GetOperands.js'
 import {ResolvePluralInternal} from './ResolvePlural.js'
 

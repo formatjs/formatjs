@@ -57,6 +57,7 @@ SRC_DEPS = [
     ":node_modules/@types/picomatch",
     ":node_modules/magic-string",
     ":node_modules/picomatch",
+    "//packages/ecma402-abstract",
     "//:node_modules/@types/node",
     "//:node_modules/@types/estree-jsx",
     "//:node_modules/@unicode/unicode-17.0.0",

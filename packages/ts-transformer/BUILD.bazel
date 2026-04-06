@@ -40,6 +40,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/ts-jest",
     "//:node_modules/@babel/core",

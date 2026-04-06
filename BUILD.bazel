@@ -63,7 +63,6 @@ PACKAGES_TO_DIST = [
     "//packages/cli-lib",
     "//packages/cli",
     "//packages/ecma376",
-    "//packages/ecma402-abstract",
     "//packages/eslint-plugin-formatjs",
     "//packages/fast-memoize",
     "//packages/icu-messageformat-parser",

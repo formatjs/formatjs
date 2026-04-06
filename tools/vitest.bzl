@@ -4,7 +4,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "writ
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
-load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 def vitest(
         name,
@@ -47,6 +47,7 @@ def vitest(
         "//:node_modules/vitest",
         "//:node_modules/vite",
         "//:node_modules/@types/node",
+        "//:root_package_json",
     ] + (["//:node_modules/happy-dom"] if dom else [])
 
     deps = list(set(deps))
@@ -57,7 +58,7 @@ def vitest(
     # skipLibCheck avoids type errors from transitive deps with unresolvable type imports
     # types: ["node"] ensures @types/node augmentations (e.g. import.meta.dirname) are available
     # noUncheckedSideEffectImports: disable TS 6 strict check for side-effect imports without types (e.g. locale-data)
-    base_test_tsconfig = (tsconfig or ESNEXT_TSCONFIG)
+    base_test_tsconfig = (tsconfig or packages_tsconfig(base = ESNEXT_TSCONFIG))
     test_tsconfig = base_test_tsconfig | {
         "compilerOptions": base_test_tsconfig.get("compilerOptions", {}) | {
             "skipLibCheck": True,
