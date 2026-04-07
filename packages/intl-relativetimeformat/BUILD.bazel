@@ -40,7 +40,7 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    ":node_modules/@formatjs/intl-localematcher",
+    "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 EXTERNAL_PACKAGES = [
@@ -132,9 +132,9 @@ vitest(
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS + [
-        ":node_modules/@formatjs/intl-getcanonicallocales",
-        ":node_modules/@formatjs/intl-locale",
-        ":node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-pluralrules",
     ],
 )
 

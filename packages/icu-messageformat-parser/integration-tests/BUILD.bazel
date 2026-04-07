@@ -37,7 +37,7 @@ rust_test(
 #         f
 #     ],
 #     data = [
-#         ":node_modules/@formatjs/icu-messageformat-parser",
+#         "//:node_modules/@formatjs/icu-messageformat-parser",
 #         "//:node_modules/lodash",
 #         f
 #     ],
@@ -54,7 +54,7 @@ rust_test(
         ),
     ],
     data = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/lodash-es",
         f,
     ],

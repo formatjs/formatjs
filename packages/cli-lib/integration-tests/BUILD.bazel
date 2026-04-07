@@ -8,7 +8,7 @@ js_test(
     size = "small",
     timeout = "short",
     data = [
-        ":node_modules/@formatjs/cli-lib",
+        "//:node_modules/@formatjs/cli-lib",
     ],
     entry_point = "test_esm_imports.mjs",
 )

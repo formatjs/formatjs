@@ -7,7 +7,7 @@ ts_binary(
     name = "benchmark",
     data = [
         "en.json",
-        ":node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-numberformat",
         "//:node_modules/tinybench",
     ],
     entry_point = "benchmark.ts",
@@ -17,7 +17,7 @@ ts_binary(
     name = "profile",
     data = [
         "en.json",
-        ":node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-numberformat",
     ],
     entry_point = "profile.ts",
 )
@@ -26,7 +26,7 @@ ts_binary(
     name = "profile_cpu",
     data = [
         "en.json",
-        ":node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-numberformat",
     ],
     entry_point = "profile.ts",
     node_options = [

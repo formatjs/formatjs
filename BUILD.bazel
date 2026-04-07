@@ -1,7 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@gazelle//:def.bzl", "gazelle")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
@@ -232,18 +231,6 @@ write_source_files(
     files = {
         "tsconfig.json": ":tsconfig_formatted",
     },
-)
-
-# Symlink some workspaces to the root workspace, so scripts like benchmarks
-# can easily depend on the distributable package via target `//:node_modules/<package_name>`.
-npm_link_package(
-    name = "node_modules/@formatjs/intl-pluralrules",
-    src = "//packages/intl-pluralrules",
-)
-
-npm_link_package(
-    name = "node_modules/@formatjs/intl-localematcher",
-    src = "//packages/intl-localematcher",
 )
 
 copy_to_bin(

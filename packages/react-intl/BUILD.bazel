@@ -22,10 +22,10 @@ SRCS = glob(["src/**/*.ts*"]) + [
 ]
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
-    ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@formatjs/intl",
-    ":node_modules/intl-messageformat",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/intl",
+    "//:node_modules/intl-messageformat",
     "//:node_modules/@types/react",
     "//:node_modules/react",
 ]

@@ -6,7 +6,7 @@ npm_link_all_packages()
 ts_binary(
     name = "benchmark",
     data = [
-        ":node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-durationformat",
         "//:node_modules/tinybench",
     ],
     entry_point = "benchmark.ts",
@@ -15,7 +15,7 @@ ts_binary(
 ts_binary(
     name = "instantiation_benchmark",
     data = [
-        ":node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-durationformat",
         "//:node_modules/tinybench",
     ],
     entry_point = "instantiation-benchmark.ts",
@@ -24,7 +24,7 @@ ts_binary(
 ts_binary(
     name = "profile",
     data = [
-        ":node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-durationformat",
     ],
     entry_point = "profile.ts",
 )
@@ -32,7 +32,7 @@ ts_binary(
 ts_binary(
     name = "profile_cpu",
     data = [
-        ":node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-durationformat",
     ],
     entry_point = "profile.ts",
     node_options = [

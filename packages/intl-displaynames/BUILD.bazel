@@ -37,12 +37,12 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    ":node_modules/@formatjs/intl-localematcher",
+    "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 TEST_DEPS = SRC_DEPS + [
-    ":node_modules/@formatjs/intl-getcanonicallocales",
-    ":node_modules/@formatjs/intl-locale",
+    "//:node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/@formatjs/intl-locale",
 ]
 
 EXTERNAL_PACKAGES = [

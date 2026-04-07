@@ -10,10 +10,10 @@ vitest(
     ],
     test_timeout = "20000",
     deps = [
-        ":node_modules/babel-plugin-formatjs",
         "//:node_modules/@babel/types",
         "//:node_modules/@types/webpack",
         "//:node_modules/babel-loader",
+        "//:node_modules/babel-plugin-formatjs",
         "//:node_modules/typescript",
         "//:node_modules/vue",
         "//:node_modules/vue-loader",

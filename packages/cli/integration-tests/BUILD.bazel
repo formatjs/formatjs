@@ -58,7 +58,7 @@ vitest(
         exclude = ["compile_folder/*.test.ts"],
     ),
     deps = [
-        ":node_modules/@formatjs/cli",
+        "//:node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/fast-glob",
         "//:node_modules/fs-extra",
@@ -74,7 +74,7 @@ vitest(
 #     ) + [
 #         "formatter.js",
 #         "rust-binary-utils.ts",
-#         ":node_modules/@formatjs/cli",
+#         "//:node_modules/@formatjs/cli",
 #         ":rust_cli_copy",
 #         "//:node_modules/@types/fs-extra",
 #         "//:node_modules/fast-glob",
@@ -106,8 +106,8 @@ vitest(
         exclude = ["extract-vue/*.test.ts"],
     ),
     deps = [
-        ":node_modules/@formatjs/cli",
         "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/cli",
         "//:node_modules/@vue/compiler-core",
         "//:node_modules/fast-glob",
         "//:node_modules/vue",
@@ -124,8 +124,8 @@ vitest(
         exclude = ["extract-glimmer/*.test.ts"],
     ),
     deps = [
-        ":node_modules/@formatjs/cli",
         "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/cli",
         "//:node_modules/fast-glob",
     ] + GLIMMER_HBS_DEPS,
 )
@@ -135,8 +135,8 @@ vitest(
     srcs = [
         "formatter.js",
         "rust-binary-utils.ts",
-        ":node_modules/@formatjs/cli",
         ":rust_cli_copy",
+        "//:node_modules/@formatjs/cli",
     ] + glob(
         ["compile/**/*"],
     ),
@@ -165,8 +165,8 @@ vitest(
         ],
     ),
     deps = [
-        ":node_modules/@formatjs/cli",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/cli",
     ],
 )
 
@@ -174,8 +174,8 @@ vitest(
     name = "conformance_test",
     srcs = [
         "rust-binary-utils.ts",
-        ":node_modules/@formatjs/cli",
         ":rust_cli_copy",
+        "//:node_modules/@formatjs/cli",
     ] + glob(
         ["conformance-tests/*.test.ts"],
     ),

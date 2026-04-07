@@ -30,8 +30,8 @@ SRCS = glob(["*.ts"])
 
 # Node_modules deps for type checking and downstream consumers
 TYPECHECK_DEPS = [
-    ":node_modules/@formatjs/intl-supportedvaluesof",
-    ":node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/@formatjs/intl-supportedvaluesof",
+    "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/cldr-core",
     "//:node_modules/cldr-bcp47",
     # Source files for #packages/* path resolution in tsc
@@ -40,8 +40,8 @@ TYPECHECK_DEPS = [
 
 # Deps for esbuild — ecma402-abstract comes via #packages, not node_modules
 BUNDLE_DEPS = [
-    ":node_modules/@formatjs/intl-supportedvaluesof",
-    ":node_modules/@formatjs/intl-getcanonicallocales",
+    "//:node_modules/@formatjs/intl-supportedvaluesof",
+    "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/cldr-core",
     "//:node_modules/cldr-bcp47",
     "//packages/ecma402-abstract",

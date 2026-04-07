@@ -8,7 +8,7 @@ vitest(
     srcs = glob(["*.ts"]),
     fixtures = glob(["fixtures/*"]),
     deps = [
-        ":node_modules/@formatjs/unplugin",
+        "//:node_modules/@formatjs/unplugin",
         "//:node_modules/@rspack/core",
         "//:node_modules/@types/react",
         "//:node_modules/esbuild",

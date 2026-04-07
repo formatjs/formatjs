@@ -21,8 +21,8 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
-    ":node_modules/@formatjs/intl-localematcher",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 EXTERNAL_PACKAGES = [
@@ -125,7 +125,7 @@ generate_src_file(
     name = "time-separators",
     src = "src/time-separators.generated.ts",
     data = [
-        ":node_modules/@formatjs/ecma402-abstract",
+        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-localenames-full",

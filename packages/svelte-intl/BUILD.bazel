@@ -24,8 +24,8 @@ SRCS = glob([
 SRC_DEPS = [
     "//:node_modules/svelte",
     "//:node_modules/typescript",
-    ":node_modules/@formatjs/intl",
-    ":node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/intl",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
 ]
 
 ts_compile_node(

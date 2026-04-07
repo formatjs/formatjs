@@ -15,7 +15,7 @@ eslint_bin.eslint_test(
     data = [
         "eslint.config.mjs",
         "fixture.js",
-        ":node_modules/eslint-plugin-formatjs",
+        "//:node_modules/eslint-plugin-formatjs",
     ],
     expected_exit_code = 1,
     node_options = [
@@ -34,7 +34,7 @@ oxlint_bin.oxlint_test(
     data = [
         ".oxlintrc.json",
         "fixture.js",
-        ":node_modules/eslint-plugin-formatjs",
+        "//:node_modules/eslint-plugin-formatjs",
     ],
     expected_exit_code = 1,
     node_options = [
@@ -53,7 +53,7 @@ oxlint_bin.oxlint_test(
     data = [
         ".oxlintrc.json",
         "fixture2.js",
-        ":node_modules/eslint-plugin-formatjs",
+        "//:node_modules/eslint-plugin-formatjs",
     ],
     expected_exit_code = 1,
     node_options = [
