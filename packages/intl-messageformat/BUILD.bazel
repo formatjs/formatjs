@@ -1,5 +1,4 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
@@ -7,6 +6,7 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_json_test")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
@@ -42,10 +42,9 @@ ENTRY_POINTS = [
     "index.ts",
 ]
 
-[esbuild(
+[rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
-    config = "//tools:esbuild-packages-resolve",
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
     format = "esm",
@@ -112,25 +111,21 @@ vitest(
     deps = SRC_DEPS + TEST_DEPS,
 )
 
-esbuild(
+rolldown_bundle(
     name = "%s.iife" % PACKAGE_NAME,
     srcs = [":srcs"],
-    config = {
-        "globalName": "IntlMessageFormat",
-    },
     entry_point = "index.ts",
+    global_name = "IntlMessageFormat",
     target = "es2020",
     deps = SRC_DEPS,
 )
 
-esbuild(
+rolldown_bundle(
     name = "%s.esm" % PACKAGE_NAME,
     srcs = [":srcs"],
-    config = {
-        "globalName": "IntlMessageFormat",
-    },
     entry_point = "index.ts",
     format = "esm",
+    global_name = "IntlMessageFormat",
     target = "esnext",
     deps = SRC_DEPS,
 )

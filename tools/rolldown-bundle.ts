@@ -1,0 +1,107 @@
+/**
+ * Rolldown bundler script for Bazel.
+ * Replaces esbuild for JS bundling with #packages/* workspace resolution.
+ *
+ * Usage: rolldown-bundle --input <entry.ts> --output <out.js> --format esm
+ *        [--external pkg1 --external pkg2] [--target es2020]
+ *        [--globalName Name] [--platform browser|node]
+ */
+import {rolldown} from 'rolldown'
+import path from 'node:path'
+import minimist from 'minimist'
+
+interface Args extends minimist.ParsedArgs {
+  input: string
+  output?: string
+  outDir?: string
+  format?: string
+  external?: string | string[]
+  target?: string
+  globalName?: string
+  platform?: string
+  define?: string | string[]
+}
+
+function getWorkspaceRoot(): string {
+  if (process.env.BUILD_WORKSPACE_DIRECTORY)
+    return process.env.BUILD_WORKSPACE_DIRECTORY
+  if (process.env.JS_BINARY__EXECROOT && process.env.BAZEL_BINDIR)
+    return path.join(process.env.JS_BINARY__EXECROOT, process.env.BAZEL_BINDIR)
+  if (process.env.JS_BINARY__RUNFILES && process.env.JS_BINARY__WORKSPACE)
+    return path.join(
+      process.env.JS_BINARY__RUNFILES,
+      process.env.JS_BINARY__WORKSPACE
+    )
+  return process.cwd()
+}
+
+async function main(args: Args) {
+  const {input, output, outDir, globalName, platform} = args
+  const format: 'es' | 'cjs' | 'iife' =
+    args.format === 'esm'
+      ? 'es'
+      : (args.format as 'es' | 'cjs' | 'iife') || 'es'
+  const externals: string[] = [].concat(args.external || [])
+  const target: string = args.target || 'es2020'
+  const defines: string[] = [].concat(args.define || [])
+
+  if (!input || (!output && !outDir)) {
+    throw new Error(
+      'Usage: rolldown-bundle --input <entry> --output <out>|--outDir <dir> [--format esm] [--external pkg]'
+    )
+  }
+
+  const workspaceRoot = getWorkspaceRoot()
+
+  // Parse --define key=value pairs
+  const defineMap: Record<string, string> = {}
+  for (const d of defines) {
+    const eq = d.indexOf('=')
+    if (eq > 0) defineMap[d.slice(0, eq)] = d.slice(eq + 1)
+  }
+
+  // Convert externals to regex patterns that match subpath imports
+  const externalPatterns: Array<string | RegExp> = externals.map(ext => {
+    const escaped = ext.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    return new RegExp(`^${escaped}(\\/.*)?$`)
+  })
+
+  const bundle = await rolldown({
+    input,
+    external: externalPatterns,
+    platform:
+      platform === 'node'
+        ? 'node'
+        : platform === 'browser'
+          ? 'browser'
+          : undefined,
+    define: Object.keys(defineMap).length > 0 ? defineMap : undefined,
+    resolve: {
+      alias: {
+        '#packages': path.join(workspaceRoot, 'packages'),
+      },
+    },
+  })
+
+  if (outDir) {
+    await bundle.write({
+      dir: outDir,
+      format,
+      sourcemap: true,
+      name: globalName,
+      target,
+    })
+  } else if (output) {
+    await bundle.write({
+      file: output,
+      format,
+      sourcemap: true,
+      name: globalName,
+      target,
+    })
+  }
+}
+
+if (import.meta.filename === process.argv[1]) {
+  main(minimist<Args>(process.argv.slice(2)))
+}

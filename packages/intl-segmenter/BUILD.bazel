@@ -1,7 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
@@ -10,6 +9,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
 load(":index.bzl", "unicode_file_name")
@@ -72,10 +72,9 @@ ENTRY_POINTS = [
     "should-polyfill.ts",
 ]
 
-[esbuild(
+[rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
-    config = "//tools:esbuild-packages-resolve",
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
     format = "esm",
@@ -167,10 +166,12 @@ generate_src_file(
 )
 
 # Test262
-esbuild(
+rolldown_bundle(
     name = "test262-polyfill",
-    srcs = [":srcs"],
-    config = "//tools:esbuild-packages-resolve",
+    srcs = [
+        "test262-main.ts",
+        ":srcs",
+    ],
     entry_point = "test262-main.ts",
     target = "es2020",
     deps = SRC_DEPS,
@@ -204,10 +205,9 @@ write_source_files(
     visibility = ["//:__pkg__"],
 )
 
-esbuild(
+rolldown_bundle(
     name = "polyfill.iife",
     srcs = [":srcs"],
-    config = "//tools:esbuild-packages-resolve",
     entry_point = "polyfill.ts",
     target = "es2020",
     deps = [

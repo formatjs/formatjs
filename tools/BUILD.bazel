@@ -25,6 +25,16 @@ copy_to_bin(
 )
 
 ts_binary(
+    name = "rolldown-bundle-bin",
+    data = [
+        "//:node_modules/minimist",
+        "//:node_modules/rolldown",
+    ],
+    entry_point = "rolldown-bundle.ts",
+    visibility = ["//visibility:public"],
+)
+
+ts_binary(
     name = "generate-supported-locales",
     data = [
         "//:node_modules/fs-extra",
