@@ -40,7 +40,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
     ":node_modules/ts-jest",
     "//:node_modules/@babel/core",
     "//:node_modules/@types/babel__core",

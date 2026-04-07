@@ -27,7 +27,7 @@ SRCS = glob(
 ) + ["index.ts"]
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/fast-memoize",
+    "//:node_modules/@formatjs/fast-memoize",
 ]
 
 ts_compile(

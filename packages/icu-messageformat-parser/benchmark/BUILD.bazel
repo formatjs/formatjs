@@ -6,7 +6,7 @@ npm_link_all_packages()
 ts_binary(
     name = "benchmark",
     data = [
-        ":node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/tinybench",
     ],
     entry_point = "benchmark.ts",

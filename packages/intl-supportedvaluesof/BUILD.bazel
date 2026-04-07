@@ -22,8 +22,8 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/ecma402-abstract",
-    ":node_modules/@formatjs/fast-memoize",
+    "//:node_modules/@formatjs/ecma402-abstract",
+    "//:node_modules/@formatjs/fast-memoize",
 ]
 
 EXTERNAL_PACKAGES = [

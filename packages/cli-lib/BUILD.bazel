@@ -45,9 +45,9 @@ GLIMMER_HBS_DEPS = [
 ]
 
 SRC_DEPS = [
-    ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@formatjs/icu-skeleton-parser",
-    ":node_modules/@formatjs/ts-transformer",
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/icu-skeleton-parser",
+    "//:node_modules/@formatjs/ts-transformer",
     ":node_modules/commander",
     ":node_modules/loud-rejection",
     "//:node_modules/@types/estree",

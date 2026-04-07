@@ -11,7 +11,7 @@ npm_link_all_packages()
 #         "//:tsconfig",
 #     ],
 #     deps = [
-#         ":node_modules/@formatjs/ts-transformer",
+#         "//:node_modules/@formatjs/ts-transformer",
 #         "//:node_modules/@types/react",
 #         "//:node_modules/@types/react-dom",
 #         "//:node_modules/react",
@@ -33,8 +33,8 @@ vitest(
     ]),
     flaky = True,
     deps = [
-        ":node_modules/@formatjs/ts-transformer",
         "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/webpack",
         "//:node_modules/ts-loader",
         "//:node_modules/typescript",

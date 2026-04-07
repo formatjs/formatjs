@@ -66,6 +66,81 @@ importers:
       '@commitlint/config-angular':
         specifier: ^20.3.1
         version: 20.5.0
+      '@formatjs/bigdecimal':
+        specifier: workspace:*
+        version: link:packages/bigdecimal
+      '@formatjs/cli':
+        specifier: workspace:*
+        version: link:packages/cli
+      '@formatjs/cli-lib':
+        specifier: workspace:*
+        version: link:packages/cli-lib
+      '@formatjs/ecma376':
+        specifier: workspace:*
+        version: link:packages/ecma376
+      '@formatjs/ecma402-abstract':
+        specifier: workspace:*
+        version: link:packages/ecma402-abstract
+      '@formatjs/fast-memoize':
+        specifier: workspace:*
+        version: link:packages/fast-memoize
+      '@formatjs/icu-messageformat-parser':
+        specifier: workspace:*
+        version: link:packages/icu-messageformat-parser
+      '@formatjs/icu-skeleton-parser':
+        specifier: workspace:*
+        version: link:packages/icu-skeleton-parser
+      '@formatjs/intl':
+        specifier: workspace:*
+        version: link:packages/intl
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:packages/intl-datetimeformat
+      '@formatjs/intl-displaynames':
+        specifier: workspace:*
+        version: link:packages/intl-displaynames
+      '@formatjs/intl-durationformat':
+        specifier: workspace:*
+        version: link:packages/intl-durationformat
+      '@formatjs/intl-getcanonicallocales':
+        specifier: workspace:*
+        version: link:packages/intl-getcanonicallocales
+      '@formatjs/intl-listformat':
+        specifier: workspace:*
+        version: link:packages/intl-listformat
+      '@formatjs/intl-locale':
+        specifier: workspace:*
+        version: link:packages/intl-locale
+      '@formatjs/intl-localematcher':
+        specifier: workspace:*
+        version: link:packages/intl-localematcher
+      '@formatjs/intl-numberformat':
+        specifier: workspace:*
+        version: link:packages/intl-numberformat
+      '@formatjs/intl-pluralrules':
+        specifier: workspace:*
+        version: link:packages/intl-pluralrules
+      '@formatjs/intl-relativetimeformat':
+        specifier: workspace:*
+        version: link:packages/intl-relativetimeformat
+      '@formatjs/intl-segmenter':
+        specifier: workspace:*
+        version: link:packages/intl-segmenter
+      '@formatjs/intl-supportedvaluesof':
+        specifier: workspace:*
+        version: link:packages/intl-supportedvaluesof
+      '@formatjs/svelte-intl':
+        specifier: workspace:*
+        version: link:packages/svelte-intl
+      '@formatjs/ts-transformer':
+        specifier: workspace:*
+        version: link:packages/ts-transformer
+      '@formatjs/unplugin':
+        specifier: workspace:*
+        version: link:packages/unplugin
+      '@formatjs/utils':
+        specifier: workspace:*
+        version: link:packages/utils
       '@glimmer/syntax':
         specifier: ^0.95.0
         version: 0.95.0
@@ -207,6 +282,9 @@ importers:
       babel-loader:
         specifier: ^10.0.0
         version: 10.1.1(@babel/core@7.29.0)(@rspack/core@1.7.9)(webpack@5.105.4(esbuild@0.27.4))
+      babel-plugin-formatjs:
+        specifier: workspace:*
+        version: link:packages/babel-plugin-formatjs
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -249,6 +327,9 @@ importers:
       eslint:
         specifier: 10.0.3
         version: 10.0.3(jiti@2.6.1)
+      eslint-plugin-formatjs:
+        specifier: workspace:*
+        version: link:packages/eslint-plugin-formatjs
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -306,6 +387,9 @@ importers:
       react-dom:
         specifier: '19'
         version: 19.2.3(react@19.2.3)
+      react-intl:
+        specifier: workspace:*
+        version: link:packages/react-intl
       react-live:
         specifier: ^4.1.8
         version: 4.1.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -396,6 +480,9 @@ importers:
       vue-eslint-parser:
         specifier: ^10.4.0
         version: 10.4.0(eslint@10.0.3(jiti@2.6.1))
+      vue-intl:
+        specifier: workspace:*
+        version: link:packages/vue-intl
       vue-loader:
         specifier: ^17.4.2
         version: 17.4.2(vue@3.5.30(typescript@6.0.2))(webpack@5.105.4(esbuild@0.27.4))
