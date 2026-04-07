@@ -1,6 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
@@ -9,6 +8,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
@@ -43,10 +43,9 @@ ENTRY_POINTS = [
     "should-polyfill.ts",
 ]
 
-[esbuild(
+[rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
-    config = "//tools:esbuild-packages-resolve",
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
     format = "esm",
@@ -184,10 +183,9 @@ generate_src_file(
     tool = "//packages/intl-supportedvaluesof/scripts:units",
 )
 
-esbuild(
+rolldown_bundle(
     name = "polyfill.iife",
     srcs = [":srcs"],
-    config = "//tools:esbuild-packages-resolve",
     entry_point = "polyfill.ts",
     target = "es2020",
     deps = [

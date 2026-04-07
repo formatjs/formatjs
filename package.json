@@ -146,6 +146,7 @@
     "rehype-slug": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
+    "rolldown": "1.0.0-rc.13",
     "rollup": "^4.40.0",
     "serialize-javascript": "^7.0.2",
     "svelte": "^5.0.0",
@@ -179,9 +180,6 @@
   },
   "packageManager": "pnpm@10.32.1",
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ],
     "overrides": {
       "@tailwindcss/vite>vite": "$vite"
     },
@@ -229,7 +227,10 @@
       "unicode-match-property-value-ecmascript@2.2.1": "patches/unicode-match-property-value-ecmascript@2.2.1.patch",
       "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch",
       "oxlint@1.48.0": "patches/oxlint@1.48.0.patch"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "repository": "formatjs/formatjs"
 }
