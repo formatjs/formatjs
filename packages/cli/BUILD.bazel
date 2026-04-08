@@ -1,4 +1,5 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("//tools:index.bzl", "package_exports_test")
 
 PACKAGE_NAME = "cli"
 
@@ -19,4 +20,9 @@ npm_package(
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
+)
+
+package_exports_test(
+    name = "package_exports_test",
+    pkg = ":pkg",
 )

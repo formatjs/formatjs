@@ -7,7 +7,7 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test", "ts_run_binary")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_exports_test", "package_json_test", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
@@ -863,4 +863,9 @@ package_json_test(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+package_exports_test(
+    name = "package_exports_test",
+    pkg = ":pkg",
 )

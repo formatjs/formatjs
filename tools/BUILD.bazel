@@ -1,10 +1,26 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:index.bzl", "ts_binary")
+load("//tools:vitest.bzl", "vitest")
 
 exports_files([
     "check_no_internal_imports.sh",
+    "check_package_exports.ts",
     "supported-locales-gen.ts",
 ])
+
+copy_to_bin(
+    name = "check_package_exports",
+    srcs = ["check_package_exports.ts"],
+    visibility = ["//visibility:public"],
+)
+
+vitest(
+    name = "unit_test",
+    srcs = [
+        "check_package_exports.test.ts",
+        "check_package_exports.ts",
+    ],
+)
 
 copy_to_bin(
     name = "esbuild-packages-resolve",

@@ -7,7 +7,7 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_json_test")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_exports_test", "package_json_test")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
@@ -98,13 +98,25 @@ ts_project(
     deps = TYPECHECK_DEPS,
 )
 
+ts_project(
+    name = "types",
+    srcs = [":srcs"],
+    declaration = True,
+    emit_declaration_only = True,
+    resolve_json_module = True,
+    transpiler = tsgo_bin.tsgo,
+    tsconfig = TSCONFIG,
+    visibility = ["//visibility:public"],
+    deps = TYPECHECK_DEPS,
+)
+
 npm_package(
     name = "pkg",
     srcs = [
         "LICENSE.md",
         "README.md",
         "package.json",
-    ] + BUNDLES + [
+    ] + BUNDLES + [":types"] + [
         "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
@@ -264,4 +276,9 @@ generate_src_file(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+package_exports_test(
+    name = "package_exports_test",
+    pkg = ":pkg",
 )
