@@ -2,7 +2,7 @@
 
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
@@ -341,6 +341,22 @@ def is_internal_dep(s):
         "//:node_modules/vue-intl",
         "//:node_modules/@formatjs/svelte-intl",
     ]
+
+def package_exports_test(name, pkg):
+    """Test that all files referenced in package.json exports actually exist in the npm package.
+
+    Args:
+        name: target name
+        pkg: label of the npm_package target (e.g. ":pkg")
+    """
+    js_test(
+        name = name,
+        size = "small",
+        args = ["$(rootpath %s)" % pkg],
+        data = [pkg],
+        entry_point = "//tools:check_package_exports",
+        node_options = ["--experimental-transform-types"],
+    )
 
 def package_json_test(name, packageJson = "package.json", deps = []):
     copy_to_bin(

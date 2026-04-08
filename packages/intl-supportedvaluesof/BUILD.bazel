@@ -7,7 +7,7 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "package_exports_test")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
@@ -195,4 +195,9 @@ rolldown_bundle(
 copy_to_bin(
     name = "srcs",
     srcs = SRCS,
+)
+
+package_exports_test(
+    name = "package_exports_test",
+    pkg = ":pkg",
 )
