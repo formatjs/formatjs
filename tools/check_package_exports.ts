@@ -32,6 +32,15 @@ export function validatePackageExports(pkgDir: string): string[] {
     if (!existsSync(resolved)) {
       errors.push(`exported path '${value}' not found at '${resolved}'`)
     }
+    // Check that .js exports have a corresponding .d.ts file
+    if (value.endsWith('.js')) {
+      const dtsPath = join(pkgDir, value.replace(/\.js$/, '.d.ts'))
+      if (!existsSync(dtsPath)) {
+        errors.push(
+          `missing declaration file '${value.replace(/\.js$/, '.d.ts')}' for export '${value}'`
+        )
+      }
+    }
   })
 
   // Check wildcard export directories
@@ -42,6 +51,17 @@ export function validatePackageExports(pkgDir: string): string[] {
       errors.push(`exported directory '${value}' not found at '${dir}'`)
     } else if (readdirSync(dir).length === 0) {
       errors.push(`exported directory '${value}' is empty at '${dir}'`)
+    } else {
+      // Check that .js files in wildcard dirs have corresponding .d.ts
+      const jsFiles = readdirSync(dir).filter(f => f.endsWith('.js'))
+      for (const jsFile of jsFiles) {
+        const dtsFile = jsFile.replace(/\.js$/, '.d.ts')
+        if (!existsSync(join(dir, dtsFile))) {
+          errors.push(
+            `missing declaration file '${dtsFile}' in wildcard directory '${value}'`
+          )
+        }
+      }
     }
   })
 
