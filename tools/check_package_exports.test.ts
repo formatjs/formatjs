@@ -52,7 +52,7 @@ describe('validatePackageExports', () => {
     expect(errors[0]).toContain('package.json not found')
   })
 
-  it('passes when all exported files exist', () => {
+  it('passes when all exported files and declarations exist', () => {
     writeFileSync(
       join(tmpDir, 'package.json'),
       JSON.stringify({
@@ -60,7 +60,9 @@ describe('validatePackageExports', () => {
       })
     )
     writeFileSync(join(tmpDir, 'index.js'), '')
+    writeFileSync(join(tmpDir, 'index.d.ts'), '')
     writeFileSync(join(tmpDir, 'server.js'), '')
+    writeFileSync(join(tmpDir, 'server.d.ts'), '')
 
     expect(validatePackageExports(tmpDir)).toEqual([])
   })
@@ -73,13 +75,28 @@ describe('validatePackageExports', () => {
       })
     )
     writeFileSync(join(tmpDir, 'index.js'), '')
+    writeFileSync(join(tmpDir, 'index.d.ts'), '')
 
     const errors = validatePackageExports(tmpDir)
-    expect(errors).toHaveLength(1)
     expect(errors[0]).toContain("'./missing.js'")
   })
 
-  it('passes with polyfill-style exports', () => {
+  it('detects missing .d.ts for .js export', () => {
+    writeFileSync(
+      join(tmpDir, 'package.json'),
+      JSON.stringify({
+        exports: {'.': './index.js'},
+      })
+    )
+    writeFileSync(join(tmpDir, 'index.js'), '')
+    // index.d.ts is missing
+
+    const errors = validatePackageExports(tmpDir)
+    expect(errors).toHaveLength(1)
+    expect(errors[0]).toContain("missing declaration file './index.d.ts'")
+  })
+
+  it('passes with polyfill-style exports when declarations exist', () => {
     writeFileSync(
       join(tmpDir, 'package.json'),
       JSON.stringify({
@@ -91,15 +108,20 @@ describe('validatePackageExports', () => {
         },
       })
     )
-    writeFileSync(join(tmpDir, 'index.js'), '')
-    writeFileSync(join(tmpDir, 'polyfill.js'), '')
-    writeFileSync(join(tmpDir, 'polyfill-force.js'), '')
-    writeFileSync(join(tmpDir, 'should-polyfill.js'), '')
+    for (const name of [
+      'index',
+      'polyfill',
+      'polyfill-force',
+      'should-polyfill',
+    ]) {
+      writeFileSync(join(tmpDir, `${name}.js`), '')
+      writeFileSync(join(tmpDir, `${name}.d.ts`), '')
+    }
 
     expect(validatePackageExports(tmpDir)).toEqual([])
   })
 
-  it('passes with wildcard export directory containing files', () => {
+  it('passes with wildcard directory when .js and .d.ts exist', () => {
     writeFileSync(
       join(tmpDir, 'package.json'),
       JSON.stringify({
@@ -110,10 +132,28 @@ describe('validatePackageExports', () => {
       })
     )
     writeFileSync(join(tmpDir, 'index.js'), '')
+    writeFileSync(join(tmpDir, 'index.d.ts'), '')
     mkdirSync(join(tmpDir, 'locale-data'))
     writeFileSync(join(tmpDir, 'locale-data', 'en.js'), '')
+    writeFileSync(join(tmpDir, 'locale-data', 'en.d.ts'), '')
 
     expect(validatePackageExports(tmpDir)).toEqual([])
+  })
+
+  it('detects missing .d.ts in wildcard directory', () => {
+    writeFileSync(
+      join(tmpDir, 'package.json'),
+      JSON.stringify({
+        exports: {'./locale-data/*': './locale-data/*'},
+      })
+    )
+    mkdirSync(join(tmpDir, 'locale-data'))
+    writeFileSync(join(tmpDir, 'locale-data', 'en.js'), '')
+    // en.d.ts is missing
+
+    const errors = validatePackageExports(tmpDir)
+    expect(errors).toHaveLength(1)
+    expect(errors[0]).toContain("missing declaration file 'en.d.ts'")
   })
 
   it('detects missing wildcard export directory', () => {
@@ -164,24 +204,26 @@ describe('validatePackageExports', () => {
       })
     )
     writeFileSync(join(tmpDir, 'index.js'), '')
+    writeFileSync(join(tmpDir, 'index.d.ts'), '')
 
-    const errors = validatePackageExports(tmpDir)
-    expect(errors).toHaveLength(1)
-    expect(errors[0]).toContain("types file 'index.d.ts'")
+    expect(validatePackageExports(tmpDir)).toEqual([])
   })
 
-  it('passes when types file exists', () => {
+  it('detects missing types field file', () => {
     writeFileSync(
       join(tmpDir, 'package.json'),
       JSON.stringify({
         exports: {'.': './index.js'},
-        types: 'index.d.ts',
+        types: 'types.d.ts',
       })
     )
     writeFileSync(join(tmpDir, 'index.js'), '')
     writeFileSync(join(tmpDir, 'index.d.ts'), '')
+    // types.d.ts is missing
 
-    expect(validatePackageExports(tmpDir)).toEqual([])
+    const errors = validatePackageExports(tmpDir)
+    expect(errors).toHaveLength(1)
+    expect(errors[0]).toContain("types file 'types.d.ts'")
   })
 
   it('passes with no exports field', () => {
@@ -220,11 +262,24 @@ describe('validatePackageExports', () => {
       })
     )
     writeFileSync(join(tmpDir, 'index.js'), '')
-    // index.d.ts is missing
+    // index.d.ts is missing — reported both as missing export path and missing .d.ts for .js
 
     const errors = validatePackageExports(tmpDir)
-    expect(errors).toHaveLength(1)
+    expect(errors).toHaveLength(2)
     expect(errors[0]).toContain("'./index.d.ts'")
+    expect(errors[1]).toContain("missing declaration file './index.d.ts'")
+  })
+
+  it('does not require .d.ts for non-.js exports', () => {
+    writeFileSync(
+      join(tmpDir, 'package.json'),
+      JSON.stringify({
+        exports: {'.': './index.cjs'},
+      })
+    )
+    writeFileSync(join(tmpDir, 'index.cjs'), '')
+
+    expect(validatePackageExports(tmpDir)).toEqual([])
   })
 
   it('reports multiple errors at once', () => {
@@ -235,12 +290,13 @@ describe('validatePackageExports', () => {
           '.': './index.js',
           './server': './server.js',
         },
-        types: 'index.d.ts',
+        types: 'types.d.ts',
       })
     )
     // All files missing
 
     const errors = validatePackageExports(tmpDir)
-    expect(errors).toHaveLength(3)
+    // index.js missing, index.d.ts missing, server.js missing, server.d.ts missing, types.d.ts missing
+    expect(errors).toHaveLength(5)
   })
 })
