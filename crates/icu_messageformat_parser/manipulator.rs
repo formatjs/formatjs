@@ -834,4 +834,93 @@ mod tests {
             result.err()
         );
     }
+
+    // https://github.com/formatjs/formatjs/issues/6212
+    // Variable names that happen to match Map prototype properties (e.g., "size",
+    // "entries", "get") should work correctly. The TypeScript implementation had a
+    // bug where `in` operator on a Map checked the prototype chain instead of Map
+    // entries. The Rust implementation uses Vec so it's not affected, but these
+    // tests ensure parity with the TypeScript fix.
+    #[test]
+    fn test_map_prototype_variable_names_no_false_conflict() {
+        use crate::parser::{Parser, ParserOptions};
+        let opts = ParserOptions::default();
+
+        // "size" and "entries" are Map.prototype properties in JS
+        let a = Parser::new("{size} m²", opts.clone())
+            .parse()
+            .expect("parse a");
+        let b = Parser::new("{size} sq ft", opts.clone())
+            .parse()
+            .expect("parse b");
+        assert!(
+            is_structurally_same(&a, &b, "test.size".to_string()).is_ok(),
+            "Same variable 'size' should be structurally equal"
+        );
+
+        let a = Parser::new("{entries} items", opts.clone())
+            .parse()
+            .expect("parse a");
+        let b = Parser::new("{entries} records", opts.clone())
+            .parse()
+            .expect("parse b");
+        assert!(
+            is_structurally_same(&a, &b, "test.entries".to_string()).is_ok(),
+            "Same variable 'entries' should be structurally equal"
+        );
+
+        // Different variable counts should still fail
+        let a = Parser::new("{size} m²", opts.clone())
+            .parse()
+            .expect("parse a");
+        let b = Parser::new("{date} · {size}", opts.clone())
+            .parse()
+            .expect("parse b");
+        let result = is_structurally_same(&a, &b, "test.size_mismatch".to_string());
+        assert!(result.is_err(), "Different variable counts should fail");
+    }
+
+    #[test]
+    fn test_plural_with_inner_number_element() {
+        use crate::parser::{Parser, ParserOptions};
+        let opts = ParserOptions::default();
+
+        // {count, plural, one {{count, number} cat} other {{count, number} cats}}
+        // 'count' appears as both Plural and Number — this is valid ICU usage
+        let a = Parser::new(
+            "{count, plural, one {{count, number} cat} other {{count, number} cats}}",
+            opts.clone(),
+        )
+        .parse()
+        .expect("parse a");
+        let b = Parser::new(
+            "{count, plural, one {{count, number} foo} few{# cats} other {{count, number} bax}}",
+            opts.clone(),
+        )
+        .parse()
+        .expect("parse b");
+        assert!(
+            is_structurally_same(&a, &b, "test.plural_number".to_string()).is_ok(),
+            "Plural with inner number for same variable should be structurally equal"
+        );
+
+        // Mismatch: different outer variable name
+        let a = Parser::new(
+            "some static string {count, plural, one {{count, number} cat} other {{count, number} cats}}",
+            opts.clone(),
+        )
+        .parse()
+        .expect("parse a");
+        let b = Parser::new(
+            "{count2, plural, one {{count, number} foo} other {{count, number} bax}}",
+            opts.clone(),
+        )
+        .parse()
+        .expect("parse b");
+        let result = is_structurally_same(&a, &b, "test.plural_mismatch".to_string());
+        assert!(
+            result.is_err(),
+            "Different plural variable names should fail"
+        );
+    }
 }
