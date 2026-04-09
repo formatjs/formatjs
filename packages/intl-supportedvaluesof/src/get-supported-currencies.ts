@@ -1,4 +1,4 @@
-import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract/utils.js'
+import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
 import type {Currency} from './currencies.generated.js'
 import {currencies} from './currencies.generated.js'
 

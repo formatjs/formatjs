@@ -1,5 +1,5 @@
-import {ToNumber} from '@formatjs/ecma402-abstract/262.js'
-import {invariant} from '@formatjs/ecma402-abstract/utils.js'
+import {ToNumber} from '#packages/ecma402-abstract/262.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 export function ToIntegerIfIntegral(arg: any): number {
   const number = ToNumber(arg)

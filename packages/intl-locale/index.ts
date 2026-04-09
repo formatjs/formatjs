@@ -1,11 +1,10 @@
+import {HasOwnProperty, SameValue} from '#packages/ecma402-abstract/262.js'
+import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {
-  CoerceOptionsToObject,
-  GetOption,
-  HasOwnProperty,
-  SameValue,
   createDataProperty,
   invariant,
-} from '#packages/ecma402-abstract/index.js'
+} from '#packages/ecma402-abstract/utils.js'
 import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {

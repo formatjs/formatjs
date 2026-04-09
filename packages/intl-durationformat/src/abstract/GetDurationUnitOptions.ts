@@ -1,4 +1,4 @@
-import {GetOption} from '@formatjs/ecma402-abstract/GetOption.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 
 export function GetDurationUnitOptions<T extends object>(
   unit: keyof T,

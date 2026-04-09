@@ -9,7 +9,7 @@
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
-    "./*": "./*.js"
+    "./*": "./*"
   },
   "dependencies": {
     "@formatjs/bigdecimal": "workspace:*",

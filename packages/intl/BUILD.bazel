@@ -19,6 +19,7 @@ PACKAGE_NAME = "intl"
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/ecma402-abstract",
     "//:node_modules/@formatjs/fast-memoize",
     "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -113,7 +114,10 @@ ts_project(
 vitest(
     name = "unit_test",
     srcs = [":srcs"] + TESTS,
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS + [
         "//:node_modules/@types/node",
     ],

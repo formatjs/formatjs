@@ -1,12 +1,12 @@
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
 
-import {OrdinaryHasInstance, ToObject} from '@formatjs/ecma402-abstract/262.js'
-import {CanonicalizeLocaleList} from '@formatjs/ecma402-abstract/CanonicalizeLocaleList.js'
-import {GetNumberOption} from '@formatjs/ecma402-abstract/GetNumberOption.js'
-import {GetOption} from '@formatjs/ecma402-abstract/GetOption.js'
-import {SupportedLocales} from '@formatjs/ecma402-abstract/SupportedLocales.js'
-import {invariant} from '@formatjs/ecma402-abstract/utils.js'
+import {OrdinaryHasInstance, ToObject} from '#packages/ecma402-abstract/262.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from './abstract/GetDurationUnitOptions.js'
 import {PartitionDurationFormatPattern} from './abstract/PartitionDurationFormatPattern.js'
