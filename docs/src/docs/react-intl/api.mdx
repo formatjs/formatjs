@@ -18,8 +18,7 @@ The core of `react-intl` is the `intl` object (of type [`IntlShape`](#intlshape)
 
 There are a few ways to get access to the `intl` object:
 
-- `useIntl` hook: Once you've declared your `IntlProvider`, you can get access to the `intl` object via calling this hook in your functional React component
-- `injectIntl` HOC: In `class`-based React components, you can wrap them with the `injectIntl` HOC and `intl` should be available as a `prop`.
+- `useIntl` hook: Once you've declared your `IntlProvider`, you can get access to the `intl` object via calling this hook in your functional React component.
 - `createIntl`: In a non-React environment (Node, vue, angular, testing... you name it), you can directly create a `intl` object by calling this function with the same configuration as the `IntlProvider`.
 
 ## useIntl hook
@@ -40,52 +39,6 @@ export default FunctionComponent
 ```
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
-
-## injectIntl HOC
-
-```ts
-type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
-  [k in IntlPropName]: IntlShape
-}
-
-type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
-  forwardedRef?: React.Ref<any>
-}
-
-function injectIntl<
-  IntlPropName extends string = 'intl',
-  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
->(
-  WrappedComponent: React.ComponentType<P>,
-  options?: Opts<IntlPropName>
-): React.ComponentType<WithIntlProps<P>> & {
-  WrappedComponent: typeof WrappedComponent
-}
-```
-
-This function is exported by the `react-intl` package and is a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
-
-By default, the formatting API will be provided to the wrapped component via `props.intl`, but this can be overridden when specifying `options.intlPropName`. The value of the prop will be of type [`IntlShape`](#Intlshape), defined in the next section.
-
-```tsx
-interface Props {
-  date: Date | number
-}
-
-const FunctionalComponent: React.FC<Props> = props => {
-  const {
-    date,
-    intl, // Injected by `injectIntl`
-  } = props
-  return (
-    <span title={intl.formatDate(date)}>
-      <FormattedDate value={date} />
-    </span>
-  )
-}
-
-export default injectIntl(FunctionalComponent)
-```
 
 ## createIntl
 
@@ -179,9 +132,9 @@ interface IntlFormatters {
 type IntlShape = IntlConfig & IntlFormatters
 ```
 
-This interface is exported by the `react-intl` package that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
+This interface is exported by the `react-intl` package and represents the `intl` object returned by the [`useIntl`](#useintl) hook or [`createIntl`](#createintl).
 
-The definition above shows what the `props.intl` object will look like that's injected to your component via `injectIntl`. It's made up of two parts:
+It's made up of two parts:
 
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
 - **`IntlFormatters`:** The imperative formatting API described below.

@@ -24,7 +24,7 @@ You can either load the polyfill in the browser from `node_modules` or use the [
 
 ## Shallow Rendering
 
-React's `react-addons-test-utils` package contains a [shallow rendering](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering) feature which you might use to test your app's React components. If a component you're trying to test using `ReactShallowRenderer` uses React Intl — specifically `injectIntl()` — you'll need to do extra setup work because React Intl components expect to be nested inside an `<IntlProvider>`.
+React's `react-addons-test-utils` package contains a [shallow rendering](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering) feature which you might use to test your app's React components. If a component you're trying to test using `ReactShallowRenderer` uses React Intl — specifically `useIntl()` or `<Formatted*>` components — you'll need to do extra setup work because React Intl components expect to be nested inside an `<IntlProvider>`.
 
 ### Testing Example Components That Use React Intl
 
@@ -75,62 +75,7 @@ let element = ReactTestUtils.renderIntoDocument(
 )
 ```
 
-However this means that the `element` reference is now pointing to the `IntlProvider` instead of your component. To retrieve a reference to your wrapped component, you can use "refs" with these changes to the code:
-
-In your component, remember to add `{forwardRef: true}` when calling `injectIntl()`:
-
-```tsx
-class MyComponent extends React.Component {
-  ...
-  myClassFn() { ... }
-}
-export default injectIntl(MyComponent, {forwardRef: true});
-```
-
-In your test, add a "ref" to extract the reference to your tested component:
-
-```tsx
-const element = React.createRef()
-ReactTestUtils.renderIntoDocument(
-  <IntlProvider>
-    <MyComponent ref={element} />
-  </IntlProvider>
-)
-```
-
-You can now access the wrapped component instance from `element` like this:
-
-```tsx
-element.current.myClassFn()
-```
-
-### Helper function
-
-Since you will have to do this in all your unit tests, you should probably wrap that setup in a `render` function like this:
-
-```tsx
-function renderWithIntl(element) {
-  let instance
-
-  ReactTestUtils.renderIntoDocument(
-    <IntlProvider>
-      {React.cloneElement(element, {
-        ref: instance,
-      })}
-    </IntlProvider>
-  )
-
-  return instance
-}
-```
-
-You can now use this in your tests like this:
-
-```tsx
-const element = React.createRef();
-renderWithIntl(<MyElement ref={element}>);
-element.current.myClassFn();
-```
+However this means that the `element` reference is now pointing to the `IntlProvider` instead of your component. We recommend using `@testing-library/react` as shown below for a simpler testing experience.
 
 ## @testing-library/react
 
