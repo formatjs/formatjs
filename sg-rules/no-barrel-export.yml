@@ -1,0 +1,8 @@
+id: no-barrel-export
+language: typescript
+message: "Barrel exports (export * from) are banned in private packages. Use deep imports instead."
+severity: error
+rule:
+  pattern: "export * from '$PATH'"
+files:
+  - "packages/ecma402-abstract/**"
