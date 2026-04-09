@@ -20,6 +20,7 @@ PACKAGE_NAME = "icu-messageformat-parser"
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/ecma402-abstract",
     "//:node_modules/@formatjs/icu-skeleton-parser",
 ]
@@ -107,6 +108,9 @@ vitest(
     srcs = SRCS + glob([
         "tests/**/*.ts",
     ]),
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS + [
         "//:node_modules/@types/lodash-es",
         "//:node_modules/fast-glob",

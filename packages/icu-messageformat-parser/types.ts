@@ -1,4 +1,4 @@
-import type {NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import type {NumberFormatOptions} from '@formatjs/ecma402-abstract/types/number.js'
 import {type NumberSkeletonToken} from '@formatjs/icu-skeleton-parser'
 
 export interface ExtendedNumberFormatOptions extends NumberFormatOptions {

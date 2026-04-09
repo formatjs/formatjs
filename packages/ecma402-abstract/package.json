@@ -8,7 +8,8 @@
   "sideEffects": false,
   "types": "index.d.ts",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./*": "./*"
   },
   "dependencies": {
     "@formatjs/bigdecimal": "workspace:*",

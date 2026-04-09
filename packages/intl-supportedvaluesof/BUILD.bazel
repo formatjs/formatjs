@@ -21,7 +21,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/fast-memoize",
 ]
 
@@ -113,6 +113,9 @@ ts_project(
 vitest(
     name = "unit_test",
     srcs = SRCS + TESTS,
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS,
 )
 

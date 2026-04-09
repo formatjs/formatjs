@@ -39,14 +39,21 @@ Always use `bazel run -c opt` for Rust benchmarks. Debug mode is ~10x slower.
 bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
 ```
 
-### 4. Polyfill Development
+### 4. No Barrel Exports for Internal Packages
+
+- **Do NOT use barrel `index.ts` files** for internal packages (e.g., `@formatjs/ecma402-abstract`)
+- Use deep imports with `.js` extensions: `import {GetOption} from '#packages/ecma402-abstract/GetOption.js'`
+- Barrel re-exports are only allowed for **public-facing packages** (e.g., `react-intl`, `intl-messageformat`)
+- For type-only imports that appear in published `.d.ts` files, use `@formatjs/ecma402-abstract/...` (npm package name) so consumers can resolve them
+
+### 5. Polyfill Development
 
 - Cross-check with the [LDML spec](https://unicode.org/reports/tr35/) and [ICU4J](https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/) source
 - Each polyfill follows ECMA-402 strictly
 - Data is tree-shakeable — locale data is separately importable
 - See `knowledge-base/007*.md` for per-polyfill CLDR pipeline details
 
-### 5. Commit Message Format
+### 6. Commit Message Format
 
 [Conventional Commits](https://www.conventionalcommits.org/) — enforced by commitlint.
 

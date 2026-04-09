@@ -20,7 +20,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/ecma402-abstract",
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/intl-localematcher",
 ]
 
@@ -107,6 +107,9 @@ vitest(
     srcs = SRCS + glob([
         "tests/**/*.ts",
     ]),
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS,
 )
 
@@ -126,7 +129,6 @@ generate_src_file(
     name = "time-separators",
     src = "src/time-separators.generated.ts",
     data = [
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-localenames-full",
@@ -134,6 +136,7 @@ generate_src_file(
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
+        "//packages/ecma402-abstract",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-durationformat/scripts:time-separators",

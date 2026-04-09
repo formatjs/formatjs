@@ -17,6 +17,7 @@ PACKAGE_NAME = "icu-skeleton-parser"
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/ecma402-abstract",
 ]
 
@@ -98,6 +99,9 @@ ts_project(
 vitest(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
+    data = ["//:package.json"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS,
 )
 

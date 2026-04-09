@@ -21,6 +21,7 @@ SRCS = glob(["src/**/*.ts*"]) + [
 ]
 
 SRC_DEPS = [
+    "//packages/ecma402-abstract",
     "//:node_modules/@formatjs/ecma402-abstract",
     "//:node_modules/@formatjs/icu-messageformat-parser",
     "//:node_modules/@formatjs/intl",
@@ -144,7 +145,10 @@ vitest(
     srcs = SRCS +
            TESTS,
     config = "vitest.config.mjs",
+    data = ["//:package.json"],
     dom = True,
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = TEST_DEPS,
 )
 
