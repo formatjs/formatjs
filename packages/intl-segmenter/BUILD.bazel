@@ -66,6 +66,7 @@ EXTERNAL_PACKAGES = [
 ]
 
 ENTRY_POINTS = [
+    "index.ts",
     "polyfill.ts",
     "polyfill-force.ts",
     "should-polyfill.ts",
