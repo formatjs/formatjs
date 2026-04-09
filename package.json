@@ -147,6 +147,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "rolldown": "1.0.0-rc.13",
+    "rolldown-plugin-dts": "^0.23.2",
     "rollup": "^4.40.0",
     "serialize-javascript": "^7.0.2",
     "svelte": "^5.0.0",

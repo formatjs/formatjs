@@ -45,6 +45,7 @@ ENTRY_POINTS = [
 [rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
+    dts = True,
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
     format = "esm",
@@ -59,7 +60,6 @@ js_library(
     name = PACKAGE_NAME,
     srcs = BUNDLES + [
         "package.json",
-        ":types",
     ],
     visibility = ["//visibility:public"],
 )
@@ -71,8 +71,12 @@ npm_package(
         "README.md",
         "package.json",
         "%s.iife.js" % PACKAGE_NAME,
-    ] + BUNDLES + [":types"],
+    ] + BUNDLES,
     package = PACKAGE_NAME,
+    replace_prefixes = {
+        "%s-bundle/" % entry.replace(".ts", ""): ""
+        for entry in ENTRY_POINTS
+    },
     visibility = ["//visibility:public"],
 )
 

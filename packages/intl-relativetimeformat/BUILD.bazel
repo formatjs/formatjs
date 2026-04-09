@@ -59,6 +59,7 @@ ENTRY_POINTS = [
 [rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
+    dts = True,
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
     format = "esm",
@@ -73,7 +74,6 @@ js_library(
     name = PACKAGE_NAME,
     srcs = BUNDLES + [
         "package.json",
-        ":types",
     ],
     visibility = ["//visibility:public"],
 )
@@ -84,12 +84,16 @@ npm_package(
         "LICENSE.md",
         "README.md",
         "package.json",
-    ] + BUNDLES + [":types"] + [
+    ] + BUNDLES + [
         ":locale-data",
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
+    replace_prefixes = {
+        "%s-bundle/" % entry.replace(".ts", ""): ""
+        for entry in ENTRY_POINTS
+    },
     visibility = ["//visibility:public"],
 )
 

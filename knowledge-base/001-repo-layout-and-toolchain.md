@@ -47,14 +47,16 @@ BuildBuddy provides remote caching for all CI builds and remote execution for Li
 
 ### Custom Bazel Macros (tools/)
 
-| Macro               | File                 | Expands To                                                              |
-| ------------------- | -------------------- | ----------------------------------------------------------------------- |
-| `ts_compile`        | `index.bzl`          | ts_project (typecheck, tsgo) + ts_project (transpile, oxc) + js_library |
-| `ts_compile_node`   | `index.bzl`          | Same as ts_compile with ESNEXT_TSCONFIG                                 |
-| `vitest`            | `vitest.bzl`         | ts_project (typecheck) + vitest_test + snapshot targets                 |
-| `ts_binary`         | `index.bzl`          | js_binary with `--experimental-transform-types`                         |
-| `generate_src_file` | `index.bzl`          | ts_run_binary + oxfmt + write_source_files                              |
-| `oxc_transpiler`    | `oxc_transpiler.bzl` | Custom rule: .ts -> .js + .d.ts via oxc-transform                       |
+| Macro                  | File                 | Expands To                                                                         |
+| ---------------------- | -------------------- | ---------------------------------------------------------------------------------- |
+| `ts_compile`           | `index.bzl`          | ts_project (typecheck, tsgo) + ts_project (transpile, oxc) + js_library            |
+| `ts_compile_node`      | `index.bzl`          | Same as ts_compile with ESNEXT_TSCONFIG                                            |
+| `rolldown_bundle`      | `rolldown.bzl`       | js_run_binary (rolldown bundler); `dts=True` bundles .d.ts via rolldown-plugin-dts |
+| `package_exports_test` | `index.bzl`          | js_test validating package.json exports/types exist in npm_package                 |
+| `vitest`               | `vitest.bzl`         | ts_project (typecheck) + vitest_test + snapshot targets                            |
+| `ts_binary`            | `index.bzl`          | js_binary with `--experimental-transform-types`                                    |
+| `generate_src_file`    | `index.bzl`          | ts_run_binary + oxfmt + write_source_files                                         |
+| `oxc_transpiler`       | `oxc_transpiler.bzl` | Custom rule: .ts -> .js + .d.ts via oxc-transform                                  |
 
 ## Package Management: pnpm
 
@@ -68,10 +70,19 @@ BuildBuddy provides remote caching for all CI builds and remote execution for Li
 
 **TypeScript:** 6.0.2
 
-The build uses a dual typecheck + transpile pattern for speed:
+The build uses two patterns depending on the package type:
+
+### Rolldown-bundled packages (15 packages: polyfills, parsers, intl, react-intl)
 
 1. **Typecheck:** `@typescript/native-preview` (tsgo) — fast parallel type checking, no emit
-2. **Transpile:** `oxc-transform` 0.120.0 — generates .js + .d.ts files
+2. **Bundle:** `rolldown` with `rolldown-plugin-dts` — single pass producing bundled `.js`, `.js.map`, and `.d.ts` per entry point
+3. The `dts` plugin uses oxc for fast `isolatedDeclarations` generation and oxc-resolver for `#packages/*` path resolution (via a temp tsconfig)
+4. Each npm package gets one flat `.d.ts` file per export instead of a tree of individual declaration files
+
+### ts_compile packages (10 packages: utilities, Node tooling, framework integrations)
+
+1. **Typecheck:** `@typescript/native-preview` (tsgo) — fast parallel type checking, no emit
+2. **Transpile:** `oxc-transform` — generates .js + .d.ts files (individual, not bundled)
 
 TypeScript configs are defined as Starlark dicts in `tools/tsconfig.bzl`:
 
