@@ -1,5 +1,10 @@
 import {readFileSync, existsSync, statSync, readdirSync} from 'fs'
 import {join} from 'path'
+import minimist from 'minimist'
+
+interface Args extends minimist.ParsedArgs {
+  _: string[]
+}
 
 export function collectPaths(
   obj: Record<string, unknown>,
@@ -76,13 +81,8 @@ export function validatePackageExports(pkgDir: string): string[] {
   return errors
 }
 
-// CLI entry point
-if (
-  process.argv[1] &&
-  (process.argv[1].endsWith('check_package_exports.ts') ||
-    process.argv[1].endsWith('check_package_exports.js'))
-) {
-  const pkgDir = process.argv[2]
+function main(args: Args): void {
+  const pkgDir = args._[0]
   if (!pkgDir) {
     console.error('Usage: check_package_exports <pkg-dir>')
     process.exit(1)
@@ -97,4 +97,8 @@ if (
   }
 
   console.log('PASS: all package.json exports exist in package')
+}
+
+if (import.meta.filename === process.argv[1]) {
+  main(minimist<Args>(process.argv.slice(2)))
 }
