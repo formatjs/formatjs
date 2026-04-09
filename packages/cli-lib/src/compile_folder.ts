@@ -10,6 +10,6 @@ export default async function compileFolder(
   const outFiles = files.map(f => join(outFolder, basename(f)))
 
   return Promise.all(
-    outFiles.map((outFile, i) => outputFile(outFile, results[i]))
+    outFiles.map((outFile, i) => outputFile(outFile, results[i] + '\n'))
   )
 }
