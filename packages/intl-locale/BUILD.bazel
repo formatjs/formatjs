@@ -58,6 +58,7 @@ EXTERNAL_PACKAGES = [
 [rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
     srcs = [":srcs"],
+    dts = True,
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
     format = "esm",
@@ -116,10 +117,19 @@ npm_package(
         "LICENSE.md",
         "README.md",
         "package.json",
-    ] + BUNDLES + [":types"] + [
+    ] + BUNDLES + [
         "polyfill.iife.js",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
+    replace_prefixes = {
+        "%s-bundle/" % entry.replace(".ts", ""): ""
+        for entry in [
+            "index.ts",
+            "polyfill.ts",
+            "polyfill-force.ts",
+            "should-polyfill.ts",
+        ]
+    },
     visibility = ["//visibility:public"],
 )
 

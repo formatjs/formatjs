@@ -45,6 +45,7 @@ ts_binary(
     data = [
         "//:node_modules/minimist",
         "//:node_modules/rolldown",
+        "//:node_modules/rolldown-plugin-dts",
     ],
     entry_point = "rolldown-bundle.ts",
     visibility = ["//visibility:public"],

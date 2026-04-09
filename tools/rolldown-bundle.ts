@@ -7,7 +7,10 @@
  *        [--globalName Name] [--platform browser|node]
  */
 import {rolldown} from 'rolldown'
+import {dts} from 'rolldown-plugin-dts'
 import path from 'node:path'
+import {writeFileSync} from 'node:fs'
+import {tmpdir} from 'node:os'
 import minimist from 'minimist'
 
 interface Args extends minimist.ParsedArgs {
@@ -20,6 +23,7 @@ interface Args extends minimist.ParsedArgs {
   globalName?: string
   platform?: string
   define?: string | string[]
+  dts?: boolean
 }
 
 function getWorkspaceRoot(): string {
@@ -69,6 +73,28 @@ async function main(args: Args) {
   const bundle = await rolldown({
     input,
     external: externalPatterns,
+    plugins: args.dts
+      ? (() => {
+          // Write a temp tsconfig so the oxc resolver can resolve #packages/* paths
+          const tsconfigPath = path.join(
+            tmpdir(),
+            `rolldown-dts-tsconfig-${process.pid}.json`
+          )
+          writeFileSync(
+            tsconfigPath,
+            JSON.stringify({
+              compilerOptions: {
+                isolatedDeclarations: true,
+                baseUrl: workspaceRoot,
+                paths: {
+                  '#packages/*': ['packages/*'],
+                },
+              },
+            })
+          )
+          return dts({tsconfig: tsconfigPath})
+        })()
+      : [],
     platform:
       platform === 'node'
         ? 'node'
@@ -92,13 +118,25 @@ async function main(args: Args) {
       target,
     })
   } else if (output) {
-    await bundle.write({
-      file: output,
-      format,
-      sourcemap: true,
-      name: globalName,
-      target,
-    })
+    if (args.dts) {
+      // dts plugin generates multiple chunks, requiring dir mode
+      const dir = path.dirname(output)
+      await bundle.write({
+        dir: dir || '.',
+        format,
+        sourcemap: true,
+        name: globalName,
+        target,
+      })
+    } else {
+      await bundle.write({
+        file: output,
+        format,
+        sourcemap: true,
+        name: globalName,
+        target,
+      })
+    }
   }
 }
 

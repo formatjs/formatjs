@@ -14,6 +14,15 @@ All 11 polyfill packages share a common architecture. See individual docs (007a-
 - Only imported locales are bundled — critical for mobile where bundle size matters
 - All packages use ES modules with `"type": "module"`
 
+## Build Output
+
+Each polyfill uses `rolldown_bundle` with `dts = True` to produce bundled output:
+
+- Each entry point (index, polyfill, polyfill-force, should-polyfill) produces a single `.js`, `.js.map`, and `.d.ts` file
+- Declaration files are bundled into one `.d.ts` per entry point via `rolldown-plugin-dts` (not scattered `src/*.d.ts` trees)
+- The `no_internal_imports_test` validates that neither `.js` nor `.d.ts` files contain leaked `#packages/` path aliases
+- The `package_exports_test` validates that all files referenced in `package.json` exports exist and have corresponding `.d.ts` files
+
 ## Two Data Loading Patterns
 
 ### Dynamic per-locale (numberformat, datetimeformat, pluralrules, displaynames, listformat, relativetimeformat)
