@@ -342,6 +342,22 @@ def is_internal_dep(s):
         "//:node_modules/@formatjs/svelte-intl",
     ]
 
+def no_internal_imports_test(name, data):
+    """Test that no #packages/ path aliases leak into bundled .js or .d.ts output.
+
+    Args:
+        name: target name
+        data: list of bundle targets to check (files or directories)
+    """
+    js_test(
+        name = name,
+        size = "small",
+        args = ["$(rootpath %s)" % d for d in data],
+        data = data + ["//:node_modules/minimist"],
+        entry_point = "//tools:check_no_internal_imports",
+        node_options = ["--experimental-transform-types"],
+    )
+
 def package_exports_test(name, pkg):
     """Test that all files referenced in package.json exports actually exist in the npm package.
 
@@ -353,7 +369,7 @@ def package_exports_test(name, pkg):
         name = name,
         size = "small",
         args = ["$(rootpath %s)" % pkg],
-        data = [pkg],
+        data = [pkg, "//:node_modules/minimist"],
         entry_point = "//tools:check_package_exports",
         node_options = ["--experimental-transform-types"],
     )
