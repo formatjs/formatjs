@@ -1,8 +1,5 @@
-import {
-  type LocaleData,
-  type DateTimeFormatLocaleInternalData,
-  type IntervalFormatsData,
-} from '@formatjs/ecma402-abstract'
+import type {LocaleData} from '@formatjs/ecma402-abstract/types/core.js'
+import type {DateTimeFormatLocaleInternalData, IntervalFormatsData} from '@formatjs/ecma402-abstract/types/date-time.js'
 
 export interface PackedData {
   zones: string[]

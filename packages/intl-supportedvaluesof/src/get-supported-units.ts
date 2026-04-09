@@ -1,4 +1,4 @@
-import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
+import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract/utils.js'
 import type {Unit} from './units.generated.js'
 import {units} from './units.generated.js'
 
