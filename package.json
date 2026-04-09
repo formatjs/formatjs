@@ -34,7 +34,6 @@
     "@formatjs/cli": "workspace:*",
     "@formatjs/cli-lib": "workspace:*",
     "@formatjs/ecma376": "workspace:*",
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/icu-skeleton-parser": "workspace:*",

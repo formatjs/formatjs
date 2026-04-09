@@ -15,7 +15,6 @@
     "./locale-data": "./locale-data"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*"
   },
   "devDependencies": {

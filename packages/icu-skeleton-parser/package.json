@@ -8,7 +8,6 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*"
   },
   "repository": {
     "type": "git",

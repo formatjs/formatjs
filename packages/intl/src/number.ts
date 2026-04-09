@@ -1,4 +1,4 @@
-import {type NumberFormatOptions} from '@formatjs/ecma402-abstract/types/number.js'
+import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {IntlFormatError} from './error.js'
 import {
   type CustomFormats,
