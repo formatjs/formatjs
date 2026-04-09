@@ -91,30 +91,26 @@ values={[
 <TabItem value="react">
 
 ```tsx
-class PasswordChangeWithIntl extends React.Component {
-  render() {
-    const {intl} = this.props
-    return (
-      <li>
-        <input
-          placeholder={intl.formatMessage({
-            defaultMessage: 'New Password',
-            description: 'placeholder text',
-          })}
-        />
-        <input
-          placeholder={intl.formatMessage({
-            id: 'explicit-id',
-            defaultMessage: 'Confirm Password',
-            description: 'placeholder text',
-          })}
-        />
-      </li>
-    )
-  }
+function PasswordChange() {
+  const intl = useIntl()
+  return (
+    <li>
+      <input
+        placeholder={intl.formatMessage({
+          defaultMessage: 'New Password',
+          description: 'placeholder text',
+        })}
+      />
+      <input
+        placeholder={intl.formatMessage({
+          id: 'explicit-id',
+          defaultMessage: 'Confirm Password',
+          description: 'placeholder text',
+        })}
+      />
+    </li>
+  )
 }
-
-const PasswordChange = injectIntl(PasswordChangeWithIntl)
 
 export function List(props) {
   const intl = useIntl()
