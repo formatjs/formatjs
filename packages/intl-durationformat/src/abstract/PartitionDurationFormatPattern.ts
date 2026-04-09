@@ -3,7 +3,7 @@ import {
   createMemoizedListFormat,
   createMemoizedNumberFormat,
   invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract'
 import {TABLE_2} from '../constants.js'
 import {DurationFormat} from '../core.js'
 import {getInternalSlots} from '../get_internal_slots.js'

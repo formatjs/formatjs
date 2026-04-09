@@ -1,4 +1,4 @@
-import {createMemoizedNumberFormat} from '@formatjs/ecma402-abstract'
+import {createMemoizedNumberFormat} from '#packages/ecma402-abstract'
 import {numberingSystemNames} from './numbering-systems.generated.js'
 
 /**

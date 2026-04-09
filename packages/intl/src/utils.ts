@@ -1,4 +1,4 @@
-import {type NumberFormatOptions} from '@formatjs/ecma402-abstract'
+import {type NumberFormatOptions} from '#packages/ecma402-abstract'
 import {type Cache, memoize, strategies} from '@formatjs/fast-memoize'
 import {IntlMessageFormat} from 'intl-messageformat'
 import {UnsupportedFormatterError} from './error.js'

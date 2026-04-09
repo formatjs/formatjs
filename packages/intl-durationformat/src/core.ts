@@ -9,7 +9,7 @@ import {
   SupportedLocales,
   ToObject,
   invariant,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from './abstract/GetDurationUnitOptions.js'
 import {PartitionDurationFormatPattern} from './abstract/PartitionDurationFormatPattern.js'

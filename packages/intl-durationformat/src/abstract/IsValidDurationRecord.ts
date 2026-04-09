@@ -1,4 +1,4 @@
-import {invariant} from '@formatjs/ecma402-abstract'
+import {invariant} from '#packages/ecma402-abstract'
 import {TABLE_1} from '../constants.js'
 import {type DurationRecord} from '../types.js'
 import {DurationRecordSign} from './DurationRecordSign.js'

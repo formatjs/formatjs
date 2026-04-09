@@ -2,7 +2,7 @@ import {
   type LocaleData,
   type DateTimeFormatLocaleInternalData,
   type IntervalFormatsData,
-} from '@formatjs/ecma402-abstract'
+} from '#packages/ecma402-abstract'
 
 export interface PackedData {
   zones: string[]

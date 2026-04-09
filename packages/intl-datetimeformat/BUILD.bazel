@@ -49,7 +49,6 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    "//:node_modules/@formatjs/ecma402-abstract",  # for src/ files still using barrel imports
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
 ]
@@ -756,7 +755,6 @@ ts_run_binary(
     srcs = [
         "src/abstract/skeleton.ts",
         "src/types.ts",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
@@ -871,7 +869,6 @@ generate_src_file(
         "src/packer.ts",
         "src/types.ts",
         ":zdumps",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/json-stable-stringify",
         "//packages/ecma402-abstract",
     ],
@@ -887,7 +884,6 @@ ts_run_binary(
         "src/packer.ts",
         "src/types.ts",
         ":zdumps",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -914,7 +910,6 @@ ts_run_binary(
         "src/packer.ts",
         "src/types.ts",
         ":zdumps",
-        "//:node_modules/@formatjs/ecma402-abstract",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
