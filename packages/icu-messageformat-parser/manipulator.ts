@@ -172,10 +172,20 @@ function collectVariables(
       isTimeElement(el) ||
       isNumberElement(el)
     ) {
-      if (el.value in vars && vars.get(el.value) !== el.type) {
-        throw new Error(`Variable ${el.value} has conflicting types`)
+      // If the variable was already registered as a plural/select, it's normal
+      // for it to also appear inside as number/date/time/argument — not a conflict.
+      if (vars.has(el.value)) {
+        const existingType = vars.get(el.value)!
+        if (
+          existingType !== el.type &&
+          existingType !== TYPE.plural &&
+          existingType !== TYPE.select
+        ) {
+          throw new Error(`Variable ${el.value} has conflicting types`)
+        }
+      } else {
+        vars.set(el.value, el.type)
       }
-      vars.set(el.value, el.type)
     }
 
     if (isPluralElement(el) || isSelectElement(el)) {
