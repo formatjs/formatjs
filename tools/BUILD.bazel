@@ -3,10 +3,14 @@ load("//tools:index.bzl", "ts_binary")
 load("//tools:vitest.bzl", "vitest")
 
 exports_files([
-    "check_no_internal_imports.sh",
-    "check_package_exports.ts",
     "supported-locales-gen.ts",
 ])
+
+copy_to_bin(
+    name = "check_no_internal_imports",
+    srcs = ["check_no_internal_imports.ts"],
+    visibility = ["//visibility:public"],
+)
 
 copy_to_bin(
     name = "check_package_exports",
