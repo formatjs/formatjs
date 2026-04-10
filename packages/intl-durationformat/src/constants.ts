@@ -1,4 +1,4 @@
-import {type DurationRecord} from './types.js'
+import {type DurationRecord} from '#packages/ecma402-abstract/types/duration.js'
 
 export const TABLE_1: Array<keyof DurationRecord> = [
   'years',

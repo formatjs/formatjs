@@ -1,3 +1,9 @@
+import type {
+  DurationInput,
+  DurationRecord,
+} from '#packages/ecma402-abstract/types/duration.js'
+export type {DurationInput, DurationRecord}
+
 // Public --------------------------------------------------------------------------------------------------------------
 
 export type DurationFormatOptions = Partial<ResolvedDurationFormatOptions>
@@ -80,32 +86,6 @@ export interface IntlDurationFormatInternal {
   microsecondsDisplay: 'always' | 'auto'
   nanoseconds: 'long' | 'short' | 'narrow' | 'numeric'
   nanosecondsDisplay: 'always' | 'auto'
-}
-
-export interface DurationInput {
-  years?: number
-  months?: number
-  weeks?: number
-  days?: number
-  hours?: number
-  minutes?: number
-  seconds?: number
-  milliseconds?: number
-  microseconds?: number
-  nanoseconds?: number
-}
-
-export interface DurationRecord {
-  years: number
-  months: number
-  weeks: number
-  days: number
-  hours: number
-  minutes: number
-  seconds: number
-  milliseconds: number
-  microseconds: number
-  nanoseconds: number
 }
 
 export interface DurationFormatConstructor {

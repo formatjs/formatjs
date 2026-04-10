@@ -1,4 +1,7 @@
-import {type DurationInput, type DurationRecord} from '../types.js'
+import {
+  type DurationInput,
+  type DurationRecord,
+} from '#packages/ecma402-abstract/types/duration.js'
 import {IsValidDurationRecord} from './IsValidDurationRecord.js'
 import {ToIntegerIfIntegral} from './ToIntegerIfIntegral.js'
 
