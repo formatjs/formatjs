@@ -3,73 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [4.1.5](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.4...@formatjs/intl@4.1.5) (2026-03-27)
+## [4.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.4...@formatjs/intl@4.1.5) (2026-03-27)
 
 ### Bug Fixes
 
-* **deps:** remove typescript peer dependencies ([#6180](/github.com/formatjs/formatjs/issues/6180)) ([b4dba3d](github.com/formatjs/formatjs/commits/b4dba3dfde138c2ea872a6372c01d8ad89216ee4)), closes [#6179](github.com/formatjs/formatjs/issues/6179) - by @camsteffen
+* **deps:** remove typescript peer dependencies ([#6180](https://github.com/formatjs/formatjs/issues/6180)) ([b4dba3d](https://github.com/formatjs/formatjs/commits/b4dba3dfde138c2ea872a6372c01d8ad89216ee4)), closes [#6179](https://github.com/formatjs/formatjs/issues/6179) - by @camsteffen
 
-## [4.1.4](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.3...@formatjs/intl@4.1.4) (2026-03-17)
-
-**Note:** Version bump only for package @formatjs/intl
-
-## [4.1.3](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.2...@formatjs/intl@4.1.3) (2026-03-16)
+## [4.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.3...@formatjs/intl@4.1.4) (2026-03-17)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.1.2](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.1...@formatjs/intl@4.1.2) (2026-02-01)
+## [4.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.2...@formatjs/intl@4.1.3) (2026-03-16)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.1.1](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.0...@formatjs/intl@4.1.1) (2026-01-19)
+## [4.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.1...@formatjs/intl@4.1.2) (2026-02-01)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [4.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.0...@formatjs/intl@4.1.1) (2026-01-19)
 
 ### Bug Fixes
 
-* **@formatjs/intl:** remove hot path optimization to fix escaped character handling, fix [#4973](/github.com/formatjs/formatjs/issues/4973) ([309f579](github.com/formatjs/formatjs/commits/309f5792a1871488a4287fafdc0467f65bc9530c)) - by @longlho
+* **@formatjs/intl:** remove hot path optimization to fix escaped character handling, fix [#4973](https://github.com/formatjs/formatjs/issues/4973) ([309f579](https://github.com/formatjs/formatjs/commits/309f5792a1871488a4287fafdc0467f65bc9530c)) - by @longlho
 
-# [4.1.0](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.9...@formatjs/intl@4.1.0) (2026-01-15)
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.9...@formatjs/intl@4.1.0) (2026-01-15)
 
 ### Features
 
-* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
 
-## [4.0.9](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.8...@formatjs/intl@4.0.9) (2026-01-06)
-
-**Note:** Version bump only for package @formatjs/intl
-
-## [4.0.8](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.7...@formatjs/intl@4.0.8) (2026-01-02)
+## [4.0.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.8...@formatjs/intl@4.0.9) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.7](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.6...@formatjs/intl@4.0.7) (2025-12-26)
+## [4.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.7...@formatjs/intl@4.0.8) (2026-01-02)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.6](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.5...@formatjs/intl@4.0.6) (2025-12-23)
+## [4.0.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.6...@formatjs/intl@4.0.7) (2025-12-26)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.5](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.4...@formatjs/intl@4.0.5) (2025-12-23)
+## [4.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.5...@formatjs/intl@4.0.6) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.4](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.3...@formatjs/intl@4.0.4) (2025-12-19)
+## [4.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.4...@formatjs/intl@4.0.5) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.3](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.2...@formatjs/intl@4.0.3) (2025-12-18)
+## [4.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.3...@formatjs/intl@4.0.4) (2025-12-19)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.2](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.1...@formatjs/intl@4.0.2) (2025-12-17)
+## [4.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.2...@formatjs/intl@4.0.3) (2025-12-18)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.1](github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.0...@formatjs/intl@4.0.1) (2025-12-15)
+## [4.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.1...@formatjs/intl@4.0.2) (2025-12-17)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [4.0.0](/github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.8...@formatjs/intl@4.0.0) (2025-12-15)
+## [4.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.0.0...@formatjs/intl@4.0.1) (2025-12-15)
+
+**Note:** Version bump only for package @formatjs/intl
+
+## [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.8...@formatjs/intl@4.0.0) (2025-12-15)
 
 ### ⚠ BREAKING CHANGES
 
@@ -77,22 +77,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **@formatjs/intl:** convert to ESM ([#5434](/github.com/formatjs/formatjs/issues/5434)) ([47e75d7](/github.com/formatjs/formatjs/commit/47e75d7f5ca6fcf1fcb64088b8a5dd8a00fddadc)) - by @longlho
+* **@formatjs/intl:** convert to ESM ([#5434](https://github.com/formatjs/formatjs/issues/5434)) ([47e75d7](https://github.com/formatjs/formatjs/commit/47e75d7f5ca6fcf1fcb64088b8a5dd8a00fddadc)) - by @longlho
 
 ### Bug Fixes
 
-* use global 'time' Formats override with formatTime/FormattedTimeParts 'format' config instead of 'date' Formats, add strict 'format' overrides typing to FormattedDate and FormattedTime ([#5151](/github.com/formatjs/formatjs/issues/5151)) ([3fe4b50](/github.com/formatjs/formatjs/commit/3fe4b50d4b14e04717072217adf8514c580b55b7)) - by @seanmadi
+* use global 'time' Formats override with formatTime/FormattedTimeParts 'format' config instead of 'date' Formats, add strict 'format' overrides typing to FormattedDate and FormattedTime ([#5151](https://github.com/formatjs/formatjs/issues/5151)) ([3fe4b50](https://github.com/formatjs/formatjs/commit/3fe4b50d4b14e04717072217adf8514c580b55b7)) - by @seanmadi
 
-## [3.1.8](github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.7...@formatjs/intl@3.1.8) (2025-10-09)
+## [3.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.7...@formatjs/intl@3.1.8) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl
 
-## [3.1.7](github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.6...@formatjs/intl@3.1.7) (2025-10-03)
+## [3.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.6...@formatjs/intl@3.1.7) (2025-10-03)
 
 ### Bug Fixes
 
-* formatList null value replaced to placeholder value ([f629131](github.com/formatjs/formatjs/commits/f629131bad27b5ef8fbc1d7fd60ef4d2aa33f9e5)) - by @septs
-* string list from iterable ([#5046](/github.com/formatjs/formatjs/issues/5046)) ([19a4c05](github.com/formatjs/formatjs/commits/19a4c051238aa48c6cab5eadf3a46ca7783a987c)) - by @septs
+* formatList null value replaced to placeholder value ([f629131](https://github.com/formatjs/formatjs/commits/f629131bad27b5ef8fbc1d7fd60ef4d2aa33f9e5)) - by @septs
+* string list from iterable ([#5046](https://github.com/formatjs/formatjs/issues/5046)) ([19a4c05](https://github.com/formatjs/formatjs/commits/19a4c051238aa48c6cab5eadf3a46ca7783a987c)) - by @septs
 
 ## [3.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@3.1.5...@formatjs/intl@3.1.6) (2025-03-26)
 

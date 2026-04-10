@@ -3,23 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [10.1.1](github.com/formatjs/formatjs/compare/react-intl@10.1.0...react-intl@10.1.1) (2026-03-27)
+## [10.1.1](https://github.com/formatjs/formatjs/compare/react-intl@10.1.0...react-intl@10.1.1) (2026-03-27)
 
 ### Bug Fixes
 
-* **deps:** remove typescript peer dependencies ([#6180](/github.com/formatjs/formatjs/issues/6180)) ([b4dba3d](github.com/formatjs/formatjs/commits/b4dba3dfde138c2ea872a6372c01d8ad89216ee4)), closes [#6179](github.com/formatjs/formatjs/issues/6179) - by @camsteffen
+* **deps:** remove typescript peer dependencies ([#6180](https://github.com/formatjs/formatjs/issues/6180)) ([b4dba3d](https://github.com/formatjs/formatjs/commits/b4dba3dfde138c2ea872a6372c01d8ad89216ee4)), closes [#6179](https://github.com/formatjs/formatjs/issues/6179) - by @camsteffen
 
-# [10.1.0](github.com/formatjs/formatjs/compare/react-intl@10.0.0...react-intl@10.1.0) (2026-03-17)
-
-### Features
-
-* **@formatjs/ecma402-abstract:** migrate from decimal.js to @formatjs/bigdecimal ([#6148](/github.com/formatjs/formatjs/issues/6148)) ([93744d4](github.com/formatjs/formatjs/commits/93744d4732ab2dfdc93e7ddb2a73e80a6e461534)) - by @longlho
-
-# [10.0.0](github.com/formatjs/formatjs/compare/react-intl@8.2.0...react-intl@10.0.0) (2026-03-16)
+# [10.1.0](https://github.com/formatjs/formatjs/compare/react-intl@10.0.0...react-intl@10.1.0) (2026-03-17)
 
 ### Features
 
-* **react-intl:** bump to v9.0.0 ([#6112](/github.com/formatjs/formatjs/issues/6112)) ([8de45c7](github.com/formatjs/formatjs/commits/8de45c7f4bca0852b3844775a234f54fec3e2739)) - by @longlho
+* **@formatjs/ecma402-abstract:** migrate from decimal.js to @formatjs/bigdecimal ([#6148](https://github.com/formatjs/formatjs/issues/6148)) ([93744d4](https://github.com/formatjs/formatjs/commits/93744d4732ab2dfdc93e7ddb2a73e80a6e461534)) - by @longlho
+
+# [10.0.0](https://github.com/formatjs/formatjs/compare/react-intl@8.2.0...react-intl@10.0.0) (2026-03-16)
+
+### Features
+
+* **react-intl:** bump to v9.0.0 ([#6112](https://github.com/formatjs/formatjs/issues/6112)) ([8de45c7](https://github.com/formatjs/formatjs/commits/8de45c7f4bca0852b3844775a234f54fec3e2739)) - by @longlho
 
 ### BREAKING CHANGES
 
@@ -31,89 +31,89 @@ migration instructions.
 
 Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 
-# [8.2.0](github.com/formatjs/formatjs/compare/react-intl@8.1.4...react-intl@8.2.0) (2026-03-16)
+# [8.2.0](https://github.com/formatjs/formatjs/compare/react-intl@8.1.4...react-intl@8.2.0) (2026-03-16)
 
 ### Bug Fixes
 
-* **react-intl:** fix vitest DOM tests failing in Bazel sandbox ([#6099](/github.com/formatjs/formatjs/issues/6099)) ([d364a33](github.com/formatjs/formatjs/commits/d364a3393615bd5837b1678351b53178f0c697cf)) - by @longlho
+* **react-intl:** fix vitest DOM tests failing in Bazel sandbox ([#6099](https://github.com/formatjs/formatjs/issues/6099)) ([d364a33](https://github.com/formatjs/formatjs/commits/d364a3393615bd5837b1678351b53178f0c697cf)) - by @longlho
 
 ### Features
 
-* **react-intl:** modernize for React 19 and RSC support ([#6083](/github.com/formatjs/formatjs/issues/6083)) ([4ecc046](github.com/formatjs/formatjs/commits/4ecc0468350681a9f33e9a1488a5bea99dc50783)) - by @longlho
+* **react-intl:** modernize for React 19 and RSC support ([#6083](https://github.com/formatjs/formatjs/issues/6083)) ([4ecc046](https://github.com/formatjs/formatjs/commits/4ecc0468350681a9f33e9a1488a5bea99dc50783)) - by @longlho
 
-## [8.1.4](github.com/formatjs/formatjs/compare/react-intl@8.1.3...react-intl@8.1.4) (2026-03-15)
+## [8.1.4](https://github.com/formatjs/formatjs/compare/react-intl@8.1.3...react-intl@8.1.4) (2026-03-15)
 
 **Note:** Version bump only for package react-intl
 
-## [8.1.3](github.com/formatjs/formatjs/compare/react-intl@8.1.2...react-intl@8.1.3) (2026-02-03)
+## [8.1.3](https://github.com/formatjs/formatjs/compare/react-intl@8.1.2...react-intl@8.1.3) (2026-02-03)
 
 ### Bug Fixes
 
-* **react-intl:** update react/react-dom dep versions to 19 ([#6015](/github.com/formatjs/formatjs/issues/6015)) ([70e7ad3](github.com/formatjs/formatjs/commits/70e7ad3a3d81a071411a1a7f30fced08b2797c80)), closes [#6014](github.com/formatjs/formatjs/issues/6014) - by @longlho
+* **react-intl:** update react/react-dom dep versions to 19 ([#6015](https://github.com/formatjs/formatjs/issues/6015)) ([70e7ad3](https://github.com/formatjs/formatjs/commits/70e7ad3a3d81a071411a1a7f30fced08b2797c80)), closes [#6014](https://github.com/formatjs/formatjs/issues/6014) - by @longlho
 
-## [8.1.2](github.com/formatjs/formatjs/compare/react-intl@8.1.1...react-intl@8.1.2) (2026-02-01)
-
-**Note:** Version bump only for package react-intl
-
-## [8.1.1](github.com/formatjs/formatjs/compare/react-intl@8.1.0...react-intl@8.1.1) (2026-01-19)
+## [8.1.2](https://github.com/formatjs/formatjs/compare/react-intl@8.1.1...react-intl@8.1.2) (2026-02-01)
 
 **Note:** Version bump only for package react-intl
 
-# [8.1.0](github.com/formatjs/formatjs/compare/react-intl@8.0.11...react-intl@8.1.0) (2026-01-15)
+## [8.1.1](https://github.com/formatjs/formatjs/compare/react-intl@8.1.0...react-intl@8.1.1) (2026-01-19)
+
+**Note:** Version bump only for package react-intl
+
+# [8.1.0](https://github.com/formatjs/formatjs/compare/react-intl@8.0.11...react-intl@8.1.0) (2026-01-15)
 
 ### Features
 
-* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
 
-## [8.0.11](github.com/formatjs/formatjs/compare/react-intl@8.0.10...react-intl@8.0.11) (2026-01-06)
-
-**Note:** Version bump only for package react-intl
-
-## [8.0.10](github.com/formatjs/formatjs/compare/react-intl@8.0.9...react-intl@8.0.10) (2026-01-02)
+## [8.0.11](https://github.com/formatjs/formatjs/compare/react-intl@8.0.10...react-intl@8.0.11) (2026-01-06)
 
 **Note:** Version bump only for package react-intl
 
-## [8.0.9](github.com/formatjs/formatjs/compare/react-intl@8.0.8...react-intl@8.0.9) (2025-12-26)
+## [8.0.10](https://github.com/formatjs/formatjs/compare/react-intl@8.0.9...react-intl@8.0.10) (2026-01-02)
 
 **Note:** Version bump only for package react-intl
 
-## [8.0.8](github.com/formatjs/formatjs/compare/react-intl@8.0.7...react-intl@8.0.8) (2025-12-23)
+## [8.0.9](https://github.com/formatjs/formatjs/compare/react-intl@8.0.8...react-intl@8.0.9) (2025-12-26)
 
 **Note:** Version bump only for package react-intl
 
-## [8.0.7](github.com/formatjs/formatjs/compare/react-intl@8.0.6...react-intl@8.0.7) (2025-12-23)
+## [8.0.8](https://github.com/formatjs/formatjs/compare/react-intl@8.0.7...react-intl@8.0.8) (2025-12-23)
 
 **Note:** Version bump only for package react-intl
 
-## [8.0.6](github.com/formatjs/formatjs/compare/react-intl@8.0.5...react-intl@8.0.6) (2025-12-19)
+## [8.0.7](https://github.com/formatjs/formatjs/compare/react-intl@8.0.6...react-intl@8.0.7) (2025-12-23)
+
+**Note:** Version bump only for package react-intl
+
+## [8.0.6](https://github.com/formatjs/formatjs/compare/react-intl@8.0.5...react-intl@8.0.6) (2025-12-19)
 
 ### Bug Fixes
 
-* **@formatjs/utils:** fix json ESM import ([#5594](/github.com/formatjs/formatjs/issues/5594)) ([dfd79a2](github.com/formatjs/formatjs/commits/dfd79a2d9935e0b7d06c08555ff6625d3f1c884f)) - by @longlho
+* **@formatjs/utils:** fix json ESM import ([#5594](https://github.com/formatjs/formatjs/issues/5594)) ([dfd79a2](https://github.com/formatjs/formatjs/commits/dfd79a2d9935e0b7d06c08555ff6625d3f1c884f)) - by @longlho
 
-## [8.0.5](github.com/formatjs/formatjs/compare/react-intl@8.0.4...react-intl@8.0.5) (2025-12-18)
-
-**Note:** Version bump only for package react-intl
-
-## [8.0.4](github.com/formatjs/formatjs/compare/react-intl@8.0.3...react-intl@8.0.4) (2025-12-17)
+## [8.0.5](https://github.com/formatjs/formatjs/compare/react-intl@8.0.4...react-intl@8.0.5) (2025-12-18)
 
 **Note:** Version bump only for package react-intl
 
-## [8.0.3](github.com/formatjs/formatjs/compare/react-intl@8.0.2...react-intl@8.0.3) (2025-12-16)
+## [8.0.4](https://github.com/formatjs/formatjs/compare/react-intl@8.0.3...react-intl@8.0.4) (2025-12-17)
+
+**Note:** Version bump only for package react-intl
+
+## [8.0.3](https://github.com/formatjs/formatjs/compare/react-intl@8.0.2...react-intl@8.0.3) (2025-12-16)
 
 ### Bug Fixes
 
-* **react-intl:** jiggle package.json to republish ([b93b961](github.com/formatjs/formatjs/commits/b93b961de2412cdf67b5f7ba72872f0ecb59ecf7)) - by @longlho
+* **react-intl:** jiggle package.json to republish ([b93b961](https://github.com/formatjs/formatjs/commits/b93b961de2412cdf67b5f7ba72872f0ecb59ecf7)) - by @longlho
 
-## [8.0.2](github.com/formatjs/formatjs/compare/react-intl@8.0.1...react-intl@8.0.2) (2025-12-16)
-
-**Note:** Version bump only for package react-intl
-
-## [8.0.1](github.com/formatjs/formatjs/compare/react-intl@8.0.0...react-intl@8.0.1) (2025-12-15)
+## [8.0.2](https://github.com/formatjs/formatjs/compare/react-intl@8.0.1...react-intl@8.0.2) (2025-12-16)
 
 **Note:** Version bump only for package react-intl
 
-## [8.0.0](/github.com/formatjs/formatjs/compare/react-intl@7.1.14...react-intl@8.0.0) (2025-12-15)
+## [8.0.1](https://github.com/formatjs/formatjs/compare/react-intl@8.0.0...react-intl@8.0.1) (2025-12-15)
+
+**Note:** Version bump only for package react-intl
+
+## [8.0.0](https://github.com/formatjs/formatjs/compare/react-intl@7.1.14...react-intl@8.0.0) (2025-12-15)
 
 ### ⚠ BREAKING CHANGES
 
@@ -128,34 +128,34 @@ Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 
 ### Features
 
-* **@formatjs/intl-datetimeformat:** convert to ESM ([#5429](/github.com/formatjs/formatjs/issues/5429)) ([c717c1a](/github.com/formatjs/formatjs/commit/c717c1adee58ad9d7604c74a4bafca2628e2a0a8)) - by @longlho
-* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](/github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](/github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
-* **@formatjs/intl-locale:** convert to esm ([#5435](/github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](/github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
-* **@formatjs/intl-pluralrules:** convert to esm ([#5436](/github.com/formatjs/formatjs/issues/5436)) ([0ed2ff9](/github.com/formatjs/formatjs/commit/0ed2ff979aa24088265f953d205a1d0c0029a433)) - by @longlho
-* **react-intl:** convert to ESM ([cb93e7d](/github.com/formatjs/formatjs/commit/cb93e7dc7fd1ba0b2eb697f84a8f00ae4d7f536d)) - by @longlho
-* **react-intl:** drop support for React 18 and below ([#5485](/github.com/formatjs/formatjs/issues/5485)) ([2ea4b7e](/github.com/formatjs/formatjs/commit/2ea4b7e4ffa7df0974632fdbeb632da6dc9c0f6c)) - by @longlho
+* **@formatjs/intl-datetimeformat:** convert to ESM ([#5429](https://github.com/formatjs/formatjs/issues/5429)) ([c717c1a](https://github.com/formatjs/formatjs/commit/c717c1adee58ad9d7604c74a4bafca2628e2a0a8)) - by @longlho
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](https://github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](https://github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+* **@formatjs/intl-pluralrules:** convert to esm ([#5436](https://github.com/formatjs/formatjs/issues/5436)) ([0ed2ff9](https://github.com/formatjs/formatjs/commit/0ed2ff979aa24088265f953d205a1d0c0029a433)) - by @longlho
+* **react-intl:** convert to ESM ([cb93e7d](https://github.com/formatjs/formatjs/commit/cb93e7dc7fd1ba0b2eb697f84a8f00ae4d7f536d)) - by @longlho
+* **react-intl:** drop support for React 18 and below ([#5485](https://github.com/formatjs/formatjs/issues/5485)) ([2ea4b7e](https://github.com/formatjs/formatjs/commit/2ea4b7e4ffa7df0974632fdbeb632da6dc9c0f6c)) - by @longlho
 
 ### Bug Fixes
 
-* **@formatjs/intl-numberformat:** convert to ESM ([#5431](/github.com/formatjs/formatjs/issues/5431)) ([793ae5c](/github.com/formatjs/formatjs/commit/793ae5c586cfa89e19d1a591f0c3d3c86d59ca23)) - by @longlho
-* **react-intl:** move @types/react to peerDep ([eea10ff](/github.com/formatjs/formatjs/commit/eea10ffd62f51d828b941809d31a1b39481cf362)) - by @longlho
-* **react-intl:** wrap rich text with Fragment instead of clone, fix [#5135](/github.com/formatjs/formatjs/issues/5135) ([#5507](/github.com/formatjs/formatjs/issues/5507)) ([27365e8](/github.com/formatjs/formatjs/commit/27365e847ab08828d8f0777a6c4a027b80e76c95)) - by @longlho
-* use global 'time' Formats override with formatTime/FormattedTimeParts 'format' config instead of 'date' Formats, add strict 'format' overrides typing to FormattedDate and FormattedTime ([#5151](/github.com/formatjs/formatjs/issues/5151)) ([3fe4b50](/github.com/formatjs/formatjs/commit/3fe4b50d4b14e04717072217adf8514c580b55b7)) - by @seanmadi
+* **@formatjs/intl-numberformat:** convert to ESM ([#5431](https://github.com/formatjs/formatjs/issues/5431)) ([793ae5c](https://github.com/formatjs/formatjs/commit/793ae5c586cfa89e19d1a591f0c3d3c86d59ca23)) - by @longlho
+* **react-intl:** move @types/react to peerDep ([eea10ff](https://github.com/formatjs/formatjs/commit/eea10ffd62f51d828b941809d31a1b39481cf362)) - by @longlho
+* **react-intl:** wrap rich text with Fragment instead of clone, fix [#5135](https://github.com/formatjs/formatjs/issues/5135) ([#5507](https://github.com/formatjs/formatjs/issues/5507)) ([27365e8](https://github.com/formatjs/formatjs/commit/27365e847ab08828d8f0777a6c4a027b80e76c95)) - by @longlho
+* use global 'time' Formats override with formatTime/FormattedTimeParts 'format' config instead of 'date' Formats, add strict 'format' overrides typing to FormattedDate and FormattedTime ([#5151](https://github.com/formatjs/formatjs/issues/5151)) ([3fe4b50](https://github.com/formatjs/formatjs/commit/3fe4b50d4b14e04717072217adf8514c580b55b7)) - by @seanmadi
 
-## [7.1.14](github.com/formatjs/formatjs/compare/react-intl@7.1.13...react-intl@7.1.14) (2025-10-09)
-
-**Note:** Version bump only for package react-intl
-
-## [7.1.13](github.com/formatjs/formatjs/compare/react-intl@7.1.12...react-intl@7.1.13) (2025-10-06)
+## [7.1.14](https://github.com/formatjs/formatjs/compare/react-intl@7.1.13...react-intl@7.1.14) (2025-10-09)
 
 **Note:** Version bump only for package react-intl
 
-## [7.1.12](github.com/formatjs/formatjs/compare/react-intl@7.1.11...react-intl@7.1.12) (2025-10-03)
+## [7.1.13](https://github.com/formatjs/formatjs/compare/react-intl@7.1.12...react-intl@7.1.13) (2025-10-06)
+
+**Note:** Version bump only for package react-intl
+
+## [7.1.12](https://github.com/formatjs/formatjs/compare/react-intl@7.1.11...react-intl@7.1.12) (2025-10-03)
 
 ### Bug Fixes
 
-* keyed react node ([#5050](/github.com/formatjs/formatjs/issues/5050)) ([8ef2c8b](github.com/formatjs/formatjs/commits/8ef2c8ba5a4959b58eeb53b8eeb0fe4e3067a27f)) - by @septs
-* **react-intl:** add keys on nested rich text elements ([#5032](/github.com/formatjs/formatjs/issues/5032)) ([7ebf80e](github.com/formatjs/formatjs/commits/7ebf80efb8c82cd197d1f2f22f07d55e1c04fd67)) - by @zyzo
+* keyed react node ([#5050](https://github.com/formatjs/formatjs/issues/5050)) ([8ef2c8b](https://github.com/formatjs/formatjs/commits/8ef2c8ba5a4959b58eeb53b8eeb0fe4e3067a27f)) - by @septs
+* **react-intl:** add keys on nested rich text elements ([#5032](https://github.com/formatjs/formatjs/issues/5032)) ([7ebf80e](https://github.com/formatjs/formatjs/commits/7ebf80efb8c82cd197d1f2f22f07d55e1c04fd67)) - by @zyzo
 
 ## [7.1.11](https://github.com/formatjs/formatjs/compare/react-intl@7.1.10...react-intl@7.1.11) (2025-04-19)
 
