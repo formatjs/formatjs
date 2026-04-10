@@ -457,8 +457,8 @@ importers:
         specifier: 6.0.2
         version: 6.0.2
       typesense:
-        specifier: 3.0.3
-        version: 3.0.3(@babel/runtime@7.29.2)
+        specifier: 3.0.5
+        version: 3.0.5(@babel/runtime@7.29.2)
       unidiff:
         specifier: ^1.0.4
         version: 1.0.4
@@ -4997,8 +4997,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.13.6:
-    resolution: {integrity: sha512-ChTCHMouEe2kn713WHbQGcuYrr6fXTBiu460OTwWrWob16g1bXn4vtz07Ope7ewMozJAnEquLk5lWQWtBig9DQ==}
+  axios@1.13.5:
+    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -8563,8 +8563,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typesense@3.0.3:
-    resolution: {integrity: sha512-Cue72Hbz0Aj7DMNXzHIuitBKHWK12GprIFC/7AQ8kR73vJ4iNaKz4eUPICJmQOdWhblEeBv8Am4f9wqEDFd66A==}
+  typesense@3.0.5:
+    resolution: {integrity: sha512-Pw/yWosbqEOFMM/wQDsnS8FA6r3Qp5ilxuqZTMBoUc95SGCEBflMd39kvDEZZFoTORzNDxCLiiQ+LfYJTl1ulQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@babel/runtime': ^7.23.2
@@ -12974,7 +12974,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.13.6:
+  axios@1.13.5:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
@@ -17471,10 +17471,10 @@ snapshots:
 
   typescript@6.0.2: {}
 
-  typesense@3.0.3(@babel/runtime@7.29.2):
+  typesense@3.0.5(@babel/runtime@7.29.2):
     dependencies:
       '@babel/runtime': 7.29.2
-      axios: 1.13.6
+      axios: 1.13.5
       loglevel: 1.9.2
       tslib: 2.8.1
     transitivePeerDependencies:
