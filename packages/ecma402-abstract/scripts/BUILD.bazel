@@ -3,7 +3,7 @@ load("//tools:index.bzl", "ts_binary")
 ts_binary(
     name = "digit-mapping",
     entry_point = "digit-mapping.ts",
-    visibility = ["//packages/ecma402-abstract:__pkg__"],
+    visibility = ["//packages/ecma402-abstract:__subpackages__"],
 )
 
 ts_binary(

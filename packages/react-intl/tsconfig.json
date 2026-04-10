@@ -4,5 +4,10 @@
       "#packages/*": ["../../packages/*"]
     }
   },
+  "exclude": [
+    "./example-sandboxes/**/*",
+    "./examples/**/*",
+    "./integration-tests/**/*"
+  ],
   "extends": "../../tsconfig.json"
 }

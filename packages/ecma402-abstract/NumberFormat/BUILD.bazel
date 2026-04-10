@@ -1,0 +1,37 @@
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
+
+PACKAGE_NAME = "NumberFormat"
+
+SRCS = glob(["*.ts"])
+
+SRC_DEPS = [
+    "//:node_modules/@formatjs/bigdecimal",
+    "//:node_modules/@formatjs/intl-localematcher",
+    "//packages/ecma402-abstract:ecma402-abstract-root",
+    "//packages/ecma402-abstract/types",
+]
+
+ts_compile(
+    name = PACKAGE_NAME,
+    srcs = SRCS,
+    package_json = False,
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+generate_src_file(
+    name = "digit-mapping",
+    src = "digit-mapping.generated.ts",
+    data = [
+        "//:node_modules/json-stable-stringify",
+    ],
+    tool = "//packages/ecma402-abstract/scripts:digit-mapping",
+)
+
+generate_ide_tsconfig_json(
+    composite = True,
+    project_references = [
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
+)

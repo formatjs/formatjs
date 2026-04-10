@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "paths": {
+      "#packages/*": ["../../../packages/*"]
+    }
+  },
+  "extends": "../../../tsconfig.json"
+}

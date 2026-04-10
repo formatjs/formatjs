@@ -6,7 +6,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary"
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
@@ -19,12 +19,14 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         visibility: visibility
     """
 
+    esnext_tsconfig = packages_tsconfig(ESNEXT_TSCONFIG)
+
     # Type check only with tsgo (fast, parallel)
     ts_project(
         name = "%s-esm-esnext-typecheck" % name,
         srcs = srcs,
         declaration = True,
-        tsconfig = ESNEXT_TSCONFIG,
+        tsconfig = esnext_tsconfig,
         resolve_json_module = True,
         deps = deps,
         transpiler = tsgo_bin.tsgo,
@@ -36,7 +38,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         name = "%s-esm-esnext" % name,
         srcs = srcs,
         declaration = True,
-        tsconfig = ESNEXT_TSCONFIG,
+        tsconfig = esnext_tsconfig,
         resolve_json_module = True,
         deps = deps + ["//:node_modules/oxc-transform"],
         transpiler = oxc_transpiler,
@@ -301,6 +303,15 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
         "extends": extends_path,
         "compilerOptions": compiler_options,
     }
+
+    # Automatically exclude child Bazel sub-packages to avoid double-compilation
+    # in composite project setups. Uses native.subpackages() to discover them.
+    child_excludes = [
+        "./{subpackage}/**/*".format(subpackage = subpackage)
+        for subpackage in native.subpackages(include = ["*"], allow_empty = True)
+    ]
+    if child_excludes:
+        tsconfig["exclude"] = child_excludes
 
     # Convert project_references (Bazel labels) to relative tsconfig paths
     if project_references:

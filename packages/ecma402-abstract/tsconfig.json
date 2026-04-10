@@ -5,5 +5,14 @@
       "#packages/*": ["../../packages/*"]
     }
   },
-  "extends": "../../tsconfig.json"
+  "exclude": ["./NumberFormat/**/*", "./scripts/**/*", "./types/**/*"],
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "./types/tsconfig.json"
+    },
+    {
+      "path": "./NumberFormat/tsconfig.json"
+    }
+  ]
 }

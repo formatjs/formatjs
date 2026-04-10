@@ -41,10 +41,14 @@ bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
 
 ### 4. No Barrel Exports for Internal Packages
 
-- **Do NOT use barrel `index.ts` files** for internal packages (e.g., `@formatjs/ecma402-abstract`)
+- **Do NOT use barrel `index.ts` files** for internal packages (e.g., `ecma402-abstract`)
 - Use deep imports with `.js` extensions: `import {GetOption} from '#packages/ecma402-abstract/GetOption.js'`
 - Barrel re-exports are only allowed for **public-facing packages** (e.g., `react-intl`, `intl-messageformat`)
-- For type-only imports that appear in published `.d.ts` files, use `@formatjs/ecma402-abstract/...` (npm package name) so consumers can resolve them
+- `ecma402-abstract` is **not published to npm** — no `package.json`. It is imported via `#packages/ecma402-abstract/` (Node.js subpath imports defined in root `package.json`)
+- `ecma402-abstract` is split into 3 composite Bazel sub-packages: root, `types/`, `NumberFormat/`
+- For new composite sub-packages: use `generate_ide_tsconfig_json(composite = True, project_references = [...])`
+- Child Bazel sub-packages are auto-excluded from the parent tsconfig via `native.subpackages()` — no manual exclude needed
+- `ast-grep` enforces no-barrel-export rule via `sg-rules/no-barrel-export.yml`
 
 ### 5. Polyfill Development
 
@@ -63,7 +67,7 @@ bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
 
-**Scope:** Full package name from package.json (e.g., `@formatjs/cli`, `@formatjs/intl-localematcher`)
+**Scope:** Full package name from package.json (e.g., `@formatjs/cli`, `@formatjs/intl-localematcher`), Rust crate name (e.g., `formatjs_cli`), or `deps` for repo-wide/internal changes. Note: `@formatjs/ecma402-abstract` is not a valid scope (no package.json).
 
 **Breaking changes:** Append `!` after scope or add `BREAKING CHANGE:` footer.
 

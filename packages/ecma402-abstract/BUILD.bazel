@@ -1,4 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
@@ -6,25 +7,33 @@ PACKAGE_NAME = "ecma402-abstract"
 
 SRCS = glob(
     [
-        "**/*.ts",
-    ],
-    exclude = [
-        "tests/*.ts",
+        "*.ts",
     ],
 )
 
 SRC_DEPS = [
-    "//:node_modules/@formatjs/intl-localematcher",
-    "//:node_modules/@formatjs/fast-memoize",
     "//:node_modules/@formatjs/bigdecimal",
+    "//:node_modules/@formatjs/fast-memoize",
+    "//:node_modules/@formatjs/intl-localematcher",
 ]
 
 ts_compile(
-    name = PACKAGE_NAME,
+    name = "%s-root" % PACKAGE_NAME,
     srcs = [":srcs"],
     package_json = False,
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
+)
+
+# Aggregate target: root + types + NumberFormat so downstream deps get everything
+js_library(
+    name = PACKAGE_NAME,
+    srcs = [
+        ":%s-root" % PACKAGE_NAME,
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+    visibility = ["//visibility:public"],
 )
 
 vitest(
@@ -33,22 +42,19 @@ vitest(
         "tests/**/*.ts",
         "tests/**/*.tsx",
     ]),
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + [
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json(
     composite = True,
-)
-
-# digit-mapping
-generate_src_file(
-    name = "digit-mapping",
-    src = "NumberFormat/digit-mapping.generated.ts",
-    data = [
-        "//:node_modules/json-stable-stringify",
+    project_references = [
+        "//packages/ecma402-abstract/types",
+        "//packages/ecma402-abstract/NumberFormat",
     ],
-    tool = "//packages/ecma402-abstract/scripts:digit-mapping",
 )
 
 generate_src_file(
