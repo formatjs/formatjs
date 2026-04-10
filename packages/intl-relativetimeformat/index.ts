@@ -5,8 +5,8 @@ import {
   type LocaleFieldsData,
   type RelativeTimeLocaleData,
 } from '#packages/ecma402-abstract/types/relative-time.js'
-import {InitializeRelativeTimeFormat} from './abstract/InitializeRelativeTimeFormat.js'
-import {PartitionRelativeTimePattern} from './abstract/PartitionRelativeTimePattern.js'
+import {InitializeRelativeTimeFormat} from '#packages/ecma402-abstract/RelativeTimeFormat/InitializeRelativeTimeFormat.js'
+import {PartitionRelativeTimePattern} from '#packages/ecma402-abstract/RelativeTimeFormat/PartitionRelativeTimePattern.js'
 import getInternalSlots from './get_internal_slots.js'
 
 export default class RelativeTimeFormat {
