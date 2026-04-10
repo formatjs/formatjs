@@ -1,6 +1,6 @@
 import Decimal from '@formatjs/bigdecimal'
-import {PartitionNumberRangePattern} from '../NumberFormat/PartitionNumberRangePattern.js'
-import {getInternalSlots} from './utils.js'
+import {PartitionNumberRangePattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberRangePattern.js'
+import {getInternalSlots} from '#packages/ecma402-abstract/tests/utils.js'
 import {describe, expect, test} from 'vitest'
 describe('PartitionNumberRangePattern', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')

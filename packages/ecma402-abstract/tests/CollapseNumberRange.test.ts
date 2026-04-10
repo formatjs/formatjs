@@ -1,5 +1,5 @@
-import {CollapseNumberRange} from '../NumberFormat/CollapseNumberRange.js'
-import {getInternalSlots} from './utils.js'
+import {CollapseNumberRange} from '#packages/ecma402-abstract/NumberFormat/CollapseNumberRange.js'
+import {getInternalSlots} from '#packages/ecma402-abstract/tests/utils.js'
 import {describe, expect, test} from 'vitest'
 const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')
 

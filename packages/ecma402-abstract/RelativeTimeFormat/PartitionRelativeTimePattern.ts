@@ -8,8 +8,8 @@ import {
   type RelativeTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/relative-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit.js'
-import {MakePartsList} from './MakePartsList.js'
+import {SingularRelativeTimeUnit} from '#packages/ecma402-abstract/RelativeTimeFormat/SingularRelativeTimeUnit.js'
+import {MakePartsList} from '#packages/ecma402-abstract/RelativeTimeFormat/MakePartsList.js'
 
 export function PartitionRelativeTimePattern(
   rtf: Intl.RelativeTimeFormat,

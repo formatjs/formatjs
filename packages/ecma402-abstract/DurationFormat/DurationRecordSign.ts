@@ -1,4 +1,4 @@
-import {TABLE_1} from './constants.js'
+import {TABLE_1} from '#packages/ecma402-abstract/DurationFormat/constants.js'
 import {type DurationRecord} from '#packages/ecma402-abstract/types/duration.js'
 
 export function DurationRecordSign(record: DurationRecord): -1 | 0 | 1 {

@@ -1,4 +1,4 @@
-import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption.js'
+import {GetStringOrBooleanOption} from '#packages/ecma402-abstract/GetStringOrBooleanOption.js'
 import {describe, expect, test} from 'vitest'
 describe('GetStringOrBooleanOption', () => {
   test('returns fallback for undefined options', () => {

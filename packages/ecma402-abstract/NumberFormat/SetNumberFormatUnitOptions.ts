@@ -1,11 +1,11 @@
-import {GetOption} from '../GetOption.js'
-import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode.js'
-import {IsWellFormedUnitIdentifier} from '../IsWellFormedUnitIdentifier.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
+import {IsWellFormedUnitIdentifier} from '#packages/ecma402-abstract/IsWellFormedUnitIdentifier.js'
 import {
   type NumberFormatInternal,
   type NumberFormatOptions,
-} from '../types/number.js'
-import {invariant} from '../utils.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-setnumberformatunitoptions

@@ -1,4 +1,4 @@
-import {IsValidTimeZoneName} from '../IsValidTimeZoneName.js'
+import {IsValidTimeZoneName} from '#packages/ecma402-abstract/IsValidTimeZoneName.js'
 import {expect, test, describe} from 'vitest'
 
 describe('IsValidTimeZoneName', () => {

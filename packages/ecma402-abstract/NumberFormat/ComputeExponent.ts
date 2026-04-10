@@ -1,8 +1,8 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {type NumberFormatInternal} from '../types/number.js'
-import {ComputeExponentForMagnitude} from './ComputeExponentForMagnitude.js'
-import {FormatNumericToString} from './FormatNumericToString.js'
-import {getPowerOf10} from './decimal-cache.js'
+import {type NumberFormatInternal} from '#packages/ecma402-abstract/types/number.js'
+import {ComputeExponentForMagnitude} from '#packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.js'
+import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
+import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
 /**
  * The abstract operation ComputeExponent computes an exponent (power of ten) by which to scale x

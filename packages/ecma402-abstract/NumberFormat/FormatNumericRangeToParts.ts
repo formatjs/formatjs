@@ -2,8 +2,8 @@ import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type NumberFormatInternal,
   type NumberRangeToParts,
-} from '../types/number.js'
-import {PartitionNumberRangePattern} from './PartitionNumberRangePattern.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {PartitionNumberRangePattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberRangePattern.js'
 
 /**
  * https://tc39.es/ecma402/#sec-formatnumericrangetoparts

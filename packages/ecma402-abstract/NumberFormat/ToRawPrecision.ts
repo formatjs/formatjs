@@ -1,12 +1,12 @@
 import type {Decimal} from '@formatjs/bigdecimal'
-import {ZERO} from '../constants.js'
+import {ZERO} from '#packages/ecma402-abstract/constants.js'
 import {
   type RawNumberFormatResult,
   type UnsignedRoundingModeType,
-} from '../types/number.js'
-import {invariant, repeat} from '../utils.js'
-import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
-import {getPowerOf10} from './decimal-cache.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant, repeat} from '#packages/ecma402-abstract/utils.js'
+import {ApplyUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/ApplyUnsignedRoundingMode.js'
+import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
 //IMPL: Helper function to find n1, e1, and r1 using direct calculation
 function findN1E1R1(x: Decimal, p: number) {

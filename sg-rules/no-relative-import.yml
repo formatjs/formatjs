@@ -1,0 +1,17 @@
+id: no-relative-import
+language: typescript
+message: "Relative imports are banned in internal packages. Use absolute '#packages/' imports instead."
+severity: error
+rule:
+  any:
+    - pattern: "import $$$ARGS from '$PATH'"
+    - pattern: "import type $$$ARGS from '$PATH'"
+    - pattern: "export * from '$PATH'"
+    - pattern: "export { $$$ARGS } from '$PATH'"
+    - pattern: "export type { $$$ARGS } from '$PATH'"
+constraints:
+  PATH:
+    regex: ^\.\.?/
+files:
+  - 'packages/ecma402-abstract/**/*.ts'
+  - 'packages/ecma262-abstract/**/*.ts'

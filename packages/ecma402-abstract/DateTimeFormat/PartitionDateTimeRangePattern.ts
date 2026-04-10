@@ -11,8 +11,11 @@ import type Decimal from '@formatjs/bigdecimal'
 import {
   FormatDateTimePattern,
   type FormatDateTimePatternImplDetails,
-} from './FormatDateTimePattern.js'
-import {ToLocalTime, type ToLocalTimeImplDetails} from './ToLocalTime.js'
+} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
+import {
+  ToLocalTime,
+  type ToLocalTimeImplDetails,
+} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
