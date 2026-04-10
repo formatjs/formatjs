@@ -1,4 +1,4 @@
-import {Type} from '#packages/ecma402-abstract/262.js'
+import {Type} from '#packages/ecma262-abstract/Type.js'
 import {
   type LDMLPluralRule,
   type PluralRulesInternal,

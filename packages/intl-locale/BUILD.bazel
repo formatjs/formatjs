@@ -34,6 +34,7 @@ TYPECHECK_DEPS = [
     "//:node_modules/cldr-core",
     "//:node_modules/cldr-bcp47",
     # Source files for #packages/* path resolution in tsc
+    "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
 ]
 
@@ -43,6 +44,7 @@ BUNDLE_DEPS = [
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/cldr-core",
     "//:node_modules/cldr-bcp47",
+    "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
 ]
 
@@ -188,6 +190,7 @@ test262_harness_bin.test262_harness_test(
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json(
     project_references = [
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
     ],
 )

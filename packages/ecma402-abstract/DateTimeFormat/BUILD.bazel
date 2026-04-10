@@ -7,6 +7,7 @@ SRCS = glob(["*.ts"])
 SRC_DEPS = [
     "//:node_modules/@formatjs/bigdecimal",
     "//:node_modules/@formatjs/intl-localematcher",
+    "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/types",
 ]
@@ -22,6 +23,7 @@ ts_compile(
 generate_ide_tsconfig_json(
     composite = True,
     project_references = [
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/types",
     ],

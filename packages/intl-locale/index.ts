@@ -1,4 +1,5 @@
-import {HasOwnProperty, SameValue} from '#packages/ecma402-abstract/262.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {

@@ -1,4 +1,4 @@
-import {Type} from '#packages/ecma402-abstract/262.js'
+import {Type} from '#packages/ecma262-abstract/Type.js'
 import {type RelativeTimeFormatSingularUnit} from '#packages/ecma402-abstract/types/relative-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 

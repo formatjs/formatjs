@@ -1,4 +1,4 @@
-import {Type} from '#packages/ecma402-abstract/262.js'
+import {Type} from '#packages/ecma262-abstract/Type.js'
 import {ComputeExponentForMagnitude} from '#packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.js'
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {

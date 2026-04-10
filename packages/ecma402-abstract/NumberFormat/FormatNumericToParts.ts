@@ -1,5 +1,5 @@
 import type {Decimal} from '@formatjs/bigdecimal'
-import {ArrayCreate} from '../262.js'
+import {ArrayCreate} from '#packages/ecma262-abstract/ArrayCreate.js'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,

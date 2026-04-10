@@ -20,6 +20,7 @@ SRCS = glob([
 ])
 
 SRC_DEPS = [
+    "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/DurationFormat",
     "//packages/ecma402-abstract/types",
@@ -138,6 +139,7 @@ generate_src_file(
         "//:node_modules/fast-glob",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DurationFormat",
         "//packages/ecma402-abstract/types",

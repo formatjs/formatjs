@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest'
-import {DayFromYear} from '../262.js'
+import {DayFromYear} from '#packages/ecma262-abstract/DateOperations.js'
 
 describe('262', () => {
   describe('DayFromYear', () => {

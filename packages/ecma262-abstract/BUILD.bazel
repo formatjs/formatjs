@@ -1,0 +1,27 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "ts_compile")
+
+PACKAGE_NAME = "ecma262-abstract"
+
+SRCS = glob(["*.ts"])
+
+SRC_DEPS = [
+    "//:node_modules/@formatjs/bigdecimal",
+]
+
+ts_compile(
+    name = PACKAGE_NAME,
+    srcs = [":srcs"],
+    package_json = False,
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+generate_ide_tsconfig_json(
+    composite = True,
+)
+
+copy_to_bin(
+    name = "srcs",
+    srcs = SRCS,
+)

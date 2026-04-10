@@ -1,4 +1,4 @@
-import {OrdinaryHasInstance} from '#packages/ecma402-abstract/262.js'
+import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
 import {FormatNumericRange} from '#packages/ecma402-abstract/NumberFormat/FormatNumericRange.js'

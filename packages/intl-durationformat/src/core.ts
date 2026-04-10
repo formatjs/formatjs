@@ -1,7 +1,8 @@
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
 
-import {OrdinaryHasInstance, ToObject} from '#packages/ecma402-abstract/262.js'
+import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
+import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
