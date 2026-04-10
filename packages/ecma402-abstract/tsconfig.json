@@ -11,16 +11,5 @@
     "./scripts/**/*",
     "./types/**/*"
   ],
-  "extends": "../../tsconfig.json",
-  "references": [
-    {
-      "path": "./DisplayNames/tsconfig.json"
-    },
-    {
-      "path": "./NumberFormat/tsconfig.json"
-    },
-    {
-      "path": "./types/tsconfig.json"
-    }
-  ]
+  "extends": "../../tsconfig.json"
 }

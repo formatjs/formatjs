@@ -39,11 +39,6 @@ vitest(
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json(
     composite = True,
-    project_references = [
-        "//packages/ecma402-abstract/DisplayNames",
-        "//packages/ecma402-abstract/NumberFormat",
-        "//packages/ecma402-abstract/types",
-    ],
 )
 
 generate_src_file(

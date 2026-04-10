@@ -4,7 +4,8 @@
 
 For detailed architecture docs, package dependency hierarchies, CLDR data pipelines, and design decisions, consult `knowledge-base/`. Key docs:
 
-- `001-repo-layout-and-toolchain.md` — Directory structure, Bazel, TypeScript/Rust toolchains, CI/CD
+- `001-repo-layout.md` — Directory structure, pnpm, linting, CI/CD, common commands
+- `001a-bazel-toolchain.md` — Bazel setup, TypeScript/Rust build pipeline, custom macros, tsconfig strategy, composite sub-packages
 - `002-ts-package-dependency-hierarchy.md` — 5-layer TypeScript package dependency graph
 - `003-rust-crate-dependency-hierarchy.md` — Rust crates, WASM, cross-language connections
 - `004-009` — Per-package design decisions and ECMA-402 conformance details
