@@ -2,7 +2,10 @@
  * Test for GH #5069: Tagged template expressions with substitutions
  * should be allowed in non-message props like tagName, values, etc.
  */
-import {name, rule} from '../rules/no-invalid-icu.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/no-invalid-icu.js'
 import {ruleTester} from './util'
 
 ruleTester.run(name + ' (GH #5069 - tagged templates)', rule, {

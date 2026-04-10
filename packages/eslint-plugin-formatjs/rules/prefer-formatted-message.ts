@@ -1,6 +1,6 @@
 import type {JSXElement} from 'estree-jsx'
 import type {Rule} from 'eslint'
-import {isIntlFormatMessageCall} from '../util.js'
+import {isIntlFormatMessageCall} from '#packages/eslint-plugin-formatjs/util.js'
 
 export const name = 'prefer-formatted-message'
 

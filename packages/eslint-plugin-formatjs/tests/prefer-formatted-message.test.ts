@@ -1,4 +1,7 @@
-import {rule, name} from '../rules/prefer-formatted-message.js'
+import {
+  rule,
+  name,
+} from '#packages/eslint-plugin-formatjs/rules/prefer-formatted-message.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,

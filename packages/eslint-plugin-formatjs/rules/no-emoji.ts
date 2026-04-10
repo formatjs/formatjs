@@ -6,8 +6,11 @@ import {
   hasEmoji,
   isValidEmojiVersion,
   type EmojiVersion,
-} from '../emoji-utils.js'
-import {extractMessages, getSettings} from '../util.js'
+} from '#packages/eslint-plugin-formatjs/emoji-utils.js'
+import {
+  extractMessages,
+  getSettings,
+} from '#packages/eslint-plugin-formatjs/util.js'
 
 export const name = 'no-emoji'
 

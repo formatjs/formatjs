@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/no-useless-message.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/no-useless-message.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,

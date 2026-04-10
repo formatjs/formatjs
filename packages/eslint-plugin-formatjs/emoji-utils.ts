@@ -6,11 +6,11 @@ import {
   EMOJI_VERSIONS,
   EMOJI_RANGES,
   type EmojiVersion,
-} from './emoji-data.generated.js'
+} from '#packages/eslint-plugin-formatjs/emoji-data.generated.js'
 import * as emojiPresentationRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation/regex.js'
 import * as emojiPropertyRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji/regex.js'
 
-export type {EmojiVersion} from './emoji-data.generated.js'
+export type {EmojiVersion} from '#packages/eslint-plugin-formatjs/emoji-data.generated.js'
 
 /**
  * Cached Intl.Segmenter instance for emoji extraction

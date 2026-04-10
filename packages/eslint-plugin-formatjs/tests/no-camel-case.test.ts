@@ -1,5 +1,8 @@
 import {ruleTester} from './util'
-import {rule, name} from '../rules/no-camel-case.js'
+import {
+  rule,
+  name,
+} from '#packages/eslint-plugin-formatjs/rules/no-camel-case.js'
 import {
   dynamicMessage,
   noMatch,

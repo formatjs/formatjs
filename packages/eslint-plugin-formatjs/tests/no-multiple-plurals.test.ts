@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/no-multiple-plurals.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/no-multiple-plurals.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,

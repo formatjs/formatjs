@@ -1,4 +1,8 @@
-import {Option, name, rule} from '../rules/enforce-description.js'
+import {
+  Option,
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-description.js'
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
 import {ruleTester} from './util'
 

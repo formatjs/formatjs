@@ -3,9 +3,9 @@ import {
   type UnpluginFactory,
   type UnpluginInstance,
 } from 'unplugin'
-import {transform, type Options} from './transform.js'
+import {transform, type Options} from '#packages/unplugin/transform.js'
 
-export type {Options} from './transform.js'
+export type {Options} from '#packages/unplugin/transform.js'
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (
   options = {}

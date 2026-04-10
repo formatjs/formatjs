@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/prefer-pound-in-plural.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/prefer-pound-in-plural.js'
 import {
   defineMessage,
   dynamicMessage,

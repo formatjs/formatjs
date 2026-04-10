@@ -1,4 +1,8 @@
-import {rule, name, Option} from '../rules/enforce-default-message.js'
+import {
+  rule,
+  name,
+  Option,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-default-message.js'
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 

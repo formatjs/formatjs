@@ -1,4 +1,7 @@
-import {rule, name} from '../rules/no-complex-selectors.js'
+import {
+  rule,
+  name,
+} from '#packages/eslint-plugin-formatjs/rules/no-complex-selectors.js'
 import {ruleTester} from './util'
 import {
   dynamicMessage,
