@@ -72,6 +72,8 @@ SRCS = glob(
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/NumberFormat",
+    "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
 ]
@@ -866,6 +868,8 @@ ts_run_binary(
         "//:node_modules/lodash-es",
         "//:node_modules/minimist",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -957,6 +961,8 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-numberformat/scripts:currency-digits",
@@ -972,6 +978,8 @@ generate_src_file(
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/lodash-es",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-numberformat/scripts:numbering-systems",

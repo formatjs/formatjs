@@ -1,5 +1,4 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
 load("//tools:vitest.bzl", "vitest")
 
@@ -18,22 +17,11 @@ SRC_DEPS = [
 ]
 
 ts_compile(
-    name = "%s-root" % PACKAGE_NAME,
+    name = PACKAGE_NAME,
     srcs = [":srcs"],
     package_json = False,
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
-)
-
-# Aggregate target: root + types + NumberFormat so downstream deps get everything
-js_library(
-    name = PACKAGE_NAME,
-    srcs = [
-        ":%s-root" % PACKAGE_NAME,
-        "//packages/ecma402-abstract/NumberFormat",
-        "//packages/ecma402-abstract/types",
-    ],
-    visibility = ["//visibility:public"],
 )
 
 vitest(
@@ -52,8 +40,9 @@ vitest(
 generate_ide_tsconfig_json(
     composite = True,
     project_references = [
-        "//packages/ecma402-abstract/types",
+        "//packages/ecma402-abstract/DisplayNames",
         "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
     ],
 )
 

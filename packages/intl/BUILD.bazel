@@ -20,6 +20,7 @@ SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/fast-memoize",
     "//:node_modules/@formatjs/icu-messageformat-parser",
     "//:node_modules/intl-messageformat",

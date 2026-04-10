@@ -23,6 +23,7 @@ SRC_DEPS = [
     "//:node_modules/@formatjs/icu-messageformat-parser",
     "//:node_modules/@formatjs/fast-memoize",
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/types",
 ]
 
 EXTERNAL_PACKAGES = [

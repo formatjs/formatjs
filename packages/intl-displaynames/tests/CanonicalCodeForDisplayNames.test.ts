@@ -1,4 +1,4 @@
-import {CanonicalCodeForDisplayNames} from '../abstract/CanonicalCodeForDisplayNames.js'
+import {CanonicalCodeForDisplayNames} from '#packages/ecma402-abstract/DisplayNames/CanonicalCodeForDisplayNames.js'
 import {describe, expect, it} from 'vitest'
 
 describe('CanonicalCodeForDisplayNames', () => {

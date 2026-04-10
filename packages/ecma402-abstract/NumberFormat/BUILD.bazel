@@ -7,7 +7,7 @@ SRCS = glob(["*.ts"])
 SRC_DEPS = [
     "//:node_modules/@formatjs/bigdecimal",
     "//:node_modules/@formatjs/intl-localematcher",
-    "//packages/ecma402-abstract:ecma402-abstract-root",
+    "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/types",
 ]
 

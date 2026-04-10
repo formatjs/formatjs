@@ -1,0 +1,24 @@
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "ts_compile")
+
+PACKAGE_NAME = "DisplayNames"
+
+SRCS = glob(["*.ts"])
+
+SRC_DEPS = [
+    "//packages/ecma402-abstract:ecma402-abstract-root",
+]
+
+ts_compile(
+    name = PACKAGE_NAME,
+    srcs = SRCS,
+    package_json = False,
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+generate_ide_tsconfig_json(
+    composite = True,
+    project_references = [
+        "//packages/ecma402-abstract",
+    ],
+)

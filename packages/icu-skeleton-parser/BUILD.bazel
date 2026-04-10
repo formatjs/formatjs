@@ -18,6 +18,7 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/types",
 ]
 
 EXTERNAL_PACKAGES = [

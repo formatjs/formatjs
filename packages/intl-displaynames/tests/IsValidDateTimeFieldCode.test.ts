@@ -1,4 +1,4 @@
-import {IsValidDateTimeFieldCode} from '../abstract/IsValidDateTimeFieldCode.js'
+import {IsValidDateTimeFieldCode} from '#packages/ecma402-abstract/DisplayNames/IsValidDateTimeFieldCode.js'
 import {describe, expect, it} from 'vitest'
 
 describe('IsValidDateTimeFieldCode', () => {

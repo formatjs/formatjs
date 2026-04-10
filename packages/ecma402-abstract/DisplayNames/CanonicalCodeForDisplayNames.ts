@@ -1,6 +1,6 @@
-import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
-import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList.js'
+import {IsWellFormedCurrencyCode} from '../IsWellFormedCurrencyCode.js'
+import {invariant} from '../utils.js'
 
 import {IsValidDateTimeFieldCode} from './IsValidDateTimeFieldCode.js'
 
