@@ -38,17 +38,6 @@
 #     deps = SRC_DEPS,
 # )
 
-# esbuild(
-#     name = "app",
-#     define = {
-#         "process.env.NODE_ENV": "development",
-#     },
-#     entry_point = "lib/main.js",
-#     format = "iife",
-#     deps = [":dist-esm"] + SRC_DEPS + [
-#     ],
-# )
-
 # copy_to_bin(
 #     name = "index",
 #     srcs = ["index.html"],

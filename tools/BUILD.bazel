@@ -31,12 +31,6 @@ vitest(
 )
 
 copy_to_bin(
-    name = "esbuild-packages-resolve",
-    srcs = ["esbuild-packages-resolve.mjs"],
-    visibility = ["//visibility:public"],
-)
-
-copy_to_bin(
     name = "vitest_config_mjs",
     srcs = ["vitest.config.mjs"],
     visibility = ["//visibility:public"],

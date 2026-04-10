@@ -1,13 +1,18 @@
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_exports_test")
 
 PACKAGE_NAME = "cli"
 
-genrule(
+# Assemble bin/ directory: rename main.js to formatjs (entry point) and include all chunks
+copy_to_directory(
     name = "bin",
-    srcs = ["//packages/cli-lib:formatjs.js"],
-    outs = ["bin/formatjs"],
-    cmd = "cp $< $@",
+    srcs = ["//packages/cli-lib:formatjs"],
+    out = "bin",
+    replace_prefixes = {
+        "-lib/formatjs/main.js": "formatjs",
+        "-lib/formatjs/": "",
+    },
 )
 
 npm_package(
@@ -16,7 +21,7 @@ npm_package(
         "LICENSE.md",
         "README.md",
         "package.json",
-        ":bin/formatjs",
+        ":bin",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],
