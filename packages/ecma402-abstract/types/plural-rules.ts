@@ -18,6 +18,12 @@ export interface PluralRulesData {
 
 export type PluralRulesLocaleData = LocaleData<PluralRulesData>
 
+// Extends built-in PluralRulesOptions with formatjs-specific extensions
+export interface PluralRulesOptions extends Intl.PluralRulesOptions {
+  notation?: 'standard' | 'compact'
+  compactDisplay?: 'short' | 'long'
+}
+
 export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean
   locale: string

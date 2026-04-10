@@ -8,6 +8,7 @@
   "exclude": [
     "./DisplayNames/**/*",
     "./NumberFormat/**/*",
+    "./PluralRules/**/*",
     "./RelativeTimeFormat/**/*",
     "./scripts/**/*",
     "./types/**/*"

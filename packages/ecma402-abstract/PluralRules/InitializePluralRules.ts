@@ -5,13 +5,14 @@ import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberForm
 import {
   type PluralRulesData,
   type PluralRulesInternal,
+  type PluralRulesOptions,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 
 export function InitializePluralRules(
   pl: Intl.PluralRules,
   locales: string | string[] | undefined,
-  options: Intl.PluralRulesOptions | undefined,
+  options: PluralRulesOptions | undefined,
   {
     availableLocales,
     relevantExtensionKeys,
@@ -28,7 +29,7 @@ export function InitializePluralRules(
 ): Intl.PluralRules {
   const requestedLocales = CanonicalizeLocaleList(locales)
   const opt: any = Object.create(null)
-  const opts = CoerceOptionsToObject<Intl.PluralRulesOptions>(options)
+  const opts = CoerceOptionsToObject<PluralRulesOptions>(options)
   const internalSlots = getInternalSlots(pl)
   internalSlots.initializedPluralRules = true
   const matcher = GetOption(
@@ -70,7 +71,6 @@ export function InitializePluralRules(
   internalSlots.notation = notation
 
   if (notation === 'compact') {
-    // Extension: compactDisplay option (mirrors Intl.NumberFormat)
     internalSlots.compactDisplay = GetOption(
       opts,
       'compactDisplay',
