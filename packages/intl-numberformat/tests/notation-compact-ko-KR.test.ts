@@ -2,8 +2,8 @@ import {describe, it, expect} from 'vitest'
 import {type NumberFormatPart} from '#packages/ecma402-abstract/types/number.js'
 import '@formatjs/intl-pluralrules/locale-data/ko'
 import '@formatjs/intl-pluralrules/polyfill.js'
-import {NumberFormat} from '../src/core'
-import ko from './locale-data/ko.json' with {type: 'json'}
+import {NumberFormat} from '#packages/intl-numberformat/src/core'
+import ko from '#packages/intl-numberformat/tests/locale-data/ko.json' with {type: 'json'}
 NumberFormat.__addLocaleData(ko as any)
 
 const tests: Array<[number, NumberFormatPart[]]> = [

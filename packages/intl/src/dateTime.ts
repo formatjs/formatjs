@@ -3,10 +3,10 @@ import {
   type Formatters,
   type IntlFormatters,
   type OnErrorFn,
-} from './types.js'
+} from '#packages/intl/src/types.js'
 
-import {IntlFormatError} from './error.js'
-import {filterProps, getNamedFormat} from './utils.js'
+import {IntlFormatError} from '#packages/intl/src/error.js'
+import {filterProps, getNamedFormat} from '#packages/intl/src/utils.js'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'formatMatcher',

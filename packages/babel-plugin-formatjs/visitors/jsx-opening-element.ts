@@ -1,6 +1,9 @@
 import {type NodePath, type PluginPass} from '@babel/core'
 
-import {type Options, type State} from '../types.js'
+import {
+  type Options,
+  type State,
+} from '#packages/babel-plugin-formatjs/types.js'
 import * as t from '@babel/types'
 import {type VisitNodeFunction} from '@babel/traverse'
 import {parse} from '@formatjs/icu-messageformat-parser'
@@ -11,7 +14,7 @@ import {
   storeMessage,
   tagAsExtracted,
   wasExtracted,
-} from '../utils.js'
+} from '#packages/babel-plugin-formatjs/utils.js'
 
 export const visitor: VisitNodeFunction<
   PluginPass & State,

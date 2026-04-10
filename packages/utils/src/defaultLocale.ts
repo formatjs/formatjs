@@ -1,5 +1,5 @@
-import {canonicalizeCountryCode} from './countryCodes.js'
-import data from './defaultLocaleData.generated.js'
+import {canonicalizeCountryCode} from '#packages/utils/src/countryCodes.js'
+import data from '#packages/utils/src/defaultLocaleData.generated.js'
 
 /**
  * Look up default locale for a country code.

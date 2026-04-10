@@ -1,7 +1,7 @@
 import {describe, it, beforeAll, expect} from 'vitest'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
-import {NumberFormat} from '../../src/core'
+import {NumberFormat} from '#packages/intl-numberformat/src/core'
 
 const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [
   'auto',

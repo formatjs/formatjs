@@ -12,6 +12,9 @@
     "./polyfill-force.js": "./polyfill-force.js",
     "./should-polyfill.js": "./should-polyfill.js"
   },
+  "imports": {
+    "#packages/*": "../../packages/*"
+  },
   "dependencies": {},
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",

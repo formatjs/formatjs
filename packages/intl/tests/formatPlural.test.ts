@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
-import {formatPlural as formatPluralFn} from '../src/plural'
+import {formatPlural as formatPluralFn} from '#packages/intl/src/plural'
 
-import {type IntlFormatters, type IntlConfig} from '../src/types'
+import {type IntlFormatters, type IntlConfig} from '#packages/intl/src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

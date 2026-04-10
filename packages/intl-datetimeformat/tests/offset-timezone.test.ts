@@ -1,9 +1,9 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
-import {DateTimeFormat} from '../src/core'
-import allData from '../src/data/all-tz.generated'
-import enGB from './locale-data/en-GB.json' with {type: 'json'}
-import en from './locale-data/en.json' with {type: 'json'}
+import {DateTimeFormat} from '#packages/intl-datetimeformat/src/core'
+import allData from '#packages/intl-datetimeformat/src/data/all-tz.generated'
+import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
+import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
 
 // @ts-ignore

@@ -1,6 +1,6 @@
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
-import type {Currency} from './currencies.generated.js'
-import {currencies} from './currencies.generated.js'
+import type {Currency} from '#packages/intl-supportedvaluesof/src/currencies.generated.js'
+import {currencies} from '#packages/intl-supportedvaluesof/src/currencies.generated.js'
 
 /**
  * Implementation: Tests if a currency is supported by attempting to create

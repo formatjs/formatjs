@@ -1,5 +1,8 @@
 import type {Comparator} from 'json-stable-stringify'
-import {type CompileFn, type FormatFn} from './default.js'
+import {
+  type CompileFn,
+  type FormatFn,
+} from '#packages/cli-lib/src/formatters/default.js'
 
 export interface SmartlingDirectives {
   translate_paths: [

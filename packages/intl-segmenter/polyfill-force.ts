@@ -1,4 +1,4 @@
-import {Segmenter} from './src/segmenter.js'
+import {Segmenter} from '#packages/intl-segmenter/src/segmenter.js'
 
 Object.defineProperty(Intl, 'Segmenter', {
   value: Segmenter,

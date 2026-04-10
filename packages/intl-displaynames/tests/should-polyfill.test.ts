@@ -1,8 +1,8 @@
-import {DisplayNames} from '../index.js'
+import {DisplayNames} from '#packages/intl-displaynames/index.js'
 import {
   _shouldPolyfillWithoutLocale,
   shouldPolyfill,
-} from '../should-polyfill.js'
+} from '#packages/intl-displaynames/should-polyfill.js'
 import {describe, expect, it, test, beforeEach, afterEach} from 'vitest'
 test('should-polyfill should be true', function () {
   // Node 14.9.0/browsers does have this bug

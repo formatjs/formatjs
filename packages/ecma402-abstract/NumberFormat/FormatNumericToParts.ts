@@ -3,8 +3,8 @@ import {ArrayCreate} from '#packages/ecma262-abstract/ArrayCreate.js'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
-} from '../types/number.js'
-import {PartitionNumberPattern} from './PartitionNumberPattern.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.js'
 
 export function FormatNumericToParts(
   nf: Intl.NumberFormat,

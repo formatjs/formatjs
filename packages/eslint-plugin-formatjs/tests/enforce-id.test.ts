@@ -1,6 +1,17 @@
-import {name, type Option, rule} from '../rules/enforce-id.js'
-import {emptyFnCall, noMatch, spreadJsx} from './fixtures'
-import {ruleTester, vueRuleTester} from './util'
+import {
+  name,
+  type Option,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-id.js'
+import {
+  emptyFnCall,
+  noMatch,
+  spreadJsx,
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
+import {
+  ruleTester,
+  vueRuleTester,
+} from '#packages/eslint-plugin-formatjs/tests/util'
 const options: [Option] = [
   {idInterpolationPattern: '[sha512:contenthash:base64:6]'},
 ]

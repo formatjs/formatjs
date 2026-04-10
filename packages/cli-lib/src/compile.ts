@@ -5,15 +5,18 @@ import {
 import {outputFile} from 'fs-extra/esm'
 import {readFile} from 'fs/promises'
 import * as stringifyNs from 'json-stable-stringify'
-import {debug, warn, writeStdout} from './console_utils.js'
-import {type Formatter, resolveBuiltinFormatter} from './formatters/index.js'
+import {debug, warn, writeStdout} from '#packages/cli-lib/src/console_utils.js'
+import {
+  type Formatter,
+  resolveBuiltinFormatter,
+} from '#packages/cli-lib/src/formatters/index.js'
 import {
   generateENXA,
   generateENXB,
   generateXXAC,
   generateXXHA,
   generateXXLS,
-} from './pseudo_locale.js'
+} from '#packages/cli-lib/src/pseudo_locale.js'
 
 const stringify = (stringifyNs as any).default || stringifyNs
 

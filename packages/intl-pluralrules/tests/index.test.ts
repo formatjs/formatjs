@@ -1,10 +1,10 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
-import {PluralRules} from '../'
+import {PluralRules} from '#packages/intl-pluralrules/index.js'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-import en from './locale-data/en.js'
-import fr from './locale-data/fr.js'
+import en from '#packages/intl-pluralrules/tests/locale-data/en.js'
+import fr from '#packages/intl-pluralrules/tests/locale-data/fr.js'
 PluralRules.__addLocaleData(en, fr)
 
 describe('PluralRules', function () {

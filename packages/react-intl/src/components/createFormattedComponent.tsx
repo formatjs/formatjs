@@ -5,8 +5,8 @@ import {
   type FormatNumberOptions,
 } from '@formatjs/intl'
 import * as React from 'react'
-import {type IntlShape} from '../types.js'
-import useIntl from './useIntl.js'
+import {type IntlShape} from '#packages/react-intl/src/types.js'
+import useIntl from '#packages/react-intl/src/components/useIntl.js'
 
 enum DisplayName {
   formatDate = 'FormattedDate',

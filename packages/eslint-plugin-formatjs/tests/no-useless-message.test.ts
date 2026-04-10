@@ -1,12 +1,15 @@
-import {name, rule} from '../rules/no-useless-message.js'
-import {ruleTester} from './util'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/no-useless-message.js'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 import {
   dynamicMessage,
   noMatch,
   spreadJsx,
   emptyFnCall,
   defineMessage,
-} from './fixtures'
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
 
 ruleTester.run(name, rule, {
   valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],

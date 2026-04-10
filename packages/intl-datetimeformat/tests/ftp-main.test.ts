@@ -1,9 +1,9 @@
-import en from './locale-data/en.json' with {type: 'json'}
-import pl from './locale-data/pl.json' with {type: 'json'}
-import de from './locale-data/de.json' with {type: 'json'}
-import ar from './locale-data/ar.json' with {type: 'json'}
-import allData from '../src/data/all-tz.generated'
-import {DateTimeFormat} from '../src/core'
+import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import pl from '#packages/intl-datetimeformat/tests/locale-data/pl.json' with {type: 'json'}
+import de from '#packages/intl-datetimeformat/tests/locale-data/de.json' with {type: 'json'}
+import ar from '#packages/intl-datetimeformat/tests/locale-data/ar.json' with {type: 'json'}
+import allData from '#packages/intl-datetimeformat/src/data/all-tz.generated'
+import {DateTimeFormat} from '#packages/intl-datetimeformat/src/core'
 import {type IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore

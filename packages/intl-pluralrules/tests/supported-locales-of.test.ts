@@ -1,9 +1,9 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
-import {PluralRules} from '../'
+import {PluralRules} from '#packages/intl-pluralrules/index.js'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-import zh from './locale-data/zh.js'
+import zh from '#packages/intl-pluralrules/tests/locale-data/zh.js'
 // @ts-ignore
 PluralRules.__addLocaleData(zh)
 

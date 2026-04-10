@@ -2,11 +2,14 @@ import {program} from 'commander'
 import * as glob from 'fast-glob'
 const globSync = glob.sync
 import loudRejection from 'loud-rejection'
-import compile, {type CompileCLIOpts, type Opts} from './compile.js'
-import compileFolder from './compile_folder.js'
-import {debug} from './console_utils.js'
-import extract, {type ExtractCLIOptions} from './extract.js'
-import {verify, type VerifyOpts} from './verify/index.js'
+import compile, {
+  type CompileCLIOpts,
+  type Opts,
+} from '#packages/cli-lib/src/compile.js'
+import compileFolder from '#packages/cli-lib/src/compile_folder.js'
+import {debug} from '#packages/cli-lib/src/console_utils.js'
+import extract, {type ExtractCLIOptions} from '#packages/cli-lib/src/extract.js'
+import {verify, type VerifyOpts} from '#packages/cli-lib/src/verify/index.js'
 import {resolve} from 'path'
 import {readFileSync} from 'fs'
 

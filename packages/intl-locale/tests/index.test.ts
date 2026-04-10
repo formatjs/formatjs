@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
-import {Locale} from '../'
+import {Locale} from '#packages/intl-locale/index.js'
 import {describe, expect, it, test} from 'vitest'
 describe('intl-locale', () => {
   it('toString', function () {

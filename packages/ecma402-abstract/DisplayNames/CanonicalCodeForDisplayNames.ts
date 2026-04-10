@@ -2,7 +2,7 @@ import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLoc
 import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 
-import {IsValidDateTimeFieldCode} from './IsValidDateTimeFieldCode.js'
+import {IsValidDateTimeFieldCode} from '#packages/ecma402-abstract/DisplayNames/IsValidDateTimeFieldCode.js'
 
 const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
 const ALPHA_4 = /^[a-z]{4}$/i

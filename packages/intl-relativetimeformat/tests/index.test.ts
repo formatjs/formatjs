@@ -3,12 +3,12 @@ import '@formatjs/intl-locale/polyfill.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/zh'
 import '@formatjs/intl-pluralrules/locale-data/en'
-import zh from './locale-data/zh.json' with {type: 'json'}
-import zhHant from './locale-data/zh-Hant.json' with {type: 'json'}
-import zhHans from './locale-data/zh-Hans.json' with {type: 'json'}
-import en from './locale-data/en.json' with {type: 'json'}
-import enAI from './locale-data/en-AI.json' with {type: 'json'}
-import RelativeTimeFormat from '../index.js'
+import zh from '#packages/intl-relativetimeformat/tests/locale-data/zh.json' with {type: 'json'}
+import zhHant from '#packages/intl-relativetimeformat/tests/locale-data/zh-Hant.json' with {type: 'json'}
+import zhHans from '#packages/intl-relativetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
+import en from '#packages/intl-relativetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import enAI from '#packages/intl-relativetimeformat/tests/locale-data/en-AI.json' with {type: 'json'}
+import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
 import {describe, expect, it} from 'vitest'
 RelativeTimeFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant)
 

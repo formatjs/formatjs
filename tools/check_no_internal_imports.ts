@@ -7,13 +7,15 @@ interface Args extends minimist.ParsedArgs {
 }
 
 const PATTERN = /#packages\//
+// Skip lines that are just the package.json imports field definition (inlined by bundler)
+const IMPORTS_FIELD_PATTERN = /["']#packages\/\*["']\s*:\s*["']\.\.\/\.\.\//
 
 export function checkFile(filePath: string): string[] {
   const content = readFileSync(filePath, 'utf8')
   const errors: string[] = []
   const lines = content.split('\n')
   for (let i = 0; i < lines.length; i++) {
-    if (PATTERN.test(lines[i])) {
+    if (PATTERN.test(lines[i]) && !IMPORTS_FIELD_PATTERN.test(lines[i])) {
       errors.push(`${filePath}:${i + 1}: ${lines[i].trim()}`)
     }
   }

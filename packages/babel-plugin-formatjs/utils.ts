@@ -10,7 +10,7 @@ import {
   type MessageDescriptor,
   type MessageDescriptorPath,
   type Options,
-} from './types.js'
+} from '#packages/babel-plugin-formatjs/types.js'
 
 const DESCRIPTOR_PROPS = new Set<keyof MessageDescriptorPath>([
   'id',

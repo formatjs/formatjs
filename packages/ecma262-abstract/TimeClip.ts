@@ -1,6 +1,6 @@
 import {Decimal} from '@formatjs/bigdecimal'
 const ZERO = new Decimal(0)
-import {ToNumber} from './ToNumber.js'
+import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 
 function ToInteger(n: any): Decimal {
   const number = ToNumber(n)

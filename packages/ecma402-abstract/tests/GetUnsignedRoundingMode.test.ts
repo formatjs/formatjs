@@ -1,8 +1,8 @@
-import {GetUnsignedRoundingMode} from '../NumberFormat/GetUnsignedRoundingMode.js'
+import {GetUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/GetUnsignedRoundingMode.js'
 import {
   type RoundingModeType,
   type UnsignedRoundingModeType,
-} from '../types/number.js'
+} from '#packages/ecma402-abstract/types/number.js'
 import {describe, expect, it} from 'vitest'
 describe('GetUnsignedRoundingMod', () => {
   const negativeMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {

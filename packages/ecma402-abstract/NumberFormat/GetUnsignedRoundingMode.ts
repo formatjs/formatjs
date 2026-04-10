@@ -1,7 +1,7 @@
 import {
   type RoundingModeType,
   type UnsignedRoundingModeType,
-} from '../types/number.js'
+} from '#packages/ecma402-abstract/types/number.js'
 
 const negativeMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
   ceil: 'zero',

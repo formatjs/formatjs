@@ -1,5 +1,8 @@
-import {rule, name} from '../rules/no-literal-string-in-jsx.js'
-import {ruleTester} from './util'
+import {
+  rule,
+  name,
+} from '#packages/eslint-plugin-formatjs/rules/no-literal-string-in-jsx.js'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name, rule, {
   valid: [

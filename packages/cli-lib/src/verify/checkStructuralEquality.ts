@@ -3,7 +3,7 @@ import {
   type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser'
-import {debug, writeStderr} from '../console_utils.js'
+import {debug, writeStderr} from '#packages/cli-lib/src/console_utils.js'
 import {error} from 'console'
 
 /**

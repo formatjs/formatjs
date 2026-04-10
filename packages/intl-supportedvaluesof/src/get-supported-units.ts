@@ -1,6 +1,6 @@
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
-import type {Unit} from './units.generated.js'
-import {units} from './units.generated.js'
+import type {Unit} from '#packages/intl-supportedvaluesof/src/units.generated.js'
+import {units} from '#packages/intl-supportedvaluesof/src/units.generated.js'
 
 /**
  * Implementation: Tests if a unit is supported by attempting to create

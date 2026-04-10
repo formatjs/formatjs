@@ -1,4 +1,4 @@
-import {Parser} from '../parser.js'
+import {Parser} from '#packages/icu-messageformat-parser/parser.js'
 import {describe, expect, it} from 'vitest'
 describe('@formatjs/icu-messageformat-parser', function () {
   it('plural_arg_2', () => {

@@ -16,15 +16,15 @@ import {
   defineProperty,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
-import {currencyDigitsData} from './currency-digits.generated.js'
-import {numberingSystemNames} from './numbering-systems.generated.js'
+import {currencyDigitsData} from '#packages/intl-numberformat/src/currency-digits.generated.js'
+import {numberingSystemNames} from '#packages/intl-numberformat/src/numbering-systems.generated.js'
 // eslint-disable-next-line import/no-cycle
 import type Decimal from '@formatjs/bigdecimal'
-import getInternalSlots from './get_internal_slots.js'
+import getInternalSlots from '#packages/intl-numberformat/src/get_internal_slots.js'
 import {
   type NumberFormatConstructor,
   type NumberFormat as NumberFormatType,
-} from './types.js'
+} from '#packages/intl-numberformat/src/types.js'
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = NumberFormatType

@@ -4,10 +4,13 @@ import {
   createMemoizedNumberFormat,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
-import {TABLE_2} from '../constants.js'
-import {DurationFormat} from '../core.js'
-import {getInternalSlots} from '../get_internal_slots.js'
-import {type DurationFormatPart, type DurationRecord} from '../types.js'
+import {TABLE_2} from '#packages/intl-durationformat/src/constants.js'
+import {DurationFormat} from '#packages/intl-durationformat/src/core.js'
+import {getInternalSlots} from '#packages/intl-durationformat/src/get_internal_slots.js'
+import {
+  type DurationFormatPart,
+  type DurationRecord,
+} from '#packages/intl-durationformat/src/types.js'
 
 export function PartitionDurationFormatPattern(
   df: DurationFormat,

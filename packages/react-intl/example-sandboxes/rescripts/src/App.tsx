@@ -1,4 +1,4 @@
-import './styles.css'
+import '#packages/react-intl/example-sandboxes/rescripts/src/styles.css'
 import {IntlProvider, FormattedMessage} from 'react-intl'
 export default function App() {
   return (

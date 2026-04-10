@@ -1,4 +1,4 @@
-import {supportedValuesOf} from './src'
+import {supportedValuesOf} from '#packages/intl-supportedvaluesof/src'
 
 Object.defineProperty(Intl, 'supportedValuesOf', {
   value: supportedValuesOf,

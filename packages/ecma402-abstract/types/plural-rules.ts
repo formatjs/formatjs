@@ -1,5 +1,5 @@
-import {type LocaleData} from './core.js'
-import {type NumberFormatDigitInternalSlots} from './number.js'
+import {type LocaleData} from '#packages/ecma402-abstract/types/core.js'
+import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
 export type LDMLPluralRule = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
 
 export interface PluralRangesData {

@@ -3,21 +3,21 @@ import {
   scriptAlias,
   territoryAlias,
   variantAlias,
-} from './aliases.generated.js'
-import {emitUnicodeLanguageId} from './emitter.js'
-import {likelySubtags} from './likelySubtags.generated.js'
+} from '#packages/intl-getcanonicallocales/src/aliases.generated.js'
+import {emitUnicodeLanguageId} from '#packages/intl-getcanonicallocales/src/emitter.js'
+import {likelySubtags} from '#packages/intl-getcanonicallocales/src/likelySubtags.generated.js'
 import {
   isUnicodeLanguageSubtag,
   isUnicodeVariantSubtag,
   parseUnicodeLanguageId,
   SEPARATOR,
-} from './parser.js'
+} from '#packages/intl-getcanonicallocales/src/parser.js'
 import {
   type Extension,
   type KV,
   type UnicodeLanguageId,
   type UnicodeLocaleId,
-} from './types.js'
+} from '#packages/intl-getcanonicallocales/src/types.js'
 
 function canonicalizeAttrs(strs: string[]): string[] {
   return Object.keys(

@@ -1,7 +1,22 @@
-export {default as extractAndWrite, extract} from './src/extract.js'
-export type {ExtractCLIOptions, ExtractOpts} from './src/extract.js'
+export {
+  default as extractAndWrite,
+  extract,
+} from '#packages/cli-lib/src/extract.js'
+export type {
+  ExtractCLIOptions,
+  ExtractOpts,
+} from '#packages/cli-lib/src/extract.js'
 export type {MessageDescriptor} from '@formatjs/ts-transformer'
-export type {FormatFn, CompileFn} from './src/formatters/default.js'
+export type {
+  FormatFn,
+  CompileFn,
+} from '#packages/cli-lib/src/formatters/default.js'
 export type {Comparator} from 'json-stable-stringify'
-export {default as compileAndWrite, compile} from './src/compile.js'
-export type {CompileCLIOpts, Opts as CompileOpts} from './src/compile.js'
+export {
+  default as compileAndWrite,
+  compile,
+} from '#packages/cli-lib/src/compile.js'
+export type {
+  CompileCLIOpts,
+  Opts as CompileOpts,
+} from '#packages/cli-lib/src/compile.js'

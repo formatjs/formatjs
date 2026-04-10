@@ -1,12 +1,12 @@
-import {DefaultNumberOption} from '../DefaultNumberOption.js'
-import {GetNumberOption} from '../GetNumberOption.js'
-import {GetOption} from '../GetOption.js'
+import {DefaultNumberOption} from '#packages/ecma402-abstract/DefaultNumberOption.js'
+import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {
   type NumberFormatDigitInternalSlots,
   type NumberFormatDigitOptions,
   type NumberFormatNotation,
-} from '../types/number.js'
-import {invariant} from '../utils.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 //IMPL: Valid rounding increments as per implementation
 const VALID_ROUNDING_INCREMENTS = new Set([

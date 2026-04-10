@@ -5,7 +5,7 @@ import {
   type IntlShape,
 } from '@formatjs/intl'
 import type {Plugin} from 'vue'
-import {intlKey} from './injection-key.js'
+import {intlKey} from '#packages/vue-intl/injection-key.js'
 
 declare module 'vue' {
   interface ComponentCustomProperties {

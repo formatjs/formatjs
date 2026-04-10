@@ -1,8 +1,8 @@
 import {describe, it, expect} from 'vitest'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/en'
-import en from './locale-data/en.json' with {type: 'json'}
-import {NumberFormat} from '../src/core'
+import en from '#packages/intl-numberformat/tests/locale-data/en.json' with {type: 'json'}
+import {NumberFormat} from '#packages/intl-numberformat/src/core'
 NumberFormat.__addLocaleData(en as any)
 const toNumberResults = [
   [undefined, NaN],

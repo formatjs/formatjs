@@ -1,6 +1,6 @@
-import {createMemoizedDateTimeFormat} from './memoize.js'
-import type {Calendar} from './calendars.generated.js'
-import {calendars} from './calendars.generated.js'
+import {createMemoizedDateTimeFormat} from '#packages/intl-supportedvaluesof/src/memoize.js'
+import type {Calendar} from '#packages/intl-supportedvaluesof/src/calendars.generated.js'
+import {calendars} from '#packages/intl-supportedvaluesof/src/calendars.generated.js'
 
 /**
  * Implementation: Tests if a calendar is supported by attempting to create

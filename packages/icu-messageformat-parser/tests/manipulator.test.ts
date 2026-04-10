@@ -1,6 +1,9 @@
-import {parse} from '../index.js'
-import {hoistSelectors, isStructurallySame} from '../manipulator.js'
-import {printAST} from '../printer.js'
+import {parse} from '#packages/icu-messageformat-parser/index.js'
+import {
+  hoistSelectors,
+  isStructurallySame,
+} from '#packages/icu-messageformat-parser/manipulator.js'
+import {printAST} from '#packages/icu-messageformat-parser/printer.js'
 import {expect, test} from 'vitest'
 test('should hoist 1 plural', function () {
   expect(

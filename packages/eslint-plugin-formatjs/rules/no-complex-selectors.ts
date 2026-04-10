@@ -5,8 +5,11 @@ import {
 } from '@formatjs/icu-messageformat-parser'
 import type {Node} from 'estree-jsx'
 import type {Rule} from 'eslint'
-import {extractMessages, getSettings} from '../util.js'
-import {CORE_MESSAGES} from '../messages.js'
+import {
+  extractMessages,
+  getSettings,
+} from '#packages/eslint-plugin-formatjs/util.js'
+import {CORE_MESSAGES} from '#packages/eslint-plugin-formatjs/messages.js'
 
 interface Config {
   limit: number

@@ -1,5 +1,5 @@
 import {expect, test, vi} from 'vitest'
-import {createIntl} from '../src/create-intl'
+import {createIntl} from '#packages/intl/src/create-intl'
 
 test('createIntl', function () {
   const intl = createIntl({

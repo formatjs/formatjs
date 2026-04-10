@@ -2,7 +2,7 @@ import {
   type NumberFormatInternal,
   type NumberFormatPart,
   type NumberFormatPartTypes,
-} from '../types/number.js'
+} from '#packages/ecma402-abstract/types/number.js'
 
 const PART_TYPES_TO_COLLAPSE = new Set<NumberFormatPartTypes>([
   'unit',

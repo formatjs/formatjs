@@ -1,5 +1,5 @@
 import * as ts from 'typescript'
-import {transform as intlTransformer} from '../'
+import {transform as intlTransformer} from '#packages/ts-transformer/index.js'
 
 declare module 'fs-extra/esm' {
   export function outputJsonSync(file: string, data: any, opts?: {}): void

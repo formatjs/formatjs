@@ -1,7 +1,7 @@
 import {cleanup, render} from '@testing-library/react'
-import {FormattedDateTimeRange, type IntlShape} from '../../..'
-import {createIntl} from '../../../src/components/createIntl'
-import {mountFormattedComponentWithProvider} from '../testUtils'
+import {FormattedDateTimeRange, type IntlShape} from '#packages/react-intl'
+import {createIntl} from '#packages/react-intl/src/components/createIntl'
+import {mountFormattedComponentWithProvider} from '#packages/react-intl/tests/unit/testUtils'
 import {describe, expect, it, beforeEach, vi} from 'vitest'
 import '@testing-library/jest-dom/vitest'
 const mountWithProvider = mountFormattedComponentWithProvider(

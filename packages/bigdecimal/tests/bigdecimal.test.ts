@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest'
-import {BigDecimal} from '../index'
+import {BigDecimal} from '#packages/bigdecimal/index'
 
 describe('BigDecimal', () => {
   // --- Constructor ---

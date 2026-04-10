@@ -1,13 +1,13 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
-import {DateTimeFormat} from '../src/core'
-import allData from '../src/data/all-tz.generated'
-import enCA from './locale-data/en-CA.json' with {type: 'json'}
-import enGB from './locale-data/en-GB.json' with {type: 'json'}
-import en from './locale-data/en.json' with {type: 'json'}
-import fa from './locale-data/fa.json' with {type: 'json'}
-import ja from './locale-data/ja.json' with {type: 'json'}
-import zhHans from './locale-data/zh-Hans.json' with {type: 'json'}
+import {DateTimeFormat} from '#packages/intl-datetimeformat/src/core'
+import allData from '#packages/intl-datetimeformat/src/data/all-tz.generated'
+import enCA from '#packages/intl-datetimeformat/tests/locale-data/en-CA.json' with {type: 'json'}
+import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
+import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import fa from '#packages/intl-datetimeformat/tests/locale-data/fa.json' with {type: 'json'}
+import ja from '#packages/intl-datetimeformat/tests/locale-data/ja.json' with {type: 'json'}
+import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa)

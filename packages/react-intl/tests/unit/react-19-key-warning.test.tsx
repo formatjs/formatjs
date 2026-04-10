@@ -1,8 +1,8 @@
 import {render} from '@testing-library/react'
 import * as React from 'react'
-import FormattedMessage from '../../src/components/message'
-import IntlProvider from '../../src/components/provider'
-import type {IntlConfig} from '../../src/types'
+import FormattedMessage from '#packages/react-intl/src/components/message'
+import IntlProvider from '#packages/react-intl/src/components/provider'
+import type {IntlConfig} from '#packages/react-intl/src/types'
 import {describe, expect, it, beforeEach, vi, afterEach} from 'vitest'
 import '@testing-library/jest-dom/vitest'
 

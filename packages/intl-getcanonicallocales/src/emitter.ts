@@ -1,4 +1,7 @@
-import {type UnicodeLanguageId, type UnicodeLocaleId} from './types.js'
+import {
+  type UnicodeLanguageId,
+  type UnicodeLocaleId,
+} from '#packages/intl-getcanonicallocales/src/types.js'
 
 export function emitUnicodeLanguageId(lang?: UnicodeLanguageId): string {
   if (!lang) {

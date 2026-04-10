@@ -1,5 +1,5 @@
-import {Segmenter} from '../src/segmenter.js'
-import {segmentationTests} from './test-utils.js'
+import {Segmenter} from '#packages/intl-segmenter/src/segmenter.js'
+import {segmentationTests} from '#packages/intl-segmenter/tests/test-utils.js'
 import {describe, expect, it} from 'vitest'
 
 // CLDR 48 word segmentation rules differ from Unicode 17.0 specification for Format characters.

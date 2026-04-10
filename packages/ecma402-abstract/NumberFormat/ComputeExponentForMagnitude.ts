@@ -2,9 +2,9 @@ import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type DecimalFormatNum,
   type NumberFormatInternal,
-} from '../types/number.js'
-import {invariant} from '../utils.js'
-import {getPowerOf10} from './decimal-cache.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 /**
  * The abstract operation ComputeExponentForMagnitude computes an exponent by which to scale a
  * number of the given magnitude (power of ten of the most significant digit) according to the

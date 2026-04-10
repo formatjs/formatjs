@@ -1,5 +1,5 @@
-import {PluralRules} from './index.js'
-import {shouldPolyfill} from './should-polyfill.js'
+import {PluralRules} from '#packages/intl-pluralrules/index.js'
+import {shouldPolyfill} from '#packages/intl-pluralrules/should-polyfill.js'
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'PluralRules', {

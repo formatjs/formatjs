@@ -1,4 +1,4 @@
-import {findBestMatch} from '../abstract/utils.js'
+import {findBestMatch} from '#packages/intl-localematcher/abstract/utils.js'
 
 // Profile locale matching to identify bottlenecks
 // Run with: node --prof profile.ts

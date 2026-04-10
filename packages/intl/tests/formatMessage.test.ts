@@ -2,12 +2,12 @@
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import IntlMessageFormat from 'intl-messageformat'
-import {formatMessage as baseFormatMessage} from '../src/message'
+import {formatMessage as baseFormatMessage} from '#packages/intl/src/message'
 import {
   type Formatters,
   type IntlConfig,
   type IntlFormatters,
-} from '../src/types'
+} from '#packages/intl/src/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

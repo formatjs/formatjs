@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
-import {DisplayNames} from '../index.js'
+import {DisplayNames} from '#packages/intl-displaynames/index.js'
 import {describe, expect, it} from 'vitest'
 
-import en from './locale-data/en.json' with {type: 'json'}
-import zh from './locale-data/zh.json' with {type: 'json'}
+import en from '#packages/intl-displaynames/tests/locale-data/en.json' with {type: 'json'}
+import zh from '#packages/intl-displaynames/tests/locale-data/zh.json' with {type: 'json'}
 DisplayNames.__addLocaleData(en, zh)
 
 describe('.of()', () => {

@@ -2,12 +2,12 @@ import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
-} from '../types/number.js'
-import {invariant} from '../utils.js'
-import {ComputeExponent} from './ComputeExponent.js'
-import formatToParts from './format_to_parts.js'
-import {FormatNumericToString} from './FormatNumericToString.js'
-import {getPowerOf10} from './decimal-cache.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {ComputeExponent} from '#packages/ecma402-abstract/NumberFormat/ComputeExponent.js'
+import formatToParts from '#packages/ecma402-abstract/NumberFormat/format_to_parts.js'
+import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
+import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitionnumberpattern

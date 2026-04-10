@@ -1,5 +1,8 @@
-import {parseDateTimeSkeleton, parseNumberSkeleton} from '../index.js'
-import {parseNumberSkeletonFromString} from '../number.js'
+import {
+  parseDateTimeSkeleton,
+  parseNumberSkeleton,
+} from '#packages/icu-skeleton-parser/index.js'
+import {parseNumberSkeletonFromString} from '#packages/icu-skeleton-parser/number.js'
 import {test, expect} from 'vitest'
 
 const dateTimeSkeletonResults = {

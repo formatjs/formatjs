@@ -1,4 +1,4 @@
-import {PluralRules} from './index.js'
+import {PluralRules} from '#packages/intl-pluralrules/index.js'
 
 Object.defineProperty(Intl, 'PluralRules', {
   value: PluralRules,

@@ -1,14 +1,14 @@
-import {DateTimeFormat} from '../src/core'
-import allData from '../src/data/all-tz.generated'
+import {DateTimeFormat} from '#packages/intl-datetimeformat/src/core'
+import allData from '#packages/intl-datetimeformat/src/data/all-tz.generated'
 import {
   toLocaleDateString,
   toLocaleString,
   toLocaleTimeString,
-} from '../src/to_locale_string'
-import bs from './locale-data/bs.json' with {type: 'json'}
-import en from './locale-data/en.json' with {type: 'json'}
-import ko from './locale-data/ko.json' with {type: 'json'}
-import ru from './locale-data/ru.json' with {type: 'json'}
+} from '#packages/intl-datetimeformat/src/to_locale_string'
+import bs from '#packages/intl-datetimeformat/tests/locale-data/bs.json' with {type: 'json'}
+import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import ko from '#packages/intl-datetimeformat/tests/locale-data/ko.json' with {type: 'json'}
+import ru from '#packages/intl-datetimeformat/tests/locale-data/ru.json' with {type: 'json'}
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(bs, en, ko, ru)
