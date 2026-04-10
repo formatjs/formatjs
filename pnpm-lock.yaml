@@ -307,8 +307,8 @@ importers:
         specifier: 48.1.0
         version: 48.1.0(cldr-core@48.1.0)
       cldr-segments-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.1.0)
       cldr-units-full:
         specifier: 48.1.0
         version: 48.1.0(cldr-core@48.1.0)
@@ -5084,10 +5084,10 @@ packages:
     peerDependencies:
       cldr-core: 48.1.0
 
-  cldr-segments-full@48.1.0:
-    resolution: {integrity: sha512-RIcJS4mLVnmmcExoqj5twCoJBMktbIhjlOqykAIdkKdmW5M9YRfne1OtyJHGCLUif0qatZ1eUYtg+oFzfsP2Og==}
+  cldr-segments-full@48.2.0:
+    resolution: {integrity: sha512-emIJVJL1tfAUkbqqw/XaY1gU5L910GOrG7w+Lgf3avw5/d3DaecxtfAhovuk3GmbHK0yWgAOrR4yIE3bbgcXRA==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
   cldr-units-full@48.1.0:
     resolution: {integrity: sha512-gZRKOiY/zk5WydpE6qvHyhzRqCoOCtVWfYHN3bwaLXn3p2neuFMfFmetN+3aJBL9bZSrvwB0brXGnb7+/XA3CA==}
@@ -12980,7 +12980,7 @@ snapshots:
     dependencies:
       cldr-core: 48.1.0
 
-  cldr-segments-full@48.1.0(cldr-core@48.1.0):
+  cldr-segments-full@48.2.0(cldr-core@48.1.0):
     dependencies:
       cldr-core: 48.1.0
 
