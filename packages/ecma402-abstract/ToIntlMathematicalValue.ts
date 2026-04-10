@@ -1,5 +1,5 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {ToPrimitive} from './262.js'
+import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 
 /**
  * https://tc39.es/ecma402/#sec-tointlmathematicalvalue

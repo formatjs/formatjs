@@ -37,6 +37,7 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
+    "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/RelativeTimeFormat",
     "//packages/ecma402-abstract/types",
@@ -727,6 +728,7 @@ ts_run_binary(
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/RelativeTimeFormat",
         "//packages/ecma402-abstract/types",

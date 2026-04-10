@@ -1,4 +1,4 @@
-import {TimeClip} from '#packages/ecma402-abstract/262.js'
+import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
   type DateTimeFormat,

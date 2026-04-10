@@ -4,7 +4,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "writ
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
-load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 def vitest(
         name,
@@ -57,7 +57,7 @@ def vitest(
     # skipLibCheck avoids type errors from transitive deps with unresolvable type imports
     # types: ["node"] ensures @types/node augmentations (e.g. import.meta.dirname) are available
     # noUncheckedSideEffectImports: disable TS 6 strict check for side-effect imports without types (e.g. locale-data)
-    base_test_tsconfig = (tsconfig or ESNEXT_TSCONFIG)
+    base_test_tsconfig = (tsconfig or packages_tsconfig(ESNEXT_TSCONFIG))
     test_tsconfig = base_test_tsconfig | {
         "compilerOptions": base_test_tsconfig.get("compilerOptions", {}) | {
             "skipLibCheck": True,
@@ -84,13 +84,17 @@ def vitest(
     base_config = "//tools:vitest_config_mjs"
     actual_config = config if config else base_config
 
+    # Always include root package.json for #packages/* subpath import resolution
+    root_pkg = ["//:package.json"] if "//:package.json" not in data else []
+    root_pkg_ncb = ["//:package.json"] if "//:package.json" not in no_copy_to_bin else []
+
     vitest_bin.vitest_test(
         name = name,
-        data = srcs + deps + data + snapshots + fixtures + [actual_config],
+        data = srcs + deps + data + snapshots + fixtures + [actual_config] + root_pkg,
         size = size,
         flaky = flaky,
         tags = tags,
-        no_copy_to_bin = no_copy_to_bin,
+        no_copy_to_bin = no_copy_to_bin + root_pkg_ncb,
         args = [
             "run",
             "--config",

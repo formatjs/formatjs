@@ -5,6 +5,7 @@ PACKAGE_NAME = "PluralRules"
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
+    "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/NumberFormat",
     "//packages/ecma402-abstract/types",
@@ -21,6 +22,7 @@ ts_compile(
 generate_ide_tsconfig_json(
     composite = True,
     project_references = [
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",

@@ -1,4 +1,6 @@
-import {SameValue, ToString, Type} from '#packages/ecma402-abstract/262.js'
+import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {Type} from '#packages/ecma262-abstract/Type.js'
 import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 import {
   type FieldData,

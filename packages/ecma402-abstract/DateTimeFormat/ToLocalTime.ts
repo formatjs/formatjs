@@ -7,7 +7,7 @@ import {
   WeekDay,
   YearFromTime,
   msFromTime,
-} from '#packages/ecma402-abstract/262.js'
+} from '#packages/ecma262-abstract/DateOperations.js'
 import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'

@@ -1,4 +1,4 @@
-import {ToNumber} from '#packages/ecma402-abstract/262.js'
+import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {ZERO} from '#packages/ecma402-abstract/constants.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'

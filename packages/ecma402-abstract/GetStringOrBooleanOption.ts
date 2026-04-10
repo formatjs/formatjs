@@ -8,7 +8,7 @@
  * @param fallback
  */
 
-import {ToString} from './262.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 
 export function GetStringOrBooleanOption<T extends object, K extends keyof T>(
   opts: T,

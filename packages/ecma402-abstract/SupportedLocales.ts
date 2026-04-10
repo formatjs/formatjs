@@ -1,5 +1,5 @@
 import {LookupSupportedLocales} from '@formatjs/intl-localematcher'
-import {ToObject} from './262.js'
+import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {GetOption} from './GetOption.js'
 
 /**

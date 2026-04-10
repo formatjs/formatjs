@@ -1,4 +1,4 @@
-import {ToString} from '#packages/ecma402-abstract/262.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'

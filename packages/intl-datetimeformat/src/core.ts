@@ -1,4 +1,5 @@
-import {OrdinaryHasInstance, ToNumber} from '#packages/ecma402-abstract/262.js'
+import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
+import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
 import {IsValidTimeZoneName} from '#packages/ecma402-abstract/IsValidTimeZoneName.js'
