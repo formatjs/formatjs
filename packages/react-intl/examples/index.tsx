@@ -7,20 +7,24 @@ import Hooks from './Hooks'
 import Injected from './Injected'
 import Messages from './Messages'
 import StaticTypeSafetyAndCodeSplitting from './StaticTypeSafetyAndCodeSplitting/StaticTypeSafetyAndCodeSplitting'
+import SvenskaExample from './SvenskaExample'
+import SvensktStriktExample from './SvensktStriktExample'
 import Timezone from './TimeZone'
-import SvenskaExample from "./SvenskaExample"
 //polyfills
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 
 import '@formatjs/intl-pluralrules/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-pluralrules/locale-data/sv.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 
 import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-numberformat/locale-data/sv.js'
 import '@formatjs/intl-numberformat/polyfill.js'
 
 import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 import '@formatjs/intl-datetimeformat/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-datetimeformat/locale-data/sv.js'
 import '@formatjs/intl-datetimeformat/polyfill.js'
 
 ReactDOM.createRoot(document.getElementById('timezone')!).render(<Timezone />)
@@ -38,6 +42,12 @@ ReactDOM.createRoot(
 ).render(<StaticTypeSafetyAndCodeSplitting />)
 
 ReactDOM.createRoot(document.getElementById('bug2727')!).render(<Bug2727 />)
+ReactDOM.createRoot(document.getElementById('svenska-example')!).render(
+  <SvenskaExample />
+)
+ReactDOM.createRoot(document.getElementById('svenskt-strikt-example')!).render(
+  <SvensktStriktExample />
+)
 
 bootstrapApplication('en').then(app => {
   ReactDOM.createRoot(document.getElementById('advanced')!).render(app)

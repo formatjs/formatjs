@@ -1,66 +1,45 @@
-import * as React from 'react'
+import type {JSX} from 'react'
 import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 
-// Swedish messages with type-safe keys
+// Swedish messages with locally type-safe keys
 const messages = {
   title: 'Hej FormatJS',
   content: 'Börja redigera för att se lite magi hända!',
   body: 'Din språkinställning ({locale}) är nu typsäker',
   welcome: 'Välkommen {name}',
-  itemCount: 'Du har {count, plural, =0 {inga objekt} =1 {ett objekt} other {# objekt}}',
+  itemCount:
+    'Du har {count, plural, =0 {inga objekt} =1 {ett objekt} other {# objekt}}',
   currentTime: 'Nuvarande tid: {time, time}',
-  description: 'Detta är ett exempel på typsäker internationalisering med svenska språket'
-}
+  description:
+    'Detta är ett exempel på typsäker internationalisering med svenska språket',
+} as const
 
-// Type declarations for Swedish locale support
-declare global {
-  namespace FormatjsIntl {
-    interface Message {
-      ids: keyof typeof messages
-    }
-    interface IntlConfig {
-      locale: 'sv-SE' | 'sv' | 'en'
-    }
-  }
-}
+type SwedishLocale = 'sv-SE' | 'sv' | 'en'
 
-const SvenskKomponent = () => {
-  // Här är locale typsäker (svenska kommentar!)
+const SvenskKomponent = (): JSX.Element => {
   const {locale} = useIntl()
+  const typedLocale = locale as SwedishLocale
 
   return (
     <div>
       <p>
-        <FormattedMessage 
-          id="body" 
-          values={{locale}}
-        />
+        <FormattedMessage id="body" values={{locale: typedLocale}} />
       </p>
       <p>
-        <FormattedMessage 
-          id="welcome" 
-          values={{name: 'Anna'}}
-        />
+        <FormattedMessage id="welcome" values={{name: 'Anna'}} />
       </p>
       <p>
-        <FormattedMessage 
-          id="itemCount" 
-          values={{count: 5}}
-        />
+        <FormattedMessage id="itemCount" values={{count: 5}} />
       </p>
       <p>
-        <FormattedMessage 
-          id="currentTime" 
-          values={{time: new Date()}}
-        />
+        <FormattedMessage id="currentTime" values={{time: new Date()}} />
       </p>
     </div>
   )
 }
 
-export default function SvensktStriktExample() {
+export default function SvensktStriktExample(): JSX.Element {
   return (
-    // Här är locale typsäker och begränsad till svenska
     <IntlProvider locale="sv-SE" messages={messages}>
       <div style={{fontFamily: 'system-ui', padding: '20px'}}>
         <h1>
