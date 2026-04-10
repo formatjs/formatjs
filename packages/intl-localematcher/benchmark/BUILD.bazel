@@ -7,7 +7,7 @@ ts_binary(
     name = "benchmark",
     data = [
         "//:node_modules/tinybench",
-        "//packages/intl-localematcher:dist",
+        "//packages/intl-localematcher",
     ],
     entry_point = "benchmark.ts",
 )
@@ -25,7 +25,7 @@ ts_binary(
 ts_binary(
     name = "profile",
     data = [
-        "//packages/intl-localematcher:dist",
+        "//packages/intl-localematcher",
     ],
     entry_point = "profile.ts",
 )
@@ -33,7 +33,7 @@ ts_binary(
 ts_binary(
     name = "profile_cpu",
     data = [
-        "//packages/intl-localematcher:dist",
+        "//packages/intl-localematcher",
     ],
     entry_point = "profile.ts",
     node_options = [
