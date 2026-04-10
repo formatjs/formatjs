@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import {NumberFormat} from './core.js'
+import {NumberFormat} from '#packages/intl-numberformat/src/core.js'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 
 /**

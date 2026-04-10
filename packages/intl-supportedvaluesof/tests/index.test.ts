@@ -1,4 +1,4 @@
-import {supportedValuesOf} from '../src/index.js'
+import {supportedValuesOf} from '#packages/intl-supportedvaluesof/src/index.js'
 import {describe, expect, it} from 'vitest'
 
 describe('Intl.supportedValuesOf', () => {

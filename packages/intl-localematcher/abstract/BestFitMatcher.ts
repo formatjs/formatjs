@@ -1,5 +1,8 @@
-import type {LookupMatcherResult} from './types.js'
-import {UNICODE_EXTENSION_SEQUENCE_REGEX, findBestMatch} from './utils.js'
+import type {LookupMatcherResult} from '#packages/intl-localematcher/abstract/types.js'
+import {
+  UNICODE_EXTENSION_SEQUENCE_REGEX,
+  findBestMatch,
+} from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-bestfitmatcher

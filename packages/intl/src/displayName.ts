@@ -1,8 +1,12 @@
-import {type Formatters, type IntlFormatters, type OnErrorFn} from './types.js'
-import {filterProps} from './utils.js'
+import {
+  type Formatters,
+  type IntlFormatters,
+  type OnErrorFn,
+} from '#packages/intl/src/types.js'
+import {filterProps} from '#packages/intl/src/utils.js'
 
 import {ErrorCode, FormatError} from 'intl-messageformat'
-import {IntlFormatError} from './error.js'
+import {IntlFormatError} from '#packages/intl/src/error.js'
 
 const DISPLAY_NAMES_OPTONS: Array<keyof Intl.DisplayNamesOptions> = [
   'style',

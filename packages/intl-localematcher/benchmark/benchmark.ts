@@ -1,5 +1,5 @@
 import {Bench} from 'tinybench'
-import {findBestMatch} from '../abstract/utils.js'
+import {findBestMatch} from '#packages/intl-localematcher/abstract/utils.js'
 
 // Test locale matching performance - the optimization for issue #4936
 // The issue reported DurationFormat instantiation taking 610ms on React Native/Hermes

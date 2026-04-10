@@ -1,5 +1,5 @@
-import type {Collation} from './collations.generated.js'
-import {collations} from './collations.generated.js'
+import type {Collation} from '#packages/intl-supportedvaluesof/src/collations.generated.js'
+import {collations} from '#packages/intl-supportedvaluesof/src/collations.generated.js'
 
 /**
  * Implementation: Tests if a collation is supported by attempting to create

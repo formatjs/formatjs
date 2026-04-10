@@ -1,6 +1,6 @@
 import {type IntlShape} from '@formatjs/intl'
 import {getContext, setContext} from 'svelte'
-import {intlKey} from './context-key.js'
+import {intlKey} from '#packages/svelte-intl/context-key.js'
 
 export function provideIntl(intl: IntlShape<string>): void {
   setContext(intlKey, intl)

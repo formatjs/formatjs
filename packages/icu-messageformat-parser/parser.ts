@@ -1,4 +1,7 @@
-import {ErrorKind, type ParserError} from './error.js'
+import {
+  ErrorKind,
+  type ParserError,
+} from '#packages/icu-messageformat-parser/error.js'
 import {
   type DateTimeSkeleton,
   type LiteralElement,
@@ -9,15 +12,15 @@ import {
   SKELETON_TYPE,
   type TagElement,
   TYPE,
-} from './types.js'
-import {SPACE_SEPARATOR_REGEX} from './regex.generated.js'
+} from '#packages/icu-messageformat-parser/types.js'
+import {SPACE_SEPARATOR_REGEX} from '#packages/icu-messageformat-parser/regex.generated.js'
 import {
   type NumberSkeletonToken,
   parseNumberSkeleton,
   parseNumberSkeletonFromString,
   parseDateTimeSkeleton,
 } from '@formatjs/icu-skeleton-parser'
-import {getBestPattern} from './date-time-pattern-generator.js'
+import {getBestPattern} from '#packages/icu-messageformat-parser/date-time-pattern-generator.js'
 
 const SPACE_SEPARATOR_START_REGEX = new RegExp(
   `^${SPACE_SEPARATOR_REGEX.source}*`

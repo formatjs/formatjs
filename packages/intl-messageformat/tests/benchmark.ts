@@ -1,5 +1,7 @@
 import {Bench} from 'tinybench'
-import IntlMessageFormat, {type Formatters} from '../index.js'
+import IntlMessageFormat, {
+  type Formatters,
+} from '#packages/intl-messageformat/index.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/en'
 import {memoize} from '@formatjs/fast-memoize'

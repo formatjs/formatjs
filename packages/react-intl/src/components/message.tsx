@@ -12,8 +12,8 @@ import type {
 import * as React from 'react'
 
 import {type MessageDescriptor} from '@formatjs/intl'
-import {shallowEqual} from '../utils.js'
-import useIntl from './useIntl.js'
+import {shallowEqual} from '#packages/react-intl/src/utils.js'
+import useIntl from '#packages/react-intl/src/components/useIntl.js'
 
 export interface Props<
   V extends Record<string, any> = Record<

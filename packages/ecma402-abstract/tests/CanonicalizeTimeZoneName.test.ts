@@ -1,4 +1,4 @@
-import {CanonicalizeTimeZoneName} from '../CanonicalizeTimeZoneName.js'
+import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
 import {expect, test, describe} from 'vitest'
 
 describe('CanonicalizeTimeZoneName', () => {

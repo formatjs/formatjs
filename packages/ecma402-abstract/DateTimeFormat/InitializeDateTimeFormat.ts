@@ -11,11 +11,11 @@ import {
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {BasicFormatMatcher} from './BasicFormatMatcher.js'
-import {BestFitFormatMatcher} from './BestFitFormatMatcher.js'
-import {DateTimeStyleFormat} from './DateTimeStyleFormat.js'
-import {ToDateTimeOptions} from './ToDateTimeOptions.js'
-import {DATE_TIME_PROPS} from './utils.js'
+import {BasicFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.js'
+import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
+import {DateTimeStyleFormat} from '#packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.js'
+import {ToDateTimeOptions} from '#packages/ecma402-abstract/DateTimeFormat/ToDateTimeOptions.js'
+import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 function isTimeRelated(opt: Opt) {
   for (const prop of ['hour', 'minute', 'second'] as Array<

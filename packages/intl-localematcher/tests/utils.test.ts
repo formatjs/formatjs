@@ -1,4 +1,7 @@
-import {findBestMatch, findMatchingDistance} from '../abstract/utils.js'
+import {
+  findBestMatch,
+  findMatchingDistance,
+} from '#packages/intl-localematcher/abstract/utils.js'
 import {expect, test} from 'vitest'
 test('findMatchingDistance', () => {
   expect(findMatchingDistance('es-CO', 'es')).toBe(49)

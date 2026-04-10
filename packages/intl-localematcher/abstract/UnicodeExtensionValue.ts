@@ -1,4 +1,4 @@
-import {invariant} from './utils.js'
+import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-unicodeextensionvalue

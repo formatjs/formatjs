@@ -1,7 +1,7 @@
 import {ArrayCreate} from '#packages/ecma262-abstract/ArrayCreate.js'
 import {type IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
 import type Decimal from '@formatjs/bigdecimal'
-import {PartitionDateTimePattern} from './PartitionDateTimePattern.js'
+import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimePattern.js'
 
 /**
  * https://tc39.es/ecma402/#sec-formatdatetimetoparts

@@ -2,8 +2,8 @@ import {
   type IntlFormatters as CoreIntlFormatters,
   type MessageDescriptor,
 } from '@formatjs/intl'
-export * from './provider.js'
-export {intlKey} from './context-key.js'
+export * from '#packages/svelte-intl/provider.js'
+export {intlKey} from '#packages/svelte-intl/context-key.js'
 export {
   type IntlShape,
   type IntlConfig,

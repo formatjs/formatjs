@@ -1,4 +1,4 @@
-import {invariant} from './utils.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 /**
  * Partition a pattern into a list of literals and placeholders

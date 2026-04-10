@@ -1,6 +1,9 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
-import type {DurationFormat, IntlDurationFormatInternal} from './types.js'
+import type {
+  DurationFormat,
+  IntlDurationFormatInternal,
+} from '#packages/intl-durationformat/src/types.js'
 
 const internalSlotMap = new WeakMap<
   DurationFormat,

@@ -1,12 +1,12 @@
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
-import {IntlFormatError} from './error.js'
+import {IntlFormatError} from '#packages/intl/src/error.js'
 import {
   type CustomFormats,
   type Formatters,
   type IntlFormatters,
   type OnErrorFn,
-} from './types.js'
-import {filterProps, getNamedFormat} from './utils.js'
+} from '#packages/intl/src/types.js'
+import {filterProps, getNamedFormat} from '#packages/intl/src/utils.js'
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'style',

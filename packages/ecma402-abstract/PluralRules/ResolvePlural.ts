@@ -7,7 +7,10 @@ import {
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import Decimal from '@formatjs/bigdecimal'
-import {GetOperands, type OperandsRecord} from './GetOperands.js'
+import {
+  GetOperands,
+  type OperandsRecord,
+} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 
 /**
  * Result of ResolvePluralInternal containing both the formatted string and plural category.

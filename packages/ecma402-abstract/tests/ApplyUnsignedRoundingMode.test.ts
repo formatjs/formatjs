@@ -1,5 +1,5 @@
 import Decimal from '@formatjs/bigdecimal'
-import {ApplyUnsignedRoundingMode} from '../NumberFormat/ApplyUnsignedRoundingMode.js'
+import {ApplyUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/ApplyUnsignedRoundingMode.js'
 import {describe, expect, it} from 'vitest'
 describe('ApplyUnsignedRoundingMode', () => {
   it('return r1 for x = r1', () => {

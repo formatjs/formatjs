@@ -20,7 +20,7 @@ import {
   InvalidValueError,
   InvalidValueTypeError,
   MissingValueError,
-} from './error.js'
+} from '#packages/intl-messageformat/src/error.js'
 
 declare global {
   namespace FormatjsIntl {

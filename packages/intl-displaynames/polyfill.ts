@@ -1,5 +1,5 @@
-import {DisplayNames} from './index.js'
-import {shouldPolyfill} from './should-polyfill.js'
+import {DisplayNames} from '#packages/intl-displaynames/index.js'
+import {shouldPolyfill} from '#packages/intl-displaynames/should-polyfill.js'
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'DisplayNames', {

@@ -3,11 +3,11 @@ import {
   type Formatters,
   type CustomFormats,
   type OnErrorFn,
-} from './types.js'
+} from '#packages/intl/src/types.js'
 
-import {getNamedFormat, filterProps} from './utils.js'
+import {getNamedFormat, filterProps} from '#packages/intl/src/utils.js'
 import {FormatError, ErrorCode} from 'intl-messageformat'
-import {IntlFormatError} from './error.js'
+import {IntlFormatError} from '#packages/intl/src/error.js'
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<
   keyof Intl.RelativeTimeFormatOptions

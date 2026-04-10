@@ -1,7 +1,11 @@
 import {ErrorCode, FormatError} from 'intl-messageformat'
-import {IntlFormatError} from './error.js'
-import {type Formatters, type IntlFormatters, type OnErrorFn} from './types.js'
-import {filterProps} from './utils.js'
+import {IntlFormatError} from '#packages/intl/src/error.js'
+import {
+  type Formatters,
+  type IntlFormatters,
+  type OnErrorFn,
+} from '#packages/intl/src/types.js'
+import {filterProps} from '#packages/intl/src/utils.js'
 
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = ['type']
 

@@ -1,5 +1,5 @@
-import type {Keyword} from './types.js'
-import {invariant} from './utils.js'
+import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
+import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
 export function UnicodeExtensionComponents(extension: string): {
   attributes: string[]

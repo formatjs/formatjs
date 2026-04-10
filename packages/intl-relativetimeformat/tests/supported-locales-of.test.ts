@@ -8,7 +8,7 @@ import zhHant from './locale-data/zh-Hant.json' with {type: 'json'}
 import zhHans from './locale-data/zh-Hans.json' with {type: 'json'}
 import en from './locale-data/en.json' with {type: 'json'}
 import enAI from './locale-data/en-AI.json' with {type: 'json'}
-import RelativeTimeFormat from '../index.js'
+import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
 import {describe, expect, it} from 'vitest'
 RelativeTimeFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant)
 

@@ -1,5 +1,5 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {ToPrimitive} from './ToPrimitive.js'
+import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 
 const ZERO = new Decimal(0)
 

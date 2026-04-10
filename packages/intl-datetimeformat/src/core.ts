@@ -20,10 +20,13 @@ import {FormatDateTimeToParts} from '#packages/ecma402-abstract/DateTimeFormat/F
 import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
-import links from './data/links.generated.js'
-import getInternalSlots from './get_internal_slots.js'
-import {unpack} from './packer.js'
-import {type PackedData, type RawDateTimeLocaleData} from './types.js'
+import links from '#packages/intl-datetimeformat/src/data/links.generated.js'
+import getInternalSlots from '#packages/intl-datetimeformat/src/get_internal_slots.js'
+import {unpack} from '#packages/intl-datetimeformat/src/packer.js'
+import {
+  type PackedData,
+  type RawDateTimeLocaleData,
+} from '#packages/intl-datetimeformat/src/types.js'
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {

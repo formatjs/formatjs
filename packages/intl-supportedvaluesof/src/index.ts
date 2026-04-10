@@ -1,9 +1,9 @@
-import {getSupportedCalendars} from './get-supported-calendars.js'
-import {getSupportedCollations} from './get-supported-collations.js'
-import {getSupportedCurrencies} from './get-supported-currencies.js'
-import {getSupportedNumberingSystems} from './get-supported-numbering-systems.js'
-import {getSupportedTimeZones} from './get-supported-timezones.js'
-import {getSupportedUnits} from './get-supported-units.js'
+import {getSupportedCalendars} from '#packages/intl-supportedvaluesof/src/get-supported-calendars.js'
+import {getSupportedCollations} from '#packages/intl-supportedvaluesof/src/get-supported-collations.js'
+import {getSupportedCurrencies} from '#packages/intl-supportedvaluesof/src/get-supported-currencies.js'
+import {getSupportedNumberingSystems} from '#packages/intl-supportedvaluesof/src/get-supported-numbering-systems.js'
+import {getSupportedTimeZones} from '#packages/intl-supportedvaluesof/src/get-supported-timezones.js'
+import {getSupportedUnits} from '#packages/intl-supportedvaluesof/src/get-supported-units.js'
 
 /**
  * ECMA-402 Spec: Intl.supportedValuesOf

@@ -1,4 +1,4 @@
-import {generateNumFmtPattern} from '../index.js'
+import {generateNumFmtPattern} from '#packages/ecma376/index.js'
 import {expect, test} from 'vitest'
 test.each`
   locale       | result

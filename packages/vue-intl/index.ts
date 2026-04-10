@@ -2,9 +2,9 @@ import {
   type IntlFormatters as CoreIntlFormatters,
   type MessageDescriptor,
 } from '@formatjs/intl'
-export * from './plugin.js'
-export * from './provider.js'
-export {intlKey} from './injection-key.js'
+export * from '#packages/vue-intl/plugin.js'
+export * from '#packages/vue-intl/provider.js'
+export {intlKey} from '#packages/vue-intl/injection-key.js'
 export {
   type IntlShape,
   type IntlConfig,

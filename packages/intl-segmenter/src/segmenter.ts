@@ -8,8 +8,11 @@ import {
   setInternalSlot,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {SegmentationRules} from './cldr-segmentation-rules.generated.js'
-import {isSurrogate, replaceVariables} from './segmentation-utils.js'
+import {SegmentationRules} from '#packages/intl-segmenter/src/cldr-segmentation-rules.generated.js'
+import {
+  isSurrogate,
+  replaceVariables,
+} from '#packages/intl-segmenter/src/segmentation-utils.js'
 
 // Cached regex patterns for word character detection
 // Note: Unicode property escape regex is created at runtime in try-catch

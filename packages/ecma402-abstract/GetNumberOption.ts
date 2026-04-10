@@ -7,7 +7,7 @@
  * @param fallback
  */
 
-import {DefaultNumberOption} from './DefaultNumberOption.js'
+import {DefaultNumberOption} from '#packages/ecma402-abstract/DefaultNumberOption.js'
 
 export function GetNumberOption<
   T extends object,

@@ -3,7 +3,7 @@ import {
   type TABLE_6,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import {processDateTimePattern} from './skeleton.js'
+import {processDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {
   DATE_TIME_PROPS,
   additionPenalty,
@@ -13,7 +13,7 @@ import {
   removalPenalty,
   shortLessPenalty,
   shortMorePenalty,
-} from './utils.js'
+} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 function isNumericType(
   t: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'

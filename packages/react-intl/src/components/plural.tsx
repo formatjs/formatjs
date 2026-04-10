@@ -6,7 +6,7 @@
 
 import * as React from 'react'
 import {type FormatPluralOptions} from '@formatjs/intl'
-import useIntl from './useIntl.js'
+import useIntl from '#packages/react-intl/src/components/useIntl.js'
 
 interface Props extends FormatPluralOptions {
   value: number

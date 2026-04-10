@@ -5,8 +5,8 @@ import {
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'
-import {type OperandsRecord} from './GetOperands.js'
-import {ResolvePluralInternal} from './ResolvePlural.js'
+import {type OperandsRecord} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
+import {ResolvePluralInternal} from '#packages/ecma402-abstract/PluralRules/ResolvePlural.js'
 
 /**
  * ResolvePluralRange ( pluralRules, x, y )

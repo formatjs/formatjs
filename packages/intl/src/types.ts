@@ -14,8 +14,8 @@ import type {
   MissingDataError,
   MissingTranslationError,
   UnsupportedFormatterError,
-} from './error.js'
-import type {DEFAULT_INTL_CONFIG} from './utils.js'
+} from '#packages/intl/src/error.js'
+import type {DEFAULT_INTL_CONFIG} from '#packages/intl/src/utils.js'
 
 export interface Part<T = string> {
   type: 'element' | 'literal'

@@ -1,6 +1,6 @@
 import type {Decimal} from '@formatjs/bigdecimal'
-import {type UnsignedRoundingModeType} from '../types/number.js'
-import {invariant} from '../utils.js'
+import {type UnsignedRoundingModeType} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 export function ApplyUnsignedRoundingMode(
   x: Decimal,

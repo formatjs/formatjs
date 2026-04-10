@@ -1,7 +1,7 @@
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {type Cache, memoize, strategies} from '@formatjs/fast-memoize'
 import {IntlMessageFormat} from 'intl-messageformat'
-import {UnsupportedFormatterError} from './error.js'
+import {UnsupportedFormatterError} from '#packages/intl/src/error.js'
 import {
   type CustomFormats,
   type Formatters,
@@ -9,7 +9,7 @@ import {
   type OnErrorFn,
   type OnWarnFn,
   type ResolvedIntlConfig,
-} from './types.js'
+} from '#packages/intl/src/types.js'
 
 export function invariant(
   condition: boolean,

@@ -1,5 +1,5 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {S_UNICODE_REGEX} from '../regex.generated.js'
+import {S_UNICODE_REGEX} from '#packages/ecma402-abstract/regex.generated.js'
 import {
   type DecimalFormatNum,
   type LDMLPluralRuleMap,
@@ -17,12 +17,12 @@ import {
   type UnitData,
   type UnsignedRoundingModeType,
   type UseGroupingType,
-} from '../types/number.js'
-import {getPowerOf10} from './decimal-cache.js'
-import {type LDMLPluralRule} from '../types/plural-rules.js'
-import {digitMapping} from './digit-mapping.generated.js'
-import {GetUnsignedRoundingMode} from './GetUnsignedRoundingMode.js'
-import {ToRawFixed} from './ToRawFixed.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
+import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
+import {digitMapping} from '#packages/ecma402-abstract/NumberFormat/digit-mapping.generated.js'
+import {GetUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/GetUnsignedRoundingMode.js'
+import {ToRawFixed} from '#packages/ecma402-abstract/NumberFormat/ToRawFixed.js'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
 // IE11 does not support unicode flag, otherwise this is just /\p{S}/u.

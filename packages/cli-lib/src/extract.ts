@@ -4,11 +4,19 @@ import {
   interpolateName,
 } from '@formatjs/ts-transformer'
 import {outputFile} from 'fs-extra/esm'
-import {debug, getStdinAsString, warn, writeStdout} from './console_utils.js'
+import {
+  debug,
+  getStdinAsString,
+  warn,
+  writeStdout,
+} from '#packages/cli-lib/src/console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 
-import {type Formatter, resolveBuiltinFormatter} from './formatters/index.js'
-import {parseScript} from './parse_script.js'
+import {
+  type Formatter,
+  resolveBuiltinFormatter,
+} from '#packages/cli-lib/src/formatters/index.js'
+import {parseScript} from '#packages/cli-lib/src/parse_script.js'
 import {readFile} from 'fs/promises'
 
 const stringify = (stringifyNs as any).default || stringifyNs

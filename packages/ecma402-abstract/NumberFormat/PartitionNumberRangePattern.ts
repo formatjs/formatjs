@@ -2,12 +2,12 @@ import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
-} from '../types/number.js'
-import {invariant} from '../utils.js'
-import {CollapseNumberRange} from './CollapseNumberRange.js'
-import {FormatApproximately} from './FormatApproximately.js'
-import {FormatNumeric} from './FormatNumeric.js'
-import {PartitionNumberPattern} from './PartitionNumberPattern.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {CollapseNumberRange} from '#packages/ecma402-abstract/NumberFormat/CollapseNumberRange.js'
+import {FormatApproximately} from '#packages/ecma402-abstract/NumberFormat/FormatApproximately.js'
+import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
+import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitionnumberrangepattern

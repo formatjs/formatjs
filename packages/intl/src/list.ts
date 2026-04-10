@@ -1,12 +1,12 @@
 import {ErrorCode, FormatError} from 'intl-messageformat'
-import {IntlFormatError} from './error.js'
+import {IntlFormatError} from '#packages/intl/src/error.js'
 import {
   type Formatters,
   type IntlFormatters,
   type OnErrorFn,
   type Part,
-} from './types.js'
-import {filterProps} from './utils.js'
+} from '#packages/intl/src/types.js'
+import {filterProps} from '#packages/intl/src/utils.js'
 
 const LIST_FORMAT_OPTIONS: Array<keyof Intl.ListFormatOptions> = [
   'type',

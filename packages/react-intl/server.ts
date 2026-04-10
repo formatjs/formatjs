@@ -5,8 +5,12 @@ export {
   type IntlCache,
   type MessageDescriptor,
 } from '@formatjs/intl'
-export {createIntl} from './src/components/createIntl.js'
-export type {IntlConfig, IntlShape, ResolvedIntlConfig} from './src/types.js'
+export {createIntl} from '#packages/react-intl/src/components/createIntl.js'
+export type {
+  IntlConfig,
+  IntlShape,
+  ResolvedIntlConfig,
+} from '#packages/react-intl/src/types.js'
 
 // Identity functions — duplicated here to avoid importing from "use client" index
 export function defineMessages<

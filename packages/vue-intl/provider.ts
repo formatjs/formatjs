@@ -6,7 +6,7 @@ import {
   type RendererNode,
   type VNode,
 } from 'vue'
-import {intlKey} from './injection-key.js'
+import {intlKey} from '#packages/vue-intl/injection-key.js'
 
 export function provideIntl(intl: IntlShape<VNode>): void {
   provide(intlKey, intl)

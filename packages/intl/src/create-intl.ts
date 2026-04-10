@@ -5,21 +5,24 @@ import {
   formatDateToParts,
   formatTime,
   formatTimeToParts,
-} from './dateTime.js'
-import {formatDisplayName} from './displayName.js'
-import {InvalidConfigError, MissingDataError} from './error.js'
-import {formatList, formatListToParts} from './list.js'
-import {formatMessage} from './message.js'
-import {formatNumber, formatNumberToParts} from './number.js'
-import {formatPlural} from './plural.js'
-import {formatRelativeTime} from './relativeTime.js'
+} from '#packages/intl/src/dateTime.js'
+import {formatDisplayName} from '#packages/intl/src/displayName.js'
+import {InvalidConfigError, MissingDataError} from '#packages/intl/src/error.js'
+import {formatList, formatListToParts} from '#packages/intl/src/list.js'
+import {formatMessage} from '#packages/intl/src/message.js'
+import {formatNumber, formatNumberToParts} from '#packages/intl/src/number.js'
+import {formatPlural} from '#packages/intl/src/plural.js'
+import {formatRelativeTime} from '#packages/intl/src/relativeTime.js'
 import {
   type IntlCache,
   type IntlConfig,
   type IntlShape,
   type ResolvedIntlConfig,
-} from './types.js'
-import {createFormatters, DEFAULT_INTL_CONFIG} from './utils.js'
+} from '#packages/intl/src/types.js'
+import {
+  createFormatters,
+  DEFAULT_INTL_CONFIG,
+} from '#packages/intl/src/utils.js'
 
 export interface CreateIntlFn<
   T = string,

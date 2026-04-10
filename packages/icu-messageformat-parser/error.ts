@@ -1,4 +1,4 @@
-import {type Location} from './types.js'
+import {type Location} from '#packages/icu-messageformat-parser/types.js'
 
 export interface ParserError {
   kind: ErrorKind

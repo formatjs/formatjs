@@ -7,8 +7,7 @@
   "exports": {
     ".": "./index.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/formatjs/formatjs.git",

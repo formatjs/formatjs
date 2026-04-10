@@ -3,7 +3,7 @@ import {
   type Formatters,
   type MessageDescriptor,
   type OnErrorFn,
-} from './types.js'
+} from '#packages/intl/src/types.js'
 
 import {
   type MessageFormatElement,
@@ -16,8 +16,11 @@ import {
   type Options,
   type PrimitiveType,
 } from 'intl-messageformat'
-import {MessageFormatError, MissingTranslationError} from './error.js'
-import {invariant} from './utils.js'
+import {
+  MessageFormatError,
+  MissingTranslationError,
+} from '#packages/intl/src/error.js'
+import {invariant} from '#packages/intl/src/utils.js'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,

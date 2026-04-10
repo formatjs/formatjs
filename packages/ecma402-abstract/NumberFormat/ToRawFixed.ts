@@ -2,10 +2,10 @@ import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type RawNumberFormatResult,
   type UnsignedRoundingModeType,
-} from '../types/number.js'
-import {repeat} from '../utils.js'
-import {ApplyUnsignedRoundingMode} from './ApplyUnsignedRoundingMode.js'
-import {getPowerOf10} from './decimal-cache.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {repeat} from '#packages/ecma402-abstract/utils.js'
+import {ApplyUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/ApplyUnsignedRoundingMode.js'
+import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
 //IMPL: Helper function to calculate raw fixed value
 function ToRawFixedFn(n: Decimal, f: number) {

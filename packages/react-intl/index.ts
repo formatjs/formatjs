@@ -15,19 +15,19 @@ import * as React from 'react'
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
-} from './src/components/createFormattedComponent.js'
-import {createIntl} from './src/components/createIntl.js'
+} from '#packages/react-intl/src/components/createFormattedComponent.js'
+import {createIntl} from '#packages/react-intl/src/components/createIntl.js'
 import {
   Context as IntlContext,
   Provider as RawIntlProvider,
-} from './src/components/context.js'
-import FormattedDateTimeRange from './src/components/dateTimeRange.js'
-import FormattedMessage from './src/components/message.js'
-import FormattedPlural from './src/components/plural.js'
-import IntlProvider from './src/components/provider.js'
-import FormattedRelativeTime from './src/components/relative.js'
-import useIntl from './src/components/useIntl.js'
-import {type IntlShape} from './src/types.js'
+} from '#packages/react-intl/src/components/context.js'
+import FormattedDateTimeRange from '#packages/react-intl/src/components/dateTimeRange.js'
+import FormattedMessage from '#packages/react-intl/src/components/message.js'
+import FormattedPlural from '#packages/react-intl/src/components/plural.js'
+import IntlProvider from '#packages/react-intl/src/components/provider.js'
+import FormattedRelativeTime from '#packages/react-intl/src/components/relative.js'
+import useIntl from '#packages/react-intl/src/components/useIntl.js'
+import {type IntlShape} from '#packages/react-intl/src/types.js'
 export {
   createIntlCache,
   type CustomFormatConfig,
@@ -54,7 +54,7 @@ export {
   type IntlConfig,
   type IntlShape,
   type ResolvedIntlConfig,
-} from './src/types.js'
+} from '#packages/react-intl/src/types.js'
 export {
   createIntl,
   FormattedDateTimeRange,
@@ -128,4 +128,4 @@ export type {PrimitiveType} from 'intl-messageformat'
 export {
   FormattedListParts,
   FormattedNumberParts,
-} from './src/components/createFormattedComponent.js'
+} from '#packages/react-intl/src/components/createFormattedComponent.js'
