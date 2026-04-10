@@ -3,76 +3,76 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [3.2.0](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.1.2...@formatjs/ecma402-abstract@3.2.0) (2026-03-17)
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.1.2...@formatjs/ecma402-abstract@3.2.0) (2026-03-17)
 
 ### Features
 
-* **@formatjs/ecma402-abstract:** migrate from decimal.js to @formatjs/bigdecimal ([#6148](/github.com/formatjs/formatjs/issues/6148)) ([93744d4](github.com/formatjs/formatjs/commits/93744d4732ab2dfdc93e7ddb2a73e80a6e461534)) - by @longlho
+* **@formatjs/ecma402-abstract:** migrate from decimal.js to @formatjs/bigdecimal ([#6148](https://github.com/formatjs/formatjs/issues/6148)) ([93744d4](https://github.com/formatjs/formatjs/commits/93744d4732ab2dfdc93e7ddb2a73e80a6e461534)) - by @longlho
 
-## [3.1.2](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.1.1...@formatjs/ecma402-abstract@3.1.2) (2026-03-16)
-
-**Note:** Version bump only for package @formatjs/ecma402-abstract
-
-## [3.1.1](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.1.0...@formatjs/ecma402-abstract@3.1.1) (2026-02-01)
+## [3.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.1.1...@formatjs/ecma402-abstract@3.1.2) (2026-03-16)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
 
-# [3.1.0](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.8...@formatjs/ecma402-abstract@3.1.0) (2026-01-15)
+## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.1.0...@formatjs/ecma402-abstract@3.1.1) (2026-02-01)
+
+**Note:** Version bump only for package @formatjs/ecma402-abstract
+
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.8...@formatjs/ecma402-abstract@3.1.0) (2026-01-15)
 
 ### Features
 
-* **@formatjs/ecma402-abstract:** upgrade Unicode from 13.0.0 to 17.0.0 ([#5866](/github.com/formatjs/formatjs/issues/5866)) ([00343fe](github.com/formatjs/formatjs/commits/00343fe97e34f8f494d8b9a8b99bca50af6b48b2)) - by @longlho
-* **@formatjs/intl-pluralrules:** replace make-plural-compiler with native implementation and add BigInt support ([#5910](/github.com/formatjs/formatjs/issues/5910)) ([bed7271](github.com/formatjs/formatjs/commits/bed7271893174309c320bb308c6c62756873977e)) - by @longlho
-* **@formatjs/intl-pluralrules:** support notation/compactDisplay (c/e operands) ([#5914](/github.com/formatjs/formatjs/issues/5914)) ([c13e633](github.com/formatjs/formatjs/commits/c13e6331c09725e80993c8a44913d04be6ebae24)) - by @longlho
-* **@formatjs/intl-pluralrules:** support selectRange ([#5913](/github.com/formatjs/formatjs/issues/5913)) ([3240e62](github.com/formatjs/formatjs/commits/3240e629c639d4c91a5c0db0b209bcacda93a505)) - by @longlho
-* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
-* **@formatjs/intl-supportedvaluesof:** update to latest spec ([#5918](/github.com/formatjs/formatjs/issues/5918)) ([f6ed7eb](github.com/formatjs/formatjs/commits/f6ed7eb6cf075e893488960acb8320e1cb99ea05)) - by @longlho
+* **@formatjs/ecma402-abstract:** upgrade Unicode from 13.0.0 to 17.0.0 ([#5866](https://github.com/formatjs/formatjs/issues/5866)) ([00343fe](https://github.com/formatjs/formatjs/commits/00343fe97e34f8f494d8b9a8b99bca50af6b48b2)) - by @longlho
+* **@formatjs/intl-pluralrules:** replace make-plural-compiler with native implementation and add BigInt support ([#5910](https://github.com/formatjs/formatjs/issues/5910)) ([bed7271](https://github.com/formatjs/formatjs/commits/bed7271893174309c320bb308c6c62756873977e)) - by @longlho
+* **@formatjs/intl-pluralrules:** support notation/compactDisplay (c/e operands) ([#5914](https://github.com/formatjs/formatjs/issues/5914)) ([c13e633](https://github.com/formatjs/formatjs/commits/c13e6331c09725e80993c8a44913d04be6ebae24)) - by @longlho
+* **@formatjs/intl-pluralrules:** support selectRange ([#5913](https://github.com/formatjs/formatjs/issues/5913)) ([3240e62](https://github.com/formatjs/formatjs/commits/3240e629c639d4c91a5c0db0b209bcacda93a505)) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
+* **@formatjs/intl-supportedvaluesof:** update to latest spec ([#5918](https://github.com/formatjs/formatjs/issues/5918)) ([f6ed7eb](https://github.com/formatjs/formatjs/commits/f6ed7eb6cf075e893488960acb8320e1cb99ea05)) - by @longlho
 
-## [3.0.8](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.7...@formatjs/ecma402-abstract@3.0.8) (2026-01-06)
-
-**Note:** Version bump only for package @formatjs/ecma402-abstract
-
-## [3.0.7](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.6...@formatjs/ecma402-abstract@3.0.7) (2026-01-02)
-
-### Bug Fixes
-
-* **@formatjs/intl-datetimeformat:** add support for offset tz, fix [#4804](/github.com/formatjs/formatjs/issues/4804) ([#5735](/github.com/formatjs/formatjs/issues/5735)) ([0e835b0](github.com/formatjs/formatjs/commits/0e835b016068e1d3ffd22070be0ad9493eab5323)) - by @longlho
-* **@formatjs/intl-numberformat:** handle massive numbers, fix [#4236](/github.com/formatjs/formatjs/issues/4236) ([#5782](/github.com/formatjs/formatjs/issues/5782)) ([3464284](github.com/formatjs/formatjs/commits/3464284d983070b9b0f307f5f1d1709be829f14c)) - by @longlho
-
-## [3.0.6](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.5...@formatjs/ecma402-abstract@3.0.6) (2025-12-26)
-
-### Bug Fixes
-
-* **@formatjs/intl-datetimeformat:** handle interval format fallback, fix [#4168](/github.com/formatjs/formatjs/issues/4168) ([#5685](/github.com/formatjs/formatjs/issues/5685)) ([55cb0f6](github.com/formatjs/formatjs/commits/55cb0f61a85f7bf6cddd1949cb9ce0c049b43817)) - by @longlho
-
-## [3.0.5](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.4...@formatjs/ecma402-abstract@3.0.5) (2025-12-23)
+## [3.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.7...@formatjs/ecma402-abstract@3.0.8) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
 
-## [3.0.4](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.3...@formatjs/ecma402-abstract@3.0.4) (2025-12-23)
+## [3.0.7](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.6...@formatjs/ecma402-abstract@3.0.7) (2026-01-02)
 
 ### Bug Fixes
 
-* **@formatjs/ecma402-abstract:** optimize ToRawPrecision ([#5663](/github.com/formatjs/formatjs/issues/5663)) ([99fc228](github.com/formatjs/formatjs/commits/99fc228fa43b6b7fc5a488b39cbc5269c3231738)), closes [#5023](github.com/formatjs/formatjs/issues/5023) [#5023](github.com/formatjs/formatjs/issues/5023) - by @longlho
-* **@formatjs/intl-numberformat:** optimize decimal, perf 10x, fix [#5023](/github.com/formatjs/formatjs/issues/5023) ([51fcd21](github.com/formatjs/formatjs/commits/51fcd21fbe084b8bdb3fe54a23c9bd6f37b3f5e0)) - by @longlho
+* **@formatjs/intl-datetimeformat:** add support for offset tz, fix [#4804](https://github.com/formatjs/formatjs/issues/4804) ([#5735](https://github.com/formatjs/formatjs/issues/5735)) ([0e835b0](https://github.com/formatjs/formatjs/commits/0e835b016068e1d3ffd22070be0ad9493eab5323)) - by @longlho
+* **@formatjs/intl-numberformat:** handle massive numbers, fix [#4236](https://github.com/formatjs/formatjs/issues/4236) ([#5782](https://github.com/formatjs/formatjs/issues/5782)) ([3464284](https://github.com/formatjs/formatjs/commits/3464284d983070b9b0f307f5f1d1709be829f14c)) - by @longlho
 
-## [3.0.3](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.2...@formatjs/ecma402-abstract@3.0.3) (2025-12-18)
-
-### Bug Fixes
-
-* **@formatjs/intl-datetimeformat:** support standalone months, fix [#5134](/github.com/formatjs/formatjs/issues/5134) ([#5583](/github.com/formatjs/formatjs/issues/5583)) ([3c7dd24](github.com/formatjs/formatjs/commits/3c7dd24854c42a3ff9034ef511fa2aff8efde78f)) - by @longlho
-
-## [3.0.2](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.1...@formatjs/ecma402-abstract@3.0.2) (2025-12-17)
+## [3.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.5...@formatjs/ecma402-abstract@3.0.6) (2025-12-26)
 
 ### Bug Fixes
 
-* **@formatjs/cli-lib:** fix fs-extra imports, fix [#5569](/github.com/formatjs/formatjs/issues/5569) ([76c8793](github.com/formatjs/formatjs/commits/76c8793bf8a0744ad9a7c64ab3adbe5c1434898f)) - by @longlho
+* **@formatjs/intl-datetimeformat:** handle interval format fallback, fix [#4168](https://github.com/formatjs/formatjs/issues/4168) ([#5685](https://github.com/formatjs/formatjs/issues/5685)) ([55cb0f6](https://github.com/formatjs/formatjs/commits/55cb0f61a85f7bf6cddd1949cb9ce0c049b43817)) - by @longlho
 
-## [3.0.1](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.0...@formatjs/ecma402-abstract@3.0.1) (2025-12-15)
+## [3.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.4...@formatjs/ecma402-abstract@3.0.5) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
 
-## [3.0.0](/github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.6...@formatjs/ecma402-abstract@3.0.0) (2025-12-15)
+## [3.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.3...@formatjs/ecma402-abstract@3.0.4) (2025-12-23)
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** optimize ToRawPrecision ([#5663](https://github.com/formatjs/formatjs/issues/5663)) ([99fc228](https://github.com/formatjs/formatjs/commits/99fc228fa43b6b7fc5a488b39cbc5269c3231738)), closes [#5023](https://github.com/formatjs/formatjs/issues/5023) [#5023](https://github.com/formatjs/formatjs/issues/5023) - by @longlho
+* **@formatjs/intl-numberformat:** optimize decimal, perf 10x, fix [#5023](https://github.com/formatjs/formatjs/issues/5023) ([51fcd21](https://github.com/formatjs/formatjs/commits/51fcd21fbe084b8bdb3fe54a23c9bd6f37b3f5e0)) - by @longlho
+
+## [3.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.2...@formatjs/ecma402-abstract@3.0.3) (2025-12-18)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** support standalone months, fix [#5134](https://github.com/formatjs/formatjs/issues/5134) ([#5583](https://github.com/formatjs/formatjs/issues/5583)) ([3c7dd24](https://github.com/formatjs/formatjs/commits/3c7dd24854c42a3ff9034ef511fa2aff8efde78f)) - by @longlho
+
+## [3.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.1...@formatjs/ecma402-abstract@3.0.2) (2025-12-17)
+
+### Bug Fixes
+
+* **@formatjs/cli-lib:** fix fs-extra imports, fix [#5569](https://github.com/formatjs/formatjs/issues/5569) ([76c8793](https://github.com/formatjs/formatjs/commits/76c8793bf8a0744ad9a7c64ab3adbe5c1434898f)) - by @longlho
+
+## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@3.0.0...@formatjs/ecma402-abstract@3.0.1) (2025-12-15)
+
+**Note:** Version bump only for package @formatjs/ecma402-abstract
+
+## [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.6...@formatjs/ecma402-abstract@3.0.0) (2025-12-15)
 
 ### ⚠ BREAKING CHANGES
 
@@ -80,19 +80,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **@formatjs/ecma402-abstract:** convert to esm ([#5466](/github.com/formatjs/formatjs/issues/5466)) ([0911508](/github.com/formatjs/formatjs/commit/0911508aeabd9331ded8e75cd03182d814849bbe)) - by @longlho
+* **@formatjs/ecma402-abstract:** convert to esm ([#5466](https://github.com/formatjs/formatjs/issues/5466)) ([0911508](https://github.com/formatjs/formatjs/commit/0911508aeabd9331ded8e75cd03182d814849bbe)) - by @longlho
 
-## [2.3.6](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.5...@formatjs/ecma402-abstract@2.3.6) (2025-10-09)
-
-### Bug Fixes
-
-* add a comment just to bump patch version ([fe0dd85](github.com/formatjs/formatjs/commits/fe0dd851574d1413fd8820d28f18cbd660a81776)) - by @longlho
-
-## [2.3.5](github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.4...@formatjs/ecma402-abstract@2.3.5) (2025-10-03)
+## [2.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.5...@formatjs/ecma402-abstract@2.3.6) (2025-10-09)
 
 ### Bug Fixes
 
-* **ecma402:** DayFromYear handling for years below 100 AD ([#5039](/github.com/formatjs/formatjs/issues/5039)) ([aef53fb](github.com/formatjs/formatjs/commits/aef53fbc55240cb116c02d0ac57b5e4be41609e4)), closes [#5038](github.com/formatjs/formatjs/issues/5038) - by @korri123
+* add a comment just to bump patch version ([fe0dd85](https://github.com/formatjs/formatjs/commits/fe0dd851574d1413fd8820d28f18cbd660a81776)) - by @longlho
+
+## [2.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.4...@formatjs/ecma402-abstract@2.3.5) (2025-10-03)
+
+### Bug Fixes
+
+* **ecma402:** DayFromYear handling for years below 100 AD ([#5039](https://github.com/formatjs/formatjs/issues/5039)) ([aef53fb](https://github.com/formatjs/formatjs/commits/aef53fbc55240cb116c02d0ac57b5e4be41609e4)), closes [#5038](https://github.com/formatjs/formatjs/issues/5038) - by @korri123
 
 ## [2.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@2.3.3...@formatjs/ecma402-abstract@2.3.4) (2025-03-23)
 

@@ -3,82 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [8.3.1](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.3.0...@formatjs/intl-listformat@8.3.1) (2026-03-19)
+## [8.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.3.0...@formatjs/intl-listformat@8.3.1) (2026-03-19)
 
 ### Bug Fixes
 
-* **deps:** update .bazeliskrc to Bazel 9.0.1 ([#6151](/github.com/formatjs/formatjs/issues/6151)) ([92f9803](github.com/formatjs/formatjs/commits/92f9803232789835d97d97d336ddbbdefb753c6c)), closes [#6135](github.com/formatjs/formatjs/issues/6135) - by @longlho
+* **deps:** update .bazeliskrc to Bazel 9.0.1 ([#6151](https://github.com/formatjs/formatjs/issues/6151)) ([92f9803](https://github.com/formatjs/formatjs/commits/92f9803232789835d97d97d336ddbbdefb753c6c)), closes [#6135](https://github.com/formatjs/formatjs/issues/6135) - by @longlho
 
-# [8.3.0](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.3...@formatjs/intl-listformat@8.3.0) (2026-03-17)
+# [8.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.3...@formatjs/intl-listformat@8.3.0) (2026-03-17)
 
 ### Features
 
-* **@formatjs/ecma402-abstract:** migrate from decimal.js to @formatjs/bigdecimal ([#6148](/github.com/formatjs/formatjs/issues/6148)) ([93744d4](github.com/formatjs/formatjs/commits/93744d4732ab2dfdc93e7ddb2a73e80a6e461534)) - by @longlho
-* buffer locale data for parallel polyfill + data loading ([#6145](/github.com/formatjs/formatjs/issues/6145)) ([1b28e30](github.com/formatjs/formatjs/commits/1b28e30c26c264a039e1326a45c4fecb649e5d45)), closes [#4457](github.com/formatjs/formatjs/issues/4457) - by @longlho
+* **@formatjs/ecma402-abstract:** migrate from decimal.js to @formatjs/bigdecimal ([#6148](https://github.com/formatjs/formatjs/issues/6148)) ([93744d4](https://github.com/formatjs/formatjs/commits/93744d4732ab2dfdc93e7ddb2a73e80a6e461534)) - by @longlho
+* buffer locale data for parallel polyfill + data loading ([#6145](https://github.com/formatjs/formatjs/issues/6145)) ([1b28e30](https://github.com/formatjs/formatjs/commits/1b28e30c26c264a039e1326a45c4fecb649e5d45)), closes [#4457](https://github.com/formatjs/formatjs/issues/4457) - by @longlho
 
-## [8.2.3](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.2...@formatjs/intl-listformat@8.2.3) (2026-03-16)
+## [8.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.2...@formatjs/intl-listformat@8.2.3) (2026-03-16)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-## [8.2.2](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.1...@formatjs/intl-listformat@8.2.2) (2026-03-09)
+## [8.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.1...@formatjs/intl-listformat@8.2.2) (2026-03-09)
 
 ### Bug Fixes
 
-* add locale-data directory export for variable dynamic imports ([#6063](/github.com/formatjs/formatjs/issues/6063)) ([0492f8b](github.com/formatjs/formatjs/commits/0492f8bf5c7cefb561b2bc7b9f7363d218bd0641)), closes [#6060](github.com/formatjs/formatjs/issues/6060) - by @longlho
+* add locale-data directory export for variable dynamic imports ([#6063](https://github.com/formatjs/formatjs/issues/6063)) ([0492f8b](https://github.com/formatjs/formatjs/commits/0492f8bf5c7cefb561b2bc7b9f7363d218bd0641)), closes [#6060](https://github.com/formatjs/formatjs/issues/6060) - by @longlho
 
-## [8.2.1](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.0...@formatjs/intl-listformat@8.2.1) (2026-02-01)
+## [8.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.2.0...@formatjs/intl-listformat@8.2.1) (2026-02-01)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-# [8.2.0](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.2...@formatjs/intl-listformat@8.2.0) (2026-01-15)
+# [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.2...@formatjs/intl-listformat@8.2.0) (2026-01-15)
 
 ### Features
 
-* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](/github.com/formatjs/formatjs/issues/5862)) ([effeb9c](github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](github.com/formatjs/formatjs/issues/29) - by @longlho
+* **@formatjs/intl-segmenter:** improve Unicode 17.0 Format/Extend transparency and upgrade deps ([#5862](https://github.com/formatjs/formatjs/issues/5862)) ([effeb9c](https://github.com/formatjs/formatjs/commits/effeb9cd9d26f8c43c1e3df64a84c42dc7b12043)), closes [#29](https://github.com/formatjs/formatjs/issues/29) - by @longlho
 
-## [8.1.2](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.1...@formatjs/intl-listformat@8.1.2) (2026-01-06)
-
-**Note:** Version bump only for package @formatjs/intl-listformat
-
-## [8.1.1](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.0...@formatjs/intl-listformat@8.1.1) (2026-01-02)
+## [8.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.1...@formatjs/intl-listformat@8.1.2) (2026-01-06)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-# [8.1.0](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.6...@formatjs/intl-listformat@8.1.0) (2025-12-26)
+## [8.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.1.0...@formatjs/intl-listformat@8.1.1) (2026-01-02)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+# [8.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.6...@formatjs/intl-listformat@8.1.0) (2025-12-26)
 
 ### Features
 
-* upgrade cldr to v48 ([#5678](/github.com/formatjs/formatjs/issues/5678)) ([54ef319](github.com/formatjs/formatjs/commits/54ef31940172467889be64907e9fbbf567ea3f4b)) - by @longlho
+* upgrade cldr to v48 ([#5678](https://github.com/formatjs/formatjs/issues/5678)) ([54ef319](https://github.com/formatjs/formatjs/commits/54ef31940172467889be64907e9fbbf567ea3f4b)) - by @longlho
 
-## [8.0.6](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.5...@formatjs/intl-listformat@8.0.6) (2025-12-23)
-
-**Note:** Version bump only for package @formatjs/intl-listformat
-
-## [8.0.5](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.4...@formatjs/intl-listformat@8.0.5) (2025-12-23)
+## [8.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.5...@formatjs/intl-listformat@8.0.6) (2025-12-23)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-## [8.0.4](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.3...@formatjs/intl-listformat@8.0.4) (2025-12-19)
+## [8.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.4...@formatjs/intl-listformat@8.0.5) (2025-12-23)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+## [8.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.3...@formatjs/intl-listformat@8.0.4) (2025-12-19)
 
 ### Bug Fixes
 
-* **@formatjs/utils:** fix json ESM import ([#5594](/github.com/formatjs/formatjs/issues/5594)) ([dfd79a2](github.com/formatjs/formatjs/commits/dfd79a2d9935e0b7d06c08555ff6625d3f1c884f)) - by @longlho
+* **@formatjs/utils:** fix json ESM import ([#5594](https://github.com/formatjs/formatjs/issues/5594)) ([dfd79a2](https://github.com/formatjs/formatjs/commits/dfd79a2d9935e0b7d06c08555ff6625d3f1c884f)) - by @longlho
 
-## [8.0.3](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.2...@formatjs/intl-listformat@8.0.3) (2025-12-18)
+## [8.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.2...@formatjs/intl-listformat@8.0.3) (2025-12-18)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-## [8.0.2](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.1...@formatjs/intl-listformat@8.0.2) (2025-12-17)
+## [8.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.1...@formatjs/intl-listformat@8.0.2) (2025-12-17)
 
 ### Bug Fixes
 
-* **@formatjs/cli-lib:** fix fs-extra imports, fix [#5569](/github.com/formatjs/formatjs/issues/5569) ([76c8793](github.com/formatjs/formatjs/commits/76c8793bf8a0744ad9a7c64ab3adbe5c1434898f)) - by @longlho
+* **@formatjs/cli-lib:** fix fs-extra imports, fix [#5569](https://github.com/formatjs/formatjs/issues/5569) ([76c8793](https://github.com/formatjs/formatjs/commits/76c8793bf8a0744ad9a7c64ab3adbe5c1434898f)) - by @longlho
 
-## [8.0.1](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.0...@formatjs/intl-listformat@8.0.1) (2025-12-15)
+## [8.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.0.0...@formatjs/intl-listformat@8.0.1) (2025-12-15)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-## [8.0.0](/github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.13...@formatjs/intl-listformat@8.0.0) (2025-12-15)
+## [8.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.13...@formatjs/intl-listformat@8.0.0) (2025-12-15)
 
 ### ⚠ BREAKING CHANGES
 
@@ -88,23 +88,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](/github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](/github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
-* **@formatjs/intl-listformat:** convert to ESM ([bef4a10](/github.com/formatjs/formatjs/commit/bef4a1030ccda93c863af47790b9618e5316cf40)) - by @longlho
-* **@formatjs/intl-locale:** convert to esm ([#5435](/github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](/github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
+* **@formatjs/intl-getcanonicallocales:** convert to esm ([#5457](https://github.com/formatjs/formatjs/issues/5457)) ([e1a6d19](https://github.com/formatjs/formatjs/commit/e1a6d196404a25c67eba3bc149b9d5162715f0db)) - by @longlho
+* **@formatjs/intl-listformat:** convert to ESM ([bef4a10](https://github.com/formatjs/formatjs/commit/bef4a1030ccda93c863af47790b9618e5316cf40)) - by @longlho
+* **@formatjs/intl-locale:** convert to esm ([#5435](https://github.com/formatjs/formatjs/issues/5435)) ([fc9ae8e](https://github.com/formatjs/formatjs/commit/fc9ae8e20b556108b1b800fb930d70ffc5545041)) - by @longlho
 
 ### Bug Fixes
 
-* fix exports ([#5430](/github.com/formatjs/formatjs/issues/5430)) ([b7a9b4c](/github.com/formatjs/formatjs/commit/b7a9b4cd7a0566c6aaa33305a9f700d639f30ddd)) - by @longlho
+* fix exports ([#5430](https://github.com/formatjs/formatjs/issues/5430)) ([b7a9b4c](https://github.com/formatjs/formatjs/commit/b7a9b4cd7a0566c6aaa33305a9f700d639f30ddd)) - by @longlho
 
-## [7.7.13](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.12...@formatjs/intl-listformat@7.7.13) (2025-10-09)
+## [7.7.13](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.12...@formatjs/intl-listformat@7.7.13) (2025-10-09)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
 
-## [7.7.12](github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.11...@formatjs/intl-listformat@7.7.12) (2025-10-03)
+## [7.7.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.11...@formatjs/intl-listformat@7.7.12) (2025-10-03)
 
 ### Bug Fixes
 
-* string list from iterable ([#5046](/github.com/formatjs/formatjs/issues/5046)) ([19a4c05](github.com/formatjs/formatjs/commits/19a4c051238aa48c6cab5eadf3a46ca7783a987c)) - by @septs
+* string list from iterable ([#5046](https://github.com/formatjs/formatjs/issues/5046)) ([19a4c05](https://github.com/formatjs/formatjs/commits/19a4c051238aa48c6cab5eadf3a46ca7783a987c)) - by @septs
 
 ## [7.7.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@7.7.10...@formatjs/intl-listformat@7.7.11) (2025-03-23)
 

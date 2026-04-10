@@ -234,5 +234,5 @@
       "esbuild"
     ]
   },
-  "repository": "formatjs/formatjs"
+  "repository": "https://github.com/formatjs/formatjs"
 }
