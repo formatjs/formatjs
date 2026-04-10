@@ -64,7 +64,7 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None, packag
         package_json: whether to include package.json in js_library srcs (default True)
     """
 
-    effective_tsconfig = tsconfig or BASE_TSCONFIG
+    effective_tsconfig = tsconfig or packages_tsconfig()
 
     # Always build ESM bundle
     # Type check only with tsgo (fast, parallel)

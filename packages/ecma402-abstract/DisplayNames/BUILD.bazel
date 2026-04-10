@@ -5,7 +5,7 @@ PACKAGE_NAME = "DisplayNames"
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "//packages/ecma402-abstract:ecma402-abstract-root",
+    "//packages/ecma402-abstract",
 ]
 
 ts_compile(
