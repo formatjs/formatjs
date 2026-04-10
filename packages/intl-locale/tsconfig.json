@@ -4,6 +4,7 @@
       "#packages/*": ["../../packages/*"]
     }
   },
+  "exclude": ["./scripts/**/*"],
   "extends": "../../tsconfig.json",
   "references": [
     {

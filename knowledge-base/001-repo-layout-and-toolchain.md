@@ -47,16 +47,17 @@ BuildBuddy provides remote caching for all CI builds and remote execution for Li
 
 ### Custom Bazel Macros (tools/)
 
-| Macro                  | File                 | Expands To                                                                         |
-| ---------------------- | -------------------- | ---------------------------------------------------------------------------------- |
-| `ts_compile`           | `index.bzl`          | ts_project (typecheck, tsgo) + ts_project (transpile, oxc) + js_library            |
-| `ts_compile_node`      | `index.bzl`          | Same as ts_compile with ESNEXT_TSCONFIG                                            |
-| `rolldown_bundle`      | `rolldown.bzl`       | js_run_binary (rolldown bundler); `dts=True` bundles .d.ts via rolldown-plugin-dts |
-| `package_exports_test` | `index.bzl`          | js_test validating package.json exports/types exist in npm_package                 |
-| `vitest`               | `vitest.bzl`         | ts_project (typecheck) + vitest_test + snapshot targets                            |
-| `ts_binary`            | `index.bzl`          | js_binary with `--experimental-transform-types`                                    |
-| `generate_src_file`    | `index.bzl`          | ts_run_binary + oxfmt + write_source_files                                         |
-| `oxc_transpiler`       | `oxc_transpiler.bzl` | Custom rule: .ts -> .js + .d.ts via oxc-transform                                  |
+| Macro                        | File                 | Expands To                                                                               |
+| ---------------------------- | -------------------- | ---------------------------------------------------------------------------------------- |
+| `ts_compile`                 | `index.bzl`          | ts_project (typecheck, tsgo) + ts_project (transpile, oxc) + js_library                  |
+| `ts_compile_node`            | `index.bzl`          | Same as ts_compile with ESNEXT_TSCONFIG                                                  |
+| `rolldown_bundle`            | `rolldown.bzl`       | js_run_binary (rolldown bundler); `dts=True` bundles .d.ts via rolldown-plugin-dts       |
+| `package_exports_test`       | `index.bzl`          | js_test validating package.json exports/types exist in npm_package                       |
+| `vitest`                     | `vitest.bzl`         | ts_project (typecheck) + vitest_test + snapshot targets                                  |
+| `ts_binary`                  | `index.bzl`          | js_binary with `--experimental-transform-types`                                          |
+| `generate_src_file`          | `index.bzl`          | ts_run_binary + oxfmt + write_source_files                                               |
+| `generate_ide_tsconfig_json` | `index.bzl`          | Generates tsconfig.json with `#packages/*` paths, composite, project references; auto-excludes child sub-packages via `native.subpackages()` |
+| `oxc_transpiler`             | `oxc_transpiler.bzl` | Custom rule: .ts -> .js + .d.ts via oxc-transform                                        |
 
 ## Package Management: pnpm
 

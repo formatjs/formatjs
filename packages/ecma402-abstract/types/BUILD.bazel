@@ -1,0 +1,21 @@
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "ts_compile")
+
+PACKAGE_NAME = "types"
+
+SRCS = glob(["*.ts"])
+
+SRC_DEPS = [
+    "//:node_modules/@formatjs/bigdecimal",
+]
+
+ts_compile(
+    name = PACKAGE_NAME,
+    srcs = SRCS,
+    package_json = False,
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+generate_ide_tsconfig_json(
+    composite = True,
+)

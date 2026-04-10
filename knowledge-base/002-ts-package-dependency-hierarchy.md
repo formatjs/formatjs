@@ -15,11 +15,11 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 
 ### Layer 1 — Core Infrastructure
 
-| Package                            | Internal Dependencies                        |
-| ---------------------------------- | -------------------------------------------- |
-| `@formatjs/intl-localematcher`     | fast-memoize                                 |
-| `@formatjs/ecma402-abstract`       | bigdecimal, fast-memoize, intl-localematcher |
-| `@formatjs/intl-supportedvaluesof` | ecma402-abstract, fast-memoize               |
+| Package                            | Internal Dependencies                        | Notes                                                                                                                                   |
+| ---------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `@formatjs/intl-localematcher`     | fast-memoize                                 |                                                                                                                                         |
+| `ecma402-abstract` (internal)      | bigdecimal, fast-memoize, intl-localematcher | Not published to npm. Imported via `#packages/ecma402-abstract/*.js`. Split into 3 Bazel sub-packages: root, `types/`, `NumberFormat/`. |
+| `@formatjs/intl-supportedvaluesof` | ecma402-abstract, fast-memoize               |                                                                                                                                         |
 
 ### Layer 2 — Parsers & Polyfills
 
