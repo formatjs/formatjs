@@ -5,8 +5,8 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_exports_test", "package_json_test")
-load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG")
 load("//tools:vitest.bzl", "vitest")
 
@@ -43,10 +43,67 @@ SRC_DEPS = [
     "//:node_modules/vite",
 ]
 
+EXTERNAL_PACKAGES = [
+    dep.split("node_modules/")[1]
+    for dep in SRC_DEPS
+    if "node_modules/" in dep
+]
+
+ENTRY_POINTS = [
+    "index.ts",
+    "vite.ts",
+    "webpack.ts",
+    "rollup.ts",
+    "esbuild.ts",
+    "rspack.ts",
+    "transform.ts",
+]
+
+[rolldown_bundle(
+    name = "%s-bundle" % entry.replace(".ts", ""),
+    srcs = [":srcs"],
+    dts = True,
+    entry_point = entry,
+    external = EXTERNAL_PACKAGES,
+    format = "esm",
+    output = "%s.js" % entry.replace(".ts", ""),
+    target = "es2020",
+    deps = SRC_DEPS,
+) for entry in ENTRY_POINTS]
+
+BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
+
+js_library(
+    name = "dist",
+    srcs = BUNDLES + [
+        "package.json",
+    ],
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        "LICENSE.md",
+        "README.md",
+        "package.json",
+    ] + BUNDLES,
+    package = PACKAGE_NAME,
+    replace_prefixes = {
+        "%s-bundle/" % entry.replace(".ts", ""): ""
+        for entry in ENTRY_POINTS
+    },
+    visibility = ["//visibility:public"],
+)
+
+no_internal_imports_test(
+    name = "no_internal_imports_test",
+    data = BUNDLES,
+)
+
 # Type check only with tsgo (fast, parallel)
 # Uses skipLibCheck because unplugin's .d.ts imports types from many optional peer deps
 ts_project(
-    name = "dist-esm-esnext-typecheck",
+    name = "typecheck",
     srcs = [":srcs"],
     declaration = True,
     no_emit = True,
@@ -54,26 +111,6 @@ ts_project(
     transpiler = tsgo_bin.tsgo,
     tsconfig = ESNEXT_SKIP_LIB_CHECK_TSCONFIG,
     deps = SRC_DEPS,
-)
-
-# Transpile with oxc-transform (fast JS and .d.ts generation)
-ts_project(
-    name = "dist-esm-esnext",
-    srcs = [":srcs"],
-    declaration = True,
-    declaration_transpiler = oxc_transpiler,
-    resolve_json_module = True,
-    transpiler = oxc_transpiler,
-    tsconfig = ESNEXT_SKIP_LIB_CHECK_TSCONFIG,
-    deps = SRC_DEPS + ["//:node_modules/oxc-transform"],
-)
-
-js_library(
-    name = "dist",
-    srcs = [
-        "package.json",
-        ":dist-esm-esnext",
-    ],
 )
 
 vitest(
@@ -93,18 +130,6 @@ vitest(
     deps = SRC_DEPS + [
         "//:node_modules/@bazel/runfiles",
     ],
-)
-
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-        ":dist",
-    ],
-    package = PACKAGE_NAME,
-    visibility = ["//visibility:public"],
 )
 
 copy_to_bin(
