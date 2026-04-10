@@ -1,3 +1,3 @@
-export * from './src/transform.js'
-export * from './src/types.js'
-export * from './src/interpolate-name.js'
+export * from '#packages/ts-transformer/src/transform.js'
+export * from '#packages/ts-transformer/src/types.js'
+export * from '#packages/ts-transformer/src/interpolate-name.js'

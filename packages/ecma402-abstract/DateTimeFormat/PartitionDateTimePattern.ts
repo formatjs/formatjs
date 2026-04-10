@@ -10,8 +10,8 @@ import type Decimal from '@formatjs/bigdecimal'
 import {
   FormatDateTimePattern,
   type FormatDateTimePatternImplDetails,
-} from './FormatDateTimePattern.js'
-import {type ToLocalTimeImplDetails} from './ToLocalTime.js'
+} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
+import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern

@@ -1,6 +1,6 @@
 import type {Decimal} from '@formatjs/bigdecimal'
-import {type NumberFormatInternal} from '../types/number.js'
-import {PartitionNumberPattern} from './PartitionNumberPattern.js'
+import {type NumberFormatInternal} from '#packages/ecma402-abstract/types/number.js'
+import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.js'
 
 export function FormatNumeric(
   internalSlots: NumberFormatInternal,

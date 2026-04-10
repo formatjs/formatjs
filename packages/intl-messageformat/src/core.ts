@@ -19,7 +19,7 @@ import {
   type MessageFormatPart,
   PART_TYPE,
   type PrimitiveType,
-} from './formatters.js'
+} from '#packages/intl-messageformat/src/formatters.js'
 
 // -- MessageFormat --------------------------------------------------------
 

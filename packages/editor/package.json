@@ -39,8 +39,5 @@
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "imports": {
-    "#packages/*": "../../packages/*"
   }
 }

@@ -1,5 +1,5 @@
-import {parse} from '../index.js'
-import {printAST} from '../printer.js'
+import {parse} from '#packages/icu-messageformat-parser/index.js'
+import {printAST} from '#packages/icu-messageformat-parser/printer.js'
 import {expect, test} from 'vitest'
 test('should escape things properly', function () {
   expect(printAST(parse("Name: ''{name}''."))).toBe("Name: ''{name}''.")

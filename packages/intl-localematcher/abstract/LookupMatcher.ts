@@ -1,6 +1,6 @@
-import {BestAvailableLocale} from './BestAvailableLocale.js'
-import type {LookupMatcherResult} from './types.js'
-import {UNICODE_EXTENSION_SEQUENCE_REGEX} from './utils.js'
+import {BestAvailableLocale} from '#packages/intl-localematcher/abstract/BestAvailableLocale.js'
+import type {LookupMatcherResult} from '#packages/intl-localematcher/abstract/types.js'
+import {UNICODE_EXTENSION_SEQUENCE_REGEX} from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-lookupmatcher

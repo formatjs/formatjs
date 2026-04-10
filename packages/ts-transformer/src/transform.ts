@@ -6,9 +6,9 @@ import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import * as stringifyNs from 'json-stable-stringify'
 import * as typescript from 'typescript'
-import {debug} from './console_utils.js'
-import {interpolateName} from './interpolate-name.js'
-import {type MessageDescriptor} from './types.js'
+import {debug} from '#packages/ts-transformer/src/console_utils.js'
+import {interpolateName} from '#packages/ts-transformer/src/interpolate-name.js'
+import {type MessageDescriptor} from '#packages/ts-transformer/src/types.js'
 
 const stringify = (stringifyNs as any).default || stringifyNs
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void

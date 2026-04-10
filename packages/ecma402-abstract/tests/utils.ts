@@ -1,5 +1,5 @@
-import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions.js'
-import {type NumberFormatInternal} from '../types/number.js'
+import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatDigitOptions.js'
+import {type NumberFormatInternal} from '#packages/ecma402-abstract/types/number.js'
 
 const internalSlotMap = new WeakMap<Intl.NumberFormat, NumberFormatInternal>()
 

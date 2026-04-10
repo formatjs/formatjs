@@ -1,4 +1,4 @@
-import {invariant} from './utils.js'
+import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
 export function CanonicalizeUValue(ukey: string, uvalue: string): string {
   // TODO: Implement algorithm for CanonicalizeUValue per https://tc39.es/ecma402/#sec-canonicalizeuvalue

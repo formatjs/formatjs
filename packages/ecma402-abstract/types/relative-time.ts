@@ -1,5 +1,5 @@
-import {type LocaleData} from './core.js'
-import {type LDMLPluralRule} from './plural-rules.js'
+import {type LocaleData} from '#packages/ecma402-abstract/types/core.js'
+import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 
 export interface FieldData {
   '0'?: string

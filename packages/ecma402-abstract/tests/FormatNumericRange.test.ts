@@ -1,6 +1,6 @@
 import Decimal from '@formatjs/bigdecimal'
-import {FormatNumericRange} from '../NumberFormat/FormatNumericRange.js'
-import {getInternalSlots} from './utils.js'
+import {FormatNumericRange} from '#packages/ecma402-abstract/NumberFormat/FormatNumericRange.js'
+import {getInternalSlots} from '#packages/ecma402-abstract/tests/utils.js'
 import {describe, expect, it} from 'vitest'
 describe('FormatNumericRange', () => {
   const numberFormat: Intl.NumberFormat = new Intl.NumberFormat('it')

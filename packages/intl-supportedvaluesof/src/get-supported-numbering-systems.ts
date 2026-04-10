@@ -1,5 +1,5 @@
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
-import {numberingSystemNames} from './numbering-systems.generated.js'
+import {numberingSystemNames} from '#packages/intl-supportedvaluesof/src/numbering-systems.generated.js'
 
 /**
  * Implementation: Tests if a numbering system is supported by attempting to create

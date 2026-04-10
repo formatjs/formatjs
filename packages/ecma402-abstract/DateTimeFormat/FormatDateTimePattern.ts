@@ -8,8 +8,11 @@ import {
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
 
 import Decimal from '@formatjs/bigdecimal'
-import {ToLocalTime, type ToLocalTimeImplDetails} from './ToLocalTime.js'
-import {DATE_TIME_PROPS} from './utils.js'
+import {
+  ToLocalTime,
+  type ToLocalTimeImplDetails,
+} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
+import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 function pad(n: number): string {
   if (n < 10) {

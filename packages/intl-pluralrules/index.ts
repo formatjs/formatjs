@@ -12,7 +12,7 @@ import {type OperandsRecord} from '#packages/ecma402-abstract/PluralRules/GetOpe
 import {InitializePluralRules} from '#packages/ecma402-abstract/PluralRules/InitializePluralRules.js'
 import {ResolvePlural} from '#packages/ecma402-abstract/PluralRules/ResolvePlural.js'
 import {ResolvePluralRange} from '#packages/ecma402-abstract/PluralRules/ResolvePluralRange.js'
-import getInternalSlots from './get_internal_slots.js'
+import getInternalSlots from '#packages/intl-pluralrules/get_internal_slots.js'
 
 /**
  * Type augmentation for Intl.PluralRules

@@ -1,6 +1,9 @@
 import {type NodePath, type PluginPass} from '@babel/core'
 import * as t from '@babel/types'
-import {type Options, type State} from '../types.js'
+import {
+  type Options,
+  type State,
+} from '#packages/babel-plugin-formatjs/types.js'
 import {type VisitNodeFunction} from '@babel/traverse'
 import {
   createMessageDescriptor,
@@ -8,7 +11,7 @@ import {
   wasExtracted,
   storeMessage,
   tagAsExtracted,
-} from '../utils.js'
+} from '#packages/babel-plugin-formatjs/utils.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 
 function assertObjectExpression(

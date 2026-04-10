@@ -1,1 +1,1 @@
-export * from './src/segmenter.js'
+export * from '#packages/intl-segmenter/src/segmenter.js'

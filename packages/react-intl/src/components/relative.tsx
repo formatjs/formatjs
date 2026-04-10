@@ -6,8 +6,8 @@
 import * as React from 'react'
 
 import {type FormatRelativeTimeOptions} from '@formatjs/intl'
-import {invariant} from '../utils.js'
-import useIntl from './useIntl.js'
+import {invariant} from '#packages/react-intl/src/utils.js'
+import useIntl from '#packages/react-intl/src/components/useIntl.js'
 
 const MINUTE = 60
 const HOUR = 60 * 60

@@ -1,5 +1,5 @@
-import {getCanonicalLocales} from './index.js'
-import {shouldPolyfill} from './should-polyfill.js'
+import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
+import {shouldPolyfill} from '#packages/intl-getcanonicallocales/should-polyfill.js'
 if (typeof Intl === 'undefined') {
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'Intl', {

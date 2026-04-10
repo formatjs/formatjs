@@ -1,5 +1,5 @@
-import RelativeTimeFormat from './index.js'
-import {shouldPolyfill} from './should-polyfill.js'
+import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
+import {shouldPolyfill} from '#packages/intl-relativetimeformat/should-polyfill.js'
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'RelativeTimeFormat', {
     value: RelativeTimeFormat,

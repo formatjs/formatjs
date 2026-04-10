@@ -1,5 +1,10 @@
 import {defineComponent, h} from 'vue'
-import {createIntl, intlKey, provideIntl, useIntl} from '../index.js'
+import {
+  createIntl,
+  intlKey,
+  provideIntl,
+  useIntl,
+} from '#packages/vue-intl/index.js'
 import {mount} from '@vue/test-utils'
 import {createIntl as rawCreateIntl} from '@formatjs/intl'
 import {expect, test} from 'vitest'

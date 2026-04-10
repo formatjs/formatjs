@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import {DateTimeFormat} from './core.js'
+import {DateTimeFormat} from '#packages/intl-datetimeformat/src/core.js'
 import {ToDateTimeOptions} from '#packages/ecma402-abstract/DateTimeFormat/ToDateTimeOptions.js'
 
 /**

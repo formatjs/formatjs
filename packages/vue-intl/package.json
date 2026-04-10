@@ -9,9 +9,6 @@
   "exports": {
     ".": "./index.js"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@babel/types": "^7.29.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",

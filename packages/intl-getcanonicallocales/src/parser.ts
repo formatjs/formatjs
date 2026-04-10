@@ -6,7 +6,7 @@ import {
   type PuExtension,
   type OtherExtension,
   type KV,
-} from './types.js'
+} from '#packages/intl-getcanonicallocales/src/types.js'
 
 const ALPHANUM_1_8 = /^[a-z0-9]{1,8}$/i
 const ALPHANUM_2_8 = /^[a-z0-9]{2,8}$/i

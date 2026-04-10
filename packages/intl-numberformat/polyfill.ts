@@ -1,8 +1,8 @@
-import {NumberFormat} from './src/core.js'
-import {toLocaleString as _toLocaleString} from './src/to_locale_string.js'
+import {NumberFormat} from '#packages/intl-numberformat/src/core.js'
+import {toLocaleString as _toLocaleString} from '#packages/intl-numberformat/src/to_locale_string.js'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {defineProperty} from '#packages/ecma402-abstract/utils.js'
-import {shouldPolyfill} from './should-polyfill.js'
+import {shouldPolyfill} from '#packages/intl-numberformat/should-polyfill.js'
 
 if (shouldPolyfill()) {
   defineProperty(Intl, 'NumberFormat', {value: NumberFormat})

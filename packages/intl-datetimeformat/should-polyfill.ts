@@ -1,5 +1,5 @@
 import {match} from '@formatjs/intl-localematcher'
-import {supportedLocales} from './supported-locales.generated.js'
+import {supportedLocales} from '#packages/intl-datetimeformat/supported-locales.generated.js'
 
 function supportsDateStyle() {
   try {

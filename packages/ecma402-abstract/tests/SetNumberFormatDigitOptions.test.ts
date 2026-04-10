@@ -1,8 +1,8 @@
-import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions.js'
+import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatDigitOptions.js'
 import {
   type NumberFormatDigitInternalSlots,
   type NumberFormatDigitOptions,
-} from '../types/number.js'
+} from '#packages/ecma402-abstract/types/number.js'
 import {describe, expect, it, beforeEach} from 'vitest'
 describe('SetNumberFormatDigitOptions', () => {
   let internalSlots: NumberFormatDigitInternalSlots

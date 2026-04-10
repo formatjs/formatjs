@@ -1,7 +1,7 @@
 import type Decimal from '@formatjs/bigdecimal'
-import {type FormatDateTimePatternImplDetails} from './FormatDateTimePattern.js'
-import {PartitionDateTimeRangePattern} from './PartitionDateTimeRangePattern.js'
-import {type ToLocalTimeImplDetails} from './ToLocalTime.js'
+import {type FormatDateTimePatternImplDetails} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
+import {PartitionDateTimeRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.js'
+import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 
 export function FormatDateTimeRange(
   dtf: Intl.DateTimeFormat,

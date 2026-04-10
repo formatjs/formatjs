@@ -14,9 +14,6 @@
     "./locale-data/*": "./locale-data/*",
     "./locale-data": "./locale-data"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@formatjs/intl-localematcher": "workspace:*"
   },

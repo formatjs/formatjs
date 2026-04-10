@@ -1,4 +1,4 @@
-import {getCanonicalLocales} from '../index.js'
+import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
 import {describe, expect, it} from 'vitest'
 describe('Intl.getCanonicalLocales', () => {
   it('regular', function () {

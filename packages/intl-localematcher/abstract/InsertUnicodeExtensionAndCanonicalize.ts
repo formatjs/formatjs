@@ -1,6 +1,6 @@
-import {CanonicalizeUnicodeLocaleId} from './CanonicalizeUnicodeLocaleId.js'
-import type {Keyword} from './types.js'
-import {invariant} from './utils.js'
+import {CanonicalizeUnicodeLocaleId} from '#packages/intl-localematcher/abstract/CanonicalizeUnicodeLocaleId.js'
+import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
+import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
 export function InsertUnicodeExtensionAndCanonicalize(
   locale: string,

@@ -1,4 +1,4 @@
-import {type LocaleData} from './core.js'
+import {type LocaleData} from '#packages/ecma402-abstract/types/core.js'
 
 export type ListPatternLocaleData = LocaleData<ListPatternFieldsData>
 

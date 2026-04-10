@@ -1,5 +1,8 @@
-import {ErrorKind} from './error.js'
-import {Parser, type ParserOptions} from './parser.js'
+import {ErrorKind} from '#packages/icu-messageformat-parser/error.js'
+import {
+  Parser,
+  type ParserOptions,
+} from '#packages/icu-messageformat-parser/parser.js'
 import {
   isDateElement,
   isDateTimeSkeleton,
@@ -10,7 +13,7 @@ import {
   isTagElement,
   isTimeElement,
   type MessageFormatElement,
-} from './types.js'
+} from '#packages/icu-messageformat-parser/types.js'
 
 function pruneLocation(els: MessageFormatElement[]): void {
   els.forEach(el => {
@@ -57,8 +60,8 @@ export function parse(
   }
   return result.val
 }
-export * from './types.js'
+export * from '#packages/icu-messageformat-parser/types.js'
 export type {ParserOptions}
 // only for testing
 export const _Parser: typeof Parser = Parser
-export {isStructurallySame} from './manipulator.js'
+export {isStructurallySame} from '#packages/icu-messageformat-parser/manipulator.js'

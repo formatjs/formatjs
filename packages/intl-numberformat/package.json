@@ -13,9 +13,6 @@
     "./locale-data/*": "./locale-data/*",
     "./locale-data": "./locale-data"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@formatjs/bigdecimal": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*"

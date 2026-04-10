@@ -1,18 +1,18 @@
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList.js'
-import {CoerceOptionsToObject} from '../CoerceOptionsToObject.js'
-import {GetOption} from '../GetOption.js'
-import {GetStringOrBooleanOption} from '../GetStringOrBooleanOption.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
+import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {GetStringOrBooleanOption} from '#packages/ecma402-abstract/GetStringOrBooleanOption.js'
 import {
   type NumberFormatInternal,
   type NumberFormatLocaleInternalData,
   type NumberFormatOptions,
   type UseGroupingType,
-} from '../types/number.js'
-import {invariant} from '../utils.js'
-import {CurrencyDigits} from './CurrencyDigits.js'
-import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions.js'
-import {SetNumberFormatUnitOptions} from './SetNumberFormatUnitOptions.js'
+} from '#packages/ecma402-abstract/types/number.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {CurrencyDigits} from '#packages/ecma402-abstract/NumberFormat/CurrencyDigits.js'
+import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatDigitOptions.js'
+import {SetNumberFormatUnitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatUnitOptions.js'
 
 /**
  * https://tc39.es/ecma402/#sec-initializenumberformat

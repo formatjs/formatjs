@@ -12,7 +12,7 @@ import {
   type PluralOrSelectOption,
   type SelectElement,
   TYPE,
-} from './types.js'
+} from '#packages/icu-messageformat-parser/types.js'
 
 function cloneDeep<T>(obj: T): T {
   if (Array.isArray(obj)) {

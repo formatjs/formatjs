@@ -10,11 +10,11 @@ import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/GetDurationUnitOptions.js'
-import {PartitionDurationFormatPattern} from './abstract/PartitionDurationFormatPattern.js'
+import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/src/abstract/PartitionDurationFormatPattern.js'
 import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
-import {getInternalSlots} from './get_internal_slots.js'
-import {numberingSystemNames} from './numbering-systems.generated.js'
-import {TIME_SEPARATORS} from './time-separators.generated.js'
+import {getInternalSlots} from '#packages/intl-durationformat/src/get_internal_slots.js'
+import {numberingSystemNames} from '#packages/intl-durationformat/src/numbering-systems.generated.js'
+import {TIME_SEPARATORS} from '#packages/intl-durationformat/src/time-separators.generated.js'
 import type {
   DurationFormatLocaleInternalData,
   DurationFormatPart,
@@ -22,8 +22,8 @@ import type {
   DurationInput,
   IntlDurationFormatInternal,
   ResolvedDurationFormatOptions,
-} from './types.js'
-import {type DurationFormatOptions} from './types.js'
+} from '#packages/intl-durationformat/src/types.js'
+import {type DurationFormatOptions} from '#packages/intl-durationformat/src/types.js'
 
 // Keys that should be included in resolvedOptions() output
 // These represent all the configurable options for duration formatting

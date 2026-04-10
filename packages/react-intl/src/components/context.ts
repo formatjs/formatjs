@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {type IntlShape} from '../types.js'
+import {type IntlShape} from '#packages/react-intl/src/types.js'
 
 const IntlContext: React.Context<IntlShape> = React.createContext<IntlShape>(
   null as any

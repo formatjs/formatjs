@@ -1,4 +1,4 @@
-import {DisplayNames} from './index.js'
+import {DisplayNames} from '#packages/intl-displaynames/index.js'
 
 Object.defineProperty(Intl, 'DisplayNames', {
   value: DisplayNames,

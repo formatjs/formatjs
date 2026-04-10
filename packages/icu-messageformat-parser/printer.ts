@@ -22,7 +22,7 @@ import {
   type TagElement,
   type TimeElement,
   TYPE,
-} from './types.js'
+} from '#packages/icu-messageformat-parser/types.js'
 
 export function printAST(ast: MessageFormatElement[]): string {
   return doPrintAST(ast, false)

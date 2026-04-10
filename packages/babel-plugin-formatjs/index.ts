@@ -5,9 +5,9 @@ import {
   type ExtractedMessageDescriptor,
   type Options,
   type State,
-} from './types.js'
-import {visitor as CallExpression} from './visitors/call-expression.js'
-import {visitor as JSXOpeningElement} from './visitors/jsx-opening-element.js'
+} from '#packages/babel-plugin-formatjs/types.js'
+import {visitor as CallExpression} from '#packages/babel-plugin-formatjs/visitors/call-expression.js'
+import {visitor as JSXOpeningElement} from '#packages/babel-plugin-formatjs/visitors/jsx-opening-element.js'
 
 const babelPluginSyntaxJsx =
   (babelPluginSyntaxJsxNs as any).default || babelPluginSyntaxJsxNs

@@ -1,4 +1,4 @@
-import {DurationFormat} from './index.js'
+import {DurationFormat} from '#packages/intl-durationformat/index.js'
 if (typeof Intl === 'undefined') {
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'Intl', {

@@ -9,9 +9,6 @@
   "exports": {
     ".": "./index.js"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@babel/core": "^7.28.5",
     "@babel/helper-plugin-utils": "^7.27.1",

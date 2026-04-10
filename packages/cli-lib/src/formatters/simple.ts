@@ -1,4 +1,7 @@
-import {type CompileFn, type FormatFn} from './default.js'
+import {
+  type CompileFn,
+  type FormatFn,
+} from '#packages/cli-lib/src/formatters/default.js'
 
 export type PhraseJson = Record<string, string>
 

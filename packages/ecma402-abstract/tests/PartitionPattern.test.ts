@@ -1,4 +1,4 @@
-import {PartitionPattern} from '../PartitionPattern.js'
+import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {expect, test} from 'vitest'
 test('PartitionPattern should partition pattern correctly', function () {
   expect(PartitionPattern('AA{0}BB')).toEqual([

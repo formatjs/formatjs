@@ -6,14 +6,14 @@
 
 import {type IntlCache, createIntlCache} from '@formatjs/intl'
 import * as React from 'react'
-import type {IntlConfig, IntlShape} from '../types.js'
+import type {IntlConfig, IntlShape} from '#packages/react-intl/src/types.js'
 import {
   DEFAULT_INTL_CONFIG,
   invariantIntlContext,
   shallowEqual,
-} from '../utils.js'
-import {createIntl} from './createIntl.js'
-import {Provider} from './context.js'
+} from '#packages/react-intl/src/utils.js'
+import {createIntl} from '#packages/react-intl/src/components/createIntl.js'
+import {Provider} from '#packages/react-intl/src/components/context.js'
 
 function processIntlConfig<P extends IntlConfig = IntlConfig>(
   config: P

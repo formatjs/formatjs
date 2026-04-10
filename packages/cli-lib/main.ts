@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import cli from './src/cli.js'
+import cli from '#packages/cli-lib/src/cli.js'
 
 cli(process.argv)

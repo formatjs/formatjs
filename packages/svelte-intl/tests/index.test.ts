@@ -4,7 +4,7 @@ import {
   createIntlCache,
   defineMessage,
   defineMessages,
-} from '../index.js'
+} from '#packages/svelte-intl/index.js'
 
 // Mock Svelte's context API to test provideIntl/useIntl
 const contextMap = new Map<symbol, unknown>()

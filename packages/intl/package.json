@@ -10,9 +10,6 @@
   "exports": {
     ".": "./index.js"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",

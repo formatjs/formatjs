@@ -1,5 +1,5 @@
 import {type RelativeTimeFormatInternal} from '#packages/ecma402-abstract/types/relative-time.js'
-import {PartitionRelativeTimePattern} from './PartitionRelativeTimePattern.js'
+import {PartitionRelativeTimePattern} from '#packages/ecma402-abstract/RelativeTimeFormat/PartitionRelativeTimePattern.js'
 
 export function FormatRelativeTime(
   rtf: Intl.RelativeTimeFormat,

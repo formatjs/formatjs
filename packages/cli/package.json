@@ -4,9 +4,6 @@
   "version": "6.14.1",
   "license": "MIT",
   "author": "Linjie Ding <linjie@airtable.com>",
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "engines": {
     "node": ">= 20.12.0"
   },

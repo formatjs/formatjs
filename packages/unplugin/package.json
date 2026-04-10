@@ -15,9 +15,6 @@
     "./rspack": "./rspack.js",
     "./transform": "./transform.js"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",

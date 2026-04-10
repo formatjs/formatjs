@@ -12,9 +12,6 @@
     "./polyfill-force.js": "./polyfill-force.js",
     "./should-polyfill.js": "./should-polyfill.js"
   },
-  "imports": {
-    "#packages/*": "../../packages/*"
-  },
   "dependencies": {
     "@formatjs/intl-localematcher": "workspace:*"
   },

@@ -2,8 +2,8 @@ import {
   type DurationInput,
   type DurationRecord,
 } from '#packages/ecma402-abstract/types/duration.js'
-import {IsValidDurationRecord} from './IsValidDurationRecord.js'
-import {ToIntegerIfIntegral} from './ToIntegerIfIntegral.js'
+import {IsValidDurationRecord} from '#packages/ecma402-abstract/DurationFormat/IsValidDurationRecord.js'
+import {ToIntegerIfIntegral} from '#packages/ecma402-abstract/DurationFormat/ToIntegerIfIntegral.js'
 
 export function ToDurationRecord(input: DurationInput): DurationRecord {
   if (typeof input !== 'object') {

@@ -1,4 +1,4 @@
-import RelativeTimeFormat from './index.js'
+import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
 Object.defineProperty(Intl, 'RelativeTimeFormat', {
   value: RelativeTimeFormat,
   writable: true,

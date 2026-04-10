@@ -1,6 +1,6 @@
 import type {TsCompilerInstance} from 'ts-jest'
 import {type SourceFile, type TransformerFactory} from 'typescript'
-import {type Opts, transformWithTs} from './index.js'
+import {type Opts, transformWithTs} from '#packages/ts-transformer/index.js'
 
 export const name = '@formatjs/ts-transformer'
 export const version = '2.10.1'
