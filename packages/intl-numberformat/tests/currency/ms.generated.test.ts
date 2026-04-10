@@ -1,4 +1,4 @@
 import '@formatjs/intl-pluralrules/locale-data/ms.js'
-import {test} from './currencyTest'
-import localeData from '../locale-data/ms.json' with {type: 'json'}
+import {test} from '#packages/intl-numberformat/tests/currency/currencyTest'
+import localeData from '#packages/intl-numberformat/tests/locale-data/ms.json' with {type: 'json'}
 test('ms', localeData)

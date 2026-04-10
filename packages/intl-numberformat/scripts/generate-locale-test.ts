@@ -25,8 +25,8 @@ function main(args: Args) {
   const pluralLocale = locale.split('-')[0]
 
   const content = `import "@formatjs/intl-pluralrules/locale-data/${pluralLocale}.js"
-import { test } from "./${type}Test"
-import localeData from "../locale-data/${locale}.json" with {type: 'json'}
+import { test } from "#packages/intl-numberformat/tests/${type}/${type}Test"
+import localeData from "#packages/intl-numberformat/tests/locale-data/${locale}.json" with {type: 'json'}
 test("${locale}", localeData);
 `
 

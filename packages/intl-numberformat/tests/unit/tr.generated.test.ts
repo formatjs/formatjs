@@ -1,4 +1,4 @@
 import '@formatjs/intl-pluralrules/locale-data/tr.js'
-import {test} from './unitTest'
-import localeData from '../locale-data/tr.json' with {type: 'json'}
+import {test} from '#packages/intl-numberformat/tests/unit/unitTest'
+import localeData from '#packages/intl-numberformat/tests/locale-data/tr.json' with {type: 'json'}
 test('tr', localeData)

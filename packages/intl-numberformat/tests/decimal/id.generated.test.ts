@@ -1,4 +1,4 @@
 import '@formatjs/intl-pluralrules/locale-data/id.js'
-import {test} from './decimalTest'
-import localeData from '../locale-data/id.json' with {type: 'json'}
+import {test} from '#packages/intl-numberformat/tests/decimal/decimalTest'
+import localeData from '#packages/intl-numberformat/tests/locale-data/id.json' with {type: 'json'}
 test('id', localeData)

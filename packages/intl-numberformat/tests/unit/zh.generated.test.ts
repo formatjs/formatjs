@@ -1,4 +1,4 @@
 import '@formatjs/intl-pluralrules/locale-data/zh.js'
-import {test} from './unitTest'
-import localeData from '../locale-data/zh.json' with {type: 'json'}
+import {test} from '#packages/intl-numberformat/tests/unit/unitTest'
+import localeData from '#packages/intl-numberformat/tests/locale-data/zh.json' with {type: 'json'}
 test('zh', localeData)
