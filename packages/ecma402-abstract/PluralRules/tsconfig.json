@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "paths": {
+      "#packages/*": ["../../../packages/*"]
+    }
+  },
+  "extends": "../../../tsconfig.json",
+  "references": [
+    {
+      "path": "../tsconfig.json"
+    },
+    {
+      "path": "../NumberFormat/tsconfig.json"
+    },
+    {
+      "path": "../types/tsconfig.json"
+    }
+  ]
+}

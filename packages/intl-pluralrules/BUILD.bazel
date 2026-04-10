@@ -244,7 +244,6 @@ TEST_LOCALE_DATA = ["tests/locale-data/%s.ts" % locale for locale in TEST_LOCALE
 SRCS = glob(
     [
         "*.ts",
-        "abstract/*.ts",
     ],
     exclude = ["test*.*"],
 )
@@ -255,6 +254,7 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/PluralRules",
     "//packages/ecma402-abstract/NumberFormat",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
@@ -372,6 +372,7 @@ ts_run_binary(
         "//:node_modules/typescript",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/PluralRules",
         "//packages/ecma402-abstract/types",
     ],
     outs = CLDR_RAW_FILES,

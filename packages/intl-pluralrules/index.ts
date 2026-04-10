@@ -8,10 +8,10 @@ import {
   type PluralRulesLocaleData,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import type Decimal from '@formatjs/bigdecimal'
-import {type OperandsRecord} from './abstract/GetOperands.js'
-import {InitializePluralRules} from './abstract/InitializePluralRules.js'
-import {ResolvePlural} from './abstract/ResolvePlural.js'
-import {ResolvePluralRange} from './abstract/ResolvePluralRange.js'
+import {type OperandsRecord} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
+import {InitializePluralRules} from '#packages/ecma402-abstract/PluralRules/InitializePluralRules.js'
+import {ResolvePlural} from '#packages/ecma402-abstract/PluralRules/ResolvePlural.js'
+import {ResolvePluralRange} from '#packages/ecma402-abstract/PluralRules/ResolvePluralRange.js'
 import getInternalSlots from './get_internal_slots.js'
 
 /**
