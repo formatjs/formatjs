@@ -292,26 +292,26 @@ importers:
         specifier: 48.1.0
         version: 48.1.0
       cldr-core:
-        specifier: 48.1.0
-        version: 48.1.0
+        specifier: 48.2.0
+        version: 48.2.0
       cldr-dates-full:
         specifier: 48.1.0
-        version: 48.1.0(cldr-numbers-full@48.1.0(cldr-core@48.1.0))
+        version: 48.1.0(cldr-numbers-full@48.1.0(cldr-core@48.2.0))
       cldr-localenames-full:
         specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        version: 48.1.0(cldr-core@48.2.0)
       cldr-misc-full:
         specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        version: 48.1.0(cldr-core@48.2.0)
       cldr-numbers-full:
         specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        version: 48.1.0(cldr-core@48.2.0)
       cldr-segments-full:
         specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        version: 48.1.0(cldr-core@48.2.0)
       cldr-units-full:
         specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        version: 48.1.0(cldr-core@48.2.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -5061,8 +5061,8 @@ packages:
   cldr-bcp47@48.1.0:
     resolution: {integrity: sha512-5GF0weVNrLmqkZvZ18VwNW4Js/RUF2nt9Iz6ex/90BODZ/PPkBNYjF+dMIMMmHDipYXDoHlE02urCkFRt3nkYg==}
 
-  cldr-core@48.1.0:
-    resolution: {integrity: sha512-Br9lHQHRhFVyQ/4dY2AnTOuJVEwzDSFR9tE4EzaZxdtux4BFZ4V6oY0SiSAe/8H9+CJ6njpBiPJdDv+vdXnvfA==}
+  cldr-core@48.2.0:
+    resolution: {integrity: sha512-zfmLothncSwfv2jlevoSrgI2VGgH8SDGHXst6jUEotHA8nq9Igeg9jzdJDFtBso9pgJuG89DK16TzrmZDdo2Bg==}
 
   cldr-dates-full@48.1.0:
     resolution: {integrity: sha512-GyVLYFmC8Xsd+awXwAedeAXTr3u9FGnpRTFEf9aYbB6zVzz5CqATPBvyFqLs0+PLPbdHrqhjgxQ6oIf9EAavbw==}
@@ -12962,31 +12962,31 @@ snapshots:
 
   cldr-bcp47@48.1.0: {}
 
-  cldr-core@48.1.0: {}
+  cldr-core@48.2.0: {}
 
-  cldr-dates-full@48.1.0(cldr-numbers-full@48.1.0(cldr-core@48.1.0)):
+  cldr-dates-full@48.1.0(cldr-numbers-full@48.1.0(cldr-core@48.2.0)):
     dependencies:
-      cldr-numbers-full: 48.1.0(cldr-core@48.1.0)
+      cldr-numbers-full: 48.1.0(cldr-core@48.2.0)
 
-  cldr-localenames-full@48.1.0(cldr-core@48.1.0):
+  cldr-localenames-full@48.1.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-misc-full@48.1.0(cldr-core@48.1.0):
+  cldr-misc-full@48.1.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-numbers-full@48.1.0(cldr-core@48.1.0):
+  cldr-numbers-full@48.1.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-segments-full@48.1.0(cldr-core@48.1.0):
+  cldr-segments-full@48.1.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-units-full@48.1.0(cldr-core@48.1.0):
+  cldr-units-full@48.1.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
   cli-width@4.1.0: {}
 
