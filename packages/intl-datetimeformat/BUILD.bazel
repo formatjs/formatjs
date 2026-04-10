@@ -49,6 +49,7 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
 ]
@@ -767,6 +768,7 @@ ts_run_binary(
         "//:node_modules/minimist",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
     outs = CLDR_RAW_FILES,
     args = [
@@ -873,6 +875,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-datetimeformat/scripts:process-zdump",
@@ -891,6 +894,7 @@ ts_run_binary(
         "//:node_modules/minimist",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
     outs = ["add-all-tz.js"],
     args = [
@@ -918,6 +922,7 @@ ts_run_binary(
         "//:node_modules/minimist",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
     outs = ["add-golden-tz.js"],
     args = [

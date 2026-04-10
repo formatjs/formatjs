@@ -255,6 +255,8 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/NumberFormat",
+    "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
 ]
@@ -369,6 +371,8 @@ ts_run_binary(
         "//:node_modules/serialize-javascript",
         "//:node_modules/typescript",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
     ],
     outs = CLDR_RAW_FILES,
     args = [
