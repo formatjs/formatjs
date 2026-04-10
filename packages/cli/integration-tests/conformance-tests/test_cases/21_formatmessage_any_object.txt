@@ -1,0 +1,46 @@
+import React from 'react';
+
+function MyComponent() {
+  const msg1 = this.intl.formatMessage({
+    id: 'this.intl',
+    defaultMessage: 'From this.intl'
+  });
+
+  const msg2 = someVar.formatMessage({
+    id: 'somevar',
+    defaultMessage: 'From someVar'
+  });
+
+  const msg3 = this.props.intl.formatMessage({
+    id: 'this.props.intl',
+    defaultMessage: 'From this.props.intl'
+  });
+
+  const msg4 = foo.bar.baz.formatMessage({
+    id: 'deep.chain',
+    defaultMessage: 'From deep chain'
+  });
+
+  return <div>{msg1}{msg2}{msg3}{msg4}</div>;
+}
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "tsx"
+}
+---
+{
+  "this.intl": {
+    "defaultMessage": "From this.intl"
+  },
+  "somevar": {
+    "defaultMessage": "From someVar"
+  },
+  "this.props.intl": {
+    "defaultMessage": "From this.props.intl"
+  },
+  "deep.chain": {
+    "defaultMessage": "From deep chain"
+  }
+}

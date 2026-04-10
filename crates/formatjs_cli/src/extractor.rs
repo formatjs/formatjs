@@ -295,91 +295,26 @@ impl<'a> MessageExtractor<'a> {
             // Direct function call: formatMessage(...)
             Expression::Identifier(id) => Some(id.name.as_str()),
 
-            // Member expression: intl.formatMessage, props.intl.formatMessage
+            // Member expression: something.formatMessage()
+            // Matches any object — aligns with JS CLI (ts-transformer) behavior
             Expression::StaticMemberExpression(member) => {
-                self.extract_function_name_from_member(member)
+                Some(member.property.name.as_str())
             }
 
-            // Optional chaining wrapper: formatMessage?.()
-            Expression::ChainExpression(chain) => {
-                self.extract_function_name_from_chain(&chain.expression)
-            }
+            // Optional chaining wrapper: something?.formatMessage()
+            Expression::ChainExpression(chain) => match &chain.expression {
+                ChainElement::StaticMemberExpression(member) => {
+                    Some(member.property.name.as_str())
+                }
+                _ => None,
+            },
 
             // TypeScript generic instantiation: formatMessage<T>, intl.formatMessage<HTMLElement>
             Expression::TSInstantiationExpression(instantiation) => {
-                // The actual expression is inside the instantiation
                 self.extract_function_name(&instantiation.expression)
             }
 
             _ => None,
-        }
-    }
-
-    /// Extract function name from ChainElement (used in optional chaining)
-    fn extract_function_name_from_chain<'b>(
-        &self,
-        chain_elem: &'b ChainElement,
-    ) -> Option<&'b str> {
-        match chain_elem {
-            ChainElement::CallExpression(_) => None,
-            ChainElement::StaticMemberExpression(member) => {
-                self.extract_function_name_from_member(member)
-            }
-            _ => None,
-        }
-    }
-
-    /// Extract function name from member expression, checking if it's a valid intl call
-    fn extract_function_name_from_member<'b>(
-        &self,
-        member: &'b StaticMemberExpression,
-    ) -> Option<&'b str> {
-        let property_name = member.property.name.as_str();
-
-        // Check if the object is 'intl' or ends with '.intl'
-        if self.is_intl_object(&member.object) {
-            return Some(property_name);
-        }
-
-        None
-    }
-
-    /// Check if an expression is or ends with 'intl'
-    /// Matches: intl, props.intl, this.props.intl, something?.intl
-    fn is_intl_object(&self, expr: &Expression) -> bool {
-        match expr {
-            // Direct 'intl' identifier
-            Expression::Identifier(id) => id.name.as_str() == "intl",
-
-            // props.intl, this.props.intl
-            Expression::StaticMemberExpression(member) => {
-                if member.property.name.as_str() == "intl" {
-                    return true;
-                }
-                // Recursively check parent (for this.props.intl)
-                self.is_intl_object(&member.object)
-            }
-
-            // Optional chaining: something?.intl
-            Expression::ChainExpression(chain) => self.is_intl_object_from_chain(&chain.expression),
-
-            // this.props
-            Expression::ThisExpression(_) => false, // 'this' alone is not intl, but this.props.intl will be caught above
-
-            _ => false,
-        }
-    }
-
-    /// Check if a ChainElement is or ends with 'intl'
-    fn is_intl_object_from_chain(&self, chain_elem: &ChainElement) -> bool {
-        match chain_elem {
-            ChainElement::StaticMemberExpression(member) => {
-                if member.property.name.as_str() == "intl" {
-                    return true;
-                }
-                self.is_intl_object(&member.object)
-            }
-            _ => false,
         }
     }
 
