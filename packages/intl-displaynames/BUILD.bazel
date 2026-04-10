@@ -25,7 +25,6 @@ TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCA
 SRCS = glob(
     [
         "*.ts",
-        "abstract/*.ts",
     ],
     exclude = ["test*.*"],
 )
