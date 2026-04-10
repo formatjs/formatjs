@@ -1,8 +1,8 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "package_exports_test", "package_json_test", "ts_compile_node")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -81,14 +81,15 @@ generate_ide_tsconfig_json()
 
 genrule(
     name = "bin",
-    srcs = [":formatjs.js"],
+    srcs = [":formatjs"],
     outs = ["bin/formatjs"],
-    cmd = "cp $< $@",
+    cmd = "cp $(location :formatjs)/main.js $@",
 )
 
-esbuild(
+rolldown_bundle(
     name = "formatjs",
     srcs = [":srcs"],
+    code_splitting = True,
     entry_point = "main.ts",
     external = [
         "vue",
@@ -99,14 +100,13 @@ esbuild(
         "@glimmer/validator",
         "@vue/compiler-core",
         "svelte",
-        "content-tag",
         "source-map-support",
     ],
+    output = "formatjs/main.js",
     platform = "node",
-    target = "node16",
+    target = "node20",
     visibility = ["//packages/cli:__pkg__"],
-    deps = [
-    ] + SRC_DEPS,
+    deps = SRC_DEPS,
 )
 
 package_json_test(

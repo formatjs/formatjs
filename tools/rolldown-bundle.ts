@@ -109,6 +109,13 @@ async function main(args: Args) {
     },
   })
 
+  // Polyfill CJS globals (__filename, __dirname) when bundling for Node.js ESM.
+  // Required when bundled dependencies (e.g., TypeScript compiler) use these globals.
+  const banner =
+    platform === 'node' && format !== 'cjs'
+      ? 'import{fileURLToPath as _furl}from"node:url";import{dirname as _dname}from"node:path";const __filename=_furl(import.meta.url);const __dirname=_dname(__filename);'
+      : undefined
+
   if (outDir) {
     await bundle.write({
       dir: outDir,
@@ -116,6 +123,7 @@ async function main(args: Args) {
       sourcemap: true,
       name: globalName,
       target,
+      banner,
     })
   } else if (output) {
     if (args.dts) {
@@ -127,6 +135,7 @@ async function main(args: Args) {
         sourcemap: true,
         name: globalName,
         target,
+        banner,
       })
     } else {
       await bundle.write({
@@ -135,6 +144,7 @@ async function main(args: Args) {
         sourcemap: true,
         name: globalName,
         target,
+        banner,
       })
     }
   }

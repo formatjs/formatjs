@@ -59,10 +59,6 @@ pnpm.pnpm(
 # bazel run -- @pnpm --dir /home/runner/work/rules_js/rules_js install
 use_repo(pnpm, "pnpm")
 
-######### ESBuild rules #########
-
-bazel_dep(name = "aspect_rules_esbuild", version = "0.25.1")
-
 ######### TypeScript rules #########
 
 bazel_dep(name = "aspect_rules_ts", version = "3.8.7")
