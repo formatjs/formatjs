@@ -110,7 +110,7 @@
     "cldr-misc-full": "48.1.0",
     "cldr-numbers-full": "48.1.0",
     "cldr-segments-full": "48.1.0",
-    "cldr-units-full": "48.1.0",
+    "cldr-units-full": "48.2.0",
     "clsx": "^2.1.1",
     "content-tag": "^4.1.0",
     "conventional-changelog-angular": "^8.1.0",

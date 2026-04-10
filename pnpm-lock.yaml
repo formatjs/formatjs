@@ -310,8 +310,8 @@ importers:
         specifier: 48.1.0
         version: 48.1.0(cldr-core@48.1.0)
       cldr-units-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.1.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -5089,10 +5089,10 @@ packages:
     peerDependencies:
       cldr-core: 48.1.0
 
-  cldr-units-full@48.1.0:
-    resolution: {integrity: sha512-gZRKOiY/zk5WydpE6qvHyhzRqCoOCtVWfYHN3bwaLXn3p2neuFMfFmetN+3aJBL9bZSrvwB0brXGnb7+/XA3CA==}
+  cldr-units-full@48.2.0:
+    resolution: {integrity: sha512-BjDC7V46eeXzgalnIumrJ1XQDk8wJaOxNLME4hmkBT9Q0hnzxn3XgtavigPUwnljk7FxlNQW9Wx+hbFrARPrQg==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
   cli-width@4.1.0:
     resolution: {integrity: sha512-ouuZd4/dm2Sw5Gmqy6bGyNNNe1qt9RpmxveLSO7KcgsTnU7RXfsw+/bukWGo1abgBiMAic068rclZsO4IWmmxQ==}
@@ -12984,7 +12984,7 @@ snapshots:
     dependencies:
       cldr-core: 48.1.0
 
-  cldr-units-full@48.1.0(cldr-core@48.1.0):
+  cldr-units-full@48.2.0(cldr-core@48.1.0):
     dependencies:
       cldr-core: 48.1.0
 
