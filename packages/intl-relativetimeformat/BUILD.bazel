@@ -28,7 +28,6 @@ TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCA
 SRCS = glob(
     [
         "*.ts",
-        "abstract/*.ts",
     ],
     exclude = ["test*.*"],
 )
@@ -39,6 +38,7 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/RelativeTimeFormat",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
 ]
@@ -728,6 +728,7 @@ ts_run_binary(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/RelativeTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
     outs = CLDR_RAW_FILES,
