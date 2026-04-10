@@ -1,6 +1,6 @@
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import {TABLE_1} from '../constants.js'
-import {type DurationRecord} from '../types.js'
+import {TABLE_1} from './constants.js'
+import {type DurationRecord} from '#packages/ecma402-abstract/types/duration.js'
 import {DurationRecordSign} from './DurationRecordSign.js'
 
 export function IsValidDurationRecord(record: DurationRecord): boolean {
