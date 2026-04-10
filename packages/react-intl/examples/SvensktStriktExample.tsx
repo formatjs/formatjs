@@ -23,16 +23,32 @@ const SvenskKomponent = (): JSX.Element => {
   return (
     <div>
       <p>
-        <FormattedMessage id="body" values={{locale: typedLocale}} />
+        <FormattedMessage
+          id="body"
+          defaultMessage={messages.body}
+          values={{locale: typedLocale}}
+        />
       </p>
       <p>
-        <FormattedMessage id="welcome" values={{name: 'Anna'}} />
+        <FormattedMessage
+          id="welcome"
+          defaultMessage={messages.welcome}
+          values={{name: 'Anna'}}
+        />
       </p>
       <p>
-        <FormattedMessage id="itemCount" values={{count: 5}} />
+        <FormattedMessage
+          id="itemCount"
+          defaultMessage={messages.itemCount}
+          values={{count: 5}}
+        />
       </p>
       <p>
-        <FormattedMessage id="currentTime" values={{time: new Date()}} />
+        <FormattedMessage
+          id="currentTime"
+          defaultMessage={messages.currentTime}
+          values={{time: new Date()}}
+        />
       </p>
     </div>
   )
@@ -43,13 +59,16 @@ export default function SvensktStriktExample(): JSX.Element {
     <IntlProvider locale="sv-SE" messages={messages}>
       <div style={{fontFamily: 'system-ui', padding: '20px'}}>
         <h1>
-          <FormattedMessage id="title" />
+          <FormattedMessage id="title" defaultMessage={messages.title} />
         </h1>
         <h2>
-          <FormattedMessage id="content" />
+          <FormattedMessage id="content" defaultMessage={messages.content} />
         </h2>
         <p>
-          <FormattedMessage id="description" />
+          <FormattedMessage
+            id="description"
+            defaultMessage={messages.description}
+          />
         </p>
         <SvenskKomponent />
       </div>

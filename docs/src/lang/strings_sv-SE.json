@@ -1,23 +1,3 @@
 {
-  "demo": "{name} tog {numPhotos, plural, =0 {inga foton} =1 {ett foto} other {# foton} } den {takenDate, date, long}.",
-  "demo.title": "FormatJS Demo på Svenska",
-  "demo.description": "Detta visar hur internationalisering fungerar med FormatJS och svenska språkfunktioner.",
-  "demo.welcome": "Välkommen till FormatJS",
-  "demo.getting-started": "Kom igång",
-  "demo.documentation": "Dokumentation",
-  "demo.examples": "Exempel",
-  "demo.pluralization": "Pluralisering på svenska",
-  "demo.date-formatting": "Datumformatering",
-  "demo.number-formatting": "Sifferformatering",
-  "demo.currency": "Valuta",
-  "demo.relative-time": "Relativ tid",
-  "navigation.getting-started": "Kom igång",
-  "navigation.core-concepts": "Kärnkoncept",
-  "navigation.guides": "Guider",
-  "navigation.polyfills": "Polyfills",
-  "examples.hello": "Hej {name}!",
-  "examples.count": "Du har {count, plural, =0 {inga objekt} =1 {ett objekt} other {# objekt}}",
-  "examples.date": "Idag är det {date, date, long}",
-  "examples.price": "Pris: {price, number, currency}",
-  "examples.time-ago": "Det hände {time, relativeTime}"
+  "demo": "{name} tog {numPhotos, plural, =0 {inga foton} =1 {ett foto} other {# foton} } den {takenDate, date, long}."
 }

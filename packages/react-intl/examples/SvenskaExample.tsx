@@ -105,11 +105,31 @@ const SvensktInnehåll = (): JSX.Element => {
       <h3>Direkta formatters</h3>
 
       <p>
-        Datum:{' '}
-        <FormattedDate value={now} year="numeric" month="long" day="numeric" />
+        <FormattedMessage
+          id="formattedDateLabel"
+          defaultMessage="Datum: <formattedDate></formattedDate>"
+          values={{
+            formattedDate: () => (
+              <FormattedDate value={now} year="numeric" month="long" day="numeric" />
+            ),
+          }}
+        />
       </p>
       <p>
-        Tid: <FormattedDate value={now} hour="numeric" minute="numeric" second="numeric" />
+        <FormattedMessage
+          id="formattedTimeLabel"
+          defaultMessage="Tid: <formattedTime></formattedTime>"
+          values={{
+            formattedTime: () => (
+              <FormattedDate
+                value={now}
+                hour="numeric"
+                minute="numeric"
+                second="numeric"
+              />
+            ),
+          }}
+        />
       </p>
       <p>Nummer: <FormattedNumber value={1234567.89} /></p>
       <p>
