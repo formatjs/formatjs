@@ -289,8 +289,8 @@ importers:
         specifier: ^0.7.1
         version: 0.7.1
       cldr-bcp47:
-        specifier: 48.1.0
-        version: 48.1.0
+        specifier: 48.2.0
+        version: 48.2.0
       cldr-core:
         specifier: 48.1.0
         version: 48.1.0
@@ -5058,8 +5058,8 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
-  cldr-bcp47@48.1.0:
-    resolution: {integrity: sha512-5GF0weVNrLmqkZvZ18VwNW4Js/RUF2nt9Iz6ex/90BODZ/PPkBNYjF+dMIMMmHDipYXDoHlE02urCkFRt3nkYg==}
+  cldr-bcp47@48.2.0:
+    resolution: {integrity: sha512-ks3zN+Wbg1zMqvJNeDai1zA0JBGHbAnxv2Ko4rjVohvXscDGmTa7VNy1T+QRlQw3QVPzQcCm2EOiEtAfOU4d+g==}
 
   cldr-core@48.1.0:
     resolution: {integrity: sha512-Br9lHQHRhFVyQ/4dY2AnTOuJVEwzDSFR9tE4EzaZxdtux4BFZ4V6oY0SiSAe/8H9+CJ6njpBiPJdDv+vdXnvfA==}
@@ -12960,7 +12960,7 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
-  cldr-bcp47@48.1.0: {}
+  cldr-bcp47@48.2.0: {}
 
   cldr-core@48.1.0: {}
 
