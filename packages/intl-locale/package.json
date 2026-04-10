@@ -13,7 +13,6 @@
     "./should-polyfill.js": "./should-polyfill.js"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-getcanonicallocales": "workspace:*",
     "@formatjs/intl-supportedvaluesof": "workspace:*"
   },

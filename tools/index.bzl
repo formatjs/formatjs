@@ -50,7 +50,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         visibility = visibility,
     )
 
-def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None):
+def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None, package_json = True):
     """Compile TS with prefilled args.
 
     Args:
@@ -59,6 +59,7 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None):
         deps: deps
         visibility: visibility
         tsconfig: optional tsconfig dict override (defaults to BASE_TSCONFIG)
+        package_json: whether to include package.json in js_library srcs (default True)
     """
 
     effective_tsconfig = tsconfig or BASE_TSCONFIG
@@ -90,7 +91,7 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None):
 
     js_library(
         name = name,
-        srcs = [":%s-esm" % name, "package.json"],
+        srcs = [":%s-esm" % name] + (["package.json"] if package_json else []),
         visibility = visibility,
     )
 

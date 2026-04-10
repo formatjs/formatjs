@@ -3,7 +3,7 @@ import type {
   IntlFormatters,
   MessageDescriptor,
   ResolvedIntlConfig,
-} from '../src/types'
+} from '..'
 
 // Example type overrides
 declare global {

@@ -12,7 +12,6 @@
     "./should-polyfill.js": "./should-polyfill.js"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*"
   },
   "bugs": "https://github.com/formatjs/formatjs/issues",

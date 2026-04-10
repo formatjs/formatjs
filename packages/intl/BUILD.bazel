@@ -20,7 +20,6 @@ SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    "//:node_modules/@formatjs/ecma402-abstract",
     "//:node_modules/@formatjs/fast-memoize",
     "//:node_modules/@formatjs/icu-messageformat-parser",
     "//:node_modules/intl-messageformat",
@@ -73,7 +72,7 @@ npm_package(
         "LICENSE.md",
         "README.md",
         "package.json",
-    ] + BUNDLES + [":types"],
+    ] + BUNDLES,
     allow_overwrites = True,
     package = "@formatjs/%s" % PACKAGE_NAME,
     replace_prefixes = {

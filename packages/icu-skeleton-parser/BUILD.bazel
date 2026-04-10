@@ -18,7 +18,6 @@ SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
-    "//:node_modules/@formatjs/ecma402-abstract",
 ]
 
 EXTERNAL_PACKAGES = [

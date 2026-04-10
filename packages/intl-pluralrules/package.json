@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@formatjs/bigdecimal": "workspace:*",
-    "@formatjs/ecma402-abstract": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*"
   },
   "devDependencies": {
