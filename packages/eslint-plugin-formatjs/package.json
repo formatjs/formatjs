@@ -10,6 +10,9 @@
     ".": "./index.js",
     "./util": "./util.js"
   },
+  "imports": {
+    "#packages/*": "../../packages/*"
+  },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",

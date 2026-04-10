@@ -9,6 +9,9 @@
   "exports": {
     ".": "./index.js"
   },
+  "imports": {
+    "#packages/*": "../../packages/*"
+  },
   "engines": {
     "node": ">= 20.12.0"
   },

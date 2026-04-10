@@ -11,6 +11,9 @@
     ".": "./index.js",
     "./server": "./server.js"
   },
+  "imports": {
+    "#packages/*": "../../packages/*"
+  },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",

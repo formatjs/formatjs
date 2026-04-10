@@ -10,6 +10,9 @@
     "./printer.js": "./printer.js",
     "./manipulator.js": "./manipulator.js"
   },
+  "imports": {
+    "#packages/*": "../../packages/*"
+  },
   "dependencies": {
     "@formatjs/icu-skeleton-parser": "workspace:*"
   },
