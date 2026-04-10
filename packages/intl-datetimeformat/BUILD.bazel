@@ -49,6 +49,7 @@ TESTS = glob([
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/DateTimeFormat",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
@@ -754,7 +755,6 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        "src/abstract/skeleton.ts",
         "src/types.ts",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-bcp47",
@@ -768,6 +768,7 @@ ts_run_binary(
         "//:node_modules/minimist",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
     outs = CLDR_RAW_FILES,
@@ -875,6 +876,7 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
     tags = ["cldr"],
@@ -894,6 +896,7 @@ ts_run_binary(
         "//:node_modules/minimist",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
     outs = ["add-all-tz.js"],
@@ -922,6 +925,7 @@ ts_run_binary(
         "//:node_modules/minimist",
         "//:root_package_json",
         "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
     outs = ["add-golden-tz.js"],

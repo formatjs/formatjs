@@ -24,7 +24,7 @@ import TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {typ
 import metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
 import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
-import {parseDateTimeSkeleton} from '../src/abstract/skeleton.ts'
+import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
 const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
