@@ -1,13 +1,9 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:compile.bzl", "formatjs_compile")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "no_internal_imports_test", "package_exports_test", "package_json_test")
-load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:tsconfig.bzl", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
@@ -23,27 +19,16 @@ SRC_DEPS = [
     "//:node_modules/@formatjs/fast-memoize",
 ]
 
-EXTERNAL_PACKAGES = [
-    dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep
-]
-
 ENTRY_POINTS = [
     "index.ts",
 ]
 
-[rolldown_bundle(
-    name = "%s-bundle" % entry.replace(".ts", ""),
-    srcs = [":srcs"],
-    dts = True,
-    entry_point = entry,
-    external = EXTERNAL_PACKAGES,
-    format = "esm",
-    output = "%s.js" % entry.replace(".ts", ""),
-    target = "es2020",
+formatjs_compile(
+    name = "dist",
+    srcs = SRCS,
+    entry_points = ENTRY_POINTS,
     deps = SRC_DEPS,
-) for entry in ENTRY_POINTS]
+)
 
 BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
 
@@ -75,17 +60,6 @@ no_internal_imports_test(
     data = BUNDLES,
 )
 
-ts_project(
-    name = "typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = packages_tsconfig(),
-    deps = SRC_DEPS,
-)
-
 vitest(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
@@ -107,11 +81,6 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     tool = "//packages/intl-localematcher/scripts:regions-gen",
-)
-
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
 )
 
 package_exports_test(
