@@ -78,7 +78,7 @@ def formatjs_compile(
             emit_declaration_only = True,
             resolve_json_module = True,
             transpiler = tsgo_bin.tsgo,
-            tsconfig = packages_tsconfig(),
+            tsconfig = effective_tsconfig,
             visibility = ["//visibility:public"],
             deps = all_deps,
         )

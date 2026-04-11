@@ -20,4 +20,4 @@ docs/typesense-index.jsonl
 # Environment files
 docs/.env
 .env
-.env.local
+.env.local.trunk/
