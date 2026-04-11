@@ -15,19 +15,19 @@ import * as React from 'react'
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
-} from '#packages/react-intl/src/components/createFormattedComponent.js'
-import {createIntl} from '#packages/react-intl/src/components/createIntl.js'
+} from '#packages/react-intl/components/createFormattedComponent.js'
+import {createIntl} from '#packages/react-intl/components/createIntl.js'
 import {
   Context as IntlContext,
   Provider as RawIntlProvider,
-} from '#packages/react-intl/src/components/context.js'
-import FormattedDateTimeRange from '#packages/react-intl/src/components/dateTimeRange.js'
-import FormattedMessage from '#packages/react-intl/src/components/message.js'
-import FormattedPlural from '#packages/react-intl/src/components/plural.js'
-import IntlProvider from '#packages/react-intl/src/components/provider.js'
-import FormattedRelativeTime from '#packages/react-intl/src/components/relative.js'
-import useIntl from '#packages/react-intl/src/components/useIntl.js'
-import {type IntlShape} from '#packages/react-intl/src/types.js'
+} from '#packages/react-intl/components/context.js'
+import FormattedDateTimeRange from '#packages/react-intl/components/dateTimeRange.js'
+import FormattedMessage from '#packages/react-intl/components/message.js'
+import FormattedPlural from '#packages/react-intl/components/plural.js'
+import IntlProvider from '#packages/react-intl/components/provider.js'
+import FormattedRelativeTime from '#packages/react-intl/components/relative.js'
+import useIntl from '#packages/react-intl/components/useIntl.js'
+import {type IntlShape} from '#packages/react-intl/types.js'
 export {
   createIntlCache,
   type CustomFormatConfig,
@@ -54,7 +54,7 @@ export {
   type IntlConfig,
   type IntlShape,
   type ResolvedIntlConfig,
-} from '#packages/react-intl/src/types.js'
+} from '#packages/react-intl/types.js'
 export {
   createIntl,
   FormattedDateTimeRange,
@@ -78,7 +78,7 @@ export function defineMessages<
 export function defineMessage<T extends MessageDescriptor>(msg: T): T {
   return msg
 }
-// IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./src/types').CustomFormatConfig`
+// IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
 export const FormattedDate: React.FC<
   Intl.DateTimeFormatOptions &
     CustomFormatConfig<'date'> & {
@@ -128,4 +128,4 @@ export type {PrimitiveType} from 'intl-messageformat'
 export {
   FormattedListParts,
   FormattedNumberParts,
-} from '#packages/react-intl/src/components/createFormattedComponent.js'
+} from '#packages/react-intl/components/createFormattedComponent.js'

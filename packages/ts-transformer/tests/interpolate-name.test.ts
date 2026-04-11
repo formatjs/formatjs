@@ -1,4 +1,4 @@
-import {interpolateName} from '../src/interpolate-name'
+import {interpolateName} from '../interpolate-name'
 import {createHash} from 'crypto'
 import {describe, it, expect} from 'vitest'
 describe('interpolateName', function () {

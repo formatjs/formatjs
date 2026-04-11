@@ -23,7 +23,6 @@ exports_files([
 PACKAGE_NAME = "utils"
 
 SRCS = glob([
-    "src/**/*",
     "*.ts",
 ])
 
@@ -112,7 +111,7 @@ vitest(
 
 generate_src_file(
     name = "default-currency",
-    src = "src/defaultCurrencyData.generated.ts",
+    src = "defaultCurrencyData.generated.ts",
     data = [
         "//:node_modules/cldr-core",
     ],
@@ -122,7 +121,7 @@ generate_src_file(
 
 generate_src_file(
     name = "default-locale",
-    src = "src/defaultLocaleData.generated.ts",
+    src = "defaultLocaleData.generated.ts",
     data = [
         "//:node_modules/cldr-core",
     ],
@@ -138,7 +137,7 @@ copy_file(
 
 generate_src_file(
     name = "currency-minor-units",
-    src = "src/currencyMinorUnits.generated.ts",
+    src = "currencyMinorUnits.generated.ts",
     args = [
         "--input",
         "$(rootpath :iso4217.xml)",

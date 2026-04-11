@@ -1,0 +1,15 @@
+import {outputFile} from 'fs-extra/esm'
+import {basename, join} from 'path'
+import {type Opts, compile} from '#packages/cli-lib/compile.js'
+export default async function compileFolder(
+  files: string[],
+  outFolder: string,
+  opts: Opts = {}
+): Promise<void[]> {
+  const results = await Promise.all(files.map(f => compile([f], opts)))
+  const outFiles = files.map(f => join(outFolder, basename(f)))
+
+  return Promise.all(
+    outFiles.map((outFile, i) => outputFile(outFile, results[i] + '\n'))
+  )
+}

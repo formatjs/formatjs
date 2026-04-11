@@ -15,10 +15,15 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "react-intl"
 
-SRCS = glob(["src/**/*.ts*"]) + [
-    "index.ts",
-    "server.ts",
-]
+SRCS = glob(
+    ["**/*.ts*"],
+    exclude = [
+        "tests/**",
+        "integration-tests/**",
+        "examples/**",
+        "example-sandboxes/**",
+    ],
+)
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",

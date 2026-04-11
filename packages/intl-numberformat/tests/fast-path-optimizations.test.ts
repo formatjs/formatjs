@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest'
-import {NumberFormat} from '../src/core'
+import {NumberFormat} from '../core'
 import en from './locale-data/en.json' with {type: 'json'}
 NumberFormat.__addLocaleData(en as any)
 

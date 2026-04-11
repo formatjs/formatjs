@@ -2,7 +2,7 @@ import {describe, test, expect} from 'vitest'
 import {type MessageDescriptor, interpolateName} from '@formatjs/ts-transformer'
 import {readFile} from 'node:fs/promises'
 import {join} from 'path'
-import {parseFile} from '../../src/gts_extractor'
+import {parseFile} from '../../gts_extractor'
 
 describe('gts_extractor', () => {
   test('gts files', async function () {

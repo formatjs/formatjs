@@ -1,10 +1,10 @@
-import {DateTimeFormat} from '../src/core'
-import allData from '../src/data/all-tz.generated'
+import {DateTimeFormat} from '../core'
+import allData from '../data/all-tz.generated'
 import {
   toLocaleDateString,
   toLocaleString,
   toLocaleTimeString,
-} from '../src/to_locale_string'
+} from '../to_locale_string'
 import bs from './locale-data/bs.json' with {type: 'json'}
 import en from './locale-data/en.json' with {type: 'json'}
 import ko from './locale-data/ko.json' with {type: 'json'}

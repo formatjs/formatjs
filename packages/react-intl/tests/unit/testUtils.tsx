@@ -1,7 +1,7 @@
 import {render} from '@testing-library/react'
 import * as React from 'react'
-import Provider from '../../src/components/provider'
-import type {IntlConfig} from '../../src/types'
+import Provider from '../../components/provider'
+import type {IntlConfig} from '../../types'
 
 import {type RenderResult} from '@testing-library/react'
 

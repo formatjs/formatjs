@@ -1,1 +1,1 @@
-export * from '#packages/intl-durationformat/src/core.js'
+export * from '#packages/intl-durationformat/core.js'

@@ -3,8 +3,8 @@ import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
 import minimist from 'minimist'
 import {promisify} from 'util'
-import {pack} from '../src/packer.ts'
-import {type UnpackedData, type ZoneData} from '../src/types.ts'
+import {pack} from '../packer.ts'
+import {type UnpackedData, type ZoneData} from '../types.ts'
 
 const readFile = promisify(_readFile)
 const SPACE_REGEX = /[\s\t]+/

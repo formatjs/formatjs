@@ -39,7 +39,11 @@ TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCA
 SRCS = glob(
     [
         "*.ts",
-        "src/**/*",
+        "data/**",
+    ],
+    exclude = [
+        "tests/**",
+        "scripts/**",
     ],
 )
 
@@ -756,7 +760,7 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
-        "src/types.ts",
+        "types.ts",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
@@ -851,7 +855,7 @@ generate_src_file(
 # links
 generate_src_file(
     name = "links",
-    src = "src/data/links.generated.ts",
+    src = "data/links.generated.ts",
     args = [
         "--input",
         package_name() + "/tz_data_generated/backward",
@@ -867,13 +871,13 @@ generate_src_file(
 # data.ts
 generate_src_file(
     name = "all-tz",
-    src = "src/data/all-tz.generated.ts",
+    src = "data/all-tz.generated.ts",
     args = [
         "$(rootpaths :zdumps)",
     ],
     data = [
-        "src/packer.ts",
-        "src/types.ts",
+        "packer.ts",
+        "types.ts",
         ":zdumps",
         "//:node_modules/json-stable-stringify",
         "//:root_package_json",
@@ -891,8 +895,8 @@ generate_src_file(
 ts_run_binary(
     name = "add-all-tz",
     srcs = [
-        "src/packer.ts",
-        "src/types.ts",
+        "packer.ts",
+        "types.ts",
         ":zdumps",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
@@ -921,8 +925,8 @@ ts_run_binary(
 ts_run_binary(
     name = "add-golden-tz",
     srcs = [
-        "src/packer.ts",
-        "src/types.ts",
+        "packer.ts",
+        "types.ts",
         ":zdumps",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",

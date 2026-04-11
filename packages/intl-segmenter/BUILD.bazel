@@ -44,14 +44,15 @@ TEST_DEPS = SRC_DEPS + [
 
 SRCS = glob(
     [
-        "src/**/*.ts",
+        "**/*.ts",
         "*.ts",
     ],
     exclude = [
         #for development only
         "debug.ts",
         "benchmark.ts",
-        "tests/**/*",
+        "tests/**",
+        "scripts/**",
     ],
 )
 
@@ -241,7 +242,7 @@ UNICODE_FILES = [
 # Segmentation UCDs
 generate_src_file(
     name = "generate-cldr-segmentation-rules",
-    src = "src/cldr-segmentation-rules.generated.ts",
+    src = "cldr-segmentation-rules.generated.ts",
     args = ["--unicodeFiles=$(rootpath :%s)" % unicode_file_name(f) for f in UNICODE_FILES],
     data =
         [":%s" % unicode_file_name(f) for f in UNICODE_FILES] + [

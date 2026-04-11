@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest'
-import {MissingTranslationError} from '../src/error'
+import {MissingTranslationError} from '../error'
 
 describe('MissingTranslationError', () => {
   it('records the actual default message', () => {

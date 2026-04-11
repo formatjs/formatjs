@@ -16,7 +16,12 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "intl"
 
-SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
+SRCS = glob(
+    ["**/*.ts*"],
+    exclude = [
+        "tests/**",
+    ],
+)
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",

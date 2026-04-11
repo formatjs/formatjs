@@ -1,5 +1,5 @@
-import {type MessageDescriptor} from '#packages/intl/src/types.js'
-export * from '#packages/intl/src/types.js'
+import {type MessageDescriptor} from '#packages/intl/types.js'
+export * from '#packages/intl/types.js'
 
 export function defineMessages<
   K extends keyof any,
@@ -19,20 +19,20 @@ export {
   DEFAULT_INTL_CONFIG,
   createFormatters,
   getNamedFormat,
-} from '#packages/intl/src/utils.js'
-export * from '#packages/intl/src/error.js'
-export {formatMessage} from '#packages/intl/src/message.js'
-export type {FormatMessageFn} from '#packages/intl/src/message.js'
+} from '#packages/intl/utils.js'
+export * from '#packages/intl/error.js'
+export {formatMessage} from '#packages/intl/message.js'
+export type {FormatMessageFn} from '#packages/intl/message.js'
 export {
   formatDate,
   formatDateToParts,
   formatTime,
   formatTimeToParts,
-} from '#packages/intl/src/dateTime.js'
-export {formatDisplayName} from '#packages/intl/src/displayName.js'
-export {formatList} from '#packages/intl/src/list.js'
-export {formatPlural} from '#packages/intl/src/plural.js'
-export {formatRelativeTime} from '#packages/intl/src/relativeTime.js'
-export {formatNumber, formatNumberToParts} from '#packages/intl/src/number.js'
-export {createIntl} from '#packages/intl/src/create-intl.js'
-export type {CreateIntlFn} from '#packages/intl/src/create-intl.js'
+} from '#packages/intl/dateTime.js'
+export {formatDisplayName} from '#packages/intl/displayName.js'
+export {formatList} from '#packages/intl/list.js'
+export {formatPlural} from '#packages/intl/plural.js'
+export {formatRelativeTime} from '#packages/intl/relativeTime.js'
+export {formatNumber, formatNumberToParts} from '#packages/intl/number.js'
+export {createIntl} from '#packages/intl/create-intl.js'
+export type {CreateIntlFn} from '#packages/intl/create-intl.js'

@@ -28,7 +28,7 @@ filegroup(
 PACKAGE_NAME = "ts-transformer"
 
 SRCS = glob([
-    "src/*.ts",
+    "*.ts",
     "*.ts",
 ])
 

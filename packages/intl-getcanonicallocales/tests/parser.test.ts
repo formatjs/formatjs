@@ -1,4 +1,4 @@
-import {parseUnicodeLocaleId} from '#packages/intl-getcanonicallocales/src/parser.js'
+import {parseUnicodeLocaleId} from '#packages/intl-getcanonicallocales/parser.js'
 import {describe, expect, it} from 'vitest'
 describe('parser', () => {
   const invalidLanguageTags = [
