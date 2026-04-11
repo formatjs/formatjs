@@ -297,7 +297,7 @@
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
-          "FILE:@@//package.json 2869183125abb6a50a28991f5c6fbfa2126e4925e8af28cd53456c1e643799a5"
+          "FILE:@@//package.json e98388ca4d6222f6e20d50134a45dbcb60f1a5801e7577ce62f0fa46fb8f3ff4"
         ],
         "generatedRepoSpecs": {
           "npm_typescript": {
@@ -3906,7 +3906,7 @@
     },
     "@@rules_rust+//crate_universe/private:internal_extensions.bzl%cu_nr": {
       "general": {
-        "bzlTransitiveDigest": "+GMGLO8fhObMT4QIEm4KHXZlSvypggLOZN+UGbwWea4=",
+        "bzlTransitiveDigest": "x/pJs1oMJ7DRz8Vs8RyMQx1C1F8yw1Cu6piUnL05/WY=",
         "usagesDigest": "tG3p3Nb5XxC7vWY/bcKdb//g0HoAxpxxH3F5/jBVlk4=",
         "recordedInputs": [
           "REPO_MAPPING:bazel_features+,bazel_features_globals bazel_features++version_extension+bazel_features_globals",

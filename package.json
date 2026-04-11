@@ -132,7 +132,7 @@
     "oxc-parser": "^0.120.0",
     "oxc-transform": "^0.120.0",
     "oxfmt": "^0.41.0",
-    "oxlint": "^1.48.0",
+    "oxlint": "^1.59.0",
     "prismjs": "^1.30.0",
     "react": "19",
     "react-dom": "19",
@@ -226,8 +226,7 @@
       "@types/mdx": "patches/@types__mdx.patch",
       "@vue/compiler-sfc": "patches/@vue+compiler-sfc.patch",
       "unicode-match-property-value-ecmascript@2.2.1": "patches/unicode-match-property-value-ecmascript@2.2.1.patch",
-      "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch",
-      "oxlint@1.48.0": "patches/oxlint@1.48.0.patch"
+      "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch"
     },
     "onlyBuiltDependencies": [
       "@ast-grep/cli",
