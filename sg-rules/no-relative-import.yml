@@ -11,10 +11,17 @@ rule:
     - pattern: "export type { $$$ARGS } from '$PATH'"
 constraints:
   PATH:
-    regex: ^\.\.?/.*\.js$
+    regex: ^\.\.?/
 files:
   - 'packages/**/*.ts'
   - 'packages/**/*.tsx'
 ignores:
   - 'packages/*/examples/**'
-  - 'packages/*/test262-main.ts'
+  # tsd type tests use a separate tsconfig without #packages/ path mapping
+  - 'packages/**/*.test-d.ts'
+  # Scripts/tools run in Node with --experimental-transform-types
+  # which can't resolve #packages/*.js to .ts files
+  - 'packages/*/scripts/**'
+  - 'packages/*/tools/**'
+  # Imports ./package.json (JSON can't use #packages/ path mapping)
+  - 'packages/eslint-plugin-formatjs/index.ts'

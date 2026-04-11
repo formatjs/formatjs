@@ -1,6 +1,6 @@
 // @generated
 // @ts-nocheck
-import './polyfill-force.js'
+import '#packages/intl-listformat/polyfill-force.js'
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(
     {

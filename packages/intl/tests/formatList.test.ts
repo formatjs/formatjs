@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
-import {formatList as formatListFn} from '../list'
+import {formatList as formatListFn} from '#packages/intl/list'
 
-import {type IntlConfig, type IntlFormatters} from '../types'
+import {type IntlConfig, type IntlFormatters} from '#packages/intl/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

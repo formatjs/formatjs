@@ -2,8 +2,16 @@ import {
   rule,
   name,
 } from '#packages/eslint-plugin-formatjs/rules/no-literal-string-in-object.js'
-import {ruleTester, vueRuleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
+import {
+  ruleTester,
+  vueRuleTester,
+} from '#packages/eslint-plugin-formatjs/tests/util'
+import {
+  dynamicMessage,
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
 
 ruleTester.run(name, rule, {
   valid: [

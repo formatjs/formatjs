@@ -8,8 +8,8 @@ import {
   emptyFnCall,
   noMatch,
   spreadJsx,
-} from './fixtures'
-import {ruleTester} from './util'
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name, rule, {
   valid: [

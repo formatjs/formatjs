@@ -3,8 +3,13 @@ import {
   name,
   rule,
 } from '#packages/eslint-plugin-formatjs/rules/enforce-description.js'
-import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
-import {ruleTester} from './util'
+import {
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+  dynamicMessage,
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name, rule, {
   valid: [

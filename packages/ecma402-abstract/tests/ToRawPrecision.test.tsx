@@ -1,5 +1,5 @@
 import Decimal from '@formatjs/bigdecimal'
-import {ToRawPrecision} from '../NumberFormat/ToRawPrecision'
+import {ToRawPrecision} from '#packages/ecma402-abstract/NumberFormat/ToRawPrecision'
 import {describe, expect, it} from 'vitest'
 
 describe('ToRawPrecision', () => {

@@ -22,7 +22,7 @@ import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/s
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '#packages/intl-datetimeformat/data/links.generated.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
-import {unpack} from '#packages/intl-datetimeformat/packer.js'
+import {unpack} from '#packages/intl-datetimeformat/unpack.js'
 import {
   type PackedData,
   type RawDateTimeLocaleData,

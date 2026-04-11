@@ -1,9 +1,9 @@
 import {type IntlShape} from '@formatjs/intl'
 import {cleanup, render} from '@testing-library/react'
 import * as React from 'react'
-import {FormattedNumber, FormattedNumberParts} from '../../..'
-import {createIntl} from '../../../components/createIntl'
-import {mountFormattedComponentWithProvider} from '../testUtils'
+import {FormattedNumber, FormattedNumberParts} from '#packages/react-intl'
+import {createIntl} from '#packages/react-intl/components/createIntl'
+import {mountFormattedComponentWithProvider} from '#packages/react-intl/tests/unit/testUtils'
 import {describe, expect, it, beforeEach, vi} from 'vitest'
 import '@testing-library/jest-dom/vitest'
 

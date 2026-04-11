@@ -2,14 +2,14 @@ import {
   rule,
   name,
 } from '#packages/eslint-plugin-formatjs/rules/no-complex-selectors.js'
-import {ruleTester} from './util'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 import {
   dynamicMessage,
   noMatch,
   spreadJsx,
   emptyFnCall,
   defineMessage,
-} from './fixtures'
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
 ruleTester.run(name, rule, {
   valid: [
     defineMessage,

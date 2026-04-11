@@ -1,5 +1,5 @@
 import * as React from 'react'
-import './styles.css'
+import '#packages/react-intl/example-sandboxes/strict-message-types/src/styles.css'
 import {IntlProvider, FormattedMessage} from 'react-intl'
 
 const messages = {

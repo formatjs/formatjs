@@ -1,4 +1,4 @@
-import {defaultCurrency} from '../defaultCurrency'
+import {defaultCurrency} from '#packages/utils/defaultCurrency'
 import {expect, describe, it} from 'vitest'
 describe('defaultCurrency', () => {
   it('should return the default currency when no currency is provided', () => {

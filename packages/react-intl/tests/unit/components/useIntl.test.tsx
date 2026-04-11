@@ -1,6 +1,6 @@
 import {cleanup, render} from '@testing-library/react'
-import {IntlProvider} from '../../..'
-import useIntl from '../../../components/useIntl'
+import {IntlProvider} from '#packages/react-intl'
+import useIntl from '#packages/react-intl/components/useIntl'
 import {describe, expect, it, vi, beforeEach} from 'vitest'
 import '@testing-library/jest-dom/vitest'
 

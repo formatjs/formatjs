@@ -1,4 +1,4 @@
-import {defaultLocale} from '../defaultLocale'
+import {defaultLocale} from '#packages/utils/defaultLocale'
 import {expect, describe, it} from 'vitest'
 describe('defaultCurrency', () => {
   it('should return the default locale when no country code is provided', () => {

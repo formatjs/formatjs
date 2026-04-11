@@ -80,8 +80,8 @@
     "https://bcr.bazel.build/modules/bazel_skylib/1.8.2/MODULE.bazel": "69ad6927098316848b34a9142bcc975e018ba27f08c4ff403f50c1b6e646ca67",
     "https://bcr.bazel.build/modules/bazel_skylib/1.8.2/source.json": "34a3c8bcf233b835eb74be9d628899bb32999d3e0eadef1947a0a562a2b16ffb",
     "https://bcr.bazel.build/modules/buildifier_prebuilt/7.3.1/MODULE.bazel": "537faf0ad9f5892910074b8e43b4c91c96f1d5d86b6ed04bdbe40cf68aa48b68",
-    "https://bcr.bazel.build/modules/buildifier_prebuilt/8.5.1/MODULE.bazel": "77f2a1958d1d07376dd3ce3ae16540f2c1b01921c1fd21930827271260e75a66",
-    "https://bcr.bazel.build/modules/buildifier_prebuilt/8.5.1/source.json": "ae9f3d9dc7bec033976cf47165a78788bebad2b5c272241063ae31bad8664fd4",
+    "https://bcr.bazel.build/modules/buildifier_prebuilt/8.5.1.2/MODULE.bazel": "9a6e0a2e87d1e3da679e157da5192ea351d5739ca1ff51831c2b736d5b6034de",
+    "https://bcr.bazel.build/modules/buildifier_prebuilt/8.5.1.2/source.json": "33e11b3bf11e39cb762480a7e6ea1d24d044636135cdd8b8e74b07ebcd3b8d8b",
     "https://bcr.bazel.build/modules/buildozer/8.5.1/MODULE.bazel": "a35d9561b3fc5b18797c330793e99e3b834a473d5fbd3d7d7634aafc9bdb6f8f",
     "https://bcr.bazel.build/modules/buildozer/8.5.1/source.json": "e3386e6ff4529f2442800dee47ad28d3e6487f36a1f75ae39ae56c70f0cd2fbd",
     "https://bcr.bazel.build/modules/gawk/5.3.2.bcr.1/MODULE.bazel": "cdf8cbe5ee750db04b78878c9633cc76e80dcf4416cbe982ac3a9222f80713c8",
@@ -297,7 +297,7 @@
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
-          "FILE:@@//package.json 900a2822c67f5c125e1f172f12fe8e58437e320cc286ebeffd2e0ade97771502"
+          "FILE:@@//package.json 2869183125abb6a50a28991f5c6fbfa2126e4925e8af28cd53456c1e643799a5"
         ],
         "generatedRepoSpecs": {
           "npm_typescript": {
@@ -932,7 +932,7 @@
     },
     "@@rules_rust+//crate_universe:extension.bzl%crate": {
       "general": {
-        "bzlTransitiveDigest": "Q6YfhSSac5eXmV/qH5mkCRH9WcYHavt9MF/hsxbgXiE=",
+        "bzlTransitiveDigest": "Yx3HfFlT9UtnB4IvyMjPbeLnxEh+708jB80NM9K347A=",
         "usagesDigest": "+2oxp30n7U2iCRyiQVVvn9Dm9XZaeUlnwnAuV9gqyVs=",
         "recordedInputs": [
           "ENV:CARGO_BAZEL_DEBUG \\0",
@@ -959,7 +959,7 @@
           "FILE:@@//Cargo.lock b25f6e198c91b5282f93a5c62a3a799917ec7c2f6a03b0488948c4328d6c1c93",
           "FILE:@@//Cargo.toml 4e0e0629ddbf521db0ad31e9ad8cd8805f29b141f7edaaa560af34e5f325f882",
           "FILE:@@rules_rust++rust_host_tools+rust_host_tools//rust_host_tools ENOENT",
-          "FILE:@@//MODULE.bazel 043c7bd04167e3534768411a4b0e673d0f5521eb97d4e25d33e10f2af7695715",
+          "FILE:@@//MODULE.bazel 5706ab41ffb28384bb77f18cec61127c00f057d0c816fbb802e72239ba30c428",
           "FILE:@@//crates/icu_skeleton_parser/Cargo.toml eac4ca44b47b0fde5ae7f4afcdb6e7d4951eac75eb44db7349b2ba912a9840da",
           "FILE:@@//crates/icu_messageformat_parser/Cargo.toml 1c2096e9a8853568596e65ebbb56af73feef324883c36b9fec7fa2ab7a7621ed",
           "FILE:@@//crates/formatjs_cli/Cargo.toml aec7493b4f9b37ec1d2ee32c7a60814c0e8c0823b0a5596bd69f8400c857b033",

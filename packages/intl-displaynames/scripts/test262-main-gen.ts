@@ -17,7 +17,7 @@ function main(args: Args) {
     out,
     `// @generated
 // @ts-nocheck
-import './polyfill-force.js';
+import '#packages/intl-displaynames/polyfill-force.js';
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(${allData.join(',\n')})
 }`

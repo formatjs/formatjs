@@ -1,4 +1,8 @@
-import {msg, Component, formattedMessage} from './comp'
+import {
+  msg,
+  Component,
+  formattedMessage,
+} from '#packages/ts-transformer/integration-tests/integration/comp'
 import * as React from 'react'
 import * as ReactDOMServer from 'react-dom/server'
 import {expect, describe, it} from 'vitest'

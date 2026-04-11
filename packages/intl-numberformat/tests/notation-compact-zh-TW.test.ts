@@ -4,9 +4,9 @@ import '@formatjs/intl-locale/polyfill.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/zh'
 import '@formatjs/intl-pluralrules/polyfill.js'
-import zh from './locale-data/zh.json' with {type: 'json'}
-import zhHant from './locale-data/zh-Hant.json' with {type: 'json'}
-import {NumberFormat} from '../core'
+import zh from '#packages/intl-numberformat/tests/locale-data/zh.json' with {type: 'json'}
+import zhHant from '#packages/intl-numberformat/tests/locale-data/zh-Hant.json' with {type: 'json'}
+import {NumberFormat} from '#packages/intl-numberformat/core'
 NumberFormat.__addLocaleData(zh as any, zhHant as any)
 
 describe('notation-compact-zh-TW', function () {

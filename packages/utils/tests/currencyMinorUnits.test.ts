@@ -1,4 +1,4 @@
-import {currencyMinorScale} from '../iso4217'
+import {currencyMinorScale} from '#packages/utils/iso4217'
 import {expect, describe, it} from 'vitest'
 describe('currencyMinorScale', () => {
   it('should return 100 for USD', () => {
