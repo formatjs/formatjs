@@ -114,7 +114,7 @@
     "clsx": "^2.1.1",
     "content-tag": "^4.1.0",
     "conventional-changelog-angular": "^8.1.0",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.28.0",
     "eslint": "10.0.3",
     "eslint-plugin-formatjs": "workspace:*",
     "fast-glob": "^3.3.3",
