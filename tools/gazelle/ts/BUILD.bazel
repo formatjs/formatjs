@@ -1,0 +1,36 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "ts",
+    srcs = [
+        "config.go",
+        "kinds.go",
+        "language.go",
+        "parser.go",
+        "resolve.go",
+    ],
+    importpath = "github.com/nicolo-ribaudo/formatjs/tools/gazelle/ts",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_smacker_go_tree_sitter//:go-tree-sitter",
+        "@com_github_smacker_go_tree_sitter//typescript/typescript",
+        "@gazelle//config",
+        "@gazelle//label",
+        "@gazelle//language",
+        "@gazelle//repo",
+        "@gazelle//resolve",
+        "@gazelle//rule",
+    ],
+)
+
+go_test(
+    name = "ts_test",
+    srcs = [
+        "parser_test.go",
+        "resolve_test.go",
+    ],
+    embed = [":ts"],
+    deps = [
+        "@gazelle//label",
+    ],
+)

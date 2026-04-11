@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@gazelle//:def.bzl", "gazelle")
+load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
@@ -30,12 +30,16 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
+gazelle_binary(
+    name = "gazelle_bin",
+    languages = [
+        "//tools/gazelle/ts",
+    ],
+)
+
 gazelle(
     name = "gazelle",
-    env = {
-        "ENABLE_LANGUAGES": "js",
-    },
-    gazelle = "@multitool//tools/gazelle",
+    gazelle = ":gazelle_bin",
 )
 
 npm_link_all_packages()
