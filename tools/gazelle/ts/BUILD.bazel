@@ -27,6 +27,10 @@ go_test(
     name = "ts_test",
     srcs = [
         "parser_test.go",
+        "resolve_test.go",
     ],
     embed = [":ts"],
+    deps = [
+        "@gazelle//label",
+    ],
 )
