@@ -876,7 +876,6 @@ generate_src_file(
         "$(rootpaths :zdumps)",
     ],
     data = [
-        "packer.ts",
         "types.ts",
         ":zdumps",
         "//:node_modules/json-stable-stringify",
@@ -895,7 +894,6 @@ generate_src_file(
 ts_run_binary(
     name = "add-all-tz",
     srcs = [
-        "packer.ts",
         "types.ts",
         ":zdumps",
         "//:node_modules/fs-extra",
@@ -925,7 +923,6 @@ ts_run_binary(
 ts_run_binary(
     name = "add-golden-tz",
     srcs = [
-        "packer.ts",
         "types.ts",
         ":zdumps",
         "//:node_modules/fs-extra",

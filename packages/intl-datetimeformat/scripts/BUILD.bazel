@@ -1,6 +1,6 @@
 load("//tools:index.bzl", "ts_binary")
 
-exports_files(glob(["*.sh"]))
+exports_files(glob(["*.sh"]) + ["packer.ts"])
 
 ts_binary(
     name = "cldr-raw",
@@ -31,6 +31,7 @@ ts_binary(
 
 ts_binary(
     name = "process-zdump",
+    data = ["packer.ts"],
     entry_point = "process-zdump.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )

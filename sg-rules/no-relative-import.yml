@@ -23,7 +23,5 @@ ignores:
   # which can't resolve #packages/*.js to .ts files
   - 'packages/*/scripts/**'
   - 'packages/*/tools/**'
-  # Shared between src and scripts, uses .ts extension
-  - 'packages/intl-datetimeformat/packer.ts'
   # Imports ./package.json (JSON can't use #packages/ path mapping)
   - 'packages/eslint-plugin-formatjs/index.ts'

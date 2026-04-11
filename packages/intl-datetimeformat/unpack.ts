@@ -1,22 +1,5 @@
-import {type UnpackedData, type PackedData} from './types.ts'
+import type {PackedData} from '#packages/intl-datetimeformat/types.js'
 import type {UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
-
-export function pack(data: UnpackedData): PackedData {
-  const zoneNames = Object.keys(data.zones)
-  zoneNames.sort() // so output is stable
-  return {
-    zones: zoneNames.map(zone =>
-      [
-        zone,
-        ...data.zones[zone].map(([ts, ...others]) =>
-          [ts === '' ? '' : ts.toString(36), ...others].join(',')
-        ),
-      ].join('|')
-    ),
-    abbrvs: data.abbrvs.join('|'),
-    offsets: data.offsets.map(o => o.toString(36)).join('|'),
-  }
-}
 
 export function unpack(data: PackedData): Record<string, UnpackedZoneData[]> {
   const abbrvs = data.abbrvs.split('|')
