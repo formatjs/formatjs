@@ -1,8 +1,6 @@
-load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_compile")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:package.bzl", "formatjs_package")
 
 npm_link_all_packages()
 
@@ -10,60 +8,15 @@ exports_files([
     "package.json",
 ])
 
-PACKAGE_NAME = "fast-memoize"
-
 SRCS = glob([
     "*.ts",
 ])
 
-ENTRY_POINTS = [
-    "index.ts",
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    entry_points = ENTRY_POINTS,
 )
 
-BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
-
-js_library(
-    name = PACKAGE_NAME,
-    srcs = BUNDLES + [
-        "package.json",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-    ] + BUNDLES,
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    replace_prefixes = {
-        "%s-bundle/" % entry.replace(".ts", ""): ""
-        for entry in ENTRY_POINTS
-    },
-    visibility = ["//visibility:public"],
-)
-
-no_internal_imports_test(
-    name = "no_internal_imports_test",
-    data = BUNDLES,
-)
-
-# Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
-
-package_json_test(
-    name = "package_json_test",
-)
-
-package_exports_test(
-    name = "package_exports_test",
-    pkg = ":pkg",
+formatjs_package(
+    name = "fast-memoize",
 )
