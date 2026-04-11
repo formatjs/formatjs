@@ -88,7 +88,7 @@ bazel_dep(
 
 ######### Gazelle (aspect-gazelle) #########
 
-bazel_dep(name = "gazelle", version = "0.48.0")
+bazel_dep(name = "gazelle", version = "0.50.0")
 bazel_dep(name = "rules_multitool", version = "1.11.1")
 
 multitool = use_extension("@rules_multitool//multitool:extension.bzl", "multitool")
