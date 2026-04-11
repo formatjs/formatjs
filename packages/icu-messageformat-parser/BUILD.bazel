@@ -1,21 +1,15 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "no_internal_imports_test", "package_exports_test", "package_json_test")
-load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:compile.bzl", "formatjs_compile")
+load("//tools:index.bzl", "generate_src_file")
+load("//tools:package.bzl", "formatjs_package")
+load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
-load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
 
 exports_files([
     "package.json",
 ])
-
-PACKAGE_NAME = "icu-messageformat-parser"
 
 SRCS = glob(["*.ts"])
 
@@ -25,12 +19,6 @@ SRC_DEPS = [
     "//:node_modules/@formatjs/icu-skeleton-parser",
 ]
 
-EXTERNAL_PACKAGES = [
-    dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep and "ecma402-abstract" not in dep
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "no-parser.ts",
@@ -38,88 +26,47 @@ ENTRY_POINTS = [
     "manipulator.ts",
 ]
 
-[rolldown_bundle(
-    name = "%s-bundle" % entry.replace(".ts", ""),
-    srcs = [":srcs"],
-    dts = True,
-    entry_point = entry,
-    external = EXTERNAL_PACKAGES,
-    format = "esm",
-    output = "%s.js" % entry.replace(".ts", ""),
-    target = "es2020",
-    deps = SRC_DEPS,
-) for entry in ENTRY_POINTS]
-
-BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
-
-js_library(
-    name = PACKAGE_NAME,
-    srcs = BUNDLES + [
-        "package.json",
+formatjs_compile(
+    name = "dist",
+    srcs = SRCS,
+    entry_points = ENTRY_POINTS,
+    project_references = [
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
-    visibility = ["//visibility:public"],
+    types = True,
+    deps = [
+        "//:node_modules/@formatjs/icu-skeleton-parser",
+    ],
 )
 
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-    ] + BUNDLES,
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    replace_prefixes = {
-        "%s-bundle/" % entry.replace(".ts", ""): ""
-        for entry in ENTRY_POINTS
-    },
-    visibility = ["//visibility:public"],
-)
-
-no_internal_imports_test(
-    name = "no_internal_imports_test",
-    data = BUNDLES,
-)
-
-ts_project(
-    name = "typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = packages_tsconfig(),
+formatjs_package(
+    name = "icu-messageformat-parser",
+    entry_points = ENTRY_POINTS,
     deps = SRC_DEPS,
 )
 
-ts_project(
-    name = "types",
-    srcs = [":srcs"],
-    declaration = True,
-    emit_declaration_only = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = packages_tsconfig(),
-    visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
-)
-
-vitest(
+formatjs_test(
     name = "unit_test",
     srcs = SRCS + glob([
         "tests/**/*.ts",
     ]),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = SRC_DEPS + [
+    project_references = [
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
+    test_deps = [
         "//:node_modules/@types/lodash-es",
         "//:node_modules/fast-glob",
         "//:node_modules/lodash-es",
     ],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        "//:node_modules/@formatjs/icu-skeleton-parser",
+    ],
 )
-
-# Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
 
 generate_src_file(
     name = "regex",
@@ -132,19 +79,4 @@ generate_src_file(
     src = "time-data.generated.ts",
     tags = ["cldr"],
     tool = "//packages/icu-messageformat-parser/tools:time_data_gen",
-)
-
-package_json_test(
-    name = "package_json_test",
-    deps = SRC_DEPS,
-)
-
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
-)
-
-package_exports_test(
-    name = "package_exports_test",
-    pkg = ":pkg",
 )

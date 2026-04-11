@@ -1,14 +1,7 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
-load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
-load("//tools:vitest.bzl", "vitest")
+load("//tools:compile.bzl", "formatjs_compile")
+load("//tools:package.bzl", "formatjs_package")
+load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
@@ -42,70 +35,18 @@ SRC_DEPS = [
     "//:node_modules/typescript",
 ]
 
-EXTERNAL_PACKAGES = [
-    dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep
-]
-
-ENTRY_POINTS = [
-    "index.ts",
-]
-
-[rolldown_bundle(
-    name = "%s-bundle" % entry.replace(".ts", ""),
-    srcs = [":srcs"],
-    dts = True,
-    entry_point = entry,
-    external = EXTERNAL_PACKAGES,
-    format = "esm",
-    output = "%s.js" % entry.replace(".ts", ""),
-    target = "es2020",
+formatjs_compile(
+    name = "dist",
+    srcs = SRCS,
     deps = SRC_DEPS,
-) for entry in ENTRY_POINTS]
+)
 
-BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
-
-js_library(
+formatjs_package(
     name = PACKAGE_NAME,
-    srcs = BUNDLES + [
-        "package.json",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-    ] + BUNDLES,
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    replace_prefixes = {
-        "%s-bundle/" % entry.replace(".ts", ""): ""
-        for entry in ENTRY_POINTS
-    },
-    visibility = ["//visibility:public"],
-)
-
-no_internal_imports_test(
-    name = "no_internal_imports_test",
-    data = BUNDLES,
-)
-
-ts_project(
-    name = "typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = SRC_DEPS,
 )
 
-vitest(
+formatjs_test(
     name = "unit_test",
     srcs = SRCS + glob([
         "tests/*.ts*",
@@ -114,22 +55,4 @@ vitest(
         "tests/fixtures/*.ts*",
     ]),
     deps = SRC_DEPS,
-)
-
-# Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
-
-package_json_test(
-    name = "package_json_test",
-    deps = SRC_DEPS,
-)
-
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
-)
-
-package_exports_test(
-    name = "package_exports_test",
-    pkg = ":pkg",
 )
