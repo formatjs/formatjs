@@ -1,4 +1,7 @@
-import {rule, name} from '../rules/no-literal-string-in-object.js'
+import {
+  rule,
+  name,
+} from '#packages/eslint-plugin-formatjs/rules/no-literal-string-in-object.js'
 import {ruleTester, vueRuleTester} from './util'
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 

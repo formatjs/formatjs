@@ -1,4 +1,4 @@
-import {name, rule} from '../rules/no-offset.js'
+import {name, rule} from '#packages/eslint-plugin-formatjs/rules/no-offset.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
 ruleTester.run(name, rule, {

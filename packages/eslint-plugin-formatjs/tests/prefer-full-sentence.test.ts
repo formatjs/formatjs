@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/prefer-full-sentence.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/prefer-full-sentence.js'
 import {
   defineMessage,
   dynamicMessage,

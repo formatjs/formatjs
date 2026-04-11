@@ -1,4 +1,8 @@
-import {name, type Option, rule} from '../rules/enforce-id.js'
+import {
+  name,
+  type Option,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-id.js'
 import {emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 const options: [Option] = [

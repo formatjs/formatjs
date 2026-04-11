@@ -1,6 +1,9 @@
 import type {Node} from 'estree-jsx'
 import type {Rule} from 'eslint'
-import {extractMessages, getSettings} from '../util.js'
+import {
+  extractMessages,
+  getSettings,
+} from '#packages/eslint-plugin-formatjs/util.js'
 
 export enum Option {
   literal = 'literal',

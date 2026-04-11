@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/no-multiple-whitespaces.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/no-multiple-whitespaces.js'
 import {
   defineMessage,
   dynamicMessage,

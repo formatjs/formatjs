@@ -1,0 +1,20 @@
+id: no-relative-import
+language: typescript
+message: "Relative imports are banned. Use absolute '#packages/' imports instead."
+severity: error
+rule:
+  any:
+    - pattern: "import $$$ARGS from '$PATH'"
+    - pattern: "import type $$$ARGS from '$PATH'"
+    - pattern: "export * from '$PATH'"
+    - pattern: "export { $$$ARGS } from '$PATH'"
+    - pattern: "export type { $$$ARGS } from '$PATH'"
+constraints:
+  PATH:
+    regex: ^\.\.?/.*\.js$
+files:
+  - 'packages/**/*.ts'
+  - 'packages/**/*.tsx'
+ignores:
+  - 'packages/*/examples/**'
+  - 'packages/*/test262-main.ts'

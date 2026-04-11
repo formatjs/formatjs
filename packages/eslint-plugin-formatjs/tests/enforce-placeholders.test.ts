@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/enforce-placeholders.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-placeholders.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester} from './util'
 ruleTester.run(name, rule, {

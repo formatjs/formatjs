@@ -1,4 +1,7 @@
-import {name, rule} from '../rules/no-missing-icu-plural-one-placeholders.js'
+import {
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/no-missing-icu-plural-one-placeholders.js'
 import {ruleTester} from './util'
 
 ruleTester.run(name, rule, {

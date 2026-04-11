@@ -1,4 +1,8 @@
-import {Element, name, rule} from '../rules/blocklist-elements.js'
+import {
+  Element,
+  name,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/blocklist-elements.js'
 import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
 import {ruleTester, vueRuleTester} from './util'
 

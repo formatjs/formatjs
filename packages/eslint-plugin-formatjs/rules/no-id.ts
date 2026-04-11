@@ -1,6 +1,9 @@
 import type {Comment, Node} from 'estree-jsx'
 import type {Rule, SourceCode} from 'eslint'
-import {extractMessages, getSettings} from '../util.js'
+import {
+  extractMessages,
+  getSettings,
+} from '#packages/eslint-plugin-formatjs/util.js'
 
 function isComment(
   token: ReturnType<SourceCode['getTokenAfter']>

@@ -9,8 +9,14 @@ import {
 import type {Node} from 'estree-jsx'
 import type {Rule} from 'eslint'
 import MagicString from 'magic-string'
-import {extractMessages, patchMessage} from '../util.js'
-import {CORE_MESSAGES, type CoreMessageIds} from '../messages.js'
+import {
+  extractMessages,
+  patchMessage,
+} from '#packages/eslint-plugin-formatjs/util.js'
+import {
+  CORE_MESSAGES,
+  type CoreMessageIds,
+} from '#packages/eslint-plugin-formatjs/messages.js'
 
 export const name = 'no-missing-icu-plural-one-placeholders'
 

@@ -41,7 +41,6 @@ SRCS = glob(["rules/*.ts"]) + [
     "messages.ts",
     "emoji-utils.ts",
     "emoji-data.generated.ts",
-    "package.json",
 ]
 
 SRC_DEPS = [
@@ -70,7 +69,10 @@ ENTRY_POINTS = [
 
 [rolldown_bundle(
     name = "%s-bundle" % entry.replace(".ts", ""),
-    srcs = [":srcs"],
+    srcs = [
+        "package.json",
+        ":srcs",
+    ],
     dts = True,
     entry_point = entry,
     external = EXTERNAL_PACKAGES,
@@ -112,7 +114,10 @@ no_internal_imports_test(
 
 ts_project(
     name = "typecheck",
-    srcs = [":srcs"],
+    srcs = [
+        "package.json",
+        ":srcs",
+    ],
     declaration = True,
     no_emit = True,
     resolve_json_module = True,

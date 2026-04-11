@@ -5,7 +5,7 @@ import {
   getEmojiVersion,
   isValidEmojiVersion,
   filterEmojis,
-} from '../emoji-utils.js'
+} from '#packages/eslint-plugin-formatjs/emoji-utils.js'
 
 describe('emoji-utils', () => {
   describe('hasEmoji', () => {

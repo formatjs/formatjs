@@ -1,5 +1,5 @@
 import {describe, expect, test} from 'vitest'
-import {transform, type Options} from '../transform.js'
+import {transform, type Options} from '#packages/unplugin/transform.js'
 import {interpolateName} from '@formatjs/ts-transformer'
 
 function t(

@@ -14,8 +14,8 @@ import {mkdirSync, rmSync, writeFileSync} from 'fs'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
 import {afterAll, beforeAll, describe, expect, test} from 'vitest'
-import {transform} from '../transform.js'
-import {resolveRustBinaryPath} from './rust-binary-utils.js'
+import {transform} from '#packages/unplugin/transform.js'
+import {resolveRustBinaryPath} from '#packages/unplugin/conformance-tests/rust-binary-utils.js'
 
 const exec = promisify(nodeExec)
 
@@ -34,97 +34,93 @@ function extractPluginIds(code: string): string[] {
   return ids.sort()
 }
 
-describe(
-  'formatjs_cli vs @formatjs/unplugin conformance',
-  () => {
-    if (!RUST_BIN_PATH) {
-      test.skip('Rust CLI not available — skipping conformance tests', () => {})
-      return
-    }
+describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
+  if (!RUST_BIN_PATH) {
+    test.skip('Rust CLI not available — skipping conformance tests', () => {})
+    return
+  }
 
-    beforeAll(() => {
-      mkdirSync(ARTIFACT_PATH, {recursive: true})
-    })
+  beforeAll(() => {
+    mkdirSync(ARTIFACT_PATH, {recursive: true})
+  })
 
-    afterAll(() => {
-      rmSync(ARTIFACT_PATH, {recursive: true, force: true})
-    })
+  afterAll(() => {
+    rmSync(ARTIFACT_PATH, {recursive: true, force: true})
+  })
 
-    /**
-     * Assert that `formatjs_cli extract --flatten` and the unplugin transform
-     * (default options: flatten=true) produce identical IDs for the given code.
-     */
-    async function assertConformance(code: string, filename: string) {
-      const tempFile = join(ARTIFACT_PATH, filename)
-      writeFileSync(tempFile, code)
+  /**
+   * Assert that `formatjs_cli extract --flatten` and the unplugin transform
+   * (default options: flatten=true) produce identical IDs for the given code.
+   */
+  async function assertConformance(code: string, filename: string) {
+    const tempFile = join(ARTIFACT_PATH, filename)
+    writeFileSync(tempFile, code)
 
-      // CLI: --flatten matches the plugin's default flatten=true
-      const {stdout} = await exec(
-        `"${RUST_BIN_PATH}" extract --flatten "${tempFile}"`
-      )
-      const cliOutput: Record<string, {defaultMessage: string}> =
-        JSON.parse(stdout)
-      const cliIds = Object.keys(cliOutput).sort()
+    // CLI: --flatten matches the plugin's default flatten=true
+    const {stdout} = await exec(
+      `"${RUST_BIN_PATH}" extract --flatten "${tempFile}"`
+    )
+    const cliOutput: Record<string, {defaultMessage: string}> =
+      JSON.parse(stdout)
+    const cliIds = Object.keys(cliOutput).sort()
 
-      // Plugin: default options (flatten=true, idInterpolationPattern=[sha512:contenthash:base64:6])
-      const result = transform(code, tempFile, {})
-      expect(result, 'unplugin should transform the code').toBeDefined()
-      const pluginIds = extractPluginIds(result!.code)
+    // Plugin: default options (flatten=true, idInterpolationPattern=[sha512:contenthash:base64:6])
+    const result = transform(code, tempFile, {})
+    expect(result, 'unplugin should transform the code').toBeDefined()
+    const pluginIds = extractPluginIds(result!.code)
 
-      expect(pluginIds).toEqual(cliIds)
-    }
+    expect(pluginIds).toEqual(cliIds)
+  }
 
-    test('plain formatMessage without description', async () => {
-      await assertConformance(
-        `intl.formatMessage({defaultMessage: 'Hello World'})`,
-        'plain-no-desc.tsx'
-      )
-    })
+  test('plain formatMessage without description', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: 'Hello World'})`,
+      'plain-no-desc.tsx'
+    )
+  })
 
-    test('plain formatMessage with description', async () => {
-      await assertConformance(
-        `intl.formatMessage({defaultMessage: 'Hello World', description: 'greeting'})`,
-        'plain-with-desc.tsx'
-      )
-    })
+  test('plain formatMessage with description', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: 'Hello World', description: 'greeting'})`,
+      'plain-with-desc.tsx'
+    )
+  })
 
-    test('plural message — flatten hoists selectors', async () => {
-      await assertConformance(
-        `intl.formatMessage({defaultMessage: '{count, plural, one {# item} other {# items}}'})`,
-        'plural.tsx'
-      )
-    })
+  test('plural message — flatten hoists selectors', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: '{count, plural, one {# item} other {# items}}'})`,
+      'plural.tsx'
+    )
+  })
 
-    test('plural embedded in sentence — flatten produces full phrases', async () => {
-      await assertConformance(
-        `<FormattedMessage defaultMessage="Are you sure you want to delete {count,plural,one {this template} other {these # templates}}?" />`,
-        'plural-sentence.tsx'
-      )
-    })
+  test('plural embedded in sentence — flatten produces full phrases', async () => {
+    await assertConformance(
+      `<FormattedMessage defaultMessage="Are you sure you want to delete {count,plural,one {this template} other {these # templates}}?" />`,
+      'plural-sentence.tsx'
+    )
+  })
 
-    test('JSX FormattedMessage with description', async () => {
-      await assertConformance(
-        `<FormattedMessage defaultMessage="Hello World" description="greeting" />`,
-        'jsx-with-desc.tsx'
-      )
-    })
+  test('JSX FormattedMessage with description', async () => {
+    await assertConformance(
+      `<FormattedMessage defaultMessage="Hello World" description="greeting" />`,
+      'jsx-with-desc.tsx'
+    )
+  })
 
-    test('defineMessages with multiple messages', async () => {
-      await assertConformance(
-        `defineMessages({
+  test('defineMessages with multiple messages', async () => {
+    await assertConformance(
+      `defineMessages({
   greeting: {defaultMessage: 'Hello', description: 'greeting'},
   farewell: {defaultMessage: 'Goodbye', description: 'farewell'},
 })`,
-        'define-messages.tsx'
-      )
-    })
+      'define-messages.tsx'
+    )
+  })
 
-    test('whitespace is normalized before ID generation', async () => {
-      await assertConformance(
-        `intl.formatMessage({defaultMessage: '  Hello   World  '})`,
-        'whitespace.tsx'
-      )
-    })
-  },
-  30000
-)
+  test('whitespace is normalized before ID generation', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: '  Hello   World  '})`,
+      'whitespace.tsx'
+    )
+  })
+}, 30000)
