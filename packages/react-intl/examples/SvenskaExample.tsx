@@ -1,74 +1,86 @@
 import type {JSX} from 'react'
-import {IntlProvider, FormattedMessage, FormattedPlural} from 'react-intl'
+import {IntlProvider, FormattedMessage} from 'react-intl'
 
-// Swedish messages with proper plural forms and culturally appropriate content
-const svenskaMessages = {
-  welcome: 'Välkommen till FormatJS',
-  greeting: 'Hej {name}!',
-  photoCount:
-    'Du har {count, plural, =0 {inga foton} =1 {ett foto} other {# foton}} i ditt album',
-  currentDate: 'Idag är det {date, date, long}',
-  price: 'Pris: {amount, number, ::currency/SEK}',
-  temperature: 'Temperaturen är {temp, number}°C',
-  lastLogin: 'Senast inloggad: {time, date, short} kl. {time, time, short}',
-  userCount:
-    'Vi har {users, plural, =0 {inga användare} =1 {en användare} other {# användare}} registrerade',
-  ordinalExample:
-    'Du kom på {place, selectordinal, one {#:a} two {#:a} =3 {#:e} other {#:e}} plats',
-  genderMessage:
-    '{name} är {gender, select, male {en kille} female {en tjej} other {en person}} från {city}',
-  weekday:
-    'Det är {day, select, monday {måndag} tuesday {tisdag} wednesday {onsdag} thursday {torsdag} friday {fredag} saturday {lördag} sunday {söndag} other {en okänd dag}}',
-} as const
-
-// Component demonstrating Swedish formatting
 const SvensktInnehåll = (): JSX.Element => {
   const now = new Date()
 
   return (
     <div style={{fontFamily: 'system-ui', padding: '20px', maxWidth: '600px'}}>
       <h1>
-        <FormattedMessage id="welcome" />
+        <FormattedMessage
+          id="welcome"
+          defaultMessage="Välkommen till FormatJS"
+        />
       </h1>
 
       <p>
-        <FormattedMessage id="greeting" values={{name: 'Anna'}} />
+        <FormattedMessage
+          id="greeting"
+          defaultMessage="Hej {name}!"
+          values={{name: 'Anna'}}
+        />
       </p>
 
       <p>
-        <FormattedMessage id="photoCount" values={{count: 42}} />
+        <FormattedMessage
+          id="photoCount"
+          defaultMessage="Du har {count, plural, =0 {inga foton} =1 {ett foto} other {# foton}} i ditt album"
+          values={{count: 42}}
+        />
       </p>
 
       <p>
-        <FormattedMessage id="currentDate" values={{date: now}} />
+        <FormattedMessage
+          id="currentDate"
+          defaultMessage="Idag är det {date, date, long}"
+          values={{date: now}}
+        />
       </p>
 
       <p>
-        <FormattedMessage id="price" values={{amount: 299.5}} />
+        <FormattedMessage
+          id="price"
+          defaultMessage="Pris: {amount, number, ::currency/SEK}"
+          values={{amount: 299.5}}
+        />
       </p>
 
       <p>
-        <FormattedMessage id="temperature" values={{temp: -5}} />
+        <FormattedMessage
+          id="temperature"
+          defaultMessage="Temperaturen är {temp, number}°C"
+          values={{temp: -5}}
+        />
       </p>
 
       <p>
         <FormattedMessage
           id="lastLogin"
+          defaultMessage="Senast inloggad: {time, date, short} kl. {time, time, short}"
           values={{time: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2)}}
         />
       </p>
 
       <p>
-        <FormattedMessage id="userCount" values={{users: 1337}} />
+        <FormattedMessage
+          id="userCount"
+          defaultMessage="Vi har {users, plural, =0 {inga användare} =1 {en användare} other {# användare}} registrerade"
+          values={{users: 1337}}
+        />
       </p>
 
       <p>
-        <FormattedMessage id="ordinalExample" values={{place: 3}} />
+        <FormattedMessage
+          id="ordinalExample"
+          defaultMessage="Du kom på {place, selectordinal, one {#:a} two {#:a} =3 {#:e} other {#:e}} plats"
+          values={{place: 3}}
+        />
       </p>
 
       <p>
         <FormattedMessage
           id="genderMessage"
+          defaultMessage="{name} är {gender, select, male {en kille} female {en tjej} other {en person}} från {city}"
           values={{
             name: 'Erik',
             gender: 'male',
@@ -79,24 +91,20 @@ const SvensktInnehåll = (): JSX.Element => {
 
       <p>
         <FormattedMessage
-          id="weekday"
-          values={{
-            day: [
-              'sunday',
-              'monday',
-              'tuesday',
-              'wednesday',
-              'thursday',
-              'friday',
-              'saturday',
-            ][now.getDay()],
-          }}
+          id="weekdayExample"
+          defaultMessage="Veckodag: {today, date, ::EEEE}"
+          values={{today: now}}
         />
       </p>
 
       <hr style={{margin: '20px 0'}} />
 
-      <h3>Direkta formatters</h3>
+      <h3>
+        <FormattedMessage
+          id="directFormattersHeading"
+          defaultMessage="Direkta formatterare"
+        />
+      </h3>
 
       <p>
         <FormattedMessage
@@ -149,11 +157,19 @@ const SvensktInnehåll = (): JSX.Element => {
         />
       </p>
 
-      <h3>Pluralformen</h3>
+      <h3>
+        <FormattedMessage
+          id="pluralHeading"
+          defaultMessage="Pluralformer"
+        />
+      </h3>
       {[0, 1, 2, 5].map(count => (
         <p key={count}>
-          <FormattedPlural value={count} one="# hund" other="# hundar" /> (count:{' '}
-          {count})
+          <FormattedMessage
+            id="pluralExample"
+            defaultMessage="Exempel ({count}): {count, plural, one {# hund} other {# hundar}}"
+            values={{count}}
+          />
         </p>
       ))}
     </div>
@@ -162,7 +178,7 @@ const SvensktInnehåll = (): JSX.Element => {
 
 export default function SvenskaExample(): JSX.Element {
   return (
-    <IntlProvider locale="sv-SE" messages={svenskaMessages} timeZone="Europe/Stockholm">
+    <IntlProvider locale="sv-SE" timeZone="Europe/Stockholm">
       <SvensktInnehåll />
     </IntlProvider>
   )
