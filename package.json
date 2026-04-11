@@ -17,7 +17,7 @@
     "website": "ibazel run //docs:serve"
   },
   "devDependencies": {
-    "@ast-grep/cli": "^0.38.0",
+    "@ast-grep/cli": "^0.42.0",
     "@babel/core": "^7.28.5",
     "@babel/helper-plugin-utils": "^7.27.1",
     "@babel/plugin-syntax-jsx": "^7.27.1",
