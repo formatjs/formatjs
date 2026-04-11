@@ -1,15 +1,12 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "no_internal_imports_test", "package_exports_test", "package_json_test", "ts_run_binary")
+load("//tools:compile.bzl", "formatjs_compile")
+load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
+load("//tools:package.bzl", "formatjs_package")
 load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
-load("//tools:vitest.bzl", "vitest")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 npm_link_all_packages()
 
@@ -41,17 +38,6 @@ SRC_DEPS = [
     "//:node_modules/@formatjs/intl-localematcher",
 ]
 
-TEST_DEPS = SRC_DEPS + [
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/@formatjs/intl-locale",
-]
-
-EXTERNAL_PACKAGES = [
-    dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
-    if "node_modules/" in dep and "ecma402-abstract" not in dep
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -59,84 +45,52 @@ ENTRY_POINTS = [
     "should-polyfill.ts",
 ]
 
-[rolldown_bundle(
-    name = "%s-bundle" % entry.replace(".ts", ""),
-    srcs = [":srcs"],
-    dts = True,
-    entry_point = entry,
-    external = EXTERNAL_PACKAGES,
-    format = "esm",
-    output = "%s.js" % entry.replace(".ts", ""),
-    target = "es2020",
-    deps = SRC_DEPS,
-) for entry in ENTRY_POINTS]
-
-BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
-
-js_library(
-    name = PACKAGE_NAME,
-    srcs = BUNDLES + [
-        "package.json",
+formatjs_compile(
+    name = "dist",
+    srcs = SRCS,
+    entry_points = ENTRY_POINTS,
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+        "//packages/ecma402-abstract/DisplayNames",
     ],
-    visibility = ["//visibility:public"],
+    types = True,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+    ],
 )
 
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-    ] + BUNDLES + [
+formatjs_package(
+    name = PACKAGE_NAME,
+    entry_points = ENTRY_POINTS,
+    extra_npm_srcs = [
         ":locale-data",
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-    package = "@formatjs/%s" % PACKAGE_NAME,
-    replace_prefixes = {
-        "%s-bundle/" % entry.replace(".ts", ""): ""
-        for entry in ENTRY_POINTS
-    },
-    visibility = ["//visibility:public"],
-)
-
-# Ensure no internal path aliases leak into published JS
-no_internal_imports_test(
-    name = "no_internal_imports_test",
-    data = BUNDLES,
-)
-
-ts_project(
-    name = "typecheck",
-    srcs = [":srcs"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = packages_tsconfig(),
     deps = SRC_DEPS,
 )
 
-# --- Generate .d.ts declarations ---
-ts_project(
-    name = "types",
-    srcs = [":srcs"],
-    declaration = True,
-    emit_declaration_only = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
-    tsconfig = packages_tsconfig(),
-    visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
-)
-
-vitest(
+formatjs_test(
     name = "unit_test",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+        "//packages/ecma402-abstract/DisplayNames",
+    ],
+    test_deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-locale",
+    ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = TEST_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+    ],
 )
 
 # CLDR
@@ -840,9 +794,6 @@ test262_harness_bin.test262_harness_test(
     tags = ["manual"],
 )
 
-# Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
-
 write_source_files(
     name = "generated-test-files",
     files = {
@@ -857,21 +808,5 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = [
-    ] + SRC_DEPS,
-)
-
-package_json_test(
-    name = "package_json_test",
     deps = SRC_DEPS,
-)
-
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
-)
-
-package_exports_test(
-    name = "package_exports_test",
-    pkg = ":pkg",
 )

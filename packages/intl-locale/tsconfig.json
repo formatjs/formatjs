@@ -5,13 +5,5 @@
     }
   },
   "exclude": ["./scripts/**/*"],
-  "extends": "../../tsconfig.json",
-  "references": [
-    {
-      "path": "../ecma262-abstract/tsconfig.json"
-    },
-    {
-      "path": "../ecma402-abstract/tsconfig.json"
-    }
-  ]
+  "extends": "../../tsconfig.json"
 }

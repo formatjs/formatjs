@@ -12,7 +12,8 @@ def formatjs_compile(
         deps = [],
         project_references = [],
         entry_points = ["index.ts"],
-        types = False):
+        types = False,
+        tsconfig = None):
     """TypeScript compilation + rolldown bundling.
 
     Generates:
@@ -28,8 +29,10 @@ def formatjs_compile(
         project_references: internal package dependencies (e.g. //packages/ecma402-abstract)
         entry_points: list of .ts entry points to bundle
         types: if True, generate a "types" ts_project with emit_declaration_only
+        tsconfig: optional tsconfig dict override (defaults to packages_tsconfig())
     """
     all_deps = deps + project_references
+    effective_tsconfig = tsconfig or packages_tsconfig()
 
     # Compute external packages for rolldown (only node_modules deps are externalized)
     external_packages = [
@@ -50,7 +53,7 @@ def formatjs_compile(
         no_emit = True,
         resolve_json_module = True,
         transpiler = tsgo_bin.tsgo,
-        tsconfig = packages_tsconfig(),
+        tsconfig = effective_tsconfig,
         deps = all_deps,
     )
 
@@ -75,7 +78,7 @@ def formatjs_compile(
             emit_declaration_only = True,
             resolve_json_module = True,
             transpiler = tsgo_bin.tsgo,
-            tsconfig = packages_tsconfig(),
+            tsconfig = effective_tsconfig,
             visibility = ["//visibility:public"],
             deps = all_deps,
         )
