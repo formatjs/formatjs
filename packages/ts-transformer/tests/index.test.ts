@@ -3,7 +3,7 @@ import {
   transform,
   type Opts,
   type MessageDescriptor,
-} from '#packages/ts-transformer/'
+} from '#packages/ts-transformer/index.js'
 import * as ts from 'typescript'
 import {readFile as readFileAsync} from 'fs'
 import {promisify} from 'util'

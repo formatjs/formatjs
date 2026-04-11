@@ -17,7 +17,7 @@ function main(args: Args) {
     `/* @generated */
 // prettier-ignore
 // @ts-nocheck
-import './polyfill-force.ts'
+import '#packages/intl-pluralrules/polyfill-force.js'
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
   Intl.PluralRules.__addLocaleData(${allData.join(',\n')})
 }

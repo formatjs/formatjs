@@ -18,8 +18,8 @@ function main(args: Args) {
     out,
     `/* @generated */
 // @ts-nocheck
-import './polyfill-force.js'
-import allData from './data/all-tz.generated.ts'
+import '#packages/intl-datetimeformat/polyfill-force.js'
+import allData from '#packages/intl-datetimeformat/data/all-tz.generated.js'
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})
 Intl.DateTimeFormat.__addLocaleData(${allData.join(',\n')})
 Intl.DateTimeFormat.__addTZData(allData)`

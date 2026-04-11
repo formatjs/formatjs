@@ -1,6 +1,6 @@
 // @generated
 // @ts-nocheck
-import './polyfill-force.js'
+import '#packages/intl-displaynames/polyfill-force.js'
 if (
   Intl.DisplayNames &&
   typeof Intl.DisplayNames.__addLocaleData === 'function'

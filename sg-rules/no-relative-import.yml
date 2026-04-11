@@ -17,9 +17,13 @@ files:
   - 'packages/**/*.tsx'
 ignores:
   - 'packages/*/examples/**'
+  # tsd type tests use a separate tsconfig without #packages/ path mapping
+  - 'packages/**/*.test-d.ts'
+  # Scripts/tools run in Node with --experimental-transform-types
+  # which can't resolve #packages/*.js to .ts files
   - 'packages/*/scripts/**'
   - 'packages/*/tools/**'
-  - 'packages/*/test262-main.ts'
-  - 'packages/**/*.test-d.ts'
+  # Shared between src and scripts, uses .ts extension
   - 'packages/intl-datetimeformat/packer.ts'
+  # Imports ./package.json (JSON can't use #packages/ path mapping)
   - 'packages/eslint-plugin-formatjs/index.ts'

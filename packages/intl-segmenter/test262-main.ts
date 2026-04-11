@@ -1,3 +1,3 @@
 // @generated
 // @ts-nocheck
-import './polyfill-force.js'
+import '#packages/intl-segmenter/polyfill-force.js'
