@@ -1,6 +1,6 @@
 import {cleanup, render} from '@testing-library/react'
 import {FormattedDate, FormattedDateParts, type IntlShape} from '../../..'
-import {createIntl} from '../../../src/components/createIntl'
+import {createIntl} from '../../../components/createIntl'
 import {mountFormattedComponentWithProvider} from '../testUtils'
 import {describe, expect, it, beforeEach, vi} from 'vitest'
 import '@testing-library/jest-dom/vitest'

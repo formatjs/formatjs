@@ -4,7 +4,7 @@ import {
   toLocaleDateString as _toLocaleDateString,
   toLocaleString as _toLocaleString,
   toLocaleTimeString as _toLocaleTimeString,
-} from '#packages/intl-datetimeformat/src/to_locale_string.js'
+} from '#packages/intl-datetimeformat/to_locale_string.js'
 
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})
 defineProperty(Date.prototype, 'toLocaleString', {

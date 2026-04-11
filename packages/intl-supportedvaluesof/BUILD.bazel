@@ -15,10 +15,16 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "intl-supportedvaluesof"
 
-SRCS = glob([
-    "src/**/*.ts",
-    "*.ts",
-])
+SRCS = glob(
+    [
+        "**/*.ts",
+        "*.ts",
+    ],
+    exclude = [
+        "tests/**",
+        "scripts/**",
+    ],
+)
 
 SRC_DEPS = [
     "//packages/ecma402-abstract",
@@ -126,7 +132,7 @@ generate_ide_tsconfig_json()
 # calendars
 generate_src_file(
     name = "calendars",
-    src = "src/calendars.generated.ts",
+    src = "calendars.generated.ts",
     data = [
         "//:node_modules/cldr-bcp47",
     ],
@@ -137,7 +143,7 @@ generate_src_file(
 # timezones
 generate_src_file(
     name = "timezones",
-    src = "src/timezones.generated.ts",
+    src = "timezones.generated.ts",
     args = ["--zone %s" % z for z in ZONES],
     data = [
     ],
@@ -149,7 +155,7 @@ generate_src_file(
 write_source_files(
     name = "numbering-systems",
     files = {
-        "src/numbering-systems.generated.ts": "//packages/intl-numberformat:src/numbering-systems.generated.ts",
+        "numbering-systems.generated.ts": "//packages/intl-numberformat:numbering-systems.generated.ts",
     },
     visibility = ["//:__pkg__"],
 )
@@ -157,7 +163,7 @@ write_source_files(
 # currencies
 generate_src_file(
     name = "currencies",
-    src = "src/currencies.generated.ts",
+    src = "currencies.generated.ts",
     data = [
         "//:node_modules/cldr-numbers-full",
     ],
@@ -168,7 +174,7 @@ generate_src_file(
 # collations
 generate_src_file(
     name = "collations",
-    src = "src/collations.generated.ts",
+    src = "collations.generated.ts",
     data = [
         "//:node_modules/cldr-bcp47",
     ],
@@ -179,7 +185,7 @@ generate_src_file(
 # units
 generate_src_file(
     name = "units",
-    src = "src/units.generated.ts",
+    src = "units.generated.ts",
     data = [
         "//:node_modules/cldr-bcp47",
         "//packages/ecma402-abstract",

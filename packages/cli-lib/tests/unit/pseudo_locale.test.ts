@@ -5,7 +5,7 @@ import {
   generateXXLS,
   generateENXA,
   generateENXB,
-} from '../../src/pseudo_locale'
+} from '../../pseudo_locale'
 
 const pseudoLocales = [
   {name: 'en-LS', generate: generateXXLS},

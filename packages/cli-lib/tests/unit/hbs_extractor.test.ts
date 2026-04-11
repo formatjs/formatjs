@@ -2,7 +2,7 @@ import {test, expect} from 'vitest'
 import {type MessageDescriptor, interpolateName} from '@formatjs/ts-transformer'
 import {readFile} from 'node:fs/promises'
 import {join} from 'path'
-import {parseFile} from '../../src/hbs_extractor'
+import {parseFile} from '../../hbs_extractor'
 
 test('hbs_extractor', async function () {
   let messages: MessageDescriptor[] = []

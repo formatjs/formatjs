@@ -17,7 +17,7 @@ import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'jso
 import {
   type RawDateTimeLocaleInternalData,
   type TimeZoneNameData,
-} from '../src/types.ts'
+} from '../types.ts'
 import rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
 import rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
 import TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}

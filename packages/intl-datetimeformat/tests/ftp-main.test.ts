@@ -2,8 +2,8 @@ import en from './locale-data/en.json' with {type: 'json'}
 import pl from './locale-data/pl.json' with {type: 'json'}
 import de from './locale-data/de.json' with {type: 'json'}
 import ar from './locale-data/ar.json' with {type: 'json'}
-import allData from '../src/data/all-tz.generated'
-import {DateTimeFormat} from '../src/core'
+import allData from '../data/all-tz.generated'
+import {DateTimeFormat} from '../core'
 import {type IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
 import {describe, expect, it} from 'vitest'
 // @ts-ignore

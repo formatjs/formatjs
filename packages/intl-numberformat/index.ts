@@ -1,1 +1,1 @@
-export * from '#packages/intl-numberformat/src/core.js'
+export * from '#packages/intl-numberformat/core.js'

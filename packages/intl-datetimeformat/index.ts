@@ -1,1 +1,1 @@
-export * from '#packages/intl-datetimeformat/src/core.js'
+export * from '#packages/intl-datetimeformat/core.js'

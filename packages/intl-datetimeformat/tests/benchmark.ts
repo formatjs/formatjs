@@ -1,7 +1,7 @@
 import {Bench} from 'tinybench'
 import en from './locale-data/en.json' with {type: 'json'}
-import allData from '../src/data/all-tz.generated'
-import {DateTimeFormat} from '../src/core'
+import allData from '../data/all-tz.generated'
+import {DateTimeFormat} from '../core'
 DateTimeFormat.__addTZData(allData)
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en)

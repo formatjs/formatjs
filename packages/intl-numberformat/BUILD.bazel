@@ -17,7 +17,7 @@ npm_link_all_packages()
 
 exports_files(
     [
-        "src/numbering-systems.generated.ts",
+        "numbering-systems.generated.ts",
     ],
     visibility = [
         "//packages/intl-durationformat:__pkg__",
@@ -65,7 +65,7 @@ TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCA
 SRCS = glob(
     [
         "*.ts",
-        "src/*.ts",
+        "*.ts",
     ],
     exclude = ["test*.*"],
 )
@@ -954,7 +954,7 @@ generate_src_file(
 # currency-digits
 generate_src_file(
     name = "currency-digits",
-    src = "src/currency-digits.generated.ts",
+    src = "currency-digits.generated.ts",
     data = [
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
@@ -974,7 +974,7 @@ generate_src_file(
 # numbering-systems
 generate_src_file(
     name = "numbering-systems",
-    src = "src/numbering-systems.generated.ts",
+    src = "numbering-systems.generated.ts",
     data = [
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
@@ -992,7 +992,7 @@ generate_src_file(
 # units-constants
 # generate_src_file(
 #     name = "units-constants",
-#     src = "src/units-constants.generated.ts",
+#     src = "units-constants.generated.ts",
 #     data = [
 #
 #

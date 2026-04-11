@@ -1,4 +1,4 @@
-import {DurationFormat} from '#packages/intl-durationformat/src/core.js'
+import {DurationFormat} from '#packages/intl-durationformat/core.js'
 import {test, expect} from 'vitest'
 test('Intl.DurationFormat resolvedOptions', function () {
   expect(new DurationFormat('en').resolvedOptions()).toEqual({

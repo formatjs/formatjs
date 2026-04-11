@@ -15,10 +15,13 @@ PACKAGE_NAME = "cli-lib"
 
 exports_files(["package.json"])
 
-SRCS = glob(["src/**/*.ts"]) + [
-    "index.ts",
-    "main.ts",
-]
+SRCS = glob(
+    ["**/*.ts"],
+    exclude = [
+        "tests/**",
+        "integration-tests/**",
+    ],
+)
 
 VUE_DEPS = [
     "//:node_modules/@vue/compiler-core",

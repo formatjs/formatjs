@@ -1,7 +1,7 @@
 import {test, expect} from 'vitest'
 import {type MessageDescriptor} from '@formatjs/ts-transformer'
-import {parseScript} from '../../src/parse_script'
-import {parseFile} from '../../src/vue_extractor'
+import {parseScript} from '../../parse_script'
+import {parseFile} from '../../vue_extractor'
 import {join} from 'path'
 import {readFileSync} from 'fs'
 

@@ -1,4 +1,4 @@
-import {Segmenter} from '#packages/intl-segmenter/src/segmenter.js'
+import {Segmenter} from '#packages/intl-segmenter/segmenter.js'
 import {shouldPolyfill} from '#packages/intl-segmenter/should-polyfill.js'
 
 if (shouldPolyfill()) {

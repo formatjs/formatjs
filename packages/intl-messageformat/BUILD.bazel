@@ -17,7 +17,7 @@ exports_files([
 
 PACKAGE_NAME = "intl-messageformat"
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "//:node_modules/@formatjs/icu-messageformat-parser",

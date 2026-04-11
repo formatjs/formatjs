@@ -1,4 +1,4 @@
-import {supportedValuesOf} from './src'
+import {supportedValuesOf} from '#packages/intl-supportedvaluesof/index.js'
 
 Object.defineProperty(Intl, 'supportedValuesOf', {
   value: supportedValuesOf,

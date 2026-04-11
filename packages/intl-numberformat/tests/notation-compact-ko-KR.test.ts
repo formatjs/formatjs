@@ -2,7 +2,7 @@ import {describe, it, expect} from 'vitest'
 import {type NumberFormatPart} from '#packages/ecma402-abstract/types/number.js'
 import '@formatjs/intl-pluralrules/locale-data/ko'
 import '@formatjs/intl-pluralrules/polyfill.js'
-import {NumberFormat} from '../src/core'
+import {NumberFormat} from '../core'
 import ko from './locale-data/ko.json' with {type: 'json'}
 NumberFormat.__addLocaleData(ko as any)
 

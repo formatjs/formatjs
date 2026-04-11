@@ -1,4 +1,4 @@
-import {Segmenter} from '#packages/intl-segmenter/src/segmenter.js'
+import {Segmenter} from '#packages/intl-segmenter/segmenter.js'
 import {segmentationTests} from '#packages/intl-segmenter/tests/test-utils.js'
 import {describe, expect, it} from 'vitest'
 const ucdTests = segmentationTests.grapheme

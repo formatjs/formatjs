@@ -6,7 +6,7 @@ import '@formatjs/intl-pluralrules/locale-data/zh'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import zh from './locale-data/zh.json' with {type: 'json'}
 import zhHant from './locale-data/zh-Hant.json' with {type: 'json'}
-import {NumberFormat} from '../src/core'
+import {NumberFormat} from '../core'
 NumberFormat.__addLocaleData(zh as any, zhHant as any)
 
 describe('notation-compact-zh-TW', function () {

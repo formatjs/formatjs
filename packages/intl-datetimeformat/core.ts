@@ -1,0 +1,454 @@
+import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
+import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
+import {IsValidTimeZoneName} from '#packages/ecma402-abstract/IsValidTimeZoneName.js'
+import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
+import {
+  type DateTimeFormatLocaleInternalData,
+  type DateTimeFormat as IDateTimeFormat,
+  type IntlDateTimeFormatInternal,
+  type TABLE_6,
+  type UnpackedZoneData,
+} from '#packages/ecma402-abstract/types/date-time.js'
+import {defineProperty, invariant} from '#packages/ecma402-abstract/utils.js'
+import Decimal from '@formatjs/bigdecimal'
+import {FormatDateTime} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTime.js'
+import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRange.js'
+import {FormatDateTimeRangeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRangeToParts.js'
+import {FormatDateTimeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeToParts.js'
+import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
+import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
+import links from '#packages/intl-datetimeformat/data/links.generated.js'
+import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
+import {unpack} from '#packages/intl-datetimeformat/packer.js'
+import {
+  type PackedData,
+  type RawDateTimeLocaleData,
+} from '#packages/intl-datetimeformat/types.js'
+
+const UPPERCASED_LINKS = Object.keys(links).reduce(
+  (all: Record<string, string>, l) => {
+    all[l.toUpperCase()] = links[l as 'Zulu']
+    return all
+  },
+  {}
+)
+
+const RESOLVED_OPTIONS_KEYS: Array<
+  keyof Omit<IntlDateTimeFormatInternal, 'pattern' | 'boundFormat'>
+> = [
+  'locale',
+  'calendar',
+  'numberingSystem',
+  'dateStyle',
+  'timeStyle',
+  'timeZone',
+  'hourCycle',
+  'weekday',
+  'era',
+  'year',
+  'month',
+  'day',
+  'hour',
+  'minute',
+  'second',
+  'timeZoneName',
+]
+
+const formatDescriptor = {
+  enumerable: false,
+  configurable: true,
+  get(this: IDateTimeFormat) {
+    if (
+      typeof this !== 'object' ||
+      !OrdinaryHasInstance(DateTimeFormat, this)
+    ) {
+      throw TypeError(
+        'Intl.DateTimeFormat format property accessor called on incompatible receiver'
+      )
+    }
+    const internalSlots = getInternalSlots(this)
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const dtf = this
+    let boundFormat = internalSlots.boundFormat
+    if (boundFormat === undefined) {
+      // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
+      boundFormat = (date?: Date | number) => {
+        let x: Decimal
+        if (date === undefined) {
+          x = new Decimal(Date.now())
+        } else {
+          x = ToNumber(date)
+        }
+        return FormatDateTime(dtf as Intl.DateTimeFormat, x, {
+          getInternalSlots,
+          localeData: DateTimeFormat.localeData,
+          tzData: DateTimeFormat.tzData,
+          getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+        })
+      }
+      try {
+        // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
+        Object.defineProperty(boundFormat, 'name', {
+          configurable: true,
+          enumerable: false,
+          writable: false,
+          value: '',
+        })
+      } catch {
+        // In older browser (e.g Chrome 36 like polyfill-fastly.io)
+        // TypeError: Cannot redefine property: name
+      }
+      internalSlots.boundFormat = boundFormat
+    }
+    return boundFormat
+  },
+} as const
+try {
+  // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/name.js
+  Object.defineProperty(formatDescriptor.get, 'name', {
+    configurable: true,
+    enumerable: false,
+    writable: false,
+    value: 'get format',
+  })
+} catch {
+  // In older browser (e.g Chrome 36 like polyfill-fastly.io)
+  // TypeError: Cannot redefine property: name
+}
+
+export interface DateTimeFormatConstructor {
+  new (
+    locales?: string | string[],
+    options?: Intl.DateTimeFormatOptions
+  ): IDateTimeFormat
+  (
+    locales?: string | string[],
+    options?: Intl.DateTimeFormatOptions
+  ): IDateTimeFormat
+
+  __addLocaleData(...data: RawDateTimeLocaleData[]): void
+  supportedLocalesOf(
+    locales: string | string[],
+    options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
+  ): string[]
+  getDefaultLocale(): string
+  relevantExtensionKeys: string[]
+  __defaultLocale: string
+  __defaultTimeZone: string
+  __setDefaultTimeZone(tz: string): void
+  getDefaultTimeZone(): string
+  localeData: Record<string, DateTimeFormatLocaleInternalData>
+  availableLocales: Set<string>
+  polyfilled: boolean
+  tzData: Record<string, UnpackedZoneData[]>
+  __addTZData(d: PackedData): void
+}
+
+export const DateTimeFormat = function (
+  this: IDateTimeFormat,
+  locales?: string | string[],
+  options?: Intl.DateTimeFormatOptions
+) {
+  // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
+  if (!this || !OrdinaryHasInstance(DateTimeFormat, this)) {
+    return new DateTimeFormat(locales, options)
+  }
+
+  InitializeDateTimeFormat(this, locales, options, {
+    tzData: DateTimeFormat.tzData,
+    uppercaseLinks: UPPERCASED_LINKS,
+    availableLocales: DateTimeFormat.availableLocales,
+    relevantExtensionKeys: DateTimeFormat.relevantExtensionKeys,
+    getDefaultLocale: DateTimeFormat.getDefaultLocale,
+    getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+    getInternalSlots,
+    localeData: DateTimeFormat.localeData,
+  })
+
+  /** IMPL START */
+  const internalSlots = getInternalSlots(this)
+
+  const dataLocale = internalSlots.dataLocale
+  const dataLocaleData = DateTimeFormat.localeData[dataLocale]
+  invariant(
+    dataLocaleData !== undefined,
+    `Cannot load locale-dependent data for ${dataLocale}.`
+  )
+  /** IMPL END */
+} as DateTimeFormatConstructor
+
+// Static properties
+defineProperty(DateTimeFormat, 'supportedLocalesOf', {
+  value: function supportedLocalesOf(
+    locales: string | string[],
+    options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
+  ) {
+    return SupportedLocales(
+      DateTimeFormat.availableLocales,
+      CanonicalizeLocaleList(locales),
+      options as any
+    )
+  },
+})
+
+defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
+  value: function resolvedOptions(this: IDateTimeFormat) {
+    if (
+      typeof this !== 'object' ||
+      !OrdinaryHasInstance(DateTimeFormat, this)
+    ) {
+      throw TypeError(
+        'Method Intl.DateTimeFormat.prototype.resolvedOptions called on incompatible receiver'
+      )
+    }
+    const internalSlots = getInternalSlots(this)
+    const ro: Record<string, unknown> = {}
+    for (const key of RESOLVED_OPTIONS_KEYS) {
+      let value = internalSlots[key]
+      if (key === 'hourCycle') {
+        const hour12 =
+          value === 'h11' || value === 'h12'
+            ? true
+            : value === 'h23' || value === 'h24'
+              ? false
+              : undefined
+        if (hour12 !== undefined) {
+          ro.hour12 = hour12
+        }
+      }
+      if (DATE_TIME_PROPS.indexOf(key as TABLE_6) > -1) {
+        if (
+          internalSlots.dateStyle !== undefined ||
+          internalSlots.timeStyle !== undefined
+        ) {
+          value = undefined
+        }
+      }
+
+      if (value !== undefined) {
+        ro[key] = value
+      }
+    }
+    return ro as any
+  },
+})
+
+defineProperty(DateTimeFormat.prototype, 'formatToParts', {
+  value: function formatToParts(date?: number | Date) {
+    let x: Decimal
+    if (date === undefined) {
+      x = new Decimal(Date.now())
+    } else {
+      x = ToNumber(date)
+    }
+    return FormatDateTimeToParts(this, x, {
+      getInternalSlots,
+      localeData: DateTimeFormat.localeData,
+      tzData: DateTimeFormat.tzData,
+      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+    })
+  },
+})
+
+defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
+  value: function formatRangeToParts(
+    startDate: number | Date,
+    endDate: number | Date
+  ) {
+    // oxlint-disable-next-line no-this-alias
+    const dtf = this
+    invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
+    invariant(
+      startDate !== undefined && endDate !== undefined,
+      'startDate/endDate cannot be undefined',
+      TypeError
+    )
+
+    return FormatDateTimeRangeToParts(
+      dtf,
+      ToNumber(startDate),
+      ToNumber(endDate),
+      {
+        getInternalSlots,
+        localeData: DateTimeFormat.localeData,
+        tzData: DateTimeFormat.tzData,
+        getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+      }
+    )
+  },
+})
+
+defineProperty(DateTimeFormat.prototype, 'formatRange', {
+  value: function formatRange(
+    startDate: number | Date,
+    endDate: number | Date
+  ) {
+    // oxlint-disable-next-line no-this-alias
+    const dtf = this
+    invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
+    invariant(
+      startDate !== undefined && endDate !== undefined,
+      'startDate/endDate cannot be undefined',
+      TypeError
+    )
+    return FormatDateTimeRange(dtf, ToNumber(startDate), ToNumber(endDate), {
+      getInternalSlots,
+      localeData: DateTimeFormat.localeData,
+      tzData: DateTimeFormat.tzData,
+      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+    })
+  },
+})
+
+const DEFAULT_TIMEZONE = 'UTC'
+
+DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
+  if (timeZone !== undefined) {
+    timeZone = String(timeZone)
+    if (
+      !IsValidTimeZoneName(timeZone, {
+        zoneNamesFromData: Object.keys(DateTimeFormat.tzData),
+        uppercaseLinks: UPPERCASED_LINKS,
+      })
+    ) {
+      throw new RangeError('Invalid timeZoneName')
+    }
+    timeZone = CanonicalizeTimeZoneName(timeZone, {
+      zoneNames: Object.keys(DateTimeFormat.tzData),
+      uppercaseLinks: UPPERCASED_LINKS,
+    })
+  } else {
+    timeZone = DEFAULT_TIMEZONE
+  }
+  DateTimeFormat.__defaultTimeZone = timeZone
+}
+DateTimeFormat.relevantExtensionKeys = ['nu', 'ca', 'hc']
+
+DateTimeFormat.__defaultTimeZone = DEFAULT_TIMEZONE
+DateTimeFormat.getDefaultTimeZone = () => DateTimeFormat.__defaultTimeZone
+
+/**
+ * GH #4535: When a format skeleton uses raw pattern form (e.g., "MMMEd, h:mm a")
+ * instead of canonical form (e.g., "MMMEd, hm"), interval formats won't match
+ * by exact key. This function finds the matching canonical interval format by
+ * normalizing the time portion of the skeleton.
+ */
+function findIntervalFormat(
+  skeleton: string,
+  intervalFormats: Record<string, any>
+): Record<string, string> | undefined {
+  const commaIdx = skeleton.indexOf(', ')
+  if (commaIdx === -1) return undefined
+  const datePart = skeleton.slice(0, commaIdx)
+  const timePart = skeleton.slice(commaIdx + 2)
+  // Canonicalize the time part: strip non-skeleton chars (colons, spaces),
+  // remove AM/PM markers (a/b/B are implied by h/K hour symbols),
+  // and collapse repeated field chars (hh→h, mm→m, ss→s)
+  const canonical = timePart
+    .replace(/[^a-zA-Z]/g, '')
+    .replace(/[abB]/g, '')
+    .replace(/(.)\1+/g, '$1')
+  if (canonical === timePart) return undefined
+  const canonicalKey = `${datePart}, ${canonical}`
+  return intervalFormats[canonicalKey]
+}
+
+DateTimeFormat.__addLocaleData = function __addLocaleData(
+  ...data: RawDateTimeLocaleData[]
+) {
+  for (const {data: d, locale} of data) {
+    const {
+      dateFormat,
+      timeFormat,
+      dateTimeFormat,
+      formats,
+      intervalFormats,
+      ...rawData
+    } = d
+    const processedData: DateTimeFormatLocaleInternalData = {
+      ...rawData,
+      dateFormat: {
+        full: parseDateTimeSkeleton(dateFormat.full),
+        long: parseDateTimeSkeleton(dateFormat.long),
+        medium: parseDateTimeSkeleton(dateFormat.medium),
+        short: parseDateTimeSkeleton(dateFormat.short),
+      },
+      timeFormat: {
+        full: parseDateTimeSkeleton(timeFormat.full),
+        long: parseDateTimeSkeleton(timeFormat.long),
+        medium: parseDateTimeSkeleton(timeFormat.medium),
+        short: parseDateTimeSkeleton(timeFormat.short),
+      },
+      dateTimeFormat: {
+        full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
+        long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
+        medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
+        short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
+      },
+      intervalFormatFallback: intervalFormats.intervalFormatFallback,
+      formats: {},
+    }
+
+    for (const calendar in formats) {
+      processedData.formats[calendar] = Object.keys(formats[calendar]).map(
+        skeleton =>
+          parseDateTimeSkeleton(
+            skeleton,
+            formats[calendar][skeleton],
+            intervalFormats[skeleton] ||
+              findIntervalFormat(skeleton, intervalFormats),
+            intervalFormats.intervalFormatFallback
+          )
+      )
+    }
+
+    const minimizedLocale = new (Intl as any).Locale(locale)
+      .minimize()
+      .toString()
+    DateTimeFormat.localeData[locale] = DateTimeFormat.localeData[
+      minimizedLocale
+    ] = processedData
+    DateTimeFormat.availableLocales.add(locale)
+    DateTimeFormat.availableLocales.add(minimizedLocale)
+    if (!DateTimeFormat.__defaultLocale) {
+      DateTimeFormat.__defaultLocale = minimizedLocale
+    }
+  }
+}
+
+Object.defineProperty(DateTimeFormat.prototype, 'format', formatDescriptor)
+
+DateTimeFormat.__defaultLocale = ''
+DateTimeFormat.localeData = {}
+DateTimeFormat.availableLocales = new Set()
+DateTimeFormat.getDefaultLocale = () => {
+  return DateTimeFormat.__defaultLocale
+}
+DateTimeFormat.polyfilled = true
+DateTimeFormat.tzData = {}
+DateTimeFormat.__addTZData = function (d: PackedData) {
+  DateTimeFormat.tzData = unpack(d)
+}
+
+try {
+  if (typeof Symbol !== 'undefined') {
+    Object.defineProperty(DateTimeFormat.prototype, Symbol.toStringTag, {
+      value: 'Intl.DateTimeFormat',
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    })
+  }
+
+  Object.defineProperty(DateTimeFormat.prototype.constructor, 'length', {
+    value: 1,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  })
+} catch {
+  // Meta fix so we're test262-compliant, not important
+}

@@ -1,6 +1,6 @@
-import {CanonicalizeUnicodeLocaleId} from '#packages/intl-getcanonicallocales/src/canonicalizer.js'
-import {emitUnicodeLocaleId} from '#packages/intl-getcanonicallocales/src/emitter.js'
-import {parseUnicodeLocaleId} from '#packages/intl-getcanonicallocales/src/parser.js'
+import {CanonicalizeUnicodeLocaleId} from '#packages/intl-getcanonicallocales/canonicalizer.js'
+import {emitUnicodeLocaleId} from '#packages/intl-getcanonicallocales/emitter.js'
+import {parseUnicodeLocaleId} from '#packages/intl-getcanonicallocales/parser.js'
 
 /**
  * Check if value is an Intl.Locale object by checking for [[InitializedLocale]] internal slot
@@ -100,7 +100,7 @@ export function getCanonicalLocales(
   return CanonicalizeLocaleList(locales)
 }
 
-export * from '#packages/intl-getcanonicallocales/src/emitter.js'
+export * from '#packages/intl-getcanonicallocales/emitter.js'
 export {
   isStructurallyValidLanguageTag,
   isUnicodeLanguageSubtag,
@@ -108,7 +108,7 @@ export {
   isUnicodeScriptSubtag,
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
-} from '#packages/intl-getcanonicallocales/src/parser.js'
-export * from '#packages/intl-getcanonicallocales/src/types.js'
+} from '#packages/intl-getcanonicallocales/parser.js'
+export * from '#packages/intl-getcanonicallocales/types.js'
 
-export * from '#packages/intl-getcanonicallocales/src/likelySubtags.generated.js'
+export * from '#packages/intl-getcanonicallocales/likelySubtags.generated.js'

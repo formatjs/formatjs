@@ -1,7 +1,7 @@
 import {cleanup, render} from '@testing-library/react'
 import {FormattedDate, FormattedMessage, useIntl} from '../../..'
-import IntlProvider from '../../../src/components/provider'
-import type {IntlConfig} from '../../../src/types'
+import IntlProvider from '../../../components/provider'
+import type {IntlConfig} from '../../../types'
 import {
   describe,
   expect,

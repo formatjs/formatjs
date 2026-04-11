@@ -5,7 +5,7 @@ import {
   toLocaleString as _toLocaleString,
   toLocaleDateString as _toLocaleDateString,
   toLocaleTimeString as _toLocaleTimeString,
-} from '#packages/intl-datetimeformat/src/to_locale_string.js'
+} from '#packages/intl-datetimeformat/to_locale_string.js'
 
 if (shouldPolyfill()) {
   defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})

@@ -5,7 +5,7 @@
  * example: `npx ts-node debug word 1700-1701`
  */
 
-import {Segmenter} from '#packages/intl-segmenter/src/segmenter.js'
+import {Segmenter} from '#packages/intl-segmenter/segmenter.js'
 import {segmentationTests} from '#packages/intl-segmenter/tests/test-utils.js'
 
 //parse argvs

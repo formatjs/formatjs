@@ -1,4 +1,4 @@
-import {defaultTimezone} from '../src/defaultTimezone'
+import {defaultTimezone} from '../defaultTimezone'
 import {expect, it, describe} from 'vitest'
 describe('defaultTimezone', () => {
   it('returns the default timezone', () => {

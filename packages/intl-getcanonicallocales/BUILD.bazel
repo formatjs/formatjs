@@ -17,10 +17,16 @@ exports_files([
 
 PACKAGE_NAME = "intl-getcanonicallocales"
 
-SRCS = glob([
-    "src/**/*.ts",
-    "*.ts",
-])
+SRCS = glob(
+    [
+        "**/*.ts",
+        "*.ts",
+    ],
+    exclude = [
+        "tests/**",
+        "scripts/**",
+    ],
+)
 
 SRC_DEPS = [
 ]
@@ -107,7 +113,7 @@ vitest(
 # aliases
 generate_src_file(
     name = "aliases",
-    src = "src/aliases.generated.ts",
+    src = "aliases.generated.ts",
     data = [
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
@@ -119,7 +125,7 @@ generate_src_file(
 
 generate_src_file(
     name = "likelySubtags",
-    src = "src/likelySubtags.generated.ts",
+    src = "likelySubtags.generated.ts",
     data = [
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
