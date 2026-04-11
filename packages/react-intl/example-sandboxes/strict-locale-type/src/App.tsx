@@ -1,5 +1,5 @@
 import * as React from 'react'
-import '#packages/react-intl/example-sandboxes/strict-locale-type/src/styles.css'
+import './styles.css'
 import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 
 const messages = {

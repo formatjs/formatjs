@@ -3,7 +3,7 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", "bin")
 load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "packages_tsconfig")
 
 npm_link_all_packages()
 
@@ -35,7 +35,7 @@ ts_project(
     declaration = True,
     out_dir = "examples-lib",
     resolve_json_module = True,
-    tsconfig = BASE_TSCONFIG,
+    tsconfig = packages_tsconfig(),
     deps = EXAMPLES_SRC_DEPS,
 )
 
