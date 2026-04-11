@@ -1,4 +1,4 @@
-import {interpolateName} from '../interpolate-name'
+import {interpolateName} from '#packages/ts-transformer/interpolate-name'
 import {createHash} from 'crypto'
 import {describe, it, expect} from 'vitest'
 describe('interpolateName', function () {

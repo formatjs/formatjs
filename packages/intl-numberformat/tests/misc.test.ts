@@ -20,7 +20,7 @@ import '@formatjs/intl-pluralrules/locale-data/th.js'
 import '@formatjs/intl-pluralrules/locale-data/tr.js'
 import '@formatjs/intl-pluralrules/locale-data/uk.js'
 import '@formatjs/intl-pluralrules/locale-data/zh.js'
-import {NumberFormat} from '../core'
+import {NumberFormat} from '#packages/intl-numberformat/core'
 
 const LOCALES = [
   'en',

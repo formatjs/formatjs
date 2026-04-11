@@ -1,7 +1,7 @@
 import {describe, expect, it, vi, beforeEach} from 'vitest'
 import {cleanup, render} from '@testing-library/react'
-import {FormattedDisplayName} from '../../..'
-import {mountFormattedComponentWithProvider} from '../testUtils'
+import {FormattedDisplayName} from '#packages/react-intl'
+import {mountFormattedComponentWithProvider} from '#packages/react-intl/tests/unit/testUtils'
 import '@testing-library/jest-dom/vitest'
 const mountWithProvider =
   mountFormattedComponentWithProvider(FormattedDisplayName)

@@ -1,5 +1,5 @@
 import {test, expect} from 'vitest'
-import {NumberFormat} from '../core'
+import {NumberFormat} from '#packages/intl-numberformat/core'
 NumberFormat.__addLocaleData(require(`./locale-data/en.json`))
 test('legacy constructor', function () {
   let object = new NumberFormat()

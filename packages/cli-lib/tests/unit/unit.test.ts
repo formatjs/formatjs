@@ -1,5 +1,5 @@
 import {describe, it, expect, beforeEach, vi} from 'vitest'
-import cliMain from '../../cli'
+import cliMain from '#packages/cli-lib/cli'
 const glob = require('fast-glob')
 import ts from 'typescript'
 vi.mock('typescript')

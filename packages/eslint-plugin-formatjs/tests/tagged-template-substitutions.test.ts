@@ -6,7 +6,7 @@ import {
   name,
   rule,
 } from '#packages/eslint-plugin-formatjs/rules/no-invalid-icu.js'
-import {ruleTester} from './util'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name + ' (GH #5069 - tagged templates)', rule, {
   valid: [

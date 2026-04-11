@@ -2,8 +2,13 @@ import {
   name,
   rule,
 } from '#packages/eslint-plugin-formatjs/rules/no-invalid-icu.js'
-import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
-import {ruleTester} from './util'
+import {
+  dynamicMessage,
+  emptyFnCall,
+  noMatch,
+  spreadJsx,
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name, rule, {
   valid: [

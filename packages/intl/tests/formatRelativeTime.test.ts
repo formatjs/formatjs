@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
-import {formatRelativeTime as formatRelativeTimeFn} from '../relativeTime'
-import {type IntlConfig, type IntlFormatters} from '../types'
+import {formatRelativeTime as formatRelativeTimeFn} from '#packages/intl/relativeTime'
+import {type IntlConfig, type IntlFormatters} from '#packages/intl/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

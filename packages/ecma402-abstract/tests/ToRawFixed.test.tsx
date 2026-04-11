@@ -1,5 +1,5 @@
 import Decimal from '@formatjs/bigdecimal'
-import {ToRawFixed} from '../NumberFormat/ToRawFixed'
+import {ToRawFixed} from '#packages/ecma402-abstract/NumberFormat/ToRawFixed'
 import {expect, it, test} from 'vitest'
 test('ToRawFixed(9.99, 0, 1)', () => {
   expect(ToRawFixed(new Decimal(9.99), 0, 1, 1, 'half-infinity')).toEqual({

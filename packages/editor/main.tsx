@@ -1,4 +1,4 @@
-import Main from './index.js'
+import Main from '#packages/editor/index.js'
 import ReactDOM from 'react-dom'
 import * as React from 'react'
 

@@ -3,8 +3,16 @@ import {
   name,
   Option,
 } from '#packages/eslint-plugin-formatjs/rules/enforce-default-message.js'
-import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
-import {ruleTester, vueRuleTester} from './util'
+import {
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+  dynamicMessage,
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
+import {
+  ruleTester,
+  vueRuleTester,
+} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name, rule, {
   valid: [

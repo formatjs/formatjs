@@ -1,6 +1,6 @@
 import {describe, it, expect} from 'vitest'
-import {extract} from '../../extract'
-import {compile} from '../../compile'
+import {extract} from '#packages/cli-lib/extract'
+import {compile} from '#packages/cli-lib/compile'
 
 describe('AbortSignal support', () => {
   describe('extract()', () => {

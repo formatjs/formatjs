@@ -1,4 +1,4 @@
-import {match} from '../'
+import {match} from '#packages/intl-localematcher/'
 import {expect, test} from 'vitest'
 test('zh-HK', function () {
   // With canonicalization, zh-HANT → zh-Hant, and zh-HK matches zh-Hant better

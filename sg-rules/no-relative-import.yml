@@ -11,10 +11,15 @@ rule:
     - pattern: "export type { $$$ARGS } from '$PATH'"
 constraints:
   PATH:
-    regex: ^\.\.?/.*\.js$
+    regex: ^\.\.?/
 files:
   - 'packages/**/*.ts'
   - 'packages/**/*.tsx'
 ignores:
   - 'packages/*/examples/**'
+  - 'packages/*/scripts/**'
+  - 'packages/*/tools/**'
   - 'packages/*/test262-main.ts'
+  - 'packages/**/*.test-d.ts'
+  - 'packages/intl-datetimeformat/packer.ts'
+  - 'packages/eslint-plugin-formatjs/index.ts'

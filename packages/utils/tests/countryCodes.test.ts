@@ -1,4 +1,4 @@
-import {canonicalizeCountryCode} from '../countryCodes'
+import {canonicalizeCountryCode} from '#packages/utils/countryCodes'
 import {expect, test} from 'vitest'
 test('canonicalizeCountryCode', () => {
   expect(canonicalizeCountryCode('USA')).toBe('US')

@@ -1,4 +1,4 @@
-import {defineMessages, useIntl} from '../../'
+import {defineMessages, useIntl} from '#packages/react-intl/'
 import {describe, it} from 'vitest'
 describe('types', () => {
   // https://github.com/formatjs/formatjs/issues/3856

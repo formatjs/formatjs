@@ -2,7 +2,7 @@ import {join} from 'path'
 import {promisify} from 'util'
 import {exec as nodeExec} from 'child_process'
 import {describe, expect, test} from 'vitest'
-import {resolveRustBinaryPath} from '../rust-binary-utils'
+import {resolveRustBinaryPath} from '#packages/cli/integration-tests/rust-binary-utils'
 
 const exec = promisify(nodeExec)
 

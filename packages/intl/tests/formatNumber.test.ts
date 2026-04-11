@@ -1,6 +1,6 @@
 import {describe, it, expect, beforeEach, afterEach, vi} from 'vitest'
-import {formatNumber as formatNumberFn} from '../number'
-import {type IntlConfig} from '../types'
+import {formatNumber as formatNumberFn} from '#packages/intl/number'
+import {type IntlConfig} from '#packages/intl/types'
 
 describe('format API', () => {
   const {NODE_ENV} = process.env

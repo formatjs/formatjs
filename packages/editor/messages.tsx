@@ -2,8 +2,8 @@ import {List, ListItem, Box} from '@material-ui/core'
 import {CheckCircle} from '@material-ui/icons'
 import {Skeleton} from '@material-ui/lab'
 import * as React from 'react'
-import {type TranslatedMessage} from './types.js'
-import Message from './message.js'
+import {type TranslatedMessage} from '#packages/editor/types.js'
+import Message from '#packages/editor/message.js'
 export interface Props {
   messages: TranslatedMessage[]
   isLoading?: boolean

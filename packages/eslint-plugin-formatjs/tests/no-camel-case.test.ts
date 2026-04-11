@@ -1,4 +1,4 @@
-import {ruleTester} from './util'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 import {
   rule,
   name,
@@ -9,7 +9,7 @@ import {
   spreadJsx,
   emptyFnCall,
   defineMessage,
-} from './fixtures'
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
 
 ruleTester.run(name, rule, {
   valid: [defineMessage, dynamicMessage, noMatch, spreadJsx, emptyFnCall],

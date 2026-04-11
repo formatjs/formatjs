@@ -2,8 +2,13 @@ import {
   name,
   rule,
 } from '#packages/eslint-plugin-formatjs/rules/enforce-plural-rules.js'
-import {ruleTester} from './util'
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
+import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
+import {
+  dynamicMessage,
+  noMatch,
+  spreadJsx,
+  emptyFnCall,
+} from '#packages/eslint-plugin-formatjs/tests/fixtures'
 ruleTester.run(name, rule, {
   valid: [
     {

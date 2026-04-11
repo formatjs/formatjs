@@ -4,7 +4,7 @@ import {mkdirp, remove} from 'fs-extra/esm'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
 import {beforeEach, describe, expect, test} from 'vitest'
-import {resolveRustBinaryPath} from '../rust-binary-utils'
+import {resolveRustBinaryPath} from '#packages/cli/integration-tests/rust-binary-utils'
 
 const exec = promisify(nodeExec)
 
