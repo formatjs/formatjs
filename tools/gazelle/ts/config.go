@@ -18,7 +18,7 @@ type tsConfig struct {
 
 func newTsConfig() *tsConfig {
 	return &tsConfig{
-		enabled:     false, // off by default, enabled per-package
+		enabled:     true,
 		packageType: "internal",
 		skipTest:    false,
 	}
