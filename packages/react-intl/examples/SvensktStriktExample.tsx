@@ -1,19 +1,6 @@
 import type {JSX} from 'react'
 import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 
-// Swedish messages with locally type-safe keys
-const messages = {
-  title: 'Hej FormatJS',
-  content: 'Börja redigera för att se lite magi hända!',
-  body: 'Din språkinställning ({locale}) är nu typsäker',
-  welcome: 'Välkommen {name}',
-  itemCount:
-    'Du har {count, plural, =0 {inga objekt} =1 {ett objekt} other {# objekt}}',
-  currentTime: 'Nuvarande tid: {time, time}',
-  description:
-    'Detta är ett exempel på typsäker internationalisering med svenska språket',
-} as const
-
 type SwedishLocale = 'sv-SE' | 'sv' | 'en'
 
 const SvenskKomponent = (): JSX.Element => {
@@ -25,28 +12,28 @@ const SvenskKomponent = (): JSX.Element => {
       <p>
         <FormattedMessage
           id="body"
-          defaultMessage={messages.body}
+          defaultMessage="Din språkinställning ({locale}) är nu typsäker"
           values={{locale: typedLocale}}
         />
       </p>
       <p>
         <FormattedMessage
           id="welcome"
-          defaultMessage={messages.welcome}
+          defaultMessage="Välkommen {name}"
           values={{name: 'Anna'}}
         />
       </p>
       <p>
         <FormattedMessage
           id="itemCount"
-          defaultMessage={messages.itemCount}
+          defaultMessage="Du har {count, plural, =0 {inga objekt} =1 {ett objekt} other {# objekt}}"
           values={{count: 5}}
         />
       </p>
       <p>
         <FormattedMessage
           id="currentTime"
-          defaultMessage={messages.currentTime}
+          defaultMessage="Nuvarande tid: {time, time}"
           values={{time: new Date()}}
         />
       </p>
@@ -56,18 +43,18 @@ const SvenskKomponent = (): JSX.Element => {
 
 export default function SvensktStriktExample(): JSX.Element {
   return (
-    <IntlProvider locale="sv-SE" messages={messages}>
+    <IntlProvider locale="sv-SE">
       <div style={{fontFamily: 'system-ui', padding: '20px'}}>
         <h1>
-          <FormattedMessage id="title" defaultMessage={messages.title} />
+          <FormattedMessage id="title" defaultMessage="Hej FormatJS" />
         </h1>
         <h2>
-          <FormattedMessage id="content" defaultMessage={messages.content} />
+          <FormattedMessage id="content" defaultMessage="Börja redigera för att se lite magi hända!" />
         </h2>
         <p>
           <FormattedMessage
             id="description"
-            defaultMessage={messages.description}
+            defaultMessage="Detta är ett exempel på typsäker internationalisering med svenska språket"
           />
         </p>
         <SvenskKomponent />

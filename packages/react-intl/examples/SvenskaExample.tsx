@@ -1,11 +1,5 @@
 import type {JSX} from 'react'
-import {
-  IntlProvider,
-  FormattedMessage,
-  FormattedDate,
-  FormattedNumber,
-  FormattedPlural,
-} from 'react-intl'
+import {IntlProvider, FormattedMessage, FormattedPlural} from 'react-intl'
 
 // Swedish messages with proper plural forms and culturally appropriate content
 const svenskaMessages = {
@@ -107,35 +101,53 @@ const SvensktInnehåll = (): JSX.Element => {
       <p>
         <FormattedMessage
           id="formattedDateLabel"
-          defaultMessage="Datum: <formattedDate></formattedDate>"
+          defaultMessage="Datum: <formattedDate>{now, date, ::yMMMMd}</formattedDate>"
           values={{
-            formattedDate: () => (
-              <FormattedDate value={now} year="numeric" month="long" day="numeric" />
-            ),
+            now,
+            formattedDate: chunks => <strong>{chunks}</strong>,
           }}
         />
       </p>
       <p>
         <FormattedMessage
           id="formattedTimeLabel"
-          defaultMessage="Tid: <formattedTime></formattedTime>"
+          defaultMessage="Tid: <formattedTime>{now, time, ::Hms}</formattedTime>"
           values={{
-            formattedTime: () => (
-              <FormattedDate
-                value={now}
-                hour="numeric"
-                minute="numeric"
-                second="numeric"
-              />
-            ),
+            now,
+            formattedTime: chunks => <strong>{chunks}</strong>,
           }}
         />
       </p>
-      <p>Nummer: <FormattedNumber value={1234567.89} /></p>
       <p>
-        Valuta: <FormattedNumber value={1999.99} style="currency" currency="SEK" />
+        <FormattedMessage
+          id="formattedNumberLabel"
+          defaultMessage="Nummer: <formattedNumber>{value, number}</formattedNumber>"
+          values={{
+            value: 1234567.89,
+            formattedNumber: chunks => <strong>{chunks}</strong>,
+          }}
+        />
       </p>
-      <p>Procent: <FormattedNumber value={0.159} style="percent" /></p>
+      <p>
+        <FormattedMessage
+          id="formattedCurrencyLabel"
+          defaultMessage="Valuta: <formattedCurrency>{value, number, ::currency/SEK}</formattedCurrency>"
+          values={{
+            value: 1999.99,
+            formattedCurrency: chunks => <strong>{chunks}</strong>,
+          }}
+        />
+      </p>
+      <p>
+        <FormattedMessage
+          id="formattedPercentLabel"
+          defaultMessage="Procent: <formattedPercent>{value, number, ::percent}</formattedPercent>"
+          values={{
+            value: 0.159,
+            formattedPercent: chunks => <strong>{chunks}</strong>,
+          }}
+        />
+      </p>
 
       <h3>Pluralformen</h3>
       {[0, 1, 2, 5].map(count => (
