@@ -11,3 +11,4 @@ actions:
       disk: 16GB
     bazel_commands:
       - 'test //...'
+      - 'build --compilation_mode=opt //crates/formatjs_cli'
