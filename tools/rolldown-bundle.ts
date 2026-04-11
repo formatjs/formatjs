@@ -70,31 +70,29 @@ async function main(args: Args) {
     return new RegExp(`^${escaped}(\\/.*)?$`)
   })
 
+  // Write a temp tsconfig so the oxc resolver can resolve #packages/* paths
+  // with proper TypeScript extension mapping (.js -> .ts/.tsx)
+  const tsconfigPath = path.join(
+    tmpdir(),
+    `rolldown-tsconfig-${process.pid}.json`
+  )
+  writeFileSync(
+    tsconfigPath,
+    JSON.stringify({
+      compilerOptions: {
+        baseUrl: workspaceRoot,
+        paths: {
+          '#packages/*': ['packages/*'],
+        },
+        ...(args.dts ? {isolatedDeclarations: true} : {}),
+      },
+    })
+  )
+
   const bundle = await rolldown({
     input,
     external: externalPatterns,
-    plugins: args.dts
-      ? (() => {
-          // Write a temp tsconfig so the oxc resolver can resolve #packages/* paths
-          const tsconfigPath = path.join(
-            tmpdir(),
-            `rolldown-dts-tsconfig-${process.pid}.json`
-          )
-          writeFileSync(
-            tsconfigPath,
-            JSON.stringify({
-              compilerOptions: {
-                isolatedDeclarations: true,
-                baseUrl: workspaceRoot,
-                paths: {
-                  '#packages/*': ['packages/*'],
-                },
-              },
-            })
-          )
-          return dts({tsconfig: tsconfigPath})
-        })()
-      : [],
+    plugins: args.dts ? dts({tsconfig: tsconfigPath}) : [],
     platform:
       platform === 'node'
         ? 'node'
@@ -103,9 +101,7 @@ async function main(args: Args) {
           : undefined,
     define: Object.keys(defineMap).length > 0 ? defineMap : undefined,
     resolve: {
-      alias: {
-        '#packages': path.join(workspaceRoot, 'packages'),
-      },
+      tsconfigFilename: tsconfigPath,
     },
   })
 
