@@ -4,7 +4,6 @@
 package ts
 
 import (
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -18,19 +17,11 @@ import (
 const languageName = "formatjs_ts"
 
 // tsLang implements language.Language for formatjs TypeScript packages.
-type tsLang struct {
-	// subdirImports accumulates imports from subdirectories without BUILD files.
-	// Key is the nearest parent package path. Gazelle visits children before parents.
-	subdirImports     map[string][]ImportStatement
-	subdirTestImports map[string][]ImportStatement
-}
+type tsLang struct{}
 
 // NewLanguage creates a new formatjs TypeScript language extension.
 func NewLanguage() language.Language {
-	return &tsLang{
-		subdirImports:     make(map[string][]ImportStatement),
-		subdirTestImports: make(map[string][]ImportStatement),
-	}
+	return &tsLang{}
 }
 
 func (l *tsLang) Name() string { return languageName }
@@ -119,26 +110,8 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		}
 	}
 
-	// If this directory has no BUILD file, accumulate imports for the nearest
-	// parent package. Gazelle visits children depth-first, so the parent will
-	// consume these later.
 	if args.File == nil {
-		parentPkg := findParentPackage(args.Config.RepoRoot, args.Rel)
-		if parentPkg != "" {
-			l.subdirImports[parentPkg] = append(l.subdirImports[parentPkg], sourceImports...)
-			l.subdirTestImports[parentPkg] = append(l.subdirTestImports[parentPkg], testImports...)
-		}
 		return language.GenerateResult{}
-	}
-
-	// Merge in any imports accumulated from subdirectories.
-	if subImps, ok := l.subdirImports[args.Rel]; ok {
-		sourceImports = append(sourceImports, subImps...)
-		delete(l.subdirImports, args.Rel)
-	}
-	if subTestImps, ok := l.subdirTestImports[args.Rel]; ok {
-		testImports = append(testImports, subTestImps...)
-		delete(l.subdirTestImports, args.Rel)
 	}
 
 	// Create new rules that match existing ones, so gazelle's merge can
@@ -176,19 +149,6 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 
 func isTypeScriptFile(name string) bool {
 	return strings.HasSuffix(name, ".ts") || strings.HasSuffix(name, ".tsx")
-}
-
-// findParentPackage walks up from rel to find the nearest directory with a BUILD file.
-func findParentPackage(repoRoot, rel string) string {
-	for rel != "" && rel != "." {
-		rel = filepath.Dir(rel)
-		for _, name := range []string{"BUILD.bazel", "BUILD"} {
-			if _, err := os.Stat(filepath.Join(repoRoot, rel, name)); err == nil {
-				return rel
-			}
-		}
-	}
-	return ""
 }
 
 func isTestFile(name string) bool {

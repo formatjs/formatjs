@@ -101,8 +101,6 @@ formatjs_compile(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/vitest",
     ],
 )
 

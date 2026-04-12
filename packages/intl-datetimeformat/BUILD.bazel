@@ -82,7 +82,6 @@ formatjs_compile(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
     ],
 )
 
@@ -122,13 +121,13 @@ formatjs_test(
     test_deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/tinybench",
         "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
     ],
 )
 
