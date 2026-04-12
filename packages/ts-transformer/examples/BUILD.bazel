@@ -1,4 +1,2 @@
 # gazelle:ignore
 # gazelle:formatjs_enabled false
-
-exports_files(glob(["*.ts"]))
