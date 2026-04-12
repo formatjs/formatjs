@@ -7,10 +7,10 @@ load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_tes
 def formatjs_package(
         name,
         entry_points = ["index.ts"],
-        deps = [],
         npm_package_name = None,
         extra_npm_srcs = [],
-        allow_overwrites = False):
+        allow_overwrites = False,
+        **_kwargs):
     """npm packaging + validation tests.
 
     Generates:
@@ -27,7 +27,6 @@ def formatjs_package(
     Args:
         name: package name (e.g. "fast-memoize"), used as js_library target name
         entry_points: list of .ts entry points (must match formatjs_compile's entry_points)
-        deps: all dependencies (for package_json_test)
         npm_package_name: npm package name for publishing (default "@formatjs/{name}")
         extra_npm_srcs: additional files for npm_package (iife bundles, locale-data, etc.)
         allow_overwrites: passed to npm_package (default False)
@@ -70,7 +69,6 @@ def formatjs_package(
 
     package_json_test(
         name = "package_json_test",
-        deps = deps,
     )
 
     package_exports_test(

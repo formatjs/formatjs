@@ -1,5 +1,7 @@
 # Gazelle Migration Plan: Custom Macros to Stock Rules
 
+> **Status: COMPLETED.** Phases 1-3 below were superseded by 3 custom macros (`formatjs_compile`, `formatjs_package`, `formatjs_test`) + a custom Go gazelle plugin at `tools/gazelle/ts/`. See `knowledge-base/001a-bazel-toolchain.md`.
+
 ## Goal
 
 Decompose custom Bazel macros in `tools/index.bzl` and `tools/vitest.bzl` so that `ts_project` targets are visible at the BUILD file level. This lets gazelle manage `deps` by reading TypeScript imports, which is its primary value.
