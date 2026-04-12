@@ -221,14 +221,14 @@
   "moduleExtensions": {
     "//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "Isj3L84GNr8g0Dr0yItPBw/NwcaOak8Gz1fVHv8FYwI=",
-        "usagesDigest": "yP/7Kjh7948f1JrIW0GMFFVzuAnQLfYJqdVTqkVlpc8=",
+        "bzlTransitiveDigest": "Dx44iGITOa48exi2WFKg3rzM18FLCuAXrH2muSnONYY=",
+        "usagesDigest": "6a99XjhcZCe5E6qdWgU04K8XTvjVZt+51xy4CuzkENE=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
           "formatjs_cli_toolchains_darwin_arm64": {
             "repoRuleId": "@@//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
-              "version": "1.0.0",
+              "version": "1.1.1",
               "platform": "darwin-arm64",
               "exec_compatible_with": [
                 "@platforms//os:macos",
@@ -246,7 +246,7 @@
           "formatjs_cli_toolchains_linux_x64": {
             "repoRuleId": "@@//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
-              "version": "1.0.0",
+              "version": "1.1.1",
               "platform": "linux-x64",
               "exec_compatible_with": [
                 "@platforms//os:linux",
@@ -286,6 +286,28 @@
           "explicitRootModuleDirectDevDeps": [],
           "useAllRepos": "NO",
           "reproducible": false
+        }
+      }
+    },
+    "@@pybind11_bazel+//:internal_configure.bzl%internal_configure_extension": {
+      "general": {
+        "bzlTransitiveDigest": "06cynZ1bCvvy8zHPrrDlXq+Z68xmjctHpfFxi+zEpJY=",
+        "usagesDigest": "D1r3lfzMuUBFxgG8V6o0bQTLMk3GkaGOaPzw53wrwyw=",
+        "recordedInputs": [
+          "REPO_MAPPING:pybind11_bazel+,bazel_tools bazel_tools",
+          "FILE:@@pybind11_bazel+//MODULE.bazel e6f4c20442eaa7c90d7190d8dc539d0ab422f95c65a57cc59562170c58ae3d34"
+        ],
+        "generatedRepoSpecs": {
+          "pybind11": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_archive",
+            "attributes": {
+              "build_file": "@@pybind11_bazel+//:pybind11-BUILD.bazel",
+              "strip_prefix": "pybind11-2.12.0",
+              "urls": [
+                "https://github.com/pybind/pybind11/archive/v2.12.0.zip"
+              ]
+            }
+          }
         }
       }
     },
