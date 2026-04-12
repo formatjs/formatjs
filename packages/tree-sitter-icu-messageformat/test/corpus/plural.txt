@@ -1,0 +1,101 @@
+================================================================================
+Basic plural
+================================================================================
+{count, plural, one {item} other {items}}
+--------------------------------------------------------------------------------
+
+(message
+  (plural_element
+    (identifier)
+    (plural_option
+      (plural_key)
+      (literal))
+    (plural_option
+      (plural_key)
+      (literal))))
+
+================================================================================
+Plural with pound sign
+================================================================================
+{count, plural, one {# item} other {# items}}
+--------------------------------------------------------------------------------
+
+(message
+  (plural_element
+    (identifier)
+    (plural_option
+      (plural_key)
+      (pound)
+      (literal))
+    (plural_option
+      (plural_key)
+      (pound)
+      (literal))))
+
+================================================================================
+Plural with offset
+================================================================================
+{count, plural, offset: 2 =0 {no items} one {1 item} other {{count} items}}
+--------------------------------------------------------------------------------
+
+(message
+  (plural_element
+    (identifier)
+    (offset
+      (number))
+    (plural_option
+      (plural_key)
+      (literal))
+    (plural_option
+      (plural_key)
+      (literal))
+    (plural_option
+      (plural_key)
+      (argument
+        (identifier))
+      (literal))))
+
+================================================================================
+Plural with exact values
+================================================================================
+{count, plural, =0 {none} =1 {one} other {many}}
+--------------------------------------------------------------------------------
+
+(message
+  (plural_element
+    (identifier)
+    (plural_option
+      (plural_key)
+      (literal))
+    (plural_option
+      (plural_key)
+      (literal))
+    (plural_option
+      (plural_key)
+      (literal))))
+
+================================================================================
+Selectordinal
+================================================================================
+{num, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}
+--------------------------------------------------------------------------------
+
+(message
+  (selectordinal_element
+    (identifier)
+    (plural_option
+      (plural_key)
+      (pound)
+      (literal))
+    (plural_option
+      (plural_key)
+      (pound)
+      (literal))
+    (plural_option
+      (plural_key)
+      (pound)
+      (literal))
+    (plural_option
+      (plural_key)
+      (pound)
+      (literal))))

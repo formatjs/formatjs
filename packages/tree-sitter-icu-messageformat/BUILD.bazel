@@ -1,0 +1,80 @@
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:tree-sitter-cli/package_json.bzl", tree_sitter_bin = "bin")
+
+npm_link_all_packages()
+
+exports_files(["package.json"])
+
+# Generate the C parser from grammar.js via `tree-sitter generate`.
+# Outputs: src/parser.c, src/grammar.json, src/node-types.json, src/tree_sitter/*.h
+tree_sitter_bin.tree_sitter(
+    name = "generate",
+    srcs = [
+        "grammar.js",
+        "tree-sitter.json",
+    ],
+    args = ["generate"],
+    chdir = package_name(),
+    out_dirs = ["src"],
+)
+
+# Compile the generated C parser into a dynamic library for ast-grep.
+tree_sitter_bin.tree_sitter(
+    name = "build_dylib",
+    srcs = [
+        "grammar.js",
+        "tree-sitter.json",
+        ":generate",
+    ],
+    outs = ["icu-messageformat.so"],
+    args = [
+        "build",
+        "-o",
+        "icu-messageformat.so",
+    ],
+    chdir = package_name(),
+    execution_requirements = {
+        "no-sandbox": "1",
+        "local": "1",
+    },
+)
+
+filegroup(
+    name = "grammar_data",
+    srcs = [
+        "grammar.js",
+        "tree-sitter.json",
+        ":generate",
+    ],
+    visibility = ["//packages/tree-sitter-icu-messageformat:__subpackages__"],
+)
+
+alias(
+    name = "dylib",
+    actual = ":build_dylib",
+    visibility = ["//packages/tree-sitter-icu-messageformat:__subpackages__"],
+)
+
+# Run tree-sitter corpus tests: `tree-sitter test`
+tree_sitter_bin.tree_sitter_test(
+    name = "unit_test",
+    size = "small",
+    args = ["test"],
+    chdir = package_name(),
+    data = [
+        ":grammar_data",
+    ] + glob(["test/corpus/**"]),
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        "grammar.js",
+        "package.json",
+        "tree-sitter.json",
+        ":generate",
+    ] + glob(["queries/**"]),
+    package = "tree-sitter-icu-messageformat",
+    visibility = ["//visibility:public"],
+)

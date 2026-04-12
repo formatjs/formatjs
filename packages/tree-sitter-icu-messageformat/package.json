@@ -1,0 +1,53 @@
+{
+  "name": "tree-sitter-icu-messageformat",
+  "description": "Tree-sitter grammar for ICU MessageFormat with formatjs tag extensions",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "node-addon-api": "^8.0.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "devDependencies": {
+    "prebuildify": "^6.0.0",
+    "tree-sitter-cli": "^0.25.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.22.0"
+  },
+  "files": [
+    "grammar.js",
+    "queries/*",
+    "src/**",
+    "*.wasm"
+  ],
+  "homepage": "https://formatjs.github.io",
+  "keywords": [
+    "i18n",
+    "icu",
+    "intl",
+    "messageformat",
+    "parser",
+    "tree-sitter"
+  ],
+  "peerDependenciesMeta": {
+    "tree-sitter": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs",
+    "directory": "packages/tree-sitter-icu-messageformat"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.icu-messageformat",
+      "file-types": [
+        "msg",
+        "icu"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm"
+    }
+  ]
+}

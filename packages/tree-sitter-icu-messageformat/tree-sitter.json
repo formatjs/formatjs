@@ -1,0 +1,31 @@
+{
+  "grammars": [
+    {
+      "name": "icu_messageformat",
+      "camelcase": "ICUMessageFormat",
+      "scope": "source.icu-messageformat",
+      "path": ".",
+      "file-types": ["msg", "icu"],
+      "highlights": "queries/highlights.scm",
+      "tags": "queries/tags.scm",
+      "injections": "queries/injections.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for ICU MessageFormat with formatjs tag extensions",
+    "authors": [
+      {
+        "name": "FormatJS"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/formatjs/formatjs"
+    }
+  },
+  "bindings": {
+    "node": true,
+    "rust": true
+  }
+}

@@ -1,0 +1,6 @@
+id: no-offset-in-plural
+valid:
+  - '{count, plural, one {# item} other {# items}}'
+  - '{count, plural, =0 {none} one {one} other {many}}'
+invalid:
+  - '{count, plural, offset: 1 one {# item} other {# items}}'

@@ -1,0 +1,43 @@
+================================================================================
+Basic select
+================================================================================
+{gender, select, male {He} female {She} other {They}}
+--------------------------------------------------------------------------------
+
+(message
+  (select_element
+    (identifier)
+    (select_option
+      (select_key)
+      (literal))
+    (select_option
+      (select_key)
+      (literal))
+    (select_option
+      (select_key)
+      (literal))))
+
+================================================================================
+Select with nested arguments
+================================================================================
+{gender, select, male {He is {age}} female {She is {age}} other {They are {age}}}
+--------------------------------------------------------------------------------
+
+(message
+  (select_element
+    (identifier)
+    (select_option
+      (select_key)
+      (literal)
+      (argument
+        (identifier)))
+    (select_option
+      (select_key)
+      (literal)
+      (argument
+        (identifier)))
+    (select_option
+      (select_key)
+      (literal)
+      (argument
+        (identifier)))))

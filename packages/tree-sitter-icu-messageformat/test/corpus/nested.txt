@@ -1,0 +1,57 @@
+================================================================================
+Nested plural in select
+================================================================================
+{gender, select, male {{count, plural, one {He has # item} other {He has # items}}} other {{count, plural, one {They have # item} other {They have # items}}}}
+--------------------------------------------------------------------------------
+
+(message
+  (select_element
+    (identifier)
+    (select_option
+      (select_key)
+      (plural_element
+        (identifier)
+        (plural_option
+          (plural_key)
+          (literal)
+          (pound)
+          (literal))
+        (plural_option
+          (plural_key)
+          (literal)
+          (pound)
+          (literal))))
+    (select_option
+      (select_key)
+      (plural_element
+        (identifier)
+        (plural_option
+          (plural_key)
+          (literal)
+          (pound)
+          (literal))
+        (plural_option
+          (plural_key)
+          (literal)
+          (pound)
+          (literal))))))
+
+================================================================================
+Complex real-world message
+================================================================================
+Cart: {itemCount} {itemCount, plural, one {item} other {items}}
+--------------------------------------------------------------------------------
+
+(message
+  (literal)
+  (argument
+    (identifier))
+  (literal)
+  (plural_element
+    (identifier)
+    (plural_option
+      (plural_key)
+      (literal))
+    (plural_option
+      (plural_key)
+      (literal))))

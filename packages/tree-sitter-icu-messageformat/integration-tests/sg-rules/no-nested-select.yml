@@ -1,0 +1,10 @@
+id: no-nested-select
+language: icu-messageformat
+message: Avoid nesting select inside select — flatten into a single select or use a compound key.
+severity: warning
+rule:
+  kind: select_element
+  has:
+    kind: select_option
+    has:
+      kind: select_element

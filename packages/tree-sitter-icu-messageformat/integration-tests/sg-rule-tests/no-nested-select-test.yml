@@ -1,0 +1,7 @@
+id: no-nested-select
+valid:
+  - '{gender, select, male {He} female {She} other {They}}'
+  - '{count, plural, one {# item} other {# items}}'
+  - '{gender, select, male {{count, plural, one {He has #} other {He has #}}} other {They}}'
+invalid:
+  - '{a, select, x {{b, select, y {nested} other {no}}} other {no}}'

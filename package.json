@@ -156,6 +156,7 @@
     "tailwindcss": "^4.1.18",
     "test262-harness": "^10.0.0",
     "tinybench": "^6.0.0",
+    "tree-sitter-cli": "^0.25.0",
     "ts-loader": "^9.5.4",
     "tsd": "^0.33.0",
     "typescript": "6.0.2",
@@ -230,7 +231,8 @@
     },
     "onlyBuiltDependencies": [
       "@ast-grep/cli",
-      "esbuild"
+      "esbuild",
+      "tree-sitter-cli"
     ]
   },
   "repository": "https://github.com/formatjs/formatjs"

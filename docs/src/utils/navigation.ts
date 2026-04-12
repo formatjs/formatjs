@@ -111,6 +111,10 @@ export function getNavigationTree(): NavSection[] {
           title: 'Rust: ICU Skeleton Parser',
           path: 'tooling/rust-icu-skeleton-parser',
         },
+        {
+          title: 'Tree-sitter ICU MessageFormat Grammar',
+          path: 'tooling/tree-sitter-icu-messageformat',
+        },
       ],
     },
     {

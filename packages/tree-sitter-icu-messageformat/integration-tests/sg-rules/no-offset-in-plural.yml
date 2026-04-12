@@ -1,0 +1,8 @@
+id: no-offset-in-plural
+language: icu-messageformat
+message: Avoid using offset in plural — it makes translations harder to understand.
+severity: warning
+rule:
+  kind: plural_element
+  has:
+    kind: offset

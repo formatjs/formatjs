@@ -1,0 +1,46 @@
+load("@npm//:tree-sitter-cli/package_json.bzl", tree_sitter_bin = "bin")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+tree_sitter_bin.tree_sitter_binary(
+    name = "tree_sitter_bin",
+    visibility = ["//visibility:private"],
+)
+
+# Conformance test: parse each shared integration test case and verify:
+# - Valid messages parse without ERROR nodes
+# - Invalid messages produce ERROR nodes
+sh_test(
+    name = "conformance_test",
+    size = "small",
+    srcs = ["conformance_test.sh"],
+    args = [
+        "$(rootpath :tree_sitter_bin)",
+        "packages/tree-sitter-icu-messageformat",
+        "packages/icu-messageformat-parser/integration-tests/test_cases",
+    ],
+    data = [
+        ":tree_sitter_bin",
+        "//packages/icu-messageformat-parser/integration-tests:test_cases",
+        "//packages/tree-sitter-icu-messageformat:grammar_data",
+    ],
+)
+
+# ast-grep integration test: validate that structural pattern matching works
+# with the compiled tree-sitter grammar via ast-grep's custom language support.
+sh_test(
+    name = "ast_grep_test",
+    size = "small",
+    srcs = ["ast_grep_test.sh"],
+    args = [
+        "$(locations //:node_modules/@ast-grep/cli)",
+    ],
+    data = [
+        "sgconfig.yml",
+        "//:node_modules/@ast-grep/cli",
+        "//packages/tree-sitter-icu-messageformat:dylib",
+    ] + glob([
+        "sg-rules/**",
+        "sg-rule-tests/**",
+    ]),
+    tags = ["no-sandbox"],
+)

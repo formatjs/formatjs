@@ -7,6 +7,12 @@ npm_link_all_packages()
 
 TEST_CASES = glob(["test_cases/*"])
 
+filegroup(
+    name = "test_cases",
+    srcs = TEST_CASES,
+    visibility = ["//packages/tree-sitter-icu-messageformat:__subpackages__"],
+)
+
 # Generate a file listing all test case filenames
 genrule(
     name = "generate_test_list",

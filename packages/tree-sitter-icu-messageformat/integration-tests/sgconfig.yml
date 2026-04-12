@@ -1,0 +1,10 @@
+ruleDirs:
+  - sg-rules
+testConfigs:
+  - testDir: sg-rule-tests
+customLanguages:
+  icu-messageformat:
+    libraryPath: icu-messageformat.so
+    extensions: [icu]
+    expandoChar: _
+    languageSymbol: tree_sitter_icu_messageformat

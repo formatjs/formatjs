@@ -1,0 +1,94 @@
+---
+title: Tree-sitter ICU MessageFormat Grammar
+---
+
+## Overview
+
+A [tree-sitter](https://tree-sitter.github.io/) grammar for ICU MessageFormat syntax. Enables structural pattern matching via [ast-grep](https://ast-grep.github.io/) and syntax highlighting in tree-sitter-powered editors.
+
+Supports standard ICU MessageFormat v1 syntax plus formatjs extensions:
+
+- Simple XML-like tags: `<tag>children</tag>`
+- Self-closing tags: `<tag/>`
+
+## Node Types
+
+The grammar produces the following CST node types:
+
+| Node Type               | Syntax                                  | Example                                         |
+| ----------------------- | --------------------------------------- | ----------------------------------------------- |
+| `literal`               | Plain text, `''`, `'quoted'`            | `Hello world`, `I''m`, `'{escaped}'`            |
+| `argument`              | `{id}`                                  | `{name}`                                        |
+| `number_element`        | `{id, number[, style]}`                 | `{price, number, ::currency/CAD}`               |
+| `date_element`          | `{id, date[, style]}`                   | `{d, date, ::yyyy.MM.dd}`                       |
+| `time_element`          | `{id, time[, style]}`                   | `{t, time, full}`                               |
+| `select_element`        | `{id, select, key {msg}...}`            | `{gender, select, male {He} other {They}}`      |
+| `plural_element`        | `{id, plural, [offset:N] key {msg}...}` | `{count, plural, one {# item} other {# items}}` |
+| `selectordinal_element` | `{id, selectordinal, key {msg}...}`     | `{num, selectordinal, one {#st} other {#th}}`   |
+| `tag`                   | `<name>children</name>`                 | `<b>bold</b>`                                   |
+| `self_closing_tag`      | `<name/>`                               | `<br/>`                                         |
+| `pound`                 | `#`                                     | `#` in plural contexts                          |
+| `number_skeleton`       | `::tokens`                              | `::currency/CAD unit-width-narrow`              |
+| `date_time_skeleton`    | `::pattern`                             | `::yyyy.MM.dd`                                  |
+| `style_text`            | Named style                             | `short`, `percent`                              |
+| `plural_key`            | `zero\|one\|two\|few\|many\|other\|=N`  | `one`, `=0`                                     |
+| `select_key`            | Any identifier                          | `male`, `female`                                |
+| `offset`                | `offset: N`                             | `offset: 2`                                     |
+
+## Building
+
+The grammar source is `grammar.js`. The C parser is generated at build time:
+
+```bash
+# Generate parser + run corpus tests
+bazel test //packages/tree-sitter-icu-messageformat:unit_test
+
+# Run conformance tests against shared icu-messageformat-parser test suite
+bazel test //packages/tree-sitter-icu-messageformat:conformance_test
+```
+
+## ast-grep Integration
+
+Once registered as a custom language in `sgconfig.yml`, you can write structural lint rules:
+
+```yaml
+# sgconfig.yml
+customLanguages:
+  icu-messageformat:
+    libraryPath: tree-sitter-icu-messageformat.so
+    extensions: [msg, icu]
+    expandoChar: _
+```
+
+Example rule — flag plurals missing an `other` clause:
+
+```yaml
+id: require-other-clause
+language: icu-messageformat
+rule:
+  kind: plural_element
+  not:
+    has:
+      kind: plural_option
+      has:
+        kind: plural_key
+        regex: '^other$'
+```
+
+## Syntax Highlighting
+
+The package includes tree-sitter query files for editor integration:
+
+- `queries/highlights.scm` — Syntax highlighting
+- `queries/tags.scm` — Code navigation (tag definitions, variable references)
+
+## Known Limitations
+
+- `#` is always parsed as a `pound` node. It is semantically meaningful only inside `plural_element` and `selectordinal_element` option bodies, but the grammar emits it everywhere for simpler structural matching.
+- The `ignoreTag` parser option (which treats `<tag>` as literal text) has no equivalent in the tree-sitter grammar — tags are always parsed structurally.
+
+## Related Packages
+
+- [`@formatjs/icu-messageformat-parser`](/docs/core-concepts/icu-syntax) — JavaScript parser
+- [ICU MessageFormat Parser (Rust)](/docs/tooling/rust-icu-messageformat-parser) — Rust parser
+- [ICU MessageFormat Syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages/) — ICU spec
