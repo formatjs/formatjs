@@ -85,16 +85,11 @@ formatjs_test(
         "@WordBreakTest//file",
         "@SentenceBreakTest//file",
     ],
-    project_references = ["//packages/ecma402-abstract"],
-    test_deps = [
+    tsconfig = TSCONFIG,
+    deps = [
         "//:node_modules/@bazel/runfiles",  # keep: imported from tests/
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
-    ],
-    tsconfig = TSCONFIG,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
     ],
 )
 

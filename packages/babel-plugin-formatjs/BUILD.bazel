@@ -35,23 +35,13 @@ formatjs_test(
         ],
         exclude = ["tests/vue/**/*"],
     ),
-    test_deps = [
+    deps = [
+        "//:node_modules/@babel/core",
         "//:node_modules/@babel/preset-env",  # keep: loaded dynamically via babel config in tests
         "//:node_modules/@babel/preset-react",  # keep: loaded dynamically via babel config in tests
+        "//:node_modules/@types/babel__core",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
         "//packages/babel-plugin-formatjs/tests/fixtures",  # keep: test fixture data
-    ],
-    deps = [
-        "//:node_modules/@babel/core",
-        "//:node_modules/@babel/helper-plugin-utils",
-        "//:node_modules/@babel/plugin-syntax-jsx",
-        "//:node_modules/@babel/traverse",  # keep: imported from visitors/
-        "//:node_modules/@babel/types",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@types/babel__core",
-        "//:node_modules/@types/babel__helper-plugin-utils",
-        "//:node_modules/@types/babel__traverse",
     ],
 )

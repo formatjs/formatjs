@@ -28,8 +28,7 @@ formatjs_test(
     srcs = glob([
         "tests/*.ts*",
     ]),
-    test_deps = ["//:node_modules/vitest"],
-    deps = ["//:node_modules/@formatjs/fast-memoize"],
+    deps = ["//:node_modules/vitest"],
 )
 
 generate_src_file(

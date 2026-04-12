@@ -44,15 +44,8 @@ formatjs_test(
     ]),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DurationFormat",
-        "//packages/ecma402-abstract/types",
-    ],
-    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = ["//:node_modules/@formatjs/intl-localematcher"],
+    deps = ["//:node_modules/vitest"],
 )
 
 # numbering-systems

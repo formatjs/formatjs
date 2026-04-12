@@ -48,17 +48,13 @@ formatjs_test(
     srcs = TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = ["//packages/ecma402-abstract/types"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),
-    test_deps = [
-        "//:node_modules/tsd",
-        "//:node_modules/vitest",
-    ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
-        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
+        "//:node_modules/tsd",
+        "//:node_modules/vitest",
     ],
 )
 

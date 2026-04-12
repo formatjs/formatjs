@@ -63,53 +63,33 @@ func (l *tsLang) Resolve(
 
 	kind := r.Kind()
 
-	// Resolve source imports
-	resolved := resolveImportsToDeps(importData.Imports, from, ix)
+	switch kind {
+	case KindFormatjsLibrary:
+		// Resolve source imports into deps + project_references
+		resolved := resolveImportsToDeps(importData.Imports, from, ix)
 
-	if len(resolved.external) > 0 {
-		r.SetAttr("deps", deduplicateAndSort(resolved.external))
-	} else {
-		r.DelAttr("deps")
-	}
+		if len(resolved.external) > 0 {
+			r.SetAttr("deps", deduplicateAndSort(resolved.external))
+		} else {
+			r.DelAttr("deps")
+		}
 
-	if len(resolved.internal) > 0 {
-		r.SetAttr("project_references", deduplicateAndSort(resolved.internal))
-	} else {
-		r.DelAttr("project_references")
-	}
+		if len(resolved.internal) > 0 {
+			r.SetAttr("project_references", deduplicateAndSort(resolved.internal))
+		} else {
+			r.DelAttr("project_references")
+		}
 
-	// Resolve test imports (formatjs_test only)
-	if kind == KindFormatjsTest && len(importData.TestImports) > 0 {
+	case KindFormatjsTest:
+		// Resolve test imports into a single deps attr.
+		// Source deps are provided transitively via :lib.
 		testResolved := resolveImportsToDeps(importData.TestImports, from, ix)
+		allDeps := append(testResolved.external, testResolved.internal...)
 
-		// Filter out deps already in production
-		prodExtSet := toSet(resolved.external)
-		prodIntSet := toSet(resolved.internal)
-
-		var testOnlyExt []string
-		for _, dep := range testResolved.external {
-			if !prodExtSet[dep] {
-				testOnlyExt = append(testOnlyExt, dep)
-			}
-		}
-
-		var testOnlyInt []string
-		for _, dep := range testResolved.internal {
-			if !prodIntSet[dep] {
-				testOnlyInt = append(testOnlyInt, dep)
-			}
-		}
-
-		if len(testOnlyExt) > 0 {
-			r.SetAttr("test_deps", deduplicateAndSort(testOnlyExt))
+		if len(allDeps) > 0 {
+			r.SetAttr("deps", deduplicateAndSort(allDeps))
 		} else {
-			r.DelAttr("test_deps")
-		}
-
-		if len(testOnlyInt) > 0 {
-			r.SetAttr("test_project_references", deduplicateAndSort(testOnlyInt))
-		} else {
-			r.DelAttr("test_project_references")
+			r.DelAttr("deps")
 		}
 	}
 }

@@ -23,10 +23,5 @@ formatjs_test(
     srcs = glob([
         "tests/*.ts",
     ]),
-    test_deps = ["//:node_modules/vitest"],
-    deps = [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/intl",
-        "//:node_modules/svelte",
-    ],
+    deps = ["//:node_modules/vitest"],
 )
