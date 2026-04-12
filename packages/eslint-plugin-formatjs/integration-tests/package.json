@@ -2,7 +2,7 @@
   "name": "integration-tests",
   "private": true,
   "dependencies": {
-    "eslint": "10.0.3",
+    "eslint": "10.2.0",
     "eslint-plugin-formatjs": "workspace:*",
     "react-intl": "workspace:*"
   }
