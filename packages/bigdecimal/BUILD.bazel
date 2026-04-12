@@ -9,20 +9,14 @@ exports_files([
     "package.json",
 ])
 
-SRCS = glob([
-    "*.ts",
-])
-
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = ["index.ts"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob([
-        "tests/*.test.ts",
-    ]),
+    srcs = ["tests/bigdecimal.test.ts"],
     deps = ["//:node_modules/vitest"],
 )

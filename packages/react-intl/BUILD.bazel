@@ -6,26 +6,10 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+# gazelle:formatjs_srcs_exclude *.test-d.ts,tests/perf/*
 npm_link_all_packages()
 
 PACKAGE_NAME = "react-intl"
-
-SRCS = glob(
-    ["**/*.ts*"],
-    exclude = [
-        "tests/**",
-        "integration-tests/**",
-        "examples/**",
-        "example-sandboxes/**",
-    ],
-)
-
-TESTS = glob(
-    [
-        "tests/unit/**/*.ts*",
-    ],
-    exclude = ["tests/unit/components/__snapshots__/*"],
-)
 
 ENTRY_POINTS = [
     "index.ts",
@@ -34,7 +18,21 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "components/context.ts",
+        "components/createFormattedComponent.tsx",
+        "components/createIntl.ts",
+        "components/dateTimeRange.tsx",
+        "components/message.tsx",
+        "components/plural.tsx",
+        "components/provider.tsx",
+        "components/relative.tsx",
+        "components/useIntl.ts",
+        "index.ts",
+        "server.ts",
+        "types.ts",
+        "utils.tsx",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["%s.iife.js" % PACKAGE_NAME],
     npm_package_name = PACKAGE_NAME,
@@ -51,7 +49,22 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS,
+    srcs = [
+        "tests/unit/components/date.test.tsx",
+        "tests/unit/components/dateTimeRange.test.tsx",
+        "tests/unit/components/displayName.test.tsx",
+        "tests/unit/components/message.test.tsx",
+        "tests/unit/components/number.test.tsx",
+        "tests/unit/components/plural.test.tsx",
+        "tests/unit/components/provider.test.tsx",
+        "tests/unit/components/relative.test.tsx",
+        "tests/unit/components/time.test.tsx",
+        "tests/unit/components/useIntl.test.tsx",
+        "tests/unit/react-19-key-warning.test.tsx",
+        "tests/unit/react-intl.test.tsx",
+        "tests/unit/testUtils.tsx",
+        "tests/unit/types.test.tsx",
+    ],
     config = "vitest.config.mjs",
     data = ["//:package.json"],
     dom = True,

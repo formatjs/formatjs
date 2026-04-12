@@ -5,14 +5,26 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-SRCS = glob(
-    ["abstract/*"],
-    exclude = ["tests/*"],
-) + ["index.ts"]
-
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "abstract/BestAvailableLocale.ts",
+        "abstract/BestFitMatcher.ts",
+        "abstract/CanonicalizeLocaleList.ts",
+        "abstract/CanonicalizeUValue.ts",
+        "abstract/CanonicalizeUnicodeLocaleId.ts",
+        "abstract/InsertUnicodeExtensionAndCanonicalize.ts",
+        "abstract/LookupMatcher.ts",
+        "abstract/LookupSupportedLocales.ts",
+        "abstract/ResolveLocale.ts",
+        "abstract/UnicodeExtensionComponents.ts",
+        "abstract/UnicodeExtensionValue.ts",
+        "abstract/languageMatching.ts",
+        "abstract/regions.generated.ts",
+        "abstract/types.ts",
+        "abstract/utils.ts",
+        "index.ts",
+    ],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",  # keep: imported from abstract/
     ],
@@ -20,7 +32,13 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob(["tests/**/*.ts"]),
+    srcs = [
+        "tests/BestFitMatcher.test.ts",
+        "tests/LookupMatcher.test.ts",
+        "tests/ResolveLocale.test.ts",
+        "tests/index.test.ts",
+        "tests/utils.test.ts",
+    ],
     deps = ["//:node_modules/vitest"],
 )
 

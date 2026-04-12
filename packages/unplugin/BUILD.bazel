@@ -39,7 +39,16 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "conformance-tests/rust-binary-utils.ts",
+        "esbuild.ts",
+        "index.ts",
+        "rollup.ts",
+        "rspack.ts",
+        "transform.ts",
+        "vite.ts",
+        "webpack.ts",
+    ],
     entry_points = ENTRY_POINTS,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     deps = [
@@ -55,7 +64,10 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob(["tests/**/*.ts"]),
+    srcs = [
+        "conformance-tests/cli-unplugin-conformance.test.ts",
+        "tests/transform.test.ts",
+    ],
     deps = [
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",

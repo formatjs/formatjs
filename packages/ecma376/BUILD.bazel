@@ -5,20 +5,16 @@ exports_files([
     "package.json",
 ])
 
-SRCS = glob([
-    "*.ts",
-])
-
 SRC_DEPS = [
 ]
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = ["index.ts"],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob(["tests/*"]),
+    srcs = ["tests/index.test.ts"],
     deps = ["//:node_modules/vitest"],
 )

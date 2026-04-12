@@ -9,8 +9,6 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "intl-locale"
 
-SRCS = glob(["*.ts"])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -20,7 +18,20 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "calendars.generated.ts",
+        "character-orders.generated.ts",
+        "get_internal_slots.ts",
+        "hour-cycles.generated.ts",
+        "index.ts",
+        "numbering-systems.generated.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "preference-data.ts",
+        "should-polyfill.ts",
+        "timezones.generated.ts",
+        "week-data.generated.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
     project_references = [
@@ -36,9 +47,11 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob([
-        "tests/**/*.ts",
-    ]),
+    srcs = [
+        "tests/index.test.ts",
+        "tests/likely-subtags.test.ts",
+        "tests/minimize.test.ts",
+    ],
     data = [
         "//:package.json",
     ],

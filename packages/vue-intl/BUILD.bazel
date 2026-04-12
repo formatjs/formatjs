@@ -4,13 +4,14 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-SRCS = glob([
-    "*.ts",
-])
-
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "index.ts",
+        "injection-key.ts",
+        "plugin.ts",
+        "provider.ts",
+    ],
     npm_package_name = "vue-intl",
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -21,9 +22,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob([
-        "tests/*",
-    ]),
+    srcs = ["tests/index.test.ts"],
     dom = True,
     deps = [
         "//:node_modules/@formatjs/intl",

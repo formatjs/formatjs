@@ -9,6 +9,7 @@ load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load(":index.bzl", "unicode_file_name")
 
+# gazelle:formatjs_srcs_exclude benchmark.ts,debug.ts
 npm_link_all_packages()
 
 # tsconfig with #packages/* path alias for tsc resolution
@@ -35,24 +36,6 @@ TEST_DEPS = [
     "//:node_modules/@bazel/runfiles",
 ] + TEST_UNICODE_FILES
 
-SRCS = glob(
-    [
-        "**/*.ts",
-        "*.ts",
-    ],
-    exclude = [
-        #for development only
-        "debug.ts",
-        "benchmark.ts",
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -62,7 +45,16 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "cldr-segmentation-rules.generated.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "segmentation-utils.ts",
+        "segmenter.ts",
+        "should-polyfill.ts",
+        "test262-main.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
     project_references = ["//packages/ecma402-abstract"],
@@ -75,7 +67,13 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS + ["tests/test-utils.ts"],
+    srcs = [
+        "tests/grapheme.test.ts",
+        "tests/isWordLike.test.ts",
+        "tests/sentence.test.ts",
+        "tests/test-utils.ts",
+        "tests/word.test.ts",
+    ],
     data = [
         "//:package.json",
     ] + TEST_UNICODE_FILES,
