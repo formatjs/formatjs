@@ -33,7 +33,7 @@ def formatjs_test(
 
     vitest(
         name = name,
-        srcs = srcs,
+        srcs = [":srcs"] + srcs,
         deps = all_deps,
         **kwargs
     )
