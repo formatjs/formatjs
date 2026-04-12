@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "generate_src_file")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -36,18 +35,6 @@ formatjs_library(
     ],
     types = True,
     deps = ["//:node_modules/@formatjs/intl-localematcher"],
-)
-
-formatjs_package(
-    name = PACKAGE_NAME,
-    entry_points = ENTRY_POINTS,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DurationFormat",
-        "//packages/ecma402-abstract/types",
-    ],
 )
 
 formatjs_test(

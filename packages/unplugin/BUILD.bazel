@@ -1,7 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
@@ -51,21 +50,6 @@ formatjs_library(
         "//:node_modules/magic-string",
         "//:node_modules/oxc-parser",
         "//:node_modules/unplugin",
-    ],
-)
-
-formatjs_package(
-    name = "unplugin",
-    entry_points = ENTRY_POINTS,
-    npm_package_name = PACKAGE_NAME,
-    deps = [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@types/node",
-        "//:node_modules/magic-string",
-        "//:node_modules/oxc-parser",
-        "//:node_modules/unplugin",
-        "//:node_modules/vite",
     ],
 )
 

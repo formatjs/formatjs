@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -33,6 +32,7 @@ ENTRY_POINTS = [
 formatjs_library(
     name = "dist",
     srcs = SRCS,
+    allow_overwrites = True,
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
@@ -40,19 +40,6 @@ formatjs_library(
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
-    ],
-)
-
-formatjs_package(
-    name = PACKAGE_NAME,
-    allow_overwrites = True,
-    entry_points = ENTRY_POINTS,
-    deps = [
-        "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/intl-messageformat",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
     ],
 )
 

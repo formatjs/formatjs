@@ -1,5 +1,4 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 
 exports_files([
@@ -16,10 +15,6 @@ SRC_DEPS = [
 formatjs_library(
     name = "dist",
     srcs = SRCS,
-)
-
-formatjs_package(
-    name = "ecma376",
 )
 
 formatjs_test(

@@ -1,6 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
@@ -31,19 +30,6 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/babel__core",  # keep: transitive type dep required by ts-jest
-        "//:node_modules/@types/node",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/ts-jest",
-        "//:node_modules/typescript",
-    ],
-)
-
-formatjs_package(
-    name = PACKAGE_NAME,
-    deps = [
-        "//:node_modules/@babel/core",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@types/babel__core",
         "//:node_modules/@types/node",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/ts-jest",
