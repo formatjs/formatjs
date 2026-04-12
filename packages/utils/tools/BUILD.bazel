@@ -1,4 +1,22 @@
 # gazelle:ignore
 # gazelle:formatjs_enabled false
 
-exports_files(glob(["*.ts"]))
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+
+js_library(
+    name = "extract-default-currency_ts",
+    srcs = ["extract-default-currency.ts"],
+    visibility = ["//packages/utils:__pkg__"],
+)
+
+js_library(
+    name = "extract-default-locale_ts",
+    srcs = ["extract-default-locale.ts"],
+    visibility = ["//packages/utils:__pkg__"],
+)
+
+js_library(
+    name = "extract-minor-currency-units_ts",
+    srcs = ["extract-minor-currency-units.ts"],
+    visibility = ["//packages/utils:__pkg__"],
+)
