@@ -37,7 +37,7 @@ Node 24.14.0 pinned with SHA256 hashes for 5 platforms (darwin_arm64, darwin_amd
 
 ### Two Compilation Patterns
 
-**Pattern 1: Rolldown-bundled packages** (polyfills, parsers, intl, react-intl — ~15 packages)
+**Pattern 1: formatjs_compile packages** (28 npm-published packages)
 
 ```
 Source .ts files
@@ -45,7 +45,7 @@ Source .ts files
   └─ rolldown + rolldown-plugin-dts ──→ bundled .js + .js.map + .d.ts
 ```
 
-**Pattern 2: ts_compile packages** (utilities, Node tooling, framework integrations — ~10 packages)
+**Pattern 2: ts_compile packages** (3 internal packages: ecma402-abstract, ecma262-abstract, editor)
 
 ```
 Source .ts files
@@ -121,8 +121,8 @@ rolldown_bundle(name, entry_point, srcs, deps, external, format, target, dts, gl
 
 **How #packages/\* resolves in rolldown:**
 
-1. `resolve.alias`: `'#packages' → path.join(workspaceRoot, 'packages')`
-2. dts plugin: temp tsconfig with `"paths": {"#packages/*": ["packages/*"]}` and `baseUrl: workspaceRoot`
+1. `resolve.tsconfigFilename`: temp tsconfig with `"paths": {"#packages/*": ["packages/*"]}` and `baseUrl: workspaceRoot`. Uses oxc-resolver's TypeScript-aware resolution (.js → .ts/.tsx extension mapping).
+2. dts plugin: same temp tsconfig with `isolatedDeclarations: true`
 
 **External handling:** `["pkg"]` becomes regex `^pkg(/.*)?$` — matches both `pkg` and `pkg/subpath`.
 
