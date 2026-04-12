@@ -56,15 +56,10 @@ formatjs_library(
 formatjs_test(
     name = "unit_test",
     srcs = glob(["tests/**/*.ts"]),
-    test_deps = ["//:node_modules/vitest"],
     deps = [
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
-        "//:node_modules/magic-string",
-        "//:node_modules/oxc-parser",
-        "//:node_modules/unplugin",
+        "//:node_modules/vitest",
     ],
 )
 

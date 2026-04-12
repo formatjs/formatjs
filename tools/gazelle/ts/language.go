@@ -133,7 +133,6 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 				newRule := rule.NewRule(r.Kind(), r.Name())
 				genRules = append(genRules, newRule)
 				genImports = append(genImports, ImportData{
-					Imports:     sourceImports,
 					TestImports: testImports,
 				})
 			}

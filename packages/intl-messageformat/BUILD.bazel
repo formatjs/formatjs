@@ -42,16 +42,13 @@ formatjs_test(
     srcs = TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = ["//packages/ecma402-abstract/types"],
-    test_deps = [
-        "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/tinybench",
-        "//:node_modules/vitest",
-    ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/tinybench",
+        "//:node_modules/vitest",
     ],
 )
 

@@ -25,15 +25,12 @@ formatjs_test(
         "tests/*",
     ]),
     dom = True,
-    test_deps = [
+    deps = [
+        "//:node_modules/@formatjs/intl",
         "//:node_modules/@vue/compiler-dom",  # keep: transitive runtime dep required by @vue/test-utils SSR
         "//:node_modules/@vue/server-renderer",  # keep: transitive runtime dep required by @vue/test-utils SSR
         "//:node_modules/@vue/test-utils",  # keep: imported from tests/
         "//:node_modules/vitest",
-    ],
-    deps = [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/intl",
         "//:node_modules/vue",
     ],
 )

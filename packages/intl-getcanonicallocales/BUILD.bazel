@@ -44,7 +44,7 @@ TESTS = glob([
 formatjs_test(
     name = "unit_test",
     srcs = TESTS,
-    test_deps = ["//:node_modules/vitest"],
+    deps = ["//:node_modules/vitest"],
 )
 
 # aliases

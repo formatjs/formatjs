@@ -48,10 +48,8 @@ formatjs_test(
     srcs = TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = ["//packages/ecma402-abstract"],
-    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = ["//:node_modules/@formatjs/fast-memoize"],
+    deps = ["//:node_modules/vitest"],
 )
 
 # calendars

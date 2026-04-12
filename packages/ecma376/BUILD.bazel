@@ -20,5 +20,5 @@ formatjs_library(
 formatjs_test(
     name = "unit_test",
     srcs = glob(["tests/*"]),
-    test_deps = ["//:node_modules/vitest"],
+    deps = ["//:node_modules/vitest"],
 )

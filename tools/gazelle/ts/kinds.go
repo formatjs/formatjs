@@ -19,10 +19,7 @@ var tsKinds = map[string]rule.KindInfo{
 	KindFormatjsTest: {
 		NonEmptyAttrs: map[string]bool{"name": true},
 		ResolveAttrs: map[string]bool{
-			"deps":                    true,
-			"project_references":      true,
-			"test_deps":               true,
-			"test_project_references": true,
+			"deps": true,
 		},
 	},
 	// ts_compile rules are internal-only packages (ecma402-abstract, ecma262-abstract).

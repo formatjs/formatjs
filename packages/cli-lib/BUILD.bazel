@@ -48,23 +48,11 @@ formatjs_test(
     fixtures = glob(
         ["tests/unit/fixtures/**/*"],
     ),
-    test_deps = ["//:node_modules/vitest"],
     deps = [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@glimmer/syntax",
-        "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/node",
-        "//:node_modules/@vue/compiler-core",
-        "//:node_modules/commander",
-        "//:node_modules/content-tag",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/loud-rejection",
-        "//:node_modules/svelte",
         "//:node_modules/typescript",
-        "//:node_modules/vue",
+        "//:node_modules/vitest",
     ],
 )
 
