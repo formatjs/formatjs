@@ -119,6 +119,12 @@ def formatjs_library(
         srcs = srcs,
     )
 
+    js_library(
+        name = "lib",
+        srcs = [":srcs"],
+        deps = all_deps,
+    )
+
     ts_project(
         name = "typecheck",
         srcs = [":srcs"],

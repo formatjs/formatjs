@@ -29,7 +29,7 @@ def formatjs_test(
         test_project_references: internal deps only in test files (gazelle-managed)
         **kwargs: passed through to vitest (dom, config, size, tsconfig, data, etc.)
     """
-    all_deps = deps + project_references + test_deps + test_project_references
+    all_deps = deps + project_references + test_deps + test_project_references + [":lib"]
 
     vitest(
         name = name,

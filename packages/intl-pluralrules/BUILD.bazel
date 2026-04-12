@@ -277,7 +277,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    srcs = TESTS + TEST_LOCALE_DATA,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     project_references = [

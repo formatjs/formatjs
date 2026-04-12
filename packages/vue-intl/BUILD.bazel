@@ -21,7 +21,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob([
+    srcs = glob([
         "tests/*",
     ]),
     dom = True,
