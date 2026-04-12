@@ -14,9 +14,6 @@ SRCS = glob([
     "*.ts",
 ])
 
-SRC_DEPS = [
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
@@ -32,4 +29,5 @@ formatjs_test(
     srcs = SRCS + glob([
         "tests/*.test.ts",
     ]),
+    test_deps = ["//:node_modules/vitest"],
 )

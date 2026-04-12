@@ -194,7 +194,7 @@ func resolvePackagesImport(importPath string, from label.Label, ix *resolve.Rule
 			languageName,
 		)
 		if len(results) > 0 {
-			return results[0].Label.String()
+			return "//" + testPath
 		}
 
 		// Check wildcard match
@@ -204,7 +204,7 @@ func resolvePackagesImport(importPath string, from label.Label, ix *resolve.Rule
 			languageName,
 		)
 		if len(results) > 0 {
-			return results[0].Label.String()
+			return "//" + testPath
 		}
 	}
 
@@ -236,15 +236,23 @@ func resolveNpmImport(importPath string) string {
 		}
 	}
 
-	return "//:node_modules/" + pkgName
+	// Package not found in package.json — skip to avoid generating
+	// references to non-existent Bazel targets.
+	return ""
 }
 
-// getTypesPackage returns the @types label if it exists for a non-scoped package.
+// getTypesPackage returns the @types label if it exists for a package.
+// For scoped packages like @babel/core, the DefinitelyTyped convention
+// is @types/babel__core (scope stripped, / replaced with __).
 func getTypesPackage(pkgName string) string {
+	var typesName string
 	if strings.HasPrefix(pkgName, "@") {
-		return ""
+		// @babel/core → @types/babel__core
+		withoutAt := strings.TrimPrefix(pkgName, "@")
+		typesName = "@types/" + strings.Replace(withoutAt, "/", "__", 1)
+	} else {
+		typesName = "@types/" + pkgName
 	}
-	typesName := "@types/" + pkgName
 	if packageDeps[typesName] {
 		return "//:node_modules/" + typesName
 	}

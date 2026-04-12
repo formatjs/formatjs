@@ -18,45 +18,51 @@ SRCS = glob(
     ],
 )
 
-VUE_DEPS = [
-    "//:node_modules/@vue/compiler-core",
-    "//:node_modules/@babel/types",
-    "//:node_modules/vue",
-]
-
-SVELTE_DEPS = [
-    "//:node_modules/svelte",
-]
-
-GLIMMER_HBS_DEPS = [
-    "//:node_modules/@glimmer/syntax",
-    "//:node_modules/content-tag",
-]
-
-SRC_DEPS = [
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/icu-skeleton-parser",
-    "//:node_modules/@formatjs/ts-transformer",
-    ":node_modules/commander",
-    ":node_modules/loud-rejection",
-    "//:node_modules/@types/estree",
-    "//:node_modules/@types/fs-extra",
-    "//:node_modules/@types/node",
-    "//:node_modules/fast-glob",
-    "//:node_modules/fs-extra",
-    "//:node_modules/json-stable-stringify",
-    "//:node_modules/typescript",
-] + VUE_DEPS + SVELTE_DEPS + GLIMMER_HBS_DEPS
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@glimmer/syntax",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/node",
+        "//:node_modules/@vue/compiler-core",
+        "//:node_modules/commander",
+        "//:node_modules/content-tag",
+        "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/loud-rejection",
+        "//:node_modules/svelte",
+        "//:node_modules/typescript",
+        "//:node_modules/vue",
+    ],
 )
 
 formatjs_package(
     name = PACKAGE_NAME,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/icu-skeleton-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@glimmer/syntax",
+        "//:node_modules/@types/estree",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/node",
+        "//:node_modules/@vue/compiler-core",
+        "//:node_modules/commander",
+        "//:node_modules/content-tag",
+        "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/loud-rejection",
+        "//:node_modules/svelte",
+        "//:node_modules/typescript",
+        "//:node_modules/vue",
+    ],
 )
 
 formatjs_test(
@@ -67,7 +73,24 @@ formatjs_test(
     fixtures = glob(
         ["tests/unit/fixtures/**/*"],
     ),
-    deps = SRC_DEPS,
+    test_deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@glimmer/syntax",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/node",
+        "//:node_modules/@vue/compiler-core",
+        "//:node_modules/commander",
+        "//:node_modules/content-tag",
+        "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/loud-rejection",
+        "//:node_modules/svelte",
+        "//:node_modules/typescript",
+        "//:node_modules/vue",
+    ],
 )
 
 genrule(
@@ -97,5 +120,24 @@ rolldown_bundle(
     platform = "node",
     target = "node20",
     visibility = ["//packages/cli:__pkg__"],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/icu-skeleton-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@glimmer/syntax",
+        "//:node_modules/@types/estree",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/node",
+        "//:node_modules/@vue/compiler-core",
+        "//:node_modules/commander",
+        "//:node_modules/content-tag",
+        "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/loud-rejection",
+        "//:node_modules/svelte",
+        "//:node_modules/typescript",
+        "//:node_modules/vue",
+    ],
 )

@@ -25,25 +25,30 @@ SRCS = glob([
     "*.ts",
 ])
 
-SRC_DEPS = [
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/ts-jest",
-    "//:node_modules/@babel/core",
-    "//:node_modules/@types/babel__core",
-    "//:node_modules/@types/node",
-    "//:node_modules/json-stable-stringify",
-    "//:node_modules/typescript",
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@types/babel__core",  # keep: transitive type dep required by ts-jest
+        "//:node_modules/@types/node",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/ts-jest",
+        "//:node_modules/typescript",
+    ],
 )
 
 formatjs_package(
     name = PACKAGE_NAME,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/core",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@types/babel__core",
+        "//:node_modules/@types/node",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/ts-jest",
+        "//:node_modules/typescript",
+    ],
 )
 
 formatjs_test(
@@ -54,5 +59,17 @@ formatjs_test(
     fixtures = glob([
         "tests/fixtures/*.ts*",
     ]),
-    deps = SRC_DEPS,
+    test_deps = [
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/react-intl",
+        "//:node_modules/vitest",
+    ],
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@types/node",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/ts-jest",
+        "//:node_modules/typescript",
+    ],
 )

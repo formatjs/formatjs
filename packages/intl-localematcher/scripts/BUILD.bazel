@@ -1,3 +1,4 @@
+# gazelle:ignore
 load("//tools:index.bzl", "ts_binary")
 
 ts_binary(

@@ -41,6 +41,10 @@ func (l *tsLang) Loads() []rule.LoadInfo {
 			Name:    "//tools:test.bzl",
 			Symbols: []string{KindFormatjsTest},
 		},
+		{
+			Name:    "//tools:index.bzl",
+			Symbols: []string{KindTsCompile},
+		},
 	}
 }
 
@@ -54,9 +58,10 @@ type ImportData struct {
 }
 
 // Imports returns the import specs that a rule provides, used to build the RuleIndex.
-// Each formatjs_compile rule provides its package path so other packages can depend on it.
+// Both formatjs_compile and ts_compile rules provide their package path so other
+// packages can resolve #packages/* imports to project_references.
 func (l *tsLang) Imports(c *config.Config, r *rule.Rule, f *rule.File) []resolve.ImportSpec {
-	if r.Kind() != KindFormatjsCompile {
+	if r.Kind() != KindFormatjsCompile && r.Kind() != KindTsCompile {
 		return nil
 	}
 
@@ -84,73 +89,53 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		return language.GenerateResult{}
 	}
 
-	// Collect TypeScript files
-	var sourceFiles, testFiles []string
+	// Collect TypeScript files from args.RegularFiles (provided by gazelle).
+	var sourceImports, testImports []ImportStatement
+
 	for _, f := range args.RegularFiles {
 		if !isTypeScriptFile(f) {
 			continue
 		}
+
+		fullPath := filepath.Join(args.Dir, f)
+		imps, err := extractImportsFromFile(fullPath)
+		if err != nil {
+			continue
+		}
+
 		if isTestFile(f) {
-			testFiles = append(testFiles, f)
+			testImports = append(testImports, imps...)
 		} else {
-			sourceFiles = append(sourceFiles, f)
+			sourceImports = append(sourceImports, imps...)
 		}
 	}
 
-	// Also check subdirectories for test files (tests/ directory)
-	for _, d := range args.Subdirs {
-		if d == "tests" || d == "test" {
-			walkTestDir(filepath.Join(args.Dir, d), d, &testFiles)
-		}
-	}
-
-	if len(sourceFiles) == 0 && len(testFiles) == 0 {
+	if args.File == nil {
 		return language.GenerateResult{}
 	}
 
-	// Parse imports from source files
-	var sourceImports []ImportStatement
-	for _, f := range sourceFiles {
-		fullPath := filepath.Join(args.Dir, f)
-		imps, err := extractImportsFromFile(fullPath)
-		if err != nil {
-			continue
-		}
-		sourceImports = append(sourceImports, imps...)
-	}
-
-	// Parse imports from test files
-	var testImports []ImportStatement
-	for _, f := range testFiles {
-		fullPath := filepath.Join(args.Dir, f)
-		imps, err := extractImportsFromFile(fullPath)
-		if err != nil {
-			continue
-		}
-		testImports = append(testImports, imps...)
-	}
-
-	// Find existing rules in the BUILD file
+	// Create new rules that match existing ones, so gazelle's merge can
+	// properly preserve # keep entries in the existing BUILD file.
 	var genRules []*rule.Rule
 	var genImports []interface{}
 
-	if args.File != nil {
-		for _, r := range args.File.Rules {
-			switch r.Kind() {
-			case KindFormatjsCompile:
-				genRules = append(genRules, r)
-				genImports = append(genImports, ImportData{
-					Imports: sourceImports,
-				})
+	for _, r := range args.File.Rules {
+		switch r.Kind() {
+		case KindFormatjsCompile:
+			newRule := rule.NewRule(r.Kind(), r.Name())
+			genRules = append(genRules, newRule)
+			genImports = append(genImports, ImportData{
+				Imports: sourceImports,
+			})
 
-			case KindFormatjsTest:
-				if !cfg.skipTest {
-					genRules = append(genRules, r)
-					genImports = append(genImports, ImportData{
-						Imports:     sourceImports,
-						TestImports: testImports,
-					})
-				}
+		case KindFormatjsTest:
+			if !cfg.skipTest {
+				newRule := rule.NewRule(r.Kind(), r.Name())
+				genRules = append(genRules, newRule)
+				genImports = append(genImports, ImportData{
+					Imports:     sourceImports,
+					TestImports: testImports,
+				})
 			}
 		}
 	}
@@ -160,6 +145,7 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		Imports: genImports,
 	}
 }
+
 
 func isTypeScriptFile(name string) bool {
 	return strings.HasSuffix(name, ".ts") || strings.HasSuffix(name, ".tsx")
@@ -172,31 +158,3 @@ func isTestFile(name string) bool {
 		strings.HasPrefix(name, "test/")
 }
 
-// walkTestDir recursively finds .ts/.tsx files in a test directory.
-func walkTestDir(dir string, relPrefix string, testFiles *[]string) {
-	entries, err := filepath.Glob(filepath.Join(dir, "*"))
-	if err != nil {
-		return
-	}
-	for _, entry := range entries {
-		base := filepath.Base(entry)
-		relPath := relPrefix + "/" + base
-
-		// Check if directory
-		info, err := filepath.Abs(entry)
-		if err != nil {
-			continue
-		}
-		_ = info
-
-		if isTypeScriptFile(base) {
-			*testFiles = append(*testFiles, relPath)
-		}
-
-		// Recurse into subdirectories
-		subEntries, err := filepath.Glob(filepath.Join(entry, "*"))
-		if err == nil && len(subEntries) > 0 {
-			walkTestDir(entry, relPath, testFiles)
-		}
-	}
-}
