@@ -25,7 +25,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob([
+    srcs = glob([
         "tests/*.ts*",
     ]),
     test_deps = ["//:node_modules/vitest"],

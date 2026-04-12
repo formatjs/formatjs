@@ -51,7 +51,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS,
+    srcs = TESTS,
     config = "vitest.config.mjs",
     data = ["//:package.json"],
     dom = True,

@@ -75,7 +75,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS + ["tests/test-utils.ts"],
+    srcs = TESTS + ["tests/test-utils.ts"],
     data = [
         "//:package.json",
     ] + TEST_UNICODE_FILES,

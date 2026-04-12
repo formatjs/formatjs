@@ -42,7 +42,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = [":srcs"] + glob(
+    srcs = glob(
         ["tests/unit/**/*.test.ts"],
     ),
     fixtures = glob(

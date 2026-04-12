@@ -12,12 +12,15 @@ load("//tools:tsconfig.bzl", "packages_tsconfig")
 def _formatjs_package(
         package_name,
         entry_points,
+        deps,
+        external_packages,
         npm_package_name,
         extra_npm_srcs,
         allow_overwrites):
-    """npm packaging + validation tests (private).
+    """Rolldown bundling + npm packaging + validation tests (private).
 
     Generates:
+    - rolldown_bundle per entry point (dts=True, esm, es2020)
     - js_library(name = {package_name}) with bundles + package.json
     - npm_package(name = "pkg")
     - no_internal_imports_test
@@ -26,6 +29,19 @@ def _formatjs_package(
     - generate_ide_tsconfig_json()
     """
     effective_npm_name = npm_package_name or ("@formatjs/%s" % package_name)
+
+    for entry in entry_points:
+        rolldown_bundle(
+            name = "%s-bundle" % entry.replace(".ts", ""),
+            srcs = [":srcs"],
+            dts = True,
+            entry_point = entry,
+            external = external_packages,
+            format = "esm",
+            output = "%s.js" % entry.replace(".ts", ""),
+            target = "es2020",
+            deps = deps,
+        )
 
     bundles = [":%s-bundle" % entry.replace(".ts", "") for entry in entry_points]
     replace_prefixes = {
@@ -83,14 +99,14 @@ def formatjs_library(
         npm_package_name = None,
         extra_npm_srcs = [],
         allow_overwrites = False):
-    """TypeScript compilation + rolldown bundling + optional npm packaging.
+    """TypeScript compilation + optional npm packaging.
 
     Generates:
     - copy_to_bin(name = "srcs") for sandbox compatibility
+    - js_library(name = "lib") wrapping sources + deps
     - ts_project(name = "typecheck") for type checking (tsgo, no emit)
-    - rolldown_bundle per entry point (dts=True, esm, es2020)
     - Optionally ts_project(name = "types") with emit_declaration_only
-    - If package.json exists: js_library, npm_package, and validation tests
+    - If package.json exists: rolldown bundles, npm_package, and validation tests
 
     Args:
         name: target name (e.g. "dist")
@@ -119,6 +135,12 @@ def formatjs_library(
         srcs = srcs,
     )
 
+    js_library(
+        name = "lib",
+        srcs = [":srcs"],
+        deps = all_deps,
+    )
+
     ts_project(
         name = "typecheck",
         srcs = [":srcs"],
@@ -129,19 +151,6 @@ def formatjs_library(
         tsconfig = effective_tsconfig,
         deps = all_deps,
     )
-
-    for entry in entry_points:
-        rolldown_bundle(
-            name = "%s-bundle" % entry.replace(".ts", ""),
-            srcs = [":srcs"],
-            dts = True,
-            entry_point = entry,
-            external = external_packages,
-            format = "esm",
-            output = "%s.js" % entry.replace(".ts", ""),
-            target = "es2020",
-            deps = all_deps,
-        )
 
     if types:
         ts_project(
@@ -162,6 +171,8 @@ def formatjs_library(
         _formatjs_package(
             package_name = package_dir_name,
             entry_points = entry_points,
+            deps = all_deps,
+            external_packages = external_packages,
             npm_package_name = npm_package_name,
             extra_npm_srcs = extra_npm_srcs,
             allow_overwrites = allow_overwrites,
