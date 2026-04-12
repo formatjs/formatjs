@@ -10,30 +10,22 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "intl"
 
-SRCS = glob(
-    ["**/*.ts*"],
-    exclude = [
-        "tests/**",
-    ],
-)
-
-TESTS = glob(
-    [
-        "tests/*.ts*",
-    ],
-    exclude = [
-        "tests/*.test-d.ts",
-    ],
-)
-
-ENTRY_POINTS = [
-    "index.ts",
-]
-
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
-    entry_points = ENTRY_POINTS,
+    srcs = [
+        "create-intl.ts",
+        "dateTime.ts",
+        "displayName.ts",
+        "error.ts",
+        "index.ts",
+        "list.ts",
+        "message.ts",
+        "number.ts",
+        "plural.ts",
+        "relativeTime.ts",
+        "types.ts",
+        "utils.ts",
+    ],
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     deps = [
@@ -46,7 +38,6 @@ formatjs_compile(
 formatjs_package(
     name = PACKAGE_NAME,
     allow_overwrites = True,
-    entry_points = ENTRY_POINTS,
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -58,15 +49,19 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS,
+    srcs = glob(
+        [
+            "tests/*.ts*",
+        ],
+        exclude = [
+            "tests/*.test-d.ts",
+        ],
+    ),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     project_references = ["//packages/ecma402-abstract/types"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),
-    test_deps = [
-        "//:node_modules/tsd",
-        "//:node_modules/vitest",
-    ],
+    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         "//:node_modules/@formatjs/fast-memoize",

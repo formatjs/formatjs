@@ -20,14 +20,16 @@ filegroup(
 
 PACKAGE_NAME = "ts-transformer"
 
-SRCS = glob([
-    "*.ts",
-    "*.ts",
-])
-
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "console_utils.ts",
+        "index.ts",
+        "interpolate-name.ts",
+        "transform.ts",
+        "ts-jest-integration.ts",
+        "types.ts",
+    ],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/babel__core",  # keep: transitive type dep required by ts-jest
@@ -53,7 +55,7 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob([
+    srcs = glob([
         "tests/*.ts*",
     ]),
     fixtures = glob([

@@ -12,21 +12,6 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "intl-supportedvaluesof"
 
-SRCS = glob(
-    [
-        "**/*.ts",
-        "*.ts",
-    ],
-    exclude = [
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -36,7 +21,25 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "calendars.generated.ts",
+        "collations.generated.ts",
+        "currencies.generated.ts",
+        "get-supported-calendars.ts",
+        "get-supported-collations.ts",
+        "get-supported-currencies.ts",
+        "get-supported-numbering-systems.ts",
+        "get-supported-timezones.ts",
+        "get-supported-units.ts",
+        "index.ts",
+        "memoize.ts",
+        "numbering-systems.generated.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "timezones.generated.ts",
+        "units.generated.ts",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract"],
     types = True,
@@ -58,7 +61,9 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS,
+    srcs = glob([
+        "tests/*.test.ts",
+    ]),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     project_references = ["//packages/ecma402-abstract"],

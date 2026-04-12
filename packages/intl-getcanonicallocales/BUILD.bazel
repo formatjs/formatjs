@@ -13,17 +13,6 @@ exports_files([
 
 PACKAGE_NAME = "intl-getcanonicallocales"
 
-SRCS = glob(
-    [
-        "**/*.ts",
-        "*.ts",
-    ],
-    exclude = [
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -33,7 +22,18 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "aliases.generated.ts",
+        "canonicalizer.ts",
+        "emitter.ts",
+        "index.ts",
+        "likelySubtags.generated.ts",
+        "parser.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "types.ts",
+    ],
     entry_points = ENTRY_POINTS,
 )
 
@@ -46,13 +46,11 @@ formatjs_package(
     ],
 )
 
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS,
+    srcs = glob([
+        "tests/*.test.ts",
+    ]),
     test_deps = ["//:node_modules/vitest"],
 )
 

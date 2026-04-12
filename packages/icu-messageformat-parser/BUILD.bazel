@@ -11,8 +11,6 @@ exports_files([
     "package.json",
 ])
 
-SRCS = glob(["*.ts"])
-
 ENTRY_POINTS = [
     "index.ts",
     "no-parser.ts",
@@ -22,7 +20,18 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "date-time-pattern-generator.ts",
+        "error.ts",
+        "index.ts",
+        "manipulator.ts",
+        "no-parser.ts",
+        "parser.ts",
+        "printer.ts",
+        "regex.generated.ts",
+        "time-data.generated.ts",
+        "types.ts",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
@@ -41,7 +50,7 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob([
+    srcs = glob([
         "tests/**/*.ts",
     ]),
     data = ["//:package.json"],

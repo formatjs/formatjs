@@ -5,6 +5,7 @@ package ts
 
 import (
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/bazelbuild/bazel-gazelle/config"
@@ -89,12 +90,19 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		return language.GenerateResult{}
 	}
 
-	// Collect TypeScript files from args.RegularFiles (provided by gazelle).
+	// Collect TypeScript files and imports from args.RegularFiles (provided by gazelle).
+	var sourceFiles, testFiles []string
 	var sourceImports, testImports []ImportStatement
 
 	for _, f := range args.RegularFiles {
 		if !isTypeScriptFile(f) {
 			continue
+		}
+
+		if isTestFile(f) {
+			testFiles = append(testFiles, f)
+		} else {
+			sourceFiles = append(sourceFiles, f)
 		}
 
 		fullPath := filepath.Join(args.Dir, f)
@@ -114,6 +122,10 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		return language.GenerateResult{}
 	}
 
+	// Sort file lists for deterministic output.
+	sort.Strings(sourceFiles)
+	sort.Strings(testFiles)
+
 	// Create new rules that match existing ones, so gazelle's merge can
 	// properly preserve # keep entries in the existing BUILD file.
 	var genRules []*rule.Rule
@@ -123,6 +135,9 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		switch r.Kind() {
 		case KindFormatjsCompile:
 			newRule := rule.NewRule(r.Kind(), r.Name())
+			if len(sourceFiles) > 0 {
+				newRule.SetAttr("srcs", sourceFiles)
+			}
 			genRules = append(genRules, newRule)
 			genImports = append(genImports, ImportData{
 				Imports: sourceImports,
@@ -148,7 +163,15 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 
 
 func isTypeScriptFile(name string) bool {
-	return strings.HasSuffix(name, ".ts") || strings.HasSuffix(name, ".tsx")
+	if !strings.HasSuffix(name, ".ts") && !strings.HasSuffix(name, ".tsx") {
+		return false
+	}
+	// Exclude type-definition test files (*.test-d.ts) — these use special
+	// tsconfig settings and are tested via tsd, not vitest.
+	if strings.HasSuffix(name, ".test-d.ts") || strings.HasSuffix(name, ".test-d.tsx") {
+		return false
+	}
+	return true
 }
 
 func isTestFile(name string) bool {
@@ -157,4 +180,5 @@ func isTestFile(name string) bool {
 		strings.HasPrefix(name, "tests/") ||
 		strings.HasPrefix(name, "test/")
 }
+
 

@@ -8,6 +8,7 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+# gazelle:exclude test262-main.ts
 npm_link_all_packages()
 
 PACKAGE_NAME = "intl-listformat"
@@ -22,17 +23,6 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
-SRCS = glob(
-    [
-        "*.ts",
-    ],
-    exclude = ["test*.*"],
-)
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -42,7 +32,13 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = [
         "//packages/ecma402-abstract",
@@ -69,7 +65,9 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    srcs = glob([
+        "tests/*.test.ts",
+    ]) + TEST_LOCALE_DATA,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     project_references = [

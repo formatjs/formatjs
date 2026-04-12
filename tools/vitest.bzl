@@ -66,10 +66,15 @@ def vitest(
         },
     }
 
+    # Collect :srcs from deps (the copy_to_bin target from formatjs_compile)
+    # so ts_project can typecheck test files alongside source files.
+    src_lib_deps = [d for d in deps if d.endswith(":src_lib")]
+    non_src_lib_deps = [d for d in deps if not d.endswith(":src_lib")]
+
     # Type check only with tsgo (fast, parallel)
     ts_project(
         name = "%s_typecheck" % name,
-        srcs = srcs_no_snapshots,
+        srcs = srcs_no_snapshots + [d.replace(":src_lib", ":srcs") for d in src_lib_deps],
         tsconfig = test_tsconfig,
         resolve_json_module = True,
         declaration = True,

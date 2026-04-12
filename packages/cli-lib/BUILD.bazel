@@ -10,17 +10,34 @@ exports_files(["package.json"])
 
 PACKAGE_NAME = "cli-lib"
 
-SRCS = glob(
-    ["**/*.ts"],
-    exclude = [
-        "tests/**",
-        "integration-tests/**",
-    ],
-)
-
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "cli.ts",
+        "compile.ts",
+        "compile_folder.ts",
+        "console_utils.ts",
+        "extract.ts",
+        "formatters/crowdin.ts",
+        "formatters/default.ts",
+        "formatters/index.ts",
+        "formatters/lokalise.ts",
+        "formatters/simple.ts",
+        "formatters/smartling.ts",
+        "formatters/transifex.ts",
+        "gts_extractor.ts",
+        "hbs_extractor.ts",
+        "index.ts",
+        "main.ts",
+        "parse_script.ts",
+        "pseudo_locale.ts",
+        "svelte_extractor.ts",
+        "verify/checkExtraKeys.ts",
+        "verify/checkMissingKeys.ts",
+        "verify/checkStructuralEquality.ts",
+        "verify/index.ts",
+        "vue_extractor.ts",
+    ],
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -67,7 +84,7 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = [":srcs"] + glob(
+    srcs = glob(
         ["tests/unit/**/*.test.ts"],
     ),
     fixtures = glob(

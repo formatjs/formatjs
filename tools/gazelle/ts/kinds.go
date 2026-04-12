@@ -10,7 +10,8 @@ const (
 
 var tsKinds = map[string]rule.KindInfo{
 	KindFormatjsCompile: {
-		NonEmptyAttrs: map[string]bool{"name": true},
+		NonEmptyAttrs:  map[string]bool{"name": true},
+		MergeableAttrs: map[string]bool{"srcs": true},
 		ResolveAttrs: map[string]bool{
 			"deps":               true,
 			"project_references": true,

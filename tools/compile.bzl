@@ -1,6 +1,7 @@
 "Macro for TypeScript compilation + rolldown bundling."
 
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -44,6 +45,14 @@ def formatjs_compile(
     copy_to_bin(
         name = "srcs",
         srcs = srcs,
+    )
+
+    # js_library wrapping source files so formatjs_test can depend on them
+    # instead of including them in srcs.
+    js_library(
+        name = "src_lib",
+        srcs = [":srcs"],
+        deps = all_deps,
     )
 
     ts_project(

@@ -12,6 +12,7 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_dockerfile")
 
+# gazelle:exclude test262-main.ts
 npm_link_all_packages()
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -34,33 +35,6 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
-SRCS = glob(
-    [
-        "*.ts",
-        "data/**",
-    ],
-    exclude = [
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
-TESTS = glob([
-    "tests/**/*.test.ts",
-])
-
-TEST_DEPS = [
-    "//packages/ecma262-abstract",
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/DateTimeFormat",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/intl-localematcher",
-    "//:node_modules/@formatjs/bigdecimal",
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/@formatjs/intl-locale",
-    "//:node_modules/@types/node",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -70,7 +44,20 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "core.ts",
+        "data/all-tz.generated.ts",
+        "data/links.generated.ts",
+        "get_internal_slots.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+        "to_locale_string.ts",
+        "types.ts",
+        "unpack.ts",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = [
         "//packages/ecma262-abstract",
@@ -109,7 +96,9 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    srcs = glob([
+        "tests/**/*.test.ts",
+    ]) + TEST_LOCALE_DATA,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     project_references = [

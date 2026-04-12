@@ -8,13 +8,9 @@ exports_files([
     "package.json",
 ])
 
-SRCS = glob([
-    "*.ts",
-])
-
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = ["index.ts"],
 )
 
 formatjs_package(

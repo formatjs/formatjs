@@ -11,23 +11,6 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "react-intl"
 
-SRCS = glob(
-    ["**/*.ts*"],
-    exclude = [
-        "tests/**",
-        "integration-tests/**",
-        "examples/**",
-        "example-sandboxes/**",
-    ],
-)
-
-TESTS = glob(
-    [
-        "tests/unit/**/*.ts*",
-    ],
-    exclude = ["tests/unit/components/__snapshots__/*"],
-)
-
 ENTRY_POINTS = [
     "index.ts",
     "server.ts",
@@ -35,7 +18,21 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "components/context.ts",
+        "components/createFormattedComponent.tsx",
+        "components/createIntl.ts",
+        "components/dateTimeRange.tsx",
+        "components/message.tsx",
+        "components/plural.tsx",
+        "components/provider.tsx",
+        "components/relative.tsx",
+        "components/useIntl.ts",
+        "index.ts",
+        "server.ts",
+        "types.ts",
+        "utils.tsx",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
@@ -68,7 +65,12 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS,
+    srcs = glob(
+        [
+            "tests/unit/**/*.ts*",
+        ],
+        exclude = ["tests/unit/components/__snapshots__/*"],
+    ),
     config = "vitest.config.mjs",
     data = ["//:package.json"],
     dom = True,
@@ -80,7 +82,6 @@ formatjs_test(
         "//:node_modules/@types/react-dom",
         "//:node_modules/react-dom",
         "//:node_modules/tinybench",
-        "//:node_modules/tsd",
         "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

@@ -5,13 +5,13 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-SRCS = glob([
-    "*.ts",
-])
-
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "context-key.ts",
+        "index.ts",
+        "provider.ts",
+    ],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
@@ -31,7 +31,7 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob([
+    srcs = glob([
         "tests/*.ts",
     ]),
     test_deps = ["//:node_modules/vitest"],

@@ -18,16 +18,6 @@ copy_file(
 
 PACKAGE_NAME = "@formatjs/unplugin"
 
-SRCS = [
-    "esbuild.ts",
-    "index.ts",
-    "rollup.ts",
-    "rspack.ts",
-    "transform.ts",
-    "vite.ts",
-    "webpack.ts",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "vite.ts",
@@ -40,7 +30,16 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "conformance-tests/rust-binary-utils.ts",
+        "esbuild.ts",
+        "index.ts",
+        "rollup.ts",
+        "rspack.ts",
+        "transform.ts",
+        "vite.ts",
+        "webpack.ts",
+    ],
     entry_points = ENTRY_POINTS,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     deps = [
@@ -71,7 +70,7 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob(["tests/**/*.ts"]),
+    srcs = glob(["tests/**/*.ts"]),
     test_deps = ["//:node_modules/vitest"],
     deps = [
         "//:node_modules/@bazel/runfiles",
@@ -86,7 +85,7 @@ formatjs_test(
 
 vitest(
     name = "conformance_test",
-    srcs = SRCS + [
+    srcs = [":srcs"] + [
         ":rust_cli_copy",
     ] + glob(["conformance-tests/**/*.ts"]),
     data = [

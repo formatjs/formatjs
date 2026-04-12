@@ -10,6 +10,9 @@ load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load(":index.bzl", "unicode_file_name")
 
+# gazelle:exclude benchmark.ts
+# gazelle:exclude debug.ts
+# gazelle:exclude test262-main.ts
 npm_link_all_packages()
 
 # tsconfig with #packages/* path alias for tsc resolution
@@ -36,24 +39,6 @@ TEST_DEPS = [
     "//:node_modules/@bazel/runfiles",
 ] + TEST_UNICODE_FILES
 
-SRCS = glob(
-    [
-        "**/*.ts",
-        "*.ts",
-    ],
-    exclude = [
-        #for development only
-        "debug.ts",
-        "benchmark.ts",
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -63,14 +48,19 @@ ENTRY_POINTS = [
 
 formatjs_compile(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "cldr-segmentation-rules.generated.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "segmentation-utils.ts",
+        "segmenter.ts",
+        "should-polyfill.ts",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract"],
     types = True,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 formatjs_package(
@@ -88,7 +78,9 @@ formatjs_package(
 
 formatjs_test(
     name = "unit_test",
-    srcs = SRCS + TESTS + ["tests/test-utils.ts"],
+    srcs = glob([
+        "tests/*.test.ts",
+    ]) + ["tests/test-utils.ts"],
     data = [
         "//:package.json",
     ] + TEST_UNICODE_FILES,
@@ -105,10 +97,7 @@ formatjs_test(
         "//:node_modules/vitest",
     ],
     tsconfig = TSCONFIG,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 generate_src_file(

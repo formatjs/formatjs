@@ -12,6 +12,9 @@ def formatjs_test(
         **kwargs):
     """Vitest wrapper with separated dependency tracking.
 
+    Source files come from :src_lib (created by formatjs_compile) via deps.
+    Test files are passed via srcs.
+
     Separates deps into 4 categories for gazelle:
     - deps: external npm deps from source files
     - project_references: internal //packages/* deps from source files
@@ -22,14 +25,14 @@ def formatjs_test(
 
     Args:
         name: target name (e.g. "unit_test")
-        srcs: source + test files
+        srcs: test files only
         deps: external npm dependencies from source files (gazelle-managed)
         project_references: internal package deps from source files (gazelle-managed)
         test_deps: external npm deps only in test files (gazelle-managed)
         test_project_references: internal deps only in test files (gazelle-managed)
         **kwargs: passed through to vitest (dom, config, size, tsconfig, data, etc.)
     """
-    all_deps = deps + project_references + test_deps + test_project_references
+    all_deps = [":src_lib"] + deps + project_references + test_deps + test_project_references
 
     vitest(
         name = name,
