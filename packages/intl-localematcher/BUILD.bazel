@@ -1,7 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "generate_src_file")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
@@ -16,13 +15,6 @@ formatjs_library(
     srcs = SRCS,
     deps = [
         "//:node_modules/@formatjs/fast-memoize",  # keep: imported from abstract/
-    ],
-)
-
-formatjs_package(
-    name = "intl-localematcher",
-    deps = [
-        "//:node_modules/@formatjs/fast-memoize",
     ],
 )
 

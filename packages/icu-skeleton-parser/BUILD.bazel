@@ -1,7 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "generate_src_file")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -14,14 +13,6 @@ formatjs_library(
     srcs = SRCS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
-)
-
-formatjs_package(
-    name = "icu-skeleton-parser",
-    deps = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
 )
 
 formatjs_test(

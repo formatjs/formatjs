@@ -1,6 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -26,30 +25,6 @@ formatjs_library(
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@glimmer/syntax",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/node",
-        "//:node_modules/@vue/compiler-core",
-        "//:node_modules/commander",
-        "//:node_modules/content-tag",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/loud-rejection",
-        "//:node_modules/svelte",
-        "//:node_modules/typescript",
-        "//:node_modules/vue",
-    ],
-)
-
-formatjs_package(
-    name = PACKAGE_NAME,
-    deps = [
-        "//:node_modules/@babel/types",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/icu-skeleton-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@glimmer/syntax",
-        "//:node_modules/@types/estree",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/node",
         "//:node_modules/@vue/compiler-core",

@@ -1,6 +1,6 @@
 # Gazelle Migration Plan: Custom Macros to Stock Rules
 
-> **Status: COMPLETED.** Phases 1-3 below were superseded by 3 custom macros (`formatjs_library`, `formatjs_package`, `formatjs_test`) + a custom Go gazelle plugin at `tools/gazelle/ts/`. See `knowledge-base/001a-bazel-toolchain.md`.
+> **Status: COMPLETED.** Phases 1-3 below were superseded by 2 custom macros (`formatjs_library`, `formatjs_test`) + a custom Go gazelle plugin at `tools/gazelle/ts/`. See `knowledge-base/001a-bazel-toolchain.md`.
 
 ## Goal
 

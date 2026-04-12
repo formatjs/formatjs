@@ -1,6 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
@@ -12,18 +11,8 @@ SRCS = glob([
 formatjs_library(
     name = "dist",
     srcs = SRCS,
-    deps = [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/intl",
-        "//:node_modules/vue",
-    ],
-)
-
-formatjs_package(
-    name = "vue-intl",
     npm_package_name = "vue-intl",
     deps = [
-        "//:node_modules/@babel/types",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/vue",
