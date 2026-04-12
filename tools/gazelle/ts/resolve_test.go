@@ -49,9 +49,9 @@ func TestResolveNpmImport(t *testing.T) {
 			expected: "//:node_modules/lodash-es",
 		},
 		{
-			name:     "unknown package still returns label",
+			name:     "unknown package returns empty",
 			input:    "nonexistent-pkg",
-			expected: "//:node_modules/nonexistent-pkg",
+			expected: "",
 		},
 		{
 			name:     "scoped with only 1 part",
@@ -73,11 +73,15 @@ func TestResolveNpmImport(t *testing.T) {
 func TestGetTypesPackage(t *testing.T) {
 	packageDepsOnce = sync.Once{}
 	packageDeps = map[string]bool{
-		"react":          true,
-		"@types/react":   true,
-		"lodash-es":      true,
-		"@types/node":    true,
-		"@formatjs/intl": true,
+		"react":                          true,
+		"@types/react":                   true,
+		"lodash-es":                      true,
+		"@types/node":                    true,
+		"@formatjs/intl":                 true,
+		"@babel/core":                    true,
+		"@types/babel__core":             true,
+		"@babel/helper-plugin-utils":     true,
+		"@types/babel__helper-plugin-utils": true,
 	}
 
 	tests := []struct {
@@ -96,7 +100,17 @@ func TestGetTypesPackage(t *testing.T) {
 			expected: "",
 		},
 		{
-			name:     "scoped package skipped",
+			name:     "scoped package with @types (DefinitelyTyped convention)",
+			input:    "@babel/core",
+			expected: "//:node_modules/@types/babel__core",
+		},
+		{
+			name:     "scoped package with @types double-barrel",
+			input:    "@babel/helper-plugin-utils",
+			expected: "//:node_modules/@types/babel__helper-plugin-utils",
+		},
+		{
+			name:     "scoped package without @types",
 			input:    "@formatjs/intl",
 			expected: "",
 		},

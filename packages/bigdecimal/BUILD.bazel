@@ -14,9 +14,6 @@ SRCS = glob([
     "*.ts",
 ])
 
-SRC_DEPS = [
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,

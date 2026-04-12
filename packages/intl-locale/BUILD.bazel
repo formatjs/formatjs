@@ -12,15 +12,6 @@ PACKAGE_NAME = "intl-locale"
 
 SRCS = glob(["*.ts"])
 
-SRC_DEPS = [
-    "//:node_modules/@formatjs/intl-supportedvaluesof",
-    "//:node_modules/@formatjs/intl-getcanonicallocales",
-    "//:node_modules/cldr-core",
-    "//:node_modules/cldr-bcp47",
-    "//packages/ecma262-abstract",
-    "//packages/ecma402-abstract",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -32,6 +23,10 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
     types = True,
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
@@ -45,7 +40,14 @@ formatjs_package(
     extra_npm_srcs = [
         "polyfill.iife.js",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/cldr-bcp47",
+        "//:node_modules/cldr-core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
 )
 
 formatjs_test(
@@ -58,6 +60,10 @@ formatjs_test(
     ],
     no_copy_to_bin = [
         "//:package.json",
+    ],
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
     ],
     test_deps = ["//:node_modules/vitest"],
     deps = [
@@ -72,7 +78,14 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill-force.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/cldr-bcp47",
+        "//:node_modules/cldr-core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
 )
 
 test262_harness_bin.test262_harness_test(
@@ -103,7 +116,14 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/cldr-bcp47",
+        "//:node_modules/cldr-core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
 )
 
 # character orders

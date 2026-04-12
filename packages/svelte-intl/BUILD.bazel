@@ -9,13 +9,6 @@ SRCS = glob([
     "*.ts",
 ])
 
-SRC_DEPS = [
-    "//:node_modules/svelte",
-    "//:node_modules/typescript",
-    "//:node_modules/@formatjs/intl",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
@@ -28,7 +21,12 @@ formatjs_compile(
 
 formatjs_package(
     name = "svelte-intl",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/svelte",
+        "//:node_modules/typescript",
+    ],
 )
 
 formatjs_test(

@@ -24,9 +24,6 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = [
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -47,7 +44,6 @@ formatjs_package(
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-    deps = SRC_DEPS,
 )
 
 TESTS = glob([
@@ -90,5 +86,4 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es6",
-    deps = SRC_DEPS,
 )

@@ -9,13 +9,6 @@ SRCS = glob([
     "*.ts",
 ])
 
-SRC_DEPS = [
-    "//:node_modules/vue",
-    "//:node_modules/@babel/types",
-    "//:node_modules/@formatjs/intl",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
@@ -29,7 +22,12 @@ formatjs_compile(
 formatjs_package(
     name = "vue-intl",
     npm_package_name = "vue-intl",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/vue",
+    ],
 )
 
 formatjs_test(
@@ -39,6 +37,8 @@ formatjs_test(
     ]),
     dom = True,
     test_deps = [
+        "//:node_modules/@vue/compiler-dom",  # keep: transitive runtime dep required by @vue/test-utils SSR
+        "//:node_modules/@vue/server-renderer",  # keep: transitive runtime dep required by @vue/test-utils SSR
         "//:node_modules/@vue/test-utils",
         "//:node_modules/vitest",
     ],

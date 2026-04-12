@@ -17,14 +17,6 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = [
-    "//packages/ecma262-abstract",
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/DurationFormat",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/intl-localematcher",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -36,6 +28,12 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DurationFormat",
+        "//packages/ecma402-abstract/types",
+    ],
     types = True,
     deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
@@ -43,7 +41,13 @@ formatjs_compile(
 formatjs_package(
     name = PACKAGE_NAME,
     entry_points = ENTRY_POINTS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DurationFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -53,6 +57,12 @@ formatjs_test(
     ]),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DurationFormat",
+        "//packages/ecma402-abstract/types",
+    ],
     test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = ["//:node_modules/@formatjs/intl-localematcher"],

@@ -43,22 +43,20 @@ SRCS = glob(["rules/*.ts"]) + [
     "emoji-data.generated.ts",
 ]
 
-SRC_DEPS = [
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/ts-transformer",
-    ":node_modules/@types/picomatch",
-    ":node_modules/magic-string",
-    ":node_modules/picomatch",
-    "//:node_modules/@types/node",
-    "//:node_modules/@types/estree-jsx",
-    "//:node_modules/@unicode/unicode-17.0.0",
-    "//:node_modules/eslint",
-    "//:node_modules/typescript",
-]
-
 EXTERNAL_PACKAGES = [
     dep.split("node_modules/")[1]
-    for dep in SRC_DEPS
+    for dep in [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        ":node_modules/@types/picomatch",
+        "//:node_modules/magic-string",
+        ":node_modules/picomatch",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/estree-jsx",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/eslint",
+        "//:node_modules/typescript",
+    ]
     if "node_modules/" in dep
 ]
 
@@ -79,7 +77,18 @@ ENTRY_POINTS = [
     format = "esm",
     output = "%s.js" % entry.replace(".ts", ""),
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        ":node_modules/@types/picomatch",
+        ":node_modules/picomatch",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@types/estree-jsx",
+        "//:node_modules/@types/node",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/eslint",
+        "//:node_modules/magic-string",
+        "//:node_modules/typescript",
+    ],
 ) for entry in ENTRY_POINTS]
 
 BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
@@ -123,7 +132,18 @@ ts_project(
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = SRC_DEPS,
+    deps = [
+        ":node_modules/@types/picomatch",
+        ":node_modules/picomatch",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@types/estree-jsx",
+        "//:node_modules/@types/node",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/eslint",
+        "//:node_modules/magic-string",
+        "//:node_modules/typescript",
+    ],
 )
 
 TESTS_BASE_SRCS = [":srcs"] + glob(
@@ -140,9 +160,19 @@ TEST_FILES = glob([
 vitest(
     name = "unit_test",
     srcs = TESTS_BASE_SRCS + TEST_FILES,
-    deps = SRC_DEPS + [
+    deps = [
+        ":node_modules/@types/picomatch",
+        ":node_modules/picomatch",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@types/estree-jsx",
+        "//:node_modules/@types/node",
         "//:node_modules/@typescript-eslint/utils",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/eslint",
+        "//:node_modules/magic-string",
         "//:node_modules/oxlint",
+        "//:node_modules/typescript",
         "//:node_modules/vue-eslint-parser",
     ],
 )
@@ -152,7 +182,18 @@ generate_ide_tsconfig_json()
 
 package_json_test(
     name = "package_json_test",
-    deps = SRC_DEPS,
+    deps = [
+        ":node_modules/@types/picomatch",
+        ":node_modules/picomatch",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@types/estree-jsx",
+        "//:node_modules/@types/node",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/eslint",
+        "//:node_modules/magic-string",
+        "//:node_modules/typescript",
+    ],
 )
 
 copy_to_bin(

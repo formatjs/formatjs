@@ -9,20 +9,19 @@ npm_link_all_packages()
 
 SRCS = glob(["*.ts"])
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
+    project_references = ["//packages/ecma402-abstract/types"],
     types = True,
 )
 
 formatjs_package(
     name = "icu-skeleton-parser",
-    deps = SRC_DEPS,
+    deps = [
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -30,6 +29,7 @@ formatjs_test(
     srcs = SRCS + glob(["tests/**/*.ts"]),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
+    project_references = ["//packages/ecma402-abstract/types"],
     test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

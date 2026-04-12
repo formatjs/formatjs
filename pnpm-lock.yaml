@@ -312,6 +312,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      commander:
+        specifier: ^14.0.0
+        version: 14.0.3
       content-tag:
         specifier: ^4.1.0
         version: 4.1.1
@@ -354,6 +357,9 @@ importers:
       lodash-es:
         specifier: ^4.17.22
         version: 4.18.1
+      loud-rejection:
+        specifier: ^2.0.0
+        version: 2.2.0
       lucide-react:
         specifier: ^0.577.0
         version: 0.577.0(react@19.2.3)
@@ -444,6 +450,9 @@ importers:
       tinybench:
         specifier: ^6.0.0
         version: 6.0.0
+      ts-jest:
+        specifier: ^29.0.0
+        version: 29.4.9(@babel/core@7.29.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.0))(esbuild@0.28.0)(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.0)(babel-plugin-macros@3.1.0))(typescript@6.0.2)
       ts-loader:
         specifier: ^9.5.4
         version: 9.5.7(typescript@6.0.2)(webpack@5.106.1(esbuild@0.28.0))

@@ -21,16 +21,6 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/intl",
-    "//:node_modules/intl-messageformat",
-    "//:node_modules/@types/react",
-    "//:node_modules/react",
-]
-
 TESTS = glob(
     [
         "tests/unit/**/*.ts*",
@@ -47,13 +37,17 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
+    project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/@types/react",
+        "//:node_modules/@types/react-dom",
         "//:node_modules/intl-messageformat",
         "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-intl",
     ],
 )
 
@@ -64,7 +58,15 @@ formatjs_package(
         "%s.iife.js" % PACKAGE_NAME,
     ],
     npm_package_name = PACKAGE_NAME,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/@types/react",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/react",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -74,11 +76,10 @@ formatjs_test(
     data = ["//:package.json"],
     dom = True,
     no_copy_to_bin = ["//:package.json"],
+    project_references = ["//packages/ecma402-abstract/types"],
     test_deps = [
         "//:node_modules/@testing-library/jest-dom",
         "//:node_modules/@testing-library/react",
-        "//:node_modules/@types/react-dom",
-        "//:node_modules/react-dom",
         "//:node_modules/tinybench",
         "//:node_modules/tsd",
         "//:node_modules/vitest",
@@ -88,8 +89,11 @@ formatjs_test(
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/@types/react",
+        "//:node_modules/@types/react-dom",
         "//:node_modules/intl-messageformat",
         "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-intl",
     ],
 )
 
@@ -100,7 +104,15 @@ rolldown_bundle(
     external = ["react"],
     global_name = "ReactIntl",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/@types/react",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/react",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 genrule(
@@ -139,6 +151,13 @@ tsd_bin.tsd_test(
     data = [
         "tsconfig.json",
         ":global_type_overrides_test_files",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/@types/react",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/react",
         "//:node_modules/tsd",
-    ] + SRC_DEPS,
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )

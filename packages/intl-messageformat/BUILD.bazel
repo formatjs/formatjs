@@ -16,13 +16,6 @@ PACKAGE_NAME = "intl-messageformat"
 
 SRCS = glob(["*.ts"])
 
-SRC_DEPS = [
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/@formatjs/fast-memoize",
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-]
-
 TESTS = glob([
     "tests/*.test.ts",
 ])
@@ -35,6 +28,7 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
+    project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -49,7 +43,12 @@ formatjs_package(
         "%s.iife.js" % PACKAGE_NAME,
     ],
     npm_package_name = PACKAGE_NAME,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -57,11 +56,8 @@ formatjs_test(
     srcs = SRCS + TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    test_deps = [
-        "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/tinybench",
-        "//:node_modules/vitest",
-    ],
+    project_references = ["//packages/ecma402-abstract/types"],
+    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -75,7 +71,12 @@ rolldown_bundle(
     entry_point = "index.ts",
     global_name = "IntlMessageFormat",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 rolldown_bundle(
@@ -85,16 +86,25 @@ rolldown_bundle(
     format = "esm",
     global_name = "IntlMessageFormat",
     target = "esnext",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = [":srcs"] + SRC_DEPS + [
+    data = [":srcs"] + [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/tinybench",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [

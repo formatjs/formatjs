@@ -49,16 +49,13 @@ TESTS = glob([
     "tests/**/*.test.ts",
 ])
 
-SRC_DEPS = [
+TEST_DEPS = [
     "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/DateTimeFormat",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
-]
-
-TEST_DEPS = SRC_DEPS + [
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
     "//:node_modules/@types/node",
@@ -75,6 +72,12 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
     types = True,
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
@@ -94,7 +97,14 @@ formatjs_package(
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -102,10 +112,15 @@ formatjs_test(
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
     test_deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/tinybench",
         "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
@@ -935,15 +950,27 @@ rolldown_bundle(
     entry_point = "polyfill.ts",
     target = "es2020",
     deps = [
-    ] + SRC_DEPS,
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = [":srcs"] + SRC_DEPS + [
+    data = [":srcs"] + [
         "tests/locale-data/en.json",
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/tinybench",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [
