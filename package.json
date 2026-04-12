@@ -115,7 +115,7 @@
     "content-tag": "^4.1.0",
     "conventional-changelog-angular": "^8.1.0",
     "esbuild": "^0.28.0",
-    "eslint": "10.0.3",
+    "eslint": "10.2.0",
     "eslint-plugin-formatjs": "workspace:*",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.3",
