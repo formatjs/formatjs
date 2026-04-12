@@ -3,13 +3,13 @@ package ts
 import "github.com/bazelbuild/bazel-gazelle/rule"
 
 const (
-	KindFormatjsCompile = "formatjs_compile"
+	KindFormatjsLibrary = "formatjs_library"
 	KindFormatjsTest    = "formatjs_test"
 	KindTsCompile       = "ts_compile"
 )
 
 var tsKinds = map[string]rule.KindInfo{
-	KindFormatjsCompile: {
+	KindFormatjsLibrary: {
 		NonEmptyAttrs: map[string]bool{"name": true},
 		ResolveAttrs: map[string]bool{
 			"deps":               true,

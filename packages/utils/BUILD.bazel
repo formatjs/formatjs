@@ -1,6 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:compile.bzl", "formatjs_compile")
+load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
@@ -18,7 +18,7 @@ SRCS = glob([
     "*.ts",
 ])
 
-formatjs_compile(
+formatjs_library(
     name = "dist",
     srcs = SRCS,
     deps = ["//:node_modules/@formatjs/fast-memoize"],
