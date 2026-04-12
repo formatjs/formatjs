@@ -32,4 +32,5 @@ formatjs_test(
     srcs = SRCS + glob([
         "tests/*.test.ts",
     ]),
+    test_deps = ["//:node_modules/vitest"],
 )

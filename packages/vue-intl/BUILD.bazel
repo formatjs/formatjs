@@ -19,7 +19,11 @@ SRC_DEPS = [
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/vue",
+    ],
 )
 
 formatjs_package(
@@ -35,9 +39,12 @@ formatjs_test(
     ]),
     dom = True,
     test_deps = [
-        "//:node_modules/@vue/compiler-dom",
-        "//:node_modules/@vue/server-renderer",
         "//:node_modules/@vue/test-utils",
+        "//:node_modules/vitest",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/vue",
+    ],
 )

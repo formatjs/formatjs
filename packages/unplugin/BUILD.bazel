@@ -53,7 +53,13 @@ formatjs_compile(
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/magic-string",
+        "//:node_modules/oxc-parser",
+        "//:node_modules/unplugin",
+    ],
 )
 
 formatjs_package(
@@ -66,7 +72,14 @@ formatjs_package(
 formatjs_test(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
-    deps = SRC_DEPS,
+    test_deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/magic-string",
+        "//:node_modules/oxc-parser",
+        "//:node_modules/unplugin",
+    ],
 )
 
 vitest(

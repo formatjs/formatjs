@@ -26,7 +26,14 @@ SRC_DEPS = [
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/core",
+        "//:node_modules/@babel/helper-plugin-utils",
+        "//:node_modules/@babel/plugin-syntax-jsx",
+        "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+    ],
 )
 
 formatjs_package(
@@ -44,9 +51,15 @@ formatjs_test(
         exclude = ["tests/vue/**/*"],
     ),
     test_deps = [
-        "//:node_modules/@babel/preset-env",
-        "//:node_modules/@babel/preset-react",
-        "//packages/babel-plugin-formatjs/tests/fixtures",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@babel/core",
+        "//:node_modules/@babel/helper-plugin-utils",
+        "//:node_modules/@babel/plugin-syntax-jsx",
+        "//:node_modules/@babel/types",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+    ],
 )

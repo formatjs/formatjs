@@ -18,7 +18,6 @@ SRC_DEPS = [
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
 )
 
 formatjs_package(
@@ -29,7 +28,7 @@ formatjs_package(
 formatjs_test(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
-    deps = SRC_DEPS,
+    test_deps = ["//:node_modules/vitest"],
 )
 
 generate_src_file(

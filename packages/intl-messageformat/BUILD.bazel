@@ -35,10 +35,6 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
-    project_references = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
     types = True,
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -61,9 +57,10 @@ formatjs_test(
     srcs = SRCS + TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
+    test_deps = [
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/tinybench",
+        "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [

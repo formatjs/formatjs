@@ -19,7 +19,11 @@ SRC_DEPS = [
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/svelte",
+    ],
 )
 
 formatjs_package(
@@ -32,5 +36,10 @@ formatjs_test(
     srcs = SRCS + glob([
         "tests/*.ts",
     ]),
-    deps = SRC_DEPS,
+    test_deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/svelte",
+    ],
 )

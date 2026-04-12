@@ -17,7 +17,6 @@ SRC_DEPS = [
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    project_references = SRC_DEPS,
     types = True,
 )
 
@@ -31,7 +30,7 @@ formatjs_test(
     srcs = SRCS + glob(["tests/**/*.ts"]),
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = SRC_DEPS,
+    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
