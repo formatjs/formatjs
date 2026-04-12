@@ -175,8 +175,8 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 func isExcludedDir(name string) bool {
 	switch name {
 	case "node_modules", "scripts", "benchmark", "benchmarks",
-		"examples", "integration-tests", "fixtures", "dist",
-		"__snapshots__", "tools":
+		"examples", "example-sandboxes", "integration-tests", "fixtures",
+		"dist", "__snapshots__", "tools":
 		return true
 	}
 	return false
