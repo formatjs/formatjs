@@ -1,5 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:compile.bzl", "formatjs_compile")
+load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package.bzl", "formatjs_package")
 
 npm_link_all_packages()
@@ -12,7 +12,7 @@ SRCS = glob([
     "*.ts",
 ])
 
-formatjs_compile(
+formatjs_library(
     name = "dist",
     srcs = SRCS,
 )
