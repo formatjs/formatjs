@@ -249,15 +249,6 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/PluralRules",
-    "//packages/ecma402-abstract/NumberFormat",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/intl-localematcher",
-    "//:node_modules/@formatjs/bigdecimal",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -272,7 +263,6 @@ formatjs_compile(
     project_references = [
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/PluralRules",
-        "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
     types = True,
@@ -290,7 +280,14 @@ formatjs_package(
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/PluralRules",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -301,12 +298,12 @@ formatjs_test(
     project_references = [
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/PluralRules",
-        "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
     test_deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
@@ -411,7 +408,14 @@ rolldown_bundle(
     ],
     entry_point = "test262-main.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/PluralRules",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 test262_harness_bin.test262_harness_test(
@@ -451,5 +455,12 @@ rolldown_bundle(
     entry_point = "polyfill.ts",
     target = "es2020",
     # TODO: fix this and set it back to es5
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/PluralRules",
+        "//packages/ecma402-abstract/types",
+    ],
 )

@@ -11,25 +11,28 @@ SRCS = glob(
     exclude = ["tests/*"],
 ) + ["index.ts"]
 
-SRC_DEPS = [
-    "//:node_modules/@formatjs/fast-memoize",
-]
-
 formatjs_compile(
     name = "dist",
     srcs = SRCS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",  # keep: imported from abstract/
+    ],
 )
 
 formatjs_package(
     name = "intl-localematcher",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+    ],
 )
 
 formatjs_test(
     name = "unit_test",
     srcs = SRCS + glob(["tests/**/*.ts"]),
-    deps = SRC_DEPS,
+    test_deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",  # keep: imported from abstract/
+    ],
 )
 
 generate_src_file(

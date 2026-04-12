@@ -17,14 +17,6 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = [
-    "//packages/ecma262-abstract",
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/DurationFormat",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/intl-localematcher",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -43,15 +35,19 @@ formatjs_compile(
         "//packages/ecma402-abstract/types",
     ],
     types = True,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 formatjs_package(
     name = PACKAGE_NAME,
     entry_points = ENTRY_POINTS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DurationFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -67,10 +63,9 @@ formatjs_test(
         "//packages/ecma402-abstract/DurationFormat",
         "//packages/ecma402-abstract/types",
     ],
+    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 # numbering-systems

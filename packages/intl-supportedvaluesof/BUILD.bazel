@@ -23,11 +23,6 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract",
-    "//:node_modules/@formatjs/fast-memoize",
-]
-
 TESTS = glob([
     "tests/*.test.ts",
 ])
@@ -43,13 +38,9 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
-    project_references = [
-        "//packages/ecma402-abstract",
-    ],
+    project_references = ["//packages/ecma402-abstract"],
     types = True,
-    deps = [
-        "//:node_modules/@formatjs/fast-memoize",
-    ],
+    deps = ["//:node_modules/@formatjs/fast-memoize"],
 )
 
 formatjs_package(
@@ -59,7 +50,10 @@ formatjs_package(
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//packages/ecma402-abstract",
+    ],
 )
 
 formatjs_test(
@@ -67,13 +61,10 @@ formatjs_test(
     srcs = SRCS + TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = [
-        "//packages/ecma402-abstract",
-    ],
+    project_references = ["//packages/ecma402-abstract"],
+    test_deps = ["//:node_modules/vitest"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        "//:node_modules/@formatjs/fast-memoize",
-    ],
+    deps = ["//:node_modules/@formatjs/fast-memoize"],
 )
 
 # calendars
@@ -146,5 +137,8 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//packages/ecma402-abstract",
+    ],
 )

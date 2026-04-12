@@ -33,12 +33,6 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/intl-localematcher",
-]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -55,9 +49,7 @@ formatjs_compile(
         "//packages/ecma402-abstract/types",
     ],
     types = True,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 formatjs_package(
@@ -68,7 +60,11 @@ formatjs_package(
         # polyfill-library uses this
         "polyfill.iife.js",
     ],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -83,12 +79,10 @@ formatjs_test(
     test_deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 # CLDR
@@ -750,7 +744,11 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill-force.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 test262_harness_bin.test262_harness_test(
@@ -790,5 +788,9 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es2020",
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )

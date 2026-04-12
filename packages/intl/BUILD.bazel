@@ -17,14 +17,6 @@ SRCS = glob(
     ],
 )
 
-SRC_DEPS = [
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-    "//:node_modules/@formatjs/fast-memoize",
-    "//:node_modules/@formatjs/icu-messageformat-parser",
-    "//:node_modules/intl-messageformat",
-]
-
 TESTS = glob(
     [
         "tests/*.ts*",
@@ -42,10 +34,7 @@ formatjs_compile(
     name = "dist",
     srcs = SRCS,
     entry_points = ENTRY_POINTS,
-    project_references = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
+    project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -58,7 +47,13 @@ formatjs_package(
     name = PACKAGE_NAME,
     allow_overwrites = True,
     entry_points = ENTRY_POINTS,
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/intl-messageformat",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -66,13 +61,11 @@ formatjs_test(
     srcs = SRCS + TESTS,
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
-    project_references = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
+    project_references = ["//packages/ecma402-abstract/types"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),
     test_deps = [
-        "//:node_modules/@types/node",
+        "//:node_modules/tsd",
+        "//:node_modules/vitest",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
@@ -111,6 +104,11 @@ tsd_bin.tsd_test(
     data = [
         "tsconfig.json",
         ":global_type_overrides_test_files",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/intl-messageformat",
         "//:node_modules/tsd",
-    ] + SRC_DEPS,
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
 )

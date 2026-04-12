@@ -4,6 +4,6 @@
       "#packages/*": ["../../packages/*"]
     }
   },
-  "exclude": ["./integration-tests/**/*"],
+  "exclude": ["./examples/**/*", "./integration-tests/**/*"],
   "extends": "../../tsconfig.json"
 }
