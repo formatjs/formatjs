@@ -6,7 +6,7 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "packages_tsconfig")
 
-def formatjs_compile(
+def formatjs_library(
         name,
         srcs,
         deps = [],

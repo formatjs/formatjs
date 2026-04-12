@@ -50,9 +50,9 @@ formatjs_extract(
 Compile extracted messages for optimized runtime:
 
 ```starlark
-load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_library")
 
-formatjs_compile(
+formatjs_library(
     name = "messages_compiled",
     src = ":messages_extracted",
     out = "en-compiled.json",
@@ -107,7 +107,7 @@ bazel build //:all_messages \
 ### Complete Example
 
 ```starlark
-load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract", "formatjs_compile", "formatjs_verify")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract", "formatjs_library", "formatjs_verify")
 
 # Extract messages from source files
 formatjs_extract(
@@ -122,7 +122,7 @@ formatjs_extract(
 )
 
 # Compile for production
-formatjs_compile(
+formatjs_library(
     name = "compile_en",
     src = ":extract_en",
     out = "lang/en-compiled.json",
@@ -130,7 +130,7 @@ formatjs_compile(
 )
 
 # Compile translations
-formatjs_compile(
+formatjs_library(
     name = "compile_es",
     src = "translations/es.json",
     out = "lang/es-compiled.json",
@@ -185,7 +185,7 @@ formatjs_extract(
 )
 ```
 
-### formatjs_compile
+### formatjs_library
 
 Compile extracted messages for optimized runtime.
 
@@ -202,7 +202,7 @@ Compile extracted messages for optimized runtime.
 **Example:**
 
 ```starlark
-formatjs_compile(
+formatjs_library(
     name = "compile_messages",
     src = ":extract_en",
     out = "en-compiled.json",
@@ -437,7 +437,7 @@ formatjs_extract(
     id_interpolation_pattern = "[sha512:contenthash:base64:6]",
 )
 
-formatjs_compile(
+formatjs_library(
     name = "compile_dev",
     src = ":extract_dev",
     ast = True,
@@ -470,7 +470,7 @@ formatjs_aggregate(
 )
 
 # Compile with AST
-formatjs_compile(
+formatjs_library(
     name = "compile_prod",
     src = ":all_app_messages",
     out = "app-messages.json",

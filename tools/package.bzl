@@ -21,12 +21,12 @@ def formatjs_package(
     - package_exports_test
     - generate_ide_tsconfig_json()
 
-    Expects formatjs_compile to have been called first, producing
+    Expects formatjs_library to have been called first, producing
     "{entry}-bundle" targets for each entry point.
 
     Args:
         name: package name (e.g. "fast-memoize"), used as js_library target name
-        entry_points: list of .ts entry points (must match formatjs_compile's entry_points)
+        entry_points: list of .ts entry points (must match formatjs_library's entry_points)
         npm_package_name: npm package name for publishing (default "@formatjs/{name}")
         extra_npm_srcs: additional files for npm_package (iife bundles, locale-data, etc.)
         allow_overwrites: passed to npm_package (default False)

@@ -37,7 +37,7 @@ Node 24.14.0 pinned with SHA256 hashes for 5 platforms (darwin_arm64, darwin_amd
 
 ### Two Compilation Patterns
 
-**Pattern 1: formatjs_compile packages** (28 npm-published packages)
+**Pattern 1: formatjs_library packages** (28 npm-published packages)
 
 ```
 Source .ts files

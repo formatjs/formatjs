@@ -1,4 +1,4 @@
-load("//tools:compile.bzl", "formatjs_compile")
+load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package.bzl", "formatjs_package")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -13,7 +13,7 @@ SRCS = glob([
 SRC_DEPS = [
 ]
 
-formatjs_compile(
+formatjs_library(
     name = "dist",
     srcs = SRCS,
 )

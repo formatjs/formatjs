@@ -1,5 +1,5 @@
 // Package ts implements a Gazelle language extension for formatjs TypeScript packages.
-// It manages deps and project_references on formatjs_compile and formatjs_test targets
+// It manages deps and project_references on formatjs_library and formatjs_test targets
 // by parsing TypeScript imports and resolving them to Bazel labels.
 package ts
 
@@ -35,7 +35,7 @@ func (l *tsLang) Loads() []rule.LoadInfo {
 	return []rule.LoadInfo{
 		{
 			Name:    "//tools:compile.bzl",
-			Symbols: []string{KindFormatjsCompile},
+			Symbols: []string{KindFormatjsLibrary},
 		},
 		{
 			Name:    "//tools:test.bzl",
@@ -58,10 +58,10 @@ type ImportData struct {
 }
 
 // Imports returns the import specs that a rule provides, used to build the RuleIndex.
-// Both formatjs_compile and ts_compile rules provide their package path so other
+// Both formatjs_library and ts_compile rules provide their package path so other
 // packages can resolve #packages/* imports to project_references.
 func (l *tsLang) Imports(c *config.Config, r *rule.Rule, f *rule.File) []resolve.ImportSpec {
-	if r.Kind() != KindFormatjsCompile && r.Kind() != KindTsCompile {
+	if r.Kind() != KindFormatjsLibrary && r.Kind() != KindTsCompile {
 		return nil
 	}
 
@@ -76,7 +76,7 @@ func (l *tsLang) Imports(c *config.Config, r *rule.Rule, f *rule.File) []resolve
 func (l *tsLang) Embeds(r *rule.Rule, from label.Label) []label.Label { return nil }
 
 // GenerateRules scans TypeScript files and attaches import data to existing rules.
-// It does NOT create new rules — it only updates deps on existing formatjs_compile
+// It does NOT create new rules — it only updates deps on existing formatjs_library
 // and formatjs_test targets.
 func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResult {
 	cfg, ok := args.Config.Exts[languageName].(*tsConfig)
@@ -121,7 +121,7 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 
 	for _, r := range args.File.Rules {
 		switch r.Kind() {
-		case KindFormatjsCompile:
+		case KindFormatjsLibrary:
 			newRule := rule.NewRule(r.Kind(), r.Name())
 			genRules = append(genRules, newRule)
 			genImports = append(genImports, ImportData{
