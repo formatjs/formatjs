@@ -33,6 +33,8 @@ formatjs_compile(
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/tinybench",
     ],
 )
 
@@ -62,6 +64,8 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/tinybench",
     ],
 )
 

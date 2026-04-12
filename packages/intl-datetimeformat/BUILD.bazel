@@ -82,6 +82,7 @@ formatjs_compile(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/tinybench",
     ],
 )
 
@@ -127,6 +128,7 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/tinybench",
     ],
 )
 

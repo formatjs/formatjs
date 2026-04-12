@@ -39,7 +39,7 @@ formatjs_test(
     test_deps = [
         "//:node_modules/@vue/compiler-dom",  # keep: transitive runtime dep required by @vue/test-utils SSR
         "//:node_modules/@vue/server-renderer",  # keep: transitive runtime dep required by @vue/test-utils SSR
-        "//:node_modules/@vue/test-utils",
+        "//:node_modules/@vue/test-utils",  # keep: imported from tests/
         "//:node_modules/vitest",
     ],
     deps = [

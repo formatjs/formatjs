@@ -17,7 +17,7 @@ formatjs_compile(
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",
         "//:node_modules/@babel/plugin-syntax-jsx",
-        "//:node_modules/@babel/traverse",
+        "//:node_modules/@babel/traverse",  # keep: imported from visitors/
         "//:node_modules/@babel/types",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
@@ -63,7 +63,7 @@ formatjs_test(
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",
         "//:node_modules/@babel/plugin-syntax-jsx",
-        "//:node_modules/@babel/traverse",
+        "//:node_modules/@babel/traverse",  # keep: imported from visitors/
         "//:node_modules/@babel/types",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",

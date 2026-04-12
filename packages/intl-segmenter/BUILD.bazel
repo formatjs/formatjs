@@ -67,7 +67,12 @@ formatjs_compile(
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract"],
     types = True,
-    deps = ["//:node_modules/@formatjs/intl-localematcher"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@types/node",
+        "//:node_modules/tinybench",
+    ],
 )
 
 formatjs_package(
@@ -97,12 +102,16 @@ formatjs_test(
     ],
     project_references = ["//packages/ecma402-abstract"],
     test_deps = [
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
+        "//:node_modules/@bazel/runfiles",  # keep: imported from tests/
         "//:node_modules/vitest",
     ],
     tsconfig = TSCONFIG,
-    deps = ["//:node_modules/@formatjs/intl-localematcher"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@types/node",
+        "//:node_modules/tinybench",
+    ],
 )
 
 generate_src_file(
