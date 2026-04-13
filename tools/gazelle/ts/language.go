@@ -132,10 +132,8 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		case KindFormatjsTest:
 			{
 				newRule := rule.NewRule(r.Kind(), r.Name())
-				// Exclude files already covered by the fixtures attr.
-				filtered := excludeFixtures(testSrcs, r)
-				if len(filtered) > 0 {
-					newRule.SetAttr("srcs", filtered)
+				if len(testSrcs) > 0 {
+					newRule.SetAttr("srcs", testSrcs)
 				}
 				genRules = append(genRules, newRule)
 				genImports = append(genImports, ImportData{
@@ -165,8 +163,12 @@ func isTestFile(name string) bool {
 
 // collectSrcs partitions RegularFiles into source and test file lists.
 // Test srcs include both TypeScript files and JSON data files under tests/.
+// Files under fixtures/ directories are skipped (auto-discovered by formatjs_test macro).
 func collectSrcs(regularFiles []string) (srcFiles, testFiles []string) {
 	for _, f := range regularFiles {
+		if strings.Contains(f, "fixtures/") {
+			continue
+		}
 		if isTestFile(f) {
 			if isTypeScriptFile(f) || strings.HasSuffix(f, ".json") {
 				testFiles = append(testFiles, f)
@@ -178,28 +180,5 @@ func collectSrcs(regularFiles []string) (srcFiles, testFiles []string) {
 	sort.Strings(srcFiles)
 	sort.Strings(testFiles)
 	return
-}
-
-// excludeFixtures removes files from srcs that are covered by the
-// existing rule's "fixtures" attribute to avoid duplicates.
-func excludeFixtures(testSrcs []string, existingRule *rule.Rule) []string {
-	fixturesGlob, ok := rule.ParseGlobExpr(existingRule.Attr("fixtures"))
-	if !ok {
-		return testSrcs
-	}
-	var result []string
-	for _, f := range testSrcs {
-		matched := false
-		for _, p := range fixturesGlob.Patterns {
-			if m, _ := filepath.Match(p, f); m {
-				matched = true
-				break
-			}
-		}
-		if !matched {
-			result = append(result, f)
-		}
-	}
-	return result
 }
 

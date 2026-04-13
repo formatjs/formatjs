@@ -45,9 +45,6 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/interpolate-name.test.ts",
     ],
-    fixtures = glob([
-        "tests/fixtures/*.ts*",
-    ]),
     deps = [
         "//:node_modules/@types/node",
         "//:node_modules/@types/react",
