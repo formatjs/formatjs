@@ -1,9 +1,5 @@
 import {expectType} from 'tsd'
-import type {
-  IntlFormatters,
-  MessageDescriptor,
-  ResolvedIntlConfig,
-} from '..'
+import type {IntlFormatters, MessageDescriptor, ResolvedIntlConfig} from '..'
 
 // Example type overrides
 declare global {

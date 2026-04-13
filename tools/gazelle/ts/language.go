@@ -135,7 +135,7 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 			})
 
 		case KindFormatjsTest:
-			if !cfg.skipTest {
+			{
 				newRule := rule.NewRule(r.Kind(), r.Name())
 				// Exclude files already covered by the fixtures attr.
 				filtered := excludeFixtures(testSrcs, r)
@@ -158,9 +158,6 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 
 
 func isTypeScriptFile(name string) bool {
-	if strings.HasSuffix(name, ".test-d.ts") || strings.HasSuffix(name, ".test-d.tsx") {
-		return false // tsd type-test files, not vitest sources
-	}
 	return strings.HasSuffix(name, ".ts") || strings.HasSuffix(name, ".tsx")
 }
 
