@@ -253,9 +253,16 @@ Go (gazelle plugin)                     Rust (ts_import_extractor)
   stays alive for entire gazelle run, exits when Go closes stdin.
 - **Binary discovery:** `runfiles.Rlocation("_main/crates/ts_import_extractor/bin")`.
   The binary is a `data` dep on the `go_library` rule.
-- **Parallelism:** rayon thread pool on the Rust side processes files within a batch in parallel.
-- **Error handling:** Go side returns nil parser on startup failure (graceful degradation).
-  Rust side exits cleanly on stdout pipe errors instead of panicking.
+- **Batching:** All TypeScript files in a directory are sent in one request (not per-file).
+  rayon thread pool on the Rust side parses files within the batch in parallel.
+- **Error handling:**
+  - Go: `getOxcParser()` returns nil on startup failure (graceful degradation, logs warning).
+    `extractImportsBatch()` returns nil map if parser unavailable — caller skips imports.
+  - Rust: checks `ret.errors` after parsing — malformed files return `Err` with oxc diagnostics
+    instead of extracting from partially-recovered ASTs (avoids incorrect dep graphs).
+    Stdout write errors exit cleanly instead of panicking.
+- **Rust optimization flags:** `panic=abort` (no unwind tables), `codegen-units=1` (better inlining).
+  LTO is incompatible with rules_rust's `embed-bitcode=no` default.
 - **oxc AST visitor:** Implements `Visit<'a>` trait, extracts from 4 node types:
   `ImportDeclaration`, `ExportNamedDeclaration`, `ExportAllDeclaration`, `ImportExpression`
 

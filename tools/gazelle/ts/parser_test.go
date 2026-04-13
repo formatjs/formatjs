@@ -84,11 +84,12 @@ import {b} from 'react'`,
 				t.Fatalf("write temp file: %v", err)
 			}
 
-			imports, err := extractImportsFromFile(tmpFile)
+			allImports, err := extractImportsBatch([]string{tmpFile})
 			if err != nil {
-				t.Fatalf("extractImportsFromFile: %v", err)
+				t.Fatalf("extractImportsBatch: %v", err)
 			}
 
+			imports := allImports[tmpFile]
 			paths := make([]string, len(imports))
 			for i, imp := range imports {
 				paths[i] = imp.ImportPath

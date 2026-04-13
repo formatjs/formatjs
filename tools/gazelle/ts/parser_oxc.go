@@ -212,27 +212,3 @@ func (p *OxcParser) readFrame() (*oxcResponse, error) {
 	return &resp, nil
 }
 
-// extractImportsOxc extracts imports from a single file using the oxc subprocess.
-// This is the function called by language.go's GenerateRules for each TypeScript file.
-// Returns an error if the oxc parser is unavailable (caller can fall back to other methods).
-func extractImportsOxc(filePath string) ([]ImportStatement, error) {
-	parser := getOxcParser()
-	if parser == nil {
-		return nil, fmt.Errorf("oxc parser not available")
-	}
-
-	result, err := parser.ExtractImports([]string{filePath})
-	if err != nil {
-		return nil, err
-	}
-
-	paths := result[filePath]
-	imports := make([]ImportStatement, 0, len(paths))
-	for _, p := range paths {
-		imports = append(imports, ImportStatement{
-			ImportPath: p,
-			SourceFile: filePath,
-		})
-	}
-	return imports, nil
-}

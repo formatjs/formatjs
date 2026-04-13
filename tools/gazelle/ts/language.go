@@ -158,33 +158,35 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		return language.GenerateResult{}
 	}
 
-	// Phase 1: Parse imports from all TypeScript files in this directory.
-	// args.RegularFiles includes files from subdirectories that don't have their
-	// own BUILD.bazel file (Gazelle walks the tree and assigns "orphan" files to
-	// the nearest parent package).
-	var sourceImports, testImports []ImportStatement
+	// Phase 1: Collect all TypeScript files and partition into source/test srcs.
+	libSrcs, testSrcs := collectSrcs(args.RegularFiles)
 
+	// Phase 2: Batch-parse all TypeScript files in one subprocess call.
+	// This is much more efficient than per-file calls: one round-trip to the
+	// Rust subprocess, which uses rayon to parse files in parallel.
+	var tsFiles []string
 	for _, f := range args.RegularFiles {
-		if !isTypeScriptFile(f) {
-			continue
-		}
-
-		fullPath := filepath.Join(args.Dir, f)
-		imps, err := extractImportsFromFile(fullPath)
-		if err != nil {
-			continue
-		}
-
-		// Separate source vs test imports — they go to different rule types.
-		if isTestFile(f) {
-			testImports = append(testImports, imps...)
-		} else {
-			sourceImports = append(sourceImports, imps...)
+		if isTypeScriptFile(f) {
+			tsFiles = append(tsFiles, filepath.Join(args.Dir, f))
 		}
 	}
 
-	// Phase 2: Partition files into source and test srcs lists.
-	libSrcs, testSrcs := collectSrcs(args.RegularFiles)
+	var sourceImports, testImports []ImportStatement
+	if len(tsFiles) > 0 {
+		allImports, _ := extractImportsBatch(tsFiles)
+		for _, f := range args.RegularFiles {
+			if !isTypeScriptFile(f) {
+				continue
+			}
+			fullPath := filepath.Join(args.Dir, f)
+			imps := allImports[fullPath]
+			if isTestFile(f) {
+				testImports = append(testImports, imps...)
+			} else {
+				sourceImports = append(sourceImports, imps...)
+			}
+		}
+	}
 
 	// Early return if no TypeScript files at all — don't generate empty rules.
 	if len(libSrcs) == 0 && len(testSrcs) == 0 {
