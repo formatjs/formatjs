@@ -10,5 +10,10 @@
     "./integration-tests/**/*",
     "./scripts/**/*"
   ],
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../ecma402-abstract/types/tsconfig.json"
+    }
+  ]
 }

@@ -87,8 +87,6 @@ def _formatjs_package(
         pkg = ":pkg",
     )
 
-    generate_ide_tsconfig_json()
-
 def formatjs_library(
         name,
         srcs,
@@ -218,3 +216,8 @@ def formatjs_library(
             extra_npm_srcs = extra_npm_srcs,
             allow_overwrites = allow_overwrites,
         )
+
+    generate_ide_tsconfig_json(
+        composite = not has_package_json,
+        project_references = project_references,
+    )

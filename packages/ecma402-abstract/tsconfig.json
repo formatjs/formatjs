@@ -15,5 +15,10 @@
     "./scripts/**/*",
     "./types/**/*"
   ],
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../ecma262-abstract/tsconfig.json"
+    }
+  ]
 }

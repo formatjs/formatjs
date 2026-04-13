@@ -1,5 +1,4 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
 
 formatjs_library(
     name = "dist",
@@ -12,11 +11,4 @@ formatjs_library(
         "//packages/ecma402-abstract",
     ],
     visibility = ["//visibility:public"],
-)
-
-generate_ide_tsconfig_json(
-    composite = True,
-    project_references = [
-        "//packages/ecma402-abstract",
-    ],
 )

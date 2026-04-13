@@ -5,5 +5,19 @@
     }
   },
   "exclude": ["./scripts/**/*"],
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../ecma262-abstract/tsconfig.json"
+    },
+    {
+      "path": "../ecma402-abstract/tsconfig.json"
+    },
+    {
+      "path": "../ecma402-abstract/RelativeTimeFormat/tsconfig.json"
+    },
+    {
+      "path": "../ecma402-abstract/types/tsconfig.json"
+    }
+  ]
 }

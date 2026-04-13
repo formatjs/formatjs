@@ -1,5 +1,4 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
 
 formatjs_library(
     name = "dist",
@@ -20,15 +19,5 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-    ],
-)
-
-generate_ide_tsconfig_json(
-    composite = True,
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/NumberFormat",
-        "//packages/ecma402-abstract/types",
     ],
 )
