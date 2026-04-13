@@ -13,14 +13,12 @@ import (
 type tsConfig struct {
 	enabled     bool   // Whether this plugin is active for this directory
 	packageType string // "internal" (default) or "npm_package"
-	skipTest    bool   // Whether to skip test generation
 }
 
 func newTsConfig() *tsConfig {
 	return &tsConfig{
 		enabled:     true,
 		packageType: "internal",
-		skipTest:    false,
 	}
 }
 
@@ -28,7 +26,6 @@ func (c *tsConfig) clone() *tsConfig {
 	return &tsConfig{
 		enabled:     c.enabled,
 		packageType: c.packageType,
-		skipTest:    c.skipTest,
 	}
 }
 
@@ -43,7 +40,6 @@ func (l *tsLang) KnownDirectives() []string {
 	return []string{
 		"formatjs_enabled",
 		"formatjs_package_type",
-		"formatjs_skip_test",
 	}
 }
 
@@ -64,8 +60,6 @@ func (l *tsLang) Configure(c *config.Config, rel string, f *rule.File) {
 				cfg.enabled = d.Value == "true"
 			case "formatjs_package_type":
 				cfg.packageType = d.Value
-			case "formatjs_skip_test":
-				cfg.skipTest = d.Value == "true"
 			}
 		}
 	}

@@ -1,0 +1,38 @@
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
+
+PACKAGE_NAME = "intl"
+
+copy_to_directory(
+    name = "global_type_overrides_test_files",
+    srcs = [
+        "global_type_overrides.test-d.ts",
+        "//packages/intl:pkg",
+        "//packages/intl:tsconfig.json",
+    ],
+    out = "global_type_overrides_test_files",
+    replace_prefixes = {
+        "packages/intl/pkg": "",
+        "packages/intl/tsconfig.json": "tsconfig.json",
+        "global_type_overrides.test-d.ts": "tests/global_type_overrides.test-d.ts",
+    },
+)
+
+tsd_bin.tsd_test(
+    name = "global_type_overrides_test",
+    size = "small",
+    args = [
+        "--files",
+        "tests/global_type_overrides.test-d.ts",
+    ],
+    chdir = "packages/%s/tests/tsd/global_type_overrides_test_files" % PACKAGE_NAME,
+    data = [
+        ":global_type_overrides_test_files",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/tsd",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
+)
