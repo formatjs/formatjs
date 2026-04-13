@@ -79,10 +79,16 @@ fn main() {
             let response = handle_request(request);
             let payload = serde_json::to_vec(&response).unwrap();
 
+            // Write response frame. Exit cleanly on pipe errors (Go side closed stdout).
             let mut out = stdout.lock();
-            out.write_all(&(payload.len() as u32).to_be_bytes()).unwrap();
-            out.write_all(&payload).unwrap();
-            out.flush().unwrap();
+            if out
+                .write_all(&(payload.len() as u32).to_be_bytes())
+                .and_then(|_| out.write_all(&payload))
+                .and_then(|_| out.flush())
+                .is_err()
+            {
+                return;
+            }
         }
     }
 }
