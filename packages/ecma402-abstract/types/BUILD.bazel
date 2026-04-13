@@ -1,19 +1,23 @@
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "ts_compile")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "generate_ide_tsconfig_json")
 
-PACKAGE_NAME = "types"
-
-SRCS = glob(["*.ts"])
-
-SRC_DEPS = [
-    "//:node_modules/@formatjs/bigdecimal",
-]
-
-ts_compile(
-    name = PACKAGE_NAME,
-    srcs = SRCS,
+formatjs_library(
+    name = "dist",
+    srcs = [
+        "core.ts",
+        "date-time.ts",
+        "displaynames.ts",
+        "duration.ts",
+        "list.ts",
+        "number.ts",
+        "plural-rules.ts",
+        "relative-time.ts",
+    ],
     package_json = False,
     visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+    ],
 )
 
 generate_ide_tsconfig_json(
