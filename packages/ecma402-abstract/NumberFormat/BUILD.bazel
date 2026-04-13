@@ -1,22 +1,44 @@
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
 
-PACKAGE_NAME = "NumberFormat"
-
-SRCS = glob(["*.ts"])
-
-SRC_DEPS = [
-    "//:node_modules/@formatjs/bigdecimal",
-    "//:node_modules/@formatjs/intl-localematcher",
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-]
-
-ts_compile(
-    name = PACKAGE_NAME,
-    srcs = SRCS,
+formatjs_library(
+    name = "dist",
+    srcs = [
+        "ApplyUnsignedRoundingMode.ts",
+        "CollapseNumberRange.ts",
+        "ComputeExponent.ts",
+        "ComputeExponentForMagnitude.ts",
+        "CurrencyDigits.ts",
+        "FormatApproximately.ts",
+        "FormatNumeric.ts",
+        "FormatNumericRange.ts",
+        "FormatNumericRangeToParts.ts",
+        "FormatNumericToParts.ts",
+        "FormatNumericToString.ts",
+        "GetUnsignedRoundingMode.ts",
+        "InitializeNumberFormat.ts",
+        "PartitionNumberPattern.ts",
+        "PartitionNumberRangePattern.ts",
+        "SetNumberFormatDigitOptions.ts",
+        "SetNumberFormatUnitOptions.ts",
+        "ToRawFixed.ts",
+        "ToRawPrecision.ts",
+        "decimal-cache.ts",
+        "digit-mapping.generated.ts",
+        "format_to_parts.ts",
+    ],
     package_json = False,
+    project_references = [
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+        "//packages/ecma262-abstract",
+    ],
     visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/intl-localematcher",
+    ],
 )
 
 generate_src_file(

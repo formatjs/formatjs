@@ -6,6 +6,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "packages_tsconfig")
 
@@ -98,8 +99,13 @@ def formatjs_library(
         tsconfig = None,
         npm_package_name = None,
         extra_npm_srcs = [],
-        allow_overwrites = False):
+        allow_overwrites = False,
+        package_json = True,
+        visibility = None):
     """TypeScript compilation + optional npm packaging.
+
+    For npm-published packages (with package.json): rolldown bundling + npm_package.
+    For internal packages (no package.json): oxc per-file transpilation.
 
     Generates:
     - copy_to_bin(name = "srcs") for sandbox compatibility
@@ -107,10 +113,11 @@ def formatjs_library(
     - ts_project(name = "typecheck") for type checking (tsgo, no emit)
     - Optionally ts_project(name = "types") with emit_declaration_only
     - If package.json exists: rolldown bundles, npm_package, and validation tests
+    - If no package.json: oxc per-file transpilation
 
     Args:
         name: target name (e.g. "dist")
-        srcs: source files (already globbed)
+        srcs: source files (gazelle-managed)
         deps: external npm dependencies (e.g. //:node_modules/react)
         project_references: internal package dependencies (e.g. //packages/ecma402-abstract)
         entry_points: list of .ts entry points to bundle
@@ -119,26 +126,16 @@ def formatjs_library(
         npm_package_name: npm package name for publishing (default "@formatjs/{dir_name}")
         extra_npm_srcs: additional files for npm_package (iife bundles, locale-data, etc.)
         allow_overwrites: passed to npm_package (default False)
+        package_json: whether to include package.json in js_library srcs (default True)
+        visibility: visibility for the js_library target
     """
     all_deps = deps + project_references
     effective_tsconfig = tsconfig or packages_tsconfig()
-
-    # Compute external packages for rolldown (only node_modules deps are externalized)
-    external_packages = [
-        dep.split("node_modules/")[1]
-        for dep in deps
-        if "node_modules/" in dep
-    ]
+    has_package_json = native.glob(["package.json"], allow_empty = True)
 
     copy_to_bin(
         name = "srcs",
         srcs = srcs,
-    )
-
-    js_library(
-        name = "lib",
-        srcs = [":srcs"],
-        deps = all_deps,
     )
 
     ts_project(
@@ -151,6 +148,43 @@ def formatjs_library(
         tsconfig = effective_tsconfig,
         deps = all_deps,
     )
+
+    if has_package_json:
+        # Published package: use :srcs for lib, rolldown for bundling
+        js_library(
+            name = "lib",
+            srcs = [":srcs"],
+            deps = all_deps,
+            visibility = visibility,
+        )
+    else:
+        # Internal package: oxc per-file transpilation
+        # The js_library name matches the directory name so that
+        # //packages/foo/bar resolves to the :bar target.
+        lib_name = native.package_name().split("/")[-1]
+
+        ts_project(
+            name = "%s-esm" % lib_name,
+            srcs = [":srcs"],
+            declaration = True,
+            tsconfig = effective_tsconfig,
+            resolve_json_module = True,
+            deps = all_deps + ["//:node_modules/oxc-transform"],
+            transpiler = oxc_transpiler,
+            declaration_transpiler = oxc_transpiler,
+        )
+
+        js_library(
+            name = lib_name,
+            srcs = [":%s-esm" % lib_name] + (["package.json"] if package_json else []),
+            visibility = visibility,
+        )
+
+        # Alias so formatjs_test's :lib reference works
+        native.alias(
+            name = "lib",
+            actual = ":%s" % lib_name,
+        )
 
     if types:
         ts_project(
@@ -166,7 +200,14 @@ def formatjs_library(
         )
 
     # Auto-generate npm packaging if package.json exists
-    if native.glob(["package.json"], allow_empty = True):
+    if has_package_json:
+        # Compute external packages for rolldown (only node_modules deps are externalized)
+        external_packages = [
+            dep.split("node_modules/")[1]
+            for dep in deps
+            if "node_modules/" in dep
+        ]
+
         package_dir_name = native.package_name().split("/")[-1]
         _formatjs_package(
             package_name = package_dir_name,

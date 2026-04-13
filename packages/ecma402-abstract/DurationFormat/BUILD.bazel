@@ -1,21 +1,23 @@
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "ts_compile")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "generate_ide_tsconfig_json")
 
-PACKAGE_NAME = "DurationFormat"
-
-SRCS = glob(["*.ts"])
-
-SRC_DEPS = [
-    "//packages/ecma262-abstract",
-    "//packages/ecma402-abstract",
-    "//packages/ecma402-abstract/types",
-]
-
-ts_compile(
-    name = PACKAGE_NAME,
-    srcs = SRCS,
+formatjs_library(
+    name = "dist",
+    srcs = [
+        "DurationRecordSign.ts",
+        "GetDurationUnitOptions.ts",
+        "IsValidDurationRecord.ts",
+        "ToDurationRecord.ts",
+        "ToIntegerIfIntegral.ts",
+        "constants.ts",
+    ],
     package_json = False,
+    project_references = [
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
     visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
 )
 
 generate_ide_tsconfig_json(
