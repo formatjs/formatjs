@@ -25,7 +25,6 @@ formatjs_library(
         "regex.generated.ts",
         "utils.ts",
     ],
-    package_json = False,
     project_references = ["//packages/ecma262-abstract"],
     visibility = ["//visibility:public"],
     deps = [

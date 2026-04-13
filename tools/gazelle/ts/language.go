@@ -76,9 +76,10 @@ func (l *tsLang) Imports(c *config.Config, r *rule.Rule, f *rule.File) []resolve
 // Embeds returns empty — TypeScript doesn't use embedding.
 func (l *tsLang) Embeds(r *rule.Rule, from label.Label) []label.Label { return nil }
 
-// GenerateRules scans TypeScript files and attaches import data to existing rules.
-// It does NOT create new rules — it only updates deps on existing formatjs_library
-// and formatjs_test targets.
+// GenerateRules scans TypeScript files and creates or updates formatjs_library
+// and formatjs_test rules. Rules are auto-created when TypeScript source or test
+// files exist, unless disabled via the formatjs_enabled directive.
+// Gazelle's merge handles preserving manually-set attrs (visibility, package_json, etc.).
 func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResult {
 	cfg, ok := args.Config.Exts[languageName].(*tsConfig)
 	if !ok || !cfg.enabled {
@@ -106,39 +107,34 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		}
 	}
 
-	if args.File == nil {
+	libSrcs, testSrcs := collectSrcs(args.RegularFiles)
+
+	if len(libSrcs) == 0 && len(testSrcs) == 0 {
 		return language.GenerateResult{}
 	}
 
-	// Create new rules that match existing ones, so gazelle's merge can
-	// properly preserve # keep entries in the existing BUILD file.
 	var genRules []*rule.Rule
 	var genImports []interface{}
 
-	libSrcs, testSrcs := collectSrcs(args.RegularFiles)
+	// Generate formatjs_library if source files exist.
+	// Gazelle merges with existing rule if present, preserving manual attrs.
+	if len(libSrcs) > 0 {
+		newRule := rule.NewRule(KindFormatjsLibrary, "dist")
+		newRule.SetAttr("srcs", libSrcs)
+		genRules = append(genRules, newRule)
+		genImports = append(genImports, ImportData{
+			Imports: sourceImports,
+		})
+	}
 
-	for _, r := range args.File.Rules {
-		switch r.Kind() {
-		case KindFormatjsLibrary:
-			newRule := rule.NewRule(r.Kind(), r.Name())
-			if len(libSrcs) > 0 {
-				newRule.SetAttr("srcs", libSrcs)
-			}
-			genRules = append(genRules, newRule)
-			genImports = append(genImports, ImportData{
-				Imports: sourceImports,
-			})
-
-		case KindFormatjsTest:
-			newRule := rule.NewRule(r.Kind(), r.Name())
-			if len(testSrcs) > 0 {
-				newRule.SetAttr("srcs", testSrcs)
-			}
-			genRules = append(genRules, newRule)
-			genImports = append(genImports, ImportData{
-				TestImports: testImports,
-			})
-		}
+	// Generate formatjs_test if test files exist.
+	if len(testSrcs) > 0 {
+		newRule := rule.NewRule(KindFormatjsTest, "unit_test")
+		newRule.SetAttr("srcs", testSrcs)
+		genRules = append(genRules, newRule)
+		genImports = append(genImports, ImportData{
+			TestImports: testImports,
+		})
 	}
 
 	return language.GenerateResult{

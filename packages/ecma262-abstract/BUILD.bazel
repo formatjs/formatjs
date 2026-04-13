@@ -15,7 +15,6 @@ formatjs_library(
         "ToString.ts",
         "Type.ts",
     ],
-    package_json = False,
     visibility = ["//visibility:public"],
     deps = ["//:node_modules/@formatjs/bigdecimal"],
 )
