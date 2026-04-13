@@ -130,16 +130,14 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 			})
 
 		case KindFormatjsTest:
-			{
-				newRule := rule.NewRule(r.Kind(), r.Name())
-				if len(testSrcs) > 0 {
-					newRule.SetAttr("srcs", testSrcs)
-				}
-				genRules = append(genRules, newRule)
-				genImports = append(genImports, ImportData{
-					TestImports: testImports,
-				})
+			newRule := rule.NewRule(r.Kind(), r.Name())
+			if len(testSrcs) > 0 {
+				newRule.SetAttr("srcs", testSrcs)
 			}
+			genRules = append(genRules, newRule)
+			genImports = append(genImports, ImportData{
+				TestImports: testImports,
+			})
 		}
 	}
 
@@ -148,7 +146,6 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		Imports: genImports,
 	}
 }
-
 
 func isTypeScriptFile(name string) bool {
 	return strings.HasSuffix(name, ".ts") || strings.HasSuffix(name, ".tsx")
