@@ -5,7 +5,6 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
-# gazelle:formatjs_srcs_exclude *.test-d.ts
 npm_link_all_packages()
 
 PACKAGE_NAME = "intl"
@@ -62,7 +61,6 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
-        "//:node_modules/tsd",
         "//:node_modules/vitest",
     ],
 )

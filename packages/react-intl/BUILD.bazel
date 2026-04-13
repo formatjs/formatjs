@@ -6,7 +6,6 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
-# gazelle:formatjs_srcs_exclude *.test-d.ts,tests/perf/*
 npm_link_all_packages()
 
 PACKAGE_NAME = "react-intl"
@@ -71,16 +70,11 @@ formatjs_test(
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/@testing-library/jest-dom",
         "//:node_modules/@testing-library/react",
         "//:node_modules/@types/react",
-        "//:node_modules/@types/react-dom",
         "//:node_modules/react",
-        "//:node_modules/react-dom",
-        "//:node_modules/tinybench",
-        "//:node_modules/tsd",
         "//:node_modules/vitest",
     ],
 )

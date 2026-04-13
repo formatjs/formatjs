@@ -120,7 +120,7 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 	var genRules []*rule.Rule
 	var genImports []interface{}
 
-	libSrcs, testSrcs := collectSrcs(args.RegularFiles, cfg.srcsExclude)
+	libSrcs, testSrcs := collectSrcs(args.RegularFiles)
 
 	for _, r := range args.File.Rules {
 		switch r.Kind() {
@@ -158,6 +158,9 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 
 
 func isTypeScriptFile(name string) bool {
+	if strings.HasSuffix(name, ".test-d.ts") || strings.HasSuffix(name, ".test-d.tsx") {
+		return false // tsd type-test files, not vitest sources
+	}
 	return strings.HasSuffix(name, ".ts") || strings.HasSuffix(name, ".tsx")
 }
 
@@ -168,39 +171,21 @@ func isTestFile(name string) bool {
 		strings.HasPrefix(name, "test/")
 }
 
-// collectSrcs partitions RegularFiles into source and test file lists,
-// excluding files that match any of the exclude patterns.
-func collectSrcs(regularFiles []string, excludePatterns []string) (srcFiles, testFiles []string) {
+// collectSrcs partitions RegularFiles into source and test file lists.
+// Test srcs include both TypeScript files and JSON data files under tests/.
+func collectSrcs(regularFiles []string) (srcFiles, testFiles []string) {
 	for _, f := range regularFiles {
-		if !isTypeScriptFile(f) {
-			continue
-		}
-		if matchesAny(f, excludePatterns) {
-			continue
-		}
 		if isTestFile(f) {
-			testFiles = append(testFiles, f)
-		} else {
+			if isTypeScriptFile(f) || strings.HasSuffix(f, ".json") {
+				testFiles = append(testFiles, f)
+			}
+		} else if isTypeScriptFile(f) {
 			srcFiles = append(srcFiles, f)
 		}
 	}
 	sort.Strings(srcFiles)
 	sort.Strings(testFiles)
 	return
-}
-
-// matchesAny checks if a file path matches any of the given glob patterns.
-func matchesAny(file string, patterns []string) bool {
-	for _, p := range patterns {
-		if matched, _ := filepath.Match(p, file); matched {
-			return true
-		}
-		// Also try matching against just the basename for simple patterns.
-		if matched, _ := filepath.Match(p, filepath.Base(file)); matched {
-			return true
-		}
-	}
-	return false
 }
 
 // excludeFixtures removes files from srcs that are covered by the
@@ -212,7 +197,14 @@ func excludeFixtures(testSrcs []string, existingRule *rule.Rule) []string {
 	}
 	var result []string
 	for _, f := range testSrcs {
-		if !matchesAny(f, fixturesGlob.Patterns) {
+		matched := false
+		for _, p := range fixturesGlob.Patterns {
+			if m, _ := filepath.Match(p, f); m {
+				matched = true
+				break
+			}
+		}
+		if !matched {
 			result = append(result, f)
 		}
 	}

@@ -9,7 +9,6 @@ load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 load(":index.bzl", "unicode_file_name")
 
-# gazelle:formatjs_srcs_exclude benchmark.ts,debug.ts
 npm_link_all_packages()
 
 # tsconfig with #packages/* path alias for tsc resolution
@@ -59,10 +58,7 @@ formatjs_library(
     extra_npm_srcs = ["polyfill.iife.js"],
     project_references = ["//packages/ecma402-abstract"],
     types = True,
-    deps = [
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/tinybench",
-    ],
+    deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 
 formatjs_test(
