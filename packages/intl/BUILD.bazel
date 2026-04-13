@@ -5,25 +5,10 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+# gazelle:formatjs_srcs_exclude *.test-d.ts
 npm_link_all_packages()
 
 PACKAGE_NAME = "intl"
-
-SRCS = glob(
-    ["**/*.ts*"],
-    exclude = [
-        "tests/**",
-    ],
-)
-
-TESTS = glob(
-    [
-        "tests/*.ts*",
-    ],
-    exclude = [
-        "tests/*.test-d.ts",
-    ],
-)
 
 ENTRY_POINTS = [
     "index.ts",
@@ -31,7 +16,20 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "create-intl.ts",
+        "dateTime.ts",
+        "displayName.ts",
+        "error.ts",
+        "index.ts",
+        "list.ts",
+        "message.ts",
+        "number.ts",
+        "plural.ts",
+        "relativeTime.ts",
+        "types.ts",
+        "utils.ts",
+    ],
     allow_overwrites = True,
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
@@ -45,7 +43,18 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS,
+    srcs = [
+        "tests/create-intl.test.ts",
+        "tests/error.test.ts",
+        "tests/formatDate.test.ts",
+        "tests/formatDisplayNames.test.ts",
+        "tests/formatList.test.ts",
+        "tests/formatMessage.test.ts",
+        "tests/formatNumber.test.ts",
+        "tests/formatPlural.test.ts",
+        "tests/formatRelativeTime.test.ts",
+        "tests/formatTime.test.ts",
+    ],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),

@@ -5,6 +5,7 @@ package ts
 
 import (
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/bazelbuild/bazel-gazelle/config"
@@ -119,10 +120,15 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 	var genRules []*rule.Rule
 	var genImports []interface{}
 
+	libSrcs, testSrcs := collectSrcs(args.RegularFiles, cfg.srcsExclude)
+
 	for _, r := range args.File.Rules {
 		switch r.Kind() {
 		case KindFormatjsLibrary:
 			newRule := rule.NewRule(r.Kind(), r.Name())
+			if len(libSrcs) > 0 {
+				newRule.SetAttr("srcs", libSrcs)
+			}
 			genRules = append(genRules, newRule)
 			genImports = append(genImports, ImportData{
 				Imports: sourceImports,
@@ -131,6 +137,11 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		case KindFormatjsTest:
 			if !cfg.skipTest {
 				newRule := rule.NewRule(r.Kind(), r.Name())
+				// Exclude files already covered by the fixtures attr.
+				filtered := excludeFixtures(testSrcs, r)
+				if len(filtered) > 0 {
+					newRule.SetAttr("srcs", filtered)
+				}
 				genRules = append(genRules, newRule)
 				genImports = append(genImports, ImportData{
 					TestImports: testImports,
@@ -155,5 +166,56 @@ func isTestFile(name string) bool {
 		strings.Contains(name, ".test.tsx") ||
 		strings.HasPrefix(name, "tests/") ||
 		strings.HasPrefix(name, "test/")
+}
+
+// collectSrcs partitions RegularFiles into source and test file lists,
+// excluding files that match any of the exclude patterns.
+func collectSrcs(regularFiles []string, excludePatterns []string) (srcFiles, testFiles []string) {
+	for _, f := range regularFiles {
+		if !isTypeScriptFile(f) {
+			continue
+		}
+		if matchesAny(f, excludePatterns) {
+			continue
+		}
+		if isTestFile(f) {
+			testFiles = append(testFiles, f)
+		} else {
+			srcFiles = append(srcFiles, f)
+		}
+	}
+	sort.Strings(srcFiles)
+	sort.Strings(testFiles)
+	return
+}
+
+// matchesAny checks if a file path matches any of the given glob patterns.
+func matchesAny(file string, patterns []string) bool {
+	for _, p := range patterns {
+		if matched, _ := filepath.Match(p, file); matched {
+			return true
+		}
+		// Also try matching against just the basename for simple patterns.
+		if matched, _ := filepath.Match(p, filepath.Base(file)); matched {
+			return true
+		}
+	}
+	return false
+}
+
+// excludeFixtures removes files from srcs that are covered by the
+// existing rule's "fixtures" attribute to avoid duplicates.
+func excludeFixtures(testSrcs []string, existingRule *rule.Rule) []string {
+	fixturesGlob, ok := rule.ParseGlobExpr(existingRule.Attr("fixtures"))
+	if !ok {
+		return testSrcs
+	}
+	var result []string
+	for _, f := range testSrcs {
+		if !matchesAny(f, fixturesGlob.Patterns) {
+			result = append(result, f)
+		}
+	}
+	return result
 }
 

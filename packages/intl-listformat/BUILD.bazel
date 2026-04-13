@@ -21,17 +21,6 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
-SRCS = glob(
-    [
-        "*.ts",
-    ],
-    exclude = ["test*.*"],
-)
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -41,7 +30,14 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+        "test262-main.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
@@ -57,7 +53,10 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS + TEST_LOCALE_DATA,
+    srcs = [
+        "tests/index.test.ts",
+        "tests/supported-locales-of.test.ts",
+    ] + TEST_LOCALE_DATA,  # keep
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

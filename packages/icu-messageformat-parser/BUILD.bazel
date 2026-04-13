@@ -10,8 +10,6 @@ exports_files([
     "package.json",
 ])
 
-SRCS = glob(["*.ts"])
-
 ENTRY_POINTS = [
     "index.ts",
     "no-parser.ts",
@@ -21,7 +19,18 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "date-time-pattern-generator.ts",
+        "error.ts",
+        "index.ts",
+        "manipulator.ts",
+        "no-parser.ts",
+        "parser.ts",
+        "printer.ts",
+        "regex.generated.ts",
+        "time-data.generated.ts",
+        "types.ts",
+    ],
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
@@ -30,9 +39,13 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob([
-        "tests/**/*.ts",
-    ]),
+    srcs = [
+        "tests/browser-smoke.test.ts",
+        "tests/date-time-pattern-generator.test.ts",
+        "tests/manipulator.test.ts",
+        "tests/no-parser.test.ts",
+        "tests/printer.test.ts",
+    ],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

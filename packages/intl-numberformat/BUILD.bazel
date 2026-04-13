@@ -58,14 +58,6 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
-SRCS = glob(
-    [
-        "*.ts",
-        "*.ts",
-    ],
-    exclude = ["test*.*"],
-)
-
 TEST_DEPS = [
     "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
@@ -88,7 +80,20 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "core.ts",
+        "currency-digits.generated.ts",
+        "get_internal_slots.ts",
+        "index.ts",
+        "numbering-systems.generated.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+        "test262-main.ts",
+        "to_locale_string.ts",
+        "types.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",

@@ -11,21 +11,6 @@ npm_link_all_packages()
 
 PACKAGE_NAME = "intl-supportedvaluesof"
 
-SRCS = glob(
-    [
-        "**/*.ts",
-        "*.ts",
-    ],
-    exclude = [
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -35,7 +20,25 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "calendars.generated.ts",
+        "collations.generated.ts",
+        "currencies.generated.ts",
+        "get-supported-calendars.ts",
+        "get-supported-collations.ts",
+        "get-supported-currencies.ts",
+        "get-supported-numbering-systems.ts",
+        "get-supported-timezones.ts",
+        "get-supported-units.ts",
+        "index.ts",
+        "memoize.ts",
+        "numbering-systems.generated.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "timezones.generated.ts",
+        "units.generated.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
     project_references = ["//packages/ecma402-abstract"],
@@ -45,7 +48,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS,
+    srcs = ["tests/index.test.ts"],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

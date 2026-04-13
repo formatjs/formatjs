@@ -33,21 +33,6 @@ TEST_LOCALES = [
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
-SRCS = glob(
-    [
-        "*.ts",
-        "data/**",
-    ],
-    exclude = [
-        "tests/**",
-        "scripts/**",
-    ],
-)
-
-TESTS = glob([
-    "tests/**/*.test.ts",
-])
-
 TEST_DEPS = [
     "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
@@ -69,7 +54,21 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "core.ts",
+        "data/all-tz.generated.ts",
+        "data/links.generated.ts",
+        "get_internal_slots.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "supported-locales.generated.ts",
+        "test262-main.ts",
+        "to_locale_string.ts",
+        "types.ts",
+        "unpack.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         "add-all-tz.d.ts",
@@ -94,7 +93,16 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS + TEST_LOCALE_DATA,
+    srcs = [
+        "tests/abstract/BestFitFormatMatcher.test.ts",
+        "tests/abstract/skeleton.test.ts",
+        "tests/benchmark.ts",
+        "tests/format.test.ts",
+        "tests/format-range.test.ts",
+        "tests/ftp-main.test.ts",
+        "tests/index.test.ts",
+        "tests/offset-timezone.test.ts",
+    ] + TEST_LOCALE_DATA,  # keep
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

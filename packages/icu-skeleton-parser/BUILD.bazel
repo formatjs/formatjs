@@ -6,18 +6,21 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 npm_link_all_packages()
 
-SRCS = glob(["*.ts"])
-
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "date-time.ts",
+        "index.ts",
+        "number.ts",
+        "regex.generated.ts",
+    ],
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob(["tests/**/*.ts"]),
+    srcs = ["tests/index.test.ts"],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

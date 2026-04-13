@@ -13,19 +13,18 @@ exports_files([
 
 PACKAGE_NAME = "intl-messageformat"
 
-SRCS = glob(["*.ts"])
-
-TESTS = glob([
-    "tests/*.test.ts",
-])
-
 ENTRY_POINTS = [
     "index.ts",
 ]
 
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "core.ts",
+        "error.ts",
+        "formatters.ts",
+        "index.ts",
+    ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["%s.iife.js" % PACKAGE_NAME],
     npm_package_name = PACKAGE_NAME,
@@ -39,7 +38,10 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = TESTS,
+    srcs = [
+        "tests/benchmark.ts",
+        "tests/index.test.ts",
+    ],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

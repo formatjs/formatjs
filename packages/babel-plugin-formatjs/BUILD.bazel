@@ -4,14 +4,16 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-SRCS = glob(
-    ["**/*.ts"],
-    exclude = ["tests/**/*"],
-)
-
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "global.d.ts",
+        "index.ts",
+        "types.ts",
+        "utils.ts",
+        "visitors/call-expression.ts",
+        "visitors/jsx-opening-element.ts",
+    ],
     npm_package_name = "babel-plugin-formatjs",
     deps = [
         "//:node_modules/@babel/core",
@@ -29,12 +31,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob(
-        [
-            "tests/**/*.test.ts",
-        ],
-        exclude = ["tests/vue/**/*"],
-    ),
+    srcs = ["tests/index.test.ts"],
     deps = [
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/preset-env",  # keep: loaded dynamically via babel config in tests

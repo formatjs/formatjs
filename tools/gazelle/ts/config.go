@@ -11,9 +11,10 @@ import (
 
 // tsConfig holds per-directory configuration for the formatjs TS gazelle plugin.
 type tsConfig struct {
-	enabled     bool   // Whether this plugin is active for this directory
-	packageType string // "internal" (default) or "npm_package"
-	skipTest    bool   // Whether to skip test generation
+	enabled     bool     // Whether this plugin is active for this directory
+	packageType string   // "internal" (default) or "npm_package"
+	skipTest    bool     // Whether to skip test generation
+	srcsExclude []string // File patterns to exclude from generated srcs
 }
 
 func newTsConfig() *tsConfig {
@@ -29,6 +30,7 @@ func (c *tsConfig) clone() *tsConfig {
 		enabled:     c.enabled,
 		packageType: c.packageType,
 		skipTest:    c.skipTest,
+		srcsExclude: c.srcsExclude,
 	}
 }
 
@@ -44,6 +46,7 @@ func (l *tsLang) KnownDirectives() []string {
 		"formatjs_enabled",
 		"formatjs_package_type",
 		"formatjs_skip_test",
+		"formatjs_srcs_exclude",
 	}
 }
 
@@ -66,6 +69,8 @@ func (l *tsLang) Configure(c *config.Config, rel string, f *rule.File) {
 				cfg.packageType = d.Value
 			case "formatjs_skip_test":
 				cfg.skipTest = d.Value == "true"
+			case "formatjs_srcs_exclude":
+				cfg.srcsExclude = strings.Split(d.Value, ",")
 			}
 		}
 	}

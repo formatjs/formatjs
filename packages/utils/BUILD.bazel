@@ -13,21 +13,32 @@ exports_files([
     "data/list-one.xml",
 ])
 
-SRCS = glob([
-    "*.ts",
-])
-
 formatjs_library(
     name = "dist",
-    srcs = SRCS,
+    srcs = [
+        "countryCodes.ts",
+        "currencyMinorUnits.generated.ts",
+        "defaultCurrency.ts",
+        "defaultCurrencyData.generated.ts",
+        "defaultLocale.ts",
+        "defaultLocaleData.generated.ts",
+        "defaultTimezone.ts",
+        "index.ts",
+        "iso3166Alpha3CountryCodes.ts",
+        "iso4217.ts",
+    ],
     deps = ["//:node_modules/@formatjs/fast-memoize"],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = glob([
-        "tests/*.ts*",
-    ]),
+    srcs = [
+        "tests/countryCodes.test.ts",
+        "tests/currencyMinorUnits.test.ts",
+        "tests/defaultCurrency.test.ts",
+        "tests/defaultLocale.test.ts",
+        "tests/defaultTimezone.test.ts",
+    ],
     deps = ["//:node_modules/vitest"],
 )
 
