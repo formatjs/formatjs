@@ -25,21 +25,33 @@ use std::collections::HashSet;
 pub fn extract_imports_from_file(path: &str) -> Result<Vec<String>, String> {
     let source_text = std::fs::read_to_string(path)
         .map_err(|e| format!("Failed to read {path}: {e}"))?;
-    Ok(extract_imports(path, &source_text))
+    extract_imports(path, &source_text)
 }
 
 /// Extract all import paths from TypeScript/TSX source code.
-pub fn extract_imports(path: &str, source_text: &str) -> Vec<String> {
+/// Returns an error if the file has parse errors — we don't extract from
+/// partially-recovered ASTs to avoid producing incorrect dependency graphs.
+pub fn extract_imports(path: &str, source_text: &str) -> Result<Vec<String>, String> {
     let allocator = Allocator::default();
     let source_type = SourceType::from_path(path)
-        .unwrap_or_default()
+        .map_err(|e| format!("Unknown file extension for {path}: {e}"))?
         .with_jsx(true);
 
     let ret = Parser::new(&allocator, source_text, source_type).parse();
 
+    if !ret.errors.is_empty() {
+        let errors: Vec<String> = ret
+            .errors
+            .into_iter()
+            .map(|d| d.with_source_code(source_text.to_string()))
+            .map(|e| format!("{e:?}"))
+            .collect();
+        return Err(format!("Parse `{path}` failed:\n{}", errors.join("\n")));
+    }
+
     let mut visitor = ImportVisitor::new();
     visitor.visit_program(&ret.program);
-    visitor.into_imports()
+    Ok(visitor.into_imports())
 }
 
 /// AST visitor that collects import paths from TypeScript source code.
@@ -100,7 +112,7 @@ mod tests {
 
     #[test]
     fn empty_file() {
-        assert_eq!(extract_imports("test.ts", ""), Vec::<String>::new());
+        assert_eq!(extract_imports("test.ts", "").unwrap(), Vec::<String>::new());
     }
 
     #[test]
@@ -109,13 +121,13 @@ mod tests {
             import foo from 'foo';
             import { bar } from 'bar';
             import * as baz from 'baz';
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec!["foo", "bar", "baz"]);
     }
 
     #[test]
     fn side_effect_import() {
-        let imports = extract_imports("test.ts", "import 'polyfill';");
+        let imports = extract_imports("test.ts", "import 'polyfill';").unwrap();
         assert_eq!(imports, vec!["polyfill"]);
     }
 
@@ -124,7 +136,7 @@ mod tests {
         let imports = extract_imports("test.ts", r#"
             import type { Foo } from 'foo';
             import { type Bar } from 'bar';
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec!["foo", "bar"]);
     }
 
@@ -134,13 +146,13 @@ mod tests {
             export { x } from 'foo';
             export * from 'bar';
             export type { Baz } from 'baz';
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec!["foo", "bar", "baz"]);
     }
 
     #[test]
     fn dynamic_import() {
-        let imports = extract_imports("test.ts", "const m = await import('lazy');");
+        let imports = extract_imports("test.ts", "const m = await import('lazy');").unwrap();
         assert_eq!(imports, vec!["lazy"]);
     }
 
@@ -149,7 +161,7 @@ mod tests {
         let imports = extract_imports("test.tsx", r#"
             import React from 'react';
             export function App() { return <div />; }
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec!["react"]);
     }
 
@@ -158,7 +170,7 @@ mod tests {
         let imports = extract_imports("test.ts", r#"
             import { a } from 'foo';
             import { b } from 'foo';
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec!["foo"]);
     }
 
@@ -166,7 +178,7 @@ mod tests {
     fn subpath_imports() {
         let imports = extract_imports("test.ts", r#"
             import { x } from '#packages/ecma402-abstract/types/number.js';
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec!["#packages/ecma402-abstract/types/number.js"]);
     }
 
@@ -178,7 +190,7 @@ mod tests {
             import type { NumberFormatOptions } from '#packages/ecma402-abstract/types/number.js';
             export * from './utils.js';
             const lazy = await import('lazy-module');
-        "#);
+        "#).unwrap();
         assert_eq!(imports, vec![
             "react",
             "#packages/ecma402-abstract/GetOption.js",
@@ -186,5 +198,12 @@ mod tests {
             "./utils.js",
             "lazy-module",
         ]);
+    }
+
+    #[test]
+    fn malformed_file_returns_error() {
+        let result = extract_imports("test.ts", "@@@import broken syntax");
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("Parse `test.ts` failed"));
     }
 }
