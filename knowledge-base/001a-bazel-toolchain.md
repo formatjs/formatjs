@@ -126,10 +126,38 @@ rolldown_bundle(name, entry_point, srcs, deps, external, format, target, dts, gl
 
 **External handling:** `["pkg"]` becomes regex `^pkg(/.*)?$` — matches both `pkg` and `pkg/subpath`.
 
+### formatjs_library (tools/compile.bzl)
+
+Wraps source files, type checking, bundling, and npm packaging into a single macro:
+
+```
+formatjs_library(name, srcs, deps, project_references, entry_points, types, npm_package_name, ...)
+  ├─ copy_to_bin(name="srcs")         ← sandbox-safe source copy
+  ├─ js_library(name="lib")           ← wraps sources + deps
+  ├─ ts_project(name="typecheck")     ← tsgo, no_emit (type check)
+  ├─ ts_project(name="types")         ← emit_declaration_only (if types=True)
+  ├─ rolldown_bundle(name-bundle)     ← bundled .js + .d.ts
+  └─ npm_package(name="pkg")          ← assembled package (if npm_package_name set)
+```
+
+**Gazelle manages:** `srcs`, `deps`, `project_references`
+
+### formatjs_test (tools/test.bzl)
+
+Vitest wrapper that auto-depends on `:lib` from `formatjs_library`:
+
+```
+formatjs_test(name, srcs, deps, **kwargs)
+  └─ vitest(srcs=[":srcs"] + srcs, deps=deps + [":lib"], fixtures=auto, **kwargs)
+```
+
+- **Gazelle manages:** `srcs`, `deps`
+- **Fixtures convention:** Files in `tests/fixtures/` are auto-discovered and passed to vitest. Gazelle skips `fixtures/` directories.
+
 ### vitest (tools/vitest.bzl)
 
 ```
-vitest(name, srcs, deps, data, no_copy_to_bin, tsconfig, dom, snapshots, config)
+vitest(name, srcs, deps, data, no_copy_to_bin, tsconfig, dom, snapshots, fixtures, config)
   ├─ ts_project(name_typecheck)   ← tsgo, type check only
   ├─ vitest_test(name)            ← actual test execution
   └─ vitest(name_snapshots)       ← snapshot update targets
@@ -142,6 +170,33 @@ vitest(name, srcs, deps, data, no_copy_to_bin, tsconfig, dom, snapshots, config)
 - `noUncheckedSideEffectImports: false` — locale data imports are untyped
 
 **vitest.config.mjs:** `resolve.preserveSymlinks: true` is critical — Bazel creates symlink runfiles; resolving to real paths escapes the sandbox.
+
+### Gazelle Extension (tools/gazelle/ts/)
+
+Custom Go gazelle plugin that manages `srcs`, `deps`, and `project_references` on `formatjs_library` and `formatjs_test` rules by parsing TypeScript imports.
+
+**What gazelle manages:**
+
+| Rule               | Managed attrs                                                         |
+| ------------------ | --------------------------------------------------------------------- |
+| `formatjs_library` | `srcs` (MergeableAttrs), `deps` + `project_references` (ResolveAttrs) |
+| `formatjs_test`    | `srcs` (MergeableAttrs), `deps` (ResolveAttrs)                        |
+
+**How srcs are generated:**
+
+- Collects `.ts`/`.tsx` files from `args.RegularFiles` (includes subdirs without BUILD files)
+- Partitions into source files and test files (`tests/`/`test/` prefix or `.test.ts` suffix)
+- Test srcs also include `.json` data files under `tests/` (for locale data)
+- Skips files under `fixtures/` directories (auto-discovered by `formatjs_test` macro)
+
+**How deps are resolved:**
+
+- Parses imports with tree-sitter
+- `#packages/*` imports → `project_references` (internal Bazel labels)
+- `node:*` / Node builtins → `@types/node`
+- npm packages → `//:node_modules/<pkg>` (with auto `@types` detection)
+
+**Configuration:** `# gazelle:formatjs_enabled false` disables the plugin for a directory.
 
 ### generate_ide_tsconfig_json (tools/index.bzl)
 

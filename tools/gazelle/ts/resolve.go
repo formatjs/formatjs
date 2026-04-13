@@ -14,10 +14,11 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/rule"
 )
 
-// Cached package.json dependencies, loaded once per run.
+// Cached package.json data, loaded once per run.
 var (
-	packageDeps     map[string]bool
-	packageDepsOnce sync.Once
+	packageDeps       map[string]bool
+	subpathImportsMap map[string]string // e.g. "#packages/*" → "./packages/*"
+	packageDepsOnce   sync.Once
 )
 
 // nodeBuiltinModules that resolve to @types/node instead of npm packages.
@@ -34,6 +35,7 @@ var nodeBuiltinModules = map[string]bool{
 }
 
 type packageJSON struct {
+	Imports              map[string]string `json:"imports"`
 	Dependencies         map[string]string `json:"dependencies"`
 	DevDependencies      map[string]string `json:"devDependencies"`
 	OptionalDependencies map[string]string `json:"optionalDependencies"`
@@ -112,9 +114,9 @@ func resolveImportsToDeps(imports []ImportStatement, from label.Label, ix *resol
 			continue
 		}
 
-		// Handle #packages/* imports (Node.js subpath imports)
-		if strings.HasPrefix(importPath, "#packages/") {
-			target := resolvePackagesImport(importPath, from, ix)
+		// Handle # subpath imports (Node.js convention, maps via package.json "imports")
+		if strings.HasPrefix(importPath, "#") {
+			target := resolveSubpathImport(importPath, from, ix)
 			if target != "" {
 				result.internal = append(result.internal, target)
 			}
@@ -147,20 +149,35 @@ func resolveImportsToDeps(imports []ImportStatement, from label.Label, ix *resol
 	return result
 }
 
-// resolvePackagesImport resolves #packages/ecma402-abstract/types/number.js
-// to //packages/ecma402-abstract/types by walking up the directory tree.
-func resolvePackagesImport(importPath string, from label.Label, ix *resolve.RuleIndex) string {
-	// Strip #packages/ prefix and .js/.ts extension
-	path := strings.TrimPrefix(importPath, "#packages/")
-	for _, ext := range []string{".js", ".ts", ".tsx", ".jsx"} {
-		path = strings.TrimSuffix(path, ext)
+// resolveSubpathImport resolves Node.js # subpath imports using the
+// package.json "imports" map. For example, #packages/ecma402-abstract/types/number.js
+// matches "#packages/*" → "./packages/*", resolving to //packages/ecma402-abstract/types.
+func resolveSubpathImport(importPath string, from label.Label, ix *resolve.RuleIndex) string {
+	// Find matching subpath import pattern (e.g. "#packages/*" → "./packages/*")
+	var resolvedPath string
+	for pattern, target := range subpathImportsMap {
+		prefix := strings.TrimSuffix(pattern, "*")
+		if strings.HasPrefix(importPath, prefix) {
+			targetPrefix := strings.TrimSuffix(target, "*")
+			targetPrefix = strings.TrimPrefix(targetPrefix, "./")
+			resolvedPath = targetPrefix + strings.TrimPrefix(importPath, prefix)
+			break
+		}
+	}
+	if resolvedPath == "" {
+		return ""
 	}
 
-	parts := strings.Split(path, "/")
+	// Strip .js/.ts extension
+	for _, ext := range []string{".js", ".ts", ".tsx", ".jsx"} {
+		resolvedPath = strings.TrimSuffix(resolvedPath, ext)
+	}
+
+	parts := strings.Split(resolvedPath, "/")
 
 	// Walk up from most specific to least specific
 	for i := len(parts); i > 0; i-- {
-		testPath := "packages/" + strings.Join(parts[:i], "/")
+		testPath := strings.Join(parts[:i], "/")
 
 		// Skip self-references
 		if testPath == from.Pkg {
@@ -242,6 +259,7 @@ func getTypesPackage(pkgName string) string {
 func loadPackageJSONDeps(repoRoot string) {
 	packageDepsOnce.Do(func() {
 		packageDeps = make(map[string]bool)
+		subpathImportsMap = make(map[string]string)
 		data, err := os.ReadFile(repoRoot + "/package.json")
 		if err != nil {
 			return
@@ -258,6 +276,9 @@ func loadPackageJSONDeps(repoRoot string) {
 		}
 		for dep := range pkg.OptionalDependencies {
 			packageDeps[dep] = true
+		}
+		for k, v := range pkg.Imports {
+			subpathImportsMap[k] = v
 		}
 	})
 }
