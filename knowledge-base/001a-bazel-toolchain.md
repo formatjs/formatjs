@@ -97,13 +97,11 @@ Dynamically calculates `#packages/*` path alias depth:
 ### ts_compile (tools/index.bzl)
 
 ```
-ts_compile(name, srcs, deps, visibility, tsconfig, package_json)
+ts_compile(name, srcs, deps, visibility, tsconfig)
   ├─ ts_project(name-esm-typecheck)  ← tsgo, no_emit=True (type check)
   ├─ ts_project(name-esm)            ← oxc_transpiler (.js + .d.ts)
-  └─ js_library(name)                ← wraps output + optional package.json
+  └─ js_library(name)                ← wraps output + package.json (if exists)
 ```
-
-- `package_json=False` for internal packages without package.json (e.g., ecma402-abstract)
 
 ### ts_compile_node (tools/index.bzl)
 
@@ -173,30 +171,61 @@ vitest(name, srcs, deps, data, no_copy_to_bin, tsconfig, dom, snapshots, fixture
 
 ### Gazelle Extension (tools/gazelle/ts/)
 
-Custom Go gazelle plugin that manages `srcs`, `deps`, and `project_references` on `formatjs_library` and `formatjs_test` rules by parsing TypeScript imports.
+Custom Go gazelle plugin that auto-generates and maintains `formatjs_library` and `formatjs_test` rules by parsing TypeScript imports with tree-sitter.
+
+**Source files:**
+
+| File          | Purpose                                                             |
+| ------------- | ------------------------------------------------------------------- |
+| `language.go` | Main entry point: GenerateRules (file scanning), Imports (indexing) |
+| `resolve.go`  | Resolve phase: converts imports → Bazel labels, reads package.json  |
+| `config.go`   | Per-directory config, `formatjs_enabled` directive                  |
+| `kinds.go`    | Rule type definitions and merge behavior (MergeableAttrs, etc.)     |
+| `parser.go`   | Tree-sitter TypeScript parser, extracts import statements           |
+
+**Auto-generation behavior:**
+
+- If a directory has `.ts`/`.tsx` source files → auto-creates `formatjs_library(name = "dist")`
+- If a directory has test files → auto-creates `formatjs_test(name = "unit_test")`
+- Gazelle's merge preserves manually-set attrs (entry_points, types, npm_package_name, etc.)
+- Disable with `# gazelle:formatjs_enabled false` for directories with custom build rules
 
 **What gazelle manages:**
 
-| Rule               | Managed attrs                                                         |
-| ------------------ | --------------------------------------------------------------------- |
-| `formatjs_library` | `srcs` (MergeableAttrs), `deps` + `project_references` (ResolveAttrs) |
-| `formatjs_test`    | `srcs` (MergeableAttrs), `deps` (ResolveAttrs)                        |
+| Rule               | Managed attrs                                                                  |
+| ------------------ | ------------------------------------------------------------------------------ |
+| `formatjs_library` | `srcs` + `visibility` (GenerateRules), `deps` + `project_references` (Resolve) |
+| `formatjs_test`    | `srcs` (GenerateRules), `deps` (Resolve)                                       |
+
+**Merge behavior (kinds.go):**
+
+| Attr category   | Behavior                                             | Examples                     |
+| --------------- | ---------------------------------------------------- | ---------------------------- |
+| MergeableAttrs  | Merged with existing; `# keep` entries preserved     | `srcs`                       |
+| ResolveAttrs    | Set by Resolve(), replacing existing values each run | `deps`, `project_references` |
+| Set in Generate | Overwritten each run                                 | `visibility`                 |
+| Not set         | Preserved from existing BUILD file                   | `entry_points`, `types`      |
 
 **How srcs are generated:**
 
 - Collects `.ts`/`.tsx` files from `args.RegularFiles` (includes subdirs without BUILD files)
 - Partitions into source files and test files (`tests/`/`test/` prefix or `.test.ts` suffix)
-- Test srcs also include `.json` data files under `tests/` (for locale data)
+- Test srcs also include `.json` data files under `tests/` (for locale data fixtures)
 - Skips files under `fixtures/` directories (auto-discovered by `formatjs_test` macro)
 
-**How deps are resolved:**
+**How deps are resolved (resolve.go):**
 
-- Parses imports with tree-sitter
-- `#packages/*` imports → `project_references` (internal Bazel labels)
-- `node:*` / Node builtins → `@types/node`
+- Parses imports with tree-sitter (parser.go)
+- `#packages/*` imports → walked up path hierarchy → `project_references` (internal Bazel labels)
+- `node:*` / Node builtins → `//:node_modules/@types/node`
 - npm packages → `//:node_modules/<pkg>` (with auto `@types` detection)
+- Only adds deps for packages found in root `package.json` (prevents non-existent targets)
 
-**Configuration:** `# gazelle:formatjs_enabled false` disables the plugin for a directory.
+**Three-phase pipeline:**
+
+1. **GenerateRules** (language.go): Scan `.ts`/`.tsx` files, extract imports, create rules with `srcs`
+2. **Imports** (language.go): Register each rule in the RuleIndex (exact + wildcard paths)
+3. **Resolve** (resolve.go): Query RuleIndex to convert imports → Bazel labels, set `deps`/`project_references`
 
 ### generate_ide_tsconfig_json (tools/index.bzl)
 
@@ -230,7 +259,8 @@ packages/ecma402-abstract/
 
 Each sub-package:
 
-- Has `ts_compile` with `package_json=False`
+- Has `formatjs_library` (auto-generated by gazelle when `.ts` files exist)
+- The macro auto-detects `package.json` via glob — no manual `package_json` attr needed
 - Has `generate_ide_tsconfig_json(composite=True)`
 - Parent auto-excludes children via `native.subpackages()` in tsconfig
 - Consumers depend on sub-packages directly: `//packages/ecma402-abstract/types`
