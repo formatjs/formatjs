@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.2.1](github.com/formatjs/formatjs/compare/intl-messageformat@11.2.0...intl-messageformat@11.2.1) (2026-04-13)
+
+### Bug Fixes
+
+* **deps:** fix broken GitHub URLs in changelogs ([#6252](/github.com/formatjs/formatjs/issues/6252)) ([f6f693f](github.com/formatjs/formatjs/commits/f6f693f2f4f1f415973346b1cb8b07f5a640e182)), closes [#6248](github.com/formatjs/formatjs/issues/6248) - by @longlho
+
+### Reverts
+
+* **deps:** revert gazelle migration phases 1-3 ([#6205](/github.com/formatjs/formatjs/issues/6205)) ([4c04aa2](github.com/formatjs/formatjs/commits/4c04aa2726107ab1d0b9dab8a54a82fa62a73680)), closes [#6197](github.com/formatjs/formatjs/issues/6197) [#6198](github.com/formatjs/formatjs/issues/6198) [#6199](github.com/formatjs/formatjs/issues/6199) [#6195](github.com/formatjs/formatjs/issues/6195) [#6196](github.com/formatjs/formatjs/issues/6196) - by @longlho
+
 # [11.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@11.1.3...intl-messageformat@11.2.0) (2026-03-17)
 
 ### Features

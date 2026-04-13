@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.21](github.com/formatjs/formatjs/compare/@formatjs/editor@3.0.20...@formatjs/editor@3.0.21) (2026-04-13)
+
+### Bug Fixes
+
+* **deps:** fix broken GitHub URLs in changelogs ([#6252](/github.com/formatjs/formatjs/issues/6252)) ([f6f693f](github.com/formatjs/formatjs/commits/f6f693f2f4f1f415973346b1cb8b07f5a640e182)), closes [#6248](github.com/formatjs/formatjs/issues/6248) - by @longlho
+
+### Reverts
+
+* **deps:** revert gazelle migration phases 1-3 ([#6205](/github.com/formatjs/formatjs/issues/6205)) ([4c04aa2](github.com/formatjs/formatjs/commits/4c04aa2726107ab1d0b9dab8a54a82fa62a73680)), closes [#6197](github.com/formatjs/formatjs/issues/6197) [#6198](github.com/formatjs/formatjs/issues/6198) [#6199](github.com/formatjs/formatjs/issues/6199) [#6195](github.com/formatjs/formatjs/issues/6195) [#6196](github.com/formatjs/formatjs/issues/6196) - by @longlho
+
 ## [3.0.20](https://github.com/formatjs/formatjs/compare/@formatjs/editor@3.0.19...@formatjs/editor@3.0.20) (2026-03-27)
 
 **Note:** Version bump only for package @formatjs/editor

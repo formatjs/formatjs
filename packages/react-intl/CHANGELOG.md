@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.2](github.com/formatjs/formatjs/compare/react-intl@10.1.1...react-intl@10.1.2) (2026-04-13)
+
+### Bug Fixes
+
+* **deps:** fix broken GitHub URLs in changelogs ([#6252](/github.com/formatjs/formatjs/issues/6252)) ([f6f693f](github.com/formatjs/formatjs/commits/f6f693f2f4f1f415973346b1cb8b07f5a640e182)), closes [#6248](github.com/formatjs/formatjs/issues/6248) - by @longlho
+* **deps:** revert example-sandboxes to relative imports, fix examples BUILD ([#6292](/github.com/formatjs/formatjs/issues/6292)) ([90d90e5](github.com/formatjs/formatjs/commits/90d90e53556e0ff0740f877fdca727e7ee824756)), closes [#6285](github.com/formatjs/formatjs/issues/6285) - by @longlho
+
+### Reverts
+
+* **deps:** revert gazelle migration phases 1-3 ([#6205](/github.com/formatjs/formatjs/issues/6205)) ([4c04aa2](github.com/formatjs/formatjs/commits/4c04aa2726107ab1d0b9dab8a54a82fa62a73680)), closes [#6197](github.com/formatjs/formatjs/issues/6197) [#6198](github.com/formatjs/formatjs/issues/6198) [#6199](github.com/formatjs/formatjs/issues/6199) [#6195](github.com/formatjs/formatjs/issues/6195) [#6196](github.com/formatjs/formatjs/issues/6196) - by @longlho
+
 ## [10.1.1](https://github.com/formatjs/formatjs/compare/react-intl@10.1.0...react-intl@10.1.1) (2026-03-27)
 
 ### Bug Fixes

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.4.4...eslint-plugin-formatjs@6.4.5) (2026-04-13)
+
+### Bug Fixes
+
+* **deps:** update dependency eslint to v10.2.0 ([#6331](https://github.com/formatjs/formatjs/issues/6331)) ([18f397e](https://github.com/formatjs/formatjs/commit/18f397ef65fd01ff4373a75c45e09cfea0e6e0fa)) - by @renovate[bot]
+
+### Reverts
+
+* **deps:** revert gazelle migration phases 1-3 ([#6205](https://github.com/formatjs/formatjs/issues/6205)) ([4c04aa2](https://github.com/formatjs/formatjs/commit/4c04aa2726107ab1d0b9dab8a54a82fa62a73680)), closes [#6197](https://github.com/formatjs/formatjs/issues/6197) [#6198](https://github.com/formatjs/formatjs/issues/6198) [#6199](https://github.com/formatjs/formatjs/issues/6199) [#6195](https://github.com/formatjs/formatjs/issues/6195) [#6196](https://github.com/formatjs/formatjs/issues/6196) - by @longlho
+
 ## [6.4.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.4.3...eslint-plugin-formatjs@6.4.4) (2026-03-27)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
