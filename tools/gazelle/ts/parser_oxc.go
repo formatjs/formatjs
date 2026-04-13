@@ -75,11 +75,13 @@ var (
 )
 
 // getOxcParser returns the global OxcParser, starting the subprocess on first call.
+// Returns nil if the subprocess cannot be started (caller should handle gracefully).
 func getOxcParser() *OxcParser {
 	oxcParserOnce.Do(func() {
 		p, err := newOxcParser()
 		if err != nil {
-			log.Fatalf("formatjs_ts: failed to start oxc parser: %v", err)
+			log.Printf("formatjs_ts: oxc parser unavailable: %v", err)
+			return // globalOxcParser stays nil
 		}
 		globalOxcParser = p
 	})
@@ -90,6 +92,9 @@ func getOxcParser() *OxcParser {
 // The binary's stderr is forwarded to the Go process's stderr for debugging.
 func newOxcParser() (*OxcParser, error) {
 	binPath := findOxcBinary()
+	if binPath == "" {
+		return nil, fmt.Errorf("ts_import_extractor binary not found in runfiles")
+	}
 
 	cmd := exec.Command(binPath)
 	cmd.Stderr = os.Stderr
@@ -117,6 +122,7 @@ func newOxcParser() (*OxcParser, error) {
 
 // findOxcBinary locates the ts_import_extractor binary using Bazel runfiles.
 // Override with FORMATJS_OXC_PARSER_BIN env var for testing outside Bazel.
+// Returns empty string if the binary cannot be found.
 func findOxcBinary() string {
 	if bin := os.Getenv("FORMATJS_OXC_PARSER_BIN"); bin != "" {
 		return bin
@@ -124,7 +130,7 @@ func findOxcBinary() string {
 
 	bin, err := runfiles.Rlocation("_main/crates/ts_import_extractor/bin")
 	if err != nil {
-		log.Fatalf("formatjs_ts: cannot locate ts_import_extractor binary: %v", err)
+		return ""
 	}
 	return bin
 }
@@ -208,8 +214,12 @@ func (p *OxcParser) readFrame() (*oxcResponse, error) {
 
 // extractImportsOxc extracts imports from a single file using the oxc subprocess.
 // This is the function called by language.go's GenerateRules for each TypeScript file.
+// Returns an error if the oxc parser is unavailable (caller can fall back to other methods).
 func extractImportsOxc(filePath string) ([]ImportStatement, error) {
 	parser := getOxcParser()
+	if parser == nil {
+		return nil, fmt.Errorf("oxc parser not available")
+	}
 
 	result, err := parser.ExtractImports([]string{filePath})
 	if err != nil {
