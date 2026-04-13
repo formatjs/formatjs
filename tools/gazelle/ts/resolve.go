@@ -2,8 +2,8 @@ package ts
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 
@@ -283,14 +283,6 @@ func loadPackageJSONDeps(repoRoot string) {
 	})
 }
 
-func toSet(items []string) map[string]bool {
-	m := make(map[string]bool, len(items))
-	for _, item := range items {
-		m[item] = true
-	}
-	return m
-}
-
 func deduplicateAndSort(items []string) []string {
 	if len(items) == 0 {
 		return nil
@@ -303,20 +295,6 @@ func deduplicateAndSort(items []string) []string {
 			seen[item] = true
 		}
 	}
-	// Sort for deterministic output
-	for i := 0; i < len(result); i++ {
-		for j := i + 1; j < len(result); j++ {
-			if result[j] < result[i] {
-				result[i], result[j] = result[j], result[i]
-			}
-		}
-	}
+	sort.Strings(result)
 	return result
-}
-
-// Unused but kept for debugging.
-func debugLog(format string, args ...interface{}) {
-	if os.Getenv("FORMATJS_GAZELLE_DEBUG") != "" {
-		fmt.Fprintf(os.Stderr, format, args...)
-	}
 }
