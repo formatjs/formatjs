@@ -85,11 +85,6 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		return language.GenerateResult{}
 	}
 
-	// Only operate under packages/ directory
-	if !isUnderPackagesDir(args.Rel) {
-		return language.GenerateResult{}
-	}
-
 	// Collect TypeScript files from args.RegularFiles (provided by gazelle).
 	var sourceImports, testImports []ImportStatement
 

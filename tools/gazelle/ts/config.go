@@ -2,8 +2,6 @@ package ts
 
 import (
 	"flag"
-	"path/filepath"
-	"strings"
 
 	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/rule"
@@ -11,21 +9,18 @@ import (
 
 // tsConfig holds per-directory configuration for the formatjs TS gazelle plugin.
 type tsConfig struct {
-	enabled     bool   // Whether this plugin is active for this directory
-	packageType string // "internal" (default) or "npm_package"
+	enabled bool // Whether this plugin is active for this directory
 }
 
 func newTsConfig() *tsConfig {
 	return &tsConfig{
-		enabled:     true,
-		packageType: "internal",
+		enabled: true,
 	}
 }
 
 func (c *tsConfig) clone() *tsConfig {
 	return &tsConfig{
-		enabled:     c.enabled,
-		packageType: c.packageType,
+		enabled: c.enabled,
 	}
 }
 
@@ -39,7 +34,6 @@ func (l *tsLang) CheckFlags(fs *flag.FlagSet, c *config.Config) error { return n
 func (l *tsLang) KnownDirectives() []string {
 	return []string{
 		"formatjs_enabled",
-		"formatjs_package_type",
 	}
 }
 
@@ -58,16 +52,9 @@ func (l *tsLang) Configure(c *config.Config, rel string, f *rule.File) {
 			switch d.Key {
 			case "formatjs_enabled":
 				cfg.enabled = d.Value == "true"
-			case "formatjs_package_type":
-				cfg.packageType = d.Value
 			}
 		}
 	}
 
 	c.Exts[languageName] = cfg
-}
-
-// isUnderPackagesDir checks if a relative path is under the packages/ directory.
-func isUnderPackagesDir(rel string) bool {
-	return strings.HasPrefix(rel, "packages/") || strings.HasPrefix(filepath.ToSlash(rel), "packages/")
 }
