@@ -31,8 +31,6 @@ TEST_LOCALES = [
     "nl",
 ]
 
-TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
-
 TEST_DEPS = [
     "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
@@ -101,8 +99,21 @@ formatjs_test(
         "tests/format-range.test.ts",
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
+        "tests/locale-data/ar.json",
+        "tests/locale-data/bs.json",
+        "tests/locale-data/de.json",
+        "tests/locale-data/en.json",
+        "tests/locale-data/en-CA.json",
+        "tests/locale-data/en-GB.json",
+        "tests/locale-data/fa.json",
+        "tests/locale-data/ja.json",
+        "tests/locale-data/ko.json",
+        "tests/locale-data/nl.json",
+        "tests/locale-data/pl.json",
+        "tests/locale-data/ru.json",
+        "tests/locale-data/zh-Hans.json",
         "tests/offset-timezone.test.ts",
-    ] + TEST_LOCALE_DATA,  # keep
+    ],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

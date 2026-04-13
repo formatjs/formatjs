@@ -16,8 +16,6 @@ TEST_LOCALES = [
     "zh",
 ]
 
-TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -56,8 +54,10 @@ formatjs_test(
         "tests/CanonicalCodeForDisplayNames.test.ts",
         "tests/IsValidDateTimeFieldCode.test.ts",
         "tests/index.test.ts",
+        "tests/locale-data/en.json",
+        "tests/locale-data/zh.json",
         "tests/should-polyfill.test.ts",
-    ] + TEST_LOCALE_DATA,  # keep
+    ],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

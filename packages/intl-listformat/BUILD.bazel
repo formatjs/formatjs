@@ -19,8 +19,6 @@ TEST_LOCALES = [
     "zh-Hans",
 ]
 
-TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
-
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
@@ -55,8 +53,13 @@ formatjs_test(
     name = "unit_test",
     srcs = [
         "tests/index.test.ts",
+        "tests/locale-data/en.json",
+        "tests/locale-data/en-AI.json",
+        "tests/locale-data/zh.json",
+        "tests/locale-data/zh-Hans.json",
+        "tests/locale-data/zh-Hant.json",
         "tests/supported-locales-of.test.ts",
-    ] + TEST_LOCALE_DATA,  # keep
+    ],
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
