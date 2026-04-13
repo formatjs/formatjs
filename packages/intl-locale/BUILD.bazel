@@ -39,6 +39,7 @@ formatjs_library(
         "//packages/ecma402-abstract",
     ],
     types = True,
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-supportedvaluesof",

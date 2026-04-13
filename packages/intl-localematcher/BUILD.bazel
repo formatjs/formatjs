@@ -25,6 +25,7 @@ formatjs_library(
         "abstract/utils.ts",
         "index.ts",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",  # keep: imported from abstract/
     ],

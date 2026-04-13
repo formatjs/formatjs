@@ -98,7 +98,6 @@ def formatjs_library(
         npm_package_name = None,
         extra_npm_srcs = [],
         allow_overwrites = False,
-        package_json = True,
         visibility = None):
     """TypeScript compilation + optional npm packaging.
 
@@ -124,7 +123,6 @@ def formatjs_library(
         npm_package_name: npm package name for publishing (default "@formatjs/{dir_name}")
         extra_npm_srcs: additional files for npm_package (iife bundles, locale-data, etc.)
         allow_overwrites: passed to npm_package (default False)
-        package_json: whether to include package.json in js_library srcs (default True)
         visibility: visibility for the js_library target
     """
     all_deps = deps + project_references
@@ -174,7 +172,7 @@ def formatjs_library(
 
         js_library(
             name = lib_name,
-            srcs = [":%s-esm" % lib_name] + (["package.json"] if package_json else []),
+            srcs = [":%s-esm" % lib_name] + has_package_json,
             visibility = visibility,
         )
 

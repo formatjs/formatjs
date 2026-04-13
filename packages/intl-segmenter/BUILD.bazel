@@ -58,6 +58,7 @@ formatjs_library(
     extra_npm_srcs = ["polyfill.iife.js"],
     project_references = ["//packages/ecma402-abstract"],
     types = True,
+    visibility = ["//visibility:public"],
     deps = ["//:node_modules/@formatjs/intl-localematcher"],
 )
 

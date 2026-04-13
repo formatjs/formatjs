@@ -40,6 +40,7 @@ formatjs_library(
     npm_package_name = PACKAGE_NAME,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",

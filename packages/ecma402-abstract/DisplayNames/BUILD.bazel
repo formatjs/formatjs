@@ -6,7 +6,6 @@ formatjs_library(
         "CanonicalCodeForDisplayNames.ts",
         "IsValidDateTimeFieldCode.ts",
     ],
-    package_json = False,
     project_references = [
         "//packages/ecma402-abstract",
     ],

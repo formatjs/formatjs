@@ -34,6 +34,7 @@ formatjs_library(
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
+    visibility = ["//visibility:public"],
     deps = ["//:node_modules/@formatjs/icu-skeleton-parser"],
 )
 

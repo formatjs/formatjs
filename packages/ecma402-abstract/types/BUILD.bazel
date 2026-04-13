@@ -12,7 +12,6 @@ formatjs_library(
         "plural-rules.ts",
         "relative-time.ts",
     ],
-    package_json = False,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
