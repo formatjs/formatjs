@@ -35,6 +35,7 @@ formatjs_library(
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    visibility = ["//visibility:public"],
 )
 
 formatjs_test(

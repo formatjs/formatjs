@@ -13,6 +13,7 @@ formatjs_library(
         "provider.ts",
     ],
     npm_package_name = "vue-intl",
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",

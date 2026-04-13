@@ -266,6 +266,7 @@ formatjs_library(
         "//packages/ecma402-abstract/types",
     ],
     types = True,
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

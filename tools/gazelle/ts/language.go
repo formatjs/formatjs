@@ -121,6 +121,7 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 	if len(libSrcs) > 0 {
 		newRule := rule.NewRule(KindFormatjsLibrary, "dist")
 		newRule.SetAttr("srcs", libSrcs)
+		newRule.SetAttr("visibility", []string{"//visibility:public"})
 		genRules = append(genRules, newRule)
 		genImports = append(genImports, ImportData{
 			Imports: sourceImports,

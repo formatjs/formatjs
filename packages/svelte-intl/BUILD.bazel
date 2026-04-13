@@ -11,6 +11,7 @@ formatjs_library(
         "index.ts",
         "provider.ts",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",

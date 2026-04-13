@@ -13,6 +13,7 @@ formatjs_library(
     name = "dist",
     srcs = ["index.ts"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    visibility = ["//visibility:public"],
 )
 
 formatjs_test(

@@ -11,6 +11,7 @@ SRC_DEPS = [
 formatjs_library(
     name = "dist",
     srcs = ["index.ts"],
+    visibility = ["//visibility:public"],
 )
 
 formatjs_test(

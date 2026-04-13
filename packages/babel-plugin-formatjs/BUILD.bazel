@@ -15,6 +15,7 @@ formatjs_library(
         "visitors/jsx-opening-element.ts",
     ],
     npm_package_name = "babel-plugin-formatjs",
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",

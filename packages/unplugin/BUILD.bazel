@@ -51,6 +51,7 @@ formatjs_library(
     ],
     entry_points = ENTRY_POINTS,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
+    visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/icu-messageformat-parser",
