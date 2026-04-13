@@ -3,6 +3,7 @@ members = [
   "crates/icu_skeleton_parser",
   "crates/icu_messageformat_parser",
   "crates/formatjs_cli",
+  "crates/ts_import_extractor",
   "packages/icu-messageformat-parser/integration-tests",
 ]
 resolver = "3"

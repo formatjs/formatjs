@@ -171,17 +171,18 @@ vitest(name, srcs, deps, data, no_copy_to_bin, tsconfig, dom, snapshots, fixture
 
 ### Gazelle Extension (tools/gazelle/ts/)
 
-Custom Go gazelle plugin that auto-generates and maintains `formatjs_library` and `formatjs_test` rules by parsing TypeScript imports with tree-sitter.
+Custom Go gazelle plugin that auto-generates and maintains `formatjs_library` and `formatjs_test` rules by parsing TypeScript imports with oxc (Rust).
 
 **Source files:**
 
-| File          | Purpose                                                             |
-| ------------- | ------------------------------------------------------------------- |
-| `language.go` | Main entry point: GenerateRules (file scanning), Imports (indexing) |
-| `resolve.go`  | Resolve phase: converts imports → Bazel labels, reads package.json  |
-| `config.go`   | Per-directory config, `formatjs_enabled` directive                  |
-| `kinds.go`    | Rule type definitions and merge behavior (MergeableAttrs, etc.)     |
-| `parser.go`   | Tree-sitter TypeScript parser, extracts import statements           |
+| File            | Purpose                                                             |
+| --------------- | ------------------------------------------------------------------- |
+| `language.go`   | Main entry point: GenerateRules (file scanning), Imports (indexing) |
+| `resolve.go`    | Resolve phase: converts imports → Bazel labels, reads package.json  |
+| `config.go`     | Per-directory config, `formatjs_enabled` directive                  |
+| `kinds.go`      | Rule type definitions and merge behavior (MergeableAttrs, etc.)     |
+| `parser.go`     | Import extraction entry point + tree-sitter fallback                |
+| `parser_oxc.go` | Oxc subprocess client (length-prefixed JSON over stdin/stdout)      |
 
 **Auto-generation behavior:**
 
@@ -215,15 +216,24 @@ Custom Go gazelle plugin that auto-generates and maintains `formatjs_library` an
 
 **How deps are resolved (resolve.go):**
 
-- Parses imports with tree-sitter (parser.go)
+- Parses imports via oxc subprocess (parser_oxc.go → crates/ts_import_extractor)
 - `#packages/*` imports → walked up path hierarchy → `project_references` (internal Bazel labels)
 - `node:*` / Node builtins → `//:node_modules/@types/node`
 - npm packages → `//:node_modules/<pkg>` (with auto `@types` detection)
 - Only adds deps for packages found in root `package.json` (prevents non-existent targets)
 
+**Oxc parser subprocess (crates/ts_import_extractor/):**
+
+- Long-lived Rust binary communicating over stdin/stdout with length-prefixed JSON frames
+- Uses oxc 0.120 to parse TypeScript/TSX, walks AST via `Visit` trait
+- Extracts: `import_declaration`, `export_named_declaration`, `export_all_declaration`, `import_expression`
+- Uses rayon for parallel file parsing within a single request batch
+- ~36x faster than tree-sitter, ~195x less memory (benchmarked on 200 files, M4 Max, `-c opt`)
+- Falls back to tree-sitter if subprocess is unavailable
+
 **Three-phase pipeline:**
 
-1. **GenerateRules** (language.go): Scan `.ts`/`.tsx` files, extract imports, create rules with `srcs`
+1. **GenerateRules** (language.go): Scan `.ts`/`.tsx` files, extract imports via oxc, create rules with `srcs`
 2. **Imports** (language.go): Register each rule in the RuleIndex (exact + wildcard paths)
 3. **Resolve** (resolve.go): Query RuleIndex to convert imports → Bazel labels, set `deps`/`project_references`
 

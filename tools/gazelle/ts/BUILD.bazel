@@ -7,25 +7,29 @@ go_library(
         "kinds.go",
         "language.go",
         "parser.go",
+        "parser_oxc.go",
         "resolve.go",
+    ],
+    data = [
+        "//crates/ts_import_extractor:bin",
     ],
     importpath = "github.com/nicolo-ribaudo/formatjs/tools/gazelle/ts",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_smacker_go_tree_sitter//:go-tree-sitter",
-        "@com_github_smacker_go_tree_sitter//typescript/typescript",
         "@gazelle//config",
         "@gazelle//label",
         "@gazelle//language",
         "@gazelle//repo",
         "@gazelle//resolve",
         "@gazelle//rule",
+        "@rules_go//go/runfiles",
     ],
 )
 
 go_test(
     name = "ts_test",
     srcs = [
+        "parser_bench_test.go",
         "parser_test.go",
         "resolve_test.go",
     ],

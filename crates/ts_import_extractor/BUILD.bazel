@@ -1,0 +1,39 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+
+rust_library(
+    name = "ts_import_extractor",
+    srcs = [
+        "src/extract_imports.rs",
+        "src/lib.rs",
+    ],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:oxc",
+        "@crates//:oxc_allocator",
+        "@crates//:oxc_ast",
+        "@crates//:oxc_parser",
+        "@crates//:oxc_span",
+    ],
+)
+
+rust_binary(
+    name = "bin",
+    srcs = ["src/main.rs"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":ts_import_extractor",
+        "@crates//:rayon",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_test(
+    name = "unit_test",
+    crate = ":ts_import_extractor",
+    deps = [
+        "@crates//:pretty_assertions",
+    ],
+)

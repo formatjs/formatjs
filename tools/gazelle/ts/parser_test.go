@@ -1,6 +1,8 @@
 package ts
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -22,8 +24,8 @@ import * as React from 'react'`,
 			expected: []string{"@formatjs/intl-pluralrules/polyfill.js"},
 		},
 		{
-			name: "type-only import",
-			source: `import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'`,
+			name:     "type-only import",
+			source:   `import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'`,
 			expected: []string{"#packages/ecma402-abstract/types/number.js"},
 		},
 		{
@@ -38,7 +40,7 @@ export * from '@formatjs/intl'`,
 			expected: []string{"lodash-es"},
 		},
 		{
-			name: "relative imports skipped in resolve but captured by parser",
+			name: "relative imports captured by parser",
 			source: `import {foo} from './utils'
 import {bar} from '../common'`,
 			expected: []string{"./utils", "../common"},
@@ -72,9 +74,21 @@ import {b} from 'react'`,
 		},
 	}
 
+	// The oxc parser reads files from disk, so write temp files.
+	tmpDir := t.TempDir()
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			imports := extractImports([]byte(tt.source), "test.ts")
+			tmpFile := filepath.Join(tmpDir, "test.ts")
+			if err := os.WriteFile(tmpFile, []byte(tt.source), 0644); err != nil {
+				t.Fatalf("write temp file: %v", err)
+			}
+
+			imports, err := extractImportsFromFile(tmpFile)
+			if err != nil {
+				t.Fatalf("extractImportsFromFile: %v", err)
+			}
+
 			paths := make([]string, len(imports))
 			for i, imp := range imports {
 				paths[i] = imp.ImportPath
