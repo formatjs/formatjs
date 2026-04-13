@@ -1,37 +1,65 @@
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_compile")
-load("//tools:vitest.bzl", "vitest")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:test.bzl", "formatjs_test")
 
-PACKAGE_NAME = "ecma402-abstract"
-
-SRCS = glob(
-    [
-        "*.ts",
+formatjs_library(
+    name = "dist",
+    srcs = [
+        "CanonicalizeLocaleList.ts",
+        "CanonicalizeTimeZoneName.ts",
+        "CoerceOptionsToObject.ts",
+        "DefaultNumberOption.ts",
+        "GetNumberOption.ts",
+        "GetOption.ts",
+        "GetOptionsObject.ts",
+        "GetStringOrBooleanOption.ts",
+        "IsSanctionedSimpleUnitIdentifier.ts",
+        "IsValidTimeZoneName.ts",
+        "IsWellFormedCurrencyCode.ts",
+        "IsWellFormedUnitIdentifier.ts",
+        "PartitionPattern.ts",
+        "SupportedLocales.ts",
+        "ToIntlMathematicalValue.ts",
+        "constants.ts",
+        "data.ts",
+        "regex.generated.ts",
+        "utils.ts",
+    ],
+    package_json = False,
+    project_references = ["//packages/ecma262-abstract"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/intl-localematcher",
     ],
 )
 
-SRC_DEPS = [
-    "//:node_modules/@formatjs/bigdecimal",
-    "//:node_modules/@formatjs/fast-memoize",
-    "//:node_modules/@formatjs/intl-localematcher",
-    "//packages/ecma262-abstract",
-]
-
-ts_compile(
-    name = PACKAGE_NAME,
-    srcs = [":srcs"],
-    package_json = False,
-    visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
-)
-
-vitest(
+formatjs_test(
     name = "unit_test",
-    srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-    ]),
-    deps = SRC_DEPS + [
+    srcs = [
+        "tests/262.test.ts",
+        "tests/ApplyUnsignedRoundingMode.test.ts",
+        "tests/CanonicalizeTimeZoneName.test.ts",
+        "tests/CollapseNumberRange.test.ts",
+        "tests/FormatApproximately.test.ts",
+        "tests/FormatNumericRange.test.ts",
+        "tests/FormatNumericRangeToParts.test.ts",
+        "tests/GetStringOrBooleanOption.test.ts",
+        "tests/GetUnsignedRoundingMode.test.ts",
+        "tests/IsValidTimeZoneName.test.ts",
+        "tests/PartitionNumberPattern.test.ts",
+        "tests/PartitionNumberRangePattern.test.ts",
+        "tests/PartitionPattern.test.ts",
+        "tests/SetNumberFormatDigitOptions.test.ts",
+        "tests/ToRawFixed.test.tsx",
+        "tests/ToRawPrecision.test.tsx",
+        "tests/utils.ts",
+    ],
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/vitest",
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
@@ -51,9 +79,4 @@ generate_src_file(
         "//:node_modules/regenerate",
     ],
     tool = "//packages/ecma402-abstract/scripts:regex-gen",
-)
-
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
 )
