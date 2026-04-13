@@ -1,5 +1,4 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
 
 formatjs_library(
     name = "dist",
@@ -19,8 +18,4 @@ formatjs_library(
     package_json = False,
     visibility = ["//visibility:public"],
     deps = ["//:node_modules/@formatjs/bigdecimal"],
-)
-
-generate_ide_tsconfig_json(
-    composite = True,
 )

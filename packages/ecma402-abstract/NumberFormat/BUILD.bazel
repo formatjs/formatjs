@@ -1,5 +1,5 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file")
+load("//tools:index.bzl", "generate_src_file")
 
 formatjs_library(
     name = "dist",
@@ -48,12 +48,4 @@ generate_src_file(
         "//:node_modules/json-stable-stringify",
     ],
     tool = "//packages/ecma402-abstract/scripts:digit-mapping",
-)
-
-generate_ide_tsconfig_json(
-    composite = True,
-    project_references = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
 )

@@ -12,6 +12,9 @@
     },
     {
       "path": "../types/tsconfig.json"
+    },
+    {
+      "path": "../../ecma262-abstract/tsconfig.json"
     }
   ]
 }
