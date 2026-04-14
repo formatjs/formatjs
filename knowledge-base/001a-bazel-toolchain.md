@@ -175,14 +175,19 @@ Custom Go gazelle plugin that auto-generates and maintains `formatjs_library` an
 
 **Source files (Go — tools/gazelle/ts/):**
 
-| File            | Purpose                                                             |
-| --------------- | ------------------------------------------------------------------- |
-| `language.go`   | Main entry point: GenerateRules (file scanning), Imports (indexing) |
-| `resolve.go`    | Resolve phase: converts imports → Bazel labels, reads package.json  |
-| `config.go`     | Per-directory config, `formatjs_enabled` directive                  |
-| `kinds.go`      | Rule type definitions and merge behavior (MergeableAttrs, etc.)     |
-| `parser.go`     | Import extraction entry point (delegates to oxc subprocess)         |
-| `parser_oxc.go` | Oxc subprocess client (length-prefixed JSON over stdin/stdout)      |
+| File            | Purpose                                                                            |
+| --------------- | ---------------------------------------------------------------------------------- |
+| `language.go`   | Plugin struct (`tsLang`) with state: lifecycle manager + pkg.json cache            |
+| `lifecycle.go`  | `lifeCycleManager`: starts/stops oxc subprocess via `Before`/`DoneGeneratingRules` |
+| `generate.go`   | `GenerateRules`: file scanning, import extraction, rule creation                   |
+| `imports.go`    | `Imports`: registers rules in RuleIndex (exact + wildcard paths)                   |
+| `resolve.go`    | `Resolve`: converts imports → Bazel labels, reads package.json                     |
+| `config.go`     | `tsConfig` data struct for per-directory configuration                             |
+| `configure.go`  | `Configure`: reads BUILD directives, manages config inheritance                    |
+| `kinds.go`      | Rule type definitions, merge behavior, `Kinds()`, `Loads()`                        |
+| `fix.go`        | `Fix`: post-processing hook (currently no-op)                                      |
+| `parser.go`     | `ImportStatement` type + `extractImportsBatch` method                              |
+| `parser_oxc.go` | `OxcParser` subprocess client (length-prefixed JSON over stdin/stdout)             |
 
 **Source files (Rust — crates/ts_import_extractor/):**
 
@@ -249,15 +254,15 @@ Go (gazelle plugin)                     Rust (ts_import_extractor)
   Each frame: `[4-byte big-endian u32 length][JSON payload]`
   - Request: `{"id": N, "files": ["path/to/file.ts", ...]}`
   - Response: `{"id": N, "imports": [{"file": "...", "importPaths": [...]}, ...]}`
-- **Lifecycle:** Subprocess spawned lazily on first parse request (via `sync.Once`),
-  stays alive for entire gazelle run, exits when Go closes stdin.
+- **Lifecycle:** Subprocess spawned in `lifeCycleManager.Before()` at plugin startup,
+  shut down in `DoneGeneratingRules()`. Stays alive for entire gazelle run.
 - **Binary discovery:** `runfiles.Rlocation("_main/crates/ts_import_extractor/bin")`.
   The binary is a `data` dep on the `go_library` rule.
 - **Batching:** All TypeScript files in a directory are sent in one request (not per-file).
   rayon thread pool on the Rust side parses files within the batch in parallel.
 - **Error handling:**
-  - Go: `getOxcParser()` returns nil on startup failure (graceful degradation, logs warning).
-    `extractImportsBatch()` returns nil map if parser unavailable — caller skips imports.
+  - Go: `Before()` logs warning on startup failure; `extractImportsBatch()` returns nil map
+    if parser unavailable — caller skips imports.
   - Rust: checks `ret.errors` after parsing — malformed files return `Err` with oxc diagnostics
     instead of extracting from partially-recovered ASTs (avoids incorrect dep graphs).
     Stdout write errors exit cleanly instead of panicking.
@@ -276,9 +281,15 @@ Go (gazelle plugin)                     Rust (ts_import_extractor)
 
 **Three-phase pipeline:**
 
-1. **GenerateRules** (language.go): Scan `.ts`/`.tsx` files, extract imports via oxc subprocess, create rules with `srcs`
-2. **Imports** (language.go): Register each rule in the RuleIndex (exact + wildcard paths)
+1. **GenerateRules** (generate.go): Scan `.ts`/`.tsx` files, extract imports via oxc subprocess, create rules with `srcs`
+2. **Imports** (imports.go): Register each rule in the RuleIndex (exact + wildcard paths)
 3. **Resolve** (resolve.go): Query RuleIndex to convert imports → Bazel labels, set `deps`/`project_references`
+
+**Architecture pattern:** The plugin follows the same separation-of-concerns pattern as
+[gazelle-ts-plugin](https://github.com/aspect-build/gazelle-ts-plugin):
+stateful language struct with lifecycle management, one file per Gazelle interface method
+(`generate.go`, `imports.go`, `resolve.go`, `configure.go`, `fix.go`), and config data
+separate from config interface (`config.go` vs `configure.go`).
 
 ### generate_ide_tsconfig_json (tools/index.bzl)
 

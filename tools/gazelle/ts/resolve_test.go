@@ -2,16 +2,21 @@ package ts
 
 import (
 	"sort"
-	"sync"
 	"testing"
 
 	"github.com/bazelbuild/bazel-gazelle/label"
 )
 
+// newTestLang creates a tsLang with the given packageDeps for testing.
+func newTestLang(deps map[string]bool) *tsLang {
+	return &tsLang{
+		packageDeps:       deps,
+		subpathImportsMap: make(map[string]string),
+	}
+}
+
 func TestResolveNpmImport(t *testing.T) {
-	// Reset and set up package deps for tests
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{
+	l := newTestLang(map[string]bool{
 		"react":                              true,
 		"@types/react":                       true,
 		"@formatjs/intl":                     true,
@@ -21,7 +26,7 @@ func TestResolveNpmImport(t *testing.T) {
 		"@types/lodash-es":                   true,
 		"typescript":                         true,
 		"eslint":                             true,
-	}
+	})
 
 	tests := []struct {
 		name     string
@@ -62,7 +67,7 @@ func TestResolveNpmImport(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := resolveNpmImport(tt.input)
+			got := l.resolveNpmImport(tt.input)
 			if got != tt.expected {
 				t.Errorf("resolveNpmImport(%q) = %q, want %q", tt.input, got, tt.expected)
 			}
@@ -71,18 +76,17 @@ func TestResolveNpmImport(t *testing.T) {
 }
 
 func TestGetTypesPackage(t *testing.T) {
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{
-		"react":                          true,
-		"@types/react":                   true,
-		"lodash-es":                      true,
-		"@types/node":                    true,
-		"@formatjs/intl":                 true,
-		"@babel/core":                    true,
-		"@types/babel__core":             true,
-		"@babel/helper-plugin-utils":     true,
-		"@types/babel__helper-plugin-utils": true,
-	}
+	l := newTestLang(map[string]bool{
+		"react":                                true,
+		"@types/react":                         true,
+		"lodash-es":                            true,
+		"@types/node":                          true,
+		"@formatjs/intl":                       true,
+		"@babel/core":                          true,
+		"@types/babel__core":                   true,
+		"@babel/helper-plugin-utils":           true,
+		"@types/babel__helper-plugin-utils":    true,
+	})
 
 	tests := []struct {
 		name     string
@@ -123,7 +127,7 @@ func TestGetTypesPackage(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := getTypesPackage(tt.input)
+			got := l.getTypesPackage(tt.input)
 			if got != tt.expected {
 				t.Errorf("getTypesPackage(%q) = %q, want %q", tt.input, got, tt.expected)
 			}
@@ -132,13 +136,12 @@ func TestGetTypesPackage(t *testing.T) {
 }
 
 func TestResolveImportsToDeps_Categories(t *testing.T) {
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{
+	l := newTestLang(map[string]bool{
 		"react":                              true,
 		"@types/react":                       true,
 		"@formatjs/icu-messageformat-parser": true,
 		"@formatjs/icu-skeleton-parser":      true,
-	}
+	})
 
 	imports := []ImportStatement{
 		{ImportPath: "./relative", SourceFile: "index.ts"},
@@ -151,7 +154,7 @@ func TestResolveImportsToDeps_Categories(t *testing.T) {
 	}
 
 	from := label.Label{Pkg: "packages/intl-messageformat"}
-	result := resolveImportsToDeps(imports, from, nil)
+	result := l.resolveImportsToDeps(imports, from, nil)
 
 	expectedExt := []string{
 		"//:node_modules/@formatjs/icu-skeleton-parser",
@@ -171,15 +174,13 @@ func TestResolveImportsToDeps_Categories(t *testing.T) {
 		}
 	}
 
-	// Relative imports should be skipped, #packages/* needs RuleIndex
 	if len(result.internal) != 0 {
 		t.Errorf("internal deps: got %v, want empty (no RuleIndex)", result.internal)
 	}
 }
 
 func TestResolveImportsToDeps_NodeBuiltins(t *testing.T) {
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{}
+	l := newTestLang(map[string]bool{})
 
 	imports := []ImportStatement{
 		{ImportPath: "node:path", SourceFile: "index.ts"},
@@ -190,9 +191,8 @@ func TestResolveImportsToDeps_NodeBuiltins(t *testing.T) {
 	}
 
 	from := label.Label{Pkg: "packages/cli-lib"}
-	result := resolveImportsToDeps(imports, from, nil)
+	result := l.resolveImportsToDeps(imports, from, nil)
 
-	// All should resolve to @types/node (deduplicated)
 	if len(result.external) != 1 {
 		t.Errorf("expected 1 external dep (@types/node), got %d: %v",
 			len(result.external), result.external)
@@ -203,11 +203,10 @@ func TestResolveImportsToDeps_NodeBuiltins(t *testing.T) {
 }
 
 func TestResolveImportsToDeps_Deduplication(t *testing.T) {
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{
+	l := newTestLang(map[string]bool{
 		"react":        true,
 		"@types/react": true,
-	}
+	})
 
 	imports := []ImportStatement{
 		{ImportPath: "react", SourceFile: "a.ts"},
@@ -216,7 +215,7 @@ func TestResolveImportsToDeps_Deduplication(t *testing.T) {
 	}
 
 	from := label.Label{Pkg: "packages/react-intl"}
-	result := resolveImportsToDeps(imports, from, nil)
+	result := l.resolveImportsToDeps(imports, from, nil)
 
 	expected := []string{"//:node_modules/@types/react", "//:node_modules/react"}
 	if len(result.external) != len(expected) {
@@ -225,8 +224,7 @@ func TestResolveImportsToDeps_Deduplication(t *testing.T) {
 }
 
 func TestResolveImportsToDeps_SkipsRelative(t *testing.T) {
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{}
+	l := newTestLang(map[string]bool{})
 
 	imports := []ImportStatement{
 		{ImportPath: "./utils", SourceFile: "index.ts"},
@@ -235,7 +233,7 @@ func TestResolveImportsToDeps_SkipsRelative(t *testing.T) {
 	}
 
 	from := label.Label{Pkg: "packages/react-intl"}
-	result := resolveImportsToDeps(imports, from, nil)
+	result := l.resolveImportsToDeps(imports, from, nil)
 
 	if len(result.external) != 0 {
 		t.Errorf("relative imports should be skipped, got external: %v", result.external)
@@ -246,18 +244,16 @@ func TestResolveImportsToDeps_SkipsRelative(t *testing.T) {
 }
 
 func TestResolveImportsToDeps_TypesOnlyPackage(t *testing.T) {
-	packageDepsOnce = sync.Once{}
-	packageDeps = map[string]bool{
+	l := newTestLang(map[string]bool{
 		"@types/estree-jsx": true,
-		// Note: "estree-jsx" is NOT in deps — only @types version exists
-	}
+	})
 
 	imports := []ImportStatement{
 		{ImportPath: "estree-jsx", SourceFile: "index.ts"},
 	}
 
 	from := label.Label{Pkg: "packages/eslint-plugin-formatjs"}
-	result := resolveImportsToDeps(imports, from, nil)
+	result := l.resolveImportsToDeps(imports, from, nil)
 
 	if len(result.external) != 1 {
 		t.Errorf("expected 1 dep, got %d: %v", len(result.external), result.external)
