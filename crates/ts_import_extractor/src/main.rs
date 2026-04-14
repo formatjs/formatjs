@@ -1,45 +1,18 @@
 // main.rs — Long-lived subprocess for extracting TypeScript imports.
 //
-// This binary is spawned by the Go gazelle plugin (tools/gazelle/ts/parser_oxc.go)
-// and stays alive for the entire gazelle run. Communication is over stdin/stdout
-// using length-prefixed JSON frames.
+// Communication is over stdin/stdout using length-prefixed protobuf frames.
+// Frame format: [4-byte big-endian u32 length][protobuf payload of that length]
 //
-// Frame format: [4-byte big-endian u32 length][JSON payload of that length]
-//
-// Protocol:
-//   Request:  {"id": N, "files": ["path/to/file.ts", ...]}
-//   Response: {"id": N, "imports": [{"file": "path.ts", "importPaths": ["react", ...]}, ...]}
-//   Error:    {"id": N, "error": "message"}
-//
-// Files within a request are parsed in parallel using rayon. The binary exits
-// when stdin is closed (Go side closes stdin when gazelle finishes).
+// The binary exits when stdin is closed (Go side closes stdin when gazelle finishes).
 
-use ts_import_extractor::extract_imports_from_file;
 use rayon::prelude::*;
-use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
+use ts_import_extractor::extract_imports_from_file;
 
-#[derive(Deserialize)]
-struct Request {
-    id: u32,
-    files: Vec<String>,
-}
-
-#[derive(Serialize)]
-struct Response {
-    id: u32,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    imports: Option<Vec<FileImports>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    error: Option<String>,
-}
-
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct FileImports {
-    file: String,
-    import_paths: Vec<String>,
-}
+// Generated protobuf types.
+use message_proto::ts_import_extractor::{
+    self as proto, response, ImportByFile, Response, ResponseError, ResponseResult,
+};
 
 fn main() {
     let stdin = std::io::stdin();
@@ -66,7 +39,7 @@ fn main() {
             }
 
             let frame = &stream[4..4 + len];
-            let request: Request = match serde_json::from_slice(frame) {
+            let request: proto::Request = match prost::Message::decode(frame) {
                 Ok(r) => r,
                 Err(e) => {
                     eprintln!("ts_import_extractor: invalid request: {e}");
@@ -77,9 +50,11 @@ fn main() {
             stream.drain(..4 + len);
 
             let response = handle_request(request);
-            let payload = serde_json::to_vec(&response).unwrap();
 
-            // Write response frame. Exit cleanly on pipe errors (Go side closed stdout).
+            let mut payload = Vec::new();
+            prost::Message::encode(&response, &mut payload).unwrap();
+
+            // Write response frame. Exit cleanly on pipe errors.
             let mut out = stdout.lock();
             if out
                 .write_all(&(payload.len() as u32).to_be_bytes())
@@ -93,12 +68,12 @@ fn main() {
     }
 }
 
-fn handle_request(req: Request) -> Response {
-    let results: Result<Vec<FileImports>, String> = req
+fn handle_request(req: proto::Request) -> Response {
+    let results: Result<Vec<ImportByFile>, String> = req
         .files
         .par_iter()
         .map(|file| {
-            extract_imports_from_file(file).map(|import_paths| FileImports {
+            extract_imports_from_file(file).map(|import_paths| ImportByFile {
                 file: file.clone(),
                 import_paths,
             })
@@ -108,13 +83,11 @@ fn handle_request(req: Request) -> Response {
     match results {
         Ok(imports) => Response {
             id: req.id,
-            imports: Some(imports),
-            error: None,
+            data: Some(response::Data::Result(ResponseResult { imports })),
         },
         Err(e) => Response {
             id: req.id,
-            imports: None,
-            error: Some(e),
+            data: Some(response::Data::Error(ResponseError { message: e })),
         },
     }
 }

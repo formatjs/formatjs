@@ -21,12 +21,14 @@ go_library(
     importpath = "github.com/nicolo-ribaudo/formatjs/tools/gazelle/ts",
     visibility = ["//visibility:public"],
     deps = [
+        "//crates/ts_import_extractor/proto",
         "@gazelle//config",
         "@gazelle//label",
         "@gazelle//language",
         "@gazelle//repo",
         "@gazelle//resolve",
         "@gazelle//rule",
+        "@org_golang_google_protobuf//proto",
         "@rules_go//go/runfiles",
     ],
 )
