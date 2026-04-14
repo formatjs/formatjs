@@ -35,9 +35,9 @@ rust_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":ts_import_extractor",
+        "//crates/ts_import_extractor/proto:ts_import_extractor_rust_proto",
         "@crates//:rayon",
-        "@crates//:serde",
-        "@crates//:serde_json",
+        "@rules_rust_prost//private/3rdparty/crates:prost",
     ],
 )
 

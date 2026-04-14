@@ -244,16 +244,16 @@ cgo overhead, FFI memory management, `cc_library` chains, and dylib path issues.
 Go (gazelle plugin)                     Rust (ts_import_extractor)
 ┌────────────────────────┐              ┌──────────────────────────────┐
 │ parser_oxc.go          │  stdin       │ main.rs                      │
-│   OxcParser struct     │ ────────────>│   length-prefixed JSON loop  │
+│   OxcParser struct     │ ────────────>│   length-prefixed protobuf   │
 │   writeFrame/readFrame │  stdout      │   rayon parallel file parse  │
 │   runfiles.Rlocation   │ <────────────│   oxc Visit AST walker       │
 └────────────────────────┘              └──────────────────────────────┘
 ```
 
-- **Protocol:** Length-prefixed JSON frames over stdin/stdout.
-  Each frame: `[4-byte big-endian u32 length][JSON payload]`
-  - Request: `{"id": N, "files": ["path/to/file.ts", ...]}`
-  - Response: `{"id": N, "imports": [{"file": "...", "importPaths": [...]}, ...]}`
+- **Protocol:** Length-prefixed protobuf frames over stdin/stdout.
+  Schema: `crates/ts_import_extractor/proto/message.proto`
+  Each frame: `[4-byte big-endian u32 length][protobuf payload]`
+  Go uses `google.golang.org/protobuf/proto`, Rust uses `prost`.
 - **Lifecycle:** Subprocess spawned in `lifeCycleManager.Before()` at plugin startup,
   shut down in `DoneGeneratingRules()`. Stays alive for entire gazelle run.
 - **Binary discovery:** `runfiles.Rlocation("_main/crates/ts_import_extractor/bin")`.

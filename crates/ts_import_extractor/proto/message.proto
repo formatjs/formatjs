@@ -1,0 +1,28 @@
+syntax = "proto3";
+package ts_import_extractor;
+
+message Request {
+  uint32 id = 1;
+  repeated string files = 2;
+}
+
+message Response {
+  uint32 id = 1;
+  oneof data {
+    ResponseResult result = 2;
+    ResponseError error = 3;
+  }
+}
+
+message ResponseResult {
+  repeated ImportByFile imports = 1;
+}
+
+message ResponseError {
+  string message = 1;
+}
+
+message ImportByFile {
+  string file = 1;
+  repeated string import_paths = 2;
+}

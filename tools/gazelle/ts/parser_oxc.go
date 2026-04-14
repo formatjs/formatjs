@@ -9,48 +9,30 @@
 //	Go (gazelle plugin)                 Rust (ts_import_extractor)
 //	┌──────────────────┐                ┌──────────────────────────┐
 //	│ parser_oxc.go    │  stdin/stdout  │ main.rs                  │
-//	│                  │ ──────────────>│   length-prefixed JSON   │
+//	│                  │ ──────────────>│   length-prefixed proto  │
 //	│ OxcParser struct │ <──────────────│   oxc parse + rayon      │
 //	└──────────────────┘                └──────────────────────────┘
 //
 // Communication protocol:
-//   - Each frame: [4-byte big-endian u32 length][JSON payload of that length]
-//   - Request:  {"id": N, "files": ["path/to/file.ts", ...]}
-//   - Response: {"id": N, "imports": [{"file": "...", "importPaths": [...]}, ...]}
+//   - Each frame: [4-byte big-endian u32 length][protobuf payload of that length]
+//   - Request/Response defined in crates/ts_import_extractor/proto/message.proto
 //
 // Binary location: discovered via Bazel runfiles (github.com/bazelbuild/rules_go/go/runfiles).
 package ts
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
 	"sync"
 
+	pb "github.com/nicolo-ribaudo/formatjs/crates/ts_import_extractor/proto"
+
 	"github.com/bazelbuild/rules_go/go/runfiles"
+	"google.golang.org/protobuf/proto"
 )
-
-// oxcRequest is the JSON request sent to the Rust subprocess.
-type oxcRequest struct {
-	ID    uint32   `json:"id"`
-	Files []string `json:"files"`
-}
-
-// oxcResponse is the JSON response from the Rust subprocess.
-type oxcResponse struct {
-	ID      uint32           `json:"id"`
-	Imports []oxcFileImports `json:"imports,omitempty"`
-	Error   string           `json:"error,omitempty"`
-}
-
-// oxcFileImports holds the import paths extracted from a single file.
-type oxcFileImports struct {
-	File        string   `json:"file"`
-	ImportPaths []string `json:"importPaths"`
-}
 
 // OxcParser manages a long-lived Rust subprocess for import extraction.
 // All methods are serialized via the mutex since the subprocess communicates
@@ -123,7 +105,7 @@ func (p *OxcParser) ExtractImports(files []string) (map[string][]string, error) 
 	defer p.mu.Unlock()
 
 	p.nextID++
-	req := oxcRequest{ID: p.nextID, Files: files}
+	req := &pb.Request{Id: p.nextID, Files: files}
 
 	if err := p.writeFrame(req); err != nil {
 		return nil, err
@@ -134,20 +116,23 @@ func (p *OxcParser) ExtractImports(files []string) (map[string][]string, error) 
 		return nil, err
 	}
 
-	if resp.Error != "" {
-		return nil, fmt.Errorf("oxc parser error: %s", resp.Error)
+	switch data := resp.Data.(type) {
+	case *pb.Response_Error:
+		return nil, fmt.Errorf("oxc parser error: %s", data.Error.Message)
+	case *pb.Response_Result:
+		result := make(map[string][]string, len(data.Result.Imports))
+		for _, fi := range data.Result.Imports {
+			result[fi.File] = fi.ImportPaths
+		}
+		return result, nil
+	default:
+		return nil, fmt.Errorf("unexpected response type")
 	}
-
-	result := make(map[string][]string, len(resp.Imports))
-	for _, fi := range resp.Imports {
-		result[fi.File] = fi.ImportPaths
-	}
-	return result, nil
 }
 
-// writeFrame marshals the request to JSON and writes it as a length-prefixed frame.
-func (p *OxcParser) writeFrame(req oxcRequest) error {
-	payload, err := json.Marshal(req)
+// writeFrame marshals the request to protobuf and writes it as a length-prefixed frame.
+func (p *OxcParser) writeFrame(req *pb.Request) error {
+	payload, err := proto.Marshal(req)
 	if err != nil {
 		return fmt.Errorf("marshal request: %w", err)
 	}
@@ -163,8 +148,8 @@ func (p *OxcParser) writeFrame(req oxcRequest) error {
 	return nil
 }
 
-// readFrame reads a length-prefixed JSON frame from stdout and unmarshals it.
-func (p *OxcParser) readFrame() (*oxcResponse, error) {
+// readFrame reads a length-prefixed protobuf frame from stdout and unmarshals it.
+func (p *OxcParser) readFrame() (*pb.Response, error) {
 	var lenBuf [4]byte
 	if _, err := io.ReadFull(p.stdout, lenBuf[:]); err != nil {
 		return nil, fmt.Errorf("read response length: %w", err)
@@ -175,8 +160,8 @@ func (p *OxcParser) readFrame() (*oxcResponse, error) {
 		return nil, fmt.Errorf("read response payload: %w", err)
 	}
 
-	var resp oxcResponse
-	if err := json.Unmarshal(respBuf, &resp); err != nil {
+	var resp pb.Response
+	if err := proto.Unmarshal(respBuf, &resp); err != nil {
 		return nil, fmt.Errorf("unmarshal response: %w", err)
 	}
 	return &resp, nil
