@@ -1,7 +1,8 @@
 // parser_oxc.go — Go client for the oxc-based TypeScript import extractor.
 //
-// This file manages a long-lived Rust subprocess (crates/ts_import_extractor)
+// This file manages the Rust subprocess (crates/ts_import_extractor)
 // that parses TypeScript files using oxc and returns extracted import paths.
+// The subprocess lifecycle is managed by lifeCycleManager (lifecycle.go).
 //
 // Architecture:
 //
@@ -17,10 +18,6 @@
 //   - Request:  {"id": N, "files": ["path/to/file.ts", ...]}
 //   - Response: {"id": N, "imports": [{"file": "...", "importPaths": [...]}, ...]}
 //
-// The subprocess is spawned lazily on first use and stays alive for the entire
-// gazelle run. This amortizes the process startup cost and allows the Rust side
-// to reuse its rayon thread pool across requests.
-//
 // Binary location: discovered via Bazel runfiles (github.com/bazelbuild/rules_go/go/runfiles).
 package ts
 
@@ -29,7 +26,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
 	"sync"
@@ -65,27 +61,6 @@ type OxcParser struct {
 	stdout io.Reader
 	mu     sync.Mutex
 	nextID uint32
-}
-
-// Global singleton — initialized lazily on first use via sync.Once.
-// The subprocess stays alive for the entire gazelle run.
-var (
-	globalOxcParser *OxcParser
-	oxcParserOnce   sync.Once
-)
-
-// getOxcParser returns the global OxcParser, starting the subprocess on first call.
-// Returns nil if the subprocess cannot be started (caller should handle gracefully).
-func getOxcParser() *OxcParser {
-	oxcParserOnce.Do(func() {
-		p, err := newOxcParser()
-		if err != nil {
-			log.Printf("formatjs_ts: oxc parser unavailable: %v", err)
-			return // globalOxcParser stays nil
-		}
-		globalOxcParser = p
-	})
-	return globalOxcParser
 }
 
 // newOxcParser locates the Rust binary via Bazel runfiles and starts it as a subprocess.
@@ -143,9 +118,6 @@ func (p *OxcParser) Close() error {
 
 // ExtractImports sends a batch of file paths to the Rust subprocess and returns
 // the parsed imports. The result maps file paths to their import path lists.
-//
-// The Rust side uses rayon to parse files in parallel, so batching multiple
-// files in a single request is more efficient than one-at-a-time calls.
 func (p *OxcParser) ExtractImports(files []string) (map[string][]string, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -153,12 +125,10 @@ func (p *OxcParser) ExtractImports(files []string) (map[string][]string, error) 
 	p.nextID++
 	req := oxcRequest{ID: p.nextID, Files: files}
 
-	// Write request as a length-prefixed JSON frame.
 	if err := p.writeFrame(req); err != nil {
 		return nil, err
 	}
 
-	// Read response frame.
 	resp, err := p.readFrame()
 	if err != nil {
 		return nil, err
@@ -211,4 +181,3 @@ func (p *OxcParser) readFrame() (*oxcResponse, error) {
 	}
 	return &resp, nil
 }
-

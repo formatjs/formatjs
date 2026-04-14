@@ -35,15 +35,16 @@ func BenchmarkOxc(b *testing.B) {
 		b.Skip("no TypeScript files found")
 	}
 
-	parser := getOxcParser()
-	if parser == nil {
-		b.Skip("oxc parser not available")
+	p, err := newOxcParser()
+	if err != nil {
+		b.Skipf("oxc parser not available: %v", err)
 	}
+	defer p.Close()
 
 	b.Logf("Benchmarking %d files", len(files))
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, err := parser.ExtractImports(files)
+		_, err := p.ExtractImports(files)
 		if err != nil {
 			b.Fatalf("oxc parse error: %v", err)
 		}

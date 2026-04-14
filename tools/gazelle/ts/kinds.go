@@ -14,7 +14,9 @@
 // entry_points, types, npm_package_name, etc. survive gazelle runs.
 package ts
 
-import "github.com/bazelbuild/bazel-gazelle/rule"
+import (
+	"github.com/bazelbuild/bazel-gazelle/rule"
+)
 
 const (
 	// KindFormatjsLibrary is the main TypeScript compilation rule.
@@ -70,4 +72,28 @@ var tsKinds = map[string]rule.KindInfo{
 	KindTsCompile: {
 		NonEmptyAttrs: map[string]bool{"name": true},
 	},
+}
+
+// Kinds tells Gazelle which rule types this plugin manages and how to merge them.
+func (l *tsLang) Kinds() map[string]rule.KindInfo {
+	return tsKinds
+}
+
+// Loads declares the .bzl files that provide the rule kinds we generate.
+// Gazelle uses this to add the correct load() statements at the top of BUILD files.
+func (l *tsLang) Loads() []rule.LoadInfo {
+	return []rule.LoadInfo{
+		{
+			Name:    "//tools:compile.bzl",
+			Symbols: []string{KindFormatjsLibrary},
+		},
+		{
+			Name:    "//tools:test.bzl",
+			Symbols: []string{KindFormatjsTest},
+		},
+		{
+			Name:    "//tools:index.bzl",
+			Symbols: []string{KindTsCompile},
+		},
+	}
 }

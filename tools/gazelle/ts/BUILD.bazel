@@ -4,8 +4,13 @@ go_library(
     name = "ts",
     srcs = [
         "config.go",
+        "configure.go",
+        "fix.go",
+        "generate.go",
+        "imports.go",
         "kinds.go",
         "language.go",
+        "lifecycle.go",
         "parser.go",
         "parser_oxc.go",
         "resolve.go",

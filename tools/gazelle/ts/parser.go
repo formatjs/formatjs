@@ -21,13 +21,12 @@ type ImportStatement struct {
 // This is much more efficient than per-file calls because:
 //   - One subprocess round-trip instead of N
 //   - Rust side uses rayon to parse files in parallel
-func extractImportsBatch(filePaths []string) (map[string][]ImportStatement, error) {
-	parser := getOxcParser()
-	if parser == nil {
+func (l *tsLang) extractImportsBatch(filePaths []string) (map[string][]ImportStatement, error) {
+	if l.parser == nil {
 		return nil, nil
 	}
 
-	result, err := parser.ExtractImports(filePaths)
+	result, err := l.parser.ExtractImports(filePaths)
 	if err != nil {
 		return nil, err
 	}

@@ -77,6 +77,19 @@ import {b} from 'react'`,
 	// The oxc parser reads files from disk, so write temp files.
 	tmpDir := t.TempDir()
 
+	// Create a tsLang with a parser for testing.
+	p, err := newOxcParser()
+	if err != nil {
+		t.Skipf("oxc parser not available: %v", err)
+	}
+	defer p.Close()
+
+	l := &tsLang{
+		packageDeps:       make(map[string]bool),
+		subpathImportsMap: make(map[string]string),
+	}
+	l.parser = p
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpFile := filepath.Join(tmpDir, "test.ts")
@@ -84,7 +97,7 @@ import {b} from 'react'`,
 				t.Fatalf("write temp file: %v", err)
 			}
 
-			allImports, err := extractImportsBatch([]string{tmpFile})
+			allImports, err := l.extractImportsBatch([]string{tmpFile})
 			if err != nil {
 				t.Fatalf("extractImportsBatch: %v", err)
 			}
