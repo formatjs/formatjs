@@ -29,7 +29,7 @@ formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1
 oxc = { version = "0.120", features = ["ast_visit"] }
 oxc_allocator = "0.120"
 oxc_ast = "0.120"
-oxc_parser = "0.120"
+oxc_parser = "0.126"
 oxc_span = "0.120"
 sha2 = "0.11"
 base64 = "0.22"
