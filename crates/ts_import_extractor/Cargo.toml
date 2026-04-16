@@ -13,7 +13,7 @@ oxc = { version = "0.120", features = ["ast_visit"] }
 oxc_allocator = "0.120"
 oxc_ast = "0.120"
 oxc_parser = "0.120"
-oxc_span = "0.120"
+oxc_span = "0.126"
 rayon = "1.8"
 
 [dev-dependencies]
