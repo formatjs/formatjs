@@ -2,7 +2,7 @@
   "compilerOptions": {
     "paths": {
       "#packages/*": ["../../packages/*"],
-      "@formatjs_generated/*": ["../../bazel-bin/packages/generated/*/pkg/*"]
+      "@formatjs_generated/*": ["../../node_modules/@formatjs_generated/*"]
     }
   },
   "extends": "../../tsconfig.json",

@@ -204,6 +204,7 @@ formatjs_generated_package(
 ```
 
 Generates:
+
 1. `package.json` with `{"name": "@formatjs_generated/cldr.locale", "type": "module", "exports": {"./*": "./*"}}`
 2. `tsconfig.json` with `composite: true`
 3. `oxc_transpiler` compilation of all `.ts` → `.js` + `.d.ts`
@@ -265,7 +266,7 @@ formatjs_library(
   "compilerOptions": {
     "paths": {
       "#packages/*": ["../../packages/*"],
-      "@formatjs_generated/*": ["../../bazel-bin/packages/generated/*/pkg/*"]
+      "@formatjs_generated/*": ["../../node_modules/@formatjs_generated/*"]
     }
   }
 }
@@ -300,14 +301,14 @@ Rust generated files (`crates/icu_messageformat_parser/regex_generated.rs`, `tim
 
 ## Key Files
 
-| File | Purpose |
-|---|---|
-| `tools/generated.bzl` | `generate_package_file()`, `formatjs_generated_package()` macros |
-| `tools/generated_packages_registry.bzl` | Auto-generated package registry (`GENERATED_PACKAGES` list) |
-| `tools/generated_packages.bzl` | `link_all_generated_packages()` helper |
-| `scripts/generate_generated_packages.sh` | Script to regenerate the registry via `bazel query` |
-| `tools/compile.bzl` | `formatjs_library()` — excludes `@formatjs_generated` from rolldown externals |
-| `tools/tsconfig.bzl` | `packages_tsconfig()` — `@formatjs_generated/*` path alias for IDE |
-| `tools/index.bzl` | `generate_ide_tsconfig_json()` — `@formatjs_generated/*` path mapping |
-| `tools/gazelle/ts/resolve.go` | Resolves `@formatjs_generated/` imports to Bazel labels |
-| `BUILD.bazel` (root) | Calls `link_all_generated_packages()` |
+| File                                     | Purpose                                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `tools/generated.bzl`                    | `generate_package_file()`, `formatjs_generated_package()` macros              |
+| `tools/generated_packages_registry.bzl`  | Auto-generated package registry (`GENERATED_PACKAGES` list)                   |
+| `tools/generated_packages.bzl`           | `link_all_generated_packages()` helper                                        |
+| `scripts/generate_generated_packages.sh` | Script to regenerate the registry via `bazel query`                           |
+| `tools/compile.bzl`                      | `formatjs_library()` — excludes `@formatjs_generated` from rolldown externals |
+| `tools/tsconfig.bzl`                     | `packages_tsconfig()` — `@formatjs_generated/*` path alias for IDE            |
+| `tools/index.bzl`                        | `generate_ide_tsconfig_json()` — `@formatjs_generated/*` path mapping         |
+| `tools/gazelle/ts/resolve.go`            | Resolves `@formatjs_generated/` imports to Bazel labels                       |
+| `BUILD.bazel` (root)                     | Calls `link_all_generated_packages()`                                         |
