@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "#packages/*": ["../../packages/*"]
+      "#packages/*": ["../../packages/*"],
+      "@formatjs_generated/*": ["../../bazel-bin/packages/generated/*/pkg/*"]
     }
   },
   "exclude": ["./benchmark/**/*", "./integration-tests/**/*", "./tools/**/*"],
