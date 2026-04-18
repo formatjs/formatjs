@@ -46,6 +46,24 @@ For Bazel sandbox contexts (vitest, ts_run_binary), the root `package.json` must
 - vitest: `data = ["//:package.json"]` + `no_copy_to_bin = ["//:package.json"]`
 - ts_run_binary: `//:root_package_json` (copy_to_bin output) in `srcs`
 
+## Generated Data Packages (@formatjs\_generated/\*)
+
+Auto-generated TypeScript data (CLDR, IANA timezone, Unicode regex) lives only in Bazel output — not checked into git. Generated files are compiled and packaged as `@formatjs_generated/*` npm packages, linked into `node_modules` via `npm_link_package()`.
+
+```typescript
+import {timezones} from '@formatjs_generated/cldr.locale/timezones.js'
+import links from '@formatjs_generated/tz/links.js'
+import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/ecma402-abstract/regex.js'
+```
+
+Packages are organized by **data source** (not by consuming package): `cldr.core`, `cldr.locale`, `cldr.number`, `cldr.supported-values`, `cldr.supported-locales`, `tz`, `unicode`. Resolution:
+
+1. **TypeScript** — via `"paths"` in tsconfig.json pointing to `bazel-bin/`
+2. **Gazelle** — custom resolver in `tools/gazelle/ts/resolve.go` maps to `//:node_modules/@formatjs_generated/<pkg>`
+3. **Rolldown** — resolved from `node_modules` (bundled inline, not externalized)
+
+See `knowledge-base/011-generated-packages.md` for full architecture and `knowledge-base/migrations/002-generated-packages-migration.md` for migration plan.
+
 ## Linting & Formatting
 
 | Tool       | Scope                  | Config                      |
