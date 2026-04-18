@@ -128,7 +128,7 @@
     "lefthook": "^2.0.13",
     "lodash-es": "^4.17.22",
     "loud-rejection": "^2",
-    "lucide-react": "^0.577.0",
+    "lucide-react": "^1.0.0",
     "magic-string": "^0.30.0",
     "minimist": "^1.2.8",
     "oxc-parser": "^0.124.0",
