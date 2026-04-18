@@ -125,6 +125,16 @@ func (l *tsLang) resolveImportsToDeps(imports []ImportStatement, from label.Labe
 			continue
 		}
 
+		// Handle @formatjs_generated/* imports (Bazel-linked generated packages).
+		// These are not in the pnpm lockfile so resolveNpmImport won't find them.
+		if strings.HasPrefix(importPath, "@formatjs_generated/") {
+			parts := strings.SplitN(importPath, "/", 3) // @formatjs_generated, pkg, file
+			if len(parts) >= 2 {
+				result.external = append(result.external, "//:node_modules/@formatjs_generated/"+parts[1])
+			}
+			continue
+		}
+
 		// Handle Node.js built-in modules.
 		modulePath := strings.TrimPrefix(importPath, "node:")
 		baseModule := strings.Split(modulePath, "/")[0]

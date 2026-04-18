@@ -5,6 +5,7 @@ load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@rules_multirun//:defs.bzl", "multirun")
+load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
@@ -44,6 +45,8 @@ gazelle(
 )
 
 npm_link_all_packages()
+
+link_all_generated_packages()
 
 exports_files(
     [
