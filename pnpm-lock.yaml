@@ -278,7 +278,7 @@ importers:
         version: 2.4.6
       babel-loader:
         specifier: ^10.0.0
-        version: 10.1.1(@babel/core@7.29.0)(@rspack/core@1.7.11)(webpack@5.106.1(esbuild@0.28.0))
+        version: 10.1.1(@babel/core@7.29.0)(@rspack/core@1.7.11)(webpack@5.106.2(esbuild@0.28.0))
       babel-plugin-formatjs:
         specifier: workspace:*
         version: link:packages/babel-plugin-formatjs
@@ -455,7 +455,7 @@ importers:
         version: 29.4.9(@babel/core@7.29.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.0))(esbuild@0.28.0)(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.0)(babel-plugin-macros@3.1.0))(typescript@6.0.2)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.7(typescript@6.0.2)(webpack@5.106.1(esbuild@0.28.0))
+        version: 9.5.7(typescript@6.0.2)(webpack@5.106.2(esbuild@0.28.0))
       tsd:
         specifier: ^0.33.0
         version: 0.33.0
@@ -497,10 +497,10 @@ importers:
         version: link:packages/vue-intl
       vue-loader:
         specifier: ^17.4.2
-        version: 17.4.2(vue@3.5.32(typescript@6.0.2))(webpack@5.106.1(esbuild@0.28.0))
+        version: 17.4.2(vue@3.5.32(typescript@6.0.2))(webpack@5.106.2(esbuild@0.28.0))
       webpack:
         specifier: ^5.104.1
-        version: 5.106.1(esbuild@0.28.0)
+        version: 5.106.2(esbuild@0.28.0)
 
   benchmarks/cli-comparison: {}
 
@@ -5289,8 +5289,8 @@ packages:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
     engines: {node: ^4.5.0 || >= 5.9}
 
-  baseline-browser-mapping@2.10.18:
-    resolution: {integrity: sha512-VSnGQAOLtP5mib/DPyg2/t+Tlv65NTBz83BJBJvmLVHHuKJVaDOBvJJykiT5TR++em5nfAySPccDZDa4oSrn8A==}
+  baseline-browser-mapping@2.10.19:
+    resolution: {integrity: sha512-qCkNLi2sfBOn8XhZQ0FXsT1Ki/Yo5P90hrkRamVFRS7/KV9hpfA4HkoWNU152+8w0zPjnxo5psx5NL3PSGgv5g==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -5388,8 +5388,8 @@ packages:
   caniuse-lite@1.0.30001779:
     resolution: {integrity: sha512-U5og2PN7V4DMgF50YPNtnZJGWVLFjjsN3zb6uMT5VGYIewieDj1upwfuVNXf4Kor+89c3iCRJnSzMD5LmTvsfA==}
 
-  caniuse-lite@1.0.30001787:
-    resolution: {integrity: sha512-mNcrMN9KeI68u7muanUpEejSLghOKlVhRqS/Za2IeyGllJ9I9otGpR9g3nsw7n4W378TE/LyIteA0+/FOZm4Kg==}
+  caniuse-lite@1.0.30001788:
+    resolution: {integrity: sha512-6q8HFp+lOQtcf7wBK+uEenxymVWkGKkjFpCvw5W25cmMwEDU45p1xQFBQv8JDlMMry7eNxyBaR+qxgmTUZkIRQ==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -5826,8 +5826,8 @@ packages:
   electron-to-chromium@1.5.313:
     resolution: {integrity: sha512-QBMrTWEf00GXZmJyx2lbYD45jpI3TUFnNIzJ5BBc8piGUDwMPa1GV6HJWTZVvY/eiN3fSopl7NRbgGp9sZ9LTA==}
 
-  electron-to-chromium@1.5.335:
-    resolution: {integrity: sha512-q9n5T4BR4Xwa2cwbrwcsDJtHD/enpQ5S1xF1IAtdqf5AAgqDFmR/aakqH3ChFdqd/QXJhS3rnnXFtexU7rax6Q==}
+  electron-to-chromium@1.5.340:
+    resolution: {integrity: sha512-908qahOGocRMinT2nM3ajCEM99H4iPdv84eagPP3FfZy/1ZGeOy2CZYzjhms81ckOPCXPlW7LkY4XpxD8r1DrA==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -7453,6 +7453,10 @@ packages:
 
   mime-db@1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
+    engines: {node: '>= 0.6'}
+
+  mime-db@1.54.0:
+    resolution: {integrity: sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==}
     engines: {node: '>= 0.6'}
 
   mime-types@2.1.35:
@@ -9244,8 +9248,8 @@ packages:
       webpack-cli:
         optional: true
 
-  webpack@5.106.1:
-    resolution: {integrity: sha512-EW8af29ak8Oaf4T8k8YsajjrDBDYgnKZ5er6ljWFJsXABfTNowQfvHLftwcepVgdz+IoLSdEAbBiM9DFXoll9w==}
+  webpack@5.106.2:
+    resolution: {integrity: sha512-wGN3qcrBQIFmQ/c0AiOAQBvrZ5lmY8vbbMv4Mxfgzqd/B6+9pXtLo73WuS1dSGXM5QYY3hZnIbvx+K1xxe6FyA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -12806,7 +12810,7 @@ snapshots:
     dependencies:
       '@types/node': 24.12.0
       tapable: 2.3.0
-      webpack: 5.106.1(esbuild@0.28.0)
+      webpack: 5.106.2(esbuild@0.28.0)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
@@ -13429,13 +13433,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-loader@10.1.1(@babel/core@7.29.0)(@rspack/core@1.7.11)(webpack@5.106.1(esbuild@0.28.0)):
+  babel-loader@10.1.1(@babel/core@7.29.0)(@rspack/core@1.7.11)(webpack@5.106.2(esbuild@0.28.0)):
     dependencies:
       '@babel/core': 7.29.0
       find-up: 5.0.0
     optionalDependencies:
       '@rspack/core': 1.7.11
-      webpack: 5.106.1(esbuild@0.28.0)
+      webpack: 5.106.2(esbuild@0.28.0)
 
   babel-plugin-istanbul@6.1.1:
     dependencies:
@@ -13522,7 +13526,7 @@ snapshots:
 
   base64id@2.0.0: {}
 
-  baseline-browser-mapping@2.10.18: {}
+  baseline-browser-mapping@2.10.19: {}
 
   baseline-browser-mapping@2.10.8: {}
 
@@ -13568,9 +13572,9 @@ snapshots:
 
   browserslist@4.28.2:
     dependencies:
-      baseline-browser-mapping: 2.10.18
-      caniuse-lite: 1.0.30001787
-      electron-to-chromium: 1.5.335
+      baseline-browser-mapping: 2.10.19
+      caniuse-lite: 1.0.30001788
+      electron-to-chromium: 1.5.340
       node-releases: 2.0.37
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
@@ -13631,7 +13635,7 @@ snapshots:
 
   caniuse-lite@1.0.30001779: {}
 
-  caniuse-lite@1.0.30001787: {}
+  caniuse-lite@1.0.30001788: {}
 
   ccount@2.0.1: {}
 
@@ -14010,7 +14014,7 @@ snapshots:
 
   electron-to-chromium@1.5.313: {}
 
-  electron-to-chromium@1.5.335: {}
+  electron-to-chromium@1.5.340: {}
 
   emittery@0.13.1: {}
 
@@ -16343,6 +16347,8 @@ snapshots:
 
   mime-db@1.52.0: {}
 
+  mime-db@1.54.0: {}
+
   mime-types@2.1.35:
     dependencies:
       mime-db: 1.52.0
@@ -17791,13 +17797,13 @@ snapshots:
     optionalDependencies:
       esbuild: 0.27.4
 
-  terser-webpack-plugin@5.4.0(esbuild@0.28.0)(webpack@5.106.1(esbuild@0.28.0)):
+  terser-webpack-plugin@5.4.0(esbuild@0.28.0)(webpack@5.106.2(esbuild@0.28.0)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.46.1
-      webpack: 5.106.1(esbuild@0.28.0)
+      webpack: 5.106.2(esbuild@0.28.0)
     optionalDependencies:
       esbuild: 0.28.0
 
@@ -17936,7 +17942,7 @@ snapshots:
       esbuild: 0.28.0
       jest-util: 29.7.0
 
-  ts-loader@9.5.7(typescript@6.0.2)(webpack@5.106.1(esbuild@0.28.0)):
+  ts-loader@9.5.7(typescript@6.0.2)(webpack@5.106.2(esbuild@0.28.0)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.20.1
@@ -17944,7 +17950,7 @@ snapshots:
       semver: 7.7.4
       source-map: 0.7.6
       typescript: 6.0.2
-      webpack: 5.106.1(esbuild@0.28.0)
+      webpack: 5.106.2(esbuild@0.28.0)
 
   tsd@0.33.0:
     dependencies:
@@ -18320,12 +18326,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-loader@17.4.2(vue@3.5.32(typescript@6.0.2))(webpack@5.106.1(esbuild@0.28.0)):
+  vue-loader@17.4.2(vue@3.5.32(typescript@6.0.2))(webpack@5.106.2(esbuild@0.28.0)):
     dependencies:
       chalk: 4.1.2
       hash-sum: 2.0.0
       watchpack: 2.5.0
-      webpack: 5.106.1(esbuild@0.28.0)
+      webpack: 5.106.2(esbuild@0.28.0)
     optionalDependencies:
       vue: 3.5.32(typescript@6.0.2)
 
@@ -18413,7 +18419,7 @@ snapshots:
       - esbuild
       - uglify-js
 
-  webpack@5.106.1(esbuild@0.28.0):
+  webpack@5.106.2(esbuild@0.28.0):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -18431,13 +18437,12 @@ snapshots:
       events: 3.3.0
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
       loader-runner: 4.3.1
-      mime-types: 2.1.35
+      mime-db: 1.54.0
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.2
-      terser-webpack-plugin: 5.4.0(esbuild@0.28.0)(webpack@5.106.1(esbuild@0.28.0))
+      terser-webpack-plugin: 5.4.0(esbuild@0.28.0)(webpack@5.106.2(esbuild@0.28.0))
       watchpack: 2.5.1
       webpack-sources: 3.3.4
     transitivePeerDependencies:
