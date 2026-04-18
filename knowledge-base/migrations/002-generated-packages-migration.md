@@ -4,7 +4,7 @@
 
 ## Goal
 
-Remove all generated TypeScript data files from git. Generated files become Bazel build artifacts, organized into 3 composite TypeScript projects by data source (`cldr`, `tz`, `unicode`), linked into `node_modules` via `npm_link_package()`. See `knowledge-base/011-generated-packages.md` for the target architecture.
+Remove all generated TypeScript data files from git. Generated files become Bazel build artifacts, organized into 7 composite TypeScript projects by data source (`cldr.core`, `cldr.locale`, `cldr.number`, `cldr.supported-values`, `cldr.supported-locales`, `tz`, `unicode`), linked into `node_modules` via `npm_link_package()`. See `knowledge-base/011-generated-packages.md` for the target architecture.
 
 ## Motivation
 
@@ -23,7 +23,11 @@ Remove all generated TypeScript data files from git. Generated files become Baze
 
 | Package | Data Source | File Count |
 |---|---|---|
-| `@formatjs_generated/cldr` | CLDR npm packages, ISO 4217 | 28 |
+| `@formatjs_generated/cldr.core` | cldr-core supplemental, ISO 4217 | 7 |
+| `@formatjs_generated/cldr.locale` | cldr-core/bcp47/localenames (intl-locale metadata) | 6 |
+| `@formatjs_generated/cldr.number` | cldr-numbers-full (currency/numbering data) | 4 |
+| `@formatjs_generated/cldr.supported-values` | cldr-bcp47/numbers (BCP47 enumerations) | 6 |
+| `@formatjs_generated/cldr.supported-locales` | mixed CLDR full packages (per-polyfill locale lists) | 6 |
 | `@formatjs_generated/tz` | IANA Time Zone Database | 2 |
 | `@formatjs_generated/unicode` | Unicode character data, emoji-data.txt, CLDR segmentation | 7 |
 
@@ -41,7 +45,7 @@ Full file listing in `knowledge-base/011-generated-packages.md`.
 
 2. **`tools/generated_packages.bzl`** — Registry + `link_all_generated_packages()`.
 
-3. **`packages/generated/cldr/BUILD.bazel`** — CLDR generated package (initially empty, populated in later phases).
+3. **`packages/generated/cldr/{core,locale,number,supported-values,supported-locales}/BUILD.bazel`** — 5 CLDR sub-packages (initially empty, populated in later phases).
 
 4. **`packages/generated/tz/BUILD.bazel`** — Timezone generated package.
 
@@ -134,27 +138,31 @@ Migrate all Unicode-derived files across 5 source packages.
 
 For each: move `generate_src_file` → `generate_package_file` in `packages/generated/unicode/BUILD.bazel`, update imports, remove from source `srcs`, add dep on `//:node_modules/@formatjs_generated/unicode`.
 
-### Phase 3: `@formatjs_generated/cldr`
+### Phase 3: `@formatjs_generated/cldr.*` (5 sub-packages)
 
-**Effort:** High | **Risk:** Medium (28 files, many consumers)
+**Effort:** High | **Risk:** Medium (29 files, many consumers)
 
-The largest package. Migrate in sub-batches by origin package:
+Migrate one CLDR sub-package at a time.
 
-**Batch 3a:** `intl-getcanonicallocales` (2 files: aliases, likelySubtags)
+**3a: `cldr.core`** (7 files) — Supplemental data, canonical names, defaults
+- intl-getcanonicallocales/{aliases, likelySubtags}
+- intl-localematcher/regions
+- utils/{currencyMinorUnits, defaultCurrencyData, defaultLocaleData}
+- icu-messageformat-parser/time-data
 
-**Batch 3b:** `utils` (3 files: currencyMinorUnits, defaultCurrencyData, defaultLocaleData)
+**3b: `cldr.locale`** (6 files) — Locale preference metadata (all from intl-locale)
+- calendars, character-orders, hour-cycles, numbering-systems, timezones, week-data
 
-**Batch 3c:** `intl-numberformat` (3 files: currency-digits, numbering-systems, supported-locales)
-- **Important:** Migrate this before `intl-durationformat` and `intl-supportedvaluesof` since they copy `numbering-systems` from here.
+**3c: `cldr.number`** (4 files) — Number/currency formatting data
+- intl-numberformat/{currency-digits, numbering-systems}
+- intl-durationformat/{numbering-systems, time-separators}
+- **Important:** Migrate before `cldr.supported-values` since `intl-supportedvaluesof/numbering-systems` is copied from `intl-numberformat`.
 
-**Batch 3d:** `intl-durationformat` (2 files) + `intl-supportedvaluesof` (6 files)
-- Update the numbering-systems copy to import from `@formatjs_generated/cldr/intl-numberformat/numbering-systems.js`
+**3d: `cldr.supported-values`** (6 files) — BCP47 enumerations (all from intl-supportedvaluesof)
+- calendars, collations, currencies, numbering-systems, timezones, units
 
-**Batch 3e:** `intl-locale` (6 files) + `intl-localematcher` (1 file: regions)
-
-**Batch 3f:** Remaining supported-locales files (intl-displaynames, intl-listformat, intl-pluralrules, intl-relativetimeformat, intl-datetimeformat)
-
-**Batch 3g:** `icu-messageformat-parser/time-data` (1 file)
+**3e: `cldr.supported-locales`** (6 files) — Per-polyfill supported locale lists
+- intl-datetimeformat, intl-displaynames, intl-listformat, intl-numberformat, intl-pluralrules, intl-relativetimeformat
 
 ### Phase 4: Cleanup
 
@@ -172,21 +180,29 @@ The largest package. Migrate in sub-batches by origin package:
 ## Import Change Summary
 
 ```typescript
-// CLDR data — before
+// CLDR locale metadata — before
 import {timezones} from '#packages/intl-locale/timezones.generated.js'
+// after
+import {timezones} from '@formatjs_generated/cldr.locale/timezones.js'
+
+// CLDR core — before
+import {aliases} from '#packages/intl-getcanonicallocales/aliases.generated.js'
+// after
+import {aliases} from '@formatjs_generated/cldr.core/intl-getcanonicallocales/aliases.js'
+
+// CLDR supported locales — before
 import {supportedLocales} from '#packages/intl-pluralrules/supported-locales.generated.js'
-// CLDR data — after
-import {timezones} from '@formatjs_generated/cldr/intl-locale/timezones.js'
-import {supportedLocales} from '@formatjs_generated/cldr/intl-pluralrules/supported-locales.js'
+// after
+import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-pluralrules.js'
 
 // Timezone data — before
 import links from '#packages/intl-datetimeformat/data/links.generated.js'
-// Timezone data — after
+// after
 import links from '@formatjs_generated/tz/links.js'
 
 // Unicode/regex data — before
 import {S_UNICODE_REGEX} from '#packages/ecma402-abstract/regex.generated.js'
-// Unicode/regex data — after
+// after
 import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/ecma402-abstract/regex.js'
 ```
 

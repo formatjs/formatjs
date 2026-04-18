@@ -43,56 +43,83 @@ flowchart TD
 
 ## Package Structure
 
-Packages are organized by **data source**, not by consuming package. Files within each package use subdirectories named after their origin package to avoid collisions.
+Packages are organized by **data source**, not by consuming package. CLDR data is further split into sub-packages aligned with the upstream CLDR npm package groupings (`cldr-core`, `cldr-numbers-full`, `cldr-bcp47`, etc.). Package names use `.` as path delimiter.
 
-### `@formatjs_generated/cldr` — CLDR-derived data (28 files)
+Files within each package use subdirectories named after their origin package to avoid collisions.
 
-All data generated from CLDR npm packages (`cldr-core`, `cldr-bcp47`, `cldr-numbers-full`, `cldr-localenames-full`, `cldr-misc-full`, `cldr-dates-full`, `cldr-segments-full`, `cldr-units-full`).
+### `@formatjs_generated/cldr.core` — Supplemental data, canonical names, defaults (7 files)
+
+From `cldr-core` supplemental data and ISO 4217.
 
 ```
-@formatjs_generated/cldr/
-  intl-locale/
-    calendars.js            # from cldr-core
-    character-orders.js     # from cldr-localenames-full, cldr-misc-full
-    hour-cycles.js          # from cldr-core
-    numbering-systems.js    # from cldr-localenames-full, cldr-numbers-full
-    timezones.js            # from cldr-bcp47
-    week-data.js            # from cldr-core
-  intl-supportedvaluesof/
-    calendars.js            # from cldr-bcp47
-    collations.js           # from cldr-bcp47
-    currencies.js           # from cldr-numbers-full
-    numbering-systems.js    # copied from intl-numberformat
-    timezones.js            # from ZONES list
-    units.js                # from cldr-bcp47
+@formatjs_generated/cldr.core/
+  intl-getcanonicallocales/
+    aliases.js              # language/territory/script/variant aliases
+    likelySubtags.js        # likely subtag mappings
+  intl-localematcher/
+    regions.js              # region groupings for locale matching
+  icu-messageformat-parser/
+    time-data.js            # time data for ICU message parsing
+  utils/
+    currencyMinorUnits.js   # ISO 4217 minor units
+    defaultCurrencyData.js  # default currency per territory
+    defaultLocaleData.js    # default locale data
+```
+
+### `@formatjs_generated/cldr.locale` — Locale preference metadata (6 files)
+
+Locale-level preferences from `cldr-core`, `cldr-bcp47`, `cldr-localenames-full`, `cldr-misc-full`. All consumed by `intl-locale`.
+
+```
+@formatjs_generated/cldr.locale/
+  calendars.js              # preferred calendars per territory
+  character-orders.js       # character ordering per locale
+  hour-cycles.js            # preferred hour cycles per territory
+  numbering-systems.js      # preferred numbering systems per locale
+  timezones.js              # timezones per territory
+  week-data.js              # first day of week, weekend, min days
+```
+
+### `@formatjs_generated/cldr.number` — Number/currency formatting data (4 files)
+
+From `cldr-numbers-full` and `cldr-core`. Currency and numbering system data for formatters.
+
+```
+@formatjs_generated/cldr.number/
   intl-numberformat/
-    currency-digits.js      # from cldr-core, cldr-numbers-full
-    numbering-systems.js    # from cldr-core, cldr-numbers-full
-    supported-locales.js    # from cldr-core, cldr-numbers-full, cldr-units-full
+    currency-digits.js      # decimal digits per currency
+    numbering-systems.js    # numbering system digit mappings
   intl-durationformat/
     numbering-systems.js    # copied from intl-numberformat
-    time-separators.js      # from cldr-core, cldr-localenames-full, cldr-numbers-full
-  intl-getcanonicallocales/
-    aliases.js              # from cldr-core
-    likelySubtags.js        # from cldr-core
-  intl-displaynames/
-    supported-locales.js    # from cldr-core, cldr-dates-full, cldr-localenames-full, cldr-numbers-full
-  intl-listformat/
-    supported-locales.js    # from cldr-core, cldr-misc-full
-  intl-pluralrules/
-    supported-locales.js    # from cldr-core
-  intl-relativetimeformat/
-    supported-locales.js    # from cldr-core, cldr-dates-full, cldr-numbers-full
-  intl-datetimeformat/
-    supported-locales.js    # from cldr-core, cldr-bcp47, cldr-dates-full, cldr-numbers-full
-  intl-localematcher/
-    regions.js              # from cldr-core
-  icu-messageformat-parser/
-    time-data.js            # from CLDR time data
-  utils/
-    currencyMinorUnits.js   # from ISO 4217 list-one.xml
-    defaultCurrencyData.js  # from cldr-core
-    defaultLocaleData.js    # from cldr-core
+    time-separators.js      # locale-specific time separators
+```
+
+### `@formatjs_generated/cldr.supported-values` — BCP47 supported value enumerations (6 files)
+
+From `cldr-bcp47` and `cldr-numbers-full`. Exhaustive lists consumed by `intl-supportedvaluesof`.
+
+```
+@formatjs_generated/cldr.supported-values/
+  calendars.js              # all BCP47 calendar types
+  collations.js             # all BCP47 collation types
+  currencies.js             # all ISO 4217 currency codes
+  numbering-systems.js      # copied from intl-numberformat
+  timezones.js              # all IANA timezone identifiers
+  units.js                  # all BCP47 unit identifiers
+```
+
+### `@formatjs_generated/cldr.supported-locales` — Per-polyfill supported locale lists (6 files)
+
+From various CLDR full packages. Each file is the set of locales a polyfill supports, derived from which locales have sufficient CLDR data.
+
+```
+@formatjs_generated/cldr.supported-locales/
+  intl-datetimeformat.js    # from cldr-core, cldr-bcp47, cldr-dates-full, cldr-numbers-full
+  intl-displaynames.js      # from cldr-core, cldr-dates-full, cldr-localenames-full, cldr-numbers-full
+  intl-listformat.js        # from cldr-core, cldr-misc-full
+  intl-numberformat.js      # from cldr-core, cldr-numbers-full, cldr-units-full
+  intl-pluralrules.js       # from cldr-core
+  intl-relativetimeformat.js # from cldr-core, cldr-dates-full, cldr-numbers-full
 ```
 
 ### `@formatjs_generated/tz` — IANA timezone database (2 files)
@@ -130,7 +157,11 @@ Regex patterns and data generated from Unicode character properties (`@unicode/u
 
 ```starlark
 GENERATED_PACKAGES = [
-    {"name": "cldr", "target": "//packages/generated/cldr:pkg"},
+    {"name": "cldr.core", "target": "//packages/generated/cldr/core:pkg"},
+    {"name": "cldr.locale", "target": "//packages/generated/cldr/locale:pkg"},
+    {"name": "cldr.number", "target": "//packages/generated/cldr/number:pkg"},
+    {"name": "cldr.supported-values", "target": "//packages/generated/cldr/supported-values:pkg"},
+    {"name": "cldr.supported-locales", "target": "//packages/generated/cldr/supported-locales:pkg"},
     {"name": "tz", "target": "//packages/generated/tz:pkg"},
     {"name": "unicode", "target": "//packages/generated/unicode:pkg"},
 ]
@@ -156,7 +187,7 @@ Generates and formats a single `.ts` file. Same pipeline as `generate_src_file()
 ```starlark
 generate_package_file(
     name = "timezones_gen",
-    src = "intl-locale/timezones.ts",
+    src = "timezones.ts",
     data = ["//:node_modules/cldr-bcp47"],
     tool = "//packages/intl-locale/scripts:timezones",
 )
@@ -171,18 +202,20 @@ Assembles generated files into a composite TypeScript project, compiles, and cre
 ```starlark
 formatjs_generated_package(
     name = "pkg",
-    package_name = "cldr",
+    package_name = "cldr.locale",
     srcs = {
-        "intl-locale/timezones.ts": ":timezones_gen",
-        "intl-locale/calendars.ts": ":calendars_gen",
-        "intl-numberformat/supported-locales.ts": ":numberformat_supported_locales_gen",
-        # ...
+        "calendars.ts": ":calendars_gen",
+        "character-orders.ts": ":character_orders_gen",
+        "hour-cycles.ts": ":hour_cycles_gen",
+        "numbering-systems.ts": ":numbering_systems_gen",
+        "timezones.ts": ":timezones_gen",
+        "week-data.ts": ":week_data_gen",
     },
 )
 ```
 
 Generates:
-1. `package.json` with `{"name": "@formatjs_generated/cldr", "type": "module", "exports": {"./*": "./*"}}`
+1. `package.json` with `{"name": "@formatjs_generated/cldr.locale", "type": "module", "exports": {"./*": "./*"}}`
 2. `tsconfig.json` with `composite: true`
 3. `oxc_transpiler` compilation of all `.ts` → `.js` + `.d.ts`
 4. `npm_package` with the compiled output
@@ -192,29 +225,37 @@ Generates:
 ### Import Pattern
 
 ```typescript
-// CLDR data
-import {timezones} from '@formatjs_generated/cldr/intl-locale/timezones.js'
-import {supportedLocales} from '@formatjs_generated/cldr/intl-numberformat/supported-locales.js'
-import type {Calendar} from '@formatjs_generated/cldr/intl-supportedvaluesof/calendars.js'
+// CLDR locale metadata
+import {timezones} from '@formatjs_generated/cldr.locale/timezones.js'
+import {weekData} from '@formatjs_generated/cldr.locale/week-data.js'
+
+// CLDR core/supplemental
+import {aliases} from '@formatjs_generated/cldr.core/intl-getcanonicallocales/aliases.js'
+
+// CLDR supported locale lists
+import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-numberformat.js'
+
+// CLDR supported value enumerations
+import type {Calendar} from '@formatjs_generated/cldr.supported-values/calendars.js'
 
 // Timezone data
 import links from '@formatjs_generated/tz/links.js'
 
 // Unicode/regex data
 import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/ecma402-abstract/regex.js'
-import {digitMapping} from '@formatjs_generated/unicode/ecma402-abstract/digit-mapping.js'
 ```
 
 ### Bazel Dependency
 
-Add `//:node_modules/@formatjs_generated/<data-source>` to your target's `deps`:
+Add `//:node_modules/@formatjs_generated/<package>` to your target's `deps`:
 
 ```starlark
 formatjs_library(
     name = "dist",
     srcs = ["index.ts", "polyfill.ts"],
     deps = [
-        "//:node_modules/@formatjs_generated/cldr",
+        "//:node_modules/@formatjs_generated/cldr.locale",
+        "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
     ],
 )
@@ -241,7 +282,7 @@ formatjs_library(
 }
 ```
 
-Generated packages must be built at least once for IDE resolution (`bazel build //packages/generated/cldr:pkg`).
+Generated packages must be built at least once for IDE resolution (e.g., `bazel build //packages/generated/cldr/locale:pkg`).
 
 ### Gazelle
 
