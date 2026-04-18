@@ -1,7 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
-import allData from '#packages/intl-datetimeformat/data/all-tz.generated'
+import allData from '@formatjs_generated/tz/all-tz.js'
 import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'

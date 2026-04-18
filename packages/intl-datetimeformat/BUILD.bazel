@@ -4,6 +4,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:compile.bzl", "formatjs_library")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
@@ -54,8 +55,6 @@ formatjs_library(
     name = "dist",
     srcs = [
         "core.ts",
-        "data/all-tz.generated.ts",
-        "data/links.generated.ts",
         "get_internal_slots.ts",
         "index.ts",
         "polyfill.ts",
@@ -87,6 +86,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/tz",
     ],
 )
 
@@ -121,6 +121,7 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DateTimeFormat",
@@ -816,11 +817,10 @@ generate_src_file(
     ],
 )
 
-# "ts-node scripts/link --input iana-data/backward --output src/links.ts"
-# links
-generate_src_file(
-    name = "links",
-    src = "data/links.generated.ts",
+# @formatjs_generated/tz — IANA timezone data
+generate_package_file(
+    name = "tz_links",
+    src = "links.ts",
     args = [
         "--input",
         package_name() + "/tz_data_generated/backward",
@@ -833,10 +833,9 @@ generate_src_file(
     tool = "//packages/intl-datetimeformat/scripts:link",
 )
 
-# data.ts
-generate_src_file(
-    name = "all-tz",
-    src = "data/all-tz.generated.ts",
+generate_package_file(
+    name = "tz_all_tz",
+    src = "all-tz.ts",
     args = [
         "$(rootpaths :zdumps)",
     ],
@@ -852,6 +851,15 @@ generate_src_file(
     ],
     tags = ["cldr"],
     tool = "//packages/intl-datetimeformat/scripts:process-zdump",
+)
+
+formatjs_generated_package(
+    name = "tz_pkg",
+    package_name = "tz",
+    srcs = [
+        ":tz_all_tz",
+        ":tz_links",
+    ],
 )
 
 # "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
@@ -981,8 +989,7 @@ multirun(
     name = "tz_data.update",
     testonly = True,
     commands = [
-        ":links",
-        ":all-tz",
+        ":supported-locales",
     ],
 )
 
