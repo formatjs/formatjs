@@ -296,9 +296,24 @@ separate from config interface (`config.go` vs `configure.go`).
 Generates IDE tsconfig.json with:
 
 - `#packages/*` path alias (depth-aware)
+- `@formatjs_generated/*` path alias pointing to `bazel-bin/`
 - `composite: true` if requested
 - `references` from Bazel labels → relative tsconfig paths
 - `exclude` auto-generated via `native.subpackages()` for child Bazel packages
+
+### generate_package_file (tools/generated.bzl)
+
+Same pipeline as `generate_src_file()` but output stays in Bazel — no `write_source_files`. Used for `@formatjs_generated/*` packages.
+
+### formatjs_generated_package (tools/generated.bzl)
+
+Creates an `@formatjs_generated/*` npm package from generated `.ts` files:
+
+1. Compiles `.ts` → `.js` + `.d.ts` via `oxc_transpiler`
+2. Generates `package.json`
+3. Creates `npm_package` linked via `npm_link_package()` in root BUILD
+
+See `knowledge-base/011-generated-packages.md` for full details.
 
 ### oxc_transpiler (tools/oxc_transpiler.bzl + tools/oxc-transpiler/index.mjs)
 

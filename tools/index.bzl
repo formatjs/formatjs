@@ -292,6 +292,7 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
     compiler_options = {
         "paths": {
             "#packages/*": [relative_to_root + "/packages/*"],
+            "@formatjs_generated/*": [relative_to_root + "/node_modules/@formatjs_generated/*"],
         },
     }
 

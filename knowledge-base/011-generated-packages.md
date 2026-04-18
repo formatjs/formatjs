@@ -11,7 +11,6 @@ Generated files live **only in Bazel output** — they are not checked into git.
 ```
 Generation script (.ts)
   → ts_run_binary (runs script with --out flag)
-  → oxfmt (format output)
   → oxc_transpiler (compile .ts → .js + .d.ts)
   → npm_package (package as @formatjs_generated/<data-source>)
   → npm_link_package (symlink into node_modules)
@@ -29,8 +28,7 @@ flowchart TD
         CLDR --> GEN["ts_run_binary<br>(generate_package_file)"]
         TZ --> GEN
         UNI --> GEN
-        GEN --> FMT["oxfmt"]
-        FMT --> OXC["oxc_transpiler<br>(.ts → .js + .d.ts)"]
+        GEN --> OXC["oxc_transpiler<br>(.ts → .js + .d.ts)"]
         OXC --> PKG["npm_package"]
     end
 
@@ -153,28 +151,19 @@ Regex patterns and data generated from Unicode character properties (`@unicode/u
 
 ## Package Registry
 
-`tools/generated_packages.bzl` contains the registry and linking helper:
+The registry is auto-generated — **do not edit manually**:
 
-```starlark
-GENERATED_PACKAGES = [
-    {"name": "cldr.core", "target": "//packages/generated/cldr/core:pkg"},
-    {"name": "cldr.locale", "target": "//packages/generated/cldr/locale:pkg"},
-    {"name": "cldr.number", "target": "//packages/generated/cldr/number:pkg"},
-    {"name": "cldr.supported-values", "target": "//packages/generated/cldr/supported-values:pkg"},
-    {"name": "cldr.supported-locales", "target": "//packages/generated/cldr/supported-locales:pkg"},
-    {"name": "tz", "target": "//packages/generated/tz:pkg"},
-    {"name": "unicode", "target": "//packages/generated/unicode:pkg"},
-]
+- **`tools/generated_packages_registry.bzl`** — Auto-generated list of all `@formatjs_generated` packages. Contains `GENERATED_PACKAGES` list.
+- **`tools/generated_packages.bzl`** — Imports the registry and provides `link_all_generated_packages()` helper.
+- **`scripts/generate_generated_packages.sh`** — Script that regenerates the registry using `bazel query` to discover all `formatjs_generated_package` targets.
 
-def link_all_generated_packages():
-    for pkg in GENERATED_PACKAGES:
-        npm_link_package(
-            name = "node_modules/@formatjs_generated/" + pkg["name"],
-            src = pkg["target"],
-        )
+To regenerate after adding/removing a generated package:
+
+```bash
+./scripts/generate_generated_packages.sh
 ```
 
-The root `BUILD.bazel` calls `link_all_generated_packages()`.
+The root `BUILD.bazel` calls `link_all_generated_packages()` to link all packages into `node_modules`.
 
 ## Bazel Macros
 
@@ -182,7 +171,7 @@ The root `BUILD.bazel` calls `link_all_generated_packages()`.
 
 **Location:** `tools/generated.bzl`
 
-Generates and formats a single `.ts` file. Same pipeline as `generate_src_file()` but without `write_source_files` — output stays in Bazel.
+Generates a single `.ts` file via `ts_run_binary`. Output stays in Bazel — no `write_source_files`, no formatting (generated data doesn't need it).
 
 ```starlark
 generate_package_file(
@@ -215,6 +204,7 @@ formatjs_generated_package(
 ```
 
 Generates:
+
 1. `package.json` with `{"name": "@formatjs_generated/cldr.locale", "type": "module", "exports": {"./*": "./*"}}`
 2. `tsconfig.json` with `composite: true`
 3. `oxc_transpiler` compilation of all `.ts` → `.js` + `.d.ts`
@@ -276,7 +266,7 @@ formatjs_library(
   "compilerOptions": {
     "paths": {
       "#packages/*": ["../../packages/*"],
-      "@formatjs_generated/*": ["../../bazel-bin/packages/generated/*/pkg/*"]
+      "@formatjs_generated/*": ["../../node_modules/@formatjs_generated/*"]
     }
   }
 }
@@ -294,14 +284,15 @@ The custom gazelle plugin at `tools/gazelle/ts/resolve.go` resolves `@formatjs_g
 
 1. Create the generation script in `packages/<consuming-pkg>/scripts/<name>.ts` (follow `knowledge-base/010-script-conventions.md`)
 2. Add a `generate_package_file()` target in the data-source package's `BUILD.bazel`
-3. Add the new file to `formatjs_generated_package(srcs={...})`
-4. Import from `@formatjs_generated/<data-source>/<origin-pkg>/<name>.js`
-5. Run `bazel run //:gazelle` to update deps
+3. Add the new file to `formatjs_generated_package(srcs=[...])`
+4. Run `./scripts/generate_generated_packages.sh` to update the registry
+5. Import from `@formatjs_generated/<data-source>/<origin-pkg>/<name>.js`
+6. Run `bazel run //:gazelle` to update deps
 
 ### Creating a new data-source package
 
-1. Create `packages/generated/<data-source>/BUILD.bazel` with `generate_package_file()` + `formatjs_generated_package()`
-2. Add entry to `GENERATED_PACKAGES` in `tools/generated_packages.bzl`
+1. Create `BUILD.bazel` with `generate_package_file()` + `formatjs_generated_package()`
+2. Run `./scripts/generate_generated_packages.sh` to update the registry
 3. Run `bazel run //:gazelle` to update deps
 
 ## Rust Crate Generated Files
@@ -310,12 +301,14 @@ Rust generated files (`crates/icu_messageformat_parser/regex_generated.rs`, `tim
 
 ## Key Files
 
-| File | Purpose |
-|---|---|
-| `tools/generated.bzl` | `generate_package_file()`, `formatjs_generated_package()` macros |
-| `tools/generated_packages.bzl` | Package registry + `link_all_generated_packages()` |
-| `tools/compile.bzl` | `formatjs_library()` — excludes `@formatjs_generated` from rolldown externals |
-| `tools/tsconfig.bzl` | `packages_tsconfig()` — `@formatjs_generated/*` path alias for IDE |
-| `tools/index.bzl` | `generate_ide_tsconfig_json()` — `@formatjs_generated/*` path mapping |
-| `tools/gazelle/ts/resolve.go` | Resolves `@formatjs_generated/` imports to Bazel labels |
-| `BUILD.bazel` (root) | Calls `link_all_generated_packages()` |
+| File                                     | Purpose                                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `tools/generated.bzl`                    | `generate_package_file()`, `formatjs_generated_package()` macros              |
+| `tools/generated_packages_registry.bzl`  | Auto-generated package registry (`GENERATED_PACKAGES` list)                   |
+| `tools/generated_packages.bzl`           | `link_all_generated_packages()` helper                                        |
+| `scripts/generate_generated_packages.sh` | Script to regenerate the registry via `bazel query`                           |
+| `tools/compile.bzl`                      | `formatjs_library()` — excludes `@formatjs_generated` from rolldown externals |
+| `tools/tsconfig.bzl`                     | `packages_tsconfig()` — `@formatjs_generated/*` path alias for IDE            |
+| `tools/index.bzl`                        | `generate_ide_tsconfig_json()` — `@formatjs_generated/*` path mapping         |
+| `tools/gazelle/ts/resolve.go`            | Resolves `@formatjs_generated/` imports to Bazel labels                       |
+| `BUILD.bazel` (root)                     | Calls `link_all_generated_packages()`                                         |
