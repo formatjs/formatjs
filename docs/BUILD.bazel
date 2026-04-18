@@ -99,6 +99,26 @@ ts_run_binary(
     tool = ":build_typesense_index_tool",
 )
 
+# Generate sitemap tool
+ts_binary(
+    name = "generate_sitemap_tool",
+    data = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fast-glob",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "scripts/generate-sitemap.ts",
+)
+
+# Generate sitemap.xml from MDX docs
+generate_src_file(
+    name = "sitemap",
+    src = "public/sitemap.xml",
+    data = glob(["src/docs/**/*.mdx"]),
+    tool = ":generate_sitemap_tool",
+)
+
 # Extract metadata tool
 ts_binary(
     name = "extract_metadata_tool",

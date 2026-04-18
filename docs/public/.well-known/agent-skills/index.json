@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agentskills.io/schema/v0.2.0/index.json",
+  "skills": [
+    {
+      "name": "formatjs-docs",
+      "type": "documentation",
+      "description": "FormatJS documentation — guides, API references, and polyfill docs for JavaScript internationalization using ICU Message syntax and ECMA-402.",
+      "url": "https://formatjs.io/sitemap.xml"
+    }
+  ]
+}

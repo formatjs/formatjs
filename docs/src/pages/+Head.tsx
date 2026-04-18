@@ -9,6 +9,14 @@ export function Head(): React.ReactNode {
       <link rel="icon" href="/img/logo-icon.svg" type="image/svg+xml" />
       <meta name="theme-color" content="#6f3c97" />
 
+      {/* Agent discovery */}
+      <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+      <link
+        rel="agent-skills"
+        href="/.well-known/agent-skills/index.json"
+        type="application/json"
+      />
+
       {/* Google Analytics */}
       <script
         async

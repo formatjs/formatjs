@@ -1,0 +1,13 @@
+# robots.txt for formatjs.io
+# https://www.rfc-editor.org/rfc/rfc9309
+
+# Default: allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://formatjs.io/sitemap.xml
+
+# Content Signals (draft-romm-aipref-contentsignals)
+# https://contentsignals.org/
+Content-Signal: search=yes, ai-train=yes, ai-input=yes
