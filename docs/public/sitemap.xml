@@ -106,12 +106,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://formatjs.io/docs/intl</loc>
+    <loc>https://formatjs.io/docs/intl-messageformat</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://formatjs.io/docs/intl-messageformat</loc>
+    <loc>https://formatjs.io/docs/intl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
