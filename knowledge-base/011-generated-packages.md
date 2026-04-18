@@ -132,7 +132,7 @@ Data extracted from the IANA Time Zone Database (`tz_data.tar.gz` → zdump outp
   links.js                # IANA "backward" timezone links
 ```
 
-### `@formatjs_generated/unicode` — Unicode-derived data (7 files)
+### `@formatjs_generated/unicode` — Unicode-derived data (6 files)
 
 Regex patterns and data generated from Unicode character properties (`@unicode/unicode-17.0.0`, `emoji-data.txt`, `cldr-segments-full`).
 

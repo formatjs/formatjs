@@ -29,7 +29,7 @@ Remove all generated TypeScript data files from git. Generated files become Baze
 | `@formatjs_generated/cldr.supported-values` | cldr-bcp47/numbers (BCP47 enumerations) | 6 |
 | `@formatjs_generated/cldr.supported-locales` | mixed CLDR full packages (per-polyfill locale lists) | 6 |
 | `@formatjs_generated/tz` | IANA Time Zone Database | 2 |
-| `@formatjs_generated/unicode` | Unicode character data, emoji-data.txt, CLDR segmentation | 7 |
+| `@formatjs_generated/unicode` | Unicode character data, emoji-data.txt, CLDR segmentation | 6 |
 
 Full file listing in `knowledge-base/011-generated-packages.md`.
 
