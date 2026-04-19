@@ -163,8 +163,6 @@ multirun(
     testonly = True,
     commands = [
         "//packages/icu-messageformat-parser:time-data",
-        "//packages/intl-datetimeformat:all-tz",
-        "//packages/intl-datetimeformat:links",
         "//packages/intl-datetimeformat:supported-locales",
         "//packages/intl-datetimeformat:test262-main",
         "//packages/intl-displaynames:supported-locales",

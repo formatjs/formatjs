@@ -2,7 +2,7 @@ import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {t
 import pl from '#packages/intl-datetimeformat/tests/locale-data/pl.json' with {type: 'json'}
 import de from '#packages/intl-datetimeformat/tests/locale-data/de.json' with {type: 'json'}
 import ar from '#packages/intl-datetimeformat/tests/locale-data/ar.json' with {type: 'json'}
-import allData from '#packages/intl-datetimeformat/data/all-tz.generated'
+import allData from '@formatjs_generated/tz/all-tz.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
 import {type IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
 import {describe, expect, it} from 'vitest'
