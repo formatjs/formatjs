@@ -1026,7 +1026,7 @@ formatjs_test(
         "tests/unit-zh-TW.test.ts",
         "tests/unit/unitTest.ts",
         "tests/value-tonumber.test.ts",
-    ],
+    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],  # keep
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
