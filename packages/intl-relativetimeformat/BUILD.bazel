@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
@@ -767,15 +766,6 @@ test262_harness_bin.test262_harness_test(
         "@com_github_tc39_test262//:test262-relativetimeformat-copy",
     ],
     tags = ["manual"],
-)
-
-write_source_files(
-    name = "generated-test-files",
-    files = {
-        "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
-        for k in TEST_LOCALES
-    },
-    visibility = ["//:__pkg__"],
 )
 
 rolldown_bundle(

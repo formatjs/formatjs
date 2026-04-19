@@ -127,19 +127,12 @@ multirun(
     testonly = True,
     commands = [
         "//packages/intl-datetimeformat:test262-main",
-        "//packages/intl-datetimeformat:generated-test-files",
         "//packages/intl-displaynames:test262-main",
-        "//packages/intl-displaynames:generated-test-files",
         "//packages/intl-listformat:test262-main",
-        "//packages/intl-listformat:generated-test-files",
         "//packages/intl-numberformat:test262-main",
-        "//packages/intl-numberformat:generated-test-files",
         "//packages/intl-pluralrules:test262-main",
-        "//packages/intl-pluralrules:generated-test-files",
         "//packages/intl-relativetimeformat:test262-main",
-        "//packages/intl-relativetimeformat:generated-test-files",
         "//packages/intl-segmenter:test262-main",
-        "//packages/intl-segmenter:generated-files",
         "//packages/intl-getcanonicallocales:aliases",
     ],
 )
@@ -154,7 +147,6 @@ multirun(
         "//packages/intl-numberformat:supported-locales",
         "//packages/intl-pluralrules:supported-locales",
         "//packages/intl-relativetimeformat:supported-locales",
-        "//packages/intl-segmenter:generated-files",
     ],
 )
 

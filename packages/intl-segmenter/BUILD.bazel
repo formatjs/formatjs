@@ -1,5 +1,4 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
@@ -134,11 +133,6 @@ test262_harness_bin.test262_harness_test(
     ],
     # TODO: fix
     tags = ["manual"],
-)
-
-write_source_files(
-    name = "generated-files",
-    visibility = ["//:__pkg__"],
 )
 
 rolldown_bundle(
