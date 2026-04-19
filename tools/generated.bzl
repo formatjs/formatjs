@@ -4,7 +4,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 
-def generate_package_file(name, src, entry_point = None, tool = None, chdir = None, args = [], data = [], tags = []):
+def generate_package_file(name, src, entry_point = None, tool = None, chdir = None, args = [], data = [], tags = [], visibility = None):
     """Generate a single .ts file for inclusion in a generated package.
 
     Runs ts_run_binary to produce the file. Output stays in Bazel — no
@@ -19,7 +19,11 @@ def generate_package_file(name, src, entry_point = None, tool = None, chdir = No
         args: args to generation script
         data: dependent data labels
         tags: tags to apply
+        visibility: target visibility (needed for cross-package references)
     """
+    kwargs = {}
+    if visibility:
+        kwargs["visibility"] = visibility
     ts_run_binary(
         name = name,
         outs = [src],
@@ -35,6 +39,7 @@ def generate_package_file(name, src, entry_point = None, tool = None, chdir = No
             "//:node_modules/minimist",
         ],
         tags = tags + ["codegen"],
+        **kwargs
     )
 
 def formatjs_generated_package(name, package_name, srcs, visibility = ["//visibility:public"]):
