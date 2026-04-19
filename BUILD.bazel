@@ -4,7 +4,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
-load("@rules_multirun//:defs.bzl", "multirun")
+
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
@@ -120,13 +120,6 @@ copy_to_directory(
         "packages/%s/pkg" % p,
         "packages/%s" % p,
     ) for p in PACKAGE_DIRNAMES]},
-)
-
-multirun(
-    name = "cldr-gen",
-    testonly = True,
-    commands = [],
-    jobs = 0,  # Run all targets in parallel
 )
 
 copy_to_bin(
