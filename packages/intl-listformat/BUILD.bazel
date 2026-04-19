@@ -1,8 +1,7 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
@@ -33,7 +32,6 @@ formatjs_library(
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-        "test262-main.ts",
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
@@ -56,11 +54,6 @@ formatjs_test(
     name = "unit_test",
     srcs = [
         "tests/index.test.ts",
-        "tests/locale-data/en.json",
-        "tests/locale-data/en-AI.json",
-        "tests/locale-data/zh.json",
-        "tests/locale-data/zh-Hans.json",
-        "tests/locale-data/zh-Hant.json",
         "tests/supported-locales-of.test.ts",
     ],
     data = ["//:package.json"],
@@ -696,26 +689,29 @@ ts_run_binary(
 [genrule(
     name = "tests-locale-data-%s" % locale,
     srcs = ["cldr-raw/%s.json" % locale],
-    outs = ["tests-locale-data/%s.json" % locale],
+    outs = ["tests/locale-data/%s.json" % locale],
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-generate_src_file(
-    name = "test262-main",
-    src = "test262-main.ts",
+ts_run_binary(
+    name = "test262-main-gen",
+    srcs = [
+        ":cldr-raw",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    outs = ["test262-main.ts"],
     args = [
         "--cldrFile %s/cldr-raw/%s.json" % (
             package_name(),
             f,
         )
         for f in ALL_LOCALES
+    ] + [
+        "--out",
+        "$(rootpath test262-main.ts)",
     ],
-    data = [":cldr-raw"],
-    tags = ["cldr"],
     tool = "//packages/intl-listformat/scripts:test262-main-gen",
-    visibility = [
-        "//:__pkg__",
-    ],
 )
 
 # Test262
@@ -752,15 +748,6 @@ test262_harness_bin.test262_harness_test(
     ],
     # TODO: fix
     tags = ["manual"],
-)
-
-write_source_files(
-    name = "generated-test-files",
-    files = {
-        "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
-        for k in TEST_LOCALES
-    },
-    visibility = ["//:__pkg__"],
 )
 
 rolldown_bundle(

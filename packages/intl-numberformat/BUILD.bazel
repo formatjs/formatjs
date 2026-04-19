@@ -1,11 +1,9 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
-load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
@@ -81,7 +79,6 @@ formatjs_library(
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-        "test262-main.ts",
         "to_locale_string.ts",
         "types.ts",
     ],
@@ -159,29 +156,25 @@ LOCALE_TEST_TYPES = [
 ) for type in LOCALE_TEST_TYPES]
 
 [
-    [generate_src_file(
-        name = "%s_%s_test" % (type, locale),
-        src = "tests/%s/%s.generated.test.ts" % (type, locale),
+    [ts_run_binary(
+        name = "%s_%s_test_gen" % (type, locale),
+        srcs = [
+            "//:node_modules/fs-extra",
+            "//:node_modules/minimist",
+        ],
+        outs = ["tests/%s/%s.generated.test.ts" % (type, locale)],
         args = [
             "--locale",
             locale,
             "--type",
             type,
+            "--out",
+            "$(rootpath tests/%s/%s.generated.test.ts)" % (type, locale),
         ],
         tool = "//packages/intl-numberformat/scripts:generate-locale-test",
     ) for locale in UNIT_TEST_LOCALES]
     for type in LOCALE_TEST_TYPES
 ]
-
-multirun(
-    name = "tests_gen",
-    testonly = True,
-    commands = [
-        ":%s_%s_test" % (type, locale)
-        for type in LOCALE_TEST_TYPES
-        for locale in UNIT_TEST_LOCALES
-    ],
-)
 
 vitest(
     name = "misc_tests",
@@ -844,7 +837,7 @@ ts_run_binary(
 [genrule(
     name = "tests-locale-data-%s" % locale,
     srcs = ["cldr-raw/%s.json" % locale],
-    outs = ["tests-locale-data/%s.json" % locale],
+    outs = ["tests/locale-data/%s.json" % locale],
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
@@ -860,22 +853,25 @@ TEST262_LOCALES = [
     "zh-Hans",
 ]
 
-generate_src_file(
-    name = "test262-main",
-    src = "test262-main.ts",
+ts_run_binary(
+    name = "test262-main-gen",
+    srcs = [
+        ":cldr-raw",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    outs = ["test262-main.ts"],
     args = [
         "--cldrFile %s/cldr-raw/%s.json" % (
             package_name(),
             f,
         )
         for f in TEST262_LOCALES
+    ] + [
+        "--out",
+        "$(rootpath test262-main.ts)",
     ],
-    data = [":cldr-raw"],
-    tags = ["cldr"],
     tool = "//packages/intl-numberformat/scripts:test262-main-gen",
-    visibility = [
-        "//:__pkg__",
-    ],
 )
 
 # @formatjs_generated/cldr.number — CLDR number/currency formatting data
@@ -960,8 +956,8 @@ formatjs_generated_package(
 rolldown_bundle(
     name = "test262-polyfill",
     srcs = [
-        "test262-main.ts",
         ":srcs",
+        ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
     target = "es2020",
@@ -997,15 +993,6 @@ test262_harness_bin.test262_harness_test(
     ],
 )
 
-write_source_files(
-    name = "generated-test-files",
-    files = {
-        "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
-        for k in TEST_LOCALES
-    },
-    visibility = ["//:__pkg__"],
-)
-
 rolldown_bundle(
     name = "polyfill.iife",
     srcs = [":srcs"],
@@ -1026,136 +1013,18 @@ formatjs_test(
     srcs = [
         "tests/currency-code.test.ts",
         "tests/currency/currencyTest.ts",
-        "tests/currency/da.generated.test.ts",
-        "tests/currency/de.generated.test.ts",
-        "tests/currency/en.generated.test.ts",
-        "tests/currency/en-BS.generated.test.ts",
-        "tests/currency/en-GB.generated.test.ts",
-        "tests/currency/es.generated.test.ts",
-        "tests/currency/fr.generated.test.ts",
-        "tests/currency/id.generated.test.ts",
-        "tests/currency/it.generated.test.ts",
-        "tests/currency/ja.generated.test.ts",
-        "tests/currency/ko.generated.test.ts",
-        "tests/currency/ms.generated.test.ts",
-        "tests/currency/nb.generated.test.ts",
-        "tests/currency/nl.generated.test.ts",
-        "tests/currency/pl.generated.test.ts",
-        "tests/currency/pt.generated.test.ts",
-        "tests/currency/ru.generated.test.ts",
-        "tests/currency/sv.generated.test.ts",
-        "tests/currency/th.generated.test.ts",
-        "tests/currency/tr.generated.test.ts",
-        "tests/currency/uk.generated.test.ts",
-        "tests/currency/zh.generated.test.ts",
-        "tests/decimal/da.generated.test.ts",
-        "tests/decimal/de.generated.test.ts",
         "tests/decimal/decimalTest.ts",
-        "tests/decimal/en.generated.test.ts",
-        "tests/decimal/en-BS.generated.test.ts",
-        "tests/decimal/en-GB.generated.test.ts",
-        "tests/decimal/es.generated.test.ts",
-        "tests/decimal/fr.generated.test.ts",
-        "tests/decimal/id.generated.test.ts",
-        "tests/decimal/it.generated.test.ts",
-        "tests/decimal/ja.generated.test.ts",
-        "tests/decimal/ko.generated.test.ts",
-        "tests/decimal/ms.generated.test.ts",
-        "tests/decimal/nb.generated.test.ts",
-        "tests/decimal/nl.generated.test.ts",
-        "tests/decimal/pl.generated.test.ts",
-        "tests/decimal/pt.generated.test.ts",
-        "tests/decimal/ru.generated.test.ts",
-        "tests/decimal/sv.generated.test.ts",
-        "tests/decimal/th.generated.test.ts",
-        "tests/decimal/tr.generated.test.ts",
-        "tests/decimal/uk.generated.test.ts",
-        "tests/decimal/zh.generated.test.ts",
         "tests/fast-path-optimizations.test.ts",
         "tests/format_to_parts.test.ts",
         "tests/legacy.test.ts",
-        "tests/locale-data/ar-SS.json",
-        "tests/locale-data/bn.json",
-        "tests/locale-data/da.json",
-        "tests/locale-data/de.json",
-        "tests/locale-data/de-AT.json",
-        "tests/locale-data/en.json",
-        "tests/locale-data/en-BS.json",
-        "tests/locale-data/en-GB.json",
-        "tests/locale-data/es.json",
-        "tests/locale-data/fr.json",
-        "tests/locale-data/fr-CH.json",
-        "tests/locale-data/hi.json",
-        "tests/locale-data/id.json",
-        "tests/locale-data/it.json",
-        "tests/locale-data/ja.json",
-        "tests/locale-data/ko.json",
-        "tests/locale-data/ms.json",
-        "tests/locale-data/nb.json",
-        "tests/locale-data/nl.json",
-        "tests/locale-data/pl.json",
-        "tests/locale-data/pt.json",
-        "tests/locale-data/ru.json",
-        "tests/locale-data/sv.json",
-        "tests/locale-data/sw.json",
-        "tests/locale-data/th.json",
-        "tests/locale-data/tr.json",
-        "tests/locale-data/uk.json",
-        "tests/locale-data/zh.json",
-        "tests/locale-data/zh-Hans.json",
-        "tests/locale-data/zh-Hant.json",
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",
         "tests/notation-compact-zh-TW.test.ts",
-        "tests/percent/da.generated.test.ts",
-        "tests/percent/de.generated.test.ts",
-        "tests/percent/en.generated.test.ts",
-        "tests/percent/en-BS.generated.test.ts",
-        "tests/percent/en-GB.generated.test.ts",
-        "tests/percent/es.generated.test.ts",
-        "tests/percent/fr.generated.test.ts",
-        "tests/percent/id.generated.test.ts",
-        "tests/percent/it.generated.test.ts",
-        "tests/percent/ja.generated.test.ts",
-        "tests/percent/ko.generated.test.ts",
-        "tests/percent/ms.generated.test.ts",
-        "tests/percent/nb.generated.test.ts",
-        "tests/percent/nl.generated.test.ts",
         "tests/percent/percentTest.ts",
-        "tests/percent/pl.generated.test.ts",
-        "tests/percent/pt.generated.test.ts",
-        "tests/percent/ru.generated.test.ts",
-        "tests/percent/sv.generated.test.ts",
-        "tests/percent/th.generated.test.ts",
-        "tests/percent/tr.generated.test.ts",
-        "tests/percent/uk.generated.test.ts",
-        "tests/percent/zh.generated.test.ts",
         "tests/signDisplay-currency-zh-TW.test.ts",
         "tests/signDisplay-zh-TW.test.ts",
         "tests/unit-zh-TW.test.ts",
-        "tests/unit/da.generated.test.ts",
-        "tests/unit/de.generated.test.ts",
-        "tests/unit/en.generated.test.ts",
-        "tests/unit/en-BS.generated.test.ts",
-        "tests/unit/en-GB.generated.test.ts",
-        "tests/unit/es.generated.test.ts",
-        "tests/unit/fr.generated.test.ts",
-        "tests/unit/id.generated.test.ts",
-        "tests/unit/it.generated.test.ts",
-        "tests/unit/ja.generated.test.ts",
-        "tests/unit/ko.generated.test.ts",
-        "tests/unit/ms.generated.test.ts",
-        "tests/unit/nb.generated.test.ts",
-        "tests/unit/nl.generated.test.ts",
-        "tests/unit/pl.generated.test.ts",
-        "tests/unit/pt.generated.test.ts",
-        "tests/unit/ru.generated.test.ts",
-        "tests/unit/sv.generated.test.ts",
-        "tests/unit/th.generated.test.ts",
-        "tests/unit/tr.generated.test.ts",
-        "tests/unit/uk.generated.test.ts",
         "tests/unit/unitTest.ts",
-        "tests/unit/zh.generated.test.ts",
         "tests/value-tonumber.test.ts",
     ],
     deps = [
