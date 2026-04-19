@@ -1,5 +1,5 @@
 import {match} from '@formatjs/intl-localematcher'
-import {supportedLocales} from '#packages/intl-numberformat/supported-locales.generated.js'
+import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-numberformat.js'
 /**
  * Check if this is old Node that only supports en
  * @returns
