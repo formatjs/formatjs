@@ -13,7 +13,7 @@ import {
   type TagElement,
   TYPE,
 } from '#packages/icu-messageformat-parser/types.js'
-import {SPACE_SEPARATOR_REGEX} from '#packages/icu-messageformat-parser/regex.generated.js'
+import {SPACE_SEPARATOR_REGEX} from '@formatjs_generated/unicode/icu-messageformat-parser-regex.js'
 import {
   type NumberSkeletonToken,
   parseNumberSkeleton,

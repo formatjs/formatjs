@@ -5,7 +5,9 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:generated.bzl", "generate_package_file")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
@@ -22,9 +24,9 @@ copy_file(
 )
 
 # Generate emoji version data from Unicode emoji-data.txt
-generate_src_file(
-    name = "emoji-data-generated",
-    src = "emoji-data.generated.ts",
+generate_package_file(
+    name = "unicode_emoji_data",
+    src = "emoji-data.ts",
     args = [
         "--emojiDataPath",
         "$(rootpath :emoji-data-txt)",
@@ -33,6 +35,7 @@ generate_src_file(
         ":emoji-data-txt",
     ],
     tool = "//packages/eslint-plugin-formatjs/scripts:generate-emoji-data",
+    visibility = ["//packages/ecma402-abstract:__pkg__"],
 )
 
 SRCS = glob(["rules/*.ts"]) + [
@@ -40,7 +43,6 @@ SRCS = glob(["rules/*.ts"]) + [
     "util.ts",
     "messages.ts",
     "emoji-utils.ts",
-    "emoji-data.generated.ts",
 ]
 
 EXTERNAL_PACKAGES = [
@@ -204,4 +206,45 @@ copy_to_bin(
 package_exports_test(
     name = "package_exports_test",
     pkg = ":pkg",
+)
+
+formatjs_library(
+    name = "dist",
+    srcs = [
+        "emoji-utils.ts",
+        "index.ts",
+        "messages.ts",
+        "rules/blocklist-elements.ts",
+        "rules/enforce-default-message.ts",
+        "rules/enforce-description.ts",
+        "rules/enforce-id.ts",
+        "rules/enforce-placeholders.ts",
+        "rules/enforce-plural-rules.ts",
+        "rules/no-camel-case.ts",
+        "rules/no-complex-selectors.ts",
+        "rules/no-emoji.ts",
+        "rules/no-id.ts",
+        "rules/no-invalid-icu.ts",
+        "rules/no-literal-string-in-jsx.ts",
+        "rules/no-literal-string-in-object.ts",
+        "rules/no-missing-icu-plural-one-placeholders.ts",
+        "rules/no-multiple-plurals.ts",
+        "rules/no-multiple-whitespaces.ts",
+        "rules/no-offset.ts",
+        "rules/no-useless-message.ts",
+        "rules/prefer-formatted-message.ts",
+        "rules/prefer-full-sentence.ts",
+        "rules/prefer-pound-in-plural.ts",
+        "util.ts",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@formatjs_generated/unicode",
+        "//:node_modules/@types/estree-jsx",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/eslint",
+        "//:node_modules/magic-string",
+    ],
 )

@@ -1,6 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:generated.bzl", "generate_package_file")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -12,11 +12,13 @@ formatjs_library(
         "date-time.ts",
         "index.ts",
         "number.ts",
-        "regex.generated.ts",
     ],
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs_generated/unicode",
+    ],
 )
 
 formatjs_test(
@@ -28,12 +30,13 @@ formatjs_test(
     deps = ["//:node_modules/vitest"],
 )
 
-generate_src_file(
-    name = "regex",
-    src = "regex.generated.ts",
+generate_package_file(
+    name = "unicode_icu_sp_regex",
+    src = "icu-skeleton-parser-regex.ts",
     data = [
         "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/regenerate",
     ],
     tool = "//packages/icu-skeleton-parser/scripts:regex-gen",
+    visibility = ["//packages/ecma402-abstract:__pkg__"],
 )

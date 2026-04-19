@@ -164,7 +164,6 @@ multirun(
         "//packages/intl-numberformat:test262-main",
         "//packages/intl-pluralrules:test262-main",
         "//packages/intl-relativetimeformat:test262-main",
-        "//packages/intl-segmenter:generate-cldr-segmentation-rules",
         "//packages/intl-segmenter:test262-main",
     ],
     jobs = 0,  # Run all targets in parallel

@@ -1,5 +1,5 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:test.bzl", "formatjs_test")
 
 formatjs_library(
@@ -22,7 +22,6 @@ formatjs_library(
         "ToIntlMathematicalValue.ts",
         "constants.ts",
         "data.ts",
-        "regex.generated.ts",
         "utils.ts",
     ],
     project_references = ["//packages/ecma262-abstract"],
@@ -64,13 +63,26 @@ formatjs_test(
     ],
 )
 
-generate_src_file(
-    name = "regex",
-    src = "regex.generated.ts",
+generate_package_file(
+    name = "unicode_regex",
+    src = "regex.ts",
     data = [
         "//:node_modules/@types/regenerate",
         "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/regenerate",
     ],
     tool = "//packages/ecma402-abstract/scripts:regex-gen",
+)
+
+formatjs_generated_package(
+    name = "unicode_pkg",
+    package_name = "unicode",
+    srcs = [
+        ":unicode_regex",
+        "//packages/ecma402-abstract/NumberFormat:unicode_digit_mapping",
+        "//packages/eslint-plugin-formatjs:unicode_emoji_data",
+        "//packages/icu-messageformat-parser:unicode_icu_mfp_regex",
+        "//packages/icu-skeleton-parser:unicode_icu_sp_regex",
+        "//packages/intl-segmenter:unicode_cldr_segmentation_rules",
+    ],
 )
