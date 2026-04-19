@@ -4,4 +4,5 @@
 GENERATED_PACKAGES = [
     {"name": "cldr.core", "target": "//packages/intl-getcanonicallocales:cldr_core_pkg"},
     {"name": "cldr.locale", "target": "//packages/intl-locale:cldr_locale_pkg"},
+    {"name": "cldr.number", "target": "//packages/intl-numberformat:cldr_number_pkg"},
 ]
