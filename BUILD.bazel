@@ -162,7 +162,6 @@ multirun(
     name = "cldr-gen",
     testonly = True,
     commands = [
-        "//packages/icu-messageformat-parser:time-data",
         "//packages/intl-datetimeformat:all-tz",
         "//packages/intl-datetimeformat:links",
         "//packages/intl-datetimeformat:supported-locales",
@@ -177,8 +176,6 @@ multirun(
         "//packages/intl-supportedvaluesof:numbering-systems",
         "//packages/intl-supportedvaluesof:timezones",
         "//packages/intl-supportedvaluesof:units",
-        "//packages/intl-getcanonicallocales:aliases",
-        "//packages/intl-getcanonicallocales:likelySubtags",
         "//packages/intl-listformat:supported-locales",
         "//packages/intl-listformat:test262-main",
         "//packages/intl-numberformat:currency-digits",
@@ -191,8 +188,6 @@ multirun(
         "//packages/intl-relativetimeformat:test262-main",
         "//packages/intl-segmenter:generate-cldr-segmentation-rules",
         "//packages/intl-segmenter:test262-main",
-        "//packages/utils:default-currency",
-        "//packages/utils:default-locale",
     ],
     jobs = 0,  # Run all targets in parallel
 )

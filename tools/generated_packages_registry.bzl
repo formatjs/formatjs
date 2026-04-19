@@ -2,5 +2,6 @@
 # To regenerate: bazel run //:generate-generated-packages
 
 GENERATED_PACKAGES = [
+    {"name": "cldr.core", "target": "//packages/intl-getcanonicallocales:cldr_core_pkg"},
     {"name": "cldr.locale", "target": "//packages/intl-locale:cldr_locale_pkg"},
 ]

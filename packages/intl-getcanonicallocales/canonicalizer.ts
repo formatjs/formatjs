@@ -3,9 +3,9 @@ import {
   scriptAlias,
   territoryAlias,
   variantAlias,
-} from '#packages/intl-getcanonicallocales/aliases.generated.js'
+} from '@formatjs_generated/cldr.core/aliases.js'
 import {emitUnicodeLanguageId} from '#packages/intl-getcanonicallocales/emitter.js'
-import {likelySubtags} from '#packages/intl-getcanonicallocales/likelySubtags.generated.js'
+import {likelySubtags} from '@formatjs_generated/cldr.core/likelySubtags.js'
 import {
   isUnicodeLanguageSubtag,
   isUnicodeVariantSubtag,

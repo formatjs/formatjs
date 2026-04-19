@@ -1,5 +1,5 @@
 import {canonicalizeCountryCode} from '#packages/utils/countryCodes.js'
-import data from '#packages/utils/defaultCurrencyData.generated.js'
+import data from '@formatjs_generated/cldr.core/defaultCurrencyData.js'
 
 const COUNTRIES_BY_DEFAULT_CURRENCY = Object.keys(data).reduce<
   Record<string, string[]>

@@ -25,5 +25,6 @@ ts_binary(
     visibility = [
         "//crates/icu_messageformat_parser:__pkg__",
         "//packages/icu-messageformat-parser:__subpackages__",
+        "//packages/intl-getcanonicallocales:__pkg__",
     ],
 )
