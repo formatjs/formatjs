@@ -1,5 +1,5 @@
 import {match} from '@formatjs/intl-localematcher'
-import {supportedLocales} from '#packages/intl-displaynames/supported-locales.generated.js'
+import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-displaynames.js'
 
 /**
  * https://bugs.chromium.org/p/chromium/issues/detail?id=1097432

@@ -111,4 +111,4 @@ export {
 } from '#packages/intl-getcanonicallocales/parser.js'
 export * from '#packages/intl-getcanonicallocales/types.js'
 
-export * from '#packages/intl-getcanonicallocales/likelySubtags.generated.js'
+export * from '@formatjs_generated/cldr.core/likelySubtags.js'

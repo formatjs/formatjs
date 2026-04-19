@@ -1,5 +1,5 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {S_UNICODE_REGEX} from '#packages/ecma402-abstract/regex.generated.js'
+import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/regex.js'
 import {
   type DecimalFormatNum,
   type LDMLPluralRuleMap,
@@ -20,7 +20,7 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
-import {digitMapping} from '#packages/ecma402-abstract/NumberFormat/digit-mapping.generated.js'
+import {digitMapping} from '@formatjs_generated/unicode/digit-mapping.js'
 import {GetUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/GetUnsignedRoundingMode.js'
 import {ToRawFixed} from '#packages/ecma402-abstract/NumberFormat/ToRawFixed.js'
 

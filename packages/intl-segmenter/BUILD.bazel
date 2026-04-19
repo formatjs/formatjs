@@ -3,6 +3,7 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
+load("//tools:generated.bzl", "generate_package_file")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
@@ -45,7 +46,6 @@ ENTRY_POINTS = [
 formatjs_library(
     name = "dist",
     srcs = [
-        "cldr-segmentation-rules.generated.ts",
         "index.ts",
         "polyfill.ts",
         "polyfill-force.ts",
@@ -59,7 +59,10 @@ formatjs_library(
     project_references = ["//packages/ecma402-abstract"],
     types = True,
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/intl-localematcher"],
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/unicode",
+    ],
 )
 
 formatjs_test(
@@ -174,9 +177,9 @@ UNICODE_FILES = [
 ]
 
 # Segmentation UCDs
-generate_src_file(
-    name = "generate-cldr-segmentation-rules",
-    src = "cldr-segmentation-rules.generated.ts",
+generate_package_file(
+    name = "unicode_cldr_segmentation_rules",
+    src = "cldr-segmentation-rules.ts",
     args = ["--unicodeFiles=$(rootpath :%s)" % unicode_file_name(f) for f in UNICODE_FILES],
     data =
         [":%s" % unicode_file_name(f) for f in UNICODE_FILES] + [
@@ -187,4 +190,5 @@ generate_src_file(
         ],
     tags = ["cldr"],
     tool = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules",
+    visibility = ["//packages/ecma402-abstract:__pkg__"],
 )

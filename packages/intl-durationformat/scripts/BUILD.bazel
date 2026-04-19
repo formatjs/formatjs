@@ -7,5 +7,8 @@ ts_binary(
         "utils.ts",
     ],
     entry_point = "time-separators.ts",
-    visibility = ["//packages/intl-durationformat:__pkg__"],
+    visibility = [
+        "//packages/intl-durationformat:__pkg__",
+        "//packages/intl-numberformat:__pkg__",
+    ],
 )

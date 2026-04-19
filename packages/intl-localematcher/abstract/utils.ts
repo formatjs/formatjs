@@ -1,6 +1,6 @@
 import {memoize} from '@formatjs/fast-memoize'
 import {data as jsonData} from '#packages/intl-localematcher/abstract/languageMatching.js'
-import {regions} from '#packages/intl-localematcher/abstract/regions.generated.js'
+import {regions} from '@formatjs_generated/cldr.core/regions.js'
 export const UNICODE_EXTENSION_SEQUENCE_REGEX: RegExp =
   /-u(?:-[0-9a-z]{2,8})+/gi
 

@@ -1,5 +1,5 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:generated.bzl", "generate_package_file")
 
 formatjs_library(
     name = "dist",
@@ -24,7 +24,6 @@ formatjs_library(
         "ToRawFixed.ts",
         "ToRawPrecision.ts",
         "decimal-cache.ts",
-        "digit-mapping.generated.ts",
         "format_to_parts.ts",
     ],
     project_references = [
@@ -37,14 +36,16 @@ formatjs_library(
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/unicode",
     ],
 )
 
-generate_src_file(
-    name = "digit-mapping",
-    src = "digit-mapping.generated.ts",
+generate_package_file(
+    name = "unicode_digit_mapping",
+    src = "digit-mapping.ts",
     data = [
         "//:node_modules/json-stable-stringify",
     ],
     tool = "//packages/ecma402-abstract/scripts:digit-mapping",
+    visibility = ["//packages/ecma402-abstract:__pkg__"],
 )
