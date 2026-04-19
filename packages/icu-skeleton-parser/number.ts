@@ -1,5 +1,5 @@
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
-import {WHITE_SPACE_REGEX} from '#packages/icu-skeleton-parser/regex.generated.js'
+import {WHITE_SPACE_REGEX} from '@formatjs_generated/unicode/icu-skeleton-parser-regex.js'
 
 export interface ExtendedNumberFormatOptions extends NumberFormatOptions {
   scale?: number

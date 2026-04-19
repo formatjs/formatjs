@@ -2,8 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "paths": {
-      "#packages/*": ["../../packages/*"],
-      "@formatjs_generated/*": ["../../node_modules/@formatjs_generated/*"]
+      "#packages/*": ["../../packages/*"]
     }
   },
   "extends": "../../tsconfig.json"

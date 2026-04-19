@@ -13,8 +13,8 @@ import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/
 import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
 import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
-import {numberingSystemNames} from '#packages/intl-durationformat/numbering-systems.generated.js'
-import {TIME_SEPARATORS} from '#packages/intl-durationformat/time-separators.generated.js'
+import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
+import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
   DurationFormatLocaleInternalData,
   DurationFormatPart,

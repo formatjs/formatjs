@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
@@ -7,7 +6,6 @@ load("//tools:index.bzl", "generate_src_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-load(":index.bzl", "unicode_file_name")
 
 npm_link_all_packages()
 
@@ -45,7 +43,6 @@ ENTRY_POINTS = [
 formatjs_library(
     name = "dist",
     srcs = [
-        "cldr-segmentation-rules.generated.ts",
         "index.ts",
         "polyfill.ts",
         "polyfill-force.ts",
@@ -59,7 +56,10 @@ formatjs_library(
     project_references = ["//packages/ecma402-abstract"],
     types = True,
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/intl-localematcher"],
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/unicode",
+    ],
 )
 
 formatjs_test(
@@ -83,6 +83,7 @@ formatjs_test(
     tsconfig = TSCONFIG,
     deps = [
         "//:node_modules/@bazel/runfiles",  # keep: imported from tests/
+        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
@@ -150,41 +151,4 @@ rolldown_bundle(
         "//:node_modules/@formatjs/intl-localematcher",
         "//packages/ecma402-abstract",
     ],
-)
-
-UNICODE_FILES = [
-    "@DerivedCombiningClass//file",
-    "@DerivedCoreProperties//file",
-    "@DerivedEastAsianWidth//file",
-    "@GraphemeBreakProperty//file",
-    "@IndicSyllabicCategory//file",
-    "@SentenceBreakProperty//file",
-    "@WordBreakProperty//file",
-    "@emoji-data//file",
-]
-
-[
-    copy_file(
-        # Name is something like DerivedCombiningClass
-        name = unicode_file_name(f),
-        src = f,
-        out = "%s.txt" % unicode_file_name(f),
-    )
-    for f in UNICODE_FILES
-]
-
-# Segmentation UCDs
-generate_src_file(
-    name = "generate-cldr-segmentation-rules",
-    src = "cldr-segmentation-rules.generated.ts",
-    args = ["--unicodeFiles=$(rootpath :%s)" % unicode_file_name(f) for f in UNICODE_FILES],
-    data =
-        [":%s" % unicode_file_name(f) for f in UNICODE_FILES] + [
-            "//:node_modules/@types/regenerate",
-            "//:node_modules/cldr-segments-full",
-            "//:node_modules/json-stable-stringify",
-            "//:node_modules/regexpu-core",
-        ],
-    tags = ["cldr"],
-    tool = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules",
 )

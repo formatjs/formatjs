@@ -1,0 +1,104 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("//packages/intl-segmenter:index.bzl", "unicode_file_name")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
+
+generate_package_file(
+    name = "unicode_regex",
+    src = "regex.ts",
+    data = [
+        "//:node_modules/@types/regenerate",
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/regenerate",
+    ],
+    tool = "//packages/ecma402-abstract/scripts:regex-gen",
+)
+
+generate_package_file(
+    name = "unicode_digit_mapping",
+    src = "digit-mapping.ts",
+    data = [
+        "//:node_modules/json-stable-stringify",
+    ],
+    tool = "//packages/ecma402-abstract/scripts:digit-mapping",
+)
+
+generate_package_file(
+    name = "unicode_icu_mfp_regex",
+    src = "icu-messageformat-parser-regex.ts",
+    tool = "//packages/icu-messageformat-parser/tools:regex_gen",
+)
+
+generate_package_file(
+    name = "unicode_icu_sp_regex",
+    src = "icu-skeleton-parser-regex.ts",
+    data = [
+        "//:node_modules/@unicode/unicode-17.0.0",
+        "//:node_modules/regenerate",
+    ],
+    tool = "//packages/icu-skeleton-parser/scripts:regex-gen",
+)
+
+# Generate emoji version data from Unicode emoji-data.txt
+# Note: emoji-data.txt comes from the UNICODE_FILES copy_file loop below (name = "emoji-data")
+generate_package_file(
+    name = "unicode_emoji_data",
+    src = "emoji-data.ts",
+    args = [
+        "--emojiDataPath",
+        "$(rootpath :emoji-data)",
+    ],
+    data = [
+        ":emoji-data",
+    ],
+    tool = "//packages/eslint-plugin-formatjs/scripts:generate-emoji-data",
+)
+
+UNICODE_FILES = [
+    "@DerivedCombiningClass//file",
+    "@DerivedCoreProperties//file",
+    "@DerivedEastAsianWidth//file",
+    "@GraphemeBreakProperty//file",
+    "@IndicSyllabicCategory//file",
+    "@SentenceBreakProperty//file",
+    "@WordBreakProperty//file",
+    "@emoji-data//file",
+]
+
+[
+    copy_file(
+        # Name is something like DerivedCombiningClass
+        name = unicode_file_name(f),
+        src = f,
+        out = "%s.txt" % unicode_file_name(f),
+    )
+    for f in UNICODE_FILES
+]
+
+# Segmentation UCDs
+generate_package_file(
+    name = "unicode_cldr_segmentation_rules",
+    src = "cldr-segmentation-rules.ts",
+    args = ["--unicodeFiles=$(rootpath :%s)" % unicode_file_name(f) for f in UNICODE_FILES],
+    data =
+        [":%s" % unicode_file_name(f) for f in UNICODE_FILES] + [
+            "//:node_modules/@types/regenerate",
+            "//:node_modules/cldr-segments-full",
+            "//:node_modules/json-stable-stringify",
+            "//:node_modules/regexpu-core",
+        ],
+    tags = ["cldr"],
+    tool = "//packages/intl-segmenter/scripts:generate-cldr-segmentation-rules",
+)
+
+formatjs_generated_package(
+    name = "pkg",
+    package_name = "unicode",
+    srcs = [
+        ":unicode_cldr_segmentation_rules",
+        ":unicode_digit_mapping",
+        ":unicode_emoji_data",
+        ":unicode_icu_mfp_regex",
+        ":unicode_icu_sp_regex",
+        ":unicode_regex",
+    ],
+)

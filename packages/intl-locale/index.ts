@@ -21,9 +21,9 @@ import {
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
-import {characterOrders} from '#packages/intl-locale/character-orders.generated.js'
+import {characterOrders} from '@formatjs_generated/cldr.locale/character-orders.js'
 import getInternalSlots from '#packages/intl-locale/get_internal_slots.js'
-import {numberingSystems} from '#packages/intl-locale/numbering-systems.generated.js'
+import {numberingSystems} from '@formatjs_generated/cldr.locale/numbering-systems.js'
 import {
   getCalendarPreferenceDataForRegion,
   getHourCyclesPreferenceDataForLocaleOrRegion,
@@ -31,7 +31,7 @@ import {
   getWeekDataForRegion,
 } from '#packages/intl-locale/preference-data.js'
 
-import type {CharacterOrder} from '#packages/intl-locale/character-orders.generated.js'
+import type {CharacterOrder} from '@formatjs_generated/cldr.locale/character-orders.js'
 import type {WeekInfoInternal} from '#packages/intl-locale/preference-data.js'
 
 export interface IntlLocaleOptions {

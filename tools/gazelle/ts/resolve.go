@@ -88,6 +88,16 @@ func (l *tsLang) Resolve(
 
 	case KindFormatjsTest:
 		testResolved := l.resolveImportsToDeps(importData.TestImports, from, ix)
+		// Also resolve source imports: @formatjs_generated/* packages must be
+		// in the test sandbox because formatjs_test depends on :lib which
+		// includes the compiled source files, but js_library doesn't
+		// transitively link npm packages.
+		srcResolved := l.resolveImportsToDeps(importData.Imports, from, ix)
+		for _, dep := range srcResolved.external {
+			if strings.HasPrefix(dep, "//:node_modules/@formatjs_generated/") {
+				testResolved.external = append(testResolved.external, dep)
+			}
+		}
 		allDeps := append(testResolved.external, testResolved.internal...)
 
 		if len(allDeps) > 0 {

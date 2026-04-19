@@ -1,6 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -27,15 +26,17 @@ formatjs_library(
         "no-parser.ts",
         "parser.ts",
         "printer.ts",
-        "regex.generated.ts",
-        "time-data.generated.ts",
         "types.ts",
     ],
     entry_points = ENTRY_POINTS,
     project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/icu-skeleton-parser"],
+    deps = [
+        "//:node_modules/@formatjs/icu-skeleton-parser",
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@formatjs_generated/unicode",
+    ],
 )
 
 formatjs_test(
@@ -50,18 +51,9 @@ formatjs_test(
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = ["//:node_modules/vitest"],
-)
-
-generate_src_file(
-    name = "regex",
-    src = "regex.generated.ts",
-    tool = "//packages/icu-messageformat-parser/tools:regex_gen",
-)
-
-generate_src_file(
-    name = "time-data",
-    src = "time-data.generated.ts",
-    tags = ["cldr"],
-    tool = "//packages/icu-messageformat-parser/tools:time_data_gen",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@formatjs_generated/unicode",
+        "//:node_modules/vitest",
+    ],
 )

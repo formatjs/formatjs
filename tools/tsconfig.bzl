@@ -89,7 +89,6 @@ def packages_tsconfig(base = None):
         "compilerOptions": base["compilerOptions"] | {
             "paths": {
                 "#packages/*": [relative_to_root + "/packages/*"],
-                "@formatjs_generated/*": [relative_to_root + "/node_modules/@formatjs_generated/*"],
             },
         },
     }

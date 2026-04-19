@@ -1,5 +1,4 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
 load("//tools:test.bzl", "formatjs_test")
 
 formatjs_library(
@@ -22,7 +21,6 @@ formatjs_library(
         "ToIntlMathematicalValue.ts",
         "constants.ts",
         "data.ts",
-        "regex.generated.ts",
         "utils.ts",
     ],
     project_references = ["//packages/ecma262-abstract"],
@@ -62,15 +60,4 @@ formatjs_test(
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
-)
-
-generate_src_file(
-    name = "regex",
-    src = "regex.generated.ts",
-    data = [
-        "//:node_modules/@types/regenerate",
-        "//:node_modules/@unicode/unicode-17.0.0",
-        "//:node_modules/regenerate",
-    ],
-    tool = "//packages/ecma402-abstract/scripts:regex-gen",
 )

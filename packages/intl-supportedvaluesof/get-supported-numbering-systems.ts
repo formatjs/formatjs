@@ -1,5 +1,5 @@
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
-import {numberingSystemNames} from '#packages/intl-supportedvaluesof/numbering-systems.generated.js'
+import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
 
 /**
  * Implementation: Tests if a numbering system is supported by attempting to create

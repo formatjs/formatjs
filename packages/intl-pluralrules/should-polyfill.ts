@@ -1,5 +1,5 @@
 import {match} from '@formatjs/intl-localematcher'
-import {supportedLocales} from '#packages/intl-pluralrules/supported-locales.generated.js'
+import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-pluralrules.js'
 
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {

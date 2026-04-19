@@ -1,7 +1,5 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -24,11 +22,9 @@ formatjs_library(
         "core.ts",
         "get_internal_slots.ts",
         "index.ts",
-        "numbering-systems.generated.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-        "time-separators.generated.ts",
         "types.ts",
     ],
     entry_points = ENTRY_POINTS,
@@ -40,7 +36,10 @@ formatjs_library(
     ],
     types = True,
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/intl-localematcher"],
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.number",
+    ],
 )
 
 formatjs_test(
@@ -49,34 +48,8 @@ formatjs_test(
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = ["//:node_modules/vitest"],
-)
-
-# numbering-systems
-write_source_files(
-    name = "numbering-systems",
-    files = {
-        "numbering-systems.generated.ts": "//packages/intl-numberformat:numbering-systems.generated.ts",
-    },
-    visibility = ["//:__pkg__"],
-)
-
-generate_src_file(
-    name = "time-separators",
-    src = "time-separators.generated.ts",
-    data = [
-        "//:node_modules/@types/lodash-es",
-        "//:node_modules/cldr-core",
-        "//:node_modules/cldr-localenames-full",
-        "//:node_modules/cldr-numbers-full",
-        "//:node_modules/fast-glob",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/lodash-es",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DurationFormat",
-        "//packages/ecma402-abstract/types",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/vitest",
     ],
-    tags = ["cldr"],
-    tool = "//packages/intl-durationformat/scripts:time-separators",
 )

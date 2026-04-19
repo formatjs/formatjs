@@ -5,11 +5,11 @@ import {getSupportedNumberingSystems} from '#packages/intl-supportedvaluesof/get
 import {getSupportedTimeZones} from '#packages/intl-supportedvaluesof/get-supported-timezones.js'
 import {getSupportedUnits} from '#packages/intl-supportedvaluesof/get-supported-units.js'
 
-export type {Calendar} from '#packages/intl-supportedvaluesof/calendars.generated.js'
-export type {Collation} from '#packages/intl-supportedvaluesof/collations.generated.js'
-export type {Currency} from '#packages/intl-supportedvaluesof/currencies.generated.js'
-export type {Timezone} from '#packages/intl-supportedvaluesof/timezones.generated.js'
-export type {Unit} from '#packages/intl-supportedvaluesof/units.generated.js'
+export type {Calendar} from '@formatjs_generated/cldr.supported-values/calendars.js'
+export type {Collation} from '@formatjs_generated/cldr.supported-values/collations.js'
+export type {Currency} from '@formatjs_generated/cldr.supported-values/currencies.js'
+export type {Timezone} from '@formatjs_generated/cldr.supported-values/timezones.js'
+export type {Unit} from '@formatjs_generated/cldr.supported-values/units.js'
 
 export {shouldPolyfill} from '#packages/intl-supportedvaluesof/should-polyfill.js'
 

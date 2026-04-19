@@ -4,5 +4,8 @@ load("//tools:index.bzl", "ts_binary")
 ts_binary(
     name = "generate-emoji-data",
     entry_point = "generate-emoji-data.ts",
-    visibility = ["//packages/eslint-plugin-formatjs:__pkg__"],
+    visibility = [
+        "//packages/eslint-plugin-formatjs:__pkg__",
+        "//packages/generated/unicode:__pkg__",
+    ],
 )

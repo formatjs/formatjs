@@ -60,7 +60,6 @@ formatjs_library(
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-        "supported-locales.generated.ts",
         "test262-main.ts",
         "to_locale_string.ts",
         "types.ts",
@@ -86,6 +85,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
     ],
 )
@@ -121,6 +121,7 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
@@ -752,15 +753,6 @@ ts_run_binary(
     tool = "//packages/intl-datetimeformat/scripts:cldr-raw",
 )
 
-generate_src_file(
-    name = "supported-locales",
-    src = "supported-locales.generated.ts",
-    args = ALL_LOCALES,
-    tags = ["cldr"],
-    tool = "//tools:generate-supported-locales",
-    visibility = ["//:__pkg__"],
-)
-
 ts_run_binary(
     name = "locale-data",
     srcs = CLDR_RAW_FILES + [
@@ -989,7 +981,6 @@ multirun(
     name = "tz_data.update",
     testonly = True,
     commands = [
-        ":supported-locales",
     ],
 )
 

@@ -5,7 +5,8 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:generated.bzl", "generate_package_file")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
@@ -22,9 +23,9 @@ copy_file(
 )
 
 # Generate emoji version data from Unicode emoji-data.txt
-generate_src_file(
-    name = "emoji-data-generated",
-    src = "emoji-data.generated.ts",
+generate_package_file(
+    name = "unicode_emoji_data",
+    src = "emoji-data.ts",
     args = [
         "--emojiDataPath",
         "$(rootpath :emoji-data-txt)",
@@ -33,6 +34,7 @@ generate_src_file(
         ":emoji-data-txt",
     ],
     tool = "//packages/eslint-plugin-formatjs/scripts:generate-emoji-data",
+    visibility = ["//packages/ecma402-abstract:__pkg__"],
 )
 
 SRCS = glob(["rules/*.ts"]) + [
@@ -40,7 +42,6 @@ SRCS = glob(["rules/*.ts"]) + [
     "util.ts",
     "messages.ts",
     "emoji-utils.ts",
-    "emoji-data.generated.ts",
 ]
 
 EXTERNAL_PACKAGES = [
@@ -82,6 +83,7 @@ ENTRY_POINTS = [
         ":node_modules/picomatch",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/estree-jsx",
         "//:node_modules/@types/node",
         "//:node_modules/@unicode/unicode-17.0.0",
@@ -137,6 +139,7 @@ ts_project(
         ":node_modules/picomatch",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/estree-jsx",
         "//:node_modules/@types/node",
         "//:node_modules/@unicode/unicode-17.0.0",
@@ -165,6 +168,7 @@ vitest(
         ":node_modules/picomatch",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/estree-jsx",
         "//:node_modules/@types/node",
         "//:node_modules/@typescript-eslint/utils",

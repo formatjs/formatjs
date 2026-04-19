@@ -1,7 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
 load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
@@ -17,18 +16,18 @@ formatjs_library(
     name = "dist",
     srcs = [
         "countryCodes.ts",
-        "currencyMinorUnits.generated.ts",
         "defaultCurrency.ts",
-        "defaultCurrencyData.generated.ts",
         "defaultLocale.ts",
-        "defaultLocaleData.generated.ts",
         "defaultTimezone.ts",
         "index.ts",
         "iso3166Alpha3CountryCodes.ts",
         "iso4217.ts",
     ],
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/fast-memoize"],
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.core",
+    ],
 )
 
 formatjs_test(
@@ -40,45 +39,15 @@ formatjs_test(
         "tests/defaultLocale.test.ts",
         "tests/defaultTimezone.test.ts",
     ],
-    deps = ["//:node_modules/vitest"],
-)
-
-generate_src_file(
-    name = "default-currency",
-    src = "defaultCurrencyData.generated.ts",
-    data = [
-        "//:node_modules/cldr-core",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/vitest",
     ],
-    entry_point = "//packages/utils/tools:extract-default-currency_ts",
-    tags = ["cldr"],
-)
-
-generate_src_file(
-    name = "default-locale",
-    src = "defaultLocaleData.generated.ts",
-    data = [
-        "//:node_modules/cldr-core",
-    ],
-    entry_point = "//packages/utils/tools:extract-default-locale_ts",
-    tags = ["cldr"],
 )
 
 copy_file(
     name = "iso-4217",
     src = "data/list-one.xml",
     out = "iso4217.xml",
-)
-
-generate_src_file(
-    name = "currency-minor-units",
-    src = "currencyMinorUnits.generated.ts",
-    args = [
-        "--input",
-        "$(rootpath :iso4217.xml)",
-    ],
-    data = [
-        ":iso4217.xml",
-        ":node_modules/fast-xml-parser",
-    ],
-    entry_point = "//packages/utils/tools:extract-minor-currency-units_ts",
+    visibility = ["//packages/intl-getcanonicallocales:__pkg__"],
 )
