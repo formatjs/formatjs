@@ -1,4 +1,4 @@
-import {timeData} from '#packages/icu-messageformat-parser/time-data.generated.js'
+import {timeData} from '@formatjs_generated/cldr.core/time-data.js'
 
 /**
  * Returns the best matching date time pattern if a date time skeleton

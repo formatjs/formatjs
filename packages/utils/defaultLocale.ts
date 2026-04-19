@@ -1,5 +1,5 @@
 import {canonicalizeCountryCode} from '#packages/utils/countryCodes.js'
-import data from '#packages/utils/defaultLocaleData.generated.js'
+import data from '@formatjs_generated/cldr.core/defaultLocaleData.js'
 
 /**
  * Look up default locale for a country code.
