@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
@@ -928,26 +927,6 @@ genrule(
     name = "add-golden-tz-typedef",
     outs = ["add-golden-tz.d.ts"],
     cmd = "echo 'export {}' > $@",
-)
-
-write_source_files(
-    name = "generated-test-files",
-    files = {
-        "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
-        for k in TEST_LOCALES
-    },
-    visibility = ["//:__pkg__"],
-)
-
-TZ_DATA_FILES = [":tz_data_generated/zdump/%s" % zone for zone in ZONES] + [":tz_data_generated/backward"]
-
-TZ_DATA_SRC_FILES = [k.replace(":tz_data_generated", "tz_data") for k in TZ_DATA_FILES]
-
-write_source_files(
-    name = "generated_tz_data",
-    files = {k: v for k, v in zip(TZ_DATA_SRC_FILES, TZ_DATA_FILES)},
-    tags = ["manual"],
-    visibility = ["//:__pkg__"],
 )
 
 rolldown_bundle(
