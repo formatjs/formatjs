@@ -125,15 +125,7 @@ copy_to_directory(
 multirun(
     name = "cldr-gen",
     testonly = True,
-    commands = [
-        "//packages/intl-datetimeformat:test262-main",
-        "//packages/intl-displaynames:test262-main",
-        "//packages/intl-listformat:test262-main",
-        "//packages/intl-numberformat:test262-main",
-        "//packages/intl-pluralrules:test262-main",
-        "//packages/intl-relativetimeformat:test262-main",
-        "//packages/intl-segmenter:test262-main",
-    ],
+    commands = [],
     jobs = 0,  # Run all targets in parallel
 )
 
