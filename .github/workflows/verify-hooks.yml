@@ -2,6 +2,7 @@ name: Verify Commit Hooks
 
 on:
   pull_request:
+  merge_group:
   push:
     branches:
       - main
