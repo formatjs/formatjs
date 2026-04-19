@@ -1,7 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -19,18 +19,12 @@ ENTRY_POINTS = [
 formatjs_library(
     name = "dist",
     srcs = [
-        "calendars.generated.ts",
-        "character-orders.generated.ts",
         "get_internal_slots.ts",
-        "hour-cycles.generated.ts",
         "index.ts",
-        "numbering-systems.generated.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "preference-data.ts",
         "should-polyfill.ts",
-        "timezones.generated.ts",
-        "week-data.generated.ts",
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
@@ -43,6 +37,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@formatjs_generated/cldr.locale",
     ],
 )
 
@@ -119,10 +114,10 @@ rolldown_bundle(
     ],
 )
 
-# character orders
-generate_src_file(
-    name = "character-orders",
-    src = "character-orders.generated.ts",
+# @formatjs_generated/cldr.locale — CLDR locale preference data
+generate_package_file(
+    name = "cldr_locale_character_orders",
+    src = "character-orders.ts",
     data = [
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-misc-full",
@@ -133,10 +128,9 @@ generate_src_file(
     tool = "//packages/intl-locale/scripts:character-orders",
 )
 
-# numbering systems
-generate_src_file(
-    name = "numbering-systems",
-    src = "numbering-systems.generated.ts",
+generate_package_file(
+    name = "cldr_locale_numbering_systems",
+    src = "numbering-systems.ts",
     data = [
         "//:node_modules/cldr-localenames-full",
         "//:node_modules/cldr-numbers-full",
@@ -147,10 +141,9 @@ generate_src_file(
     tool = "//packages/intl-locale/scripts:numbering-systems",
 )
 
-# timezones
-generate_src_file(
-    name = "timezones",
-    src = "timezones.generated.ts",
+generate_package_file(
+    name = "cldr_locale_timezones",
+    src = "timezones.ts",
     data = [
         "//:node_modules/cldr-bcp47",
         "//:node_modules/json-stable-stringify",
@@ -159,10 +152,9 @@ generate_src_file(
     tool = "//packages/intl-locale/scripts:timezones",
 )
 
-# hour cycles
-generate_src_file(
-    name = "hour-cycles",
-    src = "hour-cycles.generated.ts",
+generate_package_file(
+    name = "cldr_locale_hour_cycles",
+    src = "hour-cycles.ts",
     data = [
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
@@ -171,10 +163,9 @@ generate_src_file(
     tool = "//packages/intl-locale/scripts:hour-cycles",
 )
 
-# calendars
-generate_src_file(
-    name = "calendars",
-    src = "calendars.generated.ts",
+generate_package_file(
+    name = "cldr_locale_calendars",
+    src = "calendars.ts",
     data = [
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
@@ -183,14 +174,26 @@ generate_src_file(
     tool = "//packages/intl-locale/scripts:calendars",
 )
 
-# week data
-generate_src_file(
-    name = "week-data",
-    src = "week-data.generated.ts",
+generate_package_file(
+    name = "cldr_locale_week_data",
+    src = "week-data.ts",
     data = [
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-locale/scripts:week-data",
+)
+
+formatjs_generated_package(
+    name = "cldr_locale_pkg",
+    package_name = "cldr.locale",
+    srcs = [
+        ":cldr_locale_calendars",
+        ":cldr_locale_character_orders",
+        ":cldr_locale_hour_cycles",
+        ":cldr_locale_numbering_systems",
+        ":cldr_locale_timezones",
+        ":cldr_locale_week_data",
+    ],
 )
