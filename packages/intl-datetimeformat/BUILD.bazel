@@ -1,11 +1,10 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_multirun//:defs.bzl", "multirun")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
-load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
@@ -60,7 +59,6 @@ formatjs_library(
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-        "test262-main.ts",
         "to_locale_string.ts",
         "types.ts",
         "unpack.ts",
@@ -100,21 +98,8 @@ formatjs_test(
         "tests/format-range.test.ts",
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
-        "tests/locale-data/ar.json",
-        "tests/locale-data/bs.json",
-        "tests/locale-data/de.json",
-        "tests/locale-data/en.json",
-        "tests/locale-data/en-CA.json",
-        "tests/locale-data/en-GB.json",
-        "tests/locale-data/fa.json",
-        "tests/locale-data/ja.json",
-        "tests/locale-data/ko.json",
-        "tests/locale-data/nl.json",
-        "tests/locale-data/pl.json",
-        "tests/locale-data/ru.json",
-        "tests/locale-data/zh-Hans.json",
         "tests/offset-timezone.test.ts",
-    ],
+    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],  # keep
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
@@ -775,7 +760,7 @@ ts_run_binary(
 [genrule(
     name = "tests-locale-data-%s" % locale,
     srcs = ["cldr-raw/%s.json" % locale],
-    outs = ["tests-locale-data/%s.json" % locale],
+    outs = ["tests/locale-data/%s.json" % locale],
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
@@ -791,22 +776,25 @@ TEST262_LOCALES = [
     "zh-Hans",
 ]
 
-generate_src_file(
-    name = "test262-main",
-    src = "test262-main.ts",
+ts_run_binary(
+    name = "test262-main-gen",
+    srcs = [
+        ":cldr-raw",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    outs = ["test262-main.ts"],
     args = [
         "--cldrFile %s/cldr-raw/%s.json" % (
             package_name(),
             f,
         )
         for f in TEST262_LOCALES
+    ] + [
+        "--out",
+        "$(rootpath test262-main.ts)",
     ],
-    data = [":cldr-raw"],
-    tags = ["cldr"],
     tool = "//packages/intl-datetimeformat/scripts:test262-main-gen",
-    visibility = [
-        "//:__pkg__",
-    ],
 )
 
 # @formatjs_generated/tz — IANA timezone data
@@ -920,26 +908,6 @@ genrule(
     name = "add-golden-tz-typedef",
     outs = ["add-golden-tz.d.ts"],
     cmd = "echo 'export {}' > $@",
-)
-
-write_source_files(
-    name = "generated-test-files",
-    files = {
-        "tests/locale-data/%s.json" % k: ":tests-locale-data/%s.json" % k
-        for k in TEST_LOCALES
-    },
-    visibility = ["//:__pkg__"],
-)
-
-TZ_DATA_FILES = [":tz_data_generated/zdump/%s" % zone for zone in ZONES] + [":tz_data_generated/backward"]
-
-TZ_DATA_SRC_FILES = [k.replace(":tz_data_generated", "tz_data") for k in TZ_DATA_FILES]
-
-write_source_files(
-    name = "generated_tz_data",
-    files = {k: v for k, v in zip(TZ_DATA_SRC_FILES, TZ_DATA_FILES)},
-    tags = ["manual"],
-    visibility = ["//:__pkg__"],
 )
 
 rolldown_bundle(
