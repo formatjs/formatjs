@@ -57,7 +57,9 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/should-polyfill.test.ts",
     ],
-    data = ["//:package.json"],
+    data = [
+        "//:package.json",
+    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
