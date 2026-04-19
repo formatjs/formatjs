@@ -1,7 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
@@ -20,9 +20,6 @@ ENTRY_POINTS = [
 formatjs_library(
     name = "dist",
     srcs = [
-        "calendars.generated.ts",
-        "collations.generated.ts",
-        "currencies.generated.ts",
         "get-supported-calendars.ts",
         "get-supported-collations.ts",
         "get-supported-currencies.ts",
@@ -34,8 +31,6 @@ formatjs_library(
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-        "timezones.generated.ts",
-        "units.generated.ts",
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
@@ -45,6 +40,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
     ],
 )
 
@@ -57,10 +53,10 @@ formatjs_test(
     deps = ["//:node_modules/vitest"],
 )
 
-# calendars
-generate_src_file(
-    name = "calendars",
-    src = "calendars.generated.ts",
+# @formatjs_generated/cldr.supported-values — BCP47 supported value enumerations
+generate_package_file(
+    name = "cldr_sv_calendars",
+    src = "calendars.ts",
     data = [
         "//:node_modules/cldr-bcp47",
     ],
@@ -68,21 +64,17 @@ generate_src_file(
     tool = "//packages/intl-supportedvaluesof/scripts:calendars",
 )
 
-# timezones
-generate_src_file(
-    name = "timezones",
-    src = "timezones.generated.ts",
+generate_package_file(
+    name = "cldr_sv_timezones",
+    src = "timezones.ts",
     args = ["--zone %s" % z for z in ZONES],
-    data = [
-    ],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:timezones",
 )
 
-# currencies
-generate_src_file(
-    name = "currencies",
-    src = "currencies.generated.ts",
+generate_package_file(
+    name = "cldr_sv_currencies",
+    src = "currencies.ts",
     data = [
         "//:node_modules/cldr-numbers-full",
     ],
@@ -90,10 +82,9 @@ generate_src_file(
     tool = "//packages/intl-supportedvaluesof/scripts:currencies",
 )
 
-# collations
-generate_src_file(
-    name = "collations",
-    src = "collations.generated.ts",
+generate_package_file(
+    name = "cldr_sv_collations",
+    src = "collations.ts",
     data = [
         "//:node_modules/cldr-bcp47",
     ],
@@ -101,16 +92,27 @@ generate_src_file(
     tool = "//packages/intl-supportedvaluesof/scripts:collations",
 )
 
-# units
-generate_src_file(
-    name = "units",
-    src = "units.generated.ts",
+generate_package_file(
+    name = "cldr_sv_units",
+    src = "units.ts",
     data = [
         "//:node_modules/cldr-bcp47",
         "//packages/ecma402-abstract",
     ],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:units",
+)
+
+formatjs_generated_package(
+    name = "cldr_sv_pkg",
+    package_name = "cldr.supported-values",
+    srcs = [
+        ":cldr_sv_calendars",
+        ":cldr_sv_collations",
+        ":cldr_sv_currencies",
+        ":cldr_sv_timezones",
+        ":cldr_sv_units",
+    ],
 )
 
 rolldown_bundle(
