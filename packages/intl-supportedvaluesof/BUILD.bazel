@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:compile.bzl", "formatjs_library")
@@ -32,7 +31,6 @@ formatjs_library(
         "get-supported-units.ts",
         "index.ts",
         "memoize.ts",
-        "numbering-systems.generated.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
@@ -44,7 +42,10 @@ formatjs_library(
     project_references = ["//packages/ecma402-abstract"],
     types = True,
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/fast-memoize"],
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.number",
+    ],
 )
 
 formatjs_test(
@@ -76,15 +77,6 @@ generate_src_file(
     ],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:timezones",
-)
-
-# numbering-systems
-write_source_files(
-    name = "numbering-systems",
-    files = {
-        "numbering-systems.generated.ts": "//packages/intl-numberformat:numbering-systems.generated.ts",
-    },
-    visibility = ["//:__pkg__"],
 )
 
 # currencies
