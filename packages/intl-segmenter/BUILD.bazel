@@ -1,8 +1,7 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
@@ -49,7 +48,6 @@ formatjs_library(
         "segmentation-utils.ts",
         "segmenter.ts",
         "should-polyfill.ts",
-        "test262-main.ts",
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
@@ -89,22 +87,26 @@ formatjs_test(
     ],
 )
 
-generate_src_file(
-    name = "test262-main",
-    src = "test262-main.ts",
-    tags = ["cldr"],
-    tool = "//packages/intl-segmenter/scripts:test262-main-gen",
-    visibility = [
-        "//:__pkg__",
+ts_run_binary(
+    name = "test262-main-gen",
+    srcs = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
     ],
+    outs = ["test262-main.ts"],
+    args = [
+        "--out",
+        "$(rootpath test262-main.ts)",
+    ],
+    tool = "//packages/intl-segmenter/scripts:test262-main-gen",
 )
 
 # Test262
 rolldown_bundle(
     name = "test262-polyfill",
     srcs = [
-        "test262-main.ts",
         ":srcs",
+        ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
     target = "es2020",
@@ -135,11 +137,6 @@ test262_harness_bin.test262_harness_test(
     ],
     # TODO: fix
     tags = ["manual"],
-)
-
-write_source_files(
-    name = "generated-files",
-    visibility = ["//:__pkg__"],
 )
 
 rolldown_bundle(
