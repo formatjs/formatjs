@@ -88,7 +88,7 @@ bazel_dep(
 
 ######### Protobuf rules #########
 
-bazel_dep(name = "protobuf", version = "33.6")
+bazel_dep(name = "protobuf", version = "34.1")
 bazel_dep(name = "rules_proto", version = "7.1.0")
 bazel_dep(name = "rules_rust_prost", version = "0.69.0")
 
