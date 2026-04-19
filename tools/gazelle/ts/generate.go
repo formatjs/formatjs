@@ -25,7 +25,9 @@ import (
 //
 // The separation of Imports vs TestImports matters because:
 //   - Source imports become deps + project_references on formatjs_library
-//   - Test imports become deps on formatjs_test (source deps are transitive via :lib)
+//   - Test imports become deps on formatjs_test
+//   - Source imports are also passed to formatjs_test so @formatjs_generated/* deps
+//     can be added (js_library doesn't transitively link npm packages)
 type ImportData struct {
 	Imports     []ImportStatement // Source file imports
 	TestImports []ImportStatement // Test file imports
@@ -100,6 +102,7 @@ func (l *tsLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 		newRule.SetAttr("srcs", testSrcs)
 		genRules = append(genRules, newRule)
 		genImports = append(genImports, ImportData{
+			Imports:     sourceImports,
 			TestImports: testImports,
 		})
 	}

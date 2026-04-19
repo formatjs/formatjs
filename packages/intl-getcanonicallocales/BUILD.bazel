@@ -45,7 +45,10 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/parser.test.ts",
     ],
-    deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/vitest",
+    ],
 )
 
 # @formatjs_generated/cldr.core — CLDR supplemental data
@@ -116,8 +119,8 @@ generate_package_file(
         "$(rootpath //packages/utils:iso4217.xml)",
     ],
     data = [
-        "//:node_modules/fast-xml-parser",
         "//packages/utils:iso4217.xml",
+        "//packages/utils:node_modules/fast-xml-parser",
     ],
     entry_point = "//packages/utils/tools:extract-minor-currency-units_ts",
 )

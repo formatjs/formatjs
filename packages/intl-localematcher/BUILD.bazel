@@ -39,5 +39,8 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/utils.test.ts",
     ],
-    deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/vitest",
+    ],
 )

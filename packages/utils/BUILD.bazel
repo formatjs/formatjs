@@ -39,7 +39,10 @@ formatjs_test(
         "tests/defaultLocale.test.ts",
         "tests/defaultTimezone.test.ts",
     ],
-    deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/vitest",
+    ],
 )
 
 copy_file(

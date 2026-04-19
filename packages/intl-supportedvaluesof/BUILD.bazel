@@ -50,7 +50,11 @@ formatjs_test(
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//:node_modules/vitest",
+    ],
 )
 
 # @formatjs_generated/cldr.supported-values — BCP47 supported value enumerations

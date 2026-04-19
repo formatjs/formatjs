@@ -7,5 +7,8 @@ ts_binary(
         "global.ts",
     ],
     entry_point = "regex-gen.ts",
-    visibility = ["//packages/icu-skeleton-parser:__pkg__"],
+    visibility = [
+        "//packages/generated/unicode:__pkg__",
+        "//packages/icu-skeleton-parser:__pkg__",
+    ],
 )

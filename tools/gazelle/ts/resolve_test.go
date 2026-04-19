@@ -263,6 +263,99 @@ func TestResolveImportsToDeps_TypesOnlyPackage(t *testing.T) {
 	}
 }
 
+func TestResolveImportsToDeps_FormatjsGenerated(t *testing.T) {
+	l := newTestLang(map[string]bool{
+		"react":        true,
+		"@types/react": true,
+	})
+
+	imports := []ImportStatement{
+		{ImportPath: "@formatjs_generated/unicode/regex.js", SourceFile: "index.ts"},
+		{ImportPath: "@formatjs_generated/cldr.locale/calendars.js", SourceFile: "index.ts"},
+		{ImportPath: "react", SourceFile: "index.ts"},
+	}
+
+	from := label.Label{Pkg: "packages/test-pkg"}
+	result := l.resolveImportsToDeps(imports, from, nil)
+
+	expected := []string{
+		"//:node_modules/@formatjs_generated/cldr.locale",
+		"//:node_modules/@formatjs_generated/unicode",
+		"//:node_modules/@types/react",
+		"//:node_modules/react",
+	}
+	if len(result.external) != len(expected) {
+		t.Errorf("external deps: got %d, want %d\ngot:  %v\nwant: %v",
+			len(result.external), len(expected), result.external, expected)
+	} else {
+		for i, exp := range expected {
+			if result.external[i] != exp {
+				t.Errorf("external[%d]: got %q, want %q", i, result.external[i], exp)
+			}
+		}
+	}
+}
+
+func TestResolveFormatjsTest_IncludesGeneratedDepsFromSource(t *testing.T) {
+	l := newTestLang(map[string]bool{
+		"vitest": true,
+	})
+
+	// Source imports include @formatjs_generated, test imports don't
+	sourceImports := []ImportStatement{
+		{ImportPath: "@formatjs_generated/unicode/regex.js", SourceFile: "number.ts"},
+	}
+	testImports := []ImportStatement{
+		{ImportPath: "vitest", SourceFile: "tests/index.test.ts"},
+	}
+
+	from := label.Label{Pkg: "packages/icu-skeleton-parser"}
+
+	// Resolve source imports — should find @formatjs_generated
+	srcResolved := l.resolveImportsToDeps(sourceImports, from, nil)
+	hasGenerated := false
+	for _, dep := range srcResolved.external {
+		if dep == "//:node_modules/@formatjs_generated/unicode" {
+			hasGenerated = true
+		}
+	}
+	if !hasGenerated {
+		t.Errorf("source imports should resolve @formatjs_generated/unicode, got: %v", srcResolved.external)
+	}
+
+	// Resolve test imports — should NOT have @formatjs_generated directly
+	testResolved := l.resolveImportsToDeps(testImports, from, nil)
+	for _, dep := range testResolved.external {
+		if dep == "//:node_modules/@formatjs_generated/unicode" {
+			t.Errorf("test imports alone should not resolve @formatjs_generated, got: %v", testResolved.external)
+		}
+	}
+
+	// Simulate what resolve.go does: merge @formatjs_generated deps from source into test
+	for _, dep := range srcResolved.external {
+		if len(dep) > len("//:node_modules/@formatjs_generated/") &&
+			dep[:len("//:node_modules/@formatjs_generated/")] == "//:node_modules/@formatjs_generated/" {
+			testResolved.external = append(testResolved.external, dep)
+		}
+	}
+	allDeps := deduplicateAndSort(append(testResolved.external, testResolved.internal...))
+
+	expectedDeps := []string{
+		"//:node_modules/@formatjs_generated/unicode",
+		"//:node_modules/vitest",
+	}
+	if len(allDeps) != len(expectedDeps) {
+		t.Errorf("merged test deps: got %d, want %d\ngot:  %v\nwant: %v",
+			len(allDeps), len(expectedDeps), allDeps, expectedDeps)
+	} else {
+		for i, exp := range expectedDeps {
+			if allDeps[i] != exp {
+				t.Errorf("merged[%d]: got %q, want %q", i, allDeps[i], exp)
+			}
+		}
+	}
+}
+
 func TestDeduplicateAndSort(t *testing.T) {
 	tests := []struct {
 		name     string

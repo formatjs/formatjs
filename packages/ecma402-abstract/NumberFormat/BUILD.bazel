@@ -1,5 +1,4 @@
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:generated.bzl", "generate_package_file")
 
 formatjs_library(
     name = "dist",
@@ -38,14 +37,4 @@ formatjs_library(
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/unicode",
     ],
-)
-
-generate_package_file(
-    name = "unicode_digit_mapping",
-    src = "digit-mapping.ts",
-    data = [
-        "//:node_modules/json-stable-stringify",
-    ],
-    tool = "//packages/ecma402-abstract/scripts:digit-mapping",
-    visibility = ["//packages/ecma402-abstract:__pkg__"],
 )

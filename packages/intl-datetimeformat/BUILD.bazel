@@ -121,6 +121,7 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
@@ -752,28 +753,6 @@ ts_run_binary(
     tool = "//packages/intl-datetimeformat/scripts:cldr-raw",
 )
 
-# @formatjs_generated/cldr.supported-locales — per-polyfill supported locale lists
-generate_package_file(
-    name = "cldr_sl_intl_datetimeformat",
-    src = "intl-datetimeformat.ts",
-    args = ALL_LOCALES,
-    tags = ["cldr"],
-    tool = "//tools:generate-supported-locales",
-)
-
-formatjs_generated_package(
-    name = "cldr_sl_pkg",
-    package_name = "cldr.supported-locales",
-    srcs = [
-        ":cldr_sl_intl_datetimeformat",
-        "//packages/intl-displaynames:cldr_sl_intl-displaynames",
-        "//packages/intl-listformat:cldr_sl_intl-listformat",
-        "//packages/intl-numberformat:cldr_sl_intl-numberformat",
-        "//packages/intl-pluralrules:cldr_sl_intl-pluralrules",
-        "//packages/intl-relativetimeformat:cldr_sl_intl-relativetimeformat",
-    ],
-)
-
 ts_run_binary(
     name = "locale-data",
     srcs = CLDR_RAW_FILES + [
@@ -1002,7 +981,6 @@ multirun(
     name = "tz_data.update",
     testonly = True,
     commands = [
-        ":supported-locales",
     ],
 )
 

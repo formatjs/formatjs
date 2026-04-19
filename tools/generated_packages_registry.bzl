@@ -5,8 +5,8 @@ GENERATED_PACKAGES = [
     {"name": "cldr.core", "target": "//packages/intl-getcanonicallocales:cldr_core_pkg"},
     {"name": "cldr.locale", "target": "//packages/intl-locale:cldr_locale_pkg"},
     {"name": "cldr.number", "target": "//packages/intl-numberformat:cldr_number_pkg"},
-    {"name": "cldr.supported-locales", "target": "//packages/intl-datetimeformat:cldr_sl_pkg"},
+    {"name": "cldr.supported-locales", "target": "//packages/generated/cldr-supported-locales:pkg"},
     {"name": "cldr.supported-values", "target": "//packages/intl-supportedvaluesof:cldr_sv_pkg"},
     {"name": "tz", "target": "//packages/intl-datetimeformat:tz_pkg"},
-    {"name": "unicode", "target": "//packages/ecma402-abstract:unicode_pkg"},
+    {"name": "unicode", "target": "//packages/generated/unicode:pkg"},
 ]

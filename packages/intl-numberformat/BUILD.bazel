@@ -60,6 +60,8 @@ TEST_DEPS = [
     "//:node_modules/@formatjs/intl-pluralrules",
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
+    "//:node_modules/@formatjs_generated/cldr.number",
+    "//:node_modules/@formatjs_generated/cldr.supported-locales",
     "//:node_modules/@types/node",
 ]
 
@@ -820,15 +822,6 @@ ts_run_binary(
     ],
 )
 
-generate_package_file(
-    name = "cldr_sl_intl-numberformat",
-    src = "intl-numberformat.ts",
-    args = ALL_LOCALES,
-    tags = ["cldr"],
-    tool = "//tools:generate-supported-locales",
-    visibility = ["//packages/intl-datetimeformat:__pkg__"],
-)
-
 ts_run_binary(
     name = "locale-data",
     srcs = CLDR_RAW_FILES + [
@@ -1170,6 +1163,8 @@ formatjs_test(
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",

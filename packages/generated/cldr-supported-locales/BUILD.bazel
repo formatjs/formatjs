@@ -1,0 +1,63 @@
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
+load(":locales.bzl", "INTL_DATETIMEFORMAT_LOCALES", "INTL_DISPLAYNAMES_LOCALES", "INTL_LISTFORMAT_LOCALES", "INTL_NUMBERFORMAT_LOCALES", "INTL_PLURALRULES_LOCALES", "INTL_RELATIVETIMEFORMAT_LOCALES")
+
+generate_package_file(
+    name = "cldr_sl_intl_datetimeformat",
+    src = "intl-datetimeformat.ts",
+    args = INTL_DATETIMEFORMAT_LOCALES,
+    tags = ["cldr"],
+    tool = "//tools:generate-supported-locales",
+)
+
+generate_package_file(
+    name = "cldr_sl_intl-displaynames",
+    src = "intl-displaynames.ts",
+    args = INTL_DISPLAYNAMES_LOCALES,
+    tags = ["cldr"],
+    tool = "//tools:generate-supported-locales",
+)
+
+generate_package_file(
+    name = "cldr_sl_intl-listformat",
+    src = "intl-listformat.ts",
+    args = INTL_LISTFORMAT_LOCALES,
+    tags = ["cldr"],
+    tool = "//tools:generate-supported-locales",
+)
+
+generate_package_file(
+    name = "cldr_sl_intl-numberformat",
+    src = "intl-numberformat.ts",
+    args = INTL_NUMBERFORMAT_LOCALES,
+    tags = ["cldr"],
+    tool = "//tools:generate-supported-locales",
+)
+
+generate_package_file(
+    name = "cldr_sl_intl-pluralrules",
+    src = "intl-pluralrules.ts",
+    args = INTL_PLURALRULES_LOCALES,
+    tags = ["cldr"],
+    tool = "//tools:generate-supported-locales",
+)
+
+generate_package_file(
+    name = "cldr_sl_intl-relativetimeformat",
+    src = "intl-relativetimeformat.ts",
+    args = INTL_RELATIVETIMEFORMAT_LOCALES,
+    tags = ["cldr"],
+    tool = "//tools:generate-supported-locales",
+)
+
+formatjs_generated_package(
+    name = "pkg",
+    package_name = "cldr.supported-locales",
+    srcs = [
+        ":cldr_sl_intl-displaynames",
+        ":cldr_sl_intl-listformat",
+        ":cldr_sl_intl-numberformat",
+        ":cldr_sl_intl-pluralrules",
+        ":cldr_sl_intl-relativetimeformat",
+        ":cldr_sl_intl_datetimeformat",
+    ],
+)

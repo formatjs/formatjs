@@ -1,6 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:generated.bzl", "generate_package_file")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -52,12 +51,9 @@ formatjs_test(
     data = ["//:package.json"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = ["//:node_modules/vitest"],
-)
-
-generate_package_file(
-    name = "unicode_icu_mfp_regex",
-    src = "icu-messageformat-parser-regex.ts",
-    tool = "//packages/icu-messageformat-parser/tools:regex_gen",
-    visibility = ["//packages/ecma402-abstract:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@formatjs_generated/unicode",
+        "//:node_modules/vitest",
+    ],
 )

@@ -2,7 +2,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:generated.bzl", "generate_package_file")
 load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
@@ -68,6 +67,7 @@ formatjs_test(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DisplayNames",
     ],
@@ -672,15 +672,6 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-displaynames/scripts:cldr-raw",
-)
-
-generate_package_file(
-    name = "cldr_sl_intl-displaynames",
-    src = "intl-displaynames.ts",
-    args = ALL_LOCALES,
-    tags = ["cldr"],
-    tool = "//tools:generate-supported-locales",
-    visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )
 
 ts_run_binary(

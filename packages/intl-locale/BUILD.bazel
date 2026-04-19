@@ -56,6 +56,7 @@ formatjs_test(
     ],
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs_generated/cldr.locale",
         "//:node_modules/vitest",
     ],
 )
