@@ -1,5 +1,5 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@rules_rust//rust:defs.bzl", "rust_test")
+load("@rules_rs//rs:rust_test.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:vitest.bzl", "vitest")
 

@@ -1,8 +1,10 @@
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("@rules_rs//rs:rust_test.bzl", "rust_test")
 
 # Optimization flags for the parser binary. Since this is a long-lived subprocess
 # used by gazelle, we want maximum parse throughput.
-# Note: LTO (-Clto=thin) is incompatible with rules_rust's -Cembed-bitcode=no,
+# Note: LTO (-Clto=thin) is incompatible with the Rust toolchain's -Cembed-bitcode=no,
 # so we rely on codegen-units=1 for cross-function optimization instead.
 _OPT_RUSTC_FLAGS = [
     "-Cpanic=abort",  # No unwind tables — smaller binary, deterministic failures
@@ -37,7 +39,7 @@ rust_binary(
         ":ts_import_extractor",
         "//crates/ts_import_extractor/proto:ts_import_extractor_rust_proto",
         "@crates//:rayon",
-        "@rules_rust_prost//private/3rdparty/crates:prost",
+        "@rrprd//:prost",
     ],
 )
 
