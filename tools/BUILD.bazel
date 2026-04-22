@@ -1,5 +1,5 @@
+# gazelle:ignore
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:vitest.bzl", "vitest")
 
@@ -63,28 +63,4 @@ ts_binary(
     ],
     entry_point = "generate-supported-locales.ts",
     visibility = ["//visibility:public"],
-)
-
-formatjs_library(
-    name = "dist",
-    srcs = [
-        "check-package-json.ts",
-        "check_no_internal_imports.ts",
-        "check_package_exports.ts",
-        "generate-supported-locales.ts",
-        "rolldown-bundle.ts",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/lodash-es",
-        "//:node_modules/@types/minimist",
-        "//:node_modules/@types/node",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/lodash-es",
-        "//:node_modules/minimist",
-        "//:node_modules/rolldown",
-        "//:node_modules/rolldown-plugin-dts",
-    ],
 )
