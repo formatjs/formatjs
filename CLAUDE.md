@@ -2,15 +2,15 @@
 
 ## Knowledge Base
 
-For detailed architecture docs, package dependency hierarchies, CLDR data pipelines, and design decisions, consult `knowledge-base/`. Key docs:
+For detailed architecture docs, package dependency hierarchies, CLDR data pipelines, and design decisions, consult @knowledge-base/. Key docs:
 
-- `001-repo-layout.md` — Directory structure, pnpm, linting, CI/CD, common commands
-- `001a-bazel-toolchain.md` — Bazel setup, TypeScript/Rust build pipeline, custom macros, tsconfig strategy, composite sub-packages
-- `002-ts-package-dependency-hierarchy.md` — 5-layer TypeScript package dependency graph
-- `003-rust-crate-dependency-hierarchy.md` — Rust crates, WASM, cross-language connections
-- `004-009` — Per-package design decisions and ECMA-402 conformance details
-- `007a-007k` — Individual polyfill CLDR data pipelines
-- `migrations/` — Migration plans (e.g., gazelle migration)
+- @knowledge-base/001-repo-layout.md — Directory structure, pnpm, linting, CI/CD, common commands
+- @knowledge-base/001a-bazel-toolchain.md — Bazel setup, TypeScript/Rust build pipeline, custom macros, tsconfig strategy, composite sub-packages
+- @knowledge-base/002-ts-package-dependency-hierarchy.md — 5-layer TypeScript package dependency graph
+- @knowledge-base/003-rust-crate-dependency-hierarchy.md — Rust crates, WASM, cross-language connections
+- @knowledge-base/004-009 — Per-package design decisions and ECMA-402 conformance details
+- @knowledge-base/007a-007k — Individual polyfill CLDR data pipelines
+- @knowledge-base/migrations/ — Migration plans (e.g., gazelle migration)
 
 ## Critical Rules
 
@@ -56,7 +56,7 @@ bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
 - Cross-check with the [LDML spec](https://unicode.org/reports/tr35/) and [ICU4J](https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/) source
 - Each polyfill follows ECMA-402 strictly
 - Data is tree-shakeable — locale data is separately importable
-- See `knowledge-base/007*.md` for per-polyfill CLDR pipeline details
+- See @knowledge-base/007*.md for per-polyfill CLDR pipeline details
 
 ### 6. Commit Message Format
 
