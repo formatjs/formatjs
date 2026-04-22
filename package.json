@@ -13,11 +13,10 @@
     "format": "lefthook run pre-commit --all-files",
     "prepare": "lefthook install",
     "prerelease": "LEFTHOOK=0 lerna version --yes --no-private",
-    "test": "syncpack lint && oxlint --config .oxlintrc.json && ast-grep scan && bazel test //...",
+    "test": "syncpack lint && oxlint --config .oxlintrc.json && bazel run //:ast-grep -- scan && bazel test //...",
     "website": "ibazel run //docs:serve"
   },
   "devDependencies": {
-    "@ast-grep/cli": "^0.42.0",
     "@babel/core": "^7.28.5",
     "@babel/helper-plugin-utils": "^7.27.1",
     "@babel/plugin-syntax-jsx": "^7.27.1",
@@ -232,7 +231,6 @@
       "unicode-match-property-ecmascript@2.0.0": "patches/unicode-match-property-ecmascript@2.0.0.patch"
     },
     "onlyBuiltDependencies": [
-      "@ast-grep/cli",
       "esbuild"
     ]
   },

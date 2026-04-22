@@ -4,7 +4,6 @@ load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
-
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
@@ -174,5 +173,14 @@ oxfmt.oxfmt_binary(
     fixed_args = [
         "--config=\"$$JS_BINARY__RUNFILES\"/$(rlocationpath //:oxfmtrc)",
     ],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "ast-grep",
+    actual = select({
+        "@platforms//os:macos": "@ast_grep_darwin_arm64//:ast-grep",
+        "@platforms//os:linux": "@ast_grep_linux_x86_64//:ast-grep",
+    }),
     visibility = ["//visibility:public"],
 )

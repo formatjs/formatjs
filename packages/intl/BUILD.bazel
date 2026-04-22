@@ -1,6 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:ast_grep.bzl", "ast_grep_test")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "node_env_preserved_test")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -45,9 +45,11 @@ formatjs_library(
     ],
 )
 
-node_env_preserved_test(
+ast_grep_test(
     name = "node_env_preserved_test",
+    size = "small",
     data = [":index-bundle"],
+    pattern = "process.env.NODE_ENV",
 )
 
 formatjs_test(

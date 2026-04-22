@@ -370,22 +370,6 @@ def no_internal_imports_test(name, data):
         node_options = ["--experimental-transform-types"],
     )
 
-def node_env_preserved_test(name, data):
-    """Test that process.env.NODE_ENV is preserved in bundled .js output.
-
-    Args:
-        name: target name
-        data: list of bundle targets to check (files or directories)
-    """
-    js_test(
-        name = name,
-        size = "small",
-        args = ["$(rootpath %s)" % d for d in data],
-        data = data + ["//:node_modules/minimist"],
-        entry_point = "//tools:check_node_env_preserved",
-        node_options = ["--experimental-transform-types"],
-    )
-
 def package_exports_test(name, pkg):
     """Test that all files referenced in package.json exports actually exist in the npm package.
 

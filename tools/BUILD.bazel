@@ -4,18 +4,13 @@ load("//tools:index.bzl", "ts_binary")
 load("//tools:vitest.bzl", "vitest")
 
 exports_files([
+    "ast_grep_test.sh",
     "supported-locales-gen.ts",
 ])
 
 copy_to_bin(
     name = "check_no_internal_imports",
     srcs = ["check_no_internal_imports.ts"],
-    visibility = ["//visibility:public"],
-)
-
-copy_to_bin(
-    name = "check_node_env_preserved",
-    srcs = ["check_node_env_preserved.ts"],
     visibility = ["//visibility:public"],
 )
 
@@ -75,7 +70,6 @@ formatjs_library(
     srcs = [
         "check-package-json.ts",
         "check_no_internal_imports.ts",
-        "check_node_env_preserved.ts",
         "check_package_exports.ts",
         "generate-supported-locales.ts",
         "rolldown-bundle.ts",

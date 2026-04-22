@@ -42,7 +42,7 @@ pre-commit:
       stage_fixed: true
     lint-ast-grep:
       glob: '**/*.{ts,tsx}'
-      run: pnpm ast-grep scan {staged_files}
+      run: bazel run //:ast-grep -- scan {staged_files}
     gazelle:
       glob:
         - "**/*.{ts,tsx,js,jsx,mjs,cjs}"
