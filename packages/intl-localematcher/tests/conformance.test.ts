@@ -1,6 +1,21 @@
 import {match} from '#packages/intl-localematcher/index.js'
+import {readFileSync} from 'fs'
+import {join, dirname} from 'path'
 import {describe, expect, test} from 'vitest'
-import fixtures from './locale-match-fixtures.json'
+
+interface Fixture {
+  description: string
+  requested: string[]
+  supported: string[]
+  expected: string
+}
+
+const fixtures: Fixture[] = JSON.parse(
+  readFileSync(
+    join(dirname(import.meta.filename), 'locale-match-fixtures.json'),
+    'utf8'
+  )
+)
 
 describe('Locale matching conformance (shared with ICU4J)', () => {
   for (const fixture of fixtures) {

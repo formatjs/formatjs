@@ -36,11 +36,21 @@ formatjs_test(
         "tests/BestFitMatcher.test.ts",
         "tests/LookupMatcher.test.ts",
         "tests/ResolveLocale.test.ts",
+        "tests/benchmark.test.ts",
+        "tests/conformance.test.ts",
         "tests/index.test.ts",
+        "tests/locale-match-fixtures.json",
         "tests/utils.test.ts",
     ],
+    data = ["tests/locale-match-fixtures.json"],
     deps = [
         "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
+)
+
+exports_files(
+    ["tests/locale-match-fixtures.json"],
+    visibility = ["//visibility:public"],
 )
