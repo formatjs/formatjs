@@ -1,5 +1,6 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "node_env_preserved_test")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -42,6 +43,11 @@ formatjs_library(
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
     ],
+)
+
+node_env_preserved_test(
+    name = "node_env_preserved_test",
+    data = [":index-bundle"],
 )
 
 formatjs_test(
