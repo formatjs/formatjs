@@ -1,4 +1,4 @@
-load("//tools:test.bzl", "formatjs_test")
+# gazelle:ignore
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 
@@ -24,17 +24,5 @@ vitest(
     deps = [
         "//:node_modules/vitest",
         "//packages/intl-localematcher:lib",
-    ],
-)
-
-formatjs_test(
-    name = "unit_test",
-    srcs = [
-        "benchmark.test.ts",
-        "conformance.test.ts",
-    ],
-    deps = [
-        "//:node_modules/vitest",
-        "//packages/intl-localematcher",
     ],
 )
