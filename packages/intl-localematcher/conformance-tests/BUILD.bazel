@@ -15,7 +15,10 @@ filegroup(
 
 vitest(
     name = "conformance_test",
-    srcs = ["conformance.test.ts"],
+    srcs = [
+        "benchmark.test.ts",
+        "conformance.test.ts",
+    ],
     data = ["locale-match-fixtures.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
@@ -26,7 +29,10 @@ vitest(
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["conformance.test.ts"],
+    srcs = [
+        "benchmark.test.ts",
+        "conformance.test.ts",
+    ],
     deps = [
         "//:node_modules/vitest",
         "//packages/intl-localematcher",
