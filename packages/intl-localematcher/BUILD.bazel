@@ -42,7 +42,6 @@ formatjs_test(
         "tests/locale-match-fixtures.json",
         "tests/utils.test.ts",
     ],
-    data = ["tests/locale-match-fixtures.json"],
     deps = [
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@types/node",
