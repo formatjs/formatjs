@@ -1,8 +1,8 @@
 import {match} from '#packages/intl-localematcher/index.js'
 import {expect, test} from 'vitest'
 test('zh-HK', function () {
-  // With canonicalization, zh-HANT → zh-Hant, and zh-HK matches zh-Hant better
-  expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-Hant')
+  // zh-HK matches zh-HANT (returns original supported locale string as-is)
+  expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-HANT')
 })
 
 test('Intl.LocaleMatcher', function () {

@@ -2,6 +2,7 @@ import com.ibm.icu.text.PluralRules;
 import com.ibm.icu.number.FormattedNumberRange;
 import com.ibm.icu.number.NumberRangeFormatter;
 import com.ibm.icu.number.LocalizedNumberRangeFormatter;
+import com.ibm.icu.util.LocaleMatcher;
 import com.ibm.icu.util.ULocale;
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class ICUConformanceTest {
         testLowercaseScriptCodes();
         testDisplayNames();
         testPluralRulesSelectRange();
+        testLocaleMatching();
 
         System.out.println("\n==========================================================");
         System.out.println("All tests completed successfully!");
@@ -365,5 +367,50 @@ public class ICUConformanceTest {
         }
 
         System.out.println("\n  ✓ PluralRules selectRange tests completed\n");
+    }
+
+    /**
+     * Test 7: Locale Matching (GH #6415)
+     * Validates that Latin American Spanish locales match es-419 over es
+     * when both are in the supported locales list.
+     *
+     * ICU4J's LocaleMatcher uses CLDR distance data including paradigm locales,
+     * which should prefer es-419 for Latin American locales.
+     */
+    private static void testLocaleMatching() {
+        System.out.println("TEST 7: Locale Matching (GH #6415)");
+        System.out.println("----------------------------------------------------------");
+
+        LocaleMatcher matcher = LocaleMatcher.builder()
+            .addSupportedULocale(ULocale.forLanguageTag("en"))
+            .addSupportedULocale(ULocale.forLanguageTag("es"))
+            .addSupportedULocale(ULocale.forLanguageTag("es-419"))
+            .setDefaultULocale(ULocale.forLanguageTag("en"))
+            .build();
+
+        // Latin American locales should match es-419, not es
+        Map<String, String> testCases = new LinkedHashMap<>();
+        testCases.put("es-MX", "es-419");
+        testCases.put("es-AR", "es-419");
+        testCases.put("es-CO", "es-419");
+        testCases.put("es", "es");
+        testCases.put("es-419", "es-419");
+
+        for (Map.Entry<String, String> entry : testCases.entrySet()) {
+            String requested = entry.getKey();
+            String expected = entry.getValue();
+            ULocale result = matcher.getBestMatch(ULocale.forLanguageTag(requested));
+            String actual = result.toLanguageTag();
+
+            boolean pass = actual.equals(expected);
+            System.out.printf("  %-10s → %-10s [%s]%n",
+                requested, actual, pass ? "PASS" : "FAIL - expected: " + expected);
+
+            if (!pass) {
+                System.exit(1);
+            }
+        }
+
+        System.out.println("  ✓ All locale matching tests passed\n");
     }
 }

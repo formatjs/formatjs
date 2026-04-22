@@ -454,6 +454,12 @@ export function findBestMatch(
   // Always run Tier 3 for full CLDR accuracy
   // Tier 3 may find better matches than Tier 2's fallback approach
   // findMatchingDistance is memoized, so repeated calculations are cached
+  // Reset lowestDistance so Tier 3 operates independently from Tier 2's
+  // heuristic distances — Tier 2 uses subtag-removal position as a proxy
+  // for distance, which is not comparable to CLDR distances (e.g. Tier 2
+  // assigns distance 20 to es→es-MX, but CLDR says es-419 at distance 39
+  // is closer than es at distance 49).
+  lowestDistance = Infinity
   requestedLocales.forEach((desired, i) => {
     if (!result.distances[desired]) {
       result.distances[desired] = {}
