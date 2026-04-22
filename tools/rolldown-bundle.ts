@@ -98,7 +98,7 @@ async function main(args: Args) {
         ? 'node'
         : platform === 'browser'
           ? 'browser'
-          : undefined,
+          : 'neutral',
     define: Object.keys(defineMap).length > 0 ? defineMap : undefined,
     resolve: {
       tsconfigFilename: tsconfigPath,
