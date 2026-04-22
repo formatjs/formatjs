@@ -240,6 +240,24 @@ http_file(
     url = "https://www.unicode.org/Public/17.0.0/ucd/DerivedCoreProperties.txt",
 )
 
+######### ast-grep for structural linting #########
+
+AST_GREP_VERSION = "0.42.1"
+
+http_archive(
+    name = "ast_grep_darwin_arm64",
+    build_file = "@//tools:ast_grep.BUILD",
+    sha256 = "c3961d8e8a4ee0ce2d0d98c7beeb168bb331cdc766b53630118a7b6c4fd39015",
+    url = "https://github.com/ast-grep/ast-grep/releases/download/%s/app-aarch64-apple-darwin.zip" % AST_GREP_VERSION,
+)
+
+http_archive(
+    name = "ast_grep_linux_x86_64",
+    build_file = "@//tools:ast_grep.BUILD",
+    sha256 = "5de8b87cba67fc8dc3e239d54b6484802ad745a7ae3de76be4fe89661dc52657",
+    url = "https://github.com/ast-grep/ast-grep/releases/download/%s/app-x86_64-unknown-linux-gnu.zip" % AST_GREP_VERSION,
+)
+
 ######### ICU4J for conformance testing #########
 
 http_file(
