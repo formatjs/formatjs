@@ -1,0 +1,34 @@
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools:vitest.bzl", "vitest")
+
+exports_files(
+    ["locale-match-fixtures.json"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "fixtures",
+    srcs = ["locale-match-fixtures.json"],
+    visibility = ["//visibility:public"],
+)
+
+vitest(
+    name = "conformance_test",
+    srcs = ["conformance.test.ts"],
+    data = ["locale-match-fixtures.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        "//:node_modules/vitest",
+        "//packages/intl-localematcher:lib",
+    ],
+)
+
+formatjs_test(
+    name = "unit_test",
+    srcs = ["conformance.test.ts"],
+    deps = [
+        "//:node_modules/vitest",
+        "//packages/intl-localematcher",
+    ],
+)

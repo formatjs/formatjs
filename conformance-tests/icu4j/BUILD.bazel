@@ -8,6 +8,10 @@ java_import(
 java_binary(
     name = "icu_conformance_test",
     srcs = ["ICUConformanceTest.java"],
+    data = ["//packages/intl-localematcher/conformance-tests:fixtures"],
+    env = {
+        "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher/conformance-tests:fixtures)",
+    },
     main_class = "ICUConformanceTest",
     deps = [":icu4j"],
 )

@@ -4,6 +4,8 @@ import com.ibm.icu.number.NumberRangeFormatter;
 import com.ibm.icu.number.LocalizedNumberRangeFormatter;
 import com.ibm.icu.util.LocaleMatcher;
 import com.ibm.icu.util.ULocale;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -370,47 +372,133 @@ public class ICUConformanceTest {
     }
 
     /**
-     * Test 7: Locale Matching (GH #6415)
-     * Validates that Latin American Spanish locales match es-419 over es
-     * when both are in the supported locales list.
-     *
-     * ICU4J's LocaleMatcher uses CLDR distance data including paradigm locales,
-     * which should prefer es-419 for Latin American locales.
+     * Test 7: Locale Matching Conformance (shared fixtures with TS implementation)
+     * Reads test cases from locale-match-fixtures.json and validates ICU4J produces
+     * the same results as our @formatjs/intl-localematcher.
      */
     private static void testLocaleMatching() {
-        System.out.println("TEST 7: Locale Matching (GH #6415)");
+        System.out.println("TEST 7: Locale Matching Conformance");
         System.out.println("----------------------------------------------------------");
 
-        LocaleMatcher matcher = LocaleMatcher.builder()
-            .addSupportedULocale(ULocale.forLanguageTag("en"))
-            .addSupportedULocale(ULocale.forLanguageTag("es"))
-            .addSupportedULocale(ULocale.forLanguageTag("es-419"))
-            .setDefaultULocale(ULocale.forLanguageTag("en"))
-            .build();
+        String fixturesPath = System.getenv("LOCALE_MATCH_FIXTURES");
+        if (fixturesPath == null || fixturesPath.isEmpty()) {
+            System.out.println("  SKIP: LOCALE_MATCH_FIXTURES not set");
+            return;
+        }
 
-        // Latin American locales should match es-419, not es
-        Map<String, String> testCases = new LinkedHashMap<>();
-        testCases.put("es-MX", "es-419");
-        testCases.put("es-AR", "es-419");
-        testCases.put("es-CO", "es-419");
-        testCases.put("es", "es");
-        testCases.put("es-419", "es-419");
+        String json;
+        try {
+            json = new String(Files.readAllBytes(Paths.get(fixturesPath)));
+        } catch (IOException e) {
+            System.out.println("  FAIL: Cannot read fixtures: " + e.getMessage());
+            System.exit(1);
+            return;
+        }
 
-        for (Map.Entry<String, String> entry : testCases.entrySet()) {
-            String requested = entry.getKey();
-            String expected = entry.getValue();
-            ULocale result = matcher.getBestMatch(ULocale.forLanguageTag(requested));
+        // Minimal JSON array-of-objects parser (no external dependency)
+        // Each object has: description, requested[], supported[], expected
+        List<Map<String, Object>> fixtures = parseFixtures(json);
+
+        for (Map<String, Object> fixture : fixtures) {
+            String description = (String) fixture.get("description");
+            @SuppressWarnings("unchecked")
+            List<String> requested = (List<String>) fixture.get("requested");
+            @SuppressWarnings("unchecked")
+            List<String> supported = (List<String>) fixture.get("supported");
+            String expected = (String) fixture.get("expected");
+
+            LocaleMatcher.Builder builder = LocaleMatcher.builder()
+                .setDefaultULocale(ULocale.forLanguageTag(supported.get(0)));
+            for (String s : supported) {
+                builder.addSupportedULocale(ULocale.forLanguageTag(s));
+            }
+            LocaleMatcher matcher = builder.build();
+
+            // Match first requested locale (single-locale test cases)
+            ULocale result = matcher.getBestMatch(ULocale.forLanguageTag(requested.get(0)));
             String actual = result.toLanguageTag();
 
             boolean pass = actual.equals(expected);
-            System.out.printf("  %-10s → %-10s [%s]%n",
-                requested, actual, pass ? "PASS" : "FAIL - expected: " + expected);
+            System.out.printf("  %-60s [%s]%n",
+                description, pass ? "PASS" : "FAIL - got: " + actual + ", expected: " + expected);
 
             if (!pass) {
                 System.exit(1);
             }
         }
 
-        System.out.println("  ✓ All locale matching tests passed\n");
+        System.out.println("  ✓ All locale matching conformance tests passed\n");
+    }
+
+    /** Minimal JSON array parser for fixture files. */
+    private static List<Map<String, Object>> parseFixtures(String json) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        // Strip outer []
+        json = json.trim();
+        if (!json.startsWith("[") || !json.endsWith("]")) return result;
+        json = json.substring(1, json.length() - 1).trim();
+
+        // Split objects by },{ pattern
+        int depth = 0;
+        int start = -1;
+        for (int i = 0; i < json.length(); i++) {
+            char c = json.charAt(i);
+            if (c == '{') {
+                if (depth == 0) start = i;
+                depth++;
+            } else if (c == '}') {
+                depth--;
+                if (depth == 0 && start >= 0) {
+                    result.add(parseObject(json.substring(start + 1, i)));
+                    start = -1;
+                }
+            }
+        }
+        return result;
+    }
+
+    private static Map<String, Object> parseObject(String obj) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        // Parse "key": value pairs
+        int i = 0;
+        while (i < obj.length()) {
+            // Find key
+            int keyStart = obj.indexOf('"', i);
+            if (keyStart < 0) break;
+            int keyEnd = obj.indexOf('"', keyStart + 1);
+            String key = obj.substring(keyStart + 1, keyEnd);
+
+            // Find colon
+            int colon = obj.indexOf(':', keyEnd);
+
+            // Find value
+            int valStart = colon + 1;
+            while (valStart < obj.length() && obj.charAt(valStart) == ' ') valStart++;
+
+            if (obj.charAt(valStart) == '"') {
+                // String value
+                int valEnd = obj.indexOf('"', valStart + 1);
+                map.put(key, obj.substring(valStart + 1, valEnd));
+                i = valEnd + 1;
+            } else if (obj.charAt(valStart) == '[') {
+                // Array value
+                int valEnd = obj.indexOf(']', valStart);
+                String arrayContent = obj.substring(valStart + 1, valEnd).trim();
+                List<String> list = new ArrayList<>();
+                if (!arrayContent.isEmpty()) {
+                    for (String item : arrayContent.split(",")) {
+                        item = item.trim();
+                        if (item.startsWith("\"") && item.endsWith("\"")) {
+                            list.add(item.substring(1, item.length() - 1));
+                        }
+                    }
+                }
+                map.put(key, list);
+                i = valEnd + 1;
+            } else {
+                i = valStart + 1;
+            }
+        }
+        return map;
     }
 }
