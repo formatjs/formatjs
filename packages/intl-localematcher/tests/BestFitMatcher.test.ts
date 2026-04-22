@@ -56,10 +56,10 @@ test('GH #4237', function () {
 })
 
 test('bestFitMatcher testing $cnsar: zh-HK', function () {
-  // With Tier 2 optimization, zh-HK maximizes to zh-Hant-HK → falls back to zh-Hant
-  // Previously used CLDR $cnsar data to match zh-MO, but maximization is linguistically correct
+  // zh-HK should match zh-MO via CLDR $cnsar region group (distance 40)
+  // which is closer than zh-Hant (distance 50)
   expect(BestFitMatcher(['zh-Hant', 'zh-MO'], ['zh-HK'], () => 'en')).toEqual({
-    locale: 'zh-Hant',
+    locale: 'zh-MO',
   })
 })
 
@@ -70,11 +70,11 @@ test('bestFitMatcher testing $enUS: en-CA', function () {
 })
 
 test('bestFitMatcher testing $americas: es-KY', function () {
-  // With Tier 2 fallback optimization, es-KY → es (simple fallback)
-  // Previously used CLDR $americas data to match es-419
+  // es-KY (Americas) should match es-419 (distance 39) over es (distance 49)
+  // via CLDR $americas paradigm locale rules
   expect(BestFitMatcher(['es', 'en', 'es-419'], ['es-KY'], () => 'en')).toEqual(
     {
-      locale: 'es',
+      locale: 'es-419',
     }
   )
 })

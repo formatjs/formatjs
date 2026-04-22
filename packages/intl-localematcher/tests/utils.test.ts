@@ -86,11 +86,19 @@ test('findBestMatch', () => {
     matchedSupportedLocale: 'es-419',
   })
 
-  // es-co → es uses Tier 3 calculation, which is better than es-419
-  const esResult = findBestMatch(['es-co'], ['en', 'es', 'es-419'])
-  expect(esResult.matchedDesiredLocale).toEqual('es-co')
-  expect(esResult.matchedSupportedLocale).toEqual('es')
-  expect(esResult.distances['es-co'].es).toBeLessThan(100) // Tier 3 calculates accurate distance
+  // es-co → es-419 (CLDR distance 39) is closer than es (distance 49)
+  // Latin American locales should match es-419 via CLDR paradigm locale rules
+  expect(findBestMatch(['es-co'], ['en', 'es', 'es-419'])).toEqual({
+    distances: {
+      'es-co': {
+        en: 839,
+        es: 49,
+        'es-419': 39,
+      },
+    },
+    matchedDesiredLocale: 'es-co',
+    matchedSupportedLocale: 'es-419',
+  })
 
   expect(findBestMatch(['pt-mz'], ['pt-PT', 'pt-BR'])).toEqual({
     distances: {

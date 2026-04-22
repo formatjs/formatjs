@@ -1,0 +1,80 @@
+[
+  {
+    "description": "es-MX matches es-419 (Latin American Spanish, GH #6415)",
+    "requested": ["es-MX"],
+    "supported": ["en", "es", "es-419"],
+    "expected": "es-419"
+  },
+  {
+    "description": "es-AR matches es-419 (Latin American Spanish, GH #6415)",
+    "requested": ["es-AR"],
+    "supported": ["en", "es", "es-419"],
+    "expected": "es-419"
+  },
+  {
+    "description": "es-CO matches es-419 (Latin American Spanish, GH #6415)",
+    "requested": ["es-CO"],
+    "supported": ["en", "es", "es-419"],
+    "expected": "es-419"
+  },
+  {
+    "description": "es-KY matches es-419 ($americas region group)",
+    "requested": ["es-KY"],
+    "supported": ["es", "en", "es-419"],
+    "expected": "es-419"
+  },
+  {
+    "description": "es matches es exactly",
+    "requested": ["es"],
+    "supported": ["en", "es", "es-419"],
+    "expected": "es"
+  },
+  {
+    "description": "es-419 matches es-419 exactly",
+    "requested": ["es-419"],
+    "supported": ["en", "es", "es-419"],
+    "expected": "es-419"
+  },
+  {
+    "description": "zh-TW matches zh-Hant (maximization: zh-TW → zh-Hant-TW)",
+    "requested": ["zh-TW"],
+    "supported": ["zh", "zh-Hant"],
+    "expected": "zh-Hant"
+  },
+  {
+    "description": "zh-HK matches zh-MO ($cnsar region group, distance 40 < zh-Hant distance 50)",
+    "requested": ["zh-HK"],
+    "supported": ["zh-Hant", "zh-MO"],
+    "expected": "zh-MO"
+  },
+  {
+    "description": "zh-HK matches zh-Hant when zh-MO not available",
+    "requested": ["zh-HK"],
+    "supported": ["zh", "zh-Hant", "en"],
+    "expected": "zh-Hant"
+  },
+  {
+    "description": "es-CO matches es-419 when only es-419 and en available",
+    "requested": ["es-CO"],
+    "supported": ["en", "es-419"],
+    "expected": "es-419"
+  },
+  {
+    "description": "pt-MZ matches pt-PT ($ptPT region group)",
+    "requested": ["pt-MZ"],
+    "supported": ["pt-PT", "pt-BR"],
+    "expected": "pt-PT"
+  },
+  {
+    "description": "en-CA matches en-US ($enUS region group)",
+    "requested": ["en-CA"],
+    "supported": ["en-GB", "en-US"],
+    "expected": "en-US"
+  },
+  {
+    "description": "sr-Latn-BA matches sh (cross-language match via CLDR)",
+    "requested": ["sr-Latn-BA"],
+    "supported": ["bs", "sh"],
+    "expected": "sh"
+  }
+]
