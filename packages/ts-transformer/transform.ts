@@ -286,8 +286,16 @@ function extractMessageDescriptor(
   let extractionError: Error | null = null
 
   // Helper to handle errors based on throws option
-  function handleError(errorMsg: string): void {
-    const error = new Error(errorMsg)
+  function handleError(errorMsg: string, errorNode?: typescript.Node): void {
+    let locationMsg = errorMsg
+    if (errorNode) {
+      const {line, character} = ts.getLineAndCharacterOfPosition(
+        sf,
+        errorNode.getStart(sf)
+      )
+      locationMsg = `${sf.fileName}:${line + 1}:${character + 1} ${errorMsg}`
+    }
+    const error = new Error(locationMsg)
     if (throws) {
       throw error
     }
@@ -364,7 +372,8 @@ function extractMessageDescriptor(
         const {template} = initializer
         if (!ts.isNoSubstitutionTemplateLiteral(template)) {
           handleError(
-            '[FormatJS] Tagged template expression must be no substitution'
+            '[FormatJS] Tagged template expression must be no substitution',
+            prop
           )
           return
         }
@@ -437,7 +446,8 @@ function extractMessageDescriptor(
           } = initializer
           if (!ts.isNoSubstitutionTemplateLiteral(template)) {
             handleError(
-              '[FormatJS] Tagged template expression must be no substitution'
+              '[FormatJS] Tagged template expression must be no substitution',
+              prop
             )
             return
           }
@@ -475,7 +485,8 @@ function extractMessageDescriptor(
           ) {
             // Non-static expression for defaultMessage or id
             handleError(
-              `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
+              `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`,
+              prop
             )
             return
           }
@@ -486,7 +497,8 @@ function extractMessageDescriptor(
           name.text !== 'description'
         ) {
           handleError(
-            `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
+            `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`,
+            prop
           )
           return
         }
@@ -512,7 +524,8 @@ function extractMessageDescriptor(
         ) {
           // Non-static expression for defaultMessage or id
           handleError(
-            `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`
+            `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`,
+            prop
           )
           return
         }
@@ -530,7 +543,8 @@ function extractMessageDescriptor(
         name.text !== 'description'
       ) {
         handleError(
-          `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`
+          `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`,
+          prop
         )
         return
       }

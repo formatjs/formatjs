@@ -91,6 +91,7 @@ pub fn extract_messages_from_source(
     // Visit the AST to extract messages
     let mut visitor = MessageExtractor::new(
         file_path,
+        source_text,
         extract_source_location,
         component_names,
         function_names,
@@ -185,6 +186,7 @@ pub fn determine_source_type(path: &Path) -> Result<SourceType> {
 /// AST visitor to extract message descriptors
 struct MessageExtractor<'a> {
     file_path: &'a Path,
+    source_text: &'a str,
     extract_source_location: bool,
     component_names: &'a [String],
     function_names: &'a [String],
@@ -197,6 +199,7 @@ struct MessageExtractor<'a> {
 impl<'a> MessageExtractor<'a> {
     fn new(
         file_path: &'a Path,
+        source_text: &'a str,
         extract_source_location: bool,
         component_names: &'a [String],
         function_names: &'a [String],
@@ -206,6 +209,7 @@ impl<'a> MessageExtractor<'a> {
     ) -> Self {
         Self {
             file_path,
+            source_text,
             extract_source_location,
             component_names,
             function_names,
@@ -214,6 +218,12 @@ impl<'a> MessageExtractor<'a> {
             throws,
             messages: Vec::new(),
         }
+    }
+
+    /// Format a source location string like "file.tsx:line:col"
+    fn format_location(&self, offset: u32) -> String {
+        let (line, col) = get_line_col(self.source_text, offset as usize);
+        format!("{}:{}:{}", self.file_path.display(), line, col)
     }
 
     fn extract_string_literal(
@@ -380,20 +390,34 @@ impl<'a> MessageExtractor<'a> {
                                     match attr_name {
                                         "id" => {
                                             descriptor.id = self.extract_string_literal(expr, None);
-                                            // Validate id is static if throws is enabled
-                                            if self.throws && descriptor.id.is_none() {
-                                                panic!(
-                                                    "defaultMessage must be a string literal to be extracted."
+                                            if descriptor.id.is_none() {
+                                                let loc = self.format_location(jsx_attr.span.start);
+                                                if self.throws {
+                                                    panic!(
+                                                        "{} [FormatJS] `id` must be a string literal to be extracted.",
+                                                        loc
+                                                    );
+                                                }
+                                                eprintln!(
+                                                    "{} [FormatJS] `id` must be a string literal to be extracted.",
+                                                    loc
                                                 );
                                             }
                                         }
                                         "defaultMessage" => {
                                             descriptor.default_message =
                                                 self.extract_string_literal(expr, None);
-                                            // Validate defaultMessage is static if throws is enabled
-                                            if self.throws && descriptor.default_message.is_none() {
-                                                panic!(
-                                                    "defaultMessage must be a string literal to be extracted."
+                                            if descriptor.default_message.is_none() {
+                                                let loc = self.format_location(jsx_attr.span.start);
+                                                if self.throws {
+                                                    panic!(
+                                                        "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
+                                                        loc
+                                                    );
+                                                }
+                                                eprintln!(
+                                                    "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
+                                                    loc
                                                 );
                                             }
                                         }
@@ -498,17 +522,35 @@ impl<'a> MessageExtractor<'a> {
                     match key.name.as_str() {
                         "id" => {
                             descriptor.id = self.extract_string_literal(&p.value, None);
-                            // Validate id is static if throws is enabled
-                            if self.throws && descriptor.id.is_none() {
-                                panic!("defaultMessage must be a string literal to be extracted.");
+                            if descriptor.id.is_none() {
+                                let loc = self.format_location(p.span.start);
+                                if self.throws {
+                                    panic!(
+                                        "{} [FormatJS] `id` must be a string literal to be extracted.",
+                                        loc
+                                    );
+                                }
+                                eprintln!(
+                                    "{} [FormatJS] `id` must be a string literal to be extracted.",
+                                    loc
+                                );
                             }
                         }
                         "defaultMessage" => {
                             descriptor.default_message =
                                 self.extract_string_literal(&p.value, None);
-                            // Validate defaultMessage is static if throws is enabled
-                            if self.throws && descriptor.default_message.is_none() {
-                                panic!("defaultMessage must be a string literal to be extracted.");
+                            if descriptor.default_message.is_none() {
+                                let loc = self.format_location(p.span.start);
+                                if self.throws {
+                                    panic!(
+                                        "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
+                                        loc
+                                    );
+                                }
+                                eprintln!(
+                                    "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
+                                    loc
+                                );
                             }
                         }
                         "description" => {
