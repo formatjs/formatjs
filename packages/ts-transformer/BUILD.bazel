@@ -29,6 +29,10 @@ formatjs_library(
         "ts-jest-integration.ts",
         "types.ts",
     ],
+    entry_points = [
+        "index.ts",
+        "ts-jest-integration.ts",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
