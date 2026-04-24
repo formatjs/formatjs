@@ -6,7 +6,7 @@ module.exports = {
       astTransformers: {
         before: [
           {
-            path: require.resolve('@formatjs/ts-transformer/ts-jest-integration'),
+            path: require.resolve('@formatjs/ts-transformer/ts-jest-integration.js'),
             options: {
               // options
               overrideIdFn: '[sha512:contenthash:base64:6]',
