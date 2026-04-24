@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.8.3...@formatjs/intl-localematcher@0.8.4) (2026-04-24)
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** latin american locales match es-419 correctly ([#6431](https://github.com/formatjs/formatjs/issues/6431)) ([15adcca](https://github.com/formatjs/formatjs/commit/15adcca05d1a535949da295cd935b69bf30e9a35)), closes [#6415](https://github.com/formatjs/formatjs/issues/6415) - by @longlho
+
 ## [0.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.8.2...@formatjs/intl-localematcher@0.8.3) (2026-04-13)
 
 ### Reverts

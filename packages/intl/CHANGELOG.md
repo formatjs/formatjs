@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.7](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.6...@formatjs/intl@4.1.7) (2026-04-24)
+
+### Bug Fixes
+
+* **@formatjs/intl:** preserve process.env.NODE_ENV check in bundled output ([#6429](/github.com/formatjs/formatjs/issues/6429)) ([f8d5e22](github.com/formatjs/formatjs/commits/f8d5e22ad1468a383bd0cfc4b85205d0b2b2f696)), closes [#6414](github.com/formatjs/formatjs/issues/6414) - by @longlho
+
 ## [4.1.6](github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.5...@formatjs/intl@4.1.6) (2026-04-13)
 
 ### Bug Fixes

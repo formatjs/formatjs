@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.4...@formatjs/ts-transformer@4.4.5) (2026-04-24)
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** include source location in extraction warnings ([#6432](https://github.com/formatjs/formatjs/issues/6432)) ([9e55a25](https://github.com/formatjs/formatjs/commit/9e55a25ad01d9f1b3463a7a7ba8388ca699ec9a5)), closes [#6428](https://github.com/formatjs/formatjs/issues/6428) - by @longlho
+* **@formatjs/ts-transformer:** restore ts-jest-integration subpath export ([#6437](https://github.com/formatjs/formatjs/issues/6437)) ([10d1f74](https://github.com/formatjs/formatjs/commit/10d1f740972df58592f885959f86e668be9c6a85)), closes [#6080](https://github.com/formatjs/formatjs/issues/6080) [#6433](https://github.com/formatjs/formatjs/issues/6433) - by @longlho
+
 ## [4.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.3...@formatjs/ts-transformer@4.4.4) (2026-04-13)
 
 ### Reverts
