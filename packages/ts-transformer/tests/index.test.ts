@@ -726,6 +726,26 @@ describe('emit asserts for', function () {
       /\[formatjs\] Cannot flatten message in file.*flattenError\.tsx.*at line \d+, column \d+.*with id "test\.message".*Cannot hoist plural\/select within a tag element/
     )
   })
+
+  it('GH #6428 - extraction error with throws=true includes file:line:col', async function () {
+    await expect(
+      compile(join(FIXTURES_DIR, 'nonStaticMessages.tsx'), {})
+    ).rejects.toThrow(/nonStaticMessages\.tsx:\d+:\d+ \[FormatJS\]/)
+  })
+
+  it('GH #6428 - extraction error with throws=false reports file:line:col via onMsgError', async function () {
+    const errors: Error[] = []
+    await compile(join(FIXTURES_DIR, 'nonStaticMessages.tsx'), {
+      throws: false,
+      onMsgError: (_filePath: string, error: Error) => {
+        errors.push(error)
+      },
+    })
+    expect(errors.length).toBeGreaterThan(0)
+    expect(errors[0].message).toMatch(
+      /nonStaticMessages\.tsx:\d+:\d+ \[FormatJS\]/
+    )
+  })
 })
 
 async function compile(filePath: string, options?: Partial<Opts>) {
