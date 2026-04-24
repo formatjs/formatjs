@@ -1658,4 +1658,152 @@ export default function Test() {
         assert!(error.contains("Cannot hoist plural/select within a tag element"), "Error should include original error message");
         assert!(error.contains("<b>{count"), "Error should include problematic message");
     }
+
+    #[test]
+    fn test_non_static_id_throws_includes_location() {
+        // When throws=true and id is non-static, the panic message should include file:line:col
+        let source = r#"import { defineMessage } from 'react-intl';
+const dynamicId = 'foo';
+const msg = defineMessage({
+    id: dynamicId,
+    defaultMessage: 'Hello',
+});
+"#;
+
+        let file_path = PathBuf::from("src/App.tsx");
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec![
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+            "formatMessage".to_string(),
+        ];
+
+        let result = std::panic::catch_unwind(|| {
+            extract_messages_from_source(
+                source,
+                &file_path,
+                source_type,
+                false,
+                &component_names,
+                &function_names,
+                HashMap::new(),
+                false,
+                false,
+                true, // throws = true
+            )
+        });
+
+        assert!(result.is_err(), "Should panic with throws=true on non-static id");
+        let panic_msg = result
+            .unwrap_err()
+            .downcast_ref::<String>()
+            .cloned()
+            .unwrap_or_default();
+        assert!(
+            panic_msg.contains("src/App.tsx:4:"),
+            "Panic message should include file:line:col, got: {}",
+            panic_msg
+        );
+        assert!(
+            panic_msg.contains("[FormatJS]"),
+            "Panic message should include [FormatJS] prefix, got: {}",
+            panic_msg
+        );
+    }
+
+    #[test]
+    fn test_non_static_default_message_throws_includes_location() {
+        // When throws=true and defaultMessage is non-static, the panic message should include file:line:col
+        let source = r#"import { FormattedMessage } from 'react-intl';
+export default function App() {
+    const msg = getDynamicMessage();
+    return <FormattedMessage id="test" defaultMessage={msg} />;
+}
+"#;
+
+        let file_path = PathBuf::from("src/Component.tsx");
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["formatMessage".to_string()];
+
+        let result = std::panic::catch_unwind(|| {
+            extract_messages_from_source(
+                source,
+                &file_path,
+                source_type,
+                false,
+                &component_names,
+                &function_names,
+                HashMap::new(),
+                false,
+                false,
+                true, // throws = true
+            )
+        });
+
+        assert!(result.is_err(), "Should panic with throws=true on non-static defaultMessage");
+        let panic_msg = result
+            .unwrap_err()
+            .downcast_ref::<String>()
+            .cloned()
+            .unwrap_or_default();
+        assert!(
+            panic_msg.contains("src/Component.tsx:4:"),
+            "Panic message should include file:line:col, got: {}",
+            panic_msg
+        );
+        assert!(
+            panic_msg.contains("`defaultMessage`"),
+            "Panic message should mention defaultMessage, got: {}",
+            panic_msg
+        );
+    }
+
+    #[test]
+    fn test_non_static_values_no_throw_skips_and_warns() {
+        // When throws=false and defaultMessage is non-static, messages should be skipped (not panic)
+        let source = r#"import { defineMessage } from 'react-intl';
+const dynamic = getDynamic();
+const msg1 = defineMessage({
+    id: 'skip.me',
+    defaultMessage: dynamic,
+});
+const msg2 = defineMessage({
+    id: 'valid.message',
+    defaultMessage: 'This is valid',
+});
+"#;
+
+        let file_path = PathBuf::from("src/App.tsx");
+        let source_type = SourceType::default().with_typescript(true).with_jsx(true);
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec![
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+            "formatMessage".to_string(),
+        ];
+
+        let messages = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            false, // throws = false
+        )
+        .unwrap();
+
+        // Only the valid message should be extracted (the one with non-static defaultMessage is skipped)
+        assert_eq!(messages.len(), 1, "Should extract only the valid message");
+        assert_eq!(messages[0].id.as_deref(), Some("valid.message"));
+        assert_eq!(
+            messages[0].default_message.as_deref(),
+            Some("This is valid")
+        );
+    }
 }
