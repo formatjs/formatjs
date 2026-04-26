@@ -21,6 +21,12 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["tests/index.test.ts"],
-    deps = ["//:node_modules/vitest"],
+    data = [
+        "tests/index.test.ts",
+        ":dist",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/svelte",
+        "//:node_modules/vitest",
+    ],
 )

@@ -9,6 +9,8 @@ exports_files([
 
 formatjs_library(
     name = "dist",
-    srcs = ["index.ts"],
+    srcs = [
+        "index.ts",
+    ],
     visibility = ["//visibility:public"],
 )

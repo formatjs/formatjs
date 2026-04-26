@@ -35,26 +35,28 @@ formatjs_library(
     ],
     allow_overwrites = True,
     entry_points = ENTRY_POINTS,
-    project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
+        "//packages/ecma402-abstract/types:dist",
     ],
 )
 
 ast_grep_test(
     name = "node_env_preserved_test",
     size = "small",
-    data = [":index-bundle"],
+    data = [
+        ":index-bundle",
+    ],
     pattern = "process.env.NODE_ENV",
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/create-intl.test.ts",
         "tests/error.test.ts",
         "tests/formatDate.test.ts",
@@ -65,14 +67,14 @@ formatjs_test(
         "tests/formatPlural.test.ts",
         "tests/formatRelativeTime.test.ts",
         "tests/formatTime.test.ts",
-    ],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    snapshots = glob(["tests/__snapshots__/*.snap"]),
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":dist",
+        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types:dist",
     ],
+    no_copy_to_bin = ["//:package.json"],
+    snapshots = glob(["tests/__snapshots__/*.snap"]),
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

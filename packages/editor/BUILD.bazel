@@ -1,3 +1,8 @@
+# Editor demo app — not published. Auto-generated formatjs_library defaults
+# to index.ts as entry point, but the entry here is index.tsx; opt out of
+# gazelle-driven rule generation entirely for this dir.
+# gazelle:ts_enabled false
+
 # load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 # load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 

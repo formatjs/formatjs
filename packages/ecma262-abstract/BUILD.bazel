@@ -16,5 +16,7 @@ formatjs_library(
         "Type.ts",
     ],
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs/bigdecimal"],
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+    ],
 )

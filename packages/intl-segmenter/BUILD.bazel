@@ -51,27 +51,32 @@ formatjs_library(
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
-    project_references = ["//packages/ecma402-abstract"],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/unicode",
+        "//packages/ecma402-abstract:dist",
     ],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/grapheme.test.ts",
         "tests/isWordLike.test.ts",
         "tests/sentence.test.ts",
         "tests/test-utils.ts",
         "tests/word.test.ts",
+        ":dist",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/unicode",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract:dist",
     ],
-    data = [
-        "//:package.json",
-    ] + TEST_UNICODE_FILES,
+    extra_data = TEST_UNICODE_FILES,
     no_copy_to_bin = [
         "//:package.json",
         "@GraphemeBreakTest//file",
@@ -79,12 +84,6 @@ formatjs_test(
         "@SentenceBreakTest//file",
     ],
     tsconfig = TSCONFIG,
-    deps = [
-        "//:node_modules/@bazel/runfiles",  # keep: imported from tests/
-        "//:node_modules/@formatjs_generated/unicode",
-        "//:node_modules/@types/node",
-        "//:node_modules/vitest",
-    ],
 )
 
 ts_run_binary(

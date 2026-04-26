@@ -39,36 +39,38 @@ formatjs_library(
         ":locale-data",
         "polyfill.iife.js",
     ],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/RelativeTimeFormat",
-        "//packages/ecma402-abstract/types",
-    ],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/RelativeTimeFormat:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
-    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],  # keep
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":dist",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/RelativeTimeFormat:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
+    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 # CLDR

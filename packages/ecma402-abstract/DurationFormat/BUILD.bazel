@@ -10,10 +10,10 @@ formatjs_library(
         "ToIntegerIfIntegral.ts",
         "constants.ts",
     ],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/types:dist",
+    ],
 )

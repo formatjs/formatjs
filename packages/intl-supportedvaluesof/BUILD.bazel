@@ -34,27 +34,29 @@ formatjs_library(
     ],
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
-    project_references = ["//packages/ecma402-abstract"],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma402-abstract:dist",
     ],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["tests/index.test.ts"],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+    data = [
+        "tests/index.test.ts",
+        ":dist",
+        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract:dist",
     ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 # @formatjs_generated/cldr.supported-values — BCP47 supported value enumerations

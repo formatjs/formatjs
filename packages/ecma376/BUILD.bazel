@@ -10,12 +10,17 @@ SRC_DEPS = [
 
 formatjs_library(
     name = "dist",
-    srcs = ["index.ts"],
+    srcs = [
+        "index.ts",
+    ],
     visibility = ["//visibility:public"],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["tests/index.test.ts"],
-    deps = ["//:node_modules/vitest"],
+    data = [
+        "tests/index.test.ts",
+        ":dist",
+        "//:node_modules/vitest",
+    ],
 )

@@ -72,12 +72,6 @@ formatjs_library(
         ":locale-data",
         "polyfill.iife.js",
     ],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/types",
-    ],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -85,12 +79,16 @@ formatjs_library(
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/DateTimeFormat:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/abstract/BestFitFormatMatcher.test.ts",
         "tests/abstract/skeleton.test.ts",
         "tests/benchmark.ts",
@@ -99,20 +97,23 @@ formatjs_test(
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
         "tests/offset-timezone.test.ts",
-    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],  # keep
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":dist",
+        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
-        "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/types",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/DateTimeFormat:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
+    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 # Expand zdump files
@@ -928,15 +929,9 @@ rolldown_bundle(
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = [":srcs"] + [
-        "tests/locale-data/en.json",
-        "//:node_modules/@formatjs/bigdecimal",
-        "//:node_modules/@formatjs/intl-localematcher",
+    data = [
+        "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/tinybench",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/types",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [

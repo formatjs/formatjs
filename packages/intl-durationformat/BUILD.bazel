@@ -28,28 +28,31 @@ formatjs_library(
         "types.ts",
     ],
     entry_points = ENTRY_POINTS,
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DurationFormat",
-        "//packages/ecma402-abstract/types",
-    ],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.number",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/DurationFormat:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["tests/index.test.ts"],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+    data = [
+        "tests/index.test.ts",
+        ":dist",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/vitest",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/DurationFormat:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

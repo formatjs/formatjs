@@ -46,7 +46,7 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/fixtures/FormattedMessage.tsx",
         "tests/fixtures/additionalComponentNames.tsx",
         "tests/fixtures/additionalFunctionNames.tsx",
@@ -72,12 +72,14 @@ formatjs_test(
         "tests/fixtures/templateLiteral.tsx",
         "tests/index.test.ts",
         "tests/interpolate-name.test.ts",
-    ],
-    deps = [
+        ":dist",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/node",
         "//:node_modules/@types/react",
+        "//:node_modules/json-stable-stringify",
         "//:node_modules/react",
         "//:node_modules/react-intl",
+        "//:node_modules/ts-jest",
         "//:node_modules/typescript",
         "//:node_modules/vitest",
     ],

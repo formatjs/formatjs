@@ -313,11 +313,16 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
     if child_excludes:
         tsconfig["exclude"] = child_excludes
 
-    # Convert project_references (Bazel labels) to relative tsconfig paths
+    # Convert project_references (Bazel labels) to relative tsconfig paths.
+    # Labels may carry an explicit target (e.g. "//pkg/foo:dist"); strip it
+    # before computing the package-relative path so the tsconfig reference
+    # points at the directory.
     if project_references:
         refs = []
         for ref in project_references:
             ref_path = ref.lstrip("/")
+            if ":" in ref_path:
+                ref_path = ref_path.split(":")[0]
             relative = _relative_path(ref_path, package)
             refs.append({"path": relative + "/tsconfig.json"})
         tsconfig["references"] = refs

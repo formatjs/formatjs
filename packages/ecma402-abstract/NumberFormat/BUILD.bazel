@@ -25,16 +25,14 @@ formatjs_library(
         "decimal-cache.ts",
         "format_to_parts.ts",
     ],
-    project_references = [
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-        "//packages/ecma262-abstract",
-    ],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/unicode",
+        "//packages/ecma262-abstract:dist",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract/types:dist",
     ],
 )

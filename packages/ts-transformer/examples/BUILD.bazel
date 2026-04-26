@@ -1,2 +1,2 @@
 # gazelle:ignore
-# gazelle:formatjs_enabled false
+# gazelle:ts_enabled false

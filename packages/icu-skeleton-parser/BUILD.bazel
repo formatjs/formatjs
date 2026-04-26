@@ -12,22 +12,23 @@ formatjs_library(
         "index.ts",
         "number.ts",
     ],
-    project_references = ["//packages/ecma402-abstract/types"],
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs_generated/unicode",
+        "//packages/ecma402-abstract/types:dist",
     ],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["tests/index.test.ts"],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+    data = [
+        "tests/index.test.ts",
+        ":dist",
         "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types:dist",
     ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

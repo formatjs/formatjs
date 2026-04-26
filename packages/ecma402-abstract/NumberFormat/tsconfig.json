@@ -8,13 +8,13 @@
   "extends": "../../../tsconfig.json",
   "references": [
     {
+      "path": "../../ecma262-abstract/tsconfig.json"
+    },
+    {
       "path": "../tsconfig.json"
     },
     {
       "path": "../types/tsconfig.json"
-    },
-    {
-      "path": "../../ecma262-abstract/tsconfig.json"
     }
   ]
 }

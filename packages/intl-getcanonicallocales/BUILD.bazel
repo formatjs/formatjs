@@ -34,18 +34,15 @@ formatjs_library(
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
     visibility = ["//visibility:public"],
-    deps = [
-        "//:node_modules/@formatjs_generated/cldr.core",
-    ],
+    deps = ["//:node_modules/@formatjs_generated/cldr.core"],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/index.test.ts",
         "tests/parser.test.ts",
-    ],
-    deps = [
+        ":dist",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],

@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
+load("@gazelle//:def.bzl", "gazelle")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
@@ -11,6 +11,30 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:js disabled
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
+
+# gazelle_ts_plugin (from @gazelle_plugins//gazelle_ts_plugin) emits stock
+# ts_project + js_test rules; map_kind rewrites them to our wrappers, which
+# accept the same generated attrs (srcs/deps for libraries, data/entry_point
+# for tests) and translate to ts_project / vitest internally.
+# gazelle:map_kind ts_project formatjs_library //tools:compile.bzl
+# gazelle:map_kind js_test formatjs_test //tools:test.bzl
+# gazelle:ts_library_name dist
+# gazelle:ts_test_name unit_test
+# gazelle:ts_npm_link_pattern //:node_modules/{pkg}
+# gazelle:ts_project_references false
+# gazelle:ts_test_entry_point_auto false
+# @formatjs_generated/* are auto-generated npm packages linked via
+# npm_link_package() — they don't appear in package.json, so list them here
+# for the import resolver. Patterns end at the package boundary (no trailing
+# `*`) so subpath imports like `@formatjs_generated/cldr.core/regions.js`
+# resolve to the package label, not the file path.
+# gazelle:ts_generated_package @formatjs_generated/cldr.core/*=//:node_modules/@formatjs_generated/cldr.core
+# gazelle:ts_generated_package @formatjs_generated/cldr.locale/*=//:node_modules/@formatjs_generated/cldr.locale
+# gazelle:ts_generated_package @formatjs_generated/cldr.number/*=//:node_modules/@formatjs_generated/cldr.number
+# gazelle:ts_generated_package @formatjs_generated/cldr.supported-locales/*=//:node_modules/@formatjs_generated/cldr.supported-locales
+# gazelle:ts_generated_package @formatjs_generated/cldr.supported-values/*=//:node_modules/@formatjs_generated/cldr.supported-values
+# gazelle:ts_generated_package @formatjs_generated/tz/*=//:node_modules/@formatjs_generated/tz
+# gazelle:ts_generated_package @formatjs_generated/unicode/*=//:node_modules/@formatjs_generated/unicode
 
 # Exported for Node subpath import resolution (#packages/*) in tests.
 # Node walks up to find package.json with "imports" field.
@@ -31,16 +55,9 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
-gazelle_binary(
-    name = "gazelle_bin",
-    languages = [
-        "//tools/gazelle/ts",
-    ],
-)
-
 gazelle(
     name = "gazelle",
-    gazelle = ":gazelle_bin",
+    gazelle = "@gazelle_plugins//gazelle_ts_plugin:gazelle_ts",
 )
 
 npm_link_all_packages()

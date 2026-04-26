@@ -1812,19 +1812,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ts_import_extractor"
-version = "0.1.0"
-dependencies = [
- "oxc",
- "oxc_allocator",
- "oxc_ast",
- "oxc_parser",
- "oxc_span",
- "pretty_assertions",
- "rayon",
-]
-
-[[package]]
 name = "typenum"
 version = "1.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

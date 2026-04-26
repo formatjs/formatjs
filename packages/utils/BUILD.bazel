@@ -32,14 +32,14 @@ formatjs_library(
 
 formatjs_test(
     name = "unit_test",
-    srcs = [
+    data = [
         "tests/countryCodes.test.ts",
         "tests/currencyMinorUnits.test.ts",
         "tests/defaultCurrency.test.ts",
         "tests/defaultLocale.test.ts",
         "tests/defaultTimezone.test.ts",
-    ],
-    deps = [
+        ":dist",
+        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],

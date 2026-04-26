@@ -76,7 +76,9 @@ rust_binary(
 rust_test(
     name = "formatjs_cli_test",
     crate = ":formatjs_cli",
-    data = ["//packages/ts-transformer:test_fixtures"],
+    data = [
+        "//packages/ts-transformer:test_fixtures",
+    ],
     deps = TEST_DEPS,
 )
 

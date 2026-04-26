@@ -99,9 +99,24 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.24.12")
 
-go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
-go_deps.from_file(go_mod = "//:go.mod")
-use_repo(go_deps, "org_golang_google_protobuf")
+######### gazelle_plugins (TypeScript Gazelle extension) #########
+
+bazel_dep(name = "gazelle_plugins", version = "0.1.1")
+
+# gazelle_plugins's MODULE.bazel registers its own toolchain tag
+# (rules_rs default_rust_toolchains, version 1.93.0/edition 2021) and
+# a Cargo workspace at //:Cargo.toml. Both leak into consumers and
+# clash with formatjs's own toolchain tag and Cargo workspace. Patch
+# them to dev_dependency = True so they only apply when gazelle_plugins
+# is the root module (i.e. when building the upstream repo itself).
+archive_override(
+    module_name = "gazelle_plugins",
+    integrity = "sha256-HtoNsctZkRr5NsAJDASnn/pzPOTkT0mM2JGLH99brRg=",
+    patch_strip = 1,
+    patches = ["//third_party/gazelle_plugins:dev_dependency_extensions.patch"],
+    strip_prefix = "gazelle_plugins-0.1.1",
+    urls = ["https://github.com/hermeticbuild/gazelle_plugins/releases/download/v0.1.1/gazelle_plugins-v0.1.1.tar.gz"],
+)
 
 ######### Rust rules #########
 
@@ -144,7 +159,7 @@ crate.from_cargo(
     ],
     use_experimental_platforms = True,
 )
-use_repo(crate, "crates", "rrprd")
+use_repo(crate, "crates")
 
 rules_rust_prost = use_extension("@rules_rs//rs/experimental:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
