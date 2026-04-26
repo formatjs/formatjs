@@ -16,7 +16,7 @@ The build system prioritizes **fast, parallel compilation** through separation o
 | `aspect_rules_ts`       | 3.8.7   | ts_project type checking                 |
 | `aspect_rules_esbuild`  | 0.25.1  | esbuild bundling (legacy, rolldown used) |
 | `aspect_bazel_lib`      | 2.22.5  | copy_to_bin, write_source_files          |
-| `rules_rust`            | 0.69.0  | Rust compilation + WASM                  |
+| `rules_rs`              | 0.0.58  | Rust compilation + WASM                  |
 | `rules_nodejs`          | 6.7.3   | Node.js toolchain                        |
 | `buildifier_prebuilt`   | 8.5.1   | Starlark formatting                      |
 | `gazelle`               | 0.48.0  | BUILD file generation                    |
@@ -267,7 +267,7 @@ Go (gazelle plugin)                     Rust (ts_import_extractor)
     instead of extracting from partially-recovered ASTs (avoids incorrect dep graphs).
     Stdout write errors exit cleanly instead of panicking.
 - **Rust optimization flags:** `panic=abort` (no unwind tables), `codegen-units=1` (better inlining).
-  LTO is incompatible with rules_rust's `embed-bitcode=no` default.
+  LTO is incompatible with the Rust toolchain's `embed-bitcode=no` default.
 - **oxc AST visitor:** Implements `Visit<'a>` trait, extracts from 4 node types:
   `ImportDeclaration`, `ExportNamedDeclaration`, `ExportAllDeclaration`, `ImportExpression`
 

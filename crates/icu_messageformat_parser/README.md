@@ -62,7 +62,7 @@ The parser can be compiled to WebAssembly using Bazel's platform transition appr
 bazel build //crates/icu_messageformat_parser:formatjs_icu_messageformat_parser_wasm
 ```
 
-This uses `rust_shared_library` with `platform = "@rules_rust//rust/platform:wasm"` to cross-compile to wasm32.
+This uses `rust_shared_library` with `platform = "@rules_rs//rs/experimental/platforms:wasm32-unknown-unknown"` to cross-compile to wasm32.
 
 #### What Gets Built
 
@@ -79,7 +79,7 @@ The WASM build uses:
 
 - **crate-type**: `cdylib` for dynamic library output
 - **features**: `wasm` feature flag enables wasm-bindgen dependencies
-- **platform**: `@rules_rust//rust/platform:wasm` for wasm32 target
+- **platform**: `@rules_rs//rs/experimental/platforms:wasm32-unknown-unknown` for wasm32 target
 - **dependencies**: `wasm-bindgen` and `serde-wasm-bindgen` for JS interop
 
 See [BUILD.bazel](./BUILD.bazel) for the full configuration.
@@ -134,7 +134,7 @@ The build uses Bazel's platform transition feature to cross-compile from the hos
 ```python
 rust_shared_library(
     name = "formatjs_icu_messageformat_parser_wasm",
-    platform = "@rules_rust//rust/platform:wasm",
+    platform = "@rules_rs//rs/experimental/platforms:wasm32-unknown-unknown",
     crate_features = ["wasm"],
     # ...
 )
@@ -144,7 +144,7 @@ This approach:
 
 - ✅ Works entirely within Bazel's hermetic build system
 - ✅ No external tools (like wasm-pack) required at build time
-- ✅ Leverages rules_rust's native WASM support
+- ✅ Leverages rules_rs/Rust native WASM support
 - ✅ Automatically uses the wasm32 dummy CC toolchain
 
 ### WASM Bindgen Integration

@@ -241,7 +241,7 @@ file dist/v<version>/formatjs_cli-*
 
 **Problem**: Bazel can't find the platform definition.
 
-**Solution**: Ensure `rules_rust` is properly configured in `MODULE.bazel` or `WORKSPACE`.
+**Solution**: Ensure `rules_rs` is properly configured in `MODULE.bazel`.
 
 ## CI/CD Integration
 
