@@ -8,9 +8,13 @@ exports_files([
 ])
 
 formatjs_library(
-    name = "dist",
+    name = "fast-memoize",
     srcs = [
         "index.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
 )

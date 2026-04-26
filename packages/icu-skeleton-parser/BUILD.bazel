@@ -6,29 +6,34 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 npm_link_all_packages()
 
 formatjs_library(
-    name = "dist",
+    name = "icu-skeleton-parser",
     srcs = [
         "date-time.ts",
         "index.ts",
         "number.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs_generated/unicode",
-        "//packages/ecma402-abstract/types:dist",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "icu-skeleton-parser_test",
     data = [
         "tests/index.test.ts",
-        ":dist",
+        ":icu-skeleton-parser",
         "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/vitest",
-        "//packages/ecma402-abstract/types:dist",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/index.test.ts",
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

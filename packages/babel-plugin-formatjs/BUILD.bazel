@@ -5,7 +5,7 @@ load("//tools:test.bzl", "formatjs_test")
 npm_link_all_packages()
 
 formatjs_library(
-    name = "dist",
+    name = "babel-plugin-formatjs",
     srcs = [
         "global.d.ts",
         "index.ts",
@@ -14,7 +14,11 @@ formatjs_library(
         "visitors/call-expression.ts",
         "visitors/jsx-opening-element.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     npm_package_name = "babel-plugin-formatjs",
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@babel/core",
@@ -32,10 +36,10 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "babel-plugin-formatjs_test",
     data = [
         "tests/index.test.ts",
-        ":dist",
+        ":babel-plugin-formatjs",
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",
         "//:node_modules/@babel/plugin-syntax-jsx",
@@ -52,4 +56,5 @@ formatjs_test(
         "//:node_modules/vitest",
         "//packages/babel-plugin-formatjs/tests/fixtures",  # keep: test fixture data
     ],
+    entry_point = "tests/index.test.ts",
 )

@@ -20,7 +20,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-getcanonicallocales",
     srcs = [
         "canonicalizer.ts",
         "emitter.ts",
@@ -31,21 +31,26 @@ formatjs_library(
         "should-polyfill.ts",
         "types.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = ["//:node_modules/@formatjs_generated/cldr.core"],
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "intl-getcanonicallocales_test",
     data = [
         "tests/index.test.ts",
         "tests/parser.test.ts",
-        ":dist",
+        ":intl-getcanonicallocales",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],
+    entry_point = "tests/index.test.ts",
 )
 
 # @formatjs_generated/cldr.core — CLDR supplemental data

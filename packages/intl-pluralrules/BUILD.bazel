@@ -244,7 +244,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-pluralrules",
     srcs = [
         "get_internal_slots.ts",
         "index.ts",
@@ -252,39 +252,44 @@ formatjs_library(
         "polyfill-force.ts",
         "should-polyfill.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
         "polyfill.iife.js",
     ],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
-        "//packages/ecma402-abstract:dist",
-        "//packages/ecma402-abstract/PluralRules:dist",
-        "//packages/ecma402-abstract/types:dist",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/PluralRules",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "intl-pluralrules_test",
     data = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
-        ":dist",
+        ":intl-pluralrules",
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
-        "//packages/ecma402-abstract:dist",
-        "//packages/ecma402-abstract/PluralRules:dist",
-        "//packages/ecma402-abstract/types:dist",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/PluralRules",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/index.test.ts",
     extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

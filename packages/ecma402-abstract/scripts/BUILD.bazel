@@ -20,11 +20,15 @@ ts_binary(
 )
 
 formatjs_library(
-    name = "dist",
+    name = "scripts",
     srcs = [
         "digit-mapping.ts",
         "regex-gen.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@types/fs-extra",

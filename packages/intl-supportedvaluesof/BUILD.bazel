@@ -18,7 +18,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-supportedvaluesof",
     srcs = [
         "get-supported-calendars.ts",
         "get-supported-collations.ts",
@@ -32,29 +32,34 @@ formatjs_library(
         "polyfill-force.ts",
         "should-polyfill.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
-        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "intl-supportedvaluesof_test",
     data = [
         "tests/index.test.ts",
-        ":dist",
+        ":intl-supportedvaluesof",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//:node_modules/vitest",
-        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract",
     ],
+    entry_point = "tests/index.test.ts",
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

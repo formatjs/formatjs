@@ -164,6 +164,13 @@ def formatjs_library(
         )
         return
 
+    # gazelle_ts_plugin emits these on every library when
+    # ts_project_references defaults to true. The macro has its own
+    # bundling pipeline (rolldown for published, oxc for internal) so the
+    # stock ts_project flags don't apply — drop them silently.
+    for _ignored in ("composite", "declaration", "declaration_map", "source_map"):
+        typecheck_only_kwargs.pop(_ignored, None)
+
     if typecheck_only_kwargs:
         fail(
             "formatjs_library got unexpected kwargs: %s. Only typecheck-only " +
@@ -229,18 +236,6 @@ def formatjs_library(
         native.alias(
             name = "lib",
             actual = ":%s" % lib_name,
-            visibility = visibility or ["//visibility:public"],
-        )
-
-    # Alias from the macro's `name` (e.g. "dist") to the canonical :lib
-    # target. gazelle_ts_plugin emits a sibling-library reference using the
-    # rule name (`ts_library_name`), and the rest of the codebase already
-    # references :lib — this alias keeps both forms in sync without forcing
-    # every BUILD or every test wrapper to know which is which.
-    if name != "lib":
-        native.alias(
-            name = name,
-            actual = ":lib",
             visibility = visibility or ["//visibility:public"],
         )
 

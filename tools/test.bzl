@@ -79,6 +79,18 @@ def formatjs_test(
         )
         return
 
+    # gazelle_ts_plugin emits the sibling-library label (basename) so the
+    # bundled output is in the test sandbox. For published packages that
+    # bundled js_library carries the package's own package.json, which
+    # shadows the root //:package.json and breaks `#packages/*` subpath
+    # resolution at runtime. Strip it and substitute the source-only
+    # `:lib` instead.
+    base = native.package_name().split("/")[-1]
+    sibling_lib = ":" + base
+    deps = [d for d in deps if d != sibling_lib]
+    if native.existing_rule("lib"):
+        deps.append(":lib")
+
     if "fixtures" not in kwargs:
         fixtures = [s for s in srcs if "/fixtures/" in s]
         if fixtures:

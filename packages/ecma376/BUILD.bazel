@@ -9,18 +9,23 @@ SRC_DEPS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "ecma376",
     srcs = [
         "index.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "ecma376_test",
     data = [
         "tests/index.test.ts",
-        ":dist",
+        ":ecma376",
         "//:node_modules/vitest",
     ],
+    entry_point = "tests/index.test.ts",
 )

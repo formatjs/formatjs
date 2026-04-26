@@ -5,7 +5,7 @@ load("//tools:test.bzl", "formatjs_test")
 npm_link_all_packages()
 
 formatjs_library(
-    name = "dist",
+    name = "intl-localematcher",
     srcs = [
         "abstract/BestAvailableLocale.ts",
         "abstract/BestFitMatcher.ts",
@@ -23,6 +23,10 @@ formatjs_library(
         "abstract/utils.ts",
         "index.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -31,7 +35,7 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "intl-localematcher_test",
     data = [
         "tests/BestFitMatcher.test.ts",
         "tests/LookupMatcher.test.ts",
@@ -41,12 +45,13 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/locale-match-fixtures.json",  # keep: JSON fixture loaded at runtime
         "tests/utils.test.ts",
-        ":dist",
+        ":intl-localematcher",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
+    entry_point = "tests/BestFitMatcher.test.ts",
 )
 
 exports_files(

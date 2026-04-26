@@ -5,12 +5,16 @@ load("//tools:test.bzl", "formatjs_test")
 npm_link_all_packages()
 
 formatjs_library(
-    name = "dist",
+    name = "svelte-intl",
     srcs = [
         "context-key.ts",
         "index.ts",
         "provider.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -20,13 +24,14 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "svelte-intl_test",
     data = [
         "tests/index.test.ts",
-        ":dist",
+        ":svelte-intl",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/svelte",
         "//:node_modules/vitest",
     ],
+    entry_point = "tests/index.test.ts",
 )

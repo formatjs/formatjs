@@ -38,7 +38,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "unplugin",
     srcs = [
         "conformance-tests/rust-binary-utils.ts",
         "esbuild.ts",
@@ -49,7 +49,11 @@ formatjs_library(
         "vite.ts",
         "webpack.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
+    source_map = True,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     visibility = ["//visibility:public"],
     deps = [
@@ -64,11 +68,11 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "unplugin_test",
     data = [
         "conformance-tests/cli-unplugin-conformance.test.ts",
         "tests/transform.test.ts",
-        ":dist",
+        ":unplugin",
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
@@ -78,6 +82,7 @@ formatjs_test(
         "//:node_modules/unplugin",
         "//:node_modules/vitest",
     ],
+    entry_point = "conformance-tests/cli-unplugin-conformance.test.ts",
 )
 
 vitest(

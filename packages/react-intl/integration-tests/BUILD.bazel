@@ -24,7 +24,7 @@ vitest(
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "integration-tests_test",
     data = [
         "format.test.tsx",
         "//:node_modules/@testing-library/jest-dom",
@@ -34,4 +34,5 @@ formatjs_test(
         "//:node_modules/react-intl",
         "//:node_modules/vitest",
     ],
+    entry_point = "format.test.tsx",
 )

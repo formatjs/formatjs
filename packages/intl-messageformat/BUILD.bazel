@@ -18,38 +18,43 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-messageformat",
     srcs = [
         "core.ts",
         "error.ts",
         "formatters.ts",
         "index.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["%s.iife.js" % PACKAGE_NAME],
     npm_package_name = PACKAGE_NAME,
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//packages/ecma402-abstract/types:dist",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "intl-messageformat_test",
     data = [
         "tests/benchmark.ts",
         "tests/index.test.ts",
-        ":dist",
+        ":intl-messageformat",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
-        "//packages/ecma402-abstract/types:dist",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/index.test.ts",
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

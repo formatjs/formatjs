@@ -1,7 +1,7 @@
 load("//tools:compile.bzl", "formatjs_library")
 
 formatjs_library(
-    name = "dist",
+    name = "ecma262-abstract",
     srcs = [
         "ArrayCreate.ts",
         "DateOperations.ts",
@@ -15,6 +15,10 @@ formatjs_library(
         "ToString.ts",
         "Type.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",

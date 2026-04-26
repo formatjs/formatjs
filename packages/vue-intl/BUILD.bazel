@@ -5,14 +5,18 @@ load("//tools:test.bzl", "formatjs_test")
 npm_link_all_packages()
 
 formatjs_library(
-    name = "dist",
+    name = "vue-intl",
     srcs = [
         "index.ts",
         "injection-key.ts",
         "plugin.ts",
         "provider.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     npm_package_name = "vue-intl",
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -22,9 +26,9 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
+    name = "vue-intl_test",
     data = [
-        ":dist",
+        ":vue-intl",
         "tests/index.test.ts",
         # keep: imported from tests/
         "//:node_modules/vitest",
@@ -37,4 +41,5 @@ formatjs_test(
         "//:node_modules/vue",
     ],
     dom = True,
+    entry_point = "tests/index.test.ts",
 )
