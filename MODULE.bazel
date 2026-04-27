@@ -160,7 +160,7 @@ crate.from_cargo(
     ],
     use_experimental_platforms = True,
 )
-use_repo(crate, "crates")
+use_repo(crate, "crates", "rrprd")
 
 rules_rust_prost = use_extension("@rules_rs//rs/experimental:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
