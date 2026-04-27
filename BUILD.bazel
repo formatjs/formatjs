@@ -13,7 +13,7 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 
-# gazelle_plugins//ts emits stock ts_project + js_test rules; map_kind
+# gazelle_ts//ts emits stock ts_project + js_test rules; map_kind
 # rewrites them to our wrappers, which
 # accept the same generated attrs (srcs/deps for libraries, data/entry_point
 # for tests) and translate to ts_project / vitest internally.
@@ -54,7 +54,7 @@ exports_files(
 
 gazelle_binary(
     name = "gazelle_bin",
-    languages = ["@gazelle_plugins//ts"],
+    languages = ["@gazelle_ts//ts"],
 )
 
 gazelle(

@@ -351,14 +351,14 @@
         }
       }
     },
-    "@@gazelle_plugins+//import_extractor:extensions.bzl%import_extractor": {
+    "@@gazelle_ts+//import_extractor:extensions.bzl%import_extractor": {
       "general": {
-        "bzlTransitiveDigest": "a6rORU2bOLDJzmEsrxEHGvi/xGIUiHnCiE6fJuhrvgs=",
-        "usagesDigest": "hogq3gcP8ui2B+KpGrtttgiPqXN8gfn8vDxWEAtcnLE=",
+        "bzlTransitiveDigest": "AmL27r1uBZ3mfr//4hH0uflLzNjZmOlvvA26+peU/bY=",
+        "usagesDigest": "32DebkiMr0707D+AZDFImc4rI9SZIFWeKMAqiyz2kWA=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
           "import_extractor": {
-            "repoRuleId": "@@gazelle_plugins+//import_extractor:repositories.bzl%import_extractor_repo",
+            "repoRuleId": "@@gazelle_ts+//import_extractor:repositories.bzl%import_extractor_repo",
             "attributes": {
               "version": "0.1.1",
               "repositories": {}

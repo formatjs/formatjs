@@ -99,30 +99,22 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.24.12")
 
-######### gazelle_plugins (TypeScript Gazelle extension) #########
+######### gazelle_ts (TypeScript Gazelle extension) #########
 
-# Pinned to a commit on main rather than v0.1.1 because that release pre-dates
-# the import_extractor module extension (#25), the gazelle_ts_plugin → ts
-# rename (#22), and the dev_dependency-only toolchain + Cargo extensions
-# (#27). The extension downloads a prebuilt binary so we don't need rules_rs's
-# source build chain on the consumer side.
-#
-# The patch updates rules_rs extension paths from the 0.0.58 layout
-# (rs/experimental/...) to the 0.0.61 layout (rs/...). Gazelle_plugins's
-# tags are dev_dependency = True so this only matters for the load lines,
-# but they still need to resolve.
-bazel_dep(name = "gazelle_plugins", version = "0.1.1")
+# v0.2.0 is the first release after the gazelle_plugins → gazelle_ts rename,
+# also picks up the rules_rs 0.0.61 paved-path migration upstream so no
+# patches needed on our side. Pinned via archive_override since BCR doesn't
+# carry the new module name yet.
+bazel_dep(name = "gazelle_ts", version = "0.2.0")
 archive_override(
-    module_name = "gazelle_plugins",
-    integrity = "sha256-bVw7sc3KTn/+DD6nsruqbG32FQXnDoQFeSTc2yrLgd0=",
-    patch_strip = 1,
-    patches = ["//third_party/gazelle_plugins:rules_rs_paths.patch"],
-    strip_prefix = "gazelle_plugins-4cabf8447089418bc51a68bf05f8e8f850b19b39",
-    urls = ["https://github.com/hermeticbuild/gazelle_plugins/archive/4cabf8447089418bc51a68bf05f8e8f850b19b39.tar.gz"],
+    module_name = "gazelle_ts",
+    integrity = "sha256-QsqLc11MNC/31dVNll1hhPKXblpzFV3tqjZKTiCJdEY=",
+    strip_prefix = "gazelle_ts-0.2.0",
+    urls = ["https://github.com/hermeticbuild/gazelle_ts/archive/refs/tags/v0.2.0.tar.gz"],
 )
 
 # Pre-built import-extractor binary that backs the gazelle plugin.
-import_extractor = use_extension("@gazelle_plugins//import_extractor:extensions.bzl", "import_extractor")
+import_extractor = use_extension("@gazelle_ts//import_extractor:extensions.bzl", "import_extractor")
 import_extractor.toolchain()
 use_repo(import_extractor, "import_extractor")
 
