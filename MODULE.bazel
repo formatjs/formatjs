@@ -131,16 +131,6 @@ archive_override(
     urls = ["https://github.com/hermeticbuild/rules_rs/releases/download/v0.0.61/rules_rs-v0.0.61.tar.gz"],
 )
 bazel_dep(name = "llvm", version = "0.7.3")
-bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.69.0")
-
-# Make wasm-bindgen transition user wasm targets to rules_rs platforms and
-# accept rules_rs-built wasm outputs without requiring rules_rust CrateInfo.
-single_version_override(
-    module_name = "rules_rust_wasm_bindgen",
-    patch_strip = 1,
-    patches = ["//third_party/rules_rust_wasm_bindgen:use_rules_rs.patch"],
-    version = "0.69.0",
-)
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
@@ -154,10 +144,9 @@ use_repo(toolchains, "default_rust_toolchains")
 rules_rust_ext = use_extension("@rules_rs//rs:rules_rust.bzl", "rules_rust")
 use_repo(rules_rust_ext, "rules_rust")
 
-# Per the rules_rs 0.0.61 paved path. @llvm//toolchain:all carries the
-# cross-compile linkers (rust-lld for wasm32, lld for Linux/Windows). Without
-# it the rules_rs rust toolchain alone has no linker available for wasm
-# targets and the build fails with "linker `rust-lld` not found".
+# Per the rules_rs 0.0.61 paved path. @llvm//toolchain:all ships the cc
+# toolchain (clang/lld + bundled runtimes) used for cross-compile and as
+# rules_rs's preferred linker on Linux/Windows.
 register_toolchains(
     "@default_rust_toolchains//:all",
     "@llvm//toolchain:all",
@@ -171,7 +160,6 @@ crate.from_cargo(
     platform_triples = [
         "aarch64-apple-darwin",
         "aarch64-unknown-linux-gnu",
-        "wasm32-unknown-unknown",
         "x86_64-apple-darwin",
         "x86_64-unknown-linux-gnu",
     ],
@@ -182,8 +170,6 @@ rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_ru
 use_repo(rules_rust_prost, "rules_rust_prost")
 
 register_toolchains("@rules_rust_prost//:default_prost_toolchain")
-
-register_toolchains("@rules_rust_wasm_bindgen//:default_wasm_bindgen_toolchain")
 
 ######### Java rules #########
 
