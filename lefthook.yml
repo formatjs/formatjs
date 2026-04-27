@@ -49,7 +49,7 @@ pre-commit:
         - "**/BUILD.bazel"
         - "**/BUILD"
         - "pnpm-lock.yaml"
-      run: bazel run //:gazelle
+      run: bazel run -c opt //:gazelle
       stage_fixed: true
     bazel-lock-regen:
       glob:

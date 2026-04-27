@@ -125,6 +125,7 @@ archive_override(
     strip_prefix = "rules_rs-0.0.61",
     urls = ["https://github.com/hermeticbuild/rules_rs/releases/download/v0.0.61/rules_rs-v0.0.61.tar.gz"],
 )
+
 bazel_dep(name = "llvm", version = "0.7.5")
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
@@ -155,7 +156,7 @@ crate.from_cargo(
         "x86_64-unknown-linux-gnu",
     ],
 )
-use_repo(crate, "crates", "rrprd")
+use_repo(crate, "crates")
 
 rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
