@@ -154,8 +154,13 @@ use_repo(toolchains, "default_rust_toolchains")
 rules_rust_ext = use_extension("@rules_rs//rs:rules_rust.bzl", "rules_rust")
 use_repo(rules_rust_ext, "rules_rust")
 
+# Per the rules_rs 0.0.61 paved path. @llvm//toolchain:all carries the
+# cross-compile linkers (rust-lld for wasm32, lld for Linux/Windows). Without
+# it the rules_rs rust toolchain alone has no linker available for wasm
+# targets and the build fails with "linker `rust-lld` not found".
 register_toolchains(
     "@default_rust_toolchains//:all",
+    "@llvm//toolchain:all",
 )
 
 crate = use_extension("@rules_rs//rs:extensions.bzl", "crate")
