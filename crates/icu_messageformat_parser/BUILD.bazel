@@ -79,7 +79,7 @@ rust_shared_library(
     srcs = ["lib_wasm.rs"],
     crate_name = "formatjs_icu_messageformat_parser",
     crate_root = "lib_wasm.rs",
-    platform = "@rules_rs//rs/experimental/platforms:wasm32-unknown-unknown",
+    platform = "@rules_rs//rs/platforms:wasm32-unknown-unknown",
     deps = [
         ":icu_messageformat_parser",
         "@crates//:icu",

@@ -13,14 +13,14 @@ platform(
 platform(
     name = "local_windows_msvc",
     constraint_values = [
-        "@rules_rs//rs/experimental/platforms/constraints:windows_msvc",
+        "@rules_rs//rs/platforms/constraints:windows_msvc",
     ],
     parents = ["@platforms//host"],
 )
 
 platform(
     name = "linux_x86_64_gnu",
-    parents = ["@rules_rs//rs/experimental/platforms:x86_64-unknown-linux-gnu"],
+    parents = ["@rules_rs//rs/platforms:x86_64-unknown-linux-gnu"],
 )
 
 platform(

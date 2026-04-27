@@ -3,13 +3,13 @@
 # macOS ARM64 (Apple Silicon)
 platform(
     name = "darwin_arm64",
-    parents = ["@rules_rs//rs/experimental/platforms:aarch64-apple-darwin"],
+    parents = ["@rules_rs//rs/platforms:aarch64-apple-darwin"],
     visibility = ["//visibility:public"],
 )
 
 # Linux x86_64
 platform(
     name = "linux_x86_64",
-    parents = ["@rules_rs//rs/experimental/platforms:x86_64-unknown-linux-gnu"],
+    parents = ["@rules_rs//rs/platforms:x86_64-unknown-linux-gnu"],
     visibility = ["//visibility:public"],
 )

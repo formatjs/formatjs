@@ -106,10 +106,17 @@ go_sdk.download(version = "1.24.12")
 # rename (#22), and the dev_dependency-only toolchain + Cargo extensions
 # (#27). The extension downloads a prebuilt binary so we don't need rules_rs's
 # source build chain on the consumer side.
+#
+# The patch updates rules_rs extension paths from the 0.0.58 layout
+# (rs/experimental/...) to the 0.0.61 layout (rs/...). Gazelle_plugins's
+# tags are dev_dependency = True so this only matters for the load lines,
+# but they still need to resolve.
 bazel_dep(name = "gazelle_plugins", version = "0.1.1")
 archive_override(
     module_name = "gazelle_plugins",
     integrity = "sha256-bVw7sc3KTn/+DD6nsruqbG32FQXnDoQFeSTc2yrLgd0=",
+    patch_strip = 1,
+    patches = ["//third_party/gazelle_plugins:rules_rs_paths.patch"],
     strip_prefix = "gazelle_plugins-4cabf8447089418bc51a68bf05f8e8f850b19b39",
     urls = ["https://github.com/hermeticbuild/gazelle_plugins/archive/4cabf8447089418bc51a68bf05f8e8f850b19b39.tar.gz"],
 )
@@ -121,7 +128,16 @@ use_repo(import_extractor, "import_extractor")
 
 ######### Rust rules #########
 
-bazel_dep(name = "rules_rs", version = "0.0.58")
+# Pinned to the v0.0.61 GitHub release (BCR hasn't published it yet). 0.0.61
+# fixes the rust-lld bundling issue that broke wasm cross-compile under remote
+# execution on 0.0.58.
+bazel_dep(name = "rules_rs", version = "0.0.61")
+archive_override(
+    module_name = "rules_rs",
+    integrity = "sha256-UegjVubWrcMt45ZlUnkSBPZxzxi7bcWnp5DTYdr9Pi8=",
+    strip_prefix = "rules_rs-0.0.61",
+    urls = ["https://github.com/hermeticbuild/rules_rs/releases/download/v0.0.61/rules_rs-v0.0.61.tar.gz"],
+)
 bazel_dep(name = "llvm", version = "0.7.3")
 bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.69.0")
 
@@ -134,25 +150,20 @@ single_version_override(
     version = "0.69.0",
 )
 
-rules_rust_ext = use_extension("@rules_rs//rs/experimental:rules_rust.bzl", "rules_rust")
-use_repo(rules_rust_ext, "rules_rust")
-
-toolchains = use_extension("@rules_rs//rs/experimental/toolchains:module_extension.bzl", "toolchains")
+toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
     edition = "2024",
     version = "1.95.0",
 )
 use_repo(toolchains, "default_rust_toolchains")
 
-# Register only wasm-targeting LLVM toolchains. They bundle rust-lld + lld,
-# required for wasm32 cross-compilation (rules_rs's Linux rust toolchain
-# alone doesn't ship rust-lld). Registering @llvm//toolchain:all would also
-# pull cross-compile toolchains targeting macOS, which trigger a slow and
-# fetch-prone macos_sdk download we don't need.
+# Optional rules_rust facade — keeps existing @rules_rust references working
+# (rules_rust_wasm_bindgen, downstream BUILDs that load @rules_rust//... etc.).
+rules_rust_ext = use_extension("@rules_rs//rs:rules_rust.bzl", "rules_rust")
+use_repo(rules_rust_ext, "rules_rust")
+
 register_toolchains(
     "@default_rust_toolchains//:all",
-    "@llvm//toolchain:linux_x86_64_to_none_wasm32",
-    "@llvm//toolchain:macos_aarch64_to_none_wasm32",
 )
 
 crate = use_extension("@rules_rs//rs:extensions.bzl", "crate")
@@ -167,11 +178,10 @@ crate.from_cargo(
         "x86_64-apple-darwin",
         "x86_64-unknown-linux-gnu",
     ],
-    use_experimental_platforms = True,
 )
 use_repo(crate, "crates", "rrprd")
 
-rules_rust_prost = use_extension("@rules_rs//rs/experimental:rules_rust_prost.bzl", "rules_rust_prost")
+rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
 
 register_toolchains("@rules_rust_prost//:default_prost_toolchain")
