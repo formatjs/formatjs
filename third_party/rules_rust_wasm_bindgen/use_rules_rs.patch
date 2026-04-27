@@ -20,7 +20,7 @@ index 7917c54..8e40651 100644
      """
 -    return {"//command_line_option:platforms": str(Label("@rules_rust//rust/platform:{}".format(attr.target_arch)))}
 +    if attr.target_arch == "wasm32":
-+        platform = "@rules_rs//rs/experimental/platforms:wasm32-unknown-unknown"
++        platform = "@rules_rs//rs/platforms:wasm32-unknown-unknown"
 +    else:
 +        platform = "@rules_rust//rust/platform:{}".format(attr.target_arch)
 +
