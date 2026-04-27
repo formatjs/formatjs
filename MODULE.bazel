@@ -106,11 +106,13 @@ go_sdk.download(version = "1.24.12")
 # rename (#22). The extension downloads a prebuilt binary so we don't need
 # rules_rs's source build chain on the consumer side.
 #
-# The patch strips gazelle_plugins's `crate.from_cargo` tag — rules_rs's
-# crate extension can't merge two Cargo workspaces, and gazelle_plugins's
-# `crates/import-extractor` path dep isn't findable from formatjs's
-# Cargo.toml. (gazelle_plugins's toolchain tag is intentionally left alone:
-# formatjs's toolchain is bumped to match its 1.95.0/2024 config.)
+# The patch strips gazelle_plugins's own rules_rs toolchain tag and Cargo
+# workspace from MODULE.bazel. The toolchain tag pins 1.95.0 (rules_rs in
+# this repo doesn't have prebuilt URLs for that version on Linux x86_64);
+# the Cargo workspace can't be merged with formatjs's because
+# crates/import-extractor isn't a findable path dep here. Both blocks are
+# unreachable since we consume gazelle_plugins's import-extractor as a
+# prebuilt binary download.
 bazel_dep(name = "gazelle_plugins", version = "0.1.1")
 archive_override(
     module_name = "gazelle_plugins",
@@ -147,7 +149,7 @@ use_repo(rules_rust_ext, "rules_rust")
 toolchains = use_extension("@rules_rs//rs/experimental/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
     edition = "2024",
-    version = "1.95.0",
+    version = "1.90.0",
 )
 use_repo(toolchains, "default_rust_toolchains")
 
