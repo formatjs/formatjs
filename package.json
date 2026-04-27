@@ -181,7 +181,7 @@
       "version": ">= 18.x"
     }
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "pnpm": {
     "overrides": {
       "@tailwindcss/vite>vite": "$vite"
