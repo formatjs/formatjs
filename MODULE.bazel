@@ -101,22 +101,17 @@ go_sdk.download(version = "1.24.12")
 
 ######### gazelle_ts (TypeScript Gazelle extension) #########
 
-# v0.2.0 is the first release after the gazelle_plugins → gazelle_ts rename,
-# also picks up the rules_rs 0.0.61 paved-path migration upstream so no
-# patches needed on our side. Pinned via archive_override since BCR doesn't
-# carry the new module name yet.
+# Pinned to a post-v0.2.0 commit that links the import_extractor crate
+# statically into the gazelle plugin via cgo (no subprocess, no prebuilt
+# binary). The rust toolchain + crate.from_cargo extensions below propagate
+# from this module — keep our own toolchain/crate config in sync.
 bazel_dep(name = "gazelle_ts", version = "0.2.0")
 archive_override(
     module_name = "gazelle_ts",
-    integrity = "sha256-QsqLc11MNC/31dVNll1hhPKXblpzFV3tqjZKTiCJdEY=",
-    strip_prefix = "gazelle_ts-0.2.0",
-    urls = ["https://github.com/hermeticbuild/gazelle_ts/archive/refs/tags/v0.2.0.tar.gz"],
+    integrity = "sha256-C0PdbsYJz+F1QMNriPR0LIPeyhPFiC1uLoBl0ylDLkc=",
+    strip_prefix = "gazelle_ts-3c4b42d59439c6bdbb1af893155ea79442f2ad3e",
+    urls = ["https://github.com/hermeticbuild/gazelle_ts/archive/3c4b42d59439c6bdbb1af893155ea79442f2ad3e.tar.gz"],
 )
-
-# Pre-built import-extractor binary that backs the gazelle plugin.
-import_extractor = use_extension("@gazelle_ts//import_extractor:extensions.bzl", "import_extractor")
-import_extractor.toolchain()
-use_repo(import_extractor, "import_extractor")
 
 ######### Rust rules #########
 
