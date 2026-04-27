@@ -17,7 +17,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "icu-messageformat-parser",
     srcs = [
         "date-time-pattern-generator.ts",
         "error.ts",
@@ -28,32 +28,37 @@ formatjs_library(
         "printer.ts",
         "types.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
-    project_references = ["//packages/ecma402-abstract/types"],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-skeleton-parser",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@formatjs_generated/unicode",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "icu-messageformat-parser_test",
+    data = [
         "tests/browser-smoke.test.ts",
         "tests/date-time-pattern-generator.test.ts",
         "tests/manipulator.test.ts",
         "tests/no-parser.test.ts",
         "tests/printer.test.ts",
-    ],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":icu-messageformat-parser",
+        "//:node_modules/@formatjs/icu-skeleton-parser",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/browser-smoke.test.ts",
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

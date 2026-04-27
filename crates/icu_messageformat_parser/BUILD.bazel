@@ -1,8 +1,6 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
-load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
-load("@rules_rust_wasm_bindgen//:defs.bzl", "rust_wasm_bindgen")
 load("//tools:index.bzl", "generate_src_file")
 
 exports_files(
@@ -71,29 +69,4 @@ rust_binary(
         ":icu_messageformat_parser",
         "@crates//:criterion",
     ],
-)
-
-# WASM binary using platform parameter
-rust_shared_library(
-    name = "_wasm_lib",
-    srcs = ["lib_wasm.rs"],
-    crate_name = "formatjs_icu_messageformat_parser",
-    crate_root = "lib_wasm.rs",
-    platform = "@rules_rs//rs/experimental/platforms:wasm32-unknown-unknown",
-    deps = [
-        ":icu_messageformat_parser",
-        "@crates//:icu",
-        "@crates//:serde",
-        "@crates//:serde-wasm-bindgen",
-        "@crates//:serde_json",
-        "@crates//:wasm-bindgen",
-    ],
-)
-
-# Generate JS glue code with wasm-bindgen
-rust_wasm_bindgen(
-    name = "formatjs_icu_messageformat_parser_wasm",
-    target = "web",
-    visibility = ["//visibility:public"],
-    wasm_file = ":_wasm_lib",
 )

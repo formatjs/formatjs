@@ -18,41 +18,45 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-messageformat",
     srcs = [
         "core.ts",
         "error.ts",
         "formatters.ts",
         "index.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["%s.iife.js" % PACKAGE_NAME],
     npm_package_name = PACKAGE_NAME,
-    project_references = ["//packages/ecma402-abstract/types"],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "intl-messageformat_test",
+    data = [
         "tests/benchmark.ts",
         "tests/index.test.ts",
-    ],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":intl-messageformat",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/index.test.ts",
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 rolldown_bundle(
@@ -87,14 +91,10 @@ rolldown_bundle(
 # Use with `bazel run`.
 js_binary(
     name = "benchmark",
-    data = [":srcs"] + [
+    data = [
         "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/tinybench",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
     ],
     entry_point = "tests/benchmark.ts",
     node_options = [

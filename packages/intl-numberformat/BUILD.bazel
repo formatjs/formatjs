@@ -71,7 +71,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-numberformat",
     srcs = [
         "core.ts",
         "get_internal_slots.ts",
@@ -82,17 +82,15 @@ formatjs_library(
         "to_locale_string.ts",
         "types.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
         "polyfill.iife.js",
     ],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/NumberFormat",
-        "//packages/ecma402-abstract/types",
-    ],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -100,6 +98,10 @@ formatjs_library(
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
@@ -1009,8 +1011,8 @@ rolldown_bundle(
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "intl-numberformat_test",
+    data = [
         "tests/currency-code.test.ts",
         "tests/currency/currencyTest.ts",
         "tests/decimal/decimalTest.ts",
@@ -1026,16 +1028,20 @@ formatjs_test(
         "tests/unit-zh-TW.test.ts",
         "tests/unit/unitTest.ts",
         "tests/value-tonumber.test.ts",
-    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],  # keep
-    deps = [
+        ":intl-numberformat",
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/currency-code.test.ts",
+    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
 )

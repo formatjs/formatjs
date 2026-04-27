@@ -1,6 +1,10 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
+# Manually-managed integration test: a vitest() with glob'd fixtures.
+# Auto-generated formatjs_test would race with the existing rule.
+# gazelle:ts_enabled false
+
 npm_link_all_packages()
 
 vitest(

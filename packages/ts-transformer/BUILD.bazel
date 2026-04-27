@@ -20,7 +20,7 @@ filegroup(
 PACKAGE_NAME = "ts-transformer"
 
 formatjs_library(
-    name = "dist",
+    name = "ts-transformer",
     srcs = [
         "console_utils.ts",
         "index.ts",
@@ -29,10 +29,14 @@ formatjs_library(
         "ts-jest-integration.ts",
         "types.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = [
         "index.ts",
         "ts-jest-integration.ts",
     ],
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -45,8 +49,8 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "ts-transformer_test",
+    data = [
         "tests/fixtures/FormattedMessage.tsx",
         "tests/fixtures/additionalComponentNames.tsx",
         "tests/fixtures/additionalFunctionNames.tsx",
@@ -72,13 +76,16 @@ formatjs_test(
         "tests/fixtures/templateLiteral.tsx",
         "tests/index.test.ts",
         "tests/interpolate-name.test.ts",
-    ],
-    deps = [
+        ":ts-transformer",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/node",
         "//:node_modules/@types/react",
+        "//:node_modules/json-stable-stringify",
         "//:node_modules/react",
         "//:node_modules/react-intl",
+        "//:node_modules/ts-jest",
         "//:node_modules/typescript",
         "//:node_modules/vitest",
     ],
+    entry_point = "tests/index.test.ts",
 )

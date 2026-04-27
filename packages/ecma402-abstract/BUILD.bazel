@@ -2,7 +2,7 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 
 formatjs_library(
-    name = "dist",
+    name = "ecma402-abstract",
     srcs = [
         "CanonicalizeLocaleList.ts",
         "CanonicalizeTimeZoneName.ts",
@@ -23,18 +23,22 @@ formatjs_library(
         "data.ts",
         "utils.ts",
     ],
-    project_references = ["//packages/ecma262-abstract"],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "ecma402-abstract_test",
+    data = [
         "tests/262.test.ts",
         "tests/ApplyUnsignedRoundingMode.test.ts",
         "tests/CanonicalizeTimeZoneName.test.ts",
@@ -52,12 +56,14 @@ formatjs_test(
         "tests/ToRawFixed.test.tsx",
         "tests/ToRawPrecision.test.tsx",
         "tests/utils.ts",
-    ],
-    deps = [
+        ":ecma402-abstract",
         "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/262.test.ts",
 )

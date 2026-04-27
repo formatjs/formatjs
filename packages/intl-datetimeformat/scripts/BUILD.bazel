@@ -32,7 +32,9 @@ ts_binary(
 
 ts_binary(
     name = "process-zdump",
-    data = ["packer.ts"],
+    data = [
+        "packer.ts",
+    ],
     entry_point = "process-zdump.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )

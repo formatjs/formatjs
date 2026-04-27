@@ -10,14 +10,24 @@ exports_files([
 ])
 
 formatjs_library(
-    name = "dist",
-    srcs = ["index.ts"],
+    name = "bigdecimal",
+    srcs = [
+        "index.ts",
+    ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     visibility = ["//visibility:public"],
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = ["tests/bigdecimal.test.ts"],
-    deps = ["//:node_modules/vitest"],
+    name = "bigdecimal_test",
+    data = [
+        "tests/bigdecimal.test.ts",
+        ":bigdecimal",
+        "//:node_modules/vitest",
+    ],
+    entry_point = "tests/bigdecimal.test.ts",
 )

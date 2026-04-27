@@ -84,13 +84,24 @@ def vitest(
     base_config = "//tools:vitest_config_mjs"
     actual_config = config if config else base_config
 
-    # Always include root package.json for #packages/* subpath import resolution
-    root_pkg = ["//:package.json"] if "//:package.json" not in data else []
+    # Always include root package.json for #packages/* subpath import resolution.
+    # Dedupe the final list — gazelle now feeds //:package.json through `data`
+    # for some packages, and we'd otherwise list it twice (once from there,
+    # once from `root_pkg`).
+    pre_dedupe = srcs + deps + data + snapshots + fixtures + [actual_config] + ["//:package.json"]
+    seen = {}
+    deduped_data = []
+    for item in pre_dedupe:
+        if item in seen:
+            continue
+        seen[item] = True
+        deduped_data.append(item)
+
     root_pkg_ncb = ["//:package.json"] if "//:package.json" not in no_copy_to_bin else []
 
     vitest_bin.vitest_test(
         name = name,
-        data = srcs + deps + data + snapshots + fixtures + [actual_config] + root_pkg,
+        data = deduped_data,
         size = size,
         flaky = flaky,
         tags = tags,

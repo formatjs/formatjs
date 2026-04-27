@@ -1,6 +1,11 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
+# Manually-managed integration test: a single vitest() with glob'd srcs.
+# Auto-generated formatjs_library + formatjs_test would race with the
+# vitest rule and require a checked-in tsconfig.json this dir doesn't have.
+# gazelle:ts_enabled false
+
 npm_link_all_packages()
 
 vitest(

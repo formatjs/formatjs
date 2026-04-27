@@ -75,7 +75,7 @@ build:ci --config=remote
 build:remote --bes_backend=grpcs://formatjs.buildbuddy.io
 build:remote --bes_results_url=https://formatjs.buildbuddy.io/invocation/
 build:remote --define=EXECUTOR=remote
-build:remote --extra_execution_platforms=@toolchains_buildbuddy//platforms:linux_x86_64
+build:remote --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
 build:remote --jobs=50
 build:remote --platforms=//platforms:buildbuddy_linux_x86_64_gnu
 build:remote --remote_cache=grpcs://formatjs.buildbuddy.io

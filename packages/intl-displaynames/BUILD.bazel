@@ -23,50 +23,56 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl-displaynames",
     srcs = [
         "index.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
         "polyfill.iife.js",
     ],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DisplayNames",
-        "//packages/ecma402-abstract/types",
-    ],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DisplayNames",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "intl-displaynames_test",
+    data = [
         "tests/CanonicalCodeForDisplayNames.test.ts",
         "tests/IsValidDateTimeFieldCode.test.ts",
         "tests/index.test.ts",
         "tests/should-polyfill.test.ts",
-    ] + [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],  # keep
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":intl-displaynames",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DisplayNames",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/CanonicalCodeForDisplayNames.test.ts",
+    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 # CLDR

@@ -99,36 +99,54 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.24.12")
 
-go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
-go_deps.from_file(go_mod = "//:go.mod")
-use_repo(go_deps, "org_golang_google_protobuf")
+######### gazelle_ts (TypeScript Gazelle extension) #########
+
+# v0.2.0 is the first release after the gazelle_plugins → gazelle_ts rename,
+# also picks up the rules_rs 0.0.61 paved-path migration upstream so no
+# patches needed on our side. Pinned via archive_override since BCR doesn't
+# carry the new module name yet.
+bazel_dep(name = "gazelle_ts", version = "0.2.0")
+archive_override(
+    module_name = "gazelle_ts",
+    integrity = "sha256-QsqLc11MNC/31dVNll1hhPKXblpzFV3tqjZKTiCJdEY=",
+    strip_prefix = "gazelle_ts-0.2.0",
+    urls = ["https://github.com/hermeticbuild/gazelle_ts/archive/refs/tags/v0.2.0.tar.gz"],
+)
+
+# Pre-built import-extractor binary that backs the gazelle plugin.
+import_extractor = use_extension("@gazelle_ts//import_extractor:extensions.bzl", "import_extractor")
+import_extractor.toolchain()
+use_repo(import_extractor, "import_extractor")
 
 ######### Rust rules #########
 
-bazel_dep(name = "rules_rs", version = "0.0.58")
-bazel_dep(name = "llvm", version = "0.7.3")
-bazel_dep(name = "rules_rust_wasm_bindgen", version = "0.69.0")
-
-# Make wasm-bindgen transition user wasm targets to rules_rs platforms and
-# accept rules_rs-built wasm outputs without requiring rules_rust CrateInfo.
-single_version_override(
-    module_name = "rules_rust_wasm_bindgen",
-    patch_strip = 1,
-    patches = ["//third_party/rules_rust_wasm_bindgen:use_rules_rs.patch"],
-    version = "0.69.0",
+# Pinned to the v0.0.61 GitHub release (BCR hasn't published it yet). 0.0.61
+# fixes the rust-lld bundling issue that broke wasm cross-compile under remote
+# execution on 0.0.58.
+bazel_dep(name = "rules_rs", version = "0.0.61")
+archive_override(
+    module_name = "rules_rs",
+    integrity = "sha256-UegjVubWrcMt45ZlUnkSBPZxzxi7bcWnp5DTYdr9Pi8=",
+    strip_prefix = "rules_rs-0.0.61",
+    urls = ["https://github.com/hermeticbuild/rules_rs/releases/download/v0.0.61/rules_rs-v0.0.61.tar.gz"],
 )
+bazel_dep(name = "llvm", version = "0.7.3")
 
-rules_rust_ext = use_extension("@rules_rs//rs/experimental:rules_rust.bzl", "rules_rust")
-use_repo(rules_rust_ext, "rules_rust")
-
-toolchains = use_extension("@rules_rs//rs/experimental/toolchains:module_extension.bzl", "toolchains")
+toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
     edition = "2024",
-    version = "1.90.0",
+    version = "1.95.0",
 )
 use_repo(toolchains, "default_rust_toolchains")
 
-register_toolchains("@default_rust_toolchains//:all")
+# Optional rules_rust facade — keeps existing @rules_rust references working
+# (rules_rust_wasm_bindgen, downstream BUILDs that load @rules_rust//... etc.).
+rules_rust_ext = use_extension("@rules_rs//rs:rules_rust.bzl", "rules_rust")
+use_repo(rules_rust_ext, "rules_rust")
+
+register_toolchains(
+    "@default_rust_toolchains//:all",
+)
 
 crate = use_extension("@rules_rs//rs:extensions.bzl", "crate")
 crate.from_cargo(
@@ -138,20 +156,16 @@ crate.from_cargo(
     platform_triples = [
         "aarch64-apple-darwin",
         "aarch64-unknown-linux-gnu",
-        "wasm32-unknown-unknown",
         "x86_64-apple-darwin",
         "x86_64-unknown-linux-gnu",
     ],
-    use_experimental_platforms = True,
 )
 use_repo(crate, "crates", "rrprd")
 
-rules_rust_prost = use_extension("@rules_rs//rs/experimental:rules_rust_prost.bzl", "rules_rust_prost")
+rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
 
 register_toolchains("@rules_rust_prost//:default_prost_toolchain")
-
-register_toolchains("@rules_rust_wasm_bindgen//:default_wasm_bindgen_toolchain")
 
 ######### Java rules #########
 

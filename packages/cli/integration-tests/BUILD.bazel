@@ -2,6 +2,11 @@ load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:vitest.bzl", "vitest")
 
+# CLI extract/* fixtures are intentionally invalid TS (err.tsx etc.) used as
+# test inputs, not real source. Auto-generated formatjs_library would try to
+# bundle/typecheck them and fail.
+# gazelle:ts_enabled false
+
 npm_link_all_packages()
 
 # Copy Rust CLI binary to integration tests directory so js_run_binary can find it

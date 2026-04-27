@@ -87,18 +87,37 @@ def _formatjs_package(
         pkg = ":pkg",
     )
 
+def _partition_deps(deps):
+    """Split a combined deps list into (npm, internal).
+
+    npm: labels under //:node_modules/ — externalized at bundle time.
+    internal: every other label — internal cross-package references.
+
+    The new gazelle_ts_plugin emits a single combined `deps` attr; the macro
+    re-splits so rolldown can externalize npm packages while bundling internal
+    references inline.
+    """
+    npm_deps = []
+    internal_deps = []
+    for d in deps:
+        if "//:node_modules/" in d:
+            npm_deps.append(d)
+        else:
+            internal_deps.append(d)
+    return npm_deps, internal_deps
+
 def formatjs_library(
         name,
         srcs,
         deps = [],
-        project_references = [],
         entry_points = ["index.ts"],
         types = False,
         tsconfig = None,
         npm_package_name = None,
         extra_npm_srcs = [],
         allow_overwrites = False,
-        visibility = None):
+        visibility = None,
+        **typecheck_only_kwargs):
     """TypeScript compilation + optional npm packaging.
 
     For npm-published packages (with package.json): rolldown bundling + npm_package.
@@ -115,8 +134,11 @@ def formatjs_library(
     Args:
         name: target name (e.g. "dist")
         srcs: source files (gazelle-managed)
-        deps: external npm dependencies (e.g. //:node_modules/react)
-        project_references: internal package dependencies (e.g. //packages/ecma402-abstract)
+        deps: combined dependency list (gazelle-managed). Includes both npm
+            packages (//:node_modules/...) and internal references
+            (//packages/...). The macro auto-partitions them: npm packages
+            become externalized at bundle time, internals become project
+            references for IDE tsconfig.
         entry_points: list of .ts entry points to bundle
         types: if True, generate a "types" ts_project with emit_declaration_only
         tsconfig: optional tsconfig dict override (defaults to packages_tsconfig())
@@ -125,7 +147,39 @@ def formatjs_library(
         allow_overwrites: passed to npm_package (default False)
         visibility: visibility for the js_library target
     """
-    all_deps = deps + project_references
+
+    # Pre-existing manual `ts_project(no_emit = True, ...)` rules in some
+    # BUILDs get rewritten to `formatjs_library(...)` by `# gazelle:map_kind`.
+    # Detect that pattern (typecheck-only — no library/bundle output) and
+    # forward straight to ts_project so the macro keeps emitting the same
+    # underlying rule.
+    if typecheck_only_kwargs.get("no_emit"):
+        ts_project(
+            name = name,
+            srcs = srcs,
+            deps = deps,
+            tsconfig = tsconfig,
+            visibility = visibility,
+            **typecheck_only_kwargs
+        )
+        return
+
+    # gazelle_ts_plugin emits these on every library when
+    # ts_project_references defaults to true. The macro has its own
+    # bundling pipeline (rolldown for published, oxc for internal) so the
+    # stock ts_project flags don't apply — drop them silently.
+    for _ignored in ("composite", "declaration", "declaration_map", "source_map"):
+        typecheck_only_kwargs.pop(_ignored, None)
+
+    if typecheck_only_kwargs:
+        fail(
+            "formatjs_library got unexpected kwargs: %s. Only typecheck-only " +
+            "ts_project shimming (no_emit=True) accepts extra kwargs." %
+            list(typecheck_only_kwargs.keys()),
+        )
+
+    npm_deps, project_references = _partition_deps(deps)
+    all_deps = deps
     effective_tsconfig = tsconfig or packages_tsconfig()
     has_package_json = native.glob(["package.json"], allow_empty = True)
 
@@ -176,10 +230,13 @@ def formatjs_library(
             visibility = visibility,
         )
 
-        # Alias so formatjs_test's :lib reference works
+        # Alias so formatjs_test's :lib reference works. Public visibility
+        # because cross-package deps may chain through :name → :lib →
+        # :lib_name and Bazel checks every alias hop.
         native.alias(
             name = "lib",
             actual = ":%s" % lib_name,
+            visibility = visibility or ["//visibility:public"],
         )
 
     if types:
@@ -201,8 +258,8 @@ def formatjs_library(
         # Exclude @formatjs_generated — generated data is bundled inline, not externalized.
         external_packages = [
             dep.split("node_modules/")[1]
-            for dep in deps
-            if "node_modules/" in dep and "@formatjs_generated" not in dep
+            for dep in npm_deps
+            if "@formatjs_generated" not in dep
         ]
 
         package_dir_name = native.package_name().split("/")[-1]

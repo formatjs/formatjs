@@ -19,7 +19,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "react-intl",
     srcs = [
         "components/context.ts",
         "components/createFormattedComponent.tsx",
@@ -35,10 +35,13 @@ formatjs_library(
         "types.ts",
         "utils.tsx",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["%s.iife.js" % PACKAGE_NAME],
     npm_package_name = PACKAGE_NAME,
-    project_references = ["//packages/ecma402-abstract/types"],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -47,12 +50,14 @@ formatjs_library(
         "//:node_modules/@types/react",
         "//:node_modules/intl-messageformat",
         "//:node_modules/react",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "react-intl_test",
+    config = "vitest.config.mjs",
+    data = [
         "tests/unit/components/date.test.tsx",
         "tests/unit/components/dateTimeRange.test.tsx",
         "tests/unit/components/displayName.test.tsx",
@@ -67,20 +72,21 @@ formatjs_test(
         "tests/unit/react-intl.test.tsx",
         "tests/unit/testUtils.tsx",
         "tests/unit/types.test.tsx",
-    ],
-    config = "vitest.config.mjs",
-    data = ["//:package.json"],
-    dom = True,
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":react-intl",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/@testing-library/jest-dom",
         "//:node_modules/@testing-library/react",
         "//:node_modules/@types/react",
+        "//:node_modules/intl-messageformat",
         "//:node_modules/react",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
     ],
+    dom = True,
+    entry_point = "tests/unit/components/date.test.tsx",
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 rolldown_bundle(

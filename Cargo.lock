@@ -489,9 +489,7 @@ dependencies = [
  "once_cell",
  "regex",
  "serde",
- "serde-wasm-bindgen",
  "serde_json",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -1627,17 +1625,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "serde-wasm-bindgen"
-version = "0.6.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8302e169f0eddcc139c70f139d19d6467353af16f9fce27e8c30158036a1e16b"
-dependencies = [
- "js-sys",
- "serde",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "serde_core"
 version = "1.0.228"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1809,19 +1796,6 @@ checksum = "be4d6b5f19ff7664e8c98d03e2139cb510db9b0a60b55f8e8709b689d939b6bc"
 dependencies = [
  "serde",
  "serde_json",
-]
-
-[[package]]
-name = "ts_import_extractor"
-version = "0.1.0"
-dependencies = [
- "oxc",
- "oxc_allocator",
- "oxc_ast",
- "oxc_parser",
- "oxc_span",
- "pretty_assertions",
- "rayon",
 ]
 
 [[package]]

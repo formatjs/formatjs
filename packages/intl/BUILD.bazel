@@ -18,7 +18,7 @@ ENTRY_POINTS = [
 ]
 
 formatjs_library(
-    name = "dist",
+    name = "intl",
     srcs = [
         "create-intl.ts",
         "dateTime.ts",
@@ -34,27 +34,33 @@ formatjs_library(
         "utils.ts",
     ],
     allow_overwrites = True,
+    composite = True,
+    declaration = True,
+    declaration_map = True,
     entry_points = ENTRY_POINTS,
-    project_references = ["//packages/ecma402-abstract/types"],
+    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
+        "//packages/ecma402-abstract/types",
     ],
 )
 
 ast_grep_test(
     name = "node_env_preserved_test",
     size = "small",
-    data = [":index-bundle"],
+    data = [
+        ":index-bundle",
+    ],
     pattern = "process.env.NODE_ENV",
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "intl_test",
+    data = [
         "tests/create-intl.test.ts",
         "tests/error.test.ts",
         "tests/formatDate.test.ts",
@@ -65,14 +71,15 @@ formatjs_test(
         "tests/formatPlural.test.ts",
         "tests/formatRelativeTime.test.ts",
         "tests/formatTime.test.ts",
-    ],
-    data = ["//:package.json"],
-    no_copy_to_bin = ["//:package.json"],
-    snapshots = glob(["tests/__snapshots__/*.snap"]),
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
+        ":intl",
+        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/intl-messageformat",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
     ],
+    entry_point = "tests/create-intl.test.ts",
+    no_copy_to_bin = ["//:package.json"],
+    snapshots = glob(["tests/__snapshots__/*.snap"]),
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

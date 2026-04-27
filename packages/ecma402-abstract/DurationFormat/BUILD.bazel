@@ -1,7 +1,7 @@
 load("//tools:compile.bzl", "formatjs_library")
 
 formatjs_library(
-    name = "dist",
+    name = "DurationFormat",
     srcs = [
         "DurationRecordSign.ts",
         "GetDurationUnitOptions.ts",
@@ -10,10 +10,14 @@ formatjs_library(
         "ToIntegerIfIntegral.ts",
         "constants.ts",
     ],
-    project_references = [
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
+    visibility = ["//visibility:public"],
+    deps = [
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/types",
     ],
-    visibility = ["//visibility:public"],
 )

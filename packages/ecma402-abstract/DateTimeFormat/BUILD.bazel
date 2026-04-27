@@ -1,7 +1,7 @@
 load("//tools:compile.bzl", "formatjs_library")
 
 formatjs_library(
-    name = "dist",
+    name = "DateTimeFormat",
     srcs = [
         "BasicFormatMatcher.ts",
         "BestFitFormatMatcher.ts",
@@ -19,14 +19,16 @@ formatjs_library(
         "skeleton.ts",
         "utils.ts",
     ],
-    project_references = [
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/types",
-    ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
     ],
 )

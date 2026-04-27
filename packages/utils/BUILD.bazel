@@ -13,7 +13,7 @@ exports_files([
 ])
 
 formatjs_library(
-    name = "dist",
+    name = "utils",
     srcs = [
         "countryCodes.ts",
         "defaultCurrency.ts",
@@ -23,6 +23,10 @@ formatjs_library(
         "iso3166Alpha3CountryCodes.ts",
         "iso4217.ts",
     ],
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -31,18 +35,19 @@ formatjs_library(
 )
 
 formatjs_test(
-    name = "unit_test",
-    srcs = [
+    name = "utils_test",
+    data = [
         "tests/countryCodes.test.ts",
         "tests/currencyMinorUnits.test.ts",
         "tests/defaultCurrency.test.ts",
         "tests/defaultLocale.test.ts",
         "tests/defaultTimezone.test.ts",
-    ],
-    deps = [
+        ":utils",
+        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],
+    entry_point = "tests/countryCodes.test.ts",
 )
 
 copy_file(

@@ -1,5 +1,5 @@
 # gazelle:ignore
-# gazelle:formatjs_enabled false
+# gazelle:ts_enabled false
 
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 

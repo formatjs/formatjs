@@ -1,9 +1,13 @@
-load("@aspect_rules_js//js:defs.bzl", "js_test")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:test.bzl", "formatjs_test")
+
+# Hand-rolled js_test that runs a one-off ESM smoke test.
+# gazelle:ts_enabled false
 
 npm_link_all_packages()
 
-js_test(
+# keep
+formatjs_test(
     name = "esm_compatibility_test",
     size = "small",
     timeout = "short",

@@ -1,13 +1,17 @@
 load("//tools:compile.bzl", "formatjs_library")
 
 formatjs_library(
-    name = "dist",
+    name = "DisplayNames",
     srcs = [
         "CanonicalCodeForDisplayNames.ts",
         "IsValidDateTimeFieldCode.ts",
     ],
-    project_references = [
+    composite = True,
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
+    visibility = ["//visibility:public"],
+    deps = [
         "//packages/ecma402-abstract",
     ],
-    visibility = ["//visibility:public"],
 )
