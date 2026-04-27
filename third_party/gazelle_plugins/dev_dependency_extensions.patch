@@ -1,20 +1,35 @@
 --- a/MODULE.bazel
 +++ b/MODULE.bazel
-@@ -23,7 +23,7 @@ rules_rust = use_extension("@rules_rs//rs/experimental:rules_rust.bzl", "rules_r
+@@ -23,32 +23,6 @@
+ rules_rust = use_extension("@rules_rs//rs/experimental:rules_rust.bzl", "rules_rust")
  use_repo(rules_rust, "rules_rust")
-
- # Rust toolchain (rules_rs experimental).
+ 
+-# Rust toolchain (rules_rs experimental).
 -toolchains = use_extension("@rules_rs//rs/experimental/toolchains:module_extension.bzl", "toolchains")
-+toolchains = use_extension("@rules_rs//rs/experimental/toolchains:module_extension.bzl", "toolchains", dev_dependency = True)
- toolchains.toolchain(
-     edition = "2021",
-     version = "1.93.0",
-@@ -33,7 +33,7 @@ use_repo(toolchains, "default_rust_toolchains")
- register_toolchains("@default_rust_toolchains//:all")
-
- # Crate resolution: rules_rs reads Cargo.toml/Cargo.lock directly (no repinning).
+-toolchains.toolchain(
+-    edition = "2024",
+-    version = "1.95.0",
+-)
+-use_repo(toolchains, "default_rust_toolchains")
+-
+-register_toolchains("@default_rust_toolchains//:all")
+-
+-# Crate resolution: rules_rs reads Cargo.toml/Cargo.lock directly (no repinning).
 -crate = use_extension("@rules_rs//rs:extensions.bzl", "crate")
-+crate = use_extension("@rules_rs//rs:extensions.bzl", "crate", dev_dependency = True)
- crate.from_cargo(
-     name = "crates",
-     cargo_lock = "//:Cargo.lock",
+-crate.from_cargo(
+-    name = "crates",
+-    cargo_lock = "//:Cargo.lock",
+-    cargo_toml = "//:Cargo.toml",
+-    platform_triples = [
+-        "aarch64-apple-darwin",
+-        "aarch64-unknown-linux-gnu",
+-        "x86_64-apple-darwin",
+-        "x86_64-unknown-linux-gnu",
+-    ],
+-    use_experimental_platforms = True,
+-)
+-use_repo(crate, "crates")
+-
+ # Prost/tonic codegen toolchains for rust_prost_library.
+ rules_rust_prost = use_extension("@rules_rs//rs/experimental:rules_rust_prost.bzl", "rules_rust_prost")
+ use_repo(rules_rust_prost, "rules_rust_prost")

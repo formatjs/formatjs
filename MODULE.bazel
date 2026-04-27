@@ -101,22 +101,29 @@ go_sdk.download(version = "1.24.12")
 
 ######### gazelle_plugins (TypeScript Gazelle extension) #########
 
+# Pinned to a commit on main rather than v0.1.1 because that release pre-dates
+# the import_extractor module extension (#25) and the gazelle_ts_plugin → ts
+# rename (#22). The extension downloads a prebuilt binary so we don't need
+# rules_rs's source build chain on the consumer side.
+#
+# The patch strips gazelle_plugins's own rules_rs toolchain tag and Cargo
+# workspace from MODULE.bazel. Both leak into consumers via rules_rs's
+# extensions, conflict with formatjs's setup, and aren't reachable since the
+# import-extractor binary is provided as a prebuilt download.
 bazel_dep(name = "gazelle_plugins", version = "0.1.1")
-
-# gazelle_plugins's MODULE.bazel registers its own toolchain tag
-# (rules_rs default_rust_toolchains, version 1.93.0/edition 2021) and
-# a Cargo workspace at //:Cargo.toml. Both leak into consumers and
-# clash with formatjs's own toolchain tag and Cargo workspace. Patch
-# them to dev_dependency = True so they only apply when gazelle_plugins
-# is the root module (i.e. when building the upstream repo itself).
 archive_override(
     module_name = "gazelle_plugins",
-    integrity = "sha256-HtoNsctZkRr5NsAJDASnn/pzPOTkT0mM2JGLH99brRg=",
+    integrity = "sha256-+MuARa9MabXUh977pOLpTpX4jxkoIldcsGyn5vLMYd0=",
     patch_strip = 1,
     patches = ["//third_party/gazelle_plugins:dev_dependency_extensions.patch"],
-    strip_prefix = "gazelle_plugins-0.1.1",
-    urls = ["https://github.com/hermeticbuild/gazelle_plugins/releases/download/v0.1.1/gazelle_plugins-v0.1.1.tar.gz"],
+    strip_prefix = "gazelle_plugins-9dbc148a4b285d7c5cb5936e9a6168ea29e1c726",
+    urls = ["https://github.com/hermeticbuild/gazelle_plugins/archive/9dbc148a4b285d7c5cb5936e9a6168ea29e1c726.tar.gz"],
 )
+
+# Pre-built import-extractor binary that backs the gazelle plugin.
+import_extractor = use_extension("@gazelle_plugins//import_extractor:extensions.bzl", "import_extractor")
+import_extractor.toolchain()
+use_repo(import_extractor, "import_extractor")
 
 ######### Rust rules #########
 

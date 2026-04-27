@@ -354,6 +354,30 @@
         }
       }
     },
+    "@@gazelle_plugins+//import_extractor:extensions.bzl%import_extractor": {
+      "general": {
+        "bzlTransitiveDigest": "w8P0Evy08BoH3/wQwAX5RctHV13STYF5XNRWkyBvbKg=",
+        "usagesDigest": "hogq3gcP8ui2B+KpGrtttgiPqXN8gfn8vDxWEAtcnLE=",
+        "recordedInputs": [],
+        "generatedRepoSpecs": {
+          "import_extractor": {
+            "repoRuleId": "@@gazelle_plugins+//import_extractor:repositories.bzl%import_extractor_repo",
+            "attributes": {
+              "version": "0.1.1",
+              "repositories": {}
+            }
+          }
+        },
+        "moduleExtensionMetadata": {
+          "explicitRootModuleDirectDeps": [
+            "import_extractor"
+          ],
+          "explicitRootModuleDirectDevDeps": [],
+          "useAllRepos": "NO",
+          "reproducible": false
+        }
+      }
+    },
     "@@protobuf+//python/dist:system_python.bzl%system_python_extension": {
       "general": {
         "bzlTransitiveDigest": "pmsA+awieucfllLc2n7k8xEoPp0i5LF9Hw6mGX0cqSQ=",

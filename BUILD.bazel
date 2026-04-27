@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@gazelle//:def.bzl", "gazelle")
+load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("//tools:compile.bzl", "formatjs_library")
@@ -13,8 +13,8 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 
-# gazelle_ts_plugin (from @gazelle_plugins//gazelle_ts_plugin) emits stock
-# ts_project + js_test rules; map_kind rewrites them to our wrappers, which
+# gazelle_plugins//ts emits stock ts_project + js_test rules; map_kind
+# rewrites them to our wrappers, which
 # accept the same generated attrs (srcs/deps for libraries, data/entry_point
 # for tests) and translate to ts_project / vitest internally.
 # gazelle:map_kind ts_project formatjs_library //tools:compile.bzl
@@ -52,9 +52,14 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
+gazelle_binary(
+    name = "gazelle_bin",
+    languages = ["@gazelle_plugins//ts"],
+)
+
 gazelle(
     name = "gazelle",
-    gazelle = "@gazelle_plugins//gazelle_ts_plugin:gazelle_ts",
+    gazelle = ":gazelle_bin",
 )
 
 npm_link_all_packages()
