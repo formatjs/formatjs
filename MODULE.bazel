@@ -102,25 +102,16 @@ go_sdk.download(version = "1.24.12")
 ######### gazelle_plugins (TypeScript Gazelle extension) #########
 
 # Pinned to a commit on main rather than v0.1.1 because that release pre-dates
-# the import_extractor module extension (#25) and the gazelle_ts_plugin → ts
-# rename (#22). The extension downloads a prebuilt binary so we don't need
-# rules_rs's source build chain on the consumer side.
-#
-# The patch strips gazelle_plugins's own rules_rs toolchain tag and Cargo
-# workspace from MODULE.bazel. The toolchain tag pins 1.95.0 (rules_rs in
-# this repo doesn't have prebuilt URLs for that version on Linux x86_64);
-# the Cargo workspace can't be merged with formatjs's because
-# crates/import-extractor isn't a findable path dep here. Both blocks are
-# unreachable since we consume gazelle_plugins's import-extractor as a
-# prebuilt binary download.
+# the import_extractor module extension (#25), the gazelle_ts_plugin → ts
+# rename (#22), and the dev_dependency-only toolchain + Cargo extensions
+# (#27). The extension downloads a prebuilt binary so we don't need rules_rs's
+# source build chain on the consumer side.
 bazel_dep(name = "gazelle_plugins", version = "0.1.1")
 archive_override(
     module_name = "gazelle_plugins",
-    integrity = "sha256-+MuARa9MabXUh977pOLpTpX4jxkoIldcsGyn5vLMYd0=",
-    patch_strip = 1,
-    patches = ["//third_party/gazelle_plugins:dev_dependency_extensions.patch"],
-    strip_prefix = "gazelle_plugins-9dbc148a4b285d7c5cb5936e9a6168ea29e1c726",
-    urls = ["https://github.com/hermeticbuild/gazelle_plugins/archive/9dbc148a4b285d7c5cb5936e9a6168ea29e1c726.tar.gz"],
+    integrity = "sha256-bVw7sc3KTn/+DD6nsruqbG32FQXnDoQFeSTc2yrLgd0=",
+    strip_prefix = "gazelle_plugins-4cabf8447089418bc51a68bf05f8e8f850b19b39",
+    urls = ["https://github.com/hermeticbuild/gazelle_plugins/archive/4cabf8447089418bc51a68bf05f8e8f850b19b39.tar.gz"],
 )
 
 # Pre-built import-extractor binary that backs the gazelle plugin.
