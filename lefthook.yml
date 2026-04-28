@@ -44,11 +44,6 @@ pre-commit:
       glob: '**/*.{ts,tsx}'
       run: bazel run //:ast-grep -- scan {staged_files}
     gazelle:
-      glob:
-        - "**/*.{ts,tsx,js,jsx,mjs,cjs}"
-        - "**/BUILD.bazel"
-        - "**/BUILD"
-        - "pnpm-lock.yaml"
       run: bazel run -c opt //:gazelle
       stage_fixed: true
     bazel-lock-regen:
