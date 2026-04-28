@@ -1,0 +1,31 @@
+import React from 'react';
+
+function getUsers(): Array<string> | undefined {
+  return undefined;
+}
+
+function MyComponent({intl}) {
+  // formatMessage nested in a callback inside an optional chain.
+  const messages = getUsers()?.map(() =>
+    intl.formatMessage({
+      id: 'callback.in.optional.chain',
+      defaultMessage: 'In a callback inside an optional chain',
+      description: 'Test callbacks inside an optional chain'
+    })
+  ).join(', ');
+
+  return <div>{messages}</div>;
+}
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "tsx"
+}
+---
+{
+  "callback.in.optional.chain": {
+    "defaultMessage": "In a callback inside an optional chain",
+    "description": "Test callbacks inside an optional chain"
+  }
+}

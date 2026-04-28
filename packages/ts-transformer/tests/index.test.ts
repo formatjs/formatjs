@@ -710,6 +710,11 @@ describe('emit asserts for', function () {
         description: 'Test nested optional chaining',
         id: 'DZ/55FDtO6',
       },
+      {
+        defaultMessage: 'In a callback inside an optional chain',
+        description: 'Test callbacks inside an optional chain',
+        id: '7SldKmH/WX',
+      },
     ])
   })
 
