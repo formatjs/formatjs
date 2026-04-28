@@ -1,8 +1,12 @@
 // @ts-ignore
 const intl = {} as any
 
+function getUsers(): Array<string> | undefined {
+  return undefined;
+}
+
 // GH #4471: Test optional chaining with generics
-export function testOptionalChainingWithGenerics() {
+export function testOptionalChainingWithGenerics(): void {
   // Case 1: Normal call (baseline - should work)
   intl.formatMessage({
     defaultMessage: 'Normal call',
@@ -33,4 +37,14 @@ export function testOptionalChainingWithGenerics() {
     defaultMessage: 'Nested optional chaining',
     description: 'Test nested optional chaining',
   })
+
+  // Case 6: formatMessage nested in a callback inside an optional chain.
+  getUsers()?.map(() =>
+    intl.formatMessage(
+      {
+        defaultMessage: 'In a callback inside an optional chain',
+        description: 'Test callbacks inside an optional chain',
+      },
+    ),
+  ).join(', ')
 }

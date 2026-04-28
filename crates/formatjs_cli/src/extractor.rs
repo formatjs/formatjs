@@ -1379,6 +1379,14 @@ mod tests {
                 start: None,
                 end: None,
             },
+            MessageDescriptor {
+                id: None,
+                default_message: Some("In a callback inside an optional chain".to_string()),
+                description: Some(Value::String("Test callbacks inside an optional chain".to_string())),
+                file: None,
+                start: None,
+                end: None,
+            },
         ];
 
         assert_eq!(messages, expected);
