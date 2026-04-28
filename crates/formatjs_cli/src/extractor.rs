@@ -591,18 +591,13 @@ impl<'a> Visit<'a> for MessageExtractor<'a> {
             oxc_ast::ast::ChainElement::CallExpression(call) => {
                 // Extract the message from this call expression
                 self.extract_call_expression_message(call);
-                // Don't walk - this prevents double extraction since walk would
-                // visit the arguments which may contain nested chains
-                // Instead, manually walk just the arguments to find nested messages
+                // Walk both callee and arguments to find nested messages
+                walk::walk_expression(self, &call.callee);
                 for arg in &call.arguments {
                     if let Some(expr) = arg.as_expression() {
                         walk::walk_expression(self, expr);
                     }
                 }
-            }
-            oxc_ast::ast::ChainElement::StaticMemberExpression(_) => {
-                // For member expressions in chains, walk normally to find nested patterns
-                walk::walk_chain_expression(self, it);
             }
             _ => {
                 // For other chain elements, walk normally
@@ -1375,6 +1370,14 @@ mod tests {
                 id: None,
                 default_message: Some("Nested optional chaining".to_string()),
                 description: Some(Value::String("Test nested optional chaining".to_string())),
+                file: None,
+                start: None,
+                end: None,
+            },
+            MessageDescriptor {
+                id: None,
+                default_message: Some("In a callback inside an optional chain".to_string()),
+                description: Some(Value::String("Test callbacks inside an optional chain".to_string())),
                 file: None,
                 start: None,
                 end: None,
