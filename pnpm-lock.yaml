@@ -745,6 +745,9 @@ importers:
 
   packages/intl-durationformat:
     dependencies:
+      '@formatjs/bigdecimal':
+        specifier: workspace:*
+        version: link:../bigdecimal
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
