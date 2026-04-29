@@ -1,3 +1,4 @@
+import type {BigDecimal} from '@formatjs/bigdecimal'
 import {memoize, strategies} from '@formatjs/fast-memoize'
 
 export function repeat(s: string, times: number): string {
@@ -142,11 +143,23 @@ export function invariant(
   }
 }
 
+// Native NumberFormat coerces non-primitive inputs via ToPrimitive (calling
+// `toString()`) before feeding them to ToIntlMathematicalValue, so a
+// `BigDecimal` passed to `format`/`formatToParts` is parsed as an exact
+// StringNumericLiteral. The widened return type lets call sites carry
+// BigDecimal end-to-end without lossy intermediate `.toString()` casts.
+type NumberFormatLike = Omit<Intl.NumberFormat, 'format' | 'formatToParts'> & {
+  format(value: number | bigint | string | BigDecimal | undefined): string
+  formatToParts(
+    value: number | bigint | string | BigDecimal | undefined
+  ): Intl.NumberFormatPart[]
+}
+
 export const createMemoizedNumberFormat: (
   ...args: ConstructorParameters<typeof Intl.NumberFormat>
-) => Intl.NumberFormat = memoize(
+) => NumberFormatLike = memoize(
   (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
-    new Intl.NumberFormat(...args),
+    new Intl.NumberFormat(...args) as NumberFormatLike,
   {
     strategy: strategies.variadic,
   }

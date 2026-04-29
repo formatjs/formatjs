@@ -34,9 +34,7 @@ export function PartitionDurationFormatPattern(
     // Carry the value as BigDecimal end-to-end so sub-second rollups stay
     // exact. Float arithmetic like `1 + 473/1e3` lands on
     // `1.4729999999999998650`, which `roundingMode: 'trunc'` truncates to
-    // `1.472999999` instead of `1.473` (#6462). NumberFormat (V3) accepts
-    // a decimal string and parses it as a Mathematical Value, sidestepping
-    // the IEEE 754 round-trip entirely.
+    // `1.472999999` instead of `1.473` (#6462).
     let value = new BigDecimal(duration[row.valueField])
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
@@ -104,7 +102,11 @@ export function PartitionDurationFormatPattern(
           value: separator,
         })
       }
-      let parts = nf.formatToParts(value.toString() as `${number}`)
+      // Pass the BigDecimal straight through. NumberFormat (V3) parses it
+      // as an exact Mathematical Value via ToPrimitive → BigDecimal.toString,
+      // which sidesteps the IEEE 754 round-trip that breaks
+      // `roundingMode: 'trunc'` on values like `1 + 473/1e3` (#6462).
+      let parts = nf.formatToParts(value)
       parts.forEach(({type, value}) => {
         list.push({
           type,
