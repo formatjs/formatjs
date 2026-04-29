@@ -78,6 +78,32 @@ test('Intl.DurationFormat format digital', function () {
   )
 })
 
+test('Intl.DurationFormat sub-second rollup is exact (#6462)', function () {
+  // 1s + 473ms is exactly 1.473s. Float arithmetic — `1 + 473/1e3` —
+  // lands on `1.4729999999999998650`, which `roundingMode: 'trunc'`
+  // truncated to `1.472999999s` before the BigDecimal rewrite.
+  expect(
+    new DurationFormat('en', {
+      milliseconds: 'numeric',
+      style: 'narrow',
+    }).format({milliseconds: 473, seconds: 1})
+  ).toBe('1.473s')
+  // Same kind of failure modes for milliseconds → microseconds and
+  // microseconds → nanoseconds rollups.
+  expect(
+    new DurationFormat('en', {
+      microseconds: 'numeric',
+      style: 'narrow',
+    }).format({milliseconds: 1, microseconds: 473})
+  ).toBe('1.473ms')
+  expect(
+    new DurationFormat('en', {
+      nanoseconds: 'numeric',
+      style: 'narrow',
+    }).format({microseconds: 1, nanoseconds: 473})
+  ).toBe('1.473μs')
+})
+
 test('Intl.DurationFormat hours with 2-digit', function () {
   expect(
     new DurationFormat('en', {

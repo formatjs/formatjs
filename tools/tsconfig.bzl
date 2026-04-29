@@ -19,6 +19,7 @@ BASE_TSCONFIG = {
             "ES2021.intl",
             "ES2021.String",
             "ES2022.Intl",
+            "ES2023.Intl",
             "ESNext.Intl",
         ],
         "declaration": True,

@@ -1,3 +1,4 @@
+import {BigDecimal} from '@formatjs/bigdecimal'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
   createMemoizedListFormat,
@@ -30,7 +31,13 @@ export function PartitionDurationFormatPattern(
 
   for (let i = 0; i < TABLE_2.length && !done; i++) {
     const row = TABLE_2[i]
-    let value = duration[row.valueField]
+    // Carry the value as BigDecimal end-to-end so sub-second rollups stay
+    // exact. Float arithmetic like `1 + 473/1e3` lands on
+    // `1.4729999999999998650`, which `roundingMode: 'trunc'` truncates to
+    // `1.472999999` instead of `1.473` (#6462). NumberFormat (V3) accepts
+    // a decimal string and parses it as a Mathematical Value, sidestepping
+    // the IEEE 754 round-trip entirely.
+    let value = new BigDecimal(duration[row.valueField])
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
     const {unit, numberFormatUnit} = row
@@ -51,14 +58,16 @@ export function PartitionDurationFormatPattern(
       }
       if (nextStyle === 'numeric') {
         if (unit === 'seconds') {
-          value +=
-            duration.milliseconds / 1e3 +
-            duration.microseconds / 1e6 +
-            duration.nanoseconds / 1e9
+          value = value
+            .plus(new BigDecimal(duration.milliseconds).div(1000))
+            .plus(new BigDecimal(duration.microseconds).div(1_000_000))
+            .plus(new BigDecimal(duration.nanoseconds).div(1_000_000_000))
         } else if (unit === 'milliseconds') {
-          value += duration.microseconds / 1e3 + duration.nanoseconds / 1e6
+          value = value
+            .plus(new BigDecimal(duration.microseconds).div(1000))
+            .plus(new BigDecimal(duration.nanoseconds).div(1_000_000))
         } else {
-          value += duration.nanoseconds / 1e3
+          value = value.plus(new BigDecimal(duration.nanoseconds).div(1000))
         }
         if (internalSlots.fractionalDigits === undefined) {
           nfOpts.maximumFractionDigits = 9
@@ -71,7 +80,7 @@ export function PartitionDurationFormatPattern(
         done = true
       }
     }
-    if (value !== 0 || display !== 'auto') {
+    if (!value.isZero() || display !== 'auto') {
       nfOpts.numberingSystem = internalSlots.numberingSystem
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
@@ -95,7 +104,7 @@ export function PartitionDurationFormatPattern(
           value: separator,
         })
       }
-      let parts = nf.formatToParts(value)
+      let parts = nf.formatToParts(value.toString() as `${number}`)
       parts.forEach(({type, value}) => {
         list.push({
           type,
