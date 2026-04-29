@@ -31,10 +31,16 @@ def _formatjs_package(
     """
     effective_npm_name = npm_package_name or ("@formatjs/%s" % package_name)
 
+    # package.json is exposed to rolldown so entry points can do
+    # `import './package.json' with {type: 'json'}` (used to inject plugin
+    # name/version into bundled output). Kept out of the `:srcs` copy_to_bin
+    # — and therefore out of `:lib` — because including the package's own
+    # package.json in the test sandbox shadows the root `//:package.json` and
+    # breaks `#packages/*` subpath import resolution at runtime.
     for entry in entry_points:
         rolldown_bundle(
             name = "%s-bundle" % entry.replace(".ts", ""),
-            srcs = [":srcs"],
+            srcs = [":srcs", "package.json"],
             dts = True,
             entry_point = entry,
             external = external_packages,
