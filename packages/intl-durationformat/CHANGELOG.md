@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.6...@formatjs/intl-durationformat@0.10.7) (2026-04-29)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** declare @formatjs/bigdecimal dependency ([#6468](https://github.com/formatjs/formatjs/issues/6468)) ([104cbb1](https://github.com/formatjs/formatjs/commit/104cbb13615201d9ebbb1550e1250d70a51784e5)), closes [#6466](https://github.com/formatjs/formatjs/issues/6466) - by @longlho
+
 ## [0.10.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.5...@formatjs/intl-durationformat@0.10.6) (2026-04-29)
 
 ### Bug Fixes
