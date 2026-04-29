@@ -14,11 +14,7 @@ formatjs_library(
         "visitors/call-expression.ts",
         "visitors/jsx-opening-element.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     npm_package_name = "babel-plugin-formatjs",
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@babel/core",
@@ -56,5 +52,4 @@ formatjs_test(
         "//:node_modules/vitest",
         "//packages/babel-plugin-formatjs/tests/fixtures",  # keep: test fixture data
     ],
-    entry_point = "tests/index.test.ts",
 )

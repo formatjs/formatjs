@@ -23,10 +23,6 @@ formatjs_library(
         "data.ts",
         "utils.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
@@ -65,5 +61,4 @@ formatjs_test(
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
-    entry_point = "tests/262.test.ts",
 )

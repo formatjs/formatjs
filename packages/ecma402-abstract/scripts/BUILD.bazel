@@ -3,6 +3,13 @@ load("//tools:index.bzl", "ts_binary")
 
 ts_binary(
     name = "digit-mapping",
+    data = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+    ],
     entry_point = "digit-mapping.ts",
     visibility = [
         "//packages/ecma402-abstract:__subpackages__",
@@ -12,6 +19,15 @@ ts_binary(
 
 ts_binary(
     name = "regex-gen",
+    data = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/regenerate",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+        "//:node_modules/regenerate",
+    ],
     entry_point = "regex-gen.ts",
     visibility = [
         "//packages/ecma402-abstract:__pkg__",
@@ -25,10 +41,6 @@ formatjs_library(
         "digit-mapping.ts",
         "regex-gen.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@types/fs-extra",

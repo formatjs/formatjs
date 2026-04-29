@@ -34,15 +34,11 @@ formatjs_library(
         "polyfill-force.ts",
         "should-polyfill.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
         "polyfill.iife.js",
     ],
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -72,7 +68,6 @@ formatjs_test(
         "//packages/ecma402-abstract/RelativeTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
-    entry_point = "tests/index.test.ts",
     extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

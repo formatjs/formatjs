@@ -34,5 +34,4 @@ formatjs_test(
         "//:node_modules/react-intl",
         "//:node_modules/vitest",
     ],
-    entry_point = "format.test.tsx",
 )

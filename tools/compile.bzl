@@ -156,7 +156,7 @@ def formatjs_library(
     """
 
     # Pre-existing manual `ts_project(no_emit = True, ...)` rules in some
-    # BUILDs get rewritten to `formatjs_library(...)` by `# gazelle:map_kind`.
+    # BUILDs get rewritten to `formatjs_library(...)` by `# gazelle:map_kind ts_library`.
     # Detect that pattern (typecheck-only — no library/bundle output) and
     # forward straight to ts_project so the macro keeps emitting the same
     # underlying rule.
@@ -171,10 +171,12 @@ def formatjs_library(
         )
         return
 
-    # gazelle_ts_plugin emits these on every library when
-    # ts_project_references defaults to true. The macro has its own
+    # Older gazelle_ts emitted these (composite/declaration/source_map) on
+    # every library when `ts_project_references` defaulted to true; the new
+    # ts_library abstract kind never emits them. Pop defensively in case a
+    # downgrade or hand-edit reintroduces them — the macro has its own
     # bundling pipeline (rolldown for published, oxc for internal) so the
-    # stock ts_project flags don't apply — drop them silently.
+    # stock ts_project flags don't apply.
     for _ignored in ("composite", "declaration", "declaration_map", "source_map"):
         typecheck_only_kwargs.pop(_ignored, None)
 

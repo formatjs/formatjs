@@ -58,15 +58,11 @@ formatjs_library(
         "rules/prefer-pound-in-plural.ts",
         "util.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = [
         "index.ts",
         "util.ts",
     ],
     npm_package_name = "eslint-plugin-formatjs",
-    source_map = True,
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     visibility = ["//visibility:public"],
     deps = [
@@ -124,6 +120,5 @@ formatjs_test(
         "//:node_modules/vitest",
         "//:node_modules/vue-eslint-parser",
     ],
-    entry_point = "tests/blocklist-elements.test.ts",
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

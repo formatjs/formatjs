@@ -29,14 +29,10 @@ formatjs_library(
         "ts-jest-integration.ts",
         "types.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = [
         "index.ts",
         "ts-jest-integration.ts",
     ],
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -87,5 +83,4 @@ formatjs_test(
         "//:node_modules/typescript",
         "//:node_modules/vitest",
     ],
-    entry_point = "tests/index.test.ts",
 )

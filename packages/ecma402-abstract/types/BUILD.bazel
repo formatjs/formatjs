@@ -12,10 +12,6 @@ formatjs_library(
         "plural-rules.ts",
         "relative-time.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",

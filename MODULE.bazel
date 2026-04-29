@@ -101,7 +101,15 @@ go_sdk.download(version = "1.24.12")
 
 ######### gazelle_ts (TypeScript Gazelle extension) #########
 
+# Pinned to the latest main commit (post-v0.3.3) for the abstract-kind rename
+# (ts_project → ts_library, js_test → ts_test) and the ts_bundler_config /
+# ts_binary additions. BCR has not yet published a tag for these changes.
 bazel_dep(name = "gazelle_ts", version = "0.3.3")
+git_override(
+    module_name = "gazelle_ts",
+    commit = "e3579a043d2639b85877c051f3fedd2095a4b1a2",
+    remote = "https://github.com/hermeticbuild/gazelle_ts.git",
+)
 
 ######### Rust rules #########
 

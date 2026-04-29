@@ -35,13 +35,9 @@ formatjs_library(
         "types.ts",
         "utils.tsx",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["%s.iife.js" % PACKAGE_NAME],
     npm_package_name = PACKAGE_NAME,
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -84,7 +80,6 @@ formatjs_test(
         "//packages/ecma402-abstract/types",
     ],
     dom = True,
-    entry_point = "tests/unit/components/date.test.tsx",
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

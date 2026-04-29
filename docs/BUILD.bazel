@@ -28,7 +28,6 @@ copy_to_bin(
 formatjs_library(
     name = "typecheck",
     srcs = [":srcs"],
-    declaration = False,
     no_emit = True,
     resolve_json_module = True,
     transpiler = tsgo_bin.tsgo,

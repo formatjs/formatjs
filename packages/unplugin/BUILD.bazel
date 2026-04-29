@@ -49,11 +49,7 @@ formatjs_library(
         "vite.ts",
         "webpack.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
-    source_map = True,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     visibility = ["//visibility:public"],
     deps = [
@@ -82,7 +78,6 @@ formatjs_test(
         "//:node_modules/unplugin",
         "//:node_modules/vitest",
     ],
-    entry_point = "conformance-tests/cli-unplugin-conformance.test.ts",
 )
 
 vitest(

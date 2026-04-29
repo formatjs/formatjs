@@ -49,12 +49,8 @@ formatjs_library(
         "segmenter.ts",
         "should-polyfill.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -80,7 +76,6 @@ formatjs_test(
         "//:node_modules/vitest",
         "//packages/ecma402-abstract",
     ],
-    entry_point = "tests/grapheme.test.ts",
     extra_data = TEST_UNICODE_FILES,
     no_copy_to_bin = [
         "//:package.json",

@@ -14,10 +14,6 @@ formatjs_library(
     srcs = [
         "index.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     visibility = ["//visibility:public"],
 )
@@ -29,5 +25,4 @@ formatjs_test(
         ":bigdecimal",
         "//:node_modules/vitest",
     ],
-    entry_point = "tests/bigdecimal.test.ts",
 )

@@ -32,12 +32,8 @@ formatjs_library(
         "polyfill-force.ts",
         "should-polyfill.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -59,7 +55,6 @@ formatjs_test(
         "//:node_modules/vitest",
         "//packages/ecma402-abstract",
     ],
-    entry_point = "tests/index.test.ts",
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
