@@ -1,6 +1,5 @@
 "Custom macro"
 
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
@@ -349,16 +348,6 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
         files = {"tsconfig.json": name + "_generated"},
     )
 
-def is_internal_dep(s):
-    return s.startswith("//:node_modules/@formatjs") or s in [
-        "//:node_modules/babel-plugin-formatjs",
-        "//:node_modules/eslint-plugin-formatjs",
-        "//:node_modules/intl-messageformat",
-        "//:node_modules/react-intl",
-        "//:node_modules/vue-intl",
-        "//:node_modules/@formatjs/svelte-intl",
-    ]
-
 def no_internal_imports_test(name, data):
     """Test that no #packages/ path aliases leak into bundled .js or .d.ts output.
 
@@ -391,49 +380,29 @@ def package_exports_test(name, pkg):
         node_options = ["--experimental-transform-types"],
     )
 
-def package_json_test(name, packageJson = "package.json", deps = []):
-    copy_to_bin(
-        name = "package",
-        srcs = ["package.json"],
-        visibility = ["//visibility:public"],
+def package_json_test(name, bundles, package_json = "package.json"):
+    """Verify every bare import in `bundles` is declared in `package.json`.
+
+    rolldown externalizes everything in BUILD.bazel `deps` under
+    `//:node_modules/`. If those packages aren't also declared in
+    `package.json` `dependencies`/`peerDependencies`, the published bundle
+    fails to resolve at consume time — even though every internal test
+    passes (formatjs#6467).
+
+    Args:
+        name: target name
+        bundles: list of rolldown_bundle targets whose .js output to scan
+        package_json: package.json label (default "package.json")
+    """
+    js_test(
+        name = name,
+        size = "small",
+        args = ["--pkg", "$(rootpath %s)" % package_json] +
+               ["--bundle=$(rootpath %s)" % b for b in bundles],
+        data = [package_json] + bundles + [
+            "//:node_modules/minimist",
+            "//:node_modules/oxc-parser",
+        ],
+        entry_point = "//tools:check_package_json",
+        node_options = ["--experimental-transform-types"],
     )
-
-    internal_deps = [
-        s
-        for s in deps
-        if is_internal_dep(s)
-    ]
-
-    external_deps = [s for s in deps if s not in internal_deps]
-
-    # TODO: fix this
-    # ts_node_bin.ts_node_test(
-    #     name = name,
-    #     args = [
-    #                "--transpile-only",
-    #                "$(location //tools:check-package-json)",
-    #                "--rootPackageJson",
-    #                "$(location //:package)",
-    #                "--packageJson",
-    #                "$(location %s)" % packageJson,
-    #            ] +
-    #            (["--externalDep %s" % n for n in external_deps] if external_deps else []) +
-    #            (["--internalDep %s" % d.split("//:node_modules/")[1] for d in internal_deps] if internal_deps else []),
-    #     data = internal_deps + [
-    #         packageJson,
-    #         "//tools:check-package-json",
-    #         "//:package",
-    #         "//:tsconfig",
-    #         "//:node_modules/@types/fs-extra",
-    #         "//:node_modules/@types/minimist",
-    #         "//:node_modules/fs-extra",
-    #         "//:node_modules/json-stable-stringify",
-    #
-    #         "//:node_modules/minimist",
-    #         "//:node_modules/lodash",
-    #         "//:node_modules/@types/lodash",
-    #         "//:node_modules/unidiff",
-    #         "//:node_modules/tslib",
-    #         "//:tsconfig.node",
-    #     ],
-    # )
