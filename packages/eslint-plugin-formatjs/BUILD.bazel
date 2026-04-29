@@ -1,24 +1,11 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "generate_package_file")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
-load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
-load("//tools:vitest.bzl", "vitest")
-
-# Manually-tuned BUILD: this package wraps ts_project + rolldown + npm_package
-# directly with custom srcs/external lists. Auto-generation would race with
-# the manual copy_to_bin(name = "srcs") and the typecheck ts_project.
-# gazelle:ts_enabled false
 
 npm_link_all_packages()
-
-PACKAGE_NAME = "eslint-plugin-formatjs"
 
 # Copy emoji-data.txt from external repository
 copy_file(
@@ -42,175 +29,101 @@ generate_package_file(
     visibility = ["//packages/ecma402-abstract:__pkg__"],
 )
 
-SRCS = glob(["rules/*.ts"]) + [
-    "index.ts",
-    "util.ts",
-    "messages.ts",
-    "emoji-utils.ts",
-]
-
-EXTERNAL_PACKAGES = [
-    dep.split("node_modules/")[1]
-    for dep in [
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        ":node_modules/@types/picomatch",
-        "//:node_modules/magic-string",
-        ":node_modules/picomatch",
-        "//:node_modules/@types/node",
-        "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@unicode/unicode-17.0.0",
-        "//:node_modules/eslint",
-        "//:node_modules/typescript",
-    ]
-    if "node_modules/" in dep
-]
-
-ENTRY_POINTS = [
-    "index.ts",
-    "util.ts",
-]
-
-[rolldown_bundle(
-    name = "%s-bundle" % entry.replace(".ts", ""),
-    srcs = [
-        "package.json",
-        ":srcs",
-    ],
-    dts = True,
-    entry_point = entry,
-    external = EXTERNAL_PACKAGES,
-    format = "esm",
-    output = "%s.js" % entry.replace(".ts", ""),
-    target = "es2020",
-    deps = [
-        ":node_modules/@types/picomatch",
-        ":node_modules/picomatch",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@formatjs_generated/unicode",
-        "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@types/node",
-        "//:node_modules/@unicode/unicode-17.0.0",
-        "//:node_modules/eslint",
-        "//:node_modules/magic-string",
-        "//:node_modules/typescript",
-    ],
-) for entry in ENTRY_POINTS]
-
-BUNDLES = [":%s-bundle" % entry.replace(".ts", "") for entry in ENTRY_POINTS]
-
-js_library(
-    name = PACKAGE_NAME,
-    srcs = BUNDLES + [
-        "package.json",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-npm_package(
-    name = "pkg",
-    srcs = [
-        "LICENSE.md",
-        "README.md",
-        "package.json",
-    ] + BUNDLES,
-    package = PACKAGE_NAME,
-    replace_prefixes = {
-        "%s-bundle/" % entry.replace(".ts", ""): ""
-        for entry in ENTRY_POINTS
-    },
-    visibility = ["//visibility:public"],
-)
-
-no_internal_imports_test(
-    name = "no_internal_imports_test",
-    data = BUNDLES,
-)
-
 formatjs_library(
-    name = "typecheck",
+    name = "eslint-plugin-formatjs",
     srcs = [
-        "package.json",
-        ":srcs",
+        "emoji-utils.ts",
+        "index.ts",
+        "messages.ts",
+        "rules/blocklist-elements.ts",
+        "rules/enforce-default-message.ts",
+        "rules/enforce-description.ts",
+        "rules/enforce-id.ts",
+        "rules/enforce-placeholders.ts",
+        "rules/enforce-plural-rules.ts",
+        "rules/no-camel-case.ts",
+        "rules/no-complex-selectors.ts",
+        "rules/no-emoji.ts",
+        "rules/no-id.ts",
+        "rules/no-invalid-icu.ts",
+        "rules/no-literal-string-in-jsx.ts",
+        "rules/no-literal-string-in-object.ts",
+        "rules/no-missing-icu-plural-one-placeholders.ts",
+        "rules/no-multiple-plurals.ts",
+        "rules/no-multiple-whitespaces.ts",
+        "rules/no-offset.ts",
+        "rules/no-useless-message.ts",
+        "rules/prefer-formatted-message.ts",
+        "rules/prefer-full-sentence.ts",
+        "rules/prefer-pound-in-plural.ts",
+        "util.ts",
     ],
+    composite = True,
     declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
+    declaration_map = True,
+    entry_points = [
+        "index.ts",
+        "util.ts",
+    ],
+    npm_package_name = "eslint-plugin-formatjs",
+    source_map = True,
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    visibility = ["//visibility:public"],
     deps = [
-        ":node_modules/@types/picomatch",
-        ":node_modules/picomatch",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@types/node",
+        "//:node_modules/@types/picomatch",
         "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/eslint",
         "//:node_modules/magic-string",
-        "//:node_modules/typescript",
+        "//:node_modules/picomatch",
     ],
 )
 
-TESTS_BASE_SRCS = [":srcs"] + glob(
-    [
-        "tests/*.ts",
-    ],
-    exclude = ["tests/*.test.ts"],
-)
-
-TEST_FILES = glob([
-    "tests/*.test.ts",
-])
-
-vitest(
-    name = "unit_test",
-    srcs = TESTS_BASE_SRCS + TEST_FILES,
-    deps = [
-        ":node_modules/@types/picomatch",
-        ":node_modules/picomatch",
+formatjs_test(
+    name = "eslint-plugin-formatjs_test",
+    data = [
+        "tests/blocklist-elements.test.ts",
+        "tests/emoji-utils.test.ts",
+        "tests/enforce-default-message.test.ts",
+        "tests/enforce-description.test.ts",
+        "tests/enforce-id.test.ts",
+        "tests/enforce-placeholders.test.ts",
+        "tests/enforce-plural-rules.test.ts",
+        "tests/fixtures.ts",
+        "tests/no-camel-case.test.ts",
+        "tests/no-complex-selectors.test.ts",
+        "tests/no-emoji.test.ts",
+        "tests/no-id.test.ts",
+        "tests/no-invalid-icu.test.ts",
+        "tests/no-literal-string-in-jsx.test.ts",
+        "tests/no-literal-string-in-object.test.ts",
+        "tests/no-missing-icu-plural-one-placeholders.test.ts",
+        "tests/no-multiple-plurals.test.ts",
+        "tests/no-multiple-whitespaces.test.ts",
+        "tests/no-offset.test.ts",
+        "tests/no-useless-message.test.ts",
+        "tests/prefer-formatted-message.test.ts",
+        "tests/prefer-full-sentence.test.ts",
+        "tests/prefer-pound-in-plural.test.ts",
+        "tests/tagged-template-substitutions.test.ts",
+        "tests/util.ts",
+        ":eslint-plugin-formatjs",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@types/node",
-        "//:node_modules/@typescript-eslint/utils",
+        "//:node_modules/@types/picomatch",
         "//:node_modules/@unicode/unicode-17.0.0",
         "//:node_modules/eslint",
         "//:node_modules/magic-string",
         "//:node_modules/oxlint",
-        "//:node_modules/typescript",
+        "//:node_modules/picomatch",
+        "//:node_modules/vitest",
         "//:node_modules/vue-eslint-parser",
     ],
-)
-
-# Generate tsconfig.json with correct extends path
-generate_ide_tsconfig_json()
-
-package_json_test(
-    name = "package_json_test",
-    deps = [
-        ":node_modules/@types/picomatch",
-        ":node_modules/picomatch",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@types/estree-jsx",
-        "//:node_modules/@types/node",
-        "//:node_modules/@unicode/unicode-17.0.0",
-        "//:node_modules/eslint",
-        "//:node_modules/magic-string",
-        "//:node_modules/typescript",
-    ],
-)
-
-copy_to_bin(
-    name = "srcs",
-    srcs = SRCS,
-)
-
-package_exports_test(
-    name = "package_exports_test",
-    pkg = ":pkg",
+    entry_point = "tests/blocklist-elements.test.ts",
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

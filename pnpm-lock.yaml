@@ -228,6 +228,9 @@ importers:
       '@types/node':
         specifier: 22 || 24
         version: 24.12.0
+      '@types/picomatch':
+        specifier: ^4.0.0
+        version: 4.0.3
       '@types/react':
         specifier: '19'
         version: 19.2.8
@@ -378,6 +381,9 @@ importers:
       oxlint:
         specifier: ^1.59.0
         version: 1.62.0
+      picomatch:
+        specifier: 2 || 3 || 4
+        version: 4.0.4
       prismjs:
         specifier: ^1.30.0
         version: 1.30.0
