@@ -382,7 +382,7 @@ importers:
         specifier: ^1.59.0
         version: 1.62.0
       picomatch:
-        specifier: 2 || 3 || 4
+        specifier: ^4.0.4
         version: 4.0.4
       prismjs:
         specifier: ^1.30.0

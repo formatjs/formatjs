@@ -135,7 +135,7 @@
     "oxc-transform": "^0.128.0",
     "oxfmt": "^0.47.0",
     "oxlint": "^1.59.0",
-    "picomatch": "2 || 3 || 4",
+    "picomatch": "^4.0.4",
     "prismjs": "^1.30.0",
     "react": "19",
     "react-dom": "19",
