@@ -35,6 +35,7 @@ formatjs_library(
     types = True,
     visibility = ["//visibility:public"],
     deps = [
+        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//packages/ecma262-abstract",
@@ -49,6 +50,7 @@ formatjs_test(
     data = [
         "tests/index.test.ts",
         ":intl-durationformat",
+        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/vitest",
