@@ -518,6 +518,21 @@ describe('@formatjs/unplugin factory', () => {
     expect(plugin.transformInclude('/node_modules/react/index.js')).toBe(false)
   })
 
+  test('transformInclude ignores query/hash on the id (#6455)', async () => {
+    const {unpluginFactory} = await import('../index.js')
+    const plugin = getPlugin(unpluginFactory)
+    // React Router splits routes that export clientLoader/clientAction into
+    // virtual chunk modules — IDs come in with a `?route-chunk=...` query.
+    expect(plugin.transformInclude('/src/route.tsx?route-chunk=main')).toBe(
+      true
+    )
+    expect(plugin.transformInclude('/src/route.ts?v=123')).toBe(true)
+    expect(plugin.transformInclude('/src/route.tsx#anchor')).toBe(true)
+    expect(plugin.transformInclude('/node_modules/foo/index.js?v=123')).toBe(
+      false
+    )
+  })
+
   test('transform processes formatjs descriptors', async () => {
     const {unpluginFactory} = await import('../index.js')
     const plugin = getPlugin(unpluginFactory)

@@ -13,7 +13,11 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
   name: 'formatjs',
   enforce: 'pre' as const,
   transformInclude(id: string): boolean {
-    return /\.[jt]sx?$/.test(id) && !id.includes('node_modules')
+    // Strip query/hash so virtual chunk IDs like
+    // `route.tsx?route-chunk=main` (e.g. React Router's clientLoader/
+    // clientAction split) still match the JS/TS extension test.
+    const path = id.replace(/[?#].*$/, '')
+    return /\.[jt]sx?$/.test(path) && !path.includes('node_modules')
   },
   transform(code: string, id: string) {
     return transform(code, id, options)
