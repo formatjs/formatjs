@@ -6,10 +6,6 @@ formatjs_library(
         "CanonicalCodeForDisplayNames.ts",
         "IsValidDateTimeFieldCode.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//packages/ecma402-abstract",

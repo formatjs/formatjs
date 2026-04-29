@@ -31,12 +31,8 @@ formatjs_library(
         "should-polyfill.ts",
         "types.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = ["//:node_modules/@formatjs_generated/cldr.core"],
 )
@@ -50,7 +46,6 @@ formatjs_test(
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],
-    entry_point = "tests/index.test.ts",
 )
 
 # @formatjs_generated/cldr.core — CLDR supplemental data

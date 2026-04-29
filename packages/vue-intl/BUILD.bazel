@@ -12,11 +12,7 @@ formatjs_library(
         "plugin.ts",
         "provider.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     npm_package_name = "vue-intl",
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -41,5 +37,4 @@ formatjs_test(
         "//:node_modules/vue",
     ],
     dom = True,
-    entry_point = "tests/index.test.ts",
 )

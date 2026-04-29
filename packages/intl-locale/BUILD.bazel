@@ -26,12 +26,8 @@ formatjs_library(
         "preference-data.ts",
         "should-polyfill.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -57,7 +53,6 @@ formatjs_test(
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
     ],
-    entry_point = "tests/index.test.ts",
     no_copy_to_bin = [
         "//:package.json",
     ],

@@ -10,10 +10,6 @@ formatjs_library(
         "ToIntegerIfIntegral.ts",
         "constants.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//packages/ecma262-abstract",

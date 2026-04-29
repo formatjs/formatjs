@@ -12,10 +12,6 @@ formatjs_library(
         "index.ts",
         "number.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -33,7 +29,6 @@ formatjs_test(
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/types",
     ],
-    entry_point = "tests/index.test.ts",
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )

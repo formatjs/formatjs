@@ -37,10 +37,6 @@ formatjs_library(
         "verify/index.ts",
         "vue_extractor.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
@@ -90,7 +86,6 @@ formatjs_test(
         "//:node_modules/vitest",
         "//:node_modules/vue",
     ],
-    entry_point = "tests/unit/abort_signal.test.ts",
     fixtures = glob(
         ["tests/unit/fixtures/**/*"],
     ),

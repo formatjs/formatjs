@@ -13,10 +13,6 @@ formatjs_library(
     srcs = [
         "index.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
 )
 
@@ -27,5 +23,4 @@ formatjs_test(
         ":ecma376",
         "//:node_modules/vitest",
     ],
-    entry_point = "tests/index.test.ts",
 )

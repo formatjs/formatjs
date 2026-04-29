@@ -11,10 +11,6 @@ formatjs_library(
         "index.ts",
         "provider.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -33,5 +29,4 @@ formatjs_test(
         "//:node_modules/svelte",
         "//:node_modules/vitest",
     ],
-    entry_point = "tests/index.test.ts",
 )

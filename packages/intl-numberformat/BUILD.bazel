@@ -82,15 +82,11 @@ formatjs_library(
         "to_locale_string.ts",
         "types.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
         "polyfill.iife.js",
     ],
-    source_map = True,
     types = True,
     visibility = ["//visibility:public"],
     deps = [
@@ -1042,6 +1038,5 @@ formatjs_test(
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
-    entry_point = "tests/currency-code.test.ts",
     extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
 )

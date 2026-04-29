@@ -23,10 +23,6 @@ formatjs_library(
         "iso3166Alpha3CountryCodes.ts",
         "iso4217.ts",
     ],
-    composite = True,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
@@ -47,7 +43,6 @@ formatjs_test(
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],
-    entry_point = "tests/countryCodes.test.ts",
 )
 
 copy_file(
