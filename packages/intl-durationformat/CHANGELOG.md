@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.5...@formatjs/intl-durationformat@0.10.6) (2026-04-29)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** use BigDecimal for sub-second rollups ([#6466](https://github.com/formatjs/formatjs/issues/6466)) ([bd4cb1d](https://github.com/formatjs/formatjs/commit/bd4cb1d6f103243c0a739bacd7d009e2cf09d83c)), closes [#6462](https://github.com/formatjs/formatjs/issues/6462) - by @longlho
+
 ## [0.10.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.4...@formatjs/intl-durationformat@0.10.5) (2026-04-24)
 
 **Note:** Version bump only for package @formatjs/intl-durationformat

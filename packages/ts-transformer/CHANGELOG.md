@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.5...@formatjs/ts-transformer@4.4.6) (2026-04-29)
+
+### Bug Fixes
+
+* **formatjs_cli:** extract formatMessage from callbacks inside optional chains ([#6460](https://github.com/formatjs/formatjs/issues/6460)) ([cb7bb23](https://github.com/formatjs/formatjs/commit/cb7bb238098f36c4dab8f4ba8f0d97459da740e4)) - by @walkerburgin
+
 ## [4.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.4...@formatjs/ts-transformer@4.4.5) (2026-04-24)
 
 ### Bug Fixes

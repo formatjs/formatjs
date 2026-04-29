@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/svelte-intl",
   "description": "formatjs intl binding for svelte",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "license": "ISC",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.14.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.14.3...@formatjs/cli@6.14.4) (2026-04-29)
+
+### Bug Fixes
+
+* **formatjs_cli:** extract formatMessage from callbacks inside optional chains ([#6460](https://github.com/formatjs/formatjs/issues/6460)) ([cb7bb23](https://github.com/formatjs/formatjs/commit/cb7bb238098f36c4dab8f4ba8f0d97459da740e4)) - by @walkerburgin
+
 ## [6.14.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.14.2...@formatjs/cli@6.14.3) (2026-04-24)
 
 **Note:** Version bump only for package @formatjs/cli

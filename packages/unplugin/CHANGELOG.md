@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.1.8...@formatjs/unplugin@1.1.9) (2026-04-29)
+
+### Bug Fixes
+
+* **@formatjs/unplugin:** strip query/hash in transformInclude ([#6465](https://github.com/formatjs/formatjs/issues/6465)) ([2fcf7f3](https://github.com/formatjs/formatjs/commit/2fcf7f3015138814efc5550da9c117d9fc11c54d)), closes [#6455](https://github.com/formatjs/formatjs/issues/6455) - by @longlho
+* **deps:** update dependency oxc-parser to ^0.128.0 ([#6457](https://github.com/formatjs/formatjs/issues/6457)) ([c281a36](https://github.com/formatjs/formatjs/commit/c281a36db86d4f8e3370010bc568dc9852b59e5e)) - by @renovate[bot]
+
 ## [1.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.1.7...@formatjs/unplugin@1.1.8) (2026-04-24)
 
 ### Bug Fixes
