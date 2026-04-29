@@ -86,6 +86,7 @@ def _formatjs_package(
 
     package_json_test(
         name = "package_json_test",
+        bundles = bundles,
     )
 
     package_exports_test(

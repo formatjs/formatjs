@@ -39,8 +39,8 @@ copy_to_bin(
 )
 
 copy_to_bin(
-    name = "check-package-json",
-    srcs = ["check-package-json.ts"],
+    name = "check_package_json",
+    srcs = ["check_package_json.ts"],
     visibility = ["//visibility:public"],
 )
 
