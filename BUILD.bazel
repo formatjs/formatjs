@@ -13,12 +13,12 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:js_pnpm_lockfile pnpm-lock.yaml
 # gazelle:js_validate_import_statements off
 
-# gazelle_ts//ts emits stock ts_project + js_test rules; map_kind
-# rewrites them to our wrappers, which
-# accept the same generated attrs (srcs/deps for libraries, data/entry_point
-# for tests) and translate to ts_project / vitest internally.
-# gazelle:map_kind ts_project formatjs_library //tools:compile.bzl
-# gazelle:map_kind js_test formatjs_test //tools:test.bzl
+# gazelle_ts//ts emits abstract ts_library + ts_test kinds; map_kind
+# rewrites them to our wrappers, which accept the generated attrs
+# (srcs/deps for libraries, data for tests) and translate to ts_project /
+# vitest internally.
+# gazelle:map_kind ts_library formatjs_library //tools:compile.bzl
+# gazelle:map_kind ts_test formatjs_test //tools:test.bzl
 # gazelle:ts_npm_link_pattern //:node_modules/{pkg}
 # @formatjs_generated/* are auto-generated npm packages linked via
 # npm_link_package() — they don't appear in package.json, so list them here

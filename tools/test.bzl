@@ -4,7 +4,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_test")
 load("//tools:vitest.bzl", "vitest")
 
 def _split_data(data):
-    """Partition gazelle_ts_plugin's `data` attr into vitest's srcs / deps / data.
+    """Partition gazelle_ts's ts_test `data` attr into vitest's srcs / deps / data.
 
     The plugin emits a single `data` list mixing test source file paths,
     npm package labels (//:node_modules/...), internal package labels
@@ -38,9 +38,9 @@ def formatjs_test(
         extra_srcs = [],
         entry_point = None,
         **kwargs):
-    """Vitest wrapper that consumes gazelle_ts_plugin output.
+    """Vitest wrapper that consumes gazelle_ts ts_test output.
 
-    The plugin emits stock `js_test`-shaped attrs: a `data` list mixing test
+    The plugin emits abstract `ts_test` attrs: a `data` list mixing test
     source files, npm dep labels, internal cross-package labels, and (when
     a sibling library exists) its label. vitest needs srcs and deps split,
     so this wrapper partitions `data` by label prefix.
@@ -60,8 +60,8 @@ def formatjs_test(
             via data). Use for genrule outputs like JSON locale fixtures
             imported via `import x from '#packages/.../foo.json'`.
         entry_point: ignored (vitest auto-discovers tests). Accepted only so
-            the plugin's output forwards cleanly even if
-            ts_test_entry_point_auto is left on.
+            hand-written rules with an entry_point forward cleanly; the
+            ts_test abstract kind never emits one.
         **kwargs: passed through to vitest (dom, config, size, tsconfig, etc.)
     """
     srcs, deps, runtime_data = _split_data(data + extra_data)
@@ -79,12 +79,11 @@ def formatjs_test(
         )
         return
 
-    # gazelle_ts_plugin emits the sibling-library label (basename) so the
-    # bundled output is in the test sandbox. For published packages that
-    # bundled js_library carries the package's own package.json, which
-    # shadows the root //:package.json and breaks `#packages/*` subpath
-    # resolution at runtime. Strip it and substitute the source-only
-    # `:lib` instead.
+    # gazelle_ts emits the sibling-library label (basename) so the bundled
+    # output is in the test sandbox. For published packages that bundled
+    # js_library carries the package's own package.json, which shadows the
+    # root //:package.json and breaks `#packages/*` subpath resolution at
+    # runtime. Strip it and substitute the source-only `:lib` instead.
     base = native.package_name().split("/")[-1]
     sibling_lib = ":" + base
     deps = [d for d in deps if d != sibling_lib]
