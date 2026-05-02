@@ -6,9 +6,15 @@ import minimist from 'minimist'
 
 async function main(args: minimist.ParsedArgs) {
   const {outDir} = args
-  const locales = getAllLocales()
+  const requestedLocales =
+    typeof args.locales === 'string'
+      ? new Set(args.locales.split(',').filter(Boolean))
+      : undefined
+  const locales = getAllLocales().filter(
+    locale => !requestedLocales || requestedLocales.has(locale)
+  )
   const data = await extractDatesFields(locales)
-  getAllLocales().forEach(locale =>
+  locales.forEach(locale =>
     outputJSONSync(
       join(outDir, `${locale}.json`),
       {

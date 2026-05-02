@@ -783,30 +783,48 @@ ALL_LOCALES = [
 
 CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
-ts_run_binary(
-    name = "cldr-raw",
-    srcs = [
-        "//:node_modules/@types/lodash-es",
-        "//:node_modules/cldr-core",
-        "//:node_modules/cldr-numbers-full",
-        "//:node_modules/cldr-units-full",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/lodash-es",
-        "//:node_modules/minimist",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/NumberFormat",
-        "//packages/ecma402-abstract/types",
-    ],
-    outs = CLDR_RAW_FILES,
+CLDR_RAW_SHARDS = [
+    ALL_LOCALES[i:i + 128]
+    for i in range(
+        0,
+        len(ALL_LOCALES),
+        128,
+    )
+]
+
+CLDR_RAW_SRCS = [
+    "//:node_modules/@types/lodash-es",
+    "//:node_modules/cldr-core",
+    "//:node_modules/cldr-numbers-full",
+    "//:node_modules/cldr-units-full",
+    "//:node_modules/fast-glob",
+    "//:node_modules/fs-extra",
+    "//:node_modules/json-stable-stringify",
+    "//:node_modules/lodash-es",
+    "//:node_modules/minimist",
+    "//packages/ecma262-abstract",
+    "//packages/ecma402-abstract",
+    "//packages/ecma402-abstract/NumberFormat",
+    "//packages/ecma402-abstract/types",
+]
+
+[ts_run_binary(
+    name = "cldr-raw-%d" % i,
+    srcs = CLDR_RAW_SRCS,
+    outs = ["cldr-raw/%s.json" % locale for locale in shard],
     args = [
         "--outDir",
         "cldr-raw",
+        "--locales",
+        ",".join(shard),
     ],
     chdir = package_name(),
     tool = "//packages/intl-numberformat/scripts:cldr-raw",
+) for i, shard in enumerate(CLDR_RAW_SHARDS)]
+
+filegroup(
+    name = "cldr-raw",
+    srcs = CLDR_RAW_FILES,
     visibility = [
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",

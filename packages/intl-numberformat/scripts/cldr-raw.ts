@@ -9,8 +9,15 @@ import minimist from 'minimist'
 
 async function main(args: minimist.ParsedArgs) {
   const {outDir} = args
+  const requestedLocales =
+    typeof args.locales === 'string'
+      ? new Set(args.locales.split(',').filter(Boolean))
+      : undefined
   // Dist all locale files to locale-data
   const locales = AVAILABLE_LOCALES.availableLocales.full.filter(l => {
+    if (requestedLocales && !requestedLocales.has(l)) {
+      return false
+    }
     try {
       return (Intl as any).getCanonicalLocales(l).length
     } catch {
