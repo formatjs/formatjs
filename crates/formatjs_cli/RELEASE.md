@@ -47,14 +47,37 @@ git push origin formatjs_cli_v0.1.0
 - `formatjs_cli-linux-x64` (Linux x86_64)
 - `checksums.txt` (SHA-256 checksums)
 
-### Option 2: Using Cargo
+### Option 2: Using Cargo For Local Binaries
 
 ```bash
 cd crates/formatjs_cli
 ./release.sh
 ```
 
-This uses native Cargo cross-compilation. Requires additional setup for cross-compilation (see below).
+This uses native Cargo cross-compilation. Requires additional setup for cross-compilation (see below). Cargo builds the executable as `formatjs`; release packaging may rename that executable to the platform-specific artifact names listed below.
+
+### Option 3: Publishing to crates.io
+
+Cargo distribution is source-based: users install the package and build the `formatjs` executable locally.
+
+```bash
+cargo install formatjs_cli
+formatjs --help
+```
+
+Before publishing `formatjs_cli`, ensure any workspace dependencies are already published with compatible versions. This crate depends on the FormatJS Rust parser crates, so publish or update those crates first:
+
+1. `formatjs_icu_skeleton_parser`
+2. `formatjs_icu_messageformat_parser`
+3. `formatjs_cli`
+
+The package name is `formatjs_cli`, but the installed command is `formatjs` because `Cargo.toml` defines:
+
+```toml
+[[bin]]
+name = "formatjs"
+path = "src/main.rs"
+```
 
 ## Platform Support
 
@@ -136,7 +159,7 @@ cargo build --release --target x86_64-apple-darwin
 cargo build --release --target x86_64-unknown-linux-gnu
 ```
 
-Binaries will be in `target/<triple>/release/formatjs_cli`.
+Binaries will be in `target/<triple>/release/formatjs`.
 
 ## Release Artifacts
 
@@ -185,7 +208,7 @@ chmod +x formatjs_cli-linux-x64
 
 ## Publishing
 
-The GitHub Actions workflow automates the entire release process:
+The GitHub Actions workflow automates the GitHub binary release process:
 
 1. **Tag the release**:
 
@@ -206,10 +229,25 @@ The GitHub Actions workflow automates the entire release process:
    - Verify checksums
 
 4. **Publish to npm** (if applicable):
+
    ```bash
    # Update package.json with release URLs
    # Point to GitHub release assets
    npm publish
+   ```
+
+5. **Publish to crates.io** (if applicable):
+
+   ```bash
+   # From the repository root, after publishing dependent parser crates
+   cargo publish -p formatjs_cli
+   ```
+
+   Users can then install and run:
+
+   ```bash
+   cargo install formatjs_cli
+   formatjs --version
    ```
 
 ## Troubleshooting

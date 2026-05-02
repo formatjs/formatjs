@@ -415,10 +415,16 @@ The toolchain is registered automatically when you add the MODULE.bazel dependen
 The native Rust CLI is significantly faster than the Node.js-based tools:
 
 - **4-17x faster** message extraction
-- **Zero dependencies** - no Node.js or npm required
+- **No Node.js runtime required** for supported extraction, compilation, and verification workflows
 - **Minimal memory footprint**
 - **Instant startup** - no JavaScript runtime initialization
-- **Perfect for CI/CD** - fast builds in continuous integration
+- **CI/CD friendly** - fast builds in continuous integration
+
+The Rust CLI used by these rules covers the native toolchain's supported
+FormatJS workflows. Node.js-only behavior from `@formatjs/cli`, such as custom
+JavaScript formatter files and framework template extraction for Vue, Svelte,
+Handlebars, Glimmer, GTS, and GJS, is not available in the standalone native
+binary.
 
 ## Common Workflows
 
