@@ -2,7 +2,7 @@
 
 ## Overview
 
-Created a comprehensive conformance test suite to ensure the Rust CLI (`crates/formatjs_cli`) and TypeScript CLI (`packages/cli`) produce identical outputs.
+Created a conformance test suite to ensure the Rust CLI (`crates/formatjs_cli`) and TypeScript CLI (`packages/cli`) produce identical outputs for the shared feature set covered by these tests.
 
 ## What Was Created
 
@@ -20,41 +20,43 @@ Created a comprehensive conformance test suite to ensure the Rust CLI (`crates/f
 - [BUILD.bazel](../BUILD.bazel) - Bazel test configuration
 - [README.md](./README.md) - Documentation and usage guide
 
-### Test Cases (20 total)
+### Test Cases (22 total)
 
 Located in [test_cases/](./test_cases/):
 
-#### Basic Extraction (5 tests)
+#### Basic Extraction (6 tests)
 
-1. `01_basic_extract.txt` - Basic message extraction with IDs
-2. `02_plural_messages.txt` - Plural format messages
-3. `15_inline_formatmessage.txt` - Inline FormattedMessage components
-4. `16_typescript_file.txt` - TypeScript file extraction
-5. `18_optional_chaining.txt` - Optional chaining in code
+- `01_basic_extract.txt` - Basic message extraction with IDs
+- `02_plural_messages.txt` - Plural format messages
+- `15_inline_formatmessage.txt` - Inline FormattedMessage components
+- `16_typescript_file.txt` - TypeScript file extraction
+- `18_optional_chaining.txt` - Optional chaining in code
+- `21_formatmessage_any_object.txt` - formatMessage on arbitrary member chains
 
 #### CLI Options & Flags (5 tests)
 
-6. `03_flatten_option.txt` - `--flatten` flag
-7. `04_content_hash_id.txt` - `--id-interpolation-pattern` with content hashing
-8. `05_additional_function_names.txt` - `--additional-function-names` flag
-9. `06_extract_source_location.txt` - `--extract-source-location` flag
-10. `17_pragma.txt` - `--pragma` flag for file filtering
+- `03_flatten_option.txt` - `--flatten` flag
+- `04_content_hash_id.txt` - `--id-interpolation-pattern` with content hashing
+- `05_additional_function_names.txt` - `--additional-function-names` flag
+- `06_extract_source_location.txt` - `--extract-source-location` flag
+- `17_pragma.txt` - `--pragma` flag for file filtering
 
 #### Output Formats (5 tests)
 
-11. `07_format_simple.txt` - Simple format (ID -> string mapping)
-12. `11_format_transifex.txt` - Transifex format
-13. `12_format_lokalise.txt` - Lokalise format
-14. `13_format_crowdin.txt` - Crowdin format
-15. `14_format_smartling.txt` - Smartling format
+- `07_format_simple.txt` - Simple format (ID -> string mapping)
+- `11_format_transifex.txt` - Transifex format
+- `12_format_lokalise.txt` - Lokalise format
+- `13_format_crowdin.txt` - Crowdin format
+- `14_format_smartling.txt` - Smartling format
 
-#### Edge Cases (5 tests)
+#### Edge Cases (6 tests)
 
-16. `08_whitespace_preservation.txt` - Leading/trailing whitespace handling
-17. `09_escaped_quotes.txt` - Escaped apostrophes in ICU messages
-18. `10_nested_select_plural.txt` - Nested select and plural formats
-19. `19_no_id_with_hash.txt` - Messages without IDs using content hashing
-20. `20_flatten_with_hash.txt` - Flatten + content hashing combination
+- `08_whitespace_preservation.txt` - Leading/trailing whitespace handling
+- `09_escaped_quotes.txt` - Escaped apostrophes in ICU messages
+- `10_nested_select_plural.txt` - Nested select and plural formats
+- `19_no_id_with_hash.txt` - Messages without IDs using content hashing
+- `20_flatten_with_hash.txt` - Flatten + content hashing combination
+- `22_callback_in_optional_chain.txt` - formatMessage nested inside optional-chain callbacks
 
 ## Test Format
 
@@ -99,12 +101,12 @@ const messages = defineMessages({
 
 ### Current Status
 
-- ✅ **60 out of 60 tests pass** (100% conformance)
-- ✅ **All conformance issues resolved**
+- Covered conformance tests pass for the shared JS/TS extraction cases.
+- The suite is not a claim of complete parity with every `@formatjs/cli` feature.
 
 ### Resolved Conformance Issues
 
-All implementation differences between TypeScript and Rust CLIs have been fixed:
+The tracked implementation differences for covered test cases have been fixed:
 
 #### 1. ✅ Newline Handling (Fixed)
 
@@ -136,9 +138,9 @@ All implementation differences between TypeScript and Rust CLIs have been fixed:
   - `13_format_crowdin.txt` - Changed "context" to "description"
   - `20_flatten_with_hash.txt` - Updated hash for flattened message
 
-### All Tests Pass
+### Covered Tests Pass
 
-Both CLIs now work identically for:
+Both CLIs now work identically for these covered scenarios:
 
 - ✅ Basic message extraction with IDs
 - ✅ Plural and select messages
@@ -155,7 +157,7 @@ Both CLIs now work identically for:
 - ✅ TypeScript file extraction
 - ✅ Pragma handling
 - ✅ Optional chaining support
-- ✅ Optional chaining support
+- ✅ formatMessage inside optional-chain callbacks
 - ✅ Pragma filtering
 - ✅ TypeScript file support
 
@@ -174,32 +176,19 @@ bazel test //packages/cli/integration-tests:conformance_test --test_output=error
 
 ## Next Steps
 
-To achieve 100% conformance:
+To broaden parity:
 
-1. **Decide on whitespace normalization behavior**:
-   - Should newlines be preserved or normalized?
-   - Should ICU message spacing be strict?
-   - Update one CLI to match the other
-
-2. **Fix whitespace handling** in either Rust or TypeScript CLI to be consistent
-
-3. **Update hash generation** to be consistent after whitespace normalization is aligned
-
-4. **Add more test cases** for:
-   - Error conditions (invalid syntax, duplicate IDs)
-   - More complex ICU message formats
-   - Different file types (`.vue`, `.js`, `.mts`, etc.)
-   - Glob patterns
-   - Multiple files
-   - Output to file vs stdout
-
-5. **Document intentional differences** if some behavior should diverge (like error message wording)
+1. Add conformance coverage for CLI semantics: stdin, `--in-file`, glob ordering, no-match behavior, output files, and duplicate IDs.
+2. Decide whether standalone Rust should support custom JavaScript formatter files. Today Rust supports built-in formatter names only.
+3. Add or explicitly scope framework-file extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and GJS.
+4. Port pseudo-locale transformations to Rust or document them as unsupported in the standalone binary.
+5. Add compile, compile-folder, and verify conformance cases that compare stdout, stderr, output files, and exit status.
 
 ## Benefits
 
 This conformance test suite:
 
-- ✅ Ensures both CLIs produce identical outputs
+- ✅ Ensures both CLIs produce identical outputs for covered shared behavior
 - ✅ Catches regressions when modifying either CLI
 - ✅ Provides clear examples of expected behavior
 - ✅ Documents the CLI's capabilities through test cases

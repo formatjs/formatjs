@@ -45,21 +45,37 @@ Add the following command to your `package.json` `scripts`:
 ## Native CLI (Rust)
 
 <Admonition type="tip" title="4x Faster Performance">
-We provide a high-performance native Rust CLI that's **4-17x faster** than the Node.js version with zero dependencies. Perfect for CI/CD pipelines and large codebases.
+We provide a high-performance native Rust CLI that's **4-17x faster** than the Node.js version for supported workflows. It is useful for CI/CD pipelines and large JavaScript/TypeScript codebases that do not need Node.js-specific CLI features.
 
-**Download:** [GitHub Releases](https://github.com/formatjs/formatjs/releases/tag/formatjs_cli_v0.1.6)
+Install it from Cargo with `cargo install formatjs_cli`, or download a pre-built binary from [GitHub Releases](https://github.com/formatjs/formatjs/releases).
 
 </Admonition>
 
 <Admonition type="caution">
-  The native CLI currently only supports **JavaScript/TypeScript with JSX/TSX**.
-  Vue and Glimmer are not supported due to lack of Rust parsers for these
-  frameworks. If you need Vue or Glimmer support, use the Node.js CLI above.
+  The native CLI is not a full drop-in replacement for every `@formatjs/cli`
+  feature. It currently focuses on **JavaScript/TypeScript with JSX/TSX**,
+  supports built-in formatters only, and does not load custom JavaScript
+  formatter files. If you need Vue, Svelte, Glimmer, Handlebars, GTS/GJS, or
+  custom formatter support, use the Node.js CLI above.
 </Admonition>
 
 ### Installation
 
-Download pre-built binaries for your platform:
+Install from Cargo:
+
+```sh
+cargo install formatjs_cli
+formatjs --version
+```
+
+Cargo installs the `formatjs` command into `~/.cargo/bin`. If your shell cannot
+find it, add Cargo's bin directory to your `PATH`:
+
+```sh
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+You can also download pre-built binaries for your platform:
 
 <Tabs
 groupId="platform"
@@ -72,7 +88,7 @@ values={[
 
 ```sh
 # Download and install
-curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-darwin-arm64 -o formatjs
+curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-darwin-arm64 -o formatjs
 chmod +x formatjs
 sudo mv formatjs /usr/local/bin/
 
@@ -85,7 +101,7 @@ formatjs --version
 
 ```sh
 # Download and install
-curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-linux-x86_64 -o formatjs
+curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-linux-x64 -o formatjs
 chmod +x formatjs
 sudo mv formatjs /usr/local/bin/
 
@@ -98,15 +114,15 @@ formatjs --version
 
 ### Benefits
 
-- **🚀 4-17x Faster**: Dramatically faster extraction and compilation
-- **📦 Zero Dependencies**: Single binary, no Node.js or npm required
-- **💾 Low Memory**: Minimal memory footprint
-- **⚡ Instant Startup**: No Node.js initialization overhead
-- **🔧 CI/CD Friendly**: Perfect for build pipelines and automation
+- **4-17x Faster**: Dramatically faster extraction and compilation for supported workflows
+- **No Node.js Runtime for Supported Features**: Single binary, no Node.js runtime required
+- **Low Memory**: Minimal memory footprint
+- **Instant Startup**: No Node.js initialization overhead
+- **CI/CD Friendly**: Useful for build pipelines and automation
 
 ### Usage
 
-The native CLI is a drop-in replacement with identical command-line interface:
+The native CLI uses the same `formatjs` command name for supported workflows:
 
 ```sh
 # Extract messages
@@ -119,7 +135,12 @@ formatjs compile "lang/*.json" --out-file compiled.json --ast
 formatjs verify "lang/*.json" --source-locale en --missing-keys
 ```
 
-All the same options and formatters work with the native CLI. See the sections below for detailed documentation.
+Most common extraction, compilation, and verification options work with the native CLI. Notable differences from the Node.js CLI:
+
+- `--format` accepts built-in formatter names only: `default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`.
+- Custom JavaScript formatter files are only supported by the Node.js CLI.
+- Framework template extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and GJS is only supported by the Node.js CLI.
+- Pseudo-locale options are accepted by the Rust CLI for CLI compatibility, but pseudo-locale AST transformations are not yet implemented there.
 
 ---
 

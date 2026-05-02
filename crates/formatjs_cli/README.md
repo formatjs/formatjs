@@ -4,29 +4,29 @@ A high-performance Rust-based command-line interface for FormatJS internationali
 
 ## Overview
 
-`formatjs_cli` is a high-performance Rust implementation of the FormatJS CLI, providing fast and efficient tools for working with ICU MessageFormat messages in your internationalization workflow.
+`formatjs_cli` is a high-performance Rust implementation of core FormatJS CLI workflows, providing fast tools for working with ICU MessageFormat messages in your internationalization workflow.
 
 ### Why Use the Native CLI?
 
 The native Rust CLI offers significant advantages over the Node.js-based `@formatjs/cli`:
 
-- **🚀 Faster Performance**: Up to 10-100x faster for large codebases
-- **📦 Zero Dependencies**: Single binary with no Node.js or npm packages required
-- **💾 Lower Memory Usage**: Minimal memory footprint compared to Node.js
-- **⚡ Instant Startup**: No Node.js initialization overhead
-- **🔧 Easy Distribution**: Standalone binaries for CI/CD pipelines
-- **🎯 Perfect for CI/CD**: Fast, reliable, and cache-friendly
+- **Faster Performance**: Up to 10-100x faster for large codebases
+- **Zero Node.js Runtime Dependency**: Single binary with no Node.js runtime required for supported features
+- **Lower Memory Usage**: Minimal memory footprint compared to Node.js
+- **Instant Startup**: No Node.js initialization overhead
+- **Easy Distribution**: Standalone binaries for CI/CD pipelines
+- **CI/CD Friendly**: Fast, reliable, and cache-friendly
 
 **Benchmark results** (processing ~1000 message files):
 
 - Node.js CLI: ~8.5 seconds
 - Rust CLI: ~0.5 seconds (17x faster)
 
-The native CLI is a drop-in replacement for `@formatjs/cli` with identical command-line interface and output format.
+The native CLI aims to match `@formatjs/cli` for supported workflows. Some Node-specific behavior is intentionally not available in the standalone Rust binary, including loading arbitrary JavaScript formatter files with `--format`.
 
 ## Features
 
-- **Extract**: Extract messages from source files (React, Vue, etc.)
+- **Extract**: Extract messages from JavaScript and TypeScript source files
 - **Compile**: Compile messages for production use with optional minification
 - **Verify**: Validate message files and check for missing/extra keys
 - **Compile-Folder**: Batch compile all translation files in a folder
@@ -34,32 +34,64 @@ The native CLI is a drop-in replacement for `@formatjs/cli` with identical comma
 ## Quick Start
 
 ```bash
-# Download the binary (macOS Apple Silicon example)
-curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-darwin-arm64 -o formatjs
-chmod +x formatjs
+# Install from Cargo
+cargo install formatjs_cli
 
 # Extract messages from your source code
-./formatjs extract "src/**/*.tsx" --out-file messages.json
+formatjs extract "src/**/*.tsx" --out-file messages.json
 
 # Compile translations for production
-./formatjs compile "translations/*.json" --out-file compiled.json --ast
+formatjs compile "translations/*.json" --out-file compiled.json --ast
 
 # Verify translations are complete
-./formatjs verify "translations/*.json" --source-locale en --missing-keys
+formatjs verify "translations/*.json" --source-locale en --missing-keys
 ```
 
 ## Installation
 
-### Pre-built Binaries (Recommended)
+### Cargo
 
-Download pre-built native binaries from the [GitHub Releases](https://github.com/formatjs/formatjs/releases) page:
+Install the published crate with Cargo:
 
-**Latest Release:** [formatjs_cli_v0.1.6](https://github.com/formatjs/formatjs/releases/tag/formatjs_cli_v0.1.6)
+```bash
+cargo install formatjs_cli
+```
+
+Cargo installs the command as `formatjs` in `~/.cargo/bin`:
+
+```bash
+formatjs --help
+formatjs --version
+```
+
+If `formatjs` is not found, add Cargo's bin directory to your `PATH`:
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+For local development from this repository:
+
+```bash
+cargo install --path crates/formatjs_cli
+formatjs --help
+```
+
+You can also run without installing:
+
+```bash
+cargo run -p formatjs_cli -- --help
+cargo run -p formatjs_cli -- extract "src/**/*.tsx"
+```
+
+### Pre-Built Binaries
+
+Download pre-built native binaries from the [GitHub Releases](https://github.com/formatjs/formatjs/releases) page.
 
 **Available binaries:**
 
-- `formatjs-darwin-arm64` - macOS Apple Silicon (M1/M2/M3)
-- `formatjs-linux-x86_64` - Linux x86_64
+- `formatjs_cli-darwin-arm64` - macOS Apple Silicon
+- `formatjs_cli-linux-x64` - Linux x86_64
 
 **Installation steps:**
 
@@ -67,10 +99,10 @@ Download pre-built native binaries from the [GitHub Releases](https://github.com
 
    ```bash
    # macOS Apple Silicon
-   curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-darwin-arm64 -o formatjs
+   curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-darwin-arm64 -o formatjs
 
    # Linux x86_64
-   curl -L https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v0.1.6/formatjs-linux-x86_64 -o formatjs
+   curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-linux-x64 -o formatjs
    ```
 
 2. Make it executable:
@@ -128,15 +160,17 @@ bazel build --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/fo
 bazel build --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:formatjs_cli
 ```
 
-### Using Cargo
+### Local Cargo Build
 
-Build and install using Cargo (host platform only):
+Build and install from the local checkout using Cargo:
 
 ```bash
 cd crates/formatjs_cli
 cargo build --release
 cargo install --path .
 ```
+
+The built binary is `target/release/formatjs`.
 
 ## Usage
 
@@ -162,7 +196,7 @@ formatjs extract "src/**/*.{js,ts,tsx}" \
 **Options:**
 
 - `[FILES]...` - File glob patterns to extract from (e.g., `src/**/*.tsx`)
-- `--format <PATH>` - Path to formatter file controlling JSON output shape
+- `--format <FORMATTER>` - Built-in formatter controlling JSON output shape (`default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`)
 - `--in-file <PATH>` - File containing list of files to extract (one per line)
 - `--out-file <PATH>` - Target file for aggregated .json output
 - `--id-interpolation-pattern <PATTERN>` - Pattern to auto-generate message IDs (default: `[sha512:contenthash:base64:6]`)
@@ -188,18 +222,17 @@ formatjs compile "lang/*.json" --out-file compiled.json
 ```bash
 formatjs compile "lang/*.json" \
   --out-file compiled.json \
-  --ast \
-  --pseudo-locale en-XA
+  --ast
 ```
 
 **Options:**
 
 - `[TRANSLATION_FILES]...` - Glob patterns for translation files (e.g., `foo/**/en.json`)
-- `--format <PATH>` - Path to formatter file that converts input to `Record<string, string>`
+- `--format <FORMATTER>` - Built-in formatter that converts input to `Record<string, string>` (`default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`)
 - `--out-file <PATH>` - Output file path (prints to stdout if not provided)
 - `--ast` - Compile to AST instead of strings
 - `--skip-errors` - Continue compiling after errors (excludes keys with errors)
-- `--pseudo-locale <LOCALE>` - Generate pseudo-locale files (requires `--ast`)
+- `--pseudo-locale <LOCALE>` - Accept pseudo-locale selection with `--ast`; pseudo-locale transformations are not yet implemented in the Rust CLI
   - Values: `xx-LS`, `xx-AC`, `xx-HA`, `en-XA`, `en-XB`
 - `--ignore-tag` - Treat HTML/XML tags as string literals
 
@@ -221,7 +254,7 @@ formatjs compile-folder lang/ dist/lang/ --ast
 
 - `<FOLDER>` - Source directory containing translation JSON files
 - `<OUT_FOLDER>` - Output directory for compiled files
-- `--format <PATH>` - Path to formatter file
+- `--format <FORMATTER>` - Built-in formatter (`default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`)
 - `--ast` - Compile to AST
 
 ### Verify Command
@@ -250,6 +283,14 @@ formatjs verify "lang/*.json" \
 - `--missing-keys` - Check for missing keys in target locales
 - `--extra-keys` - Check for extra keys not in source locale
 - `--structural-equality` - Check structural equality of messages
+
+## Compatibility Notes
+
+`formatjs_cli` is intended to match `@formatjs/cli` where the Rust implementation supports the same feature. Known differences include:
+
+- `--format` accepts built-in formatter names only. The Node.js CLI can also load custom JavaScript formatter files.
+- Extraction currently targets JavaScript and TypeScript source files. Framework template extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and GJS is handled by the Node.js CLI.
+- Pseudo-locale options are accepted for CLI compatibility, but pseudo-locale AST transformations are not yet implemented.
 
 ## Development
 

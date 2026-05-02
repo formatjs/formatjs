@@ -1,15 +1,15 @@
 # CLI Conformance Test Suite
 
-This directory contains a conformance test suite that ensures the Rust CLI (`crates/formatjs_cli`) and TypeScript CLI (`packages/cli`) produce identical outputs.
+This directory contains a conformance test suite for the overlapping feature set shared by the Rust CLI (`crates/formatjs_cli`) and TypeScript CLI (`packages/cli`).
 
 ## Purpose
 
-The conformance tests verify that:
+The conformance tests verify that, for covered cases:
 
 1. Both CLIs produce identical JSON output for the same inputs
 2. Both CLIs handle edge cases consistently
-3. Both CLIs support all output formats (simple, transifex, lokalise, crowdin, smartling)
-4. Both CLIs handle errors in the same way
+3. Both CLIs support the same built-in output formats (simple, transifex, lokalise, crowdin, smartling)
+4. Both CLIs agree on success and failure behavior
 
 ## Test Case Format
 
@@ -60,6 +60,7 @@ The test suite covers:
 - `02_plural_messages.txt` - Plural format messages
 - `15_inline_formatmessage.txt` - Inline FormattedMessage components
 - `16_typescript_file.txt` - TypeScript file extraction
+- `21_formatmessage_any_object.txt` - formatMessage on arbitrary member chains
 
 ### Options and Flags
 
@@ -85,6 +86,7 @@ The test suite covers:
 - `18_optional_chaining.txt` - Optional chaining in code
 - `19_no_id_with_hash.txt` - Messages without IDs using content hashing
 - `20_flatten_with_hash.txt` - Flatten + content hashing combination
+- `22_callback_in_optional_chain.txt` - formatMessage nested inside optional-chain callbacks
 
 ## Running the Tests
 
@@ -114,13 +116,15 @@ Test case options support these fields:
 
 ## Known Differences
 
-Some minor differences between the CLIs are acceptable:
+The Rust CLI is a standalone binary and does not implement every Node.js CLI feature. Known differences include:
 
-1. **Error messages**: The exact wording may differ, but both should fail/succeed in the same cases
-2. **File paths**: When using `--extract-source-location`, absolute paths will differ
-3. **Stderr output**: Warning/error messages may be formatted differently
+1. **Custom formatters**: Rust `--format` accepts built-in formatter names only. The TypeScript CLI can also load JavaScript formatter files.
+2. **Framework template files**: Vue, Svelte, Handlebars, Glimmer, GTS, and GJS extraction are covered by the TypeScript CLI. Rust extraction currently focuses on JavaScript and TypeScript inputs.
+3. **Error messages**: The exact wording may differ, but both should fail/succeed in covered cases.
+4. **File paths**: When using `--extract-source-location`, absolute paths will differ.
+5. **Stderr output**: Warning/error messages may be formatted differently.
 
-The conformance tests focus on the **JSON output structure and content**, which must be identical.
+The conformance tests focus on the **JSON output structure and content** for shared, covered behavior.
 
 ## Related Files
 
