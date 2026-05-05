@@ -62,6 +62,7 @@ formatjs_test(
     name = "cli-lib_test",
     data = [
         "tests/unit/abort_signal.test.ts",
+        "tests/unit/extract.test.ts",
         "tests/unit/gts_extractor.test.ts",
         "tests/unit/hbs_extractor.test.ts",
         "tests/unit/pseudo_locale.test.ts",

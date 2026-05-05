@@ -70,6 +70,7 @@ formatjs_test(
         "tests/fixtures/resourcePath.tsx",
         "tests/fixtures/stringConcat.tsx",
         "tests/fixtures/templateLiteral.tsx",
+        "tests/fixtures/typeAssertions.tsx",
         "tests/index.test.ts",
         "tests/interpolate-name.test.ts",
         ":ts-transformer",
