@@ -11,7 +11,7 @@ documentation = "https://docs.rs/formatjs_cli"
 keywords = ["icu", "i18n", "internationalization", "cli", "intl"]
 categories = ["internationalization", "command-line-utilities", "localization"]
 readme = "README.md"
-rust-version = "1.90"
+rust-version = "1.93"
 
 [[bin]]
 name = "formatjs"
@@ -26,11 +26,11 @@ fast-glob = "1.0"
 walkdir = "2"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.2.4" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.1" }
-oxc = { version = "0.126", features = ["ast_visit"] }
-oxc_allocator = "0.126"
-oxc_ast = "0.126"
-oxc_parser = "0.126"
-oxc_span = "0.126"
+oxc = { version = "0.129", features = ["ast_visit"] }
+oxc_allocator = "0.129"
+oxc_ast = "0.129"
+oxc_parser = "0.129"
+oxc_span = "0.129"
 sha2 = "0.11"
 base64 = "0.22"
 hex = "0.4"
