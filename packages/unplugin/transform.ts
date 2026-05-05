@@ -82,7 +82,26 @@ export function transform(
 
   let s: MagicString | undefined
 
+  function unwrapTransparentTypeScriptExpression(node: any): any {
+    let current = node
+    while (
+      current?.type === 'TSAsExpression' ||
+      current?.type === 'TSSatisfiesExpression' ||
+      current?.type === 'TSTypeAssertion' ||
+      current?.type === 'TSNonNullExpression'
+    ) {
+      current = current.expression
+    }
+    return current
+  }
+
+  function unwrapObjectExpression(node: any): any {
+    const expression = unwrapTransparentTypeScriptExpression(node)
+    return expression?.type === 'ObjectExpression' ? expression : undefined
+  }
+
   function getStaticValue(node: any): string | undefined {
+    node = unwrapTransparentTypeScriptExpression(node)
     if (!node) return undefined
     if (node.type === 'StringLiteral' || node.type === 'Literal') {
       if (typeof node.value === 'string') return node.value
@@ -128,7 +147,8 @@ export function transform(
         continue
       const keyName: keyof MessageDescriptor = name
 
-      const val = getStaticValue(prop.value)
+      const valueNode = unwrapTransparentTypeScriptExpression(prop.value)
+      const val = getStaticValue(valueNode)
       if (val === undefined) continue
 
       descriptor[keyName] = val
@@ -397,8 +417,8 @@ export function transform(
       const componentName =
         firstArg?.type === 'Identifier' ? firstArg.name : undefined
       if (componentName && componentNames.has(componentName)) {
-        const propsArg = node.arguments?.[1]
-        if (propsArg?.type === 'ObjectExpression') {
+        const propsArg = unwrapObjectExpression(node.arguments?.[1])
+        if (propsArg) {
           const result = extractDescriptor(propsArg)
           if (result) {
             processDescriptor(result.descriptor, result.locations, false)
@@ -410,14 +430,13 @@ export function transform(
     if (calleeName && functionNames.has(calleeName)) {
       if (calleeName === 'defineMessages') {
         // Process each value in the object
-        const arg = node.arguments?.[0]
-        if (arg?.type === 'ObjectExpression') {
+        const arg = unwrapObjectExpression(node.arguments?.[0])
+        if (arg) {
           for (const prop of arg.properties) {
-            if (
-              prop.type === 'Property' &&
-              prop.value?.type === 'ObjectExpression'
-            ) {
-              const result = extractDescriptor(prop.value)
+            if (prop.type === 'Property') {
+              const value = unwrapObjectExpression(prop.value)
+              if (!value) continue
+              const result = extractDescriptor(value)
               if (result) {
                 processDescriptor(result.descriptor, result.locations, false)
               }
@@ -425,8 +444,8 @@ export function transform(
           }
         }
       } else {
-        const arg = node.arguments?.[0]
-        if (arg?.type === 'ObjectExpression') {
+        const arg = unwrapObjectExpression(node.arguments?.[0])
+        if (arg) {
           const result = extractDescriptor(arg)
           if (result) {
             processDescriptor(result.descriptor, result.locations, false)

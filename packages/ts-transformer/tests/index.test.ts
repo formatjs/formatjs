@@ -198,6 +198,45 @@ describe('emit asserts for', function () {
     ])
   })
 
+  it('typeAssertions', async function () {
+    const output = await compile(join(FIXTURES_DIR, 'typeAssertions.tsx'), {})
+    expect(output.meta).toEqual({})
+    expect(output.msgs).toEqual([
+      {
+        defaultMessage: 'Define satisfies',
+        id: 'define.satisfies',
+      },
+      {
+        defaultMessage: 'Define as',
+        id: 'define.as',
+      },
+      {
+        defaultMessage: 'Define object satisfies',
+        id: 'define.object.satisfies',
+      },
+      {
+        defaultMessage: 'Messages satisfies',
+        id: 'messages.satisfies',
+      },
+      {
+        defaultMessage: 'Messages as',
+        id: 'messages.as',
+      },
+      {
+        defaultMessage: 'Format satisfies',
+        id: 'format.satisfies',
+      },
+      {
+        defaultMessage: 'JSX satisfies',
+        id: 'jsx.satisfies',
+      },
+      {
+        defaultMessage: 'JSX as',
+        id: 'jsx.as',
+      },
+    ])
+  })
+
   it('inline', async function () {
     const output = await compile(join(FIXTURES_DIR, 'inline.tsx'), {})
     expect(output.code).toMatchSnapshot()

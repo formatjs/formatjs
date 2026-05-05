@@ -253,7 +253,8 @@ function evaluateStringConcat(
   ts: TypeScript,
   node: typescript.BinaryExpression
 ): [result: string, isStaticallyEvaluatable: boolean] {
-  const {right, left} = node
+  const right = unwrapTransparentTypeScriptExpression(ts, node.right)
+  const left = unwrapTransparentTypeScriptExpression(ts, node.left)
   if (!ts.isStringLiteral(right)) {
     return ['', false]
   }
@@ -265,6 +266,30 @@ function evaluateStringConcat(
     return [result + right.text, isStatic]
   }
   return ['', false]
+}
+
+function unwrapTransparentTypeScriptExpression(
+  ts: TypeScript,
+  node: typescript.Expression
+): typescript.Expression {
+  let current = node
+  while (
+    ts.isAsExpression(current) ||
+    ts.isSatisfiesExpression(current) ||
+    ts.isNonNullExpression(current) ||
+    ts.isTypeAssertionExpression(current)
+  ) {
+    current = current.expression
+  }
+  return current
+}
+
+function unwrapObjectLiteralExpression(
+  ts: TypeScript,
+  node: typescript.Expression
+): typescript.ObjectLiteralExpression | undefined {
+  const expression = unwrapTransparentTypeScriptExpression(ts, node)
+  return ts.isObjectLiteralExpression(expression) ? expression : undefined
 }
 
 function extractMessageDescriptor(
@@ -329,37 +354,40 @@ function extractMessageDescriptor(
         : undefined
 
     if (name && ts.isIdentifier(name) && initializer) {
+      const value = ts.isPropertyAssignment(prop)
+        ? unwrapTransparentTypeScriptExpression(ts, prop.initializer)
+        : initializer
       // {id: 'id'}
-      if (ts.isStringLiteral(initializer)) {
+      if (ts.isStringLiteral(value)) {
         switch (name.text) {
           case 'id':
-            msg.id = initializer.text
+            msg.id = value.text
             break
           case 'defaultMessage':
-            msg.defaultMessage = initializer.text
+            msg.defaultMessage = value.text
             break
           case 'description':
-            msg.description = initializer.text
+            msg.description = value.text
             break
         }
       }
       // {id: `id`}
-      else if (ts.isNoSubstitutionTemplateLiteral(initializer)) {
+      else if (ts.isNoSubstitutionTemplateLiteral(value)) {
         switch (name.text) {
           case 'id':
-            msg.id = initializer.text
+            msg.id = value.text
             break
           case 'defaultMessage':
-            msg.defaultMessage = initializer.text
+            msg.defaultMessage = value.text
             break
           case 'description':
-            msg.description = initializer.text
+            msg.description = value.text
             break
         }
       }
       // {id: dedent`id`}
       // GH #5069: Only check for substitutions on message-related props
-      else if (ts.isTaggedTemplateExpression(initializer)) {
+      else if (ts.isTaggedTemplateExpression(value)) {
         const isMessageProp =
           name.text === 'id' ||
           name.text === 'defaultMessage' ||
@@ -369,7 +397,7 @@ function extractMessageDescriptor(
           return
         }
 
-        const {template} = initializer
+        const {template} = value
         if (!ts.isNoSubstitutionTemplateLiteral(template)) {
           handleError(
             '[FormatJS] Tagged template expression must be no substitution',
@@ -389,34 +417,34 @@ function extractMessageDescriptor(
             msg.description = template.text
             break
         }
-      } else if (ts.isJsxExpression(initializer) && initializer.expression) {
+      } else if (ts.isJsxExpression(value) && value.expression) {
+        const expression = unwrapTransparentTypeScriptExpression(
+          ts,
+          value.expression
+        )
         // <FormattedMessage foo={'barbaz'} />
-        if (ts.isStringLiteral(initializer.expression)) {
+        if (ts.isStringLiteral(expression)) {
           switch (name.text) {
             case 'id':
-              msg.id = initializer.expression.text
+              msg.id = expression.text
               break
             case 'defaultMessage':
-              msg.defaultMessage = initializer.expression.text
+              msg.defaultMessage = expression.text
               break
             case 'description':
-              msg.description = initializer.expression.text
+              msg.description = expression.text
               break
           }
         }
         // description={{custom: 1}}
         else if (
-          ts.isObjectLiteralExpression(initializer.expression) &&
+          ts.isObjectLiteralExpression(expression) &&
           name.text === 'description'
         ) {
-          msg.description = objectLiteralExpressionToObj(
-            ts,
-            initializer.expression
-          )
+          msg.description = objectLiteralExpressionToObj(ts, expression)
         }
         // <FormattedMessage foo={`bar`} />
-        else if (ts.isNoSubstitutionTemplateLiteral(initializer.expression)) {
-          const {expression} = initializer
+        else if (ts.isNoSubstitutionTemplateLiteral(expression)) {
           switch (name.text) {
             case 'id':
               msg.id = expression.text
@@ -431,7 +459,7 @@ function extractMessageDescriptor(
         }
         // <FormattedMessage foo={dedent`dedent Hello World!`} />
         // GH #5069: Only check for substitutions on message-related props
-        else if (ts.isTaggedTemplateExpression(initializer.expression)) {
+        else if (ts.isTaggedTemplateExpression(expression)) {
           const isMessageProp =
             name.text === 'id' ||
             name.text === 'defaultMessage' ||
@@ -441,9 +469,7 @@ function extractMessageDescriptor(
             return
           }
 
-          const {
-            expression: {template},
-          } = initializer
+          const {template} = expression
           if (!ts.isNoSubstitutionTemplateLiteral(template)) {
             handleError(
               '[FormatJS] Tagged template expression must be no substitution',
@@ -464,8 +490,7 @@ function extractMessageDescriptor(
           }
         }
         // <FormattedMessage foo={'bar' + 'baz'} />
-        else if (ts.isBinaryExpression(initializer.expression)) {
-          const {expression} = initializer
+        else if (ts.isBinaryExpression(expression)) {
           const [result, isStatic] = evaluateStringConcat(ts, expression)
           if (isStatic) {
             switch (name.text) {
@@ -504,8 +529,8 @@ function extractMessageDescriptor(
         }
       }
       // {defaultMessage: 'asd' + bar'}
-      else if (ts.isBinaryExpression(initializer)) {
-        const [result, isStatic] = evaluateStringConcat(ts, initializer)
+      else if (ts.isBinaryExpression(value)) {
+        const [result, isStatic] = evaluateStringConcat(ts, value)
         if (isStatic) {
           switch (name.text) {
             case 'id':
@@ -532,10 +557,10 @@ function extractMessageDescriptor(
       }
       // description: {custom: 1}
       else if (
-        ts.isObjectLiteralExpression(initializer) &&
+        ts.isObjectLiteralExpression(value) &&
         name.text === 'description'
       ) {
-        msg.description = objectLiteralExpressionToObj(ts, initializer)
+        msg.description = objectLiteralExpressionToObj(ts, value)
       }
       // Non-static value for defaultMessage or id
       else if (
@@ -804,15 +829,7 @@ function extractMessagesFromCallExpression(
   const {onMsgExtracted, additionalFunctionNames} = opts
   if (isMultipleMessageDecl(ts, node)) {
     const [arg, ...restArgs] = node.arguments
-    let descriptorsObj: typescript.ObjectLiteralExpression | undefined
-    if (ts.isObjectLiteralExpression(arg)) {
-      descriptorsObj = arg
-    } else if (
-      ts.isAsExpression(arg) &&
-      ts.isObjectLiteralExpression(arg.expression)
-    ) {
-      descriptorsObj = arg.expression
-    }
+    const descriptorsObj = unwrapObjectLiteralExpression(ts, arg)
     if (descriptorsObj) {
       const properties = descriptorsObj.properties
       const msgs = properties
@@ -820,11 +837,12 @@ function extractMessagesFromCallExpression(
           (prop): prop is typescript.PropertyAssignment =>
             ts.isPropertyAssignment(prop)
         )
-        .map(
-          prop =>
-            ts.isObjectLiteralExpression(prop.initializer) &&
-            extractMessageDescriptor(ts, prop.initializer, opts, sf)
-        )
+        .map(prop => {
+          const descriptor = unwrapObjectLiteralExpression(ts, prop.initializer)
+          return (
+            descriptor && extractMessageDescriptor(ts, descriptor, opts, sf)
+          )
+        })
         .filter((msg): msg is MessageDescriptor => !!msg)
       if (!msgs.length) {
         return node
@@ -874,8 +892,9 @@ function extractMessagesFromCallExpression(
     isMemberMethodFormatMessageCall(ts, node, additionalFunctionNames || [])
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments
-    if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      const msg = extractMessageDescriptor(ts, descriptorsObj, opts, sf)
+    const descriptor = unwrapObjectLiteralExpression(ts, descriptorsObj)
+    if (descriptor) {
+      const msg = extractMessageDescriptor(ts, descriptor, opts, sf)
       if (!msg) {
         return node
       }
@@ -892,7 +911,7 @@ function extractMessagesFromCallExpression(
           setAttributesInObject(
             ts,
             factory,
-            descriptorsObj,
+            descriptor,
             {
               defaultMessage: opts.removeDefaultMessage
                 ? undefined

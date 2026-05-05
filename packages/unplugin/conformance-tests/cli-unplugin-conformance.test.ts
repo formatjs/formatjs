@@ -123,4 +123,22 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
       'whitespace.tsx'
     )
   })
+
+  test('TypeScript satisfies expressions are transparent for extraction', async () => {
+    await assertConformance(
+      `type DefaultMessage = string
+intl.formatMessage({
+  defaultMessage: \`Hello from satisfies\` satisfies DefaultMessage,
+})`,
+      'satisfies-expression.tsx'
+    )
+  })
+
+  test('TypeScript as expressions are transparent for extraction', async () => {
+    await assertConformance(
+      `type DefaultMessage = string
+<FormattedMessage defaultMessage={'Hello from as' as DefaultMessage} />`,
+      'as-expression.tsx'
+    )
+  })
 }, 30000)

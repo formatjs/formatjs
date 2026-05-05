@@ -41,10 +41,30 @@ defineMessage({
 \`,
   description: 'asd'
 })`,
+    `type DefaultMessage = string
+intl.formatMessage({
+  defaultMessage: \`a template
+  literal
+\` satisfies DefaultMessage,
+  description: 'asd'
+})`,
+    `type Foo = string
+intl.formatMessage({
+  defaultMessage: 'foo' as Foo,
+  description: 'asd'
+})`,
+    `type Bar = string
+intl.formatMessage({
+  defaultMessage: \`foo\` as Bar,
+  description: 'asd'
+})`,
     `import {FormattedMessage} from 'react-intl'
 const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     `import {FormattedMessage} from 'react-intl'
 const a = <FormattedMessage defaultMessage={dedent\`asf\`}/>`,
+    `import {FormattedMessage} from 'react-intl'
+type DefaultMessage = string
+const a = <FormattedMessage defaultMessage={\`asf\` satisfies DefaultMessage}/>`,
     dynamicMessage,
     noMatch,
     spreadJsx,
@@ -195,6 +215,18 @@ const a = <FormattedMessage defaultMessage={dedent\`asf\`}/>`,
       code: `
             import {FormattedMessage} from 'react-intl'
             const a = <FormattedMessage defaultMessage={\`asf \${aas}\`}/>`,
+      errors: [
+        {
+          messageId: 'defaultMessageLiteral',
+        },
+      ],
+      options: [Option.literal],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            type DefaultMessage = string
+            const a = <FormattedMessage defaultMessage={\`asf \${aas}\` satisfies DefaultMessage}/>`,
       errors: [
         {
           messageId: 'defaultMessageLiteral',

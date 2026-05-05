@@ -3,7 +3,6 @@ import type {Rule} from 'eslint'
 import type {
   BinaryExpression,
   Expression,
-  Literal,
   Node,
   ObjectExpression,
   Property,
@@ -41,32 +40,110 @@ export function getSettings({settings}: Rule.RuleContext): Settings {
   return settings.formatjs ?? settings
 }
 
-function isStringLiteral(node: Node): node is Literal & {value: string} {
-  return node.type === 'Literal' && typeof node.value === 'string'
-}
+type BinaryExpressionOperand =
+  | BinaryExpression['left']
+  | BinaryExpression['right']
 
 function isTemplateLiteralWithoutVar(node: Node): node is TemplateLiteral {
   return node.type === 'TemplateLiteral' && node.quasis.length === 1
 }
 
+type TransparentTypeScriptExpressionType =
+  | 'TSAsExpression'
+  | 'TSSatisfiesExpression'
+  | 'TSNonNullExpression'
+  | 'TSTypeAssertion'
+
+interface TypeScriptExpressionWrapper {
+  type: TransparentTypeScriptExpressionType
+  expression: StaticMessageExpression
+}
+
+interface TypeScriptBinaryExpressionOperandWrapper {
+  type: TransparentTypeScriptExpressionType
+  expression: StaticStringConcatOperand
+}
+
+type StaticMessageExpression = Expression | TypeScriptExpressionWrapper
+type MessagePropertyValue = Property['value'] | TypeScriptExpressionWrapper
+type StaticStringConcatOperand =
+  | BinaryExpressionOperand
+  | TypeScriptBinaryExpressionOperandWrapper
+
+function getStaticStringFromTemplateLiteral(
+  node: TemplateLiteral
+): string | undefined {
+  return node.quasis.length === 1
+    ? (node.quasis[0].value.cooked ?? undefined)
+    : undefined
+}
+
+function isStaticMessageExpression(
+  node: MessagePropertyValue
+): node is StaticMessageExpression {
+  switch (node.type) {
+    case 'ArrayPattern':
+    case 'AssignmentPattern':
+    case 'ObjectPattern':
+      return false
+    default:
+      return true
+  }
+}
+
+function getStaticStringFromMessageExpression(
+  node: StaticMessageExpression
+): string | undefined {
+  switch (node.type) {
+    case 'TSAsExpression':
+    case 'TSSatisfiesExpression':
+    case 'TSNonNullExpression':
+    case 'TSTypeAssertion':
+      return getStaticStringFromMessageExpression(node.expression)
+    case 'Literal':
+      return typeof node.value === 'string' ? node.value : undefined
+    case 'TemplateLiteral':
+      return getStaticStringFromTemplateLiteral(node)
+    case 'TaggedTemplateExpression':
+      if (!isTemplateLiteralWithoutVar(node.quasi)) {
+        throw new Error('Tagged template expression must be no substitution')
+      }
+      return getStaticStringFromTemplateLiteral(node.quasi)
+    case 'BinaryExpression': {
+      const [result, isStaticallyEvaluatable] =
+        staticallyEvaluateStringConcat(node)
+      return isStaticallyEvaluatable ? result : undefined
+    }
+  }
+}
+
+function getStaticStringFromBinaryExpressionOperand(
+  node: StaticStringConcatOperand
+): string | undefined {
+  switch (node.type) {
+    case 'TSAsExpression':
+    case 'TSSatisfiesExpression':
+    case 'TSNonNullExpression':
+    case 'TSTypeAssertion':
+      return getStaticStringFromBinaryExpressionOperand(node.expression)
+    case 'Literal':
+      return typeof node.value === 'string' ? node.value : undefined
+    case 'BinaryExpression': {
+      const [result, isStaticallyEvaluatable] =
+        staticallyEvaluateStringConcat(node)
+      return isStaticallyEvaluatable ? result : undefined
+    }
+  }
+}
+
 function staticallyEvaluateStringConcat(
   node: BinaryExpression
 ): [result: string, isStaticallyEvaluatable: boolean] {
-  const right = node.right as Node
-  const left = node.left as Node
-  if (!isStringLiteral(right)) {
-    return ['', false]
-  }
-  if (isStringLiteral(left)) {
-    return [left.value + right.value, true]
-  }
-  if (node.left.type === 'BinaryExpression') {
-    const [result, isStaticallyEvaluatable] = staticallyEvaluateStringConcat(
-      node.left
-    )
-    return [result + right.value, isStaticallyEvaluatable]
-  }
-  return ['', false]
+  const right = getStaticStringFromBinaryExpressionOperand(node.right)
+  const left = getStaticStringFromBinaryExpressionOperand(node.left)
+  return left !== undefined && right !== undefined
+    ? [left + right, true]
+    : ['', false]
 }
 
 export function isIntlFormatMessageCall(node: Node): boolean {
@@ -154,30 +231,10 @@ export function extractMessageDescriptor(
       continue
     }
 
-    const valueNode = prop.value
-    let value: string | undefined = undefined
-    if (isStringLiteral(valueNode as Node)) {
-      value = (valueNode as Literal & {value: string}).value
-    }
-    // like "`asd`"
-    else if (isTemplateLiteralWithoutVar(valueNode as Node)) {
-      value = (valueNode as TemplateLiteral).quasis[0].value.cooked ?? undefined
-    }
-    // like "dedent`asd`"
-    else if (valueNode.type === 'TaggedTemplateExpression') {
-      const {quasi} = valueNode
-      if (!isTemplateLiteralWithoutVar(quasi as Node)) {
-        throw new Error('Tagged template expression must be no substitution')
-      }
-      value = quasi.quasis[0].value.cooked ?? undefined
-    }
-    // like "`asd` + `asd`"
-    else if (valueNode.type === 'BinaryExpression') {
-      const [result, isStatic] = staticallyEvaluateStringConcat(valueNode)
-      if (isStatic) {
-        value = result
-      }
-    }
+    const valueNode: MessagePropertyValue = prop.value
+    const value = isStaticMessageExpression(valueNode)
+      ? getStaticStringFromMessageExpression(valueNode)
+      : undefined
 
     switch (propName) {
       case 'defaultMessage':
@@ -238,30 +295,12 @@ function extractMessageDescriptorFromJSXElement(
     let valueNode = prop.value
     let value: string | undefined = undefined
     if (valueNode && isMessageProp) {
-      if (isStringLiteral(valueNode as Node)) {
-        value = (valueNode as Literal & {value: string}).value
+      if (valueNode.type === 'Literal' && typeof valueNode.value === 'string') {
+        value = valueNode.value
       } else if (valueNode?.type === 'JSXExpressionContainer') {
         const {expression} = valueNode
-        if (expression.type === 'BinaryExpression') {
-          const [result, isStatic] = staticallyEvaluateStringConcat(expression)
-          if (isStatic) {
-            value = result
-          }
-        }
-        // like "`asd`"
-        else if (isTemplateLiteralWithoutVar(expression as Node)) {
-          value =
-            (expression as TemplateLiteral).quasis[0].value.cooked ?? undefined
-        }
-        // like "dedent`asd`"
-        else if (expression.type === 'TaggedTemplateExpression') {
-          const {quasi} = expression
-          if (!isTemplateLiteralWithoutVar(quasi as Node)) {
-            throw new Error(
-              'Tagged template expression must be no substitution'
-            )
-          }
-          value = quasi.quasis[0].value.cooked ?? undefined
+        if (expression.type !== 'JSXEmptyExpression') {
+          value = getStaticStringFromMessageExpression(expression)
         }
       }
     }

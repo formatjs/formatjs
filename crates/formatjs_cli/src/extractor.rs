@@ -231,6 +231,7 @@ impl<'a> MessageExtractor<'a> {
         expr: &Expression,
         preserve_whitespace: Option<bool>,
     ) -> Option<String> {
+        let expr = self.unwrap_transparent_ts_expression(expr);
         match expr {
             Expression::StringLiteral(lit) => {
                 let value = lit.value.to_string();
@@ -266,6 +267,7 @@ impl<'a> MessageExtractor<'a> {
             return Some(Value::String(string_val));
         }
 
+        let expr = self.unwrap_transparent_ts_expression(expr);
         // Handle object literal descriptions
         if let Expression::ObjectExpression(obj) = expr {
             let mut map = serde_json::Map::new();
@@ -292,6 +294,23 @@ impl<'a> MessageExtractor<'a> {
         }
 
         None
+    }
+
+    fn unwrap_transparent_ts_expression<'b>(
+        &self,
+        mut expr: &'b Expression<'a>,
+    ) -> &'b Expression<'a> {
+        loop {
+            match expr {
+                Expression::TSAsExpression(ts_as) => expr = &ts_as.expression,
+                Expression::TSSatisfiesExpression(ts_satisfies) => expr = &ts_satisfies.expression,
+                Expression::TSTypeAssertion(ts_type_assertion) => {
+                    expr = &ts_type_assertion.expression
+                }
+                Expression::TSNonNullExpression(ts_non_null) => expr = &ts_non_null.expression,
+                _ => return expr,
+            }
+        }
     }
 
     /// Extract function name from callee expression, handling:
@@ -467,17 +486,16 @@ impl<'a> MessageExtractor<'a> {
             None => return,
         };
 
-        // Unwrap TSAsExpression (e.g., `{...} as const`)
-        while let Expression::TSAsExpression(ts_as) = arg_expr {
-            arg_expr = &ts_as.expression;
-        }
+        arg_expr = self.unwrap_transparent_ts_expression(arg_expr);
 
         // For defineMessages, the argument is an object with message descriptors
         if function_name == "defineMessages" {
             if let Expression::ObjectExpression(obj) = arg_expr {
                 for prop in &obj.properties {
                     if let ObjectPropertyKind::ObjectProperty(p) = prop {
-                        if let Expression::ObjectExpression(msg_obj) = &p.value {
+                        if let Expression::ObjectExpression(msg_obj) =
+                            self.unwrap_transparent_ts_expression(&p.value)
+                        {
                             if let Some(descriptor) =
                                 self.extract_object_descriptor(&msg_obj, call.span.start)
                             {
@@ -1056,6 +1074,58 @@ mod tests {
                 Some(Value::String("The default message.".to_string()))
             );
         }
+    }
+
+    #[test]
+    fn test_fixture_type_assertions() {
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec![
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+            "formatMessage".to_string(),
+        ];
+
+        let messages = extract_from_fixture(
+            "typeAssertions.tsx",
+            &component_names,
+            &function_names,
+            None,
+        )
+        .expect("Failed to extract from typeAssertions.tsx");
+
+        assert_eq!(messages.len(), 8);
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("define.satisfies".to_string())
+                && msg.default_message == Some("Define satisfies".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("define.as".to_string())
+                && msg.default_message == Some("Define as".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("define.object.satisfies".to_string())
+                && msg.default_message == Some("Define object satisfies".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("messages.satisfies".to_string())
+                && msg.default_message == Some("Messages satisfies".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("messages.as".to_string())
+                && msg.default_message == Some("Messages as".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("format.satisfies".to_string())
+                && msg.default_message == Some("Format satisfies".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("jsx.satisfies".to_string())
+                && msg.default_message == Some("JSX satisfies".to_string())
+        }));
+        assert!(messages.iter().any(|msg| {
+            msg.id == Some("jsx.as".to_string())
+                && msg.default_message == Some("JSX as".to_string())
+        }));
     }
 
     #[test]
