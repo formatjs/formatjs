@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "paths": {
-      "#packages/*": ["../../packages/*"]
-    }
-  },
-  "exclude": ["./tools/**/*"],
-  "extends": "../../tsconfig.json"
-}

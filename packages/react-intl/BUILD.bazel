@@ -6,11 +6,6 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 npm_link_all_packages()
 
-exports_files(
-    ["tsconfig.json"],
-    visibility = [":__subpackages__"],
-)
-
 PACKAGE_NAME = "react-intl"
 
 ENTRY_POINTS = [

@@ -38,6 +38,12 @@ You can build & test with `pnpm`. At the moment version >= 9 is not supported:
 pnpm i && pnpm t
 ```
 
+Package `tsconfig.json` files are generated local development files and are not checked in. Run this after checkout, rebasing, or changing package BUILD files:
+
+```sh
+bazel run //:generate_package_tsconfigs
+```
+
 ### Build System Architecture
 
 This repository uses a highly optimized TypeScript build pipeline with Bazel:

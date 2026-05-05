@@ -1,8 +1,26 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "generate_tsconfig_json")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:vitest.bzl", "vitest")
 
 npm_link_all_packages()
+
+generate_tsconfig_json(
+    name = "tsconfig_json",
+    local_only = True,
+    tsconfig = {
+        "extends": "../../../tsconfig.json",
+        "compilerOptions": {
+            "target": "es6",
+            "types": [
+                "jest",
+                "node",
+                "@testing-library/jest-dom",
+            ],
+            "sourceMap": True,
+        },
+    },
+)
 
 TEST_DEPS = [
     "//:node_modules/react-intl",

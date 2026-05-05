@@ -263,7 +263,60 @@ def _relative_path(target, start):
         path = "./" + path
     return path
 
-def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, project_references = []):
+def _tsconfig_file_impl(ctx):
+    ctx.actions.write(
+        output = ctx.outputs.out,
+        content = ctx.attr.content,
+    )
+    return [DefaultInfo(files = depset([ctx.outputs.out]))]
+
+_tsconfig_file = rule(
+    implementation = _tsconfig_file_impl,
+    attrs = {
+        "content": attr.string(mandatory = True),
+        "out": attr.output(mandatory = True),
+    },
+)
+
+def generate_tsconfig_json(name = "tsconfig_json", tsconfig = None, local_only = False):
+    """Generate a tsconfig.json file.
+
+    Args:
+        name: target name (default: "tsconfig_json")
+        tsconfig: tsconfig JSON content
+        local_only: whether the source file is local developer state and should
+            not be checked into source control
+    """
+    if tsconfig == None:
+        fail("tsconfig must be provided")
+
+    content = json.encode_indent(tsconfig, indent = "  ")
+
+    tmp_name = name + "_unformatted"
+    _tsconfig_file(
+        name = tmp_name,
+        content = content,
+        out = tmp_name + ".json",
+    )
+
+    native.genrule(
+        name = name + "_generated",
+        srcs = [tmp_name + ".json"],
+        outs = [name + ".generated.json"],
+        cmd = "$(location //:oxfmt) --stdin-filepath=$< < $< > $@",
+        tools = ["//:oxfmt"],
+        visibility = ["//visibility:public"],
+    )
+
+    write_source_files(
+        name = name,
+        check_that_out_file_exists = not local_only,
+        diff_test = not local_only,
+        files = {"tsconfig.json": name + "_generated"},
+        visibility = ["//visibility:public"],
+    )
+
+def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, project_references = [], local_only = None):
     """Generate a tsconfig.json file with the correct extends path based on package depth.
 
     This macro calculates the correct relative path to the root tsconfig.json
@@ -274,8 +327,12 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
         name: target name (default: "tsconfig_json")
         composite: whether to enable TypeScript composite projects (default: False)
         project_references: list of Bazel package labels to reference (e.g. ["//packages/ecma402-abstract"])
+        local_only: whether the source file is local developer state and should
+            not be checked into source control. Defaults to True for packages.
     """
     package = native.package_name()
+    if local_only == None:
+        local_only = package.startswith("packages/")
 
     # Calculate depth: count number of directory levels
     # Empty string (root) = 0, "docs" = 1, "packages/foo" = 2
@@ -326,26 +383,10 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
             refs.append({"path": relative + "/tsconfig.json"})
         tsconfig["references"] = refs
 
-    content = json.encode_indent(tsconfig, indent = "  ")
-
-    tmp_name = name + "_unformatted"
-    native.genrule(
-        name = tmp_name,
-        outs = [tmp_name + ".json"],
-        cmd = "cat > $@ << 'EOF'\n%s\nEOF" % content,
-    )
-
-    native.genrule(
-        name = name + "_generated",
-        srcs = [tmp_name + ".json"],
-        outs = [name + ".generated.json"],
-        cmd = "$(location //:oxfmt) --stdin-filepath=$< < $< > $@",
-        tools = ["//:oxfmt"],
-    )
-
-    write_source_files(
+    generate_tsconfig_json(
         name = name,
-        files = {"tsconfig.json": name + "_generated"},
+        local_only = local_only,
+        tsconfig = tsconfig,
     )
 
 def no_internal_imports_test(name, data):

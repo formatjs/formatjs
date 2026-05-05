@@ -1,0 +1,15 @@
+# gazelle:ignore
+
+load("//tools:index.bzl", "generate_tsconfig_json")
+
+generate_tsconfig_json(
+    name = "tsconfig_json",
+    local_only = True,
+    tsconfig = {
+        "extends": "../../tsconfig.json",
+        "include": ["src"],
+        "compilerOptions": {
+            "skipLibCheck": True,
+        },
+    },
+)
