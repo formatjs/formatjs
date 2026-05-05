@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
+      "#formatjs_generated/*": ["../../bazel-bin/*", "../../*"],
       "#packages/*": ["../../packages/*"]
     }
   },
@@ -18,6 +19,9 @@
     },
     {
       "path": "../ecma402-abstract/types/tsconfig.json"
+    },
+    {
+      "path": "../generated/cldr-supported-locales/tsconfig.json"
     }
   ]
 }

@@ -1,6 +1,6 @@
-"Macros for @formatjs_generated packages — generated data that lives only in Bazel output."
+"Macros for #formatjs_generated packages — generated data that lives only in Bazel output."
 
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 
@@ -43,14 +43,15 @@ def generate_package_file(name, src, entry_point = None, tool = None, chdir = No
     )
 
 def formatjs_generated_package(name, package_name, srcs, visibility = ["//visibility:public"]):
-    """Create an @formatjs_generated npm package from generated .ts files.
+    """Create a #formatjs_generated js_library from generated .ts files.
 
-    Compiles TypeScript sources to .js + .d.ts via oxc_transpiler, generates
-    a package.json, and creates an npm_package.
+    Compiles TypeScript sources to .js + .d.ts via oxc_transpiler. Consumers
+    import these outputs with #formatjs_generated/<output-path>/* and depend
+    on this target directly.
 
     Args:
         name: Bazel target name (e.g. "tz_pkg")
-        package_name: npm package suffix (e.g. "tz" → @formatjs_generated/tz)
+        package_name: logical generated package identifier, used for registry/docs
         srcs: list of labels pointing to generated .ts files
         visibility: target visibility
     """
@@ -61,23 +62,10 @@ def formatjs_generated_package(name, package_name, srcs, visibility = ["//visibi
         srcs = srcs,
     )
 
-    # Generate package.json
-    pkg_json_name = "%s_package_json" % name
-    native.genrule(
-        name = pkg_json_name,
-        outs = ["%s_package.json" % name],
-        cmd = """echo '{"name":"@formatjs_generated/%s","type":"module","sideEffects":false,"exports":{"./*":"./*"}}' > $@""" % package_name,
-    )
-
-    npm_package(
+    js_library(
         name = name,
         srcs = [
             ":%s_compiled" % name,
-            ":%s" % pkg_json_name,
         ],
-        package = "@formatjs_generated/%s" % package_name,
-        replace_prefixes = {
-            "%s_package.json" % name: "package.json",
-        },
         visibility = visibility,
     )

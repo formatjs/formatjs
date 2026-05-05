@@ -26,7 +26,7 @@ formatjs_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/intl-getcanonicallocales:cldr_core_pkg",
     ],
 )
 
@@ -43,9 +43,9 @@ formatjs_test(
         "tests/utils.test.ts",
         ":intl-localematcher",
         "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
+        "//packages/intl-getcanonicallocales:cldr_core_pkg",
     ],
 )
 

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "paths": {
+      "#formatjs_generated/*": ["../../bazel-bin/*", "../../*"],
       "#packages/*": ["../../packages/*"]
     }
   },

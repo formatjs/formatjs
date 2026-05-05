@@ -1,4 +1,4 @@
-import {timeData} from '@formatjs_generated/cldr.core/time-data.js'
+import {timeData} from '#formatjs_generated/packages/intl-getcanonicallocales/time-data.js'
 
 /**
  * Returns the best matching date time pattern if a date time skeleton

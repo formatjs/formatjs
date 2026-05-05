@@ -4,18 +4,11 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
-load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools:tsconfig.bzl", "BASE_TSCONFIG", "packages_tsconfig")
 
 npm_link_all_packages()
 
-# tsconfig with #packages/* path alias for tsc resolution
-TSCONFIG = BASE_TSCONFIG | {
-    "compilerOptions": BASE_TSCONFIG["compilerOptions"] | {
-        "paths": {
-            "#packages/*": ["../*"],
-        },
-    },
-}
+TSCONFIG = packages_tsconfig(BASE_TSCONFIG)
 
 PACKAGE_NAME = "intl-segmenter"
 
@@ -55,8 +48,8 @@ formatjs_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/unicode",
         "//packages/ecma402-abstract",
+        "//packages/generated/unicode:pkg",
     ],
 )
 
@@ -71,10 +64,10 @@ formatjs_test(
         ":intl-segmenter",
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract",
+        "//packages/generated/unicode:pkg",
     ],
     extra_data = TEST_UNICODE_FILES,
     no_copy_to_bin = [

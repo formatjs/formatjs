@@ -1,5 +1,5 @@
-import type {Collation} from '@formatjs_generated/cldr.supported-values/collations.js'
-import {collations} from '@formatjs_generated/cldr.supported-values/collations.js'
+import type {Collation} from '#formatjs_generated/packages/intl-supportedvaluesof/collations.js'
+import {collations} from '#formatjs_generated/packages/intl-supportedvaluesof/collations.js'
 
 /**
  * Implementation: Tests if a collation is supported by attempting to create

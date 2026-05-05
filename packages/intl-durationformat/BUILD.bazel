@@ -33,11 +33,11 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.number",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DurationFormat",
         "//packages/ecma402-abstract/types",
+        "//packages/intl-numberformat:cldr_number_pkg",
     ],
 )
 
@@ -48,12 +48,12 @@ formatjs_test(
         ":intl-durationformat",
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DurationFormat",
         "//packages/ecma402-abstract/types",
+        "//packages/intl-numberformat:cldr_number_pkg",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

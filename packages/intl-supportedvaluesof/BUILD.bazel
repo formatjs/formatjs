@@ -37,10 +37,10 @@ formatjs_library(
     types = True,
     visibility = ["//visibility:public"],
     deps = [
+        ":cldr_sv_pkg",
         "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//packages/ecma402-abstract",
+        "//packages/intl-numberformat:cldr_number_pkg",
     ],
 )
 
@@ -48,18 +48,18 @@ formatjs_test(
     name = "intl-supportedvaluesof_test",
     data = [
         "tests/index.test.ts",
+        ":cldr_sv_pkg",
         ":intl-supportedvaluesof",
         "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract",
+        "//packages/intl-numberformat:cldr_number_pkg",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
-# @formatjs_generated/cldr.supported-values — BCP47 supported value enumerations
+# #formatjs_generated/packages/intl-supportedvaluesof — BCP47 supported value enumerations
 generate_package_file(
     name = "cldr_sv_calendars",
     src = "calendars.ts",

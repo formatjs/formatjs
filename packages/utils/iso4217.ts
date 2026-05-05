@@ -1,4 +1,4 @@
-import iso4217 from '@formatjs_generated/cldr.core/currencyMinorUnits.js'
+import iso4217 from '#formatjs_generated/packages/intl-getcanonicallocales/currencyMinorUnits.js'
 
 /**
  * Returns the number of minor units (decimal places) for a given currency code.

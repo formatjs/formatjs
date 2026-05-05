@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
     "paths": {
+      "#formatjs_generated/*": ["../../bazel-bin/*", "../../*"],
       "#packages/*": ["../../packages/*"]
     }
   },
   "exclude": ["./integration-tests/**/*", "./scripts/**/*"],
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../generated/unicode/tsconfig.json"
+    }
+  ]
 }

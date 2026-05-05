@@ -8,7 +8,7 @@ import {
   setInternalSlot,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-import {SegmentationRules} from '@formatjs_generated/unicode/cldr-segmentation-rules.js'
+import {SegmentationRules} from '#formatjs_generated/packages/generated/unicode/cldr-segmentation-rules.js'
 import {
   isSurrogate,
   replaceVariables,

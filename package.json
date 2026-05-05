@@ -5,6 +5,7 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "private": true,
   "imports": {
+    "#formatjs_generated/*": "./*",
     "#packages/*": "./packages/*"
   },
   "scripts": {

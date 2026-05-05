@@ -1,6 +1,6 @@
 import {createMemoizedDateTimeFormat} from '#packages/intl-supportedvaluesof/memoize.js'
-import type {Timezone} from '@formatjs_generated/cldr.supported-values/timezones.js'
-import {timezones} from '@formatjs_generated/cldr.supported-values/timezones.js'
+import type {Timezone} from '#formatjs_generated/packages/intl-supportedvaluesof/timezones.js'
+import {timezones} from '#formatjs_generated/packages/intl-supportedvaluesof/timezones.js'
 
 /**
  * Implementation: Tests if a timezone is supported by attempting to create

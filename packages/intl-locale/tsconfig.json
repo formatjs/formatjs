@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
+      "#formatjs_generated/*": ["../../bazel-bin/*", "../../*"],
       "#packages/*": ["../../packages/*"]
     }
   },
@@ -8,10 +9,19 @@
   "extends": "../../tsconfig.json",
   "references": [
     {
+      "path": "../..//tsconfig.json"
+    },
+    {
       "path": "../ecma262-abstract/tsconfig.json"
     },
     {
       "path": "../ecma402-abstract/tsconfig.json"
+    },
+    {
+      "path": "../intl-getcanonicallocales/tsconfig.json"
+    },
+    {
+      "path": "../intl-supportedvaluesof/tsconfig.json"
     }
   ]
 }

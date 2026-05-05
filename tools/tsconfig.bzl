@@ -72,6 +72,14 @@ DOCS_TSCONFIG = BASE_TSCONFIG | {
     },
 }
 
+def generated_import_paths(relative_to_root):
+    return {
+        "#formatjs_generated/*": [
+            relative_to_root + "/bazel-bin/*",
+            relative_to_root + "/*",
+        ],
+    }
+
 def packages_tsconfig(base = None):
     """Return a tsconfig with #packages/* path alias based on current package depth.
 
@@ -89,7 +97,7 @@ def packages_tsconfig(base = None):
         "compilerOptions": base["compilerOptions"] | {
             "paths": {
                 "#packages/*": [relative_to_root + "/packages/*"],
-            },
+            } | generated_import_paths(relative_to_root),
         },
     }
 

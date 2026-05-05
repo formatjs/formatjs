@@ -5,7 +5,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary"
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "generated_import_paths", "packages_tsconfig")
 
 def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
     """Compile TS with prefilled args, specifically for Node tooling.
@@ -291,7 +291,7 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
     compiler_options = {
         "paths": {
             "#packages/*": [relative_to_root + "/packages/*"],
-        },
+        } | generated_import_paths(relative_to_root),
     }
 
     if composite:

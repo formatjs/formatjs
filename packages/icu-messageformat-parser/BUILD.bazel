@@ -33,9 +33,9 @@ formatjs_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-skeleton-parser",
-        "//:node_modules/@formatjs_generated/cldr.core",
-        "//:node_modules/@formatjs_generated/unicode",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/unicode:pkg",
+        "//packages/intl-getcanonicallocales:cldr_core_pkg",
     ],
 )
 
@@ -49,10 +49,10 @@ formatjs_test(
         "tests/printer.test.ts",
         ":icu-messageformat-parser",
         "//:node_modules/@formatjs/icu-skeleton-parser",
-        "//:node_modules/@formatjs_generated/cldr.core",
-        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/unicode:pkg",
+        "//packages/intl-getcanonicallocales:cldr_core_pkg",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

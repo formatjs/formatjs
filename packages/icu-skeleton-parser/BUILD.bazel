@@ -15,8 +15,8 @@ formatjs_library(
     types = True,
     visibility = ["//visibility:public"],
     deps = [
-        "//:node_modules/@formatjs_generated/unicode",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/unicode:pkg",
     ],
 )
 
@@ -25,9 +25,9 @@ formatjs_test(
     data = [
         "tests/index.test.ts",
         ":icu-skeleton-parser",
-        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/unicode:pkg",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

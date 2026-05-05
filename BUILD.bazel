@@ -5,7 +5,6 @@ load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
@@ -20,18 +19,15 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:map_kind ts_library formatjs_library //tools:compile.bzl
 # gazelle:map_kind ts_test formatjs_test //tools:test.bzl
 # gazelle:ts_npm_link_pattern //:node_modules/{pkg}
-# @formatjs_generated/* are auto-generated npm packages linked via
-# npm_link_package() — they don't appear in package.json, so list them here
-# for the import resolver. Patterns end at the package boundary (no trailing
-# `*`) so subpath imports like `@formatjs_generated/cldr.core/regions.js`
-# resolve to the package label, not the file path.
-# gazelle:ts_generated_package @formatjs_generated/cldr.core/*=//:node_modules/@formatjs_generated/cldr.core
-# gazelle:ts_generated_package @formatjs_generated/cldr.locale/*=//:node_modules/@formatjs_generated/cldr.locale
-# gazelle:ts_generated_package @formatjs_generated/cldr.number/*=//:node_modules/@formatjs_generated/cldr.number
-# gazelle:ts_generated_package @formatjs_generated/cldr.supported-locales/*=//:node_modules/@formatjs_generated/cldr.supported-locales
-# gazelle:ts_generated_package @formatjs_generated/cldr.supported-values/*=//:node_modules/@formatjs_generated/cldr.supported-values
-# gazelle:ts_generated_package @formatjs_generated/tz/*=//:node_modules/@formatjs_generated/tz
-# gazelle:ts_generated_package @formatjs_generated/unicode/*=//:node_modules/@formatjs_generated/unicode
+# `#formatjs_generated/*` imports resolve to generated js_library targets,
+# not node_modules links. Import paths mirror the generated output path.
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/intl-getcanonicallocales/.*$ //packages/intl-getcanonicallocales:cldr_core_pkg
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/intl-locale/.*$ //packages/intl-locale:cldr_locale_pkg
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/intl-numberformat/.*$ //packages/intl-numberformat:cldr_number_pkg
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/generated/cldr-supported-locales/.*$ //packages/generated/cldr-supported-locales:pkg
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/intl-supportedvaluesof/.*$ //packages/intl-supportedvaluesof:cldr_sv_pkg
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/intl-datetimeformat/.*$ //packages/intl-datetimeformat:tz_pkg
+# gazelle:resolve_regexp ts ^#formatjs_generated/packages/generated/unicode/.*$ //packages/generated/unicode:pkg
 
 # Exported for Node subpath import resolution (#packages/*) in tests.
 # Node walks up to find package.json with "imports" field.
@@ -63,8 +59,6 @@ gazelle(
 )
 
 npm_link_all_packages()
-
-link_all_generated_packages()
 
 exports_files(
     [

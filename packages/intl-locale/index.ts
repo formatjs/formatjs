@@ -6,6 +6,8 @@ import {
   createDataProperty,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
+import {likelySubtags} from '#formatjs_generated/packages/intl-getcanonicallocales/likelySubtags.js'
+import type {} from '#formatjs_generated/packages/intl-supportedvaluesof/calendars.js'
 import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {
@@ -17,13 +19,12 @@ import {
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
   isUnicodeScriptSubtag,
-  likelySubtags,
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
-import {characterOrders} from '@formatjs_generated/cldr.locale/character-orders.js'
+import {characterOrders} from '#formatjs_generated/packages/intl-locale/character-orders.js'
 import getInternalSlots from '#packages/intl-locale/get_internal_slots.js'
-import {numberingSystems} from '@formatjs_generated/cldr.locale/numbering-systems.js'
+import {numberingSystems} from '#formatjs_generated/packages/intl-locale/numbering-systems.js'
 import {
   getCalendarPreferenceDataForRegion,
   getHourCyclesPreferenceDataForLocaleOrRegion,
@@ -31,7 +32,7 @@ import {
   getWeekDataForRegion,
 } from '#packages/intl-locale/preference-data.js'
 
-import type {CharacterOrder} from '@formatjs_generated/cldr.locale/character-orders.js'
+import type {CharacterOrder} from '#formatjs_generated/packages/intl-locale/character-orders.js'
 import type {WeekInfoInternal} from '#packages/intl-locale/preference-data.js'
 
 export interface IntlLocaleOptions {

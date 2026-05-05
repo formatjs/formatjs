@@ -34,7 +34,7 @@ formatjs_library(
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
     visibility = ["//visibility:public"],
-    deps = ["//:node_modules/@formatjs_generated/cldr.core"],
+    deps = [":cldr_core_pkg"],
 )
 
 formatjs_test(
@@ -42,13 +42,13 @@ formatjs_test(
     data = [
         "tests/index.test.ts",
         "tests/parser.test.ts",
+        ":cldr_core_pkg",
         ":intl-getcanonicallocales",
-        "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],
 )
 
-# @formatjs_generated/cldr.core — CLDR supplemental data
+# #formatjs_generated/packages/intl-getcanonicallocales — CLDR supplemental data
 generate_package_file(
     name = "cldr_core_aliases",
     src = "aliases.ts",

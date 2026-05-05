@@ -1,6 +1,6 @@
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
-import type {Currency} from '@formatjs_generated/cldr.supported-values/currencies.js'
-import {currencies} from '@formatjs_generated/cldr.supported-values/currencies.js'
+import type {Currency} from '#formatjs_generated/packages/intl-supportedvaluesof/currencies.js'
+import {currencies} from '#formatjs_generated/packages/intl-supportedvaluesof/currencies.js'
 
 /**
  * Implementation: Tests if a currency is supported by attempting to create

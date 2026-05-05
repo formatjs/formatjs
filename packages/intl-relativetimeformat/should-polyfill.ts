@@ -1,5 +1,5 @@
 import {match} from '@formatjs/intl-localematcher'
-import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-relativetimeformat.js'
+import {supportedLocales} from '#formatjs_generated/packages/generated/cldr-supported-locales/intl-relativetimeformat.js'
 
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {

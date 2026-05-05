@@ -58,8 +58,8 @@ TEST_DEPS = [
     "//:node_modules/@formatjs/intl-pluralrules",
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
-    "//:node_modules/@formatjs_generated/cldr.number",
-    "//:node_modules/@formatjs_generated/cldr.supported-locales",
+    "//packages/intl-numberformat:cldr_number_pkg",
+    "//packages/generated/cldr-supported-locales:pkg",
     "//:node_modules/@types/node",
 ]
 
@@ -90,14 +90,14 @@ formatjs_library(
     types = True,
     visibility = ["//visibility:public"],
     deps = [
+        ":cldr_number_pkg",
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/cldr-supported-locales:pkg",
     ],
 )
 
@@ -872,7 +872,7 @@ ts_run_binary(
     tool = "//packages/intl-numberformat/scripts:test262-main-gen",
 )
 
-# @formatjs_generated/cldr.number — CLDR number/currency formatting data
+# #formatjs_generated/packages/intl-numberformat — CLDR number/currency formatting data
 generate_package_file(
     name = "cldr_number_currency_digits",
     src = "currency-digits.ts",
@@ -1024,19 +1024,19 @@ formatjs_test(
         "tests/unit-zh-TW.test.ts",
         "tests/unit/unitTest.ts",
         "tests/value-tonumber.test.ts",
+        ":cldr_number_pkg",
         ":intl-numberformat",
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/cldr-supported-locales:pkg",
     ],
     extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
 )

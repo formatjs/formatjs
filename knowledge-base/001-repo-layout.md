@@ -46,23 +46,23 @@ For Bazel sandbox contexts (vitest, ts_run_binary), the root `package.json` must
 - vitest: `data = ["//:package.json"]` + `no_copy_to_bin = ["//:package.json"]`
 - ts_run_binary: `//:root_package_json` (copy_to_bin output) in `srcs`
 
-## Generated Data Packages (@formatjs\_generated/\*)
+## Generated Data Packages (#formatjs_generated/\*)
 
-Auto-generated TypeScript data (CLDR, IANA timezone, Unicode regex) lives only in Bazel output — not checked into git. Generated files are compiled and packaged as `@formatjs_generated/*` npm packages, linked into `node_modules` via `npm_link_package()`.
+Auto-generated TypeScript data (CLDR, IANA timezone, Unicode regex) lives only in Bazel output — not checked into git. Generated files are compiled to direct Bazel `js_library` targets and imported with path-shaped `#formatjs_generated/packages/...` subpath imports.
 
 ```typescript
-import {timezones} from '@formatjs_generated/cldr.locale/timezones.js'
-import links from '@formatjs_generated/tz/links.js'
-import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/ecma402-abstract/regex.js'
+import {timezones} from '#formatjs_generated/packages/intl-locale/timezones.js'
+import links from '#formatjs_generated/packages/intl-datetimeformat/links.js'
+import {S_UNICODE_REGEX} from '#formatjs_generated/packages/generated/unicode/ecma402-abstract/regex.js'
 ```
 
-Packages are organized by **data source** (not by consuming package): `cldr.core`, `cldr.locale`, `cldr.number`, `cldr.supported-values`, `cldr.supported-locales`, `tz`, `unicode`. Resolution:
+Generated imports mirror the output package path. Resolution:
 
-1. **TypeScript** — via `"paths"` in tsconfig.json pointing to `bazel-bin/`
-2. **Gazelle** — custom resolver in `tools/gazelle/ts/resolve.go` maps to `//:node_modules/@formatjs_generated/<pkg>`
-3. **Rolldown** — resolved from `node_modules` (bundled inline, not externalized)
+1. **TypeScript** — via `"paths"` in generated tsconfig maps pointing to `bazel-bin/`
+2. **Gazelle** — root `gazelle:resolve_regexp` directives map path prefixes to direct generated targets
+3. **Rolldown/Vitest** — resolver aliases map `#formatjs_generated/*` to generated output paths
 
-See `knowledge-base/011-generated-packages.md` for full architecture and `knowledge-base/migrations/002-generated-packages-migration.md` for migration plan.
+See `knowledge-base/011-generated-packages.md` for full architecture.
 
 ## Linting & Formatting
 

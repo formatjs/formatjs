@@ -263,12 +263,11 @@ def formatjs_library(
 
     # Auto-generate npm packaging if package.json exists
     if has_package_json:
-        # Compute external packages for rolldown (only node_modules deps are externalized).
-        # Exclude @formatjs_generated — generated data is bundled inline, not externalized.
+        # Compute external packages for rolldown. Generated data uses direct
+        # Bazel deps, so only node_modules deps are externalized.
         external_packages = [
             dep.split("node_modules/")[1]
             for dep in npm_deps
-            if "@formatjs_generated" not in dep
         ]
 
         package_dir_name = native.package_name().split("/")[-1]

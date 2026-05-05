@@ -2,6 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "paths": {
+      "#formatjs_generated/*": ["../../../bazel-bin/*", "../../../*"],
       "#packages/*": ["../../../packages/*"]
     }
   },
@@ -15,6 +16,9 @@
     },
     {
       "path": "../types/tsconfig.json"
+    },
+    {
+      "path": "../../generated/unicode/tsconfig.json"
     }
   ]
 }

@@ -1,5 +1,5 @@
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
-import allData from '@formatjs_generated/tz/all-tz.js'
+import allData from '#formatjs_generated/packages/intl-datetimeformat/all-tz.js'
 import {
   toLocaleDateString,
   toLocaleString,

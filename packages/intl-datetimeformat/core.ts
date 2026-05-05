@@ -20,7 +20,7 @@ import {FormatDateTimeToParts} from '#packages/ecma402-abstract/DateTimeFormat/F
 import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
-import links from '@formatjs_generated/tz/links.js'
+import links from '#formatjs_generated/packages/intl-datetimeformat/links.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
 import {unpack} from '#packages/intl-datetimeformat/unpack.js'
 import {

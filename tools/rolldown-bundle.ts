@@ -83,6 +83,7 @@ async function main(args: Args) {
         baseUrl: workspaceRoot,
         paths: {
           '#packages/*': ['packages/*'],
+          '#formatjs_generated/*': ['bazel-bin/*', '*'],
         },
         ...(args.dts ? {isolatedDeclarations: true} : {}),
       },

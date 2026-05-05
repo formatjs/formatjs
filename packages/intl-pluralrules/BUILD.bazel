@@ -262,10 +262,10 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/PluralRules",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/cldr-supported-locales:pkg",
     ],
 )
 
@@ -279,11 +279,11 @@ formatjs_test(
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/PluralRules",
         "//packages/ecma402-abstract/types",
+        "//packages/generated/cldr-supported-locales:pkg",
     ],
     extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
     no_copy_to_bin = ["//:package.json"],

@@ -1,15 +1,15 @@
-import {timezones} from '@formatjs_generated/cldr.locale/timezones.js'
-import {hourCycles} from '@formatjs_generated/cldr.locale/hour-cycles.js'
-import {calendars} from '@formatjs_generated/cldr.locale/calendars.js'
-import {weekData} from '@formatjs_generated/cldr.locale/week-data.js'
+import {timezones} from '#formatjs_generated/packages/intl-locale/timezones.js'
+import {hourCycles} from '#formatjs_generated/packages/intl-locale/hour-cycles.js'
+import {calendars} from '#formatjs_generated/packages/intl-locale/calendars.js'
+import {weekData} from '#formatjs_generated/packages/intl-locale/week-data.js'
 
-import type {TimezonesTerritory} from '@formatjs_generated/cldr.locale/timezones.js'
-import type {HourCyclesKey} from '@formatjs_generated/cldr.locale/hour-cycles.js'
-import type {CalendarsKey} from '@formatjs_generated/cldr.locale/calendars.js'
+import type {TimezonesTerritory} from '#formatjs_generated/packages/intl-locale/timezones.js'
+import type {HourCyclesKey} from '#formatjs_generated/packages/intl-locale/hour-cycles.js'
+import type {CalendarsKey} from '#formatjs_generated/packages/intl-locale/calendars.js'
 import type {
   WeekDataKey,
   WeekInfoInternal,
-} from '@formatjs_generated/cldr.locale/week-data.js'
+} from '#formatjs_generated/packages/intl-locale/week-data.js'
 
 export {type WeekInfoInternal}
 
