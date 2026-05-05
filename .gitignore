@@ -16,6 +16,7 @@ target
 # Generated files
 docs/src/search-index.generated.json
 docs/typesense-index.jsonl
+packages/**/tsconfig.json
 
 # Environment files
 docs/.env

@@ -1,0 +1,31 @@
+# gazelle:ignore
+
+load("//tools:index.bzl", "generate_tsconfig_json")
+
+generate_tsconfig_json(
+    name = "tsconfig_json",
+    local_only = True,
+    tsconfig = {
+        "include": ["./src/**/*"],
+        "compilerOptions": {
+            "strict": True,
+            "esModuleInterop": True,
+            "lib": [
+                "dom",
+                "es2015",
+            ],
+            "jsx": "react-jsx",
+            "target": "es5",
+            "allowJs": True,
+            "skipLibCheck": True,
+            "allowSyntheticDefaultImports": True,
+            "forceConsistentCasingInFileNames": True,
+            "noFallthroughCasesInSwitch": True,
+            "module": "esnext",
+            "moduleResolution": "NodeNext",
+            "resolveJsonModule": True,
+            "isolatedModules": True,
+            "noEmit": True,
+        },
+    },
+)

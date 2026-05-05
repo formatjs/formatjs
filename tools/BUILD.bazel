@@ -64,3 +64,13 @@ ts_binary(
     entry_point = "generate-supported-locales.ts",
     visibility = ["//visibility:public"],
 )
+
+ts_binary(
+    name = "generate-package-tsconfigs",
+    data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-package-tsconfigs.ts",
+    visibility = ["//visibility:public"],
+)

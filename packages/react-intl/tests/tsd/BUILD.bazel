@@ -12,12 +12,12 @@ copy_to_directory(
     srcs = [
         "global_type_overrides.test-d.ts",
         "//packages/react-intl:pkg",
-        "//packages/react-intl:tsconfig.json",
+        "//packages/react-intl:tsconfig_json_generated",
     ],
     out = "global_type_overrides_test_files",
     replace_prefixes = {
         "packages/react-intl/pkg": "",
-        "packages/react-intl/tsconfig.json": "tsconfig.json",
+        "packages/react-intl/tsconfig_json.generated.json": "tsconfig.json",
         "global_type_overrides.test-d.ts": "tests/global_type_overrides.test-d.ts",
     },
 )
