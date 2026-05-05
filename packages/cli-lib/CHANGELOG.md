@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.5.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.5.4...@formatjs/cli-lib@8.5.5) (2026-05-05)
+
+### Bug Fixes
+
+* **formatjs:** support TS assertions in message extraction ([#6475](https://github.com/formatjs/formatjs/issues/6475)) ([06e7cf6](https://github.com/formatjs/formatjs/commit/06e7cf6c25b83012cb023fb7882cdffd9f370012)), closes [#6474](https://github.com/formatjs/formatjs/issues/6474) - by @longlho
+
 ## [8.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.5.3...@formatjs/cli-lib@8.5.4) (2026-04-29)
 
 **Note:** Version bump only for package @formatjs/cli-lib
