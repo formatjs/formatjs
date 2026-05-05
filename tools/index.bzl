@@ -5,6 +5,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary"
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:package_jsons.bzl", "PACKAGE_JSONS")
 load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
@@ -277,6 +278,52 @@ _tsconfig_file = rule(
         "out": attr.output(mandatory = True),
     },
 )
+
+def _package_json_file_impl(ctx):
+    ctx.actions.write(
+        output = ctx.outputs.out,
+        content = ctx.attr.content,
+    )
+    return [DefaultInfo(files = depset([ctx.outputs.out]))]
+
+_package_json_file = rule(
+    implementation = _package_json_file_impl,
+    attrs = {
+        "content": attr.string(mandatory = True),
+        "out": attr.output(mandatory = True),
+    },
+)
+
+def generate_package_json(name = "package_json", content = None, local_only = True):
+    """Generate a package.json file.
+
+    Args:
+        name: target name (default: "package_json")
+        content: package.json content
+        local_only: whether the source file is local developer state and should
+            not be checked into source control
+    """
+    if content == None:
+        content = PACKAGE_JSONS.get(native.package_name())
+    if content == None:
+        fail("No generated package.json metadata found for %s" % native.package_name())
+
+    normalized_content = json.encode_indent(json.decode(content), indent = "  ") + "\n"
+
+    _package_json_file(
+        name = name + "_generated",
+        content = normalized_content,
+        out = "package.json",
+        visibility = ["//visibility:public"],
+    )
+
+    write_source_files(
+        name = name,
+        check_that_out_file_exists = not local_only,
+        diff_test = not local_only,
+        files = {"package.json": name + "_generated"},
+        visibility = ["//visibility:public"],
+    )
 
 def generate_tsconfig_json(name = "tsconfig_json", tsconfig = None, local_only = False):
     """Generate a tsconfig.json file.

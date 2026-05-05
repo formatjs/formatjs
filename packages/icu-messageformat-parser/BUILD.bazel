@@ -5,10 +5,6 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 npm_link_all_packages()
 
-exports_files([
-    "package.json",
-])
-
 ENTRY_POINTS = [
     "index.ts",
     "no-parser.ts",

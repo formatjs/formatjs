@@ -2,7 +2,8 @@
 
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_package_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:package_jsons.bzl", "PACKAGE_JSONS")
 
 def formatjs_package(
         name,
@@ -32,6 +33,11 @@ def formatjs_package(
         allow_overwrites: passed to npm_package (default False)
     """
     effective_npm_name = npm_package_name or ("@formatjs/%s" % name)
+    package_json_content = PACKAGE_JSONS.get(native.package_name())
+    if package_json_content == None:
+        fail("No generated package.json metadata found for %s" % native.package_name())
+    package_json = ":package_json_generated"
+    generate_package_json(content = package_json_content)
 
     bundles = [":%s-bundle" % entry.replace(".ts", "") for entry in entry_points]
     replace_prefixes = {
@@ -41,7 +47,7 @@ def formatjs_package(
 
     js_library(
         name = name,
-        srcs = bundles + ["package.json"],
+        srcs = bundles + [package_json],
         visibility = ["//visibility:public"],
     )
 
@@ -54,7 +60,7 @@ def formatjs_package(
         srcs = [
             "LICENSE.md",
             "README.md",
-            "package.json",
+            package_json,
         ] + bundles + extra_npm_srcs,
         package = effective_npm_name,
         replace_prefixes = replace_prefixes,
@@ -69,6 +75,7 @@ def formatjs_package(
 
     package_json_test(
         name = "package_json_test",
+        package_json = package_json,
     )
 
     package_exports_test(

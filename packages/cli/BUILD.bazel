@@ -1,8 +1,10 @@
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-load("//tools:index.bzl", "package_exports_test")
+load("//tools:index.bzl", "generate_package_json", "package_exports_test")
 
 PACKAGE_NAME = "cli"
+
+generate_package_json()
 
 # Assemble bin/ directory: rename main.js to formatjs (entry point) and include all chunks
 copy_to_directory(
@@ -20,8 +22,8 @@ npm_package(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json",
         ":bin",
+        ":package_json_generated",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],

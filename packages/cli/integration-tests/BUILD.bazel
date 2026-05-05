@@ -1,6 +1,9 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:index.bzl", "generate_package_json")
 load("//tools:vitest.bzl", "vitest")
+
+generate_package_json()
 
 # CLI extract/* fixtures are intentionally invalid TS (err.tsx etc.) used as
 # test inputs, not real source. Auto-generated formatjs_library would try to

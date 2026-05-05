@@ -5,13 +5,15 @@ load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
-load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_package_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:package_jsons.bzl", "PACKAGE_JSONS")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "packages_tsconfig")
 
 def _formatjs_package(
         package_name,
+        package_json,
         entry_points,
         deps,
         external_packages,
@@ -40,7 +42,7 @@ def _formatjs_package(
     for entry in entry_points:
         rolldown_bundle(
             name = "%s-bundle" % entry.replace(".ts", ""),
-            srcs = [":srcs", "package.json"],
+            srcs = [":srcs", package_json],
             dts = True,
             entry_point = entry,
             external = external_packages,
@@ -58,7 +60,7 @@ def _formatjs_package(
 
     js_library(
         name = package_name,
-        srcs = bundles + ["package.json"],
+        srcs = bundles + [package_json],
         visibility = ["//visibility:public"],
     )
 
@@ -71,7 +73,7 @@ def _formatjs_package(
         srcs = [
             "LICENSE.md",
             "README.md",
-            "package.json",
+            package_json,
         ] + bundles + extra_npm_srcs,
         package = effective_npm_name,
         replace_prefixes = replace_prefixes,
@@ -87,6 +89,7 @@ def _formatjs_package(
     package_json_test(
         name = "package_json_test",
         bundles = bundles,
+        package_json = package_json,
     )
 
     package_exports_test(
@@ -190,7 +193,12 @@ def formatjs_library(
     npm_deps, project_references = _partition_deps(deps)
     all_deps = deps
     effective_tsconfig = tsconfig or packages_tsconfig()
-    has_package_json = native.glob(["package.json"], allow_empty = True)
+    package_json_content = PACKAGE_JSONS.get(native.package_name())
+    has_package_json = package_json_content != None
+    package_json = ":package_json_generated"
+
+    if has_package_json:
+        generate_package_json(content = package_json_content)
 
     copy_to_bin(
         name = "srcs",
@@ -235,7 +243,7 @@ def formatjs_library(
 
         js_library(
             name = lib_name,
-            srcs = [":%s-esm" % lib_name] + has_package_json,
+            srcs = [":%s-esm" % lib_name],
             visibility = visibility,
         )
 
@@ -274,6 +282,7 @@ def formatjs_library(
         package_dir_name = native.package_name().split("/")[-1]
         _formatjs_package(
             package_name = package_dir_name,
+            package_json = package_json,
             entry_points = entry_points,
             deps = all_deps,
             external_packages = external_packages,

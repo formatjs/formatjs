@@ -3,7 +3,9 @@
 # gazelle-driven rule generation entirely for this dir.
 # gazelle:ts_enabled false
 
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
+load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_package_json")
+
+generate_package_json()
 
 generate_ide_tsconfig_json()
 
@@ -11,8 +13,6 @@ generate_ide_tsconfig_json()
 # load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # load("@npm//:http-server/package_json.bzl", "http_server")
-
-# exports_files(["package.json", "tsconfig.json"])
 
 # PACKAGE_NAME = "editor"
 

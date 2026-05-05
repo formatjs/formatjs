@@ -1,6 +1,8 @@
 # gazelle:ignore
 
-load("//tools:index.bzl", "generate_tsconfig_json")
+load("//tools:index.bzl", "generate_package_json", "generate_tsconfig_json")
+
+generate_package_json()
 
 generate_tsconfig_json(
     name = "tsconfig_json",

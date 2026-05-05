@@ -66,11 +66,11 @@ ts_binary(
 )
 
 ts_binary(
-    name = "generate-package-tsconfigs",
+    name = "generate-package-files",
     data = [
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
-    entry_point = "generate-package-tsconfigs.ts",
+    entry_point = "generate-package-files.ts",
     visibility = ["//visibility:public"],
 )

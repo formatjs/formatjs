@@ -24,7 +24,8 @@ interface RuleJson {
   }
 }
 
-const TSCONFIG_QUERY = 'kind("_tsconfig_file rule", //packages/...:*)'
+const PACKAGE_FILES_QUERY =
+  'kind("_tsconfig_file rule", //packages/...:*) union kind("_package_json_file rule", //packages/...:*)'
 
 function getWorkspaceRoot(args: Args): string {
   const dir = args['workspace-root'] ?? process.env.BUILD_WORKSPACE_DIRECTORY
@@ -36,20 +37,40 @@ function getWorkspaceRoot(args: Args): string {
   return dir
 }
 
-function labelToPath(label: string): string {
+function parseLabel(label: string): {packageName: string; targetName: string} {
   const trimmed = label.startsWith('//') ? label.slice(2) : label
   const colonIdx = trimmed.indexOf(':')
   const packageName = colonIdx >= 0 ? trimmed.slice(0, colonIdx) : ''
   const targetName = colonIdx >= 0 ? trimmed.slice(colonIdx + 1) : ''
 
-  if (!packageName || targetName !== 'tsconfig_json_unformatted') {
-    throw new Error(`Unexpected tsconfig rule label: ${label}`)
+  if (!packageName || !targetName) {
+    throw new Error(`Unexpected package file rule label: ${label}`)
   }
 
-  return join(packageName, 'tsconfig.json')
+  return {packageName, targetName}
 }
 
-function parseTsconfigLine(
+function labelToPath(label: string, ruleClass: string): string {
+  const {packageName, targetName} = parseLabel(label)
+
+  if (ruleClass === '_tsconfig_file') {
+    if (targetName !== 'tsconfig_json_unformatted') {
+      throw new Error(`Unexpected tsconfig rule label: ${label}`)
+    }
+    return join(packageName, 'tsconfig.json')
+  }
+
+  if (ruleClass === '_package_json_file') {
+    if (targetName !== 'package_json_generated') {
+      throw new Error(`Unexpected package.json rule label: ${label}`)
+    }
+    return join(packageName, 'package.json')
+  }
+
+  throw new Error(`Unexpected package file rule class: ${ruleClass}`)
+}
+
+function parsePackageFileLine(
   line: string
 ): {path: string; content: string} | null {
   if (!line.startsWith('{')) {
@@ -57,7 +78,11 @@ function parseTsconfigLine(
   }
 
   const parsed = JSON.parse(line) as RuleJson
-  if (parsed.type !== 'RULE' || parsed.rule?.ruleClass !== '_tsconfig_file') {
+  const ruleClass = parsed.rule?.ruleClass
+  if (
+    parsed.type !== 'RULE' ||
+    (ruleClass !== '_tsconfig_file' && ruleClass !== '_package_json_file')
+  ) {
     return null
   }
 
@@ -72,7 +97,7 @@ function parseTsconfigLine(
   }
 
   return {
-    path: labelToPath(label),
+    path: labelToPath(label, ruleClass),
     content: JSON.stringify(JSON.parse(contentAttr.stringValue), null, 2),
   }
 }
@@ -81,14 +106,12 @@ async function main(): Promise<void> {
   const args = minimist<Args>(process.argv.slice(2))
   const dryRun = args['dry-run'] === true
   const workspaceRoot = getWorkspaceRoot(args)
-  const header =
-    '// Generated, DO NOT EDIT MANUALLY. To update, run "bazel run //:generate_package_tsconfigs"\n'
 
-  process.stderr.write('Querying package tsconfig genrules...\n')
+  process.stderr.write('Querying package file rules...\n')
 
   const bazel = spawn(
     'bazel',
-    ['query', TSCONFIG_QUERY, '--output=streamed_jsonproto'],
+    ['query', PACKAGE_FILES_QUERY, '--output=streamed_jsonproto'],
     {cwd: workspaceRoot, stdio: ['ignore', 'pipe', 'inherit']}
   )
   const rl = createInterface({input: bazel.stdout})
@@ -97,7 +120,7 @@ async function main(): Promise<void> {
   let total = 0
 
   for await (const line of rl) {
-    const result = parseTsconfigLine(line)
+    const result = parsePackageFileLine(line)
     if (!result) {
       continue
     }
@@ -111,6 +134,9 @@ async function main(): Promise<void> {
       const json = result.content.endsWith('\n')
         ? result.content
         : `${result.content}\n`
+      const header = result.path.endsWith('/tsconfig.json')
+        ? '// Generated, DO NOT EDIT MANUALLY. To update, run "bazel run //:generate_package_files"\n'
+        : ''
       writes.push(outputFile(fullPath, header + json))
     }
   }
@@ -126,14 +152,14 @@ async function main(): Promise<void> {
   }
 
   if (total === 0) {
-    process.stderr.write('No package tsconfig genrules found\n')
+    process.stderr.write('No package file rules found\n')
     process.exit(1)
   }
 
   await Promise.all(writes)
 
   const action = dryRun ? 'Would write' : 'Wrote'
-  process.stderr.write(`${action} ${total} tsconfig files\n`)
+  process.stderr.write(`${action} ${total} package files\n`)
 }
 
 main()

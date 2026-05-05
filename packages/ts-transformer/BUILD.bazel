@@ -4,10 +4,6 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-exports_files([
-    "package.json",
-])
-
 # Export test fixtures for use by other packages (e.g., Rust CLI tests)
 filegroup(
     name = "test_fixtures",

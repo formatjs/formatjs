@@ -118,8 +118,8 @@ PACKAGES_TO_DIST = [
 PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
 
 alias(
-    name = "generate_package_tsconfigs",
-    actual = "//tools:generate-package-tsconfigs",
+    name = "generate_package_files",
+    actual = "//tools:generate-package-files",
 )
 
 # pnpm_bin.pnpm(

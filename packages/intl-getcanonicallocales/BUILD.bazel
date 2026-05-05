@@ -6,10 +6,6 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-exports_files([
-    "package.json",
-])
-
 PACKAGE_NAME = "intl-getcanonicallocales"
 
 ENTRY_POINTS = [
