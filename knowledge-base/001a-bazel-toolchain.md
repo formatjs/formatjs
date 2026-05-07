@@ -2,411 +2,373 @@
 
 ## Overview
 
-The build system prioritizes **fast, parallel compilation** through separation of concerns: type checking (tsgo), transpilation (oxc-transform), and bundling (rolldown) are independent steps that can run in parallel across the monorepo.
+The build uses Bazel/bzlmod to keep TypeScript, generated data, Rust crates, and
+published npm packages under one dependency graph. The TypeScript pipeline keeps
+type checking, transpilation, bundling, testing, and package assembly as separate
+actions so they can cache and run independently across the monorepo.
 
 ## Bazel Version & Module System
 
-**Bazel 9.0.1** with bzlmod (MODULE.bazel, not WORKSPACE). Pin in `.bazelversion`.
+**Bazel 9.1.0** is pinned in `.bazelversion`. The repo uses bzlmod
+(`MODULE.bazel`); there is no active WORKSPACE-based dependency setup.
 
 ### Key Module Dependencies
 
-| Dependency              | Version | Purpose                                  |
-| ----------------------- | ------- | ---------------------------------------- |
-| `aspect_rules_js`       | 3.0.3   | JS/Node.js build rules, npm resolution   |
-| `aspect_rules_ts`       | 3.8.7   | ts_project type checking                 |
-| `aspect_rules_esbuild`  | 0.25.1  | esbuild bundling (legacy, rolldown used) |
-| `aspect_bazel_lib`      | 2.22.5  | copy_to_bin, write_source_files          |
-| `rules_rs`              | 0.0.58  | Rust compilation + WASM                  |
-| `rules_nodejs`          | 6.7.3   | Node.js toolchain                        |
-| `buildifier_prebuilt`   | 8.5.1   | Starlark formatting                      |
-| `gazelle`               | 0.48.0  | BUILD file generation                    |
-| `toolchains_buildbuddy` | 0.0.4   | Remote execution toolchain               |
+| Dependency              | Version / pin             | Purpose                                           |
+| ----------------------- | ------------------------- | ------------------------------------------------- |
+| `aspect_rules_js`       | 3.0.3                     | JS/Node.js rules, npm lock translation            |
+| `rules_nodejs`          | 6.7.4                     | Hermetic Node.js toolchain                        |
+| `aspect_rules_ts`       | 3.8.7                     | `ts_project`, tsgo integration                    |
+| `aspect_bazel_lib`      | 2.22.5                    | `copy_to_bin`, `copy_to_directory`, source writes |
+| `rules_multirun`        | 0.13.0                    | Multi-target run orchestration                    |
+| `buildifier_prebuilt`   | 8.5.1.2                   | Starlark formatting                               |
+| `protobuf`              | 34.0.bcr.1                | Proto runtime for Rust/Go tooling                 |
+| `rules_proto`           | 7.1.0                     | Proto rules                                       |
+| `rules_go`              | 0.60.0                    | Go SDK/rules for Gazelle                          |
+| `gazelle`               | 0.50.0                    | BUILD file generation driver                      |
+| `gazelle_ts`            | 0.3.3 + git override      | TypeScript Gazelle extension                      |
+| `rules_rs`              | 0.0.61 + archive override | Rust compilation, crates, wasm                    |
+| `llvm`                  | 0.7.5                     | LLVM toolchain support for Rust/wasm paths        |
+| `rules_java`            | 9.6.1                     | Java toolchain for ICU4J conformance tests        |
+| `toolchains_buildbuddy` | 0.0.4                     | Remote execution C/C++ toolchain                  |
 
-### Hermetic Node.js
+`gazelle_ts` is overridden to commit
+`e3579a043d2639b85877c051f3fedd2095a4b1a2` for the post-0.3.3 abstract-kind
+renames and `ts_bundler_config` / `ts_binary` additions. `rules_rs` is overridden
+to the v0.0.61 GitHub release because it is not available from BCR yet.
 
-Node 24.14.0 pinned with SHA256 hashes for 5 platforms (darwin_arm64, darwin_amd64, linux_arm64, linux_amd64, windows_amd64). Ensures identical runtime across developers and CI.
+### Hermetic Runtime Toolchains
 
-## Remote Cache & Execution (BuildBuddy)
+- Node.js is pinned to **24.14.0** with SHA256 hashes for darwin arm64/x64,
+  linux arm64/x64, and windows x64.
+- Bazel's pnpm extension is pinned to **pnpm 10.4.1** for repository rules.
+- TypeScript comes from root `package.json` through
+  `@aspect_rules_ts//ts:extensions.bzl`.
+- Go SDK is pinned to **1.24.12**.
+- Rust is pinned to **1.95.0**, edition **2024**, through `rules_rs`.
+
+## Remote Cache & Execution
 
 - **Remote cache:** `grpcs://formatjs.buildbuddy.io`
-- **Linux CI:** Full remote build execution (`--config=ci` → `--config=remote`)
-- **macOS CI:** Cache-only, local execution (`--config=ci-darwin`)
-- **Reason:** Rust/Bazel toolchain cross-compilation is harder on macOS; local builds + shared cache is faster than remote execution
+- **Linux CI:** `--config=ci` expands to `--config=remote`, enabling remote
+  execution and remote cache.
+- **macOS CI:** `--config=ci-darwin` uses BuildBuddy BES and remote cache only.
+- **Remote platform:** `//platforms:buildbuddy_linux_x86_64_gnu` with
+  `@toolchains_buildbuddy//toolchains/cc:ubuntu_gcc_x86_64`.
 
 ## TypeScript Build Pipeline
 
-### Two Compilation Patterns
+### Published Packages
 
-**Pattern 1: formatjs_library packages** (28 npm-published packages)
-
-```
-Source .ts files
-  ├─ tsgo (type check only, no emit) ──→ errors / pass
-  └─ rolldown + rolldown-plugin-dts ──→ bundled .js + .js.map + .d.ts
-```
-
-**Pattern 2: ts_compile packages** (3 internal packages: ecma402-abstract, ecma262-abstract, editor)
+The 29 package directories in `PACKAGES_TO_DIST` are assembled through
+`formatjs_library()` in `tools/compile.bzl`.
 
 ```
-Source .ts files
-  ├─ tsgo (type check only, no emit) ──→ errors / pass
-  └─ oxc-transform (per-file) ──→ individual .js + .d.ts files
+Source .ts/.tsx files
+  ├─ copy_to_bin(:srcs)                 → sandbox-safe source tree
+  ├─ ts_project(:typecheck)             → tsgo, no emit
+  ├─ js_library(:lib)                   → source library for tests
+  ├─ rolldown_bundle(<entry>-bundle)    → bundled .js + .js.map + .d.ts
+  ├─ validation tests                   → no internal imports, package deps, exports
+  └─ npm_package(:pkg)                  → publishable package
 ```
+
+Published packages are detected by the presence of a package-local
+`package.json`. Bundling is done per `entry_points` with Rolldown and
+`rolldown-plugin-dts`.
+
+### Internal TypeScript Packages
+
+Directories without package-local `package.json` still use `formatjs_library()`,
+but take the internal path:
+
+```
+Source .ts/.tsx files
+  ├─ copy_to_bin(:srcs)
+  ├─ ts_project(:typecheck)  → tsgo, no emit
+  ├─ ts_project(<dir>-esm)   → oxc transpilation + declarations
+  ├─ js_library(<dir>)
+  └─ alias(:lib)
+```
+
+This is used by composite internal packages such as
+`packages/ecma402-abstract/types`, `NumberFormat`, `DateTimeFormat`, and related
+abstract-operation subpackages.
 
 ### Why Separate Type Checking and Transpilation?
 
-- **tsgo** (@typescript/native-preview): Native TypeScript type checker, parallel across projects, fast. Only checks types — no output.
-- **oxc-transform**: Rust-based, ~100x faster than tsc for transpilation. Only strips types — no checking. Runs per-file in parallel.
-- **Benefit:** Type checking and transpilation run independently and in parallel across the monorepo.
+- **tsgo** (`@typescript/native-preview`) performs fast type checking and is
+  always run with `no_emit = True` in the main typecheck path.
+- **oxc-transform** is used for per-file TypeScript stripping and declaration
+  generation where package-level bundling is not needed.
+- **Rolldown** produces the published package bundles and bundled declarations.
 
-### TypeScript Configuration (tools/tsconfig.bzl)
+This split lets type checking, package bundling, internal transpilation, and
+tests cache independently.
 
-Configs are Starlark dicts, not JSON files. The root `tsconfig.json` is generated from `BASE_TSCONFIG`.
+## TypeScript Configuration
 
-| Config               | Target | Use                            |
-| -------------------- | ------ | ------------------------------ |
-| `BASE_TSCONFIG`      | ES2017 | Library packages               |
-| `ESNEXT_TSCONFIG`    | ESNext | Polyfills, tests, Node tooling |
-| `BASE_NODE_TSCONFIG` | ES2017 | Node-specific (+ types:node)   |
-| `DOCS_TSCONFIG`      | ES2017 | Documentation (+ skipLibCheck) |
+`tools/tsconfig.bzl` is the source of truth. Root `tsconfig.json` is generated
+from `BASE_TSCONFIG` via the `:tsconfig_sync` target.
 
-#### Key Compiler Options & Rationale
+| Config                           | Target / use                                   |
+| -------------------------------- | ---------------------------------------------- |
+| `BASE_TSCONFIG`                  | ES2017 library baseline                        |
+| `BASE_NODE_TSCONFIG`             | Base + `types: ["node"]`                       |
+| `ESNEXT_TSCONFIG`                | ESNext target/lib for tests and modern tooling |
+| `NODE_TSCONFIG`                  | ES2021 target for Node-specific contexts       |
+| `DOCS_TSCONFIG`                  | Base + `skipLibCheck` for docs dependencies    |
+| `ESNEXT_SKIP_LIB_CHECK_TSCONFIG` | ESNext + `skipLibCheck`                        |
 
-| Option                            | Value           | Rationale                                                          |
-| --------------------------------- | --------------- | ------------------------------------------------------------------ |
-| `module`                          | "esnext"        | Modern ESM output; tree-shakeable                                  |
-| `moduleResolution`                | "bundler"       | Supports `#packages/*` paths, Node 12.20+                          |
-| `target`                          | "ES2017" (base) | Safe baseline; async/await, spread syntax                          |
-| `strict`                          | true            | Full type checking                                                 |
-| `isolatedDeclarations`            | true            | Each file's .d.ts is standalone; enables parallel .d.ts generation |
-| `verbatimModuleSyntax`            | true            | Preserve exact import/export syntax; TypeScript 5.0+               |
-| `rewriteRelativeImportExtensions` | true            | Convert `./foo.ts` → `./foo.js` in output (ESM compat)             |
-| `jsx`                             | "react-jsx"     | Modern React transform without `import React`                      |
-| `preserveConstEnums`              | true            | Keep enum values in output (CLDR tools depend on this)             |
-| `importHelpers`                   | false           | Don't use tslib; oxc handles helpers                               |
+Key compiler options:
 
-#### packages_tsconfig(base)
+| Option                            | Value         | Rationale                                         |
+| --------------------------------- | ------------- | ------------------------------------------------- |
+| `module`                          | `esnext`      | ESM output                                        |
+| `moduleResolution`                | `bundler`     | Modern package/subpath resolution                 |
+| `target`                          | `ES2017` base | Library baseline                                  |
+| `strict`                          | `true`        | Full type checking                                |
+| `isolatedDeclarations`            | `true`        | Declaration generation can be parallelized        |
+| `verbatimModuleSyntax`            | `true`        | Preserve import/export syntax                     |
+| `rewriteRelativeImportExtensions` | `true`        | `.ts` source imports become `.js` runtime imports |
+| `jsx`                             | `react-jsx`   | Modern React JSX transform                        |
+| `preserveConstEnums`              | `true`        | CLDR/data tooling depends on const enum behavior  |
+| `importHelpers`                   | `false`       | Avoid `tslib` helper dependency                   |
 
-Dynamically calculates `#packages/*` path alias depth:
+`packages_tsconfig()` adds a depth-aware `#packages/*` path mapping for the
+current Bazel package.
 
-- `packages/intl-locale` (depth 2) → `"#packages/*": ["../../packages/*"]`
-- `packages/ecma402-abstract/NumberFormat` (depth 3) → `"#packages/*": ["../../../packages/*"]`
+## Gazelle
 
-## Custom Bazel Macros (tools/)
+The repo uses upstream `gazelle_ts` rather than an in-tree TypeScript Gazelle
+plugin.
 
-### ts_compile (tools/index.bzl)
+Root `BUILD.bazel` configures:
 
-```
-ts_compile(name, srcs, deps, visibility, tsconfig)
-  ├─ ts_project(name-esm-typecheck)  ← tsgo, no_emit=True (type check)
-  ├─ ts_project(name-esm)            ← oxc_transpiler (.js + .d.ts)
-  └─ js_library(name)                ← wraps output + package.json (if exists)
-```
-
-### ts_compile_node (tools/index.bzl)
-
-Same as ts_compile but uses `packages_tsconfig(ESNEXT_TSCONFIG)` — includes `#packages/*` paths for downstream resolution of `#packages/` imports in `.d.ts` files.
-
-### rolldown_bundle (tools/rolldown.bzl)
-
-```
-rolldown_bundle(name, entry_point, srcs, deps, external, format, target, dts, global_name, code_splitting)
-  └─ js_run_binary(tools/rolldown-bundle.ts)
-       ├─ resolves #packages/* via resolve.alias
-       ├─ if dts=True: rolldown-plugin-dts generates bundled .d.ts
-       └─ outputs: .js + .js.map (+ .d.ts if dts)
+```starlark
+gazelle_binary(
+    name = "gazelle_bin",
+    languages = ["@gazelle_ts//ts"],
+)
 ```
 
-**How #packages/\* resolves in rolldown:**
+`gazelle_ts` emits abstract `ts_library` and `ts_test` rules. Root directives
+map those into local wrappers:
 
-1. `resolve.tsconfigFilename`: temp tsconfig with `"paths": {"#packages/*": ["packages/*"]}` and `baseUrl: workspaceRoot`. Uses oxc-resolver's TypeScript-aware resolution (.js → .ts/.tsx extension mapping).
-2. dts plugin: same temp tsconfig with `isolatedDeclarations: true`
-
-**External handling:** `["pkg"]` becomes regex `^pkg(/.*)?$` — matches both `pkg` and `pkg/subpath`.
-
-### formatjs_library (tools/compile.bzl)
-
-Wraps source files, type checking, bundling, and npm packaging into a single macro:
-
-```
-formatjs_library(name, srcs, deps, project_references, entry_points, types, npm_package_name, ...)
-  ├─ copy_to_bin(name="srcs")         ← sandbox-safe source copy
-  ├─ js_library(name="lib")           ← wraps sources + deps
-  ├─ ts_project(name="typecheck")     ← tsgo, no_emit (type check)
-  ├─ ts_project(name="types")         ← emit_declaration_only (if types=True)
-  ├─ rolldown_bundle(name-bundle)     ← bundled .js + .d.ts
-  └─ npm_package(name="pkg")          ← assembled package (if npm_package_name set)
+```starlark
+# gazelle:map_kind ts_library formatjs_library //tools:compile.bzl
+# gazelle:map_kind ts_test formatjs_test //tools:test.bzl
+# gazelle:ts_npm_link_pattern //:node_modules/{pkg}
 ```
 
-**Gazelle manages:** `srcs`, `deps`, `project_references`
+That means Gazelle owns ordinary source/test file discovery and dependency
+resolution, while local macros keep the FormatJS build semantics.
 
-### formatjs_test (tools/test.bzl)
+### Generated Package Imports
 
-Vitest wrapper that auto-depends on `:lib` from `formatjs_library`:
+Generated data packages under `@formatjs_generated/*` are not listed in root
+`package.json`, so root `BUILD.bazel` uses a native Gazelle regexp override:
 
-```
-formatjs_test(name, srcs, deps, **kwargs)
-  └─ vitest(srcs=[":srcs"] + srcs, deps=deps + [":lib"], fixtures=auto, **kwargs)
-```
-
-- **Gazelle manages:** `srcs`, `deps`
-- **Fixtures convention:** Files in `tests/fixtures/` are auto-discovered and passed to vitest. Gazelle skips `fixtures/` directories.
-
-### vitest (tools/vitest.bzl)
-
-```
-vitest(name, srcs, deps, data, no_copy_to_bin, tsconfig, dom, snapshots, fixtures, config)
-  ├─ ts_project(name_typecheck)   ← tsgo, type check only
-  ├─ vitest_test(name)            ← actual test execution
-  └─ vitest(name_snapshots)       ← snapshot update targets
+```starlark
+# gazelle:resolve_regexp ts ^@formatjs_generated/([^/]+)(?:/.*)?$ //:node_modules/@formatjs_generated/$1
 ```
 
-**Test tsconfig overrides:**
+Generated package dependencies are ordinary `deps` labels under
+`//:node_modules/@formatjs_generated/...`.
 
-- `skipLibCheck: true` — test deps may have broken types
-- `types: ["node"]` — tests need Node.js globals
-- `noUncheckedSideEffectImports: false` — locale data imports are untyped
+## Custom Bazel Macros
 
-**vitest.config.mjs:** `resolve.preserveSymlinks: true` is critical — Bazel creates symlink runfiles; resolving to real paths escapes the sandbox.
+### `formatjs_library()` (`tools/compile.bzl`)
 
-### Gazelle Extension (tools/gazelle/ts/)
+Consumes Gazelle's mapped `ts_library` output.
 
-Custom Go gazelle plugin that auto-generates and maintains `formatjs_library` and `formatjs_test` rules by parsing TypeScript imports with oxc (Rust).
+- `srcs` and combined `deps` are Gazelle-managed.
+- `deps` contains both npm labels and internal package labels.
+- `_partition_deps()` splits npm labels from internal project references.
+- Published packages bundle with Rolldown and create `:pkg`.
+- Internal packages transpile per file with `oxc_transpiler`.
+- `@formatjs_generated/*` npm labels are bundled inline and deliberately not
+  added to Rolldown's external package list.
 
-**Source files (Go — tools/gazelle/ts/):**
+The macro also creates package validation tests:
 
-| File            | Purpose                                                                            |
-| --------------- | ---------------------------------------------------------------------------------- |
-| `language.go`   | Plugin struct (`tsLang`) with state: lifecycle manager + pkg.json cache            |
-| `lifecycle.go`  | `lifeCycleManager`: starts/stops oxc subprocess via `Before`/`DoneGeneratingRules` |
-| `generate.go`   | `GenerateRules`: file scanning, import extraction, rule creation                   |
-| `imports.go`    | `Imports`: registers rules in RuleIndex (exact + wildcard paths)                   |
-| `resolve.go`    | `Resolve`: converts imports → Bazel labels, reads package.json                     |
-| `config.go`     | `tsConfig` data struct for per-directory configuration                             |
-| `configure.go`  | `Configure`: reads BUILD directives, manages config inheritance                    |
-| `kinds.go`      | Rule type definitions, merge behavior, `Kinds()`, `Loads()`                        |
-| `fix.go`        | `Fix`: post-processing hook (currently no-op)                                      |
-| `parser.go`     | `ImportStatement` type + `extractImportsBatch` method                              |
-| `parser_oxc.go` | `OxcParser` subprocess client (length-prefixed JSON over stdin/stdout)             |
+- `no_internal_imports_test` checks bundled output for leaked `#packages/*`
+  imports.
+- `package_json_test` checks external bare imports against package metadata.
+- `package_exports_test` checks `package.json` exports against package contents.
 
-**Source files (Rust — crates/ts_import_extractor/):**
+### `formatjs_test()` (`tools/test.bzl`)
 
-| File                     | Purpose                                                    |
-| ------------------------ | ---------------------------------------------------------- |
-| `src/main.rs`            | Subprocess main loop: stdin/stdout framing, rayon dispatch |
-| `src/extract_imports.rs` | oxc AST visitor: extracts import paths from TS/TSX files   |
-| `src/lib.rs`             | Public API re-exports for the library                      |
+Consumes Gazelle's mapped `ts_test` output. `gazelle_ts` provides a single
+`data` list, so the wrapper partitions it into:
 
-**Auto-generation behavior:**
+- test source files and JSON fixtures,
+- Bazel dependency labels for type checking,
+- runtime-only data labels such as `//:package.json`.
 
-- If a directory has `.ts`/`.tsx` source files → auto-creates `formatjs_library(name = "dist")`
-- If a directory has test files → auto-creates `formatjs_test(name = "unit_test")`
-- Gazelle's merge preserves manually-set attrs (entry_points, types, npm_package_name, etc.)
-- Disable with `# gazelle:formatjs_enabled false` for directories with custom build rules
+When a sibling `:lib` exists, tests use that source library instead of the
+published bundle target. This avoids a package-local `package.json` shadowing the
+root `package.json` needed for `#packages/*` runtime imports.
 
-**What gazelle manages:**
+### `vitest()` (`tools/vitest.bzl`)
 
-| Rule               | Managed attrs                                                                  |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `formatjs_library` | `srcs` + `visibility` (GenerateRules), `deps` + `project_references` (Resolve) |
-| `formatjs_test`    | `srcs` (GenerateRules), `deps` (Resolve)                                       |
-
-**Merge behavior (kinds.go):**
-
-| Attr category   | Behavior                                             | Examples                     |
-| --------------- | ---------------------------------------------------- | ---------------------------- |
-| MergeableAttrs  | Merged with existing; `# keep` entries preserved     | `srcs`                       |
-| ResolveAttrs    | Set by Resolve(), replacing existing values each run | `deps`, `project_references` |
-| Set in Generate | Overwritten each run                                 | `visibility`                 |
-| Not set         | Preserved from existing BUILD file                   | `entry_points`, `types`      |
-
-**How srcs are generated:**
-
-- Collects `.ts`/`.tsx` files from `args.RegularFiles` (includes subdirs without BUILD files)
-- Partitions into source files and test files (`tests/`/`test/` prefix or `.test.ts` suffix)
-- Test srcs also include `.json` data files under `tests/` (for locale data fixtures)
-- Skips files under `fixtures/` directories (auto-discovered by `formatjs_test` macro)
-
-**How deps are resolved (resolve.go):**
-
-- Parses imports via oxc subprocess (parser_oxc.go → crates/ts_import_extractor)
-- `#packages/*` imports → walked up path hierarchy → `project_references` (internal Bazel labels)
-- `node:*` / Node builtins → `//:node_modules/@types/node`
-- npm packages → `//:node_modules/<pkg>` (with auto `@types` detection)
-- Only adds deps for packages found in root `package.json` (prevents non-existent targets)
-
-**Oxc parser subprocess architecture:**
-
-The plugin uses a subprocess model (not cgo/FFI) for calling Rust from Go. This avoids
-cgo overhead, FFI memory management, `cc_library` chains, and dylib path issues.
+Defines a typechecked Vitest target:
 
 ```
-Go (gazelle plugin)                     Rust (ts_import_extractor)
-┌────────────────────────┐              ┌──────────────────────────────┐
-│ parser_oxc.go          │  stdin       │ main.rs                      │
-│   OxcParser struct     │ ────────────>│   length-prefixed protobuf   │
-│   writeFrame/readFrame │  stdout      │   rayon parallel file parse  │
-│   runfiles.Rlocation   │ <────────────│   oxc Visit AST walker       │
-└────────────────────────┘              └──────────────────────────────┘
+vitest(name, srcs, deps, data, fixtures, dom, snapshots, config, tsconfig)
+  ├─ ts_project(<name>_typecheck)  → tsgo, no emit
+  ├─ vitest_test(<name>)           → actual test execution
+  └─ <name>.update                 → manual snapshot update helper
 ```
 
-- **Protocol:** Length-prefixed protobuf frames over stdin/stdout.
-  Schema: `crates/ts_import_extractor/proto/message.proto`
-  Each frame: `[4-byte big-endian u32 length][protobuf payload]`
-  Go uses `google.golang.org/protobuf/proto`, Rust uses `prost`.
-- **Lifecycle:** Subprocess spawned in `lifeCycleManager.Before()` at plugin startup,
-  shut down in `DoneGeneratingRules()`. Stays alive for entire gazelle run.
-- **Binary discovery:** `runfiles.Rlocation("_main/crates/ts_import_extractor/bin")`.
-  The binary is a `data` dep on the `go_library` rule.
-- **Batching:** All TypeScript files in a directory are sent in one request (not per-file).
-  rayon thread pool on the Rust side parses files within the batch in parallel.
-- **Error handling:**
-  - Go: `Before()` logs warning on startup failure; `extractImportsBatch()` returns nil map
-    if parser unavailable — caller skips imports.
-  - Rust: checks `ret.errors` after parsing — malformed files return `Err` with oxc diagnostics
-    instead of extracting from partially-recovered ASTs (avoids incorrect dep graphs).
-    Stdout write errors exit cleanly instead of panicking.
-- **Rust optimization flags:** `panic=abort` (no unwind tables), `codegen-units=1` (better inlining).
-  LTO is incompatible with the Rust toolchain's `embed-bitcode=no` default.
-- **oxc AST visitor:** Implements `Visit<'a>` trait, extracts from 4 node types:
-  `ImportDeclaration`, `ExportNamedDeclaration`, `ExportAllDeclaration`, `ImportExpression`
+Test typecheck config adds:
 
-**Performance (200 files, M4 Max, `bazel test -c opt`):**
+- `skipLibCheck: true`
+- `types: ["node"]`
+- `noUncheckedSideEffectImports: false`
 
-| Metric    | Tree-sitter (old) | Oxc (current) | Improvement |
-| --------- | ----------------- | ------------- | ----------- |
-| Time/op   | 89.5ms            | 2.5ms         | ~36x faster |
-| Memory/op | 32.2MB            | 165KB         | ~195x less  |
-| Allocs/op | 323,058           | 1,283         | ~252x fewer |
+`//tools:vitest_config_mjs` is the default test config. It must preserve symlinks
+because Bazel test runfiles are symlink-heavy.
 
-**Three-phase pipeline:**
+### `rolldown_bundle()` (`tools/rolldown.bzl`)
 
-1. **GenerateRules** (generate.go): Scan `.ts`/`.tsx` files, extract imports via oxc subprocess, create rules with `srcs`
-2. **Imports** (imports.go): Register each rule in the RuleIndex (exact + wildcard paths)
-3. **Resolve** (resolve.go): Query RuleIndex to convert imports → Bazel labels, set `deps`/`project_references`
+Wraps `js_run_binary("//tools:rolldown-bundle-bin")`.
 
-**Architecture pattern:** The plugin follows the same separation-of-concerns pattern as
-[gazelle-ts-plugin](https://github.com/aspect-build/gazelle-ts-plugin):
-stateful language struct with lifecycle management, one file per Gazelle interface method
-(`generate.go`, `imports.go`, `resolve.go`, `configure.go`, `fix.go`), and config data
-separate from config interface (`config.go` vs `configure.go`).
+- One-output mode emits `<output>.js` and `<output>.js.map`.
+- `dts = True` or code splitting uses an output directory.
+- External packages are passed with repeated `--external`.
+- Published package bundles use `dts = True`.
 
-### generate_ide_tsconfig_json (tools/index.bzl)
+The backing TypeScript script handles `#packages/*` workspace resolution and
+delegates declaration bundling to `rolldown-plugin-dts`.
 
-Generates IDE tsconfig.json with:
+### `ts_compile()` / `ts_compile_node()` (`tools/index.bzl`)
 
-- `#packages/*` path alias (depth-aware)
-- `@formatjs_generated/*` path alias pointing to `bazel-bin/`
-- `composite: true` if requested
-- `references` from Bazel labels → relative tsconfig paths
-- `exclude` auto-generated via `native.subpackages()` for child Bazel packages
+Legacy/general helper macros still exist for custom TS compilation:
 
-### generate_package_file (tools/generated.bzl)
+```
+ts_compile(name)
+  ├─ ts_project(<name>-esm-typecheck)  → tsgo, no emit
+  ├─ ts_project(<name>-esm)            → oxc transpiler + declarations
+  └─ js_library(name)
+```
 
-Same pipeline as `generate_src_file()` but output stays in Bazel — no `write_source_files`. Used for `@formatjs_generated/*` packages.
+`ts_compile_node()` uses `ESNEXT_TSCONFIG` and supports additional runtime data.
+Most package BUILD files now use `formatjs_library()` instead.
 
-### formatjs_generated_package (tools/generated.bzl)
+### `generate_ide_tsconfig_json()` (`tools/index.bzl`)
 
-Creates an `@formatjs_generated/*` npm package from generated `.ts` files:
+Generates per-package `tsconfig.json` files.
 
-1. Compiles `.ts` → `.js` + `.d.ts` via `oxc_transpiler`
-2. Generates `package.json`
-3. Creates `npm_package` linked via `npm_link_package()` in root BUILD
+- Extends the root `tsconfig.json` with a depth-aware relative path.
+- Adds `#packages/*` path mapping.
+- Enables `composite` for internal packages.
+- Converts internal project reference labels into relative tsconfig references.
+- Excludes child Bazel subpackages via `native.subpackages()`.
 
-See `knowledge-base/011-generated-packages.md` for full details.
+### Generated Data Packages (`tools/generated.bzl`)
 
-### oxc_transpiler (tools/oxc_transpiler.bzl + tools/oxc-transpiler/index.mjs)
+`generate_package_file()` runs TypeScript generation scripts and keeps the output
+inside Bazel. It intentionally does not call `write_source_files`.
 
-Custom Bazel rule wrapping oxc-transform:
+`formatjs_generated_package()` compiles generated `.ts` files with
+`oxc_transpiler`, creates a minimal package.json, and packages the result under
+`@formatjs_generated/<name>`.
 
-- Input: `.ts` file → Output: `.js` + `.d.ts`
-- Manually rewrites `./foo.ts` → `./foo.js` in imports (oxc doesn't have `rewriteRelativeImportExtensions`)
-- Uses `onlyRemoveTypeImports: true` + `declaration: true`
+Root `BUILD.bazel` calls `link_all_generated_packages()` from
+`tools/generated_packages.bzl` so generated packages are available as
+`//:node_modules/@formatjs_generated/<name>` labels.
 
-**Known workaround:** Hardcoded `../../../` depth to escape bin directory (fragile if Bazel changes bin layout).
+See `knowledge-base/011-generated-packages.md` for the generated package layout.
 
-## Composite Sub-Packages
+### `oxc_transpiler`
 
-Internal packages like `ecma402-abstract` can be split into composite Bazel sub-packages:
+`tools/oxc_transpiler.bzl` wraps `tools/oxc-transpiler/index.mjs`.
+
+- Inputs: `.ts` / `.tsx` sources.
+- Outputs: `.js` and `.d.ts`.
+- Uses `onlyRemoveTypeImports: true` and declaration generation.
+- Rewrites relative `.ts` imports to `.js` for runtime ESM compatibility.
+
+## Composite Subpackages
+
+Internal packages can be split across Bazel packages:
 
 ```
 packages/ecma402-abstract/
-  BUILD.bazel           ← ts_compile (root files only)
-  types/BUILD.bazel     ← ts_compile (type definitions)
-  NumberFormat/BUILD.bazel ← ts_compile (NumberFormat AOs)
+  BUILD.bazel
+  types/BUILD.bazel
+  NumberFormat/BUILD.bazel
+  DateTimeFormat/BUILD.bazel
+  DisplayNames/BUILD.bazel
+  DurationFormat/BUILD.bazel
+  PluralRules/BUILD.bazel
+  RelativeTimeFormat/BUILD.bazel
 ```
 
-Each sub-package:
+For internal packages, `formatjs_library()` generates composite IDE tsconfigs
+and parent packages exclude child Bazel subpackages to avoid double compilation.
+Consumers depend directly on the subpackage labels they import.
 
-- Has `formatjs_library` (auto-generated by gazelle when `.ts` files exist)
-- The macro auto-detects `package.json` via glob — no manual `package_json` attr needed
-- Has `generate_ide_tsconfig_json(composite=True)`
-- Parent auto-excludes children via `native.subpackages()` in tsconfig
-- Consumers depend on sub-packages directly: `//packages/ecma402-abstract/types`
-
-## .bazelrc Flags
+## `.bazelrc` Flags
 
 ### Project Flags
 
-| Flag                                | Value                     | Rationale                    |
-| ----------------------------------- | ------------------------- | ---------------------------- |
-| `java_language_version`             | 17                        | ICU4J conformance tests      |
-| `@aspect_rules_ts//ts:skipLibCheck` | honor_tsconfig            | Respect per-package tsconfig |
-| `NODE_OPTIONS`                      | --max-old-space-size=4096 | Prevent OOM during bundling  |
+| Flag                                             | Value / config              | Rationale                       |
+| ------------------------------------------------ | --------------------------- | ------------------------------- |
+| `--enable_bzlmod`                                | enabled                     | Use `MODULE.bazel`              |
+| `--enable_platform_specific_config`              | enabled                     | Host platform-specific config   |
+| `java_language_version`                          | 17                          | ICU4J conformance tests         |
+| `NODE_OPTIONS`                                   | `--max-old-space-size=4096` | Prevent Node OOMs during builds |
+| `@aspect_rules_ts//ts:skipLibCheck`              | `honor_tsconfig`            | Respect per-target tsconfig     |
+| `@aspect_rules_ts//ts:default_to_tsc_transpiler` | enabled                     | Default ts_project transpiler   |
+| `--experimental_platform_in_output_dir`          | enabled                     | Platform-specific output layout |
+| `--remote_cache_compression`                     | enabled                     | Smaller remote cache transfer   |
 
-### Aspect Best Practices (.aspect/bazelrc/)
+### Aspect `.bazelrc` Imports
 
-**correctness.bazelrc:**
+The repo imports Aspect's Bazel 6 recommended rc files:
 
-- `--sandbox_default_allow_network=false` — hermetic builds, no network in sandbox
-- `--incompatible_strict_action_env` — no PATH leakage from host
-- `--noremote_upload_local_results` — don't pollute shared cache with local builds
-- `experimental_allow_tags_propagation` disabled — causes "conflicting actions" in this monorepo
-
-**performance.bazelrc:**
-
-- `--reuse_sandbox_directories` — avoid recreating sandbox dirs between actions
-- `--nolegacy_external_runfiles` — no `.runfiles/wsname/external/` symlink forests
-
-**debug.bazelrc:**
-
-- `--config=debug` enables: streamed test output, exclusive strategy, no timeout
+- `.aspect/bazelrc/bazel6.bazelrc`
+- `.aspect/bazelrc/convenience.bazelrc`
+- `.aspect/bazelrc/correctness.bazelrc`
+- `.aspect/bazelrc/debug.bazelrc`
+- `.aspect/bazelrc/performance.bazelrc`
 
 ## Build Flow Example
 
-Building `@formatjs/intl-locale:pkg`:
+Building a published package such as `//packages/intl-locale:pkg`:
 
 ```
-1. Module Resolution (MODULE.bazel)
-   → Fetch npm packages, Rust crates, TypeScript
+1. bzlmod resolves MODULE.bazel dependencies
+2. npm_translate_lock exposes pnpm-lock.yaml packages as //:node_modules/* labels
+3. Gazelle-maintained BUILD attrs provide srcs and deps
+4. copy_to_bin(:srcs) materializes sources in Bazel output
+5. ts_project(:typecheck) runs tsgo with no emit
+6. rolldown_bundle() bundles JS and declarations for each entry point
+7. validation tests inspect bundled output and package metadata
+8. npm_package(:pkg) assembles the publishable package
+9. root :dist aggregates all package :pkg targets
+```
 
-2. CLDR Data Generation
-   → Rust tools generate locale data .json files
+Generated-data imports add this path:
 
-3. Type Checking (tsgo, no_emit=True)
-   → Fast parallel type check via packages_tsconfig()
-   → Resolves #packages/* via paths
-
-4. Transpilation (oxc-transform)
-   → Per-file .ts → .js + .d.ts
-   → Rewrites ./foo.ts → ./foo.js
-
-5. Bundling (rolldown)
-   → Single pass: bundled .js + .js.map + .d.ts
-   → #packages/* resolved via resolve.alias
-   → dts plugin inlines types, strips #packages/ paths
-
-6. npm_package Assembly
-   → Collects .js, .d.ts, package.json, README, LICENSE
-
-7. Root dist Target
-   → copy_to_directory aggregates all :pkg targets
+```
+generate_package_file()
+  → formatjs_generated_package()
+  → link_all_generated_packages()
+  → //:node_modules/@formatjs_generated/<name>
+  → bundled inline by formatjs_library()
 ```
 
 ## Critical Rules
 
-1. **Never run `bazel clean`** — destroys cache, 10+ minute rebuild penalty
-2. **Always use Bazel** — not npm/yarn/pnpm for builds or tests
-3. **Rust benchmarks need `-c opt`** — debug mode is 10x slower
-4. **Commit messages must be Conventional Commits** — enforced by commitlint
-5. **`@formatjs/ecma402-abstract` is not a valid commitlint scope** — use `deps`
+1. **Do not run `bazel clean` casually.** It destroys local cache state and can
+   turn a small rebuild into a full rebuild.
+2. **Use Bazel for builds/tests.** Root npm/pnpm scripts delegate to Bazel for
+   build and test work.
+3. **Run Gazelle after import graph changes.** Use `bazel run //:gazelle`.
+4. **Rust benchmarks need `-c opt`.** Debug Rust benchmarks are not meaningful.
+5. **Keep generated data in Bazel output.** New generated data should use
+   `generate_package_file()` / `formatjs_generated_package()`, not checked-in
+   generated `.ts` files.

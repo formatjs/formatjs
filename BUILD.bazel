@@ -21,17 +21,9 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:map_kind ts_test formatjs_test //tools:test.bzl
 # gazelle:ts_npm_link_pattern //:node_modules/{pkg}
 # @formatjs_generated/* are auto-generated npm packages linked via
-# npm_link_package() — they don't appear in package.json, so list them here
-# for the import resolver. Patterns end at the package boundary (no trailing
-# `*`) so subpath imports like `@formatjs_generated/cldr.core/regions.js`
-# resolve to the package label, not the file path.
-# gazelle:ts_generated_package @formatjs_generated/cldr.core/*=//:node_modules/@formatjs_generated/cldr.core
-# gazelle:ts_generated_package @formatjs_generated/cldr.locale/*=//:node_modules/@formatjs_generated/cldr.locale
-# gazelle:ts_generated_package @formatjs_generated/cldr.number/*=//:node_modules/@formatjs_generated/cldr.number
-# gazelle:ts_generated_package @formatjs_generated/cldr.supported-locales/*=//:node_modules/@formatjs_generated/cldr.supported-locales
-# gazelle:ts_generated_package @formatjs_generated/cldr.supported-values/*=//:node_modules/@formatjs_generated/cldr.supported-values
-# gazelle:ts_generated_package @formatjs_generated/tz/*=//:node_modules/@formatjs_generated/tz
-# gazelle:ts_generated_package @formatjs_generated/unicode/*=//:node_modules/@formatjs_generated/unicode
+# npm_link_package() — they don't appear in package.json, so route all subpath
+# imports to the package-level node_modules label.
+# gazelle:resolve_regexp ts ^@formatjs_generated/([^/]+)(?:/.*)?$ //:node_modules/@formatjs_generated/$1
 
 # Exported for Node subpath import resolution (#packages/*) in tests.
 # Node walks up to find package.json with "imports" field.
