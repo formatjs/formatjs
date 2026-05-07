@@ -1,5 +1,7 @@
 import {DurationFormat} from '#packages/intl-durationformat/core.js'
+import {type DurationFormatOptions} from '#packages/intl-durationformat/index.js'
 import {test, expect} from 'vitest'
+
 test('Intl.DurationFormat resolvedOptions', function () {
   expect(new DurationFormat('en').resolvedOptions()).toEqual({
     days: 'short',
@@ -73,9 +75,11 @@ test('Intl.DurationFormat format', function () {
 })
 
 test('Intl.DurationFormat format digital', function () {
-  expect(new DurationFormat('en', {style: 'digital'}).format({years: 1})).toBe(
-    '1 yr, 0:00:00'
-  )
+  const customFormatterOptions: DurationFormatOptions = {style: 'digital'}
+
+  expect(
+    new DurationFormat('en', customFormatterOptions).format({years: 1})
+  ).toBe('1 yr, 0:00:00')
 })
 
 test('Intl.DurationFormat sub-second rollup is exact (#6462)', function () {
