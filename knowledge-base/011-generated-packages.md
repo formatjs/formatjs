@@ -276,7 +276,9 @@ Generated packages must be built at least once for IDE resolution (e.g., `bazel 
 
 ### Gazelle
 
-The custom gazelle plugin at `tools/gazelle/ts/resolve.go` resolves `@formatjs_generated/<pkg>` imports to `//:node_modules/@formatjs_generated/<pkg>` Bazel labels, placed in `deps` (not `project_references`).
+Root `BUILD.bazel` uses native Gazelle `resolve_regexp` to resolve
+`@formatjs_generated/<pkg>/...` imports to
+`//:node_modules/@formatjs_generated/<pkg>` Bazel labels, placed in `deps`.
 
 ## Adding a New Generated File
 
@@ -310,5 +312,4 @@ Rust generated files (`crates/icu_messageformat_parser/regex_generated.rs`, `tim
 | `tools/compile.bzl`                      | `formatjs_library()` — excludes `@formatjs_generated` from rolldown externals |
 | `tools/tsconfig.bzl`                     | `packages_tsconfig()` — `@formatjs_generated/*` path alias for IDE            |
 | `tools/index.bzl`                        | `generate_ide_tsconfig_json()` — `@formatjs_generated/*` path mapping         |
-| `tools/gazelle/ts/resolve.go`            | Resolves `@formatjs_generated/` imports to Bazel labels                       |
 | `BUILD.bazel` (root)                     | Calls `link_all_generated_packages()`                                         |
