@@ -255,7 +255,7 @@ formatjs_cli = module_extension(
     ## Advanced: Custom Platform Binaries
 
     If you need to use a custom binary for a specific platform (e.g., unreleased version,
-    custom build, or older version not in the built-in list), configure custom platforms
+    custom build, or platform not in the built-in list), configure custom platforms
     in a single toolchain call:
 
     ```starlark
@@ -295,7 +295,8 @@ formatjs_cli = module_extension(
 
     ## Version History
 
-    - **0.1.2**: Latest version with native key sorting
+    - **1.1.4**: Latest built-in version
+    - **0.1.2**: Added native key sorting
     - **0.1.1**: Added key sorting support
     - **0.1.0**: Initial release
 

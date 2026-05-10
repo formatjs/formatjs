@@ -1,10 +1,10 @@
-# Custom FormatJS CLI Version Example
+# Custom FormatJS CLI Binary Example
 
-This example demonstrates how to use a custom FormatJS CLI version that is not included in the built-in `FORMATJS_CLI_VERSIONS` dictionary.
+This example demonstrates how to use custom FormatJS CLI binary URLs instead of the built-in `FORMATJS_CLI_VERSIONS` dictionary.
 
 ## What This Example Shows
 
-- **Custom Version Configuration**: How to use version 0.1.0, which was removed from the built-in versions
+- **Custom Binary Configuration**: How to provide explicit URLs and checksums for version 0.1.0
 - **Simple Ergonomic API**: Just provide version, platform, url, and sha256 - no manual platform constraints needed
 - **Message Extraction**: A working example of extracting messages using the custom CLI version
 
@@ -82,7 +82,7 @@ In this example:
 
 - On macOS ARM64: The custom 0.1.0 darwin-arm64 toolchain is available
 - On Linux x64: The custom 0.1.0 linux-x64 toolchain is available
-- The standard 0.1.2 toolchains (from rules_formatjs root MODULE.bazel) are also available
+- The standard toolchains from the rules_formatjs root MODULE.bazel are also available
 - Bazel will select the best match based on platform constraints
 
 ## Running the Example
@@ -162,7 +162,7 @@ When you build the `:messages` target, it will create a `messages.json` file con
 
 ## Comparison with Standard Toolchains
 
-This example does NOT call `formatjs_cli.toolchain()` because we're only using custom binaries. However, the root MODULE.bazel of `rules_formatjs` does call it, so standard toolchains (0.1.2) are also available.
+This example does NOT call `formatjs_cli.toolchain()` without custom repositories because we're only using custom binaries. However, the root MODULE.bazel of `rules_formatjs` does call it, so standard toolchains are also available.
 
 If you want to completely override and use only custom versions, you can still do so - Bazel will prefer the custom toolchains if they match the platform constraints.
 

@@ -1,6 +1,6 @@
 """Example demonstrating custom FormatJS CLI version configuration.
 
-This example shows how to use a custom version (0.1.0) that is not in the built-in
+This example shows how to use custom FormatJS CLI binary URLs instead of the built-in
 FORMATJS_CLI_VERSIONS dictionary. This is useful for:
 - Testing unreleased versions
 - Using custom builds
@@ -18,8 +18,7 @@ local_path_override(
     path = "../..",
 )
 
-# Configure custom FormatJS CLI version 0.1.0
-# This version was removed from the built-in versions but we can still use it
+# Configure custom FormatJS CLI binary URLs for version 0.1.0
 formatjs_cli = use_extension("@rules_formatjs//formatjs_cli:extensions.bzl", "formatjs_cli")
 
 # Single toolchain call with custom binaries (similar to rules_nodejs pattern)
@@ -53,7 +52,7 @@ use_repo(
 )
 
 # Register the custom version toolchains (0.1.0)
-# Note: Standard toolchains (0.1.2) are already registered by rules_formatjs root MODULE.bazel
+# Note: Standard toolchains are already registered by rules_formatjs root MODULE.bazel
 # Bazel will select the appropriate one based on platform constraints and registration order
 register_toolchains(
     "@formatjs_v0_1_0_toolchains//:all",
