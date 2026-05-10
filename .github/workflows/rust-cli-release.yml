@@ -17,24 +17,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build ${{ matrix.platform }}
-    runs-on: ${{ matrix.runner }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: macOS ARM64
-            runner: macos-latest
-            bazel_platform: //crates/formatjs_cli/platforms:darwin_arm64
-            artifact_name: formatjs_cli-darwin-arm64
-            config: ci-darwin
-          - platform: Linux x86_64
-            runner: ubuntu-latest
-            bazel_platform: //crates/formatjs_cli/platforms:linux_x86_64
-            artifact_name: formatjs_cli-linux-x64
-            config: ci
+  build_macos:
+    name: Build macOS ARM64
+    runs-on: macos-latest
 
     steps:
       - name: Checkout Repository
@@ -44,46 +29,99 @@ jobs:
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-${{ matrix.platform }}
+          disk-cache: ${{ github.workflow }}-macOS ARM64
           repository-cache: true
 
       - name: Build Binary
         run: |
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel build \
-              --config=${{ matrix.config }} \
+              --config=ci-darwin \
               --compilation_mode=opt \
-              --platforms=${{ matrix.bazel_platform }} \
+              --platforms=//crates/formatjs_cli/platforms:darwin_arm64 \
               --remote_download_outputs=all \
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
               //crates/formatjs_cli:release_binary
           else
             bazel build \
               --compilation_mode=opt \
-              --platforms=${{ matrix.bazel_platform }} \
+              --platforms=//crates/formatjs_cli/platforms:darwin_arm64 \
               //crates/formatjs_cli:release_binary
           fi
 
           # Copy binary to artifacts directory
           mkdir -p artifacts
-          cp bazel-bin/crates/formatjs_cli/formatjs_cli_release artifacts/${{ matrix.artifact_name }}
-          chmod +x artifacts/${{ matrix.artifact_name }}
+          cp bazel-bin/crates/formatjs_cli/formatjs_cli_release artifacts/formatjs_cli-darwin-arm64
+          chmod +x artifacts/formatjs_cli-darwin-arm64
 
       - name: Smoke Test
         run: |
-          ./artifacts/${{ matrix.artifact_name }} --version
-          ./artifacts/${{ matrix.artifact_name }} --help
+          ./artifacts/formatjs_cli-darwin-arm64 --version
+          ./artifacts/formatjs_cli-darwin-arm64 --help
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact_name }}
-          path: artifacts/${{ matrix.artifact_name }}
+          name: formatjs_cli-darwin-arm64
+          path: artifacts/formatjs_cli-darwin-arm64
+          retention-days: 7
+
+  build_linux:
+    name: Build Linux x86_64
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-Linux x86_64-musl
+          repository-cache: true
+
+      - name: Build Binary
+        run: |
+          bazel build //crates/formatjs_cli:release_binary_linux_x64
+
+          # Copy binary to artifacts directory
+          BINARY_PATH="$(bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_x64)"
+          mkdir -p artifacts
+          cp "$BINARY_PATH" artifacts/formatjs_cli-linux-x64
+          chmod +x artifacts/formatjs_cli-linux-x64
+
+      - name: Smoke Test
+        run: |
+          ./artifacts/formatjs_cli-linux-x64 --version
+          ./artifacts/formatjs_cli-linux-x64 --help
+
+      - name: Verify glibc Compatibility
+        run: |
+          file artifacts/formatjs_cli-linux-x64
+          ldd_output="$(ldd artifacts/formatjs_cli-linux-x64 2>&1 || true)"
+          echo "$ldd_output"
+          if echo "$ldd_output" | grep -q "not a dynamic executable"; then
+            echo "Linux binary is statically linked and does not require glibc"
+          elif strings artifacts/formatjs_cli-linux-x64 | grep -q 'GLIBC_'; then
+            echo "Linux musl binary unexpectedly references glibc symbols" >&2
+            exit 1
+          else
+            echo "Linux binary does not reference glibc symbols"
+          fi
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: formatjs_cli-linux-x64
+          path: artifacts/formatjs_cli-linux-x64
           retention-days: 7
 
   release:
     name: Create Release
-    needs: build
+    needs:
+      - build_macos
+      - build_linux
     runs-on: ubuntu-latest
     permissions:
       contents: write

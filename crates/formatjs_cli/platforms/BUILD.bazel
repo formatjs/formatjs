@@ -13,3 +13,11 @@ platform(
     parents = ["@rules_rs//rs/platforms:x86_64-unknown-linux-gnu"],
     visibility = ["//visibility:public"],
 )
+
+# Linux x86_64 with musl libc. This produces a static binary that avoids a
+# host glibc runtime requirement.
+platform(
+    name = "linux_x86_64_musl",
+    parents = ["@rules_rs//rs/platforms:x86_64-unknown-linux-musl"],
+    visibility = ["//visibility:public"],
+)

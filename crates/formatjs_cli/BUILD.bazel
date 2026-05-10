@@ -1,5 +1,6 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
+load(":release_binary.bzl", "release_binary_linux_x64")
 
 exports_files(
     [
@@ -98,6 +99,14 @@ genrule(
     name = "release_binary",
     srcs = [":formatjs_cli"],
     outs = ["formatjs_cli_release"],
+    cmd = "cp $< $@ && chmod +x $@",
+    visibility = ["//visibility:public"],
+)
+
+release_binary_linux_x64(
+    name = "release_binary_linux_x64",
+    srcs = [":formatjs_cli"],
+    outs = ["formatjs_cli_linux_x64"],
     cmd = "cp $< $@ && chmod +x $@",
     visibility = ["//visibility:public"],
 )
