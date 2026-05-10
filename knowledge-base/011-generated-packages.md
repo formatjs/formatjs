@@ -20,7 +20,7 @@ Generation script (.ts)
 flowchart TD
     subgraph "Data sources"
         CLDR["CLDR npm packages<br>(cldr-core, cldr-bcp47, etc.)"]
-        TZ["IANA tz database<br>(tz_data.tar.gz)"]
+        TZ["IANA tzdata/tzcode archives<br>(pinned in MODULE.bazel)"]
         UNI["Unicode data<br>(@unicode/unicode-17.0.0, emoji-data.txt)"]
     end
 
@@ -122,7 +122,7 @@ From various CLDR full packages. Each file is the set of locales a polyfill supp
 
 ### `@formatjs_generated/tz` — IANA timezone database (2 files)
 
-Data extracted from the IANA Time Zone Database (`tz_data.tar.gz` → zdump output and backward compatibility links).
+Data extracted from the IANA Time Zone Database. Bazel fetches pinned `tzdata` and `tzcode` archives, builds `zic`/`zdump` with `rules_cc`, runs `generate_tz_data`, and feeds the resulting `zdump` output plus IANA `backward` links into the generated package.
 
 ```
 @formatjs_generated/tz/
