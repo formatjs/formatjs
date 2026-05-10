@@ -11,5 +11,5 @@
     "@evilmartians/lefthook": "^2.0.0",
     "oxfmt": "^0.46.0"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@10.33.4"
 }
