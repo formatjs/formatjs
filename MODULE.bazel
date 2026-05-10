@@ -125,6 +125,10 @@ archive_override(
 )
 
 bazel_dep(name = "llvm", version = "0.7.5")
+bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
+
+llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
+use_repo(llvm_toolchain, "llvm_toolchains")
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
@@ -152,6 +156,7 @@ crate.from_cargo(
         "aarch64-unknown-linux-gnu",
         "x86_64-apple-darwin",
         "x86_64-unknown-linux-gnu",
+        "x86_64-unknown-linux-musl",
     ],
 )
 use_repo(crate, "crates")
