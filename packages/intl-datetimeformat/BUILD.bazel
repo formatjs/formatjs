@@ -1,7 +1,5 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@rules_multirun//:defs.bzl", "multirun")
-load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:index.bzl", "ts_run_binary")
@@ -9,7 +7,7 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load(":defs.bzl", "ZONES")
-load(":index.bzl", "generate_dockerfile")
+load(":index.bzl", "generate_tz_data")
 
 npm_link_all_packages()
 
@@ -116,16 +114,8 @@ formatjs_test(
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
-# Expand zdump files
-genrule(
-    name = "tz_data_extract",
-    srcs = [
-        "tz_data.tar.gz",
-    ],
-    outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
-    cmd = "tar -xzf $< -C $(@D)",
-    message = "Extracting zdump data files",
-    tags = ["manual"],
+generate_tz_data(
+    name = "tz_data_generated",
 )
 
 filegroup(
@@ -938,25 +928,4 @@ js_binary(
         "--experimental-transform-types",
     ],
     tags = ["manual"],
-)
-
-multirun(
-    name = "tz_data.update",
-    testonly = True,
-    commands = [
-    ],
-)
-
-generate_dockerfile(
-    name = "dockerfile",
-)
-
-sh_binary(
-    name = "update_tz_data",
-    srcs = ["//packages/intl-datetimeformat/scripts:execute_tz_docker.sh"],
-    data = [
-        "tz_data.tar.gz",
-        ":dockerfile",
-    ],
-    deps = ["@bazel_tools//tools/bash/runfiles"],
 )

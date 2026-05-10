@@ -134,21 +134,21 @@ GH_TOKEN=xxxxxxx npm run prerelease
 
 ### Updating tzdata version
 
-`tzdata` requires `Docker` to be installed. This is because tzdata compilation requires `make`.
+`tzdata` is generated hermetically by Bazel from pinned IANA `tzdata` and `tzcode` archives.
 
-1. Change `IANA_TZ_VERSION` in [packages/intl-datetimeformat/index.bzl](https://github.com/formatjs/formatjs/blob/main/packages/intl-datetimeformat/index.bzl) to the desired version
+1. Change `IANA_TZ_VERSION` in [MODULE.bazel](https://github.com/formatjs/formatjs/blob/main/MODULE.bazel) to the desired version
 
-1. Update the sha256 for tzdata & tzcode targets
+1. Update the sha256 for the `iana_tzdata` and `iana_tzcode` targets
 
-1. Run the Docker image & update the tz_data.tar.gz
+1. Regenerate and test the Bazel outputs
 
 ```sh
-bazel run //packages/intl-datetimeformat:update_tz_data
+bazel build //packages/intl-datetimeformat:tz_all_tz //packages/intl-datetimeformat:tz_links
 ```
 
 1. Test to make sure everything passes
 
-1. New TimeZones or renames of TimeZones are not updated using the Bazel script. You need to manually update `index.bzl`.
+1. New TimeZones or renames of TimeZones are not updated automatically. You need to manually update `packages/intl-datetimeformat/defs.bzl`.
 
 ### Updating test snapshots
 

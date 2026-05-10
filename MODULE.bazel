@@ -6,6 +6,7 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "rules_cc", version = "0.2.18")
 bazel_dep(name = "rules_shell", version = "0.8.0")
 
 ######### JS & Node.js rules #########
@@ -183,6 +184,22 @@ register_toolchains(
 ######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+IANA_TZ_VERSION = "2026b"
+
+http_archive(
+    name = "iana_tzcode",
+    build_file = "@//packages/intl-datetimeformat:tzcode.BUILD.bazel",
+    sha256 = "37e9ed8427f5d3521c22fc58e293cbfb043d70eedf1003870b33f363f61ca344",
+    urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
+)
+
+http_archive(
+    name = "iana_tzdata",
+    build_file = "@//packages/intl-datetimeformat:tzdata.BUILD.bazel",
+    sha256 = "114543d9f19a6bfeb5bca43686aea173d38755a3db1f2eec112647ae92c6f544",
+    urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
+)
 
 TEST262_COMMIT = "ade328d530525333751e8a3b58f02e18624da085"
 

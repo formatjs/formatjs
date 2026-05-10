@@ -2,7 +2,6 @@
 
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 
-# Pre-compile tzdata
 ZIC_FILES = [
     "backward",
     "africa",
@@ -15,73 +14,51 @@ ZIC_FILES = [
     "southamerica",
 ]
 
-IANA_TZ_VERSION = "2026b"
-
-def generate_dockerfile(name):
-    """
-    Generates a Dockerfile with the necessary commands to create directories and run zdump for each zone.
-
-    Args:
-        name: The name of the genrule.
-    """
-
-    # Deduplicate parent directories in Starlark
+def generate_tz_data(name):
+    """Generate zdump data from Bazel-built IANA zic/zdump tools."""
     unique_dirs = {}
     for zone in ZONES:
         parent_dir = zone.rsplit("/", 1)[0]
-        unique_dirs[parent_dir] = True  # Dictionary to ensure uniqueness
+        unique_dirs[parent_dir] = True
 
-    # Create mkdir commands for unique directories
-    mkdir_commands = " && \\ \n".join(["mkdir -p /tz_data_generated/zdump/{}".format(dir) for dir in unique_dirs])
+    mkdir_commands = "\n".join(["mkdir -p \"$${out_dir}/zdump/%s\"" % dir for dir in unique_dirs])
+    zic_inputs = " ".join([
+        "\"$${execroot}/$(location @iana_tzdata//:%s)\"" % zic_file
+        for zic_file in ZIC_FILES
+    ])
+    zdump_commands = "\n".join([
+        "\"$${zdump}\" -c 2100 -v zic/{zone} > \"$${out_dir}/zdump/{zone}\"".replace("{zone}", zone)
+        for zone in ZONES
+    ])
 
-    # Create zdump commands for each zone
-    zdump_commands = " && \\ \n".join(["/tzdir/usr/bin/zdump -c 2100 -v /zic/{} > /tz_data_generated/zdump/{}".format(zone, zone) for zone in ZONES])
+    cmd = """
+set -euo pipefail
 
-    # Join the ZIC files list into a space-separated string
-    zic_files = " ".join(ZIC_FILES)
+execroot="$$(pwd)"
+out_dir="$${execroot}/$(@D)/tz_data_generated"
+work_dir="$${execroot}/$(@D)/tz_work"
+zic="$${execroot}/$(execpath @iana_tzcode//:zic)"
+zdump="$${execroot}/$(execpath @iana_tzcode//:zdump)"
 
-    # Generate the entire Dockerfile content as a string
-    dockerfile_content = """
-FROM ubuntu:22.04
+rm -rf "$${out_dir}" "$${work_dir}"
+mkdir -p "$${out_dir}/zdump" "$${work_dir}/zic"
+{mkdir_commands}
 
-# Install dependencies (excluding tzdata)
-RUN apt-get update && apt-get install -y build-essential make tar curl && \
-    rm -rf /var/lib/apt/lists/*
+"$${zic}" -d "$${work_dir}/zic" {zic_inputs}
+cp "$${execroot}/$(location @iana_tzdata//:backward)" "$${out_dir}/backward"
 
-# Set working directory for downloading files
-WORKDIR /tz
+cd "$${work_dir}"
+{zdump_commands}
+        """.replace("{mkdir_commands}", mkdir_commands).replace("{zic_inputs}", zic_inputs).replace("{zdump_commands}", zdump_commands)
 
-# Download tzdata and tzcode based on the version
-RUN curl -o tzdata.tar.gz https://data.iana.org/time-zones/releases/tzdata{iana_tz_version}.tar.gz
-RUN curl -o tzcode.tar.gz https://data.iana.org/time-zones/releases/tzcode{iana_tz_version}.tar.gz
-
-# Extract the copied files into /tz and set up directories in a single layer
-RUN tar -xzf tzdata.tar.gz -C /tz && \\
-    tar -xzf tzcode.tar.gz -C /tz && \\
-    mkdir -p /tzdir/usr/sbin /tzdir/usr/bin /tz_data_generated/zdump && \\
-    {mkdir_commands}
-
-# Pre-compile tzdata and run zdump commands
-RUN make TOPDIR=/tzdir install && \\
-    /tzdir/usr/sbin/zic -d /zic {zic_files} && \\
-    cp /tz/backward /tz_data_generated && \\
-    {zdump_commands}
-
-# Archive the data
-RUN tar -czvf /tz_data.tar.gz /tz_data_generated
-    """.format(
-        iana_tz_version = IANA_TZ_VERSION,
-        mkdir_commands = mkdir_commands,
-        zic_files = zic_files,
-        zdump_commands = zdump_commands,
-    )
-
-    # Write the Dockerfile content to the output file
     native.genrule(
         name = name,
-        srcs = [],
-        outs = ["Dockerfile"],
-        cmd = """
-            echo '{}' > $@
-        """.format(dockerfile_content.replace("'", "'\\''")),
+        srcs = ["@iana_tzdata//:%s" % zic_file for zic_file in ZIC_FILES],
+        outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
+        cmd = cmd,
+        message = "Generating zdump data files",
+        tools = [
+            "@iana_tzcode//:zdump",
+            "@iana_tzcode//:zic",
+        ],
     )

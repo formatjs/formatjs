@@ -1,7 +1,7 @@
 # gazelle:ignore
 load("//tools:index.bzl", "ts_binary")
 
-exports_files(glob(["*.sh"]) + ["packer.ts"])
+exports_files(["packer.ts"])
 
 ts_binary(
     name = "cldr-raw",

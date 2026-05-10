@@ -1,0 +1,62 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+
+genrule(
+    name = "tzdir_h",
+    outs = ["tzdir.h"],
+    cmd = """cat >$@ <<'EOF'
+#ifndef TZDEFAULT
+# define TZDEFAULT "/etc/localtime" /* default zone */
+#endif
+#ifndef TZDIR
+# define TZDIR "/usr/share/zoneinfo" /* TZif directory */
+#endif
+EOF""",
+)
+
+genrule(
+    name = "version_h",
+    srcs = ["version"],
+    outs = ["version.h"],
+    cmd = """read -r VERSION < $(location version) && cat >$@ <<EOF
+static char const PKGVERSION[]="(tzcode) ";
+static char const TZVERSION[]="$$VERSION";
+static char const REPORT_BUGS_TO[]="tz@iana.org";
+EOF""",
+)
+
+cc_binary(
+    name = "zic",
+    srcs = [
+        "private.h",
+        "tzfile.h",
+        "zic.c",
+        ":tzdir_h",
+        ":version_h",
+    ],
+    copts = [
+        "-std=c17",
+        "-DHAVE_GETTEXT=0",
+        "-DHAVE_GETRANDOM=0",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "zdump",
+    srcs = [
+        "localtime.c",
+        "private.h",
+        "strftime.c",
+        "tzfile.h",
+        "zdump.c",
+        ":tzdir_h",
+        ":version_h",
+    ],
+    copts = [
+        "-std=c17",
+        "-DHAVE_GETTEXT=0",
+        "-DHAVE_GETRANDOM=0",
+        "-DSUPPRESS_TZDIR=1",
+    ],
+    visibility = ["//visibility:public"],
+)

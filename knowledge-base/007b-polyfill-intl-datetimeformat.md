@@ -20,7 +20,7 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 | `cldr-numbers-full`  | Number formatting for date components                           |
 | `cldr-core`          | Hour cycle preferences, calendar preferences, metazone mappings |
 | `cldr-bcp47`         | Locale validation                                               |
-| IANA tzdata (v2026a) | Timezone transitions, links/aliases                             |
+| IANA tzdata (v2026b) | Timezone transitions, links/aliases                             |
 
 ### Date/Time Extraction (`scripts/extract-dates.ts`)
 
@@ -38,16 +38,18 @@ Processes ~680 locales in parallel:
 This is unique to DateTimeFormat — no other polyfill processes timezone data.
 
 ```
-IANA tzdata v2026a (tz_data.tar.gz)
+Pinned IANA tzdata/tzcode archives from MODULE.bazel
     ↓
-Docker build: compile zic, run zdump -c 2100 -v for 418 zones
+Bazel builds zic/zdump from tzcode with rules_cc
+    ↓
+generate_tz_data: run zic, then zdump -c 2100 -v for 418 zones
     ↓
 zdump files (raw transition dumps)
     ↓
 process-zdump.ts: parse transitions, pack with base-36 encoding
     ↓
-src/data/all-tz.generated.ts (~1.4MB packed)
-src/data/links.generated.ts (timezone aliases)
+@formatjs_generated/tz/all-tz.js (~1.4MB packed)
+@formatjs_generated/tz/links.js (timezone aliases)
 ```
 
 **418 IANA zones** organized by continent, with transitions from historical LMT through year 2100.
@@ -68,7 +70,7 @@ src/data/links.generated.ts (timezone aliases)
 Parses IANA `backward` file to generate alias mappings:
 
 ```typescript
-// src/data/links.generated.ts
+// @formatjs_generated/tz/links.js
 export default {
   "Africa/Accra": "Africa/Abidjan",
   "US/Eastern": "America/New_York",
@@ -86,9 +88,9 @@ Stage 2: locale-data (cldr.ts)
   Output: locale-data/{locale}.js + d.ts (~1360 files)
 
 Stage 3: Timezone processing (parallel)
-  tz_data_extract → zdump files (418 zones)
-  process-zdump.ts → src/data/all-tz.generated.ts
-  link.ts → src/data/links.generated.ts
+  generate_tz_data → zdump files (418 zones)
+  process-zdump.ts → @formatjs_generated/tz/all-tz.js
+  link.ts → @formatjs_generated/tz/links.js
   add-all-tz.js (polyfill bundle)
   add-golden-tz.js (subset bundle)
 
@@ -130,7 +132,7 @@ Stage 4: supported-locales.generated.ts
 
 ## Key Design Decisions
 
-- **Docker-based tz compilation**: Uses Docker to build zic from IANA source, ensuring reproducible timezone data
+- **Hermetic tz compilation**: Bazel fetches pinned IANA `tzdata`/`tzcode` archives, builds `zic`/`zdump` with `rules_cc`, and generates stable `zdump` files in Bazel output
 - **Base-36 packing**: Reduces timezone data size significantly vs raw JSON
 - **Golden timezone subset**: Allows apps to ship 121 zones instead of 418 for smaller bundles
 - **Hour cycle fallback**: When interval formats don't exist for a locale's hour cycle, synthesizes from alternate cycle
