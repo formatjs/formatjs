@@ -305,7 +305,7 @@ importers:
         version: 14.0.3
       content-tag:
         specifier: ^4.1.0
-        version: 4.1.1
+        version: 4.2.0
       conventional-changelog-angular:
         specifier: ^8.1.0
         version: 8.3.1
@@ -5611,8 +5611,8 @@ packages:
   content-tag@4.1.0:
     resolution: {integrity: sha512-On6gUuvI1l5MScHO+Xbwjeq1Pk9H6HOipDWkzqGGUGmKpq6K5TRmQuCl1LGSHbdIo2l+lSsgLKrLgCl5kKYA+A==}
 
-  content-tag@4.1.1:
-    resolution: {integrity: sha512-LyIbq4ZY+WbN0NoyHmg0w1kLPHyXZkZZrTDJZm/HW+MVurnKJy7U3m8WlpKm6lqbYbUSWP6ATNacE5dL2eH8+g==}
+  content-tag@4.2.0:
+    resolution: {integrity: sha512-f/o+F3qSa4gg23I7RWy6cMDxP2nPo99YWusxw2bjne7ZC6Acqqf4uB/+87AekOq1ehTocHH7b7nMd2X4S3NHVw==}
 
   conventional-changelog-angular@8.3.1:
     resolution: {integrity: sha512-6gfI3otXK5Ph5DfCOI1dblr+kN3FAm5a97hYoQkqNZxOaYa5WKfXH+AnpsmS+iUH2mgVC2Cg2Qw9m5OKcmNrIg==}
@@ -13743,7 +13743,7 @@ snapshots:
 
   content-tag@4.1.0: {}
 
-  content-tag@4.1.1: {}
+  content-tag@4.2.0: {}
 
   conventional-changelog-angular@8.3.1:
     dependencies:
