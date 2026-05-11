@@ -11,7 +11,7 @@ bazel_dep(name = "rules_shell", version = "0.8.0")
 
 ######### JS & Node.js rules #########
 
-bazel_dep(name = "aspect_rules_js", version = "3.0.3")
+bazel_dep(name = "aspect_rules_js", version = "3.1.1")
 
 ####### Node.js version #########
 # By default you get the node version from DEFAULT_NODE_VERSION in @rules_nodejs//nodejs:repositories.bzl
