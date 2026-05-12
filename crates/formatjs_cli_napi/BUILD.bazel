@@ -1,0 +1,32 @@
+load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
+
+exports_files(
+    [
+        "Cargo.toml",
+        "src/lib.rs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_shared_library(
+    name = "formatjs_cli_napi",
+    srcs = [
+        "src/lib.rs",
+    ],
+    crate_name = "formatjs_cli_napi",
+    edition = "2024",
+    proc_macro_deps = [
+        "@crates//:napi-derive",
+    ],
+    rustc_flags = select({
+        "@platforms//os:macos": [
+            "-Clink-arg=-Wl,-undefined,dynamic_lookup",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/formatjs_cli:formatjs_cli_lib",
+        "@crates//:napi",
+    ],
+)

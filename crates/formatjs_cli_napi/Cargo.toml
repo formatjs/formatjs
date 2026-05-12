@@ -1,0 +1,18 @@
+[package]
+name = "formatjs_cli_napi"
+version = "0.0.0"
+edition = "2024"
+authors = ["FormatJS Team"]
+description = "Node-API bindings for the FormatJS Rust CLI core"
+license = "MIT"
+repository = "https://github.com/formatjs/formatjs"
+publish = false
+rust-version = "1.93"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+formatjs_cli = { path = "../formatjs_cli" }
+napi = { version = "3.8.6", default-features = false, features = ["napi4"] }
+napi-derive = "3.5.4"
