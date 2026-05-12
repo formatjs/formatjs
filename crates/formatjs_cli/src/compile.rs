@@ -73,6 +73,48 @@ pub fn compile(
     ignore_tag: bool,
     follow_links: bool,
 ) -> Result<()> {
+    let output = compile_to_string(
+        translation_files,
+        format,
+        ast,
+        skip_errors,
+        pseudo_locale,
+        ignore_tag,
+        follow_links,
+    )?;
+
+    if let Some(out_path) = out_file {
+        // Create parent directories if they don't exist
+        if let Some(parent) = out_path.parent() {
+            std::fs::create_dir_all(parent).with_context(|| {
+                format!(
+                    "Failed to create parent directories for {}",
+                    out_path.display()
+                )
+            })?;
+        }
+        // Write to file with trailing newline
+        std::fs::write(out_path, format!("{}\n", output))
+            .with_context(|| format!("Failed to write output to {}", out_path.display()))?;
+        // Silently succeed (matches TypeScript CLI behavior)
+    } else {
+        // Print to stdout (no trailing newline for piping)
+        println!("{}", output);
+    }
+
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn compile_to_string(
+    translation_files: &[PathBuf],
+    format: Option<Formatter>,
+    ast: bool,
+    skip_errors: bool,
+    pseudo_locale: Option<PseudoLocale>,
+    ignore_tag: bool,
+    follow_links: bool,
+) -> Result<String> {
     use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
 
     // Validate pseudo-locale requires ast
@@ -203,26 +245,7 @@ pub fn compile(
     let output = serde_json::to_string_pretty(&output_json)
         .context("Failed to serialize compiled messages to JSON")?;
 
-    if let Some(out_path) = out_file {
-        // Create parent directories if they don't exist
-        if let Some(parent) = out_path.parent() {
-            std::fs::create_dir_all(parent).with_context(|| {
-                format!(
-                    "Failed to create parent directories for {}",
-                    out_path.display()
-                )
-            })?;
-        }
-        // Write to file with trailing newline
-        std::fs::write(out_path, format!("{}\n", output))
-            .with_context(|| format!("Failed to write output to {}", out_path.display()))?;
-        // Silently succeed (matches TypeScript CLI behavior)
-    } else {
-        // Print to stdout (no trailing newline for piping)
-        println!("{}", output);
-    }
-
-    Ok(())
+    Ok(output)
 }
 
 #[cfg(test)]
