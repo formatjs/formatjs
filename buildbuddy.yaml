@@ -6,9 +6,12 @@ actions:
         branches:
           - 'main'
           - 'gh-readonly-queue/*'
+      pull_request:
+        branches:
+          - 'main'
     resource_requests:
       memory: 10GB
       disk: 16GB
     bazel_commands:
-      - 'test --config=ci --remote_download_minimal //...'
-      - 'build --config=ci --remote_download_minimal --compilation_mode=opt //crates/formatjs_cli'
+      - 'test --config=bb-workflow --remote_download_minimal //...'
+      - 'build --config=bb-workflow --remote_download_minimal --compilation_mode=opt //crates/formatjs_cli'
