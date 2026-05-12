@@ -5,6 +5,7 @@ import {
   type StringLiteral,
 } from '@babel/types'
 
+/** Message descriptor */
 export interface MessageDescriptor {
   id: string
   defaultMessage?: string
