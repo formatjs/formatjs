@@ -10,5 +10,5 @@ actions:
       memory: 10GB
       disk: 16GB
     bazel_commands:
-      - 'test //...'
-      - 'build --compilation_mode=opt //crates/formatjs_cli'
+      - 'test --config=ci //...'
+      - 'build --config=ci --compilation_mode=opt //crates/formatjs_cli'
