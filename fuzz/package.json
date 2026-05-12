@@ -1,0 +1,12 @@
+{
+  "name": "formatjs-fuzz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OSS-Fuzz fuzz targets for formatjs (https://github.com/formatjs/formatjs).",
+  "license": "MIT",
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "*",
+    "@formatjs/icu-skeleton-parser": "*",
+    "intl-messageformat": "*"
+  }
+}
