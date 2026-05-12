@@ -181,15 +181,8 @@ sentences are not translator-friendly.`
       `Compile extracted translation file into react-intl consumable JSON We also verify that the messages are valid ICU and not malformed. <translation_files> can be a glob like "foo/**/en.json"`
     )
     .option(
-      '--format <path>',
-      `Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\` so we can compile. The file must export a function named \`compile\` with the signature:
-\`\`\`
-type CompileFn = <T = Record<string, MessageDescriptor>>(
-  msgs: T
-) => Record<string, string>;
-\`\`\`
-This is especially useful to convert from a TMS-specific format back to react-intl format
-`
+      '--format <name-or-path>',
+      `Built-in formatter name that converts \`<translation_file>\` to \`Record<string, string>\` so we can compile. Custom formatter file paths are deprecated. Built-in formatters: default, simple, transifex, smartling, lokalise, crowdin.`
     )
     .option(
       '--out-file <path>',
@@ -219,14 +212,7 @@ This is especially useful to convert from a TMS-specific format back to react-in
     .action(async (filePatterns: string[], opts: CompileCLIOpts) => {
       debug('File pattern:', filePatterns)
       debug('Options:', opts)
-      const files = globSync(filePatterns, {
-        followSymbolicLinks: opts.followLinks ?? true,
-      })
-      if (!files.length) {
-        throw new Error(`No input file found with pattern ${filePatterns}`)
-      }
-      debug('Files to compile:', files)
-      await compile(files, opts)
+      await compile(filePatterns, opts)
     })
 
   program
@@ -235,15 +221,8 @@ This is especially useful to convert from a TMS-specific format back to react-in
       `Batch compile all extracted translation JSON files in <folder> to <outFolder> containing react-intl consumable JSON. We also verify that the messages are valid ICU and not malformed.`
     )
     .option(
-      '--format <path>',
-      `Path to a formatter file that converts JSON files in \`<folder>\` to \`Record<string, string>\` so we can compile. The file must export a function named \`compile\` with the signature:
-\`\`\`
-type CompileFn = <T = Record<string, MessageDescriptor>>(
-  msgs: T
-) => Record<string, string>;
-\`\`\`
-This is especially useful to convert from a TMS-specific format back to react-intl format
-`
+      '--format <name-or-path>',
+      `Built-in formatter name that converts JSON files in \`<folder>\` to \`Record<string, string>\` so we can compile. Custom formatter file paths are deprecated. Built-in formatters: default, simple, transifex, smartling, lokalise, crowdin.`
     )
     .option(
       '--ast',

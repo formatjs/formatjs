@@ -1,24 +1,33 @@
-import {
-  type MessageFormatElement,
-  parse,
-} from '@formatjs/icu-messageformat-parser'
 import {outputFile} from 'fs-extra/esm'
 import {readFile} from 'fs/promises'
+import * as glob from 'fast-glob'
 import * as stringifyNs from 'json-stable-stringify'
+import {resolve} from 'path'
+import {pathToFileURL} from 'url'
 import {debug, warn, writeStdout} from '#packages/cli-lib/console_utils.js'
+import {type Formatter} from '#packages/cli-lib/formatters/index.js'
 import {
-  type Formatter,
-  resolveBuiltinFormatter,
-} from '#packages/cli-lib/formatters/index.js'
-import {
-  generateENXA,
-  generateENXB,
-  generateXXAC,
-  generateXXHA,
-  generateXXLS,
-} from '#packages/cli-lib/pseudo_locale.js'
+  type NativeCompileMessage,
+  compileMessagesWithNative,
+  compileWithNative,
+} from '#packages/cli-lib/native.js'
 
+const dynamicImport = new Function('specifier', 'return import(specifier)') as (
+  specifier: string
+) => Promise<Formatter<unknown>>
+const globSync = glob.sync
 const stringify = (stringifyNs as any).default || stringifyNs
+const CUSTOM_FORMATTER_FILE_DEPRECATION_WARNING =
+  'Passing a custom formatter file to --format during compilation is deprecated and will be removed in a future release. Prefer a built-in formatter name or pre-process translation files before running formatjs compile.'
+
+const BUILTIN_FORMATTERS = new Set([
+  'default',
+  'simple',
+  'transifex',
+  'smartling',
+  'lokalise',
+  'crowdin',
+])
 
 export type CompileFn = (msgs: any) => Record<string, string>
 
@@ -29,12 +38,8 @@ export interface CompileCLIOpts extends Opts {
    * The target file that contains compiled messages.
    */
   outFile?: string
-  /**
-   * Whether to follow symbolic links when traversing directories.
-   * Defaults to true for compatibility with pnpm symlinked node_modules.
-   */
-  followLinks?: boolean
 }
+
 export interface Opts {
   /**
    * Whether to compile message into AST instead of just string
@@ -46,8 +51,9 @@ export interface Opts {
    */
   skipErrors?: boolean
   /**
-   * Path to a formatter file that converts <translation_files> to
-   * `Record<string, string>` so we can compile.
+   * Built-in formatter name or path to a formatter file that converts
+   * <translation_files> to `Record<string, string>` so we can compile.
+   * Formatter file paths are deprecated for compilation.
    */
   format?: string | Formatter<unknown>
   /**
@@ -62,17 +68,19 @@ export interface Opts {
    */
   ignoreTag?: boolean
   /**
-   * An AbortSignal to cancel the compilation
+   * An AbortSignal to cancel the compilation before invoking native code.
    */
   signal?: AbortSignal
+  /**
+   * Whether to follow symbolic links when traversing directories.
+   * Defaults to true for compatibility with pnpm symlinked node_modules.
+   */
+  followLinks?: boolean
 }
 
 /**
- * Aggregate `inputFiles` into a single JSON blob and compile.
- * Also checks for conflicting IDs.
- * Then returns the serialized result as a `string` since key order
- * makes a difference in some vendor.
- * @param inputFiles Input files
+ * Compile extracted translation files with the native formatjs CLI binding.
+ * @param inputFiles Input files or glob patterns
  * @param opts Options
  * @returns serialized result in string format
  */
@@ -81,83 +89,113 @@ export async function compile(
   opts: Opts = {}
 ): Promise<string> {
   debug('Compiling files:', inputFiles)
-  const {ast, format, pseudoLocale, skipErrors, ignoreTag, signal} = opts
+  const {
+    ast,
+    format,
+    pseudoLocale,
+    skipErrors,
+    ignoreTag,
+    signal,
+    followLinks,
+  } = opts
   signal?.throwIfAborted()
-  const formatter = await resolveBuiltinFormatter(format)
 
-  const messages: Record<string, string> = {}
-  const messageAsts: Record<string, MessageFormatElement[]> = {}
-  const idsWithFileName: Record<string, string> = {}
-  const compiledFiles = await Promise.all(
-    inputFiles.map(f =>
-      readFile(f, {encoding: 'utf8', signal})
-        .then(content => JSON.parse(content))
-        .then(formatter.compile)
-    )
-  )
-  debug('Compiled files:', compiledFiles)
-  for (let i = 0; i < inputFiles.length; i++) {
-    const inputFile = inputFiles[i]
-    debug('Processing file:', inputFile)
-    const compiled = compiledFiles[i]
-    for (const id in compiled) {
-      if (messages[id] && messages[id] !== compiled[id]) {
-        throw new Error(`Conflicting ID "${id}" with different translation found in these 2 files:
-ID: ${id}
-Message from ${idsWithFileName[id]}: ${messages[id]}
-Message from ${inputFile}: ${compiled[id]}
-`)
-      }
-      try {
-        const msgAst = parse(compiled[id], {ignoreTag})
-        messages[id] = compiled[id]
-        switch (pseudoLocale) {
-          case 'xx-LS':
-            messageAsts[id] = generateXXLS(msgAst)
-            break
-          case 'xx-AC':
-            messageAsts[id] = generateXXAC(msgAst)
-            break
-          case 'xx-HA':
-            messageAsts[id] = generateXXHA(msgAst)
-            break
-          case 'en-XA':
-            messageAsts[id] = generateENXA(msgAst)
-            break
-          case 'en-XB':
-            messageAsts[id] = generateENXB(msgAst)
-            break
-          default:
-            messageAsts[id] = msgAst
-            break
-        }
-        idsWithFileName[id] = inputFile
-      } catch (e) {
-        warn(
-          'Error validating message "%s" with ID "%s" in file "%s"',
-          compiled[id],
-          id,
-          inputFile
-        )
-        if (!skipErrors) {
-          throw e
-        }
-      }
-    }
+  if (format && !isBuiltinFormatter(format)) {
+    return compileWithCustomFormatter(inputFiles, opts)
   }
 
-  return (
-    stringify(ast ? messageAsts : messages, {
-      space: 2,
-      cmp: formatter.compareMessages || undefined,
-    }) ?? ''
+  return compileWithNative(inputFiles, {
+    ast,
+    format: typeof format === 'string' ? format : undefined,
+    followLinks,
+    ignoreTag,
+    pseudoLocale,
+    skipErrors,
+  })
+}
+
+function isBuiltinFormatter(
+  format: string | Formatter<unknown>
+): format is string {
+  return typeof format === 'string' && BUILTIN_FORMATTERS.has(format)
+}
+
+async function compileWithCustomFormatter(
+  inputFiles: string[],
+  opts: Opts
+): Promise<string> {
+  if (typeof opts.format === 'string') {
+    await warn(CUSTOM_FORMATTER_FILE_DEPRECATION_WARNING)
+  }
+
+  const formatter = await resolveCustomFormatter(opts.format)
+  const files = globSync(inputFiles, {
+    followSymbolicLinks: opts.followLinks ?? true,
+  })
+
+  if (!files.length) {
+    throw new Error('No translation files found matching the patterns')
+  }
+
+  const messages: NativeCompileMessage[] = []
+  await Promise.all(
+    files.map(async file => {
+      opts.signal?.throwIfAborted()
+      const content = await readFile(file, {
+        encoding: 'utf8',
+        signal: opts.signal,
+      })
+      const compiled = formatter.compile(JSON.parse(content))
+      for (const id of Object.keys(compiled)) {
+        messages.push({
+          id,
+          message: compiled[id],
+          sourceFile: file,
+        })
+      }
+    })
   )
+
+  const serialized = compileMessagesWithNative(messages, {
+    ast: opts.ast,
+    ignoreTag: opts.ignoreTag,
+    pseudoLocale: opts.pseudoLocale,
+    skipErrors: opts.skipErrors,
+  })
+
+  if (formatter.compareMessages) {
+    return (
+      stringify(JSON.parse(serialized), {
+        space: 2,
+        cmp: formatter.compareMessages,
+      }) ?? ''
+    )
+  }
+
+  return serialized
+}
+
+async function resolveCustomFormatter(
+  format: string | Formatter<unknown> | undefined
+): Promise<Formatter<unknown>> {
+  if (!format) {
+    throw new Error('A custom formatter is required')
+  }
+  if (typeof format !== 'string') {
+    return format
+  }
+  try {
+    return dynamicImport(pathToFileURL(resolve(process.cwd(), format)).href)
+  } catch (e) {
+    console.error(`Cannot resolve formatter ${format}`)
+    throw e
+  }
 }
 
 /**
- * Aggregate `inputFiles` into a single JSON blob and compile.
- * Also checks for conflicting IDs and write output to `outFile`.
- * @param inputFiles Input files
+ * Compile extracted translation files with the native formatjs CLI binding and
+ * write output to `outFile` when provided.
+ * @param inputFiles Input files or glob patterns
  * @param compileOpts options
  * @returns A `Promise` that resolves if file was written successfully
  */

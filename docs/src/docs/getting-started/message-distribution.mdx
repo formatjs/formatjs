@@ -69,7 +69,7 @@ yarn compile lang/fr.json --ast --out-file compiled-lang/fr.json
 
 ## Translation Management System (TMS) Integration
 
-If your TMS/vendor has a different JSON format you can specify a custom formatter with `--format <formatFile>` that converts that into `Record<string,string>` so `@formatjs/cli` can understand. For example:
+If your TMS/vendor has a different JSON format, prefer one of the built-in `--format` formatter names or pre-process the file before running `@formatjs/cli`. Passing a custom formatter file to `compile --format <formatFile>` is deprecated and prints a warning. For example, the deprecated formatter-file flow looks like this:
 
 If your vendor accepts the format like
 
@@ -119,7 +119,7 @@ export function compile(msgs) {
 }
 ```
 
-In the future we will provide formatters that work with popular TMSes by default.
+Prefer the built-in formatters for popular TMSes when possible.
 
 ## Distribution
 

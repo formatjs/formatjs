@@ -560,6 +560,13 @@ importers:
       '@formatjs/cli-lib':
         specifier: workspace:*
         version: link:../cli-lib
+    optionalDependencies:
+      '@formatjs/cli-native-darwin-arm64':
+        specifier: workspace:*
+        version: link:../cli-native-darwin-arm64
+      '@formatjs/cli-native-linux-x64':
+        specifier: workspace:*
+        version: link:../cli-native-linux-x64
 
   packages/cli-lib:
     dependencies:
@@ -614,12 +621,23 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.27(typescript@6.0.2)
+    optionalDependencies:
+      '@formatjs/cli-native-darwin-arm64':
+        specifier: workspace:*
+        version: link:../cli-native-darwin-arm64
+      '@formatjs/cli-native-linux-x64':
+        specifier: workspace:*
+        version: link:../cli-native-linux-x64
 
   packages/cli-lib/integration-tests:
     devDependencies:
       '@formatjs/cli-lib':
         specifier: workspace:*
         version: link:..
+
+  packages/cli-native-darwin-arm64: {}
+
+  packages/cli-native-linux-x64: {}
 
   packages/cli/integration-tests:
     devDependencies:

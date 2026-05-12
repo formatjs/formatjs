@@ -1,3 +1,4 @@
+use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 use formatjs_cli::compile::{self as cli_compile, PseudoLocale};
@@ -13,6 +14,13 @@ pub struct CompileOptions {
     pub pseudo_locale: Option<String>,
     pub ignore_tag: Option<bool>,
     pub follow_links: Option<bool>,
+}
+
+#[napi(object)]
+pub struct CompileMessage {
+    pub id: String,
+    pub message: String,
+    pub source_file: String,
 }
 
 #[napi]
@@ -43,6 +51,40 @@ pub fn compile(translation_files: Vec<String>, opts: Option<CompileOptions>) -> 
         parse_pseudo_locale(opts.pseudo_locale)?,
         opts.ignore_tag.unwrap_or(false),
         opts.follow_links.unwrap_or(true),
+    )
+    .map_err(to_napi_error)
+}
+
+#[napi]
+pub fn compile_messages(messages: Vec<CompileMessage>, opts: Option<CompileOptions>) -> napi::Result<String> {
+    let opts = opts.unwrap_or_default();
+    let mut compiled_messages: cli_compile::CompiledInputMessages = BTreeMap::new();
+
+    for message in messages {
+        if let Some((existing, existing_file)) = compiled_messages.get(&message.id) {
+            if existing != &message.message {
+                return Err(Error::from_reason(format!(
+                    "Conflicting ID \"{}\" with different translation found in these 2 files:\n  {}\n  {}",
+                    message.id, existing_file.display(), message.source_file
+                )));
+            }
+        }
+        compiled_messages.insert(
+            message.id,
+            (message.message, PathBuf::from(message.source_file)),
+        );
+    }
+
+    if compiled_messages.is_empty() {
+        eprintln!("Warning: No messages found in translation files");
+    }
+
+    cli_compile::compile_messages_to_string(
+        compiled_messages,
+        opts.ast.unwrap_or(false),
+        opts.skip_errors.unwrap_or(false),
+        parse_pseudo_locale(opts.pseudo_locale)?,
+        opts.ignore_tag.unwrap_or(false),
     )
     .map_err(to_napi_error)
 }

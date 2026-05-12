@@ -6,6 +6,8 @@ use walkdir::WalkDir;
 
 use crate::formatters::Formatter;
 
+pub type CompiledInputMessages = BTreeMap<String, (String, PathBuf)>;
+
 /// Pseudo-locale variants for testing and expanding translations
 #[derive(Clone, Copy, Debug)]
 pub enum PseudoLocale {
@@ -115,18 +117,6 @@ pub fn compile_to_string(
     ignore_tag: bool,
     follow_links: bool,
 ) -> Result<String> {
-    use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
-
-    // Validate pseudo-locale requires ast
-    if pseudo_locale.is_some() && !ast {
-        anyhow::bail!("Pseudo-locale generation requires --ast flag");
-    }
-
-    // Warn about unimplemented features
-    if pseudo_locale.is_some() {
-        eprintln!("Warning: Pseudo-locale transformations not yet implemented");
-    }
-
     // Default to "default" formatter if none provided (matches TypeScript CLI)
     let formatter = format.unwrap_or(Formatter::Default);
 
@@ -191,7 +181,29 @@ pub fn compile_to_string(
         eprintln!("Warning: No messages found in translation files");
     }
 
-    // Step 3: Parse and validate ICU MessageFormat, compile to output format
+    compile_messages_to_string(messages, ast, skip_errors, pseudo_locale, ignore_tag)
+}
+
+pub fn compile_messages_to_string(
+    messages: CompiledInputMessages,
+    ast: bool,
+    skip_errors: bool,
+    pseudo_locale: Option<PseudoLocale>,
+    ignore_tag: bool,
+) -> Result<String> {
+    use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+
+    // Validate pseudo-locale requires ast
+    if pseudo_locale.is_some() && !ast {
+        anyhow::bail!("Pseudo-locale generation requires --ast flag");
+    }
+
+    // Warn about unimplemented features
+    if pseudo_locale.is_some() {
+        eprintln!("Warning: Pseudo-locale transformations not yet implemented");
+    }
+
+    // Parse and validate ICU MessageFormat, compile to output format
     let mut compiled_messages: Map<String, Value> = Map::new();
     let mut error_count = 0;
 
