@@ -1,33 +1,54 @@
 load("@with_cfg.bzl", "with_cfg")
 
-release_binary_linux_x64, _release_binary_linux_x64_internal = with_cfg(
-    native.genrule,
-).set(
-    "compilation_mode",
-    "opt",
-).set(
-    "platforms",
-    [Label("//crates/formatjs_cli/platforms:linux_x86_64_musl")],
-).extend(
-    "extra_toolchains",
-    [
-        Label("@llvm_toolchains//:bootstrap_linux_aarch64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:bootstrap_linux_x86_64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:bootstrap_macos_aarch64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:bootstrap_macos_x86_64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:bootstrap_windows_aarch64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:bootstrap_windows_x86_64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:linux_aarch64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:linux_x86_64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:macos_aarch64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:macos_x86_64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:windows_aarch64_to_linux_x86_64"),
-        Label("@llvm_toolchains//:windows_x86_64_to_linux_x86_64"),
-    ],
-).set(
-    Label("@llvm//config:experimental_stub_libgcc_s"),
-    True,
-).set(
-    Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
-    True,
-).build()
+_HOSTS = [
+    "linux_aarch64",
+    "linux_x86_64",
+    "macos_aarch64",
+    "macos_x86_64",
+    "windows_aarch64",
+    "windows_x86_64",
+]
+
+def _llvm_toolchains(target):
+    return [
+        Label("@llvm_toolchains//:bootstrap_%s_to_%s" % (host, target))
+        for host in _HOSTS
+    ] + [
+        Label("@llvm_toolchains//:%s_to_%s" % (host, target))
+        for host in _HOSTS
+    ]
+
+def _release_binary(platform, llvm_target):
+    return with_cfg(
+        native.genrule,
+    ).set(
+        "compilation_mode",
+        "opt",
+    ).set(
+        "platforms",
+        [Label(platform)],
+    ).extend(
+        "extra_toolchains",
+        _llvm_toolchains(llvm_target),
+    ).set(
+        Label("@llvm//config:experimental_stub_libgcc_s"),
+        True,
+    ).set(
+        Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
+        True,
+    ).build()
+
+release_binary_darwin_arm64, _release_binary_darwin_arm64_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:darwin_arm64",
+    "macos_aarch64",
+)
+
+release_binary_linux_x64, _release_binary_linux_x64_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:linux_x86_64_musl",
+    "linux_x86_64",
+)
+
+release_binary_linux_x64_gnu, _release_binary_linux_x64_gnu_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:linux_x86_64",
+    "linux_x86_64",
+)
