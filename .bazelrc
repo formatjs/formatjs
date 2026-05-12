@@ -1,23 +1,14 @@
-# Common Bazel settings for JavaScript/NodeJS workspaces
-# This rc file is automatically discovered when Bazel is run in this workspace,
-# see https://docs.bazel.build/versions/master/guide.html#bazelrc
-#
-# The full list of Bazel options: https://docs.bazel.build/versions/master/command-line-reference.html
+# Common Bazel settings for this workspace.
 
-# Import Aspect recommended Bazel settings for all projects
-import %workspace%/.aspect/bazelrc/bazel6.bazelrc
-import %workspace%/.aspect/bazelrc/convenience.bazelrc
-import %workspace%/.aspect/bazelrc/correctness.bazelrc
-import %workspace%/.aspect/bazelrc/debug.bazelrc
-import %workspace%/.aspect/bazelrc/performance.bazelrc
-
-### YOUR PROJECT SPECIFIC SETTINGS GO HERE ###
-
-common --enable_bzlmod 
+common --enable_bzlmod
 common --enable_platform_specific_config
 common --color=yes
+common --heap_dump_on_oom
 common:linux --host_platform=//platforms:local_linux_gnu
 common:windows --host_platform=//platforms:local_windows_msvc
+
+# Track source directory inputs used by rules_js/npm packages.
+startup --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1
 
 build --java_language_version=17
 build --java_runtime_version=remotejdk_17
@@ -28,14 +19,22 @@ build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/
 
 # Give me dem stack traces
 build --verbose_failures
+build --keep_going
+build --show_result=20
+build --noremote_upload_local_results
+build --sandbox_default_allow_network=false
+build --incompatible_default_to_explicit_init_py
+build --enable_runfiles
+test --test_output=errors
+test --test_verbose_timeout_warnings
 
 build --experimental_platform_in_output_dir
 build --remote_cache_compression
 build --legacy_important_outputs
 build --remote_build_event_upload=minimal
-build --noslim_profile 
-build --experimental_profile_include_target_label 
-build --experimental_profile_include_primary_output 
+build --noslim_profile
+build --experimental_profile_include_target_label
+build --experimental_profile_include_primary_output
 common --bes_upload_mode=fully_async
 common --noincompatible_no_implicit_watch_label
 
@@ -58,6 +57,11 @@ common --noincompatible_no_implicit_watch_label
 #     See https://docs.bazel.build/versions/master/user-manual.html#flag--compilation_mode for more details.
 test:debug --define=VERBOSE_LOGS=1
 run:debug --define=VERBOSE_LOGS=1
+run:debug -- --node_options=--inspect-brk
+test:debug --test_output=streamed
+test:debug --test_strategy=exclusive
+test:debug --test_timeout=9999
+test:debug --nocache_test_results
 # The following option will change the build output of certain rules such as terser and may not be desirable in all cases
 build:debug --compilation_mode=dbg
 
@@ -67,27 +71,32 @@ run --incompatible_strict_action_env
 build --define=NODE_OPTIONS=--max-old-space-size=4096
 build --build_metadata=REPO_URL=https://github.com/formatjs/formatjs.git
 
-# BuildBuddy GH Actions Config
+# BuildBuddy RBE GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
 build:ci --build_metadata=ROLE=CI
 build:ci --build_metadata=VISIBILITY=PUBLIC
-build:ci --config=remote
-build:remote --bes_backend=grpcs://formatjs.buildbuddy.io
-build:remote --bes_results_url=https://formatjs.buildbuddy.io/invocation/
-build:remote --define=EXECUTOR=remote
-build:remote --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
-build:remote --jobs=50
-build:remote --platforms=//platforms:buildbuddy_linux_x86_64_gnu
-build:remote --remote_cache=grpcs://formatjs.buildbuddy.io
-build:remote --remote_executor=grpcs://formatjs.buildbuddy.io
-build:remote --remote_timeout=10m
+build:ci --config=rbe
+build:ci --remote_upload_local_results
+build:rbe --bes_backend=grpcs://formatjs.buildbuddy.io
+build:rbe --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:rbe --define=EXECUTOR=rbe
+build:rbe --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
+build:rbe --jobs=50
+build:rbe --platforms=//platforms:buildbuddy_linux_x86_64_gnu
+build:rbe --remote_cache=grpcs://formatjs.buildbuddy.io
+build:rbe --remote_executor=grpcs://formatjs.buildbuddy.io
+build:rbe --remote_timeout=10m
 
-# BuildBuddy config for macOS CI - remote cache only, no remote execution
+# Keep the old config name as an alias for existing local workflows.
+build:remote --config=rbe
+
+# BuildBuddy config for macOS CI - remote cache only, no RBE
 build:ci-darwin --build_metadata=ROLE=CI
 build:ci-darwin --build_metadata=VISIBILITY=PUBLIC
 build:ci-darwin --bes_backend=grpcs://formatjs.buildbuddy.io
 build:ci-darwin --bes_results_url=https://formatjs.buildbuddy.io/invocation/
 build:ci-darwin --remote_cache=grpcs://formatjs.buildbuddy.io
+build:ci-darwin --remote_upload_local_results
 
 # honor the setting of `skipLibCheck` in the tsconfig.json file
 build --@aspect_rules_ts//ts:skipLibCheck=honor_tsconfig

@@ -1,5 +1,0 @@
-# Performance improvement for WORKSPACE evaluation
-# of slow rulesets, for example rules_k8s has been
-# observed to take 10 seconds without this flag.
-# See https://github.com/bazelbuild/bazel/issues/13907
-common --incompatible_existing_rules_immutable_view

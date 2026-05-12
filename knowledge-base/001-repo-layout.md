@@ -13,7 +13,6 @@ formatjs/
   knowledge-base/     # Architecture docs and migration plans
   patches/            # pnpm patches for upstream deps
   .github/workflows/  # CI/CD (test, release, rust-cli-release, website)
-  .aspect/bazelrc/    # Aspect-recommended Bazel settings
   sg-rules/           # ast-grep structural lint rules
 ```
 
@@ -46,7 +45,7 @@ For Bazel sandbox contexts (vitest, ts_run_binary), the root `package.json` must
 - vitest: `data = ["//:package.json"]` + `no_copy_to_bin = ["//:package.json"]`
 - ts_run_binary: `//:root_package_json` (copy_to_bin output) in `srcs`
 
-## Generated Data Packages (@formatjs\_generated/\*)
+## Generated Data Packages (@formatjs_generated/\*)
 
 Auto-generated TypeScript data (CLDR, IANA timezone, Unicode regex) lives only in Bazel output — not checked into git. Generated files are compiled and packaged as `@formatjs_generated/*` npm packages, linked into `node_modules` via `npm_link_package()`.
 
