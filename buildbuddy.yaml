@@ -11,7 +11,7 @@ actions:
           - 'main'
     resource_requests:
       memory: 10GB
-      disk: 16GB
+      disk: 64GB
     bazel_commands:
-      - 'test --config=bb-workflow --remote_download_minimal //...'
-      - 'build --config=bb-workflow --remote_download_minimal --compilation_mode=opt //crates/formatjs_cli'
+      - 'test --config=bb-workflow //...'
+      - 'build --config=bb-workflow --compilation_mode=opt //crates/formatjs_cli'

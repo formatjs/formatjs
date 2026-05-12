@@ -77,9 +77,11 @@ build:ci --build_metadata=ROLE=CI
 build:ci --build_metadata=VISIBILITY=PUBLIC
 build:ci --config=rbe
 build:ci --remote_upload_local_results
+
+# BuildBuddy Workflows can be triggered by public fork PRs where org secrets are
+# unavailable, so keep this config off authenticated remote cache / RBE.
 build:bb-workflow --build_metadata=ROLE=BB_WORKFLOW
 build:bb-workflow --build_metadata=VISIBILITY=PUBLIC
-build:bb-workflow --config=rbe
 build:rbe --bes_backend=grpcs://formatjs.buildbuddy.io
 build:rbe --bes_results_url=https://formatjs.buildbuddy.io/invocation/
 build:rbe --define=EXECUTOR=rbe
