@@ -1,7 +1,11 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
-load(":release_binary.bzl", "release_binary_linux_x64")
+load(
+    ":release_binary.bzl",
+    "release_binary_darwin_arm64",
+    "release_binary_linux_x64",
+)
 
 exports_files(
     [
@@ -125,5 +129,22 @@ release_binary_linux_x64(
     srcs = [":formatjs_cli"],
     outs = ["formatjs_cli_linux_x64"],
     cmd = "cp $< $@ && chmod +x $@",
+    visibility = ["//visibility:public"],
+)
+
+release_binary_darwin_arm64(
+    name = "release_binary_darwin_arm64",
+    srcs = [":formatjs_cli"],
+    outs = ["formatjs_cli_darwin_arm64"],
+    cmd = "cp $< $@ && chmod +x $@",
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "release_binaries",
+    srcs = [
+        ":release_binary_darwin_arm64",
+        ":release_binary_linux_x64",
+    ],
     visibility = ["//visibility:public"],
 )

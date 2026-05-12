@@ -14,7 +14,7 @@ platform(
     visibility = ["//visibility:public"],
 )
 
-# Linux x86_64 with musl libc. This produces a static binary that avoids a
+# Linux x86_64 with musl libc. This produces a static CLI binary that avoids a
 # host glibc runtime requirement.
 platform(
     name = "linux_x86_64_musl",
