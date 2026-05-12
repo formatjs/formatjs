@@ -30,7 +30,7 @@ actions so they can cache and run independently across the monorepo.
 | `rules_rs`              | 0.0.61 + archive override | Rust compilation, crates, wasm                    |
 | `llvm`                  | 0.7.5                     | LLVM toolchain support for Rust/wasm paths        |
 | `rules_java`            | 9.6.1                     | Java toolchain for ICU4J conformance tests        |
-| `toolchains_buildbuddy` | 0.0.4                     | Remote execution C/C++ toolchain                  |
+| `toolchains_buildbuddy` | 0.0.4                     | BuildBuddy RBE C/C++ toolchain                    |
 
 `gazelle_ts` is overridden to commit
 `e3579a043d2639b85877c051f3fedd2095a4b1a2` for the post-0.3.3 abstract-kind
@@ -47,11 +47,11 @@ to the v0.0.61 GitHub release because it is not available from BCR yet.
 - Go SDK is pinned to **1.24.12**.
 - Rust is pinned to **1.95.0**, edition **2024**, through `rules_rs`.
 
-## Remote Cache & Execution
+## Remote Cache & RBE
 
 - **Remote cache:** `grpcs://formatjs.buildbuddy.io`
-- **Linux CI:** `--config=ci` expands to `--config=remote`, enabling remote
-  execution and remote cache.
+- **Linux CI:** `--config=ci` expands to `--config=rbe`, enabling BuildBuddy RBE
+  and remote cache.
 - **macOS CI:** `--config=ci-darwin` uses BuildBuddy BES and remote cache only.
 - **Remote platform:** `//platforms:buildbuddy_linux_x86_64_gnu` with
   `@toolchains_buildbuddy//toolchains/cc:ubuntu_gcc_x86_64`.
@@ -324,16 +324,9 @@ Consumers depend directly on the subpackage labels they import.
 | `@aspect_rules_ts//ts:default_to_tsc_transpiler` | enabled                     | Default ts_project transpiler   |
 | `--experimental_platform_in_output_dir`          | enabled                     | Platform-specific output layout |
 | `--remote_cache_compression`                     | enabled                     | Smaller remote cache transfer   |
-
-### Aspect `.bazelrc` Imports
-
-The repo imports Aspect's Bazel 6 recommended rc files:
-
-- `.aspect/bazelrc/bazel6.bazelrc`
-- `.aspect/bazelrc/convenience.bazelrc`
-- `.aspect/bazelrc/correctness.bazelrc`
-- `.aspect/bazelrc/debug.bazelrc`
-- `.aspect/bazelrc/performance.bazelrc`
+| `--heap_dump_on_oom`                             | enabled                     | Easier Bazel OOM diagnostics    |
+| `--sandbox_default_allow_network=false`          | enabled                     | Keep build actions hermetic     |
+| `--enable_runfiles`                              | enabled                     | rules_js runfiles support       |
 
 ## Build Flow Example
 
