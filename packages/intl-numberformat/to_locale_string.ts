@@ -3,11 +3,11 @@ import {NumberFormat} from '#packages/intl-numberformat/core.js'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 
 /**
- * Number.prototype.toLocaleString ponyfill
+ * Number.prototype.toLocaleString and BigInt.prototype.toLocaleString ponyfill
  * https://tc39.es/ecma402/#sup-number.prototype.tolocalestring
  */
 export function toLocaleString(
-  x: number,
+  x: number | bigint,
   locales?: string | string[],
   options?: NumberFormatOptions
 ): string {
