@@ -1,10 +1,12 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
 load(":release_binary.bzl", "release_binary_linux_x64")
 
 exports_files(
     [
         "Cargo.toml",
+        "src/lib.rs",
         "src/main.rs",
         "src/extract.rs",
         "src/extractor.rs",
@@ -49,9 +51,8 @@ TEST_DEPS = COMMON_DEPS + [
     "@crates//:tempfile",
 ]
 
-# Base rust binary (builds for host platform)
-rust_binary(
-    name = "formatjs_cli",
+rust_library(
+    name = "formatjs_cli_lib",
     srcs = [
         "src/compile.rs",
         "src/compile_folder.rs",
@@ -65,18 +66,34 @@ rust_binary(
         "src/formatters/smartling.rs",
         "src/formatters/transifex.rs",
         "src/id_generator.rs",
-        "src/main.rs",
+        "src/lib.rs",
         "src/verify.rs",
     ],
-    crate_name = "formatjs",
+    crate_name = "formatjs_cli",
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = COMMON_DEPS,
 )
 
+# Base rust binary (builds for host platform)
+rust_binary(
+    name = "formatjs_cli",
+    srcs = [
+        "src/main.rs",
+    ],
+    crate_name = "formatjs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":formatjs_cli_lib",
+        "@crates//:anyhow",
+        "@crates//:clap",
+    ],
+)
+
 rust_test(
     name = "formatjs_cli_test",
-    crate = ":formatjs_cli",
+    crate = ":formatjs_cli_lib",
     data = [
         "//packages/ts-transformer:test_fixtures",
     ],

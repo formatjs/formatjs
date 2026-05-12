@@ -1,15 +1,7 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand, ValueEnum};
+use formatjs_cli::{compile, compile_folder, extract, formatters, verify};
 use std::path::PathBuf;
-
-// Module declarations
-pub mod compile;
-pub mod compile_folder;
-pub mod extract;
-pub mod extractor;
-pub mod formatters;
-pub mod id_generator;
-pub mod verify;
 
 #[derive(Parser)]
 #[command(name = "formatjs")]
