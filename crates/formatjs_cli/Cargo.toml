@@ -28,7 +28,7 @@ formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", vers
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.1" }
 oxc = { version = "0.129", features = ["ast_visit"] }
 oxc_allocator = "0.129"
-oxc_ast = "0.129"
+oxc_ast = "0.130"
 oxc_parser = "0.129"
 oxc_span = "0.129"
 sha2 = "0.11"
