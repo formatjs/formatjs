@@ -83,7 +83,7 @@ export function PartitionDurationFormatPattern(
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
       }
-      if (style !== '2-digit' && style !== 'numeric') {
+      if (style !== '2-digit' && style !== 'numeric' && style !== 'fractional') {
         nfOpts.style = 'unit'
         nfOpts.unit = numberFormatUnit
         nfOpts.unitDisplay = style
