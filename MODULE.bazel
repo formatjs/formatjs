@@ -125,7 +125,7 @@ archive_override(
     urls = ["https://github.com/hermeticbuild/rules_rs/releases/download/v0.0.61/rules_rs-v0.0.61.tar.gz"],
 )
 
-bazel_dep(name = "llvm", version = "0.7.5")
+bazel_dep(name = "llvm", version = "0.8.0")
 bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
 llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
