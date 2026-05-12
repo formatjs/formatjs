@@ -27,7 +27,7 @@ walkdir = "2"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.2.4" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.1" }
 oxc = { version = "0.129", features = ["ast_visit"] }
-oxc_allocator = "0.129"
+oxc_allocator = "0.130"
 oxc_ast = "0.129"
 oxc_parser = "0.129"
 oxc_span = "0.129"
