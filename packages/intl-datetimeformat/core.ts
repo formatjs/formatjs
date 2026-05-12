@@ -51,9 +51,11 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'year',
   'month',
   'day',
+  'dayPeriod',
   'hour',
   'minute',
   'second',
+  'fractionalSecondDigits',
   'timeZoneName',
 ]
 

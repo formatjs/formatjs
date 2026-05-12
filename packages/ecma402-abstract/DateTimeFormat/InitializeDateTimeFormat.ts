@@ -58,7 +58,7 @@ interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   nu: Intl.DateTimeFormatOptions['numberingSystem']
   hc: Intl.DateTimeFormatOptions['hourCycle']
 }
-const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
+const TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 /**
  * https://tc39.es/ecma402/#sec-initializedatetimeformat
  * @param dtf DateTimeFormat
@@ -204,6 +204,13 @@ export function InitializeDateTimeFormat(
     ['2-digit', 'numeric'],
     undefined
   )
+  opt.dayPeriod = GetOption(
+    options,
+    'dayPeriod',
+    'string',
+    ['narrow', 'short', 'long'],
+    undefined
+  )
   opt.hour = GetOption(
     options,
     'hour',
@@ -321,6 +328,12 @@ export function InitializeDateTimeFormat(
     if (p !== undefined) {
       internalSlots[prop as 'year'] = p as 'numeric'
     }
+  }
+  if (opt.dayPeriod !== undefined) {
+    internalSlots.dayPeriod = opt.dayPeriod
+  }
+  if (opt.fractionalSecondDigits !== undefined) {
+    internalSlots.fractionalSecondDigits = opt.fractionalSecondDigits
   }
   let pattern
   let rangePatterns
