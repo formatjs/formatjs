@@ -1,0 +1,24 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("//tools:index.bzl", "package_exports_test")
+
+copy_file(
+    name = "formatjs_cli_napi_node",
+    src = "//crates/formatjs_cli_napi:release_node_darwin_arm64",
+    out = "formatjs_cli_napi.node",
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        "package.json",
+        ":formatjs_cli_napi_node",
+    ],
+    package = "@formatjs/cli-native-darwin-arm64",
+    visibility = ["//visibility:public"],
+)
+
+package_exports_test(
+    name = "package_exports_test",
+    pkg = ":pkg",
+)

@@ -421,10 +421,11 @@ The native Rust CLI is significantly faster than the Node.js-based tools:
 - **CI/CD friendly** - fast builds in continuous integration
 
 The Rust CLI used by these rules covers the native toolchain's supported
-FormatJS workflows. Node.js-only behavior from `@formatjs/cli`, such as custom
-JavaScript formatter files and framework template extraction for Vue, Svelte,
-Handlebars, Glimmer, GTS, and GJS, is not available in the standalone native
-binary.
+FormatJS workflows. Node.js-only behavior from `@formatjs/cli`, such as
+framework template extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and
+GJS, is not available in the standalone native binary. Custom JavaScript
+formatter files for compilation are deprecated in the Node.js CLI and are not
+supported by the standalone native binary.
 
 ## Common Workflows
 

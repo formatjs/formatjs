@@ -28,6 +28,7 @@ formatjs_library(
         "hbs_extractor.ts",
         "index.ts",
         "main.ts",
+        "native.ts",
         "parse_script.ts",
         "pseudo_locale.ts",
         "svelte_extractor.ts",
