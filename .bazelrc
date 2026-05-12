@@ -67,22 +67,25 @@ run --incompatible_strict_action_env
 build --define=NODE_OPTIONS=--max-old-space-size=4096
 build --build_metadata=REPO_URL=https://github.com/formatjs/formatjs.git
 
-# BuildBuddy GH Actions Config
+# BuildBuddy RBE GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions
 build:ci --build_metadata=ROLE=CI
 build:ci --build_metadata=VISIBILITY=PUBLIC
-build:ci --config=remote
-build:remote --bes_backend=grpcs://formatjs.buildbuddy.io
-build:remote --bes_results_url=https://formatjs.buildbuddy.io/invocation/
-build:remote --define=EXECUTOR=remote
-build:remote --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
-build:remote --jobs=50
-build:remote --platforms=//platforms:buildbuddy_linux_x86_64_gnu
-build:remote --remote_cache=grpcs://formatjs.buildbuddy.io
-build:remote --remote_executor=grpcs://formatjs.buildbuddy.io
-build:remote --remote_timeout=10m
+build:ci --config=rbe
+build:rbe --bes_backend=grpcs://formatjs.buildbuddy.io
+build:rbe --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:rbe --define=EXECUTOR=rbe
+build:rbe --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
+build:rbe --jobs=50
+build:rbe --platforms=//platforms:buildbuddy_linux_x86_64_gnu
+build:rbe --remote_cache=grpcs://formatjs.buildbuddy.io
+build:rbe --remote_executor=grpcs://formatjs.buildbuddy.io
+build:rbe --remote_timeout=10m
 
-# BuildBuddy config for macOS CI - remote cache only, no remote execution
+# Keep the old config name as an alias for existing local workflows.
+build:remote --config=rbe
+
+# BuildBuddy config for macOS CI - remote cache only, no RBE
 build:ci-darwin --build_metadata=ROLE=CI
 build:ci-darwin --build_metadata=VISIBILITY=PUBLIC
 build:ci-darwin --bes_backend=grpcs://formatjs.buildbuddy.io
