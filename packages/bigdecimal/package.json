@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/bigdecimal",
   "description": "BigInt-backed decimal arithmetic for ECMA-402 polyfills",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",

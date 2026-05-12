@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-supportedvaluesof",
   "description": "Intl.supportedValuesOf polyfill",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "license": "MIT",
   "author": "Michele Riva <ciao@micheleriva.it>",
   "type": "module",

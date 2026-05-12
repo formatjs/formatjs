@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.1.10...@formatjs/unplugin@1.1.11) (2026-05-12)
+
+### Bug Fixes
+
+* **deps:** update dependency oxc-parser to ^0.130.0 ([#6527](https://github.com/formatjs/formatjs/issues/6527)) ([9e4d5ea](https://github.com/formatjs/formatjs/commit/9e4d5eadff24e650a1f40c4fbcd2807488b29a6c)) - by @renovate[bot]
+
 ## [1.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.1.9...@formatjs/unplugin@1.1.10) (2026-05-05)
 
 ### Bug Fixes

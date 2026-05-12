@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.8...@formatjs/intl-durationformat@0.10.9) (2026-05-12)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** export duration format options ([#6487](https://github.com/formatjs/formatjs/issues/6487)) ([f70bb20](https://github.com/formatjs/formatjs/commit/f70bb202d43c36daa461458cd5f86213541d11d9)), closes [#6486](https://github.com/formatjs/formatjs/issues/6486) - by @longlho
+
 ## [0.10.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.7...@formatjs/intl-durationformat@0.10.8) (2026-05-05)
 
 **Note:** Version bump only for package @formatjs/intl-durationformat
