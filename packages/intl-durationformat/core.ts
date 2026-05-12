@@ -268,6 +268,8 @@ export class DurationFormat implements DurationFormatType {
         if (v !== undefined) {
           v = Number(v)
         }
+      } else if (v === 'fractional') {
+        v = 'numeric'
       } else {
         invariant(v !== undefined, `Missing internal slot ${key}`)
       }

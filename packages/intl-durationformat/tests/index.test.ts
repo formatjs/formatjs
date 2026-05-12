@@ -80,6 +80,10 @@ test('Intl.DurationFormat format digital', function () {
   expect(
     new DurationFormat('en', customFormatterOptions).format({years: 1})
   ).toBe('1 yr, 0:00:00')
+  expect(
+    new DurationFormat('en', customFormatterOptions).resolvedOptions()
+      .milliseconds
+  ).toBe('numeric')
 })
 
 test('Intl.DurationFormat sub-second rollup is exact (#6462)', function () {

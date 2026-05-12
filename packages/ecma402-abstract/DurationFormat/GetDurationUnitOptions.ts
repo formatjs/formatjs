@@ -6,7 +6,8 @@ export function GetDurationUnitOptions<T extends object>(
   baseStyle: Exclude<T[keyof T], undefined>,
   stylesList: readonly T[keyof T][],
   digitalBase: Exclude<T[keyof T], undefined>,
-  prevStyle: string
+  prevStyle: string,
+  twoDigitHours = false
 ): {
   style: Exclude<T[keyof T], undefined>
   display: string | Exclude<T[keyof T], undefined>
@@ -37,6 +38,10 @@ export function GetDurationUnitOptions<T extends object>(
     displayDefault
   )
 
+  if (twoDigitHours && unit === 'hours' && style === 'numeric') {
+    style = '2-digit' as Exclude<T[keyof T], undefined>
+  }
+
   if (prevStyle === 'numeric' || prevStyle === '2-digit') {
     if (style !== 'numeric' && style !== '2-digit') {
       throw new RangeError("Can't mix numeric and non-numeric styles")
@@ -45,14 +50,16 @@ export function GetDurationUnitOptions<T extends object>(
     }
     if (
       style === 'numeric' &&
-      display === 'always' &&
       (unit === 'milliseconds' ||
         unit === 'microseconds' ||
         unit === 'nanoseconds')
     ) {
-      throw new RangeError(
-        "Can't display milliseconds, microseconds, or nanoseconds in numeric format"
-      )
+      if (display === 'always') {
+        throw new RangeError(
+          "Can't display milliseconds, microseconds, or nanoseconds in numeric format"
+        )
+      }
+      style = 'fractional' as Exclude<T[keyof T], undefined>
     }
   }
   return {

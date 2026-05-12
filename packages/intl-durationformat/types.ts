@@ -80,11 +80,11 @@ export interface IntlDurationFormatInternal {
   minutesDisplay: 'always' | 'auto'
   seconds: 'long' | 'short' | 'narrow' | 'numeric' | '2-digit'
   secondsDisplay: 'always' | 'auto'
-  milliseconds: 'long' | 'short' | 'narrow' | 'numeric'
+  milliseconds: 'long' | 'short' | 'narrow' | 'numeric' | 'fractional'
   millisecondsDisplay: 'always' | 'auto'
-  microseconds: 'long' | 'short' | 'narrow' | 'numeric'
+  microseconds: 'long' | 'short' | 'narrow' | 'numeric' | 'fractional'
   microsecondsDisplay: 'always' | 'auto'
-  nanoseconds: 'long' | 'short' | 'narrow' | 'numeric'
+  nanoseconds: 'long' | 'short' | 'narrow' | 'numeric' | 'fractional'
   nanosecondsDisplay: 'always' | 'auto'
 }
 
