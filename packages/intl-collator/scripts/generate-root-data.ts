@@ -16,6 +16,12 @@ type PackedElement = readonly [
   flags: number,
 ]
 
+type PackedPrefixEntry = {
+  readonly prefix: readonly number[]
+  readonly codePoints: readonly number[]
+  readonly elements: readonly PackedElement[]
+}
+
 function packElement(entry: ParsedUCAEntry): PackedElement[] {
   return entry.elements.map(element => [
     element.primary,
@@ -53,8 +59,18 @@ if (!argv.out) {
 
 const source = readFileSync(argv.ucaPath, 'utf8')
 const entries = parseUCA(source)
-const rootTrie = buildUCATrie(entries)
-const rootElements = entries.map(packElement)
+const rootEntries = entries.filter(entry => entry.prefix === undefined)
+const prefixEntries = entries.filter(
+  (entry): entry is ParsedUCAEntry & {prefix: number[]} =>
+    entry.prefix !== undefined
+)
+const rootTrie = buildUCATrie(rootEntries)
+const rootElements = rootEntries.map(packElement)
+const rootPrefixEntries: PackedPrefixEntry[] = prefixEntries.map(entry => ({
+  prefix: entry.prefix,
+  codePoints: entry.codePoints,
+  elements: packElement(entry),
+}))
 
 outputFileSync(
   argv.out,
@@ -74,12 +90,21 @@ export type PackedTrieNode = {
   next?: Record<number, PackedTrieNode>
 }
 
+export type PackedPrefixEntry = {
+  readonly prefix: readonly number[]
+  readonly codePoints: readonly number[]
+  readonly elements: readonly PackedCollationElement[]
+}
+
 export const rootTrie: PackedTrieNode = ${serialize(rootTrie)}
 
 export const rootElements: readonly (readonly PackedCollationElement[])[] = ${serialize(rootElements)}
 
+export const rootPrefixEntries: readonly PackedPrefixEntry[] = ${serialize(rootPrefixEntries)}
+
 export const rootDataStats = {
-  entries: ${entries.length},
+  entries: ${rootEntries.length},
+  prefixEntries: ${prefixEntries.length},
   trieNodes: ${countTrieNodes(rootTrie)},
 } as const
 `

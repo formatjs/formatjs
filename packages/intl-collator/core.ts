@@ -5,6 +5,10 @@ import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
+import {
+  availableCollationLocales,
+  collationLocaleData,
+} from '@formatjs_generated/cldr.collation/locale-data.js'
 import {compareCollatorStrings} from '#packages/intl-collator/compare.js'
 import {getInternalSlots} from '#packages/intl-collator/get_internal_slots.js'
 import type {
@@ -28,14 +32,6 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'caseFirst',
 ]
 
-const DEFAULT_LOCALE_DATA: CollatorLocaleData = {
-  co: ['default'],
-  kn: ['false', 'true'],
-  kf: ['false', 'upper', 'lower'],
-  sensitivity: 'variant',
-  ignorePunctuation: false,
-}
-
 function ensureIntl() {
   if (typeof Intl === 'undefined') {
     if (typeof window !== 'undefined') {
@@ -50,17 +46,6 @@ function ensureIntl() {
       })
     }
   }
-}
-
-function getCollationOption(options: Record<string, unknown>): string {
-  const collation = GetOption(
-    options,
-    'collation',
-    'string',
-    undefined,
-    undefined
-  )
-  return typeof collation === 'string' ? collation : 'default'
 }
 
 export const Collator = function (
@@ -98,7 +83,16 @@ export const Collator = function (
   )
   const opt = Object.create(null)
   opt.localeMatcher = matcher
-  opt.co = getCollationOption(opts)
+  const collation = GetOption(
+    opts,
+    'collation',
+    'string',
+    undefined,
+    undefined
+  )
+  if (typeof collation === 'string') {
+    opt.co = collation
+  }
   if (numeric !== undefined) {
     opt.kn = String(numeric)
   }
@@ -198,12 +192,13 @@ Object.defineProperty(Collator.prototype, 'resolvedOptions', {
   },
 })
 
-Collator.availableLocales = new Set(['en'])
+Collator.availableLocales = new Set(availableCollationLocales)
 Collator.relevantExtensionKeys = ['co', 'kn', 'kf']
 Collator.getDefaultLocale = () => 'en'
-Collator.localeData = {
-  en: DEFAULT_LOCALE_DATA,
-}
+Collator.localeData = collationLocaleData as unknown as Record<
+  string,
+  CollatorLocaleData | undefined
+>
 Collator.polyfilled = true
 
 try {

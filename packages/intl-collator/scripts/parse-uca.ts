@@ -7,6 +7,7 @@ export type ParsedCollationElement = {
 }
 
 export type ParsedUCAEntry = {
+  prefix?: number[]
   codePoints: number[]
   elements: ParsedCollationElement[]
   comment?: string
@@ -96,9 +97,9 @@ export function parseUCALine(line: string): ParsedUCAEntry | undefined {
   }
 
   const [codePointPart, elementPart] = trimmed.split(';', 2)
-  const relevantCodePointPart = codePointPart.includes('|')
-    ? codePointPart.split('|', 2)[1]
-    : codePointPart
+  const [prefixPart, relevantCodePointPart] = codePointPart.includes('|')
+    ? codePointPart.split('|', 2)
+    : [undefined, codePointPart]
   COLLATION_ELEMENT_RE.lastIndex = 0
   const elements: ParsedCollationElement[] = []
   let match: RegExpExecArray | null
@@ -110,6 +111,8 @@ export function parseUCALine(line: string): ParsedUCAEntry | undefined {
   }
 
   return {
+    prefix:
+      prefixPart === undefined ? undefined : parseCodePointSequence(prefixPart),
     codePoints: parseCodePointSequence(relevantCodePointPart),
     elements,
     comment: comment?.trim(),

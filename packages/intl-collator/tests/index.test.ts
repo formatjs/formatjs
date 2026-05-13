@@ -26,6 +26,16 @@ describe('Intl.Collator', () => {
     expect(collator.compare('a', 'b')).toBeLessThan(0)
   })
 
+  it('uses root collation data for accent-sensitive comparisons', () => {
+    const collator = new Collator('en', {sensitivity: 'accent'})
+    expect(collator.compare('resume', 'résumé')).toBeLessThan(0)
+  })
+
+  it('uses prefixed root collation entries', () => {
+    const collator = new Collator('en')
+    expect(collator.compare('l\u00b7', 'lz')).toBeLessThan(0)
+  })
+
   it('compares numeric digit runs', () => {
     const collator = new Collator('en', {numeric: true})
     expect(collator.compare('item2', 'item10')).toBeLessThan(0)
@@ -41,6 +51,16 @@ describe('Intl.Collator', () => {
   })
 
   it('supports locale filtering', () => {
-    expect(Collator.supportedLocalesOf(['en', 'fr'])).toEqual(['en'])
+    expect(Collator.supportedLocalesOf(['en', 'fr', 'zz'])).toEqual([
+      'en',
+      'fr',
+    ])
+  })
+
+  it('resolves generated collation metadata', () => {
+    expect(new Collator('zh-u-co-pinyin').resolvedOptions()).toMatchObject({
+      locale: 'zh-u-co-pinyin',
+      collation: 'pinyin',
+    })
   })
 })
