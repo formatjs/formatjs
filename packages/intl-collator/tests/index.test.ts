@@ -50,10 +50,16 @@ describe('Intl.Collator', () => {
     ).toBeGreaterThan(0)
   })
 
+  it('ignores UCA variable punctuation when requested', () => {
+    const collator = new Collator('en', {ignorePunctuation: true})
+    expect(collator.compare('a\u2014b', 'ab')).toBe(0)
+  })
+
   it('supports locale filtering', () => {
-    expect(Collator.supportedLocalesOf(['en', 'fr', 'zz'])).toEqual([
+    expect(Collator.supportedLocalesOf(['en', 'fr', 'sv', 'zz'])).toEqual([
       'en',
       'fr',
+      'sv',
     ])
   })
 
@@ -62,5 +68,26 @@ describe('Intl.Collator', () => {
       locale: 'zh-u-co-pinyin',
       collation: 'pinyin',
     })
+  })
+
+  it('applies imported pinyin tone tailorings', () => {
+    const collator = new Collator('zh-u-co-pinyin')
+    expect(collator.compare('\u0101', '\u00e1')).toBeLessThan(0)
+    expect(collator.compare('\u00e1', '\u01ce')).toBeLessThan(0)
+    expect(collator.compare('\u01ce', '\u00e0')).toBeLessThan(0)
+    expect(collator.compare('\u00e0', 'a')).toBeLessThan(0)
+  })
+
+  it('uses generated CLDR default collation for comparison', () => {
+    const collator = new Collator('zh')
+    expect(collator.resolvedOptions().collation).toBe('default')
+    expect(collator.compare('\u00e0', 'a')).toBeLessThan(0)
+  })
+
+  it('applies locale primary tailorings from generated CLDR data', () => {
+    const collator = new Collator('sv')
+    expect(collator.compare('z', '\u00e5')).toBeLessThan(0)
+    expect(collator.compare('\u00e5', '\u00e4')).toBeLessThan(0)
+    expect(collator.compare('\u00e4', '\u00f6')).toBeLessThan(0)
   })
 })

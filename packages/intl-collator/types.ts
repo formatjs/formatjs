@@ -56,6 +56,7 @@ export interface CollatorLocaleData {
   co: string[]
   kn: string[]
   kf: string[]
+  defaultCollation?: string
   sensitivity: CollatorSensitivity
   ignorePunctuation: boolean
 }
