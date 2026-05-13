@@ -41,6 +41,7 @@ export type ParsedLDMLCollation = {
 }
 
 const BEFORE_RESET_RE = /^\[before\s+([123])\]\s*(.*)$/
+const COMMENT_RE = /#.*$/gm
 const LEADING_WHITESPACE_RE = /^\s+/
 const SETTING_RE = /^\[([^\]\s]+)(?:\s+([^\]]+))?\]/
 const WHITESPACE_RE = /\s+/g
@@ -82,6 +83,10 @@ function relationTokenLength(strength: CollationRelationStrength): number {
     : strength === 'secondary'
       ? 2
       : 1
+}
+
+function starredRelationValues(input: string): string[] {
+  return Array.from(input.replace(WHITESPACE_RE, ''))
 }
 
 function readToken(input: string): [string, string] {
@@ -161,7 +166,7 @@ function parseRelation(
 
 export function parseCollationRules(source: string): CollationRule[] {
   const rules: CollationRule[] = []
-  let input = source.replace(WHITESPACE_RE, ' ').trim()
+  let input = source.replace(COMMENT_RE, '').replace(WHITESPACE_RE, ' ').trim()
 
   while (input) {
     input = trimStart(input)
@@ -181,11 +186,19 @@ export function parseCollationRules(source: string): CollationRule[] {
 
     const strength = readRelationStrength(input)
     if (strength) {
+      const tokenLength = relationTokenLength(strength)
+      const starred = input[tokenLength] === '*'
       const [value, rest] = readToken(
-        trimStart(input.slice(relationTokenLength(strength)))
+        trimStart(input.slice(tokenLength + (starred ? 1 : 0)))
       )
       if (value) {
-        rules.push(parseRelation(strength, value))
+        if (starred) {
+          for (const relationValue of starredRelationValues(value)) {
+            rules.push(parseRelation(strength, relationValue))
+          }
+        } else {
+          rules.push(parseRelation(strength, value))
+        }
       }
       input = rest
       continue

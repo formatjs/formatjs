@@ -95,4 +95,19 @@ describe('LDML collation parser', () => {
       },
     ])
   })
+
+  it('expands starred relations and ignores rule comments', () => {
+    expect(
+      parseCollationRules(`
+        &a
+        <*bc # group comment
+        <<d
+      `)
+    ).toEqual([
+      {type: 'reset', value: 'a'},
+      {type: 'relation', strength: 'primary', value: 'b'},
+      {type: 'relation', strength: 'primary', value: 'c'},
+      {type: 'relation', strength: 'secondary', value: 'd'},
+    ])
+  })
 })
