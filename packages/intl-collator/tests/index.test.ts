@@ -63,4 +63,12 @@ describe('Intl.Collator', () => {
       collation: 'pinyin',
     })
   })
+
+  it('applies imported pinyin tone tailorings', () => {
+    const collator = new Collator('zh-u-co-pinyin')
+    expect(collator.compare('\u0101', '\u00e1')).toBeLessThan(0)
+    expect(collator.compare('\u00e1', '\u01ce')).toBeLessThan(0)
+    expect(collator.compare('\u01ce', '\u00e0')).toBeLessThan(0)
+    expect(collator.compare('\u00e0', 'a')).toBeLessThan(0)
+  })
 })
