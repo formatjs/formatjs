@@ -717,6 +717,8 @@ importers:
         specifier: workspace:*
         version: link:../intl-messageformat
 
+  packages/intl-collator: {}
+
   packages/intl-datetimeformat:
     dependencies:
       '@formatjs/bigdecimal':
