@@ -8,6 +8,7 @@ type GeneratedLocaleData = {
   readonly co: readonly string[]
   readonly kn: readonly ['false', 'true']
   readonly kf: readonly ['false', 'upper', 'lower']
+  readonly defaultCollation: string
   readonly sensitivity: 'variant'
   readonly ignorePunctuation: false
 }
@@ -95,6 +96,7 @@ for (const path of resolvedPaths) {
     co: [...collationTypes].sort(),
     kn: ['false', 'true'],
     kf: ['false', 'upper', 'lower'],
+    defaultCollation: defaultType,
     sensitivity: 'variant',
     ignorePunctuation: false,
   }

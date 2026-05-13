@@ -1,4 +1,5 @@
 import type {IntlCollatorInternal} from '#packages/intl-collator/types.js'
+import {collationLocaleData} from '@formatjs_generated/cldr.collation/locale-data.js'
 import {
   rootElements,
   rootPrefixEntries,
@@ -86,6 +87,20 @@ const tailoringCache = new Map<string, readonly TailoringEntry[]>()
 
 function localeBase(locale: string): string {
   return locale.split('-u-')[0]
+}
+
+function collationForComparison(locale: string, collation: string): string {
+  if (collation !== 'default') {
+    return collation
+  }
+  return (
+    (
+      collationLocaleData as Record<
+        string,
+        {defaultCollation?: string} | undefined
+      >
+    )[locale]?.defaultCollation || collation
+  )
 }
 
 function normalizeTailoringValue(value: string): string {
@@ -395,7 +410,11 @@ function comparePreparedStrings(
   right: string,
   slots: IntlCollatorInternal
 ): number {
-  const tailoring = tailoringEntries(localeBase(slots.locale), slots.collation)
+  const locale = localeBase(slots.locale)
+  const tailoring = tailoringEntries(
+    locale,
+    collationForComparison(locale, slots.collation)
+  )
   return compareCollationElements(
     collationElements(left, tailoring),
     collationElements(right, tailoring),
