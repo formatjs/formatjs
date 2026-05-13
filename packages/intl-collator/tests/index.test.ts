@@ -51,6 +51,16 @@ describe('Intl.Collator', () => {
   })
 
   it('supports locale filtering', () => {
-    expect(Collator.supportedLocalesOf(['en', 'fr'])).toEqual(['en'])
+    expect(Collator.supportedLocalesOf(['en', 'fr', 'zz'])).toEqual([
+      'en',
+      'fr',
+    ])
+  })
+
+  it('resolves generated collation metadata', () => {
+    expect(new Collator('zh-u-co-pinyin').resolvedOptions()).toMatchObject({
+      locale: 'zh-u-co-pinyin',
+      collation: 'pinyin',
+    })
   })
 })
