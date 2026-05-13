@@ -7,7 +7,7 @@ import {
   parseUCAVariableTop,
   type PackedTrieNode,
   type ParsedUCAEntry,
-} from './parse-uca.ts'
+} from './parse-uca.js'
 
 type PackedElement = readonly [
   primary: number,
@@ -27,6 +27,10 @@ function packElement(
   entry: ParsedUCAEntry,
   variableTop: number | undefined
 ): PackedElement[] {
+  // UCA elements carry comparison weights by level. The flags slot marks
+  // variable elements so alternate shifted / ignorePunctuation can filter them.
+  // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison
+  // https://www.unicode.org/reports/tr10/#Variable_Weighting
   return entry.elements.map(element => [
     element.primary,
     element.secondary,
@@ -69,6 +73,10 @@ if (!argv.out) {
 const source = readFileSync(argv.ucaPath, 'utf8')
 const entries = parseUCA(source)
 const variableTop = parseUCAVariableTop(source)
+// UCA root mappings without prefixes go into the longest-match trie; prefixed
+// mappings are emitted separately for context-sensitive lookup.
+// https://www.unicode.org/reports/tr10/#Contractions
+// https://www.unicode.org/reports/tr10/#Contextual_Sensitive_Mappings
 const rootEntries = entries.filter(entry => entry.prefix === undefined)
 const prefixEntries = entries.filter(
   (entry): entry is ParsedUCAEntry & {prefix: number[]} =>

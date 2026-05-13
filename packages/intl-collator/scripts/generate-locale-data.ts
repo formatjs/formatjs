@@ -2,7 +2,7 @@ import {basename} from 'node:path'
 import minimist from 'minimist'
 import {readdirSync, readFileSync, statSync} from 'node:fs'
 import {outputFileSync} from 'fs-extra/esm'
-import {parseLDMLCollations} from './parse-ldml-collation.ts'
+import {parseLDMLCollations} from './parse-ldml-collation.js'
 
 type GeneratedLocaleData = {
   readonly co: readonly string[]
@@ -14,6 +14,13 @@ type GeneratedLocaleData = {
 }
 
 const DEFAULT_COLLATION_RE = /<defaultCollation\b[^>]*>([^<]+)<\/defaultCollation>/i
+const UNDERSCORE_RE = /_/g
+const WHITESPACE_RE = /\s+/g
+
+// Emits the ECMA-402 locale data shape consumed by ResolveLocale for
+// Intl.Collator relevant extension keys co/kn/kf.
+// https://tc39.es/ecma402/#sec-initializecollator
+// https://tc39.es/ecma402/#sec-intl.collator-internal-slots
 
 function collationPaths(dir: string): string[] {
   const entries = readdirSync(dir).flatMap(entry => {
@@ -25,7 +32,7 @@ function collationPaths(dir: string): string[] {
 
 function collationPathList(input: string | string[] | undefined): string[] {
   return (Array.isArray(input) ? input.join(' ') : input || '')
-    .split(/\s+/)
+    .split(WHITESPACE_RE)
     .filter(path => path.endsWith('.xml'))
     .sort()
 }
@@ -39,10 +46,13 @@ function collationPathsFromCopyConfig(dir: string): string[] {
 }
 
 function localeFromPath(path: string): string {
-  return basename(path, '.xml').replace(/_/g, '-')
+  return basename(path, '.xml').replace(UNDERSCORE_RE, '-')
 }
 
 function defaultCollation(source: string): string {
+  // LDML <defaultCollation> defines the locale default collation type used by
+  // type fallback when the requested ECMA-402 collation is "default".
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Type_Fallback
   return DEFAULT_COLLATION_RE.exec(source)?.[1].trim() || 'standard'
 }
 
@@ -80,6 +90,9 @@ for (const path of resolvedPaths) {
   const defaultType = defaultCollation(source)
   const collations = parseLDMLCollations(locale, source)
   const collationTypes = new Set<string>(['default'])
+  // ECMA-402 exposes supported "co" values through locale data. Keep
+  // non-standard/search LDML types plus the locale default type.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Types
   for (const collation of collations) {
     if (
       collation.type !== 'standard' &&

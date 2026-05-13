@@ -6,7 +6,7 @@ import {
   parseLDMLCollations,
   type CollationRule,
   type ParsedLDMLCollation,
-} from './parse-ldml-collation.ts'
+} from './parse-ldml-collation.js'
 
 type PackedSetting = readonly [
   type: 'setting',
@@ -35,6 +35,13 @@ type PackedCollation = {
   readonly rules?: readonly PackedRule[]
 }
 
+const UNDERSCORE_RE = /_/g
+const WHITESPACE_RE = /\s+/g
+
+// Packs LDML collation tailorings into generated data consumed by runtime
+// CompareStrings. The XML/rule parser follows LDML Part 5 Collation.
+// https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Tailorings
+
 function collationPaths(dir: string): string[] {
   const entries = readdirSync(dir).flatMap(entry => {
     const path = `${dir}/${entry}`
@@ -48,16 +55,19 @@ function collationPathList(input: string | string[] | undefined): string[] {
     return input.filter(path => path.endsWith('.xml')).sort()
   }
   return (input || '')
-    .split(/\s+/)
+    .split(WHITESPACE_RE)
     .filter(path => path.endsWith('.xml'))
     .sort()
 }
 
 function localeFromPath(path: string): string {
-  return basename(path, '.xml').replace(/_/g, '-')
+  return basename(path, '.xml').replace(UNDERSCORE_RE, '-')
 }
 
 function packRule(rule: CollationRule): PackedRule {
+  // Preserve LDML reset/relation/setting order. Runtime compilation applies
+  // each reset chain in sequence against root UCA weights.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   switch (rule.type) {
     case 'reset':
       return rule.before
@@ -76,6 +86,8 @@ function packRule(rule: CollationRule): PackedRule {
 
 function packCollation(collation: ParsedLDMLCollation): PackedCollation {
   if (collation.alias) {
+    // LDML aliases redirect one locale/type collation to another.
+    // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Types
     return {alias: collation.alias}
   }
   return {rules: collation.rules.map(packRule)}

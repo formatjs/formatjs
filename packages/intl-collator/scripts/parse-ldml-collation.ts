@@ -46,6 +46,9 @@ const LEADING_WHITESPACE_RE = /^\s+/
 const SETTING_RE = /^\[([^\]\s]+)(?:\s+([^\]]+))?\]/
 const WHITESPACE_RE = /\s+/g
 
+// LDML Part 5 defines collation XML as <collations> containing one or more
+// typed <collation> elements, each with <cr> rule text or an <alias>.
+// https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Tailorings
 const xmlParser = new XMLParser({
   attributeNamePrefix: '',
   ignoreAttributes: false,
@@ -62,6 +65,9 @@ function trimStart(input: string): string {
 }
 
 function readRelationStrength(input: string): CollationRelationStrength | undefined {
+  // LDML relation operators encode strength: < primary, << secondary,
+  // <<< tertiary, and = identical.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   if (input.startsWith('<<<')) {
     return 'tertiary'
   }
@@ -86,6 +92,8 @@ function relationTokenLength(strength: CollationRelationStrength): number {
 }
 
 function starredRelationValues(input: string): string[] {
+  // LDML starred relations expand a sequence into one relation per code point.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   return Array.from(input.replace(WHITESPACE_RE, ''))
 }
 
@@ -114,6 +122,9 @@ function readToken(input: string): [string, string] {
 
 function parseSetting(key: string, rawValue = ''): CollationSetting {
   const value = rawValue.trim()
+  // LDML collation settings appear in square brackets in the <cr> rule stream.
+  // Unknown settings are preserved so generation can decide how to handle them.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Settings
   switch (key) {
     case 'alternate':
     case 'backwards':
@@ -135,6 +146,9 @@ function parseSetting(key: string, rawValue = ''): CollationSetting {
 }
 
 function parseReset(rawValue: string): CollationReset {
+  // A rule chain starts with a reset (&). [before 1|2|3] changes insertion
+  // position relative to the reset anchor at primary/secondary/tertiary level.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   const before = BEFORE_RESET_RE.exec(rawValue)
   if (before) {
     return {
@@ -153,6 +167,10 @@ function parseRelation(
   strength: CollationRelationStrength,
   rawValue: string
 ): CollationRelation {
+  // LDML relation strings can carry a prefix/context with "|" and an expansion
+  // with "/"; keep both so tailoring compilation can assign context mappings.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Context_Before
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Expansions
   const [prefixAndValue, expansion] = rawValue.split('/', 2)
   const [prefix, value] = prefixAndValue.split('|', 2)
   return {
@@ -166,6 +184,9 @@ function parseRelation(
 
 export function parseCollationRules(source: string): CollationRule[] {
   const rules: CollationRule[] = []
+  // Parse the LDML <cr> rule language: settings, resets, relation chains,
+  // starred relations, comments, prefixes, and expansions.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   let input = source.replace(COMMENT_RE, '').replace(WHITESPACE_RE, ' ').trim()
 
   while (input) {
@@ -239,6 +260,10 @@ export function parseLDMLCollations(
   source: string
 ): ParsedLDMLCollation[] {
   const collations: ParsedLDMLCollation[] = []
+  // Read the LDML XML layer with a real XML parser, then hand only <cr> rule
+  // text to the rule parser above. Aliases represent LDML collation fallback
+  // links between locale/type records.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Types
   const parsed = xmlParser.parse(source) as XMLNode
   const collationNodes = rootCollations(parsed)?.collation
   if (!Array.isArray(collationNodes)) {
