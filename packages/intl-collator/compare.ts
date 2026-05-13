@@ -7,10 +7,18 @@ import {
   type PackedPrefixEntry,
   type PackedTrieNode,
 } from '@formatjs_generated/cldr.collation/root.js'
+import {
+  collationTailorings,
+  type PackedLDMLCollation,
+  type PackedLDMLRelation,
+  type PackedLDMLReset,
+  type PackedLDMLRule,
+} from '@formatjs_generated/cldr.collation/tailoring.js'
 
 const COMBINING_MARKS = /[\u0300-\u036f]/g
 const ASCII_PUNCTUATION = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g
 const ASCII_DIGIT_RUN = /[0-9]+/g
+const IMPORT_COLLATION_RE = /^(.+)-u-co-([a-z0-9-]+)$/i
 
 function normalize(input: string): string {
   return typeof input.normalize === 'function' ? input.normalize('NFD') : input
@@ -67,6 +75,48 @@ function stringToCodePoints(input: string): number[] {
 
 function fallbackElement(codePoint: number): PackedCollationElement {
   return [0xff0000 + codePoint, 0, 0, 0, 0]
+}
+
+type TailoringEntry = {
+  readonly codePoints: readonly number[]
+  readonly elements: readonly PackedCollationElement[]
+}
+
+const tailoringCache = new Map<string, readonly TailoringEntry[]>()
+
+function localeBase(locale: string): string {
+  return locale.split('-u-')[0]
+}
+
+function normalizeTailoringValue(value: string): string {
+  return normalize(value)
+}
+
+function cloneElement(
+  element: PackedCollationElement,
+  level: number,
+  weight: number
+): PackedCollationElement {
+  return [
+    level === 0 ? weight : element[0],
+    level === 1 ? weight : element[1],
+    level === 2 ? weight : element[2],
+    element[3],
+    element[4],
+  ]
+}
+
+function relationLevel(rule: PackedLDMLRelation): number {
+  switch (rule[1]) {
+    case 'primary':
+      return 0
+    case 'secondary':
+      return 1
+    case 'tertiary':
+      return 2
+    default:
+      return 3
+  }
 }
 
 function matchesAt(
@@ -147,11 +197,157 @@ function lookupRootElements(
     : {elements: [fallbackElement(codePoints[start])], length: 1}
 }
 
-function collationElements(input: string): PackedCollationElement[] {
+function rootElementsForString(input: string): PackedCollationElement[] {
   const codePoints = stringToCodePoints(input)
   const elements: PackedCollationElement[] = []
   for (let i = 0; i < codePoints.length; ) {
     const match = lookupRootElements(codePoints, i)
+    elements.push(...match.elements)
+    i += match.length
+  }
+  return elements
+}
+
+function packedCollation(
+  locale: string,
+  collation: string
+): PackedLDMLCollation | undefined {
+  return (
+    collationTailorings as Record<
+      string,
+      Record<string, PackedLDMLCollation> | undefined
+    >
+  )[locale]?.[collation]
+}
+
+function importedTailorings(
+  rule: PackedLDMLRule,
+  visited: Set<string>
+): readonly TailoringEntry[] {
+  if (
+    rule[0] !== 'setting' ||
+    rule[1] !== 'import' ||
+    typeof rule[2] !== 'string'
+  ) {
+    return []
+  }
+  const imported = IMPORT_COLLATION_RE.exec(rule[2])
+  return imported ? tailoringEntries(imported[1], imported[2], visited) : []
+}
+
+function addTailoredRelation(
+  entries: TailoringEntry[],
+  rule: PackedLDMLRelation,
+  element: PackedCollationElement
+) {
+  const value = normalizeTailoringValue(rule[2])
+  entries.push({
+    codePoints: stringToCodePoints(value),
+    elements: [element],
+  })
+}
+
+function addTailoredRelationGroup(
+  entries: TailoringEntry[],
+  resetValue: string,
+  before: 1 | 2 | 3 | undefined,
+  relations: PackedLDMLRelation[]
+) {
+  const anchor = rootElementsForString(normalizeTailoringValue(resetValue))[0]
+  if (!anchor) {
+    return
+  }
+
+  const totalByLevel = [0, 0, 0, 0]
+  for (const relation of relations) {
+    totalByLevel[relationLevel(relation)]++
+  }
+
+  const seenByLevel = [0, 0, 0, 0]
+  let previousElement = anchor
+  for (const relation of relations) {
+    const level = relationLevel(relation)
+    seenByLevel[level]++
+    const baseElement = level === 2 ? previousElement : anchor
+    const anchorWeight = baseElement[level]
+    const offset =
+      before === level + 1
+        ? seenByLevel[level] - totalByLevel[level] - 1
+        : seenByLevel[level]
+    const element = cloneElement(baseElement, level, anchorWeight + offset)
+    previousElement = element
+    addTailoredRelation(entries, relation, element)
+  }
+}
+
+function tailoringEntries(
+  locale: string,
+  collation: string,
+  visited = new Set<string>()
+): readonly TailoringEntry[] {
+  const key = `${locale}|${collation}`
+  if (tailoringCache.has(key)) {
+    return tailoringCache.get(key)!
+  }
+  if (visited.has(key)) {
+    return []
+  }
+  visited.add(key)
+
+  const collationData = packedCollation(locale, collation)
+  const entries: TailoringEntry[] = []
+  const rules = collationData?.rules || []
+  let reset: PackedLDMLReset | undefined
+  let relations: PackedLDMLRelation[] = []
+
+  function flushRelations() {
+    if (reset && relations.length > 0) {
+      addTailoredRelationGroup(entries, reset[1], reset[2], relations)
+    }
+    relations = []
+  }
+
+  for (const rule of rules) {
+    if (rule[0] === 'setting') {
+      flushRelations()
+      entries.push(...importedTailorings(rule, visited))
+    } else if (rule[0] === 'reset') {
+      flushRelations()
+      reset = rule
+    } else if (rule[0] === 'relation') {
+      relations.push(rule)
+    }
+  }
+  flushRelations()
+
+  entries.sort((left, right) => right.codePoints.length - left.codePoints.length)
+  tailoringCache.set(key, entries)
+  return entries
+}
+
+function lookupTailoredElements(
+  entries: readonly TailoringEntry[],
+  codePoints: readonly number[],
+  start: number
+): {elements: readonly PackedCollationElement[]; length: number} | undefined {
+  for (const entry of entries) {
+    if (matchesAt(codePoints, start, entry.codePoints)) {
+      return {elements: entry.elements, length: entry.codePoints.length}
+    }
+  }
+  return undefined
+}
+
+function collationElements(
+  input: string,
+  tailoring: readonly TailoringEntry[]
+): PackedCollationElement[] {
+  const codePoints = stringToCodePoints(input)
+  const elements: PackedCollationElement[] = []
+  for (let i = 0; i < codePoints.length; ) {
+    const match =
+      lookupTailoredElements(tailoring, codePoints, i) ||
+      lookupRootElements(codePoints, i)
     elements.push(...match.elements)
     i += match.length
   }
@@ -199,9 +395,10 @@ function comparePreparedStrings(
   right: string,
   slots: IntlCollatorInternal
 ): number {
+  const tailoring = tailoringEntries(localeBase(slots.locale), slots.collation)
   return compareCollationElements(
-    collationElements(left),
-    collationElements(right),
+    collationElements(left, tailoring),
+    collationElements(right, tailoring),
     levelCount(slots)
   )
 }
