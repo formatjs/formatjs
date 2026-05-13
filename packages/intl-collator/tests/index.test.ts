@@ -71,4 +71,10 @@ describe('Intl.Collator', () => {
     expect(collator.compare('\u01ce', '\u00e0')).toBeLessThan(0)
     expect(collator.compare('\u00e0', 'a')).toBeLessThan(0)
   })
+
+  it('uses generated CLDR default collation for comparison', () => {
+    const collator = new Collator('zh')
+    expect(collator.resolvedOptions().collation).toBe('default')
+    expect(collator.compare('\u00e0', 'a')).toBeLessThan(0)
+  })
 })
