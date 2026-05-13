@@ -1,0 +1,49 @@
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+
+npm_link_all_packages()
+
+ENTRY_POINTS = [
+    "index.ts",
+    "polyfill.ts",
+    "polyfill-force.ts",
+    "should-polyfill.ts",
+]
+
+formatjs_library(
+    name = "intl-collator",
+    srcs = [
+        "compare.ts",
+        "core.ts",
+        "get_internal_slots.ts",
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+        "types.ts",
+    ],
+    entry_points = ENTRY_POINTS,
+    types = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
+)
+
+formatjs_test(
+    name = "intl-collator_test",
+    data = [
+        "tests/index.test.ts",
+        ":intl-collator",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/vitest",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+)

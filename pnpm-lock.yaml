@@ -87,6 +87,9 @@ importers:
       '@formatjs/intl':
         specifier: workspace:*
         version: link:packages/intl
+      '@formatjs/intl-collator':
+        specifier: workspace:*
+        version: link:packages/intl-collator
       '@formatjs/intl-datetimeformat':
         specifier: workspace:*
         version: link:packages/intl-datetimeformat
@@ -717,7 +720,11 @@ importers:
         specifier: workspace:*
         version: link:../intl-messageformat
 
-  packages/intl-collator: {}
+  packages/intl-collator:
+    dependencies:
+      '@formatjs/intl-localematcher':
+        specifier: workspace:*
+        version: link:../intl-localematcher
 
   packages/intl-datetimeformat:
     dependencies:

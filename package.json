@@ -37,6 +37,7 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/icu-skeleton-parser": "workspace:*",
     "@formatjs/intl": "workspace:*",
+    "@formatjs/intl-collator": "workspace:*",
     "@formatjs/intl-datetimeformat": "workspace:*",
     "@formatjs/intl-displaynames": "workspace:*",
     "@formatjs/intl-durationformat": "workspace:*",
