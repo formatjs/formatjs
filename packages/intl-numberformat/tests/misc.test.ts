@@ -442,18 +442,21 @@ test('#4359 roundingIncrement with fraction digits', () => {
 })
 
 test('resolvedOptions includes rounding options', () => {
-  const resolved = new NumberFormat('en-US', {
+  const nf = new NumberFormat('en-US', {
     roundingIncrement: 5,
     roundingMode: 'ceil',
     trailingZeroDisplay: 'stripIfInteger',
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
-  }).resolvedOptions()
+  })
+  const resolved = nf.resolvedOptions()
 
   expect(resolved.roundingIncrement).toBe(5)
   expect(resolved.roundingMode).toBe('ceil')
   expect(resolved.roundingPriority).toBe('auto')
   expect(resolved.trailingZeroDisplay).toBe('stripIfInteger')
+  expect(nf.format(1.221)).toBe('1.25')
+  expect(nf.format(1)).toBe('1')
 })
 
 // https://github.com/formatjs/formatjs/issues/4236
