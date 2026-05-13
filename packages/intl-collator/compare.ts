@@ -1,8 +1,10 @@
 import type {IntlCollatorInternal} from '#packages/intl-collator/types.js'
 import {
   rootElements,
+  rootPrefixEntries,
   rootTrie,
   type PackedCollationElement,
+  type PackedPrefixEntry,
   type PackedTrieNode,
 } from '@formatjs_generated/cldr.collation/root.js'
 
@@ -67,10 +69,64 @@ function fallbackElement(codePoint: number): PackedCollationElement {
   return [0xff0000 + codePoint, 0, 0, 0, 0]
 }
 
+function matchesAt(
+  codePoints: readonly number[],
+  start: number,
+  expected: readonly number[]
+): boolean {
+  if (start + expected.length > codePoints.length) {
+    return false
+  }
+  return expected.every(
+    (codePoint, index) => codePoints[start + index] === codePoint
+  )
+}
+
+function matchesBefore(
+  codePoints: readonly number[],
+  start: number,
+  expected: readonly number[]
+): boolean {
+  if (start < expected.length) {
+    return false
+  }
+  return expected.every(
+    (codePoint, index) =>
+      codePoints[start - expected.length + index] === codePoint
+  )
+}
+
+function lookupPrefixElements(
+  codePoints: readonly number[],
+  start: number
+): {elements: readonly PackedCollationElement[]; length: number} | undefined {
+  let bestEntry: PackedPrefixEntry | undefined
+  for (const entry of rootPrefixEntries) {
+    if (
+      matchesBefore(codePoints, start, entry.prefix) &&
+      matchesAt(codePoints, start, entry.codePoints) &&
+      (!bestEntry ||
+        entry.prefix.length + entry.codePoints.length >
+          bestEntry.prefix.length + bestEntry.codePoints.length)
+    ) {
+      bestEntry = entry
+    }
+  }
+
+  return bestEntry
+    ? {elements: bestEntry.elements, length: bestEntry.codePoints.length}
+    : undefined
+}
+
 function lookupRootElements(
   codePoints: readonly number[],
   start: number
 ): {elements: readonly PackedCollationElement[]; length: number} {
+  const prefixMatch = lookupPrefixElements(codePoints, start)
+  if (prefixMatch) {
+    return prefixMatch
+  }
+
   let node: PackedTrieNode | undefined = rootTrie
   let matchedElements: readonly PackedCollationElement[] | undefined
   let matchedLength = 0
