@@ -19,6 +19,12 @@ import {
 const COMBINING_MARKS = /[\u0300-\u036f]/g
 const ASCII_DIGIT_RUN = /[0-9]+/g
 const IMPORT_COLLATION_RE = /^(.+)-u-co-([a-z0-9-]+)$/i
+const LEADING_ZERO_RE = /^0+/
+
+// ECMA-402 leaves CompareStrings locale-sensitive ordering
+// implementation-defined; this implementation maps the resolved Collator
+// options onto UCA/CLDR collation element levels.
+// https://tc39.es/ecma402/#sec-comparestrings
 
 function normalize(input: string): string {
   return typeof input.normalize === 'function' ? input.normalize('NFD') : input
@@ -28,6 +34,10 @@ function stripMarks(input: string): string {
   return input.replace(COMBINING_MARKS, '')
 }
 
+// Implements ECMA-402 sensitivity by dropping marks/case before UCA lookup:
+// base ignores marks and case, accent ignores case, case ignores marks, and
+// variant keeps all levels. caseFirst keeps original case for its tie-breaker.
+// https://tc39.es/ecma402/#sec-properties-of-intl-collator-instances
 function prepare(input: string, slots: IntlCollatorInternal): string {
   let result = normalize(input)
   if (slots.sensitivity === 'base' || slots.sensitivity === 'case') {
@@ -67,6 +77,10 @@ function stringToCodePoints(input: string): number[] {
 }
 
 function fallbackElement(codePoint: number): PackedCollationElement {
+  // UCA requires an order for code points not in the explicit root table; this
+  // compact fallback gives unassigned/unknown code points deterministic primary
+  // weights until full implicit weighting is implemented.
+  // https://www.unicode.org/reports/tr10/#Implicit_Weights
   return [0xff0000 + codePoint, 0, 0, 0, 0]
 }
 
@@ -85,6 +99,9 @@ function collationForComparison(locale: string, collation: string): string {
   if (collation !== 'default') {
     return collation
   }
+  // LDML Collation Type Fallback uses the locale's <defaultCollation> when
+  // ECMA-402 resolvedOptions exposes "default" for the collation slot.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Type_Fallback
   return (
     (
       collationLocaleData as Record<
@@ -114,6 +131,9 @@ function cloneElement(
 }
 
 function relationLevel(rule: PackedLDMLRelation): number {
+  // LDML relation operators map to UCA strength levels: < primary, <<
+  // secondary, <<< tertiary, and = identical.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   switch (rule[1]) {
     case 'primary':
       return 0
@@ -157,6 +177,10 @@ function lookupPrefixElements(
   codePoints: readonly number[],
   start: number
 ): {elements: readonly PackedCollationElement[]; length: number} | undefined {
+  // UCA supports context-sensitive mappings. CLDR FractionalUCA encodes these
+  // as prefix + code point sequences, so choose the longest applicable prefix
+  // match before falling back to the root trie.
+  // https://www.unicode.org/reports/tr10/#Contextual_Sensitive_Mappings
   let bestEntry: PackedPrefixEntry | undefined
   for (const entry of rootPrefixEntries) {
     if (
@@ -188,6 +212,9 @@ function lookupRootElements(
   let matchedElements: readonly PackedCollationElement[] | undefined
   let matchedLength = 0
 
+  // UCA collation element lookup is longest-match so contractions such as
+  // multi-code-point sequences beat their shorter prefixes.
+  // https://www.unicode.org/reports/tr10/#Contractions
   for (let i = start; i < codePoints.length; i++) {
     node = node.next?.[codePoints[i]]
     if (!node) {
@@ -238,6 +265,9 @@ function importedTailorings(
   ) {
     return []
   }
+  // LDML [import] pulls rules from another language tag / collation type.
+  // The visited set prevents recursive imports from looping.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Special_Purpose_Commands
   const imported = IMPORT_COLLATION_RE.exec(rule[2])
   return imported ? tailoringEntries(imported[1], imported[2], visited) : []
 }
@@ -260,6 +290,10 @@ function addTailoredRelationGroup(
   before: 1 | 2 | 3 | undefined,
   relations: PackedLDMLRelation[]
 ) {
+  // LDML rule chains are a reset (&) followed by relations. [before n] inserts
+  // relations before the reset at the requested strength; otherwise each
+  // relation is assigned weights after the reset anchor.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
   const anchor = rootElementsForString(normalizeTailoringValue(resetValue))[0]
   if (!anchor) {
     return
@@ -316,6 +350,9 @@ function tailoringEntries(
 
   for (const rule of rules) {
     if (rule[0] === 'setting') {
+      // Settings break the current LDML rule chain. Imports contribute their
+      // compiled tailoring entries at this point in rule order.
+      // https://www.unicode.org/reports/tr35/tr35-collation.html#Collation_Settings
       flushRelations()
       entries.push(...importedTailorings(rule, visited))
     } else if (rule[0] === 'reset') {
@@ -362,6 +399,10 @@ function collationElements(
 }
 
 function levelCount(slots: IntlCollatorInternal): number {
+  // ECMA-402 sensitivity selects how many UCA levels participate in
+  // CompareStrings: base=primary, accent=primary+secondary,
+  // case/variant include tertiary handling in this compact implementation.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-collator-instances
   switch (slots.sensitivity) {
     case 'base':
       return 1
@@ -380,6 +421,10 @@ function compareCollationElements(
   levels: number,
   ignoreVariable: boolean
 ): number {
+  // UCA compares level by level. ignorePunctuation maps to shifted handling for
+  // variable elements, approximated here by filtering variable weights.
+  // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
   for (let level = 0; level < levels; level++) {
     const leftWeights = left
       .filter(element => !ignoreVariable || (element[4] & 1) === 0)
@@ -423,6 +468,9 @@ function compareNumeric(
   right: string,
   slots: IntlCollatorInternal
 ): number {
+  // ECMA-402 numeric=true / Unicode extension kn=true compares digit runs by
+  // numeric value instead of lexical code unit order.
+  // https://tc39.es/ecma402/#sec-initializecollator
   const leftParts = left.split(ASCII_DIGIT_RUN)
   const rightParts = right.split(ASCII_DIGIT_RUN)
   const leftDigits = left.match(ASCII_DIGIT_RUN) || []
@@ -445,8 +493,9 @@ function compareNumeric(
       continue
     }
 
-    const normalizedLeftNumber = leftNumber.replace(/^0+/, '') || '0'
-    const normalizedRightNumber = rightNumber.replace(/^0+/, '') || '0'
+    const normalizedLeftNumber = leftNumber.replace(LEADING_ZERO_RE, '') || '0'
+    const normalizedRightNumber =
+      rightNumber.replace(LEADING_ZERO_RE, '') || '0'
     const lengthResult =
       normalizedLeftNumber.length - normalizedRightNumber.length
     if (lengthResult) {
@@ -485,6 +534,9 @@ function compareCaseFirst(
     const leftIsUpper = leftChar !== lowerLeft
     const rightIsUpper = rightChar !== lowerRight
     if (leftIsUpper !== rightIsUpper) {
+      // ECMA-402 caseFirst / Unicode extension kf determines whether upper or
+      // lower case sorts first once base collation weights compare equal.
+      // https://tc39.es/ecma402/#sec-initializecollator
       const upperResult = leftIsUpper ? -1 : 1
       return caseFirst === 'upper' ? upperResult : -upperResult
     }
@@ -497,6 +549,9 @@ export function compareCollatorStrings(
   x: string,
   y: string
 ): number {
+  // CompareStrings receives already-ToString-converted values from the
+  // bound compare function and returns a negative/zero/positive Number.
+  // https://tc39.es/ecma402/#sec-comparestrings
   const left = prepare(x, slots)
   const right = prepare(y, slots)
   const result = slots.numeric

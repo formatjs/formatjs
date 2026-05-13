@@ -46,12 +46,13 @@ ts_binary(
 ts_binary(
     name = "generate-locale-data",
     data = [
+        ":parsers",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/fs-extra",
+        "//packages/intl-collator:node_modules/fast-xml-parser",
         "//:node_modules/minimist",
-        "parse-ldml-collation.ts",
     ],
     entry_point = "generate-locale-data.ts",
     visibility = [
@@ -62,12 +63,13 @@ ts_binary(
 ts_binary(
     name = "generate-tailoring-data",
     data = [
+        ":parsers",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/fs-extra",
+        "//packages/intl-collator:node_modules/fast-xml-parser",
         "//:node_modules/minimist",
-        "parse-ldml-collation.ts",
     ],
     entry_point = "generate-tailoring-data.ts",
     visibility = [

@@ -1,4 +1,4 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_import")
+load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
 
 java_import(
     name = "icu4j",
@@ -13,5 +13,18 @@ java_binary(
         "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/locale-match-fixtures.json)",
     },
     main_class = "ICUConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_test(
+    name = "intl_collator_conformance_test",
+    size = "small",
+    srcs = ["IntlCollatorConformanceTest.java"],
+    data = ["//packages/intl-collator:tests/collator-conformance.tsv"],
+    env = {
+        "COLLATOR_CONFORMANCE_FIXTURES": "$(rootpath //packages/intl-collator:tests/collator-conformance.tsv)",
+    },
+    main_class = "IntlCollatorConformanceTest",
+    test_class = "IntlCollatorConformanceTest",
     deps = [":icu4j"],
 )

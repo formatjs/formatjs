@@ -1,0 +1,28 @@
+description	locale	sensitivity	numeric	caseFirst	ignorePunctuation	left	right	expected
+English base sensitivity ignores accents	en	base	-	-	-	resume	résumé	0
+English accent sensitivity orders plain before accented	en	accent	-	-	-	resume	résumé	-1
+English accent sensitivity ignores case	en	accent	-	-	-	a	A	0
+English case sensitivity ignores accents	en	case	-	-	-	a	á	0
+English case sensitivity distinguishes lowercase and uppercase	en	case	-	-	-	a	A	-1
+English variant sensitivity distinguishes accents	en	variant	-	-	-	resume	résumé	-1
+English numeric ordering sorts digit runs numerically	en	variant	true	-	-	item2	item10	-1
+English numeric ordering treats leading zeros as equal	en	variant	true	-	-	item02	item2	0
+English default ordering sorts digit runs lexically	en	variant	false	-	-	item2	item10	1
+English locale numeric extension sorts digit runs numerically	en-u-kn-true	variant	-	-	-	item2	item10	-1
+English upper caseFirst orders uppercase first	en	variant	-	upper	-	A	a	-1
+English lower caseFirst orders lowercase first	en	variant	-	lower	-	A	a	1
+English locale upper caseFirst extension orders uppercase first	en-u-kf-upper	variant	-	-	-	A	a	-1
+English ignorePunctuation ignores em dash	en	variant	-	-	true	a—b	ab	0
+French accent sensitivity orders multi-accent words	fr	accent	-	-	-	cote	côté	-1
+German variant sensitivity keeps umlaut before z	de	variant	-	-	-	ä	z	-1
+Spanish sorts n before ñ	es	variant	-	-	-	n	ñ	-1
+Chinese pinyin tone one before tone two	zh-u-co-pinyin	variant	-	-	-	ā	á	-1
+Chinese pinyin tone two before tone three	zh-u-co-pinyin	variant	-	-	-	á	ǎ	-1
+Chinese pinyin tone three before tone four	zh-u-co-pinyin	variant	-	-	-	ǎ	à	-1
+Chinese default collation uses pinyin tone order	zh	variant	-	-	-	à	a	-1
+Swedish sorts z before å	sv	variant	-	-	-	z	å	-1
+Swedish sorts å before ä	sv	variant	-	-	-	å	ä	-1
+Swedish sorts ä before ö	sv	variant	-	-	-	ä	ö	-1
+Danish sorts z before æ	da	variant	-	-	-	z	æ	-1
+Danish sorts æ before ø	da	variant	-	-	-	æ	ø	-1
+Danish sorts ø before å	da	variant	-	-	-	ø	å	-1

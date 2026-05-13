@@ -12,6 +12,8 @@ ENTRY_POINTS = [
     "should-polyfill.ts",
 ]
 
+exports_files(["tests/collator-conformance.tsv"])
+
 formatjs_library(
     name = "intl-collator",
     srcs = [
@@ -28,8 +30,8 @@ formatjs_library(
     types = True,
     visibility = ["//visibility:public"],
     deps = [
-        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.collation",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
     ],
@@ -38,10 +40,13 @@ formatjs_library(
 formatjs_test(
     name = "intl-collator_test",
     data = [
+        "tests/collator-conformance.tsv",
+        "tests/conformance.test.ts",
         "tests/index.test.ts",
         ":intl-collator",
-        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",

@@ -27,6 +27,10 @@ const LEADING_DOT_RE = /^\./
 const LINE_SPLIT_RE = /\r?\n/
 const WHITESPACE_RE = /\s+/
 
+// Parses CLDR FractionalUCA/allkeys-style root entries into the collation
+// elements used by UCA's multi-level comparison algorithm.
+// https://www.unicode.org/reports/tr10/#Default_Unicode_Collation_Element_Table
+
 function parseHex(input: string): number {
   const value = parseInt(input, 16)
   if (!Number.isFinite(value)) {
@@ -36,6 +40,9 @@ function parseHex(input: string): number {
 }
 
 function parseWeightComponent(input: string): number {
+  // FractionalUCA weights can be raw hexadecimal bytes or symbolic U+NNNN
+  // weights; both become numeric UCA level weights.
+  // https://www.unicode.org/reports/tr10/#Default_Unicode_Collation_Element_Table
   const codePointWeight = input.trim().match(CODE_POINT_WEIGHT_RE)
   if (codePointWeight) {
     return parseHex(codePointWeight[1])
@@ -57,6 +64,9 @@ function parseDottedWeightComponent(input: string): number {
 }
 
 export function parseCodePointSequence(input: string): number[] {
+  // UCA mappings are keyed by one or more code points. Multiple code points
+  // form contractions that must be matched as a sequence at runtime.
+  // https://www.unicode.org/reports/tr10/#Contractions
   const codePoints = input
     .trim()
     .split(WHITESPACE_RE)
@@ -71,6 +81,10 @@ export function parseCodePointSequence(input: string): number[] {
 export function parseCollationElement(
   input: string
 ): ParsedCollationElement {
+  // Collation elements expose primary, secondary, tertiary, and quaternary
+  // weights. A leading "*" marks variable elements for shifted handling.
+  // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison
+  // https://www.unicode.org/reports/tr10/#Variable_Weighting
   const normalized = input.trim().replace(LEADING_ASTERISK_RE, '')
   const variable = input.trim().startsWith('*')
   const weights = normalized.includes(',')
@@ -91,6 +105,9 @@ export function parseCollationElement(
 }
 
 export function parseUCALine(line: string): ParsedUCAEntry | undefined {
+  // Lines may include a prefix before "|" for context-sensitive mappings and
+  // one or more bracketed collation elements after ";".
+  // https://www.unicode.org/reports/tr10/#Contextual_Sensitive_Mappings
   const [withoutComment, comment] = line.split('#', 2)
   const trimmed = withoutComment.trim()
   if (!trimmed || trimmed.startsWith('@') || !trimmed.includes(';')) {
@@ -128,11 +145,17 @@ export function parseUCA(source: string): ParsedUCAEntry[] {
 }
 
 export function parseUCAVariableTop(source: string): number | undefined {
+  // The UCA variable top separates variable elements used by alternate shifted
+  // handling, which ECMA-402 exposes through ignorePunctuation.
+  // https://www.unicode.org/reports/tr10/#Variable_Weighting
   const match = VARIABLE_TOP_RE.exec(source)
   return match ? parseWeightComponent(match[1]) : undefined
 }
 
 export function buildUCATrie(entries: ParsedUCAEntry[]): PackedTrieNode {
+  // Runtime lookup needs longest-match contraction search, so generated root
+  // data stores root mappings in a trie instead of scanning UCA lines.
+  // https://www.unicode.org/reports/tr10/#Contractions
   const root: PackedTrieNode = {}
   entries.forEach((entry, index) => {
     let node = root
