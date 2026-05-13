@@ -18,8 +18,11 @@ export type PackedTrieNode = {
 }
 
 const COLLATION_ELEMENT_RE = /\[([^\]]+)\]/g
+const HEX_BYTE_RE = /^[0-9A-Fa-f]{1,2}$/
+const CODE_POINT_WEIGHT_RE = /^U\+([0-9A-Fa-f]+)$/
+const LEADING_ASTERISK_RE = /^\*/
+const LEADING_DOT_RE = /^\./
 const LINE_SPLIT_RE = /\r?\n/
-const LEADING_WEIGHT_MARKER_RE = /^[*.]/
 const WHITESPACE_RE = /\s+/
 
 function parseHex(input: string): number {
@@ -28,6 +31,27 @@ function parseHex(input: string): number {
     throw new RangeError(`Invalid hexadecimal value: ${input}`)
   }
   return value
+}
+
+function parseWeightComponent(input: string): number {
+  const codePointWeight = input.trim().match(CODE_POINT_WEIGHT_RE)
+  if (codePointWeight) {
+    return parseHex(codePointWeight[1])
+  }
+
+  const bytes = input.trim().split(WHITESPACE_RE).filter(Boolean)
+  if (bytes.length === 0) {
+    return 0
+  }
+  if (!bytes.every(byte => HEX_BYTE_RE.test(byte))) {
+    throw new RangeError(`Invalid hexadecimal weight: ${input}`)
+  }
+  return parseHex(bytes.join(''))
+}
+
+function parseDottedWeightComponent(input: string): number {
+  const codePointWeight = input.trim().match(CODE_POINT_WEIGHT_RE)
+  return codePointWeight ? parseHex(codePointWeight[1]) : parseHex(input)
 }
 
 export function parseCodePointSequence(input: string): number[] {
@@ -45,12 +69,15 @@ export function parseCodePointSequence(input: string): number[] {
 export function parseCollationElement(
   input: string
 ): ParsedCollationElement {
-  const variable = input.startsWith('*')
-  const weights = input
-    .replace(LEADING_WEIGHT_MARKER_RE, '')
-    .split('.')
-    .filter(Boolean)
-    .map(parseHex)
+  const normalized = input.trim().replace(LEADING_ASTERISK_RE, '')
+  const variable = input.trim().startsWith('*')
+  const weights = normalized.includes(',')
+    ? normalized.split(',').map(parseWeightComponent)
+    : normalized
+        .replace(LEADING_DOT_RE, '')
+        .split('.')
+        .filter(Boolean)
+        .map(parseDottedWeightComponent)
 
   return {
     primary: weights[0] || 0,
@@ -69,6 +96,9 @@ export function parseUCALine(line: string): ParsedUCAEntry | undefined {
   }
 
   const [codePointPart, elementPart] = trimmed.split(';', 2)
+  const relevantCodePointPart = codePointPart.includes('|')
+    ? codePointPart.split('|', 2)[1]
+    : codePointPart
   COLLATION_ELEMENT_RE.lastIndex = 0
   const elements: ParsedCollationElement[] = []
   let match: RegExpExecArray | null
@@ -80,7 +110,7 @@ export function parseUCALine(line: string): ParsedUCAEntry | undefined {
   }
 
   return {
-    codePoints: parseCodePointSequence(codePointPart),
+    codePoints: parseCodePointSequence(relevantCodePointPart),
     elements,
     comment: comment?.trim(),
   }

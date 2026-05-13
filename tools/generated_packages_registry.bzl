@@ -2,6 +2,7 @@
 # To regenerate: ./scripts/generate_generated_packages.sh
 
 GENERATED_PACKAGES = [
+    {"name": "cldr.collation", "target": "//packages/generated/cldr-collation:pkg"},
     {"name": "cldr.core", "target": "//packages/intl-getcanonicallocales:cldr_core_pkg"},
     {"name": "cldr.locale", "target": "//packages/intl-locale:cldr_locale_pkg"},
     {"name": "cldr.number", "target": "//packages/intl-numberformat:cldr_number_pkg"},
