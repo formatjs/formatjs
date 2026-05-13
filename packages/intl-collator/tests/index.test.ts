@@ -26,6 +26,11 @@ describe('Intl.Collator', () => {
     expect(collator.compare('a', 'b')).toBeLessThan(0)
   })
 
+  it('uses root collation data for accent-sensitive comparisons', () => {
+    const collator = new Collator('en', {sensitivity: 'accent'})
+    expect(collator.compare('resume', 'résumé')).toBeLessThan(0)
+  })
+
   it('compares numeric digit runs', () => {
     const collator = new Collator('en', {numeric: true})
     expect(collator.compare('item2', 'item10')).toBeLessThan(0)
