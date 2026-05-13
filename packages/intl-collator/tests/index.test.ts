@@ -50,6 +50,11 @@ describe('Intl.Collator', () => {
     ).toBeGreaterThan(0)
   })
 
+  it('ignores UCA variable punctuation when requested', () => {
+    const collator = new Collator('en', {ignorePunctuation: true})
+    expect(collator.compare('a\u2014b', 'ab')).toBe(0)
+  })
+
   it('supports locale filtering', () => {
     expect(Collator.supportedLocalesOf(['en', 'fr', 'zz'])).toEqual([
       'en',

@@ -17,7 +17,6 @@ import {
 } from '@formatjs_generated/cldr.collation/tailoring.js'
 
 const COMBINING_MARKS = /[\u0300-\u036f]/g
-const ASCII_PUNCTUATION = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g
 const ASCII_DIGIT_RUN = /[0-9]+/g
 const IMPORT_COLLATION_RE = /^(.+)-u-co-([a-z0-9-]+)$/i
 
@@ -29,15 +28,8 @@ function stripMarks(input: string): string {
   return input.replace(COMBINING_MARKS, '')
 }
 
-function stripPunctuation(input: string): string {
-  return input.replace(ASCII_PUNCTUATION, '')
-}
-
 function prepare(input: string, slots: IntlCollatorInternal): string {
   let result = normalize(input)
-  if (slots.ignorePunctuation) {
-    result = stripPunctuation(result)
-  }
   if (slots.sensitivity === 'base' || slots.sensitivity === 'case') {
     result = stripMarks(result)
   }
@@ -385,13 +377,16 @@ function levelCount(slots: IntlCollatorInternal): number {
 function compareCollationElements(
   left: readonly PackedCollationElement[],
   right: readonly PackedCollationElement[],
-  levels: number
+  levels: number,
+  ignoreVariable: boolean
 ): number {
   for (let level = 0; level < levels; level++) {
     const leftWeights = left
+      .filter(element => !ignoreVariable || (element[4] & 1) === 0)
       .map(element => element[level])
       .filter(weight => weight !== 0)
     const rightWeights = right
+      .filter(element => !ignoreVariable || (element[4] & 1) === 0)
       .map(element => element[level])
       .filter(weight => weight !== 0)
     const length = Math.max(leftWeights.length, rightWeights.length)
@@ -418,7 +413,8 @@ function comparePreparedStrings(
   return compareCollationElements(
     collationElements(left, tailoring),
     collationElements(right, tailoring),
-    levelCount(slots)
+    levelCount(slots),
+    slots.ignorePunctuation
   )
 }
 

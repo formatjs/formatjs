@@ -19,6 +19,7 @@ export type PackedTrieNode = {
 }
 
 const COLLATION_ELEMENT_RE = /\[([^\]]+)\]/g
+const VARIABLE_TOP_RE = /^\[variable top\s*=\s*([^\]]+)\]/im
 const HEX_BYTE_RE = /^[0-9A-Fa-f]{1,2}$/
 const CODE_POINT_WEIGHT_RE = /^U\+([0-9A-Fa-f]+)$/
 const LEADING_ASTERISK_RE = /^\*/
@@ -124,6 +125,11 @@ export function parseUCA(source: string): ParsedUCAEntry[] {
     .split(LINE_SPLIT_RE)
     .map(parseUCALine)
     .filter((entry): entry is ParsedUCAEntry => entry !== undefined)
+}
+
+export function parseUCAVariableTop(source: string): number | undefined {
+  const match = VARIABLE_TOP_RE.exec(source)
+  return match ? parseWeightComponent(match[1]) : undefined
 }
 
 export function buildUCATrie(entries: ParsedUCAEntry[]): PackedTrieNode {
