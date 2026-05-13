@@ -1,18 +1,30 @@
 {
   "name": "@formatjs/intl-collator",
-  "description": "Tracking package for the Intl.Collator polyfill gap",
-  "version": "0.0.0",
+  "description": "Intl.Collator polyfill",
+  "version": "0.1.0",
   "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
   "type": "module",
-  "private": true,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill.js": "./polyfill.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "workspace:*"
+  },
   "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://github.com/formatjs/formatjs",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
   "keywords": [
+    "collator",
+    "ecma402",
+    "formatjs",
     "i18n",
     "intl",
-    "Intl.Collator",
-    "collator",
-    "polyfill"
+    "react-intl",
+    "tc39"
   ],
   "repository": "formatjs/formatjs.git"
 }

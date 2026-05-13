@@ -87,6 +87,7 @@ PACKAGES_TO_DIST = [
     "//packages/fast-memoize",
     "//packages/icu-messageformat-parser",
     "//packages/icu-skeleton-parser",
+    "//packages/intl-collator",
     "//packages/intl-datetimeformat",
     "//packages/intl-displaynames",
     "//packages/intl-durationformat",
