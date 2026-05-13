@@ -1,4 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 
 copy_file(
@@ -7,20 +8,13 @@ copy_file(
     out = "FractionalUCA_SHORT.txt",
 )
 
-COLLATION_LOCALES = [
-    "en",
-    "fr",
-    "zh",
-]
-
-[
-    copy_file(
-        name = "collation_%s" % locale,
-        src = "@cldr_common//:common/collation/%s.xml" % locale,
-        out = "collation/%s.xml" % locale,
-    )
-    for locale in COLLATION_LOCALES
-]
+copy_to_directory(
+    name = "collation_xml",
+    srcs = ["@cldr_common//:collation_xml"],
+    out = "collation_xml",
+    include_external_repositories = ["+http_archive+cldr_common"],
+    root_paths = ["common/collation"],
+)
 
 generate_package_file(
     name = "root_data",
@@ -39,18 +33,12 @@ generate_package_file(
     name = "locale_data",
     src = "locale-data.ts",
     args = [
-        arg
-        for locale in COLLATION_LOCALES
-        for arg in [
-            "--collationPath",
-            "$(rootpath :collation_%s)" % locale,
-        ]
+        "--collationDir",
+        "$(rootpath :collation_xml)",
     ],
     data = [
         "//packages/intl-collator:node_modules/fast-xml-parser",
-    ] + [
-        ":collation_%s" % locale
-        for locale in COLLATION_LOCALES
+        ":collation_xml",
     ],
     tool = "//packages/intl-collator/scripts:generate-locale-data",
 )
@@ -59,18 +47,12 @@ generate_package_file(
     name = "tailoring_data",
     src = "tailoring.ts",
     args = [
-        arg
-        for locale in COLLATION_LOCALES
-        for arg in [
-            "--collationPath",
-            "$(rootpath :collation_%s)" % locale,
-        ]
+        "--collationDir",
+        "$(rootpath :collation_xml)",
     ],
     data = [
         "//packages/intl-collator:node_modules/fast-xml-parser",
-    ] + [
-        ":collation_%s" % locale
-        for locale in COLLATION_LOCALES
+        ":collation_xml",
     ],
     tool = "//packages/intl-collator/scripts:generate-tailoring-data",
 )
