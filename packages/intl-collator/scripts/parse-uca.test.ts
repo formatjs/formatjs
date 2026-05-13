@@ -83,6 +83,7 @@ describe('UCA parser', () => {
 
   it('parses prefixed UCA data lines by indexing the target sequence', () => {
     expect(parseUCALine('004C | 00B7; [, FB B6, 05]')).toMatchObject({
+      prefix: [0x004c],
       codePoints: [0x00b7],
       elements: [
         {

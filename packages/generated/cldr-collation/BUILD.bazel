@@ -7,6 +7,21 @@ copy_file(
     out = "FractionalUCA_SHORT.txt",
 )
 
+COLLATION_LOCALES = [
+    "en",
+    "fr",
+    "zh",
+]
+
+[
+    copy_file(
+        name = "collation_%s" % locale,
+        src = "@cldr_common//:common/collation/%s.xml" % locale,
+        out = "collation/%s.xml" % locale,
+    )
+    for locale in COLLATION_LOCALES
+]
+
 generate_package_file(
     name = "root_data",
     src = "root.ts",
@@ -20,10 +35,52 @@ generate_package_file(
     tool = "//packages/intl-collator/scripts:generate-root-data",
 )
 
+generate_package_file(
+    name = "locale_data",
+    src = "locale-data.ts",
+    args = [
+        arg
+        for locale in COLLATION_LOCALES
+        for arg in [
+            "--collationPath",
+            "$(rootpath :collation_%s)" % locale,
+        ]
+    ],
+    data = [
+        "//packages/intl-collator:node_modules/fast-xml-parser",
+    ] + [
+        ":collation_%s" % locale
+        for locale in COLLATION_LOCALES
+    ],
+    tool = "//packages/intl-collator/scripts:generate-locale-data",
+)
+
+generate_package_file(
+    name = "tailoring_data",
+    src = "tailoring.ts",
+    args = [
+        arg
+        for locale in COLLATION_LOCALES
+        for arg in [
+            "--collationPath",
+            "$(rootpath :collation_%s)" % locale,
+        ]
+    ],
+    data = [
+        "//packages/intl-collator:node_modules/fast-xml-parser",
+    ] + [
+        ":collation_%s" % locale
+        for locale in COLLATION_LOCALES
+    ],
+    tool = "//packages/intl-collator/scripts:generate-tailoring-data",
+)
+
 formatjs_generated_package(
     name = "pkg",
     package_name = "cldr.collation",
     srcs = [
+        ":locale_data",
         ":root_data",
+        ":tailoring_data",
     ],
 )

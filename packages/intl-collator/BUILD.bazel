@@ -28,6 +28,7 @@ formatjs_library(
     types = True,
     visibility = ["//visibility:public"],
     deps = [
+        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs/intl-localematcher",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
@@ -39,6 +40,7 @@ formatjs_test(
     data = [
         "tests/index.test.ts",
         ":intl-collator",
+        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
