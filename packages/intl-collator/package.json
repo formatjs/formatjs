@@ -15,6 +15,9 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "workspace:*"
   },
+  "devDependencies": {
+    "fast-xml-parser": "^5.0.9"
+  },
   "bugs": "https://github.com/formatjs/formatjs/issues",
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "keywords": [

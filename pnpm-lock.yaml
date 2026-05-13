@@ -725,6 +725,10 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: workspace:*
         version: link:../intl-localematcher
+    devDependencies:
+      fast-xml-parser:
+        specifier: ^5.0.9
+        version: 5.8.0
 
   packages/intl-datetimeformat:
     dependencies:

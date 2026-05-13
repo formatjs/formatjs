@@ -3,17 +3,23 @@ load("//tools:test.bzl", "formatjs_test")
 
 ts_compile(
     name = "parsers",
+    deps = ["//packages/intl-collator:node_modules/fast-xml-parser"],
     package_json = False,
-    srcs = ["parse-uca.ts"],
+    srcs = [
+        "parse-ldml-collation.ts",
+        "parse-uca.ts",
+    ],
     visibility = ["//packages/intl-collator:__pkg__"],
 )
 
 formatjs_test(
     name = "parsers_test",
     data = [
+        "parse-ldml-collation.test.ts",
         "parse-uca.test.ts",
         ":parsers",
         "//:node_modules/vitest",
+        "//packages/intl-collator:node_modules/fast-xml-parser",
     ],
     no_copy_to_bin = ["//:package.json"],
 )

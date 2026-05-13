@@ -120,7 +120,9 @@ The parser needs to understand at least:
 - settings: `[strength]`, `[alternate]`, `[backwards 2]`, `[caseFirst]`, `[numericOrdering]`, `[normalization]`, `[reorder]`
 - XML aliases between locales/types
 
-This parser should live under `packages/intl-collator/scripts/`, not in `ecma402-abstract`, because it is build-time only.
+This parser should live under `packages/intl-collator/scripts/`, not in `ecma402-abstract`, because it is build-time only. `scripts/` should also be its own Bazel package: keep parser sources and parser tests in `//packages/intl-collator/scripts:*` targets instead of adding them to the parent runtime package target.
+
+Use a real XML parser, currently `fast-xml-parser`, for the LDML XML layer. The rule grammar inside `<cr>` is not XML and can stay as a purpose-built parser, but any regexes in that parser should be module-level constants rather than recreated inside hot loops.
 
 ### Stage 3: Compile Tailorings Against Root
 
