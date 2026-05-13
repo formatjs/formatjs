@@ -58,3 +58,19 @@ ts_binary(
         "//packages/generated/cldr-collation:__pkg__",
     ],
 )
+
+ts_binary(
+    name = "generate-tailoring-data",
+    data = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+        "parse-ldml-collation.ts",
+    ],
+    entry_point = "generate-tailoring-data.ts",
+    visibility = [
+        "//packages/generated/cldr-collation:__pkg__",
+    ],
+)
