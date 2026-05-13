@@ -1,0 +1,19 @@
+load("//tools:index.bzl", "ts_compile")
+load("//tools:test.bzl", "formatjs_test")
+
+ts_compile(
+    name = "parsers",
+    package_json = False,
+    srcs = ["parse-uca.ts"],
+    visibility = ["//packages/intl-collator:__pkg__"],
+)
+
+formatjs_test(
+    name = "parsers_test",
+    data = [
+        "parse-uca.test.ts",
+        ":parsers",
+        "//:node_modules/vitest",
+    ],
+    no_copy_to_bin = ["//:package.json"],
+)
