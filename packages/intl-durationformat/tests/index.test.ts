@@ -84,6 +84,12 @@ test('Intl.DurationFormat format digital', function () {
     new DurationFormat('en', customFormatterOptions).resolvedOptions()
       .milliseconds
   ).toBe('numeric')
+  expect(
+    new DurationFormat('en', customFormatterOptions).format({
+      seconds: 1,
+      milliseconds: 234,
+    })
+  ).toBe('0:00:01.234')
 })
 
 test('Intl.DurationFormat sub-second rollup is exact (#6462)', function () {
