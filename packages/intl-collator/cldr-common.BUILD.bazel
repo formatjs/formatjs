@@ -1,0 +1,12 @@
+package(default_visibility = ["//visibility:public"])
+
+exports_files([
+    "common/uca/FractionalUCA_SHORT.txt",
+    "common/uca/CollationTest_CLDR_NON_IGNORABLE_SHORT.txt",
+    "common/uca/CollationTest_CLDR_SHIFTED_SHORT.txt",
+])
+
+filegroup(
+    name = "collation_xml",
+    srcs = glob(["common/collation/*.xml"]),
+)
