@@ -5,6 +5,7 @@ import {
   parseCodePointSequence,
   parseUCA,
   parseUCALine,
+  parseUCAVariableTop,
 } from '#packages/intl-collator/scripts/parse-uca.js'
 
 describe('UCA parser', () => {
@@ -103,6 +104,10 @@ describe('UCA parser', () => {
 0061 ; [.1C47.0020.0002] # LATIN SMALL LETTER A
 `)
     ).toHaveLength(1)
+  })
+
+  it('parses the fractional UCA variable top', () => {
+    expect(parseUCAVariableTop('[variable top = 0B FF FF FF]')).toBe(0x0bffffff)
   })
 
   it('builds a longest-match trie', () => {

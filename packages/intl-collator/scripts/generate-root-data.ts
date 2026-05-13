@@ -4,6 +4,7 @@ import {outputFileSync} from 'fs-extra/esm'
 import {
   buildUCATrie,
   parseUCA,
+  parseUCAVariableTop,
   type PackedTrieNode,
   type ParsedUCAEntry,
 } from './parse-uca.ts'
@@ -22,13 +23,21 @@ type PackedPrefixEntry = {
   readonly elements: readonly PackedElement[]
 }
 
-function packElement(entry: ParsedUCAEntry): PackedElement[] {
+function packElement(
+  entry: ParsedUCAEntry,
+  variableTop: number | undefined
+): PackedElement[] {
   return entry.elements.map(element => [
     element.primary,
     element.secondary,
     element.tertiary,
     element.quaternary,
-    element.variable ? 1 : 0,
+    element.variable ||
+    (variableTop !== undefined &&
+      element.primary > 0 &&
+      element.primary <= variableTop)
+      ? 1
+      : 0,
   ])
 }
 
@@ -59,17 +68,18 @@ if (!argv.out) {
 
 const source = readFileSync(argv.ucaPath, 'utf8')
 const entries = parseUCA(source)
+const variableTop = parseUCAVariableTop(source)
 const rootEntries = entries.filter(entry => entry.prefix === undefined)
 const prefixEntries = entries.filter(
   (entry): entry is ParsedUCAEntry & {prefix: number[]} =>
     entry.prefix !== undefined
 )
 const rootTrie = buildUCATrie(rootEntries)
-const rootElements = rootEntries.map(packElement)
+const rootElements = rootEntries.map(entry => packElement(entry, variableTop))
 const rootPrefixEntries: PackedPrefixEntry[] = prefixEntries.map(entry => ({
   prefix: entry.prefix,
   codePoints: entry.codePoints,
-  elements: packElement(entry),
+  elements: packElement(entry, variableTop),
 }))
 
 outputFileSync(
@@ -106,6 +116,7 @@ export const rootDataStats = {
   entries: ${rootEntries.length},
   prefixEntries: ${prefixEntries.length},
   trieNodes: ${countTrieNodes(rootTrie)},
+  variableTop: ${variableTop ?? 'undefined'},
 } as const
 `
 )
