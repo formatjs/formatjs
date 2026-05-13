@@ -31,6 +31,36 @@ describe('UCA parser', () => {
     })
   })
 
+  it('parses CLDR fractional collation element weights', () => {
+    expect(parseCollationElement('03 02 02, 05, 05')).toEqual({
+      primary: 0x030202,
+      secondary: 0x05,
+      tertiary: 0x05,
+      quaternary: 0,
+      variable: false,
+    })
+  })
+
+  it('parses completely ignorable collation elements', () => {
+    expect(parseCollationElement(',,')).toEqual({
+      primary: 0,
+      secondary: 0,
+      tertiary: 0,
+      quaternary: 0,
+      variable: false,
+    })
+  })
+
+  it('parses code point references in fractional weights', () => {
+    expect(parseCollationElement('U+4E00, 10')).toMatchObject({
+      primary: 0x4e00,
+      secondary: 0x10,
+    })
+    expect(parseCollationElement('U+4E0D')).toMatchObject({
+      primary: 0x4e0d,
+    })
+  })
+
   it('parses UCA data lines', () => {
     expect(
       parseUCALine(
@@ -48,6 +78,19 @@ describe('UCA parser', () => {
         },
       ],
       comment: 'LATIN SMALL LETTER A',
+    })
+  })
+
+  it('parses prefixed UCA data lines by indexing the target sequence', () => {
+    expect(parseUCALine('004C | 00B7; [, FB B6, 05]')).toMatchObject({
+      codePoints: [0x00b7],
+      elements: [
+        {
+          primary: 0,
+          secondary: 0xfbb6,
+          tertiary: 0x05,
+        },
+      ],
     })
   })
 

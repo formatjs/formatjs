@@ -1,15 +1,16 @@
-load("//tools:index.bzl", "ts_compile")
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary", "ts_compile")
 load("//tools:test.bzl", "formatjs_test")
 
 ts_compile(
     name = "parsers",
-    deps = ["//packages/intl-collator:node_modules/fast-xml-parser"],
-    package_json = False,
     srcs = [
         "parse-ldml-collation.ts",
         "parse-uca.ts",
     ],
+    package_json = False,
     visibility = ["//packages/intl-collator:__pkg__"],
+    deps = ["//packages/intl-collator:node_modules/fast-xml-parser"],
 )
 
 formatjs_test(
@@ -22,4 +23,22 @@ formatjs_test(
         "//packages/intl-collator:node_modules/fast-xml-parser",
     ],
     no_copy_to_bin = ["//:package.json"],
+)
+
+ts_binary(
+    name = "generate-root-data",
+    data = [
+        "parse-uca.ts",
+        ":parsers",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-root-data.ts",
+    visibility = [
+        "//packages/generated/cldr-collation:__pkg__",
+        "//packages/intl-collator:__pkg__",
+    ],
 )

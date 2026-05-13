@@ -1,0 +1,29 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
+
+copy_file(
+    name = "fractional_uca_short",
+    src = "@cldr_common//:common/uca/FractionalUCA_SHORT.txt",
+    out = "FractionalUCA_SHORT.txt",
+)
+
+generate_package_file(
+    name = "root_data",
+    src = "root.ts",
+    args = [
+        "--ucaPath",
+        "$(rootpath :fractional_uca_short)",
+    ],
+    data = [
+        ":fractional_uca_short",
+    ],
+    tool = "//packages/intl-collator/scripts:generate-root-data",
+)
+
+formatjs_generated_package(
+    name = "pkg",
+    package_name = "cldr.collation",
+    srcs = [
+        ":root_data",
+    ],
+)
