@@ -12,6 +12,16 @@ defineProperty(Number.prototype, 'toLocaleString', {
     return _toLocaleString(this, locales, options)
   },
 })
+if (typeof BigInt !== 'undefined') {
+  defineProperty(BigInt.prototype, 'toLocaleString', {
+    value: function toLocaleString(
+      locales?: string | string[],
+      options?: NumberFormatOptions
+    ) {
+      return _toLocaleString(this, locales, options)
+    },
+  })
+}
 
 // Drain any locale data that was buffered before polyfill loaded
 const buf = (globalThis as Record<string, unknown>)

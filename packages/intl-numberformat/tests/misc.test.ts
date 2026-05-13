@@ -21,6 +21,7 @@ import '@formatjs/intl-pluralrules/locale-data/tr.js'
 import '@formatjs/intl-pluralrules/locale-data/uk.js'
 import '@formatjs/intl-pluralrules/locale-data/zh.js'
 import {NumberFormat} from '#packages/intl-numberformat/core'
+import {toLocaleString} from '#packages/intl-numberformat/to_locale_string.js'
 
 const LOCALES = [
   'en',
@@ -96,6 +97,12 @@ it('supportedLocalesOf should return correct result based on data loaded', funct
 })
 it('should not crash if unit is not specified', function () {
   expect(new NumberFormat().resolvedOptions().unit).toBeUndefined()
+})
+
+it('formats BigInt values through toLocaleString ponyfill', function () {
+  expect(toLocaleString(1234567890123456789n, 'en')).toBe(
+    '1,234,567,890,123,456,789'
+  )
 })
 
 // Some test262
