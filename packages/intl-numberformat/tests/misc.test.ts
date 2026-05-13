@@ -341,9 +341,12 @@ it('correctly set default options', () => {
     minimumIntegerDigits: 1,
     notation: 'standard',
     numberingSystem: 'latn',
+    roundingIncrement: 1,
+    roundingMode: 'halfExpand',
     roundingPriority: 'auto',
     signDisplay: 'auto',
     style: 'decimal',
+    trailingZeroDisplay: 'auto',
     useGrouping: 'auto',
   })
 })
@@ -443,6 +446,24 @@ test('#4359 roundingIncrement with fraction digits', () => {
   expect(nf.format(1.234)).toBe('1.25')
   expect(nf.format(1.222)).toBe('1.20')
   expect(nf.format(1.227)).toBe('1.25')
+})
+
+test('resolvedOptions includes rounding options', () => {
+  const nf = new NumberFormat('en-US', {
+    roundingIncrement: 5,
+    roundingMode: 'ceil',
+    trailingZeroDisplay: 'stripIfInteger',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  })
+  const resolved = nf.resolvedOptions()
+
+  expect(resolved.roundingIncrement).toBe(5)
+  expect(resolved.roundingMode).toBe('ceil')
+  expect(resolved.roundingPriority).toBe('auto')
+  expect(resolved.trailingZeroDisplay).toBe('stripIfInteger')
+  expect(nf.format(1.221)).toBe('1.25')
+  expect(nf.format(1)).toBe('1')
 })
 
 // https://github.com/formatjs/formatjs/issues/4236

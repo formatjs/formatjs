@@ -47,6 +47,9 @@ const RESOLVED_OPTIONS_KEYS = [
   'notation',
   'compactDisplay',
   'signDisplay',
+  'roundingIncrement',
+  'roundingMode',
+  'trailingZeroDisplay',
 ] as const
 
 /**
