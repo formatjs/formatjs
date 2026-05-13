@@ -49,6 +49,32 @@ describe('Intl.DateTimeFormat', function () {
       new DateTimeFormat('en-GB', {timeZone: 'UTC'}).format(new Date(0))
     ).toBe('01/01/1970')
   })
+  it('resolvedOptions includes fractionalSecondDigits and dayPeriod', function () {
+    const dtf = new DateTimeFormat('en', {
+      fractionalSecondDigits: 3,
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      dayPeriod: 'short',
+      timeZone: 'UTC',
+    })
+
+    expect(dtf.resolvedOptions()).toMatchObject({
+      dayPeriod: 'short',
+      fractionalSecondDigits: 3,
+    })
+    expect(dtf.format(new Date(Date.UTC(2020, 0, 1, 10, 1, 2, 345)))).toBe(
+      '10:01:02.345 AM'
+    )
+  })
+  it('accepts hyphenated Unicode calendar type identifiers', function () {
+    expect(
+      new DateTimeFormat('en', {
+        calendar: 'islamic-civil',
+        timeZone: 'UTC',
+      }).resolvedOptions().calendar
+    ).toBe('gregory')
+  })
   it('smoke test CST', function () {
     expect(
       new DateTimeFormat('en', {

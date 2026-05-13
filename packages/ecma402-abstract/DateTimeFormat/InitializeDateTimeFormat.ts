@@ -52,13 +52,27 @@ function resolveHourCycle(hc: string, hcDefault: string, hour12?: boolean) {
   return hc
 }
 
+function applyExplicitTimePatternOptions(pattern: string, opt: Opt) {
+  if (
+    opt.fractionalSecondDigits !== undefined &&
+    pattern.includes('{second}') &&
+    !pattern.includes('{fractionalSecondDigits}')
+  ) {
+    pattern = pattern.replace('{second}', '{second}.{fractionalSecondDigits}')
+  }
+  if (opt.dayPeriod !== undefined) {
+    pattern = pattern.replace('{ampm}', '{dayPeriod}')
+  }
+  return pattern
+}
+
 interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   localeMatcher: Intl.DateTimeFormatOptions['localeMatcher']
   ca: Intl.DateTimeFormatOptions['calendar']
   nu: Intl.DateTimeFormatOptions['numberingSystem']
   hc: Intl.DateTimeFormatOptions['hourCycle']
 }
-const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
+const TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 /**
  * https://tc39.es/ecma402/#sec-initializedatetimeformat
  * @param dtf DateTimeFormat
@@ -204,6 +218,13 @@ export function InitializeDateTimeFormat(
     ['2-digit', 'numeric'],
     undefined
   )
+  opt.dayPeriod = GetOption(
+    options,
+    'dayPeriod',
+    'string',
+    ['narrow', 'short', 'long'],
+    undefined
+  )
   opt.hour = GetOption(
     options,
     'hour',
@@ -322,6 +343,12 @@ export function InitializeDateTimeFormat(
       internalSlots[prop as 'year'] = p as 'numeric'
     }
   }
+  if (opt.dayPeriod !== undefined) {
+    internalSlots.dayPeriod = opt.dayPeriod
+  }
+  if (opt.fractionalSecondDigits !== undefined) {
+    internalSlots.fractionalSecondDigits = opt.fractionalSecondDigits
+  }
   let pattern
   let rangePatterns
   if (internalSlots.hour !== undefined) {
@@ -345,6 +372,7 @@ export function InitializeDateTimeFormat(
     pattern = bestFormat.pattern
     rangePatterns = bestFormat.rangePatterns
   }
+  pattern = applyExplicitTimePatternOptions(pattern, opt)
   internalSlots.pattern = pattern
   internalSlots.rangePatterns = rangePatterns
   return dtf as Intl.DateTimeFormat // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
