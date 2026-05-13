@@ -52,6 +52,20 @@ function resolveHourCycle(hc: string, hcDefault: string, hour12?: boolean) {
   return hc
 }
 
+function applyExplicitTimePatternOptions(pattern: string, opt: Opt) {
+  if (
+    opt.fractionalSecondDigits !== undefined &&
+    pattern.includes('{second}') &&
+    !pattern.includes('{fractionalSecondDigits}')
+  ) {
+    pattern = pattern.replace('{second}', '{second}.{fractionalSecondDigits}')
+  }
+  if (opt.dayPeriod !== undefined) {
+    pattern = pattern.replace('{ampm}', '{dayPeriod}')
+  }
+  return pattern
+}
+
 interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   localeMatcher: Intl.DateTimeFormatOptions['localeMatcher']
   ca: Intl.DateTimeFormatOptions['calendar']
@@ -358,6 +372,7 @@ export function InitializeDateTimeFormat(
     pattern = bestFormat.pattern
     rangePatterns = bestFormat.rangePatterns
   }
+  pattern = applyExplicitTimePatternOptions(pattern, opt)
   internalSlots.pattern = pattern
   internalSlots.rangePatterns = rangePatterns
   return dtf as Intl.DateTimeFormat // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged

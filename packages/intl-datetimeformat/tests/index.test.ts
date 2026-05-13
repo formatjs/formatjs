@@ -50,19 +50,22 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('01/01/1970')
   })
   it('resolvedOptions includes fractionalSecondDigits and dayPeriod', function () {
-    expect(
-      new DateTimeFormat('en', {
-        fractionalSecondDigits: 3,
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        dayPeriod: 'short',
-        timeZone: 'UTC',
-      }).resolvedOptions()
-    ).toMatchObject({
+    const dtf = new DateTimeFormat('en', {
+      fractionalSecondDigits: 3,
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      dayPeriod: 'short',
+      timeZone: 'UTC',
+    })
+
+    expect(dtf.resolvedOptions()).toMatchObject({
       dayPeriod: 'short',
       fractionalSecondDigits: 3,
     })
+    expect(dtf.format(new Date(Date.UTC(2020, 0, 1, 10, 1, 2, 345)))).toBe(
+      '10:01:02.345 AM'
+    )
   })
   it('accepts hyphenated Unicode calendar type identifiers', function () {
     expect(

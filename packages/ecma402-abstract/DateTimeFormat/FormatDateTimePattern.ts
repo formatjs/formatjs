@@ -133,8 +133,7 @@ export function FormatDateTimePattern(
       })
     } else if (p === 'fractionalSecondDigits') {
       const v = new Decimal(tm.millisecond)
-        .times(10)
-        .pow((fractionalSecondDigits || 0) - 3)
+        .times(Decimal.pow(10, (fractionalSecondDigits || 0) - 3))
         .floor()
         .toNumber()
       result.push({
@@ -142,10 +141,10 @@ export function FormatDateTimePattern(
         value: nf3!.format(v),
       })
     } else if (p === 'dayPeriod') {
-      const f = internalSlots.dayPeriod
-      // @ts-ignore
-      const fv = tm[f]
-      result.push({type: p, value: fv})
+      result.push({
+        type: p,
+        value: tm.hour < 12 ? dataLocaleData.am : dataLocaleData.pm,
+      })
     } else if (p === 'timeZoneName') {
       const f = internalSlots.timeZoneName
       let fv
