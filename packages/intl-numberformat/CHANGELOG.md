@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.3.6...@formatjs/intl-numberformat@9.3.7) (2026-05-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** expose rounding resolved options ([#6545](https://github.com/formatjs/formatjs/issues/6545)) ([4296685](https://github.com/formatjs/formatjs/commit/4296685f1c5042b6cb39948f7463243dcdde33c7)) - by @longlho
+* **@formatjs/intl-numberformat:** polyfill BigInt toLocaleString ([#6547](https://github.com/formatjs/formatjs/issues/6547)) ([98616e2](https://github.com/formatjs/formatjs/commit/98616e21af329358295dfb1773874cc2c18910dc)) - by @longlho
+
 ## [9.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.3.5...@formatjs/intl-numberformat@9.3.6) (2026-05-12)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

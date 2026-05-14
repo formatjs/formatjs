@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.4.3...@formatjs/intl-datetimeformat@7.4.4) (2026-05-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** align current ECMA-402 options ([#6548](https://github.com/formatjs/formatjs/issues/6548)) ([ce1a5d2](https://github.com/formatjs/formatjs/commit/ce1a5d2912819038ccc962c9914018da34d73af2)) - by @longlho
+
 ## [7.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.4.2...@formatjs/intl-datetimeformat@7.4.3) (2026-05-12)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

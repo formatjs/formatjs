@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.9...@formatjs/intl-durationformat@0.10.10) (2026-05-14)
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** align fractional unit style ([#6549](https://github.com/formatjs/formatjs/issues/6549)) ([b45af82](https://github.com/formatjs/formatjs/commit/b45af820780e12a3aa7996ab1ca0104357995c96)) - by @longlho
+
 ## [0.10.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.8...@formatjs/intl-durationformat@0.10.9) (2026-05-12)
 
 ### Bug Fixes
