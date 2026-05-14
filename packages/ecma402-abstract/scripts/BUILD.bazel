@@ -29,6 +29,7 @@ ts_binary(
         "//:node_modules/regenerate",
     ],
     entry_point = "regex-gen.ts",
+    tsconfig_types = ["node"],
     visibility = [
         "//packages/ecma402-abstract:__pkg__",
         "//packages/generated/unicode:__pkg__",
@@ -41,6 +42,7 @@ formatjs_library(
         "digit-mapping.ts",
         "regex-gen.ts",
     ],
+    tsconfig_types = ["node"],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@types/fs-extra",

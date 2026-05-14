@@ -22,13 +22,11 @@ formatjs_library(
 
 formatjs_test(
     name = "icu-skeleton-parser_test",
-    data = [
-        "tests/index.test.ts",
-        ":icu-skeleton-parser",
-        "//:node_modules/@formatjs_generated/unicode",
-        "//:node_modules/vitest",
-        "//packages/ecma402-abstract/types",
-    ],
+    srcs = ["tests/index.test.ts"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":icu-skeleton-parser",
+        "//:node_modules/vitest",
+    ],
 )

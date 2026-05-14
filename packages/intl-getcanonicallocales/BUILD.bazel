@@ -39,11 +39,12 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-getcanonicallocales_test",
-    data = [
+    srcs = [
         "tests/index.test.ts",
         "tests/parser.test.ts",
+    ],
+    deps = [
         ":intl-getcanonicallocales",
-        "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/vitest",
     ],
 )

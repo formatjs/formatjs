@@ -9,9 +9,6 @@ load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
-# gazelle:js disabled
-# gazelle:js_pnpm_lockfile pnpm-lock.yaml
-# gazelle:js_validate_import_statements off
 
 # gazelle_ts//ts emits abstract ts_library + ts_test kinds; map_kind
 # rewrites them to our wrappers, which accept the generated attrs

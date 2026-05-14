@@ -34,7 +34,7 @@ formatjs_library(
 
 formatjs_test(
     name = "ecma402-abstract_test",
-    data = [
+    srcs = [
         "tests/262.test.ts",
         "tests/ApplyUnsignedRoundingMode.test.ts",
         "tests/CanonicalizeTimeZoneName.test.ts",
@@ -52,10 +52,10 @@ formatjs_test(
         "tests/ToRawFixed.test.tsx",
         "tests/ToRawPrecision.test.tsx",
         "tests/utils.ts",
+    ],
+    deps = [
         ":ecma402-abstract",
         "//:node_modules/@formatjs/bigdecimal",
-        "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract/NumberFormat",

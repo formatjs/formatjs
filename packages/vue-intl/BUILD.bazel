@@ -23,18 +23,17 @@ formatjs_library(
 
 formatjs_test(
     name = "vue-intl_test",
+    srcs = ["tests/index.test.ts"],
     data = [
-        ":vue-intl",
-        "tests/index.test.ts",
-        # keep: imported from tests/
-        "//:node_modules/vitest",
         # keep: transitive runtime dep required by @vue/test-utils SSR
         "//:node_modules/@vue/server-renderer",
-        # keep: transitive runtime dep required by @vue/test-utils SSR
-        "//:node_modules/@vue/test-utils",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/intl",
-        "//:node_modules/vue",
     ],
     dom = True,
+    deps = [
+        ":vue-intl",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/@vue/test-utils",
+        "//:node_modules/vitest",
+        "//:node_modules/vue",
+    ],
 )

@@ -46,17 +46,13 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-supportedvaluesof_test",
-    data = [
-        "tests/index.test.ts",
-        ":intl-supportedvaluesof",
-        "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/cldr.supported-values",
-        "//:node_modules/vitest",
-        "//packages/ecma402-abstract",
-    ],
+    srcs = ["tests/index.test.ts"],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":intl-supportedvaluesof",
+        "//:node_modules/vitest",
+    ],
 )
 
 # @formatjs_generated/cldr.supported-values — BCP47 supported value enumerations

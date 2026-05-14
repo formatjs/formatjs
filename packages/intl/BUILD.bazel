@@ -51,7 +51,7 @@ ast_grep_test(
 
 formatjs_test(
     name = "intl_test",
-    data = [
+    srcs = [
         "tests/create-intl.test.ts",
         "tests/error.test.ts",
         "tests/formatDate.test.ts",
@@ -62,14 +62,14 @@ formatjs_test(
         "tests/formatPlural.test.ts",
         "tests/formatRelativeTime.test.ts",
         "tests/formatTime.test.ts",
-        ":intl",
-        "//:node_modules/@formatjs/fast-memoize",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/intl-messageformat",
-        "//:node_modules/vitest",
-        "//packages/ecma402-abstract/types",
     ],
     no_copy_to_bin = ["//:package.json"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":intl",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/vitest",
+    ],
 )

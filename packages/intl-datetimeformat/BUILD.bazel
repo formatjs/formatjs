@@ -86,7 +86,7 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-datetimeformat_test",
-    data = [
+    srcs = [
         "tests/abstract/BestFitFormatMatcher.test.ts",
         "tests/abstract/skeleton.test.ts",
         "tests/benchmark.ts",
@@ -95,23 +95,32 @@ formatjs_test(
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
         "tests/offset-timezone.test.ts",
+        ":tests-locale-data-ar",  # keep
+        ":tests-locale-data-bs",  # keep
+        ":tests-locale-data-de",  # keep
+        ":tests-locale-data-en",  # keep
+        ":tests-locale-data-en-CA",  # keep
+        ":tests-locale-data-en-GB",  # keep
+        ":tests-locale-data-fa",  # keep
+        ":tests-locale-data-ja",  # keep
+        ":tests-locale-data-ko",  # keep
+        ":tests-locale-data-nl",  # keep
+        ":tests-locale-data-pl",  # keep
+        ":tests-locale-data-ru",  # keep
+        ":tests-locale-data-zh-Hans",  # keep
+    ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
         ":intl-datetimeformat",
-        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
-    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 generate_tz_data(

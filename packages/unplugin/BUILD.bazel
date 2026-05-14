@@ -51,6 +51,7 @@ formatjs_library(
     ],
     entry_points = ENTRY_POINTS,
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
+    tsconfig_types = ["node"],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@bazel/runfiles",
@@ -65,17 +66,15 @@ formatjs_library(
 
 formatjs_test(
     name = "unplugin_test",
-    data = [
+    srcs = [
         "conformance-tests/cli-unplugin-conformance.test.ts",
         "tests/transform.test.ts",
+    ],
+    tsconfig_types = ["node"],
+    deps = [
         ":unplugin",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
-        "//:node_modules/magic-string",
-        "//:node_modules/oxc-parser",
-        "//:node_modules/unplugin",
         "//:node_modules/vitest",
     ],
 )

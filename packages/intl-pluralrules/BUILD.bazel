@@ -271,23 +271,21 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-pluralrules_test",
-    data = [
+    srcs = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
-        ":intl-pluralrules",
-        "//:node_modules/@formatjs/bigdecimal",
-        "//:node_modules/@formatjs/intl-getcanonicallocales",
-        "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
-        "//:node_modules/vitest",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/PluralRules",
-        "//packages/ecma402-abstract/types",
+        ":tests-locale-data-en",  # keep
+        ":tests-locale-data-fr",  # keep
+        ":tests-locale-data-zh",  # keep
     ],
-    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":intl-pluralrules",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/vitest",
+    ],
 )
 
 # CLDR

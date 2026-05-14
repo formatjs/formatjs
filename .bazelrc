@@ -6,6 +6,9 @@ common --color=yes
 common --heap_dump_on_oom
 common:linux --host_platform=//platforms:local_linux_gnu
 common:windows --host_platform=//platforms:local_windows_msvc
+common --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+common --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=1
+common --@llvm//config:experimental_stub_libgcc_s=True
 
 # Track source directory inputs used by rules_js/npm packages.
 startup --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1
@@ -70,6 +73,11 @@ run --incompatible_strict_action_env
 # Increase heap size
 build --define=NODE_OPTIONS=--max-old-space-size=4096
 build --build_metadata=REPO_URL=https://github.com/formatjs/formatjs.git
+
+# gazelle_ts links a Rust rlib into Gazelle through Go/cgo. LLVM's Linux
+# toolchain cannot link that as PIE, but Rust's musl release binary is
+# static-pie, so keep no-pie scoped to Go linker flags instead of --linkopt.
+build:linux --@rules_go//go/config:gc_linkopts=-extldflags,-no-pie
 
 # BuildBuddy RBE GH Actions Config
 # https://www.buildbuddy.io/docs/rbe-github-actions

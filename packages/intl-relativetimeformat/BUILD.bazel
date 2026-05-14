@@ -53,24 +53,24 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-relativetimeformat_test",
-    data = [
+    srcs = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
+        ":tests-locale-data-en",  # keep
+        ":tests-locale-data-en-AI",  # keep
+        ":tests-locale-data-zh",  # keep
+        ":tests-locale-data-zh-Hans",  # keep
+        ":tests-locale-data-zh-Hant",  # keep
+    ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
         ":intl-relativetimeformat",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/RelativeTimeFormat",
-        "//packages/ecma402-abstract/types",
     ],
-    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 # CLDR

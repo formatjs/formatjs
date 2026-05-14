@@ -39,18 +39,19 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-collator_test",
-    data = [
-        "tests/collator-conformance.tsv",
+    srcs = [
         "tests/conformance.test.ts",
         "tests/index.test.ts",
-        ":intl-collator",
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.collation",
-        "//:node_modules/@types/node",
-        "//:node_modules/vitest",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
+    ],
+    data = [
+        "tests/collator-conformance.tsv",  # keep: TSV fixture loaded at runtime
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
+    deps = [
+        ":intl-collator",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
 )

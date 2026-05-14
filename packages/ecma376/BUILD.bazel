@@ -18,8 +18,8 @@ formatjs_library(
 
 formatjs_test(
     name = "ecma376_test",
-    data = [
-        "tests/index.test.ts",
+    srcs = ["tests/index.test.ts"],
+    deps = [
         ":ecma376",
         "//:node_modules/vitest",
     ],

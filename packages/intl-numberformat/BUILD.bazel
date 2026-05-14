@@ -1008,7 +1008,7 @@ rolldown_bundle(
 
 formatjs_test(
     name = "intl-numberformat_test",
-    data = [
+    srcs = [
         "tests/currency-code.test.ts",
         "tests/currency/currencyTest.ts",
         "tests/decimal/decimalTest.ts",
@@ -1024,19 +1024,45 @@ formatjs_test(
         "tests/unit-zh-TW.test.ts",
         "tests/unit/unitTest.ts",
         "tests/value-tonumber.test.ts",
+        ":tests-locale-data-ar-SS",  # keep
+        ":tests-locale-data-bn",  # keep
+        ":tests-locale-data-da",  # keep
+        ":tests-locale-data-de",  # keep
+        ":tests-locale-data-de-AT",  # keep
+        ":tests-locale-data-en",  # keep
+        ":tests-locale-data-en-BS",  # keep
+        ":tests-locale-data-en-GB",  # keep
+        ":tests-locale-data-es",  # keep
+        ":tests-locale-data-fr",  # keep
+        ":tests-locale-data-fr-CH",  # keep
+        ":tests-locale-data-hi",  # keep
+        ":tests-locale-data-id",  # keep
+        ":tests-locale-data-it",  # keep
+        ":tests-locale-data-ja",  # keep
+        ":tests-locale-data-ko",  # keep
+        ":tests-locale-data-ms",  # keep
+        ":tests-locale-data-nb",  # keep
+        ":tests-locale-data-nl",  # keep
+        ":tests-locale-data-pl",  # keep
+        ":tests-locale-data-pt",  # keep
+        ":tests-locale-data-ru",  # keep
+        ":tests-locale-data-sv",  # keep
+        ":tests-locale-data-sw",  # keep
+        ":tests-locale-data-th",  # keep
+        ":tests-locale-data-tr",  # keep
+        ":tests-locale-data-uk",  # keep
+        ":tests-locale-data-zh",  # keep
+        ":tests-locale-data-zh-Hans",  # keep
+        ":tests-locale-data-zh-Hant",  # keep
+    ],
+    deps = [
         ":intl-numberformat",
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
-    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
 )

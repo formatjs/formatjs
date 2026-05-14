@@ -21,12 +21,9 @@ formatjs_library(
 
 formatjs_test(
     name = "svelte-intl_test",
-    data = [
-        "tests/index.test.ts",
+    srcs = ["tests/index.test.ts"],
+    deps = [
         ":svelte-intl",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/intl",
-        "//:node_modules/svelte",
         "//:node_modules/vitest",
     ],
 )

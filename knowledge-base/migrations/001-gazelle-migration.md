@@ -186,10 +186,15 @@ These are packaging/codegen concerns that gazelle shouldn't touch:
 
 Once `ts_project` targets are visible in BUILD files:
 
-1. In root `BUILD.bazel`, change `# gazelle:js disabled` to `# gazelle:js enabled`
+1. Configure root `BUILD.bazel` with `# gazelle:map_kind` directives for
+   `ts_library` / `ts_test` and a `# gazelle:ts_npm_link_pattern`.
 2. Run `bazel run //:gazelle -- -mode diff` to preview changes
-3. Enable per-package incrementally with `# gazelle:js enabled` in individual BUILD files
-4. Gazelle will keep `ts_project` deps in sync with actual TypeScript imports
+3. Disable directories that remain hand-owned with `# gazelle:ts_enabled false`
+4. Gazelle will keep TypeScript `srcs`, `deps`, and `tsconfig_types` in sync
+   with actual imports
+5. Put hand-owned generated files in `srcs` and runtime-only fixtures in `data`
+   with item-level `# keep` comments so Gazelle can still merge the rest of the
+   attr.
 
 ## TSConfig Strategy
 

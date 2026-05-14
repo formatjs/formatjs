@@ -14,28 +14,25 @@ actions so they can cache and run independently across the monorepo.
 
 ### Key Module Dependencies
 
-| Dependency              | Version / pin             | Purpose                                           |
-| ----------------------- | ------------------------- | ------------------------------------------------- |
-| `aspect_rules_js`       | 3.0.3                     | JS/Node.js rules, npm lock translation            |
-| `rules_nodejs`          | 6.7.4                     | Hermetic Node.js toolchain                        |
-| `aspect_rules_ts`       | 3.8.7                     | `ts_project`, tsgo integration                    |
-| `aspect_bazel_lib`      | 2.22.5                    | `copy_to_bin`, `copy_to_directory`, source writes |
-| `rules_multirun`        | 0.13.0                    | Multi-target run orchestration                    |
-| `buildifier_prebuilt`   | 8.5.1.2                   | Starlark formatting                               |
-| `protobuf`              | 34.0.bcr.1                | Proto runtime for Rust/Go tooling                 |
-| `rules_proto`           | 7.1.0                     | Proto rules                                       |
-| `rules_go`              | 0.60.0                    | Go SDK/rules for Gazelle                          |
-| `gazelle`               | 0.50.0                    | BUILD file generation driver                      |
-| `gazelle_ts`            | 0.3.3 + git override      | TypeScript Gazelle extension                      |
-| `rules_rs`              | 0.0.61 + archive override | Rust compilation, crates, wasm                    |
-| `llvm`                  | 0.7.5                     | LLVM toolchain support for Rust/wasm paths        |
-| `rules_java`            | 9.6.1                     | Java toolchain for ICU4J conformance tests        |
-| `toolchains_buildbuddy` | 0.0.4                     | BuildBuddy RBE C/C++ toolchain                    |
+| Dependency              | Version / pin | Purpose                                           |
+| ----------------------- | ------------- | ------------------------------------------------- |
+| `aspect_rules_js`       | 3.0.3         | JS/Node.js rules, npm lock translation            |
+| `rules_nodejs`          | 6.7.4         | Hermetic Node.js toolchain                        |
+| `aspect_rules_ts`       | 3.8.7         | `ts_project`, tsgo integration                    |
+| `aspect_bazel_lib`      | 2.22.5        | `copy_to_bin`, `copy_to_directory`, source writes |
+| `rules_multirun`        | 0.13.0        | Multi-target run orchestration                    |
+| `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                               |
+| `protobuf`              | 34.0.bcr.1    | Proto runtime for Rust/Go tooling                 |
+| `rules_proto`           | 7.1.0         | Proto rules                                       |
+| `rules_go`              | 0.60.0        | Go SDK/rules for Gazelle                          |
+| `gazelle`               | 0.50.0        | BUILD file generation driver                      |
+| `gazelle_ts`            | 0.4.15        | TypeScript Gazelle extension                      |
+| `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                    |
+| `llvm`                  | 0.7.5         | LLVM toolchain support for Rust/wasm paths        |
+| `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests        |
+| `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE C/C++ toolchain                    |
 
-`gazelle_ts` is overridden to commit
-`e3579a043d2639b85877c051f3fedd2095a4b1a2` for the post-0.3.3 abstract-kind
-renames and `ts_bundler_config` / `ts_binary` additions. `rules_rs` is overridden
-to the v0.0.61 GitHub release because it is not available from BCR yet.
+`gazelle_ts` and `rules_rs` are consumed from BCR.
 
 ### Hermetic Runtime Toolchains
 
@@ -199,8 +196,9 @@ The macro also creates package validation tests:
 
 ### `formatjs_test()` (`tools/test.bzl`)
 
-Consumes Gazelle's mapped `ts_test` output. `gazelle_ts` provides a single
-`data` list, so the wrapper partitions it into:
+Consumes Gazelle's mapped `ts_test` output. Current `gazelle_ts` emits separate
+`srcs`, `deps`, and runtime `data` attrs. The wrapper accepts those directly and
+still supports the older single mixed `data` list by partitioning it into:
 
 - test source files and JSON fixtures,
 - Bazel dependency labels for type checking,
@@ -224,7 +222,7 @@ vitest(name, srcs, deps, data, fixtures, dom, snapshots, config, tsconfig)
 Test typecheck config adds:
 
 - `skipLibCheck: true`
-- `types: ["node"]`
+- `types: ["node"]` plus any `tsconfig_types` discovered by Gazelle
 - `noUncheckedSideEffectImports: false`
 
 `//tools:vitest_config_mjs` is the default test config. It must preserve symlinks
