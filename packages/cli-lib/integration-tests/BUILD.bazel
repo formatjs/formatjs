@@ -6,7 +6,6 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-# keep
 formatjs_test(
     name = "esm_compatibility_test",
     size = "small",

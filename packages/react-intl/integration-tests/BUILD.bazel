@@ -43,8 +43,8 @@ vitest(
 
 formatjs_test(
     name = "integration-tests_test",
-    data = [
-        "format.test.tsx",
+    srcs = ["format.test.tsx"],
+    deps = [
         "//:node_modules/@testing-library/jest-dom",
         "//:node_modules/@testing-library/react",
         "//:node_modules/@types/react",

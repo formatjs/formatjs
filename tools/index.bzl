@@ -96,13 +96,15 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None, packag
         visibility = visibility,
     )
 
-def ts_binary(name, data = [], node_options = [], **kwargs):
+def ts_binary(name, data = [], node_options = [], tsconfig_types = [], **kwargs):
     """Create a TS binary with prefilled args.
 
     Args:
         name: target name
         data: data files or dependencies
         node_options: additional Node.js options
+        tsconfig_types: accepted for gazelle_ts compatibility; ts_binary runs
+            sources directly with Node's type stripping and does not typecheck.
         **kwargs: additional arguments passed to js_binary
     """
     js_binary(
@@ -316,7 +318,7 @@ def generate_tsconfig_json(name = "tsconfig_json", tsconfig = None, local_only =
         visibility = ["//visibility:public"],
     )
 
-def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, project_references = [], local_only = None):
+def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, project_references = [], tsconfig_types = [], local_only = None):
     """Generate a tsconfig.json file with the correct extends path based on package depth.
 
     This macro calculates the correct relative path to the root tsconfig.json
@@ -327,6 +329,7 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
         name: target name (default: "tsconfig_json")
         composite: whether to enable TypeScript composite projects (default: False)
         project_references: list of Bazel package labels to reference (e.g. ["//packages/ecma402-abstract"])
+        tsconfig_types: optional compilerOptions.types entries discovered by gazelle_ts
         local_only: whether the source file is local developer state and should
             not be checked into source control. Defaults to True for packages.
     """
@@ -353,6 +356,9 @@ def generate_ide_tsconfig_json(name = "tsconfig_json", composite = False, projec
 
     if composite:
         compiler_options["composite"] = True
+
+    if tsconfig_types:
+        compiler_options["types"] = tsconfig_types
 
     # Build tsconfig
     tsconfig = {

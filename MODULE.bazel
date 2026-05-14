@@ -102,34 +102,18 @@ go_sdk.download(version = "1.24.12")
 
 ######### gazelle_ts (TypeScript Gazelle extension) #########
 
-# Pinned to the latest main commit (post-v0.3.3) for the abstract-kind rename
-# (ts_project → ts_library, js_test → ts_test) and the ts_bundler_config /
-# ts_binary additions. BCR has not yet published a tag for these changes.
-bazel_dep(name = "gazelle_ts", version = "0.3.3")
-git_override(
-    module_name = "gazelle_ts",
-    commit = "e3579a043d2639b85877c051f3fedd2095a4b1a2",
-    remote = "https://github.com/hermeticbuild/gazelle_ts.git",
-)
+bazel_dep(name = "gazelle_ts", version = "0.4.15")
 
 ######### Rust rules #########
 
-# Pinned to the v0.0.61 GitHub release (BCR hasn't published it yet). 0.0.61
-# fixes the rust-lld bundling issue that broke wasm cross-compile under remote
-# execution on 0.0.58.
-bazel_dep(name = "rules_rs", version = "0.0.61")
-archive_override(
-    module_name = "rules_rs",
-    integrity = "sha256-UegjVubWrcMt45ZlUnkSBPZxzxi7bcWnp5DTYdr9Pi8=",
-    strip_prefix = "rules_rs-0.0.61",
-    urls = ["https://github.com/hermeticbuild/rules_rs/releases/download/v0.0.61/rules_rs-v0.0.61.tar.gz"],
-)
-
+bazel_dep(name = "rules_rs", version = "0.0.73")
 bazel_dep(name = "llvm", version = "0.8.0")
 bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
 llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
 use_repo(llvm_toolchain, "llvm_toolchains")
+
+register_toolchains("@llvm_toolchains//:all")
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(

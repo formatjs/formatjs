@@ -33,6 +33,7 @@ formatjs_library(
         "index.ts",
         "ts-jest-integration.ts",
     ],
+    tsconfig_types = ["node"],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -46,7 +47,7 @@ formatjs_library(
 
 formatjs_test(
     name = "ts-transformer_test",
-    data = [
+    srcs = [
         "tests/fixtures/FormattedMessage.tsx",
         "tests/fixtures/additionalComponentNames.tsx",
         "tests/fixtures/additionalFunctionNames.tsx",
@@ -73,14 +74,14 @@ formatjs_test(
         "tests/fixtures/typeAssertions.tsx",
         "tests/index.test.ts",
         "tests/interpolate-name.test.ts",
+    ],
+    tsconfig_types = ["node"],
+    deps = [
         ":ts-transformer",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/node",
         "//:node_modules/@types/react",
-        "//:node_modules/json-stable-stringify",
         "//:node_modules/react",
         "//:node_modules/react-intl",
-        "//:node_modules/ts-jest",
         "//:node_modules/typescript",
         "//:node_modules/vitest",
     ],

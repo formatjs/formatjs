@@ -47,8 +47,7 @@ formatjs_library(
 
 formatjs_test(
     name = "react-intl_test",
-    config = "vitest.config.mjs",
-    data = [
+    srcs = [
         "tests/unit/components/date.test.tsx",
         "tests/unit/components/dateTimeRange.test.tsx",
         "tests/unit/components/displayName.test.tsx",
@@ -63,20 +62,20 @@ formatjs_test(
         "tests/unit/react-intl.test.tsx",
         "tests/unit/testUtils.tsx",
         "tests/unit/types.test.tsx",
+    ],
+    config = "vitest.config.mjs",
+    dom = True,
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
         ":react-intl",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",
         "//:node_modules/@testing-library/jest-dom",
         "//:node_modules/@testing-library/react",
         "//:node_modules/@types/react",
-        "//:node_modules/intl-messageformat",
         "//:node_modules/react",
         "//:node_modules/vitest",
-        "//packages/ecma402-abstract/types",
     ],
-    dom = True,
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 rolldown_bundle(

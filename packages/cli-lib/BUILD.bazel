@@ -38,6 +38,7 @@ formatjs_library(
         "verify/index.ts",
         "vue_extractor.ts",
     ],
+    tsconfig_types = ["node"],
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
@@ -61,7 +62,7 @@ formatjs_library(
 
 formatjs_test(
     name = "cli-lib_test",
-    data = [
+    srcs = [
         "tests/unit/abort_signal.test.ts",
         "tests/unit/extract.test.ts",
         "tests/unit/gts_extractor.test.ts",
@@ -70,27 +71,18 @@ formatjs_test(
         "tests/unit/svelte_extractor.test.ts",
         "tests/unit/unit.test.ts",
         "tests/unit/vue_extractor.test.ts",
-        ":cli-lib",
-        "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
-        "//:node_modules/@glimmer/syntax",
-        "//:node_modules/@types/fs-extra",
-        "//:node_modules/@types/node",
-        "//:node_modules/@vue/compiler-core",
-        "//:node_modules/commander",
-        "//:node_modules/content-tag",
-        "//:node_modules/fast-glob",
-        "//:node_modules/fs-extra",
-        "//:node_modules/json-stable-stringify",
-        "//:node_modules/loud-rejection",
-        "//:node_modules/svelte",
-        "//:node_modules/typescript",
-        "//:node_modules/vitest",
-        "//:node_modules/vue",
     ],
     fixtures = glob(
         ["tests/unit/fixtures/**/*"],
     ),
+    tsconfig_types = ["node"],
+    deps = [
+        ":cli-lib",
+        "//:node_modules/@formatjs/ts-transformer",
+        "//:node_modules/@types/node",
+        "//:node_modules/typescript",
+        "//:node_modules/vitest",
+    ],
 )
 
 genrule(

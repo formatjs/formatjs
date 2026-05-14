@@ -113,6 +113,24 @@ def _partition_deps(deps):
             internal_deps.append(d)
     return npm_deps, internal_deps
 
+def _with_tsconfig_types(tsconfig, tsconfig_types):
+    if not tsconfig_types:
+        return tsconfig
+
+    compiler_options = dict(tsconfig.get("compilerOptions", {}))
+    seen = {}
+    types = []
+    for type_name in compiler_options.get("types", []) + tsconfig_types:
+        if type_name in seen:
+            continue
+        seen[type_name] = True
+        types.append(type_name)
+    compiler_options["types"] = types
+
+    merged = dict(tsconfig)
+    merged["compilerOptions"] = compiler_options
+    return merged
+
 def formatjs_library(
         name,
         srcs,
@@ -120,6 +138,7 @@ def formatjs_library(
         entry_points = ["index.ts"],
         types = False,
         tsconfig = None,
+        tsconfig_types = [],
         npm_package_name = None,
         extra_npm_srcs = [],
         allow_overwrites = False,
@@ -165,7 +184,7 @@ def formatjs_library(
             name = name,
             srcs = srcs,
             deps = deps,
-            tsconfig = tsconfig,
+            tsconfig = _with_tsconfig_types(tsconfig, tsconfig_types) if tsconfig else None,
             visibility = visibility,
             **typecheck_only_kwargs
         )
@@ -189,7 +208,7 @@ def formatjs_library(
 
     npm_deps, project_references = _partition_deps(deps)
     all_deps = deps
-    effective_tsconfig = tsconfig or packages_tsconfig()
+    effective_tsconfig = _with_tsconfig_types(tsconfig or packages_tsconfig(), tsconfig_types)
     has_package_json = native.glob(["package.json"], allow_empty = True)
 
     copy_to_bin(
@@ -285,4 +304,5 @@ def formatjs_library(
     generate_ide_tsconfig_json(
         composite = not has_package_json,
         project_references = project_references,
+        tsconfig_types = tsconfig_types,
     )

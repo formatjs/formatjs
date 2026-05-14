@@ -41,20 +41,18 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-locale_test",
-    data = [
+    srcs = [
         "tests/index.test.ts",
         "tests/likely-subtags.test.ts",
         "tests/minimize.test.ts",
-        ":intl-locale",
-        "//:node_modules/@formatjs/intl-getcanonicallocales",
-        "//:node_modules/@formatjs/intl-supportedvaluesof",
-        "//:node_modules/@formatjs_generated/cldr.locale",
-        "//:node_modules/vitest",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
     ],
     no_copy_to_bin = [
         "//:package.json",
+    ],
+    deps = [
+        ":intl-locale",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/vitest",
     ],
 )
 

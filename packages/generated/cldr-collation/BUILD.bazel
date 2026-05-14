@@ -37,8 +37,8 @@ generate_package_file(
         "$(rootpath :collation_xml)",
     ],
     data = [
-        "//packages/intl-collator:node_modules/fast-xml-parser",
         ":collation_xml",
+        "//packages/intl-collator:node_modules/fast-xml-parser",
     ],
     tool = "//packages/intl-collator/scripts:generate-locale-data",
 )
@@ -51,8 +51,8 @@ generate_package_file(
         "$(rootpath :collation_xml)",
     ],
     data = [
-        "//packages/intl-collator:node_modules/fast-xml-parser",
         ":collation_xml",
+        "//packages/intl-collator:node_modules/fast-xml-parser",
     ],
     tool = "//packages/intl-collator/scripts:generate-tailoring-data",
 )

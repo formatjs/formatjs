@@ -20,8 +20,8 @@ formatjs_library(
 
 formatjs_test(
     name = "bigdecimal_test",
-    data = [
-        "tests/bigdecimal.test.ts",
+    srcs = ["tests/bigdecimal.test.ts"],
+    deps = [
         ":bigdecimal",
         "//:node_modules/vitest",
     ],

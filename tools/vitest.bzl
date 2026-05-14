@@ -6,6 +6,16 @@ load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+def _merge_types(existing, extra):
+    seen = {}
+    result = []
+    for type_name in existing + extra:
+        if type_name in seen:
+            continue
+        seen[type_name] = True
+        result.append(type_name)
+    return result
+
 def vitest(
         name,
         srcs = [],
@@ -21,6 +31,7 @@ def vitest(
         test_timeout = None,
         config = None,
         tsconfig = None,
+        tsconfig_types = [],
         **kwargs):
     """
     A rule to define a vitest target.
@@ -40,6 +51,7 @@ def vitest(
         test_timeout (str, optional): Custom timeout for the test in milliseconds. Defaults to None.
         config (Label, optional): Custom vitest config file. Defaults to None.
         tsconfig (dict, optional): Custom tsconfig dict for typecheck. Merged with defaults. Defaults to None.
+        tsconfig_types (list, optional): compilerOptions.types entries discovered by gazelle_ts.
         **kwargs: Additional keyword arguments.
     """
 
@@ -61,7 +73,7 @@ def vitest(
     test_tsconfig = base_test_tsconfig | {
         "compilerOptions": base_test_tsconfig.get("compilerOptions", {}) | {
             "skipLibCheck": True,
-            "types": ["node"],
+            "types": _merge_types(base_test_tsconfig.get("compilerOptions", {}).get("types", []), ["node"] + tsconfig_types),
             "noUncheckedSideEffectImports": False,
         },
     }

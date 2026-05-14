@@ -62,21 +62,18 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-segmenter_test",
-    data = [
+    srcs = [
         "tests/grapheme.test.ts",
         "tests/isWordLike.test.ts",
         "tests/sentence.test.ts",
         "tests/test-utils.ts",
         "tests/word.test.ts",
-        ":intl-segmenter",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/unicode",
-        "//:node_modules/@types/node",
-        "//:node_modules/vitest",
-        "//packages/ecma402-abstract",
     ],
-    extra_data = TEST_UNICODE_FILES,
+    data = [
+        "@GraphemeBreakTest//file",  # keep
+        "@SentenceBreakTest//file",  # keep
+        "@WordBreakTest//file",  # keep
+    ],
     no_copy_to_bin = [
         "//:package.json",
         "@GraphemeBreakTest//file",
@@ -84,6 +81,13 @@ formatjs_test(
         "@SentenceBreakTest//file",
     ],
     tsconfig = TSCONFIG,
+    tsconfig_types = ["node"],
+    deps = [
+        ":intl-segmenter",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
 )
 
 ts_run_binary(

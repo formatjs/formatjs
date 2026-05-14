@@ -49,25 +49,23 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-displaynames_test",
-    data = [
+    srcs = [
         "tests/CanonicalCodeForDisplayNames.test.ts",
         "tests/IsValidDateTimeFieldCode.test.ts",
         "tests/index.test.ts",
         "tests/should-polyfill.test.ts",
+        ":tests-locale-data-en",  # keep
+        ":tests-locale-data-zh",  # keep
+    ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
         ":intl-displaynames",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/vitest",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DisplayNames",
-        "//packages/ecma402-abstract/types",
     ],
-    extra_srcs = [":tests-locale-data-%s" % locale for locale in TEST_LOCALES],
-    no_copy_to_bin = ["//:package.json"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
 )
 
 # CLDR
