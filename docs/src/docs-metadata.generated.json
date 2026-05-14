@@ -91,6 +91,10 @@
     "title": "Polyfills",
     "description": "One of our goals is to provide developers with access to newest ECMA-402 Intl APIs. Therefore, FormatJS suite also provide multiple high quality polyfil..."
   },
+  "polyfills/intl-collator": {
+    "title": "Intl Collator",
+    "description": "A spec-compliant polyfill/ponyfill for Intl.Collator."
+  },
   "polyfills/intl-datetimeformat": {
     "title": "Intl Datetimeformat",
     "description": "A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the official ECMAScript Conformance test suite"

@@ -1,6 +1,6 @@
 # Intl Polyfill Packages — Shared Architecture
 
-All 11 polyfill packages share a common architecture. See individual docs (007a-007k) for per-polyfill CLDR data pipeline details.
+All 12 polyfill packages share a common architecture. See individual docs (007a-007l) for per-polyfill CLDR data pipeline details.
 
 ## Polyfill Strategy
 
@@ -32,9 +32,9 @@ Each polyfill uses `rolldown_bundle` with `dts = True` to produce bundled output
 - Buffered via `globalThis.__FORMATJS_{API}_DATA__` if polyfill not yet loaded
 - Two-stage build: `cldr-raw` (extraction) → `locale-data` (distribution)
 
-### Static compilation (durationformat, segmenter, locale, getcanonicallocales, supportedvaluesof)
+### Static compilation (durationformat, segmenter, locale, getcanonicallocales, supportedvaluesof, collator)
 
-- Data compiled directly into the main bundle as `.generated.ts` files
+- Data compiled directly into the main bundle or generated package as `.ts` files
 - No per-locale dynamic loading needed
 - Single-stage build via `generate_src_file` targets
 
@@ -71,7 +71,4 @@ All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localem
 - [007i — intl-locale](./007i-polyfill-intl-locale.md) — ECMA-402 §14 (6 CLDR data sources)
 - [007j — intl-getcanonicallocales](./007j-polyfill-intl-getcanonicallocales.md) — ECMA-402 §8.2.1
 - [007k — intl-supportedvaluesof](./007k-polyfill-intl-supportedvaluesof.md) — ECMA-402 §8.3.2
-
-## Planned Polyfill Docs
-
-- [007l — intl-collator](./007l-polyfill-intl-collator.md) — ECMA-402 §10 (CLDR collation compiler plan)
+- [007l — intl-collator](./007l-polyfill-intl-collator.md) — ECMA-402 §10 (CLDR collation compiler)

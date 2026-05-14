@@ -121,6 +121,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://formatjs.io/docs/polyfills/intl-collator</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://formatjs.io/docs/polyfills/intl-datetimeformat</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
