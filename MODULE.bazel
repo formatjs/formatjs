@@ -108,7 +108,7 @@ go_sdk.download(version = "1.24.12")
 bazel_dep(name = "gazelle_ts", version = "0.3.3")
 git_override(
     module_name = "gazelle_ts",
-    commit = "e3579a043d2639b85877c051f3fedd2095a4b1a2",
+    commit = "ff4b19f17c060be1f706c4c34c2f7e6be42c70de",
     remote = "https://github.com/hermeticbuild/gazelle_ts.git",
 )
 
