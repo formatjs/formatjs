@@ -15,3 +15,38 @@ actions:
     bazel_commands:
       - 'test --config=bb-workflow --remote_download_minimal //...'
       - 'build --config=bb-workflow --remote_download_minimal --compilation_mode=opt //crates/formatjs_cli'
+
+  - name: 'Rust CLI Linux x64 Compatibility'
+    container_image: 'ubuntu-20.04'
+    triggers:
+      push:
+        branches:
+          - 'main'
+          - 'gh-readonly-queue/*'
+      pull_request:
+        branches:
+          - 'main'
+    resource_requests:
+      memory: 10GB
+      disk: 16GB
+    steps:
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends binutils file
+      - run: 'bazel build --config=bb-workflow --remote_download_outputs=all //crates/formatjs_cli:release_binary_linux_x64'
+      - run: |
+          BINARY_PATH="$(bazel cquery --config=bb-workflow --output=files //crates/formatjs_cli:release_binary_linux_x64)"
+          file "$BINARY_PATH"
+          "$BINARY_PATH" --version
+          "$BINARY_PATH" --help
+
+          ldd_output="$(ldd "$BINARY_PATH" 2>&1 || true)"
+          echo "$ldd_output"
+          if echo "$ldd_output" | grep -q "not a dynamic executable"; then
+            echo "Linux binary is statically linked and does not require glibc"
+          elif strings "$BINARY_PATH" | grep -q 'GLIBC_'; then
+            echo "Linux musl binary unexpectedly references glibc symbols" >&2
+            exit 1
+          else
+            echo "Linux binary does not reference glibc symbols"
+          fi
