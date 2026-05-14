@@ -69,6 +69,7 @@ export function getNavigationTree(): NavSection[] {
       order: 4,
       items: [
         {title: 'Overview', path: 'polyfills'},
+        {title: 'Intl.Collator', path: 'polyfills/intl-collator'},
         {title: 'Intl.DateTimeFormat', path: 'polyfills/intl-datetimeformat'},
         {title: 'Intl.DisplayNames', path: 'polyfills/intl-displaynames'},
         {title: 'Intl.DurationFormat', path: 'polyfills/intl-durationformat'},
