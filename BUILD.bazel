@@ -77,6 +77,7 @@ PACKAGES_TO_DIST = [
     "//packages/bigdecimal",
     "//packages/cli-lib",
     "//packages/cli-native-darwin-arm64",
+    "//packages/cli-native-linux-arm64",
     "//packages/cli-native-linux-x64",
     "//packages/cli",
     "//packages/ecma376",
