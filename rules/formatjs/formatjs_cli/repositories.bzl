@@ -1,8 +1,22 @@
 """Repository rules for FormatJS CLI toolchains."""
 
-DEFAULT_VERSION = "1.1.4"
+DEFAULT_VERSION = "1.1.5"
 
 FORMATJS_CLI_VERSIONS = {
+    "1.1.5": {
+        "darwin-arm64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v1.1.5/formatjs_cli-darwin-arm64",
+            "sha256": "381e20f9e73e8e2bd5a0494fb438ee3341e018355701c7ab35a298b787663809",
+        },
+        "linux-x64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v1.1.5/formatjs_cli-linux-x64",
+            "sha256": "874900a9e8a0462a880dba3786e16927901a9162f64ef4fe0862d54d32247542",
+        },
+        "linux-aarch64": {
+            "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v1.1.5/formatjs_cli-linux-arm64",
+            "sha256": "de2d27ae03ad83dadb7c40ec9884160415714362d7a54a1b6265d6b9c0ed4544",
+        },
+    },
     "1.1.4": {
         "darwin-arm64": {
             "url": "https://github.com/formatjs/formatjs/releases/download/formatjs_cli_v1.1.4/formatjs_cli-darwin-arm64",
@@ -291,7 +305,7 @@ _formatjs_cli_repo = repository_rule(
         ),
         "platform": attr.string(
             mandatory = True,
-            doc = "Target platform (e.g., 'darwin-arm64', 'linux-x64')",
+            doc = "Target platform (e.g., 'darwin-arm64', 'linux-x64', 'linux-aarch64')",
         ),
         "url": attr.string(
             doc = """Custom URL to download the FormatJS CLI binary from.
@@ -461,7 +475,7 @@ def formatjs_cli_register_toolchains(name, version = DEFAULT_VERSION, register =
             target_compatible_with = [],
         )
 
-    # Linux aarch64 - placeholder for now
+    # Linux aarch64
     repo_name = "{}_linux_aarch64".format(name)
     if "linux-aarch64" in FORMATJS_CLI_VERSIONS[version]:
         _formatjs_cli_repo(

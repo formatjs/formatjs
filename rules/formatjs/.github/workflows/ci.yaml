@@ -41,3 +41,32 @@ jobs:
             ${{ matrix.folder }}/bazel-testlogs/**/test.xml
           if-no-files-found: warn
           retention-days: 7
+
+  linux-arm64-smoke:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-linux-arm64
+          repository-cache: true
+
+      - name: Verify Linux ARM64 CLI alias
+        run: |
+          bazel cquery 'somepath(//formatjs_cli:cli, @formatjs_cli_toolchains_linux_aarch64//:cli)'
+
+      - name: Smoke test Linux ARM64 CLI
+        run: |
+          bazel test //tests/arguments:test_fixtures_0_test
+
+      - name: Upload test logs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-logs-ubuntu-24.04-arm
+          path: |
+            bazel-testlogs/**/test.log
+            bazel-testlogs/**/test.xml
+          if-no-files-found: warn
+          retention-days: 7
