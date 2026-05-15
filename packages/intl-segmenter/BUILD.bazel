@@ -70,9 +70,9 @@ formatjs_test(
         "tests/word.test.ts",
     ],
     data = [
-        "@GraphemeBreakTest//file",  # keep
-        "@SentenceBreakTest//file",  # keep
-        "@WordBreakTest//file",  # keep
+        "@GraphemeBreakTest//file",  # keep: Unicode test data loaded via Bazel runfiles
+        "@SentenceBreakTest//file",  # keep: Unicode test data loaded via Bazel runfiles
+        "@WordBreakTest//file",  # keep: Unicode test data loaded via Bazel runfiles
     ],
     no_copy_to_bin = [
         "//:package.json",

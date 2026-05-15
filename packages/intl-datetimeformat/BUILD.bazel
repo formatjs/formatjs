@@ -95,19 +95,19 @@ formatjs_test(
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
         "tests/offset-timezone.test.ts",
-        ":tests-locale-data-ar",  # keep
-        ":tests-locale-data-bs",  # keep
-        ":tests-locale-data-de",  # keep
-        ":tests-locale-data-en",  # keep
-        ":tests-locale-data-en-CA",  # keep
-        ":tests-locale-data-en-GB",  # keep
-        ":tests-locale-data-fa",  # keep
-        ":tests-locale-data-ja",  # keep
-        ":tests-locale-data-ko",  # keep
-        ":tests-locale-data-nl",  # keep
-        ":tests-locale-data-pl",  # keep
-        ":tests-locale-data-ru",  # keep
-        ":tests-locale-data-zh-Hans",  # keep
+        ":tests-locale-data-ar",  # keep: generated locale data imported by tests
+        ":tests-locale-data-bs",  # keep: generated locale data imported by tests
+        ":tests-locale-data-de",  # keep: generated locale data imported by tests
+        ":tests-locale-data-en",  # keep: generated locale data imported by tests
+        ":tests-locale-data-en-CA",  # keep: generated locale data imported by tests
+        ":tests-locale-data-en-GB",  # keep: generated locale data imported by tests
+        ":tests-locale-data-fa",  # keep: generated locale data imported by tests
+        ":tests-locale-data-ja",  # keep: generated locale data imported by tests
+        ":tests-locale-data-ko",  # keep: generated locale data imported by tests
+        ":tests-locale-data-nl",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pl",  # keep: generated locale data imported by tests
+        ":tests-locale-data-ru",  # keep: generated locale data imported by tests
+        ":tests-locale-data-zh-Hans",  # keep: generated locale data imported by tests
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

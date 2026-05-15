@@ -80,6 +80,7 @@ formatjs_test(
         ":cli-lib",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
+        "//:node_modules/fast-glob",
         "//:node_modules/typescript",
         "//:node_modules/vitest",
     ],

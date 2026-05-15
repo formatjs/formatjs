@@ -56,11 +56,11 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
-        ":tests-locale-data-en",  # keep
-        ":tests-locale-data-en-AI",  # keep
-        ":tests-locale-data-zh",  # keep
-        ":tests-locale-data-zh-Hans",  # keep
-        ":tests-locale-data-zh-Hant",  # keep
+        ":tests-locale-data-en",  # keep: generated locale data imported by tests
+        ":tests-locale-data-en-AI",  # keep: generated locale data imported by tests
+        ":tests-locale-data-zh",  # keep: generated locale data imported by tests
+        ":tests-locale-data-zh-Hans",  # keep: generated locale data imported by tests
+        ":tests-locale-data-zh-Hant",  # keep: generated locale data imported by tests
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
