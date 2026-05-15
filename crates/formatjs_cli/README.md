@@ -140,32 +140,23 @@ Run directly with Bazel:
 bazel run //crates/formatjs_cli:formatjs -- --help
 ```
 
-### Multi-Platform Build (Darwin ARM64 + Linux x64 + Linux ARM64)
+### Cross-Platform Release Builds
 
-Build for Darwin ARM64, Linux x64, and Linux ARM64:
+Build the release binaries for Darwin ARM64, Linux x64, and Linux ARM64:
 
 ```bash
-cd crates/formatjs_cli
-./build-multiplatform.sh
+bazel build --compilation_mode=opt \
+  //crates/formatjs_cli:release_binary_darwin_arm64 \
+  //crates/formatjs_cli:release_binary_linux_x64 \
+  //crates/formatjs_cli:release_binary_linux_arm64
 ```
 
-This will create binaries in `dist/formatjs_cli/`:
-
-- `formatjs-darwin-arm64` - macOS Apple Silicon binary
-- `formatjs-linux-x86_64` - Linux x86_64 binary
-- `formatjs-linux-arm64` - Linux ARM64 binary
-
-You can also build for specific platforms using Bazel directly:
+Use `bazel cquery --output=files <target>` to locate each binary:
 
 ```bash
-# Build for Darwin ARM64 (macOS Apple Silicon)
-bazel build --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:formatjs_cli
-
-# Build for Linux x64
-bazel build --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:formatjs_cli
-
-# Build for Linux ARM64
-bazel build --platforms=//crates/formatjs_cli/platforms:linux_aarch64 //crates/formatjs_cli:formatjs_cli
+bazel cquery --output=files //crates/formatjs_cli:release_binary_darwin_arm64
+bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_x64
+bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_arm64
 ```
 
 ### Local Cargo Build
