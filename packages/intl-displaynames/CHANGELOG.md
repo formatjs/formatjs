@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.3.6...@formatjs/intl-displaynames@7.3.7) (2026-05-15)
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** add generated tok locale data ([#6572](https://github.com/formatjs/formatjs/issues/6572)) ([ec70b36](https://github.com/formatjs/formatjs/commit/ec70b36ef4cf9867fdcf74afd91996ed7ecf54fb)), closes [#6569](https://github.com/formatjs/formatjs/issues/6569) - by @longlho
+
 ## [7.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.3.5...@formatjs/intl-displaynames@7.3.6) (2026-05-12)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

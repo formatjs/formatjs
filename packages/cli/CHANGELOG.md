@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.16.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.15.0...@formatjs/cli@6.16.0) (2026-05-15)
+
+### Features
+
+* **@formatjs/cli-native-linux-arm64:** add native package ([#6571](https://github.com/formatjs/formatjs/issues/6571)) ([6449d23](https://github.com/formatjs/formatjs/commit/6449d23add9a10bebd321c31b8d34c414fe9bdab)) - by @longlho
+
 # [6.15.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.14.5...@formatjs/cli@6.15.0) (2026-05-12)
 
 ### Features

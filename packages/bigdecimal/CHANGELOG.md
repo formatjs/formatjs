@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.4...@formatjs/bigdecimal@0.2.5) (2026-05-15)
+
+**Note:** Version bump only for package @formatjs/bigdecimal
+
 ## [0.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.3...@formatjs/bigdecimal@0.2.4) (2026-05-12)
 
 **Note:** Version bump only for package @formatjs/bigdecimal

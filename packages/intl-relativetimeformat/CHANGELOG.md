@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.7](github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.6...@formatjs/intl-relativetimeformat@12.3.7) (2026-05-15)
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** add generated tok locale data ([#6572](/github.com/formatjs/formatjs/issues/6572)) ([ec70b36](github.com/formatjs/formatjs/commits/ec70b36ef4cf9867fdcf74afd91996ed7ecf54fb)), closes [#6569](github.com/formatjs/formatjs/issues/6569) - by @longlho
+
 ## [12.3.6](github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.5...@formatjs/intl-relativetimeformat@12.3.6) (2026-05-12)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
