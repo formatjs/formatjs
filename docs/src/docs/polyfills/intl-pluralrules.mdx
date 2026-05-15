@@ -27,6 +27,8 @@ This package is **fully compliant** with the ECMA-402 specification for `Intl.Pl
 - Includes all 6 plural categories per LDML specification
 - Handles complex plural rules (e.g., Arabic has 6 forms, Chinese has 1)
 
+Locale data modules are generated from CLDR supplemental plural-rule data. If a locale is available in other CLDR datasets but absent from the supplemental plural rules, this package does not publish a `locale-data` module for it.
+
 ### Example Usage
 
 #### Global import

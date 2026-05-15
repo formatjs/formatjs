@@ -1,5 +1,10 @@
+load("//packages/intl-datetimeformat:locales.generated.bzl", INTL_DATETIMEFORMAT_LOCALES = "ALL_LOCALES")
+load("//packages/intl-displaynames:locales.generated.bzl", INTL_DISPLAYNAMES_LOCALES = "ALL_LOCALES")
+load("//packages/intl-listformat:locales.generated.bzl", INTL_LISTFORMAT_LOCALES = "ALL_LOCALES")
+load("//packages/intl-numberformat:locales.generated.bzl", INTL_NUMBERFORMAT_LOCALES = "ALL_LOCALES")
+load("//packages/intl-pluralrules:locales.generated.bzl", INTL_PLURALRULES_LOCALES = "ALL_LOCALES")
+load("//packages/intl-relativetimeformat:locales.generated.bzl", INTL_RELATIVETIMEFORMAT_LOCALES = "ALL_LOCALES")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
-load(":locales.bzl", "INTL_DATETIMEFORMAT_LOCALES", "INTL_DISPLAYNAMES_LOCALES", "INTL_LISTFORMAT_LOCALES", "INTL_NUMBERFORMAT_LOCALES", "INTL_PLURALRULES_LOCALES", "INTL_RELATIVETIMEFORMAT_LOCALES")
 
 generate_package_file(
     name = "cldr_sl_intl_datetimeformat",

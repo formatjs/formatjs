@@ -66,6 +66,17 @@ ts_binary(
 )
 
 ts_binary(
+    name = "generate-cldr-locales",
+    data = [
+        "//:node_modules/fast-glob",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-cldr-locales.ts",
+    visibility = ["//visibility:public"],
+)
+
+ts_binary(
     name = "generate-package-tsconfigs",
     data = [
         "//:node_modules/fs-extra",
