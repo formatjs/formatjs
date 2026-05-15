@@ -54,8 +54,8 @@ formatjs_test(
         "tests/IsValidDateTimeFieldCode.test.ts",
         "tests/index.test.ts",
         "tests/should-polyfill.test.ts",
-        ":tests-locale-data-en",  # keep
-        ":tests-locale-data-zh",  # keep
+        ":tests-locale-data-en",  # keep: generated locale data imported by tests
+        ":tests-locale-data-zh",  # keep: generated locale data imported by tests
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

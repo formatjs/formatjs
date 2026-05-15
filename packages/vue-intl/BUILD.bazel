@@ -25,8 +25,7 @@ formatjs_test(
     name = "vue-intl_test",
     srcs = ["tests/index.test.ts"],
     data = [
-        # keep: transitive runtime dep required by @vue/test-utils SSR
-        "//:node_modules/@vue/server-renderer",
+        "//:node_modules/@vue/server-renderer",  # keep: transitive runtime dep required by @vue/test-utils SSR
     ],
     dom = True,
     deps = [
