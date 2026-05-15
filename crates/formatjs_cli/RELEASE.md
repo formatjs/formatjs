@@ -35,28 +35,19 @@ git push origin formatjs_cli_v0.1.0
 
 **What it does**:
 
-1. Build macOS ARM64 binary natively on macOS runner
-2. Build Linux x86_64 binary natively on Linux runner
-3. Run smoke tests on both binaries
-4. Combine artifacts and generate checksums
-5. Create a GitHub Release with all binaries
+1. Build macOS ARM64, Linux x86_64, and Linux ARM64 binaries in one Bazel build job
+2. Verify artifacts on the corresponding macOS and Linux runners
+3. Combine artifacts and generate checksums
+4. Create a GitHub Release with all binaries
 
 **Release artifacts**:
 
 - `formatjs_cli-darwin-arm64` (macOS Apple Silicon)
+- `formatjs_cli-linux-arm64` (Linux ARM64)
 - `formatjs_cli-linux-x64` (Linux x86_64)
 - `checksums.txt` (SHA-256 checksums)
 
-### Option 2: Using Cargo For Local Binaries
-
-```bash
-cd crates/formatjs_cli
-./release.sh
-```
-
-This uses native Cargo cross-compilation. Requires additional setup for cross-compilation (see below). Cargo builds the executable as `formatjs`; release packaging may rename that executable to the platform-specific artifact names listed below.
-
-### Option 3: Publishing to crates.io
+### Option 2: Publishing to crates.io
 
 Cargo distribution is source-based: users install the package and build the `formatjs` executable locally.
 
@@ -81,12 +72,13 @@ path = "src/main.rs"
 
 ## Platform Support
 
-| Platform | Architecture  | Target Triple            | Status                                |
-| -------- | ------------- | ------------------------ | ------------------------------------- |
-| macOS    | Apple Silicon | aarch64-apple-darwin     | ✅ Native (Bazel on GHA macOS runner) |
-| Linux    | x86_64        | x86_64-unknown-linux-gnu | ✅ Native (Bazel on GHA Linux runner) |
+| Platform | Architecture  | Target Triple             | Status                                |
+| -------- | ------------- | ------------------------- | ------------------------------------- |
+| macOS    | Apple Silicon | aarch64-apple-darwin      | ✅ Native (Bazel on GHA macOS runner) |
+| Linux    | ARM64         | aarch64-unknown-linux-gnu | ✅ Bazel release target               |
+| Linux    | x86_64        | x86_64-unknown-linux-gnu  | ✅ Bazel release target               |
 
-**Note**: The GitHub Actions workflow builds each platform natively on its respective runner, avoiding complex cross-compilation setup.
+**Note**: The GitHub Actions workflow builds release artifacts through Bazel targets. Linux release binaries use musl targets for static artifacts.
 
 ## Cross-Compilation Setup
 
@@ -100,8 +92,9 @@ You have several options:
 # Install zig (provides a cross-platform linker)
 brew install zig
 
-# Add Linux target
+# Add Linux targets
 rustup target add x86_64-unknown-linux-gnu
+rustup target add aarch64-unknown-linux-gnu
 
 # Zig will be automatically detected and used as the linker
 ```
@@ -109,11 +102,13 @@ rustup target add x86_64-unknown-linux-gnu
 #### Option B: Using musl (Static binaries)
 
 ```bash
-# Add musl target (produces static binaries)
+# Add musl targets (produces static binaries)
 rustup target add x86_64-unknown-linux-musl
+rustup target add aarch64-unknown-linux-musl
 
 # Build
 cargo build --release --target x86_64-unknown-linux-musl
+cargo build --release --target aarch64-unknown-linux-musl
 ```
 
 #### Option C: Using cross
@@ -124,6 +119,7 @@ cargo install cross
 
 # Build
 cross build --release --target x86_64-unknown-linux-gnu
+cross build --release --target aarch64-unknown-linux-gnu
 ```
 
 ## Manual Building
@@ -138,13 +134,16 @@ bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary
 # macOS ARM64:
 bazel build --compilation_mode=opt --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/formatjs_cli:release_binary
 
-# Linux x86_64:
-bazel build --compilation_mode=opt --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:release_binary
+# Linux x86_64 static release artifact:
+bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_linux_x64
+
+# Linux ARM64 static release artifact:
+bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_linux_arm64
 ```
 
-Binary will be in `bazel-bin/crates/formatjs_cli/formatjs_cli_release`.
+Use `bazel cquery --output=files <target>` to locate platform-specific release target outputs.
 
-**Note**: Bazel builds each platform natively (no cross-compilation). Use GitHub Actions to build both platforms.
+**Note**: Prefer the platform-specific Bazel release targets in CI for reproducible release artifacts.
 
 ### Build for specific platform with Cargo
 
@@ -157,6 +156,9 @@ cargo build --release --target x86_64-apple-darwin
 
 # Linux x86_64 (requires cross-compilation setup)
 cargo build --release --target x86_64-unknown-linux-gnu
+
+# Linux ARM64 (requires cross-compilation setup)
+cargo build --release --target aarch64-unknown-linux-gnu
 ```
 
 Binaries will be in `target/<triple>/release/formatjs`.
@@ -171,6 +173,7 @@ After running the GitHub Actions workflow, artifacts will be available:
 ```
 Release assets:
 ├── formatjs_cli-darwin-arm64      # macOS Apple Silicon
+├── formatjs_cli-linux-arm64       # Linux ARM64
 ├── formatjs_cli-linux-x64         # Linux x86_64
 └── checksums.txt                  # SHA-256 checksums
 ```
@@ -320,15 +323,16 @@ build-and-test-linux: # Build and test on Linux runner
 **Jobs**:
 
 ```yaml
-build-macos: # Build macOS binary
-build-linux: # Build Linux binary
-combine-and-release: # Combine, checksum, and create release
+build: # Build release binaries
+verify-macos: # Smoke-test macOS binary
+verify-linux: # Smoke-test and inspect Linux binaries
+release: # Combine, checksum, and create release
 ```
 
 **Features**:
 
-1. **Multi-platform builds**: macOS and Linux built natively
-2. **Smoke tests**: Automatic testing with `--version` and `--help`
+1. **Multi-platform builds**: Bazel builds all release artifacts in one job
+2. **Smoke tests**: Platform runners test downloaded artifacts with `--version` and `--help`
 3. **Artifact management**: 7-day retention during workflow, permanent in releases
 4. **Checksum generation**: Automatic SHA-256 checksums
 5. **GitHub Release**: Automatic creation with formatted release notes

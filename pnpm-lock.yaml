@@ -567,6 +567,9 @@ importers:
       '@formatjs/cli-native-darwin-arm64':
         specifier: workspace:*
         version: link:../cli-native-darwin-arm64
+      '@formatjs/cli-native-linux-arm64':
+        specifier: workspace:*
+        version: link:../cli-native-linux-arm64
       '@formatjs/cli-native-linux-x64':
         specifier: workspace:*
         version: link:../cli-native-linux-x64
@@ -628,6 +631,9 @@ importers:
       '@formatjs/cli-native-darwin-arm64':
         specifier: workspace:*
         version: link:../cli-native-darwin-arm64
+      '@formatjs/cli-native-linux-arm64':
+        specifier: workspace:*
+        version: link:../cli-native-linux-arm64
       '@formatjs/cli-native-linux-x64':
         specifier: workspace:*
         version: link:../cli-native-linux-x64
@@ -639,6 +645,8 @@ importers:
         version: link:..
 
   packages/cli-native-darwin-arm64: {}
+
+  packages/cli-native-linux-arm64: {}
 
   packages/cli-native-linux-x64: {}
 
