@@ -48,7 +48,17 @@ release_binary_linux_x64, _release_binary_linux_x64_internal = _release_binary(
     "linux_x86_64",
 )
 
+release_binary_linux_arm64, _release_binary_linux_arm64_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:linux_aarch64_musl",
+    "linux_aarch64",
+)
+
 release_binary_linux_x64_gnu, _release_binary_linux_x64_gnu_internal = _release_binary(
     "//crates/formatjs_cli/platforms:linux_x86_64",
     "linux_x86_64",
+)
+
+release_binary_linux_arm64_gnu, _release_binary_linux_arm64_gnu_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:linux_aarch64",
+    "linux_aarch64",
 )

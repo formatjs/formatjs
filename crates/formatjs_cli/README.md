@@ -91,6 +91,7 @@ Download pre-built native binaries from the [GitHub Releases](https://github.com
 **Available binaries:**
 
 - `formatjs_cli-darwin-arm64` - macOS Apple Silicon
+- `formatjs_cli-linux-arm64` - Linux ARM64
 - `formatjs_cli-linux-x64` - Linux x86_64
 
 **Installation steps:**
@@ -103,6 +104,9 @@ Download pre-built native binaries from the [GitHub Releases](https://github.com
 
    # Linux x86_64
    curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-linux-x64 -o formatjs
+
+   # Linux ARM64
+   curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-linux-arm64 -o formatjs
    ```
 
 2. Make it executable:
@@ -136,9 +140,9 @@ Run directly with Bazel:
 bazel run //crates/formatjs_cli:formatjs -- --help
 ```
 
-### Multi-Platform Build (Darwin ARM64 + Linux x64)
+### Multi-Platform Build (Darwin ARM64 + Linux x64 + Linux ARM64)
 
-Build for both Darwin ARM64 and Linux x64:
+Build for Darwin ARM64, Linux x64, and Linux ARM64:
 
 ```bash
 cd crates/formatjs_cli
@@ -149,6 +153,7 @@ This will create binaries in `dist/formatjs_cli/`:
 
 - `formatjs-darwin-arm64` - macOS Apple Silicon binary
 - `formatjs-linux-x86_64` - Linux x86_64 binary
+- `formatjs-linux-arm64` - Linux ARM64 binary
 
 You can also build for specific platforms using Bazel directly:
 
@@ -158,6 +163,9 @@ bazel build --platforms=//crates/formatjs_cli/platforms:darwin_arm64 //crates/fo
 
 # Build for Linux x64
 bazel build --platforms=//crates/formatjs_cli/platforms:linux_x86_64 //crates/formatjs_cli:formatjs_cli
+
+# Build for Linux ARM64
+bazel build --platforms=//crates/formatjs_cli/platforms:linux_aarch64 //crates/formatjs_cli:formatjs_cli
 ```
 
 ### Local Cargo Build

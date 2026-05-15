@@ -55,6 +55,7 @@
   "main": "index.js",
   "optionalDependencies": {
     "@formatjs/cli-native-darwin-arm64": "workspace:*",
+    "@formatjs/cli-native-linux-arm64": "workspace:*",
     "@formatjs/cli-native-linux-x64": "workspace:*"
   },
   "peerDependenciesMeta": {

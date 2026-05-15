@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_macos:
-    name: Build macOS ARM64
+  build:
+    name: Build Release Binaries
     runs-on: macos-latest
 
     steps:
@@ -29,99 +29,129 @@ jobs:
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-macOS ARM64
+          disk-cache: ${{ github.workflow }}-release-binaries
           repository-cache: true
 
-      - name: Build Binary
+      - name: Build Binaries
         run: |
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel build \
               --config=ci-darwin \
               --compilation_mode=opt \
-              --platforms=//crates/formatjs_cli/platforms:darwin_arm64 \
               --remote_download_outputs=all \
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-              //crates/formatjs_cli:release_binary
+              //crates/formatjs_cli:release_binary_darwin_arm64 \
+              //crates/formatjs_cli:release_binary_linux_x64 \
+              //crates/formatjs_cli:release_binary_linux_arm64
           else
             bazel build \
               --compilation_mode=opt \
-              --platforms=//crates/formatjs_cli/platforms:darwin_arm64 \
-              //crates/formatjs_cli:release_binary
+              //crates/formatjs_cli:release_binary_darwin_arm64 \
+              //crates/formatjs_cli:release_binary_linux_x64 \
+              //crates/formatjs_cli:release_binary_linux_arm64
           fi
 
-          # Copy binary to artifacts directory
           mkdir -p artifacts
-          cp bazel-bin/crates/formatjs_cli/formatjs_cli_release artifacts/formatjs_cli-darwin-arm64
-          chmod +x artifacts/formatjs_cli-darwin-arm64
 
-      - name: Smoke Test
-        run: |
-          ./artifacts/formatjs_cli-darwin-arm64 --version
-          ./artifacts/formatjs_cli-darwin-arm64 --help
+          copy_artifact() {
+            local target="$1"
+            local output="$2"
+            local binary_path
+            binary_path="$(bazel cquery --output=files "$target")"
+            cp "$binary_path" "artifacts/$output"
+            chmod +x "artifacts/$output"
+          }
 
-      - name: Upload Artifact
+          copy_artifact //crates/formatjs_cli:release_binary_darwin_arm64 formatjs_cli-darwin-arm64
+          copy_artifact //crates/formatjs_cli:release_binary_linux_x64 formatjs_cli-linux-x64
+          copy_artifact //crates/formatjs_cli:release_binary_linux_arm64 formatjs_cli-linux-arm64
+
+      - name: Upload macOS ARM64 Artifact
         uses: actions/upload-artifact@v7
         with:
           name: formatjs_cli-darwin-arm64
           path: artifacts/formatjs_cli-darwin-arm64
           retention-days: 7
 
-  build_linux:
-    name: Build Linux x86_64
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-
-      - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
-        with:
-          bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-Linux x86_64-musl
-          repository-cache: true
-
-      - name: Build Binary
-        run: |
-          bazel build //crates/formatjs_cli:release_binary_linux_x64
-
-          # Copy binary to artifacts directory
-          BINARY_PATH="$(bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_x64)"
-          mkdir -p artifacts
-          cp "$BINARY_PATH" artifacts/formatjs_cli-linux-x64
-          chmod +x artifacts/formatjs_cli-linux-x64
-
-      - name: Smoke Test
-        run: |
-          ./artifacts/formatjs_cli-linux-x64 --version
-          ./artifacts/formatjs_cli-linux-x64 --help
-
-      - name: Verify glibc Compatibility
-        run: |
-          file artifacts/formatjs_cli-linux-x64
-          ldd_output="$(ldd artifacts/formatjs_cli-linux-x64 2>&1 || true)"
-          echo "$ldd_output"
-          if echo "$ldd_output" | grep -q "not a dynamic executable"; then
-            echo "Linux binary is statically linked and does not require glibc"
-          elif strings artifacts/formatjs_cli-linux-x64 | grep -q 'GLIBC_'; then
-            echo "Linux musl binary unexpectedly references glibc symbols" >&2
-            exit 1
-          else
-            echo "Linux binary does not reference glibc symbols"
-          fi
-
-      - name: Upload Artifact
+      - name: Upload Linux x64 Artifact
         uses: actions/upload-artifact@v7
         with:
           name: formatjs_cli-linux-x64
           path: artifacts/formatjs_cli-linux-x64
           retention-days: 7
 
+      - name: Upload Linux ARM64 Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: formatjs_cli-linux-arm64
+          path: artifacts/formatjs_cli-linux-arm64
+          retention-days: 7
+
+  verify_macos:
+    name: Verify macOS ARM64
+    needs: build
+    runs-on: macos-latest
+
+    steps:
+      - name: Download macOS ARM64 Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: formatjs_cli-darwin-arm64
+          path: artifacts
+
+      - name: Smoke Test
+        run: |
+          chmod +x artifacts/formatjs_cli-darwin-arm64
+          ./artifacts/formatjs_cli-darwin-arm64 --version
+          ./artifacts/formatjs_cli-darwin-arm64 --help
+
+  verify_linux:
+    name: Verify Linux
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux x64 Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: formatjs_cli-linux-x64
+          path: artifacts
+
+      - name: Download Linux ARM64 Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: formatjs_cli-linux-arm64
+          path: artifacts
+
+      - name: Smoke Test
+        run: |
+          chmod +x artifacts/formatjs_cli-linux-x64
+          ./artifacts/formatjs_cli-linux-x64 --version
+          ./artifacts/formatjs_cli-linux-x64 --help
+
+      - name: Inspect Binaries
+        run: |
+          chmod +x artifacts/formatjs_cli-linux-x64 artifacts/formatjs_cli-linux-arm64
+          for binary in artifacts/formatjs_cli-linux-x64 artifacts/formatjs_cli-linux-arm64; do
+            file "$binary"
+            ldd_output="$(ldd "$binary" 2>&1 || true)"
+            echo "$ldd_output"
+            if echo "$ldd_output" | grep -q "not a dynamic executable"; then
+              echo "$binary is statically linked and does not require glibc"
+            elif strings "$binary" | grep -q 'GLIBC_'; then
+              echo "$binary unexpectedly references glibc symbols" >&2
+              exit 1
+            else
+              echo "$binary does not reference glibc symbols"
+            fi
+          done
+
   release:
     name: Create Release
     needs:
-      - build_macos
-      - build_linux
+      - build
+      - verify_macos
+      - verify_linux
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -143,13 +173,15 @@ jobs:
 
           # Move binaries from subdirectories to release root
           mv release/formatjs_cli-darwin-arm64/formatjs_cli-darwin-arm64 release/formatjs_cli-darwin-arm64.bin
+          mv release/formatjs_cli-linux-arm64/formatjs_cli-linux-arm64 release/formatjs_cli-linux-arm64.bin
           mv release/formatjs_cli-linux-x64/formatjs_cli-linux-x64 release/formatjs_cli-linux-x64.bin
 
           # Remove empty directories
-          rmdir release/formatjs_cli-darwin-arm64 release/formatjs_cli-linux-x64
+          rmdir release/formatjs_cli-darwin-arm64 release/formatjs_cli-linux-arm64 release/formatjs_cli-linux-x64
 
           # Rename binaries to final names
           mv release/formatjs_cli-darwin-arm64.bin release/formatjs_cli-darwin-arm64
+          mv release/formatjs_cli-linux-arm64.bin release/formatjs_cli-linux-arm64
           mv release/formatjs_cli-linux-x64.bin release/formatjs_cli-linux-x64
 
       - name: Generate Checksums
@@ -171,6 +203,7 @@ jobs:
         with:
           files: |
             release/formatjs_cli-darwin-arm64
+            release/formatjs_cli-linux-arm64
             release/formatjs_cli-linux-x64
             release/checksums.txt
           body: |
@@ -178,6 +211,7 @@ jobs:
 
             ### Binaries
             - **macOS Apple Silicon**: `formatjs_cli-darwin-arm64`
+            - **Linux ARM64**: `formatjs_cli-linux-arm64`
             - **Linux x86_64**: `formatjs_cli-linux-x64`
 
             ### Installation
@@ -192,6 +226,11 @@ jobs:
             curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-x64
             chmod +x formatjs_cli-linux-x64
             sudo mv formatjs_cli-linux-x64 /usr/local/bin/formatjs
+
+            # Linux ARM64
+            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-arm64
+            chmod +x formatjs_cli-linux-arm64
+            sudo mv formatjs_cli-linux-arm64 /usr/local/bin/formatjs
             ```
 
             ### Verification

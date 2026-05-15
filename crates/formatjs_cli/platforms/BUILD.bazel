@@ -14,10 +14,25 @@ platform(
     visibility = ["//visibility:public"],
 )
 
+# Linux ARM64
+platform(
+    name = "linux_aarch64",
+    parents = ["@rules_rs//rs/platforms:aarch64-unknown-linux-gnu"],
+    visibility = ["//visibility:public"],
+)
+
 # Linux x86_64 with musl libc. This produces a static CLI binary that avoids a
 # host glibc runtime requirement.
 platform(
     name = "linux_x86_64_musl",
     parents = ["@rules_rs//rs/platforms:x86_64-unknown-linux-musl"],
+    visibility = ["//visibility:public"],
+)
+
+# Linux ARM64 with musl libc. This produces a static CLI binary that avoids a
+# host glibc runtime requirement.
+platform(
+    name = "linux_aarch64_musl",
+    parents = ["@rules_rs//rs/platforms:aarch64-unknown-linux-musl"],
     visibility = ["//visibility:public"],
 )
