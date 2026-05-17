@@ -142,14 +142,14 @@ async function buildWithRspack(
         path: outDir,
         filename: 'bundle.js',
         library: {type: 'module'},
+        module: true,
       },
-      experiments: {outputModule: true},
       optimization: {minimize: false},
       plugins: [rspackPlugin(options)],
     })
     compiler.run((err, stats) => {
       if (err) return reject(err)
-      if (stats?.hasErrors()) return reject(new Error(stats.toString()))
+      if (stats?.hasErrors()) return reject(new Error(stats.toString(false)))
       const {readFileSync} = require('fs')
       const code = readFileSync(join(outDir, 'bundle.js'), 'utf-8')
       compiler.close(() => {})
