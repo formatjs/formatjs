@@ -90,7 +90,7 @@ genrule(
     name = "bin",
     srcs = [":formatjs"],
     outs = ["bin/formatjs"],
-    cmd = "cp $(location :formatjs)/main.js $@",
+    cmd = "cp $(location :formatjs)/formatjs $@",
 )
 
 rolldown_bundle(
@@ -109,7 +109,7 @@ rolldown_bundle(
         "svelte",
         "source-map-support",
     ],
-    output = "formatjs/main.js",
+    output = "formatjs/formatjs",
     platform = "node",
     target = "node20",
     visibility = ["//packages/cli:__pkg__"],

@@ -4,13 +4,12 @@ load("//tools:index.bzl", "package_exports_test")
 
 PACKAGE_NAME = "cli"
 
-# Assemble bin/ directory: rename main.js to formatjs (entry point) and include all chunks
+# Assemble bin/ directory with the formatjs entry point and all dynamic chunks.
 copy_to_directory(
     name = "bin",
     srcs = ["//packages/cli-lib:formatjs"],
     out = "bin",
     replace_prefixes = {
-        "-lib/formatjs/main.js": "formatjs",
         "-lib/formatjs/": "",
     },
 )
