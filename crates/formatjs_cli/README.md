@@ -231,7 +231,7 @@ formatjs compile "lang/*.json" \
 - `--out-file <PATH>` - Output file path (prints to stdout if not provided)
 - `--ast` - Compile to AST instead of strings
 - `--skip-errors` - Continue compiling after errors (excludes keys with errors)
-- `--pseudo-locale <LOCALE>` - Accept pseudo-locale selection with `--ast`; pseudo-locale transformations are not yet implemented in the Rust CLI
+- `--pseudo-locale <LOCALE>` - Generate pseudo-locale AST output; requires `--ast`
   - Values: `xx-LS`, `xx-AC`, `xx-HA`, `en-XA`, `en-XB`
 - `--ignore-tag` - Treat HTML/XML tags as string literals
 
@@ -289,7 +289,6 @@ formatjs verify "lang/*.json" \
 
 - `--format` accepts built-in formatter names only. The Node.js CLI can also load custom JavaScript formatter files.
 - Extraction currently targets JavaScript and TypeScript source files. Framework template extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and GJS is handled by the Node.js CLI.
-- Pseudo-locale options are accepted for CLI compatibility, but pseudo-locale AST transformations are not yet implemented.
 
 ## Development
 

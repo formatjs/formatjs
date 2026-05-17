@@ -218,13 +218,16 @@ exports[`'Rust' CLI > compile glob 1`] = `
 
 exports[`'Rust' CLI > en-XA json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
     },
     {
       "type": 6,
@@ -234,7 +237,7 @@ exports[`'Rust' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "a dog"
+              "value": "ȧȧ ḓǿǿɠ"
             }
           ]
         },
@@ -242,19 +245,27 @@ exports[`'Rust' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
     },
     {
       "type": 6,
@@ -268,7 +279,7 @@ exports[`'Rust' CLI > en-XA json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a dog"
+                  "value": "ȧȧ ḓǿǿɠ"
                 }
               ]
             }
@@ -278,19 +289,27 @@ exports[`'Rust' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
     },
     {
       "type": 6,
@@ -304,7 +323,7 @@ exports[`'Rust' CLI > en-XA json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a "
+                  "value": "ȧȧ "
                 },
                 {
                   "type": 8,
@@ -312,7 +331,7 @@ exports[`'Rust' CLI > en-XA json 1`] = `
                   "children": [
                     {
                       "type": 0,
-                      "value": "dog"
+                      "value": "ḓǿǿɠ"
                     }
                   ]
                 }
@@ -324,29 +343,49 @@ exports[`'Rust' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿẏ ƞȧȧḿḗḗ īş "
     },
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧ ḿḗḗşşȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ]
 }
@@ -356,13 +395,16 @@ exports[`'Rust' CLI > en-XA json 1`] = `
 
 exports[`'Rust' CLI > en-XB json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
     },
     {
       "type": 6,
@@ -372,7 +414,7 @@ exports[`'Rust' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "a dog"
+              "value": "ɐ poƃ"
             }
           ]
         },
@@ -380,19 +422,27 @@ exports[`'Rust' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
     },
     {
       "type": 6,
@@ -406,7 +456,7 @@ exports[`'Rust' CLI > en-XB json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a dog"
+                  "value": "ɐ poƃ"
                 }
               ]
             }
@@ -416,19 +466,27 @@ exports[`'Rust' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
     },
     {
       "type": 6,
@@ -442,7 +500,7 @@ exports[`'Rust' CLI > en-XB json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a "
+                  "value": "ɐ "
                 },
                 {
                   "type": 8,
@@ -450,7 +508,7 @@ exports[`'Rust' CLI > en-XB json 1`] = `
                   "children": [
                     {
                       "type": 0,
-                      "value": "dog"
+                      "value": "poƃ"
                     }
                   ]
                 }
@@ -462,29 +520,49 @@ exports[`'Rust' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɯʎ uɐɯǝ ıs "
     },
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐ ɯǝssɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ]
 }
@@ -747,13 +825,12 @@ exports[`'Rust' CLI > skipped malformed ICU message json 1`] = `
 
 exports[`'Rust' CLI > xx-AC json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "I HAVE "
     },
     {
       "type": 6,
@@ -763,7 +840,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "a dog"
+              "value": "A DOG"
             }
           ]
         },
@@ -771,7 +848,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "MANY DOGS"
             }
           ]
         }
@@ -783,7 +860,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "I HAVE "
     },
     {
       "type": 6,
@@ -797,7 +874,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a dog"
+                  "value": "A DOG"
                 }
               ]
             }
@@ -807,7 +884,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "MANY DOGS"
             }
           ]
         }
@@ -819,7 +896,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "I HAVE "
     },
     {
       "type": 6,
@@ -833,7 +910,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a "
+                  "value": "A "
                 },
                 {
                   "type": 8,
@@ -841,7 +918,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
                   "children": [
                     {
                       "type": 0,
-                      "value": "dog"
+                      "value": "DOG"
                     }
                   ]
                 }
@@ -853,7 +930,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "MANY DOGS"
             }
           ]
         }
@@ -865,7 +942,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "MY NAME IS "
     },
     {
       "type": 1,
@@ -875,7 +952,7 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "A MESSAGE"
     }
   ]
 }
@@ -885,13 +962,12 @@ exports[`'Rust' CLI > xx-AC json 1`] = `
 
 exports[`'Rust' CLI > xx-HA json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "[javascript]I have "
     },
     {
       "type": 6,
@@ -921,7 +997,7 @@ exports[`'Rust' CLI > xx-HA json 1`] = `
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "[javascript]I have "
     },
     {
       "type": 6,
@@ -957,7 +1033,7 @@ exports[`'Rust' CLI > xx-HA json 1`] = `
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "[javascript]I have "
     },
     {
       "type": 6,
@@ -1003,7 +1079,7 @@ exports[`'Rust' CLI > xx-HA json 1`] = `
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "[javascript]my name is "
     },
     {
       "type": 1,
@@ -1013,7 +1089,7 @@ exports[`'Rust' CLI > xx-HA json 1`] = `
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "[javascript]a message"
     }
   ]
 }
@@ -1023,8 +1099,7 @@ exports[`'Rust' CLI > xx-HA json 1`] = `
 
 exports[`'Rust' CLI > xx-LS json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
@@ -1054,6 +1129,10 @@ exports[`'Rust' CLI > xx-LS json 1`] = `
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "a1d13": [
@@ -1090,6 +1169,10 @@ exports[`'Rust' CLI > xx-LS json 1`] = `
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "a1d14": [
@@ -1136,6 +1219,10 @@ exports[`'Rust' CLI > xx-LS json 1`] = `
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "a1dd2": [
@@ -1146,12 +1233,16 @@ exports[`'Rust' CLI > xx-LS json 1`] = `
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "a messageSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ]
 }
@@ -1364,13 +1455,16 @@ exports[`'TypeScript' CLI > compile glob 1`] = `
 
 exports[`'TypeScript' CLI > en-XA json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
     },
     {
       "type": 6,
@@ -1380,7 +1474,7 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "a dog"
+              "value": "ȧȧ ḓǿǿɠ"
             }
           ]
         },
@@ -1388,19 +1482,27 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
     },
     {
       "type": 6,
@@ -1414,7 +1516,7 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a dog"
+                  "value": "ȧȧ ḓǿǿɠ"
                 }
               ]
             }
@@ -1424,19 +1526,27 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ "
     },
     {
       "type": 6,
@@ -1450,7 +1560,7 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a "
+                  "value": "ȧȧ "
                 },
                 {
                   "type": 8,
@@ -1458,7 +1568,7 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
                   "children": [
                     {
                       "type": 0,
-                      "value": "dog"
+                      "value": "ḓǿǿɠ"
                     }
                   ]
                 }
@@ -1470,29 +1580,49 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ḿȧȧƞẏ ḓǿǿɠş"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿẏ ƞȧȧḿḗḗ īş "
     },
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ],
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧ ḿḗḗşşȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
     }
   ]
 }
@@ -1502,13 +1632,16 @@ exports[`'TypeScript' CLI > en-XA json 1`] = `
 
 exports[`'TypeScript' CLI > en-XB json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
     },
     {
       "type": 6,
@@ -1518,7 +1651,7 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "a dog"
+              "value": "ɐ poƃ"
             }
           ]
         },
@@ -1526,19 +1659,27 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
     },
     {
       "type": 6,
@@ -1552,7 +1693,7 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a dog"
+                  "value": "ɐ poƃ"
                 }
               ]
             }
@@ -1562,19 +1703,27 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ "
     },
     {
       "type": 6,
@@ -1588,7 +1737,7 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a "
+                  "value": "ɐ "
                 },
                 {
                   "type": 8,
@@ -1596,7 +1745,7 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
                   "children": [
                     {
                       "type": 0,
-                      "value": "dog"
+                      "value": "poƃ"
                     }
                   ]
                 }
@@ -1608,29 +1757,49 @@ exports[`'TypeScript' CLI > en-XB json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "ɯɐuʎ poƃs"
             }
           ]
         }
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɯʎ uɐɯǝ ıs "
     },
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ],
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐ ɯǝssɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
     }
   ]
 }
@@ -1906,13 +2075,12 @@ exports[`'TypeScript' CLI > skipped malformed ICU message json 1`] = `
 
 exports[`'TypeScript' CLI > xx-AC json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "I HAVE "
     },
     {
       "type": 6,
@@ -1922,7 +2090,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "a dog"
+              "value": "A DOG"
             }
           ]
         },
@@ -1930,7 +2098,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "MANY DOGS"
             }
           ]
         }
@@ -1942,7 +2110,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "I HAVE "
     },
     {
       "type": 6,
@@ -1956,7 +2124,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a dog"
+                  "value": "A DOG"
                 }
               ]
             }
@@ -1966,7 +2134,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "MANY DOGS"
             }
           ]
         }
@@ -1978,7 +2146,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "I HAVE "
     },
     {
       "type": 6,
@@ -1992,7 +2160,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
               "children": [
                 {
                   "type": 0,
-                  "value": "a "
+                  "value": "A "
                 },
                 {
                   "type": 8,
@@ -2000,7 +2168,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
                   "children": [
                     {
                       "type": 0,
-                      "value": "dog"
+                      "value": "DOG"
                     }
                   ]
                 }
@@ -2012,7 +2180,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
           "value": [
             {
               "type": 0,
-              "value": "many dogs"
+              "value": "MANY DOGS"
             }
           ]
         }
@@ -2024,7 +2192,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "MY NAME IS "
     },
     {
       "type": 1,
@@ -2034,7 +2202,7 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "A MESSAGE"
     }
   ]
 }
@@ -2044,13 +2212,12 @@ exports[`'TypeScript' CLI > xx-AC json 1`] = `
 
 exports[`'TypeScript' CLI > xx-HA json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "[javascript]I have "
     },
     {
       "type": 6,
@@ -2080,7 +2247,7 @@ exports[`'TypeScript' CLI > xx-HA json 1`] = `
   "a1d13": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "[javascript]I have "
     },
     {
       "type": 6,
@@ -2116,7 +2283,7 @@ exports[`'TypeScript' CLI > xx-HA json 1`] = `
   "a1d14": [
     {
       "type": 0,
-      "value": "I have "
+      "value": "[javascript]I have "
     },
     {
       "type": 6,
@@ -2162,7 +2329,7 @@ exports[`'TypeScript' CLI > xx-HA json 1`] = `
   "a1dd2": [
     {
       "type": 0,
-      "value": "my name is "
+      "value": "[javascript]my name is "
     },
     {
       "type": 1,
@@ -2172,7 +2339,7 @@ exports[`'TypeScript' CLI > xx-HA json 1`] = `
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "[javascript]a message"
     }
   ]
 }
@@ -2182,8 +2349,7 @@ exports[`'TypeScript' CLI > xx-HA json 1`] = `
 
 exports[`'TypeScript' CLI > xx-LS json 1`] = `
 {
-  "stderr": "Warning: Pseudo-locale transformations not yet implemented
-",
+  "stderr": "",
   "stdout": "{
   "a1d12": [
     {
@@ -2213,6 +2379,10 @@ exports[`'TypeScript' CLI > xx-LS json 1`] = `
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "a1d13": [
@@ -2249,6 +2419,10 @@ exports[`'TypeScript' CLI > xx-LS json 1`] = `
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "a1d14": [
@@ -2295,6 +2469,10 @@ exports[`'TypeScript' CLI > xx-LS json 1`] = `
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "a1dd2": [
@@ -2305,12 +2483,16 @@ exports[`'TypeScript' CLI > xx-LS json 1`] = `
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "ashd2": [
     {
       "type": 0,
-      "value": "a message"
+      "value": "a messageSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ]
 }
