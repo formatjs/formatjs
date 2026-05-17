@@ -181,8 +181,7 @@ To broaden parity:
 1. Add conformance coverage for CLI semantics: stdin, `--in-file`, glob ordering, no-match behavior, output files, and duplicate IDs.
 2. Decide whether standalone Rust should support custom JavaScript formatter files. Today Rust supports built-in formatter names only.
 3. Add or explicitly scope framework-file extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and GJS.
-4. Port pseudo-locale transformations to Rust or document them as unsupported in the standalone binary.
-5. Add compile, compile-folder, and verify conformance cases that compare stdout, stderr, output files, and exit status.
+4. Add compile, compile-folder, and verify conformance cases that compare stdout, stderr, output files, and exit status.
 
 ## Benefits
 

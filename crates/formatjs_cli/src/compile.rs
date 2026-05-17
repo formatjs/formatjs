@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use formatjs_icu_messageformat_parser::MessageFormatElement;
 use serde_json::{Map, Value, json};
 use std::collections::BTreeMap;
 use std::path::PathBuf;
@@ -22,6 +23,33 @@ pub enum PseudoLocale {
     /// English expansion (east-to-west)
     EnXb,
 }
+
+const XX_LS_SUFFIX: &str = "SSSSSSSSSSSSSSSSSSSSSSSSS";
+const XX_HA_PREFIX: &str = "[javascript]";
+const EN_XA_PREFIX: &str = "[";
+const EN_XA_SUFFIX: &str = "]";
+const EN_XB_PREFIX: &str = "\u{202e}";
+const EN_XB_SUFFIX: &str = "\u{202c}";
+
+const ACCENTED_CAPS: [u32; 26] = [
+    550, 385, 391, 7698, 7702, 401, 403, 294, 298, 308, 310, 319, 7742, 544, 510, 420, 586, 344,
+    350, 358, 364, 7804, 7814, 7818, 7822, 7824,
+];
+
+const ACCENTED_SMALL: [u32; 26] = [
+    551, 384, 392, 7699, 7703, 402, 608, 295, 299, 309, 311, 320, 7743, 414, 511, 421, 587, 345,
+    351, 359, 365, 7805, 7815, 7819, 7823, 7825,
+];
+
+const FLIPPED_CAPS: [u32; 26] = [
+    8704, 1296, 8579, 5601, 398, 8498, 8513, 72, 73, 383, 1276, 8514, 87, 78, 79, 1280, 210, 7450,
+    83, 8869, 8745, 581, 77, 88, 8516, 90,
+];
+
+const FLIPPED_SMALL: [u32; 26] = [
+    592, 113, 596, 112, 477, 607, 387, 613, 305, 638, 670, 645, 623, 117, 111, 100, 98, 633, 115,
+    647, 110, 652, 653, 120, 654, 122,
+];
 
 /// Compile extracted translation files into react-intl consumable JSON.
 ///
@@ -129,7 +157,11 @@ pub fn compile_to_string(
 
         let base_dir = crate::extract::extract_base_dir(pattern_str);
         if base_dir.exists() {
-            for entry in WalkDir::new(&base_dir).follow_links(follow_links).into_iter().filter_map(|e| e.ok()) {
+            for entry in WalkDir::new(&base_dir)
+                .follow_links(follow_links)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
                 if entry.path().is_file() {
                     let path_str = entry.path().to_string_lossy();
                     if fast_glob::glob_match(pattern_str, path_str.as_ref()) {
@@ -198,11 +230,6 @@ pub fn compile_messages_to_string(
         anyhow::bail!("Pseudo-locale generation requires --ast flag");
     }
 
-    // Warn about unimplemented features
-    if pseudo_locale.is_some() {
-        eprintln!("Warning: Pseudo-locale transformations not yet implemented");
-    }
-
     // Parse and validate ICU MessageFormat, compile to output format
     let mut compiled_messages: Map<String, Value> = Map::new();
     let mut error_count = 0;
@@ -217,11 +244,12 @@ pub fn compile_messages_to_string(
     for (id, (message, source_file)) in &messages {
         let parser = Parser::new(message.as_str(), parser_options.clone());
         match parser.parse() {
-            Ok(msg_ast) => {
-                // TODO: Apply pseudo-locale transformations to AST if specified
-                // This would modify literal elements in the AST
-
+            Ok(mut msg_ast) => {
                 if ast {
+                    if let Some(locale) = pseudo_locale {
+                        msg_ast = apply_pseudo_locale(msg_ast, locale);
+                    }
+
                     // Serialize AST to JSON for output
                     let ast_json = serde_json::to_value(&msg_ast)
                         .with_context(|| format!("Failed to serialize AST for message '{}'", id))?;
@@ -260,12 +288,168 @@ pub fn compile_messages_to_string(
     Ok(output)
 }
 
+fn apply_pseudo_locale(
+    mut ast: Vec<MessageFormatElement>,
+    pseudo_locale: PseudoLocale,
+) -> Vec<MessageFormatElement> {
+    match pseudo_locale {
+        PseudoLocale::XxLs => {
+            if let Some(MessageFormatElement::Literal(last)) = ast.last_mut() {
+                last.value.push_str(XX_LS_SUFFIX);
+            } else {
+                ast.push(MessageFormatElement::literal(XX_LS_SUFFIX.to_string()));
+            }
+            ast
+        }
+        PseudoLocale::XxAc => {
+            transform_literal_elements(&mut ast, &|value| value.to_uppercase());
+            ast
+        }
+        PseudoLocale::XxHa => {
+            if let Some(MessageFormatElement::Literal(first)) = ast.first_mut() {
+                first.value.insert_str(0, XX_HA_PREFIX);
+            } else {
+                ast.insert(0, MessageFormatElement::literal(XX_HA_PREFIX.to_string()));
+            }
+            ast
+        }
+        PseudoLocale::EnXa => {
+            transform_literal_elements(&mut ast, &|value| {
+                transform_ascii(value, &ACCENTED_SMALL, &ACCENTED_CAPS, true)
+            });
+
+            let mut wrapped = Vec::with_capacity(ast.len() + 2);
+            wrapped.push(MessageFormatElement::literal(EN_XA_PREFIX.to_string()));
+            wrapped.extend(ast);
+            wrapped.push(MessageFormatElement::literal(EN_XA_SUFFIX.to_string()));
+            wrapped
+        }
+        PseudoLocale::EnXb => {
+            transform_literal_elements(&mut ast, &|value| {
+                transform_ascii(value, &FLIPPED_SMALL, &FLIPPED_CAPS, false)
+            });
+
+            let mut wrapped = Vec::with_capacity(ast.len() + 2);
+            wrapped.push(MessageFormatElement::literal(EN_XB_PREFIX.to_string()));
+            wrapped.extend(ast);
+            wrapped.push(MessageFormatElement::literal(EN_XB_SUFFIX.to_string()));
+            wrapped
+        }
+    }
+}
+
+fn transform_literal_elements(
+    ast: &mut [MessageFormatElement],
+    transform: &impl Fn(&str) -> String,
+) {
+    for element in ast {
+        match element {
+            MessageFormatElement::Literal(literal) => {
+                literal.value = transform(&literal.value);
+            }
+            MessageFormatElement::Plural(plural) => {
+                for option in plural.options.values_mut() {
+                    transform_literal_elements(&mut option.value, transform);
+                }
+            }
+            MessageFormatElement::Select(select) => {
+                for option in select.options.values_mut() {
+                    transform_literal_elements(&mut option.value, transform);
+                }
+            }
+            MessageFormatElement::Tag(tag) => {
+                transform_literal_elements(&mut tag.children, transform);
+            }
+            _ => {}
+        }
+    }
+}
+
+fn transform_ascii(
+    message: &str,
+    small_map: &[u32; 26],
+    caps_map: &[u32; 26],
+    elongate: bool,
+) -> String {
+    let mut result = String::with_capacity(message.len());
+
+    for ch in message.chars() {
+        if ch.is_ascii_lowercase() {
+            let index = (ch as u8 - b'a') as usize;
+            let mapped = char::from_u32(small_map[index]).expect("valid pseudo-locale codepoint");
+            result.push(mapped);
+            if elongate && matches!(ch, 'a' | 'e' | 'o' | 'u') {
+                result.push(mapped);
+            }
+        } else if ch.is_ascii_uppercase() {
+            let index = (ch as u8 - b'A') as usize;
+            result.push(char::from_u32(caps_map[index]).expect("valid pseudo-locale codepoint"));
+        } else {
+            result.push(ch);
+        }
+    }
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use serde_json::json;
     use std::fs;
     use tempfile::tempdir;
+
+    fn compile_message_to_ast(message: &str, pseudo_locale: PseudoLocale) -> Value {
+        let mut messages = BTreeMap::new();
+        messages.insert(
+            "msg".to_string(),
+            (message.to_string(), PathBuf::from("messages.json")),
+        );
+
+        let output =
+            compile_messages_to_string(messages, true, false, Some(pseudo_locale), false).unwrap();
+
+        serde_json::from_str::<Value>(&output).unwrap()["msg"].clone()
+    }
+
+    fn collect_literal_values(value: &Value, values: &mut Vec<String>) {
+        match value {
+            Value::Array(elements) => {
+                for element in elements {
+                    collect_literal_values(element, values);
+                }
+            }
+            Value::Object(map) => {
+                if map.get("type").and_then(Value::as_u64) == Some(0) {
+                    values.push(
+                        map.get("value")
+                            .and_then(Value::as_str)
+                            .unwrap_or_default()
+                            .to_string(),
+                    );
+                }
+
+                if let Some(children) = map.get("children") {
+                    collect_literal_values(children, values);
+                }
+
+                if let Some(options) = map.get("options").and_then(Value::as_object) {
+                    for option in options.values() {
+                        if let Some(value) = option.get("value") {
+                            collect_literal_values(value, values);
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    fn literal_values(value: &Value) -> Vec<String> {
+        let mut values = Vec::new();
+        collect_literal_values(value, &mut values);
+        values
+    }
 
     #[test]
     fn test_compile_simple_messages() {
@@ -333,7 +517,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -371,7 +555,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -410,7 +594,7 @@ mod tests {
             false, // don't skip errors
             None,
             false,
-            true,  // follow links
+            true, // follow links
         );
 
         assert!(result.is_err());
@@ -446,7 +630,7 @@ mod tests {
             true, // skip errors
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -486,7 +670,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -526,7 +710,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         );
 
         assert!(result.is_err());
@@ -561,7 +745,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -600,7 +784,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -642,7 +826,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -670,7 +854,7 @@ mod tests {
             false,
             Some(PseudoLocale::EnXa), // pseudo-locale specified
             false,
-            true,  // follow links
+            true, // follow links
         );
 
         assert!(result.is_err());
@@ -680,6 +864,59 @@ mod tests {
                 .to_string()
                 .contains("requires --ast flag")
         );
+    }
+
+    #[test]
+    fn test_compile_pseudo_locale_transforms_literal_elements() {
+        let ast = compile_message_to_ast(
+            "foo {bar, plural, one {<b>a dog</b>} other {many dogs}}",
+            PseudoLocale::XxAc,
+        );
+
+        assert_eq!(
+            literal_values(&ast),
+            vec![
+                "FOO ".to_string(),
+                "A DOG".to_string(),
+                "MANY DOGS".to_string()
+            ]
+        );
+    }
+
+    #[test]
+    fn test_compile_pseudo_locale_top_level_insertions() {
+        let xx_ls = compile_message_to_ast("my name is {name}", PseudoLocale::XxLs);
+        assert_eq!(
+            literal_values(&xx_ls),
+            vec!["my name is ".to_string(), XX_LS_SUFFIX.to_string()]
+        );
+
+        let xx_ha = compile_message_to_ast("{name} has help", PseudoLocale::XxHa);
+        assert_eq!(
+            literal_values(&xx_ha),
+            vec![XX_HA_PREFIX.to_string(), " has help".to_string()]
+        );
+    }
+
+    #[test]
+    fn test_compile_pseudo_locale_en_xa_and_en_xb_wrappers() {
+        let en_xa_values = literal_values(&compile_message_to_ast(
+            "my name is {name}",
+            PseudoLocale::EnXa,
+        ));
+        assert_eq!(en_xa_values.first().unwrap(), EN_XA_PREFIX);
+        assert_eq!(en_xa_values.last().unwrap(), EN_XA_SUFFIX);
+        assert_ne!(en_xa_values[1], "my name is ");
+        assert!(en_xa_values[1].contains('\u{1e3f}'));
+
+        let en_xb_values = literal_values(&compile_message_to_ast(
+            "my name is {name}",
+            PseudoLocale::EnXb,
+        ));
+        assert_eq!(en_xb_values.first().unwrap(), EN_XB_PREFIX);
+        assert_eq!(en_xb_values.last().unwrap(), EN_XB_SUFFIX);
+        assert_ne!(en_xb_values[1], "my name is ");
+        assert!(en_xb_values[1].contains('\u{026f}'));
     }
 
     #[test]
@@ -718,7 +955,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -777,7 +1014,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -826,7 +1063,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -878,7 +1115,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -918,7 +1155,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -965,7 +1202,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1005,7 +1242,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1047,7 +1284,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1098,7 +1335,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1141,7 +1378,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1182,7 +1419,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1214,7 +1451,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1252,7 +1489,7 @@ mod tests {
             false,
             None,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
