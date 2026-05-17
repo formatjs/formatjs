@@ -89,8 +89,10 @@ bazel_dep(
 
 ######### Protobuf rules #########
 
-bazel_dep(name = "protobuf", version = "34.0.bcr.1", repo_name = "com_google_protobuf")
+bazel_dep(name = "protobuf", version = "34.1", repo_name = "com_google_protobuf")
 bazel_dep(name = "rules_proto", version = "7.1.0")
+# Force protobuf's transitive Android rules past Bazel 9 CcInfo compatibility fixes.
+bazel_dep(name = "rules_android", version = "0.7.2")
 
 ######### Go + Gazelle #########
 
