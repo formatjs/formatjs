@@ -59,7 +59,7 @@ export const FormattedListParts: React.FC<
   const {value, children, ...formatProps} = props
   return children(intl.formatListToParts(value, formatProps))
 }
-FormattedNumberParts.displayName = 'FormattedNumberParts'
+FormattedListParts.displayName = 'FormattedListParts'
 
 export function createFormattedDateTimePartsComponent<
   Name extends 'formatDate' | 'formatTime',

@@ -44,6 +44,16 @@ describe('react-intl', () => {
         expect(typeof ReactIntl.FormattedNumberParts).toBe('function')
       })
 
+      it('exports `FormattedListParts`', () => {
+        expect(typeof ReactIntl.FormattedListParts).toBe('function')
+      })
+
+      it('sets `FormattedListParts.displayName`', () => {
+        expect(ReactIntl.FormattedListParts.displayName).toBe(
+          'FormattedListParts'
+        )
+      })
+
       it('exports `FormattedRelativeTime`', () => {
         expect(typeof ReactIntl.FormattedRelativeTime).toBe('function')
       })
