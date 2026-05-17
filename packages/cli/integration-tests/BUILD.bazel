@@ -141,14 +141,16 @@ vitest(
         "formatter.js",
         "rust-binary-utils.ts",
         ":rust_cli_copy",
-        "//:node_modules/@formatjs/cli",
     ] + glob(
         ["compile/**/*"],
     ),
     data = [
         "//crates/formatjs_cli",
     ],
-    deps = ["//:node_modules/@bazel/runfiles"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/cli",
+    ],
 )
 
 vitest(
@@ -180,7 +182,6 @@ vitest(
     srcs = [
         "rust-binary-utils.ts",
         ":rust_cli_copy",
-        "//:node_modules/@formatjs/cli",
     ] + glob(
         ["conformance-tests/*.test.ts"],
     ),
@@ -192,6 +193,7 @@ vitest(
     ),
     deps = [
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/cli",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/fs-extra",
     ],
