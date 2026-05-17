@@ -27,6 +27,7 @@ function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
+    typeof Intl === 'undefined' ||
     !('RelativeTimeFormat' in Intl) ||
     !supportedLocalesOf(locale) ||
     !hasResolvedOptionsNumberingSystem(locale)

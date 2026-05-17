@@ -1,7 +1,18 @@
 import {supportedValuesOf} from '#packages/intl-supportedvaluesof/index.js'
+import '#packages/intl-supportedvaluesof/polyfill-force.js'
 import {describe, expect, it} from 'vitest'
 
 describe('Intl.supportedValuesOf', () => {
+  it('installs with native-compatible property descriptors', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(Intl, 'supportedValuesOf')
+    ).toMatchObject({
+      writable: true,
+      enumerable: false,
+      configurable: true,
+    })
+  })
+
   describe('ECMA-402 spec compliance', () => {
     it('should return an array for valid keys', () => {
       // ECMA-402 Spec: Must return an array

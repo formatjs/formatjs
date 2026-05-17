@@ -46,7 +46,10 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-supportedvaluesof_test",
-    srcs = ["tests/index.test.ts"],
+    srcs = [
+        "tests/index.test.ts",
+        "tests/polyfill-force.test.ts",
+    ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [

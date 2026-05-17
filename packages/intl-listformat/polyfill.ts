@@ -1,12 +1,11 @@
 import ListFormat from '#packages/intl-listformat/index.js'
 import {shouldPolyfill} from '#packages/intl-listformat/should-polyfill.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+
+const intl = ensureIntl()
+
 if (shouldPolyfill()) {
-  Object.defineProperty(Intl, 'ListFormat', {
-    value: ListFormat,
-    writable: true,
-    enumerable: false,
-    configurable: true,
-  })
+  defineProperty(intl, 'ListFormat', {value: ListFormat})
 
   // Drain any locale data that was buffered before polyfill loaded
   const buf = (globalThis as Record<string, unknown>)

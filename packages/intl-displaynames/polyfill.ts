@@ -1,13 +1,11 @@
 import {DisplayNames} from '#packages/intl-displaynames/index.js'
 import {shouldPolyfill} from '#packages/intl-displaynames/should-polyfill.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+
+const intl = ensureIntl()
 
 if (shouldPolyfill()) {
-  Object.defineProperty(Intl, 'DisplayNames', {
-    value: DisplayNames,
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  defineProperty(intl, 'DisplayNames', {value: DisplayNames})
 
   // Drain any locale data that was buffered before polyfill loaded
   const buf = (globalThis as Record<string, unknown>)

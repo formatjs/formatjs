@@ -1,12 +1,11 @@
 import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
 import {shouldPolyfill} from '#packages/intl-relativetimeformat/should-polyfill.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+
+const intl = ensureIntl()
+
 if (shouldPolyfill()) {
-  Object.defineProperty(Intl, 'RelativeTimeFormat', {
-    value: RelativeTimeFormat,
-    writable: true,
-    enumerable: false,
-    configurable: true,
-  })
+  defineProperty(intl, 'RelativeTimeFormat', {value: RelativeTimeFormat})
 
   // Drain any locale data that was buffered before polyfill loaded
   const buf = (globalThis as Record<string, unknown>)

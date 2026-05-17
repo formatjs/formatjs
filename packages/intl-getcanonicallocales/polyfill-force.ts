@@ -1,20 +1,6 @@
 import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
-if (typeof Intl === 'undefined') {
-  if (typeof window !== 'undefined') {
-    Object.defineProperty(window, 'Intl', {
-      value: {},
-    })
-    // @ts-ignore we don't include @types/node so global isn't a thing
-  } else if (typeof global !== 'undefined') {
-    // @ts-ignore we don't include @types/node so global isn't a thing
-    Object.defineProperty(global, 'Intl', {
-      value: {},
-    })
-  }
-}
-Object.defineProperty(Intl, 'getCanonicalLocales', {
-  value: getCanonicalLocales,
-  writable: true,
-  enumerable: false,
-  configurable: true,
-})
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+
+const intl = ensureIntl()
+
+defineProperty(intl, 'getCanonicalLocales', {value: getCanonicalLocales})

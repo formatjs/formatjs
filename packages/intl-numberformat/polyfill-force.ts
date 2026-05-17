@@ -1,9 +1,11 @@
 import {NumberFormat} from '#packages/intl-numberformat/core.js'
 import {toLocaleString as _toLocaleString} from '#packages/intl-numberformat/to_locale_string.js'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
-import {defineProperty} from '#packages/ecma402-abstract/utils.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
-defineProperty(Intl, 'NumberFormat', {value: NumberFormat})
+const intl = ensureIntl()
+
+defineProperty(intl, 'NumberFormat', {value: NumberFormat})
 defineProperty(Number.prototype, 'toLocaleString', {
   value: function toLocaleString(
     locales?: string | string[],
