@@ -4,7 +4,7 @@
  *
  * Usage: rolldown-bundle --input <entry.ts> --output <out.js> --format esm
  *        [--external pkg1 --external pkg2] [--target es2020]
- *        [--globalName Name] [--platform browser|node]
+ *        [--globalName Name] [--platform browser|node] [--entryFileNames name]
  */
 import {rolldown} from 'rolldown'
 import {dts} from 'rolldown-plugin-dts'
@@ -22,6 +22,7 @@ interface Args extends minimist.ParsedArgs {
   target?: string
   globalName?: string
   platform?: string
+  entryFileNames?: string
   define?: string | string[]
   dts?: boolean
 }
@@ -120,6 +121,7 @@ async function main(args: Args) {
       name: globalName,
       target,
       banner,
+      entryFileNames: args.entryFileNames,
     })
   } else if (output) {
     if (args.dts) {

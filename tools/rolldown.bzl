@@ -25,6 +25,7 @@ def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], exte
     """
 
     effective_output = output or (name + ".js")
+    entry_file_name = effective_output.split("/")[-1]
 
     args = [
         "--input",
@@ -80,6 +81,8 @@ def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], exte
             dir_args += ["--globalName", global_name]
         if platform:
             dir_args += ["--platform", platform]
+        if code_splitting and not dts and output:
+            dir_args += ["--entryFileNames", entry_file_name]
         if define:
             for k, v in define.items():
                 dir_args += ["--define", "%s=%s" % (k, v)]
