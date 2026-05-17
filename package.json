@@ -159,7 +159,7 @@
     "ts-jest": "^29",
     "ts-loader": "^9.5.4",
     "tsd": "^0.33.0",
-    "typescript": "6.0.2",
+    "typescript": "6.0.3",
     "typesense": "3.0.6",
     "unplugin": "^3.0.0",
     "vike": "^0.4.251",
