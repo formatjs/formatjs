@@ -51,6 +51,7 @@ formatjs_test(
         "tests/unit/components/date.test.tsx",
         "tests/unit/components/dateTimeRange.test.tsx",
         "tests/unit/components/displayName.test.tsx",
+        "tests/unit/components/list.test.tsx",
         "tests/unit/components/message.test.tsx",
         "tests/unit/components/number.test.tsx",
         "tests/unit/components/plural.test.tsx",
