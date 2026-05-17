@@ -11,6 +11,7 @@ function supportedLocalesOf(locale?: string | string[]) {
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
+    typeof Intl === 'undefined' ||
     !('PluralRules' in Intl) ||
     new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1) ===
       'one' ||

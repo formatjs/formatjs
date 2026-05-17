@@ -1,5 +1,5 @@
 import {DateTimeFormat} from '#packages/intl-datetimeformat/index.js'
-import {defineProperty} from '#packages/ecma402-abstract/utils.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 import {shouldPolyfill} from '#packages/intl-datetimeformat/should-polyfill.js'
 import {
   toLocaleString as _toLocaleString,
@@ -7,8 +7,10 @@ import {
   toLocaleTimeString as _toLocaleTimeString,
 } from '#packages/intl-datetimeformat/to_locale_string.js'
 
+const intl = ensureIntl()
+
 if (shouldPolyfill()) {
-  defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})
+  defineProperty(intl, 'DateTimeFormat', {value: DateTimeFormat})
   defineProperty(Date.prototype, 'toLocaleString', {
     value: function toLocaleString(
       locales?: string | string[],

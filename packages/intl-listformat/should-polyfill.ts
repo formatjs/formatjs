@@ -13,7 +13,11 @@ function supportedLocalesOf(locale?: string | string[]) {
 }
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
-  if (!('ListFormat' in Intl) || !supportedLocalesOf(locale)) {
+  if (
+    typeof Intl === 'undefined' ||
+    !('ListFormat' in Intl) ||
+    !supportedLocalesOf(locale)
+  ) {
     return locale ? match([locale], supportedLocales, 'en') : undefined
   }
 }

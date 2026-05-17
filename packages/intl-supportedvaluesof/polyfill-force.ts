@@ -1,8 +1,6 @@
 import {supportedValuesOf} from '#packages/intl-supportedvaluesof/index.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
-Object.defineProperty(Intl, 'supportedValuesOf', {
-  value: supportedValuesOf,
-  enumerable: true,
-  writable: false,
-  configurable: false,
-})
+const intl = ensureIntl()
+
+defineProperty(intl, 'supportedValuesOf', {value: supportedValuesOf})

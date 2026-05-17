@@ -1,11 +1,13 @@
 import {NumberFormat} from '#packages/intl-numberformat/core.js'
 import {toLocaleString as _toLocaleString} from '#packages/intl-numberformat/to_locale_string.js'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
-import {defineProperty} from '#packages/ecma402-abstract/utils.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 import {shouldPolyfill} from '#packages/intl-numberformat/should-polyfill.js'
 
+const intl = ensureIntl()
+
 if (shouldPolyfill()) {
-  defineProperty(Intl, 'NumberFormat', {value: NumberFormat})
+  defineProperty(intl, 'NumberFormat', {value: NumberFormat})
   defineProperty(Number.prototype, 'toLocaleString', {
     value: function toLocaleString(
       locales?: string | string[],

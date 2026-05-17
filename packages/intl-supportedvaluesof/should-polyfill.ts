@@ -1,3 +1,3 @@
 export function shouldPolyfill(): boolean {
-  return !('supportedValuesOf' in Intl)
+  return typeof Intl === 'undefined' || !('supportedValuesOf' in Intl)
 }

@@ -1,10 +1,9 @@
 import {Locale} from '#packages/intl-locale/index.js'
 import {shouldPolyfill} from '#packages/intl-locale/should-polyfill.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+
+const intl = ensureIntl()
+
 if (shouldPolyfill()) {
-  Object.defineProperty(Intl, 'Locale', {
-    value: Locale,
-    writable: true,
-    enumerable: false,
-    configurable: true,
-  })
+  defineProperty(intl, 'Locale', {value: Locale})
 }

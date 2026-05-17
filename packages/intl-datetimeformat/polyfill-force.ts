@@ -1,4 +1,4 @@
-import {defineProperty} from '#packages/ecma402-abstract/utils.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/index.js'
 import {
   toLocaleDateString as _toLocaleDateString,
@@ -6,7 +6,9 @@ import {
   toLocaleTimeString as _toLocaleTimeString,
 } from '#packages/intl-datetimeformat/to_locale_string.js'
 
-defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})
+const intl = ensureIntl()
+
+defineProperty(intl, 'DateTimeFormat', {value: DateTimeFormat})
 defineProperty(Date.prototype, 'toLocaleString', {
   value: function toLocaleString(
     locales?: string | string[],

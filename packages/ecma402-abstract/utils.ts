@@ -111,6 +111,18 @@ export function defineProperty<T extends object>(
   })
 }
 
+export function ensureIntl(): typeof Intl {
+  if (typeof Intl === 'undefined') {
+    Object.defineProperty(globalThis, 'Intl', {
+      configurable: true,
+      enumerable: false,
+      writable: true,
+      value: {},
+    })
+  }
+  return Intl
+}
+
 /**
  * 7.3.5 CreateDataProperty
  * @param target

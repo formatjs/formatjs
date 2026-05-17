@@ -63,6 +63,7 @@ function hasIncompleteLocaleInfo(): boolean {
 
 export function shouldPolyfill(): boolean {
   return (
+    typeof Intl === 'undefined' ||
     !('Locale' in Intl) ||
     hasIntlGetCanonicalLocalesBug() ||
     hasIncompleteLocaleInfo() ||

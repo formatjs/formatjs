@@ -1,8 +1,6 @@
 import {Locale} from '#packages/intl-locale/index.js'
+import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
-Object.defineProperty(Intl, 'Locale', {
-  value: Locale,
-  writable: true,
-  enumerable: false,
-  configurable: true,
-})
+const intl = ensureIntl()
+
+defineProperty(intl, 'Locale', {value: Locale})
