@@ -188,7 +188,7 @@ importers:
         version: 16.3.2(@testing-library/dom@10.4.0)(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/svelte':
         specifier: ^5.2.0
-        version: 5.3.1(svelte@5.55.5(@typescript-eslint/types@8.59.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.1.6(@types/node@24.12.0)(happy-dom@20.9.0)(jsdom@20.0.3)(msw@2.12.7(@types/node@24.12.0)(typescript@6.0.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)))
+        version: 5.3.1(svelte@5.55.7(@typescript-eslint/types@8.59.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.1.6(@types/node@24.12.0)(happy-dom@20.9.0)(jsdom@20.0.3)(msw@2.12.7(@types/node@24.12.0)(typescript@6.0.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)))
       '@types/aria-query':
         specifier: ^5.0.4
         version: 5.0.4
@@ -368,7 +368,7 @@ importers:
         version: 0.130.0
       oxfmt:
         specifier: ^0.49.0
-        version: 0.49.0(svelte@5.55.5(@typescript-eslint/types@8.59.3))
+        version: 0.49.0(svelte@5.55.7(@typescript-eslint/types@8.59.3))
       oxlint:
         specifier: ^1.64.0
         version: 1.64.0
@@ -428,7 +428,7 @@ importers:
         version: 7.0.5
       svelte:
         specifier: ^5.0.0
-        version: 5.55.5(@typescript-eslint/types@8.59.3)
+        version: 5.55.7(@typescript-eslint/types@8.59.3)
       syncpack:
         specifier: ^15.0.0
         version: 15.1.2
@@ -5740,8 +5740,8 @@ packages:
   devalue@5.6.4:
     resolution: {integrity: sha512-Gp6rDldRsFh/7XuouDbxMH3Mx8GMCcgzIb1pDTvNyn8pZGQ22u+Wa+lGV9dQCltFQ7uVw0MhRyb8XDskNFOReA==}
 
-  devalue@5.7.1:
-    resolution: {integrity: sha512-MUbZ586EgQqdRnC4yDrlod3BEdyvE4TapGYHMW2CiaW+KkkFmWEFqBUaLltEZCGi0iFXCEjRF0OjF0DV2QHjOA==}
+  devalue@5.8.1:
+    resolution: {integrity: sha512-4CXDYRBGqN+57wVJkuXBYmpAVUSg3L6JAQa/DFqm238G73E1wuyc/JhGQJzN7vUf/CMphYau2zXbfWzDR5aTEw==}
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
@@ -6007,8 +6007,8 @@ packages:
   esrap@2.2.4:
     resolution: {integrity: sha512-suICpxAmZ9A8bzJjEl/+rLJiDKC0X4gYWUxT6URAWBLvlXmtbZd5ySMu/N2ZGEtMCAmflUDPSehrP9BQcsGcSg==}
 
-  esrap@2.2.5:
-    resolution: {integrity: sha512-/yLB1538mag+dn0wsePTe8C0rDIjUOaJpMs2McodSzmM2msWcZsBSdRtg6HOBt0A/r82BN+Md3pgwSc/uWt2Ig==}
+  esrap@2.2.8:
+    resolution: {integrity: sha512-MPweq2EvEGj8jwOI7Hgycw/QIHzqA1EbAM8lG7p+FBfZbZq/hQ6h3AMsqnu/djzisH1KVWNzbb7LSgIVtMlPSg==}
     peerDependencies:
       '@typescript-eslint/types': ^8.2.0
     peerDependenciesMeta:
@@ -8413,8 +8413,8 @@ packages:
     resolution: {integrity: sha512-4x/uk4rQe/d7RhfvS8wemTfNjQ0bJbKvamIzRBfTe2eHHjzBZ7PZicUQrC2ryj83xxEacfA1zHKd1ephD1tAxA==}
     engines: {node: '>=18'}
 
-  svelte@5.55.5:
-    resolution: {integrity: sha512-2uCs/LZ9us+AktdzYJM8OcxQ8qnPS1kpaO7syGT/MgO+6Qr1Ybl+TqPq+97u7PHqmmMlye5ZkoyXONy5mjjAbw==}
+  svelte@5.55.7:
+    resolution: {integrity: sha512-ymI5ykLPwIHW839E053FQbI1G+jnRFJEw3Kv5Y4njixVWywQBx+NUFpkkKyk5LIb36Fg9DVXSYpqiGekLD0hyw==}
     engines: {node: '>=18'}
 
   symbol-tree@3.2.4:
@@ -12441,15 +12441,15 @@ snapshots:
       '@types/react': 19.2.8
       '@types/react-dom': 19.2.3(@types/react@19.2.8)
 
-  '@testing-library/svelte-core@1.0.0(svelte@5.55.5(@typescript-eslint/types@8.59.3))':
+  '@testing-library/svelte-core@1.0.0(svelte@5.55.7(@typescript-eslint/types@8.59.3))':
     dependencies:
-      svelte: 5.55.5(@typescript-eslint/types@8.59.3)
+      svelte: 5.55.7(@typescript-eslint/types@8.59.3)
 
-  '@testing-library/svelte@5.3.1(svelte@5.55.5(@typescript-eslint/types@8.59.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.1.6(@types/node@24.12.0)(happy-dom@20.9.0)(jsdom@20.0.3)(msw@2.12.7(@types/node@24.12.0)(typescript@6.0.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)))':
+  '@testing-library/svelte@5.3.1(svelte@5.55.7(@typescript-eslint/types@8.59.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))(vitest@4.1.6(@types/node@24.12.0)(happy-dom@20.9.0)(jsdom@20.0.3)(msw@2.12.7(@types/node@24.12.0)(typescript@6.0.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)))':
     dependencies:
       '@testing-library/dom': 10.4.0
-      '@testing-library/svelte-core': 1.0.0(svelte@5.55.5(@typescript-eslint/types@8.59.3))
-      svelte: 5.55.5(@typescript-eslint/types@8.59.3)
+      '@testing-library/svelte-core': 1.0.0(svelte@5.55.7(@typescript-eslint/types@8.59.3))
+      svelte: 5.55.7(@typescript-eslint/types@8.59.3)
     optionalDependencies:
       vite: 8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
       vitest: 4.1.6(@types/node@24.12.0)(happy-dom@20.9.0)(jsdom@20.0.3)(msw@2.12.7(@types/node@24.12.0)(typescript@6.0.3))(vite@8.0.12(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -13797,7 +13797,7 @@ snapshots:
 
   devalue@5.6.4: {}
 
-  devalue@5.7.1: {}
+  devalue@5.8.1: {}
 
   devlop@1.1.0:
     dependencies:
@@ -14220,7 +14220,7 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
       '@typescript-eslint/types': 8.57.1
 
-  esrap@2.2.5(@typescript-eslint/types@8.59.3):
+  esrap@2.2.8(@typescript-eslint/types@8.59.3):
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
     optionalDependencies:
@@ -16418,7 +16418,7 @@ snapshots:
       '@oxc-transform/binding-win32-ia32-msvc': 0.130.0
       '@oxc-transform/binding-win32-x64-msvc': 0.130.0
 
-  oxfmt@0.49.0(svelte@5.55.5(@typescript-eslint/types@8.59.3)):
+  oxfmt@0.49.0(svelte@5.55.7(@typescript-eslint/types@8.59.3)):
     dependencies:
       tinypool: 2.1.0
     optionalDependencies:
@@ -16441,7 +16441,7 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.49.0
       '@oxfmt/binding-win32-ia32-msvc': 0.49.0
       '@oxfmt/binding-win32-x64-msvc': 0.49.0
-      svelte: 5.55.5(@typescript-eslint/types@8.59.3)
+      svelte: 5.55.7(@typescript-eslint/types@8.59.3)
 
   oxlint@1.64.0:
     optionalDependencies:
@@ -17471,7 +17471,7 @@ snapshots:
       magic-string: 0.30.21
       zimmerframe: 1.1.4
 
-  svelte@5.55.5(@typescript-eslint/types@8.59.3):
+  svelte@5.55.7(@typescript-eslint/types@8.59.3):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -17482,9 +17482,9 @@ snapshots:
       aria-query: 5.3.1
       axobject-query: 4.1.0
       clsx: 2.1.1
-      devalue: 5.7.1
+      devalue: 5.8.1
       esm-env: 1.2.2
-      esrap: 2.2.5(@typescript-eslint/types@8.59.3)
+      esrap: 2.2.8(@typescript-eslint/types@8.59.3)
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.21
