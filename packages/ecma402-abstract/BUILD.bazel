@@ -51,6 +51,7 @@ formatjs_test(
         "tests/SetNumberFormatDigitOptions.test.ts",
         "tests/ToRawFixed.test.tsx",
         "tests/ToRawPrecision.test.tsx",
+        "tests/utils.test.ts",
         "tests/utils.ts",
     ],
     deps = [
