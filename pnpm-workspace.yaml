@@ -8,3 +8,41 @@ packages:
   - 'docs'
   - 'benchmarks/*'
   - '!packages/editor'
+
+overrides:
+  '@tailwindcss/vite>vite': $vite
+
+packageExtensions:
+  '@vue/compiler-core':
+    dependencies:
+      '@babel/types': '*'
+  '@vue/reactivity-transform':
+    dependencies:
+      '@babel/types': '*'
+  '@vue/test-utils':
+    dependencies:
+      '@vue/compiler-dom': '*'
+  '@glimmer/interfaces':
+    dependencies:
+      '@glimmer/reference': '*'
+      '@glimmer/validator': '*'
+  '@glimmer/syntax':
+    dependencies:
+      '@glimmer/env': '*'
+  ember-template-recast:
+    dependencies:
+      commander: '*'
+  vue-eslint-parser:
+    dependencies:
+      '@types/eslint-scope': '*'
+
+patchedDependencies:
+  '@types/mdx': patches/@types__mdx.patch
+  '@vue/compiler-sfc': patches/@vue+compiler-sfc.patch
+  unicode-match-property-value-ecmascript@2.2.1: patches/unicode-match-property-value-ecmascript@2.2.1.patch
+  unicode-match-property-ecmascript@2.0.0: patches/unicode-match-property-ecmascript@2.0.0.patch
+
+allowBuilds:
+  esbuild: true
+  lefthook: true
+  msw: false
