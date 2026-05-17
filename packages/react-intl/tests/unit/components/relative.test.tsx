@@ -4,7 +4,7 @@ import FormattedRelativeTime from '#packages/react-intl/components/relative'
 import type {IntlConfig} from '#packages/react-intl/types'
 import {type IntlShape} from '#packages/react-intl/types'
 import {mountFormattedComponentWithProvider} from '#packages/react-intl/tests/unit/testUtils'
-import {describe, expect, it, beforeEach, vi} from 'vitest'
+import {describe, expect, it, beforeEach, afterEach, vi} from 'vitest'
 import '@testing-library/jest-dom/vitest'
 
 const mountWithProvider = mountFormattedComponentWithProvider(
@@ -21,6 +21,11 @@ describe('<FormattedRelativeTime>', () => {
   beforeEach(() => {
     intl = createIntl(intlConfig)
     cleanup()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   it('has a `displayName`', () => {
@@ -124,8 +129,8 @@ describe('<FormattedRelativeTime>', () => {
     expect(getByTestId('comp')).toHaveTextContent('Jest')
   })
 
-  it.skip('updates automatically', () => {
-    // span bc enzyme support for </> seems buggy
+  it('updates automatically', () => {
+    vi.useFakeTimers()
     const {getByTestId} = mountWithProvider(
       {value: 2, updateIntervalInSeconds: 1},
       {...intl}
@@ -153,7 +158,8 @@ describe('<FormattedRelativeTime>', () => {
     )
   })
 
-  it.skip('updates when the `value` prop changes', () => {
+  it('updates when the `value` prop changes', () => {
+    vi.useFakeTimers()
     const {getByTestId, rerenderProps} = mountWithProvider(
       {value: 0, updateIntervalInSeconds: 1},
       {...intl}
@@ -168,8 +174,8 @@ describe('<FormattedRelativeTime>', () => {
     expect(getByTestId('comp')).toHaveTextContent('in 9 seconds')
   })
 
-  it.skip('should adjust unit to min correctly', function () {
-    // span bc enzyme support for </> seems buggy
+  it('should adjust unit to min correctly', function () {
+    vi.useFakeTimers()
     const {getByTestId} = mountWithProvider(
       {value: -59, updateIntervalInSeconds: 1},
       {...intlConfig}
@@ -181,8 +187,8 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(-1, 'minute')
     )
   })
-  it.skip('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function () {
-    // span bc enzyme support for </> seems buggy
+  it('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function () {
+    vi.useFakeTimers()
     const {getByTestId} = mountWithProvider(
       {value: -59, updateIntervalInSeconds: 2},
       {...intlConfig}
@@ -194,8 +200,8 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(-1, 'minute')
     )
   })
-  it.skip('should adjust unit to hour correctly', function () {
-    // span bc enzyme support for </> seems buggy
+  it('should adjust unit to hour correctly', function () {
+    vi.useFakeTimers()
     const {getByTestId} = mountWithProvider(
       {value: -59, unit: 'minute', updateIntervalInSeconds: 1},
       {...intlConfig}
@@ -208,8 +214,8 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(-1, 'hour')
     )
   })
-  it.skip('should adjust unit to day correctly and stop', function () {
-    // span bc enzyme support for </> seems buggy
+  it('should adjust unit to day correctly and stop', function () {
+    vi.useFakeTimers()
     const {getByTestId} = mountWithProvider(
       {value: -23, unit: 'hour', updateIntervalInSeconds: 1},
       {...intlConfig}
@@ -230,8 +236,8 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(-1, 'day')
     )
   })
-  it.skip('should show high seconds values as days with no timer', function () {
-    // span bc enzyme support for </> seems buggy
+  it('should show high seconds values as days with no timer', function () {
+    vi.useFakeTimers()
     const {getByTestId} = mountWithProvider(
       {value: -(60 * 60 * 24 * 3), unit: 'second', updateIntervalInSeconds: 1},
       {...intlConfig}
@@ -240,8 +246,7 @@ describe('<FormattedRelativeTime>', () => {
       intl.formatRelativeTime(-3, 'day')
     )
   })
-  it.skip('should throw if try to increment in day', function () {
-    // span bc enzyme support for </> seems buggy
+  it('should throw if try to increment in day', function () {
     expect(() =>
       mountWithProvider(
         {value: 5, unit: 'day', updateIntervalInSeconds: 1},
