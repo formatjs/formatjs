@@ -256,55 +256,81 @@ jobs:
           echo "Checksums:"
           cat release/checksums.txt
 
-      - name: Create GitHub Release
+      - name: Create or Update GitHub Release
         if: startsWith(github.ref, 'refs/tags/formatjs_cli_v')
-        uses: softprops/action-gh-release@v3
-        with:
-          files: |
-            release/formatjs_cli-darwin-arm64
-            release/formatjs_cli-linux-arm64
-            release/formatjs_cli-linux-x64
-            release/formatjs_cli-win32-x64.exe
-            release/checksums.txt
-          body: |
-            ## FormatJS Rust CLI Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > release/binary-notes.md <<'NOTES'
+          ### Binaries
+          - **macOS Apple Silicon**: `formatjs_cli-darwin-arm64`
+          - **Linux ARM64**: `formatjs_cli-linux-arm64`
+          - **Linux x86_64**: `formatjs_cli-linux-x64`
+          - **Windows x64**: `formatjs_cli-win32-x64.exe`
 
-            ### Binaries
-            - **macOS Apple Silicon**: `formatjs_cli-darwin-arm64`
-            - **Linux ARM64**: `formatjs_cli-linux-arm64`
-            - **Linux x86_64**: `formatjs_cli-linux-x64`
-            - **Windows x64**: `formatjs_cli-win32-x64.exe`
+          ### Installation
 
-            ### Installation
+          ```bash
+          # macOS (Apple Silicon)
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-darwin-arm64
+          chmod +x formatjs_cli-darwin-arm64
+          sudo mv formatjs_cli-darwin-arm64 /usr/local/bin/formatjs
 
-            ```bash
-            # macOS (Apple Silicon)
-            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-darwin-arm64
-            chmod +x formatjs_cli-darwin-arm64
-            sudo mv formatjs_cli-darwin-arm64 /usr/local/bin/formatjs
+          # Linux
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-x64
+          chmod +x formatjs_cli-linux-x64
+          sudo mv formatjs_cli-linux-x64 /usr/local/bin/formatjs
 
-            # Linux
-            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-x64
-            chmod +x formatjs_cli-linux-x64
-            sudo mv formatjs_cli-linux-x64 /usr/local/bin/formatjs
+          # Linux ARM64
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-arm64
+          chmod +x formatjs_cli-linux-arm64
+          sudo mv formatjs_cli-linux-arm64 /usr/local/bin/formatjs
+          ```
 
-            # Linux ARM64
-            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-arm64
-            chmod +x formatjs_cli-linux-arm64
-            sudo mv formatjs_cli-linux-arm64 /usr/local/bin/formatjs
-            ```
+          ```powershell
+          # Windows x64 (PowerShell)
+          curl.exe -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-win32-x64.exe
+          ```
 
-            ```powershell
-            # Windows x64 (PowerShell)
-            curl.exe -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-win32-x64.exe
-            ```
+          ### Verification
 
-            ### Verification
+          Verify the checksums:
+          ```bash
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/checksums.txt
+          shasum -a 256 -c checksums.txt
+          ```
+          NOTES
 
-            Verify the checksums:
-            ```bash
-            curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/checksums.txt
-            shasum -a 256 -c checksums.txt
-            ```
-          draft: false
-          prerelease: false
+          for attempt in 1 2 3 4 5; do
+            if gh release view "${{ github.ref_name }}" > /dev/null 2>&1; then
+              break
+            fi
+            if [ "$attempt" -lt 5 ]; then
+              sleep 15
+            fi
+          done
+
+          if gh release view "${{ github.ref_name }}" > /dev/null 2>&1; then
+            gh release view "${{ github.ref_name }}" --json body --jq .body > release/current-notes.md
+            if ! grep -q "### Binaries" release/current-notes.md; then
+              cat release/current-notes.md > release/updated-notes.md
+              printf '\n\n' >> release/updated-notes.md
+              cat release/binary-notes.md >> release/updated-notes.md
+              gh release edit "${{ github.ref_name }}" --notes-file release/updated-notes.md
+            fi
+          else
+            {
+              echo "## FormatJS Rust CLI Release"
+              echo
+              cat release/binary-notes.md
+            } > release/updated-notes.md
+            gh release create "${{ github.ref_name }}" --title "${{ github.ref_name }}" --notes-file release/updated-notes.md
+          fi
+
+          gh release upload "${{ github.ref_name }}" \
+            release/formatjs_cli-darwin-arm64 \
+            release/formatjs_cli-linux-arm64 \
+            release/formatjs_cli-linux-x64 \
+            release/formatjs_cli-win32-x64.exe \
+            release/checksums.txt \
+            --clobber

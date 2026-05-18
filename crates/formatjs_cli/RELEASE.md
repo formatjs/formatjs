@@ -68,6 +68,15 @@ Before publishing `formatjs_cli`, ensure any workspace dependencies are already 
 2. `formatjs_icu_messageformat_parser`
 3. `formatjs_cli`
 
+The normal repository workflow handles this ordering automatically:
+
+1. Release Please opens and maintains release PRs for the Rust crates.
+2. Merging the release PR creates GitHub releases with generated changelog
+   notes that include PR titles, PR links, and contributors.
+3. The `crates-release.yml` workflow publishes matching crate releases to
+   crates.io with trusted publishing and waits for workspace dependencies before
+   publishing dependents.
+
 The package name is `formatjs_cli`, but the installed command is `formatjs` because `Cargo.toml` defines:
 
 ```toml
@@ -217,48 +226,30 @@ chmod +x formatjs_cli-linux-x64
 
 ## Publishing
 
-The GitHub Actions workflow automates the GitHub binary release process:
+The GitHub Actions workflows automate the GitHub release, crate publish, and
+binary artifact process:
 
-1. **Run Prerelease first**:
+1. **Merge the Release Please PR**:
 
-   Trigger the **Prerelease** GitHub Actions workflow and wait for the resulting
-   version commit to land on `main`. This must happen before any
-   `formatjs_cli_v*` tag is created so lerna-lite can derive package changelogs
-   from the correct release history.
+   Release Please updates `Cargo.toml`, `Cargo.lock`, package manifests, and
+   changelogs. When the release PR is merged, it creates the
+   `formatjs_cli_v<version>` GitHub release with generated changelog notes.
 
-2. **Tag the release**:
+2. **Crates.io publish runs automatically**:
 
-   ```bash
-   # Update version in crates/formatjs_cli/Cargo.toml, Cargo.lock,
-   # and FORMATJS_CLI_VERSION in crates/formatjs_cli/BUILD.bazel if needed
-   git tag formatjs_cli_v0.1.0
-   git push origin formatjs_cli_v0.1.0
-   ```
+   The `crates-release.yml` workflow publishes `formatjs_cli` through crates.io
+   trusted publishing after the parser crate dependencies are available.
 
-3. **Workflow runs automatically**:
-   - Builds both macOS and Linux binaries
+3. **Rust CLI Release runs automatically**:
+   - Builds macOS, Linux, and Windows binaries through Bazel
    - Runs smoke tests
-   - Creates GitHub Release with all artifacts
+   - Uploads binaries and checksums to the existing GitHub release
+   - Appends binary installation notes without replacing the changelog
 
 4. **Manual verification** (optional):
    - Check GitHub Actions run completed successfully
    - Download and test binaries from the release
    - Verify checksums
-
-5. **Publish to npm** (if applicable):
-
-   ```bash
-   # Update package.json with release URLs
-   # Point to GitHub release assets
-   npm publish
-   ```
-
-5. **Publish to crates.io** (if applicable):
-
-   ```bash
-   # From the repository root, after publishing dependent parser crates
-   cargo publish -p formatjs_cli
-   ```
 
    Users can then install and run:
 
