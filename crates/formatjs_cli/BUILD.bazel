@@ -6,6 +6,7 @@ load(
     "release_binary_darwin_arm64",
     "release_binary_linux_arm64",
     "release_binary_linux_x64",
+    "release_binary_windows_x64",
 )
 
 exports_files(
@@ -147,6 +148,18 @@ release_binary_darwin_arm64(
     srcs = [":formatjs_cli"],
     outs = ["formatjs_cli_darwin_arm64"],
     cmd = "cp $< $@ && chmod +x $@",
+    visibility = ["//visibility:public"],
+)
+
+release_binary_windows_x64(
+    name = "release_binary_windows_x64",
+    srcs = [":formatjs_cli"],
+    outs = ["formatjs_cli_win32_x64.exe"],
+    cmd_ps = "Copy-Item -Path '$(location :formatjs_cli)' -Destination '$@'",
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:windows",
+    ],
     visibility = ["//visibility:public"],
 )
 

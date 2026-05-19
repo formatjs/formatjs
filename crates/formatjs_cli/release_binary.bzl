@@ -38,6 +38,14 @@ def _release_binary(platform, llvm_target):
         True,
     ).build()
 
+def _host_release_binary():
+    return with_cfg(
+        native.genrule,
+    ).set(
+        "compilation_mode",
+        "opt",
+    ).build()
+
 release_binary_darwin_arm64, _release_binary_darwin_arm64_internal = _release_binary(
     "//crates/formatjs_cli/platforms:darwin_arm64",
     "macos_aarch64",
@@ -62,3 +70,5 @@ release_binary_linux_arm64_gnu, _release_binary_linux_arm64_gnu_internal = _rele
     "//crates/formatjs_cli/platforms:linux_aarch64",
     "linux_aarch64",
 )
+
+release_binary_windows_x64, _release_binary_windows_x64_internal = _host_release_binary()

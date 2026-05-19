@@ -1,0 +1,23 @@
+{
+  "name": "@formatjs/cli-native-win32-x64",
+  "description": "Native FormatJS CLI binding for Windows x64.",
+  "version": "1.1.0",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "exports": {
+    ".": "./formatjs_cli_napi.node"
+  },
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "formatjs_cli_napi.node"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
+  "main": "formatjs_cli_napi.node",
+  "os": [
+    "win32"
+  ],
+  "repository": "formatjs/formatjs.git"
+}
