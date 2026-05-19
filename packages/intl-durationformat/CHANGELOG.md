@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.11...@formatjs/intl-durationformat@0.10.12) (2026-05-19)
+
+### Bug Fixes
+
+* harden polyfill installation ([#6579](https://github.com/formatjs/formatjs/issues/6579)) ([a84e2f3](https://github.com/formatjs/formatjs/commit/a84e2f3f9f2872c5d0340b2781db703ba6393e03)) - by @longlho
+
 ## [0.10.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.10.10...@formatjs/intl-durationformat@0.10.11) (2026-05-15)
 
 **Note:** Version bump only for package @formatjs/intl-durationformat

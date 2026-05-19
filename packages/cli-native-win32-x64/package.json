@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/cli-native-win32-x64",
   "description": "Native FormatJS CLI binding for Windows x64.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "exports": {

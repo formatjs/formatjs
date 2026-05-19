@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.4.5...@formatjs/intl-datetimeformat@7.4.6) (2026-05-19)
+
+### Bug Fixes
+
+* harden polyfill installation ([#6579](https://github.com/formatjs/formatjs/issues/6579)) ([a84e2f3](https://github.com/formatjs/formatjs/commit/a84e2f3f9f2872c5d0340b2781db703ba6393e03)) - by @longlho
+
 ## [7.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.4.4...@formatjs/intl-datetimeformat@7.4.5) (2026-05-15)
 
 ### Bug Fixes

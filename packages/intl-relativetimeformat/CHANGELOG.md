@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.8](github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.7...@formatjs/intl-relativetimeformat@12.3.8) (2026-05-19)
+
+### Bug Fixes
+
+* harden polyfill installation ([#6579](/github.com/formatjs/formatjs/issues/6579)) ([a84e2f3](github.com/formatjs/formatjs/commits/a84e2f3f9f2872c5d0340b2781db703ba6393e03)) - by @longlho
+
 ## [12.3.7](github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.6...@formatjs/intl-relativetimeformat@12.3.7) (2026-05-15)
 
 ### Bug Fixes

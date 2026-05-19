@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.8](github.com/formatjs/formatjs/compare/react-intl@10.1.7...react-intl@10.1.8) (2026-05-19)
+
+### Bug Fixes
+
+* **react-intl:** set FormattedListParts displayName ([#6580](/github.com/formatjs/formatjs/issues/6580)) ([93bd7f4](github.com/formatjs/formatjs/commits/93bd7f41afd2e2f1b20c6236c842df963cd79306)) - by @longlho
+
 ## [10.1.7](github.com/formatjs/formatjs/compare/react-intl@10.1.6...react-intl@10.1.7) (2026-05-15)
 
 **Note:** Version bump only for package react-intl

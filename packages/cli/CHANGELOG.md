@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.16.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.0...@formatjs/cli@6.16.1) (2026-05-19)
+
+### Bug Fixes
+
+* **@formatjs/cli-native-win32-x64:** add native package ([#6586](https://github.com/formatjs/formatjs/issues/6586)) ([445b435](https://github.com/formatjs/formatjs/commit/445b4352c5bb9558823bdb1dee64869a7c4c9307)) - by @longlho
+* **formatjs_cli:** implement pseudo-locale transforms ([#6578](https://github.com/formatjs/formatjs/issues/6578)) ([12abfe5](https://github.com/formatjs/formatjs/commit/12abfe5068be10aebd85c6fd1525a1f4eb1151f2)) - by @longlho
+
 # [6.16.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.15.0...@formatjs/cli@6.16.0) (2026-05-15)
 
 ### Features
