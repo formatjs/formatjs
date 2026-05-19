@@ -63,15 +63,6 @@ exports_files(
     visibility = ["//:__subpackages__"],
 )
 
-genrule(
-    name = "pnpm_workspace_config",
-    srcs = [],
-    outs = ["pnpm-workspace.yaml"],
-    cmd = "echo 'packages:\n\
-  - 'packages/*' \
-' > $@",
-)
-
 PACKAGES_TO_DIST = [
     "//packages/babel-plugin-formatjs",
     "//packages/bigdecimal",
@@ -127,9 +118,9 @@ copy_to_directory(
     name = "dist",
     srcs = [
         # to verify, run verdaccio at port 4000 and enable this
-        ":pnpm_workspace_config",
         "package.json",
         "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
     ] + ["%s:pkg" % pkg for pkg in PACKAGES_TO_DIST] + glob(["patches/*"]),
     out = "formatjs_dist",
     replace_prefixes = {k: v for k, v in [(
