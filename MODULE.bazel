@@ -123,9 +123,14 @@ register_toolchains("@llvm_toolchains//:all")
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
     edition = "2024",
+    extra_rustc_flags = {
+        "x86_64-pc-windows-msvc": [
+            "--sysroot=$${exec_root}/external/rules_rs++toolchains+rust_stdlib_x86_64_pc_windows_msvc_1_95_0",
+        ],
+    },
     extra_exec_rustc_flags = {
         "x86_64-pc-windows-msvc": [
-            "-Cpanic=abort",
+            "--sysroot=$${exec_root}/external/rules_rs++toolchains+rust_stdlib_x86_64_pc_windows_msvc_1_95_0",
         ],
     },
     name = "formatjs_rust_toolchains",
