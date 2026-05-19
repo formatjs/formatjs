@@ -36,3 +36,11 @@ platform(
     parents = ["@rules_rs//rs/platforms:aarch64-unknown-linux-musl"],
     visibility = ["//visibility:public"],
 )
+
+# Windows x64 with the GNU ABI. The repository uses LLVM's hermetic mingw
+# toolchain, so this keeps Rust's linker arguments aligned with clang/lld.
+platform(
+    name = "windows_x86_64_gnu",
+    parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-gnu"],
+    visibility = ["//visibility:public"],
+)

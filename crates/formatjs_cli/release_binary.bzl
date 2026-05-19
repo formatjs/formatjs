@@ -18,8 +18,8 @@ def _llvm_toolchains(target):
         for host in _HOSTS
     ]
 
-def _release_binary(platform, llvm_target):
-    return with_cfg(
+def _release_binary(platform, llvm_target, host_platform = None):
+    builder = with_cfg(
         native.genrule,
     ).set(
         "compilation_mode",
@@ -36,15 +36,13 @@ def _release_binary(platform, llvm_target):
     ).set(
         Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
         True,
-    ).build()
-
-def _host_release_binary():
-    return with_cfg(
-        native.genrule,
-    ).set(
-        "compilation_mode",
-        "opt",
-    ).build()
+    )
+    if host_platform:
+        builder = builder.set(
+            "host_platform",
+            Label(host_platform),
+        )
+    return builder.build()
 
 release_binary_darwin_arm64, _release_binary_darwin_arm64_internal = _release_binary(
     "//crates/formatjs_cli/platforms:darwin_arm64",
@@ -71,4 +69,8 @@ release_binary_linux_arm64_gnu, _release_binary_linux_arm64_gnu_internal = _rele
     "linux_aarch64",
 )
 
-release_binary_windows_x64, _release_binary_windows_x64_internal = _host_release_binary()
+release_binary_windows_x64, _release_binary_windows_x64_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:windows_x86_64_gnu",
+    "windows_x86_64",
+    host_platform = "//crates/formatjs_cli/platforms:windows_x86_64_gnu",
+)
