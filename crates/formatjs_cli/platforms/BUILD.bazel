@@ -37,8 +37,16 @@ platform(
     visibility = ["//visibility:public"],
 )
 
-# Windows x64 with the LLVM GNU ABI. The repository uses LLVM's hermetic mingw
-# toolchain, so this avoids MSVC and GCC runtime linker arguments.
+# Windows x64 using the native MSVC ABI. Windows release jobs run on a Windows
+# runner, so keep proc macros and build scripts on the native host toolchain.
+platform(
+    name = "windows_x86_64_msvc",
+    parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-msvc"],
+    visibility = ["//visibility:public"],
+)
+
+# Windows x64 with the LLVM GNU ABI. Keep this available for experiments, but
+# release targets use MSVC because proc-macro crates must run on the host.
 platform(
     name = "windows_x86_64_gnullvm",
     parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-gnullvm"],

@@ -95,6 +95,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
@@ -104,8 +107,11 @@ jobs:
 
       - name: Build Binary
         run: |
-          bazel build //crates/formatjs_cli:release_binary_windows_x64
-          $binaryPath = (bazel cquery --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+
+          bazel build --repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN //crates/formatjs_cli:release_binary_windows_x64
+          $binaryPath = (bazel cquery --repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
           New-Item -ItemType Directory -Force artifacts
           Copy-Item $binaryPath artifacts\formatjs_cli-win32-x64.exe
 

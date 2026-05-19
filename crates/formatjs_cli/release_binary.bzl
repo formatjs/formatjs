@@ -18,7 +18,7 @@ def _llvm_toolchains(target):
         for host in _HOSTS
     ]
 
-def _release_binary(platform, llvm_target, host_platform = None):
+def _release_binary(platform, llvm_target = None):
     builder = with_cfg(
         native.genrule,
     ).set(
@@ -27,20 +27,17 @@ def _release_binary(platform, llvm_target, host_platform = None):
     ).set(
         "platforms",
         [Label(platform)],
-    ).extend(
-        "extra_toolchains",
-        _llvm_toolchains(llvm_target),
-    ).set(
-        Label("@llvm//config:experimental_stub_libgcc_s"),
-        True,
-    ).set(
-        Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
-        True,
     )
-    if host_platform:
-        builder = builder.set(
-            "host_platform",
-            Label(host_platform),
+    if llvm_target:
+        builder = builder.extend(
+            "extra_toolchains",
+            _llvm_toolchains(llvm_target),
+        ).set(
+            Label("@llvm//config:experimental_stub_libgcc_s"),
+            True,
+        ).set(
+            Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
+            True,
         )
     return builder.build()
 
@@ -70,7 +67,5 @@ release_binary_linux_arm64_gnu, _release_binary_linux_arm64_gnu_internal = _rele
 )
 
 release_binary_windows_x64, _release_binary_windows_x64_internal = _release_binary(
-    "//crates/formatjs_cli/platforms:windows_x86_64_gnullvm",
-    "windows_x86_64",
-    host_platform = "//crates/formatjs_cli/platforms:windows_x86_64_gnullvm",
+    "//crates/formatjs_cli/platforms:windows_x86_64_msvc",
 )
