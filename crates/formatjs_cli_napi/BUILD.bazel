@@ -67,10 +67,10 @@ release_node_win32_x64(
     srcs = [":formatjs_cli_napi"],
     outs = ["formatjs_cli_napi_win32_x64.node"],
     cmd_ps = """
-$ErrorActionPreference = 'Stop'
-foreach ($f in '$(locations :formatjs_cli_napi)' -split ' ') {
-  if ($f.EndsWith('.dll')) {
-    Copy-Item -Path $f -Destination '$@'
+$$ErrorActionPreference = 'Stop'
+foreach ($$f in '$(locations :formatjs_cli_napi)' -split ' ') {
+  if ($$f.EndsWith('.dll')) {
+    Copy-Item -Path $$f -Destination '$@'
     exit 0
   }
 }
