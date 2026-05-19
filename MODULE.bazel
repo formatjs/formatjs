@@ -123,9 +123,15 @@ register_toolchains("@llvm_toolchains//:all")
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
     edition = "2024",
+    extra_exec_rustc_flags = {
+        "x86_64-pc-windows-msvc": [
+            "-Cpanic=abort",
+        ],
+    },
+    name = "formatjs_rust_toolchains",
     version = "1.95.0",
 )
-use_repo(toolchains, "default_rust_toolchains")
+use_repo(toolchains, "default_rust_toolchains", "formatjs_rust_toolchains")
 
 # Optional rules_rust facade — keeps existing @rules_rust references working
 # (rules_rust_wasm_bindgen, downstream BUILDs that load @rules_rust//... etc.).
@@ -133,7 +139,7 @@ rules_rust_ext = use_extension("@rules_rs//rs:rules_rust.bzl", "rules_rust")
 use_repo(rules_rust_ext, "rules_rust")
 
 register_toolchains(
-    "@default_rust_toolchains//:all",
+    "@formatjs_rust_toolchains//:all",
 )
 
 crate = use_extension("@rules_rs//rs:extensions.bzl", "crate")
