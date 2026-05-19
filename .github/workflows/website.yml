@@ -52,7 +52,7 @@ jobs:
 
       # Deploy to Organization GitHub Pages Repository
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v4.1.0
         with:
           deploy_key: ${{ secrets.WEBSITE_SECRET_KEY }}
           external_repository: formatjs/formatjs.github.io

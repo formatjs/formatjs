@@ -1,0 +1,81 @@
+name: Setup MSVC
+description: Configure the Visual Studio C++ build environment.
+
+inputs:
+  arch:
+    description: Target architecture to pass to vcvarsall.bat.
+    default: x64
+
+runs:
+  using: composite
+  steps:
+    - name: Export MSVC environment
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = 'Stop'
+
+        $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+        $installPath = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+        if (-not $installPath) {
+          throw 'Unable to locate a Visual Studio installation with the MSVC x64 toolchain.'
+        }
+
+        $vcvars = Join-Path $installPath 'VC\Auxiliary\Build\vcvarsall.bat'
+        if (-not (Test-Path $vcvars)) {
+          throw "Unable to find MSVC environment script at $vcvars."
+        }
+
+        $arch = '${{ inputs.arch }}'
+        $captured = cmd.exe /s /c "`"$vcvars`" $arch >NUL && set"
+        $envVars = @{}
+        foreach ($line in $captured) {
+          $parts = $line -split '=', 2
+          if ($parts.Length -eq 2) {
+            $envVars[$parts[0]] = $parts[1]
+          }
+        }
+
+        $names = @(
+          'Path',
+          'INCLUDE',
+          'LIB',
+          'LIBPATH',
+          'EXTERNAL_INCLUDE',
+          'ExtensionSdkDir',
+          'Framework40Version',
+          'FrameworkDir',
+          'FrameworkDir64',
+          'FrameworkVersion',
+          'FrameworkVersion64',
+          'NETFXSDKDir',
+          'UCRTVersion',
+          'UniversalCRTSdkDir',
+          'VCINSTALLDIR',
+          'VCToolsInstallDir',
+          'VCToolsRedistDir',
+          'VCToolsVersion',
+          'VSINSTALLDIR',
+          'VisualStudioVersion',
+          'WindowsLibPath',
+          'WindowsSdkBinPath',
+          'WindowsSdkDir',
+          'WindowsSDKLibVersion',
+          'WindowsSDKVersion'
+        )
+
+        foreach ($entry in $envVars.GetEnumerator()) {
+          if ($entry.Name -like 'VSCMD_*' -or $entry.Name -like '__VSCMD_*') {
+            $names += $entry.Name
+          }
+        }
+
+        foreach ($name in ($names | Select-Object -Unique)) {
+          if (-not $envVars.ContainsKey($name)) {
+            continue
+          }
+
+          $delimiter = "MSVC_ENV_$([guid]::NewGuid().ToString('N'))"
+          Add-Content -Path $env:GITHUB_ENV -Value "$name<<$delimiter"
+          Add-Content -Path $env:GITHUB_ENV -Value $envVars[$name]
+          Add-Content -Path $env:GITHUB_ENV -Value $delimiter
+        }
