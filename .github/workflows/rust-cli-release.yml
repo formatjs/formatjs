@@ -109,9 +109,13 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
+          $bazelWindowsFlags = @(
+            '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
+            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
+          )
 
-          bazel build --repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN //crates/formatjs_cli:release_binary_windows_x64
-          $binaryPath = (bazel cquery --repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
+          bazel build @bazelWindowsFlags //crates/formatjs_cli:release_binary_windows_x64
+          $binaryPath = (bazel cquery @bazelWindowsFlags --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
           New-Item -ItemType Directory -Force artifacts
           Copy-Item $binaryPath artifacts\formatjs_cli-win32-x64.exe
 

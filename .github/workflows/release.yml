@@ -38,9 +38,13 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
+          $bazelWindowsFlags = @(
+            '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
+            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
+          )
 
-          bazel build --repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN //packages/cli-native-win32-x64:pkg
-          $pkgPath = (bazel cquery --repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
+          bazel build @bazelWindowsFlags //packages/cli-native-win32-x64:pkg
+          $pkgPath = (bazel cquery @bazelWindowsFlags --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
           New-Item -ItemType Directory -Force artifacts\cli-native-win32-x64
           Copy-Item -Path (Join-Path $pkgPath '*') -Destination artifacts\cli-native-win32-x64 -Recurse -Force
 
