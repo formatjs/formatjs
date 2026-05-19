@@ -37,10 +37,10 @@ platform(
     visibility = ["//visibility:public"],
 )
 
-# Windows x64 with the GNU ABI. The repository uses LLVM's hermetic mingw
-# toolchain, so this keeps Rust's linker arguments aligned with clang/lld.
+# Windows x64 with the LLVM GNU ABI. The repository uses LLVM's hermetic mingw
+# toolchain, so this avoids MSVC and GCC runtime linker arguments.
 platform(
-    name = "windows_x86_64_gnu",
-    parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-gnu"],
+    name = "windows_x86_64_gnullvm",
+    parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-gnullvm"],
     visibility = ["//visibility:public"],
 )
