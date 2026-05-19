@@ -11,7 +11,46 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build_windows_native:
+    name: Build Windows Native Package
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-windows-native
+          repository-cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Build Package
+        run: |
+          bazel build //packages/cli-native-win32-x64:pkg
+          $pkgPath = (bazel cquery --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
+          New-Item -ItemType Directory -Force artifacts\cli-native-win32-x64
+          Copy-Item -Path (Join-Path $pkgPath '*') -Destination artifacts\cli-native-win32-x64 -Recurse -Force
+
+      - name: Smoke Test Package
+        run: |
+          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-win32-x64
+
+      - name: Upload Package
+        uses: actions/upload-artifact@v7
+        with:
+          name: cli-native-win32-x64
+          path: artifacts/cli-native-win32-x64
+          retention-days: 7
+
   release:
+    needs: build_windows_native
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -49,6 +88,12 @@ jobs:
           echo "Distribution path: $DIST_PATH"
           cp -rf "$DIST_PATH" release/
           chmod -R +w release/
+
+      - name: Download Windows Native Package
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-win32-x64
+          path: release/packages/cli-native-win32-x64
 
       - name: Install Dependencies
         working-directory: release

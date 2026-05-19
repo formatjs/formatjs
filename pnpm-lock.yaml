@@ -565,6 +565,9 @@ importers:
       '@formatjs/cli-native-linux-x64':
         specifier: workspace:*
         version: link:../cli-native-linux-x64
+      '@formatjs/cli-native-win32-x64':
+        specifier: workspace:*
+        version: link:../cli-native-win32-x64
 
   packages/cli-lib:
     dependencies:
@@ -629,6 +632,9 @@ importers:
       '@formatjs/cli-native-linux-x64':
         specifier: workspace:*
         version: link:../cli-native-linux-x64
+      '@formatjs/cli-native-win32-x64':
+        specifier: workspace:*
+        version: link:../cli-native-win32-x64
 
   packages/cli-lib/integration-tests:
     devDependencies:
@@ -641,6 +647,8 @@ importers:
   packages/cli-native-linux-arm64: {}
 
   packages/cli-native-linux-x64: {}
+
+  packages/cli-native-win32-x64: {}
 
   packages/cli/integration-tests:
     devDependencies:

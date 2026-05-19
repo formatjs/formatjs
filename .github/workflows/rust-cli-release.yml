@@ -87,6 +87,35 @@ jobs:
           path: artifacts/formatjs_cli-linux-arm64
           retention-days: 7
 
+  build_windows:
+    name: Build Windows x64 Binary
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-windows-release-binary
+          repository-cache: true
+
+      - name: Build Binary
+        run: |
+          bazel build //crates/formatjs_cli:release_binary_windows_x64
+          $binaryPath = (bazel cquery --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
+          New-Item -ItemType Directory -Force artifacts
+          Copy-Item $binaryPath artifacts\formatjs_cli-win32-x64.exe
+
+      - name: Upload Windows x64 Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: formatjs_cli-win32-x64.exe
+          path: artifacts/formatjs_cli-win32-x64.exe
+          retention-days: 7
+
   verify_macos:
     name: Verify macOS ARM64
     needs: build
@@ -146,12 +175,30 @@ jobs:
             fi
           done
 
+  verify_windows:
+    name: Verify Windows x64
+    needs: build_windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Download Windows x64 Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: formatjs_cli-win32-x64.exe
+          path: artifacts
+
+      - name: Smoke Test
+        run: |
+          .\artifacts\formatjs_cli-win32-x64.exe --version
+          .\artifacts\formatjs_cli-win32-x64.exe --help
+
   release:
     name: Create Release
     needs:
       - build
       - verify_macos
       - verify_linux
+      - verify_windows
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -175,14 +222,16 @@ jobs:
           mv release/formatjs_cli-darwin-arm64/formatjs_cli-darwin-arm64 release/formatjs_cli-darwin-arm64.bin
           mv release/formatjs_cli-linux-arm64/formatjs_cli-linux-arm64 release/formatjs_cli-linux-arm64.bin
           mv release/formatjs_cli-linux-x64/formatjs_cli-linux-x64 release/formatjs_cli-linux-x64.bin
+          mv release/formatjs_cli-win32-x64.exe/formatjs_cli-win32-x64.exe release/formatjs_cli-win32-x64.exe.bin
 
           # Remove empty directories
-          rmdir release/formatjs_cli-darwin-arm64 release/formatjs_cli-linux-arm64 release/formatjs_cli-linux-x64
+          rmdir release/formatjs_cli-darwin-arm64 release/formatjs_cli-linux-arm64 release/formatjs_cli-linux-x64 release/formatjs_cli-win32-x64.exe
 
           # Rename binaries to final names
           mv release/formatjs_cli-darwin-arm64.bin release/formatjs_cli-darwin-arm64
           mv release/formatjs_cli-linux-arm64.bin release/formatjs_cli-linux-arm64
           mv release/formatjs_cli-linux-x64.bin release/formatjs_cli-linux-x64
+          mv release/formatjs_cli-win32-x64.exe.bin release/formatjs_cli-win32-x64.exe
 
       - name: Generate Checksums
         run: |
@@ -205,6 +254,7 @@ jobs:
             release/formatjs_cli-darwin-arm64
             release/formatjs_cli-linux-arm64
             release/formatjs_cli-linux-x64
+            release/formatjs_cli-win32-x64.exe
             release/checksums.txt
           body: |
             ## FormatJS Rust CLI Release
@@ -213,6 +263,7 @@ jobs:
             - **macOS Apple Silicon**: `formatjs_cli-darwin-arm64`
             - **Linux ARM64**: `formatjs_cli-linux-arm64`
             - **Linux x86_64**: `formatjs_cli-linux-x64`
+            - **Windows x64**: `formatjs_cli-win32-x64.exe`
 
             ### Installation
 
@@ -231,6 +282,11 @@ jobs:
             curl -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-linux-arm64
             chmod +x formatjs_cli-linux-arm64
             sudo mv formatjs_cli-linux-arm64 /usr/local/bin/formatjs
+            ```
+
+            ```powershell
+            # Windows x64 (PowerShell)
+            curl.exe -LO https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/formatjs_cli-win32-x64.exe
             ```
 
             ### Verification

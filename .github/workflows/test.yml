@@ -63,3 +63,37 @@ jobs:
           BINARY_PATH=bazel-bin/crates/formatjs_cli/formatjs_cli
           $BINARY_PATH --version
           $BINARY_PATH --help
+
+  windows_smoke:
+    name: Windows Smoke Tests
+    if: github.event_name != 'pull_request'
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-windows-smoke
+          repository-cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Rust CLI Smoke Test
+        run: |
+          bazel build //crates/formatjs_cli:release_binary_windows_x64
+          $binaryPath = (bazel cquery --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
+          & $binaryPath --version
+          & $binaryPath --help
+
+      - name: Native Binding Smoke Test
+        run: |
+          bazel build //packages/cli-native-win32-x64:pkg
+          $pkgPath = Resolve-Path (bazel cquery --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
+          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' $pkgPath

@@ -6,6 +6,7 @@ const NATIVE_PACKAGES: Record<string, string> = {
   'darwin-arm64': '@formatjs/cli-native-darwin-arm64',
   'linux-arm64': '@formatjs/cli-native-linux-arm64',
   'linux-x64': '@formatjs/cli-native-linux-x64',
+  'win32-x64': '@formatjs/cli-native-win32-x64',
 }
 
 export interface NativeCompileOptions {
