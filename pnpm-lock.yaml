@@ -435,7 +435,7 @@ importers:
         version: 10.0.0
       tinybench:
         specifier: ^6.0.0
-        version: 6.0.1
+        version: 6.0.2
       ts-jest:
         specifier: ^29
         version: 29.4.9(@babel/core@7.29.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.0))(esbuild@0.28.0)(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.0))(typescript@6.0.3)
@@ -8254,8 +8254,8 @@ packages:
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
 
-  tinybench@6.0.1:
-    resolution: {integrity: sha512-cMdWsxmysdg8mNWf1pujiWl3TW0cU6m8QuNw55QlnP3I6N96Grb0wnu5N0syHIu3LbiVZCNqlfWzWDq84HZphA==}
+  tinybench@6.0.2:
+    resolution: {integrity: sha512-FlHoQpcFvCzeXK5kVPvV7IVgW/hs/B36QWTz876iSdeJguBDfdTSRQmYmaHX+fQNt4hp+gEFB2XXw+8hT4/y8A==}
     engines: {node: '>=20.0.0'}
 
   tinyexec@1.1.2:
@@ -16858,7 +16858,7 @@ snapshots:
 
   tinybench@2.9.0: {}
 
-  tinybench@6.0.1: {}
+  tinybench@6.0.2: {}
 
   tinyexec@1.1.2: {}
 
