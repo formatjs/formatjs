@@ -4,14 +4,6 @@
 //! back into their string representation, following the ICU MessageFormat syntax.
 
 use crate::types::*;
-use once_cell::sync::Lazy;
-use regex::Regex;
-
-/// Regex for escaping braces that could be interpreted as argument delimiters.
-/// Matches curly braces that contain content.
-static ESCAPE_BRACES_REGEX: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"([{}](?:[\s\S]*[{}])?)").expect("Failed to compile ESCAPE_BRACES_REGEX")
-});
 
 /// Prints a MessageFormat AST to its string representation.
 ///
@@ -93,21 +85,71 @@ fn print_tag_element(el: &TagElement) -> String {
     format!("<{}>{}</{}>", el.value, print_ast(&el.children), el.value)
 }
 
-/// Escapes curly braces in a message string.
-///
-/// According to ICU MessageFormat syntax, curly braces that could be
-/// interpreted as argument delimiters need to be quoted.
-///
-/// # Arguments
-///
-/// * `message` - The message string to escape
-///
-/// # Returns
-///
-/// The escaped message with braces wrapped in quotes where necessary
-fn print_escaped_message(message: &str) -> String {
-    // Replace braces that contain content with quoted versions using the static regex
-    ESCAPE_BRACES_REGEX.replace_all(message, "'$1'").to_string()
+/// Wraps one ICU syntax token in apostrophe quotes.
+fn quote_syntax_token(token: &str) -> String {
+    format!("'{}'", token.replace('\'', "''"))
+}
+
+fn is_tag_syntax_start(bytes: &[u8], index: usize) -> bool {
+    bytes[index] == b'<'
+        && matches!(
+            bytes.get(index + 1),
+            Some(b'/') | Some(b'a'..=b'z') | Some(b'A'..=b'Z')
+        )
+}
+
+fn find_tag_syntax_end(bytes: &[u8], index: usize) -> usize {
+    let mut end = index + 1;
+    while end < bytes.len() && bytes[end] != b'>' {
+        end += 1;
+    }
+    if end < bytes.len() {
+        end + 1
+    } else {
+        bytes.len()
+    }
+}
+
+fn find_brace_syntax_end(bytes: &[u8], index: usize) -> usize {
+    let mut end = index + 1;
+    while end < bytes.len() && bytes[end] != b'}' {
+        end += 1;
+    }
+    if end < bytes.len() {
+        end + 1
+    } else {
+        index + 1
+    }
+}
+
+/// Escapes ICU syntax tokens in a literal message string.
+fn print_escaped_message(message: &str, is_in_plural: bool) -> String {
+    let bytes = message.as_bytes();
+    let mut result = String::new();
+    let mut literal_start = 0;
+    let mut i = 0;
+
+    while i < bytes.len() {
+        let end = match bytes[i] {
+            b'{' => Some(find_brace_syntax_end(bytes, i)),
+            b'}' => Some(i + 1),
+            b'<' if is_tag_syntax_start(bytes, i) => Some(find_tag_syntax_end(bytes, i)),
+            b'#' if is_in_plural => Some(i + 1),
+            _ => None,
+        };
+
+        if let Some(end) = end {
+            result.push_str(&message[literal_start..i]);
+            result.push_str(&quote_syntax_token(&message[i..end]));
+            literal_start = end;
+            i = end;
+        } else {
+            i += 1;
+        }
+    }
+
+    result.push_str(&message[literal_start..]);
+    result
 }
 
 /// Prints a literal text element with appropriate escaping.
@@ -144,15 +186,7 @@ fn print_literal_element(
         escaped = format!("{}''", &escaped[..escaped.len() - 1]);
     }
 
-    // Escape any curly braces in the message
-    escaped = print_escaped_message(&escaped);
-
-    // Inside plural elements, '#' represents the count and must be quoted to be literal
-    if is_in_plural {
-        escaped.replace('#', "'#'")
-    } else {
-        escaped
-    }
+    print_escaped_message(&escaped, is_in_plural)
 }
 
 /// Prints a simple argument reference.
@@ -270,7 +304,7 @@ fn print_number_skeleton_token(token: &NumberSkeletonToken) -> String {
 /// A string like `percent` or `::currency/USD`
 fn print_argument_style_number(style: &NumberSkeletonOrStyle) -> String {
     match style {
-        NumberSkeletonOrStyle::String(s) => print_escaped_message(s),
+        NumberSkeletonOrStyle::String(s) => print_escaped_message(s, false),
         NumberSkeletonOrStyle::Skeleton(skeleton) => format!(
             "::{}",
             skeleton
@@ -297,7 +331,7 @@ fn print_argument_style_number(style: &NumberSkeletonOrStyle) -> String {
 /// A string like `short` or `::yMMMd`
 fn print_argument_style_datetime(style: &DateTimeSkeletonOrStyle) -> String {
     match style {
-        DateTimeSkeletonOrStyle::String(s) => print_escaped_message(s),
+        DateTimeSkeletonOrStyle::String(s) => print_escaped_message(s, false),
         DateTimeSkeletonOrStyle::Skeleton(skeleton) => {
             format!("::{}", print_date_time_skeleton(skeleton))
         }
@@ -440,6 +474,42 @@ mod tests {
     }
 
     #[test]
+    fn test_print_tag_like_literal() {
+        let ast = vec![MessageFormatElement::Literal(LiteralElement::new(
+            "The URL is defined as <Issuer URL>/.well-known/openid-configuration.".to_string(),
+        ))];
+
+        assert_eq!(
+            print_ast(&ast),
+            "The URL is defined as '<Issuer URL>'/.well-known/openid-configuration."
+        );
+    }
+
+    #[test]
+    fn test_print_quoted_literals_with_apostrophes() {
+        let ast = vec![MessageFormatElement::Literal(LiteralElement::new(
+            "This {isn't} obvious and <Bob's URL> works.".to_string(),
+        ))];
+
+        assert_eq!(
+            print_ast(&ast),
+            "This '{isn''t}' obvious and '<Bob''s URL>' works."
+        );
+    }
+
+    #[test]
+    fn test_print_tag_syntax_delimiters() {
+        let ast = vec![MessageFormatElement::Literal(LiteralElement::new(
+            "This is <b>HTML</b> and <i>XML</i>.".to_string(),
+        ))];
+
+        assert_eq!(
+            print_ast(&ast),
+            "This is '<b>'HTML'</b>' and '<i>'XML'</i>'."
+        );
+    }
+
+    #[test]
     fn test_print_argument() {
         let ast = vec![MessageFormatElement::Argument(ArgumentElement::new(
             "name".to_string(),
@@ -543,7 +613,7 @@ mod tests {
             ValidPluralRule::One,
             PluralOrSelectOption {
                 value: vec![MessageFormatElement::Literal(LiteralElement::new(
-                    "one item".to_string(),
+                    "# item".to_string(),
                 ))],
                 location: None,
             },
@@ -570,7 +640,7 @@ mod tests {
         let result = print_ast(&ast);
 
         // Keys are sorted in LDML order: one, other
-        assert_eq!(result, "{count,plural,one{one item} other{'#' items}}");
+        assert_eq!(result, "{count,plural,one{'#' item} other{'#' items}}");
     }
 
     #[test]
