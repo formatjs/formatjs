@@ -67,8 +67,64 @@ function printTagElement(el: TagElement): string {
   return `<${el.value}>${printAST(el.children)}</${el.value}>`
 }
 
-function printEscapedMessage(message: string): string {
-  return message.replace(/([{}](?:[\s\S]*[{}])?)/, `'$1'`)
+function quoteSyntaxToken(token: string): string {
+  return `'${token.split("'").join("''")}'`
+}
+
+function isAlpha(ch: string | undefined): boolean {
+  if (!ch) {
+    return false
+  }
+  const code = ch.charCodeAt(0)
+  return (code >= 65 && code <= 90) || (code >= 97 && code <= 122)
+}
+
+function isTagSyntaxStart(message: string, index: number): boolean {
+  if (message[index] !== '<') {
+    return false
+  }
+  const next = message[index + 1]
+  return next === '/' || isAlpha(next)
+}
+
+function findTagSyntaxEnd(message: string, index: number): number {
+  const closingIndex = message.indexOf('>', index + 1)
+  return closingIndex === -1 ? message.length : closingIndex + 1
+}
+
+function findBraceSyntaxEnd(message: string, index: number): number {
+  const closingIndex = message.indexOf('}', index + 1)
+  return closingIndex === -1 ? index + 1 : closingIndex + 1
+}
+
+function printEscapedMessage(message: string, isInPlural = false): string {
+  let result = ''
+  let literalStart = 0
+
+  function quoteToken(start: number, end: number) {
+    result += message.slice(literalStart, start)
+    result += quoteSyntaxToken(message.slice(start, end))
+    literalStart = end
+  }
+
+  for (let i = 0; i < message.length; i++) {
+    const ch = message[i]
+    if (ch === '{') {
+      const end = findBraceSyntaxEnd(message, i)
+      quoteToken(i, end)
+      i = end - 1
+    } else if (ch === '}') {
+      quoteToken(i, i + 1)
+    } else if (isTagSyntaxStart(message, i)) {
+      const end = findTagSyntaxEnd(message, i)
+      quoteToken(i, end)
+      i = end - 1
+    } else if (isInPlural && ch === '#') {
+      quoteToken(i, i + 1)
+    }
+  }
+
+  return result + message.slice(literalStart)
 }
 
 function printLiteralElement(
@@ -87,8 +143,7 @@ function printLiteralElement(
   if (!isLastEl && escaped[escaped.length - 1] === `'`) {
     escaped = `${escaped.slice(0, escaped.length - 1)}''`
   }
-  escaped = printEscapedMessage(escaped)
-  return isInPlural ? escaped.replace('#', "'#'") : escaped
+  return printEscapedMessage(escaped, isInPlural)
 }
 
 function printArgumentElement({value}: ArgumentElement) {

@@ -124,6 +124,21 @@ describe('@formatjs/unplugin transform', () => {
         `<FormattedMessage id="test" defaultMessage={[{"type":0,"value":"Hello World"}]} />`
       )
     })
+
+    test('parses apostrophe-escaped tag-like literals after flattening', () => {
+      const input = `defineMessages({example: {defaultMessage: "The URL is defined as '<Issuer URL>'/.well-known/openid-configuration."}})`
+      const flattenedMessage =
+        "The URL is defined as '<Issuer URL>'/.well-known/openid-configuration."
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {content: flattenedMessage}
+      )
+
+      expect(t(input, {ast: true})).toBe(
+        `defineMessages({example: {id: "${expectedId}", defaultMessage: [{"type":0,"value":"The URL is defined as <Issuer URL>/.well-known/openid-configuration."}]}})`
+      )
+    })
   })
 
   describe('defineMessages', () => {

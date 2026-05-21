@@ -124,6 +124,17 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     )
   })
 
+  test('apostrophe-escaped tag-like literals stay parseable after flattening', async () => {
+    await assertConformance(
+      `defineMessages({
+  example: {
+    defaultMessage: "The URL is defined as '<Issuer URL>'/.well-known/openid-configuration.",
+  },
+})`,
+      'escaped-tag-like-literal.tsx'
+    )
+  })
+
   test('TypeScript satisfies expressions are transparent for extraction', async () => {
     await assertConformance(
       `type DefaultMessage = string
