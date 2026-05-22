@@ -1,0 +1,20 @@
+filegroup(
+    name = "extract_srcs",
+    srcs = glob(
+        [
+            "webapp/**/*.js",
+            "webapp/**/*.jsx",
+            "webapp/**/*.ts",
+            "webapp/**/*.tsx",
+        ],
+        allow_empty = True,
+        exclude = [
+            "**/__snapshots__/**",
+            "**/coverage/**",
+            "**/dist/**",
+            "**/node_modules/**",
+            "**/storybook-static/**",
+        ],
+    ),
+    visibility = ["//visibility:public"],
+)

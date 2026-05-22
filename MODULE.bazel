@@ -214,6 +214,41 @@ http_archive(
     urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
 )
 
+######### OSS React Intl benchmark corpora #########
+
+OSS_REACT_INTL_MATTERMOST_COMMIT = "44ba06ee3c8b53f1267928e6a189c137d75f43e0"
+
+http_archive(
+    name = "oss_react_intl_mattermost",
+    build_file = "@//benchmarks/oss-react-intl:mattermost.BUILD.bazel",
+    sha256 = "fa79551fbbdb802eb006292da050dbdd2b68f4016cae850b07fd85d916a77964",
+    strip_prefix = "mattermost-%s" % OSS_REACT_INTL_MATTERMOST_COMMIT,
+    type = "tar.gz",
+    urls = ["https://github.com/mattermost/mattermost/archive/%s.tar.gz" % OSS_REACT_INTL_MATTERMOST_COMMIT],
+)
+
+OSS_REACT_INTL_KIBANA_COMMIT = "3f2705aeaf48f695f630f473dbeb600422935ebe"
+
+http_archive(
+    name = "oss_react_intl_kibana",
+    build_file = "@//benchmarks/oss-react-intl:kibana.BUILD.bazel",
+    sha256 = "25e07f20a0dd2dc9ab20b2daf506a3276ad01768a575198ecae1271933b49e72",
+    strip_prefix = "kibana-%s" % OSS_REACT_INTL_KIBANA_COMMIT,
+    type = "tar.gz",
+    urls = ["https://github.com/elastic/kibana/archive/%s.tar.gz" % OSS_REACT_INTL_KIBANA_COMMIT],
+)
+
+OSS_REACT_INTL_MATTERMOST_DESKTOP_COMMIT = "e6994098ac3a766bae6638091c72ab948306ba5d"
+
+http_archive(
+    name = "oss_react_intl_mattermost_desktop",
+    build_file = "@//benchmarks/oss-react-intl:mattermost_desktop.BUILD.bazel",
+    sha256 = "95b7ad6eddfe361d4301c9a4c9d0a86f5c2d7751718bf910470946d10f81eee5",
+    strip_prefix = "desktop-%s" % OSS_REACT_INTL_MATTERMOST_DESKTOP_COMMIT,
+    type = "tar.gz",
+    urls = ["https://github.com/mattermost/desktop/archive/%s.tar.gz" % OSS_REACT_INTL_MATTERMOST_DESKTOP_COMMIT],
+)
+
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_file(

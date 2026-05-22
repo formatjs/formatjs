@@ -12,7 +12,10 @@ copy_to_directory(
     replace_prefixes = {
         "-lib/formatjs/": "",
     },
-    visibility = ["//benchmarks/cli-comparison:__pkg__"],
+    visibility = [
+        "//benchmarks/cli-comparison:__pkg__",
+        "//benchmarks/oss-react-intl:__pkg__",
+    ],
 )
 
 npm_package(
