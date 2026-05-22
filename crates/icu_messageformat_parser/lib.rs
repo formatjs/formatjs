@@ -26,7 +26,7 @@ pub use manipulator::{
 };
 
 // Re-export parser types and functions
-pub use parser::{Parser, ParserOptions, Position};
+pub use parser::{IntoParserMessage, Parser, ParserOptions, Position};
 
 // Re-export icu::locale::Locale for convenience
 pub use icu::locale::Locale;

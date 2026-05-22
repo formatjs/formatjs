@@ -9,6 +9,7 @@ use crate::types::*;
 use formatjs_icu_skeleton_parser::{parse_date_time_skeleton, parse_number_skeleton};
 use icu::locale::Locale;
 use indexmap::IndexMap;
+use std::borrow::Cow;
 use std::collections::HashSet;
 
 /// Position in the source message string.
@@ -69,6 +70,35 @@ pub struct ParserOptions {
 /// Result type for parser operations.
 pub type Result<T> = std::result::Result<T, ParserError>;
 
+/// Input accepted by [`Parser::new`].
+pub trait IntoParserMessage<'a> {
+    fn into_parser_message(self) -> Cow<'a, str>;
+}
+
+impl<'a> IntoParserMessage<'a> for &'a str {
+    fn into_parser_message(self) -> Cow<'a, str> {
+        Cow::Borrowed(self)
+    }
+}
+
+impl<'a> IntoParserMessage<'a> for &'a String {
+    fn into_parser_message(self) -> Cow<'a, str> {
+        Cow::Borrowed(self.as_str())
+    }
+}
+
+impl<'a> IntoParserMessage<'a> for String {
+    fn into_parser_message(self) -> Cow<'a, str> {
+        Cow::Owned(self)
+    }
+}
+
+impl<'a> IntoParserMessage<'a> for Cow<'a, str> {
+    fn into_parser_message(self) -> Cow<'a, str> {
+        self
+    }
+}
+
 /// Argument type being parsed (used for context-sensitive parsing).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum ArgType {
@@ -95,12 +125,6 @@ impl ArgType {
         }
     }
 }
-
-/// Static string constants for common single-character literals.
-/// OPTIMIZATION: Avoids allocating new Strings for commonly-used single characters.
-/// These are used in the parsing hot path (literal text parsing).
-const LEFT_ANGLE_BRACKET: &str = "<";
-const APOSTROPHE: &str = "'";
 
 /// Matches an identifier at a specific byte index in the string.
 ///
@@ -289,9 +313,9 @@ fn cold_panic_fmt(args: std::fmt::Arguments) -> ! {
 /// let result = parser.parse();
 /// assert!(result.is_ok());
 /// ```
-pub struct Parser {
+pub struct Parser<'a> {
     /// The message string being parsed
-    message: String,
+    message: Cow<'a, str>,
     /// Current position in the message
     position: Position,
     /// Locale for resolving locale-dependent skeletons
@@ -306,16 +330,16 @@ pub struct Parser {
     capture_location: bool,
 }
 
-impl Parser {
+impl<'a> Parser<'a> {
     /// Creates a new Parser for the given message string.
     ///
     /// # Arguments
     ///
     /// * `message` - The ICU MessageFormat string to parse
     /// * `options` - Parser configuration options
-    pub fn new(message: impl Into<String>, options: ParserOptions) -> Self {
+    pub fn new(message: impl IntoParserMessage<'a>, options: ParserOptions) -> Self {
         Parser {
-            message: message.into(),
+            message: message.into_parser_message(),
             position: Position::new(),
             locale: options.locale,
             ignore_tag: options.ignore_tag,
@@ -369,7 +393,7 @@ impl Parser {
     #[inline(always)]
     fn is_eof(&self) -> bool {
         // FIX: Check byte_offset against byte length, not character offset
-        self.byte_offset() >= self.message.len()
+        self.byte_offset() >= self.message.as_ref().len()
     }
 
     /// Returns the current Unicode codepoint.
@@ -384,12 +408,12 @@ impl Parser {
         // FIX: Use byte_offset for string indexing, not character offset
         // Character offset counts Unicode code points, byte_offset is the actual position in the UTF-8 string
         let byte_offset = self.position.byte_offset;
-        if byte_offset >= self.message.len() {
+        if byte_offset >= self.message.as_ref().len() {
             cold_panic("out of bound");
         }
 
         // Get the character at this byte offset
-        let remaining = &self.message[byte_offset..];
+        let remaining = &self.message.as_ref()[byte_offset..];
         let ch = remaining
             .chars()
             .next()
@@ -429,7 +453,7 @@ impl Parser {
 
         Err(ParserError {
             kind,
-            message: self.message.clone(),
+            message: self.message.to_string(),
             location: loc,
         })
     }
@@ -470,7 +494,7 @@ impl Parser {
     /// Returns true if the prefix was matched and consumed, false otherwise.
     fn bump_if(&mut self, prefix: &str) -> bool {
         // FIX: Use byte_offset for string slicing
-        if self.message[self.byte_offset()..].starts_with(prefix) {
+        if self.message.as_ref()[self.byte_offset()..].starts_with(prefix) {
             for _ in 0..prefix.chars().count() {
                 self.bump();
             }
@@ -485,7 +509,7 @@ impl Parser {
     /// Returns true if the pattern was found, false if EOF was reached.
     fn bump_until(&mut self, pattern: &str) -> bool {
         let current_offset = self.offset();
-        if let Some(index) = self.message[current_offset..].find(pattern) {
+        if let Some(index) = self.message.as_ref()[current_offset..].find(pattern) {
             self.bump_to(current_offset + index);
             true
         } else {
@@ -508,7 +532,7 @@ impl Parser {
             ));
         }
 
-        let target_offset = target_offset.min(self.message.len());
+        let target_offset = target_offset.min(self.message.as_ref().len());
 
         while self.offset() < target_offset {
             self.bump();
@@ -517,7 +541,7 @@ impl Parser {
             }
         }
 
-        if self.offset() != target_offset && target_offset < self.message.len() {
+        if self.offset() != target_offset && target_offset < self.message.as_ref().len() {
             cold_panic_fmt(format_args!(
                 "targetOffset {} is at invalid UTF-8 boundary",
                 target_offset
@@ -546,10 +570,10 @@ impl Parser {
         let char_len = std::char::from_u32(ch).unwrap().len_utf8();
         let next_byte_offset = byte_offset + char_len;
 
-        if next_byte_offset >= self.message.len() {
+        if next_byte_offset >= self.message.as_ref().len() {
             None
         } else {
-            let remaining = &self.message[next_byte_offset..];
+            let remaining = &self.message.as_ref()[next_byte_offset..];
             remaining.chars().next().map(|c| c as u32)
         }
     }
@@ -566,7 +590,8 @@ impl Parser {
         let start_byte_offset = self.byte_offset();
 
         // OPTIMIZATION: Get both slice and character count in one pass
-        let (value, char_count) = match_identifier_at_index(&self.message, start_byte_offset);
+        let (value, char_count) =
+            match_identifier_at_index(self.message.as_ref(), start_byte_offset);
 
         // Convert to String immediately to avoid borrowing issues
         // This is still better than regex because we avoid the regex overhead!
@@ -590,16 +615,16 @@ impl Parser {
     /// Attempts to parse a left angle bracket if it appears as literal text.
     ///
     /// Returns Some('<') if the bracket should be treated as literal, None otherwise.
-    fn try_parse_left_angle_bracket(&mut self) -> Option<String> {
+    fn try_parse_left_angle_bracket(&mut self, buffer: &mut String) -> bool {
         if !self.is_eof()
             && self.char() == 60  // '<'
             && (self.ignore_tag || !is_alpha_or_slash(self.peek().unwrap_or(0)))
         {
             self.bump();
-            // OPTIMIZATION: Use static string constant instead of allocating
-            Some(LEFT_ANGLE_BRACKET.to_string())
+            buffer.push('<');
+            true
         } else {
-            None
+            false
         }
     }
 
@@ -609,25 +634,27 @@ impl Parser {
     /// immediately precedes a character that requires quoting ("only where needed").
     ///
     /// Returns the unquoted content, or None if no quote sequence is found.
-    fn try_parse_quote(&mut self, parent_arg_type: ArgType) -> Option<String> {
+    fn try_parse_quote(&mut self, parent_arg_type: ArgType, buffer: &mut String) -> bool {
         if self.is_eof() || self.char() != 39 {
             // '\''
-            return None;
+            return false;
         }
 
         // Check what character follows the apostrophe
-        let next_char = self.peek()?;
+        let Some(next_char) = self.peek() else {
+            return false;
+        };
 
         match next_char {
             39 => {
                 // Double apostrophe '' -> single apostrophe
                 self.bump(); // First '
                 self.bump(); // Second '
-                // OPTIMIZATION: Use static string constant instead of allocating
-                return Some(APOSTROPHE.to_string());
+                buffer.push('\'');
+                return true;
             }
-            123 | 60 | 62 | 125 => { // '{', '<', '>', '}'
-                // These need escaping
+            123 | 60 | 62 | 125 => {
+                // '{', '<', '>', '}' need escaping.
             }
             35 => {
                 // '#'
@@ -635,16 +662,16 @@ impl Parser {
                 if parent_arg_type == ArgType::Plural || parent_arg_type == ArgType::SelectOrdinal {
                     // Continue to escape
                 } else {
-                    return None;
+                    return false;
                 }
             }
-            _ => return None,
+            _ => return false,
         }
 
         // We have a valid escape sequence
         self.bump(); // Consume the opening apostrophe
 
-        let mut code_points = vec![self.char()]; // The escaped character
+        buffer.push(std::char::from_u32(self.char()).unwrap()); // The escaped character
         self.bump();
 
         // Read characters until optional closing apostrophe
@@ -654,7 +681,7 @@ impl Parser {
                 // '\''
                 if self.peek() == Some(39) {
                     // Double apostrophe inside quoted text
-                    code_points.push(39);
+                    buffer.push('\'');
                     self.bump(); // Skip one of the apostrophes
                 } else {
                     // Closing apostrophe
@@ -662,17 +689,12 @@ impl Parser {
                     break;
                 }
             } else {
-                code_points.push(ch);
+                buffer.push(std::char::from_u32(ch).unwrap());
             }
             self.bump();
         }
 
-        Some(
-            code_points
-                .into_iter()
-                .map(|cp| std::char::from_u32(cp).unwrap())
-                .collect(),
-        )
+        true
     }
 
     /// Attempts to parse an unquoted character and append it to the buffer.
@@ -722,8 +744,7 @@ impl Parser {
 
         loop {
             // Try parsing quoted sequence
-            if let Some(quoted) = self.try_parse_quote(parent_arg_type) {
-                value.push_str(&quoted);
+            if self.try_parse_quote(parent_arg_type, &mut value) {
                 continue;
             }
 
@@ -733,8 +754,7 @@ impl Parser {
             }
 
             // Try parsing literal angle bracket
-            if let Some(bracket) = self.try_parse_left_angle_bracket() {
-                value.push_str(&bracket);
+            if self.try_parse_left_angle_bracket(&mut value) {
                 continue;
             }
 
@@ -769,7 +789,7 @@ impl Parser {
             self.bump();
         }
 
-        self.message[start_byte_offset..self.byte_offset()].to_string()
+        self.message.as_ref()[start_byte_offset..self.byte_offset()].to_string()
     }
 
     /// Parses an HTML/XML-like tag element.
@@ -997,7 +1017,7 @@ impl Parser {
         }
 
         // FIX: Use byte_offset for string slicing
-        Ok(self.message[start_position.byte_offset..self.byte_offset()].to_string())
+        Ok(self.message.as_ref()[start_position.byte_offset..self.byte_offset()].to_string())
     }
 
     /// Parses the main message content recursively.
@@ -1023,7 +1043,7 @@ impl Parser {
         // Heuristic: Estimate ~1 element per 20 characters, bounded between 4-16 for top level.
         // Nested messages (inside plural/select) tend to be smaller.
         let estimated_capacity = if nesting_level == 0 {
-            let remaining_len = self.message.len() - self.byte_offset();
+            let remaining_len = self.message.as_ref().len() - self.byte_offset();
             ((remaining_len / 20) + 1).clamp(4, 16)
         } else {
             // Nested contexts: be conservative
@@ -1223,7 +1243,7 @@ impl Parser {
                 } else {
                     ErrorKind::InvalidArgumentType
                 },
-                message: self.message.clone(),
+                message: self.message.to_string(),
                 location: loc,
             }
         })?;
@@ -1716,7 +1736,11 @@ mod tests {
         let parser = Parser::new("ही किंमत <span>जास्त</span>", ParserOptions::default());
         let result = parser.parse();
 
-        assert!(result.is_ok(), "Failed to parse Hindi text with tags: {:?}", result.err());
+        assert!(
+            result.is_ok(),
+            "Failed to parse Hindi text with tags: {:?}",
+            result.err()
+        );
 
         let elements = result.unwrap();
         assert_eq!(elements.len(), 2, "Expected 2 elements (literal + tag)");

@@ -8,7 +8,7 @@ use walkdir::WalkDir;
 
 use crate::extractor::{MessageDescriptor, determine_source_type, extract_messages_from_source};
 use crate::formatters::Formatter;
-use crate::id_generator::generate_id;
+use crate::id_generator::IdGenerator;
 
 /// Extract string messages from React components that use react-intl
 #[allow(clippy::too_many_arguments)]
@@ -42,6 +42,7 @@ pub fn extract(
 
     let component_names = build_component_names(additional_component_names);
     let function_names = build_function_names(additional_function_names);
+    let id_generator = IdGenerator::new(id_interpolation_pattern)?;
 
     let mut extracted_files: Vec<_> = file_list
         .par_iter()
@@ -75,12 +76,7 @@ pub fn extract(
                         id
                     } else {
                         // Hash the (possibly flattened) message
-                        generate_id(
-                            id_interpolation_pattern,
-                            msg.default_message.as_deref(),
-                            &msg.description,
-                            file_path.to_str(),
-                        )?
+                        id_generator.generate(msg.default_message.as_deref(), &msg.description)?
                     };
 
                     msg.id = Some(id.clone());
