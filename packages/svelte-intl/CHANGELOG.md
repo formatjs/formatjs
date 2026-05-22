@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@1.1.8...@formatjs/svelte-intl@1.1.9) (2026-05-22)
+
+**Note:** Version bump only for package @formatjs/svelte-intl
+
 ## [1.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@1.1.7...@formatjs/svelte-intl@1.1.8) (2026-05-15)
 
 **Note:** Version bump only for package @formatjs/svelte-intl

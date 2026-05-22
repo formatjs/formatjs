@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.10](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.9...@formatjs/icu-messageformat-parser@3.5.10) (2026-05-22)
+
+### Bug Fixes
+
+* **@formatjs/unplugin:** preserve escaped tag literals when flattening ([#6599](https://github.com/formatjs/formatjs/issues/6599)) ([56e4b0b](https://github.com/formatjs/formatjs/commit/56e4b0bc41fc806cb4a81c7fe2b1ea1f4ceefaba)), closes [#6593](https://github.com/formatjs/formatjs/issues/6593) - by @longlho
+
 ## [3.5.9](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.8...@formatjs/icu-messageformat-parser@3.5.9) (2026-05-15)
 
 **Note:** Version bump only for package @formatjs/icu-messageformat-parser

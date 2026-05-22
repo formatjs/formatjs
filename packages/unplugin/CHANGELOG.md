@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.14](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.1.13...@formatjs/unplugin@1.1.14) (2026-05-22)
+
+### Bug Fixes
+
+* **@formatjs/unplugin:** preserve escaped tag literals when flattening ([#6599](https://github.com/formatjs/formatjs/issues/6599)) ([56e4b0b](https://github.com/formatjs/formatjs/commit/56e4b0bc41fc806cb4a81c7fe2b1ea1f4ceefaba)), closes [#6593](https://github.com/formatjs/formatjs/issues/6593) - by @longlho
+* **@formatjs/unplugin:** preserve JSX defaultMessage output ([#6608](https://github.com/formatjs/formatjs/issues/6608)) ([bdff3ae](https://github.com/formatjs/formatjs/commit/bdff3ae51bb89562ad3e95ff34d78826c48a41c9)), closes [#6606](https://github.com/formatjs/formatjs/issues/6606) - by @longlho
+
 ## [1.1.13](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.1.12...@formatjs/unplugin@1.1.13) (2026-05-19)
 
 **Note:** Version bump only for package @formatjs/unplugin
