@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use rayon::prelude::*;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
@@ -89,22 +90,31 @@ pub fn verify(
     // Load all translation files
     let mut locales: HashMap<String, Value> = HashMap::new();
 
-    for file in &expanded_files {
-        // Skip ignored patterns
-        if should_ignore(file, ignore) {
-            continue;
-        }
+    let files_to_load: Vec<_> = expanded_files
+        .iter()
+        .enumerate()
+        .filter(|(_, file)| !should_ignore(file, ignore))
+        .map(|(index, file)| Ok((index, file.clone(), extract_locale_from_path(file)?)))
+        .collect::<Result<_>>()?;
 
-        // Extract locale from filename (e.g., "en.json" -> "en")
-        let locale = extract_locale_from_path(file)?;
+    let mut loaded_files: Vec<_> = files_to_load
+        .par_iter()
+        .map(|(index, file, locale)| {
+            let result = (|| -> Result<_> {
+                let content = std::fs::read_to_string(file)
+                    .with_context(|| format!("Failed to read file: {}", file.display()))?;
 
-        // Read and parse JSON
-        let content = std::fs::read_to_string(file)
-            .with_context(|| format!("Failed to read file: {}", file.display()))?;
+                serde_json::from_str(&content)
+                    .with_context(|| format!("Failed to parse JSON in file: {}", file.display()))
+            })();
 
-        let json: Value = serde_json::from_str(&content)
-            .with_context(|| format!("Failed to parse JSON in file: {}", file.display()))?;
+            (*index, locale.clone(), result)
+        })
+        .collect();
+    loaded_files.sort_by_key(|(index, _, _)| *index);
 
+    for (_, locale, result) in loaded_files {
+        let json = result?;
         locales.insert(locale, json);
     }
 

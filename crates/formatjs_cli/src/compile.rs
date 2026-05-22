@@ -1,5 +1,6 @@
 use anyhow::{Context, Result};
 use formatjs_icu_messageformat_parser::MessageFormatElement;
+use rayon::prelude::*;
 use serde_json::{Map, Value, json};
 use std::collections::BTreeMap;
 use std::path::PathBuf;
@@ -185,16 +186,29 @@ pub fn compile_to_string(
     // Store both message and source file for better error reporting
     let mut messages: BTreeMap<String, (String, PathBuf)> = BTreeMap::new();
 
-    for file in &expanded_files {
-        let content = std::fs::read_to_string(file)
-            .with_context(|| format!("Failed to read file: {}", file.display()))?;
+    let mut loaded_files: Vec<_> = expanded_files
+        .par_iter()
+        .enumerate()
+        .map(|(index, file)| {
+            let result = (|| -> Result<_> {
+                let content = std::fs::read_to_string(file)
+                    .with_context(|| format!("Failed to read file: {}", file.display()))?;
 
-        let json: Value = serde_json::from_str(&content)
-            .with_context(|| format!("Failed to parse JSON in file: {}", file.display()))?;
+                let json: Value = serde_json::from_str(&content)
+                    .with_context(|| format!("Failed to parse JSON in file: {}", file.display()))?;
 
-        // Apply formatter to extract messages
-        let file_path_str = file.to_str().unwrap_or("<invalid path>");
-        let file_messages = formatter.apply(&json, file_path_str)?;
+                // Apply formatter to extract messages
+                let file_path_str = file.to_str().unwrap_or("<invalid path>");
+                formatter.apply(&json, file_path_str)
+            })();
+
+            (index, file.clone(), result)
+        })
+        .collect();
+    loaded_files.sort_by_key(|(index, _, _)| *index);
+
+    for (_, file, result) in loaded_files {
+        let file_messages = result?;
 
         // Merge messages, checking for conflicts
         // Convert to BTreeMap for sorted iteration

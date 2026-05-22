@@ -414,11 +414,15 @@ The toolchain is registered automatically when you add the MODULE.bazel dependen
 
 The native Rust CLI is significantly faster than the Node.js-based tools:
 
-- **4-17x faster** message extraction
+- **20.90x faster** message extraction in the checked-in Rust vs TypeScript CLI benchmark
 - **No Node.js runtime required** for supported extraction, compilation, and verification workflows
 - **Minimal memory footprint**
 - **Instant startup** - no JavaScript runtime initialization
 - **CI/CD friendly** - fast builds in continuous integration
+
+The native CLI parallelizes per-file work with Rayon. By default, Rayon uses the
+available logical CPU count. Set `RAYON_NUM_THREADS` to cap worker threads when
+running under constrained CI executors.
 
 The Rust CLI used by these rules covers the native toolchain's supported
 FormatJS workflows. Node.js-only behavior from `@formatjs/cli`, such as

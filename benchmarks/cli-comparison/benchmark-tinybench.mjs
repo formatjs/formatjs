@@ -4,15 +4,25 @@
  */
 
 import {Bench} from 'tinybench'
-import {execSync} from 'child_process'
+import {execFileSync} from 'child_process'
 import fs from 'fs'
+import os from 'os'
 import path from 'path'
 import {fileURLToPath} from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const WORKSPACE_DIR =
+  process.env.BUILD_WORKSPACE_DIRECTORY ?? path.join(__dirname, '../..')
 
 // Try to use Bazel runfiles if available, otherwise fall back to bazel-bin
 let TEST_FILES_DIR, TS_CLI, RUST_CLI
+
+function setBazelBinPaths() {
+  const BAZEL_BIN = path.join(WORKSPACE_DIR, 'bazel-bin')
+  TEST_FILES_DIR = path.join(BAZEL_BIN, 'benchmarks/cli-comparison/test-files')
+  TS_CLI = path.join(BAZEL_BIN, 'packages/cli/bin/formatjs')
+  RUST_CLI = path.join(BAZEL_BIN, 'crates/formatjs_cli/formatjs_cli')
+}
 
 try {
   // Try importing @bazel/runfiles for proper Bazel sandbox support
@@ -25,15 +35,22 @@ try {
   )
   TS_CLI = runfiles.resolve('_main/packages/cli/bin/formatjs')
   RUST_CLI = runfiles.resolve('_main/crates/formatjs_cli/formatjs_cli')
+
+  if (
+    !fs.existsSync(TEST_FILES_DIR) ||
+    !fs.existsSync(TS_CLI) ||
+    !fs.existsSync(RUST_CLI)
+  ) {
+    setBazelBinPaths()
+  }
 } catch {
   // Fall back to bazel-bin for manual execution
-  const BAZEL_BIN = path.join(__dirname, '../../bazel-bin')
-  TEST_FILES_DIR = path.join(BAZEL_BIN, 'benchmarks/cli-comparison/test-files')
-  TS_CLI = path.join(BAZEL_BIN, 'packages/cli/bin/formatjs')
-  RUST_CLI = path.join(BAZEL_BIN, 'crates/formatjs_cli/formatjs_cli')
+  setBazelBinPaths()
 }
 
-const OUTPUT_DIR = path.join(__dirname, 'benchmark-output')
+const OUTPUT_DIR = fs.mkdtempSync(
+  path.join(os.tmpdir(), 'formatjs-cli-benchmark-')
+)
 
 // Check if TypeScript CLI is built
 if (!fs.existsSync(TS_CLI)) {
@@ -105,10 +122,8 @@ let rustMessageCount = 0
 // TypeScript CLI benchmark
 bench.add('TypeScript CLI', () => {
   const outputFile = path.join(OUTPUT_DIR, `typescript-${Date.now()}.json`)
-  const command = `"${TS_CLI}" extract "${pattern}" --out-file "${outputFile}"`
-
   try {
-    execSync(command, {
+    execFileSync(TS_CLI, ['extract', pattern, '--out-file', outputFile], {
       stdio: 'pipe',
       maxBuffer: 1024 * 1024 * 100, // 100MB buffer
     })
@@ -130,10 +145,8 @@ bench.add('TypeScript CLI', () => {
 // Rust CLI benchmark
 bench.add('Rust CLI', () => {
   const outputFile = path.join(OUTPUT_DIR, `rust-${Date.now()}.json`)
-  const command = `"${RUST_CLI}" extract "${pattern}" --out-file "${outputFile}"`
-
   try {
-    execSync(command, {
+    execFileSync(RUST_CLI, ['extract', pattern, '--out-file', outputFile], {
       stdio: 'pipe',
       maxBuffer: 1024 * 1024 * 100, // 100MB buffer
     })
@@ -168,9 +181,31 @@ if (!tsResult?.result || !rustResult?.result) {
   process.exit(1)
 }
 
+function getLatency(result) {
+  return result.latency ?? result
+}
+
+function getMean(result) {
+  return getLatency(result).mean
+}
+
+function getRme(result) {
+  return getLatency(result).rme
+}
+
+function getMarginOfError(result) {
+  const latency = getLatency(result)
+  return latency.moe ?? ((latency.rme / 100) * latency.mean)
+}
+
+function getSampleCount(result) {
+  const latency = getLatency(result)
+  return latency.samplesCount ?? latency.samples.length
+}
+
 // Calculate metrics
-const tsMean = tsResult.result.mean // Already in ms
-const rustMean = rustResult.result.mean // Already in ms
+const tsMean = getMean(tsResult.result) // Already in ms
+const rustMean = getMean(rustResult.result) // Already in ms
 const speedup = tsMean / rustMean
 
 const tsMsgPerSec = tsMessageCount / (tsMean / 1000)
@@ -201,15 +236,15 @@ console.log(
 )
 
 // Margin of error
-const tsError = ((tsResult.result.rme / 100) * tsMean).toFixed(2)
-const rustError = ((rustResult.result.rme / 100) * rustMean).toFixed(2)
+const tsError = getMarginOfError(tsResult.result).toFixed(2)
+const rustError = getMarginOfError(rustResult.result).toFixed(2)
 console.log(
   `${'Margin of Error (ms)'.padEnd(35)} ${`±${tsError}`.padStart(20)} ${`±${rustError}`.padStart(20)} ${'-'.padStart(15)}`
 )
 
 // Sample size
 console.log(
-  `${'Samples'.padEnd(35)} ${`${tsResult.result.samples.length}`.padStart(20)} ${`${rustResult.result.samples.length}`.padStart(20)} ${'-'.padStart(15)}`
+  `${'Samples'.padEnd(35)} ${`${getSampleCount(tsResult.result)}`.padStart(20)} ${`${getSampleCount(rustResult.result)}`.padStart(20)} ${'-'.padStart(15)}`
 )
 
 // Messages extracted
@@ -242,7 +277,10 @@ if (Math.abs(tsMessageCount - rustMessageCount) > 0) {
 }
 
 // Save results
-const resultsFile = path.join(__dirname, 'benchmark-results.json')
+const resultsFile = path.join(
+  WORKSPACE_DIR,
+  'benchmarks/cli-comparison/benchmark-results.json'
+)
 const results = {
   timestamp: new Date().toISOString(),
   testFiles: {
@@ -255,16 +293,16 @@ const results = {
     marginOfError: parseFloat(tsError),
     opsPerSec: tsOpsPerSec,
     messagesPerSec: tsMsgPerSec,
-    samples: tsResult.result.samples.length,
-    rme: tsResult.result.rme,
+    samples: getSampleCount(tsResult.result),
+    rme: getRme(tsResult.result),
   },
   rust: {
     mean: rustMean,
     marginOfError: parseFloat(rustError),
     opsPerSec: rustOpsPerSec,
     messagesPerSec: rustMsgPerSec,
-    samples: rustResult.result.samples.length,
-    rme: rustResult.result.rme,
+    samples: getSampleCount(rustResult.result),
+    rme: getRme(rustResult.result),
   },
   comparison: {
     speedup: speedup,

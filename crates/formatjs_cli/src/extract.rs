@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use rayon::prelude::*;
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io::{self, Write};
@@ -42,18 +43,31 @@ pub fn extract(
     let component_names = build_component_names(additional_component_names);
     let function_names = build_function_names(additional_function_names);
 
-    for file_path in &file_list {
+    let mut extracted_files: Vec<_> = file_list
+        .par_iter()
+        .enumerate()
+        .map(|(index, file_path)| {
+            (
+                index,
+                file_path.clone(),
+                extract_from_file(
+                    file_path,
+                    extract_source_location,
+                    &component_names,
+                    &function_names,
+                    pragma,
+                    preserve_whitespace,
+                    flatten,
+                    throws,
+                ),
+            )
+        })
+        .collect();
+    extracted_files.sort_by_key(|(index, _, _)| *index);
+
+    for (_, file_path, result) in extracted_files {
         // To match TypeScript CLI behavior, we hash the message AFTER flattening
-        match extract_from_file(
-            file_path,
-            extract_source_location,
-            &component_names,
-            &function_names,
-            pragma,
-            preserve_whitespace,
-            flatten,
-            throws,
-        ) {
+        match result {
             Ok(messages) => {
                 for mut msg in messages.into_iter() {
                     // Generate ID if not present
