@@ -42,6 +42,30 @@ Add the following command to your `package.json` `scripts`:
 }
 ```
 
+## Native bindings in the npm CLI
+
+`@formatjs/cli` and `@formatjs/cli-lib` are Node.js packages. Message
+extraction runs in Node.js, but `formatjs compile`, `formatjs compile-folder`,
+and the `compile` API from `@formatjs/cli-lib` use native Rust bindings.
+
+There is no JavaScript compiler fallback and no flag to force non-native
+compilation. If a native binding is unavailable for the current OS/CPU, or if
+your package manager omits optional dependencies, compilation fails with
+`Native @formatjs/cli-lib binding is unavailable`.
+
+The npm packages currently ship native bindings for:
+
+| Platform                   | Package                              |
+| -------------------------- | ------------------------------------ |
+| macOS Apple Silicon        | `@formatjs/cli-native-darwin-arm64`  |
+| Linux arm64 (glibc)        | `@formatjs/cli-native-linux-arm64`   |
+| Linux x64 (glibc)          | `@formatjs/cli-native-linux-x64`     |
+| Windows x64                | `@formatjs/cli-native-win32-x64`     |
+
+macOS x64/Intel and other platforms not listed above are not supported by the
+npm native binding. Run compilation on a supported platform; current releases do
+not support non-native compilation.
+
 ## Native CLI (Rust)
 
 <Admonition type="tip" title="4x Faster Performance">
@@ -56,7 +80,8 @@ Install it from Cargo with `cargo install formatjs_cli`, or download a pre-built
   feature. It currently focuses on **JavaScript/TypeScript with JSX/TSX**,
   supports built-in formatters only, and does not load custom JavaScript
   formatter files. If you need Vue, Svelte, Glimmer, Handlebars, GTS/GJS, or
-  custom formatter support, use the Node.js CLI above.
+  custom formatter support, use the npm CLI above. Its compilation commands
+  still require one of the npm native bindings listed above.
 </Admonition>
 
 ### Installation
@@ -83,6 +108,7 @@ defaultValue="macos"
 values={[
 {label: 'macOS (Apple Silicon)', value: 'macos'},
 {label: 'Linux x64', value: 'linux'},
+{label: 'Windows x64', value: 'windows'},
 ]}>
 <TabItem value="macos">
 
@@ -107,6 +133,15 @@ sudo mv formatjs /usr/local/bin/
 
 # Verify
 formatjs --version
+```
+
+</TabItem>
+<TabItem value="windows">
+
+```powershell
+# Download and verify
+curl.exe -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-win32-x64.exe -o formatjs.exe
+.\formatjs.exe --version
 ```
 
 </TabItem>
@@ -672,6 +707,12 @@ Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs
 ## Node API
 
 Install `@formatjs/cli-lib` instead to use programmatically
+
+<Admonition type="caution">
+  The `compile` and `compileAndWrite` APIs have the same native binding
+  requirement as `formatjs compile`. The `extract` and `extractAndWrite` APIs do
+  not require the native binding.
+</Admonition>
 
 <Tabs
 groupId="npm"
