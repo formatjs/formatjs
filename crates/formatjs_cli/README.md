@@ -10,19 +10,31 @@ A high-performance Rust-based command-line interface for FormatJS internationali
 
 The native Rust CLI offers significant advantages over the Node.js-based `@formatjs/cli`:
 
-- **Faster Performance**: Up to 10-100x faster for large codebases
+- **Faster Performance**: 20.90x faster in the checked-in extraction benchmark
 - **Zero Node.js Runtime Dependency**: Single binary with no Node.js runtime required for supported features
 - **Lower Memory Usage**: Minimal memory footprint compared to Node.js
 - **Instant Startup**: No Node.js initialization overhead
 - **Easy Distribution**: Standalone binaries for CI/CD pipelines
 - **CI/CD Friendly**: Fast, reliable, and cache-friendly
 
-**Benchmark results** (processing ~1000 message files):
+**Benchmark results** (processing 1,000 generated files with 9,406 messages):
 
-- Node.js CLI: ~8.5 seconds
-- Rust CLI: ~0.5 seconds (17x faster)
+- Pure TypeScript Node.js CLI: ~8.5 seconds
+- Hybrid Node.js/native CLI: 744.86 ms, 12,628 messages/second
+- Rust CLI: 35.65 ms, 263,876 messages/second
+- Speedup vs hybrid CLI: 20.90x
 
 The native CLI aims to match `@formatjs/cli` for supported workflows. Some Node-specific behavior is intentionally not available in the standalone Rust binary, including loading arbitrary JavaScript formatter files with `--format`.
+
+## Threading
+
+The native CLI parallelizes per-file work with Rayon. By default, Rayon uses the
+number of available logical CPU cores. Set `RAYON_NUM_THREADS` to cap worker
+threads in CPU-constrained environments:
+
+```bash
+RAYON_NUM_THREADS=4 formatjs extract "src/**/*.tsx" --out-file messages.json
+```
 
 ## Features
 
