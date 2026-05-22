@@ -216,7 +216,8 @@ The GitHub Actions workflow automates the GitHub binary release process:
 1. **Tag the release**:
 
    ```bash
-   # Update version in Cargo.toml if needed
+   # Update version in crates/formatjs_cli/Cargo.toml, Cargo.lock,
+   # and FORMATJS_CLI_VERSION in crates/formatjs_cli/BUILD.bazel if needed
    git tag formatjs_cli_v0.1.0
    git push origin formatjs_cli_v0.1.0
    ```

@@ -9,6 +9,8 @@ load(
     "release_binary_windows_x64",
 )
 
+FORMATJS_CLI_VERSION = "1.1.7"
+
 exports_files(
     [
         "Cargo.toml",
@@ -77,6 +79,7 @@ rust_library(
     ],
     crate_name = "formatjs_cli",
     edition = "2024",
+    version = FORMATJS_CLI_VERSION,
     visibility = ["//visibility:public"],
     deps = COMMON_DEPS,
 )
@@ -89,6 +92,7 @@ rust_binary(
     ],
     crate_name = "formatjs",
     edition = "2024",
+    version = FORMATJS_CLI_VERSION,
     visibility = ["//visibility:public"],
     deps = [
         ":formatjs_cli_lib",
