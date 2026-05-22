@@ -68,8 +68,8 @@ not support non-native compilation.
 
 ## Native CLI (Rust)
 
-<Admonition type="tip" title="4x Faster Performance">
-We provide a high-performance native Rust CLI that's **4-17x faster** than the Node.js version for supported workflows. It is useful for CI/CD pipelines and large JavaScript/TypeScript codebases that do not need Node.js-specific CLI features.
+<Admonition type="tip" title="20x Faster Extraction">
+We provide a high-performance native Rust CLI that's **20.90x faster** than the Node.js version in the checked-in extraction benchmark. It is useful for CI/CD pipelines and large JavaScript/TypeScript codebases that do not need Node.js-specific CLI features.
 
 Install it from Cargo with `cargo install formatjs_cli`, or download a pre-built binary from [GitHub Releases](https://github.com/formatjs/formatjs/releases).
 
@@ -149,7 +149,7 @@ curl.exe -L https://github.com/formatjs/formatjs/releases/download/<version>/for
 
 ### Benefits
 
-- **4-17x Faster**: Dramatically faster extraction and compilation for supported workflows
+- **20.90x Faster Extraction**: Dramatically faster extraction in the checked-in Rust vs TypeScript CLI benchmark
 - **No Node.js Runtime for Supported Features**: Single binary, no Node.js runtime required
 - **Low Memory**: Minimal memory footprint
 - **Instant Startup**: No Node.js initialization overhead
@@ -168,6 +168,14 @@ formatjs compile "lang/*.json" --out-file compiled.json --ast
 
 # Verify translations
 formatjs verify "lang/*.json" --source-locale en --missing-keys
+```
+
+The native CLI parallelizes per-file work with Rayon. By default, Rayon uses the
+available logical CPU count. Set `RAYON_NUM_THREADS` to cap worker threads in
+CPU-constrained environments:
+
+```sh
+RAYON_NUM_THREADS=4 formatjs extract "src/**/*.{ts,tsx}" --out-file messages.json
 ```
 
 Most common extraction, compilation, and verification options work with the native CLI. Notable differences from the Node.js CLI:

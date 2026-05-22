@@ -3,16 +3,20 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages()
 
-# Generate test files (100K files with mixed message formats)
+js_binary(
+    name = "generate_tool",
+    entry_point = "generate-test-files.mjs",
+)
+
+# Generate test files with mixed message formats
 # Includes defineMessage, defineMessages, formatMessage, and FormattedMessage patterns
 js_run_binary(
     name = "generate",
-    srcs = ["generate-test-files.mjs"],
     chdir = package_name(),
-    env = {"NUM_FILES": "100000"},
+    env = {"NUM_FILES": "1000"},
     out_dirs = ["test-files"],
     tags = ["manual"],
-    tool = "//:node_modules/node",
+    tool = ":generate_tool",
 )
 
 # Benchmark binary

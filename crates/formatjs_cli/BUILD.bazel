@@ -49,6 +49,7 @@ COMMON_DEPS = [
     "@crates//:oxc_ast",
     "@crates//:oxc_parser",
     "@crates//:oxc_span",
+    "@crates//:rayon",
     "@crates//:regex",
     "@crates//:serde",
     "@crates//:serde_json",

@@ -28,7 +28,7 @@ echo "📁 Step 2/3: Generating test files..."
 if [ -d "bazel-bin/benchmarks/cli-comparison/test-files" ]; then
   echo "  ✓ Test files already exist, skipping generation"
 else
-  echo "  - Generating 100,000 test files (this may take a few minutes)..."
+  echo "  - Generating 1,000 test files..."
   bazel build //benchmarks/cli-comparison:generate
 fi
 

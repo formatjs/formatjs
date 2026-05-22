@@ -34,6 +34,7 @@ oxc_span = "0.130"
 sha2 = "0.11"
 base64 = "0.22"
 hex = "0.4"
+rayon = "1.12"
 regex = "1.12"
 
 [dev-dependencies]

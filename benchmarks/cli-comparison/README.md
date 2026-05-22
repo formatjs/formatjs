@@ -6,7 +6,7 @@ This benchmark compares the performance of the Rust CLI implementation against t
 
 The benchmark:
 
-- Generates 100,000 TypeScript/React files with ICU MessageFormat messages
+- Generates 1,000 TypeScript/React files with ICU MessageFormat messages
 - Tests all message extraction patterns:
   - `defineMessage` - individual message definitions
   - `defineMessages` - grouped message definitions
@@ -19,23 +19,24 @@ The benchmark:
 
 ### Test Environment
 
-- **OS**: macOS 25.2.0 (Darwin)
-- **CPU**: Apple Silicon
+- **OS**: macOS 26.2 (Darwin)
+- **CPU**: Apple Silicon (arm64)
 - **Node.js**: v24.12.0
-- **Date**: 2026-01-04
+- **Rayon threads**: default worker count (available logical CPUs)
+- **Date**: 2026-05-22
 
-### Results (1,000 files, 9,656 messages)
+### Results (1,000 files, 9,406 messages)
 
 | Metric                 | TypeScript | Rust     | Speedup   |
 | ---------------------- | ---------- | -------- | --------- |
-| **Mean Time**          | 601.63ms   | 131.77ms | **4.57x** |
-| **Operations/sec**     | 1.66       | 7.59     | **4.57x** |
-| **Messages/sec**       | 16,050     | 73,279   | **4.57x** |
-| **Margin of Error**    | ±31.94ms   | ±2.82ms  | -         |
-| **Samples**            | 9          | 38       | -         |
-| **Messages Extracted** | 9,656      | 9,656    | ✓         |
+| **Mean Time**          | 744.86ms   | 35.65ms  | **20.90x** |
+| **Operations/sec**     | 1.34       | 28.05    | **20.90x** |
+| **Messages/sec**       | 12,628     | 263,876  | **20.90x** |
+| **Margin of Error**    | ±39.47ms   | ±0.56ms  | -         |
+| **Samples**            | 7          | 141      | -         |
+| **Messages Extracted** | 9,406      | 9,406    | ✓         |
 
-**Summary**: The Rust CLI is **4.57x faster** (356.6% faster) than the TypeScript CLI, processing 73,279 messages/second vs 16,050 messages/second.
+**Summary**: The Rust CLI is **20.90x faster** (1,989.6% faster) than the TypeScript CLI, processing 263,876 messages/second vs 12,628 messages/second.
 
 These results include all message extraction patterns: `defineMessage`, `defineMessages`, `intl.formatMessage()`, and `<FormattedMessage />`.
 
@@ -51,7 +52,7 @@ cd benchmarks/cli-comparison
 This script will:
 
 1. Build both TypeScript and Rust CLIs
-2. Generate 100K test files (if not already present)
+2. Generate 1,000 test files (if not already present)
 3. Run the benchmark with statistical analysis
 
 ### Option 2: Manual steps
@@ -59,7 +60,7 @@ This script will:
 ```bash
 # From the repository root
 
-# 1. Generate test files (100K files with mixed message formats)
+# 1. Generate test files (1,000 files with mixed message formats)
 bazel build //benchmarks/cli-comparison:generate
 
 # 2. Build both CLIs
@@ -79,6 +80,15 @@ bazel run //benchmarks/cli-comparison:benchmark
 ```
 
 The benchmark script automatically looks for test files and CLIs in `bazel-bin/` output directories.
+
+### Controlling Rust CLI Threads
+
+The Rust CLI parallelizes per-file work with Rayon. Rayon defaults to the
+available logical CPU count. Set `RAYON_NUM_THREADS` to cap worker threads:
+
+```bash
+RAYON_NUM_THREADS=4 bazel run //benchmarks/cli-comparison:benchmark
+```
 
 ## How It Works
 
@@ -146,19 +156,19 @@ BENCHMARK RESULTS
 ────────────────────────────────────────────────────────────────────────────────
 Metric                                        TypeScript                 Rust           Ratio
 ────────────────────────────────────────────────────────────────────────────────
-Mean Time (ms)                                    601.63               131.77           4.57x
-Operations/sec                                      1.66                 7.59           4.57x
-Messages/sec                                       16,050               73,279           4.57x
-Margin of Error (ms)                              ±31.94                ±2.82               -
-Samples                                                9                   38               -
-Messages Extracted                                 9,656                9,656               -
+Mean Time (ms)                                    744.86                35.65          20.90x
+Operations/sec                                      1.34                28.05          20.90x
+Messages/sec                                       12,628              263,876          20.90x
+Margin of Error (ms)                              ±39.47                ±0.56               -
+Samples                                                7                  141               -
+Messages Extracted                                 9,406                9,406               -
 ────────────────────────────────────────────────────────────────────────────────
 
 ✨ Summary:
-   🚀 Rust is 4.57x faster (356.6% faster)
-   📈 7.59 ops/sec vs 1.66 ops/sec
-   💬 Processes 73,279 msg/s vs 16,050 msg/s
-   ✓ Both extracted 9,656 messages
+   🚀 Rust is 20.90x faster (1989.6% faster)
+   📈 28.05 ops/sec vs 1.34 ops/sec
+   💬 Processes 263,875.72 msg/s vs 12,627.948 msg/s
+   ✓ Both extracted 9,406 messages
 ```
 
 Results are saved to `benchmark-results.json` with detailed statistics.
@@ -190,20 +200,20 @@ cd benchmarks/cli-comparison
 pnpm install
 ```
 
-### Out of memory with 100K files
+### Running a Larger Corpus
 
-Reduce the file count in BUILD.bazel:
+The Bazel target defaults to 1,000 files so routine benchmark runs complete quickly. Increase the file count in BUILD.bazel for larger local stress runs:
 
 ```python
-env = {"NUM_FILES": "10000"},  # Reduce from 100000 to 10000
+env = {"NUM_FILES": "10000"},
 ```
 
 ## System Requirements
 
-- **Node.js**: v18 or later
+- **Node.js**: v20 or later
 - **Bazel**: Latest version
 - **Memory**: At least 4GB available RAM
-- **Disk**: ~2GB for test files (100K files)
+- **Disk**: ~50MB for the default 1,000-file corpus; larger corpora scale with file count
 
 ## License
 
