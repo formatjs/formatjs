@@ -38,6 +38,38 @@ interface DescriptorLocation {
   insertionPoint?: number
 }
 
+const JSX_NAMED_CHARACTER_REFERENCES: Record<string, string> = {
+  amp: '&',
+  apos: "'",
+  gt: '>',
+  lt: '<',
+  nbsp: '\u00a0',
+  quot: '"',
+}
+
+function decodeJSXAttributeValue(value: string): string {
+  return value.replace(
+    /&(#(?:x[0-9a-fA-F]+|\d+)|[a-zA-Z][\w.-]*);/g,
+    (match, entity: string) => {
+      if (entity[0] === '#') {
+        const radix = entity[1]?.toLowerCase() === 'x' ? 16 : 10
+        const digits = radix === 16 ? entity.slice(2) : entity.slice(1)
+        const codePoint = Number.parseInt(digits, radix)
+        if (
+          !Number.isFinite(codePoint) ||
+          codePoint <= 0 ||
+          codePoint > 0x10ffff
+        ) {
+          return match
+        }
+        return String.fromCodePoint(codePoint)
+      }
+
+      return JSX_NAMED_CHARACTER_REFERENCES[entity] ?? match
+    }
+  )
+}
+
 export function transform(
   code: string,
   id: string,
@@ -189,7 +221,7 @@ export function transform(
       if (!valueNode) continue
 
       if (valueNode.type === 'StringLiteral' || valueNode.type === 'Literal') {
-        val = valueNode.value as string
+        val = decodeJSXAttributeValue(valueNode.value as string)
       } else if (valueNode.type === 'JSXExpressionContainer') {
         val = getStaticValue(valueNode.expression)
       }
@@ -297,7 +329,10 @@ export function transform(
             locations.defaultMessage.end,
             isJSX ? `{${jsonStr}}` : jsonStr
           )
-        } else if (defaultMessage !== locations.defaultMessage.value) {
+        } else if (
+          !isJSX &&
+          defaultMessage !== locations.defaultMessage.value
+        ) {
           // Whitespace was normalized, update the value
           s.overwrite(
             locations.defaultMessage.start,

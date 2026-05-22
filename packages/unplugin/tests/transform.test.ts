@@ -233,7 +233,7 @@ describe('@formatjs/unplugin transform', () => {
           flatten: true,
         })
       ).toBe(
-        `<FormattedMessage id="14X+wqft" defaultMessage="{numberOfConsultations,plural,one{# consultation} other{# consultations}}" />`
+        `<FormattedMessage id="14X+wqft" defaultMessage="{numberOfConsultations, plural, one {# consultation} other {# consultations}}" />`
       )
     })
 
@@ -247,7 +247,7 @@ describe('@formatjs/unplugin transform', () => {
         {content: flattenedMsg}
       )
       expect(t(input, {flatten: true})).toBe(
-        `<FormattedMessage id="${expectedId}" defaultMessage="${flattenedMsg}" />`
+        `<FormattedMessage id="${expectedId}" defaultMessage="Are you sure you want to delete {count,plural,one {this report template} other {these # report templates}}?" />`
       )
     })
 
@@ -283,6 +283,45 @@ describe('@formatjs/unplugin transform', () => {
       const input = `intl.formatMessage({id: 'test', defaultMessage: '  Hello   World  '})`
       expect(t(input, {preserveWhitespace: true})).toBe(
         `intl.formatMessage({id: "test", defaultMessage: '  Hello   World  '})`
+      )
+    })
+
+    test('preserves JSX defaultMessage source while generating id from normalized message', () => {
+      const input = `<FormattedMessage defaultMessage="  Hello   World  " description="greeting" />`
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {content: 'Hello World#greeting'}
+      )
+
+      expect(t(input)).toBe(
+        `<FormattedMessage id="${expectedId}" defaultMessage="  Hello   World  " />`
+      )
+    })
+
+    test('preserves JSX expression defaultMessage source while generating id from normalized message', () => {
+      const input = `<FormattedMessage defaultMessage={'  Hello\\n  world  '} description="greeting" />`
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {content: 'Hello world#greeting'}
+      )
+
+      expect(t(input)).toBe(
+        `<FormattedMessage id="${expectedId}" defaultMessage={'  Hello\\n  world  '} />`
+      )
+    })
+
+    test('decodes JSX entities for id generation without rewriting source', () => {
+      const input = `<FormattedMessage defaultMessage="She said &quot;hi&quot; &amp; left" description="Owner&apos;s note" />`
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {content: `She said "hi" & left#Owner's note`}
+      )
+
+      expect(t(input)).toBe(
+        `<FormattedMessage id="${expectedId}" defaultMessage="She said &quot;hi&quot; &amp; left" />`
       )
     })
   })
