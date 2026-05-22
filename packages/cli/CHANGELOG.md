@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.16.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.2...@formatjs/cli@6.16.3) (2026-05-22)
+
+### Performance Improvements
+
+* **formatjs_cli:** parallelize file processing ([#6611](https://github.com/formatjs/formatjs/issues/6611)) ([fe52dab](https://github.com/formatjs/formatjs/commit/fe52dabbafbe1c79482bac3447f8a3dc9501f0e3)) - by @longlho
+
 ## [6.16.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.1...@formatjs/cli@6.16.2) (2026-05-22)
 
 **Note:** Version bump only for package @formatjs/cli

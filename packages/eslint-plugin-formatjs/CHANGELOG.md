@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.12](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.4.11...eslint-plugin-formatjs@6.4.12) (2026-05-22)
+
+### Bug Fixes
+
+* **deps:** update dependency eslint to v10.4.0 ([#6612](https://github.com/formatjs/formatjs/issues/6612)) ([105c369](https://github.com/formatjs/formatjs/commit/105c369dc4e17c6b31407400bb6b00ae01e34c85)) - by @renovate[bot]
+
 ## [6.4.11](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.4.10...eslint-plugin-formatjs@6.4.11) (2026-05-22)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
