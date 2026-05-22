@@ -129,7 +129,7 @@
     "magic-string": "^0.30.0",
     "minimist": "^1.2.8",
     "oxc-parser": "^0.130.0",
-    "oxc-transform": "^0.130.0",
+    "oxc-transform": "^0.131.0",
     "oxfmt": "^0.49.0",
     "oxlint": "^1.64.0",
     "picomatch": "^4.0.4",
