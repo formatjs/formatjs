@@ -113,4 +113,43 @@ jobs:
 
           bazel build @bazelWindowsFlags //packages/cli-native-win32-x64:pkg
           $pkgPath = Resolve-Path (bazel cquery @bazelWindowsFlags --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
-          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' $pkgPath
+          $script = @'
+          const fs = require('node:fs')
+          const os = require('node:os')
+          const path = require('node:path')
+          const native = require(process.argv[2])
+
+          const formatters = native.supportedBuiltinFormatters()
+          if (!formatters.includes('default')) {
+            throw new Error('Missing default formatter')
+          }
+
+          const messageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'formatjs-cli-lib-'))
+          const messageSubdir = path.join(messageDir, 'messages[prod]')
+          fs.mkdirSync(messageSubdir)
+          const messageFile = path.join(messageSubdir, 'primary.json')
+          fs.writeFileSync(
+            messageFile,
+            JSON.stringify({
+              hello: {
+                message: 'Hello {name}',
+                description: 'Smoke test message',
+              },
+            })
+          )
+
+          if (!messageFile.includes('\\')) {
+            throw new Error(`Expected a native Windows path, got ${messageFile}`)
+          }
+
+          const output = native.compile([messageFile], {
+            ast: true,
+            format: 'crowdin',
+          })
+          const compiled = JSON.parse(output)
+          if (!Array.isArray(compiled.hello)) {
+            throw new Error(output)
+          }
+          console.log(output)
+          '@
+          $script | node - $pkgPath

@@ -151,6 +151,11 @@ pub fn compile_to_string(
     // Step 1: Expand glob patterns to actual file paths
     let mut expanded_files = Vec::new();
     for pattern in translation_files {
+        if pattern.is_file() {
+            expanded_files.push(pattern.clone());
+            continue;
+        }
+
         let pattern_str = pattern
             .to_str()
             .context("Pattern path contains invalid UTF-8")?;
@@ -1435,6 +1440,39 @@ mod tests {
         // Ensure literal (non-glob) paths still work
         let dir = tempdir().unwrap();
         let input_file = dir.path().join("messages.json");
+        let output_file = dir.path().join("compiled.json");
+
+        fs::write(
+            &input_file,
+            json!({"msg": {"defaultMessage": "Literal path"}}).to_string(),
+        )
+        .unwrap();
+
+        compile(
+            &[input_file],
+            None,
+            Some(&output_file),
+            false,
+            false,
+            None,
+            false,
+            true, // follow links
+        )
+        .unwrap();
+
+        let output_content = fs::read_to_string(&output_file).unwrap();
+        let output_json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+
+        assert_eq!(output_json["msg"], "Literal path");
+    }
+
+    #[test]
+    fn test_compile_with_literal_file_path_containing_glob_metacharacters() {
+        let dir = tempdir().unwrap();
+        let subdir = dir.path().join("messages[prod]");
+        fs::create_dir_all(&subdir).unwrap();
+
+        let input_file = subdir.join("primary.json");
         let output_file = dir.path().join("compiled.json");
 
         fs::write(
