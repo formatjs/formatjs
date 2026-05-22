@@ -1,0 +1,21 @@
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "benchmark",
+    data = [
+        ":benchmark.ts",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/formatjs_cli",
+        "//packages/cli:bin",
+        "@oss_react_intl_kibana//:extract_srcs",
+        "@oss_react_intl_mattermost//:extract_srcs",
+        "@oss_react_intl_mattermost_desktop//:extract_srcs",
+    ],
+    entry_point = "benchmark.ts",
+    no_copy_to_bin = [
+        "@oss_react_intl_kibana//:extract_srcs",
+        "@oss_react_intl_mattermost//:extract_srcs",
+        "@oss_react_intl_mattermost_desktop//:extract_srcs",
+    ],
+    tags = ["manual"],
+)
