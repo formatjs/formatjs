@@ -120,17 +120,21 @@ The transpiler infrastructure is located in:
 
 Releases are automated via GitHub Actions. To publish a new release:
 
-1. Bump package versions by running the prerelease script locally:
+1. Run the **Prerelease** GitHub Actions workflow first. This bumps package
+   versions and lets lerna-lite derive changelogs from the normal release
+   history.
 
-```sh
-# Make sure you have GH_TOKEN setup as indicated by:
-# https://github.com/lerna/lerna/blob/05ad1860e2da7fc16c9c0a072c9389e94792ab64/commands/version/README.md#--create-release-type
-GH_TOKEN=xxxxxxx npm run prerelease
-```
+   Do this before creating any `formatjs_cli_v*` tag. If the Rust CLI tag is
+   created first, lerna-lite can see that tag as the latest release point and
+   fail to derive the package changelog correctly.
 
-2. Commit and push the version changes to the `main` branch
+2. Wait for the Prerelease workflow to commit and push the version changes to
+   the `main` branch.
 
 3. GitHub Actions will automatically build and publish all packages to npm using [Trusted Publishing (OIDC)](https://docs.npmjs.com/trusted-publishers/)
+
+4. If publishing Rust CLI binaries, create the `formatjs_cli_v<version>` tag
+   only after the prerelease commit is on `main`.
 
 ### Updating tzdata version
 
