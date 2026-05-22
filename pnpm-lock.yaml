@@ -459,7 +459,7 @@ importers:
         version: 0.4.259(react-streaming@0.4.17(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(srvx@0.11.15)(vite@8.0.13(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.0))
       vike-react:
         specifier: ^0.6.18
-        version: 0.6.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.259(react-streaming@0.4.17(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(srvx@0.11.15)(vite@8.0.13(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.0)))
+        version: 0.6.23(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.259(react-streaming@0.4.17(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(srvx@0.11.15)(vite@8.0.13(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.0)))
       vite:
         specifier: ^8.0.0
         version: 8.0.13(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.0)
@@ -8452,8 +8452,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vike-react@0.6.22:
-    resolution: {integrity: sha512-m8iatIM50oNyXzxc+fa8OBhlF7K07tsYz3Y2L+AbFZ/qM47P35l7px34t3m29/U2o8FvYVVtgUKWH04p5dDdFg==}
+  vike-react@0.6.23:
+    resolution: {integrity: sha512-biove5kNaqcflyTbkjpCR+ebHZOzEEmsgp8WTDadbaQRouoKz2ackjnZmwpuH0tfroMgwS63wZ92q5NfZ4cksA==}
     peerDependencies:
       react: '>=19'
       react-dom: '>=19'
@@ -16971,7 +16971,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vike-react@0.6.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.259(react-streaming@0.4.17(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(srvx@0.11.15)(vite@8.0.13(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.0))):
+  vike-react@0.6.23(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vike@0.4.259(react-streaming@0.4.17(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(srvx@0.11.15)(vite@8.0.13(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.0))):
     dependencies:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
