@@ -101,6 +101,11 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | `website.yml`          | Manual/push           | Deploy docs site                         |
 | `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint       |
 
+Run the manual `Prerelease` workflow before creating any `formatjs_cli_v*` tag.
+The Rust CLI tag should point at the post-prerelease `main` commit; otherwise
+lerna-lite can treat the CLI tag as the latest release point and fail to derive
+package changelogs correctly.
+
 ## Common Commands
 
 ```bash

@@ -27,8 +27,14 @@ The repository includes two GitHub Actions workflows:
 
 **Triggered by**: Push a tag starting with `formatjs_cli_v` (e.g., `formatjs_cli_v0.1.0`)
 
+Before creating the tag, run the **Prerelease** GitHub Actions workflow and wait
+for its version commit to land on `main`. The Rust CLI release tag must point at
+that post-prerelease commit. If the `formatjs_cli_v*` tag is created first,
+lerna-lite can treat it as the latest release point and fail to derive package
+changelogs correctly.
+
 ```bash
-# Create and push a release tag
+# After Prerelease has landed on main, create and push the release tag
 git tag formatjs_cli_v0.1.0
 git push origin formatjs_cli_v0.1.0
 ```
@@ -213,7 +219,14 @@ chmod +x formatjs_cli-linux-x64
 
 The GitHub Actions workflow automates the GitHub binary release process:
 
-1. **Tag the release**:
+1. **Run Prerelease first**:
+
+   Trigger the **Prerelease** GitHub Actions workflow and wait for the resulting
+   version commit to land on `main`. This must happen before any
+   `formatjs_cli_v*` tag is created so lerna-lite can derive package changelogs
+   from the correct release history.
+
+2. **Tag the release**:
 
    ```bash
    # Update version in crates/formatjs_cli/Cargo.toml, Cargo.lock,
@@ -222,17 +235,17 @@ The GitHub Actions workflow automates the GitHub binary release process:
    git push origin formatjs_cli_v0.1.0
    ```
 
-2. **Workflow runs automatically**:
+3. **Workflow runs automatically**:
    - Builds both macOS and Linux binaries
    - Runs smoke tests
    - Creates GitHub Release with all artifacts
 
-3. **Manual verification** (optional):
+4. **Manual verification** (optional):
    - Check GitHub Actions run completed successfully
    - Download and test binaries from the release
    - Verify checksums
 
-4. **Publish to npm** (if applicable):
+5. **Publish to npm** (if applicable):
 
    ```bash
    # Update package.json with release URLs
