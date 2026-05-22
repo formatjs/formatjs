@@ -95,12 +95,28 @@ module.exports = {
 
 ## Options
 
-| Option                     | Type       | Default                         | Description                             |
-| -------------------------- | ---------- | ------------------------------- | --------------------------------------- |
-| `idInterpolationPattern`   | `string`   | `[sha512:contenthash:base64:6]` | Pattern for generating message IDs      |
-| `overrideIdFn`             | `function` | —                               | Custom function to generate message IDs |
-| `removeDefaultMessage`     | `boolean`  | `false`                         | Remove `defaultMessage` from output     |
-| `additionalComponentNames` | `string[]` | `[]`                            | Extra JSX component names to process    |
-| `additionalFunctionNames`  | `string[]` | `[]`                            | Extra function names to process         |
-| `ast`                      | `boolean`  | `false`                         | Pre-parse `defaultMessage` into AST     |
-| `preserveWhitespace`       | `boolean`  | `false`                         | Keep original whitespace in messages    |
+| Option                     | Type         | Default                         | Description                             |
+| -------------------------- | ------------ | ------------------------------- | --------------------------------------- |
+| `idInterpolationPattern`   | `string`     | `[sha512:contenthash:base64:6]` | Pattern for generating message IDs      |
+| `overrideIdFn`             | `function`   | —                               | Custom function to generate message IDs |
+| `removeDefaultMessage`     | `boolean`    | `false`                         | Remove `defaultMessage` from output     |
+| `additionalComponentNames` | `string[]`   | `[]`                            | Extra JSX component names to process    |
+| `additionalFunctionNames`  | `string[]`   | `[]`                            | Extra function names to process         |
+| `ast`                      | `boolean`    | `false`                         | Pre-parse `defaultMessage` into AST     |
+| `preserveWhitespace`       | `boolean`    | `false`                         | Keep original whitespace in messages    |
+| `filter`                   | `HookFilter` | JS/TS outside `node_modules`    | Filter modules before transformation    |
+
+### Transform Hook Filters
+
+`filter` is forwarded to unplugin's `transform.filter` hook. Passing a custom filter replaces the default module policy, which matches JavaScript and TypeScript module IDs outside `node_modules`.
+
+```ts
+import formatjs from '@formatjs/unplugin/vite'
+
+formatjs({
+  filter: {
+    id: /^(?!.*\/node_modules\/).*\.tsx?$|\/node_modules\/@my-org\/learning-block\/.*\.tsx?$/,
+    code: /FormattedMessage|defineMessages?|formatMessage|defaultMessage/,
+  },
+})
+```

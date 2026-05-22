@@ -548,8 +548,8 @@ const compiled = _jsx(FormattedMessage, {id: "iWft3o", defaultMessage: 'Compiled
 describe('@formatjs/unplugin factory', () => {
   // Helper to get the plugin object from the factory
   // The factory signature is (options, meta) per unplugin's UnpluginFactory type
-  function getPlugin(factory: Function): any {
-    return factory({}, {framework: 'vite'})
+  function getPlugin(factory: Function, options: Options = {}): any {
+    return factory(options, {framework: 'vite'})
   }
 
   test('unpluginFactory returns correct plugin shape', async () => {
@@ -557,40 +557,54 @@ describe('@formatjs/unplugin factory', () => {
     const plugin = getPlugin(unpluginFactory)
     expect(plugin.name).toBe('formatjs')
     expect(plugin.enforce).toBe('pre')
-    expect(typeof plugin.transformInclude).toBe('function')
-    expect(typeof plugin.transform).toBe('function')
+    expect(plugin.transformInclude).toBeUndefined()
+    expect(typeof plugin.transform).toBe('object')
+    expect(plugin.transform.filter).toBeDefined()
+    expect(typeof plugin.transform.handler).toBe('function')
   })
 
-  test('transformInclude matches JS/TS files', async () => {
+  test('default transform filter matches JS/TS files outside node_modules', async () => {
     const {unpluginFactory} = await import('../index.js')
     const plugin = getPlugin(unpluginFactory)
-    expect(plugin.transformInclude('/src/App.tsx')).toBe(true)
-    expect(plugin.transformInclude('/src/utils.ts')).toBe(true)
-    expect(plugin.transformInclude('/src/main.js')).toBe(true)
-    expect(plugin.transformInclude('/src/App.jsx')).toBe(true)
-    expect(plugin.transformInclude('/src/styles.css')).toBe(false)
-    expect(plugin.transformInclude('/node_modules/react/index.js')).toBe(false)
+    const idFilter = plugin.transform.filter.id
+
+    expect(idFilter.include.test('/src/App.tsx')).toBe(true)
+    expect(idFilter.include.test('/src/utils.ts')).toBe(true)
+    expect(idFilter.include.test('/src/main.js')).toBe(true)
+    expect(idFilter.include.test('/src/App.jsx')).toBe(true)
+    expect(idFilter.include.test('/src/styles.css')).toBe(false)
+    expect(idFilter.exclude.test('/node_modules/react/index.js')).toBe(true)
   })
 
-  test('transformInclude ignores query/hash on the id (#6455)', async () => {
+  test('default transform filter ignores query/hash on the id (#6455)', async () => {
     const {unpluginFactory} = await import('../index.js')
     const plugin = getPlugin(unpluginFactory)
+    const idFilter = plugin.transform.filter.id
+
     // React Router splits routes that export clientLoader/clientAction into
     // virtual chunk modules — IDs come in with a `?route-chunk=...` query.
-    expect(plugin.transformInclude('/src/route.tsx?route-chunk=main')).toBe(
-      true
-    )
-    expect(plugin.transformInclude('/src/route.ts?v=123')).toBe(true)
-    expect(plugin.transformInclude('/src/route.tsx#anchor')).toBe(true)
-    expect(plugin.transformInclude('/node_modules/foo/index.js?v=123')).toBe(
-      false
-    )
+    expect(idFilter.include.test('/src/route.tsx?route-chunk=main')).toBe(true)
+    expect(idFilter.include.test('/src/route.ts?v=123')).toBe(true)
+    expect(idFilter.include.test('/src/route.tsx#anchor')).toBe(true)
+    expect(idFilter.exclude.test('/node_modules/foo/index.js?v=123')).toBe(true)
+  })
+
+  test('custom transform filter is forwarded to unplugin', async () => {
+    const {unpluginFactory} = await import('../index.js')
+    const filter = {
+      id: /\/node_modules\/@my-org\/learning-block\/.*\.tsx?$/,
+      code: /FormattedMessage|defineMessages?|formatMessage|defaultMessage/,
+    }
+    const plugin = getPlugin(unpluginFactory, {filter})
+
+    expect(plugin.transform.filter).toBe(filter)
+    expect(plugin.transformInclude).toBeUndefined()
   })
 
   test('transform processes formatjs descriptors', async () => {
     const {unpluginFactory} = await import('../index.js')
     const plugin = getPlugin(unpluginFactory)
-    const result = plugin.transform(
+    const result = plugin.transform.handler(
       `intl.formatMessage({defaultMessage: 'Hello', description: 'greeting'})`,
       '/src/App.tsx'
     )
@@ -603,7 +617,7 @@ describe('@formatjs/unplugin factory', () => {
   test('transform returns undefined for non-formatjs code', async () => {
     const {unpluginFactory} = await import('../index.js')
     const plugin = getPlugin(unpluginFactory)
-    const result = plugin.transform(
+    const result = plugin.transform.handler(
       `const x = 1; console.log(x);`,
       '/src/utils.ts'
     )
