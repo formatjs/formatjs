@@ -2,7 +2,6 @@
 ///
 /// This module handles generating message IDs based on content hashing with
 /// configurable patterns like `[sha512:contenthash:base64:6]`.
-
 use anyhow::{Context, Result};
 use base64::Engine;
 use serde_json::Value;
@@ -10,6 +9,24 @@ use sha2::{Digest, Sha512};
 
 /// Base62 character set: 0-9, A-Z, a-z
 const BASE62_CHARS: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum HashAlgorithm {
+    Sha512,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum DigestType {
+    ContentHash,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Encoding {
+    Base64,
+    Base64Url,
+    Base62,
+    Hex,
+}
 
 /// Encode bytes to base62 string
 fn encode_base62(bytes: &[u8]) -> String {
@@ -71,74 +88,104 @@ pub fn generate_id(
     description: &Option<Value>,
     _file_path: Option<&str>,
 ) -> Result<String> {
-    // Parse pattern: [hash:digest:encoding:length]
-    // Default: [sha512:contenthash:base64:6]
+    IdGenerator::new(pattern)?.generate(default_message, description)
+}
 
-    if !pattern.starts_with('[') || !pattern.ends_with(']') {
-        anyhow::bail!("Invalid ID interpolation pattern: {}", pattern);
-    }
+/// Parsed ID interpolation pattern for repeated message ID generation.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct IdGenerator {
+    hash_algorithm: HashAlgorithm,
+    digest_type: DigestType,
+    encoding: Encoding,
+    length: usize,
+}
 
-    let inner = &pattern[1..pattern.len() - 1];
-    let parts: Vec<&str> = inner.split(':').collect();
+impl IdGenerator {
+    pub fn new(pattern: &str) -> Result<Self> {
+        // Parse pattern: [hash:digest:encoding:length]
+        // Default: [sha512:contenthash:base64:6]
 
-    if parts.len() < 4 {
-        anyhow::bail!(
-            "Invalid ID interpolation pattern format: {}. Expected [hash:digest:encoding:length]",
-            pattern
-        );
-    }
-
-    let hash_algo = parts[0];
-    let digest_type = parts[1];
-    let encoding = parts[2];
-    let length: usize = parts[3]
-        .parse()
-        .context("Invalid length in ID interpolation pattern")?;
-
-    // Build content hash input
-    let mut content = String::new();
-    if let Some(msg) = default_message {
-        content.push_str(msg);
-    }
-    if let Some(desc) = description {
-        content.push('#');
-        // Extract string value for string types to match TypeScript CLI behavior
-        // TypeScript uses: typeof description === 'string' ? description : stringify(description)
-        match desc {
-            Value::String(s) => content.push_str(s),
-            _ => content.push_str(&desc.to_string()),
+        if !pattern.starts_with('[') || !pattern.ends_with(']') {
+            anyhow::bail!("Invalid ID interpolation pattern: {}", pattern);
         }
+
+        let inner = &pattern[1..pattern.len() - 1];
+        let parts: Vec<&str> = inner.split(':').collect();
+
+        if parts.len() < 4 {
+            anyhow::bail!(
+                "Invalid ID interpolation pattern format: {}. Expected [hash:digest:encoding:length]",
+                pattern
+            );
+        }
+
+        let hash_algorithm = match parts[0] {
+            "sha512" => HashAlgorithm::Sha512,
+            _ => anyhow::bail!("Unsupported hash algorithm: {}", parts[0]),
+        };
+        let digest_type = match parts[1] {
+            "contenthash" => DigestType::ContentHash,
+            _ => anyhow::bail!("Unsupported digest type: {}", parts[1]),
+        };
+        let encoding = match parts[2] {
+            "base64" => Encoding::Base64,
+            "base64url" => Encoding::Base64Url,
+            "base62" => Encoding::Base62,
+            "hex" => Encoding::Hex,
+            _ => anyhow::bail!("Unsupported encoding: {}", parts[2]),
+        };
+        let length: usize = parts[3]
+            .parse()
+            .context("Invalid length in ID interpolation pattern")?;
+
+        Ok(Self {
+            hash_algorithm,
+            digest_type,
+            encoding,
+            length,
+        })
     }
 
-    // Generate hash
-    let hash = match (hash_algo, digest_type) {
-        ("sha512", "contenthash") => {
-            let mut hasher = Sha512::new();
-            hasher.update(content.as_bytes());
-            let result = hasher.finalize();
-            match encoding {
-                "base64" => {
-                    // Standard base64 (matches Node's crypto.digest('base64'))
-                    base64::engine::general_purpose::STANDARD.encode(&result)
+    pub fn generate(
+        &self,
+        default_message: Option<&str>,
+        description: &Option<Value>,
+    ) -> Result<String> {
+        // Generate hash
+        let hash = match (self.hash_algorithm, self.digest_type) {
+            (HashAlgorithm::Sha512, DigestType::ContentHash) => {
+                let mut hasher = Sha512::new();
+                if let Some(msg) = default_message {
+                    hasher.update(msg.as_bytes());
                 }
-                "base64url" => {
-                    // URL-safe base64 without padding (matches Node's crypto.digest('base64url'))
-                    base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(&result)
+                if let Some(desc) = description {
+                    hasher.update(b"#");
+                    // Extract string value for string types to match TypeScript CLI behavior
+                    // TypeScript uses: typeof description === 'string' ? description : stringify(description)
+                    match desc {
+                        Value::String(s) => hasher.update(s.as_bytes()),
+                        _ => hasher.update(desc.to_string().as_bytes()),
+                    }
                 }
-                "base62" => encode_base62(&result),
-                "hex" => hex::encode(result),
-                _ => anyhow::bail!("Unsupported encoding: {}", encoding),
+                let result = hasher.finalize();
+                match self.encoding {
+                    Encoding::Base64 => {
+                        // Standard base64 (matches Node's crypto.digest('base64'))
+                        base64::engine::general_purpose::STANDARD.encode(&result)
+                    }
+                    Encoding::Base64Url => {
+                        // URL-safe base64 without padding (matches Node's crypto.digest('base64url'))
+                        base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(&result)
+                    }
+                    Encoding::Base62 => encode_base62(&result),
+                    Encoding::Hex => hex::encode(result),
+                }
             }
-        }
-        _ => anyhow::bail!(
-            "Unsupported hash algorithm or digest type: {}:{}",
-            hash_algo,
-            digest_type
-        ),
-    };
+        };
 
-    // Truncate to specified length
-    Ok(hash.chars().take(length).collect())
+        // Truncate to specified length
+        Ok(hash.chars().take(self.length).collect())
+    }
 }
 
 #[cfg(test)]
@@ -254,13 +301,8 @@ mod tests {
     #[test]
     fn test_generate_id_with_description_affects_hash() {
         let desc = serde_json::Value::String("Description".to_string());
-        let id1 = generate_id(
-            "[sha512:contenthash:base64:10]",
-            Some("Hello"),
-            &None,
-            None,
-        )
-        .unwrap();
+        let id1 =
+            generate_id("[sha512:contenthash:base64:10]", Some("Hello"), &None, None).unwrap();
         let id2 = generate_id(
             "[sha512:contenthash:base64:10]",
             Some("Hello"),
@@ -290,10 +332,20 @@ mod tests {
 
     #[test]
     fn test_generate_id_base64_vs_base64url() {
-        let id_base64 =
-            generate_id("[sha512:contenthash:base64:10]", Some("Hello World"), &None, None).unwrap();
-        let id_base64url =
-            generate_id("[sha512:contenthash:base64url:10]", Some("Hello World"), &None, None).unwrap();
+        let id_base64 = generate_id(
+            "[sha512:contenthash:base64:10]",
+            Some("Hello World"),
+            &None,
+            None,
+        )
+        .unwrap();
+        let id_base64url = generate_id(
+            "[sha512:contenthash:base64url:10]",
+            Some("Hello World"),
+            &None,
+            None,
+        )
+        .unwrap();
 
         assert_eq!(id_base64, "LHT9F+2v2A");
         assert_eq!(id_base64url, "LHT9F-2v2A");
@@ -301,8 +353,13 @@ mod tests {
 
     #[test]
     fn test_generate_id_base62() {
-        let id =
-            generate_id("[sha512:contenthash:base62:10]", Some("Test message"), &None, None).unwrap();
+        let id = generate_id(
+            "[sha512:contenthash:base62:10]",
+            Some("Test message"),
+            &None,
+            None,
+        )
+        .unwrap();
         assert_eq!(id, "Gm8I0LBX6B");
     }
 
@@ -349,12 +406,7 @@ mod tests {
 
     #[test]
     fn test_generate_id_invalid_encoding() {
-        let result = generate_id(
-            "[sha512:contenthash:base32:10]",
-            Some("Test"),
-            &None,
-            None,
-        );
+        let result = generate_id("[sha512:contenthash:base32:10]", Some("Test"), &None, None);
         assert!(result.is_err());
         assert!(result
             .unwrap_err()

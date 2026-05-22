@@ -4,6 +4,7 @@
 //! back into their string representation, following the ICU MessageFormat syntax.
 
 use crate::types::*;
+use std::fmt::Write;
 
 /// Prints a MessageFormat AST to its string representation.
 ///
@@ -27,47 +28,31 @@ use crate::types::*;
 /// assert_eq!(print_ast(&ast), "Hello");
 /// ```
 pub fn print_ast(ast: &[MessageFormatElement]) -> String {
-    do_print_ast(ast, false)
+    let mut result = String::new();
+    write_ast(&mut result, ast, false);
+    result
 }
 
-/// Internal function to print AST with plural context tracking.
-///
-/// This function handles the recursive printing of AST nodes, keeping track
-/// of whether we're currently inside a plural element (which affects how
-/// the '#' character is escaped).
-///
-/// # Arguments
-///
-/// * `ast` - The AST nodes to print
-/// * `is_in_plural` - Whether we're currently inside a plural element (affects '#' escaping)
-///
-/// # Returns
-///
-/// The printed string representation
-fn do_print_ast(ast: &[MessageFormatElement], is_in_plural: bool) -> String {
-    ast.iter()
-        .enumerate()
-        .filter_map(|(i, el)| {
-            // Track position to handle special quote escaping at boundaries
-            let is_first = i == 0;
-            let is_last = i == ast.len() - 1;
+fn write_ast(out: &mut String, ast: &[MessageFormatElement], is_in_plural: bool) {
+    for (i, el) in ast.iter().enumerate() {
+        // Track position to handle special quote escaping at boundaries
+        let is_first = i == 0;
+        let is_last = i == ast.len() - 1;
 
-            match el {
-                MessageFormatElement::Literal(lit) => {
-                    Some(print_literal_element(lit, is_in_plural, is_first, is_last))
-                }
-                MessageFormatElement::Argument(arg) => Some(print_argument_element(arg)),
-                MessageFormatElement::Number(num) => Some(print_number_element(num)),
-                MessageFormatElement::Date(date) => Some(print_date_element(date)),
-                MessageFormatElement::Time(time) => Some(print_time_element(time)),
-                MessageFormatElement::Plural(plural) => Some(print_plural_element(plural)),
-                MessageFormatElement::Select(select) => Some(print_select_element(select)),
-                MessageFormatElement::Pound(_) => Some("#".to_string()),
-                MessageFormatElement::Tag(tag) => Some(print_tag_element(tag)),
+        match el {
+            MessageFormatElement::Literal(lit) => {
+                write_literal_element(out, lit, is_in_plural, is_first, is_last)
             }
-        })
-        .collect::<Vec<_>>()
-        .join("")
+            MessageFormatElement::Argument(arg) => write_argument_element(out, arg),
+            MessageFormatElement::Number(num) => write_number_element(out, num),
+            MessageFormatElement::Date(date) => write_date_element(out, date),
+            MessageFormatElement::Time(time) => write_time_element(out, time),
+            MessageFormatElement::Plural(plural) => write_plural_element(out, plural),
+            MessageFormatElement::Select(select) => write_select_element(out, select),
+            MessageFormatElement::Pound(_) => out.push('#'),
+            MessageFormatElement::Tag(tag) => write_tag_element(out, tag),
+        }
+    }
 }
 
 /// Prints an XML-like tag element with its children.
@@ -81,13 +66,27 @@ fn do_print_ast(ast: &[MessageFormatElement], is_in_plural: bool) -> String {
 /// # Returns
 ///
 /// A string like `<b>text</b>`
-fn print_tag_element(el: &TagElement) -> String {
-    format!("<{}>{}</{}>", el.value, print_ast(&el.children), el.value)
+fn write_tag_element(out: &mut String, el: &TagElement) {
+    out.push('<');
+    out.push_str(&el.value);
+    out.push('>');
+    write_ast(out, &el.children, false);
+    out.push_str("</");
+    out.push_str(&el.value);
+    out.push('>');
 }
 
 /// Wraps one ICU syntax token in apostrophe quotes.
-fn quote_syntax_token(token: &str) -> String {
-    format!("'{}'", token.replace('\'', "''"))
+fn write_quoted_syntax_token(out: &mut String, token: &str) {
+    out.push('\'');
+    for ch in token.chars() {
+        if ch == '\'' {
+            out.push_str("''");
+        } else {
+            out.push(ch);
+        }
+    }
+    out.push('\'');
 }
 
 fn is_tag_syntax_start(bytes: &[u8], index: usize) -> bool {
@@ -123,9 +122,8 @@ fn find_brace_syntax_end(bytes: &[u8], index: usize) -> usize {
 }
 
 /// Escapes ICU syntax tokens in a literal message string.
-fn print_escaped_message(message: &str, is_in_plural: bool) -> String {
+fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
     let bytes = message.as_bytes();
-    let mut result = String::new();
     let mut literal_start = 0;
     let mut i = 0;
 
@@ -139,8 +137,8 @@ fn print_escaped_message(message: &str, is_in_plural: bool) -> String {
         };
 
         if let Some(end) = end {
-            result.push_str(&message[literal_start..i]);
-            result.push_str(&quote_syntax_token(&message[i..end]));
+            out.push_str(&message[literal_start..i]);
+            write_quoted_syntax_token(out, &message[i..end]);
             literal_start = end;
             i = end;
         } else {
@@ -148,8 +146,7 @@ fn print_escaped_message(message: &str, is_in_plural: bool) -> String {
         }
     }
 
-    result.push_str(&message[literal_start..]);
-    result
+    out.push_str(&message[literal_start..]);
 }
 
 /// Prints a literal text element with appropriate escaping.
@@ -167,26 +164,33 @@ fn print_escaped_message(message: &str, is_in_plural: bool) -> String {
 /// # Returns
 ///
 /// The properly escaped literal text
-fn print_literal_element(
+fn write_literal_element(
+    out: &mut String,
     el: &LiteralElement,
     is_in_plural: bool,
     is_first_el: bool,
     is_last_el: bool,
-) -> String {
-    let mut escaped = el.value.clone();
-
+) {
     // If this literal starts with a ' and it's not the 1st node, this means the node before it is non-literal
     // and the `'` needs to be unescaped (doubled) to preserve it
-    if !is_first_el && escaped.starts_with('\'') {
-        escaped = format!("''{}", &escaped[1..]);
-    }
+    let needs_leading_quote_escape = !is_first_el && el.value.starts_with('\'');
+    let needs_trailing_quote_escape = !is_last_el && el.value.ends_with('\'');
 
-    // Same logic but for the last element - preserve trailing quotes
-    if !is_last_el && escaped.ends_with('\'') {
-        escaped = format!("{}''", &escaped[..escaped.len() - 1]);
-    }
+    if needs_leading_quote_escape || needs_trailing_quote_escape {
+        let mut escaped = el.value.clone();
+        if needs_leading_quote_escape {
+            escaped = format!("''{}", &escaped[1..]);
+        }
 
-    print_escaped_message(&escaped, is_in_plural)
+        // Same logic but for the last element - preserve trailing quotes
+        if !is_last_el && escaped.ends_with('\'') {
+            escaped = format!("{}''", &escaped[..escaped.len() - 1]);
+        }
+
+        write_escaped_message(out, &escaped, is_in_plural);
+    } else {
+        write_escaped_message(out, &el.value, is_in_plural);
+    }
 }
 
 /// Prints a simple argument reference.
@@ -200,8 +204,8 @@ fn print_literal_element(
 /// # Returns
 ///
 /// A string like `{count}`
-fn print_argument_element(el: &ArgumentElement) -> String {
-    format!("{{{}}}", el.value)
+fn write_argument_element(out: &mut String, el: &ArgumentElement) {
+    let _ = write!(out, "{{{}}}", el.value);
 }
 
 /// Prints a number format element.
@@ -215,12 +219,13 @@ fn print_argument_element(el: &ArgumentElement) -> String {
 /// # Returns
 ///
 /// A string like `{count, number, percent}`
-fn print_number_element(el: &NumberElement) -> String {
-    let style_str = match &el.style {
-        Some(s) => format!(", {}", print_argument_style_number(s)),
-        None => String::new(),
-    };
-    format!("{{{}, number{}}}", el.value, style_str)
+fn write_number_element(out: &mut String, el: &NumberElement) {
+    let _ = write!(out, "{{{}, number", el.value);
+    if let Some(style) = &el.style {
+        out.push_str(", ");
+        write_argument_style_number(out, style);
+    }
+    out.push('}');
 }
 
 /// Prints a date format element.
@@ -234,12 +239,13 @@ fn print_number_element(el: &NumberElement) -> String {
 /// # Returns
 ///
 /// A string like `{today, date, short}`
-fn print_date_element(el: &DateElement) -> String {
-    let style_str = match &el.style {
-        Some(s) => format!(", {}", print_argument_style_datetime(s)),
-        None => String::new(),
-    };
-    format!("{{{}, date{}}}", el.value, style_str)
+fn write_date_element(out: &mut String, el: &DateElement) {
+    let _ = write!(out, "{{{}, date", el.value);
+    if let Some(style) = &el.style {
+        out.push_str(", ");
+        write_argument_style_datetime(out, style);
+    }
+    out.push('}');
 }
 
 /// Prints a time format element.
@@ -253,12 +259,13 @@ fn print_date_element(el: &DateElement) -> String {
 /// # Returns
 ///
 /// A string like `{now, time, ::jmm}`
-fn print_time_element(el: &TimeElement) -> String {
-    let style_str = match &el.style {
-        Some(s) => format!(", {}", print_argument_style_datetime(s)),
-        None => String::new(),
-    };
-    format!("{{{}, time{}}}", el.value, style_str)
+fn write_time_element(out: &mut String, el: &TimeElement) {
+    let _ = write!(out, "{{{}, time", el.value);
+    if let Some(style) = &el.style {
+        out.push_str(", ");
+        write_argument_style_datetime(out, style);
+    }
+    out.push('}');
 }
 
 /// Prints a number skeleton token.
@@ -273,20 +280,11 @@ fn print_time_element(el: &TimeElement) -> String {
 /// # Returns
 ///
 /// A string like `currency/USD` or `percent`
-fn print_number_skeleton_token(token: &NumberSkeletonToken) -> String {
-    if token.options.is_empty() {
-        token.stem.clone()
-    } else {
-        format!(
-            "{}{}",
-            token.stem,
-            token
-                .options
-                .iter()
-                .map(|o| format!("/{}", o))
-                .collect::<Vec<_>>()
-                .join("")
-        )
+fn write_number_skeleton_token(out: &mut String, token: &NumberSkeletonToken) {
+    out.push_str(&token.stem);
+    for option in &token.options {
+        out.push('/');
+        out.push_str(option);
     }
 }
 
@@ -302,18 +300,18 @@ fn print_number_skeleton_token(token: &NumberSkeletonToken) -> String {
 /// # Returns
 ///
 /// A string like `percent` or `::currency/USD`
-fn print_argument_style_number(style: &NumberSkeletonOrStyle) -> String {
+fn write_argument_style_number(out: &mut String, style: &NumberSkeletonOrStyle) {
     match style {
-        NumberSkeletonOrStyle::String(s) => print_escaped_message(s, false),
-        NumberSkeletonOrStyle::Skeleton(skeleton) => format!(
-            "::{}",
-            skeleton
-                .tokens
-                .iter()
-                .map(print_number_skeleton_token)
-                .collect::<Vec<_>>()
-                .join(" ")
-        ),
+        NumberSkeletonOrStyle::String(s) => write_escaped_message(out, s, false),
+        NumberSkeletonOrStyle::Skeleton(skeleton) => {
+            out.push_str("::");
+            for (index, token) in skeleton.tokens.iter().enumerate() {
+                if index > 0 {
+                    out.push(' ');
+                }
+                write_number_skeleton_token(out, token);
+            }
+        }
     }
 }
 
@@ -329,11 +327,12 @@ fn print_argument_style_number(style: &NumberSkeletonOrStyle) -> String {
 /// # Returns
 ///
 /// A string like `short` or `::yMMMd`
-fn print_argument_style_datetime(style: &DateTimeSkeletonOrStyle) -> String {
+fn write_argument_style_datetime(out: &mut String, style: &DateTimeSkeletonOrStyle) {
     match style {
-        DateTimeSkeletonOrStyle::String(s) => print_escaped_message(s, false),
+        DateTimeSkeletonOrStyle::String(s) => write_escaped_message(out, s, false),
         DateTimeSkeletonOrStyle::Skeleton(skeleton) => {
-            format!("::{}", print_date_time_skeleton(skeleton))
+            out.push_str("::");
+            out.push_str(&skeleton.pattern);
         }
     }
 }
@@ -368,21 +367,23 @@ pub fn print_date_time_skeleton(style: &DateTimeSkeleton) -> String {
 /// # Returns
 ///
 /// A string like `{gender,select,female{She} male{He} other{They}}`
-fn print_select_element(el: &SelectElement) -> String {
+fn write_select_element(out: &mut String, el: &SelectElement) {
     // Sort keys alphabetically for consistent output
     let mut keys: Vec<_> = el.options.keys().collect();
     keys.sort();
 
-    let options_str = keys
-        .iter()
-        .map(|id| {
-            let option = &el.options[id.as_str()];
-            format!("{}{{{}}}", id, do_print_ast(&option.value, false))
-        })
-        .collect::<Vec<_>>()
-        .join(" ");
-
-    format!("{{{},select,{}}}", el.value, options_str)
+    let _ = write!(out, "{{{},select,", el.value);
+    for (index, id) in keys.iter().enumerate() {
+        if index > 0 {
+            out.push(' ');
+        }
+        let option = el.options.get(*id).expect("select key should exist");
+        out.push_str(id);
+        out.push('{');
+        write_ast(out, &option.value, false);
+        out.push('}');
+    }
+    out.push('}');
 }
 
 /// Returns the LDML sort order for a plural rule.
@@ -428,18 +429,20 @@ fn get_plural_rule_sort_order(rule: &ValidPluralRule) -> (u8, i32) {
 /// # Returns
 ///
 /// A string like `{count,plural,offset:1 one{# item} other{# items}}`
-fn print_plural_element(el: &PluralElement) -> String {
+fn write_plural_element(out: &mut String, el: &PluralElement) {
     // Determine the type keyword (plural vs selectordinal)
     let type_name = match el.plural_type {
         PluralType::Cardinal => "plural",
         PluralType::Ordinal => "selectordinal",
     };
 
-    let mut parts = Vec::new();
+    let _ = write!(out, "{{{},{},", el.value, type_name);
+    let mut wrote_part = false;
 
     // Add offset if non-zero
     if el.offset != 0 {
-        parts.push(format!("offset:{}", el.offset));
+        let _ = write!(out, "offset:{}", el.offset);
+        wrote_part = true;
     }
 
     // Sort keys in LDML order: zero, one, two, few, many, other, then exact matches
@@ -448,17 +451,18 @@ fn print_plural_element(el: &PluralElement) -> String {
 
     // Add each option with its message in sorted order
     for id in keys {
+        if wrote_part {
+            out.push(' ');
+        }
+        wrote_part = true;
         let option = &el.options[id];
-        parts.push(format!(
-            "{}{{{}}}",
-            id.as_str(),
-            do_print_ast(&option.value, true) // true = we're in a plural context
-        ));
+        out.push_str(id.as_str());
+        out.push('{');
+        write_ast(out, &option.value, true); // true = we're in a plural context
+        out.push('}');
     }
 
-    let options_str = parts.join(" ");
-
-    format!("{{{},{},{}}}", el.value, type_name, options_str)
+    out.push('}');
 }
 
 #[cfg(test)]
