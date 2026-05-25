@@ -179,6 +179,6 @@
       "version": ">= 18.x"
     }
   },
-  "packageManager": "pnpm@11.1.2",
+  "packageManager": "pnpm@11.1.3",
   "repository": "https://github.com/formatjs/formatjs"
 }
