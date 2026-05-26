@@ -1,6 +1,9 @@
 name: Crates Release
 
 on:
+  release:
+    types:
+      - published
   workflow_dispatch:
     inputs:
       dry_run:
@@ -20,12 +23,13 @@ on:
           - formatjs_cli
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
   release:
     name: Release Crates
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs_') || startsWith(github.event.release.tag_name, 'icu_') || startsWith(github.event.release.tag_name, 'crates/') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,6 +38,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
@@ -44,33 +50,75 @@ jobs:
 
       - name: Select Crates
         id: crates
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_CRATE: ${{ inputs.crate || 'all' }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
 
-          case "${{ inputs.crate }}" in
-            all)
-              crates=(
-                formatjs_icu_skeleton_parser
-                formatjs_icu_messageformat_parser
-                formatjs_cli
-              )
+          dry_run="$INPUT_DRY_RUN"
+
+          case "$EVENT_NAME" in
+            release)
+              dry_run=false
+              case "$RELEASE_TAG" in
+                formatjs_icu_skeleton_parser_v*|icu_skeleton_parser_v*|crates/icu_skeleton_parser_v*)
+                  crates=(formatjs_icu_skeleton_parser)
+                  ;;
+                formatjs_icu_messageformat_parser_v*|icu_messageformat_parser_v*|crates/icu_messageformat_parser_v*)
+                  crates=(formatjs_icu_messageformat_parser)
+                  ;;
+                formatjs_cli_v*|crates/formatjs_cli_v*)
+                  crates=(formatjs_cli)
+                  ;;
+                *)
+                  crates=()
+                  ;;
+              esac
               ;;
-            formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_cli)
-              crates=("${{ inputs.crate }}")
+            workflow_dispatch)
+              case "$INPUT_CRATE" in
+                all)
+                  crates=(
+                    formatjs_icu_skeleton_parser
+                    formatjs_icu_messageformat_parser
+                    formatjs_cli
+                  )
+                  ;;
+                formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_cli)
+                  crates=("$INPUT_CRATE")
+                  ;;
+                *)
+                  echo "Unknown crate: $INPUT_CRATE" >&2
+                  exit 1
+                  ;;
+              esac
               ;;
             *)
-              echo "Unknown crate: ${{ inputs.crate }}" >&2
+              echo "Unsupported event: $EVENT_NAME" >&2
               exit 1
               ;;
           esac
 
+          if [ "${#crates[@]}" -eq 0 ]; then
+            echo "No crates selected for this event"
+            echo "has_crates=false" >> "$GITHUB_OUTPUT"
+            echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           {
+            echo "has_crates=true"
+            echo "dry_run=$dry_run"
             echo "names<<EOF"
             printf '%s\n' "${crates[@]}"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
       - name: Validate Rust Crates
+        if: ${{ steps.crates.outputs.has_crates == 'true' }}
         run: |
           set -euo pipefail
 
@@ -90,7 +138,7 @@ jobs:
           fi
 
       - name: Dry-run Crate Publish
-        if: ${{ inputs.dry_run }}
+        if: ${{ steps.crates.outputs.has_crates == 'true' && steps.crates.outputs.dry_run == 'true' }}
         run: |
           set -euo pipefail
 
@@ -100,16 +148,58 @@ jobs:
 
       - name: Authenticate with crates.io
         id: auth
-        if: ${{ !inputs.dry_run }}
+        if: ${{ steps.crates.outputs.has_crates == 'true' && steps.crates.outputs.dry_run != 'true' }}
         uses: rust-lang/crates-io-auth-action@v1
 
       - name: Publish Crates
-        if: ${{ !inputs.dry_run }}
+        if: ${{ steps.crates.outputs.has_crates == 'true' && steps.crates.outputs.dry_run != 'true' }}
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
         run: |
           set -euo pipefail
 
+          wait_for_crate() {
+            local crate="$1"
+            local version="$2"
+            local url="https://crates.io/api/v1/crates/$crate/$version"
+
+            for attempt in $(seq 1 30); do
+              if curl --fail --silent --show-error "$url" > /dev/null; then
+                echo "$crate $version is available on crates.io"
+                return 0
+              fi
+
+              if [ "$attempt" -lt 30 ]; then
+                sleep 20
+              fi
+            done
+
+            echo "$crate $version did not become available on crates.io" >&2
+            return 1
+          }
+
+          dependency_version() {
+            local manifest="$1"
+            local crate="$2"
+            sed -n "s/^$crate = .*version = \"\\([^\"]*\\)\".*/\\1/p" "$manifest" | head -1
+          }
+
           while IFS= read -r crate; do
+            case "$crate" in
+              formatjs_icu_messageformat_parser)
+                wait_for_crate \
+                  formatjs_icu_skeleton_parser \
+                  "$(dependency_version crates/icu_messageformat_parser/Cargo.toml formatjs_icu_skeleton_parser)"
+                ;;
+              formatjs_cli)
+                wait_for_crate \
+                  formatjs_icu_skeleton_parser \
+                  "$(dependency_version crates/formatjs_cli/Cargo.toml formatjs_icu_skeleton_parser)"
+                wait_for_crate \
+                  formatjs_icu_messageformat_parser \
+                  "$(dependency_version crates/formatjs_cli/Cargo.toml formatjs_icu_messageformat_parser)"
+                ;;
+            esac
+
             cargo publish --locked -p "$crate"
           done <<< "${{ steps.crates.outputs.names }}"

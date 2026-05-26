@@ -95,16 +95,22 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | Workflow               | Trigger               | What it does                             |
 | ---------------------- | --------------------- | ---------------------------------------- |
 | `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS     |
-| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary release       |
+| `release-please.yml`   | Push to main/manual   | Version/changelog PRs and GitHub releases |
+| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC |
+| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts     |
 | `release.yml`          | Push to main          | `bazel build :dist` then `pnpm publish`  |
 | `prerelease.yml`       | Manual                | `lerna version` (independent versioning) |
 | `website.yml`          | Manual/push           | Deploy docs site                         |
 | `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint       |
 
-Run the manual `Prerelease` workflow before creating any `formatjs_cli_v*` tag.
-The Rust CLI tag should point at the post-prerelease `main` commit; otherwise
-lerna-lite can treat the CLI tag as the latest release point and fail to derive
-package changelogs correctly.
+Release Please owns version/changelog PRs plus GitHub release creation. Its
+GitHub-generated changelog notes include PR titles, PR links, and contributors.
+The npm package publish path remains `release.yml` with Bazel-built packages and
+npm Trusted Publishing. Rust crate publishing happens in `crates-release.yml`
+from crate GitHub releases using crates.io trusted publishing. The Rust CLI
+binary artifacts remain Bazel-owned in `rust-cli-release.yml`, which uploads
+assets and checksums to the `formatjs_cli_v*` release without replacing Release
+Please notes.
 
 ## Common Commands
 

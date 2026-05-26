@@ -167,14 +167,16 @@ bazel test //packages/cli/integration-tests:conformance_test
 bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench
 ```
 
-For `formatjs_cli` releases, stay on the Bazel release path in
-`.github/workflows/rust-cli-release.yml` and `crates/formatjs_cli/release_binary.bzl`.
-Always run the manual `Prerelease` GitHub Actions workflow first, wait for its
-version commit to land on `main`, and only then create the
-`formatjs_cli_v<version>` tag. If the Rust CLI tag is created first, lerna-lite
-can treat it as the latest release point and fail to derive package changelogs.
-Keep `crates/formatjs_cli/Cargo.toml`, `Cargo.lock`, and Bazel version metadata
-in sync, and verify the built binary's `--version`.
+Release Please owns version/changelog PRs and GitHub release creation for npm
+packages and Rust crates. Rust crate releases publish through
+`.github/workflows/crates-release.yml` with crates.io trusted publishing. For
+`formatjs_cli` binary artifacts, stay on the Bazel release path in
+`.github/workflows/rust-cli-release.yml` and
+`crates/formatjs_cli/release_binary.bzl`; that workflow uploads binaries and
+checksums to the Release Please-created `formatjs_cli_v<version>` release
+without replacing changelog notes. Keep `crates/formatjs_cli/Cargo.toml`,
+`Cargo.lock`, and Bazel version metadata in sync, and verify the built binary's
+`--version`.
 
 ## Scripts And Generators
 

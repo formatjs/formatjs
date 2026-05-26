@@ -118,23 +118,25 @@ The transpiler infrastructure is located in:
 
 ### Releases
 
-Releases are automated via GitHub Actions. To publish a new release:
+Releases are automated via GitHub Actions:
 
-1. Run the **Prerelease** GitHub Actions workflow first. This bumps package
-   versions and lets lerna-lite derive changelogs from the normal release
-   history.
+1. The **Release Please** workflow runs on `main` and maintains release PRs for
+   npm packages and Rust crates. Release notes use GitHub-generated changelogs
+   so entries include PR titles, PR links, and contributors.
 
-   Do this before creating any `formatjs_cli_v*` tag. If the Rust CLI tag is
-   created first, lerna-lite can see that tag as the latest release point and
-   fail to derive the package changelog correctly.
+2. Merge the release PR when it is ready. Release Please creates the package
+   tags and GitHub releases from the merged release PR.
 
-2. Wait for the Prerelease workflow to commit and push the version changes to
-   the `main` branch.
+3. The **Release** workflow publishes npm packages from the Bazel-built
+   distribution using Trusted Publishing (OIDC).
 
-3. GitHub Actions will automatically build and publish all packages to npm using [Trusted Publishing (OIDC)](https://docs.npmjs.com/trusted-publishers/)
+4. The **Crates Release** workflow publishes Rust crates to crates.io from
+   `formatjs_icu_skeleton_parser_v*`, `formatjs_icu_messageformat_parser_v*`,
+   and `formatjs_cli_v*` GitHub releases using crates.io trusted publishing.
 
-4. If publishing Rust CLI binaries, create the `formatjs_cli_v<version>` tag
-   only after the prerelease commit is on `main`.
+5. The **Rust CLI Release** workflow still owns Bazel-built binary artifacts for
+   `formatjs_cli_v*` tags. It uploads binaries and checksums to the GitHub
+   release without replacing Release Please changelog notes.
 
 ### Updating tzdata version
 
