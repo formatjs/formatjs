@@ -164,7 +164,13 @@ jobs:
             local url="https://crates.io/api/v1/crates/$crate/$version"
 
             for attempt in $(seq 1 30); do
-              if curl --fail --silent --show-error "$url" > /dev/null; then
+              if curl \
+                --fail \
+                --silent \
+                --show-error \
+                --header "Accept: application/json" \
+                --user-agent "formatjs-crates-release (https://github.com/formatjs/formatjs)" \
+                "$url" > /dev/null; then
                 echo "$crate $version is available on crates.io"
                 return 0
               fi
@@ -178,6 +184,29 @@ jobs:
             return 1
           }
 
+          publishes_crate() {
+            local crate="$1"
+
+            while IFS= read -r selected_crate; do
+              if [ "$selected_crate" = "$crate" ]; then
+                return 0
+              fi
+            done <<< "${{ steps.crates.outputs.names }}"
+
+            return 1
+          }
+
+          wait_if_published_by_this_run() {
+            local crate="$1"
+            local version="$2"
+
+            if publishes_crate "$crate"; then
+              wait_for_crate "$crate" "$version"
+            else
+              echo "$crate is not selected in this run; skipping crates.io availability wait"
+            fi
+          }
+
           dependency_version() {
             local manifest="$1"
             local crate="$2"
@@ -187,15 +216,15 @@ jobs:
           while IFS= read -r crate; do
             case "$crate" in
               formatjs_icu_messageformat_parser)
-                wait_for_crate \
+                wait_if_published_by_this_run \
                   formatjs_icu_skeleton_parser \
                   "$(dependency_version crates/icu_messageformat_parser/Cargo.toml formatjs_icu_skeleton_parser)"
                 ;;
               formatjs_cli)
-                wait_for_crate \
+                wait_if_published_by_this_run \
                   formatjs_icu_skeleton_parser \
                   "$(dependency_version crates/formatjs_cli/Cargo.toml formatjs_icu_skeleton_parser)"
-                wait_for_crate \
+                wait_if_published_by_this_run \
                   formatjs_icu_messageformat_parser \
                   "$(dependency_version crates/formatjs_cli/Cargo.toml formatjs_icu_messageformat_parser)"
                 ;;
