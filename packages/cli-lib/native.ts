@@ -24,12 +24,28 @@ export interface NativeCompileMessage {
   sourceFile: string
 }
 
+export interface NativeExtractOptions {
+  additionalComponentNames?: string[]
+  additionalFunctionNames?: string[]
+  extractSourceLocation?: boolean
+  flatten?: boolean
+  followLinks?: boolean
+  format?: string
+  idInterpolationPattern?: string
+  ignore?: string[]
+  inFile?: string
+  pragma?: string
+  preserveWhitespace?: boolean
+  throws?: boolean
+}
+
 export interface NativeBinding {
   compile(inputFiles: string[], opts?: NativeCompileOptions): string
   compileMessages(
     messages: NativeCompileMessage[],
     opts?: NativeCompileOptions
   ): string
+  extract(inputFiles: string[], opts?: NativeExtractOptions): string
   supportedBuiltinFormatters(): string[]
 }
 
@@ -88,5 +104,26 @@ export function compileMessagesWithNative(
     ignoreTag: opts.ignoreTag,
     pseudoLocale: opts.pseudoLocale,
     skipErrors: opts.skipErrors,
+  })
+}
+
+export function extractWithNative(
+  inputFiles: readonly string[],
+  opts: NativeExtractOptions = {}
+): string {
+  const native = loadNative()
+  return native.extract([...inputFiles], {
+    additionalComponentNames: opts.additionalComponentNames,
+    additionalFunctionNames: opts.additionalFunctionNames,
+    extractSourceLocation: opts.extractSourceLocation,
+    flatten: opts.flatten,
+    followLinks: opts.followLinks,
+    format: opts.format,
+    idInterpolationPattern: opts.idInterpolationPattern,
+    ignore: opts.ignore,
+    inFile: opts.inFile,
+    pragma: opts.pragma,
+    preserveWhitespace: opts.preserveWhitespace,
+    throws: opts.throws,
   })
 }
