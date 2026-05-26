@@ -149,7 +149,8 @@ jobs:
       - name: Authenticate with crates.io
         id: auth
         if: ${{ steps.crates.outputs.has_crates == 'true' && steps.crates.outputs.dry_run != 'true' }}
-        uses: rust-lang/crates-io-auth-action@v1
+        # Pin a Node 24 runtime commit until rust-lang/crates-io-auth-action tags it.
+        uses: rust-lang/crates-io-auth-action@1d2b8f3552d69b407d7790fa3ec7c39041305a61
 
       - name: Publish Crates
         if: ${{ steps.crates.outputs.has_crates == 'true' && steps.crates.outputs.dry_run != 'true' }}
