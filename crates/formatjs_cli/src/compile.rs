@@ -244,6 +244,33 @@ pub fn compile_messages_to_string(
 ) -> Result<String> {
     use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
 
+    enum CompileMessageResult {
+        Parsed {
+            index: usize,
+            id: String,
+            value: Value,
+        },
+        ParseError {
+            index: usize,
+            warning: String,
+            syntax_error: String,
+        },
+        Fatal {
+            index: usize,
+            error: anyhow::Error,
+        },
+    }
+
+    impl CompileMessageResult {
+        fn index(&self) -> usize {
+            match self {
+                Self::Parsed { index, .. }
+                | Self::ParseError { index, .. }
+                | Self::Fatal { index, .. } => *index,
+            }
+        }
+    }
+
     // Validate pseudo-locale requires ast
     if pseudo_locale.is_some() && !ast {
         anyhow::bail!("Pseudo-locale generation requires --ast flag");
@@ -260,38 +287,70 @@ pub fn compile_messages_to_string(
         ..Default::default()
     };
 
-    for (id, (message, source_file)) in &messages {
-        let parser = Parser::new(message.as_str(), parser_options.clone());
-        match parser.parse() {
-            Ok(mut msg_ast) => {
-                if ast {
-                    if let Some(locale) = pseudo_locale {
-                        msg_ast = apply_pseudo_locale(msg_ast, locale);
-                    }
+    let message_entries: Vec<_> = messages.iter().collect();
+    let mut parsed_messages: Vec<_> = message_entries
+        .into_par_iter()
+        .enumerate()
+        .map(|(index, (id, message_data))| {
+            let (message, source_file) = (&message_data.0, &message_data.1);
+            let parser_options = parser_options.clone();
+            let parser = Parser::new(message.as_str(), parser_options);
+            match parser.parse() {
+                Ok(mut msg_ast) => {
+                    let value = if ast {
+                        if let Some(locale) = pseudo_locale {
+                            msg_ast = apply_pseudo_locale(msg_ast, locale);
+                        }
 
-                    // Serialize AST to JSON for output
-                    let ast_json = serde_json::to_value(&msg_ast)
-                        .with_context(|| format!("Failed to serialize AST for message '{}'", id))?;
-                    compiled_messages.insert(id.clone(), ast_json);
-                } else {
-                    // Keep as validated string
-                    compiled_messages.insert(id.clone(), json!(message));
+                        match serde_json::to_value(&msg_ast).with_context(|| {
+                            format!("Failed to serialize AST for message '{}'", id)
+                        }) {
+                            Ok(ast_json) => ast_json,
+                            Err(error) => return CompileMessageResult::Fatal { index, error },
+                        }
+                    } else {
+                        json!(message)
+                    };
+
+                    CompileMessageResult::Parsed {
+                        index,
+                        id: (*id).clone(),
+                        value,
+                    }
                 }
-            }
-            Err(e) => {
-                error_count += 1;
-                if skip_errors {
-                    eprintln!(
+                Err(e) => CompileMessageResult::ParseError {
+                    index,
+                    warning: format!(
                         "[@formatjs/cli] [WARN] Error validating message \"{}\" with ID \"{}\" in file {}",
                         message,
                         id,
                         source_file.display()
-                    );
+                    ),
+                    syntax_error: format!("SyntaxError: {}", e),
+                },
+            }
+        })
+        .collect();
+    parsed_messages.sort_by_key(CompileMessageResult::index);
+
+    for result in parsed_messages {
+        match result {
+            CompileMessageResult::Parsed { id, value, .. } => {
+                compiled_messages.insert(id, value);
+            }
+            CompileMessageResult::ParseError {
+                warning,
+                syntax_error,
+                ..
+            } => {
+                error_count += 1;
+                if skip_errors {
+                    eprintln!("{}", warning);
                 } else {
-                    // Match TypeScript error format: "SyntaxError: ERROR_KIND"
-                    anyhow::bail!("SyntaxError: {}", e);
+                    anyhow::bail!(syntax_error);
                 }
             }
+            CompileMessageResult::Fatal { error, .. } => return Err(error),
         }
     }
 

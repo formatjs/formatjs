@@ -1,5 +1,9 @@
 # Optimization Summary
 
+This is a historical note for the first Rust parser optimization pass. For the
+current checked-in benchmark results, including the 2026-05-25 plain-message
+fast path update, see [BENCHMARK.md](./BENCHMARK.md).
+
 ## What We Did
 
 We implemented **Three Key Optimizations** to dramatically improve the Rust ICU MessageFormat parser performance.

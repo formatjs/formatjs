@@ -134,6 +134,39 @@ function matchIdentifierAtIndex(s: string, index: number): string {
   return match[1] ?? ''
 }
 
+function plainTopLevelEndPosition(message: string): Position | null {
+  if (message.length === 0) {
+    return null
+  }
+  let line = 1
+  let column = 1
+  for (let offset = 0; offset < message.length; ) {
+    const code = message.charCodeAt(offset)
+    switch (code) {
+      case 35: // #
+      case 39: // '
+      case 60: // <
+      case 123: // {
+      case 125: // }
+        return null
+    }
+    if (code === 10 /* '\n' */) {
+      line++
+      column = 1
+      offset++
+    } else {
+      column++
+      if (code >= 0xd800 && code <= 0xdbff && offset + 1 < message.length) {
+        const next = message.charCodeAt(offset + 1)
+        offset += next >= 0xdc00 && next <= 0xdfff ? 2 : 1
+      } else {
+        offset++
+      }
+    }
+  }
+  return {offset: message.length, line, column}
+}
+
 export class Parser {
   private message: string
   private position: Position
@@ -155,6 +188,32 @@ export class Parser {
   parse(): Result<MessageFormatElement[], ParserError> {
     if (this.offset() !== 0) {
       throw Error('parser can only be used once')
+    }
+    if (this.message.length > 0) {
+      const firstCode = this.message.charCodeAt(0)
+      if (
+        firstCode !== 35 /* # */ &&
+        firstCode !== 39 /* ' */ &&
+        firstCode !== 60 /* < */ &&
+        firstCode !== 123 /* { */ &&
+        firstCode !== 125 /* } */
+      ) {
+        const plainEndPosition = plainTopLevelEndPosition(this.message)
+        if (plainEndPosition) {
+          const start = this.clonePosition()
+          this.position = plainEndPosition
+          return {
+            val: [
+              {
+                type: TYPE.literal,
+                value: this.message,
+                location: createLocation(start, this.clonePosition()),
+              },
+            ],
+            err: null,
+          }
+        }
+      }
     }
     return this.parseMessage(0, '', false)
   }

@@ -89,7 +89,7 @@
 - `formatjs compile` — Compile translation files
 - `formatjs compile-folder` — Batch compile a directory
 
-The Rust CLI (`crates/formatjs_cli/`) is a 17x faster drop-in replacement with identical command-line interface and 100% conformance (60/60 integration tests passing).
+The Rust CLI (`crates/formatjs_cli/`) is a 20.90x faster drop-in replacement in the checked-in extraction benchmark, with parallelized catalog parsing for large compile and structural verify workloads.
 
 ## Utility Packages
 

@@ -164,7 +164,7 @@ targets include:
 ```bash
 bazel test //crates/formatjs_cli:formatjs_cli_test
 bazel test //packages/cli/integration-tests:conformance_test
-bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
+bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench
 ```
 
 For `formatjs_cli` releases, stay on the Bazel release path in

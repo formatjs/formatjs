@@ -4,8 +4,8 @@
  * Run with: `bazel run //packages/icu-messageformat-parser/benchmark:benchmark`
  *
  * Results: The JavaScript parser is fast, but the Rust parser (optimized build)
- * is 2.6-3.7x faster. See crates/icu_messageformat_parser/benches/comparison_bench.rs
- * for detailed comparison.
+ * is 2.3-3.5x faster on this corpus. See
+ * crates/icu_messageformat_parser/BENCHMARK.md for detailed comparison.
  */
 import {Bench} from 'tinybench'
 import {parse} from '@formatjs/icu-messageformat-parser'

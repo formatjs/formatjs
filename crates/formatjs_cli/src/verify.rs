@@ -328,41 +328,39 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
         }
 
         let target_messages = flatten(content, "");
-        let mut errors = Vec::new();
+        let mut errors: Vec<_> = source_messages
+            .par_iter()
+            .filter_map(|(key, source_msg)| {
+                // Skip if key doesn't exist in target (that's covered by missing keys check)
+                let target_msg = target_messages.get(key)?;
 
-        // Check each source message
-        for (key, source_msg) in &source_messages {
-            // Skip if key doesn't exist in target (that's covered by missing keys check)
-            if let Some(target_msg) = target_messages.get(key) {
                 // Parse both messages and compare structure with message ID as context
                 match compare_message_structure(source_msg, target_msg, Some(key)) {
-                    Ok((true, _)) => {
-                        // Structures match, all good
-                    }
+                    Ok((true, _)) => None,
                     Ok((false, Some(detail))) => {
-                        errors.push((key.clone(), format_error_message(&detail)));
+                        Some((key.clone(), format_error_message(&detail)))
                     }
-                    Ok((false, None)) => {
-                        errors.push((
-                            key.clone(),
-                            "Messages are structurally different".to_string(),
-                        ));
-                    }
+                    Ok((false, None)) => Some((
+                        key.clone(),
+                        "Messages are structurally different".to_string(),
+                    )),
                     Err(e) => {
                         // Extract parse error code from error message
                         let error_msg = format!("{:#}", e); // Use alternate display to get root cause
                         // Check if the error message contains a parse error code
-                        if error_msg.contains("EXPECT_ARGUMENT_CLOSING_BRACE") {
-                            errors.push((key.clone(), "EXPECT_ARGUMENT_CLOSING_BRACE".to_string()));
+                        let formatted_error = if error_msg.contains("EXPECT_ARGUMENT_CLOSING_BRACE")
+                        {
+                            "EXPECT_ARGUMENT_CLOSING_BRACE".to_string()
                         } else if let Some(code) = extract_parse_error_code(&error_msg) {
-                            errors.push((key.clone(), code));
+                            code
                         } else {
-                            errors.push((key.clone(), format_error_message(&error_msg)));
-                        }
+                            format_error_message(&error_msg)
+                        };
+                        Some((key.clone(), formatted_error))
                     }
                 }
-            }
-        }
+            })
+            .collect();
 
         if !errors.is_empty() {
             all_passed = false;
