@@ -41,8 +41,8 @@ git push origin formatjs_cli_v0.1.0
 
 **What it does**:
 
-1. Build macOS ARM64, Linux x86_64, and Linux ARM64 binaries in one Bazel build job
-2. Verify artifacts on the corresponding macOS and Linux runners
+1. Build macOS ARM64, Linux x86_64, Linux ARM64, and Windows x64 binaries in one Linux BuildBuddy RBE Bazel job
+2. Verify artifacts on the corresponding macOS, Linux, and Windows runners
 3. Combine artifacts and generate checksums
 4. Create a GitHub Release with all binaries
 
@@ -51,6 +51,7 @@ git push origin formatjs_cli_v0.1.0
 - `formatjs_cli-darwin-arm64` (macOS Apple Silicon)
 - `formatjs_cli-linux-arm64` (Linux ARM64)
 - `formatjs_cli-linux-x64` (Linux x86_64)
+- `formatjs_cli-win32-x64.exe` (Windows x64)
 - `checksums.txt` (SHA-256 checksums)
 
 ### Option 2: Publishing to crates.io
@@ -87,13 +88,14 @@ path = "src/main.rs"
 
 ## Platform Support
 
-| Platform | Architecture  | Target Triple             | Status                                |
-| -------- | ------------- | ------------------------- | ------------------------------------- |
-| macOS    | Apple Silicon | aarch64-apple-darwin      | ✅ Native (Bazel on GHA macOS runner) |
-| Linux    | ARM64         | aarch64-unknown-linux-gnu | ✅ Bazel release target               |
-| Linux    | x86_64        | x86_64-unknown-linux-gnu  | ✅ Bazel release target               |
+| Platform | Architecture  | Target Triple                | Status                           |
+| -------- | ------------- | ---------------------------- | -------------------------------- |
+| macOS    | Apple Silicon | aarch64-apple-darwin         | ✅ LLVM cross target             |
+| Linux    | ARM64         | aarch64-unknown-linux-musl   | ✅ LLVM cross target             |
+| Linux    | x86_64        | x86_64-unknown-linux-musl    | ✅ LLVM cross target             |
+| Windows  | x86_64        | x86_64-pc-windows-gnullvm    | ✅ LLVM cross target             |
 
-**Note**: The GitHub Actions workflow builds release artifacts through Bazel targets. Linux release binaries use musl targets for static artifacts.
+**Note**: The GitHub Actions workflow builds release artifacts through Bazel targets on Linux BuildBuddy RBE when credentials are available. Linux release binaries use musl targets for static artifacts; the standalone Windows CLI uses the LLVM gnullvm target and is smoke-tested on a Windows runner.
 
 ## Cross-Compilation Setup
 
@@ -154,6 +156,9 @@ bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_linux_x6
 
 # Linux ARM64 static release artifact:
 bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_linux_arm64
+
+# Windows x64 release artifact:
+bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_windows_x64_gnullvm
 ```
 
 Use `bazel cquery --output=files <target>` to locate platform-specific release target outputs.
@@ -190,6 +195,7 @@ Release assets:
 ├── formatjs_cli-darwin-arm64      # macOS Apple Silicon
 ├── formatjs_cli-linux-arm64       # Linux ARM64
 ├── formatjs_cli-linux-x64         # Linux x86_64
+├── formatjs_cli-win32-x64.exe     # Windows x64
 └── checksums.txt                  # SHA-256 checksums
 ```
 
@@ -241,8 +247,8 @@ binary artifact process:
    trusted publishing after the parser crate dependencies are available.
 
 3. **Rust CLI Release runs automatically**:
-   - Builds macOS, Linux, and Windows binaries through Bazel
-   - Runs smoke tests
+   - Builds macOS, Linux, and Windows binaries through Bazel on Linux BuildBuddy RBE
+   - Runs smoke tests on macOS, Linux, and Windows runners
    - Uploads binaries and checksums to the existing GitHub release
    - Appends binary installation notes without replacing the changelog
 
@@ -328,20 +334,21 @@ build-and-test-linux: # Build and test on Linux runner
 **Jobs**:
 
 ```yaml
-build: # Build release binaries
+build: # Build release binaries on Linux BuildBuddy RBE
 verify-macos: # Smoke-test macOS binary
 verify-linux: # Smoke-test and inspect Linux binaries
+verify-windows: # Smoke-test Windows binary
 release: # Combine, checksum, and create release
 ```
 
 **Features**:
 
-1. **Multi-platform builds**: Bazel builds all release artifacts in one job
+1. **Multi-platform builds**: Bazel cross-compiles all release artifacts in one Linux BuildBuddy RBE job
 2. **Smoke tests**: Platform runners test downloaded artifacts with `--version` and `--help`
 3. **Artifact management**: 7-day retention during workflow, permanent in releases
 4. **Checksum generation**: Automatic SHA-256 checksums
 5. **GitHub Release**: Automatic creation with formatted release notes
-6. **BuildBuddy integration**: Optional remote caching
+6. **BuildBuddy integration**: Remote execution and caching for release builds when credentials are available
 
 ## License
 

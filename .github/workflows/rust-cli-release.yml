@@ -19,7 +19,7 @@ concurrency:
 jobs:
   build:
     name: Build Release Binaries
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -34,22 +34,32 @@ jobs:
 
       - name: Build Binaries
         run: |
+          targets=(
+            //crates/formatjs_cli:release_binary_darwin_arm64
+            //crates/formatjs_cli:release_binary_linux_x64
+            //crates/formatjs_cli:release_binary_linux_arm64
+            //crates/formatjs_cli:release_binary_windows_x64_gnullvm
+          )
+
+          bazel_build_args=()
+          bazel_query_args=()
+
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            bazel build \
-              --config=ci-darwin \
-              --compilation_mode=opt \
-              --remote_download_outputs=all \
-              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-              //crates/formatjs_cli:release_binary_darwin_arm64 \
-              //crates/formatjs_cli:release_binary_linux_x64 \
-              //crates/formatjs_cli:release_binary_linux_arm64
+            bazel_build_args+=(
+              --config=ci
+              --remote_download_outputs=all
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+            )
+            bazel_query_args+=(
+              --config=ci
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+            )
           else
-            bazel build \
-              --compilation_mode=opt \
-              //crates/formatjs_cli:release_binary_darwin_arm64 \
-              //crates/formatjs_cli:release_binary_linux_x64 \
-              //crates/formatjs_cli:release_binary_linux_arm64
+            bazel_build_args+=(--compilation_mode=opt)
+            bazel_query_args+=(--compilation_mode=opt)
           fi
+
+          bazel build "${bazel_build_args[@]}" "${targets[@]}"
 
           mkdir -p artifacts
 
@@ -57,7 +67,7 @@ jobs:
             local target="$1"
             local output="$2"
             local binary_path
-            binary_path="$(bazel cquery --output=files "$target")"
+            binary_path="$(bazel cquery "${bazel_query_args[@]}" --output=files "$target")"
             cp "$binary_path" "artifacts/$output"
             chmod +x "artifacts/$output"
           }
@@ -65,6 +75,7 @@ jobs:
           copy_artifact //crates/formatjs_cli:release_binary_darwin_arm64 formatjs_cli-darwin-arm64
           copy_artifact //crates/formatjs_cli:release_binary_linux_x64 formatjs_cli-linux-x64
           copy_artifact //crates/formatjs_cli:release_binary_linux_arm64 formatjs_cli-linux-arm64
+          copy_artifact //crates/formatjs_cli:release_binary_windows_x64_gnullvm formatjs_cli-win32-x64.exe
 
       - name: Upload macOS ARM64 Artifact
         uses: actions/upload-artifact@v7
@@ -86,38 +97,6 @@ jobs:
           name: formatjs_cli-linux-arm64
           path: artifacts/formatjs_cli-linux-arm64
           retention-days: 7
-
-  build_windows:
-    name: Build Windows x64 Binary
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-
-      - name: Setup MSVC
-        uses: ./.github/actions/setup-msvc
-
-      - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
-        with:
-          bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-windows-release-binary
-          repository-cache: true
-
-      - name: Build Binary
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $PSNativeCommandUseErrorActionPreference = $true
-          $bazelWindowsFlags = @(
-            '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
-            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
-          )
-
-          bazel build @bazelWindowsFlags //crates/formatjs_cli:release_binary_windows_x64
-          $binaryPath = (bazel cquery @bazelWindowsFlags --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
-          New-Item -ItemType Directory -Force artifacts
-          Copy-Item $binaryPath artifacts\formatjs_cli-win32-x64.exe
 
       - name: Upload Windows x64 Artifact
         uses: actions/upload-artifact@v7
@@ -187,7 +166,7 @@ jobs:
 
   verify_windows:
     name: Verify Windows x64
-    needs: build_windows
+    needs: build
     runs-on: windows-latest
 
     steps:
