@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.11 (2026-05-26)
+
+## What's Changed
+* chore(deps): update dependency lefthook to v2.1.8 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6651
+* chore(deps): update dependency oxlint to v1.66.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6652
+* ci(formatjs_cli): cross-compile release binaries on linux by @longlho in https://github.com/formatjs/formatjs/pull/6656
+* ci: fix crates release dependency polling by @longlho in https://github.com/formatjs/formatjs/pull/6655
+* fix(deps): update rust crate oxc to 0.132 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6639
+* ci: use node24 crates auth action by @longlho in https://github.com/formatjs/formatjs/pull/6658
+* build(deps): bump qs and express in /packages/react-intl/example-sandboxes/rescripts by @dependabot[bot] in https://github.com/formatjs/formatjs/pull/6623
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.1.10...formatjs_cli_v1.1.11
+
 ## 1.1.10 (2026-05-26)
 
 ## What's Changed
