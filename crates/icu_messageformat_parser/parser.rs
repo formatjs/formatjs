@@ -253,6 +253,15 @@ fn is_identifier_char(c: char) -> bool {
     !is_white_space(c as u32) && !is_pattern_syntax(c)
 }
 
+#[inline]
+fn is_plain_top_level_message(message: &str) -> bool {
+    !message.is_empty()
+        && !message
+            .as_bytes()
+            .iter()
+            .any(|b| matches!(b, b'{' | b'}' | b'#' | b'<' | b'\''))
+}
+
 /// Trims leading space separators from a string.
 ///
 /// OPTIMIZED: Uses character iteration instead of regex for better performance.
@@ -365,6 +374,11 @@ impl<'a> Parser<'a> {
     pub fn parse(mut self) -> Result<Vec<MessageFormatElement>> {
         if self.offset() != 0 {
             cold_panic("parser can only be used once");
+        }
+        if !self.capture_location && is_plain_top_level_message(self.message.as_ref()) {
+            return Ok(vec![MessageFormatElement::Literal(LiteralElement::new(
+                self.message.into_owned(),
+            ))]);
         }
         self.parse_message(0, ArgType::None, false)
     }
@@ -1691,6 +1705,64 @@ mod tests {
         let parser = Parser::new("Hello world", ParserOptions::default());
         assert_eq!(parser.message, "Hello world");
         assert_eq!(parser.offset(), 0);
+    }
+
+    #[test]
+    fn test_parse_plain_top_level_message() {
+        let elements = Parser::new("Hello world", ParserOptions::default())
+            .parse()
+            .unwrap();
+
+        assert_eq!(elements.len(), 1);
+        match &elements[0] {
+            MessageFormatElement::Literal(lit) => {
+                assert_eq!(lit.value, "Hello world");
+                assert_eq!(lit.location, None);
+            }
+            _ => panic!("Expected a literal element"),
+        }
+    }
+
+    #[test]
+    fn test_parse_empty_message() {
+        let elements = Parser::new("", ParserOptions::default()).parse().unwrap();
+        assert!(elements.is_empty());
+    }
+
+    #[test]
+    fn test_parse_plain_top_level_message_with_location() {
+        let elements = Parser::new(
+            "Hello world",
+            ParserOptions {
+                capture_location: true,
+                ..Default::default()
+            },
+        )
+        .parse()
+        .unwrap();
+
+        assert_eq!(elements.len(), 1);
+        match &elements[0] {
+            MessageFormatElement::Literal(lit) => {
+                assert_eq!(lit.value, "Hello world");
+                assert_eq!(
+                    lit.location,
+                    Some(Location {
+                        start: LocationDetails {
+                            offset: 0,
+                            line: 1,
+                            column: 1,
+                        },
+                        end: LocationDetails {
+                            offset: 11,
+                            line: 1,
+                            column: 12,
+                        },
+                    })
+                );
+            }
+            _ => panic!("Expected a literal element"),
+        }
     }
 
     #[test]

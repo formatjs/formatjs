@@ -37,7 +37,7 @@ bazel query 'kind(test, //packages/...)'                  # Query test targets
 Always use `bazel run -c opt` for Rust benchmarks. Debug mode is ~10x slower.
 
 ```bash
-bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
+bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench
 ```
 
 ### 4. No Barrel Exports for Internal Packages

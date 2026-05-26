@@ -2,7 +2,7 @@
 //!
 //! Run with: `bazel run -c opt //crates/icu_messageformat_parser:parser_bench`
 //!
-//! For comparison with other parsers, see comparison_bench.rs
+//! For comparison with the TypeScript parser, see ../BENCHMARK.md.
 
 use criterion::{Criterion, criterion_group, criterion_main};
 use formatjs_icu_messageformat_parser::{Parser, ParserOptions};

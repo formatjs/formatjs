@@ -113,7 +113,7 @@ pnpm install              # Install deps
 pnpm t                    # syncpack lint + oxlint + ast-grep scan + bazel test //...
 bazel build //...         # Build everything
 bazel test //packages/intl-localematcher:unit_test --test_output=all  # Test specific package
-bazel run -c opt //crates/icu_messageformat_parser:comparison_bench   # Rust benchmarks (must use -c opt)
+bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench  # Rust benchmarks (must use -c opt)
 pnpm format               # runs lefthook pre-commit --all-files
 bazel run //docs:serve    # Run docs site
 bazel query 'kind(test, //packages/...)'  # Query test targets

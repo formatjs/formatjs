@@ -5,7 +5,7 @@ A Rust implementation of the ICU MessageFormat parser, optimized for performance
 ## Features
 
 - Full ICU MessageFormat syntax support
-- High-performance parsing - **2.6-3.7x faster than JavaScript parser**
+- High-performance parsing - **2.3-3.5x faster than JavaScript parser** on the checked-in benchmark
 - WebAssembly-ready with wasm-bindgen
 - Zero-copy parsing where possible
 - Comprehensive error handling
@@ -15,15 +15,15 @@ A Rust implementation of the ICU MessageFormat parser, optimized for performance
 The Rust parser (optimized build) significantly outperforms both the JavaScript parser and other Rust implementations:
 
 ```bash
-$ bazel run -c opt //crates/icu_messageformat_parser:comparison_bench
+$ bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench --output-format bencher
 ```
 
 | Message Type | Rust Parser | JavaScript | Speedup vs JS    | SWC Parser | vs SWC       |
 | ------------ | ----------- | ---------- | ---------------- | ---------- | ------------ |
-| complex_msg  | 9.22 µs     | 23.85 µs   | **2.59x faster** | 10.3 µs    | 1.11x faster |
-| normal_msg   | 1.14 µs     | 3.27 µs    | **2.87x faster** | 1.25 µs    | 1.10x faster |
-| simple_msg   | 163 ns      | 600 ns     | **3.68x faster** | 184 ns     | 1.13x faster |
-| string_msg   | 118 ns      | 320 ns     | **2.71x faster** | 126 ns     | 1.07x faster |
+| complex_msg  | 9.43 µs     | 21.39 µs   | **2.27x faster** | 10.3 µs    | 1.09x faster |
+| normal_msg   | 1.18 µs     | 3.10 µs    | **2.63x faster** | 1.25 µs    | 1.06x faster |
+| simple_msg   | 153 ns      | 543 ns     | **3.55x faster** | 184 ns     | 1.20x faster |
+| string_msg   | 59 ns       | 146 ns     | **2.47x faster** | 126 ns     | 2.14x faster |
 
 **Note:** Always use `-c opt` for benchmarking to enable release optimizations.
 
@@ -49,7 +49,7 @@ bazel test //crates/icu_messageformat_parser:icu_messageformat_parser_test
 bazel build //crates/icu_messageformat_parser:icu_messageformat_parser
 
 # Run benchmarks
-bazel run //crates/icu_messageformat_parser:parser_bench
+bazel run -c opt //crates/icu_messageformat_parser:parser_bench
 ```
 
 ### WebAssembly

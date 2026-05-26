@@ -1,6 +1,44 @@
 import {parse} from '#packages/icu-messageformat-parser/index.js'
 import {printAST} from '#packages/icu-messageformat-parser/printer.js'
+import {TYPE} from '#packages/icu-messageformat-parser/types.js'
 import {expect, test} from 'vitest'
+
+test('parses plain top-level messages without changing AST shape', function () {
+  expect(parse('Hello world')).toEqual([
+    {
+      type: TYPE.literal,
+      value: 'Hello world',
+    },
+  ])
+  expect(parse('')).toEqual([])
+})
+
+test('preserves plain top-level message location when requested', function () {
+  expect(parse('Hello world', {captureLocation: true})).toEqual([
+    {
+      type: TYPE.literal,
+      value: 'Hello world',
+      location: {
+        start: {offset: 0, line: 1, column: 1},
+        end: {offset: 11, line: 1, column: 12},
+      },
+    },
+  ])
+})
+
+test('tracks plain top-level message location across surrogate pairs', function () {
+  expect(parse('Hi 🌎', {captureLocation: true})).toEqual([
+    {
+      type: TYPE.literal,
+      value: 'Hi 🌎',
+      location: {
+        start: {offset: 0, line: 1, column: 1},
+        end: {offset: 5, line: 1, column: 5},
+      },
+    },
+  ])
+})
+
 test('should escape things properly', function () {
   expect(printAST(parse("Name: ''{name}''."))).toBe("Name: ''{name}''.")
   expect(printAST(parse("'just some {name} thing'"))).toBe(

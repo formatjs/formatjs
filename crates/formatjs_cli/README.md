@@ -10,7 +10,7 @@ A high-performance Rust-based command-line interface for FormatJS internationali
 
 The native Rust CLI offers significant advantages over the Node.js-based `@formatjs/cli`:
 
-- **Faster Performance**: 20.90x faster in the checked-in extraction benchmark
+- **Faster Performance**: 20.90x faster in the checked-in extraction benchmark, with parallel parsing for large compile and verify workloads
 - **Zero Node.js Runtime Dependency**: Single binary with no Node.js runtime required for supported features
 - **Lower Memory Usage**: Minimal memory footprint compared to Node.js
 - **Instant Startup**: No Node.js initialization overhead
@@ -24,13 +24,22 @@ The native Rust CLI offers significant advantages over the Node.js-based `@forma
 - Rust CLI: 35.65 ms, 263,876 messages/second
 - Speedup vs hybrid CLI: 20.90x
 
+**Catalog benchmark results** (20,000 generated messages, Apple Silicon, 2026-05-25; includes process startup and JSON I/O):
+
+| Workflow                        | Before   | After    | Improvement          |
+| ------------------------------- | -------- | -------- | -------------------- |
+| `compile --ast`                 | 180.9 ms | 121.1 ms | 33.1% lower latency  |
+| `verify --structural-equality`  | 373.3 ms | 228.8 ms | 38.7% lower latency  |
+
 The native CLI aims to match `@formatjs/cli` for supported workflows. Some Node-specific behavior is intentionally not available in the standalone Rust binary, including loading arbitrary JavaScript formatter files with `--format`.
 
 ## Threading
 
-The native CLI parallelizes per-file work with Rayon. By default, Rayon uses the
-number of available logical CPU cores. Set `RAYON_NUM_THREADS` to cap worker
-threads in CPU-constrained environments:
+The native CLI parallelizes per-file and per-message work with Rayon. Extraction
+uses per-file parallelism, while AST compilation and structural verification can
+also parse individual messages in parallel. By default, Rayon uses the number of
+available logical CPU cores. Set `RAYON_NUM_THREADS` to cap worker threads in
+CPU-constrained environments:
 
 ```bash
 RAYON_NUM_THREADS=4 formatjs extract "src/**/*.tsx" --out-file messages.json
@@ -342,7 +351,7 @@ crates/formatjs_cli/
 This Rust implementation provides significant performance improvements over the Node.js-based CLI, especially for:
 
 - **Large codebases**: 10-100x faster extraction and compilation
-- **Batch processing**: Minimal overhead when processing many files
+- **Batch processing**: Parallel file and message processing for large catalogs
 - **CI/CD pipelines**: Faster builds and deployments
 - **Memory efficiency**: Lower memory usage for large message catalogs
 

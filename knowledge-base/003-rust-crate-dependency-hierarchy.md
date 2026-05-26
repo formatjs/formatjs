@@ -54,7 +54,7 @@ formatjs_cli (v0.1.14)
 
 ### `formatjs_icu_messageformat_parser` (v0.2.4)
 
-**Purpose:** High-performance Rust implementation of the ICU MessageFormat parser. 2.6-3.7x faster than the JavaScript implementation.
+**Purpose:** High-performance Rust implementation of the ICU MessageFormat parser. 2.3-3.5x faster than the JavaScript implementation on the checked-in benchmark.
 
 **Key modules:**
 
@@ -69,7 +69,7 @@ formatjs_cli (v0.1.14)
 
 - **Native library** — Standard Rust library for use by formatjs_cli
 - **WASM binary** — Compiled to `wasm32-unknown-unknown`, produces `.wasm` + JS glue via `rust_wasm_bindgen`
-- **Benchmark** — Criterion-based (`bazel run -c opt //crates/icu_messageformat_parser:comparison_bench`)
+- **Benchmark** — Criterion-based (`bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench`)
 
 **Generated files** (from TypeScript tooling):
 
@@ -80,14 +80,14 @@ formatjs_cli (v0.1.14)
 
 | Message type | Rust    | JavaScript | Speedup |
 | ------------ | ------- | ---------- | ------- |
-| complex_msg  | 9.22 us | 23.85 us   | 2.6x    |
-| normal_msg   | 1.14 us | 3.27 us    | 2.9x    |
-| simple_msg   | 163 ns  | 600 ns     | 3.7x    |
-| string_msg   | 118 ns  | 320 ns     | 2.7x    |
+| complex_msg  | 9.43 us | 21.39 us   | 2.27x   |
+| normal_msg   | 1.18 us | 3.10 us    | 2.63x   |
+| simple_msg   | 153 ns  | 543 ns     | 3.55x   |
+| string_msg   | 59 ns   | 146 ns     | 2.47x   |
 
 ### `formatjs_cli` (v0.1.14)
 
-**Purpose:** Drop-in Rust replacement for `@formatjs/cli`. 17x faster than the Node.js CLI.
+**Purpose:** Drop-in Rust replacement for `@formatjs/cli`. 20.90x faster than the Node.js CLI on the checked-in extraction benchmark.
 
 **Binary:** `formatjs`
 

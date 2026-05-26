@@ -29,25 +29,33 @@ The benchmarks test parsing performance on four different message complexities:
 ## Results
 
 Benchmark run on: Apple Silicon (M-series)
-Date: 2025-12-21
+Date: 2026-05-25
 Build mode: `-c opt` (optimized/release)
 
-| Message Type | Avg Time | Throughput        | AST Size    |
-| ------------ | -------- | ----------------- | ----------- |
-| complex_msg  | 10.0 µs  | 100,394 ops/sec   | 3,911 bytes |
-| normal_msg   | 1.33 µs  | 752,517 ops/sec   | 608 bytes   |
-| simple_msg   | 172 ns   | 5,803,212 ops/sec | 127 bytes   |
-| string_msg   | 118 ns   | 8,474,576 ops/sec | 52 bytes    |
+| Message Type | Avg Time | Throughput         | AST Size    |
+| ------------ | -------- | ------------------ | ----------- |
+| complex_msg  | 9.43 µs  | 106,067 ops/sec    | 3,911 bytes |
+| normal_msg   | 1.18 µs  | 849,617 ops/sec    | 608 bytes   |
+| simple_msg   | 153 ns   | 6,535,948 ops/sec  | 127 bytes   |
+| string_msg   | 59 ns    | 16,949,153 ops/sec | 52 bytes    |
 
 ### Observations
 
-- **Simple messages** (plain text and basic substitution) process at ~5.8M ops/sec
-- **Normal messages** with number formatting and plurals process at ~753K ops/sec
-- **Complex nested messages** with select/plural combinations process at ~100K ops/sec
+- **Simple messages** (plain text and basic substitution) process at ~6.5M ops/sec
+- **Plain string messages** without ICU syntax process at ~16.9M ops/sec
+- **Normal messages** with number formatting and plurals process at ~850K ops/sec
+- **Complex nested messages** with select/plural combinations process at ~106K ops/sec
 - Performance scales roughly linearly with message complexity and AST size
 - **Build mode matters**: Without `-c opt`, performance is 6-8x slower (fastbuild/debug mode)
 
 ### Recent Optimizations
+
+**Optimization #4: Plain top-level message fast path** (2026-05-25):
+
+- Short-circuits non-empty messages without ICU syntax into a single literal element
+- Applies to the Rust parser when location capture is disabled
+- Preserves TypeScript parser location data while scanning plain messages once
+- Improves the checked-in `string_msg` benchmark from the previously documented 118 ns to 59 ns
 
 **Optimization #1 & #2: Avoid double character counting + eliminate string allocations** (2025-12-21):
 
@@ -64,18 +72,18 @@ Build mode: `-c opt` (optimized/release)
 
 Comparing with the JavaScript/TypeScript implementation (from `packages/icu-messageformat-parser/benchmark/benchmark.ts`):
 
-| Message Type | JavaScript (V8)   | Rust (opt)            | Winner              |
-| ------------ | ----------------- | --------------------- | ------------------- |
-| complex_msg  | 58,910 ops/sec    | **100,394 ops/sec**   | **Rust +70.4%** 🚀  |
-| normal_msg   | 405,440 ops/sec   | **752,517 ops/sec**   | **Rust +85.6%** 🚀  |
-| simple_msg   | 2,592,098 ops/sec | **5,803,212 ops/sec** | **Rust +123.9%** 🚀 |
-| string_msg   | 4,511,129 ops/sec | **8,474,576 ops/sec** | **Rust +87.9%** 🚀  |
+| Message Type | JavaScript (V8)   | Rust (opt)             | Winner              |
+| ------------ | ----------------- | ---------------------- | ------------------- |
+| complex_msg  | 48,112 ops/sec    | **106,067 ops/sec**    | **Rust +120.5%**    |
+| normal_msg   | 337,642 ops/sec   | **849,617 ops/sec**    | **Rust +151.6%**    |
+| simple_msg   | 1,910,194 ops/sec | **6,535,948 ops/sec**  | **Rust +242.2%**    |
+| string_msg   | 7,461,955 ops/sec | **16,949,153 ops/sec** | **Rust +127.1%**    |
 
 **Key takeaways**:
 
-- **Rust now beats JavaScript on ALL 4 benchmarks by 70-124%!** 🎉
+- **Rust beats JavaScript on all 4 checked-in parser benchmarks by 120-242%**
 - The optimizations eliminated string allocations and redundant character counting, which were the main bottlenecks
-- Rust's ahead-of-time compilation combined with zero-allocation parsing provides consistent 2-3x performance advantage
+- Rust's ahead-of-time compilation combined with low-allocation parsing provides a consistent 2-3.5x performance advantage
 - For high-throughput server applications, Rust delivers exceptional sub-microsecond to low-microsecond parsing times
 - The performance gap is largest for simple messages where allocation overhead dominated the previous implementation
 
