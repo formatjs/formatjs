@@ -471,7 +471,7 @@ checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.1.9"
+version = "1.1.10"
 dependencies = [
  "anyhow",
  "base64",
@@ -497,7 +497,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_cli_napi"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "formatjs_cli",
  "napi",
