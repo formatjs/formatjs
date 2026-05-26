@@ -24,7 +24,7 @@ jobs:
       # Rust CLI binary artifacts stay on the tag-triggered Bazel workflow.
       - name: Run Release Please
         id: release
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@v5
         with:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
           config-file: release-please-config.json
