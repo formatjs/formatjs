@@ -3,6 +3,7 @@ import {
   type Opts,
   interpolateName,
 } from '@formatjs/ts-transformer'
+import {existsSync} from 'fs'
 import {outputFile} from 'fs-extra/esm'
 import {
   debug,
@@ -11,15 +12,33 @@ import {
   writeStdout,
 } from '#packages/cli-lib/console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
+import {extname} from 'path'
 
 import {
   type Formatter,
   resolveBuiltinFormatter,
 } from '#packages/cli-lib/formatters/index.js'
+import {extractWithNative} from '#packages/cli-lib/native.js'
 import {parseScript} from '#packages/cli-lib/parse_script.js'
 import {readFile} from 'fs/promises'
 
 const stringify = (stringifyNs as any).default || stringifyNs
+const BUILTIN_FORMATTERS = new Set([
+  'default',
+  'simple',
+  'transifex',
+  'smartling',
+  'lokalise',
+  'crowdin',
+])
+const NATIVE_SUPPORTED_EXTENSIONS = new Set([
+  '.cjs',
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.ts',
+  '.tsx',
+])
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -108,6 +127,39 @@ function calculateLineColFromOffset(
   const lines = chunk.split('\n')
   const lastLine = lines[lines.length - 1]
   return {line: lines.length, col: lastLine.length}
+}
+
+function isBuiltinFormatter(
+  format: ExtractOpts['format']
+): format is string | undefined {
+  return (
+    !format || (typeof format === 'string' && BUILTIN_FORMATTERS.has(format))
+  )
+}
+
+function canExtractWithNative(
+  files: readonly string[],
+  opts: Omit<ExtractOpts, 'readFromStdin' | 'signal' | 'throws'>,
+  readFromStdin: boolean | undefined
+): boolean {
+  return (
+    !readFromStdin &&
+    typeof opts.idInterpolationPattern === 'string' &&
+    !opts.ast &&
+    !opts.extractSourceLocation &&
+    !opts.onMetaExtracted &&
+    !opts.onMsgError &&
+    !opts.onMsgExtracted &&
+    !opts.overrideIdFn &&
+    !opts.pragma &&
+    !opts.removeDefaultMessage &&
+    isBuiltinFormatter(opts.format) &&
+    files.every(
+      file =>
+        existsSync(file) &&
+        NATIVE_SUPPORTED_EXTENSIONS.has(extname(file).toLowerCase())
+    )
+  )
 }
 
 async function processFile(
@@ -225,6 +277,22 @@ export async function extract(
       ? (_: string, e: Error) => warn(e.message)
       : undefined,
   }
+
+  if (!signal?.aborted && canExtractWithNative(files, opts, readFromStdin)) {
+    return extractWithNative(files, {
+      additionalComponentNames: [
+        '$formatMessage',
+        ...(opts.additionalComponentNames || []),
+      ],
+      additionalFunctionNames: opts.additionalFunctionNames,
+      flatten: opts.flatten,
+      format: typeof opts.format === 'string' ? opts.format : undefined,
+      idInterpolationPattern: opts.idInterpolationPattern,
+      preserveWhitespace: opts.preserveWhitespace,
+      throws: shouldThrow,
+    })
+  }
+
   let rawResults: Array<ExtractionResult | undefined> = []
   try {
     if (readFromStdin) {

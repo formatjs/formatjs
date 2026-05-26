@@ -54,4 +54,66 @@ defineMessage({
       },
     })
   })
+
+  it('uses the native binding for supported extraction options', async () => {
+    tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
+    const filePath = join(tempDir, 'native.ts')
+    const nativePath = join(tempDir, 'native.cjs')
+    const previousNativePath = process.env.FORMATJS_CLI_LIB_NATIVE_PATH
+
+    await writeFile(
+      filePath,
+      `defineMessage({id: 'native', defaultMessage: 'Native'})`
+    )
+    await writeFile(
+      nativePath,
+      `
+module.exports = {
+  extract(files, opts) {
+    return JSON.stringify({files, opts})
+  },
+  compile() {
+    return '{}'
+  },
+  compileMessages() {
+    return '{}'
+  },
+  supportedBuiltinFormatters() {
+    return []
+  },
+}
+`
+    )
+
+    process.env.FORMATJS_CLI_LIB_NATIVE_PATH = nativePath
+    try {
+      const result = JSON.parse(
+        await extract([filePath], {
+          additionalFunctionNames: ['t'],
+          flatten: true,
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+          preserveWhitespace: true,
+          throws: true,
+        })
+      )
+
+      expect(result).toEqual({
+        files: [filePath],
+        opts: {
+          additionalComponentNames: ['$formatMessage'],
+          additionalFunctionNames: ['t'],
+          flatten: true,
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+          preserveWhitespace: true,
+          throws: true,
+        },
+      })
+    } finally {
+      if (previousNativePath === undefined) {
+        delete process.env.FORMATJS_CLI_LIB_NATIVE_PATH
+      } else {
+        process.env.FORMATJS_CLI_LIB_NATIVE_PATH = previousNativePath
+      }
+    }
+  })
 })

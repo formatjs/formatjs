@@ -6,7 +6,7 @@ use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
-use crate::extractor::{MessageDescriptor, determine_source_type, extract_messages_from_source};
+use crate::extractor::{determine_source_type, extract_messages_from_source, MessageDescriptor};
 use crate::formatters::Formatter;
 use crate::id_generator::IdGenerator;
 
@@ -28,6 +28,59 @@ pub fn extract(
     flatten: bool,
     follow_links: bool,
 ) -> Result<()> {
+    let output = extract_to_string(
+        files,
+        format,
+        in_file,
+        id_interpolation_pattern,
+        extract_source_location,
+        additional_component_names,
+        additional_function_names,
+        ignore,
+        throws,
+        pragma,
+        preserve_whitespace,
+        flatten,
+        follow_links,
+    )?;
+
+    if let Some(out_f) = out_file {
+        // Create parent directories if they don't exist
+        if let Some(parent) = out_f.parent() {
+            fs::create_dir_all(parent).with_context(|| {
+                format!(
+                    "Failed to create parent directories for {}",
+                    out_f.display()
+                )
+            })?;
+        }
+        fs::write(out_f, output + "\n")
+            .with_context(|| format!("Failed to write output to {}", out_f.display()))?;
+    } else {
+        io::stdout()
+            .write_all(output.as_bytes())
+            .context("Failed to write output to stdout")?;
+    }
+
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn extract_to_string(
+    files: &[PathBuf],
+    format: Option<Formatter>,
+    in_file: Option<&PathBuf>,
+    id_interpolation_pattern: &str,
+    extract_source_location: bool,
+    additional_component_names: &[String],
+    additional_function_names: &[String],
+    ignore: &[String],
+    throws: bool,
+    pragma: Option<&str>,
+    preserve_whitespace: bool,
+    flatten: bool,
+    follow_links: bool,
+) -> Result<String> {
     // Step 1: Resolve file list from glob patterns or in_file
     let file_list = if let Some(in_f) = in_file {
         read_file_list(in_f)?
@@ -128,30 +181,11 @@ pub fn extract(
         serde_json::to_string_pretty(&output_map)?
     };
 
-    // Step 4: Write output
-    if let Some(out_f) = out_file {
-        // Create parent directories if they don't exist
-        if let Some(parent) = out_f.parent() {
-            fs::create_dir_all(parent).with_context(|| {
-                format!(
-                    "Failed to create parent directories for {}",
-                    out_f.display()
-                )
-            })?;
-        }
-        fs::write(out_f, output + "\n")
-            .with_context(|| format!("Failed to write output to {}", out_f.display()))?;
-    } else {
-        io::stdout()
-            .write_all(output.as_bytes())
-            .context("Failed to write output to stdout")?;
-    }
-
     if !errors.is_empty() && throws {
         anyhow::bail!("Extraction completed with {} errors", errors.len());
     }
 
-    Ok(())
+    Ok(output)
 }
 
 /// Read file list from a file (one path per line)
@@ -192,7 +226,11 @@ pub fn extract_base_dir(pattern: &str) -> PathBuf {
 
 /// Resolve files from glob patterns, excluding ignore patterns.
 /// Uses `walkdir` for filesystem traversal and `fast_glob::glob_match` for pattern matching.
-fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String], follow_links: bool) -> Result<Vec<PathBuf>> {
+fn resolve_files_from_globs(
+    globs: &[PathBuf],
+    ignore: &[String],
+    follow_links: bool,
+) -> Result<Vec<PathBuf>> {
     let mut files = Vec::new();
 
     for glob_path in globs {
@@ -206,7 +244,11 @@ fn resolve_files_from_globs(globs: &[PathBuf], ignore: &[String], follow_links: 
             continue;
         }
 
-        for entry in WalkDir::new(&base_dir).follow_links(follow_links).into_iter().filter_map(|e| e.ok()) {
+        for entry in WalkDir::new(&base_dir)
+            .follow_links(follow_links)
+            .into_iter()
+            .filter_map(|e| e.ok())
+        {
             let path = entry.path();
 
             // Skip directories
@@ -269,6 +311,7 @@ fn build_function_names(additional: &[String]) -> Vec<String> {
         "defineMessages".to_string(),
         "defineMessage".to_string(),
         "formatMessage".to_string(),
+        "$formatMessage".to_string(),
         "$t".to_string(),
     ];
     names.extend_from_slice(additional);
@@ -379,14 +422,15 @@ mod tests {
 
     #[test]
     fn test_build_function_names() {
-        let additional = vec!["$formatMessage".to_string()];
+        let additional = vec!["customFormat".to_string()];
         let names = build_function_names(&additional);
-        assert_eq!(names.len(), 5);
+        assert_eq!(names.len(), 6);
         assert!(names.contains(&"defineMessages".to_string()));
         assert!(names.contains(&"defineMessage".to_string()));
         assert!(names.contains(&"formatMessage".to_string()));
-        assert!(names.contains(&"$t".to_string()));
         assert!(names.contains(&"$formatMessage".to_string()));
+        assert!(names.contains(&"$t".to_string()));
+        assert!(names.contains(&"customFormat".to_string()));
     }
 
     #[test]
@@ -406,10 +450,7 @@ import { FormattedMessage } from 'react-intl';
 
     #[test]
     fn test_should_ignore() {
-        let patterns = vec![
-            "**/node_modules/**".to_string(),
-            "**/*.test.ts".to_string(),
-        ];
+        let patterns = vec!["**/node_modules/**".to_string(), "**/*.test.ts".to_string()];
 
         assert!(should_ignore(
             &PathBuf::from("src/node_modules/foo.ts"),
@@ -508,7 +549,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -517,18 +558,73 @@ const msg = defineMessage({
 
         // Should have exactly 2 messages (from .ts and .tsx, but NOT from .js)
         assert_eq!(json.as_object().unwrap().len(), 2);
-        assert!(json.get("from.ts").is_some(), "Should find message from .ts file");
-        assert!(json.get("from.tsx").is_some(), "Should find message from .tsx file");
-        assert!(json.get("from.js").is_none(), "Should NOT find message from .js file");
+        assert!(
+            json.get("from.ts").is_some(),
+            "Should find message from .ts file"
+        );
+        assert!(
+            json.get("from.tsx").is_some(),
+            "Should find message from .tsx file"
+        );
+        assert!(
+            json.get("from.js").is_none(),
+            "Should NOT find message from .js file"
+        );
+    }
+
+    #[test]
+    fn test_extract_to_string_returns_serialized_messages() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let file = temp_dir.path().join("app.ts");
+        fs::write(
+            &file,
+            r#"
+import { defineMessage } from 'react-intl';
+const msg = defineMessage({
+    id: 'native.extract',
+    defaultMessage: 'Extracted by native binding',
+});
+"#,
+        )
+        .unwrap();
+
+        let output = extract_to_string(
+            &[file],
+            None,
+            None,
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output).unwrap();
+
+        assert_eq!(
+            json["native.extract"]["defaultMessage"],
+            "Extracted by native binding"
+        );
     }
 
     #[test]
     fn test_extract_base_dir() {
         assert_eq!(extract_base_dir("src/**/*.ts"), PathBuf::from("src"));
-        assert_eq!(extract_base_dir("src/components/**/*.tsx"), PathBuf::from("src/components"));
+        assert_eq!(
+            extract_base_dir("src/components/**/*.tsx"),
+            PathBuf::from("src/components")
+        );
         assert_eq!(extract_base_dir("**/*.ts"), PathBuf::from("."));
         assert_eq!(extract_base_dir("*.ts"), PathBuf::from("."));
-        assert_eq!(extract_base_dir("/absolute/path/**/*.ts"), PathBuf::from("/absolute/path"));
+        assert_eq!(
+            extract_base_dir("/absolute/path/**/*.ts"),
+            PathBuf::from("/absolute/path")
+        );
         // Brace expansion: wildcard is `{`
         assert_eq!(extract_base_dir("src/**/*.{ts,tsx}"), PathBuf::from("src"));
         // Literal path (no wildcards) returns parent dir
@@ -553,10 +649,7 @@ const msg = defineMessage({
 
         let pattern = format!("{}/**/*.ts", temp_dir.path().display());
         let globs = vec![PathBuf::from(&pattern)];
-        let ignore = vec![
-            "**/node_modules/**".to_string(),
-            "**/*.test.ts".to_string(),
-        ];
+        let ignore = vec!["**/node_modules/**".to_string(), "**/*.test.ts".to_string()];
         let files = resolve_files_from_globs(&globs, &ignore, true).unwrap();
 
         assert_eq!(files.len(), 1);
@@ -654,7 +747,7 @@ const messages = defineMessages({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -727,7 +820,7 @@ const messages = defineMessages({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -742,7 +835,11 @@ const messages = defineMessages({
             .keys()
             .map(|s| s.as_str())
             .collect();
-        assert_eq!(keys, vec!["alpha", "charlie", "zulu"], "Keys should be sorted");
+        assert_eq!(
+            keys,
+            vec!["alpha", "charlie", "zulu"],
+            "Keys should be sorted"
+        );
 
         // Verify the Default formatter outputs the vendor format (MessageDescriptor structure)
         let alpha = json.get("alpha").unwrap().as_object().unwrap();
@@ -787,7 +884,7 @@ const greeting = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -843,7 +940,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -863,7 +960,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -924,7 +1021,7 @@ const messages = defineMessages({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -983,7 +1080,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1003,7 +1100,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1023,7 +1120,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1041,9 +1138,18 @@ const msg = defineMessage({
         let id_hex = json_hex.as_object().unwrap().keys().next().unwrap();
 
         // All IDs should be different
-        assert_ne!(id_base62, id_base64, "Base62 and base64 should produce different IDs");
-        assert_ne!(id_base62, id_hex, "Base62 and hex should produce different IDs");
-        assert_ne!(id_base64, id_hex, "Base64 and hex should produce different IDs");
+        assert_ne!(
+            id_base62, id_base64,
+            "Base62 and base64 should produce different IDs"
+        );
+        assert_ne!(
+            id_base62, id_hex,
+            "Base62 and hex should produce different IDs"
+        );
+        assert_ne!(
+            id_base64, id_hex,
+            "Base64 and hex should produce different IDs"
+        );
 
         // All should be 10 characters
         assert_eq!(id_base62.len(), 10);
@@ -1097,7 +1203,7 @@ const messages = defineMessages({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1164,7 +1270,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1183,7 +1289,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1244,7 +1350,7 @@ const messages = defineMessages({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1257,7 +1363,10 @@ const messages = defineMessages({
 
         // Verify greeting message has correct Crowdin format
         let greeting = json.get("app.greeting").unwrap();
-        assert!(greeting.is_object(), "Crowdin format should have object entries");
+        assert!(
+            greeting.is_object(),
+            "Crowdin format should have object entries"
+        );
         let greeting_obj = greeting.as_object().unwrap();
         assert_eq!(greeting_obj.get("message").unwrap(), "Hello {name}!");
         assert_eq!(
@@ -1304,7 +1413,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1353,7 +1462,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1401,7 +1510,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1465,7 +1574,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1514,7 +1623,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1535,7 +1644,10 @@ const msg = defineMessage({
             }
         });
 
-        assert_eq!(json, expected, "Output should match Crowdin's expected format");
+        assert_eq!(
+            json, expected,
+            "Output should match Crowdin's expected format"
+        );
     }
 
     #[test]
@@ -1574,7 +1686,7 @@ function MyComponent() {
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1620,7 +1732,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1640,7 +1752,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         )
         .unwrap();
 
@@ -1712,7 +1824,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         );
 
         // Should succeed despite one file failing
@@ -1782,7 +1894,7 @@ const msg = defineMessage({
             None,
             false,
             false,
-            true,  // follow links
+            true, // follow links
         );
 
         // Should fail because of the invalid file
