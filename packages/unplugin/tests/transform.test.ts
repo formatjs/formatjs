@@ -339,6 +339,35 @@ describe('@formatjs/unplugin transform', () => {
         `<FormattedMessage id="${expectedId}" defaultMessage="She said &quot;hi&quot; &amp; left" />`
       )
     })
+
+    test('decodes JSX bull entity for id generation without rewriting source', () => {
+      const input = `<FormattedMessage defaultMessage="&bull;" description="Bullet between option group label and selected value" />`
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {
+          content:
+            '\u2022#Bullet between option group label and selected value',
+        }
+      )
+
+      expect(t(input)).toBe(
+        `<FormattedMessage id="${expectedId}" defaultMessage="&bull;" />`
+      )
+    })
+
+    test('decodes non-core JSX named entities for id generation without rewriting source', () => {
+      const input = `<FormattedMessage defaultMessage="&copy; &hellip; &mdash;" description="symbols" />`
+      const expectedId = interpolateName(
+        {resourcePath: '/path/to/file.tsx'} as any,
+        '[sha512:contenthash:base64:6]',
+        {content: '\u00a9 \u2026 \u2014#symbols'}
+      )
+
+      expect(t(input)).toBe(
+        `<FormattedMessage id="${expectedId}" defaultMessage="&copy; &hellip; &mdash;" />`
+      )
+    })
   })
 
   describe('member expressions', () => {
