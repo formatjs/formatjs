@@ -1,10 +1,26 @@
 {
   "name": "@formatjs/unplugin",
-  "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, and Rspack",
   "version": "1.1.15",
+  "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, and Rspack",
+  "keywords": [
+    "esbuild-plugin",
+    "formatjs",
+    "i18n",
+    "internationalization",
+    "react-intl",
+    "rollup-plugin",
+    "rspack-plugin",
+    "unplugin",
+    "vite-plugin",
+    "webpack-plugin"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
   "type": "module",
+  "main": "index.js",
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
@@ -18,6 +34,7 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
+    "decode-named-character-reference": "^1.3.0",
     "magic-string": "^0.30.0",
     "oxc-parser": "^0.132.0",
     "unplugin": "^3.0.0"
@@ -29,21 +46,6 @@
     "vite": ">=5",
     "webpack": "^5.104.1"
   },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
-  "keywords": [
-    "esbuild-plugin",
-    "formatjs",
-    "i18n",
-    "internationalization",
-    "react-intl",
-    "rollup-plugin",
-    "rspack-plugin",
-    "unplugin",
-    "vite-plugin",
-    "webpack-plugin"
-  ],
-  "main": "index.js",
   "peerDependenciesMeta": {
     "vite": {
       "optional": true
@@ -60,6 +62,5 @@
     "@rspack/core": {
       "optional": true
     }
-  },
-  "repository": "formatjs/formatjs.git"
+  }
 }

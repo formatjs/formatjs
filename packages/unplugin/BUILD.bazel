@@ -58,6 +58,7 @@ formatjs_library(
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
+        "//:node_modules/decode-named-character-reference",
         "//:node_modules/magic-string",
         "//:node_modules/oxc-parser",
         "//:node_modules/unplugin",
@@ -75,6 +76,7 @@ formatjs_test(
         ":unplugin",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
+        "//:node_modules/decode-named-character-reference",
         "//:node_modules/vitest",
     ],
 )
@@ -92,6 +94,7 @@ vitest(
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
+        "//:node_modules/decode-named-character-reference",
         "//:node_modules/magic-string",
         "//:node_modules/oxc-parser",
         "//:node_modules/unplugin",

@@ -2,6 +2,7 @@ import {parseSync, Visitor} from 'oxc-parser'
 import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
 import type {HookFilter} from 'unplugin'
 import MagicString from 'magic-string'
+import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {interpolateName} from '@formatjs/ts-transformer'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
@@ -40,15 +41,6 @@ interface DescriptorLocation {
   insertionPoint?: number
 }
 
-const JSX_NAMED_CHARACTER_REFERENCES: Record<string, string> = {
-  amp: '&',
-  apos: "'",
-  gt: '>',
-  lt: '<',
-  nbsp: '\u00a0',
-  quot: '"',
-}
-
 function decodeJSXAttributeValue(value: string): string {
   return value.replace(
     /&(#(?:x[0-9a-fA-F]+|\d+)|[a-zA-Z][\w.-]*);/g,
@@ -67,7 +59,8 @@ function decodeJSXAttributeValue(value: string): string {
         return String.fromCodePoint(codePoint)
       }
 
-      return JSX_NAMED_CHARACTER_REFERENCES[entity] ?? match
+      const decoded = decodeNamedCharacterReference(entity)
+      return decoded === false ? match : decoded
     }
   )
 }
