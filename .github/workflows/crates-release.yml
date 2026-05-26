@@ -1,0 +1,115 @@
+name: Crates Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run cargo publish --dry-run without requesting a crates.io token'
+        type: boolean
+        required: false
+        default: true
+      crate:
+        description: 'Crate to release'
+        type: choice
+        required: true
+        default: all
+        options:
+          - all
+          - formatjs_icu_skeleton_parser
+          - formatjs_icu_messageformat_parser
+          - formatjs_cli
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release Crates
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Select Crates
+        id: crates
+        run: |
+          set -euo pipefail
+
+          case "${{ inputs.crate }}" in
+            all)
+              crates=(
+                formatjs_icu_skeleton_parser
+                formatjs_icu_messageformat_parser
+                formatjs_cli
+              )
+              ;;
+            formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_cli)
+              crates=("${{ inputs.crate }}")
+              ;;
+            *)
+              echo "Unknown crate: ${{ inputs.crate }}" >&2
+              exit 1
+              ;;
+          esac
+
+          {
+            echo "names<<EOF"
+            printf '%s\n' "${crates[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validate Rust Crates
+        run: |
+          set -euo pipefail
+
+          targets=(
+            //crates/icu_skeleton_parser:icu_skeleton_parser_test
+            //crates/icu_messageformat_parser:icu_messageformat_parser_test
+            //crates/formatjs_cli:formatjs_cli_test
+          )
+
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel test \
+              --config=ci \
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+              "${targets[@]}"
+          else
+            bazel test "${targets[@]}"
+          fi
+
+      - name: Dry-run Crate Publish
+        if: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r crate; do
+            cargo publish --locked --dry-run -p "$crate"
+          done <<< "${{ steps.crates.outputs.names }}"
+
+      - name: Authenticate with crates.io
+        id: auth
+        if: ${{ !inputs.dry_run }}
+        uses: rust-lang/crates-io-auth-action@v1
+
+      - name: Publish Crates
+        if: ${{ !inputs.dry_run }}
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r crate; do
+            cargo publish --locked -p "$crate"
+          done <<< "${{ steps.crates.outputs.names }}"
