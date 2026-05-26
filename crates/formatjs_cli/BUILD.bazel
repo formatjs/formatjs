@@ -7,6 +7,7 @@ load(
     "release_binary_linux_arm64",
     "release_binary_linux_x64",
     "release_binary_windows_x64",
+    "release_binary_windows_x64_gnullvm",
 )
 
 FORMATJS_CLI_VERSION = "1.1.9"  # x-release-please-version
@@ -168,12 +169,21 @@ release_binary_windows_x64(
     visibility = ["//visibility:public"],
 )
 
+release_binary_windows_x64_gnullvm(
+    name = "release_binary_windows_x64_gnullvm",
+    srcs = [":formatjs_cli"],
+    outs = ["formatjs_cli_win32_x64_gnullvm.exe"],
+    cmd = "cp $< $@",
+    visibility = ["//visibility:public"],
+)
+
 filegroup(
     name = "release_binaries",
     srcs = [
         ":release_binary_darwin_arm64",
         ":release_binary_linux_arm64",
         ":release_binary_linux_x64",
+        ":release_binary_windows_x64_gnullvm",
     ],
     visibility = ["//visibility:public"],
 )

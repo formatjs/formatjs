@@ -114,6 +114,7 @@ Download pre-built native binaries from the [GitHub Releases](https://github.com
 - `formatjs_cli-darwin-arm64` - macOS Apple Silicon
 - `formatjs_cli-linux-arm64` - Linux ARM64
 - `formatjs_cli-linux-x64` - Linux x86_64
+- `formatjs_cli-win32-x64.exe` - Windows x64
 
 **Installation steps:**
 
@@ -128,15 +129,18 @@ Download pre-built native binaries from the [GitHub Releases](https://github.com
 
    # Linux ARM64
    curl -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-linux-arm64 -o formatjs
+
+   # Windows x64
+   curl.exe -L https://github.com/formatjs/formatjs/releases/download/<version>/formatjs_cli-win32-x64.exe -o formatjs.exe
    ```
 
-2. Make it executable:
+2. On macOS or Linux, make it executable:
 
    ```bash
    chmod +x formatjs
    ```
 
-3. Optionally, move it to your PATH:
+3. On macOS or Linux, optionally move it to your PATH:
 
    ```bash
    sudo mv formatjs /usr/local/bin/
@@ -163,13 +167,14 @@ bazel run //crates/formatjs_cli:formatjs -- --help
 
 ### Cross-Platform Release Builds
 
-Build the release binaries for Darwin ARM64, Linux x64, and Linux ARM64:
+Build the release binaries for Darwin ARM64, Linux x64, Linux ARM64, and Windows x64:
 
 ```bash
 bazel build --compilation_mode=opt \
   //crates/formatjs_cli:release_binary_darwin_arm64 \
   //crates/formatjs_cli:release_binary_linux_x64 \
-  //crates/formatjs_cli:release_binary_linux_arm64
+  //crates/formatjs_cli:release_binary_linux_arm64 \
+  //crates/formatjs_cli:release_binary_windows_x64_gnullvm
 ```
 
 Use `bazel cquery --output=files <target>` to locate each binary:
@@ -178,6 +183,7 @@ Use `bazel cquery --output=files <target>` to locate each binary:
 bazel cquery --output=files //crates/formatjs_cli:release_binary_darwin_arm64
 bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_x64
 bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_arm64
+bazel cquery --output=files //crates/formatjs_cli:release_binary_windows_x64_gnullvm
 ```
 
 ### Local Cargo Build

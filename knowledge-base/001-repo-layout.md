@@ -108,9 +108,11 @@ GitHub-generated changelog notes include PR titles, PR links, and contributors.
 The npm package publish path remains `release.yml` with Bazel-built packages and
 npm Trusted Publishing. Rust crate publishing happens in `crates-release.yml`
 from crate GitHub releases using crates.io trusted publishing. The Rust CLI
-binary artifacts remain Bazel-owned in `rust-cli-release.yml`, which uploads
-assets and checksums to the `formatjs_cli_v*` release without replacing Release
-Please notes.
+binary artifacts remain Bazel-owned in `rust-cli-release.yml`. Its release build
+job runs on Linux, uses BuildBuddy RBE when credentials are available, and
+cross-compiles the macOS, Linux, and Windows standalone CLI artifacts before
+uploading assets and checksums to the `formatjs_cli_v*` release without
+replacing Release Please notes.
 
 ## Common Commands
 
