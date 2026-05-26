@@ -95,24 +95,25 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | Workflow               | Trigger               | What it does                             |
 | ---------------------- | --------------------- | ---------------------------------------- |
 | `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS     |
-| `release-please.yml`   | Push to main/manual   | Version/changelog PRs and GitHub releases |
+| `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
+| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing |
 | `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC |
 | `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts     |
-| `release.yml`          | Push to main          | `bazel build :dist` then `pnpm publish`  |
-| `prerelease.yml`       | Manual                | `lerna version` (independent versioning) |
 | `website.yml`          | Manual/push           | Deploy docs site                         |
 | `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint       |
 
-Release Please owns version/changelog PRs plus GitHub release creation. Its
+Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
-The npm package publish path remains `release.yml` with Bazel-built packages and
-npm Trusted Publishing. Rust crate publishing happens in `crates-release.yml`
-from crate GitHub releases using crates.io trusted publishing. The Rust CLI
-binary artifacts remain Bazel-owned in `rust-cli-release.yml`. Its release build
-job runs on Linux, uses BuildBuddy RBE when credentials are available, and
-cross-compiles the macOS, Linux, and Windows standalone CLI artifacts before
-uploading assets and checksums to the `formatjs_cli_v*` release without
-replacing Release Please notes.
+When Release Please creates npm package releases, it passes those released
+package paths to `release.yml`. The npm publish workflow builds the Bazel
+`:dist` output and uses npm Trusted Publishing, then publishes only the package
+paths Release Please released. Rust crate publishing happens in
+`crates-release.yml` from crate GitHub releases using crates.io trusted
+publishing. The Rust CLI binary artifacts remain Bazel-owned in
+`rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE
+when credentials are available, and cross-compiles the macOS, Linux, and Windows
+standalone CLI artifacts before uploading assets and checksums to the
+`formatjs_cli_v*` release without replacing Release Please notes.
 
 ## Common Commands
 

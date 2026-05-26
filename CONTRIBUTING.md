@@ -125,16 +125,15 @@ Releases are automated via GitHub Actions:
    so entries include PR titles, PR links, and contributors.
 
 2. Merge the release PR when it is ready. Release Please creates the package
-   tags and GitHub releases from the merged release PR.
+   tags and GitHub releases from the merged release PR, then calls the
+   **Release** workflow with the released npm package paths. That workflow
+   publishes from the Bazel-built distribution using Trusted Publishing (OIDC).
 
-3. The **Release** workflow publishes npm packages from the Bazel-built
-   distribution using Trusted Publishing (OIDC).
-
-4. The **Crates Release** workflow publishes Rust crates to crates.io from
+3. The **Crates Release** workflow publishes Rust crates to crates.io from
    `formatjs_icu_skeleton_parser_v*`, `formatjs_icu_messageformat_parser_v*`,
    and `formatjs_cli_v*` GitHub releases using crates.io trusted publishing.
 
-5. The **Rust CLI Release** workflow still owns Bazel-built binary artifacts for
+4. The **Rust CLI Release** workflow still owns Bazel-built binary artifacts for
    `formatjs_cli_v*` tags. It uploads binaries and checksums to the GitHub
    release without replacing Release Please changelog notes.
 

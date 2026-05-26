@@ -13,7 +13,6 @@
     "examples": "bazel run //packages/react-intl/examples",
     "format": "lefthook run pre-commit --all-files",
     "prepare": "lefthook install",
-    "prerelease": "LEFTHOOK=0 lerna version --yes --no-private",
     "test": "lefthook run pre-commit --all-files && bazel test //...",
     "website": "ibazel run //docs:serve"
   },
@@ -56,8 +55,6 @@
     "@formatjs/unplugin": "workspace:*",
     "@formatjs/utils": "workspace:*",
     "@glimmer/syntax": "^0.95.0",
-    "@lerna-lite/cli": "^5.0.0",
-    "@lerna-lite/version": "^5.0.0",
     "@mdx-js/react": "^3.1.1",
     "@mdx-js/rollup": "^3.1.1",
     "@radix-ui/react-accordion": "^1.2.12",

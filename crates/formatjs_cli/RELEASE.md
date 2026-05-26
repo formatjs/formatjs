@@ -25,19 +25,10 @@ The repository includes two GitHub Actions workflows:
 
 #### 2. Release Workflow (`.github/workflows/rust-cli-release.yml`)
 
-**Triggered by**: Push a tag starting with `formatjs_cli_v` (e.g., `formatjs_cli_v0.1.0`)
-
-Before creating the tag, run the **Prerelease** GitHub Actions workflow and wait
-for its version commit to land on `main`. The Rust CLI release tag must point at
-that post-prerelease commit. If the `formatjs_cli_v*` tag is created first,
-lerna-lite can treat it as the latest release point and fail to derive package
-changelogs correctly.
-
-```bash
-# After Prerelease has landed on main, create and push the release tag
-git tag formatjs_cli_v0.1.0
-git push origin formatjs_cli_v0.1.0
-```
+**Triggered by**: the `formatjs_cli_v*` tag created when a Release Please PR is
+merged (for example, `formatjs_cli_v0.1.0`). Normal releases should come from
+Release Please rather than manual tags so npm package versions, changelogs,
+GitHub releases, and the npm publish handoff stay in one flow.
 
 **What it does**:
 
@@ -241,18 +232,24 @@ binary artifact process:
    changelogs. When the release PR is merged, it creates the
    `formatjs_cli_v<version>` GitHub release with generated changelog notes.
 
-2. **Crates.io publish runs automatically**:
+2. **npm package publish runs automatically**:
+
+   The `release-please.yml` workflow calls `release.yml` with the npm package
+   paths released by Release Please. `release.yml` builds the Bazel `:dist`
+   output and publishes those packages through npm Trusted Publishing.
+
+3. **Crates.io publish runs automatically**:
 
    The `crates-release.yml` workflow publishes `formatjs_cli` through crates.io
    trusted publishing after the parser crate dependencies are available.
 
-3. **Rust CLI Release runs automatically**:
+4. **Rust CLI Release runs automatically**:
    - Builds macOS, Linux, and Windows binaries through Bazel on Linux BuildBuddy RBE
    - Runs smoke tests on macOS, Linux, and Windows runners
    - Uploads binaries and checksums to the existing GitHub release
    - Appends binary installation notes without replacing the changelog
 
-4. **Manual verification** (optional):
+5. **Manual verification** (optional):
    - Check GitHub Actions run completed successfully
    - Download and test binaries from the release
    - Verify checksums

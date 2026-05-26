@@ -1,18 +1,28 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      npm_paths:
+        description: 'JSON array of released package paths to publish'
+        required: true
+        type: string
   workflow_dispatch:
+    inputs:
+      npm_paths:
+        description: 'JSON array of released package paths to publish'
+        required: true
+        default: '[]'
+        type: string
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build_windows_native:
     name: Build Windows Native Package
+    if: ${{ inputs.npm_paths != '[]' }}
     runs-on: windows-latest
 
     steps:
@@ -61,6 +71,7 @@ jobs:
 
   release:
     needs: build_windows_native
+    if: ${{ inputs.npm_paths != '[]' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -109,6 +120,26 @@ jobs:
         working-directory: release
         run: pnpm install --frozen-lockfile --ignore-scripts
 
-      - name: Publish to npm
+      - name: Publish released npm packages
         working-directory: release
-        run: pnpm -r publish --access public --no-git-checks
+        env:
+          NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
+        run: |
+          mapfile -t package_paths < <(
+            node -e 'JSON.parse(process.env.NPM_RELEASE_PATHS || "[]").forEach(path => console.log(path))'
+          )
+
+          if [ "${#package_paths[@]}" -eq 0 ]; then
+            echo "No npm package releases to publish."
+            exit 0
+          fi
+
+          for package_path in "${package_paths[@]}"; do
+            if [ ! -d "$package_path" ]; then
+              echo "::error::Release package path does not exist in Bazel distribution: $package_path"
+              exit 1
+            fi
+
+            echo "Publishing $package_path"
+            (cd "$package_path" && pnpm publish --access public --no-git-checks)
+          done
