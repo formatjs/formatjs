@@ -107,7 +107,7 @@
     "cldr-segments-full": "48.1.0",
     "cldr-units-full": "48.1.0",
     "clsx": "^2.1.1",
-    "codescythe": "^0.4.15",
+    "codescythe": "^0.5.0",
     "commander": "^14.0.0",
     "content-tag": "^4.1.0",
     "conventional-changelog-angular": "^8.1.0",

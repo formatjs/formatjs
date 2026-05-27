@@ -1,4 +1,8 @@
-import {name, rule} from '#packages/eslint-plugin-formatjs/rules/enforce-id.js'
+import {
+  name,
+  type Option,
+  rule,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-id.js'
 import {
   emptyFnCall,
   noMatch,
@@ -8,7 +12,9 @@ import {
   ruleTester,
   vueRuleTester,
 } from '#packages/eslint-plugin-formatjs/tests/util'
-const options = [{idInterpolationPattern: '[sha512:contenthash:base64:6]'}]
+const options: [Option] = [
+  {idInterpolationPattern: '[sha512:contenthash:base64:6]'},
+]
 ruleTester.run(name, rule, {
   valid: [
     {
@@ -181,7 +187,7 @@ defineMessages({ example: { defaultMessage: 'example', id: 'O7Eu2j' } })`,
   ],
 })
 
-const optionsWithWhitelist = [
+const optionsWithWhitelist: [Option] = [
   {
     idInterpolationPattern: '[sha512:contenthash:base64:6]',
     idWhitelist: ['\\.', '^payment_.*'],
@@ -239,7 +245,7 @@ defineMessages({ example: { defaultMessage: 'example1', id: 'payment_string' }, 
   ],
 })
 
-const optionsWithDoubleQuote = [
+const optionsWithDoubleQuote: [Option] = [
   {
     idInterpolationPattern: '[sha512:contenthash:base64:6]',
     quoteStyle: 'double',

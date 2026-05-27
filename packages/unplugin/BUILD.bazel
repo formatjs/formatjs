@@ -76,7 +76,6 @@ formatjs_test(
         ":unplugin",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
-        "//:node_modules/decode-named-character-reference",
         "//:node_modules/vitest",
     ],
 )
