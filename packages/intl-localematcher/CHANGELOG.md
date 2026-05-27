@@ -3,6 +3,107 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.8.9 (2026-05-27)
+
+## What's Changed
+* build: include linux arm64 native package in dist by @longlho in https://github.com/formatjs/formatjs/pull/6574
+* chore(formatjs_cli): use Bazel release builds in docs by @longlho in https://github.com/formatjs/formatjs/pull/6576
+* fix(formatjs_cli): implement pseudo-locale transforms by @longlho in https://github.com/formatjs/formatjs/pull/6578
+* fix(react-intl): set FormattedListParts displayName by @longlho in https://github.com/formatjs/formatjs/pull/6580
+* fix: harden polyfill installation by @longlho in https://github.com/formatjs/formatjs/pull/6579
+* test(react-intl): cover list and relative time components by @longlho in https://github.com/formatjs/formatjs/pull/6581
+* chore(deps): update dependency aspect_rules_ts to v3.8.9 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6258
+* chore(deps): update dependency rolldown to v1.0.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6371
+* chore(deps): update dependency protobuf to v34.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6454
+* chore(deps): update dependency typescript to v6.0.3 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6374
+* chore(deps): update dependency @rspack/core to v2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6537
+* chore(deps): update dependency syncpack to v15 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6539
+* build(deps-dev): bump svelte from 5.53.12 to 5.55.7 by @dependabot[bot] in https://github.com/formatjs/formatjs/pull/6568
+* chore(deps): update commitlint monorepo to v21 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6577
+* chore(deps): update pnpm to v11 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6543
+* chore(deps): update lerna-lite monorepo to v5 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6348
+* fix(@formatjs/cli-native-win32-x64): add native package by @longlho in https://github.com/formatjs/formatjs/pull/6586
+* build(deps): bump brace-expansion from 1.1.12 to 5.0.6 by @dependabot[bot] in https://github.com/formatjs/formatjs/pull/6584
+* chore(deps): update pnpm to v11.1.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6585
+* chore(deps): update pnpm to v11.1.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6587
+* chore(deps): update dependency vike-react to v0.6.22 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6588
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260513.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6589
+* chore(deps): update rust crate napi-derive to v3.5.6 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6592
+* chore(deps): update dependency rolldown to v1.0.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6591
+* chore(deps): update rust crate napi to v3.9.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6594
+* chore(deps): update dependency tinybench to v6.0.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6595
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260514.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6596
+* chore(deps): update dependency vite to v8.0.13 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6597
+* chore(deps): update pnpm to v11.1.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6598
+* fix(@formatjs/unplugin): preserve escaped tag literals when flattening by @longlho in https://github.com/formatjs/formatjs/pull/6599
+* chore(deps): update dependency lucide-react to v1.16.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6600
+* chore(deps): update dependency rollup to v4.60.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6601
+* chore(deps): update dependency @vitejs/plugin-react to v6.0.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6605
+* fix(@formatjs/cli-lib): handle literal Windows compile paths by @longlho in https://github.com/formatjs/formatjs/pull/6607
+* fix(@formatjs/unplugin): preserve JSX defaultMessage output by @longlho in https://github.com/formatjs/formatjs/pull/6608
+* build(deps): bump js-cookie from 3.0.5 to 3.0.7 by @dependabot[bot] in https://github.com/formatjs/formatjs/pull/6604
+* build(deps): bump ws from 7.5.10 to 8.20.1 by @dependabot[bot] in https://github.com/formatjs/formatjs/pull/6590
+* docs: clarify cli native binding support by @longlho in https://github.com/formatjs/formatjs/pull/6609
+* fix(deps): update dependency eslint to v10.4.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6612
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260515.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6610
+* perf(formatjs_cli): parallelize file processing by @longlho in https://github.com/formatjs/formatjs/pull/6611
+* docs(formatjs_cli): document rayon thread cap by @longlho in https://github.com/formatjs/formatjs/pull/6616
+* perf(formatjs_cli): reduce parser and extract allocations by @longlho in https://github.com/formatjs/formatjs/pull/6617
+* chore(deps): update dependency vike-react to v0.6.23 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6619
+* chore(deps): update dependency rolldown-plugin-dts to v0.25.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6618
+* bench(formatjs_cli): add OSS React Intl corpora by @longlho in https://github.com/formatjs/formatjs/pull/6621
+* fix(@formatjs/unplugin): expose transform hook filters by @longlho in https://github.com/formatjs/formatjs/pull/6622
+* chore(deps): update dependency oxc-transform to ^0.131.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6624
+* chore(deps): update dependency oxfmt to ^0.50.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6625
+* docs(formatjs_cli): document prerelease before tag by @longlho in https://github.com/formatjs/formatjs/pull/6626
+* fix(deps): update oxc rust crates to 0.131 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6613
+* chore(deps): update dependency oxlint to v1.65.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6627
+* fix(deps): update dependency oxc-parser to ^0.131.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6628
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260516.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6629
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260517.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6630
+* chore(deps): update dependency syncpack to v15.2.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6631
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260518.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6632
+* chore(deps): update dependency oxc-transform to ^0.132.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6633
+* chore(deps): update dependency svelte to v5.55.8 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6634
+* chore(deps): update pnpm to v11.1.3 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6635
+* chore(deps): update typescript-eslint monorepo to v8.59.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6636
+* chore(deps): update dependency syncpack to v15.3.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6637
+* fix(deps): update dependency oxc-parser to ^0.132.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6638
+* perf(formatjs_cli): parallelize catalog parsing by @longlho in https://github.com/formatjs/formatjs/pull/6642
+* ci: add crates trusted publishing workflow by @longlho in https://github.com/formatjs/formatjs/pull/6645
+* build: add release-please pilot by @longlho in https://github.com/formatjs/formatjs/pull/6582
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260519.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6647
+* chore(deps): update dependency syncpack to v15.3.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6648
+* chore(deps): update dependency ts-jest to v29.4.10 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6649
+* chore(deps): update dependency oxfmt to ^0.51.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6650
+* chore(deps): update googleapis/release-please-action action to v5 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6646
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6654
+* chore(deps): update dependency lefthook to v2.1.8 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6651
+* chore(deps): update dependency oxlint to v1.66.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6652
+* ci(formatjs_cli): cross-compile release binaries on linux by @longlho in https://github.com/formatjs/formatjs/pull/6656
+* ci: fix crates release dependency polling by @longlho in https://github.com/formatjs/formatjs/pull/6655
+* fix(deps): update rust crate oxc to 0.132 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6639
+* ci: use node24 crates auth action by @longlho in https://github.com/formatjs/formatjs/pull/6658
+* build(deps): bump qs and express in /packages/react-intl/example-sandboxes/rescripts by @dependabot[bot] in https://github.com/formatjs/formatjs/pull/6623
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6657
+* fix(@formatjs/unplugin): decode JSX bull entity by @longlho in https://github.com/formatjs/formatjs/pull/6662
+* fix(@formatjs/cli-lib): expose native extract binding by @longlho in https://github.com/formatjs/formatjs/pull/6663
+* build: publish npm from release please by @longlho in https://github.com/formatjs/formatjs/pull/6664
+* fix: align release-please package components by @longlho in https://github.com/formatjs/formatjs/pull/6665
+* fix: preserve release-please workspace candidates by @longlho in https://github.com/formatjs/formatjs/pull/6667
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6666
+* chore(deps): update dependency rolldown to v1.0.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6669
+* chore(deps): update dependency svelte to v5.55.9 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6670
+* chore(deps): update dependency @rspack/core to v2.0.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6671
+* chore(deps): update dependency vitest to v4.1.7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6672
+* chore(deps): update pnpm to v11.2.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6674
+* chore(deps): update dependency webpack to v5.107.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6673
+* chore: add codescythe hook by @longlho in https://github.com/formatjs/formatjs/pull/6668
+* chore(deps): update pnpm to v11.2.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6675
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.8.8...@formatjs/intl-localematcher@0.8.9
+
 ## [0.8.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.8.7...@formatjs/intl-localematcher@0.8.8) (2026-05-15)
 
 **Note:** Version bump only for package @formatjs/intl-localematcher
