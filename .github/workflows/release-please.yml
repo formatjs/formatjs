@@ -11,17 +11,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release-please:
+  release_please:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
       pull-requests: write
+    outputs:
+      npm_paths: ${{ steps.npm-release-paths.outputs.npm_paths }}
+      npm_release_created: ${{ steps.npm-release-paths.outputs.npm_release_created }}
 
     steps:
-      # Release Please owns version/changelog PRs and GitHub release notes.
-      # npm and crates.io publication happen in follow-on workflows, while the
-      # Rust CLI binary artifacts stay on the tag-triggered Bazel workflow.
+      # Release Please owns version/changelog PRs, GitHub release notes, and
+      # the release-created signal used for npm publication below.
       - name: Run Release Please
         id: release
         uses: googleapis/release-please-action@v5
@@ -29,3 +31,34 @@ jobs:
           token: ${{ secrets.GH_RELEASE_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      - name: Collect npm release paths
+        id: npm-release-paths
+        env:
+          PATHS_RELEASED: ${{ steps.release.outputs.paths_released || '[]' }}
+        run: |
+          node <<'JS'
+          const fs = require('node:fs')
+          const paths = JSON.parse(process.env.PATHS_RELEASED || '[]')
+          const npmPaths = paths.filter(path => path.startsWith('packages/'))
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `npm_paths=${JSON.stringify(npmPaths)}\n`
+          )
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `npm_release_created=${npmPaths.length > 0}\n`
+          )
+          JS
+
+  release_npm:
+    name: Release npm Packages
+    needs: release_please
+    if: ${{ needs.release_please.outputs.npm_release_created == 'true' }}
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/release.yml
+    with:
+      npm_paths: ${{ needs.release_please.outputs.npm_paths }}
+    secrets: inherit

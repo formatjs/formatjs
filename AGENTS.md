@@ -167,8 +167,9 @@ bazel test //packages/cli/integration-tests:conformance_test
 bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench
 ```
 
-Release Please owns version/changelog PRs and GitHub release creation for npm
-packages and Rust crates. Rust crate releases publish through
+Release Please owns version/changelog PRs and GitHub release creation. It calls
+`.github/workflows/release.yml` with released npm package paths for npm Trusted
+Publishing. Rust crate releases publish through
 `.github/workflows/crates-release.yml` with crates.io trusted publishing. For
 `formatjs_cli` binary artifacts, stay on the Bazel release path in
 `.github/workflows/rust-cli-release.yml` and

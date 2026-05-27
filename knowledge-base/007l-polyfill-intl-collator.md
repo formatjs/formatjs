@@ -116,5 +116,5 @@ behavior.
 
 - The package name exists on npm as `@formatjs/intl-collator@0.0.0`.
 - The placeholder exists only to enable npm trusted publishing setup.
-- The first real release should come from the normal prerelease/release
-  automation after npm OIDC is configured.
+- The first real release should come from the normal Release Please automation
+  after npm OIDC is configured.
