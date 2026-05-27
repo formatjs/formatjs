@@ -6,12 +6,6 @@ import {
   getSettings,
 } from '#packages/eslint-plugin-formatjs/util.js'
 
-export type Option = {
-  idInterpolationPattern: string
-  idWhitelist?: string[]
-  quoteStyle?: 'single' | 'double'
-}
-
 type MessageIds =
   | 'enforceId'
   | 'enforceIdDefaultMessage'

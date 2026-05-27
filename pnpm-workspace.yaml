@@ -46,3 +46,9 @@ allowBuilds:
   esbuild: true
   lefthook: true
   msw: false
+
+minimumReleaseAgeExclude:
+  - codescythe
+  - codescythe-darwin-arm64
+  - codescythe-linux-amd64
+  - codescythe-linux-arm64

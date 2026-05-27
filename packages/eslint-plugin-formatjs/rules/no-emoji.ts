@@ -14,9 +14,6 @@ import {
 
 export const name = 'no-emoji'
 
-type NoEmojiConfig = {versionAbove: string}
-export type Options = [NoEmojiConfig?]
-
 function checkNode(context: Rule.RuleContext, node: Node) {
   const msgs = extractMessages(node, getSettings(context))
 
