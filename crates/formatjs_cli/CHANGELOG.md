@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.12 (2026-05-27)
+
+## What's Changed
+* fix(@formatjs/unplugin): decode JSX bull entity by @longlho in https://github.com/formatjs/formatjs/pull/6662
+* fix(@formatjs/cli-lib): expose native extract binding by @longlho in https://github.com/formatjs/formatjs/pull/6663
+* build: publish npm from release please by @longlho in https://github.com/formatjs/formatjs/pull/6664
+* fix: align release-please package components by @longlho in https://github.com/formatjs/formatjs/pull/6665
+* fix: preserve release-please workspace candidates by @longlho in https://github.com/formatjs/formatjs/pull/6667
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.1.11...formatjs_cli_v1.1.12
+
 ## 1.1.11 (2026-05-26)
 
 ## What's Changed

@@ -1,12 +1,12 @@
 {
   "packages/babel-plugin-formatjs": "11.3.9",
   "packages/bigdecimal": "0.2.5",
-  "packages/cli-lib": "8.7.2",
+  "packages/cli-lib": "8.7.3",
   "packages/cli-native-darwin-arm64": "1.1.0",
   "packages/cli-native-linux-arm64": "1.2.0",
   "packages/cli-native-linux-x64": "1.1.0",
   "packages/cli-native-win32-x64": "1.1.1",
-  "packages/cli": "6.16.3",
+  "packages/cli": "6.16.4",
   "packages/ecma376": "0.5.6",
   "packages/eslint-plugin-formatjs": "6.4.12",
   "packages/fast-memoize": "3.1.5",
@@ -27,14 +27,14 @@
   "packages/intl-relativetimeformat": "12.3.8",
   "packages/intl-segmenter": "12.2.8",
   "packages/intl": "4.1.12",
-  "packages/react-intl": "10.1.9",
+  "packages/react-intl": "10.1.10",
   "packages/svelte-intl": "1.1.9",
   "packages/ts-transformer": "4.4.10",
-  "packages/unplugin": "1.1.15",
+  "packages/unplugin": "1.1.16",
   "packages/utils": "2.2.9",
   "packages/vue-intl": "7.2.9",
   "crates/icu_skeleton_parser": "0.1.1",
   "crates/icu_messageformat_parser": "0.2.4",
-  "crates/formatjs_cli": "1.1.11",
-  "crates/formatjs_cli_napi": "0.0.2"
+  "crates/formatjs_cli": "1.1.12",
+  "crates/formatjs_cli_napi": "0.0.3"
 }
