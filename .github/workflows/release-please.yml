@@ -51,14 +51,23 @@ jobs:
           )
           JS
 
-  release_npm:
-    name: Release npm Packages
+  dispatch_release_npm:
+    name: Dispatch npm Package Release
     needs: release_please
     if: ${{ needs.release_please.outputs.npm_release_created == 'true' }}
+    runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
-    uses: ./.github/workflows/release.yml
-    with:
-      npm_paths: ${{ needs.release_please.outputs.npm_paths }}
-    secrets: inherit
+      actions: write
+
+    steps:
+      - name: Dispatch release workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NPM_RELEASE_PATHS: ${{ needs.release_please.outputs.npm_paths }}
+        run: |
+          # Keep npm Trusted Publishing bound to release.yml by dispatching it
+          # as the top-level workflow, not as a reusable workflow call.
+          gh workflow run release.yml \
+            --ref "$GITHUB_REF_NAME" \
+            --raw-field "npm_paths=$NPM_RELEASE_PATHS"

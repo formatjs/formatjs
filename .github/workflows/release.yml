@@ -1,12 +1,6 @@
 name: Release
 
 on:
-  workflow_call:
-    inputs:
-      npm_paths:
-        description: 'JSON array of released package paths to publish'
-        required: true
-        type: string
   workflow_dispatch:
     inputs:
       npm_paths:
