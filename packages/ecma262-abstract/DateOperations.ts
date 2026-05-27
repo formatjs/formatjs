@@ -22,10 +22,6 @@ export function DayFromYear(y: number): number {
   return Date.UTC(y, 0) / MS_PER_DAY
 }
 
-export function TimeFromYear(y: number): number {
-  return Date.UTC(y, 0)
-}
-
 export function YearFromTime(t: number): number {
   return new Date(t).getUTCFullYear()
 }

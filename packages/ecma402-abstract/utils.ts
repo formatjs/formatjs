@@ -29,20 +29,6 @@ export function setInternalSlot<
   slots[field] = value
 }
 
-export function setMultiInternalSlots<
-  Instance extends object,
-  Internal extends object,
-  K extends keyof Internal,
->(
-  map: WeakMap<Instance, Internal>,
-  pl: Instance,
-  props: Pick<NonNullable<Internal>, K>
-): void {
-  for (const k of Object.keys(props) as K[]) {
-    setInternalSlot(map, pl, k, props[k])
-  }
-}
-
 export function getInternalSlot<
   Instance extends object,
   Internal extends object,
@@ -142,9 +128,6 @@ export function createDataProperty<T extends object>(
   })
 }
 
-export const UNICODE_EXTENSION_SEQUENCE_REGEX: RegExp =
-  /-u(?:-[0-9a-z]{2,8})+/gi
-
 export function invariant(
   condition: boolean,
   message: string,
@@ -182,16 +165,6 @@ export const createMemoizedPluralRules: (
 ) => Intl.PluralRules = memoize(
   (...args: ConstructorParameters<typeof Intl.PluralRules>) =>
     new Intl.PluralRules(...args),
-  {
-    strategy: strategies.variadic,
-  }
-)
-
-export const createMemoizedLocale: (
-  ...args: ConstructorParameters<typeof Intl.Locale>
-) => Intl.Locale = memoize(
-  (...args: ConstructorParameters<typeof Intl.Locale>) =>
-    new Intl.Locale(...args),
   {
     strategy: strategies.variadic,
   }

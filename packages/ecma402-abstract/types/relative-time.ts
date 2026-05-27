@@ -15,10 +15,6 @@ export interface FieldData {
 
 type RelativeTimeData = {[u in LDMLPluralRule]?: string}
 
-export type UnpackedLocaleFieldsData = {
-  [f in RelativeTimeField]?: FieldData
-} & {nu: Array<string | null>}
-
 export type LocaleFieldsData = {
   [f in RelativeTimeField]?: FieldData
 } & {nu?: Array<string | null>}

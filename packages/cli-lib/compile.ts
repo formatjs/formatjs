@@ -29,8 +29,6 @@ const BUILTIN_FORMATTERS = new Set([
   'crowdin',
 ])
 
-export type CompileFn = (msgs: any) => Record<string, string>
-
 export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA' | 'en-XB'
 
 export interface CompileCLIOpts extends Opts {

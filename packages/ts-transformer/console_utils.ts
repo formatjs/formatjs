@@ -22,13 +22,3 @@ export async function debug(message: string, ...args: any[]): Promise<void> {
   console.error(format(label('debug', message), ...args))
   console.error('\n')
 }
-
-export function warn(message: string, ...args: any[]): void {
-  console.error(format(label('warn', message), ...args))
-  console.error('\n')
-}
-
-export function error(message: string, ...args: any[]): void {
-  console.error(format(label('error', message), ...args))
-  console.error('\n')
-}

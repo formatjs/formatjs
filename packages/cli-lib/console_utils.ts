@@ -61,12 +61,6 @@ export async function warn(message: string, ...args: any[]): Promise<void> {
   await writeStderr('\n')
 }
 
-export async function error(message: string, ...args: any[]): Promise<void> {
-  await clearLine(process.stderr)
-  await writeStderr(format(label('error', message), ...args))
-  await writeStderr('\n')
-}
-
 export function getStdinAsString(): Promise<string> {
   let result = ''
   return new Promise(resolve => {
