@@ -13,14 +13,9 @@ import {
   extractMessages,
   patchMessage,
 } from '#packages/eslint-plugin-formatjs/util.js'
-import {
-  CORE_MESSAGES,
-  type CoreMessageIds,
-} from '#packages/eslint-plugin-formatjs/messages.js'
+import {CORE_MESSAGES} from '#packages/eslint-plugin-formatjs/messages.js'
 
 export const name = 'no-missing-icu-plural-one-placeholders'
-
-export type MessageIds = 'noMissingIcuPluralOnePlaceholders' | CoreMessageIds
 
 type MessagePatch =
   | {type: 'remove'; start: number; end: number}

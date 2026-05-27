@@ -43,6 +43,12 @@ pre-commit:
     lint-ast-grep:
       glob: '**/*.{ts,tsx}'
       run: bazel run //:ast-grep -- scan {staged_files}
+    lint-codescythe:
+      glob:
+        - '**/*.{ts,tsx}'
+        - 'codescythe.jsonc'
+        - 'package.json'
+      run: pnpm codescythe --directory . --config codescythe.jsonc
     gazelle:
       run: bazel run -c opt //:gazelle
       stage_fixed: true

@@ -3,8 +3,6 @@ load("//tools:compile.bzl", "formatjs_library")
 formatjs_library(
     name = "RelativeTimeFormat",
     srcs = [
-        "FormatRelativeTime.ts",
-        "FormatRelativeTimeToParts.ts",
         "InitializeRelativeTimeFormat.ts",
         "MakePartsList.ts",
         "PartitionRelativeTimePattern.ts",

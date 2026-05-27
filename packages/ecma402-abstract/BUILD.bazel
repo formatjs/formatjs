@@ -20,7 +20,6 @@ formatjs_library(
         "SupportedLocales.ts",
         "ToIntlMathematicalValue.ts",
         "constants.ts",
-        "data.ts",
         "utils.ts",
     ],
     visibility = ["//visibility:public"],

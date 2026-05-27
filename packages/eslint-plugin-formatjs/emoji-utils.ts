@@ -150,25 +150,6 @@ export function filterEmojis(
 }
 
 /**
- * Get all emoji that match the filter
- * Generates emoji from codepoint ranges and filters them
- */
-export function getAllEmojis(filter: (emoji: string) => boolean): string[] {
-  const emojis: string[] = []
-
-  for (const range of EMOJI_RANGES) {
-    for (let codepoint = range.start; codepoint <= range.end; codepoint++) {
-      const emoji = String.fromCodePoint(codepoint)
-      if (filter(emoji)) {
-        emojis.push(emoji)
-      }
-    }
-  }
-
-  return emojis
-}
-
-/**
  * Parse version string to comparable number
  * e.g., "12.0" -> 12.0, "13.1" -> 13.1
  */

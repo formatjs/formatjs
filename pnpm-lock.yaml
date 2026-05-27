@@ -289,6 +289,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      codescythe:
+        specifier: ^0.5.0
+        version: 0.5.0
       commander:
         specifier: ^14.0.0
         version: 14.0.3
@@ -5204,6 +5207,26 @@ packages:
   co@4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+
+  codescythe-darwin-arm64@0.5.0:
+    resolution: {integrity: sha512-x5EaDR1NbviOfSX0RxTBhoso/Aa3Qwf2V3BUBNkmtvKOIquy+5rnrVuJuQRz6zlAHZXPGA/9F+AfvfFrc5Kiug==}
+    cpu: [arm64]
+    os: [darwin]
+
+  codescythe-linux-amd64@0.5.0:
+    resolution: {integrity: sha512-yjGf9CYOGFoKO9ZqpRC1XtVtBm0JkhP1u3qCOnKeVNDtx41JQ1G+SA4Ip7scKDbhCrE+LaHXPB3kCaGbLBkYJQ==}
+    cpu: [x64]
+    os: [linux]
+
+  codescythe-linux-arm64@0.5.0:
+    resolution: {integrity: sha512-KdNM0OjUAkcYo3vp7toyNcdGdWe6psj6QF5b096bdlW6Gpvr5EvHd0AjPL4zbyCOhtMOQVvd3ccF+sKCZEAPaw==}
+    cpu: [arm64]
+    os: [linux]
+
+  codescythe@0.5.0:
+    resolution: {integrity: sha512-3JhdYn9JyumSsV9kFzGoY447808+PWXoiZ7l3pTAi4obHpdGhtZczE0sd9rABfnuKc7pm/lURgqwIW7gQuhXwg==}
+    engines: {node: '>=22.18.0'}
+    hasBin: true
 
   collapse-white-space@2.1.0:
     resolution: {integrity: sha512-loKTxY1zCOuG4j9f6EPnuyyYkf58RnhhWTvRoZEokgB+WbdXehfjFviyOVYkqzEWz1Q5kRiZdBYS5SwxbQYwzw==}
@@ -12588,6 +12611,21 @@ snapshots:
   clsx@2.1.1: {}
 
   co@4.6.0: {}
+
+  codescythe-darwin-arm64@0.5.0:
+    optional: true
+
+  codescythe-linux-amd64@0.5.0:
+    optional: true
+
+  codescythe-linux-arm64@0.5.0:
+    optional: true
+
+  codescythe@0.5.0:
+    optionalDependencies:
+      codescythe-darwin-arm64: 0.5.0
+      codescythe-linux-amd64: 0.5.0
+      codescythe-linux-arm64: 0.5.0
 
   collapse-white-space@2.1.0: {}
 

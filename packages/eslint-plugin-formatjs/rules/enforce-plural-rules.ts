@@ -24,7 +24,6 @@ enum LDML {
 }
 
 type PluralConfig = {[key in LDML]?: boolean}
-export type Options = [PluralConfig?]
 
 type MessageIds = 'missingPlural' | 'forbidden' | CoreMessageIds
 

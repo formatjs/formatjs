@@ -26,6 +26,7 @@ function forEachLiteralElement(
   })
 }
 
+/** @internal */
 export function generateXXLS(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
@@ -38,6 +39,7 @@ export function generateXXLS(
   return [...ast, {type: TYPE.literal, value: 'SSSSSSSSSSSSSSSSSSSSSSSSS'}]
 }
 
+/** @internal */
 export function generateXXAC(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
@@ -48,6 +50,7 @@ export function generateXXAC(
   return ast
 }
 
+/** @internal */
 export function generateXXHA(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
@@ -126,6 +129,7 @@ function transformString(
  * vowels to create roughly 30% longer strings. Strings are wrapped in markers (square brackets),
  * which help with detecting truncation.
  */
+/** @internal */
 export function generateENXA(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
@@ -148,6 +152,7 @@ export function generateENXA(
  * right to left text flow using Unicode UAX#9 Explicit Directional Embeddings. In this mode, the UI
  * directionality will also be set to right-to-left.
  */
+/** @internal */
 export function generateENXB(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
