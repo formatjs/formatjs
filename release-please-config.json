@@ -143,10 +143,12 @@
   "plugins": [
     {
       "type": "node-workspace",
+      "merge": false,
       "updatePeerDependencies": true
     },
     {
-      "type": "cargo-workspace"
+      "type": "cargo-workspace",
+      "merge": false
     }
   ]
 }
