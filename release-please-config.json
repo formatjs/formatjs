@@ -10,40 +10,108 @@
   "sequential-calls": true,
   "exclude-paths": ["**/tests/**", "**/*.md"],
   "packages": {
-    "packages/babel-plugin-formatjs": {},
-    "packages/bigdecimal": {},
-    "packages/cli-lib": {},
-    "packages/cli-native-darwin-arm64": {},
-    "packages/cli-native-linux-arm64": {},
-    "packages/cli-native-linux-x64": {},
-    "packages/cli-native-win32-x64": {},
-    "packages/cli": {},
-    "packages/ecma376": {},
-    "packages/eslint-plugin-formatjs": {},
-    "packages/fast-memoize": {},
-    "packages/icu-messageformat-parser": {},
-    "packages/icu-skeleton-parser": {},
-    "packages/intl-collator": {},
-    "packages/intl-datetimeformat": {},
-    "packages/intl-displaynames": {},
-    "packages/intl-durationformat": {},
-    "packages/intl-supportedvaluesof": {},
-    "packages/intl-getcanonicallocales": {},
-    "packages/intl-listformat": {},
-    "packages/intl-locale": {},
-    "packages/intl-localematcher": {},
-    "packages/intl-messageformat": {},
-    "packages/intl-numberformat": {},
-    "packages/intl-pluralrules": {},
-    "packages/intl-relativetimeformat": {},
-    "packages/intl-segmenter": {},
-    "packages/intl": {},
-    "packages/react-intl": {},
-    "packages/svelte-intl": {},
-    "packages/ts-transformer": {},
-    "packages/unplugin": {},
-    "packages/utils": {},
-    "packages/vue-intl": {},
+    "packages/babel-plugin-formatjs": {
+      "component": "babel-plugin-formatjs"
+    },
+    "packages/bigdecimal": {
+      "component": "@formatjs/bigdecimal"
+    },
+    "packages/cli-lib": {
+      "component": "@formatjs/cli-lib"
+    },
+    "packages/cli-native-darwin-arm64": {
+      "component": "@formatjs/cli-native-darwin-arm64"
+    },
+    "packages/cli-native-linux-arm64": {
+      "component": "@formatjs/cli-native-linux-arm64"
+    },
+    "packages/cli-native-linux-x64": {
+      "component": "@formatjs/cli-native-linux-x64"
+    },
+    "packages/cli-native-win32-x64": {
+      "component": "@formatjs/cli-native-win32-x64"
+    },
+    "packages/cli": {
+      "component": "@formatjs/cli"
+    },
+    "packages/ecma376": {
+      "component": "@formatjs/ecma376"
+    },
+    "packages/eslint-plugin-formatjs": {
+      "component": "eslint-plugin-formatjs"
+    },
+    "packages/fast-memoize": {
+      "component": "@formatjs/fast-memoize"
+    },
+    "packages/icu-messageformat-parser": {
+      "component": "@formatjs/icu-messageformat-parser"
+    },
+    "packages/icu-skeleton-parser": {
+      "component": "@formatjs/icu-skeleton-parser"
+    },
+    "packages/intl-collator": {
+      "component": "@formatjs/intl-collator"
+    },
+    "packages/intl-datetimeformat": {
+      "component": "@formatjs/intl-datetimeformat"
+    },
+    "packages/intl-displaynames": {
+      "component": "@formatjs/intl-displaynames"
+    },
+    "packages/intl-durationformat": {
+      "component": "@formatjs/intl-durationformat"
+    },
+    "packages/intl-supportedvaluesof": {
+      "component": "@formatjs/intl-supportedvaluesof"
+    },
+    "packages/intl-getcanonicallocales": {
+      "component": "@formatjs/intl-getcanonicallocales"
+    },
+    "packages/intl-listformat": {
+      "component": "@formatjs/intl-listformat"
+    },
+    "packages/intl-locale": {
+      "component": "@formatjs/intl-locale"
+    },
+    "packages/intl-localematcher": {
+      "component": "@formatjs/intl-localematcher"
+    },
+    "packages/intl-messageformat": {
+      "component": "intl-messageformat"
+    },
+    "packages/intl-numberformat": {
+      "component": "@formatjs/intl-numberformat"
+    },
+    "packages/intl-pluralrules": {
+      "component": "@formatjs/intl-pluralrules"
+    },
+    "packages/intl-relativetimeformat": {
+      "component": "@formatjs/intl-relativetimeformat"
+    },
+    "packages/intl-segmenter": {
+      "component": "@formatjs/intl-segmenter"
+    },
+    "packages/intl": {
+      "component": "@formatjs/intl"
+    },
+    "packages/react-intl": {
+      "component": "react-intl"
+    },
+    "packages/svelte-intl": {
+      "component": "@formatjs/svelte-intl"
+    },
+    "packages/ts-transformer": {
+      "component": "@formatjs/ts-transformer"
+    },
+    "packages/unplugin": {
+      "component": "@formatjs/unplugin"
+    },
+    "packages/utils": {
+      "component": "@formatjs/utils"
+    },
+    "packages/vue-intl": {
+      "component": "vue-intl"
+    },
     "crates/icu_skeleton_parser": {
       "release-type": "rust",
       "include-component-in-tag": true,
