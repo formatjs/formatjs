@@ -10,6 +10,7 @@ load(
 exports_files(
     [
         "Cargo.toml",
+        "native_abi.json",
         "src/lib.rs",
     ],
     visibility = ["//visibility:public"],

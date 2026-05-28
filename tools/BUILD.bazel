@@ -1,5 +1,6 @@
 # gazelle:ignore
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_test")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:vitest.bzl", "vitest")
 
@@ -42,6 +43,61 @@ copy_to_bin(
     name = "check_package_json",
     srcs = ["check_package_json.ts"],
     visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "check_cli_native_abi",
+    srcs = ["check_cli_native_abi.ts"],
+    visibility = ["//visibility:public"],
+)
+
+CLI_NATIVE_ABI_TEST_DATA = [
+    "//:release-please-config.json",
+    "//crates/formatjs_cli_napi:native_abi.json",
+    "//crates/formatjs_cli_napi:src/lib.rs",
+    "//packages/cli-native-darwin-arm64:native_abi.json",
+    "//packages/cli-native-darwin-arm64:package.json",
+    "//packages/cli-native-linux-arm64:native_abi.json",
+    "//packages/cli-native-linux-arm64:package.json",
+    "//packages/cli-native-linux-x64:native_abi.json",
+    "//packages/cli-native-linux-x64:package.json",
+    "//packages/cli-native-win32-x64:native_abi.json",
+    "//packages/cli-native-win32-x64:package.json",
+]
+
+js_test(
+    name = "cli_native_abi_test",
+    size = "small",
+    args = [
+        "--central-abi",
+        "$(rootpath //crates/formatjs_cli_napi:native_abi.json)",
+        "--rust-lib",
+        "$(rootpath //crates/formatjs_cli_napi:src/lib.rs)",
+        "--release-config",
+        "$(rootpath //:release-please-config.json)",
+        "--package-abi",
+        "$(rootpath //packages/cli-native-darwin-arm64:native_abi.json)",
+        "--package-json",
+        "$(rootpath //packages/cli-native-darwin-arm64:package.json)",
+        "--package-abi",
+        "$(rootpath //packages/cli-native-linux-arm64:native_abi.json)",
+        "--package-json",
+        "$(rootpath //packages/cli-native-linux-arm64:package.json)",
+        "--package-abi",
+        "$(rootpath //packages/cli-native-linux-x64:native_abi.json)",
+        "--package-json",
+        "$(rootpath //packages/cli-native-linux-x64:package.json)",
+        "--package-abi",
+        "$(rootpath //packages/cli-native-win32-x64:native_abi.json)",
+        "--package-json",
+        "$(rootpath //packages/cli-native-win32-x64:package.json)",
+    ],
+    data = [
+        "//:node_modules/minimist",
+    ] + CLI_NATIVE_ABI_TEST_DATA,
+    entry_point = ":check_cli_native_abi",
+    no_copy_to_bin = CLI_NATIVE_ABI_TEST_DATA,
+    node_options = ["--experimental-transform-types"],
 )
 
 ts_binary(

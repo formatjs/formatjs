@@ -2,6 +2,14 @@ load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_exports_test")
 
+exports_files(
+    [
+        "native_abi.json",
+        "package.json",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 copy_file(
     name = "formatjs_cli_napi_node",
     src = "//crates/formatjs_cli_napi:release_node_linux_arm64",
@@ -11,6 +19,7 @@ copy_file(
 npm_package(
     name = "pkg",
     srcs = [
+        "native_abi.json",
         "package.json",
         ":formatjs_cli_napi_node",
     ],

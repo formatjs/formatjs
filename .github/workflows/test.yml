@@ -150,6 +150,22 @@ jobs:
           if (!Array.isArray(compiled.hello)) {
             throw new Error(output)
           }
+
+          const sourceFile = path.join(messageSubdir, 'source.ts')
+          fs.writeFileSync(
+            sourceFile,
+            "defineMessage({id: 'native.extract', defaultMessage: 'Native extract'})"
+          )
+          const extracted = JSON.parse(
+            native.extract([sourceFile], {
+              idInterpolationPattern: '[sha512:contenthash:base64:6]',
+              throws: true,
+            })
+          )
+          if (extracted['native.extract']?.defaultMessage !== 'Native extract') {
+            throw new Error(JSON.stringify(extracted))
+          }
+
           console.log(output)
           '@
           $script | node - $pkgPath

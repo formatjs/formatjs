@@ -25,7 +25,10 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # Exported for Node subpath import resolution (#packages/*) in tests.
 # Node walks up to find package.json with "imports" field.
 exports_files(
-    ["package.json"],
+    [
+        "package.json",
+        "release-please-config.json",
+    ],
     visibility = ["//visibility:public"],
 )
 

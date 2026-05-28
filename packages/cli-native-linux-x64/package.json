@@ -12,7 +12,8 @@
     "x64"
   ],
   "files": [
-    "formatjs_cli_napi.node"
+    "formatjs_cli_napi.node",
+    "native_abi.json"
   ],
   "homepage": "https://github.com/formatjs/formatjs",
   "libc": [

@@ -92,15 +92,15 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 ## CI/CD (GitHub Actions)
 
-| Workflow               | Trigger               | What it does                             |
-| ---------------------- | --------------------- | ---------------------------------------- |
-| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS     |
+| Workflow               | Trigger               | What it does                                                |
+| ---------------------- | --------------------- | ----------------------------------------------------------- |
+| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
 | `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
-| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing |
-| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC |
-| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts     |
-| `website.yml`          | Manual/push           | Deploy docs site                         |
-| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint       |
+| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
+| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
+| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts                        |
+| `website.yml`          | Manual/push           | Deploy docs site                                            |
+| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint                          |
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
@@ -114,6 +114,13 @@ publishing. The Rust CLI binary artifacts remain Bazel-owned in
 when credentials are available, and cross-compiles the macOS, Linux, and Windows
 standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
+
+Native `@formatjs/cli-native-*` npm packages carry a checked-in
+`native_abi.json` marker that must match `crates/formatjs_cli_napi` exports. The
+`//tools:cli_native_abi_test` target compares the Rust `#[napi]` export surface,
+the central ABI marker, and every platform package marker. Updating the native
+N-API surface should update all platform markers so Release Please includes all
+native packages in the next npm release.
 
 ## Common Commands
 

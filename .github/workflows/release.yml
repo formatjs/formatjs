@@ -54,7 +54,44 @@ jobs:
 
       - name: Smoke Test Package
         run: |
-          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-win32-x64
+          $script = @'
+          const fs = require('node:fs')
+          const os = require('node:os')
+          const path = require('node:path')
+          const native = require(process.argv[2])
+
+          const formatters = native.supportedBuiltinFormatters()
+          if (!formatters.includes('default')) {
+            throw new Error('Missing default formatter')
+          }
+
+          const compiled = native.compileMessages(
+            [{id: 'hello', message: 'Hello {name}', sourceFile: 'smoke.json'}],
+            {}
+          )
+          if (!compiled.includes('"hello"')) {
+            throw new Error(compiled)
+          }
+
+          const sourceDir = fs.mkdtempSync(path.join(os.tmpdir(), 'formatjs-cli-native-'))
+          const sourceFile = path.join(sourceDir, 'source.ts')
+          fs.writeFileSync(
+            sourceFile,
+            "defineMessage({id: 'native.extract', defaultMessage: 'Native extract'})"
+          )
+          const extracted = JSON.parse(
+            native.extract([sourceFile], {
+              idInterpolationPattern: '[sha512:contenthash:base64:6]',
+              throws: true,
+            })
+          )
+          if (extracted['native.extract']?.defaultMessage !== 'Native extract') {
+            throw new Error(JSON.stringify(extracted))
+          }
+
+          console.log(compiled)
+          '@
+          $script | node - ./artifacts/cli-native-win32-x64
 
       - name: Upload Package
         uses: actions/upload-artifact@v7
