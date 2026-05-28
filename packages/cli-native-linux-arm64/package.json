@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/cli-native-linux-arm64",
   "description": "Native FormatJS CLI binding for Linux arm64.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
   "exports": {
