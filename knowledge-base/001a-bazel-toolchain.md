@@ -26,7 +26,7 @@ actions so they can cache and run independently across the monorepo.
 | `rules_proto`           | 7.1.0         | Proto rules                                       |
 | `rules_go`              | 0.60.0        | Go SDK/rules for Gazelle                          |
 | `gazelle`               | 0.50.0        | BUILD file generation driver                      |
-| `gazelle_ts`            | 0.4.15        | TypeScript Gazelle extension                      |
+| `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                      |
 | `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                    |
 | `llvm`                  | 0.7.5         | LLVM toolchain support for Rust/wasm paths        |
 | `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests        |
