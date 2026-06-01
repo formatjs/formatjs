@@ -9,6 +9,7 @@
     "replacements:all",
     "workarounds:all"
   ],
+  "minimumReleaseAge": "7d",
   "packageRules": [
     {
       "matchFiles": ["MODULE.bazel"],
