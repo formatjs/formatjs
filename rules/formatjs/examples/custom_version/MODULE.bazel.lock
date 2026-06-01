@@ -222,8 +222,8 @@
     },
     "@@rules_formatjs+//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "ew51Vw92Nw7vITQ2o5mkAnEib5uVgeWjKVn2DiCNy2Q=",
-        "usagesDigest": "BXG06s0q5WfsFKIg7AsF6nT544CdMNtBrk5KLk/hcQY=",
+        "bzlTransitiveDigest": "KEXKr0c3dIbbWXx4Dd3dA07r817WCmPwn9skzugZTEg=",
+        "usagesDigest": "Ll53ENNP/scQ8N9Qnn4iJRO4kjO6NFprA0j1S6YGPzI=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
           "formatjs_v0_1_0_darwin_arm64": {
@@ -263,7 +263,7 @@
           "formatjs_cli_toolchains_darwin_arm64": {
             "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
-              "version": "1.1.5",
+              "version": "1.1.12",
               "platform": "darwin-arm64",
               "exec_compatible_with": [
                 "@platforms//os:macos",
@@ -281,7 +281,7 @@
           "formatjs_cli_toolchains_linux_x64": {
             "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
-              "version": "1.1.5",
+              "version": "1.1.12",
               "platform": "linux-x64",
               "exec_compatible_with": [
                 "@platforms//os:linux",
@@ -293,7 +293,7 @@
           "formatjs_cli_toolchains_linux_aarch64": {
             "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
-              "version": "1.1.5",
+              "version": "1.1.12",
               "platform": "linux-aarch64",
               "exec_compatible_with": [
                 "@platforms//os:linux",
@@ -303,9 +303,15 @@
             }
           },
           "formatjs_cli_toolchains_windows_x86_64": {
-            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_placeholder_repo",
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
             "attributes": {
-              "platform": "windows-x86_64"
+              "version": "1.1.12",
+              "platform": "windows-x86_64",
+              "exec_compatible_with": [
+                "@platforms//os:windows",
+                "@platforms//cpu:x86_64"
+              ],
+              "target_compatible_with": []
             }
           },
           "formatjs_cli_toolchains": {

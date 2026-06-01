@@ -321,8 +321,9 @@ my_aspect = aspect(
 
 rules_formatjs uses a native Rust CLI toolchain that is automatically downloaded for your platform. The toolchain supports:
 
-- macOS (Apple Silicon and Intel)
-- Linux (x86_64)
+- macOS (Apple Silicon)
+- Linux (x86_64 and ARM64)
+- Windows (x86_64)
 
 The toolchain is registered automatically when you add the MODULE.bazel dependency. Binaries are fetched from GitHub releases and cached by Bazel.
 

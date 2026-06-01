@@ -14,11 +14,11 @@ The current default version is defined by `DEFAULT_VERSION`.
 Current binaries are available for:
 - macOS Apple Silicon (darwin-arm64)
 - Linux x86_64 (linux-x64)
+- Linux ARM64 (linux-aarch64)
+- Windows x86_64 (windows-x86_64)
 
 Toolchain definitions also exist for future support:
 - macOS Intel (darwin-x86_64)
-- Linux aarch64 (linux-aarch64)
-- Windows x86_64 (windows-x86_64)
 
 ## Usage
 
@@ -295,7 +295,9 @@ formatjs_cli = module_extension(
 
     ## Version History
 
-    - **1.1.5**: Latest built-in version with Linux ARM64 support
+    - **1.1.12**: Latest built-in version
+    - **1.1.7**: Added Windows x86_64 support
+    - **1.1.5**: Added Linux ARM64 support
     - **0.1.2**: Added native key sorting
     - **0.1.1**: Added key sorting support
     - **0.1.0**: Initial release
@@ -307,11 +309,11 @@ formatjs_cli = module_extension(
     **Binaries currently available for:**
     - **macOS Apple Silicon** (M1/M2/M3): darwin-arm64 binary
     - **Linux x86_64**: linux-x64 binary
+    - **Linux ARM64**: linux-aarch64 binary
+    - **Windows x86_64**: windows-x86_64 binary
 
     **Toolchain definitions exist for future support:**
     - **macOS Intel**: darwin-x86_64
-    - **Linux aarch64**: linux-aarch64
-    - **Windows x86_64**: windows-x86_64
 
     If your platform doesn't have a binary available yet, the build will fail with a clear
     error message. Contributions for additional platform binaries are welcome!
