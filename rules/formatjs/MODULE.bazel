@@ -40,6 +40,7 @@ bazel_dep(name = "bazel_lib", version = "3.0.0", dev_dependency = True)
 bazel_dep(name = "bazelrc-preset.bzl", version = "1.8.0", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.47.0", dev_dependency = True, repo_name = "bazel_gazelle")
+bazel_dep(name = "rules_go", version = "0.59.0", dev_dependency = True, repo_name = None)
 bazel_dep(name = "rules_shell", version = "0.3.0", dev_dependency = True)
 
 # FormatJS CLI toolchain

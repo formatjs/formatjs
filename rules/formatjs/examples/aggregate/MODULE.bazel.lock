@@ -245,7 +245,7 @@
     },
     "@@rules_formatjs+//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "ew51Vw92Nw7vITQ2o5mkAnEib5uVgeWjKVn2DiCNy2Q=",
+        "bzlTransitiveDigest": "j3u/j7mKho/ZNtAM3lFtjkZpBMasCS9583pb3iPhNJc=",
         "usagesDigest": "RkNnWs19/IGTp7wWwev/iqoiM71il5XNpLJvHtp+4CU=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
