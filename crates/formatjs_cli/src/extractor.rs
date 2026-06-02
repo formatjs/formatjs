@@ -6,6 +6,7 @@ use once_cell::sync::Lazy;
 use oxc::ast_visit::{Visit, walk};
 use oxc_allocator::Allocator;
 use oxc_ast::ast::*;
+use oxc_data_structures::rope::{Rope, get_line_column};
 use oxc_parser::{Parser, ParserReturn};
 use oxc_span::SourceType;
 use regex::Regex;
@@ -46,22 +47,14 @@ fn normalize_whitespace(s: &str) -> String {
     WHITESPACE_RE.replace_all(s.trim(), " ").to_string()
 }
 
-/// Convert byte offset to (line, column) - both 1-indexed
-fn get_line_col(source: &str, offset: usize) -> (usize, usize) {
-    let mut line = 1;
-    let mut col = 1;
-    for (i, ch) in source.chars().enumerate() {
-        if i >= offset {
-            break;
-        }
-        if ch == '\n' {
-            line += 1;
-            col = 1;
-        } else {
-            col += 1;
-        }
+/// Convert byte offset to (line, UTF-16 column) - both 1-indexed.
+fn get_line_col(source: &str, source_rope: &Rope, offset: u32) -> (usize, usize) {
+    let mut offset = (offset as usize).min(source.len());
+    while !source.is_char_boundary(offset) {
+        offset -= 1;
     }
-    (line, col)
+    let (line, col) = get_line_column(source_rope, offset as u32, source);
+    (line as usize + 1, col as usize + 1)
 }
 
 /// Extract messages from a single source file
@@ -89,9 +82,11 @@ pub fn extract_messages_from_source(
     }
 
     // Visit the AST to extract messages
+    let source_rope = Rope::from_str(source_text);
     let mut visitor = MessageExtractor::new(
         file_path,
         source_text,
+        source_rope,
         extract_source_location,
         component_names,
         function_names,
@@ -101,11 +96,15 @@ pub fn extract_messages_from_source(
     );
 
     visitor.visit_program(&program);
+    let MessageExtractor {
+        messages,
+        source_rope,
+        ..
+    } = visitor;
 
     // Apply selector hoisting if flatten is enabled
     let messages = if flatten {
-        visitor
-            .messages
+        messages
             .into_iter()
             .map(|mut msg| {
                 if let Some(ref default_message) = msg.default_message {
@@ -129,7 +128,7 @@ pub fn extract_messages_from_source(
                                 Err(e) => {
                                     // Get line and column from start position if available
                                     let location_str = if let Some(start) = msg.start {
-                                        let line_col = get_line_col(source_text, start as usize);
+                                        let line_col = get_line_col(source_text, &source_rope, start);
                                         format!(" at line {}, column {}", line_col.0, line_col.1)
                                     } else {
                                         String::new()
@@ -159,7 +158,7 @@ pub fn extract_messages_from_source(
             })
             .collect::<Result<Vec<_>>>()?
     } else {
-        visitor.messages
+        messages
     };
 
     Ok(messages)
@@ -187,6 +186,7 @@ pub fn determine_source_type(path: &Path) -> Result<SourceType> {
 struct MessageExtractor<'a> {
     file_path: &'a Path,
     source_text: &'a str,
+    source_rope: Rope,
     extract_source_location: bool,
     component_names: &'a [String],
     function_names: &'a [String],
@@ -200,6 +200,7 @@ impl<'a> MessageExtractor<'a> {
     fn new(
         file_path: &'a Path,
         source_text: &'a str,
+        source_rope: Rope,
         extract_source_location: bool,
         component_names: &'a [String],
         function_names: &'a [String],
@@ -210,6 +211,7 @@ impl<'a> MessageExtractor<'a> {
         Self {
             file_path,
             source_text,
+            source_rope,
             extract_source_location,
             component_names,
             function_names,
@@ -222,7 +224,7 @@ impl<'a> MessageExtractor<'a> {
 
     /// Format a source location string like "file.tsx:line:col"
     fn format_location(&self, offset: u32) -> String {
-        let (line, col) = get_line_col(self.source_text, offset as usize);
+        let (line, col) = get_line_col(self.source_text, &self.source_rope, offset);
         format!("{}:{}:{}", self.file_path.display(), line, col)
     }
 
@@ -706,6 +708,21 @@ mod tests {
             }
         }
         meta
+    }
+
+    #[test]
+    fn test_get_line_col_uses_utf16_columns() {
+        let source = "🍄abc\nx";
+        let source_rope = Rope::from_str(source);
+
+        assert_eq!(
+            get_line_col(source, &source_rope, source.find('a').unwrap() as u32),
+            (1, 3)
+        );
+        assert_eq!(
+            get_line_col(source, &source_rope, source.find('x').unwrap() as u32),
+            (2, 1)
+        );
     }
 
     #[test]
@@ -1877,6 +1894,46 @@ const msg2 = defineMessage({
         assert_eq!(
             messages[0].default_message.as_deref(),
             Some("This is valid")
+        );
+    }
+
+    #[test]
+    fn test_many_non_static_messages_keep_location_lookup_linear() {
+        let mut source = String::from(
+            "import { defineMessage } from 'react-intl';\nconst dynamic = {};\n",
+        );
+        for index in 0..4_000 {
+            source.push_str(&format!(
+                "const msg{index} = defineMessage({{ id: 'dynamic.{index}', defaultMessage: dynamic[{index}] }});\n"
+            ));
+        }
+
+        let file_path = PathBuf::from("src/Large.ts");
+        let source_type = SourceType::default().with_typescript(true);
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["defineMessage".to_string()];
+
+        let start = std::time::Instant::now();
+        let messages = extract_messages_from_source(
+            &source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            false,
+        )
+        .unwrap();
+        let elapsed = start.elapsed();
+
+        assert!(messages.is_empty(), "non-static descriptors should be skipped");
+        assert!(
+            elapsed < std::time::Duration::from_secs(3),
+            "warning-heavy extraction should stay linear, took {:?}",
+            elapsed
         );
     }
 }

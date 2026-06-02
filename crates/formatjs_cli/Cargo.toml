@@ -30,6 +30,7 @@ once_cell = "1.21"
 oxc = { version = "0.132", features = ["ast_visit"] }
 oxc_allocator = "0.132"
 oxc_ast = "0.132"
+oxc_data_structures = { version = "0.132", features = ["rope"] }
 oxc_parser = "0.132"
 oxc_span = "0.132"
 sha2 = "0.11"
