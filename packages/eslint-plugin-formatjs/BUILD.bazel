@@ -31,6 +31,7 @@ generate_package_file(
 
 formatjs_library(
     name = "eslint-plugin-formatjs",
+    package_name = "eslint-plugin-formatjs",
     srcs = [
         "emoji-utils.ts",
         "index.ts",
@@ -58,13 +59,40 @@ formatjs_library(
         "rules/prefer-pound-in-plural.ts",
         "util.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "ESLint plugin for formatjs",
     entry_points = [
         "index.ts",
         "util.ts",
     ],
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "eslint",
+        "eslintplugin",
+        "formatjs",
+        "i18n",
+    ],
+    license = "MIT",
+    main = "index.js",
     npm_package_name = "eslint-plugin-formatjs",
+    package_dependency_version_overrides = {
+        "eslint": "9 || 10",
+        "picomatch": "2 || 3 || 4",
+    },
+    package_peer_deps = [
+        "//:node_modules/eslint",
+    ],
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    type = "module",
+    version = "6.4.13",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./util": "./util.js",
+    },
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",

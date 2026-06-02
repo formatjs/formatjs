@@ -1,23 +1,23 @@
 {
   "name": "@formatjs/cli-native-darwin-arm64",
-  "description": "Native FormatJS CLI binding for macOS arm64.",
   "version": "1.1.1",
+  "description": "Native FormatJS CLI binding for macOS arm64.",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
-  "exports": {
-    ".": "./formatjs_cli_napi.node"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "cpu": [
-    "arm64"
-  ],
+  "repository": "formatjs/formatjs.git",
   "files": [
     "formatjs_cli_napi.node"
   ],
-  "homepage": "https://github.com/formatjs/formatjs",
-  "main": "formatjs_cli_napi.node",
   "os": [
     "darwin"
   ],
-  "repository": "formatjs/formatjs.git"
+  "cpu": [
+    "arm64"
+  ],
+  "main": "formatjs_cli_napi.node",
+  "exports": {
+    ".": "./formatjs_cli_napi.node"
+  }
 }

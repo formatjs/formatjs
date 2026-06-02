@@ -1,6 +1,42 @@
 # gazelle:ignore
 
 load("//tools:index.bzl", "generate_tsconfig_json")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "react-app-rewired",
+    description = "",
+    version = "1.0.0",
+    scripts = {
+        "build": "rescripts build",
+        "eject": "react-scripts eject",
+        "start": "rescripts start",
+        "test": "rescripts test --env=jsdom",
+    },
+    browserslist = [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all",
+    ],
+    keywords = [],
+    main = "src/index.tsx",
+    deps = [
+        "//:node_modules/@rescripts/cli",
+        "//:node_modules/@rescripts/rescript-env",
+        "//:node_modules/babel-plugin-formatjs",
+        "//:node_modules/eslint-plugin-formatjs",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-intl",
+        "//:node_modules/react-scripts",
+    ],
+    dependency_version_overrides = {
+        "babel-plugin-formatjs": "9.0.1",
+        "eslint-plugin-formatjs": "2.10.4",
+        "react-intl": "5.10.16",
+    },
+)
 
 generate_tsconfig_json(
     name = "tsconfig_json",

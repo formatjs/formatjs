@@ -21,6 +21,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-getcanonicallocales",
+    package_name = "@formatjs/intl-getcanonicallocales",
     srcs = [
         "canonicalizer.ts",
         "emitter.ts",
@@ -31,9 +32,34 @@ formatjs_library(
         "should-polyfill.ts",
         "types.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.getCanonicalLocales polyfill",
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "ecma402",
+        "formatjs",
+        "getCanonicalLocales",
+        "i18n",
+        "intl",
+        "locale",
+        "react-intl",
+        "tc39",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
+    version = "3.2.9",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs_generated/cldr.core",
         "//packages/ecma402-abstract",
@@ -120,8 +146,8 @@ generate_package_file(
         "$(rootpath //packages/utils:iso4217.xml)",
     ],
     data = [
+        "//:node_modules/fast-xml-parser",
         "//packages/utils:iso4217.xml",
-        "//packages/utils:node_modules/fast-xml-parser",
     ],
     entry_point = "//packages/utils/tools:extract-minor-currency-units_ts",
 )

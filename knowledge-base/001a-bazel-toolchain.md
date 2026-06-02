@@ -62,6 +62,7 @@ The 29 package directories in `PACKAGES_TO_DIST` are assembled through
 
 ```
 Source .ts/.tsx files
+  ├─ generate_package_json(:generated_package_json) → generated package metadata
   ├─ copy_to_bin(:srcs)                 → sandbox-safe source tree
   ├─ ts_project(:typecheck)             → tsgo, no emit
   ├─ js_library(:lib)                   → source library for tests
@@ -70,13 +71,26 @@ Source .ts/.tsx files
   └─ npm_package(:pkg)                  → publishable package
 ```
 
-Published packages are detected by the presence of a package-local
-`package.json`. Bundling is done per `entry_points` with Rolldown and
-`rolldown-plugin-dts`.
+Package manifests under `packages/**` are still checked into git during the
+transition, but Bazel also generates side-channel manifests and compares them
+against the checked-in files. Static package fields live in each package's
+`formatjs_library(package_name = ..., version = ..., ...)` or
+`generate_package_json(package_name = ..., version = ..., ...)` rule, while
+dependency sections come from Bazel npm labels. Manifest ordering comes from
+`tools/package_json_policy.bzl`; normal external dependency ranges are read from
+the root `package.json`, while package-local BUILD rules pass explicit
+overrides for preserved compatibility ranges such as peer-dependency windows.
+Bundling is done per `entry_points` with Rolldown and `rolldown-plugin-dts`.
+
+The generated `write_source_files` `package_json_sync_test` targets are the
+transition guard: they must pass before the checked-in package manifests can be
+removed in a later change. `pnpm-lock.yaml` still intentionally retains package
+importers for package-level Node resolution used by Bazel's
+`npm_translate_lock`.
 
 ### Internal TypeScript Packages
 
-Directories without package-local `package.json` still use `formatjs_library()`,
+Directories without generated package metadata still use `formatjs_library()`,
 but take the internal path:
 
 ```
@@ -183,6 +197,14 @@ Consumes Gazelle's mapped `ts_library` output.
 - `deps` contains both npm labels and internal package labels.
 - `_partition_deps()` splits npm labels from internal project references.
 - Published packages bundle with Rolldown and create `:pkg`.
+- Package BUILD files pass static manifest fields through package field attrs
+  such as `package_name`, `version`, `exports`, and `peer_dependencies_meta`.
+  Runtime dependencies come from Bazel `deps`; peer and optional buckets come
+  from explicit macro attrs. Package-local manifests do not generate
+  `devDependencies`; dev tooling belongs in the root `package.json`. Dependency
+  versions come from root `package.json` unless
+  `package_dependency_version_overrides` overrides them, and manifest field
+  ordering comes from `tools/package_json_policy.bzl`.
 - Internal packages transpile per file with `oxc_transpiler`.
 - `@formatjs_generated/*` npm labels are bundled inline and deliberately not
   added to Rolldown's external package list.
@@ -205,8 +227,9 @@ still supports the older single mixed `data` list by partitioning it into:
 - runtime-only data labels such as `//:package.json`.
 
 When a sibling `:lib` exists, tests use that source library instead of the
-published bundle target. This avoids a package-local `package.json` shadowing the
-root `package.json` needed for `#packages/*` runtime imports.
+published bundle target. This keeps package manifests in Bazel package outputs
+while the root `package.json` remains the runtime source for `#packages/*`
+imports.
 
 ### `vitest()` (`tools/vitest.bzl`)
 
@@ -334,12 +357,13 @@ Building a published package such as `//packages/intl-locale:pkg`:
 1. bzlmod resolves MODULE.bazel dependencies
 2. npm_translate_lock exposes pnpm-lock.yaml packages as //:node_modules/* labels
 3. Gazelle-maintained BUILD attrs provide srcs and deps
-4. copy_to_bin(:srcs) materializes sources in Bazel output
-5. ts_project(:typecheck) runs tsgo with no emit
-6. rolldown_bundle() bundles JS and declarations for each entry point
-7. validation tests inspect bundled output and package metadata
-8. npm_package(:pkg) assembles the publishable package
-9. root :dist aggregates all package :pkg targets
+4. formatjs_package_json(:package_json) generates package metadata in Bazel output
+5. copy_to_bin(:srcs) materializes sources in Bazel output
+6. ts_project(:typecheck) runs tsgo with no emit
+7. rolldown_bundle() bundles JS and declarations for each entry point
+8. validation tests inspect bundled output and package metadata
+9. npm_package(:pkg) assembles the publishable package
+10. root :dist aggregates all package :pkg targets
 ```
 
 Generated-data imports add this path:

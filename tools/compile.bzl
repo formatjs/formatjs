@@ -7,8 +7,11 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
+load("//tools:package_json.bzl", "formatjs_package_json", "generate_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "packages_tsconfig")
+
+_PACKAGE_JSON_UNSET = "__FORMATJS_PACKAGE_JSON_UNSET__"
 
 def _formatjs_package(
         package_name,
@@ -16,6 +19,7 @@ def _formatjs_package(
         deps,
         external_packages,
         npm_package_name,
+        package_json,
         extra_npm_srcs,
         allow_overwrites):
     """Rolldown bundling + npm packaging + validation tests (private).
@@ -40,7 +44,7 @@ def _formatjs_package(
     for entry in entry_points:
         rolldown_bundle(
             name = "%s-bundle" % entry.replace(".ts", ""),
-            srcs = [":srcs", "package.json"],
+            srcs = [":srcs", package_json],
             dts = True,
             entry_point = entry,
             external = external_packages,
@@ -58,7 +62,7 @@ def _formatjs_package(
 
     js_library(
         name = package_name,
-        srcs = bundles + ["package.json"],
+        srcs = bundles + [package_json],
         visibility = ["//visibility:public"],
     )
 
@@ -71,7 +75,7 @@ def _formatjs_package(
         srcs = [
             "LICENSE.md",
             "README.md",
-            "package.json",
+            package_json,
         ] + bundles + extra_npm_srcs,
         package = effective_npm_name,
         replace_prefixes = replace_prefixes,
@@ -87,6 +91,7 @@ def _formatjs_package(
     package_json_test(
         name = "package_json_test",
         bundles = bundles,
+        package_json = package_json,
     )
 
     package_exports_test(
@@ -140,6 +145,37 @@ def formatjs_library(
         tsconfig = None,
         tsconfig_types = [],
         npm_package_name = None,
+        package_name = None,
+        version = _PACKAGE_JSON_UNSET,
+        private = _PACKAGE_JSON_UNSET,
+        description = _PACKAGE_JSON_UNSET,
+        keywords = _PACKAGE_JSON_UNSET,
+        homepage = _PACKAGE_JSON_UNSET,
+        bugs = _PACKAGE_JSON_UNSET,
+        license = _PACKAGE_JSON_UNSET,
+        author = _PACKAGE_JSON_UNSET,
+        contributors = _PACKAGE_JSON_UNSET,
+        repository = _PACKAGE_JSON_UNSET,
+        type = _PACKAGE_JSON_UNSET,
+        main = _PACKAGE_JSON_UNSET,
+        module = _PACKAGE_JSON_UNSET,
+        package_types = _PACKAGE_JSON_UNSET,
+        exports = _PACKAGE_JSON_UNSET,
+        side_effects = _PACKAGE_JSON_UNSET,
+        files = _PACKAGE_JSON_UNSET,
+        os = _PACKAGE_JSON_UNSET,
+        cpu = _PACKAGE_JSON_UNSET,
+        libc = _PACKAGE_JSON_UNSET,
+        bin = _PACKAGE_JSON_UNSET,
+        engines = _PACKAGE_JSON_UNSET,
+        scripts = _PACKAGE_JSON_UNSET,
+        browserslist = _PACKAGE_JSON_UNSET,
+        alias = _PACKAGE_JSON_UNSET,
+        peer_dependencies_meta = _PACKAGE_JSON_UNSET,
+        git_head = _PACKAGE_JSON_UNSET,
+        package_peer_deps = [],
+        package_optional_deps = [],
+        package_dependency_version_overrides = {},
         extra_npm_srcs = [],
         allow_overwrites = False,
         visibility = None,
@@ -169,6 +205,13 @@ def formatjs_library(
         types: if True, generate a "types" ts_project with emit_declaration_only
         tsconfig: optional tsconfig dict override (defaults to packages_tsconfig())
         npm_package_name: npm package name for publishing (default "@formatjs/{dir_name}")
+        package_name: optional package.json name field. If provided, package
+            metadata is generated from the package field attrs when no
+            checked-in source manifest exists; otherwise the generated manifest
+            is compared with the checked-in package.json.
+        package_peer_deps: npm labels that should become peerDependencies.
+        package_optional_deps: npm labels that should become optionalDependencies.
+        package_dependency_version_overrides: package-name to version-range overrides.
         extra_npm_srcs: additional files for npm_package (iife bundles, locale-data, etc.)
         allow_overwrites: passed to npm_package (default False)
         visibility: visibility for the js_library target
@@ -209,7 +252,85 @@ def formatjs_library(
     npm_deps, project_references = _partition_deps(deps)
     all_deps = deps
     effective_tsconfig = _with_tsconfig_types(tsconfig or packages_tsconfig(), tsconfig_types)
-    has_package_json = native.glob(["package.json"], allow_empty = True)
+    source_package_json = native.glob(["package.json"], allow_empty = True)
+    has_source_package_json = bool(source_package_json)
+    generated_package_json = package_name != None
+    has_package_json = generated_package_json or has_source_package_json
+    package_json_label = "package.json" if has_source_package_json else ":package_json"
+
+    if package_name != None:
+        if has_source_package_json:
+            generate_package_json(
+                alias = alias,
+                author = author,
+                bin = bin,
+                browserslist = browserslist,
+                bugs = bugs,
+                contributors = contributors,
+                cpu = cpu,
+                description = description,
+                deps = deps,
+                engines = engines,
+                exports = exports,
+                files = files,
+                git_head = git_head,
+                homepage = homepage,
+                keywords = keywords,
+                libc = libc,
+                license = license,
+                main = main,
+                module = module,
+                optional_deps = package_optional_deps,
+                os = os,
+                package_name = package_name,
+                peer_dependencies_meta = peer_dependencies_meta,
+                peer_deps = package_peer_deps,
+                private = private,
+                repository = repository,
+                scripts = scripts,
+                side_effects = side_effects,
+                type = type,
+                types = package_types,
+                version = version,
+                dependency_version_overrides = package_dependency_version_overrides,
+            )
+        else:
+            formatjs_package_json(
+                alias = alias,
+                author = author,
+                bin = bin,
+                browserslist = browserslist,
+                bugs = bugs,
+                contributors = contributors,
+                cpu = cpu,
+                description = description,
+                deps = deps,
+                engines = engines,
+                exports = exports,
+                files = files,
+                git_head = git_head,
+                homepage = homepage,
+                keywords = keywords,
+                libc = libc,
+                license = license,
+                main = main,
+                module = module,
+                optional_deps = package_optional_deps,
+                os = os,
+                package_name = package_name,
+                peer_dependencies_meta = peer_dependencies_meta,
+                peer_deps = package_peer_deps,
+                private = private,
+                repository = repository,
+                scripts = scripts,
+                side_effects = side_effects,
+                type = type,
+                types = package_types,
+                version = version,
+                dependency_version_overrides = package_dependency_version_overrides,
+            )
+    elif has_source_package_json:
+        fail("formatjs_library() packages with package.json must pass package_name and package field attrs")
 
     copy_to_bin(
         name = "srcs",
@@ -218,7 +339,7 @@ def formatjs_library(
 
     ts_project(
         name = "typecheck",
-        srcs = [":srcs"],
+        srcs = [":srcs"] + ([package_json_label] if has_package_json else []),
         declaration = True,
         no_emit = True,
         resolve_json_module = True,
@@ -254,7 +375,7 @@ def formatjs_library(
 
         js_library(
             name = lib_name,
-            srcs = [":%s-esm" % lib_name] + has_package_json,
+            srcs = [":%s-esm" % lib_name] + source_package_json,
             visibility = visibility,
         )
 
@@ -297,6 +418,7 @@ def formatjs_library(
             deps = all_deps,
             external_packages = external_packages,
             npm_package_name = npm_package_name,
+            package_json = package_json_label,
             extra_npm_srcs = extra_npm_srcs,
             allow_overwrites = allow_overwrites,
         )

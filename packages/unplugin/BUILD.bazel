@@ -39,6 +39,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "unplugin",
+    package_name = "@formatjs/unplugin",
     srcs = [
         "conformance-tests/rust-binary-utils.ts",
         "esbuild.ts",
@@ -49,10 +50,71 @@ formatjs_library(
         "vite.ts",
         "webpack.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, and Rspack",
     entry_points = ENTRY_POINTS,
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "esbuild-plugin",
+        "formatjs",
+        "i18n",
+        "internationalization",
+        "react-intl",
+        "rollup-plugin",
+        "rspack-plugin",
+        "unplugin",
+        "vite-plugin",
+        "webpack-plugin",
+    ],
+    license = "MIT",
+    main = "index.js",
+    package_dependency_version_overrides = {
+        "@rspack/core": ">=1",
+        "esbuild": ">=0.17",
+        "rollup": ">=3",
+        "vite": ">=5",
+    },
+    package_peer_deps = [
+        "//:node_modules/@rspack/core",
+        "//:node_modules/esbuild",
+        "//:node_modules/rollup",
+        "//:node_modules/vite",
+        "//:node_modules/webpack",
+    ],
+    package_types = "index.d.ts",
+    peer_dependencies_meta = {
+        "vite": {
+            "optional": True,
+        },
+        "webpack": {
+            "optional": True,
+        },
+        "rollup": {
+            "optional": True,
+        },
+        "esbuild": {
+            "optional": True,
+        },
+        "@rspack/core": {
+            "optional": True,
+        },
+    },
+    repository = "formatjs/formatjs.git",
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     tsconfig_types = ["node"],
+    type = "module",
+    version = "1.1.17",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./vite": "./vite.js",
+        "./webpack": "./webpack.js",
+        "./rollup": "./rollup.js",
+        "./esbuild": "./esbuild.js",
+        "./rspack": "./rspack.js",
+        "./transform": "./transform.js",
+    },
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/icu-messageformat-parser",

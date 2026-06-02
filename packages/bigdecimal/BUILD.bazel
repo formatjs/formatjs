@@ -11,11 +11,33 @@ exports_files([
 
 formatjs_library(
     name = "bigdecimal",
+    package_name = "@formatjs/bigdecimal",
     srcs = [
         "index.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "BigInt-backed decimal arithmetic for ECMA-402 polyfills",
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "bigdecimal",
+        "bigint",
+        "decimal",
+        "ecma402",
+        "i18n",
+        "intl",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    side_effects = False,
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    type = "module",
+    version = "0.2.5",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
 )
 
 formatjs_test(

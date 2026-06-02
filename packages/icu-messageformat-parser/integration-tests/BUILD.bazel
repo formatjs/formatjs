@@ -1,7 +1,16 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
+load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:vitest.bzl", "vitest")
+
+generate_package_json(
+    package_name = "integration-tests",
+    private = True,
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+    ],
+)
 
 # run-parser.ts is the entry_point of an existing js_run_binary; an
 # auto-generated formatjs_library would race with it on srcs/deps.

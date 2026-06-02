@@ -1,6 +1,7 @@
 # gazelle:ignore
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:index.bzl", "ts_binary")
+load("//tools:package_json.bzl", "formatjs_package_json")
 load("//tools:vitest.bzl", "vitest")
 
 exports_files([
@@ -25,10 +26,28 @@ vitest(
     srcs = [
         "check_package_exports.test.ts",
         "check_package_exports.ts",
+        "generate-package-json.test.ts",
+        "generate-package-json.ts",
     ],
     deps = [
         "//:node_modules/@types/minimist",
         "//:node_modules/minimist",
+    ],
+)
+
+formatjs_package_json(
+    name = "package_json_fixture",
+    out = "package-json-fixture/package.json",
+    package_name = "@formatjs/package-json-fixture",
+    version = "0.0.0",
+    type = "module",
+    peer_deps = [
+        "//:node_modules/react",
+    ],
+    tags = ["manual"],
+    deps = [
+        "//:node_modules/minimist",
+        "//packages/ecma402-abstract",
     ],
 )
 
@@ -83,5 +102,14 @@ ts_binary(
         "//:node_modules/minimist",
     ],
     entry_point = "generate-package-tsconfigs.ts",
+    visibility = ["//visibility:public"],
+)
+
+ts_binary(
+    name = "generate-package-json",
+    data = [
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-package-json.ts",
     visibility = ["//visibility:public"],
 )

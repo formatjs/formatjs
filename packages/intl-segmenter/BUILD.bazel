@@ -41,6 +41,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-segmenter",
+    package_name = "@formatjs/intl-segmenter",
     srcs = [
         "index.ts",
         "polyfill.ts",
@@ -49,10 +50,32 @@ formatjs_library(
         "segmenter.ts",
         "should-polyfill.ts",
     ],
+    author = "Matija Gaspar <matijagaspar@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Polyfill for Intl.Segmenter",
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    homepage = "https://github.com/formatjs/formatjs",
+    keywords = [
+        "ecma402",
+        "i18n",
+        "intl",
+        "segmenter",
+        "tc39",
+        "unicode",
+    ],
+    license = "MIT",
+    repository = "git@github.com:formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "12.2.9",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/unicode",

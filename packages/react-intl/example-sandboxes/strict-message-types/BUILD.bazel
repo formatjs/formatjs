@@ -1,6 +1,38 @@
 # gazelle:ignore
 
 load("//tools:index.bzl", "generate_tsconfig_json")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "strict-message-types",
+    description = "React and TypeScript example starter project",
+    version = "1.0.0",
+    scripts = {
+        "start": "parcel src/index.html",
+        "tsc": "tsc --noEmit",
+    },
+    alias = {
+        "@formatjs/*": "workspace:*",
+        "intl-messageformat": "../../../../bazel-out/darwin-fastbuild/bin/packages/intl-messageformat",
+        "babel-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/babel-plugin-formatjs",
+        "eslint-plugin-formatjs": "../../../../bazel-out/darwin-fastbuild/bin/packages/eslint-plugin-formatjs",
+        "react-intl": "../../../../bazel-out/darwin-fastbuild/bin/packages/react-intl",
+    },
+    browserslist = [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all",
+    ],
+    keywords = [
+        "react",
+        "starter",
+        "typescript",
+    ],
+    deps = [
+        "//:node_modules/parcel",
+    ],
+)
 
 generate_tsconfig_json(
     name = "tsconfig_json",

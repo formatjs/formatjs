@@ -1,22 +1,7 @@
 {
   "name": "@formatjs/intl",
-  "description": "Internationalize JS apps. This library provides an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "version": "4.1.12",
-  "license": "MIT",
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "type": "module",
-  "sideEffects": false,
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js"
-  },
-  "dependencies": {
-    "@formatjs/fast-memoize": "workspace:*",
-    "@formatjs/icu-messageformat-parser": "workspace:*",
-    "intl-messageformat": "workspace:*"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://formatjs.github.io",
+  "description": "Internationalize JS apps. This library provides an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "format",
     "formatting",
@@ -30,5 +15,20 @@
     "translate",
     "translation"
   ],
-  "repository": "git@github.com:formatjs/formatjs.git"
+  "homepage": "https://formatjs.github.io",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "git@github.com:formatjs/formatjs.git",
+  "type": "module",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@formatjs/fast-memoize": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "intl-messageformat": "workspace:*"
+  }
 }

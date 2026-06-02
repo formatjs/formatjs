@@ -6,6 +6,7 @@ npm_link_all_packages()
 
 formatjs_library(
     name = "intl-localematcher",
+    package_name = "@formatjs/intl-localematcher",
     srcs = [
         "abstract/BestAvailableLocale.ts",
         "abstract/BestFitMatcher.ts",
@@ -22,7 +23,29 @@ formatjs_library(
         "abstract/utils.ts",
         "index.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.LocaleMatcher ponyfill",
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "ecma402",
+        "formatjs",
+        "i18n",
+        "intl",
+        "locale",
+        "react-intl",
+        "tc39",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    side_effects = False,
+    type = "module",
+    version = "0.8.9",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.core",

@@ -18,6 +18,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-locale",
+    package_name = "@formatjs/intl-locale",
     srcs = [
         "get_internal_slots.ts",
         "index.ts",
@@ -26,10 +27,34 @@ formatjs_library(
         "preference-data.ts",
         "should-polyfill.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.Locale polyfill",
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "ecma402",
+        "formatjs",
+        "i18n",
+        "intl",
+        "locale",
+        "react-intl",
+        "tc39",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "5.3.8",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-supportedvaluesof",

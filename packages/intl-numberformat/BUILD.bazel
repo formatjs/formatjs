@@ -74,6 +74,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-numberformat",
+    package_name = "@formatjs/intl-numberformat",
     srcs = [
         "core.ts",
         "get_internal_slots.ts",
@@ -84,13 +85,40 @@ formatjs_library(
         "to_locale_string.ts",
         "types.ts",
     ],
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    contributors = [
+        "Linjie Ding <linjie@airtable.com>",
+        "Long Ho <holevietlong@gmail.com>",
+    ],
+    description = "Ponyfill for ES2020 Intl.NumberFormat",
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         ":locale-data",
         "polyfill.iife.js",
     ],
+    homepage = "https://github.com/formatjs/formatjs",
+    keywords = [
+        "i18n",
+        "intl",
+        "Intl.NumberFormat",
+        "numberformat",
+        "polyfill",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "9.3.10",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+        "./locale-data/*": "./locale-data/*",
+        "./locale-data": "./locale-data",
+    },
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

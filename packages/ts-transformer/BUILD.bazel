@@ -21,6 +21,7 @@ PACKAGE_NAME = "ts-transformer"
 
 formatjs_library(
     name = "ts-transformer",
+    package_name = "@formatjs/ts-transformer",
     srcs = [
         "console_utils.ts",
         "index.ts",
@@ -29,12 +30,48 @@ formatjs_library(
         "ts-jest-integration.ts",
         "types.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "TS Compiler transformer for formatjs",
+    engines = {
+        "node": ">= 20.12.0",
+    },
     entry_points = [
         "index.ts",
         "ts-jest-integration.ts",
     ],
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "i18n",
+        "internationalization",
+        "react-intl",
+        "transform",
+        "transformer",
+        "typescript",
+    ],
+    license = "MIT",
+    main = "index.js",
+    package_dependency_version_overrides = {
+        "typescript": "^5.6 || 6",
+    },
+    package_peer_deps = [
+        "//:node_modules/ts-jest",
+    ],
+    package_types = "index.d.ts",
+    peer_dependencies_meta = {
+        "ts-jest": {
+            "optional": True,
+        },
+    },
+    repository = "formatjs/formatjs.git",
     tsconfig_types = ["node"],
+    type = "module",
+    version = "4.4.11",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./ts-jest-integration.js": "./ts-jest-integration.js",
+    },
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/babel__core",  # keep: transitive type dep required by ts-jest

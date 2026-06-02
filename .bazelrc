@@ -92,6 +92,7 @@ build:rbe --bes_backend=grpcs://formatjs.buildbuddy.io
 build:rbe --bes_results_url=https://formatjs.buildbuddy.io/invocation/
 build:rbe --define=EXECUTOR=rbe
 build:rbe --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
+build:rbe --@rules_go//go/config:gc_linkopts=-extldflags,-no-pie
 build:rbe --jobs=50
 build:rbe --platforms=//platforms:buildbuddy_linux_x86_64_gnu
 build:rbe --remote_cache=grpcs://formatjs.buildbuddy.io

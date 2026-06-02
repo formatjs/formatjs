@@ -3,41 +3,41 @@
   "version": "3.0.28",
   "description": "A ICU MessageFormat Editor UI",
   "keywords": [
-    "intl",
-    "i18n",
-    "internationalization",
-    "locale",
-    "localization",
-    "globalization",
-    "react",
-    "react-intl",
-    "reactjs",
+    "cli",
     "format",
     "formatjs",
     "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "react-intl",
+    "reactjs",
     "translate",
-    "translation",
-    "cli"
+    "translation"
   ],
-  "author": "Long Ho <holevietlong@gmail.com>",
   "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
   "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
+  },
   "type": "module",
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/react": "19",
     "react": "19",
     "react-intl": "workspace:*"
-  },
-  "bugs": {
-    "url": "https://github.com/formatjs/formatjs/issues"
   }
 }

@@ -18,6 +18,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "icu-messageformat-parser",
+    package_name = "@formatjs/icu-messageformat-parser",
     srcs = [
         "date-time-pattern-generator.ts",
         "error.ts",
@@ -29,8 +30,23 @@ formatjs_library(
         "types.ts",
     ],
     entry_points = ENTRY_POINTS,
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = {
+        "type": "git",
+        "url": "https://github.com/formatjs/formatjs.git",
+        "directory": "packages/icu-messageformat-parser",
+    },
+    type = "module",
     types = True,
+    version = "3.5.10",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./no-parser.js": "./no-parser.js",
+        "./printer.js": "./printer.js",
+        "./manipulator.js": "./manipulator.js",
+    },
     deps = [
         "//:node_modules/@formatjs/icu-skeleton-parser",
         "//:node_modules/@formatjs_generated/cldr.core",

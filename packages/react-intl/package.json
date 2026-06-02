@@ -1,26 +1,25 @@
 {
   "name": "react-intl",
-  "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "version": "10.1.11",
+  "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
+  "keywords": [
+    "format",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
+  "homepage": "https://formatjs.github.io/docs/react-intl",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "BSD-3-Clause",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
-  "type": "module",
-  "sideEffects": false,
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js",
-    "./server": "./server.js"
-  },
-  "dependencies": {
-    "@formatjs/icu-messageformat-parser": "workspace:*",
-    "@formatjs/intl": "workspace:*",
-    "intl-messageformat": "workspace:*"
-  },
-  "peerDependencies": {
-    "@types/react": "19",
-    "react": "19"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
   "contributors": [
     "Aarni Koskela <akx@iki.fi>",
     "Alexis Deveria <adeveria@gmail.com>",
@@ -119,21 +118,21 @@
     "Yang Su <yang@quip.com>",
     "zouxuoz <zouxuoz@gmail.com>"
   ],
-  "gitHead": "773d6ebf881357f6e4c2dd7e8984b1bd0f69b4ca",
-  "homepage": "https://formatjs.github.io/docs/react-intl",
-  "keywords": [
-    "format",
-    "formatting",
-    "globalization",
-    "i18n",
-    "internationalization",
-    "intl",
-    "locale",
-    "localization",
-    "react",
-    "reactjs",
-    "translate",
-    "translation"
-  ],
-  "repository": "git@github.com:formatjs/formatjs.git"
+  "repository": "git@github.com:formatjs/formatjs.git",
+  "type": "module",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./server": "./server.js"
+  },
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/intl": "workspace:*",
+    "intl-messageformat": "workspace:*"
+  },
+  "peerDependencies": {
+    "@types/react": "19",
+    "react": "19"
+  }
 }

@@ -4,6 +4,51 @@
 # gazelle:ts_enabled false
 
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "@formatjs/editor",
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = {
+        "url": "https://github.com/formatjs/formatjs/issues",
+    },
+    description = "A ICU MessageFormat Editor UI",
+    homepage = "https://github.com/formatjs/formatjs",
+    keywords = [
+        "intl",
+        "i18n",
+        "internationalization",
+        "locale",
+        "localization",
+        "globalization",
+        "react",
+        "react-intl",
+        "reactjs",
+        "format",
+        "formatjs",
+        "formatting",
+        "translate",
+        "translation",
+        "cli",
+    ],
+    license = "MIT",
+    repository = {
+        "type": "git",
+        "url": "git+ssh://git@github.com/formatjs/formatjs.git",
+    },
+    type = "module",
+    types = "index.d.ts",
+    version = "3.0.28",
+    exports = {
+        ".": "./index.js",
+    },
+    deps = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/react-intl",
+    ],
+)
 
 generate_ide_tsconfig_json()
 

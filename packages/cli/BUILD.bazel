@@ -1,6 +1,79 @@
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_exports_test")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "@formatjs/cli",
+    author = "Linjie Ding <linjie@airtable.com>",
+    bin = {
+        "formatjs": "bin/formatjs",
+    },
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    dependency_version_overrides = {
+        "@glimmer/syntax": "^0.84.3 || ^0.95.0",
+    },
+    description = "A CLI for formatjs.",
+    engines = {
+        "node": ">= 20.12.0",
+    },
+    homepage = "https://github.com/formatjs/formatjs",
+    keywords = [
+        "cli",
+        "format",
+        "formatjs",
+        "formatting",
+        "globalization",
+        "i18n",
+        "internationalization",
+        "intl",
+        "locale",
+        "localization",
+        "react",
+        "react-intl",
+        "reactjs",
+        "translate",
+        "translation",
+    ],
+    license = "MIT",
+    optional_deps = [
+        "//:node_modules/@formatjs/cli-native-darwin-arm64",
+        "//:node_modules/@formatjs/cli-native-linux-arm64",
+        "//:node_modules/@formatjs/cli-native-linux-x64",
+        "//:node_modules/@formatjs/cli-native-win32-x64",
+    ],
+    peer_dependencies_meta = {
+        "vue": {
+            "optional": True,
+        },
+        "@vue/compiler-core": {
+            "optional": True,
+        },
+        "@glimmer/env": {
+            "optional": True,
+        },
+        "@glimmer/reference": {
+            "optional": True,
+        },
+        "@glimmer/syntax": {
+            "optional": True,
+        },
+        "@glimmer/validator": {
+            "optional": True,
+        },
+        "content-tag": {
+            "optional": True,
+        },
+    },
+    peer_deps = [
+        "//:node_modules/@glimmer/syntax",
+        "//:node_modules/@vue/compiler-core",
+        "//:node_modules/content-tag",
+        "//:node_modules/vue",
+    ],
+    repository = "formatjs/formatjs.git",
+    version = "6.16.6",
+)
 
 PACKAGE_NAME = "cli"
 

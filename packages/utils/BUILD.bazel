@@ -14,6 +14,7 @@ exports_files([
 
 formatjs_library(
     name = "utils",
+    package_name = "@formatjs/utils",
     srcs = [
         "countryCodes.ts",
         "defaultCurrency.ts",
@@ -23,7 +24,25 @@ formatjs_library(
         "iso3166Alpha3CountryCodes.ts",
         "iso4217.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Collection of useful intl utilities",
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "i18n",
+        "intl",
+        "memoize",
+        "utils",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
+    version = "2.2.9",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.core",

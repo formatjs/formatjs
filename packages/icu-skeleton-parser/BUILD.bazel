@@ -7,13 +7,26 @@ npm_link_all_packages()
 
 formatjs_library(
     name = "icu-skeleton-parser",
+    package_name = "@formatjs/icu-skeleton-parser",
     srcs = [
         "date-time.ts",
         "index.ts",
         "number.ts",
     ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = {
+        "type": "git",
+        "url": "https://github.com/formatjs/formatjs.git",
+        "directory": "packages/icu-skeleton-parser",
+    },
+    type = "module",
     types = True,
+    version = "2.1.9",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@formatjs_generated/unicode",
         "//packages/ecma402-abstract/types",

@@ -24,16 +24,18 @@
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
-    "./vite": "./vite.js",
-    "./webpack": "./webpack.js",
-    "./rollup": "./rollup.js",
     "./esbuild": "./esbuild.js",
+    "./rollup": "./rollup.js",
     "./rspack": "./rspack.js",
-    "./transform": "./transform.js"
+    "./transform": "./transform.js",
+    "./vite": "./vite.js",
+    "./webpack": "./webpack.js"
   },
   "dependencies": {
+    "@bazel/runfiles": "^6.5.0",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
+    "@types/node": "22 || 24",
     "decode-named-character-reference": "^1.3.0",
     "magic-string": "^0.30.0",
     "oxc-parser": "^0.133.0",
@@ -47,19 +49,19 @@
     "webpack": "^5.104.1"
   },
   "peerDependenciesMeta": {
-    "vite": {
-      "optional": true
-    },
-    "webpack": {
-      "optional": true
-    },
-    "rollup": {
+    "@rspack/core": {
       "optional": true
     },
     "esbuild": {
       "optional": true
     },
-    "@rspack/core": {
+    "rollup": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    },
+    "webpack": {
       "optional": true
     }
   }

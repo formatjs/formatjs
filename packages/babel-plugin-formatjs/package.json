@@ -1,10 +1,18 @@
 {
   "name": "babel-plugin-formatjs",
-  "description": "Extracts string messages for translation from modules that use formatjs.",
   "version": "11.3.10",
+  "description": "Extracts string messages for translation from modules that use formatjs.",
+  "keywords": [
+    "babel-plugin",
+    "react-intl"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
   "type": "module",
+  "main": "index.js",
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js"
@@ -20,14 +28,5 @@
     "@types/babel__core": "^7.20.5",
     "@types/babel__helper-plugin-utils": "^7.10.3",
     "@types/babel__traverse": "^7.28.0"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
-  "keywords": [
-    "babel-plugin",
-    "react-intl"
-  ],
-  "main": "index.js",
-  "repository": "formatjs/formatjs.git"
+  }
 }
