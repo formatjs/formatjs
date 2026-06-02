@@ -44,6 +44,7 @@ COMMON_DEPS = [
     "@crates//:fast-glob",
     "@crates//:walkdir",
     "@crates//:hex",
+    "@crates//:md-5",
     "@crates//:once_cell",
     "@crates//:oxc",
     "@crates//:oxc_allocator",
@@ -54,6 +55,7 @@ COMMON_DEPS = [
     "@crates//:regex",
     "@crates//:serde",
     "@crates//:serde_json",
+    "@crates//:sha1",
     "@crates//:sha2",
 ]
 
