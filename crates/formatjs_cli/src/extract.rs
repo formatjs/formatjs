@@ -910,6 +910,66 @@ const greeting = defineMessage({
     }
 
     #[test]
+    fn test_extract_with_legacy_and_sha_id_interpolation_patterns() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("test.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessage } from 'react-intl';
+
+const greeting = defineMessage({
+  defaultMessage: 'Hello World',
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file.clone()],
+            None,
+            None,
+            Some(&output_file),
+            "[sha256:contenthash:hex:5]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+        assert!(json.get("a591a").is_some());
+
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[contenthash:5]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+        assert!(json.get("b10a8").is_some());
+    }
+
+    #[test]
     fn test_extract_with_different_id_patterns() {
         // Test that different patterns produce different IDs for the same message
         let temp_dir = tempfile::tempdir().unwrap();

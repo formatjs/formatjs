@@ -32,7 +32,7 @@ formatjs_cli (v0.1.14)
 ├── clap 4.5 (CLI argument parsing)
 ├── oxc 0.120 + oxc_parser + oxc_ast + oxc_allocator + oxc_span (JS/TS parsing)
 ├── serde + serde_json (serialization)
-├── sha2, base64, hex (hashing for ID generation)
+├── md-5, sha1, sha2, base64, hex (hashing for ID generation)
 ├── fast-glob 1.0, walkdir 2 (file discovery)
 ├── anyhow (error handling)
 └── regex 1.12
@@ -102,7 +102,7 @@ formatjs_cli (v0.1.14)
 
 - Uses **oxc** (v0.120) for JS/TS/JSX/TSX AST parsing (no Node.js dependency)
 - **Whitespace normalization** (`extractor.rs`): Matches TypeScript CLI behavior exactly, including U+00A0 (non-breaking space) preservation via placeholder technique
-- **ID generation** (`id_generator.rs`): SHA512 + base64 encoding, webpack loader-utils compatible. Hash is computed AFTER flattening (matching TypeScript CLI order)
+- **ID generation** (`id_generator.rs`): loader-utils style `hash`/`contenthash` interpolation with md5, sha1, and SHA-2 algorithms plus base64/base64url/base62/hex encodings. Hash is computed AFTER flattening (matching TypeScript CLI order)
 - **6 output formatters:** default, simple, crowdin, lokalise, transifex, smartling
 
 **176 unit tests.** Integration tests via `packages/cli/integration-tests/` ensure 100% conformance with the TypeScript CLI (60/60 tests passing).
