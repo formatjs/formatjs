@@ -5,7 +5,6 @@
   "include-v-in-tag": false,
   "include-v-in-release-name": false,
   "tag-separator": "@",
-  "changelog-type": "github",
   "bootstrap-sha": "482c8e224b2582b554e3f4b0718fe2332c4b5cff",
   "sequential-calls": true,
   "exclude-paths": ["**/tests/**", "**/*.md"],

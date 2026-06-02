@@ -88,21 +88,23 @@ This separation allows both operations to run in parallel, dramatically improvin
 The repository uses `verbatimModuleSyntax: true` in `tsconfig.json`. This means:
 
 - **Type-only imports must use `import type`**:
+
   ```typescript
   // ✅ Correct
-  import type { MyType } from './types.js'
+  import type {MyType} from './types.js'
 
   // ❌ Wrong - will cause build errors
-  import { MyType } from './types.js'
+  import {MyType} from './types.js'
   ```
 
 - **Type-only exports must use `export type`**:
+
   ```typescript
   // ✅ Correct
-  export type { MyType } from './types.js'
+  export type {MyType} from './types.js'
 
   // ❌ Wrong - will cause runtime errors
-  export { MyType } from './types.js'
+  export {MyType} from './types.js'
   ```
 
 This ensures compatibility with fast transpilers that operate in isolated mode without full type information.
@@ -121,13 +123,17 @@ The transpiler infrastructure is located in:
 Releases are automated via GitHub Actions:
 
 1. The **Release Please** workflow runs on `main` and maintains release PRs for
-   npm packages and Rust crates. Release notes use GitHub-generated changelogs
-   so entries include PR titles, PR links, and contributors.
+   npm packages and Rust crates. Release notes use Release Please's built-in
+   changelog builder so release PR generation does not depend on every
+   historical manifest version having a matching GitHub release.
 
 2. Merge the release PR when it is ready. Release Please creates the package
    tags and GitHub releases from the merged release PR, then calls the
    **Release** workflow with the released npm package paths. That workflow
-   publishes from the Bazel-built distribution using Trusted Publishing (OIDC).
+   publishes from the Bazel-built distribution using Trusted Publishing (OIDC)
+   and orders selected package paths by local package dependencies. A
+   `crates/formatjs_cli` release also queues the CLI and CLI native npm package
+   paths because those packages publish the native Rust binding.
 
 3. The **Crates Release** workflow publishes Rust crates to crates.io from
    `formatjs_icu_skeleton_parser_v*`, `formatjs_icu_messageformat_parser_v*`,

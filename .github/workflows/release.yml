@@ -120,7 +120,67 @@ jobs:
           NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
         run: |
           mapfile -t package_paths < <(
-            node -e 'JSON.parse(process.env.NPM_RELEASE_PATHS || "[]").forEach(path => console.log(path))'
+          node <<'JS'
+          const fs = require('node:fs')
+          const path = require('node:path')
+
+          const packagePaths = [
+            ...new Set(JSON.parse(process.env.NPM_RELEASE_PATHS || '[]')),
+          ]
+          const packagesByPath = new Map()
+          const packagesByName = new Map()
+          const dependencyFields = [
+            'dependencies',
+            'devDependencies',
+            'peerDependencies',
+            'optionalDependencies',
+          ]
+
+          for (const packagePath of packagePaths) {
+            const packageJsonPath = path.join(packagePath, 'package.json')
+            const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
+            const entry = {path: packagePath, pkg}
+            packagesByPath.set(packagePath, entry)
+            packagesByName.set(pkg.name, entry)
+          }
+
+          const visiting = new Set()
+          const visited = new Set()
+          const sortedPackagePaths = []
+
+          function visit(entry) {
+            if (visited.has(entry.path)) {
+              return
+            }
+
+            if (visiting.has(entry.path)) {
+              throw new Error(`Cycle in selected npm release paths at ${entry.path}`)
+            }
+
+            visiting.add(entry.path)
+
+            for (const field of dependencyFields) {
+              for (const depName of Object.keys(entry.pkg[field] ?? {})) {
+                const dep = packagesByName.get(depName)
+                if (dep) {
+                  visit(dep)
+                }
+              }
+            }
+
+            visiting.delete(entry.path)
+            visited.add(entry.path)
+            sortedPackagePaths.push(entry.path)
+          }
+
+          for (const packagePath of packagePaths) {
+            visit(packagesByPath.get(packagePath))
+          }
+
+          for (const packagePath of sortedPackagePaths) {
+            console.log(packagePath)
+          }
+          JS
           )
 
           if [ "${#package_paths[@]}" -eq 0 ]; then
@@ -134,6 +194,14 @@ jobs:
               exit 1
             fi
 
-            echo "Publishing $package_path"
+            package_name=$(cd "$package_path" && node -p "require('./package.json').name")
+            package_version=$(cd "$package_path" && node -p "require('./package.json').version")
+
+            if npm view "$package_name@$package_version" version >/dev/null 2>&1; then
+              echo "$package_name@$package_version is already published; skipping."
+              continue
+            fi
+
+            echo "Publishing $package_name@$package_version from $package_path"
             (cd "$package_path" && pnpm publish --access public --no-git-checks)
           done

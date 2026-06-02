@@ -22,8 +22,8 @@ jobs:
       npm_release_created: ${{ steps.npm-release-paths.outputs.npm_release_created }}
 
     steps:
-      # Release Please owns version/changelog PRs, GitHub release notes, and
-      # the release-created signal used for npm publication below.
+      # Release Please owns version/changelog PRs, GitHub releases, and the
+      # release-created signal used for npm publication below.
       - name: Run Release Please
         id: release
         uses: googleapis/release-please-action@v5
@@ -39,8 +39,31 @@ jobs:
         run: |
           node <<'JS'
           const fs = require('node:fs')
+
           const paths = JSON.parse(process.env.PATHS_RELEASED || '[]')
-          const npmPaths = paths.filter(path => path.startsWith('packages/'))
+          const cliRustReleasePaths = ['crates/formatjs_cli']
+          const cliNpmReleasePaths = [
+            'packages/cli-native-darwin-arm64',
+            'packages/cli-native-linux-arm64',
+            'packages/cli-native-linux-x64',
+            'packages/cli-native-win32-x64',
+            'packages/cli-lib',
+            'packages/cli',
+          ]
+          const npmPathSet = new Set(
+            paths.filter(path => path.startsWith('packages/'))
+          )
+
+          // Release Please cannot infer that the Rust CLI crate is shipped
+          // through these npm packages, so bridge that cross-ecosystem release
+          // edge here. release.yml sorts selected packages topologically.
+          if (paths.some(path => cliRustReleasePaths.includes(path))) {
+            for (const path of cliNpmReleasePaths) {
+              npmPathSet.add(path)
+            }
+          }
+
+          const npmPaths = [...npmPathSet]
           fs.appendFileSync(
             process.env.GITHUB_OUTPUT,
             `npm_paths=${JSON.stringify(npmPaths)}\n`

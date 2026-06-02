@@ -63,8 +63,8 @@ Before publishing `formatjs_cli`, ensure any workspace dependencies are already 
 The normal repository workflow handles this ordering automatically:
 
 1. Release Please opens and maintains release PRs for the Rust crates.
-2. Merging the release PR creates GitHub releases with generated changelog
-   notes that include PR titles, PR links, and contributors.
+2. Merging the release PR creates GitHub releases with Release Please-generated
+   changelog notes.
 3. The `crates-release.yml` workflow publishes matching crate releases to
    crates.io with trusted publishing and waits for workspace dependencies before
    publishing dependents.
@@ -79,12 +79,12 @@ path = "src/main.rs"
 
 ## Platform Support
 
-| Platform | Architecture  | Target Triple                | Status                           |
-| -------- | ------------- | ---------------------------- | -------------------------------- |
-| macOS    | Apple Silicon | aarch64-apple-darwin         | ✅ LLVM cross target             |
-| Linux    | ARM64         | aarch64-unknown-linux-musl   | ✅ LLVM cross target             |
-| Linux    | x86_64        | x86_64-unknown-linux-musl    | ✅ LLVM cross target             |
-| Windows  | x86_64        | x86_64-pc-windows-gnullvm    | ✅ LLVM cross target             |
+| Platform | Architecture  | Target Triple              | Status               |
+| -------- | ------------- | -------------------------- | -------------------- |
+| macOS    | Apple Silicon | aarch64-apple-darwin       | ✅ LLVM cross target |
+| Linux    | ARM64         | aarch64-unknown-linux-musl | ✅ LLVM cross target |
+| Linux    | x86_64        | x86_64-unknown-linux-musl  | ✅ LLVM cross target |
+| Windows  | x86_64        | x86_64-pc-windows-gnullvm  | ✅ LLVM cross target |
 
 **Note**: The GitHub Actions workflow builds release artifacts through Bazel targets on Linux BuildBuddy RBE when credentials are available. Linux release binaries use musl targets for static artifacts; the standalone Windows CLI uses the LLVM gnullvm target and is smoke-tested on a Windows runner.
 
@@ -235,8 +235,10 @@ binary artifact process:
 2. **npm package publish runs automatically**:
 
    The `release-please.yml` workflow calls `release.yml` with the npm package
-   paths released by Release Please. `release.yml` builds the Bazel `:dist`
-   output and publishes those packages through npm Trusted Publishing.
+   paths released by Release Please. A `crates/formatjs_cli` release also queues
+   the CLI and CLI native npm package paths because those packages publish the
+   native Rust binding. `release.yml` builds the Bazel `:dist` output and
+   publishes unpublished package versions through npm Trusted Publishing.
 
 3. **Crates.io publish runs automatically**:
 

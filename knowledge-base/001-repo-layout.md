@@ -92,22 +92,27 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 ## CI/CD (GitHub Actions)
 
-| Workflow               | Trigger               | What it does                             |
-| ---------------------- | --------------------- | ---------------------------------------- |
-| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS     |
+| Workflow               | Trigger               | What it does                                                |
+| ---------------------- | --------------------- | ----------------------------------------------------------- |
+| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
 | `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
-| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing |
-| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC |
-| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts     |
-| `website.yml`          | Manual/push           | Deploy docs site                         |
-| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint       |
+| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
+| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
+| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts                        |
+| `website.yml`          | Manual/push           | Deploy docs site                                            |
+| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint                          |
 
-Release Please owns version/changelog PRs and GitHub release creation. Its
-GitHub-generated changelog notes include PR titles, PR links, and contributors.
-When Release Please creates npm package releases, it passes those released
-package paths to `release.yml`. The npm publish workflow builds the Bazel
-`:dist` output and uses npm Trusted Publishing, then publishes only the package
-paths Release Please released. Rust crate publishing happens in
+Release Please owns version/changelog PRs and GitHub release creation. It uses
+Release Please's built-in changelog builder instead of GitHub-generated
+changelogs so release PR generation does not depend on historical GitHub
+releases existing for every manifest version. When Release Please creates npm
+package releases, it passes those released package paths to `release.yml`. A
+`crates/formatjs_cli` release also queues the CLI and CLI native npm package
+paths because those packages publish the native Rust binding. The npm publish
+workflow builds the Bazel `:dist` output, sorts selected package paths by local
+package dependencies, and uses npm Trusted Publishing. It skips any package
+version that is already on npm so release workflow re-runs stay idempotent.
+Rust crate publishing happens in
 `crates-release.yml` from crate GitHub releases using crates.io trusted
 publishing. The Rust CLI binary artifacts remain Bazel-owned in
 `rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE
