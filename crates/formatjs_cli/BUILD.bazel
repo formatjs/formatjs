@@ -49,6 +49,7 @@ COMMON_DEPS = [
     "@crates//:oxc",
     "@crates//:oxc_allocator",
     "@crates//:oxc_ast",
+    "@crates//:oxc_data_structures",
     "@crates//:oxc_parser",
     "@crates//:oxc_span",
     "@crates//:rayon",
@@ -107,6 +108,7 @@ rust_binary(
 
 rust_test(
     name = "formatjs_cli_test",
+    size = "small",
     crate = ":formatjs_cli_lib",
     data = [
         "//packages/ts-transformer:test_fixtures",
