@@ -27,12 +27,12 @@ walkdir = "2"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.2.4" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.1" }
 once_cell = "1.21"
-oxc = { version = "0.132", features = ["ast_visit"] }
-oxc_allocator = "0.132"
-oxc_ast = "0.132"
+oxc = { version = "0.133", features = ["ast_visit"] }
+oxc_allocator = "0.133"
+oxc_ast = "0.133"
 oxc_data_structures = { version = "0.133", features = ["rope"] }
-oxc_parser = "0.132"
-oxc_span = "0.132"
+oxc_parser = "0.133"
+oxc_span = "0.133"
 sha2 = "0.11"
 sha1 = "0.11"
 md-5 = "0.11"
