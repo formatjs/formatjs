@@ -21,7 +21,7 @@ generate_package_json(
         "darwin",
     ],
     repository = "formatjs/formatjs.git",
-    version = "1.1.1",  # x-release-please-version
+    version = "1.1.2",  # x-release-please-version
     exports = {
         ".": "./formatjs_cli_napi.node",
     },
