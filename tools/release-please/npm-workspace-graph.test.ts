@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 
+import {githubOutputRecord} from './github-output.ts'
 import {
   buildDependencyGraph,
   dependencyNames,
@@ -105,3 +106,21 @@ assert.throws(() => {
   ])
   dependentPackageOrder(cycleGraph, ['a'])
 }, /found cycle in dependency graph: a -> b -> a/)
+
+assert.equal(
+  githubOutputRecord('release_created', true),
+  'release_created=true\n'
+)
+
+assert.equal(
+  githubOutputRecord('packages/cli--body', "## What's Changed\n* release note"),
+  "packages/cli--body<<FORMATJS_packages_cli__body_EOF\n## What's Changed\n* release note\nFORMATJS_packages_cli__body_EOF\n"
+)
+
+assert.equal(
+  githubOutputRecord(
+    'body',
+    'FORMATJS_body_EOF\n## What changed\nFORMATJS_body_EOF_1'
+  ),
+  'body<<FORMATJS_body_EOF_2\nFORMATJS_body_EOF\n## What changed\nFORMATJS_body_EOF_1\nFORMATJS_body_EOF_2\n'
+)
