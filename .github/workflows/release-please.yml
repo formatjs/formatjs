@@ -22,15 +22,58 @@ jobs:
       npm_release_created: ${{ steps.npm-release-paths.outputs.npm_release_created }}
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Build npm workspace graph
+        id: npm-workspace-graph
+        env:
+          BUILDBUDDY_ORG_API_KEY: ${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+        run: |
+          bazel_args=()
+          if [ -n "$BUILDBUDDY_ORG_API_KEY" ]; then
+            bazel_args+=(
+              --config=ci
+              "--remote_header=x-buildbuddy-api-key=$BUILDBUDDY_ORG_API_KEY"
+            )
+          fi
+
+          bazel build "${bazel_args[@]}" :release_please_npm_workspace_graph
+          graph_path="$(bazel cquery "${bazel_args[@]}" --output=files :release_please_npm_workspace_graph)"
+          echo "path=$graph_path" >> "$GITHUB_OUTPUT"
+
+      - name: Install Release Please
+        run: |
+          npm install \
+            --ignore-scripts \
+            --no-audit \
+            --no-fund \
+            --prefix "$RUNNER_TEMP/release-please" \
+            release-please@17.6.0
+
       # Release Please owns version/changelog PRs, GitHub release notes, and
       # the release-created signal used for npm publication below.
       - name: Run Release Please
         id: release
-        uses: googleapis/release-please-action@v5
-        with:
-          token: ${{ secrets.GH_RELEASE_TOKEN }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
+        env:
+          FORMATJS_RELEASE_PLEASE_NPM_WORKSPACE_GRAPH: ${{ steps.npm-workspace-graph.outputs.path }}
+          GH_RELEASE_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+          NODE_PATH: ${{ runner.temp }}/release-please/node_modules
+          RELEASE_PLEASE_CONFIG_FILE: release-please-config.json
+          RELEASE_PLEASE_MANIFEST_FILE: .release-please-manifest.json
+        run: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/release-please/run.ts
 
       - name: Collect npm release paths
         id: npm-release-paths

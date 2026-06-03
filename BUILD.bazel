@@ -10,8 +10,9 @@ load("@npm//:lefthook/package_json.bzl", lefthook = "bin")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@npm//:oxlint/package_json.bzl", oxlint = "bin")
 load("//tools:compile.bzl", "formatjs_library")
-load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES")
+load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES", "RELEASE_PLEASE_NPM_PACKAGES")
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
@@ -117,6 +118,23 @@ js_test(
     ] + [pkg["package_json"] for pkg in DIST_PACKAGES],
     entry_point = "//tools:check_dist_package_json",
     node_options = ["--experimental-transform-types"],
+)
+
+ts_run_binary(
+    name = "release_please_npm_workspace_graph",
+    srcs = [pkg["package_json"] for pkg in RELEASE_PLEASE_NPM_PACKAGES],
+    outs = ["release_please_npm_workspace_graph.json"],
+    args = [
+        "--out",
+        "$(rootpath release_please_npm_workspace_graph.json)",
+    ] + [
+        "--package=packages/%s=$(rootpath %s)" % (
+            pkg["dirname"],
+            pkg["package_json"],
+        )
+        for pkg in RELEASE_PLEASE_NPM_PACKAGES
+    ],
+    tool = "//tools:generate-release-please-npm-workspace-graph",
 )
 
 test_suite(

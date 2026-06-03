@@ -83,7 +83,12 @@ Bundling is done per `entry_points` with Rolldown and `rolldown-plugin-dts`.
 Standalone package manifests use `generate_package_json()` and are consumed
 directly by their package assembly targets. The root `dist_package_json_test`
 builds `:dist` and compares each distributed package manifest against the
-corresponding generated `package_json` target.
+corresponding generated `package_json` target. The
+`//:release_please_npm_workspace_graph` target reads those generated manifests
+for all release-managed npm packages, including native packages assembled by
+platform-specific workflow jobs, and emits the npm workspace graph used by the
+custom Release Please `formatjs-bazel-workspace` plugin for dependent package
+bumps.
 
 ### Internal TypeScript Packages
 
