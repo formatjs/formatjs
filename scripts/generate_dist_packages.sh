@@ -16,10 +16,15 @@ TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
       echo "No generated package.json label found for $target" >&2
       exit 1
     fi
+    package_name=$(echo "$build" | grep -o 'package = "[^"]*"' | head -n 1 | cut -d '"' -f 2 || true)
+    if [ -z "$package_name" ]; then
+      echo "No npm package name found for $target" >&2
+      exit 1
+    fi
 
     package_dir="${target#//packages/}"
     package_dir="${package_dir%:pkg}"
-    echo "$package_dir|$target|$package_json"
+    echo "$package_dir|$target|$package_json|$package_name"
   done | sort)
 
 DIST_TARGETS=$(echo "$TARGETS" | grep -v '^cli-native-win32-x64|' || true)
@@ -36,8 +41,8 @@ emit_packages() {
 
   echo "$name = [" >> "$OUTPUT"
   if [ -n "$targets" ]; then
-    echo "$targets" | while IFS='|' read -r package_dir target package_json; do
-      echo "    {\"dirname\": \"$package_dir\", \"pkg\": \"$target\", \"package_json\": \"$package_json\"}," >> "$OUTPUT"
+    echo "$targets" | while IFS='|' read -r package_dir target package_json package_name; do
+      echo "    {\"dirname\": \"$package_dir\", \"name\": \"$package_name\", \"pkg\": \"$target\", \"package_json\": \"$package_json\"}," >> "$OUTPUT"
     done
   fi
   echo "]" >> "$OUTPUT"

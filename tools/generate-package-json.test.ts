@@ -5,9 +5,7 @@ import {generatePackageJson} from './generate-package-json'
 describe('generatePackageJson', () => {
   const rootPackageJson = {
     devDependencies: {
-      '@formatjs/icu-messageformat-parser': 'workspace:*',
       '@types/react': '19',
-      'babel-plugin-formatjs': 'workspace:*',
       minimist: '^1.2.8',
       react: '19',
       typescript: '6.0.3',
@@ -31,6 +29,7 @@ describe('generatePackageJson', () => {
           },
           dependencies: ['@formatjs/icu-messageformat-parser', 'minimist'],
           peerDependencies: ['react', '@types/react', 'vite'],
+          workspaceDependencies: ['@formatjs/icu-messageformat-parser'],
           dependencyVersionOverrides: {
             vite: '>=5',
           },
@@ -89,6 +88,7 @@ describe('generatePackageJson', () => {
             name: '@formatjs/example',
           },
           dependencies: ['babel-plugin-formatjs'],
+          workspaceDependencies: ['babel-plugin-formatjs'],
           dependencyVersionOverrides: {
             'babel-plugin-formatjs': '^9.0.0',
           },
