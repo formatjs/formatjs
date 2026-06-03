@@ -108,10 +108,13 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
-When Release Please creates npm package releases, it passes those released
-package paths to `release.yml`. The npm publish workflow builds the Bazel
-`:dist` output and uses npm Trusted Publishing, then publishes only the package
-paths Release Please released. Rust crate publishing happens in
+For npm packages, Release Please uses package-local Bazel `BUILD.bazel`
+`x-release-please-version` markers instead of source `package.json` files; those
+package manifests are generated only in Bazel outputs. When Release Please
+creates npm package releases, it passes those released package paths to
+`release.yml`. The npm publish workflow builds the Bazel `:dist` output and
+uses npm Trusted Publishing, then publishes only the package paths Release
+Please released. Rust crate publishing happens in
 `crates-release.yml` from crate GitHub releases using crates.io trusted
 publishing. The Rust CLI binary artifacts remain Bazel-owned in
 `rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE
