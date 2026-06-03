@@ -69,7 +69,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@rescripts/cli": "0.0.16",
-    "@rescripts/rescript-env": "0.0.12",
+    "@rescripts/rescript-env": "0.0.14",
     "@rspack/core": "^2.0.0",
     "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
