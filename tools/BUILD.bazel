@@ -58,7 +58,10 @@ ts_binary(
 js_test(
     name = "release_please_npm_workspace_test",
     size = "small",
-    data = ["release-please/npm-workspace-graph.ts"],
+    data = [
+        "release-please/github-output.ts",
+        "release-please/npm-workspace-graph.ts",
+    ],
     entry_point = "release-please/npm-workspace-graph.test.ts",
     node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],
 )

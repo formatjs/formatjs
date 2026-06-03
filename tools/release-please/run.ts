@@ -1,6 +1,7 @@
 import {appendFileSync} from 'node:fs'
 import {createRequire} from 'node:module'
 
+import {githubOutputRecord} from './github-output.ts'
 import {BazelNpmWorkspace} from './npm-workspace-plugin.ts'
 
 const require = createRequire(import.meta.url)
@@ -28,11 +29,10 @@ function boolEnv(name: string): boolean | undefined {
 }
 
 function setOutput(key: string, value) {
-  const serialized = typeof value === 'string' ? value : JSON.stringify(value)
   if (process.env.GITHUB_OUTPUT) {
-    appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${serialized}\n`)
+    appendFileSync(process.env.GITHUB_OUTPUT, githubOutputRecord(key, value))
   } else {
-    console.log(`${key}=${serialized}`)
+    process.stdout.write(githubOutputRecord(key, value))
   }
 }
 
