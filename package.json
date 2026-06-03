@@ -68,7 +68,7 @@
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
-    "@rescripts/cli": "0.0.15",
+    "@rescripts/cli": "0.0.16",
     "@rescripts/rescript-env": "0.0.12",
     "@rspack/core": "^2.0.0",
     "@tailwindcss/vite": "^4.1.18",
