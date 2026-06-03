@@ -111,10 +111,16 @@ GitHub-generated changelog notes include PR titles, PR links, and contributors.
 For npm packages, Release Please uses package-local Bazel `BUILD.bazel`
 `x-release-please-version` markers instead of source `package.json` files; those
 package manifests are generated only in Bazel outputs. When Release Please
-creates npm package releases, it passes those released package paths to
-`release.yml`. The npm publish workflow builds the Bazel `:dist` output and
-uses npm Trusted Publishing, then publishes only the package paths Release
-Please released. Rust crate publishing happens in
+creates or updates release PRs, `.github/workflows/release-please.yml` first
+builds `//:release_please_npm_workspace_graph` from the generated package
+manifests and runs the local `tools/release-please/run.ts` wrapper. That
+wrapper registers the `formatjs-bazel-workspace` plugin so dependent npm
+packages are patch-bumped from the Bazel-generated dependency graph without
+checking package manifests into `packages/`. When Release Please creates npm
+package releases, it passes those released package paths to `release.yml`. The
+npm publish workflow builds the Bazel `:dist` output and uses npm Trusted
+Publishing, then publishes only the package paths Release Please released. Rust
+crate publishing happens in
 `crates-release.yml` from crate GitHub releases using crates.io trusted
 publishing. The Rust CLI binary artifacts remain Bazel-owned in
 `rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE

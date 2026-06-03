@@ -414,6 +414,10 @@
   },
   "plugins": [
     {
+      "type": "formatjs-bazel-workspace",
+      "merge": false
+    },
+    {
       "type": "cargo-workspace",
       "merge": false
     }
