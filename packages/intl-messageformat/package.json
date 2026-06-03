@@ -1,28 +1,7 @@
 {
   "name": "intl-messageformat",
-  "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "version": "11.2.7",
-  "license": "BSD-3-Clause",
-  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
-  "type": "module",
-  "sideEffects": false,
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js"
-  },
-  "dependencies": {
-    "@formatjs/fast-memoize": "workspace:*",
-    "@formatjs/icu-messageformat-parser": "workspace:*"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "contributors": [
-    "Anthony Pipkin <a.pipkin@yahoo.com>",
-    "Caridy Patino <caridy@gmail.com>",
-    "Drew Folta <drew@folta.net>",
-    "Long Ho <holevietlong@gmail.com>"
-  ],
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
-  "homepage": "https://github.com/formatjs/formatjs",
+  "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "globalization",
     "i18n",
@@ -34,5 +13,25 @@
     "parser",
     "plural"
   ],
-  "repository": "git@github.com:formatjs/formatjs.git"
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "BSD-3-Clause",
+  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+  "contributors": [
+    "Anthony Pipkin <a.pipkin@yahoo.com>",
+    "Caridy Patino <caridy@gmail.com>",
+    "Drew Folta <drew@folta.net>",
+    "Long Ho <holevietlong@gmail.com>"
+  ],
+  "repository": "git@github.com:formatjs/formatjs.git",
+  "type": "module",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@formatjs/fast-memoize": "workspace:*",
+    "@formatjs/icu-messageformat-parser": "workspace:*"
+  }
 }

@@ -1,6 +1,31 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_exports_test")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "@formatjs/cli-native-win32-x64",
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    cpu = [
+        "x64",
+    ],
+    description = "Native FormatJS CLI binding for Windows x64.",
+    files = [
+        "formatjs_cli_napi.node",
+    ],
+    homepage = "https://github.com/formatjs/formatjs",
+    license = "MIT",
+    main = "formatjs_cli_napi.node",
+    os = [
+        "win32",
+    ],
+    repository = "formatjs/formatjs.git",
+    version = "1.1.2",
+    exports = {
+        ".": "./formatjs_cli_napi.node",
+    },
+)
 
 copy_file(
     name = "formatjs_cli_napi_node",

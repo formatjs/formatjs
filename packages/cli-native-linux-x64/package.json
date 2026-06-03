@@ -1,26 +1,26 @@
 {
   "name": "@formatjs/cli-native-linux-x64",
-  "description": "Native FormatJS CLI binding for Linux x64.",
   "version": "1.1.1",
+  "description": "Native FormatJS CLI binding for Linux x64.",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
-  "exports": {
-    ".": "./formatjs_cli_napi.node"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "cpu": [
-    "x64"
-  ],
+  "repository": "formatjs/formatjs.git",
   "files": [
     "formatjs_cli_napi.node"
   ],
-  "homepage": "https://github.com/formatjs/formatjs",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
   "libc": [
     "glibc"
   ],
   "main": "formatjs_cli_napi.node",
-  "os": [
-    "linux"
-  ],
-  "repository": "formatjs/formatjs.git"
+  "exports": {
+    ".": "./formatjs_cli_napi.node"
+  }
 }

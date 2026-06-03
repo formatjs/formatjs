@@ -1,18 +1,7 @@
 {
   "name": "@formatjs/bigdecimal",
-  "description": "BigInt-backed decimal arithmetic for ECMA-402 polyfills",
   "version": "0.2.5",
-  "license": "MIT",
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "type": "module",
-  "sideEffects": false,
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js"
-  },
-  "dependencies": {},
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "description": "BigInt-backed decimal arithmetic for ECMA-402 polyfills",
   "keywords": [
     "bigdecimal",
     "bigint",
@@ -21,5 +10,15 @@
     "i18n",
     "intl"
   ],
-  "repository": "formatjs/formatjs.git"
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  }
 }

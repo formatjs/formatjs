@@ -14,6 +14,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl",
+    package_name = "@formatjs/intl",
     srcs = [
         "create-intl.ts",
         "dateTime.ts",
@@ -29,9 +30,35 @@ formatjs_library(
         "utils.ts",
     ],
     allow_overwrites = True,
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Internationalize JS apps. This library provides an API to format dates, numbers, and strings, including pluralization and handling translations.",
     entry_points = ENTRY_POINTS,
+    homepage = "https://formatjs.github.io",
+    keywords = [
+        "format",
+        "formatting",
+        "globalization",
+        "i18n",
+        "internationalization",
+        "intl",
+        "locale",
+        "localization",
+        "react-intl",
+        "translate",
+        "translation",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "git@github.com:formatjs/formatjs.git",
+    side_effects = False,
+    type = "module",
     types = True,
+    version = "4.1.12",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",

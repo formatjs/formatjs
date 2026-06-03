@@ -6,6 +6,7 @@ npm_link_all_packages()
 
 formatjs_library(
     name = "babel-plugin-formatjs",
+    package_name = "babel-plugin-formatjs",
     srcs = [
         "global.d.ts",
         "index.ts",
@@ -14,8 +15,25 @@ formatjs_library(
         "visitors/call-expression.ts",
         "visitors/jsx-opening-element.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Extracts string messages for translation from modules that use formatjs.",
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "babel-plugin",
+        "react-intl",
+    ],
+    license = "MIT",
+    main = "index.js",
     npm_package_name = "babel-plugin-formatjs",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
+    version = "11.3.10",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",

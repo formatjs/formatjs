@@ -1,7 +1,4 @@
 {
   "name": "integration-tests",
-  "private": true,
-  "devDependencies": {
-    "@formatjs/cli": "workspace:*"
-  }
+  "private": true
 }

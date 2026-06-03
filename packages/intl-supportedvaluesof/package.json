@@ -1,22 +1,7 @@
 {
   "name": "@formatjs/intl-supportedvaluesof",
-  "description": "Intl.supportedValuesOf polyfill",
   "version": "2.3.7",
-  "license": "MIT",
-  "author": "Michele Riva <ciao@micheleriva.it>",
-  "type": "module",
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js",
-    "./polyfill.js": "./polyfill.js",
-    "./polyfill-force.js": "./polyfill-force.js",
-    "./should-polyfill.js": "./should-polyfill.js"
-  },
-  "dependencies": {
-    "@formatjs/fast-memoize": "workspace:*"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "description": "Intl.supportedValuesOf polyfill",
   "keywords": [
     "ecma402",
     "enumerator",
@@ -27,5 +12,20 @@
     "supportedvaluesof",
     "tc39"
   ],
-  "repository": "formatjs/formatjs.git"
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Michele Riva <ciao@micheleriva.it>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/fast-memoize": "workspace:*"
+  }
 }

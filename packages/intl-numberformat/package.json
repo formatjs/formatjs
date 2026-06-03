@@ -1,40 +1,34 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "version": "9.3.10",
-  "license": "MIT",
-  "type": "module",
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js",
-    "./polyfill.js": "./polyfill.js",
-    "./polyfill-force.js": "./polyfill-force.js",
-    "./should-polyfill.js": "./should-polyfill.js",
-    "./locale-data/*": "./locale-data/*",
-    "./locale-data": "./locale-data"
-  },
-  "dependencies": {
-    "@formatjs/bigdecimal": "workspace:*",
-    "@formatjs/intl-localematcher": "workspace:*"
-  },
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "workspace:*",
-    "@formatjs/intl-locale": "workspace:*",
-    "@formatjs/intl-pluralrules": "workspace:*"
-  },
+  "description": "Ponyfill for ES2020 Intl.NumberFormat",
+  "keywords": [
+    "Intl.NumberFormat",
+    "i18n",
+    "intl",
+    "numberformat",
+    "polyfill"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
   "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
   "contributors": [
     "Linjie Ding <linjie@airtable.com>",
     "Long Ho <holevietlong@gmail.com>"
   ],
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
-  "homepage": "https://github.com/formatjs/formatjs",
-  "keywords": [
-    "i18n",
-    "intl",
-    "Intl.NumberFormat",
-    "numberformat",
-    "polyfill"
-  ],
-  "repository": "formatjs/formatjs.git"
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./locale-data": "./locale-data",
+    "./locale-data/*": "./locale-data/*",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/bigdecimal": "workspace:*",
+    "@formatjs/intl-localematcher": "workspace:*"
+  }
 }

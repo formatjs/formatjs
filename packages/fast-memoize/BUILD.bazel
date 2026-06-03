@@ -9,8 +9,28 @@ exports_files([
 
 formatjs_library(
     name = "fast-memoize",
+    package_name = "@formatjs/fast-memoize",
     srcs = [
         "index.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "fork of fast-memoize and support esm",
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "fast-memoize",
+        "i18n",
+        "intl",
+        "memoize",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    side_effects = False,
+    type = "module",
+    version = "3.1.5",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
 )

@@ -1,5 +1,14 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:vitest.bzl", "vitest")
+
+generate_package_json(
+    package_name = "unplugin-integration-tests",
+    private = True,
+    deps = [
+        "//:node_modules/@formatjs/unplugin",
+    ],
+)
 
 # Manually-managed integration test: a single vitest() with glob'd srcs.
 # Auto-generated formatjs_library + formatjs_test would race with the

@@ -52,6 +52,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-datetimeformat",
+    package_name = "@formatjs/intl-datetimeformat",
     srcs = [
         "core.ts",
         "get_internal_slots.ts",
@@ -63,6 +64,9 @@ formatjs_library(
         "types.ts",
         "unpack.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.DateTimeFormat polyfill",
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         "add-all-tz.d.ts",
@@ -72,8 +76,31 @@ formatjs_library(
         ":locale-data",
         "polyfill.iife.js",
     ],
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "datetimeformat",
+        "formatjs",
+        "i18n",
+        "intl",
+        "polyfill",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "7.4.7",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+        "./add-all-tz.js": "./add-all-tz.js",
+        "./add-golden-tz.js": "./add-golden-tz.js",
+        "./locale-data/*": "./locale-data/*",
+        "./locale-data": "./locale-data",
+    },
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

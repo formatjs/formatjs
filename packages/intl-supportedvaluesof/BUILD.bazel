@@ -19,6 +19,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-supportedvaluesof",
+    package_name = "@formatjs/intl-supportedvaluesof",
     srcs = [
         "get-supported-calendars.ts",
         "get-supported-collations.ts",
@@ -32,10 +33,35 @@ formatjs_library(
         "polyfill-force.ts",
         "should-polyfill.ts",
     ],
+    author = "Michele Riva <ciao@micheleriva.it>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.supportedValuesOf polyfill",
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = ["polyfill.iife.js"],
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "ecma402",
+        "enumerator",
+        "formatjs",
+        "i18n",
+        "intl",
+        "react-intl",
+        "supportedvaluesof",
+        "tc39",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "2.3.7",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",

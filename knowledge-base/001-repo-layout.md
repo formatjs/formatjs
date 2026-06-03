@@ -73,34 +73,37 @@ See `knowledge-base/011-generated-packages.md` for full architecture and `knowle
 | buildifier | Bazel files            | Built-in                    |
 | rustfmt    | Rust files             | Built-in                    |
 | commitlint | Commit messages        | `.commitlintrc.mjs`         |
-| syncpack   | Dependency versions    | `.syncpackrc.json`          |
+
+Generated package manifest verification reads dependency names from Bazel deps,
+uses root `package.json` ranges by default, and allows package-local BUILD
+rules to pass explicit version overrides. Package-local manifests remain checked
+in during the transition and are compared against Bazel-generated outputs.
 
 ## Git Hooks (lefthook)
 
 Pre-commit hooks run sequentially:
 
 1. `format-rust` — rustfmt on staged .rs files
-2. `format-package-json` — syncpack fix + format
-3. `format-oxfmt` — oxfmt on staged files
-4. `format-starlark` — buildifier on BUILD/bzl files
-5. `lint-staged` — oxlint --fix
-6. `lint-ast-grep` — ast-grep scan on staged .ts/.tsx files
-7. `gazelle` — regenerate BUILD files
-8. `bazel-lock-regen` — bazel mod deps
+2. `format-oxfmt` — oxfmt on staged files
+3. `format-starlark` — buildifier on BUILD/bzl files
+4. `lint-staged` — oxlint --fix
+5. `lint-ast-grep` — ast-grep scan on staged .ts/.tsx files
+6. `gazelle` — regenerate BUILD files
+7. `bazel-lock-regen` — bazel mod deps
 
 Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 ## CI/CD (GitHub Actions)
 
-| Workflow               | Trigger               | What it does                             |
-| ---------------------- | --------------------- | ---------------------------------------- |
-| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS     |
+| Workflow               | Trigger               | What it does                                                |
+| ---------------------- | --------------------- | ----------------------------------------------------------- |
+| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
 | `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
-| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing |
-| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC |
-| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts     |
-| `website.yml`          | Manual/push           | Deploy docs site                         |
-| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint       |
+| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
+| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
+| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts                        |
+| `website.yml`          | Manual/push           | Deploy docs site                                            |
+| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint                          |
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
@@ -119,7 +122,7 @@ standalone CLI artifacts before uploading assets and checksums to the
 
 ```bash
 pnpm install              # Install deps
-pnpm t                    # syncpack lint + oxlint + ast-grep scan + bazel test //...
+pnpm test                 # lefthook pre-commit --all-files + bazel test //...
 bazel build //...         # Build everything
 bazel test //packages/intl-localematcher:unit_test --test_output=all  # Test specific package
 bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench  # Rust benchmarks (must use -c opt)

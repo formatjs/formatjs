@@ -83,10 +83,9 @@ Important generated package targets:
 - Keep parser regexes hoisted to module-level constants for performance and to
   avoid recompiling expressions in hot loops.
 - `generate_package_file` actions must include runtime parser package inputs
-  such as `//packages/intl-collator:node_modules/fast-xml-parser` in `data`
-  when the generator imports a parser that imports that package. Adding the npm
-  package only to the `ts_binary(data = ...)` can pass locally but fail on Linux
-  action runfiles.
+  such as `//:node_modules/fast-xml-parser` in `data` when the generator imports
+  a parser that imports that package. Adding the npm package only to the
+  `ts_binary(data = ...)` can pass locally but fail on Linux action runfiles.
 
 ## Runtime Model
 

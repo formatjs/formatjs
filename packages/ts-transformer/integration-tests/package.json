@@ -1,8 +1,4 @@
 {
   "name": "integration-tests",
-  "private": true,
-  "devDependencies": {
-    "@formatjs/ts-transformer": "workspace:*",
-    "ts-jest": "^29"
-  }
+  "private": true
 }

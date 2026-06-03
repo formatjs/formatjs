@@ -43,9 +43,15 @@ patchedDependencies:
   unicode-match-property-ecmascript@2.0.0: patches/unicode-match-property-ecmascript@2.0.0.patch
 
 allowBuilds:
+  '@parcel/watcher': false
+  '@swc/core': false
+  core-js: false
+  core-js-pure: false
   esbuild: true
   lefthook: true
+  lmdb: false
   msw: false
+  msgpackr-extract: false
 
 minimumReleaseAgeExclude:
   - codescythe

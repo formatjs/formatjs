@@ -6,14 +6,36 @@ npm_link_all_packages()
 
 formatjs_library(
     name = "vue-intl",
+    package_name = "vue-intl",
     srcs = [
         "index.ts",
         "injection-key.ts",
         "plugin.ts",
         "provider.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    description = "formatjs intl binding for vue",
+    homepage = "https://formatjs.github.io/docs/vue-intl",
+    keywords = [
+        "formatjs",
+        "i18n",
+        "internationalization",
+        "intl",
+        "vue",
+    ],
+    license = "MIT",
     npm_package_name = "vue-intl",
+    package_peer_deps = [
+        "//:node_modules/vue",
+    ],
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
+    version = "7.2.9",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl",

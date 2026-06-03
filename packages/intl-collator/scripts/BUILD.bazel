@@ -10,7 +10,7 @@ ts_compile(
     ],
     package_json = False,
     visibility = ["//packages/intl-collator:__pkg__"],
-    deps = ["//packages/intl-collator:node_modules/fast-xml-parser"],
+    deps = ["//:node_modules/fast-xml-parser"],
 )
 
 formatjs_test(
@@ -20,7 +20,7 @@ formatjs_test(
         "parse-uca.test.ts",
         ":parsers",
         "//:node_modules/vitest",
-        "//packages/intl-collator:node_modules/fast-xml-parser",
+        "//:node_modules/fast-xml-parser",
     ],
     no_copy_to_bin = ["//:package.json"],
 )
@@ -51,8 +51,8 @@ ts_binary(
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/fs-extra",
-        "//packages/intl-collator:node_modules/fast-xml-parser",
         "//:node_modules/minimist",
+        "//:node_modules/fast-xml-parser",
     ],
     entry_point = "generate-locale-data.ts",
     visibility = [
@@ -68,8 +68,8 @@ ts_binary(
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/fs-extra",
-        "//packages/intl-collator:node_modules/fast-xml-parser",
         "//:node_modules/minimist",
+        "//:node_modules/fast-xml-parser",
     ],
     entry_point = "generate-tailoring-data.ts",
     visibility = [

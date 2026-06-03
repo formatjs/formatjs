@@ -194,8 +194,9 @@ For TypeScript scripts in `tools/` or `packages/*/scripts/`:
 ## Formatting, Hooks, And Commits
 
 Formatting and linting are enforced by lefthook, oxfmt, oxlint, ast-grep,
-buildifier, rustfmt, syncpack, and commitlint. `pnpm format` runs the pre-commit
-hook stack for all files.
+buildifier, rustfmt, and commitlint. Generated package manifest ordering and
+dependency ranges come from `tools/package_json_policy.bzl`. `pnpm format` runs
+the pre-commit hook stack for all files.
 
 Commit messages use Conventional Commits:
 

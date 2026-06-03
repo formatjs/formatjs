@@ -16,6 +16,7 @@ ENTRY_POINTS = [
 
 formatjs_library(
     name = "intl-durationformat",
+    package_name = "@formatjs/intl-durationformat",
     srcs = [
         "abstract/PartitionDurationFormatPattern.ts",
         "constants.ts",
@@ -27,9 +28,34 @@ formatjs_library(
         "should-polyfill.ts",
         "types.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.DurationFormat polyfill",
     entry_points = ENTRY_POINTS,
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "duration",
+        "durationformat",
+        "ecma402",
+        "formatjs",
+        "i18n",
+        "intl",
+        "react-intl",
+        "tc39",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "0.10.13",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

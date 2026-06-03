@@ -1,10 +1,20 @@
 {
   "name": "eslint-plugin-formatjs",
-  "description": "ESLint plugin for formatjs",
   "version": "6.4.13",
+  "description": "ESLint plugin for formatjs",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "formatjs",
+    "i18n"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "MIT",
   "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
   "type": "module",
+  "main": "index.js",
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
@@ -13,6 +23,7 @@
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
+    "@types/estree-jsx": "^1.0.5",
     "@types/picomatch": "^4.0.0",
     "@unicode/unicode-17.0.0": "^1.6.16",
     "magic-string": "^0.30.0",
@@ -20,15 +31,5 @@
   },
   "peerDependencies": {
     "eslint": "9 || 10"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "formatjs",
-    "i18n"
-  ],
-  "main": "index.js",
-  "repository": "formatjs/formatjs.git"
+  }
 }

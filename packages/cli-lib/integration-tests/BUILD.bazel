@@ -1,5 +1,12 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:test.bzl", "formatjs_test")
+
+generate_package_json(
+    package_name = "integration-tests",
+    private = True,
+    type = "module",
+)
 
 # Hand-rolled js_test that runs a one-off ESM smoke test.
 # gazelle:ts_enabled false

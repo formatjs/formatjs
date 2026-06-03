@@ -1,31 +1,7 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "description": "Intl.DateTimeFormat polyfill",
   "version": "7.4.7",
-  "license": "MIT",
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "type": "module",
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js",
-    "./polyfill.js": "./polyfill.js",
-    "./polyfill-force.js": "./polyfill-force.js",
-    "./should-polyfill.js": "./should-polyfill.js",
-    "./add-all-tz.js": "./add-all-tz.js",
-    "./add-golden-tz.js": "./add-golden-tz.js",
-    "./locale-data/*": "./locale-data/*",
-    "./locale-data": "./locale-data"
-  },
-  "dependencies": {
-    "@formatjs/bigdecimal": "workspace:*",
-    "@formatjs/intl-localematcher": "workspace:*"
-  },
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "workspace:*",
-    "@formatjs/intl-locale": "workspace:*"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "description": "Intl.DateTimeFormat polyfill",
   "keywords": [
     "datetimeformat",
     "formatjs",
@@ -33,5 +9,25 @@
     "intl",
     "polyfill"
   ],
-  "repository": "formatjs/formatjs.git"
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./add-all-tz.js": "./add-all-tz.js",
+    "./add-golden-tz.js": "./add-golden-tz.js",
+    "./locale-data": "./locale-data",
+    "./locale-data/*": "./locale-data/*",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/bigdecimal": "workspace:*",
+    "@formatjs/intl-localematcher": "workspace:*"
+  }
 }

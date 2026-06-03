@@ -101,9 +101,79 @@ PACKAGES_TO_DIST = [
 
 PACKAGE_DIRNAMES = [p.split("packages/")[1] for p in PACKAGES_TO_DIST]
 
+PACKAGE_JSON_PACKAGES = [
+    "//packages/babel-plugin-formatjs/integration-tests",
+    "//packages/babel-plugin-formatjs",
+    "//packages/bigdecimal",
+    "//packages/cli-lib/integration-tests",
+    "//packages/cli-lib",
+    "//packages/cli-native-darwin-arm64",
+    "//packages/cli-native-linux-arm64",
+    "//packages/cli-native-linux-x64",
+    "//packages/cli-native-win32-x64",
+    "//packages/cli/integration-tests",
+    "//packages/cli",
+    "//packages/ecma376",
+    "//packages/editor",
+    "//packages/eslint-plugin-formatjs/integration-tests",
+    "//packages/eslint-plugin-formatjs",
+    "//packages/fast-memoize",
+    "//packages/icu-messageformat-parser/benchmark",
+    "//packages/icu-messageformat-parser/integration-tests",
+    "//packages/icu-messageformat-parser",
+    "//packages/icu-skeleton-parser",
+    "//packages/intl-collator",
+    "//packages/intl-datetimeformat",
+    "//packages/intl-displaynames",
+    "//packages/intl-durationformat/benchmark",
+    "//packages/intl-durationformat",
+    "//packages/intl-getcanonicallocales",
+    "//packages/intl-listformat",
+    "//packages/intl-locale",
+    "//packages/intl-localematcher/benchmark",
+    "//packages/intl-localematcher",
+    "//packages/intl-messageformat",
+    "//packages/intl-numberformat/benchmark",
+    "//packages/intl-numberformat",
+    "//packages/intl-pluralrules",
+    "//packages/intl-relativetimeformat",
+    "//packages/intl-segmenter",
+    "//packages/intl-supportedvaluesof",
+    "//packages/intl",
+    "//packages/react-intl/example-sandboxes/rescripts",
+    "//packages/react-intl/example-sandboxes/strict-locale-type",
+    "//packages/react-intl/example-sandboxes/strict-message-types",
+    "//packages/react-intl/examples",
+    "//packages/react-intl/integration-tests",
+    "//packages/react-intl",
+    "//packages/svelte-intl",
+    "//packages/ts-transformer/integration-tests",
+    "//packages/ts-transformer",
+    "//packages/unplugin/integration-tests",
+    "//packages/unplugin",
+    "//packages/utils",
+    "//packages/vue-intl",
+]
+
 alias(
     name = "generate_package_tsconfigs",
     actual = "//tools:generate-package-tsconfigs",
+)
+
+write_source_files(
+    name = "package_json_sync",
+    additional_update_targets = [
+        "%s:package_json_sync" % package
+        for package in PACKAGE_JSON_PACKAGES
+    ],
+)
+
+test_suite(
+    name = "generated_package_json_tests",
+    tests = [
+        "%s:package_json_sync_tests" % package
+        for package in PACKAGE_JSON_PACKAGES
+    ],
 )
 
 # pnpm_bin.pnpm(

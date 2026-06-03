@@ -11,6 +11,7 @@ PACKAGE_NAME = "cli-lib"
 
 formatjs_library(
     name = "cli-lib",
+    package_name = "@formatjs/cli-lib",
     srcs = [
         "cli.ts",
         "compile.ts",
@@ -38,8 +39,84 @@ formatjs_library(
         "verify/index.ts",
         "vue_extractor.ts",
     ],
+    author = "Linjie Ding <linjie@airtable.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Lib for CLI for formatjs.",
+    engines = {
+        "node": ">= 20.12.0",
+    },
+    homepage = "https://github.com/formatjs/formatjs",
+    keywords = [
+        "cli",
+        "format",
+        "formatjs",
+        "formatting",
+        "globalization",
+        "i18n",
+        "internationalization",
+        "intl",
+        "locale",
+        "localization",
+        "react",
+        "react-intl",
+        "reactjs",
+        "translate",
+        "translation",
+    ],
+    license = "MIT",
+    main = "index.js",
+    package_dependency_version_overrides = {
+        "@glimmer/syntax": "^0.84.3 || ^0.95.0",
+        "typescript": "^5.6 || 6",
+    },
+    package_optional_deps = [
+        "//:node_modules/@formatjs/cli-native-darwin-arm64",
+        "//:node_modules/@formatjs/cli-native-linux-arm64",
+        "//:node_modules/@formatjs/cli-native-linux-x64",
+        "//:node_modules/@formatjs/cli-native-win32-x64",
+    ],
+    package_peer_deps = [
+        "//:node_modules/@glimmer/syntax",
+        "//:node_modules/@vue/compiler-core",
+        "//:node_modules/content-tag",
+        "//:node_modules/svelte",
+        "//:node_modules/vue",
+    ],
+    package_types = "index.d.ts",
+    peer_dependencies_meta = {
+        "vue": {
+            "optional": True,
+        },
+        "@vue/compiler-core": {
+            "optional": True,
+        },
+        "@glimmer/env": {
+            "optional": True,
+        },
+        "@glimmer/reference": {
+            "optional": True,
+        },
+        "@glimmer/syntax": {
+            "optional": True,
+        },
+        "@glimmer/validator": {
+            "optional": True,
+        },
+        "content-tag": {
+            "optional": True,
+        },
+        "svelte": {
+            "optional": True,
+        },
+    },
+    repository = "formatjs/formatjs.git",
     tsconfig_types = ["node"],
+    type = "module",
+    version = "8.7.5",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+    },
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
         "//:node_modules/@formatjs/icu-messageformat-parser",

@@ -1,30 +1,7 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "description": "Formats JavaScript dates to relative time strings.",
   "version": "12.3.9",
-  "license": "MIT",
-  "author": "Long Ho <holevietlong@gmail.com>",
-  "type": "module",
-  "types": "index.d.ts",
-  "exports": {
-    ".": "./index.js",
-    "./polyfill.js": "./polyfill.js",
-    "./polyfill-force.js": "./polyfill-force.js",
-    "./should-polyfill.js": "./should-polyfill.js",
-    "./locale-data/*": "./locale-data/*",
-    "./locale-data": "./locale-data"
-  },
-  "dependencies": {
-    "@formatjs/intl-localematcher": "workspace:*"
-  },
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "workspace:*",
-    "@formatjs/intl-locale": "workspace:*",
-    "@formatjs/intl-pluralrules": "workspace:*"
-  },
-  "bugs": "https://github.com/formatjs/formatjs/issues",
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
-  "homepage": "https://github.com/formatjs/formatjs",
+  "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "date",
     "format",
@@ -34,5 +11,22 @@
     "relative",
     "time"
   ],
-  "repository": "git@github.com:formatjs/formatjs.git"
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "git@github.com:formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./locale-data": "./locale-data",
+    "./locale-data/*": "./locale-data/*",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "workspace:*"
+  }
 }

@@ -16,6 +16,7 @@ exports_files(["tests/collator-conformance.tsv"])
 
 formatjs_library(
     name = "intl-collator",
+    package_name = "@formatjs/intl-collator",
     srcs = [
         "compare.ts",
         "core.ts",
@@ -26,9 +27,33 @@ formatjs_library(
         "should-polyfill.ts",
         "types.ts",
     ],
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    description = "Intl.Collator polyfill",
     entry_points = ENTRY_POINTS,
+    homepage = "https://github.com/formatjs/formatjs#readme",
+    keywords = [
+        "collator",
+        "ecma402",
+        "formatjs",
+        "i18n",
+        "intl",
+        "react-intl",
+        "tc39",
+    ],
+    license = "MIT",
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    type = "module",
     types = True,
+    version = "0.2.3",
     visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.collation",
