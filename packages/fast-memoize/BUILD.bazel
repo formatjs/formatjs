@@ -24,7 +24,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     side_effects = False,
     type = "module",
-    version = "3.1.5",  # x-release-please-version
+    version = "3.1.6",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
