@@ -7,7 +7,7 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:package_json.bzl", "formatjs_package_json", "generate_package_json")
+load("//tools:package_json.bzl", "formatjs_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "packages_tsconfig")
 
@@ -206,9 +206,8 @@ def formatjs_library(
         tsconfig: optional tsconfig dict override (defaults to packages_tsconfig())
         npm_package_name: npm package name for publishing (default "@formatjs/{dir_name}")
         package_name: optional package.json name field. If provided, package
-            metadata is generated from the package field attrs when no
-            checked-in source manifest exists; otherwise the generated manifest
-            is compared with the checked-in package.json.
+            metadata is generated from the package field attrs and consumed by
+            the package assembly targets.
         package_peer_deps: npm labels that should become peerDependencies.
         package_optional_deps: npm labels that should become optionalDependencies.
         package_dependency_version_overrides: package-name to version-range overrides.
@@ -252,85 +251,45 @@ def formatjs_library(
     npm_deps, project_references = _partition_deps(deps)
     all_deps = deps
     effective_tsconfig = _with_tsconfig_types(tsconfig or packages_tsconfig(), tsconfig_types)
-    source_package_json = native.glob(["package.json"], allow_empty = True)
-    has_source_package_json = bool(source_package_json)
-    generated_package_json = package_name != None
-    has_package_json = generated_package_json or has_source_package_json
-    package_json_label = "package.json" if has_source_package_json else ":package_json"
+    has_package_json = package_name != None
+    package_json_label = ":package_json"
 
     if package_name != None:
-        if has_source_package_json:
-            generate_package_json(
-                alias = alias,
-                author = author,
-                bin = bin,
-                browserslist = browserslist,
-                bugs = bugs,
-                contributors = contributors,
-                cpu = cpu,
-                description = description,
-                deps = deps,
-                engines = engines,
-                exports = exports,
-                files = files,
-                git_head = git_head,
-                homepage = homepage,
-                keywords = keywords,
-                libc = libc,
-                license = license,
-                main = main,
-                module = module,
-                optional_deps = package_optional_deps,
-                os = os,
-                package_name = package_name,
-                peer_dependencies_meta = peer_dependencies_meta,
-                peer_deps = package_peer_deps,
-                private = private,
-                repository = repository,
-                scripts = scripts,
-                side_effects = side_effects,
-                type = type,
-                types = package_types,
-                version = version,
-                dependency_version_overrides = package_dependency_version_overrides,
-            )
-        else:
-            formatjs_package_json(
-                alias = alias,
-                author = author,
-                bin = bin,
-                browserslist = browserslist,
-                bugs = bugs,
-                contributors = contributors,
-                cpu = cpu,
-                description = description,
-                deps = deps,
-                engines = engines,
-                exports = exports,
-                files = files,
-                git_head = git_head,
-                homepage = homepage,
-                keywords = keywords,
-                libc = libc,
-                license = license,
-                main = main,
-                module = module,
-                optional_deps = package_optional_deps,
-                os = os,
-                package_name = package_name,
-                peer_dependencies_meta = peer_dependencies_meta,
-                peer_deps = package_peer_deps,
-                private = private,
-                repository = repository,
-                scripts = scripts,
-                side_effects = side_effects,
-                type = type,
-                types = package_types,
-                version = version,
-                dependency_version_overrides = package_dependency_version_overrides,
-            )
-    elif has_source_package_json:
-        fail("formatjs_library() packages with package.json must pass package_name and package field attrs")
+        formatjs_package_json(
+            alias = alias,
+            author = author,
+            bin = bin,
+            browserslist = browserslist,
+            bugs = bugs,
+            contributors = contributors,
+            cpu = cpu,
+            description = description,
+            deps = deps,
+            engines = engines,
+            exports = exports,
+            files = files,
+            git_head = git_head,
+            homepage = homepage,
+            keywords = keywords,
+            libc = libc,
+            license = license,
+            main = main,
+            module = module,
+            optional_deps = package_optional_deps,
+            os = os,
+            package_name = package_name,
+            peer_dependencies_meta = peer_dependencies_meta,
+            peer_deps = package_peer_deps,
+            private = private,
+            repository = repository,
+            scripts = scripts,
+            side_effects = side_effects,
+            type = type,
+            types = package_types,
+            version = version,
+            visibility = ["//:__pkg__"],
+            dependency_version_overrides = package_dependency_version_overrides,
+        )
 
     copy_to_bin(
         name = "srcs",
@@ -375,7 +334,7 @@ def formatjs_library(
 
         js_library(
             name = lib_name,
-            srcs = [":%s-esm" % lib_name] + source_package_json,
+            srcs = [":%s-esm" % lib_name],
             visibility = visibility,
         )
 
@@ -401,7 +360,7 @@ def formatjs_library(
             deps = all_deps,
         )
 
-    # Auto-generate npm packaging if package.json exists
+    # Auto-generate npm packaging when package metadata is declared.
     if has_package_json:
         # Compute external packages for rolldown (only node_modules deps are externalized).
         # Exclude @formatjs_generated — generated data is bundled inline, not externalized.

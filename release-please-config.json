@@ -11,106 +11,344 @@
   "exclude-paths": ["**/tests/**", "**/*.md"],
   "packages": {
     "packages/babel-plugin-formatjs": {
-      "component": "babel-plugin-formatjs"
+      "component": "babel-plugin-formatjs",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/babel-plugin-formatjs/BUILD.bazel"
+        }
+      ],
+      "package-name": "babel-plugin-formatjs"
     },
     "packages/bigdecimal": {
-      "component": "@formatjs/bigdecimal"
+      "component": "@formatjs/bigdecimal",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/bigdecimal/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/bigdecimal"
     },
     "packages/cli-lib": {
-      "component": "@formatjs/cli-lib"
+      "component": "@formatjs/cli-lib",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/cli-lib/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-lib"
     },
     "packages/cli-native-darwin-arm64": {
-      "component": "@formatjs/cli-native-darwin-arm64"
+      "component": "@formatjs/cli-native-darwin-arm64",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/cli-native-darwin-arm64/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-darwin-arm64"
     },
     "packages/cli-native-linux-arm64": {
-      "component": "@formatjs/cli-native-linux-arm64"
+      "component": "@formatjs/cli-native-linux-arm64",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/cli-native-linux-arm64/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-linux-arm64"
     },
     "packages/cli-native-linux-x64": {
-      "component": "@formatjs/cli-native-linux-x64"
+      "component": "@formatjs/cli-native-linux-x64",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/cli-native-linux-x64/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-linux-x64"
     },
     "packages/cli-native-win32-x64": {
-      "component": "@formatjs/cli-native-win32-x64"
+      "component": "@formatjs/cli-native-win32-x64",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/cli-native-win32-x64/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-win32-x64"
     },
     "packages/cli": {
-      "component": "@formatjs/cli"
+      "component": "@formatjs/cli",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/cli/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli"
     },
     "packages/ecma376": {
-      "component": "@formatjs/ecma376"
+      "component": "@formatjs/ecma376",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/ecma376/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/ecma376"
     },
     "packages/eslint-plugin-formatjs": {
-      "component": "eslint-plugin-formatjs"
+      "component": "eslint-plugin-formatjs",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/eslint-plugin-formatjs/BUILD.bazel"
+        }
+      ],
+      "package-name": "eslint-plugin-formatjs"
     },
     "packages/fast-memoize": {
-      "component": "@formatjs/fast-memoize"
+      "component": "@formatjs/fast-memoize",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/fast-memoize/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/fast-memoize"
     },
     "packages/icu-messageformat-parser": {
-      "component": "@formatjs/icu-messageformat-parser"
+      "component": "@formatjs/icu-messageformat-parser",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/icu-messageformat-parser/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/icu-messageformat-parser"
     },
     "packages/icu-skeleton-parser": {
-      "component": "@formatjs/icu-skeleton-parser"
+      "component": "@formatjs/icu-skeleton-parser",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/icu-skeleton-parser/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/icu-skeleton-parser"
     },
     "packages/intl-collator": {
-      "component": "@formatjs/intl-collator"
+      "component": "@formatjs/intl-collator",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-collator/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-collator"
     },
     "packages/intl-datetimeformat": {
-      "component": "@formatjs/intl-datetimeformat"
+      "component": "@formatjs/intl-datetimeformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-datetimeformat/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat"
     },
     "packages/intl-displaynames": {
-      "component": "@formatjs/intl-displaynames"
+      "component": "@formatjs/intl-displaynames",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-displaynames/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-displaynames"
     },
     "packages/intl-durationformat": {
-      "component": "@formatjs/intl-durationformat"
+      "component": "@formatjs/intl-durationformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-durationformat/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-durationformat"
     },
     "packages/intl-supportedvaluesof": {
-      "component": "@formatjs/intl-supportedvaluesof"
+      "component": "@formatjs/intl-supportedvaluesof",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-supportedvaluesof/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-supportedvaluesof"
     },
     "packages/intl-getcanonicallocales": {
-      "component": "@formatjs/intl-getcanonicallocales"
+      "component": "@formatjs/intl-getcanonicallocales",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-getcanonicallocales/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-getcanonicallocales"
     },
     "packages/intl-listformat": {
-      "component": "@formatjs/intl-listformat"
+      "component": "@formatjs/intl-listformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-listformat/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-listformat"
     },
     "packages/intl-locale": {
-      "component": "@formatjs/intl-locale"
+      "component": "@formatjs/intl-locale",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-locale/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-locale"
     },
     "packages/intl-localematcher": {
-      "component": "@formatjs/intl-localematcher"
+      "component": "@formatjs/intl-localematcher",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-localematcher/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-localematcher"
     },
     "packages/intl-messageformat": {
-      "component": "intl-messageformat"
+      "component": "intl-messageformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-messageformat/BUILD.bazel"
+        }
+      ],
+      "package-name": "intl-messageformat"
     },
     "packages/intl-numberformat": {
-      "component": "@formatjs/intl-numberformat"
+      "component": "@formatjs/intl-numberformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-numberformat/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-numberformat"
     },
     "packages/intl-pluralrules": {
-      "component": "@formatjs/intl-pluralrules"
+      "component": "@formatjs/intl-pluralrules",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-pluralrules/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-pluralrules"
     },
     "packages/intl-relativetimeformat": {
-      "component": "@formatjs/intl-relativetimeformat"
+      "component": "@formatjs/intl-relativetimeformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-relativetimeformat/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-relativetimeformat"
     },
     "packages/intl-segmenter": {
-      "component": "@formatjs/intl-segmenter"
+      "component": "@formatjs/intl-segmenter",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl-segmenter/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-segmenter"
     },
     "packages/intl": {
-      "component": "@formatjs/intl"
+      "component": "@formatjs/intl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/intl/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl"
     },
     "packages/react-intl": {
-      "component": "react-intl"
+      "component": "react-intl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/react-intl/BUILD.bazel"
+        }
+      ],
+      "package-name": "react-intl"
     },
     "packages/svelte-intl": {
-      "component": "@formatjs/svelte-intl"
+      "component": "@formatjs/svelte-intl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/svelte-intl/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/svelte-intl"
     },
     "packages/ts-transformer": {
-      "component": "@formatjs/ts-transformer"
+      "component": "@formatjs/ts-transformer",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/ts-transformer/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/ts-transformer"
     },
     "packages/unplugin": {
-      "component": "@formatjs/unplugin"
+      "component": "@formatjs/unplugin",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/unplugin/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/unplugin"
     },
     "packages/utils": {
-      "component": "@formatjs/utils"
+      "component": "@formatjs/utils",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/utils/BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/utils"
     },
     "packages/vue-intl": {
-      "component": "vue-intl"
+      "component": "vue-intl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packages/vue-intl/BUILD.bazel"
+        }
+      ],
+      "package-name": "vue-intl"
     },
     "crates/icu_skeleton_parser": {
       "release-type": "rust",

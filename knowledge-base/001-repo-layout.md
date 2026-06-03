@@ -76,8 +76,9 @@ See `knowledge-base/011-generated-packages.md` for full architecture and `knowle
 
 Generated package manifest verification reads dependency names from Bazel deps,
 uses root `package.json` ranges by default, and allows package-local BUILD
-rules to pass explicit version overrides. Package-local manifests remain checked
-in during the transition and are compared against Bazel-generated outputs.
+rules to pass explicit version overrides. Package-local manifests are generated
+into Bazel outputs, and `//:dist_package_json_test` verifies that `:dist`
+contains the generated manifests.
 
 ## Git Hooks (lefthook)
 

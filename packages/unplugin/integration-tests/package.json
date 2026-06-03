@@ -1,7 +1,0 @@
-{
-  "name": "unplugin-integration-tests",
-  "private": true,
-  "dependencies": {
-    "@formatjs/unplugin": "workspace:*"
-  }
-}

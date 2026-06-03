@@ -21,9 +21,16 @@ copy_to_bin(
     visibility = ["//visibility:public"],
 )
 
+copy_to_bin(
+    name = "check_dist_package_json",
+    srcs = ["check_dist_package_json.ts"],
+    visibility = ["//visibility:public"],
+)
+
 vitest(
     name = "unit_test",
     srcs = [
+        "check_dist_package_json.ts",
         "check_package_exports.test.ts",
         "check_package_exports.ts",
         "generate-package-json.test.ts",
@@ -31,20 +38,22 @@ vitest(
     ],
     deps = [
         "//:node_modules/@types/minimist",
+        "//:node_modules/@types/semver",
         "//:node_modules/minimist",
+        "//:node_modules/semver",
     ],
 )
 
 formatjs_package_json(
     name = "package_json_fixture",
-    out = "package-json-fixture/package.json",
     package_name = "@formatjs/package-json-fixture",
-    version = "0.0.0",
-    type = "module",
+    out = "package-json-fixture/package.json",
     peer_deps = [
         "//:node_modules/react",
     ],
     tags = ["manual"],
+    type = "module",
+    version = "0.0.0",
     deps = [
         "//:node_modules/minimist",
         "//packages/ecma402-abstract",

@@ -65,9 +65,9 @@ describe('generatePackageJson', () => {
           fields: {
             name: 'react-app-rewired',
           },
-          dependencies: ['babel-plugin-formatjs', 'react'],
+          dependencies: ['minimist', 'react'],
           dependencyVersionOverrides: {
-            'babel-plugin-formatjs': '9.0.1',
+            minimist: '^1.0.0',
           },
         },
         rootPackageJson
@@ -75,10 +75,29 @@ describe('generatePackageJson', () => {
     ).toEqual({
       name: 'react-app-rewired',
       dependencies: {
-        'babel-plugin-formatjs': '9.0.1',
+        minimist: '^1.0.0',
         react: '19',
       },
     })
+  })
+
+  it('rejects dependency version overrides for workspace dependencies', () => {
+    expect(() =>
+      generatePackageJson(
+        {
+          fields: {
+            name: '@formatjs/example',
+          },
+          dependencies: ['babel-plugin-formatjs'],
+          dependencyVersionOverrides: {
+            'babel-plugin-formatjs': '^9.0.0',
+          },
+        },
+        rootPackageJson
+      )
+    ).toThrow(
+      'dependencyVersionOverrides must not override workspace dependency version(s): babel-plugin-formatjs'
+    )
   })
 
   it('rejects package-local devDependencies', () => {

@@ -127,7 +127,7 @@
   },
   "unresolvedImports": {
     "mode": "report",
-    "ignore": ["@formatjs_generated/**"],
+    "ignore": ["@formatjs_generated/**", "./package.json"],
   },
   "ignoreExportsUsedInFile": true,
 }

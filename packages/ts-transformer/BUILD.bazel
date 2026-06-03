@@ -4,10 +4,6 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-exports_files([
-    "package.json",
-])
-
 # Export test fixtures for use by other packages (e.g., Rust CLI tests)
 filegroup(
     name = "test_fixtures",
@@ -66,7 +62,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     tsconfig_types = ["node"],
     type = "module",
-    version = "4.4.11",
+    version = "4.4.11",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

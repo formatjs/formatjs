@@ -18,7 +18,7 @@ pre-commit:
       stage_fixed: true
     format-oxfmt:
       glob: '**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,vue,html,mjml,css,scss,less,md,mdx,graphql,gql,yaml,yml,toml,json,jsonc,json5}'
-      run: pnpm oxfmt {staged_files}
+      run: JS_BINARY__CHDIR="$PWD" bazel run //:oxfmt -- {staged_files}
       stage_fixed: true
       exclude:
         - '**/locale-data/**'
@@ -33,7 +33,7 @@ pre-commit:
       stage_fixed: true
     lint-staged:
       glob: '**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}'
-      run: pnpm oxlint --config .oxlintrc.json --fix {staged_files}
+      run: JS_BINARY__CHDIR="$PWD" bazel run //:oxlint -- --config .oxlintrc.json --fix {staged_files}
       stage_fixed: true
     lint-ast-grep:
       glob: '**/*.{ts,tsx}'
@@ -43,9 +43,17 @@ pre-commit:
         - '**/*.{ts,tsx}'
         - 'codescythe.jsonc'
         - 'package.json'
-      run: pnpm codescythe --directory . --config codescythe.jsonc
+      run: JS_BINARY__CHDIR="$PWD" bazel run //:codescythe -- --directory . --config codescythe.jsonc
     gazelle:
       run: bazel run -c opt //:gazelle
+      stage_fixed: true
+    generated-dist-packages:
+      glob:
+        - 'packages/**/BUILD.bazel'
+        - 'tools/compile.bzl'
+        - 'tools/package.bzl'
+        - 'scripts/generate_dist_packages.sh'
+      run: bash scripts/generate_dist_packages.sh
       stage_fixed: true
     bazel-lock-regen:
       glob:
@@ -59,4 +67,4 @@ pre-commit:
 commit-msg:
   commands:
     commitlint:
-      run: pnpm commitlint --edit {1}
+      run: JS_BINARY__CHDIR="$PWD" bazel run //:commitlint -- --edit {1}

@@ -5,8 +5,6 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-exports_files(["package.json"])
-
 PACKAGE_NAME = "cli-lib"
 
 formatjs_library(
@@ -112,7 +110,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     tsconfig_types = ["node"],
     type = "module",
-    version = "8.7.5",
+    version = "8.7.5",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

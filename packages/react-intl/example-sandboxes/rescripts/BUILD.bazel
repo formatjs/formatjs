@@ -5,22 +5,22 @@ load("//tools:package_json.bzl", "generate_package_json")
 
 generate_package_json(
     package_name = "react-app-rewired",
-    description = "",
-    version = "1.0.0",
-    scripts = {
-        "build": "rescripts build",
-        "eject": "react-scripts eject",
-        "start": "rescripts start",
-        "test": "rescripts test --env=jsdom",
-    },
     browserslist = [
         ">0.2%",
         "not dead",
         "not ie <= 11",
         "not op_mini all",
     ],
+    description = "",
     keywords = [],
     main = "src/index.tsx",
+    scripts = {
+        "build": "rescripts build",
+        "eject": "react-scripts eject",
+        "start": "rescripts start",
+        "test": "rescripts test --env=jsdom",
+    },
+    version = "1.0.0",
     deps = [
         "//:node_modules/@rescripts/cli",
         "//:node_modules/@rescripts/rescript-env",
@@ -31,11 +31,6 @@ generate_package_json(
         "//:node_modules/react-intl",
         "//:node_modules/react-scripts",
     ],
-    dependency_version_overrides = {
-        "babel-plugin-formatjs": "9.0.1",
-        "eslint-plugin-formatjs": "2.10.4",
-        "react-intl": "5.10.16",
-    },
 )
 
 generate_tsconfig_json(

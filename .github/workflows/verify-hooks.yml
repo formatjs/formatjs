@@ -17,19 +17,10 @@ jobs:
         with:
           fetch-depth: 100
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 11.3.0
-
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
@@ -58,7 +49,7 @@ jobs:
               git add "$file"
             fi
           done
-          pnpm lefthook run pre-commit
+          JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run pre-commit
           if [ -n "$(git status --porcelain)" ]; then
             echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
             git diff
@@ -75,6 +66,6 @@ jobs:
             echo "Validating commit: $(git log -1 --oneline $commit)"
             msg_file=$(mktemp)
             git log -1 --format=%B $commit > "$msg_file"
-            pnpm lefthook run commit-msg "$msg_file"
+            JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run commit-msg "$msg_file"
             rm "$msg_file"
           done

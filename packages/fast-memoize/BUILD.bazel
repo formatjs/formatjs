@@ -3,10 +3,6 @@ load("//tools:compile.bzl", "formatjs_library")
 
 npm_link_all_packages()
 
-exports_files([
-    "package.json",
-])
-
 formatjs_library(
     name = "fast-memoize",
     package_name = "@formatjs/fast-memoize",
@@ -28,7 +24,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     side_effects = False,
     type = "module",
-    version = "3.1.5",
+    version = "3.1.5",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

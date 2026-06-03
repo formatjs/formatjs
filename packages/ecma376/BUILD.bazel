@@ -1,10 +1,6 @@
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 
-exports_files([
-    "package.json",
-])
-
 SRC_DEPS = [
 ]
 
@@ -31,7 +27,7 @@ formatjs_library(
         "test": "echo \"Error: no test specified\" && exit 1",
     },
     type = "module",
-    version = "0.5.6",
+    version = "0.5.6",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

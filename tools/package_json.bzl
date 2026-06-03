@@ -1,6 +1,5 @@
 """Generate npm package.json files from Bazel dependency labels."""
 
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:package_json_policy.bzl", "PACKAGE_JSON_SORT_EXPORTS", "PACKAGE_JSON_SORT_FIRST")
 
@@ -18,7 +17,7 @@ _ROOT_VERSION_FIELDS = [
 ]
 
 _GENERATED_PACKAGE_PREFIX = "@formatjs_generated/"
-_ROOT_PACKAGE_JSON_SYNC_VISIBILITY = ["//:__pkg__"]
+_ROOT_PACKAGE_JSON_TEST_VISIBILITY = ["//:__pkg__"]
 
 _UNSET = "__FORMATJS_PACKAGE_JSON_UNSET__"
 
@@ -355,8 +354,8 @@ def generate_package_json(
         dependency_version_overrides = {},
         tags = [],
         visibility = None):
-    """Generate package JSON for root write_source_files verification."""
-    sync_visibility = visibility or _ROOT_PACKAGE_JSON_SYNC_VISIBILITY
+    """Generate package JSON for package-local output tree usage."""
+    package_json_visibility = visibility or _ROOT_PACKAGE_JSON_TEST_VISIBILITY
     formatjs_package_json(
         name = name,
         alias = alias,
@@ -381,7 +380,7 @@ def generate_package_json(
         module = module,
         optional_deps = optional_deps,
         os = os,
-        out = "generated_package.json",
+        out = "package.json",
         package_name = package_name,
         peer_deps = peer_deps,
         peer_dependencies_meta = peer_dependencies_meta,
@@ -393,14 +392,5 @@ def generate_package_json(
         type = type,
         types = types,
         version = version,
-        visibility = sync_visibility,
-    )
-    write_source_files(
-        name = "package_json_sync",
-        files = {
-            "package.json": ":%s" % name,
-        },
-        suggested_update_target = "//:package_json_sync",
-        tags = tags,
-        visibility = sync_visibility,
+        visibility = package_json_visibility,
     )

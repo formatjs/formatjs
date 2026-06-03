@@ -8,6 +8,7 @@ def formatjs_package(
         name,
         entry_points = ["index.ts"],
         npm_package_name = None,
+        package_json = ":package_json",
         extra_npm_srcs = [],
         allow_overwrites = False,
         **_kwargs):
@@ -28,6 +29,7 @@ def formatjs_package(
         name: package name (e.g. "fast-memoize"), used as js_library target name
         entry_points: list of .ts entry points (must match formatjs_library's entry_points)
         npm_package_name: npm package name for publishing (default "@formatjs/{name}")
+        package_json: generated package.json label.
         extra_npm_srcs: additional files for npm_package (iife bundles, locale-data, etc.)
         allow_overwrites: passed to npm_package (default False)
     """
@@ -41,7 +43,7 @@ def formatjs_package(
 
     js_library(
         name = name,
-        srcs = bundles + ["package.json"],
+        srcs = bundles + [package_json],
         visibility = ["//visibility:public"],
     )
 
@@ -54,7 +56,7 @@ def formatjs_package(
         srcs = [
             "LICENSE.md",
             "README.md",
-            "package.json",
+            package_json,
         ] + bundles + extra_npm_srcs,
         package = effective_npm_name,
         replace_prefixes = replace_prefixes,
@@ -69,6 +71,7 @@ def formatjs_package(
 
     package_json_test(
         name = "package_json_test",
+        package_json = package_json,
     )
 
     package_exports_test(
