@@ -43,6 +43,8 @@ const ROOT_VERSION_FIELDS = [
   'optionalDependencies',
 ] as const
 
+const WORKSPACE_VERSION = 'workspace:*'
+
 const REPOSITORY_SORT_FIRST = ['type', 'url', 'directory']
 
 function sortedUnique(values: string[] | undefined): string[] {
@@ -84,6 +86,10 @@ function dependencyVersion(
   metadata: PackageJsonMetadata,
   rootVersions: Map<string, string>
 ): string {
+  if (rootVersions.get(packageName) === WORKSPACE_VERSION) {
+    return WORKSPACE_VERSION
+  }
+
   const overrideVersion = metadata.dependencyVersionOverrides?.[packageName]
   if (overrideVersion) {
     return overrideVersion
@@ -103,7 +109,8 @@ function dependencyNameSet(metadata: PackageJsonMetadata): Set<string> {
 }
 
 function validateDependencyVersionOverrides(
-  metadata: PackageJsonMetadata
+  metadata: PackageJsonMetadata,
+  rootVersions: Map<string, string>
 ): void {
   const overrideNames = Object.keys(metadata.dependencyVersionOverrides ?? {})
   if (overrideNames.length === 0) {
@@ -115,7 +122,18 @@ function validateDependencyVersionOverrides(
     .filter(packageName => !dependencyNames.has(packageName))
     .sort()
   if (unused.length === 0) {
-    return
+    const workspaceOverrides = overrideNames
+      .filter(
+        packageName => rootVersions.get(packageName) === WORKSPACE_VERSION
+      )
+      .sort()
+    if (workspaceOverrides.length === 0) {
+      return
+    }
+
+    throw new Error(
+      `dependencyVersionOverrides must not override workspace dependency version(s): ${workspaceOverrides.join(', ')}`
+    )
   }
 
   throw new Error(
@@ -232,10 +250,10 @@ export function generatePackageJson(
       )
     }
   }
-  validateNoDevDependencies(metadata)
-  validateDependencyVersionOverrides(metadata)
 
   const rootVersions = rootVersionMap(rootPackageJson)
+  validateNoDevDependencies(metadata)
+  validateDependencyVersionOverrides(metadata, rootVersions)
   const result: JsonObject = {...metadata.fields}
 
   for (const field of DEPENDENCY_FIELDS) {

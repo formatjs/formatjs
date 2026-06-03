@@ -24,7 +24,7 @@ generate_package_json(
         "linux",
     ],
     repository = "formatjs/formatjs.git",
-    version = "1.1.1",
+    version = "1.1.1",  # x-release-please-version
     exports = {
         ".": "./formatjs_cli_napi.node",
     },
@@ -39,8 +39,8 @@ copy_file(
 npm_package(
     name = "pkg",
     srcs = [
-        "package.json",
         ":formatjs_cli_napi_node",
+        ":generated_package_json",
     ],
     package = "@formatjs/cli-native-linux-x64",
     visibility = ["//visibility:public"],

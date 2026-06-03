@@ -1,7 +1,0 @@
-{
-  "name": "integration-tests",
-  "private": true,
-  "dependencies": {
-    "babel-plugin-formatjs": "workspace:*"
-  }
-}

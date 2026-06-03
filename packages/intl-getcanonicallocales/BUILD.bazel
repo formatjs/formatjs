@@ -6,10 +6,6 @@ load("//tools:test.bzl", "formatjs_test")
 
 npm_link_all_packages()
 
-exports_files([
-    "package.json",
-])
-
 PACKAGE_NAME = "intl-getcanonicallocales"
 
 ENTRY_POINTS = [
@@ -52,7 +48,7 @@ formatjs_library(
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
     type = "module",
-    version = "3.2.9",
+    version = "3.2.9",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

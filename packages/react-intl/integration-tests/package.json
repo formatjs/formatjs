@@ -1,7 +1,0 @@
-{
-  "name": "integration-tests",
-  "private": true,
-  "dependencies": {
-    "react-intl": "workspace:*"
-  }
-}
