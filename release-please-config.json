@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "release-type": "node",
+  "release-type": "bazel",
   "include-component-in-tag": true,
   "include-v-in-tag": false,
   "include-v-in-release-name": false,
@@ -15,340 +15,374 @@
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/babel-plugin-formatjs/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "babel-plugin-formatjs"
+      "package-name": "babel-plugin-formatjs",
+      "version-file": "BUILD.bazel"
     },
     "packages/bigdecimal": {
       "component": "@formatjs/bigdecimal",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/bigdecimal/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/bigdecimal"
+      "package-name": "@formatjs/bigdecimal",
+      "version-file": "BUILD.bazel"
     },
     "packages/cli-lib": {
       "component": "@formatjs/cli-lib",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/cli-lib/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/cli-lib"
+      "package-name": "@formatjs/cli-lib",
+      "version-file": "BUILD.bazel"
     },
     "packages/cli-native-darwin-arm64": {
       "component": "@formatjs/cli-native-darwin-arm64",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/cli-native-darwin-arm64/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/cli-native-darwin-arm64"
+      "package-name": "@formatjs/cli-native-darwin-arm64",
+      "version-file": "BUILD.bazel"
     },
     "packages/cli-native-linux-arm64": {
       "component": "@formatjs/cli-native-linux-arm64",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/cli-native-linux-arm64/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/cli-native-linux-arm64"
+      "package-name": "@formatjs/cli-native-linux-arm64",
+      "version-file": "BUILD.bazel"
     },
     "packages/cli-native-linux-x64": {
       "component": "@formatjs/cli-native-linux-x64",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/cli-native-linux-x64/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/cli-native-linux-x64"
+      "package-name": "@formatjs/cli-native-linux-x64",
+      "version-file": "BUILD.bazel"
     },
     "packages/cli-native-win32-x64": {
       "component": "@formatjs/cli-native-win32-x64",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/cli-native-win32-x64/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/cli-native-win32-x64"
+      "package-name": "@formatjs/cli-native-win32-x64",
+      "version-file": "BUILD.bazel"
     },
     "packages/cli": {
       "component": "@formatjs/cli",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/cli/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/cli"
+      "package-name": "@formatjs/cli",
+      "version-file": "BUILD.bazel"
     },
     "packages/ecma376": {
       "component": "@formatjs/ecma376",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/ecma376/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/ecma376"
+      "package-name": "@formatjs/ecma376",
+      "version-file": "BUILD.bazel"
     },
     "packages/eslint-plugin-formatjs": {
       "component": "eslint-plugin-formatjs",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/eslint-plugin-formatjs/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "eslint-plugin-formatjs"
+      "package-name": "eslint-plugin-formatjs",
+      "version-file": "BUILD.bazel"
     },
     "packages/fast-memoize": {
       "component": "@formatjs/fast-memoize",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/fast-memoize/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/fast-memoize"
+      "package-name": "@formatjs/fast-memoize",
+      "version-file": "BUILD.bazel"
     },
     "packages/icu-messageformat-parser": {
       "component": "@formatjs/icu-messageformat-parser",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/icu-messageformat-parser/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/icu-messageformat-parser"
+      "package-name": "@formatjs/icu-messageformat-parser",
+      "version-file": "BUILD.bazel"
     },
     "packages/icu-skeleton-parser": {
       "component": "@formatjs/icu-skeleton-parser",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/icu-skeleton-parser/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/icu-skeleton-parser"
+      "package-name": "@formatjs/icu-skeleton-parser",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-collator": {
       "component": "@formatjs/intl-collator",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-collator/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-collator"
+      "package-name": "@formatjs/intl-collator",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-datetimeformat": {
       "component": "@formatjs/intl-datetimeformat",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-datetimeformat/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-datetimeformat"
+      "package-name": "@formatjs/intl-datetimeformat",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-displaynames": {
       "component": "@formatjs/intl-displaynames",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-displaynames/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-displaynames"
+      "package-name": "@formatjs/intl-displaynames",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-durationformat": {
       "component": "@formatjs/intl-durationformat",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-durationformat/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-durationformat"
+      "package-name": "@formatjs/intl-durationformat",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-supportedvaluesof": {
       "component": "@formatjs/intl-supportedvaluesof",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-supportedvaluesof/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-supportedvaluesof"
+      "package-name": "@formatjs/intl-supportedvaluesof",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-getcanonicallocales": {
       "component": "@formatjs/intl-getcanonicallocales",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-getcanonicallocales/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-getcanonicallocales"
+      "package-name": "@formatjs/intl-getcanonicallocales",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-listformat": {
       "component": "@formatjs/intl-listformat",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-listformat/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-listformat"
+      "package-name": "@formatjs/intl-listformat",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-locale": {
       "component": "@formatjs/intl-locale",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-locale/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-locale"
+      "package-name": "@formatjs/intl-locale",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-localematcher": {
       "component": "@formatjs/intl-localematcher",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-localematcher/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-localematcher"
+      "package-name": "@formatjs/intl-localematcher",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-messageformat": {
       "component": "intl-messageformat",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-messageformat/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "intl-messageformat"
+      "package-name": "intl-messageformat",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-numberformat": {
       "component": "@formatjs/intl-numberformat",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-numberformat/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-numberformat"
+      "package-name": "@formatjs/intl-numberformat",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-pluralrules": {
       "component": "@formatjs/intl-pluralrules",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-pluralrules/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-pluralrules"
+      "package-name": "@formatjs/intl-pluralrules",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-relativetimeformat": {
       "component": "@formatjs/intl-relativetimeformat",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-relativetimeformat/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-relativetimeformat"
+      "package-name": "@formatjs/intl-relativetimeformat",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl-segmenter": {
       "component": "@formatjs/intl-segmenter",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl-segmenter/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl-segmenter"
+      "package-name": "@formatjs/intl-segmenter",
+      "version-file": "BUILD.bazel"
     },
     "packages/intl": {
       "component": "@formatjs/intl",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/intl/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/intl"
+      "package-name": "@formatjs/intl",
+      "version-file": "BUILD.bazel"
     },
     "packages/react-intl": {
       "component": "react-intl",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/react-intl/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "react-intl"
+      "package-name": "react-intl",
+      "version-file": "BUILD.bazel"
     },
     "packages/svelte-intl": {
       "component": "@formatjs/svelte-intl",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/svelte-intl/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/svelte-intl"
+      "package-name": "@formatjs/svelte-intl",
+      "version-file": "BUILD.bazel"
     },
     "packages/ts-transformer": {
       "component": "@formatjs/ts-transformer",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/ts-transformer/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/ts-transformer"
+      "package-name": "@formatjs/ts-transformer",
+      "version-file": "BUILD.bazel"
     },
     "packages/unplugin": {
       "component": "@formatjs/unplugin",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/unplugin/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/unplugin"
+      "package-name": "@formatjs/unplugin",
+      "version-file": "BUILD.bazel"
     },
     "packages/utils": {
       "component": "@formatjs/utils",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/utils/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "@formatjs/utils"
+      "package-name": "@formatjs/utils",
+      "version-file": "BUILD.bazel"
     },
     "packages/vue-intl": {
       "component": "vue-intl",
       "extra-files": [
         {
           "type": "generic",
-          "path": "packages/vue-intl/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ],
-      "package-name": "vue-intl"
+      "package-name": "vue-intl",
+      "version-file": "BUILD.bazel"
     },
     "crates/icu_skeleton_parser": {
       "release-type": "rust",
@@ -373,17 +407,12 @@
       "extra-files": [
         {
           "type": "generic",
-          "path": "crates/formatjs_cli/BUILD.bazel"
+          "path": "BUILD.bazel"
         }
       ]
     }
   },
   "plugins": [
-    {
-      "type": "node-workspace",
-      "merge": false,
-      "updatePeerDependencies": true
-    },
     {
       "type": "cargo-workspace",
       "merge": false
