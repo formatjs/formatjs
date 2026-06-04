@@ -37,3 +37,53 @@ test('svelte_extractor for bind attr', async function () {
   )
   expect(messages).toMatchSnapshot()
 })
+
+test('svelte_extractor for FormattedMessage components', async function () {
+  let messages: MessageDescriptor[] = []
+  parseFile(
+    `
+<script lang="ts">
+  import FormattedMessage from './FormattedMessage.svelte'
+  import CustomMessage from './CustomMessage.svelte'
+</script>
+
+<div class="Example">
+  <FormattedMessage
+    id="abc"
+    defaultMessage="Abcdefghi"
+    description="The beginning of the alphabet"
+  />
+  <CustomMessage
+    defaultMessage="Custom Svelte message"
+    description={{source: 'custom'}}
+  />
+  <IgnoredMessage
+    defaultMessage="Ignored Svelte message"
+    description="This should not be extracted"
+  />
+</div>
+`,
+    'formatted-message.svelte',
+    parseScript({
+      additionalComponentNames: ['CustomMessage'],
+      onMsgExtracted(_, msgs) {
+        messages = messages.concat(msgs)
+      },
+      overrideIdFn(id, defaultMessage) {
+        return id || `generated:${defaultMessage}`
+      },
+    })
+  )
+  expect(messages).toEqual([
+    {
+      id: 'abc',
+      defaultMessage: 'Abcdefghi',
+      description: 'The beginning of the alphabet',
+    },
+    {
+      id: 'generated:Custom Svelte message',
+      defaultMessage: 'Custom Svelte message',
+      description: {source: 'custom'},
+    },
+  ])
+})

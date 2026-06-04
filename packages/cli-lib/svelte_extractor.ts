@@ -9,6 +9,16 @@ interface SvelteNode {
   [key: string]: any
 }
 
+const MESSAGE_DESCRIPTOR_PROPS = new Set([
+  'id',
+  'defaultMessage',
+  'description',
+])
+
+function isValidIdentifier(name: string): boolean {
+  return /^[$A-Z_a-z][$\w]*$/.test(name)
+}
+
 function walkFragment(
   fragment: SvelteNode | null | undefined,
   source: string,
@@ -36,6 +46,89 @@ function extractExpression(
   } catch (e) {
     console.warn(
       `Failed to parse "${content}". Ignore this if content has no extractable message`,
+      e
+    )
+  }
+}
+
+function getStringAttributeValue(value: SvelteNode): string {
+  return value.data ?? value.raw ?? ''
+}
+
+function getAttributeExpression(
+  attr: SvelteNode,
+  source: string
+): string | undefined {
+  if (attr.value === true || attr.value == null) {
+    return undefined
+  }
+
+  if (!Array.isArray(attr.value)) {
+    if (attr.value.type === 'ExpressionTag') {
+      return source.slice(
+        attr.value.expression.start,
+        attr.value.expression.end
+      )
+    }
+    return undefined
+  }
+
+  if (!attr.value.length) {
+    return '""'
+  }
+
+  if (attr.value.length === 1) {
+    const [value] = attr.value
+    if (value.type === 'ExpressionTag') {
+      return source.slice(value.expression.start, value.expression.end)
+    }
+    return JSON.stringify(getStringAttributeValue(value))
+  }
+
+  let staticValue = ''
+  for (const value of attr.value) {
+    if (value.type === 'ExpressionTag') {
+      return undefined
+    }
+    staticValue += getStringAttributeValue(value)
+  }
+  return JSON.stringify(staticValue)
+}
+
+function extractMessageComponent(
+  node: SvelteNode,
+  source: string,
+  parseScriptFn: ScriptParseFn
+): void {
+  if (typeof node.name !== 'string' || !isValidIdentifier(node.name)) {
+    return
+  }
+
+  const props: string[] = []
+  for (const attr of node.attributes || []) {
+    if (
+      attr.type !== 'Attribute' ||
+      typeof attr.name !== 'string' ||
+      !MESSAGE_DESCRIPTOR_PROPS.has(attr.name)
+    ) {
+      continue
+    }
+
+    const expression = getAttributeExpression(attr, source)
+    if (expression != null) {
+      props.push(`${attr.name}: ${expression}`)
+    }
+  }
+
+  if (!props.length) {
+    return
+  }
+
+  try {
+    parseScriptFn(`${node.name}({${props.join(', ')}})`)
+  } catch (e) {
+    console.warn(
+      `Failed to parse ${node.name} message component. Ignore this if component has no extractable message`,
       e
     )
   }
@@ -111,6 +204,9 @@ function walkNode(
     case 'SlotElement':
     case 'SvelteSelf':
     case 'SvelteFragment':
+      if (node.type === 'Component') {
+        extractMessageComponent(node, source, parseScriptFn)
+      }
       // Process attributes
       if (node.attributes) {
         for (const attr of node.attributes) {
