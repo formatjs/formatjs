@@ -20,7 +20,7 @@ Created a conformance test suite to ensure the Rust CLI (`crates/formatjs_cli`) 
 - [BUILD.bazel](../BUILD.bazel) - Bazel test configuration
 - [README.md](./README.md) - Documentation and usage guide
 
-### Test Cases (22 total)
+### Test Cases (23 total)
 
 Located in [test_cases/](./test_cases/):
 
@@ -33,13 +33,14 @@ Located in [test_cases/](./test_cases/):
 - `18_optional_chaining.txt` - Optional chaining in code
 - `21_formatmessage_any_object.txt` - formatMessage on arbitrary member chains
 
-#### CLI Options & Flags (5 tests)
+#### CLI Options & Flags (6 tests)
 
 - `03_flatten_option.txt` - `--flatten` flag
 - `04_content_hash_id.txt` - `--id-interpolation-pattern` with content hashing
 - `05_additional_function_names.txt` - `--additional-function-names` flag
 - `06_extract_source_location.txt` - `--extract-source-location` flag
 - `17_pragma.txt` - `--pragma` flag for file filtering
+- `23_loader_utils_id_template.txt` - `--id-interpolation-pattern` with loader-utils file placeholders
 
 #### Output Formats (5 tests)
 

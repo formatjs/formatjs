@@ -1,0 +1,19 @@
+import {defineMessages} from 'react-intl';
+
+export const messages = defineMessages({
+  hello: {
+    defaultMessage: 'Hello'
+  }
+});
+---
+{
+  "command": "extract",
+  "args": ["--throws", "--id-interpolation-pattern", "[name].[ext]_[sha512:contenthash:base64:6]"],
+  "fileType": "ts"
+}
+---
+{
+  "input.ts_NhX4DJ": {
+    "defaultMessage": "Hello"
+  }
+}

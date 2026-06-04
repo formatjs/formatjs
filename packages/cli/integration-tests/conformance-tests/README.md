@@ -69,6 +69,7 @@ The test suite covers:
 - `05_additional_function_names.txt` - `--additional-function-names` flag
 - `06_extract_source_location.txt` - `--extract-source-location` flag
 - `17_pragma.txt` - `--pragma` flag for file filtering
+- `23_loader_utils_id_template.txt` - `--id-interpolation-pattern` with loader-utils file placeholders
 
 ### Output Formats
 

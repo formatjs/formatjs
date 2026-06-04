@@ -129,7 +129,11 @@ pub fn extract_to_string(
                         id
                     } else {
                         // Hash the (possibly flattened) message
-                        id_generator.generate(msg.default_message.as_deref(), &msg.description)?
+                        id_generator.generate(
+                            msg.default_message.as_deref(),
+                            &msg.description,
+                            Some(file_path.as_path()),
+                        )?
                     };
 
                     msg.id = Some(id.clone());
@@ -907,6 +911,50 @@ const greeting = defineMessage({
 
         // Verify message content
         assert_eq!(message["defaultMessage"].as_str().unwrap(), "Hello World");
+    }
+
+    #[test]
+    fn test_extract_with_loader_utils_id_interpolation_template() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("a.ts");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+import { defineMessages } from 'react-intl';
+
+export const messages = defineMessages({
+  hello: {
+    defaultMessage: 'Hello',
+  },
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[name].[ext]_[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+        assert!(json.get("a.ts_NhX4DJ").is_some());
+        assert_eq!(
+            json["a.ts_NhX4DJ"]["defaultMessage"].as_str().unwrap(),
+            "Hello"
+        );
     }
 
     #[test]
