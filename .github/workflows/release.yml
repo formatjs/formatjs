@@ -110,9 +110,82 @@ jobs:
           name: cli-native-win32-x64
           path: release/packages/cli-native-win32-x64
 
-      - name: Install Dependencies
+      - name: Prepare npm Package Manifests
         working-directory: release
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        run: |
+          node <<'JS'
+          const fs = require('node:fs')
+          const path = require('node:path')
+
+          const dependencyFields = [
+            'dependencies',
+            'optionalDependencies',
+            'peerDependencies',
+          ]
+          const packageRoot = path.join(process.cwd(), 'packages')
+          const packageJsonPaths = fs
+            .readdirSync(packageRoot, {withFileTypes: true})
+            .filter(entry => entry.isDirectory())
+            .map(entry => path.join(packageRoot, entry.name, 'package.json'))
+            .filter(file => fs.existsSync(file))
+          const manifests = packageJsonPaths.map(file => ({
+            file,
+            packageJson: JSON.parse(fs.readFileSync(file, 'utf8')),
+          }))
+          const packageVersions = new Map(
+            manifests.map(({packageJson}) => [
+              packageJson.name,
+              packageJson.version,
+            ])
+          )
+          let replacements = 0
+
+          for (const {file, packageJson} of manifests) {
+            let changed = false
+
+            for (const field of dependencyFields) {
+              const dependencies = packageJson[field]
+              if (
+                !dependencies ||
+                typeof dependencies !== 'object' ||
+                Array.isArray(dependencies)
+              ) {
+                continue
+              }
+
+              for (const [name, specifier] of Object.entries(dependencies)) {
+                if (
+                  typeof specifier !== 'string' ||
+                  !specifier.startsWith('workspace:')
+                ) {
+                  continue
+                }
+                if (specifier !== 'workspace:*') {
+                  throw new Error(
+                    `${file} uses unsupported workspace dependency range ${name}@${specifier}`
+                  )
+                }
+
+                const packageVersion = packageVersions.get(name)
+                if (!packageVersion) {
+                  throw new Error(
+                    `${file} references missing workspace package ${name}`
+                  )
+                }
+
+                dependencies[name] = packageVersion
+                replacements += 1
+                changed = true
+              }
+            }
+
+            if (changed) {
+              fs.writeFileSync(file, JSON.stringify(packageJson, null, 2) + '\n')
+            }
+          }
+
+          console.log(`Prepared ${replacements} workspace dependency version(s).`)
+          JS
 
       - name: Publish released npm packages
         working-directory: release
