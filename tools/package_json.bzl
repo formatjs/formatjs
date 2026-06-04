@@ -1,5 +1,6 @@
 """Generate npm package.json files from Bazel dependency labels."""
 
+load("//tools:dist_packages_registry.bzl", "RELEASE_PLEASE_NPM_PACKAGES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:package_json_policy.bzl", "PACKAGE_JSON_SORT_EXPORTS", "PACKAGE_JSON_SORT_FIRST")
 
@@ -20,6 +21,11 @@ _GENERATED_PACKAGE_PREFIX = "@formatjs_generated/"
 _ROOT_PACKAGE_JSON_TEST_VISIBILITY = ["//:__pkg__"]
 
 _UNSET = "__FORMATJS_PACKAGE_JSON_UNSET__"
+
+_WORKSPACE_PACKAGE_NAMES = {
+    package["name"]: True
+    for package in RELEASE_PLEASE_NPM_PACKAGES
+}
 
 def _set_field(fields, package_json_field, value):
     if value != _UNSET:
@@ -169,6 +175,19 @@ def _check_dependency_version_overrides(dependency_version_overrides, names_by_f
             ", ".join(sorted(dependency_owner.keys())),
         )
 
+def _workspace_dependency_names(names_by_field):
+    result = []
+    seen = {}
+    for names in names_by_field.values():
+        for package_name in names:
+            if package_name not in _WORKSPACE_PACKAGE_NAMES:
+                continue
+            if package_name in seen:
+                continue
+            seen[package_name] = True
+            result.append(package_name)
+    return sorted(result)
+
 def formatjs_package_json(
         name = "package_json",
         package_name = None,
@@ -280,6 +299,11 @@ def formatjs_package_json(
         "peerDependencies": peer_names,
         "optionalDependencies": optional_names,
     })
+    workspace_dependencies = _workspace_dependency_names({
+        "dependencies": dependency_names,
+        "peerDependencies": peer_names,
+        "optionalDependencies": optional_names,
+    })
 
     metadata_name = "%s_metadata" % name
     _metadata_file(
@@ -290,6 +314,7 @@ def formatjs_package_json(
             "peerDependencies": peer_names,
             "optionalDependencies": optional_names,
             "dependencyVersionOverrides": dependency_version_overrides,
+            "workspaceDependencies": workspace_dependencies,
             "sortExports": PACKAGE_JSON_SORT_EXPORTS,
             "sortFirst": PACKAGE_JSON_SORT_FIRST,
         }, indent = "  "),

@@ -26,6 +26,7 @@ export interface PackageJsonMetadata {
   peerDependencies?: string[]
   optionalDependencies?: string[]
   dependencyVersionOverrides?: Record<string, string>
+  workspaceDependencies?: string[]
   sortExports?: string[]
   sortFirst?: string[]
 }
@@ -84,9 +85,10 @@ function rootDependencyVersion(
 function dependencyVersion(
   packageName: string,
   metadata: PackageJsonMetadata,
-  rootVersions: Map<string, string>
+  rootVersions: Map<string, string>,
+  workspaceDependencies: Set<string>
 ): string {
-  if (rootVersions.get(packageName) === WORKSPACE_VERSION) {
+  if (workspaceDependencies.has(packageName)) {
     return WORKSPACE_VERSION
   }
 
@@ -110,7 +112,7 @@ function dependencyNameSet(metadata: PackageJsonMetadata): Set<string> {
 
 function validateDependencyVersionOverrides(
   metadata: PackageJsonMetadata,
-  rootVersions: Map<string, string>
+  workspaceDependencies: Set<string>
 ): void {
   const overrideNames = Object.keys(metadata.dependencyVersionOverrides ?? {})
   if (overrideNames.length === 0) {
@@ -123,9 +125,7 @@ function validateDependencyVersionOverrides(
     .sort()
   if (unused.length === 0) {
     const workspaceOverrides = overrideNames
-      .filter(
-        packageName => rootVersions.get(packageName) === WORKSPACE_VERSION
-      )
+      .filter(packageName => workspaceDependencies.has(packageName))
       .sort()
     if (workspaceOverrides.length === 0) {
       return
@@ -210,7 +210,8 @@ function orderExports(value: JsonValue, sortExports: string[]): JsonValue {
 function dependencyObject(
   packageNames: string[] | undefined,
   metadata: PackageJsonMetadata,
-  rootVersions: Map<string, string>
+  rootVersions: Map<string, string>,
+  workspaceDependencies: Set<string>
 ): Record<string, string> | undefined {
   const sorted = sortedUnique(packageNames)
   if (sorted.length === 0) {
@@ -219,7 +220,12 @@ function dependencyObject(
 
   const result: Record<string, string> = {}
   for (const packageName of sorted) {
-    result[packageName] = dependencyVersion(packageName, metadata, rootVersions)
+    result[packageName] = dependencyVersion(
+      packageName,
+      metadata,
+      rootVersions,
+      workspaceDependencies
+    )
   }
   return result
 }
@@ -252,12 +258,18 @@ export function generatePackageJson(
   }
 
   const rootVersions = rootVersionMap(rootPackageJson)
+  const workspaceDependencies = new Set(metadata.workspaceDependencies ?? [])
   validateNoDevDependencies(metadata)
-  validateDependencyVersionOverrides(metadata, rootVersions)
+  validateDependencyVersionOverrides(metadata, workspaceDependencies)
   const result: JsonObject = {...metadata.fields}
 
   for (const field of DEPENDENCY_FIELDS) {
-    const deps = dependencyObject(metadata[field], metadata, rootVersions)
+    const deps = dependencyObject(
+      metadata[field],
+      metadata,
+      rootVersions,
+      workspaceDependencies
+    )
     if (deps) {
       result[field] = deps
     }

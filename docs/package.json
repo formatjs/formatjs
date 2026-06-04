@@ -2,9 +2,5 @@
   "name": "docs",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
-  "devDependencies": {
-    "intl-messageformat": "workspace:*",
-    "react-intl": "workspace:*"
-  }
+  "type": "module"
 }
