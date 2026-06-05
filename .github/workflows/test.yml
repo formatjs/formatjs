@@ -131,10 +131,10 @@ jobs:
           docker run --rm \
             -v "$PWD:/repo" \
             -w /repo \
-            node:24-alpine \
+            rust:1.95-alpine \
             sh -euxc '
-              apk add --no-cache build-base cargo file rust
-              cargo build --release -p formatjs_cli_napi
+              apk add --no-cache build-base file
+              RUSTFLAGS="-C target-feature=-crt-static" cargo build --release -p formatjs_cli_napi
               cp target/release/libformatjs_cli_napi.so artifacts/${{ matrix.package }}/formatjs_cli_napi.node
               artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
               echo "$artifact_info"
