@@ -70,7 +70,9 @@ formatjs_library(
     package_optional_deps = [
         "//:node_modules/@formatjs/cli-native-darwin-arm64",
         "//:node_modules/@formatjs/cli-native-linux-arm64",
+        "//:node_modules/@formatjs/cli-native-linux-arm64-musl",
         "//:node_modules/@formatjs/cli-native-linux-x64",
+        "//:node_modules/@formatjs/cli-native-linux-x64-musl",
         "//:node_modules/@formatjs/cli-native-win32-x64",
     ],
     package_peer_deps = [
@@ -142,6 +144,7 @@ formatjs_test(
         "tests/unit/extract.test.ts",
         "tests/unit/gts_extractor.test.ts",
         "tests/unit/hbs_extractor.test.ts",
+        "tests/unit/native.test.ts",
         "tests/unit/pseudo_locale.test.ts",
         "tests/unit/svelte_extractor.test.ts",
         "tests/unit/unit.test.ts",

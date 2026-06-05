@@ -3,7 +3,9 @@ load(
     ":release_node.bzl",
     "release_node_darwin_arm64",
     "release_node_linux_arm64",
+    "release_node_linux_arm64_musl",
     "release_node_linux_x64",
+    "release_node_linux_x64_musl",
     "release_node_win32_x64",
 )
 
@@ -13,6 +15,13 @@ exports_files(
         "src/lib.rs",
     ],
     visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "linux_musl",
+    constraint_values = [
+        "@llvm//constraints/libc:musl",
+    ],
 )
 
 rust_shared_library(
@@ -28,6 +37,9 @@ rust_shared_library(
     rustc_flags = select({
         "@platforms//os:macos": [
             "-Clink-arg=-Wl,-undefined,dynamic_lookup",
+        ],
+        ":linux_musl": [
+            "-Ctarget-feature=-crt-static",
         ],
         "//conditions:default": [],
     }),
@@ -62,6 +74,22 @@ release_node_linux_arm64(
     visibility = ["//visibility:public"],
 )
 
+release_node_linux_x64_musl(
+    name = "release_node_linux_x64_musl",
+    srcs = [":formatjs_cli_napi"],
+    outs = ["formatjs_cli_napi_linux_x64_musl.node"],
+    cmd = "cp $< $@",
+    visibility = ["//visibility:public"],
+)
+
+release_node_linux_arm64_musl(
+    name = "release_node_linux_arm64_musl",
+    srcs = [":formatjs_cli_napi"],
+    outs = ["formatjs_cli_napi_linux_arm64_musl.node"],
+    cmd = "cp $< $@",
+    visibility = ["//visibility:public"],
+)
+
 release_node_win32_x64(
     name = "release_node_win32_x64",
     srcs = [":formatjs_cli_napi"],
@@ -88,7 +116,9 @@ filegroup(
     srcs = [
         ":release_node_darwin_arm64",
         ":release_node_linux_arm64",
+        ":release_node_linux_arm64_musl",
         ":release_node_linux_x64",
+        ":release_node_linux_x64_musl",
     ],
     visibility = ["//visibility:public"],
 )

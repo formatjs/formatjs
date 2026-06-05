@@ -39,7 +39,9 @@ generate_package_json(
     optional_deps = [
         "//:node_modules/@formatjs/cli-native-darwin-arm64",
         "//:node_modules/@formatjs/cli-native-linux-arm64",
+        "//:node_modules/@formatjs/cli-native-linux-arm64-musl",
         "//:node_modules/@formatjs/cli-native-linux-x64",
+        "//:node_modules/@formatjs/cli-native-linux-x64-musl",
         "//:node_modules/@formatjs/cli-native-win32-x64",
     ],
     peer_dependencies_meta = {

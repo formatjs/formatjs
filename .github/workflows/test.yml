@@ -95,6 +95,42 @@ jobs:
         working-directory: examples/${{ matrix.example }}
         run: bazel test //...
 
+  alpine_native_smoke:
+    name: Alpine Native Binding Smoke Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-alpine-native-smoke
+          repository-cache: true
+
+      - name: Build Linux x64 musl Native Package
+        run: |
+          build_args=(--remote_download_outputs=all)
+          cquery_args=()
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            build_args+=(--config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }})
+            cquery_args+=(--config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }})
+          fi
+
+          bazel build "${build_args[@]}" //packages/cli-native-linux-x64-musl:pkg
+          pkg_path=$(bazel cquery "${cquery_args[@]}" --output=files //packages/cli-native-linux-x64-musl:pkg | tail -n 1)
+          mkdir -p artifacts/cli-native-linux-x64-musl
+          cp -R "$pkg_path"/. artifacts/cli-native-linux-x64-musl/
+
+      - name: Smoke Test Package In Alpine
+        run: |
+          docker run --rm \
+            -v "$PWD/artifacts/cli-native-linux-x64-musl:/native:ro" \
+            node:24-alpine \
+            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
+
   windows_smoke:
     name: Windows Smoke Tests
     runs-on: windows-latest
