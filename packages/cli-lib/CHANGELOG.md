@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 8.7.7 (2026-06-05)
+
+## What's Changed
+* build: fix release-please multiline outputs by @longlho in https://github.com/formatjs/formatjs/pull/6726
+* chore(deps): update pnpm to v11.4.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6727
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260527.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6729
+* build: remove checked-in package intradeps by @longlho in https://github.com/formatjs/formatjs/pull/6728
+* fix(formatjs_cli): support loader-utils id templates by @longlho in https://github.com/formatjs/formatjs/pull/6731
+* fix(@formatjs/cli-lib): extract Svelte FormattedMessage components by @longlho in https://github.com/formatjs/formatjs/pull/6732
+* fix(deps): publish generated workspace packages by @longlho in https://github.com/formatjs/formatjs/pull/6734
+* chore(deps): isolate React Intl example workspaces by @longlho in https://github.com/formatjs/formatjs/pull/6737
+* fix: normalize Unicode whitespace for generated ids by @longlho in https://github.com/formatjs/formatjs/pull/6736
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.7.6...@formatjs/cli-lib@8.7.7
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/ts-transformer bumped to 4.4.13
+
 ## 8.7.6 (2026-06-03)
 
 ## What's Changed
