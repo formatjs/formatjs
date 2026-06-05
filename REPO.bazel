@@ -14,6 +14,7 @@ ignore_directories([
     "dist",
     "bazel-out",
     "target",
+    "examples",
     # All node_modules directories recursively using glob pattern
     "**/node_modules",
 ])

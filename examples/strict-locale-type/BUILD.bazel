@@ -1,0 +1,20 @@
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:typescript/package_json.bzl", typescript_bin = "bin")
+
+npm_link_all_packages()
+
+COMMON_DATA = [
+    "package.json",
+    "tsconfig.json",
+] + glob(["src/**/*"])
+
+typescript_bin.tsc_test(
+    name = "typecheck",
+    args = [
+        "--noEmit",
+        "--project",
+        "tsconfig.json",
+    ],
+    chdir = package_name(),
+    data = COMMON_DATA + [":node_modules"],
+)

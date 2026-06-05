@@ -35,7 +35,7 @@ BASE_TSCONFIG = {
         "jsx": "react-jsx",
     },
     "exclude": [
-        "packages/react-intl/example-sandboxes",
+        "examples",
         "**/*.test-d.ts",
     ],
 }

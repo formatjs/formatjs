@@ -1,0 +1,28 @@
+{
+  "name": "@formatjs-example/strict-message-types",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "parcel build src/index.html --dist-dir dist",
+    "start": "parcel src/index.html",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-intl": "10.1.12"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.15",
+    "@types/react-dom": "19.2.3",
+    "parcel": "2.16.4",
+    "typescript": "6.0.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "packageManager": "pnpm@11.4.0"
+}
