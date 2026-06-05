@@ -215,11 +215,16 @@ pub fn extract_base_dir(pattern: &str) -> PathBuf {
 
     let prefix = &pattern[..wildcard_pos];
 
-    // Find the last path separator in the prefix
-    if let Some(sep_pos) = prefix.rfind('/') {
-        let dir = &pattern[..sep_pos];
+    // Find the last path separator in the prefix. Windows accepts both `\` and
+    // `/`, and native callers pass real Windows paths through this helper.
+    if let Some(sep_pos) = prefix.rfind(|c| c == '/' || c == '\\') {
+        let dir = if sep_pos == 2 && prefix.as_bytes().get(1) == Some(&b':') {
+            &pattern[..=sep_pos]
+        } else {
+            &pattern[..sep_pos]
+        };
         if dir.is_empty() {
-            PathBuf::from("/")
+            PathBuf::from(&pattern[..=sep_pos])
         } else {
             PathBuf::from(dir)
         }
@@ -238,6 +243,13 @@ fn resolve_files_from_globs(
     let mut files = Vec::new();
 
     for glob_path in globs {
+        if glob_path.is_file() {
+            if !should_ignore(glob_path, ignore) && is_supported_file(glob_path) {
+                files.push(glob_path.to_path_buf());
+            }
+            continue;
+        }
+
         let glob_str = glob_path
             .to_str()
             .context("Invalid UTF-8 in glob pattern")?;
@@ -633,6 +645,15 @@ const msg = defineMessage({
         assert_eq!(extract_base_dir("src/**/*.{ts,tsx}"), PathBuf::from("src"));
         // Literal path (no wildcards) returns parent dir
         assert_eq!(extract_base_dir("src/app.ts"), PathBuf::from("src"));
+        assert_eq!(
+            extract_base_dir(r"src\components\*.tsx"),
+            PathBuf::from(r"src\components")
+        );
+        assert_eq!(
+            extract_base_dir(r"C:\repo\src\*.tsx"),
+            PathBuf::from(r"C:\repo\src")
+        );
+        assert_eq!(extract_base_dir(r"C:\*.tsx"), PathBuf::from(r"C:\"));
         // Question mark wildcard
         assert_eq!(extract_base_dir("src/?.ts"), PathBuf::from("src"));
         // Bracket wildcard
@@ -695,6 +716,21 @@ const msg = defineMessage({
         // Literal file paths (no glob characters) should also resolve
         let temp_dir = tempfile::tempdir().unwrap();
         let file = temp_dir.path().join("app.ts");
+        fs::write(&file, "// app").unwrap();
+
+        let globs = vec![file.clone()];
+        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
+
+        assert_eq!(files.len(), 1);
+        assert_eq!(files[0], file);
+    }
+
+    #[test]
+    fn test_resolve_files_literal_path_containing_glob_metacharacters() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let subdir = temp_dir.path().join("messages[prod]");
+        fs::create_dir_all(&subdir).unwrap();
+        let file = subdir.join("primary.tsx");
         fs::write(&file, "// app").unwrap();
 
         let globs = vec![file.clone()];

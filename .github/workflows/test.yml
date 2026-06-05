@@ -97,7 +97,6 @@ jobs:
 
   windows_smoke:
     name: Windows Smoke Tests
-    if: github.event_name != 'pull_request'
     runs-on: windows-latest
 
     steps:
@@ -124,6 +123,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
           $bazelWindowsFlags = @(
+            '--compilation_mode=opt',
             '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
             '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
           )
@@ -138,6 +138,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
           $bazelWindowsFlags = @(
+            '--compilation_mode=opt',
             '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
             '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
           )
@@ -182,5 +183,37 @@ jobs:
             throw new Error(output)
           }
           console.log(output)
+
+          const sourceSubdir = path.join(messageDir, 'src[prod]')
+          fs.mkdirSync(sourceSubdir)
+          const sourceFile = path.join(sourceSubdir, 'component.tsx')
+          fs.writeFileSync(
+            sourceFile,
+            `
+          import {defineMessage} from 'react-intl'
+
+          defineMessage({
+            id: 'native.extract',
+            defaultMessage: 'Native extract smoke',
+          })
+          `
+          )
+
+          if (!sourceFile.includes('\\')) {
+            throw new Error(`Expected a native Windows path, got ${sourceFile}`)
+          }
+
+          const extractedOutput = native.extract([sourceFile], {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            throws: true,
+          })
+          const extracted = JSON.parse(extractedOutput)
+          if (
+            extracted['native.extract']?.defaultMessage !==
+            'Native extract smoke'
+          ) {
+            throw new Error(extractedOutput)
+          }
+          console.log(extractedOutput)
           '@
           $script | node - $pkgPath

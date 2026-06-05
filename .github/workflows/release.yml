@@ -43,6 +43,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
           $bazelWindowsFlags = @(
+            '--compilation_mode=opt',
             '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
             '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
           )
@@ -97,9 +98,10 @@ jobs:
         run: |
           bazel build \
             --config=ci \
+            --compilation_mode=opt \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
             :dist
-          DIST_PATH=$(bazel cquery --config=ci --output=files :dist)
+          DIST_PATH=$(bazel cquery --config=ci --compilation_mode=opt --output=files :dist)
           echo "Distribution path: $DIST_PATH"
           cp -rf "$DIST_PATH" release/
           chmod -R +w release/
