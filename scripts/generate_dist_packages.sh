@@ -21,10 +21,14 @@ TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
       echo "No npm package name found for $target" >&2
       exit 1
     fi
+    release_deps=$(bazel query "deps($target)" 2>/dev/null \
+      | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
+      | sort -u \
+      | paste -sd, -)
 
     package_dir="${target#//packages/}"
     package_dir="${package_dir%:pkg}"
-    echo "$package_dir|$target|$package_json|$package_name"
+    echo "$package_dir|$target|$package_json|$package_name|$release_deps"
   done | sort)
 
 DIST_TARGETS=$(echo "$TARGETS" | grep -v '^cli-native-win32-x64|' || true)
@@ -41,8 +45,19 @@ emit_packages() {
 
   echo "$name = [" >> "$OUTPUT"
   if [ -n "$targets" ]; then
-    echo "$targets" | while IFS='|' read -r package_dir target package_json package_name; do
-      echo "    {\"dirname\": \"$package_dir\", \"name\": \"$package_name\", \"pkg\": \"$target\", \"package_json\": \"$package_json\"}," >> "$OUTPUT"
+    echo "$targets" | while IFS='|' read -r package_dir target package_json package_name release_deps; do
+      release_deps_field=""
+      if [ -n "$release_deps" ]; then
+        release_deps_field=", \"release_deps\": ["
+        sep=""
+        IFS=',' read -ra release_dep_array <<< "$release_deps"
+        for release_dep in "${release_dep_array[@]}"; do
+          release_deps_field+="$sep\"$release_dep\""
+          sep=", "
+        done
+        release_deps_field+="]"
+      fi
+      echo "    {\"dirname\": \"$package_dir\", \"name\": \"$package_name\", \"pkg\": \"$target\", \"package_json\": \"$package_json\"$release_deps_field}," >> "$OUTPUT"
     done
   fi
   echo "]" >> "$OUTPUT"

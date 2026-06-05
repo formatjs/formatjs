@@ -436,11 +436,11 @@
   },
   "plugins": [
     {
-      "type": "formatjs-bazel-workspace",
+      "type": "cargo-workspace",
       "merge": false
     },
     {
-      "type": "cargo-workspace",
+      "type": "formatjs-bazel-workspace",
       "merge": false
     }
   ]

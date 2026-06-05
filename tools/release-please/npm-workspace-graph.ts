@@ -16,6 +16,7 @@ export interface WorkspacePackage {
   dependencies: DependencyMap
   optionalDependencies: DependencyMap
   peerDependencies: DependencyMap
+  releaseDependencies: string[]
 }
 
 interface WorkspaceGraphFile {
@@ -50,6 +51,13 @@ function dependencyMap(value: unknown): DependencyMap {
   )
 }
 
+function stringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return []
+  }
+  return value.filter((entry): entry is string => typeof entry === 'string')
+}
+
 export function normalizePackage(pkg: unknown): WorkspacePackage {
   if (!pkg || typeof pkg !== 'object') {
     throw new Error('workspace package entry must be an object')
@@ -67,6 +75,7 @@ export function normalizePackage(pkg: unknown): WorkspacePackage {
     dependencies: dependencyMap(rawPackage.dependencies),
     optionalDependencies: dependencyMap(rawPackage.optionalDependencies),
     peerDependencies: dependencyMap(rawPackage.peerDependencies),
+    releaseDependencies: stringArray(rawPackage.releaseDependencies),
   }
 }
 
@@ -121,6 +130,19 @@ export function buildDependencyGraph(
   }
 
   return graph
+}
+
+export function packageNamesWithReleaseDependencies(
+  graph: DependencyGraph,
+  releasePaths: Set<string>
+): string[] {
+  const packageNames = []
+  for (const {value: pkg} of graph.values()) {
+    if (pkg.releaseDependencies.some(path => releasePaths.has(path))) {
+      packageNames.push(pkg.name)
+    }
+  }
+  return packageNames.sort()
 }
 
 function invertGraph(graph: DependencyGraph): DependencyGraph {
