@@ -2,11 +2,17 @@ import {createRequire} from 'module'
 
 const require = createRequire(import.meta.url)
 
-const NATIVE_PACKAGES: Record<string, string> = {
-  'darwin-arm64': '@formatjs/cli-native-darwin-arm64',
-  'linux-arm64': '@formatjs/cli-native-linux-arm64',
-  'linux-x64': '@formatjs/cli-native-linux-x64',
-  'win32-x64': '@formatjs/cli-native-win32-x64',
+const NATIVE_PACKAGES: Record<string, string[]> = {
+  'darwin-arm64': ['@formatjs/cli-native-darwin-arm64'],
+  'linux-arm64': [
+    '@formatjs/cli-native-linux-arm64',
+    '@formatjs/cli-native-linux-arm64-musl',
+  ],
+  'linux-x64': [
+    '@formatjs/cli-native-linux-x64',
+    '@formatjs/cli-native-linux-x64-musl',
+  ],
+  'win32-x64': ['@formatjs/cli-native-win32-x64'],
 }
 
 export interface NativeCompileOptions {
@@ -51,6 +57,28 @@ export interface NativeBinding {
 
 let nativeBinding: NativeBinding | null | undefined
 
+export function getInstalledNativePackageCandidates(
+  candidates: readonly string[],
+  canResolve = (candidate: string): boolean => {
+    try {
+      require.resolve(candidate)
+      return true
+    } catch {
+      return false
+    }
+  }
+): string[] {
+  return candidates.filter(canResolve)
+}
+
+export function getNativePackageCandidates(
+  platform: NodeJS.Platform = process.platform,
+  arch: string = process.arch
+): string[] {
+  const platformArch = `${platform}-${arch}`
+  return NATIVE_PACKAGES[platformArch] || []
+}
+
 export function loadNative(): NativeBinding {
   if (nativeBinding !== undefined) {
     if (nativeBinding) {
@@ -60,8 +88,15 @@ export function loadNative(): NativeBinding {
   }
 
   const overridePath = process.env.FORMATJS_CLI_LIB_NATIVE_PATH
-  const platformPackage = NATIVE_PACKAGES[`${process.platform}-${process.arch}`]
-  const candidates = [overridePath, platformPackage].filter(Boolean) as string[]
+  const packageCandidates = getNativePackageCandidates()
+  const installedPackageCandidates =
+    getInstalledNativePackageCandidates(packageCandidates)
+  const candidates = [
+    overridePath,
+    ...(installedPackageCandidates.length
+      ? installedPackageCandidates
+      : packageCandidates),
+  ].filter(Boolean) as string[]
   const loadErrors: string[] = []
 
   for (const candidate of candidates) {

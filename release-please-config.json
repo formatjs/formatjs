@@ -65,6 +65,17 @@
       "package-name": "@formatjs/cli-native-linux-arm64",
       "version-file": "BUILD.bazel"
     },
+    "packages/cli-native-linux-arm64-musl": {
+      "component": "@formatjs/cli-native-linux-arm64-musl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-linux-arm64-musl",
+      "version-file": "BUILD.bazel"
+    },
     "packages/cli-native-linux-x64": {
       "component": "@formatjs/cli-native-linux-x64",
       "extra-files": [
@@ -74,6 +85,17 @@
         }
       ],
       "package-name": "@formatjs/cli-native-linux-x64",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/cli-native-linux-x64-musl": {
+      "component": "@formatjs/cli-native-linux-x64-musl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-linux-x64-musl",
       "version-file": "BUILD.bazel"
     },
     "packages/cli-native-win32-x64": {

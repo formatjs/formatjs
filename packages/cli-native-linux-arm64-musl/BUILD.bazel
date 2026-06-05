@@ -1,0 +1,52 @@
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("//tools:index.bzl", "package_exports_test")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "@formatjs/cli-native-linux-arm64-musl",
+    author = "Long Ho <holevietlong@gmail.com>",
+    bugs = "https://github.com/formatjs/formatjs/issues",
+    cpu = [
+        "arm64",
+    ],
+    description = "Native FormatJS CLI binding for Linux arm64 musl.",
+    files = [
+        "formatjs_cli_napi.node",
+    ],
+    homepage = "https://github.com/formatjs/formatjs",
+    libc = [
+        "musl",
+    ],
+    license = "MIT",
+    main = "formatjs_cli_napi.node",
+    os = [
+        "linux",
+    ],
+    repository = "formatjs/formatjs.git",
+    version = "1.0.0",  # x-release-please-version
+    exports = {
+        ".": "./formatjs_cli_napi.node",
+    },
+)
+
+copy_file(
+    name = "formatjs_cli_napi_node",
+    src = "//crates/formatjs_cli_napi:release_node_linux_arm64_musl",
+    out = "formatjs_cli_napi.node",
+)
+
+npm_package(
+    name = "pkg",
+    srcs = [
+        ":formatjs_cli_napi_node",
+        ":generated_package_json",
+    ],
+    package = "@formatjs/cli-native-linux-arm64-musl",
+    visibility = ["//visibility:public"],
+)
+
+package_exports_test(
+    name = "package_exports_test",
+    pkg = ":pkg",
+)
