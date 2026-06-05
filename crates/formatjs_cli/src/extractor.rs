@@ -2,24 +2,16 @@ use anyhow::{Context, Result};
 use formatjs_icu_messageformat_parser::{
     Parser as IcuParser, ParserOptions, print_ast, try_hoist_selectors,
 };
-use once_cell::sync::Lazy;
 use oxc::ast_visit::{Visit, walk};
 use oxc_allocator::Allocator;
 use oxc_ast::ast::*;
 use oxc_data_structures::rope::{Rope, get_line_column};
 use oxc_parser::{Parser, ParserReturn};
 use oxc_span::SourceType;
-use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::Path;
-
-// Hoist regex for whitespace normalization to avoid recompilation
-// Matches TypeScript behavior: /\s+/gm
-// Only matches space, tab, newline, carriage return, form feed
-// Does NOT match non-breaking space (U+00A0) or other Unicode whitespace
-static WHITESPACE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"[ \t\n\r\f]+").unwrap());
 
 /// Message descriptor extracted from source code
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -42,9 +34,26 @@ pub struct MessageDescriptor {
 /// Normalize whitespace in a string by:
 /// - Replacing all whitespace sequences (newlines, tabs, multiple spaces) with single spaces
 /// - Trimming leading and trailing whitespace
-/// Matches TypeScript behavior: msg.defaultMessage.trim().replace(/\s+/gm, ' ')
+/// Matches TypeScript behavior: Unicode White_Space trim + collapse.
+/// This intentionally differs from JavaScript \s/String#trim for U+0085 and U+FEFF.
 fn normalize_whitespace(s: &str) -> String {
-    WHITESPACE_RE.replace_all(s.trim(), " ").to_string()
+    let trimmed = s.trim_matches(char::is_whitespace);
+    let mut normalized = String::with_capacity(trimmed.len());
+    let mut in_whitespace = false;
+
+    for ch in trimmed.chars() {
+        if ch.is_whitespace() {
+            if !in_whitespace {
+                normalized.push(' ');
+                in_whitespace = true;
+            }
+        } else {
+            normalized.push(ch);
+            in_whitespace = false;
+        }
+    }
+
+    normalized
 }
 
 /// Convert byte offset to (line, UTF-16 column) - both 1-indexed.
@@ -969,6 +978,22 @@ mod tests {
     }
 
     #[test]
+    fn test_unicode_whitespace_normalization() {
+        assert_eq!(
+            normalize_whitespace("\u{0009}A\u{0085}\u{2002}\u{2003}B\u{00a0}C\u{2028}D\u{3000}"),
+            "A B C D"
+        );
+    }
+
+    #[test]
+    fn test_format_characters_are_not_whitespace() {
+        assert_eq!(
+            normalize_whitespace("\u{feff}A\u{feff}B\u{feff}"),
+            "\u{feff}A\u{feff}B\u{feff}"
+        );
+    }
+
+    #[test]
     fn test_custom_component_names() {
         let source = r#"
             <CustomMessage id="custom" defaultMessage="Custom!" />
@@ -1652,10 +1677,10 @@ mod tests {
 
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0].id, Some("spacing".to_string()));
-        // \xa0 is a non-breaking space (U+00A0)
+        // \xa0 is a non-breaking space (U+00A0), which JavaScript /\s/ normalizes.
         assert_eq!(
             messages[0].default_message,
-            Some("foo\u{00a0}bar baz".to_string())
+            Some("foo bar baz".to_string())
         );
     }
 

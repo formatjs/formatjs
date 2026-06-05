@@ -3,7 +3,10 @@ import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
 import type {HookFilter} from 'unplugin'
 import MagicString from 'magic-string'
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
-import {interpolateName} from '@formatjs/ts-transformer'
+import {
+  interpolateName,
+  normalizeMessageWhitespace,
+} from '@formatjs/ts-transformer'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
@@ -245,7 +248,7 @@ export function transform(
 
     // Normalize whitespace on defaultMessage
     if (defaultMessage && !preserveWhitespace) {
-      defaultMessage = defaultMessage.trim().replace(/\s+/gm, ' ')
+      defaultMessage = normalizeMessageWhitespace(defaultMessage)
     }
 
     // Apply flatten transformation (hoist selectors + normalize ICU format via printAST)

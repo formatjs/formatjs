@@ -958,6 +958,48 @@ export const messages = defineMessages({
     }
 
     #[test]
+    fn test_extract_id_interpolation_normalizes_escaped_unicode_whitespace() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let test_file = temp_dir.path().join("Conversation.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let test_content = r#"
+intl.formatMessage({
+  defaultMessage: "🤖\u0085\u2002Conversations",
+});
+"#;
+        std::fs::write(&test_file, test_content).unwrap();
+
+        extract(
+            &[test_file],
+            None,
+            None,
+            Some(&output_file),
+            "[name].[ext]_[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+
+        let output_content = std::fs::read_to_string(&output_file).unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output_content).unwrap();
+        assert!(json.get("Conversation.tsx_yYmfIl").is_some());
+        assert_eq!(
+            json["Conversation.tsx_yYmfIl"]["defaultMessage"]
+                .as_str()
+                .unwrap(),
+            "🤖 Conversations"
+        );
+    }
+
+    #[test]
     fn test_extract_with_legacy_and_sha_id_interpolation_patterns() {
         let temp_dir = tempfile::tempdir().unwrap();
         let test_file = temp_dir.path().join("test.tsx");

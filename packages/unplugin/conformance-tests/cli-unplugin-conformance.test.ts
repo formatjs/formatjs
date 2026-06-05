@@ -124,6 +124,13 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     )
   })
 
+  test('escaped Unicode whitespace is normalized before ID generation', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: "🤖\\u0085\\u2002Conversations"})`,
+      'escaped-unicode-whitespace.tsx'
+    )
+  })
+
   test('apostrophe-escaped tag-like literals stay parseable after flattening', async () => {
     await assertConformance(
       `defineMessages({

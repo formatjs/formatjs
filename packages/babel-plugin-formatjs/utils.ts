@@ -2,7 +2,10 @@ import type * as t from '@babel/types'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
-import {interpolateName} from '@formatjs/ts-transformer'
+import {
+  interpolateName,
+  normalizeMessageWhitespace,
+} from '@formatjs/ts-transformer'
 
 import {type NodePath} from '@babel/core'
 import {
@@ -163,7 +166,7 @@ function getICUMessageValue(
   let message = getMessageDescriptorValue(messagePath, true)
 
   if (!preserveWhitespace) {
-    message = message.trim().replace(/\s+/gm, ' ')
+    message = normalizeMessageWhitespace(message)
   }
 
   try {

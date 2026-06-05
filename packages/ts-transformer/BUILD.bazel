@@ -22,6 +22,7 @@ formatjs_library(
         "console_utils.ts",
         "index.ts",
         "interpolate-name.ts",
+        "normalize-whitespace.ts",
         "transform.ts",
         "ts-jest-integration.ts",
         "types.ts",
@@ -107,6 +108,7 @@ formatjs_test(
         "tests/fixtures/typeAssertions.tsx",
         "tests/index.test.ts",
         "tests/interpolate-name.test.ts",
+        "tests/normalize-whitespace.test.ts",
     ],
     tsconfig_types = ["node"],
     deps = [
