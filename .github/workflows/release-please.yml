@@ -112,5 +112,6 @@ jobs:
           # Keep npm Trusted Publishing bound to release.yml by dispatching it
           # as the top-level workflow, not as a reusable workflow call.
           gh workflow run release.yml \
+            --repo "$GITHUB_REPOSITORY" \
             --ref "$GITHUB_REF_NAME" \
             --raw-field "npm_paths=$NPM_RELEASE_PATHS"
