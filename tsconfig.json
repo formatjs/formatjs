@@ -30,5 +30,5 @@
     "target": "ES2017",
     "verbatimModuleSyntax": true
   },
-  "exclude": ["packages/react-intl/example-sandboxes", "**/*.test-d.ts"]
+  "exclude": ["examples", "**/*.test-d.ts"]
 }

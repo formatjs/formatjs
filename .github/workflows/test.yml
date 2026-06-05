@@ -64,6 +64,37 @@ jobs:
           $BINARY_PATH --version
           $BINARY_PATH --help
 
+  examples:
+    name: Examples (${{ matrix.example }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - rescripts
+          - strict-locale-type
+          - strict-message-types
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-examples-${{ matrix.example }}
+          repository-cache: true
+
+      - name: Build Example
+        working-directory: examples/${{ matrix.example }}
+        run: bazel build //...
+
+      - name: Test Example
+        working-directory: examples/${{ matrix.example }}
+        run: bazel test //...
+
   windows_smoke:
     name: Windows Smoke Tests
     if: github.event_name != 'pull_request'

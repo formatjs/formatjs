@@ -1,0 +1,9 @@
+common --enable_bzlmod
+common --enable_platform_specific_config
+
+startup --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1
+
+build --enable_runfiles
+build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+build --sandbox_default_allow_network=false
+test --test_output=errors

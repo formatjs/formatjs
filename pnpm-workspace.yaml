@@ -11,8 +11,6 @@ packages:
 
 overrides:
   '@tailwindcss/vite>vite': $vite
-  '@rescripts/rescript-env@0.0.14>@rescripts/rescript-use-eslint-config': '0.0.11'
-  '@rescripts/rescript-env@0.0.14>@rescripts/rescript-use-tslint-config': '0.0.7'
 
 packageExtensions:
   '@vue/compiler-core':

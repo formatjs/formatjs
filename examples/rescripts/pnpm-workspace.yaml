@@ -1,0 +1,27 @@
+allowBuilds:
+  '@parcel/watcher': false
+  '@swc/core': false
+  core-js: false
+  core-js-pure: false
+  esbuild: true
+  lmdb: false
+  msgpackr-extract: false
+
+packageExtensions:
+  '@rescripts/rescript-use-babel-config':
+    dependencies:
+      ramda: ^0.26.1
+  '@rescripts/rescript-use-eslint-config':
+    dependencies:
+      ramda: ^0.26.1
+
+minimumReleaseAgeExclude:
+  - '@formatjs/fast-memoize@3.1.6'
+  - '@formatjs/icu-messageformat-parser@3.5.11'
+  - '@formatjs/icu-skeleton-parser@2.1.10'
+  - '@formatjs/intl@4.1.13'
+  - '@formatjs/ts-transformer@4.4.12'
+  - babel-plugin-formatjs@11.3.11
+  - eslint-plugin-formatjs@6.4.14
+  - intl-messageformat@11.2.8
+  - react-intl@10.1.12

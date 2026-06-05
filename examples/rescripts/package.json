@@ -1,0 +1,37 @@
+{
+  "name": "@formatjs-example/rescripts",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.tsx",
+  "scripts": {
+    "build": "rescripts build",
+    "eject": "react-scripts eject",
+    "start": "rescripts start",
+    "test": "rescripts test --env=jsdom"
+  },
+  "dependencies": {
+    "@rescripts/cli": "0.0.16",
+    "@rescripts/rescript-use-babel-config": "0.0.12",
+    "@rescripts/rescript-use-eslint-config": "0.0.11",
+    "babel-plugin-formatjs": "11.3.11",
+    "eslint-plugin-formatjs": "6.4.14",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-intl": "10.1.12",
+    "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.15",
+    "@types/react-dom": "19.2.3",
+    "babel-plugin-react-require": "4.0.3",
+    "eslint": "10.4.0",
+    "typescript": "6.0.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "packageManager": "pnpm@11.4.0"
+}
