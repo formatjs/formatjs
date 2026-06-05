@@ -64,8 +64,76 @@ jobs:
           path: artifacts/cli-native-win32-x64
           retention-days: 7
 
+  build_linux_musl_native:
+    name: Build Linux musl Native Package (${{ matrix.arch }})
+    if: ${{ inputs.npm_paths != '[]' }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: ubuntu-latest
+            package: cli-native-linux-x64-musl
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            package: cli-native-linux-arm64-musl
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-${{ matrix.package }}
+          repository-cache: true
+
+      - name: Build Package
+        run: |
+          bazel build //packages/${{ matrix.package }}:generated_package_json
+          package_json=$(bazel cquery --output=files //packages/${{ matrix.package }}:generated_package_json | tail -n 1)
+          mkdir -p artifacts/${{ matrix.package }}
+          cp "$package_json" artifacts/${{ matrix.package }}/package.json
+
+          docker run --rm \
+            -v "$PWD:/repo" \
+            -w /repo \
+            node:24-alpine \
+            sh -euxc '
+              apk add --no-cache build-base cargo file rust
+              cargo build --release -p formatjs_cli_napi
+              cp target/release/libformatjs_cli_napi.so artifacts/${{ matrix.package }}/formatjs_cli_napi.node
+              artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
+              echo "$artifact_info"
+              case "$artifact_info" in
+                *"static-pie linked"*)
+                  echo "musl Node addon must not statically link libc"
+                  exit 1
+                  ;;
+              esac
+            '
+
+      - name: Smoke Test Package
+        run: |
+          docker run --rm \
+            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
+            node:24-alpine \
+            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
+
+      - name: Upload Package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.package }}
+          path: artifacts/${{ matrix.package }}
+          retention-days: 7
+
   release:
-    needs: build_windows_native
+    needs:
+      - build_windows_native
+      - build_linux_musl_native
     if: ${{ inputs.npm_paths != '[]' }}
     runs-on: ubuntu-latest
     permissions:
@@ -111,6 +179,18 @@ jobs:
         with:
           name: cli-native-win32-x64
           path: release/packages/cli-native-win32-x64
+
+      - name: Download Linux x64 musl Native Package
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-linux-x64-musl
+          path: release/packages/cli-native-linux-x64-musl
+
+      - name: Download Linux arm64 musl Native Package
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-linux-arm64-musl
+          path: release/packages/cli-native-linux-arm64-musl
 
       - name: Prepare npm Package Manifests
         working-directory: release

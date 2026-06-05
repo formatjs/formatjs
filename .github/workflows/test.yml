@@ -95,9 +95,20 @@ jobs:
         working-directory: examples/${{ matrix.example }}
         run: bazel test //...
 
-  alpine_native_smoke:
-    name: Alpine Native Binding Smoke Test
-    runs-on: ubuntu-latest
+  linux_musl_native_smoke:
+    name: Linux musl Native Binding Smoke Test (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: ubuntu-latest
+            package: cli-native-linux-x64-musl
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            package: cli-native-linux-arm64-musl
 
     steps:
       - name: Checkout Repository
@@ -110,24 +121,35 @@ jobs:
           disk-cache: ${{ github.workflow }}-alpine-native-smoke
           repository-cache: true
 
-      - name: Build Linux x64 musl Native Package
+      - name: Build Linux musl Native Package
         run: |
-          build_args=(--remote_download_outputs=all)
-          cquery_args=()
-          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            build_args+=(--config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }})
-            cquery_args+=(--config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }})
-          fi
+          bazel build //packages/${{ matrix.package }}:generated_package_json
+          package_json=$(bazel cquery --output=files //packages/${{ matrix.package }}:generated_package_json | tail -n 1)
+          mkdir -p artifacts/${{ matrix.package }}
+          cp "$package_json" artifacts/${{ matrix.package }}/package.json
 
-          bazel build "${build_args[@]}" //packages/cli-native-linux-x64-musl:pkg
-          pkg_path=$(bazel cquery "${cquery_args[@]}" --output=files //packages/cli-native-linux-x64-musl:pkg | tail -n 1)
-          mkdir -p artifacts/cli-native-linux-x64-musl
-          cp -R "$pkg_path"/. artifacts/cli-native-linux-x64-musl/
+          docker run --rm \
+            -v "$PWD:/repo" \
+            -w /repo \
+            node:24-alpine \
+            sh -euxc '
+              apk add --no-cache build-base cargo file rust
+              cargo build --release -p formatjs_cli_napi
+              cp target/release/libformatjs_cli_napi.so artifacts/${{ matrix.package }}/formatjs_cli_napi.node
+              artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
+              echo "$artifact_info"
+              case "$artifact_info" in
+                *"static-pie linked"*)
+                  echo "musl Node addon must not statically link libc"
+                  exit 1
+                  ;;
+              esac
+            '
 
       - name: Smoke Test Package In Alpine
         run: |
           docker run --rm \
-            -v "$PWD/artifacts/cli-native-linux-x64-musl:/native:ro" \
+            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
             node:24-alpine \
             node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
 

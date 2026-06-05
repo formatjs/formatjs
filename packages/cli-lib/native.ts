@@ -2,13 +2,17 @@ import {createRequire} from 'module'
 
 const require = createRequire(import.meta.url)
 
-const NATIVE_PACKAGES: Record<string, string> = {
-  'darwin-arm64': '@formatjs/cli-native-darwin-arm64',
-  'linux-arm64': '@formatjs/cli-native-linux-arm64',
-  'linux-arm64-musl': '@formatjs/cli-native-linux-arm64-musl',
-  'linux-x64': '@formatjs/cli-native-linux-x64',
-  'linux-x64-musl': '@formatjs/cli-native-linux-x64-musl',
-  'win32-x64': '@formatjs/cli-native-win32-x64',
+const NATIVE_PACKAGES: Record<string, string[]> = {
+  'darwin-arm64': ['@formatjs/cli-native-darwin-arm64'],
+  'linux-arm64': [
+    '@formatjs/cli-native-linux-arm64',
+    '@formatjs/cli-native-linux-arm64-musl',
+  ],
+  'linux-x64': [
+    '@formatjs/cli-native-linux-x64',
+    '@formatjs/cli-native-linux-x64-musl',
+  ],
+  'win32-x64': ['@formatjs/cli-native-win32-x64'],
 }
 
 export interface NativeCompileOptions {
@@ -53,29 +57,26 @@ export interface NativeBinding {
 
 let nativeBinding: NativeBinding | null | undefined
 
-function isLinuxMusl(): boolean {
-  if (process.platform !== 'linux') {
-    return false
+export function getInstalledNativePackageCandidates(
+  candidates: readonly string[],
+  canResolve = (candidate: string): boolean => {
+    try {
+      require.resolve(candidate)
+      return true
+    } catch {
+      return false
+    }
   }
-  const report = process.report?.getReport?.()
-  return !report?.header?.glibcVersionRuntime
+): string[] {
+  return candidates.filter(canResolve)
 }
 
 export function getNativePackageCandidates(
-  platform = process.platform,
-  arch = process.arch,
-  isMusl = isLinuxMusl()
+  platform: NodeJS.Platform = process.platform,
+  arch: string = process.arch
 ): string[] {
   const platformArch = `${platform}-${arch}`
-
-  if (platform === 'linux' && (arch === 'arm64' || arch === 'x64')) {
-    const glibcPackage = NATIVE_PACKAGES[platformArch]
-    const muslPackage = NATIVE_PACKAGES[`${platformArch}-musl`]
-    return isMusl ? [muslPackage, glibcPackage] : [glibcPackage, muslPackage]
-  }
-
-  const platformPackage = NATIVE_PACKAGES[platformArch]
-  return platformPackage ? [platformPackage] : []
+  return NATIVE_PACKAGES[platformArch] || []
 }
 
 export function loadNative(): NativeBinding {
@@ -87,9 +88,15 @@ export function loadNative(): NativeBinding {
   }
 
   const overridePath = process.env.FORMATJS_CLI_LIB_NATIVE_PATH
-  const candidates = [overridePath, ...getNativePackageCandidates()].filter(
-    Boolean
-  ) as string[]
+  const packageCandidates = getNativePackageCandidates()
+  const installedPackageCandidates =
+    getInstalledNativePackageCandidates(packageCandidates)
+  const candidates = [
+    overridePath,
+    ...(installedPackageCandidates.length
+      ? installedPackageCandidates
+      : packageCandidates),
+  ].filter(Boolean) as string[]
   const loadErrors: string[] = []
 
   for (const candidate of candidates) {
