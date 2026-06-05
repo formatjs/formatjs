@@ -8,6 +8,7 @@ import * as stringifyNs from 'json-stable-stringify'
 import * as typescript from 'typescript'
 import {debug} from '#packages/ts-transformer/console_utils.js'
 import {interpolateName} from '#packages/ts-transformer/interpolate-name.js'
+import {normalizeMessageWhitespace} from '#packages/ts-transformer/normalize-whitespace.js'
 import {type MessageDescriptor} from '#packages/ts-transformer/types.js'
 
 const stringify = (stringifyNs as any).default || stringifyNs
@@ -585,7 +586,7 @@ function extractMessageDescriptor(
   }
 
   if (msg.defaultMessage && !preserveWhitespace) {
-    msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ')
+    msg.defaultMessage = normalizeMessageWhitespace(msg.defaultMessage)
   }
   // GH #3537: Apply flatten transformation before calling overrideIdFn
   // so that the ID generation sees the same message format as the final output
