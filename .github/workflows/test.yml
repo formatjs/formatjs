@@ -106,9 +106,11 @@ jobs:
           - arch: x64
             runner: ubuntu-latest
             package: cli-native-linux-x64-musl
+            cli-target: //crates/formatjs_cli:release_binary_linux_x64
           - arch: arm64
             runner: ubuntu-24.04-arm
             package: cli-native-linux-arm64-musl
+            cli-target: //crates/formatjs_cli:release_binary_linux_arm64
 
     steps:
       - name: Checkout Repository
@@ -123,28 +125,19 @@ jobs:
 
       - name: Build Linux musl Native Package
         run: |
-          bazel build //packages/${{ matrix.package }}:generated_package_json
-          package_json=$(bazel cquery --output=files //packages/${{ matrix.package }}:generated_package_json | tail -n 1)
+          bazel build //packages/${{ matrix.package }}:pkg
+          package_dir=$(bazel cquery --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
           mkdir -p artifacts/${{ matrix.package }}
-          cp "$package_json" artifacts/${{ matrix.package }}/package.json
+          cp -R "$package_dir"/. artifacts/${{ matrix.package }}/
 
-          docker run --rm \
-            -v "$PWD:/repo" \
-            -w /repo \
-            rust:1.95-alpine \
-            sh -euxc '
-              apk add --no-cache build-base file
-              RUSTFLAGS="-C target-feature=-crt-static" cargo build --release -p formatjs_cli_napi
-              cp target/release/libformatjs_cli_napi.so artifacts/${{ matrix.package }}/formatjs_cli_napi.node
-              artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
-              echo "$artifact_info"
-              case "$artifact_info" in
-                *"static-pie linked"*)
-                  echo "musl Node addon must not statically link libc"
-                  exit 1
-                  ;;
-              esac
-            '
+          artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
+          echo "$artifact_info"
+          case "$artifact_info" in
+            *"static-pie linked"*)
+              echo "musl Node addon must not statically link libc"
+              exit 1
+              ;;
+          esac
 
       - name: Smoke Test Package In Alpine
         run: |
@@ -152,6 +145,23 @@ jobs:
             -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
             node:24-alpine \
             node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
+
+      - name: Smoke Test Static musl CLI On GNU
+        run: |
+          bazel build ${{ matrix.cli-target }}
+          binary_path=$(bazel cquery --output=files ${{ matrix.cli-target }} | tail -n 1)
+          artifact_info=$(file "$binary_path")
+          echo "$artifact_info"
+          case "$artifact_info" in
+            *"static-pie linked"*)
+              ;;
+            *)
+              echo "linux release CLI should be a static musl binary"
+              exit 1
+              ;;
+          esac
+          "$binary_path" --version
+          "$binary_path" --help
 
   windows_smoke:
     name: Windows Smoke Tests
