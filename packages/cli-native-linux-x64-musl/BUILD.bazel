@@ -13,6 +13,7 @@ generate_package_json(
     description = "Native FormatJS CLI binding for Linux x64 musl.",
     files = [
         "formatjs_cli_napi.node",
+        "libstd-286e4795762d614b.so",
     ],
     homepage = "https://github.com/formatjs/formatjs",
     libc = [
@@ -36,11 +37,32 @@ copy_file(
     out = "formatjs_cli_napi.node",
 )
 
+genrule(
+    name = "rust_std_lib",
+    srcs = [
+        "@@rules_rs++toolchains+rust_stdlib_x86_64_unknown_linux_musl_1_95_0//:rust_std-x86_64-unknown-linux-musl",
+    ],
+    outs = ["libstd-286e4795762d614b.so"],
+    cmd = """
+for src in $(SRCS); do
+  case "$$src" in
+    */libstd-286e4795762d614b.so)
+      cp "$$src" "$@"
+      exit 0
+      ;;
+  esac
+done
+echo "Rust stdlib shared object not found" >&2
+exit 1
+""",
+)
+
 npm_package(
     name = "pkg",
     srcs = [
         ":formatjs_cli_napi_node",
         ":generated_package_json",
+        ":rust_std_lib",
     ],
     package = "@formatjs/cli-native-linux-x64-musl",
     visibility = ["//visibility:public"],

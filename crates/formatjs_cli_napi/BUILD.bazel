@@ -39,6 +39,7 @@ rust_shared_library(
             "-Clink-arg=-Wl,-undefined,dynamic_lookup",
         ],
         ":linux_musl": [
+            "-Clink-arg=-Wl,-rpath,$$ORIGIN",
             "-Ctarget-feature=-crt-static",
         ],
         "//conditions:default": [],

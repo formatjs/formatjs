@@ -139,13 +139,6 @@ jobs:
               ;;
           esac
 
-      - name: Smoke Test Package In Alpine
-        run: |
-          docker run --rm \
-            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
-            node:24-alpine \
-            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
-
       - name: Smoke Test Static musl CLI On GNU
         run: |
           bazel build ${{ matrix.cli-target }}
@@ -162,6 +155,13 @@ jobs:
           esac
           "$binary_path" --version
           "$binary_path" --help
+
+      - name: Smoke Test Package In Alpine
+        run: |
+          docker run --rm \
+            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
+            node:24-alpine \
+            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
 
   windows_smoke:
     name: Windows Smoke Tests
