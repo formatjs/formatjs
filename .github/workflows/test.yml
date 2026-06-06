@@ -106,9 +106,11 @@ jobs:
           - arch: x64
             runner: ubuntu-latest
             package: cli-native-linux-x64-musl
+            cli-target: //crates/formatjs_cli:release_binary_linux_x64
           - arch: arm64
             runner: ubuntu-24.04-arm
             package: cli-native-linux-arm64-musl
+            cli-target: //crates/formatjs_cli:release_binary_linux_arm64
 
     steps:
       - name: Checkout Repository
@@ -143,6 +145,23 @@ jobs:
             -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
             node:24-alpine \
             node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
+
+      - name: Smoke Test Static musl CLI On GNU
+        run: |
+          bazel build ${{ matrix.cli-target }}
+          binary_path=$(bazel cquery --output=files ${{ matrix.cli-target }} | tail -n 1)
+          artifact_info=$(file "$binary_path")
+          echo "$artifact_info"
+          case "$artifact_info" in
+            *"static-pie linked"*)
+              ;;
+            *)
+              echo "linux release CLI should be a static musl binary"
+              exit 1
+              ;;
+          esac
+          "$binary_path" --version
+          "$binary_path" --help
 
   windows_smoke:
     name: Windows Smoke Tests
