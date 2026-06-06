@@ -101,11 +101,15 @@ jobs:
           artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
           echo "$artifact_info"
           case "$artifact_info" in
-            *"static-pie linked"*)
-              echo "musl Node addon must not statically link libc"
+            *"static-pie linked"* | *"statically linked"*)
+              echo "musl Node addon must dynamically link libc"
               exit 1
               ;;
           esac
+          if nm -a artifacts/${{ matrix.package }}/formatjs_cli_napi.node | grep 'init_have_lse_atomics' >/dev/null; then
+            echo "musl Node addon must not run compiler-rt outline atomics init during dlopen"
+            exit 1
+          fi
 
       - name: Smoke Test Package
         run: |

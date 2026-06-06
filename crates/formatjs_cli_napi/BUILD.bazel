@@ -29,6 +29,14 @@ rust_shared_library(
     srcs = [
         "src/lib.rs",
     ],
+    # The LLVM musl toolchain defaults to a static libc search directory. Node
+    # addons must use Alpine's loaded musl runtime instead of embedding libc.
+    compile_data = select({
+        ":linux_musl": [
+            "@llvm//runtimes/musl:musl_libc.so",
+        ],
+        "//conditions:default": [],
+    }),
     crate_name = "formatjs_cli_napi",
     edition = "2024",
     proc_macro_deps = [
@@ -39,7 +47,10 @@ rust_shared_library(
             "-Clink-arg=-Wl,-undefined,dynamic_lookup",
         ],
         ":linux_musl": [
+            "-Clink-arg=-Wl,-rpath,$$ORIGIN",
             "-Ctarget-feature=-crt-static",
+            "-Clink-arg=-Wl,-Bdynamic",
+            "-Clink-arg=$(location @llvm//runtimes/musl:musl_libc.so)",
         ],
         "//conditions:default": [],
     }),

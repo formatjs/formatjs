@@ -70,7 +70,14 @@ release_node_linux_x64_musl, _release_node_linux_x64_musl_internal = _release_bi
 release_node_linux_arm64_musl, _release_node_linux_arm64_musl_internal = _release_binary(
     "//crates/formatjs_cli/platforms:linux_aarch64_musl",
     "linux_aarch64",
-    extra_rustc_flags = ["-Cprefer-dynamic"],
+    # The aarch64 compiler-rt outline atomics initializer calls getauxval from
+    # the statically linked musl archive during dlopen, before Node loads the
+    # addon. Alpine arm64 segfaults there, so keep outline atomics out of the
+    # N-API shared object.
+    extra_rustc_flags = [
+        "-Cprefer-dynamic",
+        "-Ctarget-feature=-outline-atomics",
+    ],
 )
 
 release_binary_linux_x64_gnu, _release_binary_linux_x64_gnu_internal = _release_binary(
