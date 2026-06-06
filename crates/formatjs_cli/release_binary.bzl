@@ -18,7 +18,7 @@ def _llvm_toolchains(target):
         for host in _HOSTS
     ]
 
-def _release_binary(platform, llvm_target = None):
+def _release_binary(platform, llvm_target = None, extra_rustc_flags = []):
     builder = with_cfg(
         native.genrule,
     ).set(
@@ -39,6 +39,11 @@ def _release_binary(platform, llvm_target = None):
             Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
             True,
         )
+    if extra_rustc_flags:
+        builder = builder.extend(
+            Label("@rules_rust//rust/settings:extra_rustc_flag"),
+            extra_rustc_flags,
+        )
     return builder.build()
 
 release_binary_darwin_arm64, _release_binary_darwin_arm64_internal = _release_binary(
@@ -54,6 +59,18 @@ release_binary_linux_x64, _release_binary_linux_x64_internal = _release_binary(
 release_binary_linux_arm64, _release_binary_linux_arm64_internal = _release_binary(
     "//crates/formatjs_cli/platforms:linux_aarch64_musl",
     "linux_aarch64",
+)
+
+release_node_linux_x64_musl, _release_node_linux_x64_musl_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:linux_x86_64_musl",
+    "linux_x86_64",
+    extra_rustc_flags = ["-Cprefer-dynamic"],
+)
+
+release_node_linux_arm64_musl, _release_node_linux_arm64_musl_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:linux_aarch64_musl",
+    "linux_aarch64",
+    extra_rustc_flags = ["-Cprefer-dynamic"],
 )
 
 release_binary_linux_x64_gnu, _release_binary_linux_x64_gnu_internal = _release_binary(

@@ -93,28 +93,19 @@ jobs:
 
       - name: Build Package
         run: |
-          bazel build //packages/${{ matrix.package }}:generated_package_json
-          package_json=$(bazel cquery --output=files //packages/${{ matrix.package }}:generated_package_json | tail -n 1)
+          bazel build //packages/${{ matrix.package }}:pkg
+          package_dir=$(bazel cquery --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
           mkdir -p artifacts/${{ matrix.package }}
-          cp "$package_json" artifacts/${{ matrix.package }}/package.json
+          cp -R "$package_dir"/. artifacts/${{ matrix.package }}/
 
-          docker run --rm \
-            -v "$PWD:/repo" \
-            -w /repo \
-            rust:1.95-alpine \
-            sh -euxc '
-              apk add --no-cache build-base file
-              RUSTFLAGS="-C target-feature=-crt-static" cargo build --release -p formatjs_cli_napi
-              cp target/release/libformatjs_cli_napi.so artifacts/${{ matrix.package }}/formatjs_cli_napi.node
-              artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
-              echo "$artifact_info"
-              case "$artifact_info" in
-                *"static-pie linked"*)
-                  echo "musl Node addon must not statically link libc"
-                  exit 1
-                  ;;
-              esac
-            '
+          artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
+          echo "$artifact_info"
+          case "$artifact_info" in
+            *"static-pie linked"*)
+              echo "musl Node addon must not statically link libc"
+              exit 1
+              ;;
+          esac
 
       - name: Smoke Test Package
         run: |
