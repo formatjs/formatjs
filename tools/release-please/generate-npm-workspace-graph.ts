@@ -8,15 +8,25 @@ import {normalizePackage} from './npm-workspace-graph.ts'
 interface Args extends minimist.ParsedArgs {
   out?: string
   package?: string | string[]
+  'release-dependency'?: string | string[]
+  releaseDependency?: string | string[]
 }
 
 interface ValidatedArgs {
   out: string
   packages: string[]
+  releaseDependencies: string[]
 }
 
 function packageArgs(args: Args): string[] {
   return ([] as string[]).concat(args.package || [])
+}
+
+function releaseDependencyArgs(args: Args): string[] {
+  return ([] as string[]).concat(
+    args['release-dependency'] || [],
+    args.releaseDependency || []
+  )
 }
 
 export function validateArgs(args: Args): ValidatedArgs {
@@ -26,7 +36,11 @@ export function validateArgs(args: Args): ValidatedArgs {
     )
   }
 
-  return {out: args.out, packages: packageArgs(args)}
+  return {
+    out: args.out,
+    packages: packageArgs(args),
+    releaseDependencies: releaseDependencyArgs(args),
+  }
 }
 
 export function parsePackageArg(value: string): {
@@ -43,8 +57,37 @@ export function parsePackageArg(value: string): {
   }
 }
 
+export function parseReleaseDependencyArg(value: string): {
+  path: string
+  releaseDependency: string
+} {
+  const separator = value.indexOf('=')
+  if (separator === -1) {
+    throw new Error(
+      `Release dependency argument must be <path=release-path>: ${value}`
+    )
+  }
+  return {
+    path: value.slice(0, separator),
+    releaseDependency: value.slice(separator + 1),
+  }
+}
+
 export function main(args: Args) {
-  const {out, packages: packagePaths} = validateArgs(args)
+  const {
+    out,
+    packages: packagePaths,
+    releaseDependencies: releaseDependencyPaths,
+  } = validateArgs(args)
+  const releaseDependenciesByPath = new Map<string, string[]>()
+
+  for (const value of releaseDependencyPaths) {
+    const {path, releaseDependency} = parseReleaseDependencyArg(value)
+    const releaseDependencies = releaseDependenciesByPath.get(path) || []
+    releaseDependencies.push(releaseDependency)
+    releaseDependenciesByPath.set(path, releaseDependencies)
+  }
+
   const packages = packagePaths.map(value => {
     const {path, packageJson} = parsePackageArg(value)
     const manifest = JSON.parse(readFileSync(packageJson, 'utf8'))
@@ -55,6 +98,7 @@ export function main(args: Args) {
       dependencies: manifest.dependencies,
       optionalDependencies: manifest.optionalDependencies,
       peerDependencies: manifest.peerDependencies,
+      releaseDependencies: releaseDependenciesByPath.get(path)?.sort(),
     })
   })
 

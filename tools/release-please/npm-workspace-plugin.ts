@@ -1,6 +1,10 @@
 import {createRequire} from 'node:module'
 
-import {buildDependencyGraph, readGraph} from './npm-workspace-graph.ts'
+import {
+  buildDependencyGraph,
+  packageNamesWithReleaseDependencies,
+  readGraph,
+} from './npm-workspace-graph.ts'
 
 const require = createRequire(import.meta.url)
 
@@ -110,6 +114,12 @@ export class BazelNpmWorkspace extends WorkspacePlugin {
       process.env.FORMATJS_RELEASE_PLEASE_NPM_WORKSPACE_INCLUDE_PEERS === 'true'
     this.strategiesByPath = {}
     this.releasesByPath = {}
+    this.candidatePaths = new Set()
+  }
+
+  async run(candidates) {
+    this.candidatePaths = new Set(candidates.map(candidate => candidate.path))
+    return super.run(candidates)
   }
 
   async buildAllPackages(candidates) {
@@ -184,6 +194,24 @@ export class BazelNpmWorkspace extends WorkspacePlugin {
       return strategy.versioningStrategy.bump(version, [])
     }
     return new PatchVersionUpdate().bump(version)
+  }
+
+  packageNamesToUpdate(graph, candidatesByPackage) {
+    const packageNames = new Set(
+      super.packageNamesToUpdate(graph, candidatesByPackage)
+    )
+
+    for (const packageName of packageNamesWithReleaseDependencies(
+      graph,
+      this.candidatePaths
+    )) {
+      this.logger.info(
+        `${packageName} depends on an updated release path in the Bazel graph`
+      )
+      packageNames.add(packageName)
+    }
+
+    return [...packageNames].sort()
   }
 
   updateCandidate(existingCandidate, pkg, updatedVersions) {

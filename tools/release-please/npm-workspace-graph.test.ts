@@ -5,6 +5,8 @@ import {
   buildDependencyGraph,
   dependencyNames,
   dependentPackageOrder,
+  normalizePackage,
+  packageNamesWithReleaseDependencies,
 } from './npm-workspace-graph.ts'
 
 const packages = [
@@ -12,6 +14,7 @@ const packages = [
     path: 'packages/core',
     name: '@formatjs/core',
     version: '1.0.0',
+    releaseDependencies: ['crates/core'],
   },
   {
     path: 'packages/runtime',
@@ -55,6 +58,28 @@ assert.deepEqual(
 assert.deepEqual(
   dependencyNames(packages[3], {includePeerDependencies: true}),
   ['@formatjs/core']
+)
+
+assert.deepEqual(
+  normalizePackage({
+    path: 'packages/empty',
+    name: '@formatjs/empty',
+    version: '1.0.0',
+  }).releaseDependencies,
+  []
+)
+
+assert.deepEqual(
+  packageNamesWithReleaseDependencies(graph, new Set(['crates/core'])),
+  ['@formatjs/core']
+)
+
+assert.deepEqual(
+  dependentPackageOrder(
+    graph,
+    packageNamesWithReleaseDependencies(graph, new Set(['crates/core']))
+  ).map(pkg => pkg.name),
+  ['@formatjs/core', '@formatjs/optional-runtime', '@formatjs/runtime']
 )
 
 const graphWithPeers = buildDependencyGraph(packages, {

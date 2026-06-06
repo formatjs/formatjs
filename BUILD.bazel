@@ -139,6 +139,13 @@ ts_run_binary(
             pkg["package_json"],
         )
         for pkg in RELEASE_PLEASE_NPM_PACKAGES
+    ] + [
+        "--release-dependency=packages/%s=%s" % (
+            pkg["dirname"],
+            release_dep,
+        )
+        for pkg in RELEASE_PLEASE_NPM_PACKAGES
+        for release_dep in pkg.get("release_deps", [])
     ],
     tool = "//tools:generate-release-please-npm-workspace-graph",
 )
