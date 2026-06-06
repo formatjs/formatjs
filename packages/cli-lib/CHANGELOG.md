@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 8.7.8 (2026-06-06)
+
+## What's Changed
+* ci: pass repository to release workflow dispatch by @longlho in https://github.com/formatjs/formatjs/pull/6740
+* fix(formatjs_cli): build native packages in opt mode by @longlho in https://github.com/formatjs/formatjs/pull/6744
+* fix(@formatjs/cli-lib): support Alpine native bindings by @longlho in https://github.com/formatjs/formatjs/pull/6743
+* fix(deps): use Bazel graph for native release propagation by @longlho in https://github.com/formatjs/formatjs/pull/6747
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@8.7.7...@formatjs/cli-lib@8.7.8
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.3
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.3
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.1
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.3
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.1
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.4
+
 ## 8.7.7 (2026-06-05)
 
 ## What's Changed

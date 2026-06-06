@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.1.3 (2026-06-06)
+
+## What's Changed
+* build: fix release-please multiline outputs by @longlho in https://github.com/formatjs/formatjs/pull/6726
+* chore(deps): update pnpm to v11.4.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6727
+* chore(deps): update dependency @typescript/native-preview to v7.0.0-dev.20260527.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6729
+* build: remove checked-in package intradeps by @longlho in https://github.com/formatjs/formatjs/pull/6728
+* fix(formatjs_cli): support loader-utils id templates by @longlho in https://github.com/formatjs/formatjs/pull/6731
+* fix(@formatjs/cli-lib): extract Svelte FormattedMessage components by @longlho in https://github.com/formatjs/formatjs/pull/6732
+* fix(deps): publish generated workspace packages by @longlho in https://github.com/formatjs/formatjs/pull/6734
+* chore(deps): isolate React Intl example workspaces by @longlho in https://github.com/formatjs/formatjs/pull/6737
+* fix: normalize Unicode whitespace for generated ids by @longlho in https://github.com/formatjs/formatjs/pull/6736
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6733
+* ci: pass repository to release workflow dispatch by @longlho in https://github.com/formatjs/formatjs/pull/6740
+* fix(formatjs_cli): build native packages in opt mode by @longlho in https://github.com/formatjs/formatjs/pull/6744
+* fix(@formatjs/cli-lib): support Alpine native bindings by @longlho in https://github.com/formatjs/formatjs/pull/6743
+* fix(deps): use Bazel graph for native release propagation by @longlho in https://github.com/formatjs/formatjs/pull/6747
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-darwin-arm64@1.1.2...@formatjs/cli-native-darwin-arm64@1.1.3
+
 ## 1.1.2 (2026-06-03)
 
 ## What's Changed
