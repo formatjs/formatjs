@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.15 (2026-06-06)
+
+## What's Changed
+* ci: pass repository to release workflow dispatch by @longlho in https://github.com/formatjs/formatjs/pull/6740
+* fix(formatjs_cli): build native packages in opt mode by @longlho in https://github.com/formatjs/formatjs/pull/6744
+* fix(@formatjs/cli-lib): support Alpine native bindings by @longlho in https://github.com/formatjs/formatjs/pull/6743
+* fix(deps): use Bazel graph for native release propagation by @longlho in https://github.com/formatjs/formatjs/pull/6747
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.1.14...formatjs_cli_v1.1.15
+
 ## 1.1.14 (2026-06-05)
 
 ## What's Changed
