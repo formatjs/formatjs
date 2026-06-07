@@ -10,7 +10,7 @@ load(
     "release_binary_windows_x64_gnullvm",
 )
 
-FORMATJS_CLI_VERSION = "1.1.15"  # x-release-please-version
+FORMATJS_CLI_VERSION = "1.1.16"  # x-release-please-version
 
 exports_files(
     [

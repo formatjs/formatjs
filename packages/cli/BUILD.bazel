@@ -74,7 +74,7 @@ generate_package_json(
         "//:node_modules/vue",
     ],
     repository = "formatjs/formatjs.git",
-    version = "6.16.9",  # x-release-please-version
+    version = "6.16.10",  # x-release-please-version
 )
 
 PACKAGE_NAME = "cli"
