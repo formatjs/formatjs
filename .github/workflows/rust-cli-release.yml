@@ -41,8 +41,8 @@ jobs:
             //crates/formatjs_cli:release_binary_windows_x64_gnullvm
           )
 
-          bazel_build_args=()
-          bazel_query_args=()
+          bazel_build_args=(--compilation_mode=opt)
+          bazel_query_args=(--compilation_mode=opt)
 
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel_build_args+=(
@@ -54,9 +54,6 @@ jobs:
               --config=ci
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}
             )
-          else
-            bazel_build_args+=(--compilation_mode=opt)
-            bazel_query_args+=(--compilation_mode=opt)
           fi
 
           bazel build "${bazel_build_args[@]}" "${targets[@]}"

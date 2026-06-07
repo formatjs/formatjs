@@ -93,8 +93,8 @@ jobs:
 
       - name: Build Package
         run: |
-          bazel build //packages/${{ matrix.package }}:pkg
-          package_dir=$(bazel cquery --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
+          bazel build --compilation_mode=opt //packages/${{ matrix.package }}:pkg
+          package_dir=$(bazel cquery --compilation_mode=opt --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
           mkdir -p artifacts/${{ matrix.package }}
           cp -R "$package_dir"/. artifacts/${{ matrix.package }}/
 
