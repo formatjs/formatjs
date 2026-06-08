@@ -26,7 +26,7 @@ fast-glob = "1.0"
 walkdir = "2"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.2.4" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.1" }
-oxc = { version = "0.133", features = ["ast_visit"] }
+oxc = { version = "0.134", features = ["ast_visit"] }
 oxc_allocator = "0.133"
 oxc_ast = "0.133"
 oxc_data_structures = { version = "0.133", features = ["rope"] }
