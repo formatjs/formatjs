@@ -192,7 +192,7 @@ importers:
         version: 16.3.2(@testing-library/dom@10.4.0)(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@testing-library/svelte':
         specifier: ^5.2.0
-        version: 5.3.1(svelte@5.56.0(@typescript-eslint/types@8.60.0))(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0))(vitest@4.1.7(@types/node@24.12.0)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)))
+        version: 5.3.1(svelte@5.56.1(@typescript-eslint/types@8.60.0))(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0))(vitest@4.1.7(@types/node@24.12.0)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)))
       '@types/aria-query':
         specifier: ^5.0.4
         version: 5.0.4
@@ -384,7 +384,7 @@ importers:
         version: 0.133.0
       oxfmt:
         specifier: ^0.52.0
-        version: 0.52.0(svelte@5.56.0(@typescript-eslint/types@8.60.0))
+        version: 0.52.0(svelte@5.56.1(@typescript-eslint/types@8.60.0))
       oxlint:
         specifier: ^1.64.0
         version: 1.67.0
@@ -450,7 +450,7 @@ importers:
         version: 7.0.5
       svelte:
         specifier: ^5.0.0
-        version: 5.56.0(@typescript-eslint/types@8.60.0)
+        version: 5.56.1(@typescript-eslint/types@8.60.0)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.6.0
@@ -8270,8 +8270,8 @@ packages:
     resolution: {integrity: sha512-4x/uk4rQe/d7RhfvS8wemTfNjQ0bJbKvamIzRBfTe2eHHjzBZ7PZicUQrC2ryj83xxEacfA1zHKd1ephD1tAxA==}
     engines: {node: '>=18'}
 
-  svelte@5.56.0:
-    resolution: {integrity: sha512-kTXr26t1bchFp28ROrb957LtbujpBmBDibmqMGziVpUs7awBi96TGgX6SovrA8BNoEUDVRK2Fb9FkeYlGspoVg==}
+  svelte@5.56.1:
+    resolution: {integrity: sha512-eArsJmvl3xZVuTYD852PzIEdg2wgDdIZ1NEsIPbzAukHwi284B18No4nK2rCO9AwsWUDza4Cjvmoa4HaojTl5g==}
     engines: {node: '>=18'}
 
   tailwind-merge@3.6.0:
@@ -12596,15 +12596,15 @@ snapshots:
       '@types/react': 19.2.15
       '@types/react-dom': 19.2.3(@types/react@19.2.15)
 
-  '@testing-library/svelte-core@1.0.0(svelte@5.56.0(@typescript-eslint/types@8.60.0))':
+  '@testing-library/svelte-core@1.0.0(svelte@5.56.1(@typescript-eslint/types@8.60.0))':
     dependencies:
-      svelte: 5.56.0(@typescript-eslint/types@8.60.0)
+      svelte: 5.56.1(@typescript-eslint/types@8.60.0)
 
-  '@testing-library/svelte@5.3.1(svelte@5.56.0(@typescript-eslint/types@8.60.0))(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0))(vitest@4.1.7(@types/node@24.12.0)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)))':
+  '@testing-library/svelte@5.3.1(svelte@5.56.1(@typescript-eslint/types@8.60.0))(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0))(vitest@4.1.7(@types/node@24.12.0)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)))':
     dependencies:
       '@testing-library/dom': 10.4.0
-      '@testing-library/svelte-core': 1.0.0(svelte@5.56.0(@typescript-eslint/types@8.60.0))
-      svelte: 5.56.0(@typescript-eslint/types@8.60.0)
+      '@testing-library/svelte-core': 1.0.0(svelte@5.56.1(@typescript-eslint/types@8.60.0))
+      svelte: 5.56.1(@typescript-eslint/types@8.60.0)
     optionalDependencies:
       vite: 8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)
       vitest: 4.1.7(@types/node@24.12.0)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.12.0)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0))
@@ -16202,7 +16202,7 @@ snapshots:
       '@oxc-transform/binding-win32-ia32-msvc': 0.133.0
       '@oxc-transform/binding-win32-x64-msvc': 0.133.0
 
-  oxfmt@0.52.0(svelte@5.56.0(@typescript-eslint/types@8.60.0)):
+  oxfmt@0.52.0(svelte@5.56.1(@typescript-eslint/types@8.60.0)):
     dependencies:
       tinypool: 2.1.0
     optionalDependencies:
@@ -16225,7 +16225,7 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.52.0
       '@oxfmt/binding-win32-ia32-msvc': 0.52.0
       '@oxfmt/binding-win32-x64-msvc': 0.52.0
-      svelte: 5.56.0(@typescript-eslint/types@8.60.0)
+      svelte: 5.56.1(@typescript-eslint/types@8.60.0)
 
   oxlint@1.67.0:
     optionalDependencies:
@@ -17205,7 +17205,7 @@ snapshots:
       magic-string: 0.30.21
       zimmerframe: 1.1.4
 
-  svelte@5.56.0(@typescript-eslint/types@8.60.0):
+  svelte@5.56.1(@typescript-eslint/types@8.60.0):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
