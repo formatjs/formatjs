@@ -504,7 +504,7 @@ importers:
         version: 8.0.0-rc.1(vue@3.5.35(typescript@6.0.3))
       vue-eslint-parser:
         specifier: ^10.4.0
-        version: 10.4.0(eslint@10.4.1(jiti@2.7.0))
+        version: 10.4.1(eslint@10.4.1(jiti@2.7.0))
       vue-intl:
         specifier: workspace:*
         version: link:packages/vue-intl
@@ -4719,6 +4719,10 @@ packages:
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
+  '@types/eslint-scope@9.1.0':
+    resolution: {integrity: sha512-ZdRd/C3bTObl4fZ6d7iXN2AVv20waMU2tPy1W24e6ECLbB8T9fBxtONKZUpIpYHShMVk6cDNP9QMVw7Qdqsd/w==}
+    deprecated: This is a stub types definition. eslint-scope provides its own type definitions, so you do not need this installed.
+
   '@types/eslint@7.29.0':
     resolution: {integrity: sha512-VNcvioYDH8/FxaeTKkM4/TiTwt6pBV9E3OfGmvaw8tPl0rrHCJ4Ll15HRT+pMiFAf/MLQvAzC+6RzUMEL9Ceng==}
 
@@ -8843,8 +8847,8 @@ packages:
   vue-component-type-helpers@3.2.8:
     resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==}
 
-  vue-eslint-parser@10.4.0:
-    resolution: {integrity: sha512-Vxi9pJdbN3ZnVGLODVtZ7y4Y2kzAAE2Cm0CZ3ZDRvydVYxZ6VrnBhLikBsRS+dpwj4Jv4UCv21PTEwF5rQ9WXg==}
+  vue-eslint-parser@10.4.1:
+    resolution: {integrity: sha512-Gk6gRDj0n/fkRa3C3l0bBheoBckUq/Rs0F/TvMWIS6nzzx67amAViMe9CkNgsP2tXyQONvGiHQESHwFtZ3aYDA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
@@ -9946,7 +9950,7 @@ snapshots:
   '@commitlint/is-ignored@21.0.2':
     dependencies:
       '@commitlint/types': 21.0.1
-      semver: 7.8.1
+      semver: 7.8.3
 
   '@commitlint/lint@21.0.2':
     dependencies:
@@ -10018,7 +10022,7 @@ snapshots:
     dependencies:
       '@simple-libs/child-process-utils': 1.0.2
       '@simple-libs/stream-utils': 1.2.0
-      semver: 7.8.1
+      semver: 7.8.3
     optionalDependencies:
       conventional-commits-parser: 6.4.0
 
@@ -11132,7 +11136,7 @@ snapshots:
       '@parcel/rust': 2.16.4
       '@parcel/utils': 2.16.4
       nullthrows: 1.1.1
-      semver: 7.8.1
+      semver: 7.8.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -11406,7 +11410,7 @@ snapshots:
       browserslist: 4.28.2
       json5: 2.2.3
       nullthrows: 1.1.1
-      semver: 7.8.1
+      semver: 7.8.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -11456,7 +11460,7 @@ snapshots:
       browserslist: 4.28.2
       nullthrows: 1.1.1
       regenerator-runtime: 0.14.1
-      semver: 7.8.1
+      semver: 7.8.3
     transitivePeerDependencies:
       - napi-wasm
 
@@ -11484,7 +11488,7 @@ snapshots:
       clone: 2.1.2
       nullthrows: 1.1.1
       postcss-value-parser: 4.2.0
-      semver: 7.8.1
+      semver: 7.8.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -12658,6 +12662,10 @@ snapshots:
     dependencies:
       '@types/eslint': 9.6.1
       '@types/estree': 1.0.9
+
+  '@types/eslint-scope@9.1.0':
+    dependencies:
+      eslint-scope: 9.1.2
 
   '@types/eslint@7.29.0':
     dependencies:
@@ -13887,7 +13895,7 @@ snapshots:
       '@one-ini/wasm': 0.1.1
       commander: 10.0.1
       minimatch: 9.0.9
-      semver: 7.8.1
+      semver: 7.8.3
 
   electron-to-chromium@1.5.313: {}
 
@@ -16112,7 +16120,7 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.2
-      semver: 7.8.1
+      semver: 7.8.3
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -17260,7 +17268,7 @@ snapshots:
   terser@5.44.1:
     dependencies:
       '@jridgewell/source-map': 0.3.11
-      acorn: 8.16.0
+      acorn: 8.15.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -17707,16 +17715,16 @@ snapshots:
 
   vue-component-type-helpers@3.2.8: {}
 
-  vue-eslint-parser@10.4.0(eslint@10.4.1(jiti@2.7.0)):
+  vue-eslint-parser@10.4.1(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
-      '@types/eslint-scope': 3.7.7
+      '@types/eslint-scope': 9.1.0
       debug: 4.4.3
       eslint: 10.4.1(jiti@2.7.0)
-      eslint-scope: 8.4.0
+      eslint-scope: 9.1.2
       eslint-visitor-keys: 5.0.1
-      espree: 10.4.0
+      espree: 11.2.0
       esquery: 1.7.0
-      semver: 7.7.4
+      semver: 7.8.3
     transitivePeerDependencies:
       - supports-color
 
