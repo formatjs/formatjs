@@ -102,7 +102,7 @@
     "lucide-react": "^1.0.0",
     "magic-string": "^0.30.0",
     "minimist": "^1.2.8",
-    "oxc-parser": "^0.133.0",
+    "oxc-parser": "^0.134.0",
     "oxc-transform": "^0.134.0",
     "oxfmt": "^0.53.0",
     "oxlint": "^1.64.0",
