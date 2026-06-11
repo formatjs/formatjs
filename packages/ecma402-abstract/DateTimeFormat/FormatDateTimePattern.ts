@@ -89,11 +89,13 @@ export function FormatDateTimePattern(
 
   const locale = internalSlots.locale
   const nfOptions = Object.create(null)
+  nfOptions.numberingSystem = internalSlots.numberingSystem
   nfOptions.useGrouping = false
 
   const nf = createMemoizedNumberFormat(locale, nfOptions)
   const nf2Options = Object.create(null)
   nf2Options.minimumIntegerDigits = 2
+  nf2Options.numberingSystem = internalSlots.numberingSystem
   nf2Options.useGrouping = false
   const nf2 = createMemoizedNumberFormat(locale, nf2Options)
   const fractionalSecondDigits = internalSlots.fractionalSecondDigits
@@ -101,6 +103,7 @@ export function FormatDateTimePattern(
   if (fractionalSecondDigits !== undefined) {
     const nf3Options = Object.create(null)
     nf3Options.minimumIntegerDigits = fractionalSecondDigits
+    nf3Options.numberingSystem = internalSlots.numberingSystem
     nf3Options.useGrouping = false
     nf3 = createMemoizedNumberFormat(locale, nf3Options)
   }

@@ -2,15 +2,18 @@ import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
 import allData from '@formatjs_generated/tz/all-tz.js'
+import bn from '#packages/intl-datetimeformat/tests/locale-data/bn.json' with {type: 'json'}
 import enCA from '#packages/intl-datetimeformat/tests/locale-data/en-CA.json' with {type: 'json'}
 import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import fa from '#packages/intl-datetimeformat/tests/locale-data/fa.json' with {type: 'json'}
 import ja from '#packages/intl-datetimeformat/tests/locale-data/ja.json' with {type: 'json'}
+import my from '#packages/intl-datetimeformat/tests/locale-data/my.json' with {type: 'json'}
+import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa)
+DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, bn, my, ne)
 DateTimeFormat.__addTZData(allData)
 const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
@@ -223,6 +226,24 @@ describe('Intl.DateTimeFormat', function () {
         second: 'numeric',
       }).format(Date.UTC(2020, 0, 1, 12, 0, 0))
     ).toBe('1/1/2020, 2:00:00 PM')
+  })
+  it('respects numberingSystem with locales that default to non-latn digits, GH #6767', function () {
+    for (const locale of ['my-MM', 'bn-BD', 'ne-NP']) {
+      const formatter = new DateTimeFormat(locale, {
+        numberingSystem: 'latn',
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      })
+      const formatted = formatter.format(Date.UTC(2020, 0, 2))
+
+      expect(formatter.resolvedOptions().numberingSystem).toBe('latn')
+      expect(formatted).toMatch(/[0-9]/)
+      expect(formatted).not.toMatch(
+        /[\u1040-\u1049\u09e6-\u09ef\u0966-\u096f]/u
+      )
+    }
   })
   it('test #2170', function () {
     const formatter = new DateTimeFormat('en-GB', {
