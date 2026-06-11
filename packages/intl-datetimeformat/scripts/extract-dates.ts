@@ -184,8 +184,12 @@ async function loadDatesFields(
     caGregorianImport.default.main[locale as 'en'].dates.calendars.gregorian
   const timeZoneNames =
     tznImport.default.main[locale as 'en'].dates.timeZoneNames
-  const nu =
-    numbersImport?.default.main[locale as 'en'].numbers.defaultNumberingSystem
+  const numbers = numbersImport?.default.main[locale as 'en'].numbers
+  const nu = numbers
+    ? numbers.defaultNumberingSystem === 'latn'
+      ? ['latn']
+      : [numbers.defaultNumberingSystem, 'latn']
+    : []
 
   let hc: string[] = []
   let region: string | undefined
@@ -489,7 +493,7 @@ async function loadDatesFields(
     // @ts-ignore
     intervalFormats,
     hourCycle: hc[0],
-    nu: nu ? [nu] : [],
+    nu,
     ca: (
       calendarPreferenceData[region as keyof typeof calendarPreferenceData] ||
       calendarPreferenceData['001']

@@ -17,6 +17,7 @@ PACKAGE_NAME = "intl-datetimeformat"
 
 TEST_LOCALES = [
     "ar",
+    "bn",
     "bs",
     "de",
     "en",
@@ -24,6 +25,8 @@ TEST_LOCALES = [
     "en-CA",
     "ja",
     "ko",
+    "my",
+    "ne",
     "pl",
     "ru",
     "zh-Hans",
@@ -125,6 +128,7 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/offset-timezone.test.ts",
         ":tests-locale-data-ar",  # keep: generated locale data imported by tests
+        ":tests-locale-data-bn",  # keep: generated locale data imported by tests
         ":tests-locale-data-bs",  # keep: generated locale data imported by tests
         ":tests-locale-data-de",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
@@ -133,6 +137,8 @@ formatjs_test(
         ":tests-locale-data-fa",  # keep: generated locale data imported by tests
         ":tests-locale-data-ja",  # keep: generated locale data imported by tests
         ":tests-locale-data-ko",  # keep: generated locale data imported by tests
+        ":tests-locale-data-my",  # keep: generated locale data imported by tests
+        ":tests-locale-data-ne",  # keep: generated locale data imported by tests
         ":tests-locale-data-nl",  # keep: generated locale data imported by tests
         ":tests-locale-data-pl",  # keep: generated locale data imported by tests
         ":tests-locale-data-ru",  # keep: generated locale data imported by tests
