@@ -104,7 +104,7 @@
     "minimist": "^1.2.8",
     "oxc-parser": "^0.133.0",
     "oxc-transform": "^0.134.0",
-    "oxfmt": "^0.52.0",
+    "oxfmt": "^0.53.0",
     "oxlint": "^1.64.0",
     "parcel": "^2.0.0",
     "picomatch": "^4.0.4",
