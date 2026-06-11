@@ -12,13 +12,13 @@ importers:
     dependencies:
       '@rescripts/cli':
         specifier: 0.0.16
-        version: 0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))(typescript@6.0.3)(webpack@5.107.2(postcss@8.5.15))
+        version: 0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))(typescript@6.0.3)(webpack@5.107.2(postcss@8.5.15))
       '@rescripts/rescript-use-babel-config':
         specifier: 0.0.12
-        version: 0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))
+        version: 0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       '@rescripts/rescript-use-eslint-config':
         specifier: 0.0.11
-        version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))
+        version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       babel-plugin-formatjs:
         specifier: 11.3.11
         version: 11.3.11
@@ -26,24 +26,24 @@ importers:
         specifier: 6.4.14
         version: 6.4.14(eslint@10.4.1(jiti@1.21.7))
       react:
-        specifier: 19.2.6
-        version: 19.2.6
+        specifier: 19.2.7
+        version: 19.2.7
       react-dom:
-        specifier: 19.2.6
-        version: 19.2.6(react@19.2.6)
+        specifier: 19.2.7
+        version: 19.2.7(react@19.2.7)
       react-intl:
         specifier: 10.1.12
-        version: 10.1.12(@types/react@19.2.15)(react@19.2.6)
+        version: 10.1.12(@types/react@19.2.16)(react@19.2.7)
       react-scripts:
         specifier: 5.0.1
-        version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3)
+        version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3)
     devDependencies:
       '@types/react':
-        specifier: 19.2.15
-        version: 19.2.15
+        specifier: 19.2.16
+        version: 19.2.16
       '@types/react-dom':
         specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.15)
+        version: 19.2.3(@types/react@19.2.16)
       babel-plugin-react-require:
         specifier: 4.0.3
         version: 4.0.3
@@ -1343,8 +1343,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.15':
-    resolution: {integrity: sha512-eRwcGNHve+E8qtEQSSRl6urh+rFop4v8gm6O8rGv25CodbvFdLjA1vVQ1KkiFE0w0UPOnb8tDiFKL5lp0rtY5Q==}
+  '@types/react@19.2.16':
+    resolution: {integrity: sha512-esJiCAnl0kfpNdE69f3So4WJUXy95dLZydX0KwK46riIHDzHM7O9Vtf9xCHW0PXIqvgqNrswl522kA/5yx+F4w==}
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -4908,10 +4908,10 @@ packages:
       typescript:
         optional: true
 
-  react-dom@19.2.6:
-    resolution: {integrity: sha512-0prMI+hvBbPjsWnxDLxlCGyM8PN6UuWjEUCYmZhO67xIV9Xasa/r/vDnq+Xyq4Lo27g8QSbO5YzARu0D1Sps3g==}
+  react-dom@19.2.7:
+    resolution: {integrity: sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ==}
     peerDependencies:
-      react: ^19.2.6
+      react: ^19.2.7
 
   react-error-overlay@5.1.6:
     resolution: {integrity: sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==}
@@ -4950,8 +4950,8 @@ packages:
       typescript:
         optional: true
 
-  react@19.2.6:
-    resolution: {integrity: sha512-sfWGGfavi0xr8Pg0sVsyHMAOziVYKgPLNrS7ig+ivMNb3wbCBw3KxtflsGBAwD3gYQlE/AEZsTLgToRrSCjb0Q==}
+  react@19.2.7:
+    resolution: {integrity: sha512-HNe9WslTbXmFK8o8cmwgAeJFSBvt1bPdHCVKtaaV+WlAN36mpT4hcRpwbf3fY56ar2oIXzsBpOAiIRHAdY0OlQ==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -7445,40 +7445,40 @@ snapshots:
       type-fest: 0.21.3
       webpack-dev-server: 4.15.2(webpack@5.107.2(postcss@8.5.15))
 
-  '@rescripts/cli@0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))(typescript@6.0.3)(webpack@5.107.2(postcss@8.5.15))':
+  '@rescripts/cli@0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))(typescript@6.0.3)(webpack@5.107.2(postcss@8.5.15))':
     dependencies:
-      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))
+      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       ramda: 0.26.1
       react-dev-utils: 7.0.5(typescript@6.0.3)(webpack@5.107.2(postcss@8.5.15))
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3)
     transitivePeerDependencies:
       - supports-color
       - typescript
       - webpack
 
-  '@rescripts/rescript-use-babel-config@0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))':
+  '@rescripts/rescript-use-babel-config@0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))':
     dependencies:
-      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))
+      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       ramda: 0.26.1
     transitivePeerDependencies:
       - react-scripts
 
-  '@rescripts/rescript-use-eslint-config@0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))':
+  '@rescripts/rescript-use-eslint-config@0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))':
     dependencies:
-      '@rescripts/utilities': 0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))
+      '@rescripts/utilities': 0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       ramda: 0.26.1
     transitivePeerDependencies:
       - react-scripts
 
-  '@rescripts/utilities@0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))':
+  '@rescripts/utilities@0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))':
     dependencies:
       ramda: 0.26.1
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3)
 
-  '@rescripts/utilities@0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3))':
+  '@rescripts/utilities@0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))':
     dependencies:
       ramda: 0.26.1
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3)
 
   '@rollup/plugin-babel@5.3.1(@babel/core@7.29.7)(@types/babel__core@7.20.5)(rollup@2.80.0)':
     dependencies:
@@ -7735,11 +7735,11 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@19.2.3(@types/react@19.2.15)':
+  '@types/react-dom@19.2.3(@types/react@19.2.16)':
     dependencies:
-      '@types/react': 19.2.15
+      '@types/react': 19.2.16
 
-  '@types/react@19.2.15':
+  '@types/react@19.2.16':
     dependencies:
       csstype: 3.2.3
 
@@ -11956,22 +11956,22 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-dom@19.2.6(react@19.2.6):
+  react-dom@19.2.7(react@19.2.7):
     dependencies:
-      react: 19.2.6
+      react: 19.2.7
       scheduler: 0.27.0
 
   react-error-overlay@5.1.6: {}
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@10.1.12(@types/react@19.2.15)(react@19.2.6):
+  react-intl@10.1.12(@types/react@19.2.16)(react@19.2.7):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.11
       '@formatjs/intl': 4.1.13
-      '@types/react': 19.2.15
+      '@types/react': 19.2.16
       intl-messageformat: 11.2.8
-      react: 19.2.6
+      react: 19.2.7
 
   react-is@16.13.1: {}
 
@@ -11981,7 +11981,7 @@ snapshots:
 
   react-refresh@0.11.0: {}
 
-  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.6)(type-fest@0.21.3)(typescript@6.0.3):
+  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3):
     dependencies:
       '@babel/core': 7.29.7
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.17(react-refresh@0.11.0)(type-fest@0.21.3)(webpack-dev-server@4.15.2(webpack@5.107.2(postcss@8.5.15)))(webpack@5.107.2(postcss@8.5.15))
@@ -12015,7 +12015,7 @@ snapshots:
       postcss-normalize: 10.0.1(browserslist@4.28.2)(postcss@8.5.15)
       postcss-preset-env: 7.8.3(postcss@8.5.15)
       prompts: 2.4.2
-      react: 19.2.6
+      react: 19.2.7
       react-app-polyfill: 3.0.0
       react-dev-utils: 12.0.1(eslint@10.4.1(jiti@1.21.7))(typescript@6.0.3)(webpack@5.107.2(postcss@8.5.15))
       react-refresh: 0.11.0
@@ -12076,7 +12076,7 @@ snapshots:
       - webpack-plugin-serve
       - yaml
 
-  react@19.2.6: {}
+  react@19.2.7: {}
 
   read-cache@1.0.0:
     dependencies:
