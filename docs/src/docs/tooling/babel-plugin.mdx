@@ -191,6 +191,11 @@ Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't d
 
 When set to true, message trimming is disabled.
 
+### **`throws`**
+
+Defaults to `true`. Set to `false` to skip message descriptors that fail
+extraction. Skipped descriptors are left unchanged.
+
 ### **`flatten`**
 
 Whether to hoist selectors & flatten sentences as much as possible. For example:

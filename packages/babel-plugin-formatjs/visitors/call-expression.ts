@@ -1,6 +1,8 @@
 import {type NodePath, type PluginPass} from '@babel/core'
 import * as t from '@babel/types'
 import {
+  type MessageDescriptor,
+  type MessageDescriptorPath,
   type Options,
   type State,
 } from '#packages/babel-plugin-formatjs/types.js'
@@ -75,6 +77,8 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
       ast,
       preserveWhitespace,
       flatten,
+      throws,
+      onMsgError,
     } = opts as Options
     if (wasExtracted(path)) {
       return
@@ -96,31 +100,41 @@ export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
         'properties'
       ) as NodePath<t.ObjectProperty>[]
 
-      const descriptorPath = createMessageDescriptor(
-        properties.map(
-          prop =>
-            [prop.get('key'), prop.get('value')] as [
-              NodePath<t.Identifier>,
-              NodePath<t.StringLiteral>,
-            ]
+      let descriptorPath: MessageDescriptorPath
+      let descriptor: MessageDescriptor
+      try {
+        descriptorPath = createMessageDescriptor(
+          properties.map(
+            prop =>
+              [prop.get('key'), prop.get('value')] as [
+                NodePath<t.Identifier>,
+                NodePath<t.StringLiteral>,
+              ]
+          )
         )
-      )
 
-      // If the message is already compiled, don't re-compile it
-      if (descriptorPath.defaultMessage?.isArrayExpression()) {
-        return
+        // If the message is already compiled, don't re-compile it
+        if (descriptorPath.defaultMessage?.isArrayExpression()) {
+          return
+        }
+
+        descriptor = evaluateMessageDescriptor(
+          descriptorPath,
+          false,
+          filename || undefined,
+          idInterpolationPattern,
+          overrideIdFn,
+          preserveWhitespace,
+          flatten
+        )
+      } catch (e) {
+        if (throws === false) {
+          tagAsExtracted(path)
+          onMsgError?.(filename || '', e as Error)
+          return
+        }
+        throw e
       }
-
-      // Evaluate the Message Descriptor values, then store it.
-      const descriptor = evaluateMessageDescriptor(
-        descriptorPath,
-        false,
-        filename || undefined,
-        idInterpolationPattern,
-        overrideIdFn,
-        preserveWhitespace,
-        flatten
-      )
       storeMessage(
         descriptor,
         messageDescriptor,
