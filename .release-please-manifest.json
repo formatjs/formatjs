@@ -1,5 +1,5 @@
 {
-  "packages/babel-plugin-formatjs": "11.3.12",
+  "packages/babel-plugin-formatjs": "11.3.13",
   "packages/bigdecimal": "0.2.6",
   "packages/cli-lib": "8.7.10",
   "packages/cli-native-darwin-arm64": "1.1.5",
@@ -17,7 +17,7 @@
   "packages/intl-collator": "0.2.4",
   "packages/intl-datetimeformat": "7.4.9",
   "packages/intl-displaynames": "7.3.10",
-  "packages/intl-durationformat": "0.10.14",
+  "packages/intl-durationformat": "0.10.15",
   "packages/intl-supportedvaluesof": "2.3.8",
   "packages/intl-getcanonicallocales": "3.2.10",
   "packages/intl-listformat": "8.3.10",
