@@ -44,4 +44,6 @@ export interface Options {
   ast?: boolean
   preserveWhitespace?: boolean
   flatten?: boolean
+  throws?: boolean
+  onMsgError?: (filePath: string, error: Error) => void
 }

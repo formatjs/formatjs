@@ -1,6 +1,8 @@
 import {type NodePath, type PluginPass} from '@babel/core'
 
 import {
+  type MessageDescriptor,
+  type MessageDescriptorPath,
   type Options,
   type State,
 } from '#packages/babel-plugin-formatjs/types.js'
@@ -35,6 +37,8 @@ export const visitor: VisitNodeFunction<
     ast,
     preserveWhitespace,
     flatten,
+    throws,
+    onMsgError,
   } = opts as Options
 
   const {componentNames, messages} = this
@@ -52,36 +56,45 @@ export const visitor: VisitNodeFunction<
     .get('attributes')
     .filter(attr => attr.isJSXAttribute())
 
-  const descriptorPath = createMessageDescriptor(
-    attributes.map(attr => [
-      attr.get('name') as NodePath<t.JSXIdentifier>,
-      attr.get('value') as
-        | NodePath<t.StringLiteral>
-        | NodePath<t.JSXExpressionContainer>,
-    ])
-  )
+  let descriptorPath: MessageDescriptorPath
+  let descriptor: MessageDescriptor
+  try {
+    descriptorPath = createMessageDescriptor(
+      attributes.map(attr => [
+        attr.get('name') as NodePath<t.JSXIdentifier>,
+        attr.get('value') as
+          | NodePath<t.StringLiteral>
+          | NodePath<t.JSXExpressionContainer>,
+      ])
+    )
 
-  // In order for a default message to be extracted when
-  // declaring a JSX element, it must be done with standard
-  // `key=value` attributes. But it's completely valid to
-  // write `<FormattedMessage {...descriptor} />`, because it will be
-  // skipped here and extracted elsewhere. The descriptor will
-  // be extracted only (storeMessage) if a `defaultMessage` prop.
-  if (!descriptorPath.defaultMessage) {
-    return
+    // In order for a default message to be extracted when
+    // declaring a JSX element, it must be done with standard
+    // `key=value` attributes. But it's completely valid to
+    // write `<FormattedMessage {...descriptor} />`, because it will be
+    // skipped here and extracted elsewhere. The descriptor will
+    // be extracted only (storeMessage) if a `defaultMessage` prop.
+    if (!descriptorPath.defaultMessage) {
+      return
+    }
+
+    descriptor = evaluateMessageDescriptor(
+      descriptorPath,
+      true,
+      filename || undefined,
+      idInterpolationPattern,
+      overrideIdFn,
+      preserveWhitespace,
+      flatten
+    )
+  } catch (e) {
+    if (throws === false) {
+      tagAsExtracted(path)
+      onMsgError?.(filename || '', e as Error)
+      return
+    }
+    throw e
   }
-
-  // Evaluate the Message Descriptor values in a JSX
-  // context, then store it.
-  const descriptor = evaluateMessageDescriptor(
-    descriptorPath,
-    true,
-    filename || undefined,
-    idInterpolationPattern,
-    overrideIdFn,
-    preserveWhitespace,
-    flatten
-  )
 
   storeMessage(
     descriptor,

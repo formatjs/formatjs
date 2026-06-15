@@ -221,6 +221,35 @@ test('skipExtractionFormattedMessage', function () {
   transformAndCheck('skipExtractionFormattedMessage')
 })
 
+test('throws defaults to true for non-static descriptors', function () {
+  expect(() => transformAndCheck('throwsFalse')).toThrow(
+    '[React Intl] Messages must be statically evaluate-able for extraction.'
+  )
+})
+
+test('throws false skips non-static descriptors and keeps extracting static ones', function () {
+  const errors: Error[] = []
+  const result = transformAndCheck('throwsFalse', {
+    throws: false,
+    onMsgError(_, error) {
+      errors.push(error)
+    },
+  })
+
+  expect(errors).toHaveLength(5)
+  expect(errors.every(error => error.message.includes('statically'))).toBe(true)
+  expect(result.data.messages.map(message => message.defaultMessage)).toEqual([
+    'Static defineMessages message',
+    'Static formatMessage message',
+    'Nested static formatMessage message',
+    'Static JSX message',
+  ])
+  expect(result.code).toContain('id: window.location.hash')
+  expect(result.code).toContain('id: status')
+  expect(result.code).toContain('defaultMessage: getDynamicMessage()')
+  expect(result.code).toContain('Agent.Details.Status.')
+})
+
 // See: https://github.com/formatjs/formatjs/issues/3589#issuecomment-1532461569
 test('jsxNestedInCallExpr', () => {
   transformAndCheck('jsxNestedInCallExpr')
