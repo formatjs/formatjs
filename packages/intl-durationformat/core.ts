@@ -331,15 +331,20 @@ export class DurationFormat implements DurationFormatType {
   ).reduce<Record<string, DurationFormatLocaleInternalData | undefined>>(
     (all, locale) => {
       DurationFormat.availableLocales.add(locale)
-      const nu: readonly string[] = TIME_SEPARATORS.localeData[locale].nu
+      const nu = [...TIME_SEPARATORS.localeData[locale].nu]
+      // ECMA-402 DurationFormat resolves `numberingSystem` through the
+      // locale-data [[nu]] list. Keep the locale default first, but allow the
+      // spec-visible `latn` override even when CLDR only needs the default
+      // numbering system for time-separator data.
+      if (!nu.includes('latn')) {
+        nu.push('latn')
+      }
       all[locale] = {
         nu,
-        digitalFormat:
-          TIME_SEPARATORS.localeData[locale as 'da'].separator ||
-          nu.reduce<Record<string, string>>((separators, n) => {
-            separators[n] = TIME_SEPARATORS.default
-            return separators
-          }, {}),
+        digitalFormat: {
+          default: TIME_SEPARATORS.default,
+          ...TIME_SEPARATORS.localeData[locale as 'da'].separator,
+        },
       }
       return all
     },

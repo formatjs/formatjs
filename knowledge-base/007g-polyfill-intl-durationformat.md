@@ -25,6 +25,8 @@ Extracts time separator characters per locale and numbering system:
 - Default separator is `:` (colon)
 - Script only includes locales/systems where the separator differs from default
 - Resolves default numbering system per locale
+- Runtime locale data keeps the locale default numbering system first, and adds
+  `latn` when needed for explicit `numberingSystem` overrides.
 
 ### Build Pipeline
 
@@ -56,3 +58,6 @@ export const TIME_SEPARATORS = {
 - **No dynamic locale loading** — data compiled into the main bundle
 - Static import: `import {TIME_SEPARATORS} from './time-separators.generated.js'`
 - Lookup at runtime: `TIME_SEPARATORS.localeData[locale]?.separator[nu] ?? TIME_SEPARATORS.default`
+- `TIME_SEPARATORS.localeData[locale].nu` is the default/alternate set needed
+  by the generator. `core.ts` ensures `latn` is present before calling
+  `ResolveLocale`.

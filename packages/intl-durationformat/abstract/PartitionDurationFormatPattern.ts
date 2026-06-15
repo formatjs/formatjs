@@ -27,7 +27,9 @@ export function PartitionDurationFormatPattern(
     throw new TypeError('Invalid locale')
   }
   const numberingSystem = internalSlots.numberingSystem
-  const separator = dataLocaleData.digitalFormat[numberingSystem]
+  const separator =
+    dataLocaleData.digitalFormat[numberingSystem] ??
+    dataLocaleData.digitalFormat.default
 
   for (let i = 0; i < TABLE_2.length && !done; i++) {
     const row = TABLE_2[i]
@@ -83,7 +85,11 @@ export function PartitionDurationFormatPattern(
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
       }
-      if (style !== '2-digit' && style !== 'numeric' && style !== 'fractional') {
+      if (
+        style !== '2-digit' &&
+        style !== 'numeric' &&
+        style !== 'fractional'
+      ) {
         nfOpts.style = 'unit'
         nfOpts.unit = numberFormatUnit
         nfOpts.unitDisplay = style

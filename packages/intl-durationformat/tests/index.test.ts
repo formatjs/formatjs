@@ -118,6 +118,29 @@ test('Intl.DurationFormat sub-second rollup is exact (#6462)', function () {
   ).toBe('1.473μs')
 })
 
+test('Intl.DurationFormat respects numberingSystem option (#6794)', function () {
+  for (const locale of ['my-MM', 'bn-BD', 'ne-NP']) {
+    const df = new DurationFormat(locale, {numberingSystem: 'latn'})
+    expect(df.resolvedOptions().numberingSystem).toBe('latn')
+    expect(
+      df.formatToParts({years: 1}).find(part => part.type === 'integer')?.value
+    ).toBe('1')
+  }
+  expect(
+    new DurationFormat('my-MM', {
+      hours: 'numeric',
+      minutes: '2-digit',
+      numberingSystem: 'latn',
+      seconds: '2-digit',
+      style: 'digital',
+    }).format({
+      hours: 1,
+      minutes: 2,
+      seconds: 3,
+    })
+  ).toBe('1:02:03')
+})
+
 test('Intl.DurationFormat hours with 2-digit', function () {
   expect(
     new DurationFormat('en', {
