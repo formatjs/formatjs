@@ -87,3 +87,40 @@ test('escapes pound signs inside plural literals', function () {
   expect(output).toBe("{count,plural,one{'#' item} other{'#' items}}")
   expect(parse(output)).toEqual(parse(input))
 })
+
+// printAST must emit plural/select branches in a deterministic, source-order-
+// independent order so that auto-generated message ids match the Rust extractor
+// (formatjs_cli) regardless of how branches were authored. See printer.rs:
+// plural -> LDML order (zero, one, two, few, many, other) then =N ascending;
+// select -> keys sorted alphabetically.
+test('sorts plural branches in LDML order with exact matches last', function () {
+  expect(
+    printAST(parse('{count, plural, =0 {No items} one {# item} other {# items}}'))
+  ).toBe('{count,plural,one{# item} other{# items} =0{No items}}')
+})
+
+test('sorts every plural category in LDML order then =N numerically', function () {
+  const input =
+    '{n, plural, other {O} =5 {F5} many {M} =0 {Z0} few {W} two {T} one {N1} zero {ZZ} =2 {E2}}'
+  expect(printAST(parse(input))).toBe(
+    '{n,plural,zero{ZZ} one{N1} two{T} few{W} many{M} other{O} =0{Z0} =2{E2} =5{F5}}'
+  )
+})
+
+test('sorts selectordinal branches in LDML order too', function () {
+  expect(
+    printAST(parse('{n, selectordinal, other {#th} one {#st} two {#nd} few {#rd}}'))
+  ).toBe('{n,selectordinal,one{#st} two{#nd} few{#rd} other{#th}}')
+})
+
+test('sorts select branches alphabetically by key', function () {
+  expect(
+    printAST(parse('{gender, select, male {He} female {She} other {They}}'))
+  ).toBe('{gender,select,female{She} male{He} other{They}}')
+})
+
+test('branch order does not affect printed output (id stability)', function () {
+  const a = '{count, plural, =0 {none} one {one} other {many}}'
+  const b = '{count, plural, other {many} one {one} =0 {none}}'
+  expect(printAST(parse(a))).toBe(printAST(parse(b)))
+})

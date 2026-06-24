@@ -180,26 +180,63 @@ export function printDateTimeSkeleton(style: DateTimeSkeleton): string {
 }
 
 function printSelectElement(el: SelectElement) {
+  // Sort keys alphabetically for consistent output.
+  // Mirrors write_select_element in crates/icu_messageformat_parser/printer.rs.
+  const keys = Object.keys(el.options).sort()
   const msg = [
     el.value,
     'select',
-    Object.keys(el.options)
-      .map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`)
-      .join(' '),
+    keys.map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`).join(' '),
   ].join(',')
   return `{${msg}}`
 }
 
+/**
+ * Returns the LDML sort order for a plural rule.
+ *
+ * LDML order is: zero, one, two, few, many, other, then =N exact matches sorted
+ * numerically. Returns a [primary, secondary] tuple for sorting.
+ *
+ * Mirrors get_plural_rule_sort_order in crates/icu_messageformat_parser/printer.rs.
+ */
+function getPluralRuleSortOrder(rule: string): [number, number] {
+  switch (rule) {
+    case 'zero':
+      return [0, 0]
+    case 'one':
+      return [1, 0]
+    case 'two':
+      return [2, 0]
+    case 'few':
+      return [3, 0]
+    case 'many':
+      return [4, 0]
+    case 'other':
+      return [5, 0]
+    default: {
+      // Extract the numeric value from exact matches like "=0", "=1".
+      const num = parseInt(rule.replace(/^=+/, ''), 10)
+      // Exact matches come after 'other', sorted numerically.
+      return [6, Number.isNaN(num) ? 0 : num]
+    }
+  }
+}
+
 function printPluralElement(el: PluralElement) {
   const type = el.pluralType === 'cardinal' ? 'plural' : 'selectordinal'
+  // Sort keys in LDML order: zero, one, two, few, many, other, then exact matches.
+  // Mirrors write_plural_element in crates/icu_messageformat_parser/printer.rs.
+  const keys = Object.keys(el.options).sort((a, b) => {
+    const [pa, sa] = getPluralRuleSortOrder(a)
+    const [pb, sb] = getPluralRuleSortOrder(b)
+    return pa - pb || sa - sb
+  })
   const msg = [
     el.value,
     type,
     [
       el.offset ? `offset:${el.offset}` : '',
-      ...Object.keys(el.options).map(
-        id => `${id}{${doPrintAST(el.options[id].value, true)}}`
-      ),
+      ...keys.map(id => `${id}{${doPrintAST(el.options[id].value, true)}}`),
     ]
       .filter(Boolean)
       .join(' '),
