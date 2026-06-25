@@ -48,7 +48,16 @@ npm.npm_translate_lock(
     patch_args = {"*": ["-p1"]},
     pnpm_lock = "//:pnpm-lock.yaml",
 )
-use_repo(npm, "npm")
+npm.npm_translate_lock(
+    name = "react18_npm",
+    data = [
+        "//packages/react-intl/tests/react18-typecheck:package.json",
+        "//packages/react-intl/tests/react18-typecheck:pnpm-workspace.yaml",
+    ],
+    npmrc = "//:.npmrc",
+    pnpm_lock = "//packages/react-intl/tests/react18-typecheck:pnpm-lock.yaml",
+)
+use_repo(npm, "npm", "react18_npm")
 
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 
