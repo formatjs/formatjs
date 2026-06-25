@@ -95,7 +95,9 @@ test('escapes pound signs inside plural literals', function () {
 // select -> keys sorted alphabetically.
 test('sorts plural branches in LDML order with exact matches last', function () {
   expect(
-    printAST(parse('{count, plural, =0 {No items} one {# item} other {# items}}'))
+    printAST(
+      parse('{count, plural, =0 {No items} one {# item} other {# items}}')
+    )
   ).toBe('{count,plural,one{# item} other{# items} =0{No items}}')
 })
 
@@ -109,7 +111,9 @@ test('sorts every plural category in LDML order then =N numerically', function (
 
 test('sorts selectordinal branches in LDML order too', function () {
   expect(
-    printAST(parse('{n, selectordinal, other {#th} one {#st} two {#nd} few {#rd}}'))
+    printAST(
+      parse('{n, selectordinal, other {#th} one {#st} two {#nd} few {#rd}}')
+    )
   ).toBe('{n,selectordinal,one{#st} two{#nd} few{#rd} other{#th}}')
 })
 
@@ -117,6 +121,19 @@ test('sorts select branches alphabetically by key', function () {
   expect(
     printAST(parse('{gender, select, male {He} female {She} other {They}}'))
   ).toBe('{gender,select,female{She} male{He} other{They}}')
+})
+
+test('sorts select branches by Unicode code point order', function () {
+  const privateUse = '\uE000'
+  const astral = '\u{10000}'
+
+  expect(
+    printAST(
+      parse(
+        `{kind, select, ${astral} {Astral} ${privateUse} {Private} other {Other}}`
+      )
+    )
+  ).toBe(`{kind,select,other{Other} ${privateUse}{Private} ${astral}{Astral}}`)
 })
 
 test('branch order does not affect printed output (id stability)', function () {

@@ -179,53 +179,59 @@ export function printDateTimeSkeleton(style: DateTimeSkeleton): string {
   return style.pattern
 }
 
-function printSelectElement(el: SelectElement) {
-  // Sort keys alphabetically for consistent output.
-  // Mirrors write_select_element in crates/icu_messageformat_parser/printer.rs.
-  const keys = Object.keys(el.options).sort()
-  const msg = [
-    el.value,
-    'select',
-    keys.map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`).join(' '),
-  ].join(',')
-  return `{${msg}}`
-}
+// Rust string ordering is UTF-8 lexicographic, which matches code point order.
+function compareCodePoints(a: string, b: string): number {
+  const aIter = a[Symbol.iterator]()
+  const bIter = b[Symbol.iterator]()
 
-/**
- * Returns the LDML sort order for a plural rule.
- *
- * LDML order is: zero, one, two, few, many, other, then =N exact matches sorted
- * numerically. Returns a [primary, secondary] tuple for sorting.
- *
- * Mirrors get_plural_rule_sort_order in crates/icu_messageformat_parser/printer.rs.
- */
-function getPluralRuleSortOrder(rule: string): [number, number] {
-  switch (rule) {
-    case 'zero':
-      return [0, 0]
-    case 'one':
-      return [1, 0]
-    case 'two':
-      return [2, 0]
-    case 'few':
-      return [3, 0]
-    case 'many':
-      return [4, 0]
-    case 'other':
-      return [5, 0]
-    default: {
-      // Extract the numeric value from exact matches like "=0", "=1".
-      const num = parseInt(rule.replace(/^=+/, ''), 10)
-      // Exact matches come after 'other', sorted numerically.
-      return [6, Number.isNaN(num) ? 0 : num]
+  while (true) {
+    const aNext = aIter.next()
+    const bNext = bIter.next()
+    if (aNext.done || bNext.done) {
+      return aNext.done === bNext.done ? 0 : aNext.done ? -1 : 1
+    }
+
+    const diff = aNext.value.codePointAt(0)! - bNext.value.codePointAt(0)!
+    if (diff !== 0) {
+      return diff
     }
   }
 }
 
+function printSelectElement(el: SelectElement) {
+  const keys = Object.keys(el.options).sort(compareCodePoints)
+  const msg = [
+    el.value,
+    'select',
+    keys
+      .map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`)
+      .join(' '),
+  ].join(',')
+  return `{${msg}}`
+}
+
+const PLURAL_RULE_ORDER: Record<string, number> = {
+  zero: 0,
+  one: 1,
+  two: 2,
+  few: 3,
+  many: 4,
+  other: 5,
+}
+
+function getPluralRuleSortOrder(rule: string): [number, number] {
+  const categoryOrder = PLURAL_RULE_ORDER[rule]
+  if (categoryOrder !== undefined) {
+    return [categoryOrder, 0]
+  }
+
+  const exactRule = rule.replace(/^=+/, '')
+  const exactValue = /^[+-]?\d+$/.test(exactRule) ? Number(exactRule) : 0
+  return [6, exactValue]
+}
+
 function printPluralElement(el: PluralElement) {
   const type = el.pluralType === 'cardinal' ? 'plural' : 'selectordinal'
-  // Sort keys in LDML order: zero, one, two, few, many, other, then exact matches.
-  // Mirrors write_plural_element in crates/icu_messageformat_parser/printer.rs.
   const keys = Object.keys(el.options).sort((a, b) => {
     const [pa, sa] = getPluralRuleSortOrder(a)
     const [pb, sb] = getPluralRuleSortOrder(b)

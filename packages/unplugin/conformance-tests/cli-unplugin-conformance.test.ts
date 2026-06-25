@@ -114,6 +114,15 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     )
   })
 
+  test('select with astral branch key — keys sorted like Rust', async () => {
+    const message =
+      '{kind, select, \u{10000} {Astral} \uE000 {Private} other {Other}}'
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: ${JSON.stringify(message)}})`,
+      'select-astral-key.tsx'
+    )
+  })
+
   test('JSX FormattedMessage with description', async () => {
     await assertConformance(
       `<FormattedMessage defaultMessage="Hello World" description="greeting" />`,
