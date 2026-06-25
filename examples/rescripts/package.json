@@ -21,7 +21,7 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "@types/react": "19.2.16",
+    "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "babel-plugin-react-require": "4.0.3",
     "eslint": "10.4.1",
