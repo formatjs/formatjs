@@ -179,27 +179,70 @@ export function printDateTimeSkeleton(style: DateTimeSkeleton): string {
   return style.pattern
 }
 
+// Rust string ordering is UTF-8 lexicographic, which matches code point order.
+function compareCodePoints(a: string, b: string): number {
+  const aIter = a[Symbol.iterator]()
+  const bIter = b[Symbol.iterator]()
+
+  while (true) {
+    const aNext = aIter.next()
+    const bNext = bIter.next()
+    if (aNext.done || bNext.done) {
+      return aNext.done === bNext.done ? 0 : aNext.done ? -1 : 1
+    }
+
+    const diff = aNext.value.codePointAt(0)! - bNext.value.codePointAt(0)!
+    if (diff !== 0) {
+      return diff
+    }
+  }
+}
+
 function printSelectElement(el: SelectElement) {
+  const keys = Object.keys(el.options).sort(compareCodePoints)
   const msg = [
     el.value,
     'select',
-    Object.keys(el.options)
+    keys
       .map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`)
       .join(' '),
   ].join(',')
   return `{${msg}}`
 }
 
+const PLURAL_RULE_ORDER: Record<string, number> = {
+  zero: 0,
+  one: 1,
+  two: 2,
+  few: 3,
+  many: 4,
+  other: 5,
+}
+
+function getPluralRuleSortOrder(rule: string): [number, number] {
+  const categoryOrder = PLURAL_RULE_ORDER[rule]
+  if (categoryOrder !== undefined) {
+    return [categoryOrder, 0]
+  }
+
+  const exactRule = rule.replace(/^=+/, '')
+  const exactValue = /^[+-]?\d+$/.test(exactRule) ? Number(exactRule) : 0
+  return [6, exactValue]
+}
+
 function printPluralElement(el: PluralElement) {
   const type = el.pluralType === 'cardinal' ? 'plural' : 'selectordinal'
+  const keys = Object.keys(el.options).sort((a, b) => {
+    const [pa, sa] = getPluralRuleSortOrder(a)
+    const [pb, sb] = getPluralRuleSortOrder(b)
+    return pa - pb || sa - sb
+  })
   const msg = [
     el.value,
     type,
     [
       el.offset ? `offset:${el.offset}` : '',
-      ...Object.keys(el.options).map(
-        id => `${id}{${doPrintAST(el.options[id].value, true)}}`
-      ),
+      ...keys.map(id => `${id}{${doPrintAST(el.options[id].value, true)}}`),
     ]
       .filter(Boolean)
       .join(' '),

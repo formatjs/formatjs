@@ -100,6 +100,29 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     )
   })
 
+  test('plural with =N exact selector — branches ordered LDML, exact last', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: '{count, plural, =0 {No items} one {# item} other {# items}}'})`,
+      'plural-exact-selector.tsx'
+    )
+  })
+
+  test('select with non-alphabetical branches — keys sorted', async () => {
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: '{gender, select, male {He} female {She} other {They}}'})`,
+      'select-unsorted.tsx'
+    )
+  })
+
+  test('select with astral branch key — keys sorted like Rust', async () => {
+    const message =
+      '{kind, select, \u{10000} {Astral} \uE000 {Private} other {Other}}'
+    await assertConformance(
+      `intl.formatMessage({defaultMessage: ${JSON.stringify(message)}})`,
+      'select-astral-key.tsx'
+    )
+  })
+
   test('JSX FormattedMessage with description', async () => {
     await assertConformance(
       `<FormattedMessage defaultMessage="Hello World" description="greeting" />`,
