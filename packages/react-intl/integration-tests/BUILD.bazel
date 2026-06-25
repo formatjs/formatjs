@@ -1,8 +1,17 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "generate_tsconfig_json")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:vitest.bzl", "vitest")
+
+# gazelle:exclude react_consumer_smoke_test.ts
+
+js_library(
+    name = "react_consumer_smoke_test_lib",
+    srcs = ["react_consumer_smoke_test.ts"],
+    visibility = ["//visibility:public"],
+)
 
 generate_package_json(
     package_name = "integration-tests",
@@ -45,9 +54,30 @@ TEST_DEPS = [
 
 vitest(
     name = "test",
-    srcs = glob(["*.ts*"]),
+    srcs = glob(
+        ["*.ts*"],
+        exclude = ["react_consumer_smoke_test.ts"],
+    ),
     dom = True,
     deps = TEST_DEPS,
+)
+
+REACT_CONSUMER_SMOKE_DEPS = [
+    "//:node_modules/@formatjs/icu-messageformat-parser",
+    "//:node_modules/@formatjs/intl",
+    "//:node_modules/intl-messageformat",
+    "//:node_modules/react",
+    "//:node_modules/react-dom",
+    "//packages/react-intl:pkg",
+]
+
+js_test(
+    name = "react_consumer_smoke_test",
+    size = "small",
+    args = ["$(rootpath //packages/react-intl:pkg)"],
+    data = REACT_CONSUMER_SMOKE_DEPS,
+    entry_point = ":react_consumer_smoke_test_lib",
+    node_options = ["--experimental-transform-types"],
 )
 
 formatjs_test(
