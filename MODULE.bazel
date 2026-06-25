@@ -49,24 +49,6 @@ npm.npm_translate_lock(
     pnpm_lock = "//:pnpm-lock.yaml",
 )
 npm.npm_translate_lock(
-    name = "react16_8_npm",
-    data = [
-        "//packages/react-intl/tests/react16-8-typecheck:package.json",
-        "//packages/react-intl/tests/react16-8-typecheck:pnpm-workspace.yaml",
-    ],
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//packages/react-intl/tests/react16-8-typecheck:pnpm-lock.yaml",
-)
-npm.npm_translate_lock(
-    name = "react17_npm",
-    data = [
-        "//packages/react-intl/tests/react17-typecheck:package.json",
-        "//packages/react-intl/tests/react17-typecheck:pnpm-workspace.yaml",
-    ],
-    npmrc = "//:.npmrc",
-    pnpm_lock = "//packages/react-intl/tests/react17-typecheck:pnpm-lock.yaml",
-)
-npm.npm_translate_lock(
     name = "react18_npm",
     data = [
         "//packages/react-intl/tests/react18-typecheck:package.json",
@@ -75,7 +57,7 @@ npm.npm_translate_lock(
     npmrc = "//:.npmrc",
     pnpm_lock = "//packages/react-intl/tests/react18-typecheck:pnpm-lock.yaml",
 )
-use_repo(npm, "npm", "react16_8_npm", "react17_npm", "react18_npm")
+use_repo(npm, "npm", "react18_npm")
 
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 
@@ -121,6 +103,7 @@ bazel_dep(
 
 bazel_dep(name = "protobuf", version = "34.1", repo_name = "com_google_protobuf")
 bazel_dep(name = "rules_proto", version = "7.1.0")
+
 # Force protobuf's transitive Android rules past Bazel 9 CcInfo compatibility fixes.
 bazel_dep(name = "rules_android", version = "0.7.2")
 
@@ -149,8 +132,8 @@ register_toolchains("@llvm_toolchains//:all")
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(
-    edition = "2024",
     name = "rs",
+    edition = "2024",
     version = "1.95.0",
 )
 use_repo(toolchains, "default_rust_toolchains", "rs")
