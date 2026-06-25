@@ -33,17 +33,17 @@ importers:
         version: 19.2.7(react@19.2.7)
       react-intl:
         specifier: 10.1.12
-        version: 10.1.12(@types/react@19.2.16)(react@19.2.7)
+        version: 10.1.12(@types/react@19.2.17)(react@19.2.7)
       react-scripts:
         specifier: 5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3)
     devDependencies:
       '@types/react':
-        specifier: 19.2.16
-        version: 19.2.16
+        specifier: 19.2.17
+        version: 19.2.17
       '@types/react-dom':
         specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.16)
+        version: 19.2.3(@types/react@19.2.17)
       babel-plugin-react-require:
         specifier: 4.0.3
         version: 4.0.3
@@ -1343,8 +1343,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.16':
-    resolution: {integrity: sha512-esJiCAnl0kfpNdE69f3So4WJUXy95dLZydX0KwK46riIHDzHM7O9Vtf9xCHW0PXIqvgqNrswl522kA/5yx+F4w==}
+  '@types/react@19.2.17':
+    resolution: {integrity: sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==}
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -7735,11 +7735,11 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@19.2.3(@types/react@19.2.16)':
+  '@types/react-dom@19.2.3(@types/react@19.2.17)':
     dependencies:
-      '@types/react': 19.2.16
+      '@types/react': 19.2.17
 
-  '@types/react@19.2.16':
+  '@types/react@19.2.17':
     dependencies:
       csstype: 3.2.3
 
@@ -11965,11 +11965,11 @@ snapshots:
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@10.1.12(@types/react@19.2.16)(react@19.2.7):
+  react-intl@10.1.12(@types/react@19.2.17)(react@19.2.7):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.11
       '@formatjs/intl': 4.1.13
-      '@types/react': 19.2.16
+      '@types/react': 19.2.17
       intl-messageformat: 11.2.8
       react: 19.2.7
 

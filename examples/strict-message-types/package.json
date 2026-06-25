@@ -13,7 +13,7 @@
     "react-intl": "10.1.12"
   },
   "devDependencies": {
-    "@types/react": "19.2.16",
+    "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "parcel": "2.16.4",
     "typescript": "6.0.3"
