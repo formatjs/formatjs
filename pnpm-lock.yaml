@@ -441,7 +441,7 @@ importers:
         version: 29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(esbuild@0.28.1)(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.0))(typescript@6.0.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.7(typescript@6.0.3)(webpack@5.107.2(esbuild@0.28.1))
+        version: 9.6.1(typescript@6.0.3)(webpack@5.107.2(esbuild@0.28.0))
       tsd:
         specifier: ^0.33.0
         version: 0.33.0
@@ -5752,6 +5752,10 @@ packages:
     resolution: {integrity: sha512-6QEuw3zoX1SJQc7b87aBXke/no+mG2bTBgw29gWMQonLmpEkWoCAVkl+M49e48AZlWzxiDzDZzYdp6kobcyLww==}
     engines: {node: '>=10.13.0'}
 
+  enhanced-resolve@5.24.1:
+    resolution: {integrity: sha512-7DdUaTjmNwMcH2gLr1qycesKII3BK4RLy/mdAb7x10Lq7bR4aNKHt1BR1ZALSv0rPM/hF5wYF0PhGop/rJm8vw==}
+    engines: {node: '>=10.13.0'}
+
   entities@6.0.1:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
     engines: {node: '>=0.12'}
@@ -8268,6 +8272,17 @@ packages:
       typescript: '*'
       webpack: ^5.0.0
 
+  ts-loader@9.6.1:
+    resolution: {integrity: sha512-8FMHnmxtpncUAu0ZjkqpXnOTlwc9eY95esH8WVN94guTPPdkg2ofVdiVM5j8L2lmjiGerXd56zXb/D2JyVQPLg==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      loader-utils: '*'
+      typescript: '*'
+      webpack: ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      loader-utils:
+        optional: true
+
   tsd@0.33.0:
     resolution: {integrity: sha512-/PQtykJFVw90QICG7zyPDMIyueOXKL7jOJVoX5pILnb3Ux+7QqynOxfVvarE+K+yi7BZyOSY4r+OZNWSWRiEwQ==}
     engines: {node: '>=14.16'}
@@ -9730,7 +9745,7 @@ snapshots:
   '@commitlint/is-ignored@21.0.2':
     dependencies:
       '@commitlint/types': 21.0.1
-      semver: 7.8.4
+      semver: 7.8.1
 
   '@commitlint/lint@21.0.2':
     dependencies:
@@ -11732,7 +11747,7 @@ snapshots:
   '@tailwindcss/node@4.3.0':
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      enhanced-resolve: 5.22.1
+      enhanced-resolve: 5.24.1
       jiti: 2.7.0
       lightningcss: 1.32.0
       magic-string: 0.30.21
@@ -13227,6 +13242,11 @@ snapshots:
       tapable: 2.3.3
 
   enhanced-resolve@5.22.1:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.3.3
+
+  enhanced-resolve@5.24.1:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
@@ -15418,7 +15438,7 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.2
-      semver: 7.8.4
+      semver: 7.8.1
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -16815,6 +16835,16 @@ snapshots:
       source-map: 0.7.6
       typescript: 6.0.3
       webpack: 5.107.2(esbuild@0.28.1)
+
+  ts-loader@9.6.1(typescript@6.0.3)(webpack@5.107.2(esbuild@0.28.0)):
+    dependencies:
+      chalk: 4.1.2
+      enhanced-resolve: 5.24.1
+      micromatch: 4.0.8
+      semver: 7.8.1
+      source-map: 0.7.6
+      typescript: 6.0.3
+      webpack: 5.107.2(esbuild@0.28.0)
 
   tsd@0.33.0:
     dependencies:
