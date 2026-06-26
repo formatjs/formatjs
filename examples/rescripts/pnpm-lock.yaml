@@ -32,8 +32,8 @@ importers:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.12
-        version: 10.1.12(@types/react@19.2.17)(react@19.2.7)
+        specifier: 10.1.13
+        version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-scripts:
         specifier: 5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3)
@@ -4919,8 +4919,8 @@ packages:
   react-error-overlay@6.1.0:
     resolution: {integrity: sha512-SN/U6Ytxf1QGkw/9ve5Y+NxBbZM6Ht95tuXNMKs8EJyFa/Vy/+Co3stop3KBHARfn/giv+Lj1uUnTfOJ3moFEQ==}
 
-  react-intl@10.1.12:
-    resolution: {integrity: sha512-gD/qJFR4ea3jv+5nuQQX+KSzepZOk3GXeg1xEFdkAaU8FRvWfgOXI8AQLuW0+/zK2pZ9Q0jmtEvNWCzBsYtD1Q==}
+  react-intl@10.1.13:
+    resolution: {integrity: sha512-3aKnIOIPN6CWsu3jqPpYMlJZ2U0Qnxhd42xGWQNdGIknK/gBudWOHSIx9vN4XKkITokJLr7YTgs4yLUGtbvP9g==}
     peerDependencies:
       '@types/react': '19'
       react: '19'
@@ -11965,7 +11965,7 @@ snapshots:
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@10.1.12(@types/react@19.2.17)(react@19.2.7):
+  react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.11
       '@formatjs/intl': 4.1.13

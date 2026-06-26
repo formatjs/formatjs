@@ -17,7 +17,7 @@
     "eslint-plugin-formatjs": "6.4.15",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "react-intl": "10.1.12",
+    "react-intl": "10.1.13",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
