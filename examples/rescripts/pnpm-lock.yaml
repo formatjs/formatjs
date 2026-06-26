@@ -20,8 +20,8 @@ importers:
         specifier: 0.0.11
         version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.4.1(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       babel-plugin-formatjs:
-        specifier: 11.3.11
-        version: 11.3.11
+        specifier: 11.3.13
+        version: 11.3.13
       eslint-plugin-formatjs:
         specifier: 6.4.14
         version: 6.4.14(eslint@10.4.1(jiti@1.21.7))
@@ -933,6 +933,15 @@ packages:
       ts-jest:
         optional: true
 
+  '@formatjs/ts-transformer@4.4.13':
+    resolution: {integrity: sha512-MQZyDrwULZ7MrJz6ar4cuCWCVn8HTlEXMEJffZfhpGJMI+RLx6WwmM7aCGeVa7q3rcV9ChAGFym5Bm2ZBUwV8A==}
+    engines: {node: '>= 20.12.0'}
+    peerDependencies:
+      ts-jest: ^29
+    peerDependenciesMeta:
+      ts-jest:
+        optional: true
+
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
     engines: {node: '>=18.18.0'}
@@ -1786,8 +1795,8 @@ packages:
       '@babel/core': ^7.0.0
       webpack: '>=2'
 
-  babel-plugin-formatjs@11.3.11:
-    resolution: {integrity: sha512-A9cUjAe2El4XiQowwVIneBUdoIrOZ+/j366w6TJIRC8Wt0P55/FydusOrsBSSnMBmhKIqXF8/uL8uS8bJs3Uvg==}
+  babel-plugin-formatjs@11.3.13:
+    resolution: {integrity: sha512-R6GZ2bFgn4+9+yQQj/6c2DY++dXazrJCWG1Rq0aRBmKqg1jtS2vF1xsghtEEvDbWytt+6VG7iMXnslvlfVz0ZQ==}
 
   babel-plugin-istanbul@6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
@@ -7178,6 +7187,14 @@ snapshots:
       json-stable-stringify: 1.3.0
       typescript: 6.0.3
 
+  '@formatjs/ts-transformer@4.4.13':
+    dependencies:
+      '@formatjs/icu-messageformat-parser': 3.5.11
+      '@types/babel__core': 7.20.5
+      '@types/node': 24.12.4
+      json-stable-stringify: 1.3.0
+      typescript: 6.0.3
+
   '@humanfs/core@0.19.2':
     dependencies:
       '@humanfs/types': 0.15.0
@@ -8237,7 +8254,7 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.107.2(postcss@8.5.15)
 
-  babel-plugin-formatjs@11.3.11:
+  babel-plugin-formatjs@11.3.13:
     dependencies:
       '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
@@ -8245,7 +8262,7 @@ snapshots:
       '@babel/traverse': 7.29.7
       '@babel/types': 7.29.7
       '@formatjs/icu-messageformat-parser': 3.5.11
-      '@formatjs/ts-transformer': 4.4.12
+      '@formatjs/ts-transformer': 4.4.13
       '@types/babel__core': 7.20.5
       '@types/babel__helper-plugin-utils': 7.10.3
       '@types/babel__traverse': 7.28.0
