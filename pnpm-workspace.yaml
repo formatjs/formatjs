@@ -9,8 +9,11 @@ packages:
   - 'benchmarks/*'
   - '!packages/editor'
 
+catalog:
+  vite: ^8.0.0
+
 overrides:
-  '@tailwindcss/vite>vite': $vite
+  '@tailwindcss/vite>vite': 'catalog:'
 
 packageExtensions:
   '@vue/compiler-core':
