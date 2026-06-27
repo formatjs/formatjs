@@ -37,6 +37,6 @@
   "packages/vue-intl": "7.2.11",
   "crates/icu_skeleton_parser": "0.1.1",
   "crates/icu_messageformat_parser": "0.2.4",
-  "crates/formatjs_cli": "1.1.17",
-  "crates/formatjs_cli_napi": "0.0.8"
+  "crates/formatjs_cli": "1.1.18",
+  "crates/formatjs_cli_napi": "0.0.9"
 }
