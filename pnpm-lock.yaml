@@ -487,8 +487,6 @@ importers:
 
   benchmarks/cli-comparison: {}
 
-  docs: {}
-
   docs:
     devDependencies:
       intl-messageformat:
