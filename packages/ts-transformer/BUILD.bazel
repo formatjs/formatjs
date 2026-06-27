@@ -49,7 +49,7 @@ formatjs_library(
     license = "MIT",
     main = "index.js",
     package_dependency_version_overrides = {
-        "typescript": "^5.6 || 6",
+        "typescript": "^5.6 || 6 || 7",
     },
     package_peer_deps = [
         "//:node_modules/ts-jest",

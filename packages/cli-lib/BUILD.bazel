@@ -65,7 +65,7 @@ formatjs_library(
     main = "index.js",
     package_dependency_version_overrides = {
         "@glimmer/syntax": "^0.84.3 || ^0.95.0",
-        "typescript": "^5.6 || 6",
+        "typescript": "^5.6 || 6 || 7",
     },
     package_optional_deps = [
         "//:node_modules/@formatjs/cli-native-darwin-arm64",
