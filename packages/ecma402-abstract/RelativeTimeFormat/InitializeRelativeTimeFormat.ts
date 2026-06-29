@@ -86,7 +86,9 @@ export function InitializeRelativeTimeFormat(
   const fields = localeData[r.dataLocale]
   invariant(!!fields, `Missing locale data for ${r.dataLocale}`)
   internalSlots.fields = fields
-  internalSlots.numberFormat = createMemoizedNumberFormat(locales)
+  internalSlots.numberFormat = createMemoizedNumberFormat(locales, {
+    numberingSystem: nu,
+  })
   internalSlots.pluralRules = createMemoizedPluralRules(locales)
   internalSlots.numberingSystem = nu
   return rtf
