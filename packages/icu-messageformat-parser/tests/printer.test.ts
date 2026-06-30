@@ -88,6 +88,38 @@ test('escapes pound signs inside plural literals', function () {
   expect(parse(output)).toEqual(parse(input))
 })
 
+// Adjacent syntax characters must be coalesced into a single quoted span.
+// Quoting each one separately (e.g. `'}''}'` for `}}`) is wrong because ICU
+// reads the `''` between the two spans as an escaped literal apostrophe, so the
+// printed message re-parses to a different string.
+test('coalesces adjacent syntax characters into one quoted span', function () {
+  const input = 'Use }} to close'
+  const output = printAST(parse(input, {requiresOtherClause: false}))
+
+  expect(output).toBe("Use '}}' to close")
+  expect(parse(output, {requiresOtherClause: false})).toEqual(
+    parse(input, {requiresOtherClause: false})
+  )
+})
+
+test('round-trips literal runs of syntax characters', function () {
+  for (const input of ['Use }} to close', 'a }}< b', '}}}', '<}}']) {
+    const output = printAST(parse(input, {requiresOtherClause: false}))
+    expect(parse(output, {requiresOtherClause: false})).toEqual(
+      parse(input, {requiresOtherClause: false})
+    )
+  }
+})
+
+test('doubles a literal apostrophe abutting a quoted span', function () {
+  const input = "a '''}' b"
+  const output = printAST(parse(input, {requiresOtherClause: false}))
+
+  expect(parse(output, {requiresOtherClause: false})).toEqual(
+    parse(input, {requiresOtherClause: false})
+  )
+})
+
 // printAST must emit plural/select branches in a deterministic, source-order-
 // independent order so that auto-generated message ids match the Rust extractor
 // (formatjs_cli) regardless of how branches were authored. See printer.rs:

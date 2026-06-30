@@ -100,11 +100,42 @@ function findBraceSyntaxEnd(message: string, index: number): number {
 function printEscapedMessage(message: string, isInPlural = false): string {
   let result = ''
   let literalStart = 0
+  // Boundaries of the run of consecutive syntax characters currently being
+  // coalesced, or -1 if no run is open.
+  let runStart = -1
+  let runEnd = -1
+
+  // Adjacent syntax characters must be wrapped in a single `'...'` span. ICU
+  // parses the `''` between two separate spans as an escaped literal
+  // apostrophe, so emitting one span per character (e.g. `'}''}'` for `}}`)
+  // re-parses to a different string. A maximal run of consecutive syntax
+  // characters is quoted once (e.g. `'}}'`).
+  function flushRun() {
+    if (runStart === -1) {
+      return
+    }
+    let prefix = message.slice(literalStart, runStart)
+    // A literal apostrophe immediately before the quoted span would otherwise
+    // pair up with the span's opening apostrophe and be read as an escaped
+    // literal apostrophe, so double it.
+    if (prefix[prefix.length - 1] === "'") {
+      prefix += "'"
+    }
+    result += prefix
+    result += quoteSyntaxToken(message.slice(runStart, runEnd))
+    literalStart = runEnd
+    runStart = -1
+    runEnd = -1
+  }
 
   function quoteToken(start: number, end: number) {
-    result += message.slice(literalStart, start)
-    result += quoteSyntaxToken(message.slice(start, end))
-    literalStart = end
+    // Extend the open run if this token is adjacent to it, otherwise flush the
+    // previous run and start a new one.
+    if (runStart === -1 || start !== runEnd) {
+      flushRun()
+      runStart = start
+    }
+    runEnd = end
   }
 
   for (let i = 0; i < message.length; i++) {
@@ -124,6 +155,7 @@ function printEscapedMessage(message: string, isInPlural = false): string {
     }
   }
 
+  flushRun()
   return result + message.slice(literalStart)
 }
 
