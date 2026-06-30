@@ -1,6 +1,6 @@
 # @formatjs/unplugin
 
-Universal build plugin for FormatJS AST transformations. Supports Vite, Webpack, Rollup, esbuild, and Rspack with one codebase.
+Universal build plugin for FormatJS AST transformations. Supports Vite, Webpack, Rollup, esbuild, Rspack, and Rsbuild with one codebase.
 
 Replicates the functionality of `babel-plugin-formatjs` and `@formatjs/ts-transformer` using `oxc-parser` + `magic-string` for fast, compiler-agnostic builds.
 
@@ -91,6 +91,23 @@ module.exports = {
     }),
   ],
 }
+```
+
+### Rsbuild
+
+```ts
+// rsbuild.config.ts
+import {defineConfig} from '@rsbuild/core'
+import formatjs from '@formatjs/unplugin/rsbuild'
+
+export default defineConfig({
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+})
 ```
 
 ## Options

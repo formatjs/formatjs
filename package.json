@@ -126,7 +126,7 @@
     "tsd": "^0.33.0",
     "typescript": "6.0.3",
     "typesense": "3.0.6",
-    "unplugin": "^3.0.0",
+    "unplugin": "^3.3.0",
     "vike": "^0.4.251",
     "vike-react": "^0.6.18",
     "vite": "^8.0.0",

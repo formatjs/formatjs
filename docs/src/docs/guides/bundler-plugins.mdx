@@ -178,7 +178,7 @@ React.createElement(FormattedMessage, {
 
 ## Using @formatjs/unplugin (Recommended)
 
-[`@formatjs/unplugin`](/docs/tooling/unplugin) is a universal build plugin that supports **Vite**, **Webpack**, **Rollup**, **esbuild**, and **Rspack** with one package. It provides the same transformations as `babel-plugin-formatjs` without requiring Babel.
+[`@formatjs/unplugin`](/docs/tooling/unplugin) is a universal build plugin that supports **Vite**, **Webpack**, **Rollup**, **esbuild**, **Rspack**, and **Rsbuild** with one package. It provides the same transformations as `babel-plugin-formatjs` without requiring Babel.
 
 <Tabs
   groupId="bundler"
@@ -189,6 +189,7 @@ React.createElement(FormattedMessage, {
   {label: 'Rollup', value: 'rollup'},
   {label: 'esbuild', value: 'esbuild'},
   {label: 'Rspack', value: 'rspack'},
+  {label: 'Rsbuild', value: 'rsbuild'},
 ]}>
 <TabItem value="vite">
 
@@ -273,6 +274,24 @@ module.exports = {
     }),
   ],
 }
+```
+
+</TabItem>
+<TabItem value="rsbuild">
+
+```ts
+// rsbuild.config.ts
+import {defineConfig} from '@rsbuild/core'
+import formatjs from '@formatjs/unplugin/rsbuild'
+
+export default defineConfig({
+  plugins: [
+    formatjs({
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }),
+  ],
+})
 ```
 
 </TabItem>
