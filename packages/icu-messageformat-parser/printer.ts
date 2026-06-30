@@ -100,11 +100,33 @@ function findBraceSyntaxEnd(message: string, index: number): number {
 function printEscapedMessage(message: string, isInPlural = false): string {
   let result = ''
   let literalStart = 0
+  let quotedStart = -1
+  let quotedEnd = -1
+
+  function flushQuotedToken() {
+    if (quotedStart === -1) {
+      return
+    }
+
+    const literal = message.slice(literalStart, quotedStart)
+    result += literal
+    if (literal.endsWith("'")) {
+      result += "'"
+    }
+    result += quoteSyntaxToken(message.slice(quotedStart, quotedEnd))
+    literalStart = quotedEnd
+    quotedStart = -1
+  }
 
   function quoteToken(start: number, end: number) {
-    result += message.slice(literalStart, start)
-    result += quoteSyntaxToken(message.slice(start, end))
-    literalStart = end
+    if (quotedStart !== -1 && start === quotedEnd) {
+      quotedEnd = end
+      return
+    }
+
+    flushQuotedToken()
+    quotedStart = start
+    quotedEnd = end
   }
 
   for (let i = 0; i < message.length; i++) {
@@ -124,6 +146,7 @@ function printEscapedMessage(message: string, isInPlural = false): string {
     }
   }
 
+  flushQuotedToken()
   return result + message.slice(literalStart)
 }
 

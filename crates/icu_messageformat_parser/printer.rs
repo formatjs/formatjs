@@ -121,10 +121,33 @@ fn find_brace_syntax_end(bytes: &[u8], index: usize) -> usize {
     }
 }
 
+fn flush_quoted_syntax_token(
+    out: &mut String,
+    message: &str,
+    literal_start: &mut usize,
+    quoted_start: &mut Option<usize>,
+    quoted_end: usize,
+) {
+    let Some(start) = *quoted_start else {
+        return;
+    };
+
+    let literal = &message[*literal_start..start];
+    out.push_str(literal);
+    if literal.ends_with('\'') {
+        out.push('\'');
+    }
+    write_quoted_syntax_token(out, &message[start..quoted_end]);
+    *literal_start = quoted_end;
+    *quoted_start = None;
+}
+
 /// Escapes ICU syntax tokens in a literal message string.
 fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
     let bytes = message.as_bytes();
     let mut literal_start = 0;
+    let mut quoted_start = None;
+    let mut quoted_end = 0;
     let mut i = 0;
 
     while i < bytes.len() {
@@ -137,15 +160,32 @@ fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
         };
 
         if let Some(end) = end {
-            out.push_str(&message[literal_start..i]);
-            write_quoted_syntax_token(out, &message[i..end]);
-            literal_start = end;
+            if quoted_start.is_some() && i == quoted_end {
+                quoted_end = end;
+            } else {
+                flush_quoted_syntax_token(
+                    out,
+                    message,
+                    &mut literal_start,
+                    &mut quoted_start,
+                    quoted_end,
+                );
+                quoted_start = Some(i);
+                quoted_end = end;
+            }
             i = end;
         } else {
             i += 1;
         }
     }
 
+    flush_quoted_syntax_token(
+        out,
+        message,
+        &mut literal_start,
+        &mut quoted_start,
+        quoted_end,
+    );
     out.push_str(&message[literal_start..]);
 }
 
@@ -468,6 +508,13 @@ fn write_plural_element(out: &mut String, el: &PluralElement) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::parser::{Parser, ParserOptions};
+
+    fn parse_message(message: &str) -> Vec<MessageFormatElement> {
+        Parser::new(message, ParserOptions::default())
+            .parse()
+            .expect("message should parse")
+    }
 
     #[test]
     fn test_print_literal() {
@@ -511,6 +558,31 @@ mod tests {
             print_ast(&ast),
             "This is '<b>'HTML'</b>' and '<i>'XML'</i>'."
         );
+    }
+
+    #[test]
+    fn test_print_adjacent_syntax_as_one_quoted_span() {
+        let ast = parse_message("Use }} to close");
+
+        assert_eq!(print_ast(&ast), "Use '}}' to close");
+    }
+
+    #[test]
+    fn test_print_literal_syntax_runs_round_trip() {
+        for input in ["Use }} to close", "a }}< b", "}}}", "<}}", "'{a}{b}'"] {
+            let ast = parse_message(input);
+            let output = print_ast(&ast);
+
+            assert_eq!(parse_message(&output), ast, "printed message: {output}");
+        }
+    }
+
+    #[test]
+    fn test_print_apostrophe_before_quoted_span_round_trip() {
+        let ast = parse_message("a '''}' b");
+        let output = print_ast(&ast);
+
+        assert_eq!(parse_message(&output), ast);
     }
 
     #[test]

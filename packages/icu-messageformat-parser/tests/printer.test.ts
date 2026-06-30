@@ -88,6 +88,40 @@ test('escapes pound signs inside plural literals', function () {
   expect(parse(output)).toEqual(parse(input))
 })
 
+test('coalesces adjacent syntax characters into one quoted span', function () {
+  const input = 'Use }} to close'
+  const output = printAST(parse(input, {requiresOtherClause: false}))
+
+  expect(output).toBe("Use '}}' to close")
+  expect(parse(output, {requiresOtherClause: false})).toEqual(
+    parse(input, {requiresOtherClause: false})
+  )
+})
+
+test('round-trips literal runs of syntax characters', function () {
+  for (const input of [
+    'Use }} to close',
+    'a }}< b',
+    '}}}',
+    '<}}',
+    "'{a}{b}'",
+  ]) {
+    const output = printAST(parse(input, {requiresOtherClause: false}))
+    expect(parse(output, {requiresOtherClause: false})).toEqual(
+      parse(input, {requiresOtherClause: false})
+    )
+  }
+})
+
+test('doubles a literal apostrophe abutting a quoted span', function () {
+  const input = "a '''}' b"
+  const output = printAST(parse(input, {requiresOtherClause: false}))
+
+  expect(parse(output, {requiresOtherClause: false})).toEqual(
+    parse(input, {requiresOtherClause: false})
+  )
+})
+
 // printAST must emit plural/select branches in a deterministic, source-order-
 // independent order so that auto-generated message ids match the Rust extractor
 // (formatjs_cli) regardless of how branches were authored. See printer.rs:
