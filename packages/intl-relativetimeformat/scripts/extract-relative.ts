@@ -79,7 +79,17 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
   const dateFileds = dateFiledsImport.default
   const numbers = numbersImport?.default
   const fields = dateFileds.main[locale as 'en'].dates.fields
-  const nu = numbers?.main[locale as 'en'].numbers.defaultNumberingSystem
+  const defaultNumberingSystem =
+    numbers?.main[locale as 'en'].numbers.defaultNumberingSystem
+  // RelativeTimeFormat resolves the `numberingSystem` option through the
+  // locale-data [[nu]] list. Keep the locale default first, but also expose
+  // `latn` so an explicit `numberingSystem: 'latn'` override is honored for
+  // locales whose default digits are non-latn.
+  const nu = defaultNumberingSystem
+    ? defaultNumberingSystem === 'latn'
+      ? ['latn']
+      : [defaultNumberingSystem, 'latn']
+    : []
 
   // Reduce the date fields data down to allowlist of fields needed in the
   // FormatJS libs.
@@ -92,7 +102,7 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
       return relative
     },
     {
-      nu: [nu],
+      nu,
     } as LocaleFieldsData
   )
 }
