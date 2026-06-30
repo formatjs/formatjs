@@ -225,7 +225,7 @@
   },
   "tooling/unplugin": {
     "title": "Unplugin",
-    "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, and Rspack with one codebase."
+    "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, Rspack, and Rsbuild with one codebase."
   },
   "vue-intl": {
     "title": "Vue Intl",
