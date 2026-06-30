@@ -165,6 +165,17 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     )
   })
 
+  test('adjacent literal syntax stays parseable after flattening', async () => {
+    await assertConformance(
+      `defineMessages({
+  example: {
+    defaultMessage: 'Use }} to close',
+  },
+})`,
+      'adjacent-literal-syntax.tsx'
+    )
+  })
+
   test('TypeScript satisfies expressions are transparent for extraction', async () => {
     await assertConformance(
       `type DefaultMessage = string

@@ -17,6 +17,15 @@ java_binary(
 )
 
 java_test(
+    name = "messageformat_escaping_conformance_test",
+    size = "small",
+    srcs = ["MessageFormatEscapingConformanceTest.java"],
+    main_class = "MessageFormatEscapingConformanceTest",
+    test_class = "MessageFormatEscapingConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_test(
     name = "intl_collator_conformance_test",
     size = "small",
     srcs = ["IntlCollatorConformanceTest.java"],

@@ -88,10 +88,6 @@ test('escapes pound signs inside plural literals', function () {
   expect(parse(output)).toEqual(parse(input))
 })
 
-// Adjacent syntax characters must be coalesced into a single quoted span.
-// Quoting each one separately (e.g. `'}''}'` for `}}`) is wrong because ICU
-// reads the `''` between the two spans as an escaped literal apostrophe, so the
-// printed message re-parses to a different string.
 test('coalesces adjacent syntax characters into one quoted span', function () {
   const input = 'Use }} to close'
   const output = printAST(parse(input, {requiresOtherClause: false}))
@@ -103,7 +99,13 @@ test('coalesces adjacent syntax characters into one quoted span', function () {
 })
 
 test('round-trips literal runs of syntax characters', function () {
-  for (const input of ['Use }} to close', 'a }}< b', '}}}', '<}}']) {
+  for (const input of [
+    'Use }} to close',
+    'a }}< b',
+    '}}}',
+    '<}}',
+    "'{a}{b}'",
+  ]) {
     const output = printAST(parse(input, {requiresOtherClause: false}))
     expect(parse(output, {requiresOtherClause: false})).toEqual(
       parse(input, {requiresOtherClause: false})
