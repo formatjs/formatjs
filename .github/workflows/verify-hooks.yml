@@ -29,27 +29,12 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
-      - name: Get Changed Files
-        id: changed-files
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch origin ${{ github.base_ref }}
-            echo "files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
-          else
-            # For push events, check the last commit
-            echo "files=$(git diff --name-only HEAD~1 HEAD | tr '\n' ' ')" >> $GITHUB_OUTPUT
-          fi
+      - name: Build Lefthook
+        run: bazel build //:lefthook
 
-      - name: Run Lefthook on Changed Files
-        if: steps.changed-files.outputs.files != ''
+      - name: Run Lefthook
         run: |
-          # Only stage files that exist (not deleted files)
-          for file in ${{ steps.changed-files.outputs.files }}; do
-            if [ -f "$file" ]; then
-              git add "$file"
-            fi
-          done
-          JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run pre-commit
+          BAZEL_BINDIR=. JS_BINARY__CHDIR="$PWD" bazel-bin/lefthook_/lefthook run pre-commit --all-files
           if [ -n "$(git status --porcelain)" ]; then
             echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
             git diff
@@ -66,6 +51,6 @@ jobs:
             echo "Validating commit: $(git log -1 --oneline $commit)"
             msg_file=$(mktemp)
             git log -1 --format=%B $commit > "$msg_file"
-            JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run commit-msg "$msg_file"
+            BAZEL_BINDIR=. JS_BINARY__CHDIR="$PWD" bazel-bin/lefthook_/lefthook run commit-msg "$msg_file"
             rm "$msg_file"
           done
