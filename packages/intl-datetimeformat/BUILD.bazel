@@ -1,5 +1,4 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -10,8 +9,6 @@ load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_tz_data")
 load(":locales.generated.bzl", "ALL_LOCALES")
-
-npm_link_all_packages()
 
 PACKAGE_NAME = "intl-datetimeformat"
 

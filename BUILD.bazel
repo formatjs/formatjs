@@ -11,7 +11,7 @@ load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@npm//:oxlint/package_json.bzl", oxlint = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES", "RELEASE_PLEASE_NPM_PACKAGES")
-load("//tools:generated_packages.bzl", "link_all_generated_packages")
+load("//tools:generated_packages.bzl", "link_all_generated_packages", "link_all_workspace_packages")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
@@ -67,6 +67,8 @@ gazelle(
 npm_link_all_packages()
 
 link_all_generated_packages()
+
+link_all_workspace_packages()
 
 exports_files(
     [

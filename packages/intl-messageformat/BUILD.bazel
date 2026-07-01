@@ -1,11 +1,8 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
-
-npm_link_all_packages()
 
 PACKAGE_NAME = "intl-messageformat"
 

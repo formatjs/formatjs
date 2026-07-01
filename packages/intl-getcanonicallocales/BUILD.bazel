@@ -1,10 +1,7 @@
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
-
-npm_link_all_packages()
 
 PACKAGE_NAME = "intl-getcanonicallocales"
 

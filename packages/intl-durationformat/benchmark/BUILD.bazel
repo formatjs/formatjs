@@ -1,5 +1,4 @@
 # gazelle:ignore
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:package_json.bzl", "generate_package_json")
 
@@ -8,8 +7,6 @@ generate_package_json(
     private = True,
     version = "1.0.0",
 )
-
-npm_link_all_packages()
 
 ts_binary(
     name = "benchmark",

@@ -1,7 +1,6 @@
 # gazelle:ignore
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", "bin")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -11,8 +10,6 @@ generate_package_json(
     package_name = "examples",
     private = True,
 )
-
-npm_link_all_packages()
 
 EXAMPLES_SRC_DEPS = [
     "//packages/ecma402-abstract",
