@@ -67,6 +67,7 @@ export function IcuEditor({
           </label>
           <textarea
             id="icu-message-input"
+            aria-label="ICU Message"
             className="flex w-full rounded-md border border-purple-500/30 bg-gray-950/50 px-4 py-3 text-base shadow-sm placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:border-purple-500 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px] text-gray-200 font-mono transition-all"
             value={message}
             onChange={e => setMessage(e.target.value)}

@@ -79,12 +79,12 @@ path = "src/main.rs"
 
 ## Platform Support
 
-| Platform | Architecture  | Target Triple                | Status                           |
-| -------- | ------------- | ---------------------------- | -------------------------------- |
-| macOS    | Apple Silicon | aarch64-apple-darwin         | ✅ LLVM cross target             |
-| Linux    | ARM64         | aarch64-unknown-linux-musl   | ✅ LLVM cross target             |
-| Linux    | x86_64        | x86_64-unknown-linux-musl    | ✅ LLVM cross target             |
-| Windows  | x86_64        | x86_64-pc-windows-gnullvm    | ✅ LLVM cross target             |
+| Platform | Architecture  | Target Triple              | Status               |
+| -------- | ------------- | -------------------------- | -------------------- |
+| macOS    | Apple Silicon | aarch64-apple-darwin       | ✅ LLVM cross target |
+| Linux    | ARM64         | aarch64-unknown-linux-musl | ✅ LLVM cross target |
+| Linux    | x86_64        | x86_64-unknown-linux-musl  | ✅ LLVM cross target |
+| Windows  | x86_64        | x86_64-pc-windows-gnullvm  | ✅ LLVM cross target |
 
 **Note**: The GitHub Actions workflow builds release artifacts through Bazel targets on Linux BuildBuddy RBE when credentials are available. Linux release binaries use musl targets for static artifacts; the standalone Windows CLI uses the LLVM gnullvm target and is smoke-tested on a Windows runner.
 

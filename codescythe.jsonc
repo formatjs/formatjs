@@ -84,6 +84,7 @@
     "packages/unplugin/webpack.ts",
     "packages/unplugin/rollup.ts",
     "packages/unplugin/esbuild.ts",
+    "packages/unplugin/rsbuild.ts",
     "packages/unplugin/rspack.ts",
     "packages/unplugin/transform.ts",
     "packages/utils/index.ts",

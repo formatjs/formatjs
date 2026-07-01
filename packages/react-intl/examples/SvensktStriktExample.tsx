@@ -49,7 +49,10 @@ export default function SvensktStriktExample(): JSX.Element {
           <FormattedMessage id="title" defaultMessage="Hej FormatJS" />
         </h1>
         <h2>
-          <FormattedMessage id="content" defaultMessage="Börja redigera för att se lite magi hända!" />
+          <FormattedMessage
+            id="content"
+            defaultMessage="Börja redigera för att se lite magi hända!"
+          />
         </h2>
         <p>
           <FormattedMessage

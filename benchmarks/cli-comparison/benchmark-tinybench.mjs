@@ -195,7 +195,7 @@ function getRme(result) {
 
 function getMarginOfError(result) {
   const latency = getLatency(result)
-  return latency.moe ?? ((latency.rme / 100) * latency.mean)
+  return latency.moe ?? (latency.rme / 100) * latency.mean
 }
 
 function getSampleCount(result) {

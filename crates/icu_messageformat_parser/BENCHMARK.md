@@ -72,12 +72,12 @@ Build mode: `-c opt` (optimized/release)
 
 Comparing with the JavaScript/TypeScript implementation (from `packages/icu-messageformat-parser/benchmark/benchmark.ts`):
 
-| Message Type | JavaScript (V8)   | Rust (opt)             | Winner              |
-| ------------ | ----------------- | ---------------------- | ------------------- |
-| complex_msg  | 48,112 ops/sec    | **106,067 ops/sec**    | **Rust +120.5%**    |
-| normal_msg   | 337,642 ops/sec   | **849,617 ops/sec**    | **Rust +151.6%**    |
-| simple_msg   | 1,910,194 ops/sec | **6,535,948 ops/sec**  | **Rust +242.2%**    |
-| string_msg   | 7,461,955 ops/sec | **16,949,153 ops/sec** | **Rust +127.1%**    |
+| Message Type | JavaScript (V8)   | Rust (opt)             | Winner           |
+| ------------ | ----------------- | ---------------------- | ---------------- |
+| complex_msg  | 48,112 ops/sec    | **106,067 ops/sec**    | **Rust +120.5%** |
+| normal_msg   | 337,642 ops/sec   | **849,617 ops/sec**    | **Rust +151.6%** |
+| simple_msg   | 1,910,194 ops/sec | **6,535,948 ops/sec**  | **Rust +242.2%** |
+| string_msg   | 7,461,955 ops/sec | **16,949,153 ops/sec** | **Rust +127.1%** |
 
 **Key takeaways**:
 

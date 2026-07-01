@@ -2,7 +2,7 @@
 const intl = {} as any
 
 function getUsers(): Array<string> | undefined {
-  return undefined;
+  return undefined
 }
 
 // GH #4471: Test optional chaining with generics
@@ -39,12 +39,12 @@ export function testOptionalChainingWithGenerics(): void {
   })
 
   // Case 6: formatMessage nested in a callback inside an optional chain.
-  getUsers()?.map(() =>
-    intl.formatMessage(
-      {
+  getUsers()
+    ?.map(() =>
+      intl.formatMessage({
         defaultMessage: 'In a callback inside an optional chain',
         description: 'Test callbacks inside an optional chain',
-      },
-    ),
-  ).join(', ')
+      })
+    )
+    .join(', ')
 }

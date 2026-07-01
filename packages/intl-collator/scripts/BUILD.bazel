@@ -19,8 +19,8 @@ formatjs_test(
         "parse-ldml-collation.test.ts",
         "parse-uca.test.ts",
         ":parsers",
-        "//:node_modules/vitest",
         "//:node_modules/fast-xml-parser",
+        "//:node_modules/vitest",
     ],
     no_copy_to_bin = ["//:package.json"],
 )
@@ -50,9 +50,9 @@ ts_binary(
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
+        "//:node_modules/fast-xml-parser",
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
-        "//:node_modules/fast-xml-parser",
     ],
     entry_point = "generate-locale-data.ts",
     visibility = [
@@ -67,9 +67,9 @@ ts_binary(
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
+        "//:node_modules/fast-xml-parser",
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
-        "//:node_modules/fast-xml-parser",
     ],
     entry_point = "generate-tailoring-data.ts",
     visibility = [

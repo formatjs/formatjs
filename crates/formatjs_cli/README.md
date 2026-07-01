@@ -26,10 +26,10 @@ The native Rust CLI offers significant advantages over the Node.js-based `@forma
 
 **Catalog benchmark results** (20,000 generated messages, Apple Silicon, 2026-05-25; includes process startup and JSON I/O):
 
-| Workflow                        | Before   | After    | Improvement          |
-| ------------------------------- | -------- | -------- | -------------------- |
-| `compile --ast`                 | 180.9 ms | 121.1 ms | 33.1% lower latency  |
-| `verify --structural-equality`  | 373.3 ms | 228.8 ms | 38.7% lower latency  |
+| Workflow                       | Before   | After    | Improvement         |
+| ------------------------------ | -------- | -------- | ------------------- |
+| `compile --ast`                | 180.9 ms | 121.1 ms | 33.1% lower latency |
+| `verify --structural-equality` | 373.3 ms | 228.8 ms | 38.7% lower latency |
 
 The native CLI aims to match `@formatjs/cli` for supported workflows. Some Node-specific behavior is intentionally not available in the standalone Rust binary, including loading arbitrary JavaScript formatter files with `--format`.
 

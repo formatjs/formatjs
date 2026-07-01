@@ -65,13 +65,7 @@ export const Collator = function (
   // https://tc39.es/ecma402/#sec-initializecollator
   const requestedLocales = CanonicalizeLocaleList(locales)
   const opts = options === undefined ? Object.create(null) : ToObject(options)
-  const usage = GetOption(
-    opts,
-    'usage',
-    'string',
-    ['sort', 'search'],
-    'sort'
-  )
+  const usage = GetOption(opts, 'usage', 'string', ['sort', 'search'], 'sort')
   const matcher = GetOption(
     opts,
     'localeMatcher',
@@ -89,13 +83,7 @@ export const Collator = function (
   )
   const opt = Object.create(null)
   opt.localeMatcher = matcher
-  const collation = GetOption(
-    opts,
-    'collation',
-    'string',
-    undefined,
-    undefined
-  )
+  const collation = GetOption(opts, 'collation', 'string', undefined, undefined)
   if (typeof collation === 'string') {
     opt.co = collation
   }
@@ -168,16 +156,12 @@ Object.defineProperty(Collator, 'supportedLocalesOf', {
 Object.defineProperty(Collator.prototype, 'compare', {
   configurable: true,
   get(this: CollatorType) {
-    if (
-      typeof this !== 'object' ||
-      !OrdinaryHasInstance(Collator, this)
-    ) {
+    if (typeof this !== 'object' || !OrdinaryHasInstance(Collator, this)) {
       throw TypeError(
         'Intl.Collator compare property accessor called on incompatible receiver'
       )
     }
-    const collator = this
-    const internalSlots = getInternalSlots(collator)
+    const internalSlots = getInternalSlots(this)
     let boundCompare = internalSlots.boundCompare
     if (boundCompare === undefined) {
       // Collator Compare Functions convert both arguments with ToString and
@@ -194,10 +178,7 @@ Object.defineProperty(Collator.prototype, 'compare', {
 
 Object.defineProperty(Collator.prototype, 'resolvedOptions', {
   value: function resolvedOptions(this: CollatorType): ResolvedCollatorOptions {
-    if (
-      typeof this !== 'object' ||
-      !OrdinaryHasInstance(Collator, this)
-    ) {
+    if (typeof this !== 'object' || !OrdinaryHasInstance(Collator, this)) {
       throw TypeError(
         'Method Intl.Collator.prototype.resolvedOptions called on incompatible receiver'
       )
@@ -242,7 +223,6 @@ try {
     enumerable: false,
     configurable: true,
   })
-} catch {
-}
+} catch {}
 
 ensureIntl()

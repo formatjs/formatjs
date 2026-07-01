@@ -1,7 +1,18 @@
 const {FuzzedDataProvider} = require('@jazzer.js/core')
 const {IntlMessageFormat} = require('intl-messageformat')
 
-const LOCALES = ['en', 'en-US', 'fr', 'de', 'es', 'ja', 'zh', 'ar', 'pt-BR', 'ru']
+const LOCALES = [
+  'en',
+  'en-US',
+  'fr',
+  'de',
+  'es',
+  'ja',
+  'zh',
+  'ar',
+  'pt-BR',
+  'ru',
+]
 
 module.exports.fuzz = function (data) {
   const fdp = new FuzzedDataProvider(data)

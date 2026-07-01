@@ -64,9 +64,7 @@ describe('UCA parser', () => {
 
   it('parses UCA data lines', () => {
     expect(
-      parseUCALine(
-        '0061 ; [.1C47.0020.0002] # LATIN SMALL LETTER A'
-      )
+      parseUCALine('0061 ; [.1C47.0020.0002] # LATIN SMALL LETTER A')
     ).toEqual({
       codePoints: [0x61],
       elements: [
