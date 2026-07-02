@@ -29,12 +29,9 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
-      - name: Build Lefthook
-        run: bazel build //:lefthook
-
       - name: Run Lefthook
         run: |
-          BAZEL_BINDIR=. JS_BINARY__CHDIR="$PWD" bazel-bin/lefthook_/lefthook run pre-commit --all-files
+          JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run pre-commit --all-files
           if [ -n "$(git status --porcelain)" ]; then
             echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
             git diff
@@ -51,6 +48,6 @@ jobs:
             echo "Validating commit: $(git log -1 --oneline $commit)"
             msg_file=$(mktemp)
             git log -1 --format=%B $commit > "$msg_file"
-            BAZEL_BINDIR=. JS_BINARY__CHDIR="$PWD" bazel-bin/lefthook_/lefthook run commit-msg "$msg_file"
+            JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run commit-msg "$msg_file"
             rm "$msg_file"
           done
