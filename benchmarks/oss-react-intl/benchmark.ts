@@ -7,7 +7,9 @@ import os from 'node:os'
 import path from 'node:path'
 import {performance} from 'node:perf_hooks'
 
-const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'formatjs-oss-react-intl-'))
+const outputDir = fs.mkdtempSync(
+  path.join(os.tmpdir(), 'formatjs-oss-react-intl-')
+)
 
 type Corpus = {
   name: string
@@ -166,13 +168,21 @@ for (const item of corpus) {
   const rustTimes: number[] = []
   let rustMessages = 0
   for (let i = 0; i < warmupIterations; i++) {
-    const outputFile = path.join(outputDir, `${item.name}-rust-warmup-${i}.json`)
+    const outputFile = path.join(
+      outputDir,
+      `${item.name}-rust-warmup-${i}.json`
+    )
     runCli(rustCli, ['extract', ...patterns, '--out-file', outputFile])
     fs.unlinkSync(outputFile)
   }
   for (let i = 0; i < iterations; i++) {
     const outputFile = path.join(outputDir, `${item.name}-rust-${i}.json`)
-    const elapsed = runCli(rustCli, ['extract', ...patterns, '--out-file', outputFile])
+    const elapsed = runCli(rustCli, [
+      'extract',
+      ...patterns,
+      '--out-file',
+      outputFile,
+    ])
     rustTimes.push(elapsed)
     if (i === 0) {
       rustMessages = countMessages(outputFile)
@@ -184,13 +194,24 @@ for (const item of corpus) {
   let tsMessages = 0
   if (includeTypeScript) {
     for (let i = 0; i < warmupIterations; i++) {
-      const outputFile = path.join(outputDir, `${item.name}-typescript-warmup-${i}.json`)
+      const outputFile = path.join(
+        outputDir,
+        `${item.name}-typescript-warmup-${i}.json`
+      )
       runCli(tsCli, ['extract', ...patterns, '--out-file', outputFile])
       fs.unlinkSync(outputFile)
     }
     for (let i = 0; i < iterations; i++) {
-      const outputFile = path.join(outputDir, `${item.name}-typescript-${i}.json`)
-      const elapsed = runCli(tsCli, ['extract', ...patterns, '--out-file', outputFile])
+      const outputFile = path.join(
+        outputDir,
+        `${item.name}-typescript-${i}.json`
+      )
+      const elapsed = runCli(tsCli, [
+        'extract',
+        ...patterns,
+        '--out-file',
+        outputFile,
+      ])
       tsTimes.push(elapsed)
       if (i === 0) {
         tsMessages = countMessages(outputFile)

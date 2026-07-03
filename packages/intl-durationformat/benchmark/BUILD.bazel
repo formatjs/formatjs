@@ -5,8 +5,8 @@ load("//tools:package_json.bzl", "generate_package_json")
 
 generate_package_json(
     package_name = "intl-durationformat-benchmark",
-    version = "1.0.0",
     private = True,
+    version = "1.0.0",
 )
 
 npm_link_all_packages()

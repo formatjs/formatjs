@@ -27,14 +27,14 @@ The benchmark:
 
 ### Results (1,000 files, 9,406 messages)
 
-| Metric                 | TypeScript | Rust     | Speedup   |
-| ---------------------- | ---------- | -------- | --------- |
-| **Mean Time**          | 744.86ms   | 35.65ms  | **20.90x** |
-| **Operations/sec**     | 1.34       | 28.05    | **20.90x** |
-| **Messages/sec**       | 12,628     | 263,876  | **20.90x** |
-| **Margin of Error**    | ±39.47ms   | ±0.56ms  | -         |
-| **Samples**            | 7          | 141      | -         |
-| **Messages Extracted** | 9,406      | 9,406    | ✓         |
+| Metric                 | TypeScript | Rust    | Speedup    |
+| ---------------------- | ---------- | ------- | ---------- |
+| **Mean Time**          | 744.86ms   | 35.65ms | **20.90x** |
+| **Operations/sec**     | 1.34       | 28.05   | **20.90x** |
+| **Messages/sec**       | 12,628     | 263,876 | **20.90x** |
+| **Margin of Error**    | ±39.47ms   | ±0.56ms | -          |
+| **Samples**            | 7          | 141     | -          |
+| **Messages Extracted** | 9,406      | 9,406   | ✓          |
 
 **Summary**: The Rust CLI is **20.90x faster** (1,989.6% faster) than the TypeScript CLI, processing 263,876 messages/second vs 12,628 messages/second.
 

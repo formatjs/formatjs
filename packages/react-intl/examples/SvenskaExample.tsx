@@ -158,10 +158,7 @@ const SvensktInnehåll = (): JSX.Element => {
       </p>
 
       <h3>
-        <FormattedMessage
-          id="pluralHeading"
-          defaultMessage="Pluralformer"
-        />
+        <FormattedMessage id="pluralHeading" defaultMessage="Pluralformer" />
       </h3>
       {[0, 1, 2, 5].map(count => (
         <p key={count}>

@@ -287,6 +287,7 @@ export function SearchBar(): React.ReactNode {
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
               type="text"
+              aria-label="Search docs"
               placeholder="Search docs..."
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}

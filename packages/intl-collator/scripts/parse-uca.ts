@@ -78,9 +78,7 @@ export function parseCodePointSequence(input: string): number[] {
   return codePoints
 }
 
-export function parseCollationElement(
-  input: string
-): ParsedCollationElement {
+export function parseCollationElement(input: string): ParsedCollationElement {
   // Collation elements expose primary, secondary, tertiary, and quaternary
   // weights. A leading "*" marks variable elements for shifted handling.
   // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison

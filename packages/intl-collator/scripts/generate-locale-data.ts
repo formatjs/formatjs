@@ -13,7 +13,8 @@ type GeneratedLocaleData = {
   readonly ignorePunctuation: false
 }
 
-const DEFAULT_COLLATION_RE = /<defaultCollation\b[^>]*>([^<]+)<\/defaultCollation>/i
+const DEFAULT_COLLATION_RE =
+  /<defaultCollation\b[^>]*>([^<]+)<\/defaultCollation>/i
 const UNDERSCORE_RE = /_/g
 const WHITESPACE_RE = /\s+/g
 
@@ -42,7 +43,10 @@ function collationPathsFromCopyConfig(dir: string): string[] {
   const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
     files: Array<{path: string}>
   }
-  return config.files.map(file => file.path).filter(path => path.endsWith('.xml')).sort()
+  return config.files
+    .map(file => file.path)
+    .filter(path => path.endsWith('.xml'))
+    .sort()
 }
 
 function localeFromPath(path: string): string {
@@ -65,7 +69,9 @@ const argv = minimist(process.argv.slice(2), {
 })
 
 if (!argv.collationDir && !argv.collationPath && !argv.collationPaths) {
-  throw new Error('--collationDir, --collationPath, or --collationPaths is required')
+  throw new Error(
+    '--collationDir, --collationPath, or --collationPaths is required'
+  )
 }
 if (!argv.out) {
   throw new Error('--out is required')
@@ -77,8 +83,8 @@ const paths =
   argv.collationPath !== undefined
     ? collationPathList(argv.collationPath)
     : argv.collationPaths === undefined
-    ? collationPaths(argv.collationDir)
-    : collationPathList(argv.collationPaths)
+      ? collationPaths(argv.collationDir)
+      : collationPathList(argv.collationPaths)
 const resolvedPaths =
   paths.length === 0 && argv.collationDir
     ? collationPathsFromCopyConfig(argv.collationDir)

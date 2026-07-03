@@ -1,6 +1,10 @@
 import {XMLParser} from 'fast-xml-parser'
 
-export type CollationRelationStrength = 'primary' | 'secondary' | 'tertiary' | 'identical'
+export type CollationRelationStrength =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'identical'
 
 export type CollationSetting =
   | {type: 'alternate'; value: string}
@@ -31,7 +35,10 @@ export type CollationRelation = {
   prefix?: string
 }
 
-export type CollationRule = CollationSetting | CollationReset | CollationRelation
+export type CollationRule =
+  | CollationSetting
+  | CollationReset
+  | CollationRelation
 
 export type ParsedLDMLCollation = {
   locale: string
@@ -64,7 +71,9 @@ function trimStart(input: string): string {
   return input.replace(LEADING_WHITESPACE_RE, '')
 }
 
-function readRelationStrength(input: string): CollationRelationStrength | undefined {
+function readRelationStrength(
+  input: string
+): CollationRelationStrength | undefined {
   // LDML relation operators encode strength: < primary, << secondary,
   // <<< tertiary, and = identical.
   // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
@@ -84,11 +93,7 @@ function readRelationStrength(input: string): CollationRelationStrength | undefi
 }
 
 function relationTokenLength(strength: CollationRelationStrength): number {
-  return strength === 'tertiary'
-    ? 3
-    : strength === 'secondary'
-      ? 2
-      : 1
+  return strength === 'tertiary' ? 3 : strength === 'secondary' ? 2 : 1
 }
 
 function starredRelationValues(input: string): string[] {
@@ -139,7 +144,10 @@ function parseSetting(key: string, rawValue = ''): CollationSetting {
     case 'optimize':
       return {type: key, value} as CollationSetting
     case 'reorder':
-      return {type: 'reorder', value: value.split(WHITESPACE_RE).filter(Boolean)}
+      return {
+        type: 'reorder',
+        value: value.split(WHITESPACE_RE).filter(Boolean),
+      }
     default:
       return {type: 'unknown', key, value}
   }

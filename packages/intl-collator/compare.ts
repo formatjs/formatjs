@@ -364,7 +364,9 @@ function tailoringEntries(
   }
   flushRelations()
 
-  entries.sort((left, right) => right.codePoints.length - left.codePoints.length)
+  entries.sort(
+    (left, right) => right.codePoints.length - left.codePoints.length
+  )
   tailoringCache.set(key, entries)
   return entries
 }

@@ -21,15 +21,15 @@ Remove all generated TypeScript data files from git. Generated files become Baze
 
 ## Target Packages
 
-| Package | Data Source | File Count |
-|---|---|---|
-| `@formatjs_generated/cldr.core` | cldr-core supplemental, ISO 4217 | 7 |
-| `@formatjs_generated/cldr.locale` | cldr-core/bcp47/localenames (intl-locale metadata) | 6 |
-| `@formatjs_generated/cldr.number` | cldr-numbers-full (currency/numbering data) | 4 |
-| `@formatjs_generated/cldr.supported-values` | cldr-bcp47/numbers (BCP47 enumerations) | 6 |
-| `@formatjs_generated/cldr.supported-locales` | mixed CLDR full packages (per-polyfill locale lists) | 6 |
-| `@formatjs_generated/tz` | IANA Time Zone Database | 2 |
-| `@formatjs_generated/unicode` | Unicode character data, emoji-data.txt, CLDR segmentation | 6 |
+| Package                                      | Data Source                                               | File Count |
+| -------------------------------------------- | --------------------------------------------------------- | ---------- |
+| `@formatjs_generated/cldr.core`              | cldr-core supplemental, ISO 4217                          | 7          |
+| `@formatjs_generated/cldr.locale`            | cldr-core/bcp47/localenames (intl-locale metadata)        | 6          |
+| `@formatjs_generated/cldr.number`            | cldr-numbers-full (currency/numbering data)               | 4          |
+| `@formatjs_generated/cldr.supported-values`  | cldr-bcp47/numbers (BCP47 enumerations)                   | 6          |
+| `@formatjs_generated/cldr.supported-locales` | mixed CLDR full packages (per-polyfill locale lists)      | 6          |
+| `@formatjs_generated/tz`                     | IANA Time Zone Database                                   | 2          |
+| `@formatjs_generated/unicode`                | Unicode character data, emoji-data.txt, CLDR segmentation | 6          |
 
 Full file listing in `knowledge-base/011-generated-packages.md`.
 
@@ -54,6 +54,7 @@ Full file listing in `knowledge-base/011-generated-packages.md`.
 #### Modified files
 
 6. **`tools/compile.bzl`** — Exclude `@formatjs_generated` from rolldown externals:
+
    ```starlark
    external_packages = [
        dep.split("node_modules/")[1]
@@ -67,6 +68,7 @@ Full file listing in `knowledge-base/011-generated-packages.md`.
 8. **`tools/index.bzl`** — Add `@formatjs_generated/*` path mapping to `generate_ide_tsconfig_json()`.
 
 9. **`tools/gazelle/ts/resolve.go`** — Handle `@formatjs_generated/` imports:
+
    ```go
    if strings.HasPrefix(importPath, "@formatjs_generated/") {
        parts := strings.SplitN(importPath, "/", 3)
@@ -103,6 +105,7 @@ The simplest package: only 2 generated files, both consumed by `intl-datetimefor
    - Add `//:node_modules/@formatjs_generated/tz` to `deps`
 
 3. **`packages/intl-datetimeformat/core.ts`** (and any other consumers):
+
    ```typescript
    // Before
    import links from '#packages/intl-datetimeformat/data/links.generated.js'
@@ -127,14 +130,14 @@ bazel test //...
 
 Migrate all Unicode-derived files across 5 source packages.
 
-| File | Origin Package | Consumer(s) |
-|---|---|---|
-| `ecma402-abstract/regex.ts` | ecma402-abstract | ecma402-abstract, icu-messageformat-parser |
-| `ecma402-abstract/digit-mapping.ts` | ecma402-abstract/NumberFormat | ecma402-abstract/NumberFormat |
-| `icu-messageformat-parser/regex.ts` | icu-messageformat-parser | icu-messageformat-parser |
-| `icu-skeleton-parser/regex.ts` | icu-skeleton-parser | icu-skeleton-parser |
-| `eslint-plugin-formatjs/emoji-data.ts` | eslint-plugin-formatjs | eslint-plugin-formatjs |
-| `intl-segmenter/cldr-segmentation-rules.ts` | intl-segmenter | intl-segmenter |
+| File                                        | Origin Package                | Consumer(s)                                |
+| ------------------------------------------- | ----------------------------- | ------------------------------------------ |
+| `ecma402-abstract/regex.ts`                 | ecma402-abstract              | ecma402-abstract, icu-messageformat-parser |
+| `ecma402-abstract/digit-mapping.ts`         | ecma402-abstract/NumberFormat | ecma402-abstract/NumberFormat              |
+| `icu-messageformat-parser/regex.ts`         | icu-messageformat-parser      | icu-messageformat-parser                   |
+| `icu-skeleton-parser/regex.ts`              | icu-skeleton-parser           | icu-skeleton-parser                        |
+| `eslint-plugin-formatjs/emoji-data.ts`      | eslint-plugin-formatjs        | eslint-plugin-formatjs                     |
+| `intl-segmenter/cldr-segmentation-rules.ts` | intl-segmenter                | intl-segmenter                             |
 
 For each: move `generate_src_file` → `generate_package_file` in `packages/generated/unicode/BUILD.bazel`, update imports, remove from source `srcs`, add dep on `//:node_modules/@formatjs_generated/unicode`.
 
@@ -145,23 +148,28 @@ For each: move `generate_src_file` → `generate_package_file` in `packages/gene
 Migrate one CLDR sub-package at a time.
 
 **3a: `cldr.core`** (7 files) — Supplemental data, canonical names, defaults
+
 - intl-getcanonicallocales/{aliases, likelySubtags}
 - intl-localematcher/regions
 - utils/{currencyMinorUnits, defaultCurrencyData, defaultLocaleData}
 - icu-messageformat-parser/time-data
 
 **3b: `cldr.locale`** (6 files) — Locale preference metadata (all from intl-locale)
+
 - calendars, character-orders, hour-cycles, numbering-systems, timezones, week-data
 
 **3c: `cldr.number`** (4 files) — Number/currency formatting data
+
 - intl-numberformat/{currency-digits, numbering-systems}
 - intl-durationformat/{numbering-systems, time-separators}
 - **Important:** Migrate before `cldr.supported-values` since `intl-supportedvaluesof/numbering-systems` is copied from `intl-numberformat`.
 
 **3d: `cldr.supported-values`** (6 files) — BCP47 enumerations (all from intl-supportedvaluesof)
+
 - calendars, collations, currencies, numbering-systems, timezones, units
 
 **3e: `cldr.supported-locales`** (6 files) — Per-polyfill supported locale lists
+
 - intl-datetimeformat, intl-displaynames, intl-listformat, intl-numberformat, intl-pluralrules, intl-relativetimeformat
 
 ### Phase 4: Cleanup
@@ -209,6 +217,7 @@ import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/ecma402-abstract/rege
 ## Rollback Plan
 
 Each phase is independently revertible:
+
 - Restore deleted `.generated.ts` files from git history
 - Revert BUILD.bazel changes (switch back to `generate_src_file()`)
 - Revert import changes in source files
@@ -216,9 +225,9 @@ Each phase is independently revertible:
 
 ## Key Risks
 
-| Risk | Mitigation |
-|---|---|
-| IDE resolution breaks | tsconfig path mappings to `bazel-bin/`; build packages once |
-| Rolldown bundles break | `@formatjs_generated` excluded from externals — data inlined |
-| Gazelle wrong deps | Custom resolver for `@formatjs_generated/`; validate with `gazelle -mode diff` |
+| Risk                                | Mitigation                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------ |
+| IDE resolution breaks               | tsconfig path mappings to `bazel-bin/`; build packages once                                |
+| Rolldown bundles break              | `@formatjs_generated` excluded from externals — data inlined                               |
+| Gazelle wrong deps                  | Custom resolver for `@formatjs_generated/`; validate with `gazelle -mode diff`             |
 | Generation scripts break when moved | Scripts stay in their original `packages/*/scripts/` location; only the Bazel target moves |
