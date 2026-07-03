@@ -2,6 +2,7 @@ import {mkdirSync, readFileSync, writeFileSync} from 'node:fs'
 import {dirname} from 'node:path'
 
 import minimist from 'minimist'
+import {minVersion, toComparators} from 'semver'
 
 interface Args extends minimist.ParsedArgs {
   'root-package-json'?: string
@@ -26,7 +27,6 @@ export interface PackageJsonMetadata {
   peerDependencies?: string[]
   optionalDependencies?: string[]
   dependencyVersionOverrides?: Record<string, string>
-  workspaceDependencies?: string[]
   sortExports?: string[]
   sortFirst?: string[]
 }
@@ -85,10 +85,15 @@ function rootDependencyVersion(
 function dependencyVersion(
   packageName: string,
   metadata: PackageJsonMetadata,
-  rootVersions: Map<string, string>,
-  workspaceDependencies: Set<string>
+  rootVersions: Map<string, string>
 ): string {
-  if (workspaceDependencies.has(packageName)) {
+  const rootVersion = rootDependencyVersion(packageName, rootVersions)
+  if (rootVersion.startsWith('workspace:')) {
+    if (rootVersion !== WORKSPACE_VERSION) {
+      throw new Error(
+        `${packageName} must use ${WORKSPACE_VERSION} in the root package.json`
+      )
+    }
     return WORKSPACE_VERSION
   }
 
@@ -97,7 +102,24 @@ function dependencyVersion(
     return overrideVersion
   }
 
-  return rootDependencyVersion(packageName, rootVersions)
+  try {
+    const majors: string[] = []
+    for (const comparatorSet of toComparators(rootVersion)) {
+      const minimum = minVersion(comparatorSet.join(' '))
+      if (!minimum) {
+        throw new Error('range has no minimum version')
+      }
+      const major = String(minimum.major)
+      if (!majors.includes(major)) {
+        majors.push(major)
+      }
+    }
+    return majors.join(' || ')
+  } catch {
+    throw new Error(
+      `Invalid version range for ${packageName} in the root package.json: ${rootVersion}`
+    )
+  }
 }
 
 function dependencyNameSet(metadata: PackageJsonMetadata): Set<string> {
@@ -112,7 +134,7 @@ function dependencyNameSet(metadata: PackageJsonMetadata): Set<string> {
 
 function validateDependencyVersionOverrides(
   metadata: PackageJsonMetadata,
-  workspaceDependencies: Set<string>
+  rootVersions: Map<string, string>
 ): void {
   const overrideNames = Object.keys(metadata.dependencyVersionOverrides ?? {})
   if (overrideNames.length === 0) {
@@ -125,7 +147,9 @@ function validateDependencyVersionOverrides(
     .sort()
   if (unused.length === 0) {
     const workspaceOverrides = overrideNames
-      .filter(packageName => workspaceDependencies.has(packageName))
+      .filter(packageName =>
+        rootVersions.get(packageName)?.startsWith('workspace:')
+      )
       .sort()
     if (workspaceOverrides.length === 0) {
       return
@@ -210,8 +234,7 @@ function orderExports(value: JsonValue, sortExports: string[]): JsonValue {
 function dependencyObject(
   packageNames: string[] | undefined,
   metadata: PackageJsonMetadata,
-  rootVersions: Map<string, string>,
-  workspaceDependencies: Set<string>
+  rootVersions: Map<string, string>
 ): Record<string, string> | undefined {
   const sorted = sortedUnique(packageNames)
   if (sorted.length === 0) {
@@ -220,12 +243,7 @@ function dependencyObject(
 
   const result: Record<string, string> = {}
   for (const packageName of sorted) {
-    result[packageName] = dependencyVersion(
-      packageName,
-      metadata,
-      rootVersions,
-      workspaceDependencies
-    )
+    result[packageName] = dependencyVersion(packageName, metadata, rootVersions)
   }
   return result
 }
@@ -258,18 +276,12 @@ export function generatePackageJson(
   }
 
   const rootVersions = rootVersionMap(rootPackageJson)
-  const workspaceDependencies = new Set(metadata.workspaceDependencies ?? [])
   validateNoDevDependencies(metadata)
-  validateDependencyVersionOverrides(metadata, workspaceDependencies)
+  validateDependencyVersionOverrides(metadata, rootVersions)
   const result: JsonObject = {...metadata.fields}
 
   for (const field of DEPENDENCY_FIELDS) {
-    const deps = dependencyObject(
-      metadata[field],
-      metadata,
-      rootVersions,
-      workspaceDependencies
-    )
+    const deps = dependencyObject(metadata[field], metadata, rootVersions)
     if (deps) {
       result[field] = deps
     }

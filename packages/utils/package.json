@@ -1,0 +1,24 @@
+{
+  "name": "@formatjs/utils",
+  "version": "2.2.10",
+  "description": "Collection of useful intl utilities",
+  "keywords": [
+    "i18n",
+    "intl",
+    "memoize",
+    "utils"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@formatjs/fast-memoize": "workspace:*"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "name": "@formatjs/cli",
+  "version": "6.16.12",
+  "description": "A CLI for formatjs.",
+  "keywords": [
+    "cli",
+    "format",
+    "formatjs",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "react-intl",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Linjie Ding <linjie@airtable.com>",
+  "repository": "formatjs/formatjs.git",
+  "bin": {
+    "formatjs": "bin/formatjs"
+  },
+  "peerDependencies": {
+    "@glimmer/syntax": "^0.84.3 || ^0.95.0",
+    "@vue/compiler-core": "3",
+    "content-tag": "4",
+    "vue": "3"
+  },
+  "peerDependenciesMeta": {
+    "@glimmer/env": {
+      "optional": true
+    },
+    "@glimmer/reference": {
+      "optional": true
+    },
+    "@glimmer/syntax": {
+      "optional": true
+    },
+    "@glimmer/validator": {
+      "optional": true
+    },
+    "@vue/compiler-core": {
+      "optional": true
+    },
+    "content-tag": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "optionalDependencies": {
+    "@formatjs/cli-native-darwin-arm64": "workspace:*",
+    "@formatjs/cli-native-linux-arm64": "workspace:*",
+    "@formatjs/cli-native-linux-arm64-musl": "workspace:*",
+    "@formatjs/cli-native-linux-x64": "workspace:*",
+    "@formatjs/cli-native-linux-x64-musl": "workspace:*",
+    "@formatjs/cli-native-win32-x64": "workspace:*"
+  },
+  "engines": {
+    "node": ">= 20.12.0"
+  }
+}

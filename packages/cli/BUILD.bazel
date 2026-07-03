@@ -1,10 +1,12 @@
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_exports_test")
-load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:package_json.bzl", "generate_package_json", "package_json_sync")
 
 generate_package_json(
     package_name = "@formatjs/cli",
+    out = "package.generated.json",
     author = "Linjie Ding <linjie@airtable.com>",
     bin = {
         "formatjs": "bin/formatjs",
@@ -77,6 +79,21 @@ generate_package_json(
     version = "6.16.12",  # x-release-please-version
 )
 
+package_json_sync(
+    visibility = ["//visibility:public"],
+)
+
+exports_files(
+    ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "package_json",
+    srcs = ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
 PACKAGE_NAME = "cli"
 
 # Assemble bin/ directory with the formatjs entry point and all dynamic chunks.
@@ -99,7 +116,7 @@ npm_package(
         "LICENSE.md",
         "README.md",
         ":bin",
-        ":generated_package_json",
+        ":package_json",
     ],
     package = "@formatjs/%s" % PACKAGE_NAME,
     visibility = ["//visibility:public"],

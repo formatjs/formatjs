@@ -1,0 +1,31 @@
+{
+  "name": "@formatjs/intl-supportedvaluesof",
+  "version": "2.3.8",
+  "description": "Intl.supportedValuesOf polyfill",
+  "keywords": [
+    "ecma402",
+    "enumerator",
+    "formatjs",
+    "i18n",
+    "intl",
+    "react-intl",
+    "supportedvaluesof",
+    "tc39"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Michele Riva <ciao@micheleriva.it>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/fast-memoize": "workspace:*"
+  }
+}

@@ -1,6 +1,6 @@
 """Generate npm package.json files from Bazel dependency labels."""
 
-load("//tools:dist_packages_registry.bzl", "RELEASE_PLEASE_NPM_PACKAGES")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:package_json_policy.bzl", "PACKAGE_JSON_SORT_EXPORTS", "PACKAGE_JSON_SORT_FIRST")
 
@@ -21,11 +21,6 @@ _GENERATED_PACKAGE_PREFIX = "@formatjs_generated/"
 _ROOT_PACKAGE_JSON_TEST_VISIBILITY = ["//:__pkg__"]
 
 _UNSET = "__FORMATJS_PACKAGE_JSON_UNSET__"
-
-_WORKSPACE_PACKAGE_NAMES = {
-    package["name"]: True
-    for package in RELEASE_PLEASE_NPM_PACKAGES
-}
 
 def _set_field(fields, package_json_field, value):
     if value != _UNSET:
@@ -175,19 +170,6 @@ def _check_dependency_version_overrides(dependency_version_overrides, names_by_f
             ", ".join(sorted(dependency_owner.keys())),
         )
 
-def _workspace_dependency_names(names_by_field):
-    result = []
-    seen = {}
-    for names in names_by_field.values():
-        for package_name in names:
-            if package_name not in _WORKSPACE_PACKAGE_NAMES:
-                continue
-            if package_name in seen:
-                continue
-            seen[package_name] = True
-            result.append(package_name)
-    return sorted(result)
-
 def formatjs_package_json(
         name = "package_json",
         package_name = None,
@@ -229,8 +211,9 @@ def formatjs_package_json(
     """Generate a package.json file for npm packaging.
 
     Static package metadata comes from package.json field attrs. Dependency
-    sections are generated from Bazel labels, with version ranges read from
-    dependency_version_overrides or the root package.json.
+    sections are generated from Bazel labels. Workspace dependencies use
+    workspace:*. External ranges default to the root dependency's major
+    version unless dependency_version_overrides provides a compatibility range.
 
     Args:
         name: Bazel target name.
@@ -299,12 +282,6 @@ def formatjs_package_json(
         "peerDependencies": peer_names,
         "optionalDependencies": optional_names,
     })
-    workspace_dependencies = _workspace_dependency_names({
-        "dependencies": dependency_names,
-        "peerDependencies": peer_names,
-        "optionalDependencies": optional_names,
-    })
-
     metadata_name = "%s_metadata" % name
     _metadata_file(
         name = metadata_name,
@@ -314,7 +291,6 @@ def formatjs_package_json(
             "peerDependencies": peer_names,
             "optionalDependencies": optional_names,
             "dependencyVersionOverrides": dependency_version_overrides,
-            "workspaceDependencies": workspace_dependencies,
             "sortExports": PACKAGE_JSON_SORT_EXPORTS,
             "sortFirst": PACKAGE_JSON_SORT_FIRST,
         }, indent = "  "),
@@ -328,6 +304,7 @@ def formatjs_package_json(
             root_package_json,
             ":%s" % metadata_name,
             "//:node_modules/minimist",
+            "//:node_modules/semver",
         ],
         outs = [out],
         args = [
@@ -340,6 +317,22 @@ def formatjs_package_json(
         ],
         tags = tags,
         tool = "//tools:generate-package-json",
+        visibility = visibility,
+    )
+
+def package_json_sync(
+        name = "package_json_sync",
+        generated = ":generated_package_json",
+        source = "package.json",
+        tags = [],
+        visibility = None):
+    """Keep checked-in package.json files in sync with generated metadata."""
+    write_source_files(
+        name = name,
+        files = {
+            source: generated,
+        },
+        tags = tags + ["codegen"],
         visibility = visibility,
     )
 
@@ -377,6 +370,7 @@ def generate_package_json(
         peer_deps = [],
         optional_deps = [],
         dependency_version_overrides = {},
+        out = "package.json",
         tags = [],
         visibility = None):
     """Generate package JSON for package-local output tree usage."""
@@ -405,7 +399,7 @@ def generate_package_json(
         module = module,
         optional_deps = optional_deps,
         os = os,
-        out = "package.json",
+        out = out,
         package_name = package_name,
         peer_deps = peer_deps,
         peer_dependencies_meta = peer_dependencies_meta,

@@ -1,12 +1,9 @@
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
-
-npm_link_all_packages()
 
 # tsconfig with #packages/* path alias for tsc resolution
 TSCONFIG = BASE_TSCONFIG | {

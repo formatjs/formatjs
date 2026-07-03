@@ -1,0 +1,21 @@
+{
+  "name": "@formatjs/icu-messageformat-parser",
+  "version": "3.5.13",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs.git",
+    "directory": "packages/icu-messageformat-parser"
+  },
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./manipulator.js": "./manipulator.js",
+    "./no-parser.js": "./no-parser.js",
+    "./printer.js": "./printer.js"
+  },
+  "dependencies": {
+    "@formatjs/icu-skeleton-parser": "workspace:*"
+  }
+}

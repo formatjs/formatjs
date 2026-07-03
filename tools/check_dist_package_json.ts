@@ -90,7 +90,6 @@ function main(args: Args): void {
     actualJson: PackageJson
   }> = []
   const workspacePackageNames = new Set<string>()
-
   for (const packageArg of packageArgs) {
     const [packageDir, expectedPath] = parsePackageArg(packageArg)
     const actualPath = join(args.dist, 'packages', packageDir, 'package.json')

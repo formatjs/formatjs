@@ -1,0 +1,32 @@
+{
+  "name": "@formatjs/intl-displaynames",
+  "version": "7.3.11",
+  "description": "Polyfill for: https://tc39.es/proposal-intl-displaynames",
+  "keywords": [
+    "Intl",
+    "Intl.DisplayNames",
+    "formatjs",
+    "i18n",
+    "intl-polyfill",
+    "localization",
+    "polyfill"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Linjie Ding <pyrocat101@users.noreply.github.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./locale-data": "./locale-data",
+    "./locale-data/*": "./locale-data/*",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "workspace:*"
+  }
+}

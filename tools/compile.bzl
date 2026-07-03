@@ -7,7 +7,7 @@ load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
-load("//tools:package_json.bzl", "formatjs_package_json")
+load("//tools:package_json.bzl", "formatjs_package_json", "package_json_sync")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "packages_tsconfig")
 
@@ -256,6 +256,7 @@ def formatjs_library(
 
     if package_name != None:
         formatjs_package_json(
+            name = "generated_package_json",
             alias = alias,
             author = author,
             bin = bin,
@@ -277,6 +278,7 @@ def formatjs_library(
             module = module,
             optional_deps = package_optional_deps,
             os = os,
+            out = "package.generated.json",
             package_name = package_name,
             peer_dependencies_meta = peer_dependencies_meta,
             peer_deps = package_peer_deps,
@@ -289,6 +291,19 @@ def formatjs_library(
             version = version,
             visibility = ["//:__pkg__"],
             dependency_version_overrides = package_dependency_version_overrides,
+        )
+        package_json_sync(
+            generated = ":generated_package_json",
+            visibility = ["//visibility:public"],
+        )
+        native.exports_files(
+            ["package.json"],
+            visibility = ["//visibility:public"],
+        )
+        copy_to_bin(
+            name = "package_json",
+            srcs = ["package.json"],
+            visibility = ["//visibility:public"],
         )
 
     copy_to_bin(

@@ -1,0 +1,31 @@
+{
+  "name": "@formatjs/intl-listformat",
+  "version": "8.3.11",
+  "description": "Formats JS list in a i18n-safe way",
+  "keywords": [
+    "format",
+    "formatjs",
+    "i18n",
+    "intl",
+    "list",
+    "listformat"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "git@github.com:formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./locale-data": "./locale-data",
+    "./locale-data/*": "./locale-data/*",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "workspace:*"
+  }
+}

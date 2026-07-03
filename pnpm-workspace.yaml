@@ -1,19 +1,23 @@
 packages:
-  # all packages in direct subdirs of packages/
+  # Published packages with checked-in generated manifests.
   - 'packages/*'
-  - 'packages/*/integration-tests'
-  - 'packages/*/examples'
-  - 'packages/*/benchmark'
   - 'website'
   - 'docs'
   - 'benchmarks/*'
   - '!packages/editor'
 
+linkWorkspacePackages: true
+
 catalog:
   vite: ^8.0.0
 
 overrides:
+  '@jest/transform': ^29.0.0
+  '@jest/types': ^29.0.0
   '@tailwindcss/vite>vite': 'catalog:'
+  babel-jest: ^29.0.0
+  jest: ^29.0.0
+  jest-util: ^29.0.0
 
 packageExtensions:
   '@vue/compiler-core':

@@ -1,10 +1,12 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("//tools:index.bzl", "package_exports_test")
-load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:package_json.bzl", "generate_package_json", "package_json_sync")
 
 generate_package_json(
     package_name = "@formatjs/cli-native-linux-x64",
+    out = "package.generated.json",
     author = "Long Ho <holevietlong@gmail.com>",
     bugs = "https://github.com/formatjs/formatjs/issues",
     cpu = [
@@ -30,6 +32,21 @@ generate_package_json(
     },
 )
 
+package_json_sync(
+    visibility = ["//visibility:public"],
+)
+
+exports_files(
+    ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "package_json",
+    srcs = ["package.json"],
+    visibility = ["//visibility:public"],
+)
+
 copy_file(
     name = "formatjs_cli_napi_node",
     src = "//crates/formatjs_cli_napi:release_node_linux_x64",
@@ -40,7 +57,7 @@ npm_package(
     name = "pkg",
     srcs = [
         ":formatjs_cli_napi_node",
-        ":generated_package_json",
+        ":package_json",
     ],
     package = "@formatjs/cli-native-linux-x64",
     visibility = ["//visibility:public"],

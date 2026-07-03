@@ -1,11 +1,8 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
-
-npm_link_all_packages()
 
 # Copy Rust CLI binary for conformance tests
 copy_file(
