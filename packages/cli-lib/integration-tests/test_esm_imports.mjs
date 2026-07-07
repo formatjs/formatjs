@@ -124,6 +124,38 @@ async function testCompileWithAST() {
   console.log('✓ Compile function with AST works correctly')
 }
 
+async function testCompileWithCustomFormatter() {
+  console.log('Testing compile function with custom formatter...')
+
+  const testMessagesFile = join(testDir, 'custom-messages.json')
+  const formatterFile = join(testDir, 'formatter.mjs')
+
+  await writeFile(
+    testMessagesFile,
+    JSON.stringify({
+      hello: 'Hello World',
+    }),
+    'utf8'
+  )
+  await writeFile(
+    formatterFile,
+    `export function compile(messages) {
+  return messages
+}
+`,
+    'utf8'
+  )
+
+  const result = await compile([testMessagesFile], {format: formatterFile})
+  const parsed = JSON.parse(result)
+
+  if (parsed['hello'] !== 'Hello World') {
+    throw new Error('Custom formatter compile result has incorrect value')
+  }
+
+  console.log('✓ Compile function with custom formatter works correctly')
+}
+
 async function main() {
   let exitCode = 0
 
@@ -138,6 +170,9 @@ async function main() {
 
     // Test compile with AST option
     await testCompileWithAST()
+
+    // Test custom formatter path, which resolves glob patterns in ESM
+    await testCompileWithCustomFormatter()
 
     console.log('\n✅ All ESM compatibility tests passed!')
   } catch (error) {

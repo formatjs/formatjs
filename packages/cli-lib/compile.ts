@@ -1,6 +1,6 @@
 import {outputFile} from 'fs-extra/esm'
 import {readFile} from 'fs/promises'
-import * as glob from 'fast-glob'
+import glob from 'fast-glob'
 import * as stringifyNs from 'json-stable-stringify'
 import {resolve} from 'path'
 import {pathToFileURL} from 'url'
