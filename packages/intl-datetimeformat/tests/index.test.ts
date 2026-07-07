@@ -773,6 +773,53 @@ describe('Intl.DateTimeFormat', function () {
     // 12:00 UTC = 09:00 in Coyhaique (-03:00)
     expect(result).toBe('04/01/2025, 09:00')
   })
+
+  it('honors hour12 with timeStyle, GH #6842', function () {
+    const morning = new Date(Date.UTC(2000, 4, 31, 3, 0))
+    const evening = new Date(Date.UTC(2000, 4, 31, 21, 0))
+
+    expect(
+      new DateTimeFormat('en-US', {
+        timeStyle: 'short',
+        hour12: false,
+        timeZone: 'UTC',
+      }).format(morning)
+    ).toBe('03:00')
+
+    expect(
+      new DateTimeFormat('en-US', {
+        timeStyle: 'short',
+        hour12: false,
+        timeZone: 'UTC',
+      }).format(evening)
+    ).toBe('21:00')
+
+    expect(
+      new DateTimeFormat('en-US', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+        hour12: false,
+        timeZone: 'UTC',
+      }).format(evening)
+    ).toBe('5/31/00, 21:00')
+
+    expect(
+      new DateTimeFormat('en-GB', {
+        timeStyle: 'short',
+        hour12: true,
+        timeZone: 'Europe/London',
+      }).format(evening)
+    ).toBe('10:00 pm')
+
+    expect(
+      new DateTimeFormat('en-GB', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+        hour12: true,
+        timeZone: 'Europe/London',
+      }).format(evening)
+    ).toBe('31/05/2000, 10:00 pm')
+  })
 })
 
 // https://github.com/formatjs/formatjs/issues/6020

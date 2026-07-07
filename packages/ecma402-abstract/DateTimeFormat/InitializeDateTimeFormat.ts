@@ -74,7 +74,7 @@ interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
 }
 const TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 /**
- * https://tc39.es/ecma402/#sec-initializedatetimeformat
+ * https://tc39.es/ecma402/#sec-createdatetimeformat
  * @param dtf DateTimeFormat
  * @param locales locales
  * @param opts options
@@ -331,7 +331,26 @@ export function InitializeDateTimeFormat(
         )
       }
     }
-    bestFormat = DateTimeStyleFormat(dateStyle, timeStyle, dataLocaleData)
+    // Spec: ECMA-402 11.1.2 CreateDateTimeFormat steps 12-14 resolve
+    // hour12 to hc; step 30.5 picks the style format; step 33 stores
+    // [[HourCycle]] when the selected format has [[hour]].
+    // FormatJS impl detail: pass that resolved 12/24 preference through
+    // because our style data is represented as concrete 12/24 patterns.
+    const hc =
+      timeStyle !== undefined
+        ? resolveHourCycle(
+            internalSlots.hourCycle,
+            dataLocaleData.hourCycle,
+            hour12
+          )
+        : undefined
+    bestFormat = DateTimeStyleFormat(
+      dateStyle,
+      timeStyle,
+      dataLocaleData,
+      formats,
+      hc !== undefined ? hc === 'h11' || hc === 'h12' : undefined
+    )
   }
   // IMPL DETAIL START
   // For debugging
