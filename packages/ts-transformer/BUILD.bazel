@@ -103,6 +103,7 @@ formatjs_test(
         "tests/fixtures/removeDefaultMessage.tsx",
         "tests/fixtures/removeDescription.tsx",
         "tests/fixtures/resourcePath.tsx",
+        "tests/fixtures/shorthandT.tsx",
         "tests/fixtures/stringConcat.tsx",
         "tests/fixtures/templateLiteral.tsx",
         "tests/fixtures/typeAssertions.tsx",

@@ -255,6 +255,14 @@ vueRuleTester.run(`vue-${name}`, rule, {
   ],
   invalid: [
     {
+      code: `<template><p>{{ $t('cart.itemCount') }}</p></template>`,
+      errors: [
+        {
+          messageId: 'defaultMessage',
+        },
+      ],
+    },
+    {
       code: `
       <template>
       <p>{{$formatMessage({

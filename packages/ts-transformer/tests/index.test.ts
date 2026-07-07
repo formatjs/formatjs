@@ -59,6 +59,15 @@ describe('emit asserts for', function () {
     ])
   })
 
+  it('shorthandT', async function () {
+    const output = await compile(join(FIXTURES_DIR, 'shorthandT.tsx'), {})
+    expect(output.msgs).toEqual([
+      {id: 'template.title'},
+      {id: 'script.ready'},
+      {id: 'literal.concat'},
+    ])
+  })
+
   it('defineMessages', async function () {
     const output = await compile(join(FIXTURES_DIR, 'defineMessages.tsx'), {
       pragma: 'react-intl',

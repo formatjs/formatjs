@@ -45,12 +45,13 @@ function checkNode(
     {
       message: {defaultMessage, description, id},
       idPropNode,
+      idValueNode,
       descriptionNode,
       messagePropNode,
       messageDescriptorNode,
     },
   ] of msgs) {
-    if (!idInterpolationPattern && !idPropNode) {
+    if (!idInterpolationPattern && !idPropNode && !idValueNode) {
       context.report({
         node: messageDescriptorNode ?? node,
         messageId: 'enforceId',

@@ -2,13 +2,14 @@ import type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import type {Rule} from 'eslint'
 import type {
   BinaryExpression,
+  CallExpression,
   Expression,
   Node,
   ObjectExpression,
   Property,
   TemplateLiteral,
+  JSXOpeningElement,
 } from 'estree-jsx'
-import type {JSXAttribute, JSXOpeningElement} from 'estree-jsx'
 
 export interface MessageDescriptor {
   id?: string
@@ -28,12 +29,12 @@ export interface Settings {
 }
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor
-  messageDescriptorNode: ObjectExpression | JSXOpeningElement
-  messageNode?: Property['value'] | JSXAttribute['value']
-  messagePropNode?: Property | JSXAttribute
-  descriptionNode?: Property['value'] | JSXAttribute['value']
-  idValueNode?: Property['value'] | JSXAttribute['value']
-  idPropNode?: Property | JSXAttribute
+  messageDescriptorNode: Node
+  messageNode?: Node
+  messagePropNode?: Node
+  descriptionNode?: Node
+  idValueNode?: Node
+  idPropNode?: Node
 }
 
 export function getSettings({settings}: Rule.RuleContext): Settings {
@@ -201,6 +202,46 @@ function isMultipleMessageDescriptorDeclaration(node: Node) {
   )
 }
 
+function isShorthandTCall(node: CallExpression) {
+  if (node.callee.type === 'Identifier') {
+    return node.callee.name === '$t'
+  }
+  return (
+    node.callee.type === 'MemberExpression' &&
+    node.callee.property.type === 'Identifier' &&
+    node.callee.property.name === '$t'
+  )
+}
+
+function extractShorthandTDescriptor(
+  node: CallExpression
+): [MessageDescriptorNodeInfo, Expression | undefined] | undefined {
+  const [idArg, values] = node.arguments
+  if (!idArg || idArg.type === 'SpreadElement') {
+    return
+  }
+  if (!isStaticMessageExpression(idArg)) {
+    return
+  }
+  const id = getStaticStringFromMessageExpression(idArg)
+  if (!id) {
+    return
+  }
+  const result: MessageDescriptorNodeInfo = {
+    messageDescriptorNode: node,
+    message: {id},
+    messageNode: undefined,
+    messagePropNode: undefined,
+    descriptionNode: undefined,
+    idValueNode: idArg,
+    idPropNode: undefined,
+  }
+  return [
+    result,
+    values && values.type !== 'SpreadElement' ? values : undefined,
+  ]
+}
+
 export function extractMessageDescriptor(
   node?: Expression
 ): MessageDescriptorNodeInfo | undefined {
@@ -308,19 +349,19 @@ function extractMessageDescriptorFromJSXElement(
     switch (keyName) {
       case 'defaultMessage':
         result.messagePropNode = prop
-        result.messageNode = valueNode
+        result.messageNode = valueNode ?? undefined
         if (value) {
           result.message.defaultMessage = value
         }
         break
       case 'description':
-        result.descriptionNode = valueNode
+        result.descriptionNode = valueNode ?? undefined
         if (value) {
           result.message.description = value
         }
         break
       case 'id':
-        result.idValueNode = valueNode
+        result.idValueNode = valueNode ?? undefined
         result.idPropNode = prop
         if (value) {
           result.message.id = value
@@ -391,6 +432,12 @@ export function extractMessages(
     // We can't really analyze spread element
     if (!args0 || args0.type === 'SpreadElement') {
       return []
+    }
+    const shorthandTDescriptor = isShorthandTCall(node)
+      ? extractShorthandTDescriptor(node)
+      : undefined
+    if (shorthandTDescriptor) {
+      return [shorthandTDescriptor]
     }
     if (
       (!excludeMessageDeclCalls &&

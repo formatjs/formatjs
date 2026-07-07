@@ -678,6 +678,68 @@ function isMemberMethodFormatMessageCall(
   return ts.isIdentifier(method) && fnNames.has(method.text)
 }
 
+function isShorthandTCall(ts: TypeScript, node: typescript.CallExpression) {
+  const method = node.expression
+  if (ts.isIdentifier(method)) {
+    return method.text === '$t'
+  }
+  if (ts.isPropertyAccessExpression(method)) {
+    return method.name.text === '$t'
+  }
+  if (
+    ts.isExpressionWithTypeArguments &&
+    ts.isExpressionWithTypeArguments(method)
+  ) {
+    const expr = method.expression
+    return ts.isPropertyAccessExpression(expr) && expr.name.text === '$t'
+  }
+  return false
+}
+
+function getStaticStringFromExpression(
+  ts: TypeScript,
+  node: typescript.Expression
+): string | undefined {
+  const expression = unwrapTransparentTypeScriptExpression(ts, node)
+  if (
+    ts.isStringLiteral(expression) ||
+    ts.isNoSubstitutionTemplateLiteral(expression)
+  ) {
+    return expression.text
+  }
+  if (ts.isBinaryExpression(expression)) {
+    const [result, isStatic] = evaluateStringConcat(ts, expression)
+    return isStatic ? result : undefined
+  }
+  return undefined
+}
+
+function extractShorthandTDescriptor(
+  ts: TypeScript,
+  node: typescript.CallExpression,
+  {extractSourceLocation}: Opts,
+  sf: typescript.SourceFile
+): MessageDescriptor | undefined {
+  const [idArg] = node.arguments
+  if (!idArg || ts.isSpreadElement(idArg)) {
+    return
+  }
+  const id = getStaticStringFromExpression(ts, idArg)
+  if (!id) {
+    return
+  }
+  const msg = {id}
+  if (extractSourceLocation) {
+    return {
+      ...msg,
+      file: sf.fileName,
+      start: idArg.pos,
+      end: idArg.end,
+    }
+  }
+  return msg
+}
+
 function extractMessageFromJsxComponent(
   ts: TypeScript,
   factory: typescript.NodeFactory,
@@ -828,7 +890,12 @@ function extractMessagesFromCallExpression(
   sf: typescript.SourceFile
 ): typescript.VisitResult<typescript.CallExpression> {
   const {onMsgExtracted, additionalFunctionNames} = opts
-  if (isMultipleMessageDecl(ts, node)) {
+  if (isShorthandTCall(ts, node)) {
+    const msg = extractShorthandTDescriptor(ts, node, opts, sf)
+    if (msg && typeof onMsgExtracted === 'function') {
+      onMsgExtracted(sf.fileName, [msg])
+    }
+  } else if (isMultipleMessageDecl(ts, node)) {
     const [arg, ...restArgs] = node.arguments
     const descriptorsObj = unwrapObjectLiteralExpression(ts, arg)
     if (descriptorsObj) {

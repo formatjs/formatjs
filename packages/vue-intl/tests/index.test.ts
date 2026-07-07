@@ -14,12 +14,10 @@ const Translations = defineComponent({
   <div>
     <h2>
       {{
-        $formatMessage({
-          id: 'foo',
-          defaultMessage: 'Hello',
-        })
+        $t('foo')
       }}
     </h2>
+    <h3>{{ $t('welcome', {name: 'Vue'}) }}</h3>
     <p>
       {{
         $formatNumber(123, {
@@ -88,13 +86,14 @@ test('basic', function () {
           defaultLocale: 'en',
           messages: {
             foo: 'Foo',
+            welcome: 'Hello {name}',
           },
         }),
       ],
     },
   })
 
-  expect(wrapper.text()).toBe('Foo€123.00')
+  expect(wrapper.text()).toBe('FooHello Vue€123.00')
 })
 
 test('injected', function () {

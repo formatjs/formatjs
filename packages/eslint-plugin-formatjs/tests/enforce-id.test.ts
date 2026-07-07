@@ -319,6 +319,18 @@ defineMessages({ example: { defaultMessage: 'example', id: "O7Eu2j" } })`,
 vueRuleTester.run(`vue-${name}`, rule, {
   valid: [
     {
+      code: `<template><p>{{ $t('cart.itemCount') }}</p></template>`,
+    },
+    {
+      code: `<script>
+export default {
+  mounted() {
+    this.$t('script.ready')
+  },
+}
+</script>`,
+    },
+    {
       options,
       code: `<template>
 <p>{{$formatMessage({

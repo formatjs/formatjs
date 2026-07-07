@@ -7,6 +7,7 @@
       })
     }}
   </p>
+  <p>{{ $t('in.template.id') }}</p>
 </template>
 
 <script>
@@ -14,4 +15,5 @@ intl.formatMessage({
   defaultMessage: 'in script',
   description: 'in script desc',
 })
+this.$t('in.script.id')
 </script>

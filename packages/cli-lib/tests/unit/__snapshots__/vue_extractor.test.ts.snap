@@ -8,9 +8,15 @@ exports[`vue_extractor 1`] = `
     "id": "f6d14",
   },
   {
+    "id": "in.template.id",
+  },
+  {
     "defaultMessage": "in script",
     "description": "in script desc",
     "id": "1ebd4",
+  },
+  {
+    "id": "in.script.id",
   },
 ]
 `;

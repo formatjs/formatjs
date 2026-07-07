@@ -55,6 +55,36 @@ defineMessage({
     })
   })
 
+  it('extracts vue-intl $t calls from Vue SFCs', async () => {
+    tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
+    const filePath = join(tempDir, 'App.vue')
+    await writeFile(
+      filePath,
+      `
+<template>
+  <p>{{ $t('template.title') }}</p>
+  <button :title="$t('button.title')" />
+</template>
+
+<script>
+export default {
+  mounted() {
+    this.$t('script.ready')
+  },
+}
+</script>
+`
+    )
+
+    const result = JSON.parse(await extract([filePath], {throws: true}))
+
+    expect(result).toEqual({
+      'button.title': {},
+      'script.ready': {},
+      'template.title': {},
+    })
+  })
+
   it('uses the native binding for supported extraction options', async () => {
     tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
     const filePath = join(tempDir, 'native.ts')

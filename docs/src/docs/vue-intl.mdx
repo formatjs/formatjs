@@ -102,12 +102,14 @@ You can also use our formatters in Vue template by prepending `$` like below:
 
 ```vue
 <template>
+  <p>{{ $t('cart.itemCount', {count}) }}</p>
   <p>{{ $formatNumber(3, {style: 'currency', currency: 'USD'}) }}</p>
 </template>
 ```
 
 We currently support:
 
+- `$t`
 - `$formatMessage`
 - `$formatDate`
 - `$formatTime`
