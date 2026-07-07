@@ -1,5 +1,5 @@
 import {program} from 'commander'
-import * as glob from 'fast-glob'
+import glob from 'fast-glob'
 const globSync = glob.sync
 import loudRejection from 'loud-rejection'
 import compile, {
