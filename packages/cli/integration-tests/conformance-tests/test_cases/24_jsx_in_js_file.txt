@@ -1,0 +1,24 @@
+import {FormattedMessage} from 'react-intl';
+
+export default function App() {
+  return (
+    <FormattedMessage
+      id="app.js-jsx"
+      defaultMessage="Hello from a JS file"
+      description="JSX in JS"
+    />
+  );
+}
+---
+{
+  "command": "extract",
+  "args": ["--throws"],
+  "fileType": "js"
+}
+---
+{
+  "app.js-jsx": {
+    "defaultMessage": "Hello from a JS file",
+    "description": "JSX in JS"
+  }
+}

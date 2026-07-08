@@ -184,7 +184,7 @@ pub fn determine_source_type(path: &Path) -> Result<SourceType> {
         "tsx" => SourceType::default().with_jsx(true).with_typescript(true),
         "jsx" => SourceType::default().with_jsx(true),
         "ts" | "mts" | "cts" => SourceType::default().with_typescript(true),
-        "js" | "mjs" | "cjs" => SourceType::default(),
+        "js" | "mjs" | "cjs" => SourceType::default().with_jsx(true),
         _ => anyhow::bail!("Unsupported file extension: {}", ext),
     };
 
@@ -769,6 +769,43 @@ mod tests {
         assert_eq!(
             messages[0].description,
             Some(Value::String("Greeting message".to_string()))
+        );
+    }
+
+    #[test]
+    fn test_extract_js_file_with_jsx() {
+        let source = r#"
+            import { FormattedMessage } from 'react-intl';
+
+            export default function App() {
+                return <FormattedMessage id="greeting" defaultMessage="Hello from JS" />;
+            }
+        "#;
+
+        let file_path = PathBuf::from("test.js");
+        let source_type = determine_source_type(&file_path).unwrap();
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["formatMessage".to_string()];
+
+        let messages = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0].id, Some("greeting".to_string()));
+        assert_eq!(
+            messages[0].default_message,
+            Some("Hello from JS".to_string())
         );
     }
 
