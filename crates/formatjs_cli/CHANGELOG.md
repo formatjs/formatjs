@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.1.19 (2026-07-09)
+
+## What's Changed
+* feat(@formatjs/unplugin): add rsbuild adapter by @longlho in https://github.com/formatjs/formatjs/pull/6838
+* fix(@formatjs/intl-relativetimeformat): honor numberingSystem option by @greymoth-jp in https://github.com/formatjs/formatjs/pull/6835
+* fix(@formatjs/icu-messageformat-parser): coalesce adjacent syntax chars when escaping by @spokodev in https://github.com/formatjs/formatjs/pull/6837
+* chore: apply pre-commit cleanup by @longlho in https://github.com/formatjs/formatjs/pull/6841
+* fix(@formatjs/cli-lib): handle fast-glob esm import by @longlho in https://github.com/formatjs/formatjs/pull/6845
+* fix(@formatjs/intl-datetimeformat): honor hour12 with timeStyle by @longlho in https://github.com/formatjs/formatjs/pull/6846
+* fix(formatjs_cli): parse JSX in JavaScript extract inputs by @longlho in https://github.com/formatjs/formatjs/pull/6850
+
+## New Contributors
+* @greymoth-jp made their first contribution in https://github.com/formatjs/formatjs/pull/6835
+* @spokodev made their first contribution in https://github.com/formatjs/formatjs/pull/6837
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.1.18...formatjs_cli_v1.1.19
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 0.2.4 to 0.2.5
+    * formatjs_icu_skeleton_parser bumped from 0.1.1 to 0.1.2
+
 ## 1.1.18 (2026-06-27)
 
 ## What's Changed
