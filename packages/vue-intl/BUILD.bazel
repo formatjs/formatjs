@@ -31,7 +31,7 @@ formatjs_library(
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
     type = "module",
-    version = "7.2.11",  # x-release-please-version
+    version = "7.2.12",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
