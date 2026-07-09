@@ -67,7 +67,7 @@ export function parseDateTimeSkeleton(
           throw new RangeError('`e..eee` (weekday) patterns are not supported')
         }
         result.weekday = ['short', 'long', 'narrow', 'short'][
-          len - 4
+          len - 3
         ] as 'short'
         break
       case 'c':
@@ -75,7 +75,7 @@ export function parseDateTimeSkeleton(
           throw new RangeError('`c..ccc` (weekday) patterns are not supported')
         }
         result.weekday = ['short', 'long', 'narrow', 'short'][
-          len - 4
+          len - 3
         ] as 'short'
         break
 
