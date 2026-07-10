@@ -161,7 +161,14 @@ generate_tz_data(
 
 filegroup(
     name = "zdumps",
-    srcs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES],
+    srcs = [":tz_data_generated"],
+    output_group = "zdumps",
+)
+
+filegroup(
+    name = "tzdata_backward",
+    srcs = [":tz_data_generated"],
+    output_group = "backward",
 )
 
 # CLDR
@@ -271,10 +278,10 @@ generate_package_file(
     src = "links.ts",
     args = [
         "--input",
-        package_name() + "/tz_data_generated/backward",
+        "$(rootpath :tzdata_backward)",
     ],
     data = [
-        ":tz_data_generated/backward",
+        ":tzdata_backward",
         "//:node_modules/json-stable-stringify",
     ],
     tags = ["cldr"],

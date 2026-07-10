@@ -122,7 +122,7 @@ From various CLDR full packages. Each file is the set of locales a polyfill supp
 
 ### `@formatjs_generated/tz` — IANA timezone database (2 files)
 
-Data extracted from the IANA Time Zone Database. Bazel fetches pinned `tzdata` and `tzcode` archives, builds `zic`/`zdump` with `rules_cc`, runs `generate_tz_data`, and feeds the resulting `zdump` output plus IANA `backward` links into the generated package.
+Data extracted from the IANA Time Zone Database. Bazel fetches checksum-pinned `tzdata` and `tzcode` source archives, builds `zic`/`zdump` for the execution platform with `rules_cc` and pinned hermetic LLVM, then runs them through a shell-free pinned Node action. The resulting `zdump` output and IANA `backward` links feed the generated package.
 
 ```
 @formatjs_generated/tz/

@@ -199,7 +199,9 @@ http_archive(
     urls = ["https://www.unicode.org/Public/cldr/%s/cldr-common-%s.zip" % (CLDR_COMMON_VERSION, CLDR_COMMON_VERSION)],
 )
 
-http_archive(
+tzcode_repository = use_repo_rule("//packages/intl-datetimeformat:tzcode_repository.bzl", "tzcode_repository")
+
+tzcode_repository(
     name = "iana_tzcode",
     build_file = "@//packages/intl-datetimeformat:tzcode.BUILD.bazel",
     sha256 = "b1cffc3ace4c4c7cd0efba2f7add86ec3d0b79da48bcf03582671fd3c8feace8",

@@ -1,0 +1,6 @@
+# gazelle:ignore
+
+exports_files(
+    ["generator.ts"],
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
