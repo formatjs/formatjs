@@ -20,7 +20,7 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 | `cldr-numbers-full`  | Number formatting for date components                           |
 | `cldr-core`          | Hour cycle preferences, calendar preferences, metazone mappings |
 | `cldr-bcp47`         | Locale validation                                               |
-| IANA tzdata (v2026b) | Timezone transitions, links/aliases                             |
+| IANA tzdata (v2026c) | Timezone transitions, links/aliases                             |
 
 ### Date/Time Extraction (`scripts/extract-dates.ts`)
 
@@ -42,7 +42,7 @@ Pinned IANA tzdata/tzcode archives from MODULE.bazel
     ↓
 Bazel builds zic/zdump from tzcode with rules_cc
     ↓
-generate_tz_data: run zic, then zdump -c 2100 -v for 418 zones
+generate_tz_data: run zic, then zdump -c 2100 -v for 427 zones
     ↓
 zdump files (raw transition dumps)
     ↓
@@ -52,7 +52,7 @@ process-zdump.ts: parse transitions, pack with base-36 encoding
 @formatjs_generated/tz/links.js (timezone aliases)
 ```
 
-**418 IANA zones** organized by continent, with transitions from historical LMT through year 2100.
+**427 IANA zones** organized by continent, with transitions from historical LMT through year 2100.
 
 **Packing format:**
 
@@ -62,8 +62,8 @@ process-zdump.ts: parse transitions, pack with base-36 encoding
 
 **Two distribution sizes:**
 
-- `add-all-tz.js` — Full 418 zones
-- `add-golden-tz.js` — 121 exemplar zones (smaller bundle)
+- `add-all-tz.js` — Full 427 zones
+- `add-golden-tz.js` — 251 exemplar zones (smaller bundle)
 
 ### Timezone Links (`scripts/link.ts`)
 

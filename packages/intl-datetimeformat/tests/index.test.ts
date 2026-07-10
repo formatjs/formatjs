@@ -260,6 +260,19 @@ describe('Intl.DateTimeFormat', function () {
     expect(formatter.format(new Date('2019-10-27T01:00:00.000Z'))).toBe('02')
     expect(formatter.format(new Date('2019-10-27T01:00:00.001Z'))).toBe('02')
   })
+  it.each([
+    ['America/Edmonton', '2026-11-01T09:00:00Z', '03:00'],
+    ['Africa/Casablanca', '2026-09-20T02:00:00Z', '02:00'],
+  ])('uses tzdb 2026c rules for %s, GH #6851', (timeZone, date, expected) => {
+    const formatter = new DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+      timeZone,
+    })
+
+    expect(formatter.format(new Date(date))).toBe(expected)
+  })
   it('test #2236', function () {
     const date = new Date('2020-09-16T11:55:32.491+02:00')
     const formatter = new DateTimeFormat('en-US', {
