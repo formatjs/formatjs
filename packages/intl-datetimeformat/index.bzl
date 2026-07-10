@@ -80,11 +80,6 @@ def _generate_tz_data_impl(ctx):
             ctx.attr._zdump[DefaultInfo].files_to_run,
             ctx.attr._zic[DefaultInfo].files_to_run,
         ],
-        env = {
-            "LC_ALL": "C",
-            "PATH": "",
-            "TZ": "UTC",
-        },
         mnemonic = "GenerateTimezoneData",
         progress_message = "Generating IANA timezone data",
     )
