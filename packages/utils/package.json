@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/utils",
-  "version": "2.2.10",
+  "version": "2.2.11",
   "description": "Collection of useful intl utilities",
   "keywords": [
     "i18n",
