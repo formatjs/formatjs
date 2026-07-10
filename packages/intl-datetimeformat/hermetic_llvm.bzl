@@ -8,8 +8,6 @@ _EXEC_HOSTS = [
     "linux_x86_64",
     "macos_aarch64",
     "macos_x86_64",
-    "windows_aarch64",
-    "windows_x86_64",
 ]
 
 def _llvm_exec_toolchains():

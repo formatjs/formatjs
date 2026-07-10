@@ -36,6 +36,9 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
+      - name: Build Hermetic Timezone Data
+        run: bazel build //packages/intl-datetimeformat:tz_data_generated
+
       - name: Run Tests
         if: matrix.os != 'macos-latest' || github.event_name != 'pull_request'
         run: |
@@ -189,14 +192,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-
-      - name: Hermetic Timezone Cross-Build
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $PSNativeCommandUseErrorActionPreference = $true
-
-          # Bazel detects the Windows host; this selects the Linux ARM64 target.
-          bazel build --platforms=@llvm//platforms:linux_aarch64_gnu.2.28 //packages/intl-datetimeformat:tz_data_generated
 
       - name: Rust CLI Smoke Test
         run: |

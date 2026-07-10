@@ -40,8 +40,8 @@ This is unique to DateTimeFormat — no other polyfill processes timezone data.
 ```
 Pinned IANA tzdata/tzcode archives from MODULE.bazel
     ↓
-Bazel builds zic/zdump from source for the execution platform with rules_cc
-and pinned hermetic LLVM
+Bazel builds zic/zdump from source for macOS and Linux execution platforms
+with rules_cc and pinned hermetic LLVM
     ↓
 generate_tz_data: pinned Node runs zic, then zdump -c 2100 -v for 427 zones
     ↓
@@ -133,7 +133,7 @@ Stage 4: supported-locales.generated.ts
 
 ## Key Design Decisions
 
-- **Hermetic tz compilation**: Bazel fetches checksum-pinned IANA `tzdata`/`tzcode` archives, generates the tzcode headers without a host shell, builds `zic`/`zdump` for the execution platform with pinned hermetic LLVM, and runs them through pinned Node actions
+- **Hermetic tz compilation**: Bazel fetches checksum-pinned IANA `tzdata`/`tzcode` archives, generates the tzcode headers without a host shell, builds `zic`/`zdump` for macOS and Linux execution platforms with pinned hermetic LLVM, and runs them through pinned Node actions
 - **Base-36 packing**: Reduces timezone data size significantly vs raw JSON
 - **Golden timezone subset**: Allows apps to ship 251 zones instead of 427 for smaller bundles
 - **Hour cycle fallback**: When interval formats don't exist for a locale's hour cycle, synthesizes from alternate cycle
