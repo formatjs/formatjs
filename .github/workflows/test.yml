@@ -36,6 +36,9 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
+      - name: Build Hermetic Timezone Data
+        run: bazel build //packages/intl-datetimeformat:tz_data_generated
+
       - name: Run Tests
         if: matrix.os != 'macos-latest' || github.event_name != 'pull_request'
         run: |

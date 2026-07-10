@@ -1,9 +1,10 @@
 """Build definitions for intl-datetimeformat package."""
 
+load("@rules_cc//cc:find_cc_toolchain.bzl", "find_cc_toolchain", "use_cc_toolchain")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
+load("//packages/intl-datetimeformat:hermetic_llvm.bzl", "with_hermetic_llvm")
 
 ZIC_FILES = [
-    "backward",
     "africa",
     "antarctica",
     "asia",
@@ -14,51 +15,121 @@ ZIC_FILES = [
     "southamerica",
 ]
 
-def generate_tz_data(name):
-    """Generate zdump data from Bazel-built IANA zic/zdump tools."""
-    unique_dirs = {}
-    for zone in ZONES:
-        parent_dir = zone.rsplit("/", 1)[0]
-        unique_dirs[parent_dir] = True
+_NODE_TOOLCHAIN_TYPE = "@rules_nodejs//nodejs:toolchain_type"
 
-    mkdir_commands = "\n".join(["mkdir -p \"$${out_dir}/zdump/%s\"" % dir for dir in unique_dirs])
-    zic_inputs = " ".join([
-        "\"$${execroot}/$(location @iana_tzdata//:%s)\"" % zic_file
-        for zic_file in ZIC_FILES
-    ])
-    zdump_commands = "\n".join([
-        "\"$${zdump}\" -c 2100 -v zic/{zone} > \"$${out_dir}/zdump/{zone}\"".replace("{zone}", zone)
-        for zone in ZONES
-    ])
+def _hermetic_llvm_toolchain_contract_impl(ctx):
+    cc_toolchain = find_cc_toolchain(ctx)
+    if cc_toolchain.compiler != "clang" or "llvm_toolchains" not in cc_toolchain.toolchain_id:
+        fail("timezone tools require hermetic LLVM, got compiler=%s toolchain_id=%s" % (
+            cc_toolchain.compiler,
+            cc_toolchain.toolchain_id,
+        ))
 
-    cmd = """
-set -euo pipefail
+    return []
 
-execroot="$$(pwd)"
-out_dir="$${execroot}/$(@D)/tz_data_generated"
-work_dir="$${execroot}/$(@D)/tz_work"
-zic="$${execroot}/$(execpath @iana_tzcode//:zic)"
-zdump="$${execroot}/$(execpath @iana_tzcode//:zdump)"
+_hermetic_llvm_toolchain_contract = rule(
+    implementation = _hermetic_llvm_toolchain_contract_impl,
+    toolchains = use_cc_toolchain(),
+)
 
-rm -rf "$${out_dir}" "$${work_dir}"
-mkdir -p "$${out_dir}/zdump" "$${work_dir}/zic"
-{mkdir_commands}
+_hermetic_llvm_toolchain_contract_with_cfg, _hermetic_llvm_toolchain_contract_with_cfg_internal = with_hermetic_llvm(
+    _hermetic_llvm_toolchain_contract,
+)
 
-"$${zic}" -d "$${work_dir}/zic" {zic_inputs}
-cp "$${execroot}/$(location @iana_tzdata//:backward)" "$${out_dir}/backward"
+def _generate_tz_data_impl(ctx):
+    zones = []
+    for zone, output in zip(ctx.attr.zones, ctx.outputs.zdumps):
+        zones.append({
+            "name": zone,
+            "output": output.path,
+        })
 
-cd "$${work_dir}"
-{zdump_commands}
-        """.replace("{mkdir_commands}", mkdir_commands).replace("{zic_inputs}", zic_inputs).replace("{zdump_commands}", zdump_commands)
+    manifest = ctx.actions.declare_file("%s_manifest.json" % ctx.label.name)
+    ctx.actions.write(
+        output = manifest,
+        content = json.encode({
+            "backward": {
+                "output": ctx.outputs.backward_out.path,
+                "source": ctx.file.backward.path,
+            },
+            "sources": [ctx.file.backward.path] + [source.path for source in ctx.files.srcs],
+            "zones": zones,
+        }),
+    )
 
-    native.genrule(
-        name = name,
-        srcs = ["@iana_tzdata//:%s" % zic_file for zic_file in ZIC_FILES],
-        outs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES] + ["tz_data_generated/backward"],
-        cmd = cmd,
-        message = "Generating zdump data files",
-        tools = [
-            "@iana_tzcode//:zdump",
-            "@iana_tzcode//:zic",
+    work_dir = ctx.actions.declare_directory("%s_work" % ctx.label.name)
+    node = ctx.toolchains[_NODE_TOOLCHAIN_TYPE].nodeinfo.node
+    ctx.actions.run(
+        executable = node,
+        arguments = [
+            "--disable-warning=ExperimentalWarning",
+            "--experimental-transform-types",
+            ctx.file._generator.path,
+            manifest.path,
+            ctx.executable._zic.path,
+            ctx.executable._zdump.path,
+            work_dir.path,
         ],
+        inputs = depset(ctx.files.srcs + [ctx.file.backward, ctx.file._generator, manifest]),
+        outputs = ctx.outputs.zdumps + [ctx.outputs.backward_out, work_dir],
+        tools = [
+            ctx.attr._zdump[DefaultInfo].files_to_run,
+            ctx.attr._zic[DefaultInfo].files_to_run,
+        ],
+        mnemonic = "GenerateTimezoneData",
+        progress_message = "Generating IANA timezone data",
+    )
+
+    return [DefaultInfo(files = depset(ctx.outputs.zdumps + [ctx.outputs.backward_out]))]
+
+_generate_tz_data = rule(
+    implementation = _generate_tz_data_impl,
+    attrs = {
+        "backward": attr.label(
+            allow_single_file = True,
+            mandatory = True,
+        ),
+        "backward_out": attr.output(mandatory = True),
+        "llvm_toolchain_contract": attr.label(
+            cfg = "exec",
+            mandatory = True,
+        ),
+        "srcs": attr.label_list(
+            allow_files = True,
+            mandatory = True,
+        ),
+        "zones": attr.string_list(mandatory = True),
+        "zdumps": attr.output_list(mandatory = True),
+        "_generator": attr.label(
+            allow_single_file = [".ts"],
+            default = "//packages/intl-datetimeformat/tzdata:generator.ts",
+        ),
+        "_zdump": attr.label(
+            cfg = "exec",
+            default = "@iana_tzcode//:zdump",
+            executable = True,
+        ),
+        "_zic": attr.label(
+            cfg = "exec",
+            default = "@iana_tzcode//:zic",
+            executable = True,
+        ),
+    },
+    toolchains = [_NODE_TOOLCHAIN_TYPE],
+)
+
+def generate_tz_data(name):
+    """Generate zdump data with execution tools pinned to hermetic LLVM."""
+    contract_name = "%s_llvm_toolchain" % name
+    _hermetic_llvm_toolchain_contract_with_cfg(
+        name = contract_name,
+    )
+    _generate_tz_data(
+        name = name,
+        backward = "@iana_tzdata//:backward",
+        backward_out = "%s/backward" % name,
+        llvm_toolchain_contract = ":%s" % contract_name,
+        srcs = ["@iana_tzdata//:%s" % zic_file for zic_file in ZIC_FILES],
+        zones = ZONES,
+        zdumps = ["%s/zdump/%s" % (name, zone) for zone in ZONES],
     )

@@ -31,6 +31,7 @@
     "packages/intl-datetimeformat/polyfill.ts",
     "packages/intl-datetimeformat/polyfill-force.ts",
     "packages/intl-datetimeformat/should-polyfill.ts",
+    "packages/intl-datetimeformat/tzdata/generator.ts",
     "packages/intl-displaynames/index.ts",
     "packages/intl-displaynames/polyfill.ts",
     "packages/intl-displaynames/polyfill-force.ts",

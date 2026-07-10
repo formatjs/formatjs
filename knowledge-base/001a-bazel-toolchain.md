@@ -28,9 +28,9 @@ actions so they can cache and run independently across the monorepo.
 | `gazelle`               | 0.50.0        | BUILD file generation driver                      |
 | `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                      |
 | `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                    |
-| `llvm`                  | 0.7.5         | LLVM toolchain support for Rust/wasm paths        |
+| `llvm`                  | 0.8.0         | Hermetic LLVM C/C++ toolchains                    |
 | `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests        |
-| `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE C/C++ toolchain                    |
+| `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE platform and C/C++ definitions     |
 
 `gazelle_ts` and `rules_rs` are consumed from BCR.
 
@@ -38,6 +38,8 @@ actions so they can cache and run independently across the monorepo.
 
 - Node.js is pinned to **24.14.0** with SHA256 hashes for darwin arm64/x64,
   linux arm64/x64, and windows x64.
+- C/C++ builds use **hermetic LLVM 22.1.4** toolchains. Build actions that need
+  native executables must keep them in the execution configuration.
 - Bazel's pnpm extension is pinned to **pnpm 10.4.1** for repository rules.
 - TypeScript comes from root `package.json` through
   `@aspect_rules_ts//ts:extensions.bzl`.
