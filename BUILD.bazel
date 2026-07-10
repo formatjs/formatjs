@@ -1,7 +1,7 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@npm//:@commitlint/cli/package_json.bzl", commitlint = "bin")
 load("@npm//:codescythe/package_json.bzl", codescythe = "bin")
@@ -39,6 +39,12 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 exports_files(
     ["package.json"],
     visibility = ["//visibility:public"],
+)
+
+js_library(
+    name = "release_please_config",
+    srcs = ["release-please-config.json"],
+    visibility = ["//tools:__pkg__"],
 )
 
 # Root package.json for Node subpath import resolution (#packages/*).

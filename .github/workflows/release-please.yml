@@ -63,6 +63,13 @@ jobs:
             --prefix "$RUNNER_TEMP/release-please" \
             release-please@17.6.0
 
+      - name: Verify Release Please package manifest updates
+        env:
+          NODE_PATH: ${{ runner.temp }}/release-please/node_modules
+        run: >-
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON
+          tools/release-please/config.test.ts
+
       # Release Please owns version/changelog PRs, GitHub release notes, and
       # the release-created signal used for npm publication below.
       - name: Run Release Please

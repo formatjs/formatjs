@@ -13,6 +13,7 @@
     "packages/babel-plugin-formatjs": {
       "component": "babel-plugin-formatjs",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -24,6 +25,7 @@
     "packages/bigdecimal": {
       "component": "@formatjs/bigdecimal",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -35,6 +37,7 @@
     "packages/cli-lib": {
       "component": "@formatjs/cli-lib",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -46,6 +49,7 @@
     "packages/cli-native-darwin-arm64": {
       "component": "@formatjs/cli-native-darwin-arm64",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -57,6 +61,7 @@
     "packages/cli-native-linux-arm64": {
       "component": "@formatjs/cli-native-linux-arm64",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -68,6 +73,7 @@
     "packages/cli-native-linux-arm64-musl": {
       "component": "@formatjs/cli-native-linux-arm64-musl",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -79,6 +85,7 @@
     "packages/cli-native-linux-x64": {
       "component": "@formatjs/cli-native-linux-x64",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -90,6 +97,7 @@
     "packages/cli-native-linux-x64-musl": {
       "component": "@formatjs/cli-native-linux-x64-musl",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -101,6 +109,7 @@
     "packages/cli-native-win32-x64": {
       "component": "@formatjs/cli-native-win32-x64",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -112,6 +121,7 @@
     "packages/cli": {
       "component": "@formatjs/cli",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -123,6 +133,7 @@
     "packages/ecma376": {
       "component": "@formatjs/ecma376",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -134,6 +145,7 @@
     "packages/eslint-plugin-formatjs": {
       "component": "eslint-plugin-formatjs",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -145,6 +157,7 @@
     "packages/fast-memoize": {
       "component": "@formatjs/fast-memoize",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -156,6 +169,7 @@
     "packages/icu-messageformat-parser": {
       "component": "@formatjs/icu-messageformat-parser",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -167,6 +181,7 @@
     "packages/icu-skeleton-parser": {
       "component": "@formatjs/icu-skeleton-parser",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -178,6 +193,7 @@
     "packages/intl-collator": {
       "component": "@formatjs/intl-collator",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -189,6 +205,7 @@
     "packages/intl-datetimeformat": {
       "component": "@formatjs/intl-datetimeformat",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -200,6 +217,7 @@
     "packages/intl-displaynames": {
       "component": "@formatjs/intl-displaynames",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -211,6 +229,7 @@
     "packages/intl-durationformat": {
       "component": "@formatjs/intl-durationformat",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -222,6 +241,7 @@
     "packages/intl-supportedvaluesof": {
       "component": "@formatjs/intl-supportedvaluesof",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -233,6 +253,7 @@
     "packages/intl-getcanonicallocales": {
       "component": "@formatjs/intl-getcanonicallocales",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -244,6 +265,7 @@
     "packages/intl-listformat": {
       "component": "@formatjs/intl-listformat",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -255,6 +277,7 @@
     "packages/intl-locale": {
       "component": "@formatjs/intl-locale",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -266,6 +289,7 @@
     "packages/intl-localematcher": {
       "component": "@formatjs/intl-localematcher",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -277,6 +301,7 @@
     "packages/intl-messageformat": {
       "component": "intl-messageformat",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -288,6 +313,7 @@
     "packages/intl-numberformat": {
       "component": "@formatjs/intl-numberformat",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -299,6 +325,7 @@
     "packages/intl-pluralrules": {
       "component": "@formatjs/intl-pluralrules",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -310,6 +337,7 @@
     "packages/intl-relativetimeformat": {
       "component": "@formatjs/intl-relativetimeformat",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -321,6 +349,7 @@
     "packages/intl-segmenter": {
       "component": "@formatjs/intl-segmenter",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -332,6 +361,7 @@
     "packages/intl": {
       "component": "@formatjs/intl",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -343,6 +373,7 @@
     "packages/react-intl": {
       "component": "react-intl",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -354,6 +385,7 @@
     "packages/svelte-intl": {
       "component": "@formatjs/svelte-intl",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -365,6 +397,7 @@
     "packages/ts-transformer": {
       "component": "@formatjs/ts-transformer",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -376,6 +409,7 @@
     "packages/unplugin": {
       "component": "@formatjs/unplugin",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -387,6 +421,7 @@
     "packages/utils": {
       "component": "@formatjs/utils",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
@@ -398,6 +433,7 @@
     "packages/vue-intl": {
       "component": "vue-intl",
       "extra-files": [
+        "package.json",
         {
           "type": "generic",
           "path": "BUILD.bazel"
