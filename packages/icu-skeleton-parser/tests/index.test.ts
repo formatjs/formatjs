@@ -35,6 +35,24 @@ const dateTimeSkeletonResults = {
     hourCycle: 'h12',
     minute: '2-digit',
   },
+  eeee: {
+    weekday: 'long',
+  },
+  eeeee: {
+    weekday: 'narrow',
+  },
+  eeeeee: {
+    weekday: 'short',
+  },
+  cccc: {
+    weekday: 'long',
+  },
+  ccccc: {
+    weekday: 'narrow',
+  },
+  cccccc: {
+    weekday: 'short',
+  },
   '': {},
 }
 
