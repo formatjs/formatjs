@@ -28,10 +28,9 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # npm_link_package() — they don't appear in package.json, so route all subpath
 # imports to the package-level node_modules label.
 # gazelle:resolve_regexp ts ^@formatjs_generated/([^/]+)(?:/.*)?$ //:node_modules/@formatjs_generated/$1
-# Published workspace package.json files are generated, so those packages don't
-# appear in root package.json. Keep bare package-name imports on the root
-# node_modules labels for package tests, generated package.json deps, and
-# Rolldown externalization.
+# Published workspace package.json files are checked in under packages/* so
+# pnpm can link them as workspace packages. Keep bare package-name imports on
+# the root node_modules labels for package tests and Rolldown externalization.
 # gazelle:resolve_regexp ts ^(@formatjs/[^/]+)(?:/.*)?$ //:node_modules/$1
 # gazelle:resolve_regexp ts ^(babel-plugin-formatjs|eslint-plugin-formatjs|intl-messageformat|react-intl|vue-intl)(?:/.*)?$ //:node_modules/$1
 

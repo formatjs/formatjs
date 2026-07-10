@@ -18,7 +18,7 @@ formatjs/
 
 ## Package Management: pnpm
 
-**Version:** pnpm 10.4.1 (pinned in MODULE.bazel), 10.32.1 (root package.json)
+**Version:** pnpm 10.4.1 (pinned in MODULE.bazel), 11.8.0 (root package.json)
 
 - `pnpm-workspace.yaml` defines workspace packages
 - `npm_translate_lock` in MODULE.bazel converts `pnpm-lock.yaml` to Bazel deps
@@ -74,11 +74,18 @@ See `knowledge-base/011-generated-packages.md` for full architecture and `knowle
 | rustfmt    | Rust files             | Built-in                    |
 | commitlint | Commit messages        | `.commitlintrc.mjs`         |
 
-Generated package manifest verification reads dependency names from Bazel deps,
-uses root `package.json` ranges by default, and allows package-local BUILD
-rules to pass explicit version overrides. Package-local manifests are generated
-into Bazel outputs, and `//:dist_package_json_test` verifies that `:dist`
-contains the generated manifests.
+Published package manifests are checked in under `packages/**` so pnpm can link
+them as workspace projects. Bazel still generates `package.generated.json` from
+BUILD metadata, reads dependency names from Bazel deps, uses root
+`package.json` to identify workspace dependencies, emits external dependencies
+as major-only ranges, and allows package-local BUILD rules to pass explicit
+version overrides. `package_json_sync` keeps checked-in manifests in sync, and
+`//:dist_package_json_test` verifies that `:dist` contains those manifests.
+Cross-package Bazel consumers read the `:package_json` wrapper target. Root
+`package.json` lists published packages as `workspace:*` dev dependencies, and
+package-local manifests use `workspace:*` for first-party dependencies.
+`npm_link_all_packages()` translates the lockfile graph into root
+`//:node_modules/<workspace>` labels.
 
 ## Git Hooks (lefthook)
 
@@ -109,14 +116,13 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
 For npm packages, Release Please uses package-local Bazel `BUILD.bazel`
-`x-release-please-version` markers instead of source `package.json` files; those
-package manifests are generated only in Bazel outputs. When Release Please
-creates or updates release PRs, `.github/workflows/release-please.yml` first
-builds `//:release_please_npm_workspace_graph` from the generated package
-manifests and runs the local `tools/release-please/run.ts` wrapper. That
-wrapper registers the `formatjs-bazel-workspace` plugin so dependent npm
-packages are patch-bumped from the Bazel-generated dependency graph without
-checking package manifests into `packages/`. When Release Please creates npm
+`x-release-please-version` markers and checked-in `package.json` files kept in
+sync by `package_json_sync`. When Release Please creates or updates release PRs,
+`.github/workflows/release-please.yml` first builds
+`//:release_please_npm_workspace_graph` from the package manifests and runs the
+local `tools/release-please/run.ts` wrapper. That wrapper registers the
+`formatjs-bazel-workspace` plugin so dependent npm packages are patch-bumped
+from the Bazel-generated dependency graph. When Release Please creates npm
 package releases, it passes those released package paths to `release.yml`. The
 npm publish workflow builds the Bazel `:dist` output and uses npm Trusted
 Publishing, then publishes only the package paths Release Please released. Rust

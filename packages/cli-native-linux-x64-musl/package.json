@@ -1,0 +1,27 @@
+{
+  "name": "@formatjs/cli-native-linux-x64-musl",
+  "version": "1.0.4",
+  "description": "Native FormatJS CLI binding for Linux x64 musl.",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "files": [
+    "formatjs_cli_napi.node",
+    "libstd-*.so"
+  ],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "musl"
+  ],
+  "main": "formatjs_cli_napi.node",
+  "exports": {
+    ".": "./formatjs_cli_napi.node"
+  }
+}

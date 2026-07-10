@@ -1,0 +1,31 @@
+{
+  "name": "@formatjs/intl-locale",
+  "version": "5.3.9",
+  "description": "Intl.Locale polyfill",
+  "keywords": [
+    "ecma402",
+    "formatjs",
+    "i18n",
+    "intl",
+    "locale",
+    "react-intl",
+    "tc39"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js"
+  },
+  "dependencies": {
+    "@formatjs/intl-getcanonicallocales": "workspace:*",
+    "@formatjs/intl-supportedvaluesof": "workspace:*"
+  }
+}

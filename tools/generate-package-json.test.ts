@@ -5,6 +5,9 @@ import {generatePackageJson} from './generate-package-json'
 describe('generatePackageJson', () => {
   const rootPackageJson = {
     devDependencies: {
+      '@formatjs/icu-messageformat-parser': 'workspace:*',
+      'babel-plugin-formatjs': 'workspace:*',
+      '@types/node': '22 || 24',
       '@types/react': '19',
       minimist: '^1.2.8',
       react: '19',
@@ -27,9 +30,12 @@ describe('generatePackageJson', () => {
               },
             },
           },
-          dependencies: ['@formatjs/icu-messageformat-parser', 'minimist'],
+          dependencies: [
+            '@formatjs/icu-messageformat-parser',
+            'minimist',
+            'typescript',
+          ],
           peerDependencies: ['react', '@types/react', 'vite'],
-          workspaceDependencies: ['@formatjs/icu-messageformat-parser'],
           dependencyVersionOverrides: {
             vite: '>=5',
           },
@@ -47,7 +53,8 @@ describe('generatePackageJson', () => {
       },
       dependencies: {
         '@formatjs/icu-messageformat-parser': 'workspace:*',
-        minimist: '^1.2.8',
+        minimist: '1',
+        typescript: '6',
       },
       peerDependencies: {
         '@types/react': '19',
@@ -88,7 +95,6 @@ describe('generatePackageJson', () => {
             name: '@formatjs/example',
           },
           dependencies: ['babel-plugin-formatjs'],
-          workspaceDependencies: ['babel-plugin-formatjs'],
           dependencyVersionOverrides: {
             'babel-plugin-formatjs': '^9.0.0',
           },
@@ -98,6 +104,25 @@ describe('generatePackageJson', () => {
     ).toThrow(
       'dependencyVersionOverrides must not override workspace dependency version(s): babel-plugin-formatjs'
     )
+  })
+
+  it('preserves disjoint major version branches', () => {
+    expect(
+      generatePackageJson(
+        {
+          fields: {
+            name: '@formatjs/example',
+          },
+          dependencies: ['@types/node'],
+        },
+        rootPackageJson
+      )
+    ).toEqual({
+      name: '@formatjs/example',
+      dependencies: {
+        '@types/node': '22 || 24',
+      },
+    })
   })
 
   it('rejects package-local devDependencies', () => {

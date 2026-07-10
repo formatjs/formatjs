@@ -11,9 +11,9 @@ TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
   | grep ':pkg$' \
   | while read -r target; do
     build=$(bazel query --output=build "$target" 2>/dev/null)
-    package_json=$(echo "$build" | grep -o '"//packages/[^"]*:\(package_json\|generated_package_json\)"' | head -n 1 | tr -d '"' || true)
+    package_json=$(echo "$build" | grep -o '"//packages/[^"]*:\(package\.json\|package_json\|generated_package_json\)"' | head -n 1 | tr -d '"' || true)
     if [ -z "$package_json" ]; then
-      echo "No generated package.json label found for $target" >&2
+      echo "No package.json label found for $target" >&2
       exit 1
     fi
     package_name=$(echo "$build" | grep -o 'package = "[^"]*"' | head -n 1 | cut -d '"' -f 2 || true)

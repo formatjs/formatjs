@@ -1,7 +1,4 @@
-load("@npm//:defs.bzl", "npm_link_all_packages")
 load("//tools:compile.bzl", "formatjs_library")
-
-npm_link_all_packages()
 
 formatjs_library(
     name = "fast-memoize",

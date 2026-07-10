@@ -1,0 +1,90 @@
+{
+  "name": "@formatjs/cli-lib",
+  "version": "8.7.12",
+  "description": "Lib for CLI for formatjs.",
+  "keywords": [
+    "cli",
+    "format",
+    "formatjs",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "react-intl",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT",
+  "author": "Linjie Ding <linjie@airtable.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@babel/types": "7",
+    "@formatjs/icu-messageformat-parser": "workspace:*",
+    "@formatjs/ts-transformer": "workspace:*",
+    "@types/fs-extra": "11",
+    "@types/node": "22 || 24",
+    "commander": "14",
+    "fast-glob": "3",
+    "fs-extra": "11",
+    "json-stable-stringify": "1",
+    "loud-rejection": "2",
+    "typescript": "^5.6 || 6"
+  },
+  "peerDependencies": {
+    "@glimmer/syntax": "^0.84.3 || ^0.95.0",
+    "@vue/compiler-core": "3",
+    "content-tag": "4",
+    "svelte": "5",
+    "vue": "3"
+  },
+  "peerDependenciesMeta": {
+    "@glimmer/env": {
+      "optional": true
+    },
+    "@glimmer/reference": {
+      "optional": true
+    },
+    "@glimmer/syntax": {
+      "optional": true
+    },
+    "@glimmer/validator": {
+      "optional": true
+    },
+    "@vue/compiler-core": {
+      "optional": true
+    },
+    "content-tag": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "optionalDependencies": {
+    "@formatjs/cli-native-darwin-arm64": "workspace:*",
+    "@formatjs/cli-native-linux-arm64": "workspace:*",
+    "@formatjs/cli-native-linux-arm64-musl": "workspace:*",
+    "@formatjs/cli-native-linux-x64": "workspace:*",
+    "@formatjs/cli-native-linux-x64-musl": "workspace:*",
+    "@formatjs/cli-native-win32-x64": "workspace:*"
+  },
+  "engines": {
+    "node": ">= 20.12.0"
+  }
+}
