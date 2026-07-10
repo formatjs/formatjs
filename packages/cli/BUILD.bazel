@@ -76,7 +76,7 @@ generate_package_json(
         "//:node_modules/vue",
     ],
     repository = "formatjs/formatjs.git",
-    version = "6.16.12",  # x-release-please-version
+    version = "6.16.13",  # x-release-please-version
 )
 
 package_json_sync(
