@@ -194,12 +194,9 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
-          $bazelTimezoneFlags = @(
-            '--platforms=@llvm//platforms:linux_aarch64_gnu.2.28',
-            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
-          )
 
-          bazel build @bazelTimezoneFlags //packages/intl-datetimeformat:tz_data_generated
+          # Bazel detects the Windows host; this selects the Linux ARM64 target.
+          bazel build --platforms=@llvm//platforms:linux_aarch64_gnu.2.28 //packages/intl-datetimeformat:tz_data_generated
 
       - name: Rust CLI Smoke Test
         run: |

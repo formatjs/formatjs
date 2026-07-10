@@ -37,23 +37,19 @@ _hermetic_llvm_toolchain_contract_with_cfg, _hermetic_llvm_toolchain_contract_wi
 )
 
 def _generate_tz_data_impl(ctx):
-    outputs = []
     zones = []
-    for zone in ctx.attr.zones:
-        output = ctx.actions.declare_file("%s/zdump/%s" % (ctx.attr.output_dir, zone))
-        outputs.append(output)
+    for zone, output in zip(ctx.attr.zones, ctx.outputs.zdumps):
         zones.append({
             "name": zone,
             "output": output.path,
         })
 
     manifest = ctx.actions.declare_file("%s_manifest.json" % ctx.label.name)
-    backward = ctx.actions.declare_file("%s/backward" % ctx.attr.output_dir)
     ctx.actions.write(
         output = manifest,
         content = json.encode({
             "backward": {
-                "output": backward.path,
+                "output": ctx.outputs.backward_out.path,
                 "source": ctx.file.backward.path,
             },
             "sources": [ctx.file.backward.path] + [source.path for source in ctx.files.srcs],
@@ -75,7 +71,7 @@ def _generate_tz_data_impl(ctx):
             work_dir.path,
         ],
         inputs = depset(ctx.files.srcs + [ctx.file.backward, ctx.file._generator, manifest]),
-        outputs = outputs + [backward, work_dir],
+        outputs = ctx.outputs.zdumps + [ctx.outputs.backward_out, work_dir],
         tools = [
             ctx.attr._zdump[DefaultInfo].files_to_run,
             ctx.attr._zic[DefaultInfo].files_to_run,
@@ -84,13 +80,7 @@ def _generate_tz_data_impl(ctx):
         progress_message = "Generating IANA timezone data",
     )
 
-    return [
-        DefaultInfo(files = depset(outputs + [backward])),
-        OutputGroupInfo(
-            backward = depset([backward]),
-            zdumps = depset(outputs),
-        ),
-    ]
+    return [DefaultInfo(files = depset(ctx.outputs.zdumps + [ctx.outputs.backward_out]))]
 
 _generate_tz_data = rule(
     implementation = _generate_tz_data_impl,
@@ -99,16 +89,17 @@ _generate_tz_data = rule(
             allow_single_file = True,
             mandatory = True,
         ),
+        "backward_out": attr.output(mandatory = True),
         "llvm_toolchain_contract": attr.label(
             cfg = "exec",
             mandatory = True,
         ),
-        "output_dir": attr.string(mandatory = True),
         "srcs": attr.label_list(
             allow_files = True,
             mandatory = True,
         ),
         "zones": attr.string_list(mandatory = True),
+        "zdumps": attr.output_list(mandatory = True),
         "_generator": attr.label(
             allow_single_file = [".ts"],
             default = "//packages/intl-datetimeformat/tzdata:generator.ts",
@@ -136,8 +127,9 @@ def generate_tz_data(name):
     _generate_tz_data(
         name = name,
         backward = "@iana_tzdata//:backward",
+        backward_out = "%s/backward" % name,
         llvm_toolchain_contract = ":%s" % contract_name,
-        output_dir = name,
         srcs = ["@iana_tzdata//:%s" % zic_file for zic_file in ZIC_FILES],
         zones = ZONES,
+        zdumps = ["%s/zdump/%s" % (name, zone) for zone in ZONES],
     )
