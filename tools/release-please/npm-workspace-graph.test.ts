@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import {readFileSync} from 'node:fs'
 
 import {githubOutputRecord} from './github-output.ts'
 import {
@@ -42,6 +43,18 @@ const packages = [
     },
   },
 ]
+
+const configPath = process.argv[2]
+assert.ok(configPath, 'release-please config path is required')
+const releasePleaseConfig = JSON.parse(readFileSync(configPath, 'utf8'))
+const npmReleasePackages = Object.entries(releasePleaseConfig.packages).filter(
+  ([path]) => path.startsWith('packages/')
+)
+assert.ok(npmReleasePackages.length > 0)
+for (const [path, config] of npmReleasePackages) {
+  assert.equal(config['version-file'], 'BUILD.bazel', path)
+  assert.ok(config['extra-files'].includes('package.json'), path)
+}
 
 const graph = buildDependencyGraph(packages)
 assert.deepEqual(graph.get('@formatjs/runtime').deps, ['@formatjs/core'])
