@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "version": "7.4.10",
+  "version": "7.5.0",
   "description": "Intl.DateTimeFormat polyfill",
   "keywords": [
     "datetimeformat",

@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.5 (2026-07-11)
+
+## What's Changed
+* fix(@formatjs/icu-skeleton-parser): map e/c weekday counts 4/5/6 to long/narrow/short by @spokodev in https://github.com/formatjs/formatjs/pull/6852
+* fix(deps): materialize published package manifests by @longlho in https://github.com/formatjs/formatjs/pull/6844
+* feat(@formatjs/intl-datetimeformat): update IANA timezone database to 2026c by @longlho in https://github.com/formatjs/formatjs/pull/6854
+* build(@formatjs/intl-datetimeformat): make tzdata generation hermetic by @longlho in https://github.com/formatjs/formatjs/pull/6855
+* fix(deps): update package manifests in release PRs by @longlho in https://github.com/formatjs/formatjs/pull/6856
+* docs: update upgrade guide to reflect relaxed React 18 support by @yslpn in https://github.com/formatjs/formatjs/pull/6818
+
+## New Contributors
+* @yslpn made their first contribution in https://github.com/formatjs/formatjs/pull/6818
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-arm64-musl@1.0.4...@formatjs/cli-native-linux-arm64-musl@1.0.5
+
 ## 1.0.4 (2026-07-09)
 
 ## What's Changed

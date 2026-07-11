@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.5.14 (2026-07-11)
+
+## What's Changed
+* fix(@formatjs/icu-skeleton-parser): map e/c weekday counts 4/5/6 to long/narrow/short by @spokodev in https://github.com/formatjs/formatjs/pull/6852
+* fix(deps): materialize published package manifests by @longlho in https://github.com/formatjs/formatjs/pull/6844
+* feat(@formatjs/intl-datetimeformat): update IANA timezone database to 2026c by @longlho in https://github.com/formatjs/formatjs/pull/6854
+* build(@formatjs/intl-datetimeformat): make tzdata generation hermetic by @longlho in https://github.com/formatjs/formatjs/pull/6855
+* fix(deps): update package manifests in release PRs by @longlho in https://github.com/formatjs/formatjs/pull/6856
+* docs: update upgrade guide to reflect relaxed React 18 support by @yslpn in https://github.com/formatjs/formatjs/pull/6818
+
+## New Contributors
+* @yslpn made their first contribution in https://github.com/formatjs/formatjs/pull/6818
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.13...@formatjs/icu-messageformat-parser@3.5.14
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-skeleton-parser bumped to 2.1.11
+
 ## 3.5.13 (2026-07-09)
 
 ## What's Changed

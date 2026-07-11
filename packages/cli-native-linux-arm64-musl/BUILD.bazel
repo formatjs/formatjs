@@ -28,7 +28,7 @@ generate_package_json(
         "linux",
     ],
     repository = "formatjs/formatjs.git",
-    version = "1.0.4",  # x-release-please-version
+    version = "1.0.5",  # x-release-please-version
     exports = {
         ".": "./formatjs_cli_napi.node",
     },
