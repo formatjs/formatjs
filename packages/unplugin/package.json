@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/unplugin",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Universal build plugin for FormatJS — supports Vite, Webpack, Rollup, esbuild, Rspack, and Rsbuild",
   "keywords": [
     "esbuild-plugin",

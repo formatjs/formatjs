@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/fast-memoize",
-  "version": "3.1.6",
+  "version": "3.1.7",
   "description": "fork of fast-memoize and support esm",
   "keywords": [
     "fast-memoize",

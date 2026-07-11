@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/bigdecimal",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "BigInt-backed decimal arithmetic for ECMA-402 polyfills",
   "keywords": [
     "bigdecimal",
