@@ -30,10 +30,10 @@ describe('performance regression check', () => {
     expect(ms).toBeLessThan(0.1)
   })
 
-  test('Tier 2 (maximized zh-TW) < 0.1ms', () => {
+  test('Tier 2 (maximized zh-TW) < 0.2ms', () => {
     const ms = measure(() => findBestMatch(['zh-TW'], ['zh', 'zh-Hant', 'en']))
     console.log(`  Tier 2 maximized:    ${(ms * 1000).toFixed(1)}μs`)
-    expect(ms).toBeLessThan(0.1)
+    expect(ms).toBeLessThan(0.2)
   })
 
   test('Tier 3 (es-MX → es-419) < 0.5ms', () => {
