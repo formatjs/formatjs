@@ -20,8 +20,8 @@ importers:
         specifier: 0.0.11
         version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7))(@types/babel__core@7.20.5)(eslint@10.6.0(jiti@1.21.7))(react@19.2.7)(type-fest@0.21.3)(typescript@6.0.3))
       babel-plugin-formatjs:
-        specifier: 11.3.13
-        version: 11.3.13
+        specifier: 11.3.14
+        version: 11.3.14
       eslint-plugin-formatjs:
         specifier: 6.4.15
         version: 6.4.15(eslint@10.6.0(jiti@1.21.7))
@@ -918,6 +918,9 @@ packages:
   '@formatjs/icu-messageformat-parser@3.5.11':
     resolution: {integrity: sha512-NVsuNsc2dUVG9+4HBJ/srScxtA/18LqGgwtop/tuN/OIBjVl6QA+0KhfZQddDD9sEh2LeVjLFPGVU3ixa3blcA==}
 
+  '@formatjs/icu-messageformat-parser@3.5.12':
+    resolution: {integrity: sha512-YyzzxVgYJ8DELmmkhn0Yr0rUj0dTJFf9Jp628K3S0ysInBWxLVDOS8i3RP91cCp4DMK4WYb4cVMhWA9i4knSJg==}
+
   '@formatjs/icu-skeleton-parser@2.1.10':
     resolution: {integrity: sha512-XuSva+8ZGawk8VnD5VD6UeH8KarQ/Z022zgjHDoHmlNiAewstXuuzXc0Hk5pGFSdG+nNw5bfJKXqj1ZXHn9yUA==}
 
@@ -926,6 +929,15 @@ packages:
 
   '@formatjs/ts-transformer@4.4.13':
     resolution: {integrity: sha512-MQZyDrwULZ7MrJz6ar4cuCWCVn8HTlEXMEJffZfhpGJMI+RLx6WwmM7aCGeVa7q3rcV9ChAGFym5Bm2ZBUwV8A==}
+    engines: {node: '>= 20.12.0'}
+    peerDependencies:
+      ts-jest: ^29
+    peerDependenciesMeta:
+      ts-jest:
+        optional: true
+
+  '@formatjs/ts-transformer@4.4.14':
+    resolution: {integrity: sha512-k3zaGIAUpQIS5tpifOJ8Jzsqy+j1YV916b1yhwd6US+kRQHdSyxtk76zad8NabalOWel5ouyzGohD0ZlApKkdg==}
     engines: {node: '>= 20.12.0'}
     peerDependencies:
       ts-jest: ^29
@@ -1786,8 +1798,8 @@ packages:
       '@babel/core': ^7.0.0
       webpack: '>=2'
 
-  babel-plugin-formatjs@11.3.13:
-    resolution: {integrity: sha512-R6GZ2bFgn4+9+yQQj/6c2DY++dXazrJCWG1Rq0aRBmKqg1jtS2vF1xsghtEEvDbWytt+6VG7iMXnslvlfVz0ZQ==}
+  babel-plugin-formatjs@11.3.14:
+    resolution: {integrity: sha512-tyM0QGOCUi8PgfQVYLo7BTIkaS4pXFh9bw4p1FU5J2P9kFyxC7TLhWoIMLPZubzcG4F9W++eJ0nONf0r6aH68g==}
 
   babel-plugin-istanbul@6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
@@ -7162,6 +7174,10 @@ snapshots:
     dependencies:
       '@formatjs/icu-skeleton-parser': 2.1.10
 
+  '@formatjs/icu-messageformat-parser@3.5.12':
+    dependencies:
+      '@formatjs/icu-skeleton-parser': 2.1.10
+
   '@formatjs/icu-skeleton-parser@2.1.10': {}
 
   '@formatjs/intl@4.1.13':
@@ -7173,6 +7189,14 @@ snapshots:
   '@formatjs/ts-transformer@4.4.13':
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.11
+      '@types/babel__core': 7.20.5
+      '@types/node': 24.12.4
+      json-stable-stringify: 1.3.0
+      typescript: 6.0.3
+
+  '@formatjs/ts-transformer@4.4.14':
+    dependencies:
+      '@formatjs/icu-messageformat-parser': 3.5.12
       '@types/babel__core': 7.20.5
       '@types/node': 24.12.4
       json-stable-stringify: 1.3.0
@@ -8237,15 +8261,15 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.107.2(postcss@8.5.15)
 
-  babel-plugin-formatjs@11.3.13:
+  babel-plugin-formatjs@11.3.14:
     dependencies:
       '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
       '@babel/plugin-syntax-jsx': 7.29.7(@babel/core@7.29.7)
       '@babel/traverse': 7.29.7
       '@babel/types': 7.29.7
-      '@formatjs/icu-messageformat-parser': 3.5.11
-      '@formatjs/ts-transformer': 4.4.13
+      '@formatjs/icu-messageformat-parser': 3.5.12
+      '@formatjs/ts-transformer': 4.4.14
       '@types/babel__core': 7.20.5
       '@types/babel__helper-plugin-utils': 7.10.3
       '@types/babel__traverse': 7.28.0
