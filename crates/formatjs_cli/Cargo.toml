@@ -30,7 +30,7 @@ oxc = { version = "0.134", features = ["ast_visit"] }
 oxc_allocator = "0.134"
 oxc_ast = "0.134"
 oxc_data_structures = { version = "0.137", features = ["rope"] }
-oxc_parser = "0.134"
+oxc_parser = "0.138"
 oxc_span = "0.134"
 sha2 = "0.11"
 sha1 = "0.11"
