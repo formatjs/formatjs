@@ -82,11 +82,13 @@ pub fn extract_messages_from_source(
     // Parse the file
     let allocator = Allocator::default();
     let ParserReturn {
-        program, errors, ..
+        program,
+        diagnostics,
+        ..
     } = Parser::new(&allocator, source_text, source_type).parse();
 
-    if !errors.is_empty() {
-        let error_messages: Vec<String> = errors.iter().map(|e| format!("{:?}", e)).collect();
+    if !diagnostics.is_empty() {
+        let error_messages: Vec<String> = diagnostics.iter().map(|e| format!("{:?}", e)).collect();
         anyhow::bail!("Parse errors:\n{}", error_messages.join("\n"));
     }
 

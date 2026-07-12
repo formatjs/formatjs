@@ -10,6 +10,20 @@
   ],
   "packageRules": [
     {
+      "description": "Group OXC updates",
+      "groupName": "OXC",
+      "matchPackageNames": [
+        "oxc",
+        "oxc_allocator",
+        "oxc_ast",
+        "oxc_data_structures",
+        "oxc_parser",
+        "oxc_span",
+        "oxc-parser",
+        "oxc-transform"
+      ]
+    },
+    {
       "description": "Automerge non-major updates",
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
