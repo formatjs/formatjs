@@ -45,7 +45,7 @@ const messages = {
   },
   'ko-KR': {
     photoCount:
-      '{name}님이 {takenDate, date, long}에 {numPhotos, plural, =0 {사진을 찍지 않았습니다} =1 {사진 한 장을 찍었습니다} other {사진 #장을 찍었습니다}}.',
+      '{name} 님이 {takenDate, date, long}에 {numPhotos, plural, =0 {사진을 찍지 않았습니다} =1 {사진 한 장을 찍었습니다} other {사진 #장을 찍었습니다}}.',
   },
 }
 
