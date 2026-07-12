@@ -14,7 +14,7 @@
     "@rescripts/rescript-use-babel-config": "0.0.12",
     "@rescripts/rescript-use-eslint-config": "0.0.11",
     "babel-plugin-formatjs": "11.3.14",
-    "eslint-plugin-formatjs": "6.4.15",
+    "eslint-plugin-formatjs": "6.4.16",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-intl": "10.1.13",
