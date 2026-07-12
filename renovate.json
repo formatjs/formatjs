@@ -10,6 +10,11 @@
   ],
   "packageRules": [
     {
+      "description": "Group NAPI-RS updates",
+      "groupName": "NAPI-RS",
+      "matchPackageNames": ["napi", "napi-derive"]
+    },
+    {
       "description": "Group OXC updates",
       "groupName": "OXC",
       "matchPackageNames": [
