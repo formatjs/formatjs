@@ -1,13 +1,12 @@
-import {type NodePath, type PluginPass} from '@babel/core'
+import {type NodePath} from '@babel/core'
 
 import {
   type MessageDescriptor,
   type MessageDescriptorPath,
   type Options,
-  type State,
+  type VisitorFunction,
 } from '#packages/babel-plugin-formatjs/types.js'
 import * as t from '@babel/types'
-import {type VisitNodeFunction} from '@babel/traverse'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {
   createMessageDescriptor,
@@ -18,10 +17,7 @@ import {
   wasExtracted,
 } from '#packages/babel-plugin-formatjs/utils.js'
 
-export const visitor: VisitNodeFunction<
-  PluginPass & State,
-  t.JSXOpeningElement
-> = function (
+export const visitor: VisitorFunction<'JSXOpeningElement'> = function (
   path,
   {
     opts,

@@ -201,6 +201,9 @@ importers:
       '@types/babel__traverse':
         specifier: ^7.28.0
         version: 7.28.0
+      '@types/convert-source-map':
+        specifier: ^2.0.3
+        version: 2.0.3
       '@types/estree':
         specifier: ^1.0.8
         version: 1.0.9
@@ -505,9 +508,6 @@ importers:
       '@babel/plugin-syntax-jsx':
         specifier: '8'
         version: 8.0.1(@babel/core@8.0.1)
-      '@babel/traverse':
-        specifier: '8'
-        version: 8.0.4
       '@babel/types':
         specifier: '8'
         version: 8.0.0
@@ -523,9 +523,9 @@ importers:
       '@types/babel__helper-plugin-utils':
         specifier: '7'
         version: 7.10.3
-      '@types/babel__traverse':
-        specifier: '7'
-        version: 7.28.0
+      '@types/convert-source-map':
+        specifier: '2'
+        version: 2.0.3
 
   packages/bigdecimal: {}
 
@@ -3561,6 +3561,9 @@ packages:
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
+
+  '@types/convert-source-map@2.0.3':
+    resolution: {integrity: sha512-ag0BfJLZf6CQz8VIuRIEYQ5Ggwk/82uvTQf27RcpyDNbY0Vw49LIPqAxk5tqYfrCs9xDaIMvl4aj7ZopnYL8bA==}
 
   '@types/debug@4.1.13':
     resolution: {integrity: sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==}
@@ -10016,6 +10019,8 @@ snapshots:
     dependencies:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
+
+  '@types/convert-source-map@2.0.3': {}
 
   '@types/debug@4.1.13':
     dependencies:
