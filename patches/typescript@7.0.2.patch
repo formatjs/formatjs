@@ -1,0 +1,27 @@
+diff --git a/lib/compat.cjs b/lib/compat.cjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..2e6efb14f38ce8eed84ab8efba9520e06aaa3be1
+--- /dev/null
++++ b/lib/compat.cjs
+@@ -0,0 +1 @@
++module.exports = require("@typescript/typescript6");
+diff --git a/lib/compat.d.cts b/lib/compat.d.cts
+new file mode 100644
+index 0000000000000000000000000000000000000000..66ce9b3a5d3239c618a7e48bb04488837c34f4ea
+--- /dev/null
++++ b/lib/compat.d.cts
+@@ -0,0 +1,2 @@
++import ts = require("@typescript/typescript6");
++export = ts;
+diff --git a/package.json b/package.json
+index 99c84c7689b9fb5a9a6af2c93ed98fc7cfbf567e..ad5f85446461a89c16f5300db77f3fe37ad5a3d2 100644
+--- a/package.json
++++ b/package.json
+@@ -29,7 +29,7 @@
+     "exports": {
+         "./package.json": "./package.json",
+-        ".": "./lib/version.cjs",
++        ".": "./lib/compat.cjs",
+         "./unstable/sync": "./dist/api/sync/api.js",
+         "./unstable/async": "./dist/api/async/api.js",
+         "./unstable/fs": "./dist/api/fs.js",

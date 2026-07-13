@@ -23,6 +23,9 @@ packageExtensions:
   '@vue/compiler-core':
     dependencies:
       '@babel/types': '*'
+  '@vue/compiler-sfc':
+    dependencies:
+      '@typescript/typescript6': 6.0.2
   '@vue/reactivity-transform':
     dependencies:
       '@babel/types': '*'
@@ -39,6 +42,13 @@ packageExtensions:
   ember-template-recast:
     dependencies:
       commander: '*'
+  ts-jest:
+    dependencies:
+      '@jest/transform': '*'
+      '@jest/types': '*'
+  typescript@7.0.2:
+    dependencies:
+      '@typescript/typescript6': 6.0.2
   vue-eslint-parser:
     dependencies:
       '@types/eslint-scope': '*'
@@ -46,6 +56,7 @@ packageExtensions:
 patchedDependencies:
   '@types/mdx': patches/@types__mdx.patch
   '@vue/compiler-sfc': patches/@vue+compiler-sfc.patch
+  typescript@7.0.2: patches/typescript@7.0.2.patch
   unicode-match-property-value-ecmascript@2.2.1: patches/unicode-match-property-value-ecmascript@2.2.1.patch
   unicode-match-property-ecmascript@2.0.0: patches/unicode-match-property-ecmascript@2.0.0.patch
 

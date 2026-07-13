@@ -25,6 +25,7 @@ test('tranpilation', async function () {
                 {
                   loader: 'ts-loader',
                   options: {
+                    compiler: '@typescript/typescript6',
                     appendTsSuffixTo: [/\.vue$/u],
                     getCustomTransformers() {
                       return {
