@@ -12,12 +12,12 @@ catalog:
   vite: ^8.0.0
 
 overrides:
-  '@jest/transform': ^30.0.0
-  '@jest/types': ^30.0.0
+  '@jest/transform': ^29.0.0
+  '@jest/types': ^29.0.0
   '@tailwindcss/vite>vite': 'catalog:'
-  babel-jest: ^30.0.0
-  jest: ^30.0.0
-  jest-util: ^30.0.0
+  babel-jest: ^29.0.0
+  jest: ^29.0.0
+  jest-util: ^29.0.0
 
 packageExtensions:
   '@vue/compiler-core':
