@@ -18,11 +18,11 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@babel/core": "7",
-    "@babel/helper-plugin-utils": "7",
-    "@babel/plugin-syntax-jsx": "7",
-    "@babel/traverse": "7",
-    "@babel/types": "7",
+    "@babel/core": "8",
+    "@babel/helper-plugin-utils": "8",
+    "@babel/plugin-syntax-jsx": "8",
+    "@babel/traverse": "8",
+    "@babel/types": "8",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@types/babel__core": "7",
