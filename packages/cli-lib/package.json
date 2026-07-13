@@ -36,7 +36,7 @@
     "@formatjs/ts-transformer": "workspace:*",
     "@types/fs-extra": "11",
     "@types/node": "22 || 24",
-    "commander": "14",
+    "commander": "15",
     "fast-glob": "3",
     "fs-extra": "11",
     "json-stable-stringify": "1",
