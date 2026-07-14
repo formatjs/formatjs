@@ -234,7 +234,7 @@ function lookupRootElements(
 function rootElementsForString(input: string): PackedCollationElement[] {
   const codePoints = stringToCodePoints(input)
   const elements: PackedCollationElement[] = []
-  for (let i = 0; i < codePoints.length; ) {
+  for (let i = 0; i < codePoints.length;) {
     const match = lookupRootElements(codePoints, i)
     elements.push(...match.elements)
     i += match.length
@@ -390,7 +390,7 @@ function collationElements(
 ): PackedCollationElement[] {
   const codePoints = stringToCodePoints(input)
   const elements: PackedCollationElement[] = []
-  for (let i = 0; i < codePoints.length; ) {
+  for (let i = 0; i < codePoints.length;) {
     const match =
       lookupTailoredElements(tailoring, codePoints, i) ||
       lookupRootElements(codePoints, i)
