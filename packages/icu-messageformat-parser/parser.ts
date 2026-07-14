@@ -140,7 +140,7 @@ function plainTopLevelEndPosition(message: string): Position | null {
   }
   let line = 1
   let column = 1
-  for (let offset = 0; offset < message.length; ) {
+  for (let offset = 0; offset < message.length;) {
     const code = message.charCodeAt(offset)
     switch (code) {
       case 35: // #
