@@ -35,13 +35,12 @@ formatjs_library(
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",
         "//:node_modules/@babel/plugin-syntax-jsx",
-        "//:node_modules/@babel/traverse",
         "//:node_modules/@babel/types",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/babel__core",
         "//:node_modules/@types/babel__helper-plugin-utils",
-        "//:node_modules/@types/babel__traverse",
+        "//:node_modules/@types/convert-source-map",  # keep: transitive type dep required by @babel/core
     ],
 )
 
@@ -58,6 +57,7 @@ formatjs_test(
         ":babel-plugin-formatjs",
         "//:node_modules/@babel/core",
         "//:node_modules/@types/babel__core",
+        "//:node_modules/@types/convert-source-map",  # keep: transitive type dep required by @babel/core
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],

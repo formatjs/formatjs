@@ -1,4 +1,4 @@
-import {type NodePath} from '@babel/core'
+import {type NodePath, type PluginPass, type VisitorBase} from '@babel/core'
 import {
   type JSXExpressionContainer,
   type SourceLocation,
@@ -17,6 +17,12 @@ export interface State {
   componentNames: string[]
   functionNames: string[]
 }
+
+export type VisitorFunction<K extends keyof VisitorBase<PluginPass & State>> =
+  Extract<
+    NonNullable<VisitorBase<PluginPass & State>[K]>,
+    (...args: any[]) => any
+  >
 
 export type ExtractedMessageDescriptor = MessageDescriptor &
   Partial<SourceLocation> & {file?: string}

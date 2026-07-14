@@ -5,8 +5,8 @@ import {
   type MessageDescriptorPath,
   type Options,
   type State,
+  type VisitorFunction,
 } from '#packages/babel-plugin-formatjs/types.js'
-import {type VisitNodeFunction} from '@babel/traverse'
 import {
   createMessageDescriptor,
   evaluateMessageDescriptor,
@@ -18,7 +18,7 @@ import {parse} from '@formatjs/icu-messageformat-parser'
 
 function assertObjectExpression(
   path: NodePath<any>,
-  callee: NodePath<t.Expression | t.V8IntrinsicIdentifier>
+  callee: NodePath<t.Expression | t.Super | t.Import | t.V8IntrinsicIdentifier>
 ): asserts path is NodePath<t.ObjectExpression> {
   if (!path || !path.isObjectExpression()) {
     throw path.buildCodeFrameError(
@@ -30,7 +30,7 @@ function assertObjectExpression(
 }
 
 function isFormatMessageCall(
-  callee: NodePath<t.Expression | t.V8IntrinsicIdentifier | t.MemberExpression>,
+  callee: NodePath<t.Expression | t.Super | t.Import | t.V8IntrinsicIdentifier>,
   functionNames: string[]
 ) {
   if (functionNames.find(name => callee.isIdentifier({name}))) {
@@ -60,170 +60,179 @@ function getMessagesObjectFromExpression(
   return currentPath
 }
 
-export const visitor: VisitNodeFunction<PluginPass & State, t.CallExpression> =
-  function (
-    path,
-    {
-      opts,
-      file: {
-        opts: {filename},
-      },
-    }
+type CallExpressionPath = Parameters<VisitorFunction<'CallExpression'>>[0]
+type OptionalCallExpressionPath = Parameters<
+  VisitorFunction<'OptionalCallExpression'>
+>[0]
+
+const visitCallExpression = function (
+  this: PluginPass & State,
+  path: CallExpressionPath | OptionalCallExpressionPath,
+  {
+    opts,
+    file: {
+      opts: {filename},
+    },
+  }: PluginPass & State
+) {
+  const {
+    overrideIdFn,
+    idInterpolationPattern,
+    removeDefaultMessage,
+    ast,
+    preserveWhitespace,
+    flatten,
+    throws,
+    onMsgError,
+  } = opts as Options
+  if (wasExtracted(path)) {
+    return
+  }
+  const {messages, functionNames} = this
+  const callee = path.get('callee')
+  const args = path.get('arguments')
+
+  /**
+   * Process MessageDescriptor
+   * @param messageDescriptor Message Descriptor
+   */
+  function processMessageObject(
+    messageDescriptor: NodePath<t.ObjectExpression>
   ) {
-    const {
-      overrideIdFn,
-      idInterpolationPattern,
-      removeDefaultMessage,
-      ast,
-      preserveWhitespace,
-      flatten,
-      throws,
-      onMsgError,
-    } = opts as Options
-    if (wasExtracted(path)) {
-      return
-    }
-    const {messages, functionNames} = this
-    const callee = path.get('callee')
-    const args = path.get('arguments')
+    assertObjectExpression(messageDescriptor, callee)
 
-    /**
-     * Process MessageDescriptor
-     * @param messageDescriptor Message Descriptor
-     */
-    function processMessageObject(
-      messageDescriptor: NodePath<t.ObjectExpression>
-    ) {
-      assertObjectExpression(messageDescriptor, callee)
+    const properties = messageDescriptor.get(
+      'properties'
+    ) as NodePath<t.ObjectProperty>[]
 
-      const properties = messageDescriptor.get(
-        'properties'
-      ) as NodePath<t.ObjectProperty>[]
-
-      let descriptorPath: MessageDescriptorPath
-      let descriptor: MessageDescriptor
-      try {
-        descriptorPath = createMessageDescriptor(
-          properties.map(
-            prop =>
-              [prop.get('key'), prop.get('value')] as [
-                NodePath<t.Identifier>,
-                NodePath<t.StringLiteral>,
-              ]
-          )
+    let descriptorPath: MessageDescriptorPath
+    let descriptor: MessageDescriptor
+    try {
+      descriptorPath = createMessageDescriptor(
+        properties.map(
+          prop =>
+            [prop.get('key'), prop.get('value')] as [
+              NodePath<t.Identifier>,
+              NodePath<t.StringLiteral>,
+            ]
         )
-
-        // If the message is already compiled, don't re-compile it
-        if (descriptorPath.defaultMessage?.isArrayExpression()) {
-          return
-        }
-
-        descriptor = evaluateMessageDescriptor(
-          descriptorPath,
-          false,
-          filename || undefined,
-          idInterpolationPattern,
-          overrideIdFn,
-          preserveWhitespace,
-          flatten
-        )
-      } catch (e) {
-        if (throws === false) {
-          tagAsExtracted(path)
-          onMsgError?.(filename || '', e as Error)
-          return
-        }
-        throw e
-      }
-      storeMessage(
-        descriptor,
-        messageDescriptor,
-        opts as Options,
-        filename || undefined,
-        messages
       )
 
-      const firstProp = properties[0]
-      const defaultMessageProp = properties.find(prop => {
-        const keyProp = prop.get('key')
-        return (
-          keyProp.isIdentifier({name: 'defaultMessage'}) ||
-          keyProp.isStringLiteral({value: 'defaultMessage'})
-        )
-      })
-      const idProp = properties.find(prop => {
-        const keyProp = prop.get('key')
-        return (
-          keyProp.isIdentifier({name: 'id'}) ||
-          keyProp.isStringLiteral({value: 'id'})
-        )
-      })
-
-      // Insert ID potentially 1st before removing nodes
-      if (idProp) {
-        idProp.get('value').replaceWith(t.stringLiteral(descriptor.id))
-      } else {
-        firstProp.insertBefore(
-          t.objectProperty(t.identifier('id'), t.stringLiteral(descriptor.id))
-        )
+      // If the message is already compiled, don't re-compile it
+      if (descriptorPath.defaultMessage?.isArrayExpression()) {
+        return
       }
 
-      // Remove description
-      properties
-        .find(prop => {
-          const keyProp = prop.get('key')
-          return (
-            keyProp.isIdentifier({name: 'description'}) ||
-            keyProp.isStringLiteral({value: 'description'})
+      descriptor = evaluateMessageDescriptor(
+        descriptorPath,
+        false,
+        filename || undefined,
+        idInterpolationPattern,
+        overrideIdFn,
+        preserveWhitespace,
+        flatten
+      )
+    } catch (e) {
+      if (throws === false) {
+        tagAsExtracted(path)
+        onMsgError?.(filename || '', e as Error)
+        return
+      }
+      throw e
+    }
+    storeMessage(
+      descriptor,
+      messageDescriptor,
+      opts as Options,
+      filename || undefined,
+      messages
+    )
+
+    const firstProp = properties[0]
+    const defaultMessageProp = properties.find(prop => {
+      const keyProp = prop.get('key')
+      return (
+        keyProp.isIdentifier({name: 'defaultMessage'}) ||
+        keyProp.isStringLiteral({value: 'defaultMessage'})
+      )
+    })
+    const idProp = properties.find(prop => {
+      const keyProp = prop.get('key')
+      return (
+        keyProp.isIdentifier({name: 'id'}) ||
+        keyProp.isStringLiteral({value: 'id'})
+      )
+    })
+
+    // Insert ID potentially 1st before removing nodes
+    if (idProp) {
+      idProp.get('value').replaceWith(t.stringLiteral(descriptor.id))
+    } else {
+      firstProp.insertBefore(
+        t.objectProperty(t.identifier('id'), t.stringLiteral(descriptor.id))
+      )
+    }
+
+    // Remove description
+    properties
+      .find(prop => {
+        const keyProp = prop.get('key')
+        return (
+          keyProp.isIdentifier({name: 'description'}) ||
+          keyProp.isStringLiteral({value: 'description'})
+        )
+      })
+      ?.remove()
+
+    // Pre-parse or remove defaultMessage
+    if (defaultMessageProp) {
+      if (removeDefaultMessage) {
+        defaultMessageProp?.remove()
+      } else if (descriptor.defaultMessage) {
+        const valueProp = defaultMessageProp.get('value')
+        if (ast) {
+          valueProp.replaceWithSourceString(
+            JSON.stringify(parse(descriptor.defaultMessage))
           )
-        })
-        ?.remove()
-
-      // Pre-parse or remove defaultMessage
-      if (defaultMessageProp) {
-        if (removeDefaultMessage) {
-          defaultMessageProp?.remove()
-        } else if (descriptor.defaultMessage) {
-          const valueProp = defaultMessageProp.get('value')
-          if (ast) {
-            valueProp.replaceWithSourceString(
-              JSON.stringify(parse(descriptor.defaultMessage))
-            )
-          } else {
-            valueProp.replaceWith(t.stringLiteral(descriptor.defaultMessage))
-          }
-        }
-      }
-
-      tagAsExtracted(path)
-    }
-
-    // Check that this is `defineMessages` call
-    if (
-      callee.isIdentifier({name: 'defineMessages'}) ||
-      callee.isIdentifier({name: 'defineMessage'})
-    ) {
-      const firstArgument = args[0]
-      const messagesObj = getMessagesObjectFromExpression(firstArgument)
-
-      assertObjectExpression(messagesObj, callee)
-      if (callee.isIdentifier({name: 'defineMessage'})) {
-        processMessageObject(messagesObj as NodePath<t.ObjectExpression>)
-      } else {
-        const properties = messagesObj.get('properties')
-        if (Array.isArray(properties)) {
-          properties
-            .map(prop => prop.get('value') as NodePath<t.ObjectExpression>)
-            .forEach(processMessageObject)
+        } else {
+          valueProp.replaceWith(t.stringLiteral(descriptor.defaultMessage))
         }
       }
     }
 
-    // Check that this is `intl.formatMessage` call
-    if (isFormatMessageCall(callee, functionNames)) {
-      const messageDescriptor = args[0]
-      if (messageDescriptor && messageDescriptor.isObjectExpression()) {
-        processMessageObject(messageDescriptor)
+    tagAsExtracted(path)
+  }
+
+  // Check that this is `defineMessages` call
+  if (
+    callee.isIdentifier({name: 'defineMessages'}) ||
+    callee.isIdentifier({name: 'defineMessage'})
+  ) {
+    const firstArgument = args[0]
+    const messagesObj = getMessagesObjectFromExpression(firstArgument)
+
+    assertObjectExpression(messagesObj, callee)
+    if (callee.isIdentifier({name: 'defineMessage'})) {
+      processMessageObject(messagesObj as NodePath<t.ObjectExpression>)
+    } else {
+      const properties = messagesObj.get('properties')
+      if (Array.isArray(properties)) {
+        properties
+          .map(prop => prop.get('value') as NodePath<t.ObjectExpression>)
+          .forEach(processMessageObject)
       }
     }
   }
+
+  // Check that this is `intl.formatMessage` call
+  if (isFormatMessageCall(callee, functionNames)) {
+    const messageDescriptor = args[0]
+    if (messageDescriptor && messageDescriptor.isObjectExpression()) {
+      processMessageObject(messageDescriptor)
+    }
+  }
+}
+
+export const visitor: VisitorFunction<'CallExpression'> = visitCallExpression
+export const optionalVisitor: VisitorFunction<'OptionalCallExpression'> =
+  visitCallExpression

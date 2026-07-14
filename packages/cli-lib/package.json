@@ -31,7 +31,7 @@
     ".": "./index.js"
   },
   "dependencies": {
-    "@babel/types": "7",
+    "@babel/types": "8",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@types/fs-extra": "11",

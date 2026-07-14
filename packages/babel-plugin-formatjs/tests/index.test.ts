@@ -1,6 +1,6 @@
 import * as path from 'path'
 
-import {transformFileSync} from '@babel/core'
+import {transformFileSync, type PluginItem} from '@babel/core'
 import plugin from '#packages/babel-plugin-formatjs/index.js'
 import {
   type Options,
@@ -72,9 +72,10 @@ test('FormattedMessage', () => {
   expect(transformAndCheck('FormattedMessage')).toEqual({
     code: `import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { jsx as _jsx } from "react/jsx-runtime";
 export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/React.createElement(FormattedMessage, {
+    return /*#__PURE__*/_jsx(FormattedMessage, {
       id: "foo.bar.baz",
       defaultMessage: "Hello World!"
     });
@@ -284,7 +285,7 @@ function transform(
   options: Options = {},
   {multiplePasses = false} = {}
 ) {
-  function getPluginConfig() {
+  function getPluginConfig(): PluginItem {
     return [plugin, options, Date.now() + '' + ++cacheBust]
   }
 
@@ -298,7 +299,6 @@ function transform(
             esmodules: true,
           },
           modules: false,
-          useBuiltIns: false,
           ignoreBrowserslistConfig: true,
         },
       ],
