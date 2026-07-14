@@ -17,7 +17,7 @@
  * - Supports exponent parameter (defaults to 0) for c/e operands
  */
 
-import ts from 'typescript'
+import ts from '@typescript/typescript6'
 
 /**
  * CLDR data structure from cldr-core package

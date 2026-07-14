@@ -31,7 +31,7 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
   'description',
 ]
 
-type TypeScript = typeof typescript
+type TypeScript = Omit<typeof typescript, 'default'>
 
 function primitiveToTSNode(
   factory: typescript.NodeFactory,

@@ -41,6 +41,7 @@ npm.npm_translate_lock(
     data = [
         "//:patches/@types__mdx.patch",
         "//:patches/@vue+compiler-sfc.patch",
+        "//:patches/typescript@7.0.2.patch",
         "//:patches/unicode-match-property-ecmascript@2.0.0.patch",
         "//:patches/unicode-match-property-value-ecmascript@2.2.1.patch",
     ],
@@ -74,12 +75,19 @@ use_repo(pnpm, "pnpm")
 
 ######### TypeScript rules #########
 
-bazel_dep(name = "aspect_rules_ts", version = "3.8.9")
+bazel_dep(name = "aspect_rules_ts", version = "3.9.1")
+single_version_override(
+    module_name = "aspect_rules_ts",
+    patch_strip = 1,
+    patches = ["//:patches/aspect_rules_ts-3.9.1.patch"],
+    version = "3.9.1",
+)
 
 rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext", dev_dependency = True)
 rules_ts_ext.deps(
-    ts_integrity = "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
     ts_version_from = "//:package.json",
+    validator_ts_integrity = "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+    validator_ts_version = "6.0.3",
 )
 use_repo(rules_ts_ext, "npm_typescript")
 

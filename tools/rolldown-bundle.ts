@@ -93,7 +93,7 @@ async function main(args: Args) {
   const bundle = await rolldown({
     input,
     external: externalPatterns,
-    plugins: args.dts ? dts({tsconfig: tsconfigPath}) : [],
+    plugins: args.dts ? dts({tsconfig: tsconfigPath, oxc: true}) : [],
     platform:
       platform === 'node'
         ? 'node'

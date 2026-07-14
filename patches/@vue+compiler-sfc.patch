@@ -7,7 +7,7 @@ index 1234567890abcdef1234567890abcdef12345678..fedcba0987654321fedcba0987654321
  import MagicString from 'magic-string';
  export { default as MagicString } from 'magic-string';
 -import TS from 'typescript';
-+import * as TS from 'typescript';
++import * as TS from '@typescript/typescript6';
 
  export interface AssetURLTagConfig {
      [name: string]: string[];

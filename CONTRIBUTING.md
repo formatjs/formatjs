@@ -48,13 +48,20 @@ bazel run //:generate_package_tsconfigs
 
 This repository uses a highly optimized TypeScript build pipeline with Bazel:
 
-#### Fast Parallel Type Checking with tsgo
+#### Fast Parallel Type Checking with TypeScript 7
 
-Type checking is performed using [tsgo](https://github.com/microsoft/TypeScript/tree/main/packages/ts-native-preview) from `@typescript/native-preview`, a native TypeScript type checker that's significantly faster than `tsc`:
+Type checking is performed using the native [`tsc` from TypeScript 7](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/). `rules_ts` reads the root `typescript` version from `package.json`, and `ts_project` uses that compiler by default:
 
 - Type checking runs in parallel with code generation
 - Uses `no_emit = True` to skip generating files (only validates types)
-- Configured via the `transpiler` attribute in `ts_project` targets
+
+TypeScript 7 does not provide the classic Node.js compiler API. Packages that
+use that API still depend on `typescript`; the root TypeScript package is
+patched so that stable import delegates to Microsoft's
+`@typescript/typescript6` compatibility package.
+The repository patches `rules_ts` so its option pre-validator uses a pinned
+TypeScript 6 compatibility runtime while `ts_project` still compiles with
+native TypeScript 7.
 
 #### Fast Transpilation with oxc-transform
 
@@ -72,7 +79,7 @@ Code generation uses [oxc-transform](https://oxc.rs/docs/guide/usage/transform.h
 For every TypeScript compilation target, two separate Bazel targets are created:
 
 1. **Type Check Target** (`<name>-typecheck`):
-   - Uses tsgo with `no_emit = True`
+   - Uses TypeScript 7 with `no_emit = True`
    - Runs in parallel with transpilation
    - Fast type validation without generating files
 
@@ -112,7 +119,7 @@ This ensures compatibility with fast transpilers that operate in isolated mode w
 The transpiler infrastructure is located in:
 
 - [`tools/index.bzl`](tools/index.bzl) - Main compilation macros (`ts_compile`, `ts_compile_node`)
-- [`tools/vitest.bzl`](tools/vitest.bzl) - Test compilation with tsgo
+- [`tools/vitest.bzl`](tools/vitest.bzl) - Test compilation with TypeScript 7
 - [`tools/oxc_transpiler.bzl`](tools/oxc_transpiler.bzl) - Custom Bazel rule for oxc-transform
 - [`tools/oxc-transpiler/`](tools/oxc-transpiler/) - Node.js wrapper for oxc-transform CLI
 

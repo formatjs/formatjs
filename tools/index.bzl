@@ -3,7 +3,6 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -20,7 +19,7 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
 
     esnext_tsconfig = packages_tsconfig(ESNEXT_TSCONFIG)
 
-    # Type check only with tsgo (fast, parallel)
+    # Type check only with TypeScript 7 (fast, parallel)
     ts_project(
         name = "%s-esm-esnext-typecheck" % name,
         srcs = srcs,
@@ -28,7 +27,6 @@ def ts_compile_node(name, srcs, deps = [], data = [], visibility = None):
         tsconfig = esnext_tsconfig,
         resolve_json_module = True,
         deps = deps,
-        transpiler = tsgo_bin.tsgo,
         no_emit = True,
     )
 
@@ -66,7 +64,7 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None, packag
     effective_tsconfig = tsconfig or packages_tsconfig()
 
     # Always build ESM bundle
-    # Type check only with tsgo (fast, parallel)
+    # Type check only with TypeScript 7 (fast, parallel)
     ts_project(
         name = "%s-esm-typecheck" % name,
         srcs = srcs,
@@ -74,7 +72,6 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None, packag
         tsconfig = effective_tsconfig,
         resolve_json_module = True,
         deps = deps,
-        transpiler = tsgo_bin.tsgo,
         no_emit = True,
     )
 

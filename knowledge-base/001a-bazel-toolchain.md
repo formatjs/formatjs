@@ -18,7 +18,7 @@ actions so they can cache and run independently across the monorepo.
 | ----------------------- | ------------- | ------------------------------------------------- |
 | `aspect_rules_js`       | 3.0.3         | JS/Node.js rules, npm lock translation            |
 | `rules_nodejs`          | 6.7.4         | Hermetic Node.js toolchain                        |
-| `aspect_rules_ts`       | 3.8.7         | `ts_project`, tsgo integration                    |
+| `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration     |
 | `aspect_bazel_lib`      | 2.22.5        | `copy_to_bin`, `copy_to_directory`, source writes |
 | `rules_multirun`        | 0.13.0        | Multi-target run orchestration                    |
 | `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                               |
@@ -41,8 +41,14 @@ actions so they can cache and run independently across the monorepo.
 - C/C++ builds use **hermetic LLVM 22.1.4** toolchains. Build actions that need
   native executables must keep them in the execution configuration.
 - Bazel's pnpm extension is pinned to **pnpm 10.4.1** for repository rules.
-- TypeScript comes from root `package.json` through
-  `@aspect_rules_ts//ts:extensions.bzl`.
+- `rules_ts` reads TypeScript 7.0.2 from root `package.json` and exposes its
+  native compiler as `@npm_typescript//:tsc`.
+- The root TypeScript package is patched so its stable Node.js import delegates
+  to Microsoft's `@typescript/typescript6` compatibility package. This keeps
+  classic compiler API users on root `//:node_modules/typescript` labels while
+  the `tsc` binary remains TypeScript 7.
+- A local `rules_ts` patch runs its option pre-validator with pinned TypeScript
+  6.0.3 while `ts_project` compiles with native TypeScript 7.
 - Go SDK is pinned to **1.24.12**.
 - Rust is pinned to **1.95.0**, edition **2024**, through `rules_rs`.
 
@@ -68,7 +74,7 @@ Source .ts/.tsx files
   ├─ package_json_sync                   → checked-in package.json
   ├─ copy_to_bin(:package_json)          → cross-package manifest input
   ├─ copy_to_bin(:srcs)                 → sandbox-safe source tree
-  ├─ ts_project(:typecheck)             → tsgo, no emit
+  ├─ ts_project(:typecheck)             → TypeScript 7, no emit
   ├─ js_library(:lib)                   → source library for tests
   ├─ rolldown_bundle(<entry>-bundle)    → bundled .js + .js.map + .d.ts
   ├─ validation tests                   → no internal imports, package deps, exports
@@ -109,7 +115,7 @@ but take the internal path:
 ```
 Source .ts/.tsx files
   ├─ copy_to_bin(:srcs)
-  ├─ ts_project(:typecheck)  → tsgo, no emit
+  ├─ ts_project(:typecheck)  → TypeScript 7, no emit
   ├─ ts_project(<dir>-esm)   → oxc transpilation + declarations
   ├─ js_library(<dir>)
   └─ alias(:lib)
@@ -121,8 +127,8 @@ abstract-operation subpackages.
 
 ### Why Separate Type Checking and Transpilation?
 
-- **tsgo** (`@typescript/native-preview`) performs fast type checking and is
-  always run with `no_emit = True` in the main typecheck path.
+- **TypeScript 7** (`@npm_typescript//:tsc`) performs native type checking and
+  is always run with `no_emit = True` in the main typecheck path.
 - **oxc-transform** is used for per-file TypeScript stripping and declaration
   generation where package-level bundling is not needed.
 - **Rolldown** produces the published package bundles and bundled declarations.
@@ -251,7 +257,7 @@ Defines a typechecked Vitest target:
 
 ```
 vitest(name, srcs, deps, data, fixtures, dom, snapshots, config, tsconfig)
-  ├─ ts_project(<name>_typecheck)  → tsgo, no emit
+  ├─ ts_project(<name>_typecheck)  → TypeScript 7, no emit
   ├─ vitest_test(<name>)           → actual test execution
   └─ <name>.update                 → manual snapshot update helper
 ```
@@ -283,7 +289,7 @@ Legacy/general helper macros still exist for custom TS compilation:
 
 ```
 ts_compile(name)
-  ├─ ts_project(<name>-esm-typecheck)  → tsgo, no emit
+  ├─ ts_project(<name>-esm-typecheck)  → TypeScript 7, no emit
   ├─ ts_project(<name>-esm)            → oxc transpiler + declarations
   └─ js_library(name)
 ```
@@ -373,7 +379,7 @@ Building a published package such as `//packages/intl-locale:pkg`:
 3. Gazelle-maintained BUILD attrs provide srcs and deps
 4. formatjs_package_json(:package_json) generates package metadata in Bazel output
 5. copy_to_bin(:srcs) materializes sources in Bazel output
-6. ts_project(:typecheck) runs tsgo with no emit
+6. ts_project(:typecheck) runs TypeScript 7 with no emit
 7. rolldown_bundle() bundles JS and declarations for each entry point
 8. validation tests inspect bundled output and package metadata
 9. npm_package(:pkg) assembles the publishable package

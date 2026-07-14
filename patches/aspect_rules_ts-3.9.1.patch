@@ -1,0 +1,141 @@
+diff --git a/ts/BUILD.typescript b/ts/BUILD.typescript
+index f9aa38d..8e84120 100644
+--- a/ts/BUILD.typescript
++++ b/ts/BUILD.typescript
+@@ -38,0 +39 @@ npm_link_package(
++# ts_validator_package_targets
+@@ -44,0 +46,4 @@ TSC_DATA = [
++VALIDATOR_DATA = [
++    # ts_validator_package_labels
++]
++
+@@ -69 +74 @@ js_binary(
+-    data = TSC_DATA,
++    data = VALIDATOR_DATA,
+@@ -70,0 +76 @@ js_binary(
++    env = VALIDATOR_ENV,
+diff --git a/ts/extensions.bzl b/ts/extensions.bzl
+index ac0cbac..5f72c6d 100644
+--- a/ts/extensions.bzl
++++ b/ts/extensions.bzl
+@@ -21 +21,3 @@ def _extension_impl(module_ctx):
+-                       attr.ts_integrity != existing_attr.ts_integrity:
++                       attr.ts_integrity != existing_attr.ts_integrity or \
++                       attr.validator_ts_version != existing_attr.validator_ts_version or \
++                       attr.validator_ts_integrity != existing_attr.validator_ts_integrity:
+@@ -23,2 +25,2 @@ def _extension_impl(module_ctx):
+-    Module '{existing_mod}' requests: ts_version={existing_version}, ts_version_from={existing_from}, ts_integrity={existing_integrity}
+-    Module '{current_mod}' requests: ts_version={current_version}, ts_version_from={current_from}, ts_integrity={current_integrity}
++    Module '{existing_mod}' requests: ts_version={existing_version}, ts_version_from={existing_from}, ts_integrity={existing_integrity}, validator_ts_version={existing_validator_version}, validator_ts_integrity={existing_validator_integrity}
++    Module '{current_mod}' requests: ts_version={current_version}, ts_version_from={current_from}, ts_integrity={current_integrity}, validator_ts_version={current_validator_version}, validator_ts_integrity={current_validator_integrity}
+@@ -30,0 +33,2 @@ To resolve this conflict, the root module should explicitly specify the desired
++                            existing_validator_integrity = existing_attr.validator_ts_integrity or "(not set)",
++                            existing_validator_version = existing_attr.validator_ts_version or "(not set)",
+@@ -34,0 +39,2 @@ To resolve this conflict, the root module should explicitly specify the desired
++                            current_validator_integrity = attr.validator_ts_integrity or "(not set)",
++                            current_validator_version = attr.validator_ts_version or "(not set)",
+@@ -55,0 +62,2 @@ To resolve this conflict, the root module should explicitly specify the desired
++            validator_ts_integrity = attr.validator_ts_integrity,
++            validator_ts_version = attr.validator_ts_version,
+@@ -65,0 +74,6 @@ ext = module_extension(
++            "validator_ts_integrity": attr.string(
++                doc = "Integrity of the classic TypeScript package used only to validate native TypeScript. Defaults to the mirrored integrity.",
++            ),
++            "validator_ts_version": attr.string(
++                doc = "Classic TypeScript version exposed as @typescript/typescript6 only for native TypeScript validation. Defaults to 6.0.3.",
++            ),
+diff --git a/ts/private/npm_repositories.bzl b/ts/private/npm_repositories.bzl
+index 5828ba9..e2bc6d1 100644
+--- a/ts/private/npm_repositories.bzl
++++ b/ts/private/npm_repositories.bzl
+@@ -6,0 +7 @@ _TYPESCRIPT_NATIVE_PACKAGE_PREFIX = "@typescript/"
++_DEFAULT_VALIDATOR_TYPESCRIPT_VERSION = "6.0.3"
+@@ -57,0 +59,2 @@ def _http_archive_version_impl(rctx):
++    validator_package_labels = ['    ":node_modules/typescript",\n']
++    validator_package_targets = []
+@@ -59,0 +63 @@ def _http_archive_version_impl(rctx):
++        validator_package_labels, validator_package_targets = _link_validator_packages(rctx)
+@@ -68,0 +73,3 @@ def _http_archive_version_impl(rctx):
++        "# ts_validator_package_labels": "".join(validator_package_labels),
++        "# ts_validator_package_targets": "\n".join(validator_package_targets),
++        "VALIDATOR_ENV": '{"RULES_TS_VALIDATOR_TYPESCRIPT": "@typescript/typescript6"}' if native_typescript_version else '{"RULES_TS_VALIDATOR_TYPESCRIPT": "typescript"}',
+@@ -122,0 +130,35 @@ npm_link_package(
++def _link_validator_packages(rctx):
++    version = rctx.attr.validator_ts_version or _DEFAULT_VALIDATOR_TYPESCRIPT_VERSION
++    if not version.startswith("6."):
++        fail("validator_ts_version must select a TypeScript 6 release, got {}".format(version))
++    integrity = rctx.attr.validator_ts_integrity or TOOL_VERSIONS.get(version)
++    if not integrity:
++        fail("""validator TypeScript version {} is not mirrored in rules_ts.
++            If this is a real version, specify 'validator_ts_integrity'.""".format(version))
++
++    # @typescript/typescript6 is a proxy to a floating typescript@^6 dependency.
++    # Fetch the exact classic compiler payload and expose it under the compatibility
++    # package name so repository resolution remains hermetic.
++    _download_package(
++        rctx,
++        "https://registry.npmjs.org/typescript/-/typescript-{}.tgz".format(version),
++        "validator_package",
++        integrity,
++    )
++
++    targets = """npm_package_internal(
++    name = "npm_typescript6",
++    src = "validator_package/package",
++    package = "@typescript/typescript6",
++    version = "{version}",
++)
++
++npm_link_package(
++    name = "node_modules/@typescript/typescript6",
++    src = ":npm_typescript6",
++    visibility = ["//visibility:public"],
++)
++""".format(version = version)
++    labels = ['    ":node_modules/@typescript/typescript6",\n']
++    return labels, [targets]
++
+@@ -133 +175 @@ def _download_native_package(rctx, version, native_package, integrity):
+-    urls = ["https://registry.npmjs.org/@typescript/{native_package}/-/{native_package}-{version}.tgz".format(
++    url = "https://registry.npmjs.org/@typescript/{native_package}/-/{native_package}-{version}.tgz".format(
+@@ -136 +178,5 @@ def _download_native_package(rctx, version, native_package, integrity):
+-    )]
++    )
++    _download_package(rctx, url, "native_packages/{}".format(native_package), integrity)
++
++def _download_package(rctx, url, output, integrity):
++    urls = [url]
+@@ -139 +185 @@ def _download_native_package(rctx, version, native_package, integrity):
+-        output = "native_packages/{}".format(native_package),
++        output = output,
+@@ -148,0 +195,2 @@ http_archive_version = repository_rule(
++        "validator_ts_integrity": attr.string(doc = "Integrity of the classic TypeScript package used only to validate native TypeScript. Defaults to the mirrored integrity."),
++        "validator_ts_version": attr.string(doc = "Classic TypeScript version exposed as @typescript/typescript6 only for native TypeScript validation. Defaults to 6.0.3."),
+@@ -160 +208 @@ http_archive_version = repository_rule(
+-def npm_dependencies(name = "npm_typescript", ts_version_from = None, ts_version = None, ts_integrity = None):
++def npm_dependencies(name = "npm_typescript", ts_version_from = None, ts_version = None, ts_integrity = None, validator_ts_version = None, validator_ts_integrity = None):
+@@ -169,0 +218,2 @@ def npm_dependencies(name = "npm_typescript", ts_version_from = None, ts_version
++        validator_ts_integrity = validator_ts_integrity,
++        validator_ts_version = validator_ts_version,
+diff --git a/ts/private/ts_project_options_validator.cjs b/ts/private/ts_project_options_validator.cjs
+index b4bc33d..8149f14 100644
+--- a/ts/private/ts_project_options_validator.cjs
++++ b/ts/private/ts_project_options_validator.cjs
+@@ -4 +4 @@ var path_1 = require('path')
+-var ts = require('typescript')
++var ts = require(process.env.RULES_TS_VALIDATOR_TYPESCRIPT || 'typescript')
+diff --git a/ts/repositories.bzl b/ts/repositories.bzl
+index 720f66f..4dea615 100644
+--- a/ts/repositories.bzl
++++ b/ts/repositories.bzl
+@@ -59 +59 @@ def rules_ts_bazel_dependencies():
+-def rules_ts_dependencies(name = "npm_typescript", ts_version_from = None, ts_version = None, ts_integrity = None):
++def rules_ts_dependencies(name = "npm_typescript", ts_version_from = None, ts_version = None, ts_integrity = None, validator_ts_version = None, validator_ts_integrity = None):
+@@ -81,0 +82,4 @@ def rules_ts_dependencies(name = "npm_typescript", ts_version_from = None, ts_ve
++        validator_ts_version: classic TypeScript version used only to validate native TypeScript.
++            Defaults to 6.0.3.
++        validator_ts_integrity: integrity hash for the validator TypeScript package.
++            Defaults to the mirrored integrity.
+@@ -90,0 +95,2 @@ def rules_ts_dependencies(name = "npm_typescript", ts_version_from = None, ts_ve
++        validator_ts_integrity = validator_ts_integrity,
++        validator_ts_version = validator_ts_version,

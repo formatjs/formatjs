@@ -2,7 +2,6 @@
 
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "write_source_files")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
@@ -78,7 +77,7 @@ def vitest(
         },
     }
 
-    # Type check only with tsgo (fast, parallel)
+    # Type check only with TypeScript 7 (fast, parallel)
     ts_project(
         name = "%s_typecheck" % name,
         srcs = srcs_no_snapshots,
@@ -88,7 +87,6 @@ def vitest(
         no_emit = True,
         testonly = True,
         deps = deps,
-        transpiler = tsgo_bin.tsgo,
     )
 
     # Use the shared base config for Bazel sandbox compatibility (preserveSymlinks).

@@ -4,7 +4,6 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:package_json.bzl", "formatjs_package_json", "package_json_sync")
@@ -188,7 +187,7 @@ def formatjs_library(
     Generates:
     - copy_to_bin(name = "srcs") for sandbox compatibility
     - js_library(name = "lib") wrapping sources + deps
-    - ts_project(name = "typecheck") for type checking (tsgo, no emit)
+    - ts_project(name = "typecheck") for type checking (TypeScript 7, no emit)
     - Optionally ts_project(name = "types") with emit_declaration_only
     - If package.json exists: rolldown bundles, npm_package, and validation tests
     - If no package.json: oxc per-file transpilation
@@ -317,7 +316,6 @@ def formatjs_library(
         declaration = True,
         no_emit = True,
         resolve_json_module = True,
-        transpiler = tsgo_bin.tsgo,
         tsconfig = effective_tsconfig,
         deps = all_deps,
     )
@@ -369,7 +367,6 @@ def formatjs_library(
             declaration = True,
             emit_declaration_only = True,
             resolve_json_module = True,
-            transpiler = tsgo_bin.tsgo,
             tsconfig = effective_tsconfig,
             visibility = ["//visibility:public"],
             deps = all_deps,

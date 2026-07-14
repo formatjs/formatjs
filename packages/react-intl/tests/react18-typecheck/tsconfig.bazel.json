@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "ignoreDeprecations": "6.0",
@@ -13,9 +12,9 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "react": ["node_modules/@types/react/index.d.ts"],
-      "react-dom/client": ["node_modules/@types/react-dom/client.d.ts"],
-      "react/jsx-runtime": ["node_modules/@types/react/jsx-runtime.d.ts"]
+      "react": ["./node_modules/@types/react/index.d.ts"],
+      "react-dom/client": ["./node_modules/@types/react-dom/client.d.ts"],
+      "react/jsx-runtime": ["./node_modules/@types/react/jsx-runtime.d.ts"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

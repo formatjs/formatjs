@@ -1,5 +1,4 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@npm//:@typescript/native-preview/package_json.bzl", tsgo_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
@@ -30,7 +29,6 @@ formatjs_library(
     srcs = [":srcs"],
     no_emit = True,
     resolve_json_module = True,
-    transpiler = tsgo_bin.tsgo,
     tsconfig = DOCS_TSCONFIG,
     deps = [
         "//:node_modules/@mdx-js/react",
