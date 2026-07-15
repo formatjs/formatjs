@@ -27,7 +27,7 @@
     "@types/babel__core": "7",
     "@types/node": "22 || 24",
     "json-stable-stringify": "1",
-    "typescript": "^5.6 || 6 || 7"
+    "typescript": "^5.6 || 6"
   },
   "peerDependencies": {
     "ts-jest": "29"
