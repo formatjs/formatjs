@@ -28,6 +28,7 @@ formatjs_library(
         "parse_script.ts",
         "pseudo_locale.ts",
         "svelte_extractor.ts",
+        "sync_source.ts",
         "verify/checkExtraKeys.ts",
         "verify/checkMissingKeys.ts",
         "verify/checkStructuralEquality.ts",
@@ -145,6 +146,7 @@ formatjs_test(
         "tests/unit/native.test.ts",
         "tests/unit/pseudo_locale.test.ts",
         "tests/unit/svelte_extractor.test.ts",
+        "tests/unit/sync_source.test.ts",
         "tests/unit/unit.test.ts",
         "tests/unit/vue_extractor.test.ts",
     ],
@@ -167,6 +169,7 @@ genrule(
     srcs = [":formatjs"],
     outs = ["bin/formatjs"],
     cmd = "cp $(location :formatjs)/formatjs $@",
+    visibility = ["//packages/cli/integration-tests:__pkg__"],
 )
 
 rolldown_bundle(

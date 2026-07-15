@@ -73,6 +73,20 @@ vitest(
     ],
 )
 
+vitest(
+    name = "sync_source_integration_test",
+    srcs = glob(
+        ["sync-source/*.test.ts"],
+    ),
+    data = [
+        "//packages/cli-lib:bin",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+    ],
+)
+
 # Disabled: Replaced by conformance_test which covers all scenarios
 # and directly compares Rust vs TypeScript CLI outputs
 # vitest(

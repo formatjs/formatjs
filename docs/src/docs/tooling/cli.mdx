@@ -183,6 +183,7 @@ Most common extraction, compilation, and verification options work with the nati
 - `--format` accepts built-in formatter names only: `default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`.
 - Custom JavaScript formatter files for `compile` and `compile-folder` are deprecated in the Node.js CLI and are not supported by the standalone native CLI.
 - Framework template extraction for Vue, Svelte, Handlebars, Glimmer, GTS, and GJS is only supported by the Node.js CLI.
+- The experimental `sync-source` command is only available in the npm CLI.
 
 ---
 
@@ -412,6 +413,52 @@ becomes
 
 The goal is to provide as many full sentences as possible since fragmented
 sentences are not translator-friendly.
+
+## Source synchronization (experimental)
+
+`sync-source` checks or updates inline `defaultMessage` values from a source-locale catalog. This is intended for teams that manage source copy in a Translation Management System while keeping messages colocated with their usages.
+
+<Admonition type="caution">
+  Source synchronization is an experimental, npm CLI-only workflow. FormatJS
+  still recommends changing source messages in code for most applications.
+</Admonition>
+
+The default catalog format is `simple`, a JSON object mapping explicit message IDs to strings:
+
+```json
+{
+  "account.save": "Save changes",
+  "account.cancel": "Cancel"
+}
+```
+
+Check for stale source messages without changing files:
+
+```sh
+formatjs sync-source "src/**/*.{js,jsx,ts,tsx}" \
+  --source-file lang/en.json
+```
+
+The command exits with status `1` when it finds stale messages. Apply the reported updates explicitly with `--write`:
+
+```sh
+formatjs sync-source "src/**/*.{js,jsx,ts,tsx}" \
+  --source-file lang/en.json \
+  --write
+```
+
+Use `--format default` for the standard extracted shape containing `{defaultMessage}`, or another built-in formatter name for its corresponding catalog shape. Custom formatter files are not supported.
+
+The initial implementation is deliberately strict:
+
+- Messages need static, explicit IDs. Generated and dynamic IDs cannot be synchronized.
+- Only existing static `defaultMessage` literals in JavaScript and TypeScript are updated. The command does not insert missing messages or process framework templates.
+- Every occurrence of a matching ID is updated.
+- Concatenated or tagged templates and descriptors containing spreads cannot be rewritten.
+- Incoming messages must be valid ICU and keep the same argument and rich-text tag names and types.
+- The complete input is validated before any source file is written.
+
+`--additional-component-names`, `--additional-function-names`, `--ignore`, and opt-in `--follow-links` use the same forms as extraction.
 
 ## Verification
 
@@ -718,8 +765,8 @@ Install `@formatjs/cli-lib` instead to use programmatically
 
 <Admonition type="caution">
   The `compile` and `compileAndWrite` APIs have the same native binding
-  requirement as `formatjs compile`. The `extract` and `extractAndWrite` APIs do
-  not require the native binding.
+  requirement as `formatjs compile`. The extraction and source synchronization
+  APIs do not require the native binding.
 </Admonition>
 
 <Tabs
@@ -766,6 +813,28 @@ const resultAsString: Promise<string> = extract(files, {
 ```tsx
 const resultAsString: Promise<string> = compile(files, {
   ast: true,
+})
+```
+
+### Source synchronization
+
+`syncSource` accepts an already normalized `Record<string, string>` and checks by default. Pass `write: true` to update the files after validation.
+
+```tsx
+const result = await syncSource(files, sourceMessages)
+
+await syncSource(files, sourceMessages, {
+  write: true,
+})
+```
+
+`syncSourceFromFile` loads a catalog using one of the built-in formats:
+
+```tsx
+await syncSourceFromFile(files, {
+  sourceFile: 'lang/en.json',
+  format: 'simple',
+  write: true,
 })
 ```
 

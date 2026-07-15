@@ -64,6 +64,8 @@
 - `extract(files, options)` — Extract messages from source files
 - `compile(messages, options)` — Compile translations to ICU format
 - `compileFolder(inputDir, outputDir, options)` — Batch compilation
+- `syncSource(files, messages, options)` — Check or update existing inline `defaultMessage` literals from a normalized source-locale catalog
+- `syncSourceFromFile(files, options)` — Load a built-in catalog format and synchronize source messages
 
 **Extractor support:**
 
@@ -88,8 +90,10 @@
 - `formatjs extract` — Extract messages from source files
 - `formatjs compile` — Compile translation files
 - `formatjs compile-folder` — Batch compile a directory
+- `formatjs verify` — Validate translation catalogs
+- `formatjs sync-source` — Experimentally check or update inline source messages
 
-The Rust CLI (`crates/formatjs_cli/`) is a 20.90x faster drop-in replacement in the checked-in extraction benchmark, with parallelized catalog parsing for large compile and structural verify workloads.
+`sync-source` is a Node-only command. It requires static explicit IDs, updates existing static JavaScript/TypeScript `defaultMessage` literals, validates ICU argument and rich-text tag names and types, and only writes when `--write` is passed. The standalone Rust CLI implements the shared extraction, compilation, and verification workflows but is not a drop-in replacement for every Node CLI feature.
 
 ## Utility Packages
 

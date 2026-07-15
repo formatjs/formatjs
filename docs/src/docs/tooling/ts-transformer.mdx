@@ -297,6 +297,10 @@ Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't d
 
 Callback that gets triggered whenever a message is encountered.
 
+### **`onMsgDescriptorExtracted(filePath: string, occurrence: MessageDescriptorOccurrence)`**
+
+Callback that receives every successfully extracted descriptor occurrence along with exact writable source ranges for static `id` and `defaultMessage` literals. Duplicate IDs are reported separately. Writable ranges are omitted for concatenations, tagged templates, and descriptors containing spreads. Descriptors that cannot be statically extracted are not reported.
+
 ### **`onMetaExtracted(filePath: string, meta: Record<string, string>)`**
 
 Callback that gets triggered whenever a `pragme` meta is encountered.

@@ -9,8 +9,8 @@
  * 3. Extract and compile functions work without "Named export not found" errors
  */
 
-import {extract, compile} from '@formatjs/cli-lib'
-import {writeFile, mkdir, rm} from 'fs/promises'
+import {compile, extract, syncSource} from '@formatjs/cli-lib'
+import {mkdir, readFile, rm, writeFile} from 'fs/promises'
 import {join} from 'path'
 import {fileURLToPath} from 'url'
 import {dirname} from 'path'
@@ -156,6 +156,32 @@ async function testCompileWithCustomFormatter() {
   console.log('✓ Compile function with custom formatter works correctly')
 }
 
+async function testSyncSourceFunction() {
+  console.log('Testing syncSource function with ESM imports...')
+
+  const testSourceFile = join(testDir, 'sync-source.ts')
+  await writeFile(
+    testSourceFile,
+    `defineMessage({id: 'sync.message', defaultMessage: 'Before'})\n`,
+    'utf8'
+  )
+
+  const check = await syncSource([testSourceFile], {
+    'sync.message': 'After',
+  })
+  if (check.changes.length !== 1) {
+    throw new Error('syncSource should report one stale message')
+  }
+
+  await syncSource([testSourceFile], {'sync.message': 'After'}, {write: true})
+  const updated = await readFile(testSourceFile, 'utf8')
+  if (!updated.includes(`defaultMessage: 'After'`)) {
+    throw new Error('syncSource did not update the source file')
+  }
+
+  console.log('✓ syncSource function works correctly')
+}
+
 async function main() {
   let exitCode = 0
 
@@ -173,6 +199,9 @@ async function main() {
 
     // Test custom formatter path, which resolves glob patterns in ESM
     await testCompileWithCustomFormatter()
+
+    // Test the public source synchronization API
+    await testSyncSourceFunction()
 
     console.log('\n✅ All ESM compatibility tests passed!')
   } catch (error) {

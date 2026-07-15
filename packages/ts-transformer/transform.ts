@@ -9,10 +9,18 @@ import * as typescript from 'typescript'
 import {debug} from '#packages/ts-transformer/console_utils.js'
 import {interpolateName} from '#packages/ts-transformer/interpolate-name.js'
 import {normalizeMessageWhitespace} from '#packages/ts-transformer/normalize-whitespace.js'
-import {type MessageDescriptor} from '#packages/ts-transformer/types.js'
+import {
+  type MessageDescriptor,
+  type MessageDescriptorOccurrence,
+  type MessageDescriptorValueLocation,
+} from '#packages/ts-transformer/types.js'
 
 const stringify = (stringifyNs as any).default || stringifyNs
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void
+export type DescriptorExtractor = (
+  filePath: string,
+  occurrence: MessageDescriptorOccurrence
+) => void
 export type MetaExtractor = (
   filePath: string,
   meta: Record<string, string>
@@ -168,6 +176,12 @@ export interface Opts {
    */
   onMsgExtracted?: Extractor
   /**
+   * Callback for each successfully extracted descriptor occurrence, including
+   * duplicate IDs. Writable value locations use inclusive `start` and
+   * exclusive `end` source offsets.
+   */
+  onMsgDescriptorExtracted?: DescriptorExtractor
+  /**
    * Callback function that gets called when we successfully parsed meta
    * declared in pragma
    */
@@ -293,6 +307,102 @@ function unwrapObjectLiteralExpression(
   return ts.isObjectLiteralExpression(expression) ? expression : undefined
 }
 
+function getStaticPropertyName(
+  ts: TypeScript,
+  name: typescript.PropertyName | typescript.JsxAttributeName
+): string | undefined {
+  if (
+    ts.isIdentifier(name) ||
+    ts.isStringLiteral(name) ||
+    ts.isNumericLiteral(name)
+  ) {
+    return name.text
+  }
+  if (ts.isComputedPropertyName(name)) {
+    const expression = unwrapTransparentTypeScriptExpression(
+      ts,
+      name.expression
+    )
+    if (
+      ts.isStringLiteral(expression) ||
+      ts.isNoSubstitutionTemplateLiteral(expression) ||
+      ts.isNumericLiteral(expression)
+    ) {
+      return expression.text
+    }
+  }
+}
+
+function hasUnsafeDescriptorProperty(
+  ts: TypeScript,
+  properties:
+    | typescript.NodeArray<typescript.ObjectLiteralElement>
+    | typescript.NodeArray<typescript.JsxAttributeLike>
+): boolean {
+  return properties.some(prop => {
+    if (ts.isSpreadAssignment(prop) || ts.isJsxSpreadAttribute(prop)) {
+      return true
+    }
+    if (ts.isJsxAttribute(prop)) {
+      return false
+    }
+    const name = prop.name
+    if (!name) {
+      return true
+    }
+    const propertyName = getStaticPropertyName(ts, name)
+    if (propertyName == null) {
+      return ts.isComputedPropertyName(name)
+    }
+    return (
+      (propertyName === 'id' || propertyName === 'defaultMessage') &&
+      !ts.isPropertyAssignment(prop)
+    )
+  })
+}
+
+function getWritableMessageValueLocation(
+  ts: TypeScript,
+  prop: typescript.ObjectLiteralElement | typescript.JsxAttributeLike,
+  sf: typescript.SourceFile
+): MessageDescriptorValueLocation | undefined {
+  let value: typescript.Expression | undefined
+  let kind: MessageDescriptorValueLocation['kind'] = 'string'
+
+  if (ts.isPropertyAssignment(prop)) {
+    value = unwrapTransparentTypeScriptExpression(ts, prop.initializer)
+  } else if (ts.isJsxAttribute(prop) && prop.initializer) {
+    if (ts.isStringLiteral(prop.initializer)) {
+      value = prop.initializer
+      kind = 'jsxAttribute'
+    } else if (
+      ts.isJsxExpression(prop.initializer) &&
+      prop.initializer.expression
+    ) {
+      value = unwrapTransparentTypeScriptExpression(
+        ts,
+        prop.initializer.expression
+      )
+    }
+  }
+
+  if (
+    !value ||
+    (!ts.isStringLiteral(value) && !ts.isNoSubstitutionTemplateLiteral(value))
+  ) {
+    return
+  }
+  if (ts.isNoSubstitutionTemplateLiteral(value)) {
+    kind = 'template'
+  }
+  return {
+    start: value.getStart(sf),
+    end: value.end,
+    kind,
+    value: value.text,
+  }
+}
+
 function extractMessageDescriptor(
   ts: TypeScript,
   node:
@@ -306,6 +416,7 @@ function extractMessageDescriptor(
     flatten,
     throws = true,
     onMsgError,
+    onMsgDescriptorExtracted,
   }: Opts,
   sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
@@ -340,12 +451,15 @@ function extractMessageDescriptor(
     properties = node.attributes.properties
   }
   const msg: MessageDescriptor = {id: ''}
+  const locations: MessageDescriptorOccurrence['locations'] = {}
   if (!properties) {
     return
   }
+  const hasUnsafeProperty = hasUnsafeDescriptorProperty(ts, properties)
 
   properties.forEach(prop => {
     const {name} = prop
+    const propertyName = name && getStaticPropertyName(ts, name)
     const initializer:
       | typescript.Expression
       | typescript.JsxExpression
@@ -354,13 +468,13 @@ function extractMessageDescriptor(
         ? prop.initializer
         : undefined
 
-    if (name && ts.isIdentifier(name) && initializer) {
+    if (propertyName && initializer) {
       const value = ts.isPropertyAssignment(prop)
         ? unwrapTransparentTypeScriptExpression(ts, prop.initializer)
         : initializer
       // {id: 'id'}
       if (ts.isStringLiteral(value)) {
-        switch (name.text) {
+        switch (propertyName) {
           case 'id':
             msg.id = value.text
             break
@@ -374,7 +488,7 @@ function extractMessageDescriptor(
       }
       // {id: `id`}
       else if (ts.isNoSubstitutionTemplateLiteral(value)) {
-        switch (name.text) {
+        switch (propertyName) {
           case 'id':
             msg.id = value.text
             break
@@ -390,9 +504,9 @@ function extractMessageDescriptor(
       // GH #5069: Only check for substitutions on message-related props
       else if (ts.isTaggedTemplateExpression(value)) {
         const isMessageProp =
-          name.text === 'id' ||
-          name.text === 'defaultMessage' ||
-          name.text === 'description'
+          propertyName === 'id' ||
+          propertyName === 'defaultMessage' ||
+          propertyName === 'description'
         if (!isMessageProp) {
           // Skip non-message props (like tagName, values, etc.)
           return
@@ -407,7 +521,7 @@ function extractMessageDescriptor(
           return
         }
 
-        switch (name.text) {
+        switch (propertyName) {
           case 'id':
             msg.id = template.text
             break
@@ -425,7 +539,7 @@ function extractMessageDescriptor(
         )
         // <FormattedMessage foo={'barbaz'} />
         if (ts.isStringLiteral(expression)) {
-          switch (name.text) {
+          switch (propertyName) {
             case 'id':
               msg.id = expression.text
               break
@@ -440,13 +554,13 @@ function extractMessageDescriptor(
         // description={{custom: 1}}
         else if (
           ts.isObjectLiteralExpression(expression) &&
-          name.text === 'description'
+          propertyName === 'description'
         ) {
           msg.description = objectLiteralExpressionToObj(ts, expression)
         }
         // <FormattedMessage foo={`bar`} />
         else if (ts.isNoSubstitutionTemplateLiteral(expression)) {
-          switch (name.text) {
+          switch (propertyName) {
             case 'id':
               msg.id = expression.text
               break
@@ -462,9 +576,9 @@ function extractMessageDescriptor(
         // GH #5069: Only check for substitutions on message-related props
         else if (ts.isTaggedTemplateExpression(expression)) {
           const isMessageProp =
-            name.text === 'id' ||
-            name.text === 'defaultMessage' ||
-            name.text === 'description'
+            propertyName === 'id' ||
+            propertyName === 'defaultMessage' ||
+            propertyName === 'description'
           if (!isMessageProp) {
             // Skip non-message props (like tagName, values, etc.)
             return
@@ -478,7 +592,7 @@ function extractMessageDescriptor(
             )
             return
           }
-          switch (name.text) {
+          switch (propertyName) {
             case 'id':
               msg.id = template.text
               break
@@ -494,7 +608,7 @@ function extractMessageDescriptor(
         else if (ts.isBinaryExpression(expression)) {
           const [result, isStatic] = evaluateStringConcat(ts, expression)
           if (isStatic) {
-            switch (name.text) {
+            switch (propertyName) {
               case 'id':
                 msg.id = result
                 break
@@ -506,12 +620,14 @@ function extractMessageDescriptor(
                 break
             }
           } else if (
-            MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
-            name.text !== 'description'
+            MESSAGE_DESC_KEYS.includes(
+              propertyName as keyof MessageDescriptor
+            ) &&
+            propertyName !== 'description'
           ) {
             // Non-static expression for defaultMessage or id
             handleError(
-              `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`,
+              `[FormatJS] \`${propertyName}\` must be a string literal or statically evaluable expression to be extracted.`,
               prop
             )
             return
@@ -519,11 +635,11 @@ function extractMessageDescriptor(
         }
         // Non-static JSX expression for defaultMessage or id
         else if (
-          MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
-          name.text !== 'description'
+          MESSAGE_DESC_KEYS.includes(propertyName as keyof MessageDescriptor) &&
+          propertyName !== 'description'
         ) {
           handleError(
-            `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`,
+            `[FormatJS] \`${propertyName}\` must be a string literal to be extracted.`,
             prop
           )
           return
@@ -533,7 +649,7 @@ function extractMessageDescriptor(
       else if (ts.isBinaryExpression(value)) {
         const [result, isStatic] = evaluateStringConcat(ts, value)
         if (isStatic) {
-          switch (name.text) {
+          switch (propertyName) {
             case 'id':
               msg.id = result
               break
@@ -545,12 +661,12 @@ function extractMessageDescriptor(
               break
           }
         } else if (
-          MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
-          name.text !== 'description'
+          MESSAGE_DESC_KEYS.includes(propertyName as keyof MessageDescriptor) &&
+          propertyName !== 'description'
         ) {
           // Non-static expression for defaultMessage or id
           handleError(
-            `[FormatJS] \`${name.text}\` must be a string literal or statically evaluable expression to be extracted.`,
+            `[FormatJS] \`${propertyName}\` must be a string literal or statically evaluable expression to be extracted.`,
             prop
           )
           return
@@ -559,23 +675,36 @@ function extractMessageDescriptor(
       // description: {custom: 1}
       else if (
         ts.isObjectLiteralExpression(value) &&
-        name.text === 'description'
+        propertyName === 'description'
       ) {
         msg.description = objectLiteralExpressionToObj(ts, value)
       }
       // Non-static value for defaultMessage or id
       else if (
-        MESSAGE_DESC_KEYS.includes(name.text as keyof MessageDescriptor) &&
-        name.text !== 'description'
+        MESSAGE_DESC_KEYS.includes(propertyName as keyof MessageDescriptor) &&
+        propertyName !== 'description'
       ) {
         handleError(
-          `[FormatJS] \`${name.text}\` must be a string literal to be extracted.`,
+          `[FormatJS] \`${propertyName}\` must be a string literal to be extracted.`,
           prop
         )
         return
       }
+
+      if (propertyName === 'id' || propertyName === 'defaultMessage') {
+        const location = getWritableMessageValueLocation(ts, prop, sf)
+        if (location) {
+          locations[propertyName] = location
+        } else {
+          delete locations[propertyName]
+        }
+      }
     }
   })
+  if (hasUnsafeProperty) {
+    delete locations.id
+    delete locations.defaultMessage
+  }
   // If we had an extraction error (and throws is false), skip this message
   if (extractionError) {
     return
@@ -629,15 +758,18 @@ function extractMessageDescriptor(
         break
     }
   }
-  if (extractSourceLocation) {
-    return {
-      ...msg,
-      file: sf.fileName,
-      start: node.pos,
-      end: node.end,
-    }
+  const descriptor = extractSourceLocation
+    ? {
+        ...msg,
+        file: sf.fileName,
+        start: node.pos,
+        end: node.end,
+      }
+    : msg
+  if (typeof onMsgDescriptorExtracted === 'function') {
+    onMsgDescriptorExtracted(sf.fileName, {descriptor, locations})
   }
-  return msg
+  return descriptor
 }
 
 /**
@@ -763,10 +895,11 @@ function setAttributesInObject(
   ]
 
   for (const prop of node.properties) {
+    const propertyName =
+      ts.isPropertyAssignment(prop) && getStaticPropertyName(ts, prop.name)
     if (
-      ts.isPropertyAssignment(prop) &&
-      ts.isIdentifier(prop.name) &&
-      MESSAGE_DESC_KEYS.includes(prop.name.text as keyof MessageDescriptor)
+      propertyName &&
+      MESSAGE_DESC_KEYS.includes(propertyName as keyof MessageDescriptor)
     ) {
       continue
     }
@@ -833,18 +966,16 @@ function extractMessagesFromCallExpression(
     const descriptorsObj = unwrapObjectLiteralExpression(ts, arg)
     if (descriptorsObj) {
       const properties = descriptorsObj.properties
-      const msgs = properties
-        .filter<typescript.PropertyAssignment>(
-          (prop): prop is typescript.PropertyAssignment =>
-            ts.isPropertyAssignment(prop)
-        )
-        .map(prop => {
-          const descriptor = unwrapObjectLiteralExpression(ts, prop.initializer)
-          return (
-            descriptor && extractMessageDescriptor(ts, descriptor, opts, sf)
-          )
-        })
-        .filter((msg): msg is MessageDescriptor => !!msg)
+      const messagesByProperty = properties.map(prop => {
+        if (!ts.isPropertyAssignment(prop)) {
+          return
+        }
+        const descriptor = unwrapObjectLiteralExpression(ts, prop.initializer)
+        return descriptor && extractMessageDescriptor(ts, descriptor, opts, sf)
+      })
+      const msgs = messagesByProperty.filter(
+        (msg): msg is MessageDescriptor => !!msg
+      )
       if (!msgs.length) {
         return node
       }
@@ -855,9 +986,11 @@ function extractMessagesFromCallExpression(
 
       const clonedProperties = factory.createNodeArray(
         properties.map((prop, i) => {
+          const msg = messagesByProperty[i]
           if (
             !ts.isPropertyAssignment(prop) ||
-            !ts.isObjectLiteralExpression(prop.initializer)
+            !ts.isObjectLiteralExpression(prop.initializer) ||
+            !msg
           ) {
             return prop
           }
@@ -871,8 +1004,8 @@ function extractMessagesFromCallExpression(
               {
                 defaultMessage: opts.removeDefaultMessage
                   ? undefined
-                  : msgs[i].defaultMessage,
-                id: msgs[i] ? msgs[i].id : '',
+                  : msg.defaultMessage,
+                id: msg.id,
               },
               opts.ast
             )

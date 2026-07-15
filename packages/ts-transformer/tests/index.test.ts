@@ -3,6 +3,7 @@ import {
   transform,
   type Opts,
   type MessageDescriptor,
+  type MessageDescriptorOccurrence,
 } from '#packages/ts-transformer/index.js'
 import * as ts from 'typescript'
 import {readFile as readFileAsync} from 'fs'
@@ -789,6 +790,103 @@ describe('emit asserts for', function () {
     expect(errors[0].message).toMatch(
       /nonStaticMessages\.tsx:\d+:\d+ \[FormatJS\]/
     )
+  })
+
+  it('reports writable locations for every descriptor occurrence', async function () {
+    const filePath = join(FIXTURES_DIR, 'descriptorLocations.tsx')
+    const input = await readFile(filePath, 'utf8')
+    const occurrences: MessageDescriptorOccurrence[] = []
+
+    await compile(filePath, {
+      onMsgDescriptorExtracted: (_, occurrence) => {
+        occurrences.push(occurrence)
+      },
+    })
+
+    expect(
+      occurrences.map(({descriptor, locations}) => ({
+        id: descriptor.id,
+        idKind: locations.id?.kind,
+        idSource: locations.id
+          ? input.slice(locations.id.start, locations.id.end)
+          : undefined,
+        defaultMessageKind: locations.defaultMessage?.kind,
+        defaultMessageSource: locations.defaultMessage
+          ? input.slice(
+              locations.defaultMessage.start,
+              locations.defaultMessage.end
+            )
+          : undefined,
+      }))
+    ).toEqual([
+      {
+        id: 'duplicate',
+        idKind: 'string',
+        idSource: "'duplicate'",
+        defaultMessageKind: 'string',
+        defaultMessageSource: "'Object message'",
+      },
+      {
+        id: 'template-id',
+        idKind: 'template',
+        idSource: '`template-id`',
+        defaultMessageKind: 'template',
+        defaultMessageSource: '`Template message`',
+      },
+      {
+        id: 'concat',
+        idKind: 'string',
+        idSource: "'concat'",
+        defaultMessageKind: undefined,
+        defaultMessageSource: undefined,
+      },
+      {
+        id: 'tagged',
+        idKind: 'string',
+        idSource: "'tagged'",
+        defaultMessageKind: undefined,
+        defaultMessageSource: undefined,
+      },
+      {
+        id: 'object-spread',
+        idKind: undefined,
+        idSource: undefined,
+        defaultMessageKind: undefined,
+        defaultMessageSource: undefined,
+      },
+      {
+        id: 'duplicate',
+        idKind: 'jsxAttribute',
+        idSource: '"duplicate"',
+        defaultMessageKind: 'jsxAttribute',
+        defaultMessageSource: '\'JSX "message"\'',
+      },
+      {
+        id: 'expression',
+        idKind: 'string',
+        idSource: "'expression'",
+        defaultMessageKind: 'string',
+        defaultMessageSource: "'Expression message'",
+      },
+      {
+        id: 'jsx-spread',
+        idKind: undefined,
+        idSource: undefined,
+        defaultMessageKind: undefined,
+        defaultMessageSource: undefined,
+      },
+    ])
+  })
+
+  it('rewrites quoted descriptor keys in output modes', async function () {
+    const filePath = join(FIXTURES_DIR, 'quotedDescriptorKeys.ts')
+    const astOutput = await compile(filePath, {ast: true})
+    const removedOutput = await compile(filePath, {
+      removeDefaultMessage: true,
+    })
+
+    expect(astOutput.code.match(/defaultMessage/g)).toHaveLength(1)
+    expect(removedOutput.code).not.toContain('defaultMessage')
   })
 })
 

@@ -30,6 +30,8 @@ export async function resolveBuiltinFormatter(
     return format
   }
   switch (format) {
+    case 'default':
+      return defaultFormatter
     case 'transifex':
       return transifex
     case 'smartling':

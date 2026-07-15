@@ -87,7 +87,7 @@ formatjs_cli (v0.1.14)
 
 ### `formatjs_cli` (v0.1.14)
 
-**Purpose:** Drop-in Rust replacement for `@formatjs/cli`. 20.90x faster than the Node.js CLI on the checked-in extraction benchmark.
+**Purpose:** Standalone native implementation of the common `@formatjs/cli` workflows. It is 20.90x faster than the Node.js CLI on the checked-in extraction benchmark.
 
 **Binary:** `formatjs`
 
@@ -105,15 +105,15 @@ formatjs_cli (v0.1.14)
 - **ID generation** (`id_generator.rs`): loader-utils style `hash`/`contenthash` interpolation with md5, sha1, and SHA-2 algorithms plus base64/base64url/base62/hex encodings. Hash is computed AFTER flattening (matching TypeScript CLI order)
 - **6 output formatters:** default, simple, crowdin, lokalise, transifex, smartling
 
-**176 unit tests.** Integration tests via `packages/cli/integration-tests/` ensure 100% conformance with the TypeScript CLI (60/60 tests passing).
+Shared command behavior is covered by conformance tests in `packages/cli/integration-tests/`. Node-only features such as framework-template extraction, custom JavaScript formatters, and `sync-source` are outside the standalone CLI's scope.
 
 ## Connection to TypeScript Packages
 
-| Rust Crate                 | TypeScript Package                   | Relationship                        |
-| -------------------------- | ------------------------------------ | ----------------------------------- |
-| `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation    |
-| `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM  |
-| `formatjs_cli`             | `@formatjs/cli`                      | Drop-in replacement for Node.js CLI |
+| Rust Crate                 | TypeScript Package                   | Relationship                                  |
+| -------------------------- | ------------------------------------ | --------------------------------------------- |
+| `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation              |
+| `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM            |
+| `formatjs_cli`             | `@formatjs/cli`                      | Native implementation of shared CLI workflows |
 
 **Data flow:** TypeScript scripts in `packages/icu-messageformat-parser/tools/` generate Rust source files (`time_data_generated.rs`, `regex_generated.rs`) from CLDR data. These are checked in and used by the Rust crate at compile time.
 

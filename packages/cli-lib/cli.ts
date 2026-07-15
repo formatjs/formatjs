@@ -7,13 +7,21 @@ import compile, {
   type Opts,
 } from '#packages/cli-lib/compile.js'
 import compileFolder from '#packages/cli-lib/compile_folder.js'
-import {debug} from '#packages/cli-lib/console_utils.js'
+import {debug, warn, writeStdout} from '#packages/cli-lib/console_utils.js'
 import extract, {type ExtractCLIOptions} from '#packages/cli-lib/extract.js'
+import syncSourceFromFile, {
+  type SyncSourceFileOptions,
+} from '#packages/cli-lib/sync_source.js'
 import {verify, type VerifyOpts} from '#packages/cli-lib/verify/index.js'
 import {resolve} from 'path'
 import {readFileSync} from 'fs'
 
 const KNOWN_COMMANDS = ['extract']
+
+type SyncSourceCLIOptions = SyncSourceFileOptions & {
+  ignore?: string[]
+  followLinks?: boolean
+}
 
 async function main(argv: string[]): Promise<void> {
   loudRejection()
@@ -173,6 +181,81 @@ sentences are not translator-friendly.`
         flatten: cmdObj.flatten,
       })
       process.exit(0)
+    })
+
+  program
+    .command('sync-source [files...]')
+    .description(
+      `Check or update inline defaultMessage values from a source-locale catalog.
+This experimental command supports JavaScript and TypeScript files with static explicit IDs.`
+    )
+    .requiredOption(
+      '--source-file <path>',
+      'Source-locale JSON catalog used to update defaultMessage values.'
+    )
+    .option(
+      '--format <name>',
+      'Built-in catalog format: simple, default, transifex, smartling, lokalise, or crowdin. Defaults to simple.',
+      'simple'
+    )
+    .option(
+      '--write',
+      'Write updates to source files. Without this flag, the command only checks for drift.',
+      false
+    )
+    .option(
+      '--additional-component-names <comma-separated-names>',
+      'Additional component names containing message descriptors.',
+      (val: string) => val.split(',')
+    )
+    .option(
+      '--additional-function-names <comma-separated-names>',
+      'Additional function names containing message descriptors.',
+      (val: string) => val.split(',')
+    )
+    .option('--ignore <files...>', 'List of glob paths to ignore.')
+    .option(
+      '--follow-links',
+      'Follow symbolic links while resolving source files. Disabled by default for source writes.',
+      false
+    )
+    .action(async (filePatterns: string[], cmdObj: SyncSourceCLIOptions) => {
+      const files = [
+        ...new Set(
+          globSync(filePatterns, {
+            ignore: cmdObj.ignore,
+            followSymbolicLinks: cmdObj.followLinks ?? false,
+          })
+        ),
+      ].sort()
+      if (!files.length) {
+        throw new Error(
+          `No source file found with pattern ${filePatterns.join(', ')}`
+        )
+      }
+      const result = await syncSourceFromFile(files, cmdObj)
+      for (const diagnostic of result.warnings) {
+        await warn(`${diagnostic.file}: ${diagnostic.message}`)
+      }
+      for (const change of result.changes) {
+        await writeStdout(
+          `${change.file}:${change.line}:${change.col} ${change.id}\n`
+        )
+      }
+      const occurrences = result.changes.length
+      const fileCount = result.changedFiles.length
+      if (!occurrences) {
+        await writeStdout('Source messages are in sync.\n')
+      } else if (cmdObj.write) {
+        await writeStdout(
+          `Updated ${occurrences} message occurrence${occurrences === 1 ? '' : 's'} in ${fileCount} file${fileCount === 1 ? '' : 's'}.\n`
+        )
+      } else {
+        await writeStdout(
+          `Found ${occurrences} stale message occurrence${occurrences === 1 ? '' : 's'} in ${fileCount} file${fileCount === 1 ? '' : 's'}. Run again with --write to update source files.\n`
+        )
+        process.exitCode = 1
+      }
     })
 
   program
