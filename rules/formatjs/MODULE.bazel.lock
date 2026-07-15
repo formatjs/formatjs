@@ -226,7 +226,7 @@
   "moduleExtensions": {
     "//formatjs_cli:extensions.bzl%formatjs_cli": {
       "general": {
-        "bzlTransitiveDigest": "KEXKr0c3dIbbWXx4Dd3dA07r817WCmPwn9skzugZTEg=",
+        "bzlTransitiveDigest": "jyvcSmowzBDDTuxIutdZ9N/e6Q2AjrNOS6PKWdLJd1M=",
         "usagesDigest": "L6WX9aF5BkUwpqL1FFHITrWq+scHf1JzYcuiaPxP7es=",
         "recordedInputs": [],
         "generatedRepoSpecs": {

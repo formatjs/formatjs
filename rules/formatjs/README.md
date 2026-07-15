@@ -31,6 +31,24 @@ git_override(
 
 ## Usage
 
+### Run the FormatJS CLI
+
+The platform-specific CLI selected by the registered toolchain is directly runnable:
+
+```bash
+bazel run @rules_formatjs//cli -- --version
+```
+
+The same label can be used in executable or tool attributes. Apply the execution transition when declaring a Starlark attribute:
+
+```starlark
+"_formatjs_cli": attr.label(
+    default = Label("@rules_formatjs//cli"),
+    executable = True,
+    cfg = "exec",
+)
+```
+
 ### Extract Messages
 
 Extract internationalized messages from your source code:

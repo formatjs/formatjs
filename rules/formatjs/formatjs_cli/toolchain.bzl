@@ -30,3 +30,27 @@ formatjs_cli_toolchain = rule(
     },
     doc = "Defines a FormatJS CLI toolchain",
 )
+
+def _formatjs_cli_executable_impl(ctx):
+    """Expose the selected FormatJS CLI as an executable target."""
+    formatjs_cli = ctx.toolchains["@rules_formatjs//formatjs_cli:toolchain_type"].formatjs_cli_info.cli
+    extension = ".exe" if formatjs_cli.basename.endswith(".exe") else ""
+    executable = ctx.actions.declare_file(ctx.label.name + extension)
+
+    ctx.actions.symlink(
+        output = executable,
+        target_file = formatjs_cli,
+        is_executable = True,
+    )
+
+    return [DefaultInfo(
+        executable = executable,
+        runfiles = ctx.runfiles(files = [formatjs_cli]),
+    )]
+
+formatjs_cli_executable = rule(
+    implementation = _formatjs_cli_executable_impl,
+    executable = True,
+    toolchains = ["@rules_formatjs//formatjs_cli:toolchain_type"],
+    doc = "Exposes the FormatJS CLI selected by the toolchain as an executable target",
+)

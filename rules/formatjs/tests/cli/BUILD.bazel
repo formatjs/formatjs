@@ -1,0 +1,6 @@
+load(":cli_test.bzl", "formatjs_cli_executable_test")
+
+formatjs_cli_executable_test(
+    name = "cli_executable_test",
+    cli = "//cli",
+)

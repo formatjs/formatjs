@@ -341,6 +341,7 @@ def _formatjs_cli_repo_impl(rctx):
     """Implementation for formatjs_cli repository rule."""
     platform = rctx.attr.platform
     version = rctx.attr.version
+    executable_name = "formatjs_cli.exe" if platform == "windows-x86_64" else "formatjs_cli"
 
     # Allow custom URL and SHA256 to be provided
     custom_url = rctx.attr.url
@@ -371,7 +372,7 @@ def _formatjs_cli_repo_impl(rctx):
 
     rctx.download(
         url = url,
-        output = "formatjs_cli",
+        output = executable_name,
         sha256 = sha256,
         executable = True,
     )
@@ -381,7 +382,7 @@ load("@rules_formatjs//formatjs_cli:toolchain.bzl", "formatjs_cli_toolchain")
 
 filegroup(
     name = "cli",
-    srcs = ["formatjs_cli"],
+    srcs = ["{executable_name}"],
     visibility = ["//visibility:public"],
 )
 
@@ -400,6 +401,7 @@ toolchain(
     visibility = ["//visibility:public"],
 )
 """.format(
+        executable_name = executable_name,
         exec_compatible_with = rctx.attr.exec_compatible_with,
         target_compatible_with = rctx.attr.target_compatible_with,
     ))
