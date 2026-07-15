@@ -16,7 +16,7 @@ importers:
         version: 21.2.0
       '@evilmartians/lefthook':
         specifier: ^2.0.0
-        version: 2.1.9
+        version: 2.1.10
       oxfmt:
         specifier: ^0.58.0
         version: 0.58.0
@@ -124,8 +124,8 @@ packages:
     resolution: {integrity: sha512-TzlTVpKPjaqW6qOYjQcYUDuGsLCNsvFHVBXkYGTAnf5V37jCWrE5haKNXzz0WZUtVHjrpV76L1buANjwXMfT8w==}
     engines: {node: '>=22'}
 
-  '@evilmartians/lefthook@2.1.9':
-    resolution: {integrity: sha512-+odrq63LQ5kbkmMocXyciavBpvmubPyrrYY3GTgPN5wIi0cIxsDF26ZrozNfGXILbQiM6F6KRHXJZu6Bz9U95A==}
+  '@evilmartians/lefthook@2.1.10':
+    resolution: {integrity: sha512-l5tiHiPQQdFE27g8j8Y1fgvGP9jiIxaxU3Bejq845hJn3M1OT2+QwjB/oqIIb7px2cTxUqFndTCSxK+HPY40rg==}
     cpu: [x64, arm64, ia32]
     os: [darwin, linux, win32]
     hasBin: true
@@ -605,7 +605,7 @@ snapshots:
 
   '@conventional-changelog/template@1.2.1': {}
 
-  '@evilmartians/lefthook@2.1.9': {}
+  '@evilmartians/lefthook@2.1.10': {}
 
   '@oxfmt/binding-android-arm-eabi@0.58.0':
     optional: true
