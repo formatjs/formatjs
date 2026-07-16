@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-collator",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Intl.Collator polyfill",
   "keywords": [
     "collator",

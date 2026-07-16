@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli-native-linux-x64-musl",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Native FormatJS CLI binding for Linux x64 musl.",
   "homepage": "https://github.com/formatjs/formatjs",
   "bugs": "https://github.com/formatjs/formatjs/issues",
