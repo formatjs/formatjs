@@ -1,0 +1,3 @@
+{
+  "plural": "{count, plural, one {{name} ma jeden plik} few {{name} ma # pliki} many {{name} ma # plików} other {{name} ma # pliku}}"
+}

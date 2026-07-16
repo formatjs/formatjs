@@ -55,6 +55,14 @@ describe.each([
     ).resolves.toBeTruthy()
   }, 20000)
 
+  test('structural equality allows locale-specific plural branches', async () => {
+    await expect(
+      exec(
+        `${binPath} verify --source-locale en-US --structural-equality '${join(import.meta.dirname, 'structural-equality', 'fixtures3', '*.json')}'`
+      )
+    ).resolves.toBeTruthy()
+  }, 20000)
+
   test('structural equality fail', async () => {
     let errMessage = isRust
       ? `These translation keys for locale fr-FR are structurally different from en-US:
