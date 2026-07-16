@@ -15,8 +15,8 @@ importers:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.14
-        version: 10.1.14(@types/react@19.2.17)(react@19.2.7)
+        specifier: 10.1.15
+        version: 10.1.15(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@types/react':
         specifier: 19.2.17
@@ -36,14 +36,14 @@ packages:
   '@formatjs/fast-memoize@3.1.6':
     resolution: {integrity: sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==}
 
-  '@formatjs/icu-messageformat-parser@3.5.12':
-    resolution: {integrity: sha512-YyzzxVgYJ8DELmmkhn0Yr0rUj0dTJFf9Jp628K3S0ysInBWxLVDOS8i3RP91cCp4DMK4WYb4cVMhWA9i4knSJg==}
+  '@formatjs/icu-messageformat-parser@3.5.13':
+    resolution: {integrity: sha512-Y50dQ09tjkv9cCTSGaQYo9Rgx5COBCqBhXuU7b8ZMAec+oA6ePZv7prycY3iYz9iD0J2LjB8/Eys1so4Xguptg==}
 
   '@formatjs/icu-skeleton-parser@2.1.10':
     resolution: {integrity: sha512-XuSva+8ZGawk8VnD5VD6UeH8KarQ/Z022zgjHDoHmlNiAewstXuuzXc0Hk5pGFSdG+nNw5bfJKXqj1ZXHn9yUA==}
 
-  '@formatjs/intl@4.1.14':
-    resolution: {integrity: sha512-hl8dgvbV2Te/KPnCud+nuBc+z8qW8fGreiun7ul5LopIHkbP0izylvnhIFDL2dQMeMPdrKCAXhJkYDeoxVuDRw==}
+  '@formatjs/intl@4.1.15':
+    resolution: {integrity: sha512-YN4CmJuqBC4CwiebhXz2EJDWXo8sdXA5WT+DbeaBaps7umJ5p5h5cVZeuhhTyVlNsPe9GkRNGKCQiBNzsbXotw==}
 
   '@lezer/common@1.5.2':
     resolution: {integrity: sha512-sxQE460fPZyU3sdc8lafxiPwJHBzZRy/udNFynGQky1SePYBdhkBl1kOagA9uT3pxR8K09bOrmTUqA9wb/PjSQ==}
@@ -803,8 +803,8 @@ packages:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
 
-  intl-messageformat@11.2.9:
-    resolution: {integrity: sha512-cGzymZerpDhVXRKjKLgXKda9gI29TU2o88L7gwNMHp3WZVxA/0c5tX52udXbW9JklDApolvMXZG6Dhhdz5eirA==}
+  intl-messageformat@11.2.10:
+    resolution: {integrity: sha512-SxsSKKqsXBfibu8erV2R5tsrSALvkarJo72EVjPgLbp9Bc/+5f/UDbSpdiRbUtvNLiy/xb9NyNzFHFzSEoZtrA==}
 
   is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -948,8 +948,8 @@ packages:
     peerDependencies:
       react: ^19.2.7
 
-  react-intl@10.1.14:
-    resolution: {integrity: sha512-DuL7vAViDCjxyiPNccMkt1PBv22mh+1OBhA8ta4r0fbjnJYhLVFc+3pR71qADZRHytRnKm9JcVDP9jYJW+qO6g==}
+  react-intl@10.1.15:
+    resolution: {integrity: sha512-G6L7N0VM0XXmJyBSPvf9JQBd3xjkEQjYXx0UwXYn97QOhfDMhxJS7MmPh5IWJ1PnzJES3D4ewvGHP3kqiUsa2g==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -1013,17 +1013,17 @@ snapshots:
 
   '@formatjs/fast-memoize@3.1.6': {}
 
-  '@formatjs/icu-messageformat-parser@3.5.12':
+  '@formatjs/icu-messageformat-parser@3.5.13':
     dependencies:
       '@formatjs/icu-skeleton-parser': 2.1.10
 
   '@formatjs/icu-skeleton-parser@2.1.10': {}
 
-  '@formatjs/intl@4.1.14':
+  '@formatjs/intl@4.1.15':
     dependencies:
       '@formatjs/fast-memoize': 3.1.6
-      '@formatjs/icu-messageformat-parser': 3.5.12
-      intl-messageformat: 11.2.9
+      '@formatjs/icu-messageformat-parser': 3.5.13
+      intl-messageformat: 11.2.10
 
   '@lezer/common@1.5.2': {}
 
@@ -1915,10 +1915,10 @@ snapshots:
 
   has-flag@4.0.0: {}
 
-  intl-messageformat@11.2.9:
+  intl-messageformat@11.2.10:
     dependencies:
       '@formatjs/fast-memoize': 3.1.6
-      '@formatjs/icu-messageformat-parser': 3.5.12
+      '@formatjs/icu-messageformat-parser': 3.5.13
 
   is-extglob@2.1.1: {}
 
@@ -2059,12 +2059,12 @@ snapshots:
       react: 19.2.7
       scheduler: 0.27.0
 
-  react-intl@10.1.14(@types/react@19.2.17)(react@19.2.7):
+  react-intl@10.1.15(@types/react@19.2.17)(react@19.2.7):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.12
-      '@formatjs/intl': 4.1.14
+      '@formatjs/icu-messageformat-parser': 3.5.13
+      '@formatjs/intl': 4.1.15
       '@types/react': 19.2.17
-      intl-messageformat: 11.2.9
+      intl-messageformat: 11.2.10
       react: 19.2.7
 
   react-refresh@0.16.0: {}
