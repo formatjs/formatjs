@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "react-intl": "10.1.14"
+    "react-intl": "10.1.15"
   },
   "devDependencies": {
     "@types/react": "19.2.17",
