@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_cli_napi"
-version = "0.0.10"
+version = "0.0.11"
 edition = "2024"
 authors = ["FormatJS Team"]
 description = "Node-API bindings for the FormatJS Rust CLI core"

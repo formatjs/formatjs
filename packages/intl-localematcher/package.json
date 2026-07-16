@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-localematcher",
-  "version": "0.8.12",
+  "version": "0.8.13",
   "description": "Intl.LocaleMatcher ponyfill",
   "keywords": [
     "ecma402",

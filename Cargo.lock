@@ -471,7 +471,7 @@ checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.1.19"
+version = "1.1.20"
 dependencies = [
  "anyhow",
  "base64",
@@ -498,7 +498,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_cli_napi"
-version = "0.0.10"
+version = "0.0.11"
 dependencies = [
  "formatjs_cli",
  "napi",
@@ -507,7 +507,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "0.2.5"
+version = "0.2.6"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
@@ -521,7 +521,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser_integration_tests"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "formatjs_icu_messageformat_parser",
  "pretty_assertions",

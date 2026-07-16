@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 12.0.0 (2026-07-16)
+
+## What's Changed
+* docs: add Korean (ko-KR) to homepage live demo by @moduvoice in https://github.com/formatjs/formatjs/pull/6858
+* chore(deps): update OXC packages to 0.138 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6826
+* chore(deps): update dependency oxfmt to ^0.57.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6824
+* chore(deps): update dependency eslint to v10.6.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6821
+* chore(deps): update rust crate anyhow to v1.0.103 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6861
+* fix(deps): align NAPI runtime and derive by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6862
+* fix(deps): update dependency babel-plugin-formatjs to v11.3.14 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6863
+* fix(deps): update dependency eslint-plugin-formatjs to v6.4.16 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6864
+* fix(deps): update formatjs monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6865
+* chore(deps): update actions/checkout action to v7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6867
+* chore(deps): update jest monorepo to v30 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6868
+* fix(deps): restore Jest 29 compatibility by @longlho in https://github.com/formatjs/formatjs/pull/6872
+* chore(deps): update dependency rolldown to v1.1.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6860
+* fix(deps): update oxc to 0.139 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6870
+* feat(babel-plugin-formatjs): require Babel 8 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6869
+* chore(deps): adopt TypeScript 7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6819
+* chore(deps): update dependency oxfmt to ^0.58.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6875
+* chore(deps): update dependency rolldown-plugin-dts to ^0.27.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6825
+* chore(deps): update pnpm to v11.10.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6866
+* chore(deps): update dependency rolldown to v1.1.5 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6878
+* fix(deps): update example TypeScript to v7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6881
+* fix(icu_messageformat_parser): dedupe structural variables by @longlho in https://github.com/formatjs/formatjs/pull/6883
+* fix(deps): update dependency babel-plugin-formatjs to v11.3.15 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6884
+
+## New Contributors
+* @moduvoice made their first contribution in https://github.com/formatjs/formatjs/pull/6858
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@11.3.16...babel-plugin-formatjs@12.0.0
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.15
+    * @formatjs/ts-transformer bumped to 4.4.17
+
 ## 11.3.16 (2026-07-11)
 
 ## What's Changed

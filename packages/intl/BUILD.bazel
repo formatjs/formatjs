@@ -51,7 +51,7 @@ formatjs_library(
     side_effects = False,
     type = "module",
     types = True,
-    version = "4.1.16",  # x-release-please-version
+    version = "4.1.17",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

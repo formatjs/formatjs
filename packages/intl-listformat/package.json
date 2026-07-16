@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-listformat",
-  "version": "8.3.12",
+  "version": "8.3.13",
   "description": "Formats JS list in a i18n-safe way",
   "keywords": [
     "format",
