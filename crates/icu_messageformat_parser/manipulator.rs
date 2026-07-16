@@ -6,6 +6,7 @@
 //! - **Structural comparison**: Checking if two ASTs have the same variable structure
 
 use crate::types::*;
+use indexmap::IndexMap;
 use std::fmt;
 
 /// Error type for AST manipulation operations.
@@ -470,38 +471,38 @@ pub fn try_hoist_selectors(
 /// This maintains compatibility with the TypeScript implementation.
 fn collect_variables(
     ast: &[MessageFormatElement],
-    vars: &mut Vec<(String, Type)>,
+    vars: &mut IndexMap<String, Type>,
 ) -> Result<(), ManipulatorError> {
     for el in ast {
         match el {
             MessageFormatElement::Argument(arg) => {
-                vars.push((arg.value.clone(), Type::Argument));
+                insert_variable(vars, &arg.value, Type::Argument)?;
             }
             MessageFormatElement::Number(num) => {
-                vars.push((num.value.clone(), Type::Number));
+                insert_variable(vars, &num.value, Type::Number)?;
             }
             MessageFormatElement::Date(date) => {
-                vars.push((date.value.clone(), Type::Date));
+                insert_variable(vars, &date.value, Type::Date)?;
             }
             MessageFormatElement::Time(time) => {
-                vars.push((time.value.clone(), Type::Time));
+                insert_variable(vars, &time.value, Type::Time)?;
             }
             MessageFormatElement::Plural(plural) => {
-                vars.push((plural.value.clone(), Type::Plural));
+                vars.insert(plural.value.clone(), Type::Plural);
                 // Recursively collect from each plural option
                 for option in plural.options.values() {
                     collect_variables(&option.value, vars)?;
                 }
             }
             MessageFormatElement::Select(select) => {
-                vars.push((select.value.clone(), Type::Select));
+                vars.insert(select.value.clone(), Type::Select);
                 // Recursively collect from each select option
                 for option in select.options.values() {
                     collect_variables(&option.value, vars)?;
                 }
             }
             MessageFormatElement::Tag(tag) => {
-                vars.push((tag.value.clone(), Type::Tag));
+                vars.insert(tag.value.clone(), Type::Tag);
                 // Recursively collect from tag children
                 collect_variables(&tag.children, vars)?;
             }
@@ -509,6 +510,29 @@ fn collect_variables(
             MessageFormatElement::Literal(_) | MessageFormatElement::Pound(_) => {}
         }
     }
+    Ok(())
+}
+
+fn insert_variable(
+    vars: &mut IndexMap<String, Type>,
+    variable: &str,
+    var_type: Type,
+) -> Result<(), ManipulatorError> {
+    if let Some(existing_type) = vars.get(variable) {
+        if existing_type != &var_type
+            && existing_type != &Type::Plural
+            && existing_type != &Type::Select
+        {
+            return Err(ManipulatorError::ConflictingVariableType {
+                variable: variable.to_string(),
+                expected: existing_type.clone(),
+                found: var_type,
+            });
+        }
+    } else {
+        vars.insert(variable.to_string(), var_type);
+    }
+
     Ok(())
 }
 
@@ -563,8 +587,8 @@ pub fn is_structurally_same(
     b: &[MessageFormatElement],
     context: String,
 ) -> StructuralComparisonResult {
-    let mut a_vars = Vec::new();
-    let mut b_vars = Vec::new();
+    let mut a_vars = IndexMap::new();
+    let mut b_vars = IndexMap::new();
 
     // Panic on conflicting variable types within a single message
     // (maintains compatibility with TypeScript implementation)
@@ -574,19 +598,15 @@ pub fn is_structurally_same(
     // Check if they have the same number of variables
     if a_vars.len() != b_vars.len() {
         return Err(StructuralComparisonError::DifferentVariableCount {
-            a_vars: a_vars.iter().map(|f| f.0.clone()).collect(),
-            b_vars: b_vars.iter().map(|f| f.0.clone()).collect(),
+            a_vars: a_vars.keys().cloned().collect(),
+            b_vars: b_vars.keys().cloned().collect(),
             context: Some(context),
         });
     }
 
     // Check if all variables match with the same types
     for (key, a_type) in &a_vars {
-        if b_vars
-            .iter()
-            .find(|b| &b.0 == key && &b.1 == a_type)
-            .is_none()
-        {
+        if b_vars.get(key) != Some(a_type) {
             return Err(StructuralComparisonError::MissingVariable {
                 variable: key.clone(),
                 var_type: a_type.clone(),
@@ -601,7 +621,6 @@ pub fn is_structurally_same(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use indexmap::IndexMap;
 
     #[test]
     fn test_hoist_simple_plural() {
@@ -672,13 +691,13 @@ mod tests {
             }),
         ];
 
-        let mut vars = Vec::new();
+        let mut vars = IndexMap::new();
         collect_variables(&ast, &mut vars).unwrap();
 
         assert_eq!(vars.len(), 3);
         assert_eq!(
             vars,
-            Vec::from([
+            IndexMap::from([
                 ("name".to_string(), Type::Argument),
                 ("count".to_string(), Type::Number),
                 ("today".to_string(), Type::Date),
@@ -835,11 +854,41 @@ mod tests {
         );
     }
 
+    #[test]
+    fn test_is_structurally_same_allows_locale_specific_plural_branches() {
+        use crate::parser::{Parser, ParserOptions};
+
+        let options = ParserOptions::default();
+        let english = Parser::new(
+            "{count, plural, one {{name} has one file} other {{name} has # files}}",
+            options.clone(),
+        )
+        .parse()
+        .expect("parse English");
+        let polish = Parser::new(
+            concat!(
+                "{count, plural, ",
+                "one {{name} ma jeden plik} ",
+                "few {{name} ma # pliki} ",
+                "many {{name} ma # plików} ",
+                "other {{name} ma # pliku}}"
+            ),
+            options,
+        )
+        .parse()
+        .expect("parse Polish");
+
+        assert!(
+            is_structurally_same(&english, &polish, "plural".to_string()).is_ok(),
+            "translations with locale-specific plural branches should be structurally equal",
+        );
+    }
+
     // https://github.com/formatjs/formatjs/issues/6212
     // Variable names that happen to match Map prototype properties (e.g., "size",
     // "entries", "get") should work correctly. The TypeScript implementation had a
     // bug where `in` operator on a Map checked the prototype chain instead of Map
-    // entries. The Rust implementation uses Vec so it's not affected, but these
+    // entries. IndexMap has no prototype chain, but these
     // tests ensure parity with the TypeScript fix.
     #[test]
     fn test_map_prototype_variable_names_no_false_conflict() {
