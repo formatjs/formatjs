@@ -295,7 +295,7 @@ formatjs_cli = module_extension(
 
     ## Version History
 
-    - **1.1.12**: Latest built-in version
+    - **1.1.20**: Latest built-in version
     - **1.1.7**: Added Windows x86_64 support
     - **1.1.5**: Added Linux ARM64 support
     - **0.1.2**: Added native key sorting
