@@ -17,5 +17,5 @@
     "@types/react-dom": "18.3.7",
     "typescript": "7.0.2"
   },
-  "packageManager": "pnpm@11.10.0"
+  "packageManager": "pnpm@11.11.0"
 }
