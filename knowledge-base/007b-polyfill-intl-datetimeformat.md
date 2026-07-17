@@ -130,6 +130,9 @@ Stage 4: supported-locales.generated.ts
 - `DateTimeFormat.__addTZData()` registers timezone data (unpacks base-36 encoding)
 - Timezone offset lookup uses binary search through transition array
 - Buffered via `globalThis.__FORMATJS_DATETIMEFORMAT_DATA__`
+- Date prototype ponyfills pass options through `ToDateTimeOptions` with the
+  ECMA-402 `required` and `defaults` values for each method. In particular,
+  `toLocaleString({timeZone})` defaults to both date and time fields.
 
 ## Key Design Decisions
 

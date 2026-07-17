@@ -14,10 +14,7 @@ if (shouldPolyfill()) {
   defineProperty(Date.prototype, 'toLocaleString', {
     value: function toLocaleString(
       locales?: string | string[],
-      options: Intl.DateTimeFormatOptions = {
-        dateStyle: 'short',
-        timeStyle: 'medium',
-      }
+      options?: Intl.DateTimeFormatOptions
     ) {
       try {
         return _toLocaleString(this, locales, options)
@@ -29,9 +26,7 @@ if (shouldPolyfill()) {
   defineProperty(Date.prototype, 'toLocaleDateString', {
     value: function toLocaleDateString(
       locales?: string | string[],
-      options: Intl.DateTimeFormatOptions = {
-        dateStyle: 'short',
-      }
+      options?: Intl.DateTimeFormatOptions
     ) {
       try {
         return _toLocaleDateString(this, locales, options)
@@ -43,9 +38,7 @@ if (shouldPolyfill()) {
   defineProperty(Date.prototype, 'toLocaleTimeString', {
     value: function toLocaleTimeString(
       locales?: string | string[],
-      options: Intl.DateTimeFormatOptions = {
-        timeStyle: 'medium',
-      }
+      options?: Intl.DateTimeFormatOptions
     ) {
       try {
         return _toLocaleTimeString(this, locales, options)

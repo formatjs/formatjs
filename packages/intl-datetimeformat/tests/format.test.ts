@@ -319,6 +319,13 @@ describe('toLocaleString', function () {
       expect(toLocaleString(new Date(TS), 'en', options)).toBe(en)
     })
   })
+
+  it('defaults to date and time when only timeZone is set, GH #6891', function () {
+    const date = new Date('2077-01-02T09:15:25Z')
+    expect(toLocaleString(date, 'en-US', {timeZone: 'Europe/Warsaw'})).toMatch(
+      /^1\/2\/2077, 10:15:25/
+    )
+  })
 })
 
 describe('toLocaleDateString', function () {
