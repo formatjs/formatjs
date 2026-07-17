@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 7.5.2 (2026-07-17)
+
+## What's Changed
+* fix(deps): update dependency eslint-plugin-formatjs to v6.4.17 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6885
+* fix(deps): update formatjs monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6886
+* chore(deps): update dependency vite to v8.1.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6887
+* chore(deps): update dependency @babel/types to v8.0.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6888
+* chore(deps): update dependency lucide-react to v1.24.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6889
+* fix(@formatjs/intl-datetimeformat): apply Date method defaults by @longlho in https://github.com/formatjs/formatjs/pull/6893
+* chore(deps): update rust crate regex to v1.13.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6890
+* chore(deps): update pnpm to v11.11.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6892
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.5.1...@formatjs/intl-datetimeformat@7.5.2
+
 ## 7.5.1 (2026-07-16)
 
 ## What's Changed
