@@ -148,6 +148,10 @@ import '@formatjs/intl-datetimeformat/locale-data/en.js' // locale-data for en
 import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 ```
 
+The polyfill also replaces `Date.prototype.toLocaleString`,
+`toLocaleDateString`, and `toLocaleTimeString` with their ECMA-402 behavior,
+including the standard date and time defaults when only `timeZone` is set.
+
 ### Dynamic import + capability detection
 
 ```tsx

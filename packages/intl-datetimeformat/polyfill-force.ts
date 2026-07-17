@@ -12,10 +12,7 @@ defineProperty(intl, 'DateTimeFormat', {value: DateTimeFormat})
 defineProperty(Date.prototype, 'toLocaleString', {
   value: function toLocaleString(
     locales?: string | string[],
-    options: Intl.DateTimeFormatOptions = {
-      dateStyle: 'short',
-      timeStyle: 'medium',
-    }
+    options?: Intl.DateTimeFormatOptions
   ) {
     try {
       return _toLocaleString(this, locales, options)
@@ -27,9 +24,7 @@ defineProperty(Date.prototype, 'toLocaleString', {
 defineProperty(Date.prototype, 'toLocaleDateString', {
   value: function toLocaleDateString(
     locales?: string | string[],
-    options: Intl.DateTimeFormatOptions = {
-      dateStyle: 'short',
-    }
+    options?: Intl.DateTimeFormatOptions
   ) {
     try {
       return _toLocaleDateString(this, locales, options)
@@ -41,9 +36,7 @@ defineProperty(Date.prototype, 'toLocaleDateString', {
 defineProperty(Date.prototype, 'toLocaleTimeString', {
   value: function toLocaleTimeString(
     locales?: string | string[],
-    options: Intl.DateTimeFormatOptions = {
-      timeStyle: 'medium',
-    }
+    options?: Intl.DateTimeFormatOptions
   ) {
     try {
       return _toLocaleTimeString(this, locales, options)
