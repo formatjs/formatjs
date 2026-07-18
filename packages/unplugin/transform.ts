@@ -107,7 +107,8 @@ export function transform(
     'createElement',
   ])
 
-  const result = parseSync(id, code, {sourceType: 'module'})
+  const filename = id.replace(/[?#].*$/, '')
+  const result = parseSync(filename, code, {sourceType: 'module'})
   const program = result.program
 
   let s: MagicString | undefined

@@ -12,6 +12,23 @@ function t(
 }
 
 describe('@formatjs/unplugin transform', () => {
+  test('parses JSX when the module id has a query or hash (#6895)', () => {
+    const input = `export const x = <div>{intl.formatMessage({defaultMessage: "Hello world"})}</div>`
+    const options = {
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      ast: true,
+    }
+    const expected = transform(input, '/src/route.tsx', options)
+
+    expect(expected).toBeDefined()
+    expect(
+      transform(input, '/src/route.tsx?tsr-split=component', options)
+    ).toEqual(expected)
+    expect(transform(input, '/src/route.tsx#route-chunk', options)).toEqual(
+      expected
+    )
+  })
+
   describe('id generation', () => {
     test('inserts generated id into formatMessage call', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello World', description: 'greeting'})`
