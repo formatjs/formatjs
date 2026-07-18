@@ -32,7 +32,7 @@
   "packages/react-intl": "10.1.18",
   "packages/svelte-intl": "1.1.14",
   "packages/ts-transformer": "4.4.17",
-  "packages/unplugin": "1.2.2",
+  "packages/unplugin": "1.2.3",
   "packages/utils": "2.2.11",
   "packages/vue-intl": "7.2.14",
   "crates/icu_skeleton_parser": "0.1.2",
