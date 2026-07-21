@@ -50,7 +50,7 @@ fn write_ast(out: &mut String, ast: &[MessageFormatElement], is_in_plural: bool)
             MessageFormatElement::Plural(plural) => write_plural_element(out, plural),
             MessageFormatElement::Select(select) => write_select_element(out, select),
             MessageFormatElement::Pound(_) => out.push('#'),
-            MessageFormatElement::Tag(tag) => write_tag_element(out, tag),
+            MessageFormatElement::Tag(tag) => write_tag_element(out, tag, is_in_plural),
         }
     }
 }
@@ -62,15 +62,16 @@ fn write_ast(out: &mut String, ast: &[MessageFormatElement], is_in_plural: bool)
 /// # Arguments
 ///
 /// * `el` - The tag element to print
+/// * `is_in_plural` - Whether the tag is inside a plural submessage
 ///
 /// # Returns
 ///
 /// A string like `<b>text</b>`
-fn write_tag_element(out: &mut String, el: &TagElement) {
+fn write_tag_element(out: &mut String, el: &TagElement, is_in_plural: bool) {
     out.push('<');
     out.push_str(&el.value);
     out.push('>');
-    write_ast(out, &el.children, false);
+    write_ast(out, &el.children, is_in_plural);
     out.push_str("</");
     out.push_str(&el.value);
     out.push('>');
@@ -582,6 +583,15 @@ mod tests {
         let ast = parse_message("a '''}' b");
         let output = print_ast(&ast);
 
+        assert_eq!(parse_message(&output), ast);
+    }
+
+    #[test]
+    fn test_print_literal_pounds_inside_plural_tag_round_trip() {
+        let ast = parse_message("{count, plural, other {<b>'##'</b>}}");
+        let output = print_ast(&ast);
+
+        assert_eq!(output, "{count,plural,other{<b>'##'</b>}}");
         assert_eq!(parse_message(&output), ast);
     }
 
