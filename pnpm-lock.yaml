@@ -420,7 +420,7 @@ importers:
         version: 1.1.5
       rolldown-plugin-dts:
         specifier: ^0.27.0
-        version: 0.27.8(rolldown@1.1.5)(typescript@7.0.2(patch_hash=11b4cba8f26df44c28a8ec9dde35fc58966120ded2f71a9c9881575b5ea876b9))
+        version: 0.27.9(rolldown@1.1.5)(typescript@7.0.2(patch_hash=11b4cba8f26df44c28a8ec9dde35fc58966120ded2f71a9c9881575b5ea876b9))
       rollup:
         specifier: ^4.40.0
         version: 4.62.2
@@ -6647,14 +6647,14 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-dts@0.27.8:
-    resolution: {integrity: sha512-IjBTFpkrYYJPRUmIjUJFsZdR1zeHskFcEwFDzSfFDoC2pZcSNgLrBUcDFY9K0Q+A1TZJR3q9MlVomxMDP8AuLQ==}
+  rolldown-plugin-dts@0.27.9:
+    resolution: {integrity: sha512-d54yt65+ZF/Mk8H6P36As02PAMdaiWRSzVNtJRc1h7nCgUFjuRI4cN2DyTfJyfVpPH6pgy7/2D7YQH1/Rh75Yg==}
     engines: {node: ^22.18.0 || >=24.11.0}
     peerDependencies:
       '@ts-macro/tsc': ^0.3.6
-      '@typescript/native-preview': '>=7.0.0-dev.20260325.1'
+      '@typescript/native-preview': '*'
       rolldown: ^1.0.0
-      typescript: ^5.0.0 || ^6.0.0 || ^7.0.0
+      typescript: ^5.0.0 || ^6.0.0 || ~7.0.0
       vue-tsc: ~3.2.0 || ~3.3.0
     peerDependenciesMeta:
       '@ts-macro/tsc':
@@ -13851,7 +13851,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.27.8(rolldown@1.1.5)(typescript@7.0.2(patch_hash=11b4cba8f26df44c28a8ec9dde35fc58966120ded2f71a9c9881575b5ea876b9)):
+  rolldown-plugin-dts@0.27.9(rolldown@1.1.5)(typescript@7.0.2(patch_hash=11b4cba8f26df44c28a8ec9dde35fc58966120ded2f71a9c9881575b5ea876b9)):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.5
