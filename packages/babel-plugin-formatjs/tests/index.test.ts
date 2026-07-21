@@ -356,3 +356,13 @@ test('GH #3537: flatten with overrideIdFn', function () {
   // ID should be based on flattened message length (249 chars)
   expect(result.data.messages[1].id).toBe('msg_249')
 })
+
+test('flatten preserves literal pounds inside tags nested in plurals', () => {
+  const result = transformAndCheck('flattenLiteralPoundsInPluralTag', {
+    flatten: true,
+  })
+
+  expect(result.data.messages[0].defaultMessage).toBe(
+    "{count,plural,other{<b>'##'</b>}}"
+  )
+})
