@@ -9,7 +9,7 @@
     "@formatjs/icu-messageformat-parser": "3.5.14",
     "@formatjs/intl": "4.1.16",
     "intl-messageformat": "11.2.11",
-    "react": "18.3.1",
+    "react": "19.2.7",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
