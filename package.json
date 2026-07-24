@@ -116,7 +116,7 @@
     "eslint": "10.6.0",
     "eslint-plugin-formatjs": "workspace:*",
     "fast-glob": "^3.3.3",
-    "fast-xml-parser": "^5.0.9",
+    "fast-xml-parser": "^5.10.1",
     "fs-extra": "^11.3.3",
     "gray-matter": "^4.0.3",
     "happy-dom": "^20.1.0",
