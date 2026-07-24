@@ -369,7 +369,7 @@ importers:
         version: 0.139.0
       oxfmt:
         specifier: ^0.58.0
-        version: 0.58.0(svelte@5.56.5)
+        version: 0.58.0(svelte@5.56.6)
       oxlint:
         specifier: ^1.64.0
         version: 1.74.0
@@ -432,7 +432,7 @@ importers:
         version: 7.0.7
       svelte:
         specifier: ^5.0.0
-        version: 5.56.5
+        version: 5.56.6
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.6.0
@@ -6967,8 +6967,8 @@ packages:
     resolution: {integrity: sha512-/d0QHehmRuJW8gVz395MTkPcPozxzdjBMBE8oEYGz8O3b9KTMzzQ9ZHJQLuFKOHOPQbU6kx/X4iid/EBBzH7iw==}
     engines: {node: '>=18'}
 
-  svelte@5.56.5:
-    resolution: {integrity: sha512-P03YJmUy2JoOxYHb4Ka3oFat1hq2ko2it1MOItSjsJ4B6WgZPLc3+RyyU+57OGWhs3Ieq74EJpZtSnNXdAGgDw==}
+  svelte@5.56.6:
+    resolution: {integrity: sha512-p4HDLDogGHKRKCrgckQHNs5PEfXkju6JI5jTywueaKJI5hAdjPohEhRtQ0M1SWC/+TA73SPln+r7srr+7e4nZA==}
     engines: {node: '>=18'}
 
   tailwind-merge@3.6.0:
@@ -13406,7 +13406,7 @@ snapshots:
       '@oxc-transform/binding-win32-ia32-msvc': 0.139.0
       '@oxc-transform/binding-win32-x64-msvc': 0.139.0
 
-  oxfmt@0.58.0(svelte@5.56.5):
+  oxfmt@0.58.0(svelte@5.56.6):
     dependencies:
       tinypool: 2.1.0
     optionalDependencies:
@@ -13429,7 +13429,7 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.58.0
       '@oxfmt/binding-win32-ia32-msvc': 0.58.0
       '@oxfmt/binding-win32-x64-msvc': 0.58.0
-      svelte: 5.56.5
+      svelte: 5.56.6
 
   oxlint@1.74.0:
     optionalDependencies:
@@ -14292,7 +14292,7 @@ snapshots:
     transitivePeerDependencies:
       - '@typescript-eslint/types'
 
-  svelte@5.56.5:
+  svelte@5.56.6:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
