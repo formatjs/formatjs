@@ -88,6 +88,14 @@ test('escapes pound signs inside plural literals', function () {
   expect(parse(output)).toEqual(parse(input))
 })
 
+test('escapes literal pound signs inside tags nested in plurals', function () {
+  const input = "{count, plural, other {<b>'##'</b>}}"
+  const output = printAST(parse(input))
+
+  expect(output).toBe("{count,plural,other{<b>'##'</b>}}")
+  expect(parse(output)).toEqual(parse(input))
+})
+
 test('coalesces adjacent syntax characters into one quoted span', function () {
   const input = 'Use }} to close'
   const output = printAST(parse(input, {requiresOtherClause: false}))
