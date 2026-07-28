@@ -5,7 +5,6 @@ formatjs_library(
     name = "babel-plugin-formatjs",
     package_name = "babel-plugin-formatjs",
     srcs = [
-        "global.d.ts",
         "index.ts",
         "types.ts",
         "utils.ts",
@@ -34,7 +33,6 @@ formatjs_library(
     deps = [
         "//:node_modules/@babel/core",
         "//:node_modules/@babel/helper-plugin-utils",
-        "//:node_modules/@babel/plugin-syntax-jsx",
         "//:node_modules/@babel/types",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",

@@ -2,7 +2,11 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 filegroup(
     name = "files",
-    srcs = glob(["*.js"]),
+    srcs = glob([
+        "*.js",
+        "*.ts",
+        "*.tsx",
+    ]),
     visibility = [
         "//packages/babel-plugin-formatjs:__subpackages__",
     ],

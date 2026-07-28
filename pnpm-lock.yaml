@@ -512,9 +512,6 @@ importers:
       '@babel/helper-plugin-utils':
         specifier: '8'
         version: 8.0.1(@babel/core@8.0.1)
-      '@babel/plugin-syntax-jsx':
-        specifier: '8'
-        version: 8.0.1(@babel/core@8.0.1)
       '@babel/types':
         specifier: '8'
         version: 8.0.4

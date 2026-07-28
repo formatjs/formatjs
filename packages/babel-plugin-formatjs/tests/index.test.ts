@@ -140,6 +140,74 @@ test('GH #2663', function () {
   }).toMatchSnapshot()
 })
 
+test('GH #6928 - does not force JSX parsing onto plain .ts files', function () {
+  const filePath = path.join(import.meta.dirname, 'fixtures', '6928.ts')
+  const messages: ExtractedMessageDescriptor[] = []
+
+  const {code} = transformFileSync(filePath, {
+    parserOpts: {plugins: ['typescript']},
+    plugins: [
+      [
+        plugin,
+        {
+          onMsgExtracted(_, msgs) {
+            messages.push(...msgs)
+          },
+        } as Options,
+        Date.now() + '' + ++cacheBust,
+      ],
+    ],
+  })!
+
+  expect(code).toMatch(/<T,?>\(x: T\): T => x/)
+  expect(messages).toEqual([
+    {
+      defaultMessage: 'Hello World!',
+      description: 'The default message.',
+      id: 'foo.bar.baz',
+    },
+  ])
+})
+
+test('GH #6928 - extracts from .tsx when the user enables JSX', function () {
+  const filePath = path.join(import.meta.dirname, 'fixtures', '6928.tsx')
+  const messages: ExtractedMessageDescriptor[] = []
+
+  transformFileSync(filePath, {
+    parserOpts: {plugins: ['typescript', 'jsx']},
+    plugins: [
+      [
+        plugin,
+        {
+          onMsgExtracted(_, msgs) {
+            messages.push(...msgs)
+          },
+        } as Options,
+        Date.now() + '' + ++cacheBust,
+      ],
+    ],
+  })!
+
+  expect(messages).toEqual([
+    {
+      defaultMessage: 'Hello World!',
+      description: 'The default message.',
+      id: 'foo.bar.baz',
+    },
+  ])
+})
+
+test('GH #6928 - does not enable JSX syntax on its own', function () {
+  const filePath = path.join(import.meta.dirname, 'fixtures', '6928.tsx')
+
+  expect(() =>
+    transformFileSync(filePath, {
+      parserOpts: {plugins: ['typescript']},
+      plugins: [[plugin, {} as Options, Date.now() + '' + ++cacheBust]],
+    })
+  ).toThrow(/Unexpected token/)
+})
+
 test('overrideIdFn', function () {
   transformAndCheck('overrideIdFn', {
     overrideIdFn: (

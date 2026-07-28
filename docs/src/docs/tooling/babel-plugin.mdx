@@ -44,6 +44,8 @@ pnpm add babel-plugin-formatjs
 
 The default message descriptors for the app's default language will be processed from: `defineMessages()`, `defineMessage()`, `intl.formatMessage` and `<FormattedMessage>`; all of which are named exports of the React Intl package.
 
+This plugin does not enable any syntax on its own. To extract messages from `<FormattedMessage>` elements, JSX parsing must be enabled by your own Babel configuration (e.g. `@babel/preset-react`, `@babel/preset-typescript` for `.tsx` files, or `@babel/plugin-syntax-jsx`), as it normally already is in projects that use JSX.
+
 ### Via `babel.config.json` (Recommended)
 
 **babel.config.json**
