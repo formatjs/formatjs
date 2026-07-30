@@ -181,6 +181,12 @@ describe('format API', () => {
           description: 'Greeting',
         })
       ).toThrow('Message Descriptor: {"description":"Greeting"}')
+
+      expect(() =>
+        formatMessage({
+          defaultMessage: [{type: 0, value: 'Hello, World!'}],
+        })
+      ).toThrow('Default Message: [{"type":0,"value":"Hello, World!"}]')
     })
 
     it('does not mask the missing `id` error for circular descriptors', () => {

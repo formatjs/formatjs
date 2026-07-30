@@ -20,7 +20,6 @@ import {
   MessageFormatError,
   MissingTranslationError,
 } from '#packages/intl/error.js'
-import {invariant} from '#packages/intl/utils.js'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -102,6 +101,23 @@ export type FormatMessageFn<T> = (
   opts?: Options
 ) => T extends string ? string : Array<T | string> | string | T
 
+function getMessageDescriptorContext(
+  messageDescriptor: MessageDescriptor
+): string {
+  const {defaultMessage} = messageDescriptor
+  try {
+    return defaultMessage !== undefined
+      ? `\nDefault Message: ${
+          typeof defaultMessage === 'string'
+            ? defaultMessage
+            : JSON.stringify(defaultMessage)
+        }`
+      : `\nMessage Descriptor: ${JSON.stringify(messageDescriptor)}`
+  } catch {
+    return ''
+  }
+}
+
 export const formatMessage: FormatMessageFn<any> = (
   {
     locale,
@@ -123,21 +139,12 @@ export const formatMessage: FormatMessageFn<any> = (
 
   // `id` is a required field of a Message Descriptor.
   if (!msgId) {
-    let descriptorContext = ''
-    if (defaultMessage !== undefined) {
-      descriptorContext = `\nDefault Message: ${defaultMessage}`
-    } else {
-      try {
-        descriptorContext = `\nMessage Descriptor: ${JSON.stringify(messageDescriptor)}`
-      } catch {}
-    }
-    invariant(
-      !!msgId,
+    throw new Error(
       `[@formatjs/intl] An \`id\` must be provided to format a message. You can either:
 1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.github.io/docs/tooling/babel-plugin)
 or [@formatjs/ts-transformer](https://formatjs.github.io/docs/tooling/ts-transformer) OR
 2. Configure your \`eslint\` config to include [eslint-plugin-formatjs](https://formatjs.github.io/docs/tooling/linter#enforce-id)
-to autofix this issue${descriptorContext}`
+to autofix this issue${getMessageDescriptorContext(messageDescriptor)}`
     )
   }
   const id = String(msgId)
