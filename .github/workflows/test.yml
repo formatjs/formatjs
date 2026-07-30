@@ -292,3 +292,22 @@ jobs:
           console.log(extractedOutput)
           '@
           $script | node - $pkgPath
+
+  validate-pnpm-lock:
+    name: Validate pnpm-lock.yaml
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Install dependencies with pnpm
+        run: pnpm install --frozen-lockfile
