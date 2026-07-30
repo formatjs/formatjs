@@ -102,6 +102,23 @@ export type FormatMessageFn<T> = (
   opts?: Options
 ) => T extends string ? string : Array<T | string> | string | T
 
+function getMessageDescriptorContext(
+  messageDescriptor: MessageDescriptor
+): string {
+  const {defaultMessage} = messageDescriptor
+  try {
+    return defaultMessage !== undefined
+      ? `\nDefault Message: ${
+          typeof defaultMessage === 'string'
+            ? defaultMessage
+            : JSON.stringify(defaultMessage)
+        }`
+      : `\nMessage Descriptor: ${JSON.stringify(messageDescriptor)}`
+  } catch {
+    return ''
+  }
+}
+
 export const formatMessage: FormatMessageFn<any> = (
   {
     locale,
@@ -122,14 +139,16 @@ export const formatMessage: FormatMessageFn<any> = (
   const {id: msgId, defaultMessage} = messageDescriptor
 
   // `id` is a required field of a Message Descriptor.
-  invariant(
-    !!msgId,
-    `[@formatjs/intl] An \`id\` must be provided to format a message. You can either:
+  if (!msgId) {
+    invariant(
+      false,
+      `[@formatjs/intl] An \`id\` must be provided to format a message. You can either:
 1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.github.io/docs/tooling/babel-plugin)
 or [@formatjs/ts-transformer](https://formatjs.github.io/docs/tooling/ts-transformer) OR
 2. Configure your \`eslint\` config to include [eslint-plugin-formatjs](https://formatjs.github.io/docs/tooling/linter#enforce-id)
-to autofix this issue`
-  )
+to autofix this issue${getMessageDescriptorContext(messageDescriptor)}`
+    )
+  }
   const id = String(msgId)
   const message =
     // In case messages is Object.create(null)
