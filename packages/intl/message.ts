@@ -20,6 +20,7 @@ import {
   MessageFormatError,
   MissingTranslationError,
 } from '#packages/intl/error.js'
+import {invariant} from '#packages/intl/utils.js'
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -139,7 +140,8 @@ export const formatMessage: FormatMessageFn<any> = (
 
   // `id` is a required field of a Message Descriptor.
   if (!msgId) {
-    throw new Error(
+    invariant(
+      false,
       `[@formatjs/intl] An \`id\` must be provided to format a message. You can either:
 1. Configure your build toolchain with [babel-plugin-formatjs](https://formatjs.github.io/docs/tooling/babel-plugin)
 or [@formatjs/ts-transformer](https://formatjs.github.io/docs/tooling/ts-transformer) OR
