@@ -364,7 +364,7 @@ test('currencyDecimal', () => {
     style: 'currency',
     currency: 'USD',
   })
-  expect(nf.format(12345678)).toEqual('12 345 678.00 $US')
+  expect(nf.format(12345678)).toEqual("12'345'678.00 $US")
 })
 
 test('#4678', () => {
