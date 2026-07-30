@@ -2,6 +2,7 @@ import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
 import allData from '@formatjs_generated/tz/all-tz.js'
+import arEG from '#packages/intl-datetimeformat/tests/locale-data/ar-EG.json' with {type: 'json'}
 import bn from '#packages/intl-datetimeformat/tests/locale-data/bn.json' with {type: 'json'}
 import enCA from '#packages/intl-datetimeformat/tests/locale-data/en-CA.json' with {type: 'json'}
 import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
@@ -13,7 +14,7 @@ import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {t
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, bn, my, ne)
+DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
 DateTimeFormat.__addTZData(allData)
 const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
@@ -244,6 +245,22 @@ describe('Intl.DateTimeFormat', function () {
         /[\u1040-\u1049\u09e6-\u09ef\u0966-\u096f]/u
       )
     }
+  })
+  it('uses ar-EG numbering system when ar-EG locale data is loaded, GH #6912', function () {
+    const formatter = new DateTimeFormat('ar-EG', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    })
+
+    expect(formatter.resolvedOptions()).toMatchObject({
+      locale: 'ar-EG',
+      numberingSystem: 'arab',
+    })
+    expect(formatter.format(new Date('2007-03-21T21:26:00Z'))).toBe(
+      'الأربعاء، ٢١ مارس'
+    )
   })
   it('test #2170', function () {
     const formatter = new DateTimeFormat('en-GB', {
