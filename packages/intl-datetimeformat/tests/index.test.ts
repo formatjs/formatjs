@@ -14,18 +14,7 @@ import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {t
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(
-  en,
-  enGB,
-  enCA,
-  ja,
-  zhHans,
-  fa,
-  arEG,
-  bn,
-  my,
-  ne
-)
+DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
 DateTimeFormat.__addTZData(allData)
 const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
