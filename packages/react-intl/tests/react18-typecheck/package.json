@@ -9,12 +9,12 @@
     "@formatjs/icu-messageformat-parser": "3.5.14",
     "@formatjs/intl": "4.1.16",
     "intl-messageformat": "11.2.11",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@types/react": "18.3.31",
-    "@types/react-dom": "18.3.7",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "typescript": "7.0.2"
   },
   "packageManager": "pnpm@11.11.0"
