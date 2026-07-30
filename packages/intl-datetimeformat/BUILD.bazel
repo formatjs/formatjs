@@ -14,6 +14,7 @@ PACKAGE_NAME = "intl-datetimeformat"
 
 TEST_LOCALES = [
     "ar",
+    "ar-EG",
     "bn",
     "bs",
     "de",
@@ -125,6 +126,7 @@ formatjs_test(
         "tests/index.test.ts",
         "tests/offset-timezone.test.ts",
         ":tests-locale-data-ar",  # keep: generated locale data imported by tests
+        ":tests-locale-data-ar-EG",  # keep: generated locale data imported by tests
         ":tests-locale-data-bn",  # keep: generated locale data imported by tests
         ":tests-locale-data-bs",  # keep: generated locale data imported by tests
         ":tests-locale-data-de",  # keep: generated locale data imported by tests
