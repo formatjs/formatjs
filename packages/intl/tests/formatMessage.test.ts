@@ -168,6 +168,30 @@ describe('format API', () => {
       })
     })
 
+    it('includes Message Descriptor context when `id` is missing', () => {
+      expect(() =>
+        formatMessage({
+          defaultMessage: 'Hello, World!',
+          description: 'Greeting',
+        })
+      ).toThrow('Default Message: Hello, World!')
+
+      expect(() =>
+        formatMessage({
+          description: 'Greeting',
+        })
+      ).toThrow('Message Descriptor: {"description":"Greeting"}')
+    })
+
+    it('does not mask the missing `id` error for circular descriptors', () => {
+      const descriptor: any = {}
+      descriptor.self = descriptor
+
+      expect(() => formatMessage(descriptor)).toThrow(
+        '[@formatjs/intl] An `id` must be provided to format a message.'
+      )
+    })
+
     it('formats basic messages', () => {
       const {locale, messages} = config
       const mf = new IntlMessageFormat(messages!.no_args, locale)
