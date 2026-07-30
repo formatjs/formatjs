@@ -278,29 +278,29 @@ importers:
         specifier: ^0.7.1
         version: 0.7.1
       cldr-bcp47:
-        specifier: 48.1.0
-        version: 48.1.0
+        specifier: 48.2.0
+        version: 48.2.0
       cldr-core:
-        specifier: 48.1.0
-        version: 48.1.0
+        specifier: 48.2.0
+        version: 48.2.0
       cldr-dates-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-numbers-full@48.1.0(cldr-core@48.1.0))
+        specifier: 48.2.0
+        version: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
       cldr-localenames-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.2.0)
       cldr-misc-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.2.0)
       cldr-numbers-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.2.0)
       cldr-segments-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.2.0)
       cldr-units-full:
-        specifier: 48.1.0
-        version: 48.1.0(cldr-core@48.1.0)
+        specifier: 48.2.0
+        version: 48.2.0(cldr-core@48.2.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -4385,41 +4385,41 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
-  cldr-bcp47@48.1.0:
-    resolution: {integrity: sha512-5GF0weVNrLmqkZvZ18VwNW4Js/RUF2nt9Iz6ex/90BODZ/PPkBNYjF+dMIMMmHDipYXDoHlE02urCkFRt3nkYg==}
+  cldr-bcp47@48.2.0:
+    resolution: {integrity: sha512-ks3zN+Wbg1zMqvJNeDai1zA0JBGHbAnxv2Ko4rjVohvXscDGmTa7VNy1T+QRlQw3QVPzQcCm2EOiEtAfOU4d+g==}
 
-  cldr-core@48.1.0:
-    resolution: {integrity: sha512-Br9lHQHRhFVyQ/4dY2AnTOuJVEwzDSFR9tE4EzaZxdtux4BFZ4V6oY0SiSAe/8H9+CJ6njpBiPJdDv+vdXnvfA==}
+  cldr-core@48.2.0:
+    resolution: {integrity: sha512-zfmLothncSwfv2jlevoSrgI2VGgH8SDGHXst6jUEotHA8nq9Igeg9jzdJDFtBso9pgJuG89DK16TzrmZDdo2Bg==}
 
-  cldr-dates-full@48.1.0:
-    resolution: {integrity: sha512-GyVLYFmC8Xsd+awXwAedeAXTr3u9FGnpRTFEf9aYbB6zVzz5CqATPBvyFqLs0+PLPbdHrqhjgxQ6oIf9EAavbw==}
+  cldr-dates-full@48.2.0:
+    resolution: {integrity: sha512-zMrKvjMO414HDftLr6vKH1fNQHakFNe+F1h4S0eg+zmL4WRi9pI41fxB3UrTJDY42MEM87jCuAw/qlqCgYKcAQ==}
     peerDependencies:
-      cldr-numbers-full: 48.1.0
+      cldr-numbers-full: 48.2.0
 
-  cldr-localenames-full@48.1.0:
-    resolution: {integrity: sha512-KJqpA/7gsBV/Tib0q5dsQ8cpNNxOsVYKYXtklsV2cjDgzAmXJjOz91PBSpveE7f072VfepUTe2ofbk18lhhQ6g==}
+  cldr-localenames-full@48.2.0:
+    resolution: {integrity: sha512-4o0paYDz0UXhfhChAVFkmVl2CP0YTSEqE6WrC0fNafaSC5u5DAXphxH3SZ1Ujczarikr8DToKZfiok6EqWLdNQ==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-misc-full@48.1.0:
-    resolution: {integrity: sha512-Jq+iihaRjaLoI0u9y3dg4IsYY+f5RIy7l2StBfM4iT891Bj/i/RsvGD/0sBlorJhQPmQ1Tn6R9Y5iztvwAAncw==}
+  cldr-misc-full@48.2.0:
+    resolution: {integrity: sha512-dSc2Tr53dQcUGwsTinamEeoP2YXOhQrIZ+SyeuUrv4MzJOSjT/Q0qkSmX11ZwfcTbYSkIqbrgALQLhAm1yf5fA==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-numbers-full@48.1.0:
-    resolution: {integrity: sha512-Kr0H7GQtuVDZQrSopxLbjv5bv9lk0T/uMsrLqPNzSlAcxqjXUEpa215ebZj/w0Vc5/PwyJmCJlG8rSUJrDpfDA==}
+  cldr-numbers-full@48.2.0:
+    resolution: {integrity: sha512-0EQ+UkVDsyXOlxnWnL1RIENVZFqCnb04D1Yrku0obnOyttbuZz8tHmUd5c5AEvhGS/Gg2zI4fTaCm51LSGITog==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-segments-full@48.1.0:
-    resolution: {integrity: sha512-RIcJS4mLVnmmcExoqj5twCoJBMktbIhjlOqykAIdkKdmW5M9YRfne1OtyJHGCLUif0qatZ1eUYtg+oFzfsP2Og==}
+  cldr-segments-full@48.2.0:
+    resolution: {integrity: sha512-emIJVJL1tfAUkbqqw/XaY1gU5L910GOrG7w+Lgf3avw5/d3DaecxtfAhovuk3GmbHK0yWgAOrR4yIE3bbgcXRA==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-units-full@48.1.0:
-    resolution: {integrity: sha512-gZRKOiY/zk5WydpE6qvHyhzRqCoOCtVWfYHN3bwaLXn3p2neuFMfFmetN+3aJBL9bZSrvwB0brXGnb7+/XA3CA==}
+  cldr-units-full@48.2.0:
+    resolution: {integrity: sha512-BjDC7V46eeXzgalnIumrJ1XQDk8wJaOxNLME4hmkBT9Q0hnzxn3XgtavigPUwnljk7FxlNQW9Wx+hbFrARPrQg==}
     peerDependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
   cliui@5.0.0:
     resolution: {integrity: sha512-PYeGSEmmHM6zvoef2w8TPzlrnNpXIjTipYK780YswmIP9vjxmd6Y2a3CB2Ks6/AU8NHjZugXvo8w3oWM2qnwXA==}
@@ -11088,33 +11088,33 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
-  cldr-bcp47@48.1.0: {}
+  cldr-bcp47@48.2.0: {}
 
-  cldr-core@48.1.0: {}
+  cldr-core@48.2.0: {}
 
-  cldr-dates-full@48.1.0(cldr-numbers-full@48.1.0(cldr-core@48.1.0)):
+  cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)):
     dependencies:
-      cldr-numbers-full: 48.1.0(cldr-core@48.1.0)
+      cldr-numbers-full: 48.2.0(cldr-core@48.2.0)
 
-  cldr-localenames-full@48.1.0(cldr-core@48.1.0):
+  cldr-localenames-full@48.2.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-misc-full@48.1.0(cldr-core@48.1.0):
+  cldr-misc-full@48.2.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-numbers-full@48.1.0(cldr-core@48.1.0):
+  cldr-numbers-full@48.2.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-segments-full@48.1.0(cldr-core@48.1.0):
+  cldr-segments-full@48.2.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
-  cldr-units-full@48.1.0(cldr-core@48.1.0):
+  cldr-units-full@48.2.0(cldr-core@48.2.0):
     dependencies:
-      cldr-core: 48.1.0
+      cldr-core: 48.2.0
 
   cliui@5.0.0:
     dependencies:
