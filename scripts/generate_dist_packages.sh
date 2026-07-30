@@ -6,6 +6,16 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT="$REPO_ROOT/tools/dist_packages_registry.bzl"
 
+# Native packages share release ownership across N-API code and platforms.
+NATIVE_RELEASE_DEPS=$(
+  bazel query \
+    'deps(set(//crates/formatjs_cli_napi:formatjs_cli_napi //crates/formatjs_cli/platforms:all))' \
+    2>/dev/null \
+    | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
+    | sort -u \
+    | paste -sd, -
+)
+
 TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
   | grep -v '^//packages/generated/' \
   | grep ':pkg$' \
@@ -21,13 +31,18 @@ TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
       echo "No npm package name found for $target" >&2
       exit 1
     fi
-    release_deps=$(bazel query "deps($target)" 2>/dev/null \
-      | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
-      | sort -u \
-      | paste -sd, -)
-
     package_dir="${target#//packages/}"
     package_dir="${package_dir%:pkg}"
+    if [[ "$package_dir" == cli-native-* ]]; then
+      release_deps="$NATIVE_RELEASE_DEPS"
+    else
+      release_deps=$(bazel query "deps($target)" 2>/dev/null \
+        | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
+        | sort -u \
+        | paste -sd, -
+      )
+    fi
+
     echo "$package_dir|$target|$package_json|$package_name|$release_deps"
   done | sort)
 
