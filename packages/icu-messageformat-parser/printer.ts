@@ -56,15 +56,15 @@ export function doPrintAST(
       return '#'
     }
     if (isTagElement(el)) {
-      return printTagElement(el)
+      return printTagElement(el, isInPlural)
     }
   })
 
   return printedNodes.join('')
 }
 
-function printTagElement(el: TagElement): string {
-  return `<${el.value}>${printAST(el.children)}</${el.value}>`
+function printTagElement(el: TagElement, isInPlural: boolean): string {
+  return `<${el.value}>${doPrintAST(el.children, isInPlural)}</${el.value}>`
 }
 
 function quoteSyntaxToken(token: string): string {
