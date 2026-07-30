@@ -11,16 +11,6 @@ import {
   type ResolvedIntlConfig,
 } from '#packages/intl/types.js'
 
-export function invariant(
-  condition: boolean,
-  message: string,
-  Err: any = Error
-): asserts condition {
-  if (!condition) {
-    throw new Err(message)
-  }
-}
-
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
   allowlist: Array<K>,
