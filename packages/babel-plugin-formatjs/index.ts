@@ -1,6 +1,5 @@
 import {type PluginPass, type PluginTarget} from '@babel/core'
 import {declare} from '@babel/helper-plugin-utils'
-import babelPluginSyntaxJsxNs from '@babel/plugin-syntax-jsx'
 import {
   type ExtractedMessageDescriptor,
   type Options,
@@ -11,9 +10,6 @@ import {
   visitor as CallExpression,
 } from '#packages/babel-plugin-formatjs/visitors/call-expression.js'
 import {visitor as JSXOpeningElement} from '#packages/babel-plugin-formatjs/visitors/jsx-opening-element.js'
-
-const babelPluginSyntaxJsx =
-  (babelPluginSyntaxJsxNs as any).default || babelPluginSyntaxJsxNs
 
 export type ExtractionResult<M = Record<string, string>> = {
   messages: ExtractedMessageDescriptor[]
@@ -40,7 +36,6 @@ const plugin: FormatJSPlugin = declare<State, Options>((api, options) => {
   // Vue
   functionNames.add('$formatMessage')
   return {
-    inherits: babelPluginSyntaxJsx,
     pre() {
       this.componentNames = Array.from(componentNames)
       this.functionNames = Array.from(functionNames)
