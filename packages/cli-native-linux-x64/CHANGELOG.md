@@ -1,5 +1,57 @@
 # Changelog
 
+## 1.1.9 (2026-07-30)
+
+## What's Changed
+* fix(deps): update dependency eslint-plugin-formatjs to v6.4.17 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6885
+* fix(deps): update formatjs monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6886
+* chore(deps): update dependency vite to v8.1.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6887
+* chore(deps): update dependency @babel/types to v8.0.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6888
+* chore(deps): update dependency lucide-react to v1.24.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6889
+* fix(@formatjs/intl-datetimeformat): apply Date method defaults by @longlho in https://github.com/formatjs/formatjs/pull/6893
+* chore(deps): update rust crate regex to v1.13.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6890
+* chore(deps): update pnpm to v11.11.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6892
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6894
+* fix(@formatjs/unplugin): parse module ids with queries by @longlho in https://github.com/formatjs/formatjs/pull/6896
+* fix(deps): update dependency eslint-plugin-formatjs to v6.4.18 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6900
+* fix(deps): update dependency babel-plugin-formatjs to v11.3.16 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6899
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6898
+* fix(deps): update formatjs monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6901
+* chore(deps): update dependency fast-xml-parser to v5.10.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6902
+* chore(deps): update dependency rolldown-plugin-dts to v0.27.8 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6904
+* chore(deps): update dependency rolldown-plugin-dts to v0.27.9 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6905
+* chore(deps): update dependency oxlint to v1.74.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6911
+* chore(deps): update dependency svelte to v5.56.5 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6914
+* chore(deps): update dependency @rspack/core to v2.1.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6913
+* chore(deps): update dependency fast-xml-parser to v5.10.1 [security] by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6920
+* chore(deps): update dependency rolldown-plugin-dts to v0.27.11 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6922
+* chore(deps): update dependency svelte to v5.56.6 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6923
+* chore(deps): update dependency vite to v8.1.5 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6924
+* fix: repair corrupted `patches/typescript@7.0.2.patch` by @andersk in https://github.com/formatjs/formatjs/pull/6929
+* fix(babel-plugin-formatjs): stop enabling JSX syntax implicitly by @andersk in https://github.com/formatjs/formatjs/pull/6930
+* test(@formatjs/intl-datetimeformat): cover ar-EG locale data by @longlho in https://github.com/formatjs/formatjs/pull/6933
+* feat: upgrade CLDR to 48.2.0 by @longlho in https://github.com/formatjs/formatjs/pull/6934
+* fix(@formatjs/intl): include context in missing id errors by @longlho in https://github.com/formatjs/formatjs/pull/6935
+* fix(deps): make native release deps host-independent by @longlho in https://github.com/formatjs/formatjs/pull/6936
+* fix(icu-messageformat-parser): preserve plural context in tags by @eoinest in https://github.com/formatjs/formatjs/pull/6908
+* chore(deps): update rust crate regex to v1.13.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6926
+* chore(deps): update rust crate clap to v4.6.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6925
+* chore(deps): update dependency oxfmt to ^0.60.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6910
+* chore(deps): update dependency bazel to v9.2.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6906
+* chore(deps): update napi-rs by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6903
+* fix(deps): update dependency typescript to v7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6882
+* chore(deps): update actions/setup-node action to v7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6909
+* chore(deps): update dependency eslint to v10.7.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6897
+* chore(deps): update dependency @rspack/core to v2.1.5 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6937
+* fix(deps): update oxc to 0.141 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6915
+* chore(deps): update dependency rolldown-plugin-dts to v0.27.13 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6939
+* chore(deps): update dependency @vitejs/plugin-react to v6.0.4 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6938
+
+## New Contributors
+* @eoinest made their first contribution in https://github.com/formatjs/formatjs/pull/6908
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64@1.1.8...@formatjs/cli-native-linux-x64@1.1.9
+
 ## 1.1.8 (2026-07-16)
 
 ## What's Changed
