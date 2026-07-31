@@ -41,10 +41,85 @@ After following the step above, you should be able to get a minimal application 
 groupId="engine"
 defaultValue="react"
 values={[
+{label: 'Ember', value: 'ember'},
 {label: 'Node', value: 'node'},
 {label: 'React', value: 'react'},
 {label: 'Vue3', value: 'vue'},
 ]}>
+
+<TabItem value="ember">
+
+```json
+/* translations/fr.json */
+{
+  "myMessage": "Aujourd'hui, nous sommes le {ts, date, ::yyyyMMdd}"
+}
+```
+
+```ts
+/* vite.config.mts */
+import {loadTranslations} from '@ember-intl/vite'
+import {defineConfig} from 'vite'
+
+export default defineConfig({
+  plugins: [
+    // ...
+    loadTranslations(),
+  ],
+})
+```
+
+```ts
+/* app/routes/application.ts */
+import Route from '@ember/routing/route'
+import {type Registry as Services, service} from '@ember/service'
+import translationsForFr from 'virtual:ember-intl/translations/fr'
+
+export default class ApplicationRoute extends Route {
+  @service declare intl: Services['intl']
+
+  beforeModel(): void {
+    this.setupIntl()
+  }
+
+  private setupIntl(): void {
+    this.intl.addTranslations('fr', translationsForFr)
+    this.intl.setLocale(['fr'])
+  }
+}
+```
+
+```gts
+/* app/templates/application.gts */
+import { formatMessage, formatNumber } from 'ember-intl';
+
+const descriptor = {
+  defaultMessage: 'Today is {ts, date, ::yyyyMMdd}',
+  id: 'myMessage',
+};
+
+const today = Date.now();
+
+<template>
+  <p>
+    {{formatMessage descriptor ts=today}}
+    <br />
+    {{formatNumber 19 currency="EUR" style="currency"}}
+  </p>
+</template>
+```
+
+Output
+
+```html
+<p>
+  Aujourd'hui, nous sommes le 23/07/2020
+  <br />
+  19,00&nbsp;€
+</p>
+```
+
+</TabItem>
 
 <TabItem value="node">
 
