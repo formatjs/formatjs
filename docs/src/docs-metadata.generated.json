@@ -7,6 +7,10 @@
     "title": "Icu Syntax",
     "description": "If you are translating text you'll need a way for your translators to express the subtleties of spelling, grammar, and conjugation inherent in each lang..."
   },
+  "ember-intl": {
+    "title": "Ember Intl",
+    "description": "ember-intl helps you internationalize Ember apps and addons."
+  },
   "getting-started/application-workflow": {
     "title": "Application Workflow",
     "description": "While our Installation guide can help you get started, this guide gives you an overview how your daily translation workflow might look like."
