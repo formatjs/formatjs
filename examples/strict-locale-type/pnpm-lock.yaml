@@ -15,8 +15,8 @@ importers:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.16
-        version: 10.1.16(@types/react@19.2.17)(react@19.2.7)
+        specifier: 10.1.18
+        version: 10.1.18(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@types/react':
         specifier: 19.2.17
@@ -36,14 +36,14 @@ packages:
   '@formatjs/fast-memoize@3.1.7':
     resolution: {integrity: sha512-zXfhLpvA6T7+efdt9JLbBwZ00tT7NsBMDVnDu8rpHeNNv8KfRZAMo2gkG0k9lK/Nzc//3kJ9pImsfuJxk3KhUA==}
 
-  '@formatjs/icu-messageformat-parser@3.5.14':
-    resolution: {integrity: sha512-jDvgtoLqe3U6yzoBlToMTkWBe38qSi7LN7kFlnXzd5ig8nn+4tSlED0xtEtdYakZVZGJJY2rW1D5xS3BFZh6kA==}
+  '@formatjs/icu-messageformat-parser@3.5.15':
+    resolution: {integrity: sha512-5o4grXKotAB3JqQuisLApHG43g17N+paoRTa92Jiz35Zvfemq0cVf4EDvuxyHAzmsJji7igaEowicLO/VmfJ8Q==}
 
   '@formatjs/icu-skeleton-parser@2.1.11':
     resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
 
-  '@formatjs/intl@4.1.16':
-    resolution: {integrity: sha512-EJe0wdORNZyzzqOmZs+sqFTL27iTcgNR6aiNT5+OscakcKvA673MyJ4SO9p5L+RQpPDw3v+jWidpo/Jaz14khg==}
+  '@formatjs/intl@4.1.17':
+    resolution: {integrity: sha512-IxluRkzOZH8ahaDip5g8YH9kJi1munUZi9i1BJs1wVFQIY2pROoCSiOlybZegyiPsZlMaYfADkD99zP2xmBfjQ==}
 
   '@lezer/common@1.5.2':
     resolution: {integrity: sha512-sxQE460fPZyU3sdc8lafxiPwJHBzZRy/udNFynGQky1SePYBdhkBl1kOagA9uT3pxR8K09bOrmTUqA9wb/PjSQ==}
@@ -803,8 +803,8 @@ packages:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
 
-  intl-messageformat@11.2.11:
-    resolution: {integrity: sha512-aDG5bvFRbQvRoT2Bh9FV6yV8t7o0MjEGknZ6pnin5Wt52PJwaBOHDfvz+oPEe78Pl3InQYKugBgCdXijLj6viQ==}
+  intl-messageformat@11.2.12:
+    resolution: {integrity: sha512-KW70Xxfcvy7vV3qODfvShWkFDPMqKDAa4N+hSyVBWGNtVhTUFYaqlD/l88DaYPKiVcPP4rPQ3qnH7i5K82Mg7g==}
 
   is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -948,8 +948,8 @@ packages:
     peerDependencies:
       react: ^19.2.7
 
-  react-intl@10.1.16:
-    resolution: {integrity: sha512-wt9lV390x/Fbqx9A1X4F+daxOzBb2LRybc2vNVS6FpI81TnV/LBlN29W3BBeh2b8cP3aWrofyrAhdViE1AD5pQ==}
+  react-intl@10.1.18:
+    resolution: {integrity: sha512-4JMOYakqVn/IajJt8Ad341Iwd6RDtiP1WQZiHRcFpHDBhVW4E9T0vkypSOk69Adg3dEbIYOE4HKTehH/1sSwnw==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -1013,17 +1013,17 @@ snapshots:
 
   '@formatjs/fast-memoize@3.1.7': {}
 
-  '@formatjs/icu-messageformat-parser@3.5.14':
+  '@formatjs/icu-messageformat-parser@3.5.15':
     dependencies:
       '@formatjs/icu-skeleton-parser': 2.1.11
 
   '@formatjs/icu-skeleton-parser@2.1.11': {}
 
-  '@formatjs/intl@4.1.16':
+  '@formatjs/intl@4.1.17':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.14
-      intl-messageformat: 11.2.11
+      '@formatjs/icu-messageformat-parser': 3.5.15
+      intl-messageformat: 11.2.12
 
   '@lezer/common@1.5.2': {}
 
@@ -1915,10 +1915,10 @@ snapshots:
 
   has-flag@4.0.0: {}
 
-  intl-messageformat@11.2.11:
+  intl-messageformat@11.2.12:
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.14
+      '@formatjs/icu-messageformat-parser': 3.5.15
 
   is-extglob@2.1.1: {}
 
@@ -2059,12 +2059,12 @@ snapshots:
       react: 19.2.7
       scheduler: 0.27.0
 
-  react-intl@10.1.16(@types/react@19.2.17)(react@19.2.7):
+  react-intl@10.1.18(@types/react@19.2.17)(react@19.2.7):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.14
-      '@formatjs/intl': 4.1.16
+      '@formatjs/icu-messageformat-parser': 3.5.15
+      '@formatjs/intl': 4.1.17
       '@types/react': 19.2.17
-      intl-messageformat: 11.2.11
+      intl-messageformat: 11.2.12
       react: 19.2.7
 
   react-refresh@0.16.0: {}
