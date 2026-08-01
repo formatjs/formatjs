@@ -23,8 +23,8 @@ importers:
         specifier: 11.3.16
         version: 11.3.16
       eslint-plugin-formatjs:
-        specifier: 6.4.18
-        version: 6.4.18(eslint@10.7.0(jiti@1.21.7))
+        specifier: 6.4.19
+        version: 6.4.19(eslint@10.7.0(jiti@1.21.7))
       react:
         specifier: 19.2.7
         version: 19.2.7
@@ -918,6 +918,9 @@ packages:
   '@formatjs/icu-messageformat-parser@3.5.14':
     resolution: {integrity: sha512-jDvgtoLqe3U6yzoBlToMTkWBe38qSi7LN7kFlnXzd5ig8nn+4tSlED0xtEtdYakZVZGJJY2rW1D5xS3BFZh6kA==}
 
+  '@formatjs/icu-messageformat-parser@3.5.15':
+    resolution: {integrity: sha512-5o4grXKotAB3JqQuisLApHG43g17N+paoRTa92Jiz35Zvfemq0cVf4EDvuxyHAzmsJji7igaEowicLO/VmfJ8Q==}
+
   '@formatjs/icu-skeleton-parser@2.1.11':
     resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
 
@@ -926,6 +929,15 @@ packages:
 
   '@formatjs/ts-transformer@4.4.16':
     resolution: {integrity: sha512-HgZuZhZ+/sFq2aYOm42GA9vN90L+enU/YZGn4S2CkkGtT092CEa9jhziIb0nAJLoBohCSzRHDg5yY9bKOKyytQ==}
+    engines: {node: '>= 20.12.0'}
+    peerDependencies:
+      ts-jest: '29'
+    peerDependenciesMeta:
+      ts-jest:
+        optional: true
+
+  '@formatjs/ts-transformer@4.4.17':
+    resolution: {integrity: sha512-20NZFTZhKyhtE0Nmiuwr6rh9FkA0L5dHkTi8pX8UNMwKmhVvEWK3yyra8MVmmOZ2PC5tIp9cqjo5H84UscSo6Q==}
     engines: {node: '>= 20.12.0'}
     peerDependencies:
       ts-jest: '29'
@@ -2764,8 +2776,8 @@ packages:
       '@babel/plugin-transform-react-jsx': ^7.14.9
       eslint: ^8.1.0
 
-  eslint-plugin-formatjs@6.4.18:
-    resolution: {integrity: sha512-GKh/CRzOU1qtJXZIibi+lq3l847sLolYOjOXSQ2lnXuBk7F6TXCFI9znBH3T5SZhH045x18c77iIj3zPqFwOSQ==}
+  eslint-plugin-formatjs@6.4.19:
+    resolution: {integrity: sha512-5J9wmbHibrZl4JOJx5VNjY6Jj4kI+eLqgyScwlFwtp1xy6kXI6V4iuRQYldrltHDXbodbtn7etbInaFnIVa0vQ==}
     peerDependencies:
       eslint: 9 || 10
 
@@ -7287,6 +7299,10 @@ snapshots:
     dependencies:
       '@formatjs/icu-skeleton-parser': 2.1.11
 
+  '@formatjs/icu-messageformat-parser@3.5.15':
+    dependencies:
+      '@formatjs/icu-skeleton-parser': 2.1.11
+
   '@formatjs/icu-skeleton-parser@2.1.11': {}
 
   '@formatjs/intl@4.1.16':
@@ -7298,6 +7314,14 @@ snapshots:
   '@formatjs/ts-transformer@4.4.16':
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.14
+      '@types/babel__core': 7.20.5
+      '@types/node': 24.12.4
+      json-stable-stringify: 1.3.0
+      typescript: 6.0.3
+
+  '@formatjs/ts-transformer@4.4.17':
+    dependencies:
+      '@formatjs/icu-messageformat-parser': 3.5.15
       '@types/babel__core': 7.20.5
       '@types/node': 24.12.4
       json-stable-stringify: 1.3.0
@@ -9429,10 +9453,10 @@ snapshots:
       lodash: 4.18.1
       string-natural-compare: 3.0.1
 
-  eslint-plugin-formatjs@6.4.18(eslint@10.7.0(jiti@1.21.7)):
+  eslint-plugin-formatjs@6.4.19(eslint@10.7.0(jiti@1.21.7)):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.14
-      '@formatjs/ts-transformer': 4.4.16
+      '@formatjs/icu-messageformat-parser': 3.5.15
+      '@formatjs/ts-transformer': 4.4.17
       '@types/estree-jsx': 1.0.5
       '@types/picomatch': 4.0.3
       '@unicode/unicode-17.0.0': 1.6.16
