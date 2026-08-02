@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.16 (2026-08-02)
+
+## What's Changed
+* chore(deps): update dependency svelte to v5.56.7 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6940
+* chore(deps): update dependency ts-jest to v29.4.12 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6941
+* chore(deps): update radix-ui-primitives monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6942
+* chore(deps): update dependency rolldown-plugin-dts to v0.27.14 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6947
+* chore(deps): update radix-ui-primitives monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6948
+* chore(deps): update tailwindcss monorepo to v4.3.3 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6949
+* chore(deps): update vue monorepo to v3.5.40 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6950
+* chore(deps): update dependency svelte to v5.56.8 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6951
+* chore(deps): update radix-ui-primitives monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6952
+* fix(deps): update dependency eslint-plugin-formatjs to v6.4.19 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6953
+* fix(deps): update formatjs monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6954
+* chore(deps): update dependency fs-extra to v11.4.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6959
+* chore(deps): update dependency happy-dom to v20.11.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6960
+* chore(deps): update dependency lucide-react to v1.27.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6963
+* chore(deps): update dependency oxlint to v1.75.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6964
+* fix(formatjs_cli): extract id-only messages by @longlho in https://github.com/formatjs/formatjs/pull/6962
+* chore(deps): update dependency tinybench to v6.1.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6966
+* chore(deps): update dependency webpack to v5.109.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6967
+* chore(deps): update dependency rollup to v4.62.3 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6970
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.15...@formatjs/cli@6.16.16
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.10
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.10
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.8
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.10
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.8
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.11
+
 ## 6.16.15 (2026-07-30)
 
 ## What's Changed
