@@ -380,6 +380,7 @@ impl<'a> MessageExtractor<'a> {
             start: None,
             end: None,
         };
+        let mut extraction_error = false;
 
         // Extract source location if requested
         if self.extract_source_location {
@@ -421,8 +422,10 @@ impl<'a> MessageExtractor<'a> {
                                 if let Some(expr) = container.expression.as_expression() {
                                     match attr_name {
                                         "id" => {
-                                            descriptor.id = self.extract_string_literal(expr, None);
+                                            descriptor.id =
+                                                self.extract_string_literal(expr, Some(true));
                                             if descriptor.id.is_none() {
+                                                extraction_error = true;
                                                 let loc = self.format_location(jsx_attr.span.start);
                                                 if self.throws {
                                                     panic!(
@@ -440,6 +443,7 @@ impl<'a> MessageExtractor<'a> {
                                             descriptor.default_message =
                                                 self.extract_string_literal(expr, None);
                                             if descriptor.default_message.is_none() {
+                                                extraction_error = true;
                                                 let loc = self.format_location(jsx_attr.span.start);
                                                 if self.throws {
                                                     panic!(
@@ -467,8 +471,7 @@ impl<'a> MessageExtractor<'a> {
             }
         }
 
-        // Only add if we have at least a defaultMessage
-        if descriptor.default_message.is_some() {
+        if !extraction_error && (descriptor.id.is_some() || descriptor.default_message.is_some()) {
             self.messages.push(descriptor);
         }
     }
@@ -541,6 +544,7 @@ impl<'a> MessageExtractor<'a> {
             start: None,
             end: None,
         };
+        let mut extraction_error = false;
 
         if self.extract_source_location {
             descriptor.file = Some(self.file_path.to_string_lossy().to_string());
@@ -552,8 +556,10 @@ impl<'a> MessageExtractor<'a> {
                 if let PropertyKey::StaticIdentifier(key) = &p.key {
                     match key.name.as_str() {
                         "id" => {
-                            descriptor.id = self.extract_string_literal(&p.value, None);
+                            descriptor.id =
+                                self.extract_string_literal(&p.value, Some(true));
                             if descriptor.id.is_none() {
+                                extraction_error = true;
                                 let loc = self.format_location(p.span.start);
                                 if self.throws {
                                     panic!(
@@ -571,6 +577,7 @@ impl<'a> MessageExtractor<'a> {
                             descriptor.default_message =
                                 self.extract_string_literal(&p.value, None);
                             if descriptor.default_message.is_none() {
+                                extraction_error = true;
                                 let loc = self.format_location(p.span.start);
                                 if self.throws {
                                     panic!(
@@ -593,8 +600,7 @@ impl<'a> MessageExtractor<'a> {
             }
         }
 
-        // Only return if we have at least defaultMessage
-        if descriptor.default_message.is_some() {
+        if !extraction_error && (descriptor.id.is_some() || descriptor.default_message.is_some()) {
             Some(descriptor)
         } else {
             None
@@ -1099,15 +1105,16 @@ mod tests {
     }
 
     #[test]
-    fn test_no_defaultmessage_skips() {
+    fn test_extracts_id_only_messages() {
         let source = r#"
-            <FormattedMessage id="no-default" description="Has no default message" />
+            const label = intl.formatMessage({id: "call  only"});
+            <FormattedMessage id={"jsx  only"} />
         "#;
 
         let file_path = PathBuf::from("test.tsx");
         let source_type = SourceType::default().with_typescript(true).with_jsx(true);
         let component_names = vec!["FormattedMessage".to_string()];
-        let function_names = vec![];
+        let function_names = vec!["formatMessage".to_string()];
 
         let messages = extract_messages_from_source(
             source,
@@ -1123,8 +1130,13 @@ mod tests {
         )
         .unwrap();
 
-        // Should not extract messages without defaultMessage
-        assert_eq!(messages.len(), 0);
+        assert_eq!(messages.len(), 2);
+        assert!(messages.iter().any(|message| {
+            message.id.as_deref() == Some("call  only") && message.default_message.is_none()
+        }));
+        assert!(messages.iter().any(|message| {
+            message.id.as_deref() == Some("jsx  only") && message.default_message.is_none()
+        }));
     }
 
     // Fixture-based tests (matching ts-transformer test suite)
