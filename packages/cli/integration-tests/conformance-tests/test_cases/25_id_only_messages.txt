@@ -1,7 +1,7 @@
 import {FormattedMessage} from 'react-intl';
 
-const label = intl.formatMessage({id: 'Call-only message'});
-const element = <FormattedMessage id="JSX-only message" />;
+const label = intl.formatMessage({id: 'Call-only  message'});
+const element = <FormattedMessage id={'JSX-only  message'} />;
 ---
 {
   "command": "extract",
@@ -10,6 +10,6 @@ const element = <FormattedMessage id="JSX-only message" />;
 }
 ---
 {
-  "Call-only message": {},
-  "JSX-only message": {}
+  "Call-only  message": {},
+  "JSX-only  message": {}
 }

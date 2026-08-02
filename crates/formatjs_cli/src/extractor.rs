@@ -422,7 +422,8 @@ impl<'a> MessageExtractor<'a> {
                                 if let Some(expr) = container.expression.as_expression() {
                                     match attr_name {
                                         "id" => {
-                                            descriptor.id = self.extract_string_literal(expr, None);
+                                            descriptor.id =
+                                                self.extract_string_literal(expr, Some(true));
                                             if descriptor.id.is_none() {
                                                 extraction_error = true;
                                                 let loc = self.format_location(jsx_attr.span.start);
@@ -555,7 +556,8 @@ impl<'a> MessageExtractor<'a> {
                 if let PropertyKey::StaticIdentifier(key) = &p.key {
                     match key.name.as_str() {
                         "id" => {
-                            descriptor.id = self.extract_string_literal(&p.value, None);
+                            descriptor.id =
+                                self.extract_string_literal(&p.value, Some(true));
                             if descriptor.id.is_none() {
                                 extraction_error = true;
                                 let loc = self.format_location(p.span.start);
@@ -1105,8 +1107,8 @@ mod tests {
     #[test]
     fn test_extracts_id_only_messages() {
         let source = r#"
-            const label = intl.formatMessage({id: "call-only"});
-            <FormattedMessage id="jsx-only" />
+            const label = intl.formatMessage({id: "call  only"});
+            <FormattedMessage id={"jsx  only"} />
         "#;
 
         let file_path = PathBuf::from("test.tsx");
@@ -1130,10 +1132,10 @@ mod tests {
 
         assert_eq!(messages.len(), 2);
         assert!(messages.iter().any(|message| {
-            message.id.as_deref() == Some("call-only") && message.default_message.is_none()
+            message.id.as_deref() == Some("call  only") && message.default_message.is_none()
         }));
         assert!(messages.iter().any(|message| {
-            message.id.as_deref() == Some("jsx-only") && message.default_message.is_none()
+            message.id.as_deref() == Some("jsx  only") && message.default_message.is_none()
         }));
     }
 
