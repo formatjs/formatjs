@@ -34,7 +34,7 @@ jobs:
           JS_BINARY__CHDIR="$PWD" bazel run //:lefthook -- run pre-commit --all-files
           if [ -n "$(git status --porcelain)" ]; then
             echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
-            git diff HEAD
+            git diff
             exit 1
           fi
 

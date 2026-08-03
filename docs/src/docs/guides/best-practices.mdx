@@ -22,10 +22,7 @@ const greeting = intl.formatMessage({defaultMessage: 'Welcome'})
 return `${greeting}, ${name}!`
 
 // Prefer: translators see and can reorder the complete thought.
-return intl.formatMessage(
-  {defaultMessage: 'Welcome, {name}!'},
-  {name}
-)
+return intl.formatMessage({defaultMessage: 'Welcome, {name}!'}, {name})
 ```
 
 For the same reason, do not reuse one message for a button, page title, and status label only because their English text matches. Give each usage its own message and description.
