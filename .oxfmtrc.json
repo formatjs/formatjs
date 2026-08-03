@@ -21,6 +21,6 @@
     "packages/*/CHANGELOG.md",
     "packages/cli-lib/tests/extract/typescript/err.tsx",
     "packages/cli/integration-tests/extract/typescript/err.tsx",
-    "target",
+    "target"
   ]
 }

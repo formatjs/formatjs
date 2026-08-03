@@ -118,6 +118,7 @@ export function getNavigationTree(): NavSection[] {
       title: 'Guides',
       order: 6,
       items: [
+        {title: 'Best Practices', path: 'guides/best-practices'},
         {
           title: 'Testing with React Intl',
           path: 'guides/testing-with-react-intl',

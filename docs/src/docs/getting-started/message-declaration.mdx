@@ -5,6 +5,8 @@ While you can declare your messages using only `id`s, we highly recommend declar
 3. Text styling is also dependent on the message itself. Things like truncation, capitalization... certainly affect the messages themselves.
 4. Better integrations with toolchains. Most toolchains cannot verify cross-file references to validate syntax/usage.
 
+See [Internationalization Best Practices](/docs/guides/best-practices) for guidance on complete messages, locale-aware formatting, brand names, and terminology.
+
 At a high level, formatjs messages use [ICU Syntax](/docs/core-concepts/icu-syntax) with a couple of enhancements common in other message format such as [Fluent](https://github.com/projectfluent/fluent.js/). This section focuses on the actual supported ways of calling `formatjs` APIs so messages can be extracted.
 
 ## Using imperative API `intl.formatMessage`
