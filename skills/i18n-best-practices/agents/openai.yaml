@@ -1,0 +1,4 @@
+interface:
+  display_name: "I18n Best Practices"
+  short_description: "Write and review localization-ready product UI"
+  default_prompt: "Use $i18n-best-practices to review this UI for localization issues."
