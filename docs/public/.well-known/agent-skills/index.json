@@ -6,6 +6,12 @@
       "type": "documentation",
       "description": "FormatJS documentation — guides, API references, and polyfill docs for JavaScript internationalization using ICU Message syntax and ECMA-402.",
       "url": "https://formatjs.io/sitemap.xml"
+    },
+    {
+      "name": "i18n-best-practices",
+      "type": "skill-md",
+      "description": "Write, refactor, or review localization-ready product UI and message catalogs. Use for i18n or l10n implementation, translation-readiness reviews, React Intl or ICU messages, locale-aware value formatting, brand-name handling, terminology glossaries, or changed UI containing user-facing text.",
+      "url": "https://raw.githubusercontent.com/formatjs/formatjs/main/.agents/skills/i18n-best-practices/SKILL.md"
     }
   ]
 }
