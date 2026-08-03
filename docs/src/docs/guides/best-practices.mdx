@@ -1,0 +1,113 @@
+# Internationalization Best Practices
+
+Good messages give translators enough context to express the same meaning naturally in every locale. Keep complete thoughts together, format values with locale-aware APIs, and treat terminology as part of your product.
+
+## Keep messages inline and complete
+
+Declare each message next to its use with a `defaultMessage` and a useful `description`. Colocation preserves UI context for both developers and translators, and lets extraction tools remove messages when their usages disappear.
+
+```tsx
+<FormattedMessage
+  defaultMessage="Delete {fileName}?"
+  description="Confirmation dialog title shown before deleting a file"
+  values={{fileName}}
+/>
+```
+
+Do not concatenate fragments or assemble sentences from multiple messages. Translators may need to reorder words, change inflection, or translate the same English word differently based on its role.
+
+```tsx
+// Avoid: translators only see disconnected fragments.
+const label = intl.formatMessage({defaultMessage: 'Last updated'})
+return `${label}: ${intl.formatRelativeTime(days, 'day')}`
+
+// Prefer: translators see and can reorder the complete thought.
+return intl.formatMessage(
+  {
+    defaultMessage:
+      'Last updated {days, plural, =0 {today} one {# day ago} other {# days ago}}',
+  },
+  {days}
+)
+```
+
+For the same reason, do not reuse one message for a button, page title, and status label only because their English text matches. Give each usage its own message and description.
+
+## Put grammar and formatting in the message
+
+Use ICU `plural` and `select` arguments instead of branching in application code. This keeps every grammatical variant together and allows each locale to define the variants it needs.
+
+```tsx
+intl.formatMessage(
+  {
+    defaultMessage:
+      '{count, plural, =0 {No results} one {# result} other {# results}}',
+  },
+  {count}
+)
+```
+
+Prefer ICU number and date skeletons when formatting is part of a sentence. Skeletons make intent visible to translators while preserving locale-appropriate output.
+
+```tsx
+intl.formatMessage(
+  {
+    defaultMessage:
+      'Your total is {total, number, ::currency/USD}. Delivery is {date, date, ::yyyyMMdd}.',
+  },
+  {total, date}
+)
+```
+
+Skeletons describe formatting, not sentence structure. Keep surrounding punctuation and words inside the message so translators can move them. See [ICU Message Syntax](/docs/core-concepts/icu-syntax) for supported skeletons.
+
+When a value is not part of a message, use FormatJS or the equivalent built-in `Intl` API instead of constructing locale-sensitive text yourself:
+
+- `formatNumber` or `<FormattedNumber>` for numbers and currencies
+- `formatDate`, `formatTime`, or their component equivalents for dates and times
+- `formatDateTimeRange` or `<FormattedDateTimeRange>` for ranges
+- `formatList` or `<FormattedList>` for lists
+- `formatRelativeTime` or `<FormattedRelativeTime>` for relative time
+
+Do not use spaces, non-breaking spaces, or newlines for layout. Different writing systems use whitespace differently. Use CSS for visual spacing.
+
+## Keep brand names translatable
+
+Do not hide a brand behind a placeholder such as `{brand}`. Brands may stay unchanged in one locale but be transliterated or use an established local name in another. The translator also needs the full sentence to place the brand naturally.
+
+```tsx
+// Avoid: the brand cannot be transliterated, and sentence context is weaker.
+intl.formatMessage(
+  {defaultMessage: '{brand} helps you find a place to stay.'},
+  {brand: 'Airbnb'}
+)
+
+// Prefer: the translator controls the complete message, including the brand.
+intl.formatMessage({
+  defaultMessage: 'Airbnb helps you find a place to stay.',
+  description: 'Product introduction; Airbnb is a brand name',
+})
+```
+
+For example, a Japanese translation may render “Google” as “グーグル”, while a Simplified Chinese translation may use Coca-Cola's established local name “可口可乐”. Product and legal requirements still apply: record whether each brand should be translated, transliterated, or kept unchanged in your glossary.
+
+## Maintain a glossary
+
+A shared glossary keeps important terms consistent across translators, teams, and releases. Add an entry when a term is product-specific, ambiguous, legally sensitive, or intentionally left untranslated.
+
+Each entry should include:
+
+- source term and meaning
+- usage context and an example sentence
+- approved translation for each locale, when one exists
+- terms or translations to avoid
+- capitalization, pluralization, and do-not-translate rules
+- owner and last review date
+
+Treat meanings separately. For example, “workspace” as a product container may need a different translation from “workspace” as a physical desk area. Review the glossary with translators as product language changes; do not use it to force one translation into every context.
+
+## Review messages in context
+
+Before shipping, review translated UI with realistic data. Check long text, plurals, gender or select variants, right-to-left layouts, narrow screens, and accessibility labels. Pseudolocalization can expose hard-coded strings and layout assumptions, but native-speaker review remains necessary for meaning and tone.
+
+See [Message Declaration](/docs/getting-started/message-declaration) for extractable message patterns and [Application Workflow](/docs/getting-started/application-workflow) for the translation lifecycle.
