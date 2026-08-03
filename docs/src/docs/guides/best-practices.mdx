@@ -18,16 +18,13 @@ Do not concatenate fragments or assemble sentences from multiple messages. Trans
 
 ```tsx
 // Avoid: translators only see disconnected fragments.
-const label = intl.formatMessage({defaultMessage: 'Last updated'})
-return `${label}: ${intl.formatRelativeTime(days, 'day')}`
+const greeting = intl.formatMessage({defaultMessage: 'Welcome'})
+return `${greeting}, ${name}!`
 
 // Prefer: translators see and can reorder the complete thought.
 return intl.formatMessage(
-  {
-    defaultMessage:
-      'Last updated {days, plural, =0 {today} one {# day ago} other {# days ago}}',
-  },
-  {days}
+  {defaultMessage: 'Welcome, {name}!'},
+  {name}
 )
 ```
 
@@ -68,6 +65,12 @@ When a value is not part of a message, use FormatJS or the equivalent built-in `
 - `formatDateTimeRange` or `<FormattedDateTimeRange>` for ranges
 - `formatList` or `<FormattedList>` for lists
 - `formatRelativeTime` or `<FormattedRelativeTime>` for relative time
+
+Prefer these APIs when ICU skeletons do not cover the format. For example, relative time has no message skeleton; let `formatRelativeTime` produce the complete locale-aware phrase instead of recreating it with plural rules:
+
+```tsx
+intl.formatRelativeTime(-1, 'day') // "yesterday" in English
+```
 
 Do not use spaces, non-breaking spaces, or newlines for layout. Different writing systems use whitespace differently. Use CSS for visual spacing.
 
