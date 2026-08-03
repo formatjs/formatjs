@@ -9,10 +9,13 @@
     "es2026": true,
     "browser": true
   },
-   "rules": {
-    "typescript/consistent-type-imports": ["error", {
-      "fixStyle": "separate-type-imports",
-      "prefer": "type-imports"
-    }]
+  "rules": {
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "separate-type-imports",
+        "prefer": "type-imports"
+      }
+    ]
   }
 }
