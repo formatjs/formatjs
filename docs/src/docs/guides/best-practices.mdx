@@ -66,11 +66,25 @@ When a value is not part of a message, use FormatJS or the equivalent built-in `
 - `formatList` or `<FormattedList>` for lists
 - `formatRelativeTime` or `<FormattedRelativeTime>` for relative time
 
-Prefer these APIs when ICU skeletons do not cover the format. For example, relative time has no message skeleton; let `formatRelativeTime` produce the complete locale-aware phrase instead of recreating it with plural rules:
+Prefer these APIs when ICU skeletons do not cover the format. For example, relative time has no message skeleton; let `formatRelativeTime` produce the locale-aware phrase instead of recreating it with plural rules.
+
+Separating text is appropriate when the UI presents a semantic label and an independently formatted value rather than one sentence. Keep the label translatable, format the value with its native API, and use layout instead of string concatenation:
 
 ```tsx
-intl.formatRelativeTime(-1, 'day') // "yesterday" in English
+<dl className="metadata-row">
+  <dt>
+    <FormattedMessage
+      defaultMessage="Last updated:"
+      description="Label before a relative time"
+    />
+  </dt>
+  <dd>
+    <FormattedRelativeTime value={-1} unit="day" />
+  </dd>
+</dl>
 ```
+
+This can render as “Last updated: 1 day ago” while allowing the label and relative-time phrase to adapt independently.
 
 Do not use spaces, non-breaking spaces, or newlines for layout. Different writing systems use whitespace differently. Use CSS for visual spacing.
 
