@@ -17,6 +17,7 @@ exports_files(
         "Cargo.toml",
         "src/lib.rs",
         "src/main.rs",
+        "src/rust_extractor.rs",
         "src/extract.rs",
         "src/extractor.rs",
         "src/compile.rs",
@@ -51,11 +52,13 @@ COMMON_DEPS = [
     "@crates//:oxc_data_structures",
     "@crates//:oxc_parser",
     "@crates//:oxc_span",
+    "@crates//:proc-macro2",
     "@crates//:rayon",
     "@crates//:serde",
     "@crates//:serde_json",
     "@crates//:sha1",
     "@crates//:sha2",
+    "@crates//:syn",
 ]
 
 TEST_DEPS = COMMON_DEPS + [
@@ -78,6 +81,7 @@ rust_library(
         "src/formatters/transifex.rs",
         "src/id_generator.rs",
         "src/lib.rs",
+        "src/rust_extractor.rs",
         "src/verify.rs",
     ],
     crate_name = "formatjs_cli",

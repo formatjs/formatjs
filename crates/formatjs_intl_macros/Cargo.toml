@@ -1,0 +1,23 @@
+[package]
+name = "formatjs_intl_macros"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "Procedural macros for formatjs_intl"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+homepage = "https://formatjs.io/"
+documentation = "https://docs.rs/formatjs_intl_macros"
+keywords = ["icu", "i18n", "internationalization", "localization", "intl"]
+categories = ["internationalization", "localization"]
+rust-version = "1.95"
+
+[lib]
+path = "lib.rs"
+proc-macro = true
+
+[dependencies]
+base64 = "0.22"
+quote = "1.0"
+sha2 = "0.11"
+syn = { version = "2.0", features = ["full", "parsing"] }

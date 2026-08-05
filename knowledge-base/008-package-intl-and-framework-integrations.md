@@ -26,6 +26,14 @@ are parsed without a locale, then formatted with a request locale.
 
 **Design:** Framework-agnostic core that `react-intl`, `vue-intl`, and `svelte-intl` all build upon. The framework packages add reactive bindings and components but delegate all formatting to `@formatjs/intl`.
 
+The Rust mirror lives at `crates/formatjs_intl` as `formatjs_intl`. It keeps
+`Intl` request-scoped, while `MessageCatalog` and `IntlCache` can be shared by
+the backend. ICU4X negotiates each ordered locale list against available
+catalogs. Translation lookup falls back to the default catalog, then the
+descriptor default message. `message_descriptor!` generates missing IDs with
+`[sha512:contenthash:base64:10]` and is extracted from Rust source by
+`formatjs_cli`.
+
 ## react-intl
 
 **Purpose:** React components and hooks for i18n. The most widely used FormatJS package.

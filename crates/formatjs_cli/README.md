@@ -208,6 +208,20 @@ Extract string messages from React components that use react-intl:
 formatjs extract "src/**/*.tsx" --out-file messages.json
 ```
 
+Rust extraction reads `formatjs_intl::message_descriptor!` descriptors. Missing
+IDs use `[sha512:contenthash:base64:10]`:
+
+```rust
+const GREETING: formatjs_intl::MessageDescriptor = formatjs_intl::message_descriptor!(
+    default_message: "Hello, {name}!",
+    description: "Greeting"
+);
+```
+
+```bash
+formatjs extract "src/**/*.rs" --out-file messages.json
+```
+
 **Full example with options:**
 
 ```bash
@@ -221,7 +235,7 @@ formatjs extract "src/**/*.{js,ts,tsx}" \
 
 **Options:**
 
-- `[FILES]...` - File glob patterns to extract from (e.g., `src/**/*.tsx`)
+- `[FILES]...` - JavaScript, TypeScript, or Rust glob patterns (e.g., `src/**/*.tsx`)
 - `--format <FORMATTER>` - Built-in formatter controlling JSON output shape (`default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`)
 - `--in-file <PATH>` - File containing list of files to extract (one per line)
 - `--out-file <PATH>` - Target file for aggregated .json output

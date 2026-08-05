@@ -21,6 +21,8 @@ on:
           - formatjs_icu_skeleton_parser
           - formatjs_icu_messageformat_parser
           - formatjs_icu_messageformat
+          - formatjs_intl_macros
+          - formatjs_intl
           - formatjs_cli
 
 concurrency:
@@ -74,6 +76,12 @@ jobs:
                 formatjs_icu_messageformat_v*|icu_messageformat_v*|crates/icu_messageformat_v*)
                   crates=(formatjs_icu_messageformat)
                   ;;
+                formatjs_intl_macros_v*|crates/formatjs_intl_macros_v*)
+                  crates=(formatjs_intl_macros)
+                  ;;
+                formatjs_intl_v*|crates/formatjs_intl_v*)
+                  crates=(formatjs_intl)
+                  ;;
                 formatjs_cli_v*|crates/formatjs_cli_v*)
                   crates=(formatjs_cli)
                   ;;
@@ -89,10 +97,12 @@ jobs:
                     formatjs_icu_skeleton_parser
                     formatjs_icu_messageformat_parser
                     formatjs_icu_messageformat
+                    formatjs_intl_macros
+                    formatjs_intl
                     formatjs_cli
                   )
                   ;;
-                formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_icu_messageformat|formatjs_cli)
+                formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_icu_messageformat|formatjs_intl_macros|formatjs_intl|formatjs_cli)
                   crates=("$INPUT_CRATE")
                   ;;
                 *)
@@ -131,6 +141,7 @@ jobs:
             //crates/icu_skeleton_parser:icu_skeleton_parser_test
             //crates/icu_messageformat_parser:icu_messageformat_parser_test
             //crates/icu_messageformat:icu_messageformat_test
+            //crates/formatjs_intl:formatjs_intl_test
             //crates/formatjs_cli:formatjs_cli_test
           )
 
@@ -234,6 +245,14 @@ jobs:
                 wait_if_published_by_this_run \
                   formatjs_icu_messageformat_parser \
                   "$(dependency_version crates/icu_messageformat/Cargo.toml formatjs_icu_messageformat_parser)"
+                ;;
+              formatjs_intl)
+                wait_if_published_by_this_run \
+                  formatjs_intl_macros \
+                  "$(dependency_version crates/formatjs_intl/Cargo.toml formatjs_intl_macros)"
+                wait_if_published_by_this_run \
+                  formatjs_icu_messageformat \
+                  "$(dependency_version crates/formatjs_intl/Cargo.toml formatjs_icu_messageformat)"
                 ;;
               formatjs_cli)
                 wait_if_published_by_this_run \

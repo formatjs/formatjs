@@ -486,11 +486,13 @@ dependencies = [
  "oxc_data_structures",
  "oxc_parser",
  "oxc_span",
+ "proc-macro2",
  "rayon",
  "serde",
  "serde_json",
  "sha1",
  "sha2",
+ "syn 2.0.117",
  "tempfile",
  "walkdir",
 ]
@@ -535,6 +537,25 @@ dependencies = [
  "formatjs_icu_messageformat_parser",
  "formatjs_icu_skeleton_parser",
  "icu",
+]
+
+[[package]]
+name = "formatjs_intl"
+version = "0.1.0"
+dependencies = [
+ "formatjs_icu_messageformat",
+ "formatjs_intl_macros",
+ "icu_locale",
+]
+
+[[package]]
+name = "formatjs_intl_macros"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "quote",
+ "sha2",
+ "syn 2.0.117",
 ]
 
 [[package]]

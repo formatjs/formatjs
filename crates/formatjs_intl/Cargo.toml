@@ -1,0 +1,23 @@
+[package]
+name = "formatjs_intl"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "High-level internationalization runtime for Rust"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+homepage = "https://formatjs.io/"
+documentation = "https://docs.rs/formatjs_intl"
+keywords = ["icu", "i18n", "internationalization", "localization", "intl"]
+categories = ["internationalization", "localization"]
+readme = "README.md"
+rust-version = "1.95"
+
+[dependencies]
+formatjs_icu_messageformat = { path = "../icu_messageformat", version = "0.1.0" }
+formatjs_intl_macros = { path = "../formatjs_intl_macros", version = "0.1.0" }
+icu_locale = "2.1"
+
+[lib]
+path = "lib.rs"
+crate-type = ["rlib"]
