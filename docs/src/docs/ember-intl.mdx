@@ -1,0 +1,191 @@
+`ember-intl` helps you internationalize Ember apps and addons.
+
+## Installation
+
+This page shows the minimal setup for "v2 apps" (Ember apps built with Vite).
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+{label: 'pnpm', value: 'pnpm'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -S ember-intl @ember-intl/vite
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add ember-intl @ember-intl/vite
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```sh
+pnpm add ember-intl @ember-intl/vite
+```
+
+</TabItem>
+</Tabs>
+
+To define translations, create a JSON or YAML file in the `translations` folder.
+
+```json
+/* translations/en-us.json */
+{
+  "hello.message": "Hello, {name}!"
+}
+```
+
+Then, pass `loadTranslations()` to the list of Vite plugins used.
+
+```ts
+/* vite.config.mts */
+import {loadTranslations} from '@ember-intl/vite'
+import {defineConfig} from 'vite'
+
+export default defineConfig({
+  plugins: [
+    // ...
+    loadTranslations(),
+  ],
+})
+```
+
+When the app starts, `@ember-intl/vite` automatically loads your translations, but it does not pass them to the `intl` service (the source of truth). You are responsible for importing the translations that you need, then calling `addTranslations` to pass them to the `intl` service.
+
+```ts
+/* app/routes/application.ts */
+import Route from '@ember/routing/route'
+import {type Registry as Services, service} from '@ember/service'
+import translationsForEnUs from 'virtual:ember-intl/translations/en-us'
+
+export default class ApplicationRoute extends Route {
+  @service declare intl: Services['intl']
+
+  beforeModel(): void {
+    this.setupIntl()
+  }
+
+  private setupIntl(): void {
+    this.intl.addTranslations('en-us', translationsForEnUs)
+    this.intl.setLocale(['en-us'])
+  }
+}
+```
+
+File paths prefixed with `virtual:` are called a "virtual module" in Vite. They don't physically exist on disk. If you use TypeScript: Add the path `@ember-intl/vite/virtual` to `compilerOptions.types` in `tsconfig.json` so that TypeScript can understand the virtual modules from `ember-intl`.
+
+```json
+/* tsconfig.json */
+{
+  "compilerOptions": {
+    "types": [
+      /* ... */
+      "@ember-intl/vite/virtual"
+    ]
+  }
+}
+```
+
+For more information, see [Quickstart](https://ember-intl.github.io/ember-intl/docs/quickstart) and [Lazy-loading translations](https://ember-intl.github.io/ember-intl/docs/advanced/lazy-loading-translations).
+
+## Usage
+
+### Services
+
+`ember-intl` provides a locale-aware service called `intl`. This service allows you to use `ember-intl`'s API in any class: Components, routes, even _native_ classes!
+
+```gts
+/* app/components/hello.gts */
+import {type Registry as Services, service} from '@ember/service'
+import Component from '@glimmer/component'
+
+interface HelloSignature {
+  Args: {
+    name: string
+  }
+}
+
+export default class Hello extends Component<HelloSignature> {
+  @service declare intl: Services['intl']
+
+  get message(): string {
+    const { name } = this.args
+
+    return this.intl.t('hello.message', { name })
+  }
+
+  <template>{{this.message}}</template>
+}
+```
+
+```gts
+/* app/templates/application.gts */
+import Hello from '#app/components/hello'
+
+<template>
+  <Hello @name="Zoey" />
+</template>
+```
+
+For more information, see [Services](https://ember-intl.github.io/ember-intl/docs/services/introduction).
+
+### Helpers
+
+`ember-intl` provides several locale-aware helpers, so that you can display translations, numbers, dates, etc. The helpers are simply a shortcut for calling an `intl` service's method in a template.
+
+```gts
+/* app/components/hello.gts */
+import type {TOC} from '@ember/component/template-only'
+import {t} from 'ember-intl'
+
+interface HelloSignature {
+  Args: {
+    name: string
+  }
+}
+
+<template>
+  {{t "hello.message" name=@name}}
+</template> satisfies TOC<HelloSignature>
+```
+
+For more information, see [Helpers](https://ember-intl.github.io/ember-intl/docs/helpers/introduction).
+
+### Test Helpers
+
+`ember-intl` provides test helpers so that you can test code that depend on a locale.
+
+```ts
+/* tests/integration/components/hello-test.gts */
+import Hello from '#app/components/hello'
+import {render} from '@ember/test-helpers'
+import {setupIntl} from 'ember-intl/test-support'
+import {setupRenderingTest} from 'ember-qunit'
+import {module, test} from 'qunit'
+
+module('Integration | Component | hello', function (hooks) {
+  setupRenderingTest(hooks)
+  setupIntl(hooks, 'en-us')
+
+  test('it renders', async function (assert) {
+    await render(
+      <template>
+        <Hello @name="Zoey" />
+      </template>
+    )
+
+    assert.dom().hasText('Hello, Zoey!')
+  })
+})
+```
+
+For more information, see [Test helpers](https://ember-intl.github.io/ember-intl/docs/test-helpers/introduction).
