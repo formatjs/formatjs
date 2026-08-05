@@ -81,6 +81,20 @@ export default class ApplicationRoute extends Route {
 }
 ```
 
+File paths prefixed with `virtual:` are called a "virtual module" in Vite. They don't physically exist on disk. If you use TypeScript: Add the path `@ember-intl/vite/virtual` to `compilerOptions.types` in `tsconfig.json` so that TypeScript can understand the virtual modules from `ember-intl`.
+
+```json
+/* tsconfig.json */
+{
+  "compilerOptions": {
+    "types": [
+      /* ... */
+      "@ember-intl/vite/virtual"
+    ]
+  }
+}
+```
+
 For more information, see [Quickstart](https://ember-intl.github.io/ember-intl/docs/quickstart) and [Lazy-loading translations](https://ember-intl.github.io/ember-intl/docs/advanced/lazy-loading-translations).
 
 ## Usage
