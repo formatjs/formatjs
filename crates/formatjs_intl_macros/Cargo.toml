@@ -10,7 +10,7 @@ homepage = "https://formatjs.io/"
 documentation = "https://docs.rs/formatjs_intl_macros"
 keywords = ["icu", "i18n", "internationalization", "localization", "intl"]
 categories = ["internationalization", "localization"]
-rust-version = "1.95"
+rust-version = "1.92"
 
 [lib]
 path = "lib.rs"

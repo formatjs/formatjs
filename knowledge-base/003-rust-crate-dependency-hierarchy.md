@@ -52,6 +52,9 @@ formatjs_intl (v0.1.0)
 └── icu_locale 2.1 (locale parsing and fallback)
 ```
 
+`formatjs_icu_messageformat`, `formatjs_intl_macros`, and `formatjs_intl`
+support Rust 1.92 and newer.
+
 ## Crate Details
 
 ### `formatjs_icu_skeleton_parser` (v0.1.1)

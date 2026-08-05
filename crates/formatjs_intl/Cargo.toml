@@ -11,7 +11,7 @@ documentation = "https://docs.rs/formatjs_intl"
 keywords = ["icu", "i18n", "internationalization", "localization", "intl"]
 categories = ["internationalization", "localization"]
 readme = "README.md"
-rust-version = "1.95"
+rust-version = "1.92"
 
 [dependencies]
 formatjs_icu_messageformat = { path = "../icu_messageformat", version = "0.1.0" }
