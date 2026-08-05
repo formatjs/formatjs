@@ -9,8 +9,9 @@ use walkdir::WalkDir;
 use crate::extractor::{determine_source_type, extract_messages_from_source, MessageDescriptor};
 use crate::formatters::Formatter;
 use crate::id_generator::IdGenerator;
+use crate::rust_extractor::extract_messages_from_rust_source;
 
-/// Extract string messages from React components that use react-intl
+/// Extract messages from JavaScript, TypeScript, and Rust source files.
 #[allow(clippy::too_many_arguments)]
 pub fn extract(
     files: &[PathBuf],
@@ -307,7 +308,7 @@ fn is_supported_file(path: &Path) -> bool {
     if let Some(ext) = path.extension() {
         matches!(
             ext.to_string_lossy().as_ref(),
-            "ts" | "tsx" | "js" | "jsx" | "mjs" | "cjs"
+            "ts" | "tsx" | "js" | "jsx" | "mjs" | "cjs" | "rs"
         )
     } else {
         false
@@ -355,10 +356,18 @@ fn extract_from_file(
         HashMap::new()
     };
 
-    // Determine source type from extension
-    let source_type = determine_source_type(path)?;
+    if path.extension().and_then(|extension| extension.to_str()) == Some("rs") {
+        return extract_messages_from_rust_source(
+            &source_text,
+            path,
+            extract_source_location,
+            preserve_whitespace,
+            flatten,
+            throws,
+        );
+    }
 
-    // Use the extractor module to parse and extract messages
+    let source_type = determine_source_type(path)?;
     extract_messages_from_source(
         &source_text,
         path,
@@ -422,6 +431,7 @@ mod tests {
         assert!(is_supported_file(&PathBuf::from("test.jsx")));
         assert!(is_supported_file(&PathBuf::from("test.mjs")));
         assert!(is_supported_file(&PathBuf::from("test.cjs")));
+        assert!(is_supported_file(&PathBuf::from("test.rs")));
         assert!(!is_supported_file(&PathBuf::from("test.py")));
         assert!(!is_supported_file(&PathBuf::from("test.txt")));
     }
@@ -626,6 +636,47 @@ const msg = defineMessage({
             json["native.extract"]["defaultMessage"],
             "Extracted by native binding"
         );
+    }
+
+    #[test]
+    fn test_extract_to_string_reads_rust_message_macro() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let file = temp_dir.path().join("main.rs");
+        fs::write(
+            &file,
+            r#"
+fn main() {
+    let descriptor = message!(
+        id: "rust.hello",
+        default_message: "Hello, {name}!",
+        description: "Greeting"
+    );
+}
+"#,
+        )
+        .unwrap();
+
+        let output = extract_to_string(
+            &[file],
+            None,
+            None,
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output).unwrap();
+
+        assert_eq!(json["rust.hello"]["defaultMessage"], "Hello, {name}!");
+        assert_eq!(json["rust.hello"]["description"], "Greeting");
+        assert_eq!(json.as_object().unwrap().len(), 1);
     }
 
     #[test]

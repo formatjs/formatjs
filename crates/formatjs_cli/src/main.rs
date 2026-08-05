@@ -75,8 +75,7 @@ impl From<PseudoLocale> for compile::PseudoLocale {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Extract string messages from React components that use react-intl.
-    /// Extracts messages from TypeScript, JavaScript, Vue, and Handlebars files.
+    /// Extract messages from JavaScript, TypeScript, and Rust source files.
     Extract {
         /// File glob patterns to extract from (e.g., src/**/*.tsx)
         #[arg(value_name = "FILES")]

@@ -1,0 +1,28 @@
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("@rules_rs//rs:rust_test.bzl", "rust_test")
+
+exports_files(
+    [
+        "Cargo.toml",
+        "README.md",
+        "lib.rs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "formatjs_intl",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_intl",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/icu_messageformat",
+        "@crates//:icu_locale",
+    ],
+)
+
+rust_test(
+    name = "formatjs_intl_test",
+    size = "small",
+    crate = ":formatjs_intl",
+)

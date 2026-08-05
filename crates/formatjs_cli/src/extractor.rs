@@ -36,7 +36,7 @@ pub struct MessageDescriptor {
 /// - Trimming leading and trailing whitespace
 /// Matches TypeScript behavior: Unicode White_Space trim + collapse.
 /// This intentionally differs from JavaScript \s/String#trim for U+0085 and U+FEFF.
-fn normalize_whitespace(s: &str) -> String {
+pub(crate) fn normalize_whitespace(s: &str) -> String {
     let trimmed = s.trim_matches(char::is_whitespace);
     let mut normalized = String::with_capacity(trimmed.len());
     let mut in_whitespace = false;
@@ -107,72 +107,64 @@ pub fn extract_messages_from_source(
     );
 
     visitor.visit_program(&program);
-    let MessageExtractor {
-        messages,
-        source_rope,
-        ..
-    } = visitor;
+    flatten_message_descriptors(visitor.messages, source_text, file_path, flatten)
+}
 
-    // Apply selector hoisting if flatten is enabled
-    let messages = if flatten {
-        messages
-            .into_iter()
-            .map(|mut msg| {
-                if let Some(ref default_message) = msg.default_message {
-                    // Parse the ICU message
-                    let parser = IcuParser::new(
-                        default_message,
-                        ParserOptions {
-                            ignore_tag: false,
-                            ..Default::default()
-                        },
-                    );
+pub(crate) fn flatten_message_descriptors(
+    messages: Vec<MessageDescriptor>,
+    source_text: &str,
+    file_path: &Path,
+    flatten: bool,
+) -> Result<Vec<MessageDescriptor>> {
+    if !flatten {
+        return Ok(messages);
+    }
 
-                    match parser.parse() {
-                        Ok(ast) => {
-                            // Apply selector hoisting
-                            match try_hoist_selectors(ast) {
-                                Ok(hoisted_ast) => {
-                                    // Print back to string
-                                    msg.default_message = Some(print_ast(&hoisted_ast));
-                                }
-                                Err(e) => {
-                                    // Get line and column from start position if available
-                                    let location_str = if let Some(start) = msg.start {
-                                        let line_col = get_line_col(source_text, &source_rope, start);
-                                        format!(" at line {}, column {}", line_col.0, line_col.1)
-                                    } else {
-                                        String::new()
-                                    };
-                                    let id_str = msg
-                                        .id
-                                        .as_ref()
-                                        .map(|id| format!(" with id \"{}\"", id))
-                                        .unwrap_or_default();
-                                    anyhow::bail!(
-                                        "[formatjs] Cannot flatten message in file \"{}\"{}{}: {}\nMessage: {}",
-                                        file_path.display(),
-                                        location_str,
-                                        id_str,
-                                        e,
-                                        default_message
-                                    );
-                                }
-                            }
-                        }
-                        Err(_) => {
-                            // If parsing fails, keep the original message
+    let source_rope = Rope::from_str(source_text);
+    messages
+        .into_iter()
+        .map(|mut message| {
+            if let Some(ref default_message) = message.default_message {
+                let parser = IcuParser::new(
+                    default_message,
+                    ParserOptions {
+                        ignore_tag: false,
+                        ..Default::default()
+                    },
+                );
+
+                if let Ok(ast) = parser.parse() {
+                    match try_hoist_selectors(ast) {
+                        Ok(ast) => message.default_message = Some(print_ast(&ast)),
+                        Err(error) => {
+                            let location = message
+                                .start
+                                .map(|start| {
+                                    let (line, column) =
+                                        get_line_col(source_text, &source_rope, start);
+                                    format!(" at line {line}, column {column}")
+                                })
+                                .unwrap_or_default();
+                            let id = message
+                                .id
+                                .as_ref()
+                                .map(|id| format!(" with id \"{id}\""))
+                                .unwrap_or_default();
+                            anyhow::bail!(
+                                "[formatjs] Cannot flatten message in file \"{}\"{}{}: {}\nMessage: {}",
+                                file_path.display(),
+                                location,
+                                id,
+                                error,
+                                default_message
+                            );
                         }
                     }
                 }
-                Ok(msg)
-            })
-            .collect::<Result<Vec<_>>>()?
-    } else {
-        messages
-    };
-
-    Ok(messages)
+            }
+            Ok(message)
+        })
+        .collect()
 }
 
 /// Determine oxc SourceType from file extension

@@ -38,6 +38,7 @@
   "crates/icu_skeleton_parser": "0.1.2",
   "crates/icu_messageformat_parser": "0.2.7",
   "crates/icu_messageformat": "0.1.0",
+  "crates/formatjs_intl": "0.1.0",
   "crates/formatjs_cli": "1.1.22",
   "crates/formatjs_cli_napi": "0.0.13",
   "packages/icu-messageformat-parser/integration-tests": "0.1.3"

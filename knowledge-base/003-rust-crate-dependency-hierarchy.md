@@ -2,14 +2,16 @@
 
 ## Workspace Members
 
-The Rust workspace (`Cargo.toml`) contains 4 members:
+The Rust workspace (`Cargo.toml`) contains 7 members:
 
 ```
 crates/
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)
   icu_messageformat/           # ICU MessageFormat runtime formatter
+  formatjs_intl/               # Descriptors, catalogs, locale negotiation, cache
   formatjs_cli/                # CLI binary (extract, compile, verify)
+  formatjs_cli_napi/           # Node.js bindings for the Rust CLI
 packages/
   icu-messageformat-parser/integration-tests/   # Cross-language integration tests
 ```
@@ -42,6 +44,10 @@ formatjs_icu_messageformat (v0.1.0)
 ├── formatjs_icu_messageformat_parser
 ├── formatjs_icu_skeleton_parser
 └── icu 2.1 (number, date/time, and plural formatting)
+
+formatjs_intl (v0.1.0)
+├── formatjs_icu_messageformat
+└── icu_locale 2.1 (locale parsing and fallback)
 ```
 
 ## Crate Details
@@ -122,6 +128,16 @@ formatjs_icu_messageformat (v0.1.0)
 - Uses ICU4X by default and accepts custom formatters through a trait.
 - Parses messages once; locale is supplied per formatting call.
 
+### `formatjs_intl` (v0.1.0)
+
+**Purpose:** High-level Rust intl runtime.
+
+- Defines explicit-ID message descriptors through `message!`.
+- Selects translation catalogs with ICU4X locale fallback.
+- Falls back from selected catalog to default catalog, then descriptor message.
+- Shares parsed messages through `IntlCache` across request-scoped `Intl` values.
+- Keeps requested-locale ordering and HTTP header parsing in application adapters.
+
 ## Connection to TypeScript Packages
 
 | Rust Crate                 | TypeScript Package                   | Relationship                        |
@@ -129,6 +145,7 @@ formatjs_icu_messageformat (v0.1.0)
 | `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation    |
 | `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM  |
 | `icu_messageformat`        | `intl-messageformat`                 | Low-level Rust runtime              |
+| `formatjs_intl`            | `@formatjs/intl`                     | High-level Rust runtime             |
 | `formatjs_cli`             | `@formatjs/cli`                      | Drop-in replacement for Node.js CLI |
 
 **Data flow:** TypeScript scripts in `packages/icu-messageformat-parser/tools/` generate Rust source files (`time_data_generated.rs`, `regex_generated.rs`) from CLDR data. These are checked in and used by the Rust crate at compile time.
