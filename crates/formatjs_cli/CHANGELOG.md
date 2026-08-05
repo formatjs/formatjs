@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 (2026-08-05)
+
+## What's Changed
+* docs: add internationalization best practices by @longlho in https://github.com/formatjs/formatjs/pull/6972
+* docs: add i18n best practices skill by @longlho in https://github.com/formatjs/formatjs/pull/6973
+* feat(formatjs_icu_messageformat): add Rust message formatter by @longlho in https://github.com/formatjs/formatjs/pull/6974
+* feat(formatjs_intl): add Rust intl runtime by @longlho in https://github.com/formatjs/formatjs/pull/6975
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.1.22...formatjs_cli_v1.2.0
+
 ## 1.1.22 (2026-08-02)
 
 ## What's Changed

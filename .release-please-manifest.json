@@ -40,7 +40,7 @@
   "crates/icu_messageformat": "0.1.0",
   "crates/formatjs_intl_macros": "0.1.0",
   "crates/formatjs_intl": "0.1.0",
-  "crates/formatjs_cli": "1.1.22",
-  "crates/formatjs_cli_napi": "0.0.13",
+  "crates/formatjs_cli": "1.2.0",
+  "crates/formatjs_cli_napi": "0.0.14",
   "packages/icu-messageformat-parser/integration-tests": "0.1.3"
 }
