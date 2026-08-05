@@ -148,7 +148,7 @@ formatjs_intl (v0.1.0)
 | `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation    |
 | `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM  |
 | `icu_messageformat`        | `intl-messageformat`                 | Low-level Rust runtime              |
-| `formatjs_intl_macros`     | Babel/TypeScript message transforms  | Rust descriptor macro backend      |
+| `formatjs_intl_macros`     | Babel/TypeScript message transforms  | Rust descriptor macro backend       |
 | `formatjs_intl`            | `@formatjs/intl`                     | High-level Rust runtime             |
 | `formatjs_cli`             | `@formatjs/cli`                      | Drop-in replacement for Node.js CLI |
 
