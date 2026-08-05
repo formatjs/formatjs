@@ -8,6 +8,7 @@ The Rust workspace (`Cargo.toml`) contains 4 members:
 crates/
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)
+  icu_messageformat/           # ICU MessageFormat runtime formatter
   formatjs_cli/                # CLI binary (extract, compile, verify)
 packages/
   icu-messageformat-parser/integration-tests/   # Cross-language integration tests
@@ -36,6 +37,11 @@ formatjs_cli (v0.1.14)
 ├── fast-glob 1.0, walkdir 2 (file discovery)
 ├── anyhow (error handling)
 └── regex 1.12
+
+formatjs_icu_messageformat (v0.1.0)
+├── formatjs_icu_messageformat_parser
+├── formatjs_icu_skeleton_parser
+└── icu 2.1 (number, date/time, and plural formatting)
 ```
 
 ## Crate Details
@@ -107,12 +113,22 @@ formatjs_cli (v0.1.14)
 
 **176 unit tests.** Integration tests via `packages/cli/integration-tests/` ensure 100% conformance with the TypeScript CLI (60/60 tests passing).
 
+### `formatjs_icu_messageformat` (v0.1.0)
+
+**Purpose:** Low-level ICU MessageFormat runtime.
+
+- Reuses the Rust ICU MessageFormat parser AST.
+- Formats arguments, selects, plurals, pound tokens, numbers, dates, times, and rich-text tags.
+- Uses ICU4X by default and accepts custom formatters through a trait.
+- Parses messages once; locale is supplied per formatting call.
+
 ## Connection to TypeScript Packages
 
 | Rust Crate                 | TypeScript Package                   | Relationship                        |
 | -------------------------- | ------------------------------------ | ----------------------------------- |
 | `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation    |
 | `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM  |
+| `icu_messageformat`        | `intl-messageformat`                 | Low-level Rust runtime              |
 | `formatjs_cli`             | `@formatjs/cli`                      | Drop-in replacement for Node.js CLI |
 
 **Data flow:** TypeScript scripts in `packages/icu-messageformat-parser/tools/` generate Rust source files (`time_data_generated.rs`, `regex_generated.rs`) from CLDR data. These are checked in and used by the Rust crate at compile time.

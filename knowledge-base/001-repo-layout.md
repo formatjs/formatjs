@@ -5,7 +5,7 @@
 ```
 formatjs/
   packages/           # 33 npm packages (polyfills, parsers, integrations, tools)
-  crates/             # 3 Rust crates (CLI, parser, skeleton parser)
+  crates/             # Rust crates (CLI, formatter, parser, skeleton parser, N-API)
   tools/              # Custom Bazel macros (ts_compile, vitest, oxc_transpiler, etc.)
   docs/               # Documentation site (Vike + React + MDX)
   benchmarks/         # Cross-tool benchmarks (Rust CLI vs TS CLI)
