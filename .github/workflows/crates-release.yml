@@ -20,6 +20,7 @@ on:
           - all
           - formatjs_icu_skeleton_parser
           - formatjs_icu_messageformat_parser
+          - formatjs_icu_messageformat
           - formatjs_cli
 
 concurrency:
@@ -70,6 +71,9 @@ jobs:
                 formatjs_icu_messageformat_parser_v*|icu_messageformat_parser_v*|crates/icu_messageformat_parser_v*)
                   crates=(formatjs_icu_messageformat_parser)
                   ;;
+                formatjs_icu_messageformat_v*|icu_messageformat_v*|crates/icu_messageformat_v*)
+                  crates=(formatjs_icu_messageformat)
+                  ;;
                 formatjs_cli_v*|crates/formatjs_cli_v*)
                   crates=(formatjs_cli)
                   ;;
@@ -84,10 +88,11 @@ jobs:
                   crates=(
                     formatjs_icu_skeleton_parser
                     formatjs_icu_messageformat_parser
+                    formatjs_icu_messageformat
                     formatjs_cli
                   )
                   ;;
-                formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_cli)
+                formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_icu_messageformat|formatjs_cli)
                   crates=("$INPUT_CRATE")
                   ;;
                 *)
@@ -125,6 +130,7 @@ jobs:
           targets=(
             //crates/icu_skeleton_parser:icu_skeleton_parser_test
             //crates/icu_messageformat_parser:icu_messageformat_parser_test
+            //crates/icu_messageformat:icu_messageformat_test
             //crates/formatjs_cli:formatjs_cli_test
           )
 
@@ -220,6 +226,14 @@ jobs:
                 wait_if_published_by_this_run \
                   formatjs_icu_skeleton_parser \
                   "$(dependency_version crates/icu_messageformat_parser/Cargo.toml formatjs_icu_skeleton_parser)"
+                ;;
+              formatjs_icu_messageformat)
+                wait_if_published_by_this_run \
+                  formatjs_icu_skeleton_parser \
+                  "$(dependency_version crates/icu_messageformat/Cargo.toml formatjs_icu_skeleton_parser)"
+                wait_if_published_by_this_run \
+                  formatjs_icu_messageformat_parser \
+                  "$(dependency_version crates/icu_messageformat/Cargo.toml formatjs_icu_messageformat_parser)"
                 ;;
               formatjs_cli)
                 wait_if_published_by_this_run \

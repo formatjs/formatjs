@@ -456,6 +456,13 @@
       "include-v-in-release-name": false,
       "tag-separator": "_v"
     },
+    "crates/icu_messageformat": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
     "crates/formatjs_cli": {
       "release-type": "rust",
       "include-component-in-tag": true,

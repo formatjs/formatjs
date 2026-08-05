@@ -10,6 +10,10 @@
 - Ships an IIFE bundle (`intl-messageformat.iife.js`) for browser `<script>` tag usage
 - BSD-3-Clause licensed (not `@formatjs` scoped for historical reasons)
 
+The low-level Rust runtime lives at `crates/icu_messageformat` as
+`formatjs_icu_messageformat`. It reuses the Rust parser AST and ICU4X. Messages
+are parsed without a locale, then formatted with a request locale.
+
 ## @formatjs/intl
 
 **Purpose:** Main FormatJS package aggregating all formatting APIs into a single coherent interface.

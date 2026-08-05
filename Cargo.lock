@@ -528,6 +528,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_icu_messageformat"
+version = "0.1.0"
+dependencies = [
+ "fixed_decimal",
+ "formatjs_icu_messageformat_parser",
+ "formatjs_icu_skeleton_parser",
+ "icu",
+]
+
+[[package]]
 name = "formatjs_icu_skeleton_parser"
 version = "0.1.2"
 dependencies = [

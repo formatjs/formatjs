@@ -1,0 +1,38 @@
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("@rules_rs//rs:rust_test.bzl", "rust_test")
+
+exports_files(
+    [
+        "Cargo.toml",
+        "README.md",
+        "error.rs",
+        "formatter.rs",
+        "lib.rs",
+        "value.rs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "icu_messageformat",
+    srcs = [
+        "error.rs",
+        "formatter.rs",
+        "lib.rs",
+        "value.rs",
+    ],
+    crate_name = "formatjs_icu_messageformat",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/icu_messageformat_parser",
+        "//crates/icu_skeleton_parser",
+        "@crates//:fixed_decimal",
+        "@crates//:icu",
+    ],
+)
+
+rust_test(
+    name = "icu_messageformat_test",
+    size = "small",
+    crate = ":icu_messageformat",
+)
