@@ -4,13 +4,15 @@ High-level Rust internationalization runtime. Owns message descriptors,
 translation catalogs, ICU4X locale negotiation, and shared compiled-message
 caching. Formatting delegates to `formatjs_icu_messageformat`.
 
+`message_descriptor!` generates missing IDs with
+`[sha512:contenthash:base64:10]`. Pass `id:` to keep a semantic ID.
+
 ```rust
 use formatjs_icu_messageformat::{Value, Values};
-use formatjs_intl::{Intl, IntlCache, MessageCatalog, message};
+use formatjs_intl::{Intl, IntlCache, MessageCatalog, message_descriptor};
 use std::{collections::HashMap, sync::Arc};
 
-const TASKS: formatjs_intl::MessageDescriptor = message!(
-    id: "tasks.count",
+const TASKS: formatjs_intl::MessageDescriptor = message_descriptor!(
     default_message: "{count, plural, one {# task} other {# tasks}}",
     description: "Task count"
 );

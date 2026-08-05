@@ -2,13 +2,14 @@
 
 ## Workspace Members
 
-The Rust workspace (`Cargo.toml`) contains 7 members:
+The Rust workspace (`Cargo.toml`) contains 8 members:
 
 ```
 crates/
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)
   icu_messageformat/           # ICU MessageFormat runtime formatter
+  formatjs_intl_macros/        # Message descriptor procedural macros
   formatjs_intl/               # Descriptors, catalogs, locale negotiation, cache
   formatjs_cli/                # CLI binary (extract, compile, verify)
   formatjs_cli_napi/           # Node.js bindings for the Rust CLI
@@ -47,6 +48,7 @@ formatjs_icu_messageformat (v0.1.0)
 
 formatjs_intl (v0.1.0)
 ├── formatjs_icu_messageformat
+├── formatjs_intl_macros
 └── icu_locale 2.1 (locale parsing and fallback)
 ```
 
@@ -132,7 +134,8 @@ formatjs_intl (v0.1.0)
 
 **Purpose:** High-level Rust intl runtime.
 
-- Defines explicit-ID message descriptors through `message!`.
+- Defines `message_descriptor!` through a re-exported procedural macro.
+- Generates missing IDs with `[sha512:contenthash:base64:10]`; explicit IDs remain supported.
 - Selects translation catalogs with ICU4X locale fallback.
 - Falls back from selected catalog to default catalog, then descriptor message.
 - Shares parsed messages through `IntlCache` across request-scoped `Intl` values.
@@ -145,6 +148,7 @@ formatjs_intl (v0.1.0)
 | `icu_skeleton_parser`      | `@formatjs/icu-skeleton-parser`      | Rust mirror of TS implementation    |
 | `icu_messageformat_parser` | `@formatjs/icu-messageformat-parser` | Rust mirror, also compiled to WASM  |
 | `icu_messageformat`        | `intl-messageformat`                 | Low-level Rust runtime              |
+| `formatjs_intl_macros`     | Babel/TypeScript message transforms  | Rust descriptor macro backend      |
 | `formatjs_intl`            | `@formatjs/intl`                     | High-level Rust runtime             |
 | `formatjs_cli`             | `@formatjs/cli`                      | Drop-in replacement for Node.js CLI |
 

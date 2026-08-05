@@ -544,7 +544,18 @@ name = "formatjs_intl"
 version = "0.1.0"
 dependencies = [
  "formatjs_icu_messageformat",
+ "formatjs_intl_macros",
  "icu_locale",
+]
+
+[[package]]
+name = "formatjs_intl_macros"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "quote",
+ "sha2",
+ "syn 2.0.117",
 ]
 
 [[package]]

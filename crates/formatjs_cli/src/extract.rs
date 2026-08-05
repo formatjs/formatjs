@@ -646,8 +646,7 @@ const msg = defineMessage({
             &file,
             r#"
 fn main() {
-    let descriptor = message!(
-        id: "rust.hello",
+    let descriptor = message_descriptor!(
         default_message: "Hello, {name}!",
         description: "Greeting"
     );
@@ -674,8 +673,8 @@ fn main() {
         .unwrap();
         let json: serde_json::Value = serde_json::from_str(&output).unwrap();
 
-        assert_eq!(json["rust.hello"]["defaultMessage"], "Hello, {name}!");
-        assert_eq!(json["rust.hello"]["description"], "Greeting");
+        assert_eq!(json["EG1xJTTqQy"]["defaultMessage"], "Hello, {name}!");
+        assert_eq!(json["EG1xJTTqQy"]["description"], "Greeting");
         assert_eq!(json.as_object().unwrap().len(), 1);
     }
 

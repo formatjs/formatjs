@@ -30,8 +30,9 @@ The Rust mirror lives at `crates/formatjs_intl` as `formatjs_intl`. It keeps
 `Intl` request-scoped, while `MessageCatalog` and `IntlCache` can be shared by
 the backend. ICU4X negotiates each ordered locale list against available
 catalogs. Translation lookup falls back to the default catalog, then the
-descriptor default message. `message!` requires explicit IDs and is extracted
-from Rust source by `formatjs_cli`.
+descriptor default message. `message_descriptor!` generates missing IDs with
+`[sha512:contenthash:base64:10]` and is extracted from Rust source by
+`formatjs_cli`.
 
 ## react-intl
 

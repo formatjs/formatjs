@@ -5,6 +5,9 @@ use std::error::Error as StdError;
 use std::fmt;
 use std::sync::{Arc, RwLock};
 
+#[doc(hidden)]
+pub use formatjs_intl_macros::__message_descriptor;
+
 pub type Messages = HashMap<String, String>;
 
 #[derive(Debug)]
@@ -71,16 +74,15 @@ impl MessageDescriptor {
 }
 
 #[macro_export]
-macro_rules! message {
-    (
-        id: $id:literal,
-        default_message: $default_message:literal
-        $(, description: $description:literal)?
-        $(,)?
-    ) => {{
-        let descriptor = $crate::MessageDescriptor::new($id, $default_message);
-        $(let descriptor = descriptor.with_description($description);)?
-        descriptor
+macro_rules! message_descriptor {
+    ($($tokens:tt)*) => {{
+        const DATA: (&str, &str, ::core::option::Option<&str>) =
+            $crate::__message_descriptor!($($tokens)*);
+        $crate::MessageDescriptor {
+            id: DATA.0,
+            default_message: DATA.1,
+            description: DATA.2,
+        }
     }};
 }
 
@@ -280,11 +282,28 @@ mod tests {
     use super::*;
     use formatjs_icu_messageformat::Value;
 
-    const TASKS: MessageDescriptor = message!(
-        id: "tasks.count",
+    const TASKS: MessageDescriptor = message_descriptor!(
         default_message: "{count, plural, one {# task} other {# tasks}}",
         description: "Task count"
     );
+
+    const EXPLICIT_ID: MessageDescriptor = message_descriptor!(
+        id: "tasks.explicit",
+        default_message: "Explicit task"
+    );
+
+    const GREETING: MessageDescriptor = message_descriptor!(
+        default_message: "Hello, {name}!",
+        description: "Greeting"
+    );
+
+    #[test]
+    fn message_descriptor_generates_or_preserves_id() {
+        assert_eq!(TASKS.id.len(), 10);
+        assert_eq!(TASKS.id, "LURAmALj1U");
+        assert_eq!(GREETING.id, "EG1xJTTqQy");
+        assert_eq!(EXPLICIT_ID.id, "tasks.explicit");
+    }
 
     fn catalog() -> Arc<MessageCatalog> {
         let mut catalog = MessageCatalog::new();
@@ -293,7 +312,7 @@ mod tests {
             .insert(
                 "fr",
                 HashMap::from([(
-                    "tasks.count".to_owned(),
+                    TASKS.id.to_owned(),
                     "{count, plural, one {# tâche} other {# tâches}}".to_owned(),
                 )]),
             )

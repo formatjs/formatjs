@@ -1,0 +1,22 @@
+load("@rules_rs//rs:rust_proc_macro.bzl", "rust_proc_macro")
+
+exports_files(
+    [
+        "Cargo.toml",
+        "lib.rs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_proc_macro(
+    name = "formatjs_intl_macros",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_intl_macros",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:base64",
+        "@crates//:quote",
+        "@crates//:sha2",
+        "@crates//:syn",
+    ],
+)

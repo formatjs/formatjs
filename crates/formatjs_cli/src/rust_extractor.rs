@@ -1,4 +1,5 @@
 use crate::extractor::{MessageDescriptor, flatten_message_descriptors, normalize_whitespace};
+use crate::id_generator::IdGenerator;
 use anyhow::{Result, bail};
 use proc_macro2::{LineColumn, Span};
 use serde_json::Value;
@@ -7,6 +8,8 @@ use syn::parse::{Parse, ParseStream};
 use syn::spanned::Spanned;
 use syn::visit::{self, Visit};
 use syn::{Ident, LitStr, Macro, Token};
+
+const RUST_ID_INTERPOLATION_PATTERN: &str = "[sha512:contenthash:base64:10]";
 
 pub fn extract_messages_from_rust_source(
     source_text: &str,
@@ -17,12 +20,14 @@ pub fn extract_messages_from_rust_source(
     throws: bool,
 ) -> Result<Vec<MessageDescriptor>> {
     let file = syn::parse_file(source_text)?;
+    let id_generator = IdGenerator::new(RUST_ID_INTERPOLATION_PATTERN)?;
     let mut extractor = RustMessageExtractor {
         source_text,
         file_path,
         extract_source_location,
         preserve_whitespace,
         throws,
+        id_generator,
         messages: Vec::new(),
         errors: Vec::new(),
     };
@@ -39,12 +44,13 @@ struct RustMessageExtractor<'a> {
     extract_source_location: bool,
     preserve_whitespace: bool,
     throws: bool,
+    id_generator: IdGenerator,
     messages: Vec<MessageDescriptor>,
     errors: Vec<String>,
 }
 
 impl RustMessageExtractor<'_> {
-    fn descriptor(&self, arguments: MessageArgs, span: Span) -> MessageDescriptor {
+    fn descriptor(&self, arguments: MessageArgs, span: Span) -> Result<MessageDescriptor> {
         let (start, end) = if self.extract_source_location {
             (
                 Some(line_column_to_offset(self.source_text, span.start())),
@@ -53,21 +59,30 @@ impl RustMessageExtractor<'_> {
         } else {
             (None, None)
         };
+        let normalized_default_message = normalize_whitespace(&arguments.default_message);
+        let description = arguments.description.map(Value::String);
+        let id = match arguments.id {
+            Some(id) => id,
+            None => {
+                self.id_generator
+                    .generate(Some(&normalized_default_message), &description, None)?
+            }
+        };
         let default_message = if self.preserve_whitespace {
             arguments.default_message
         } else {
-            normalize_whitespace(&arguments.default_message)
+            normalized_default_message
         };
-        MessageDescriptor {
-            id: Some(arguments.id),
+        Ok(MessageDescriptor {
+            id: Some(id),
             default_message: Some(default_message),
-            description: arguments.description.map(Value::String),
+            description,
             file: self
                 .extract_source_location
                 .then(|| self.file_path.to_string_lossy().into_owned()),
             start,
             end,
-        }
+        })
     }
 
     fn error(&mut self, span: Span, message: impl AsRef<str>) {
@@ -87,12 +102,12 @@ impl RustMessageExtractor<'_> {
 impl<'ast> Visit<'ast> for RustMessageExtractor<'_> {
     fn visit_macro(&mut self, node: &'ast Macro) {
         let name = node.path.segments.last().map(|segment| &segment.ident);
-        if name.is_some_and(|name| name == "message") {
+        if name.is_some_and(|name| name == "message_descriptor") {
             match syn::parse2::<MessageArgs>(node.tokens.clone()) {
-                Ok(arguments) => {
-                    let descriptor = self.descriptor(arguments, node.span());
-                    self.messages.push(descriptor);
-                }
+                Ok(arguments) => match self.descriptor(arguments, node.span()) {
+                    Ok(descriptor) => self.messages.push(descriptor),
+                    Err(error) => self.error(node.span(), error.to_string()),
+                },
                 Err(error) => self.error(node.span(), error.to_string()),
             }
         }
@@ -112,7 +127,7 @@ fn line_column_to_offset(source: &str, location: LineColumn) -> u32 {
 }
 
 struct MessageArgs {
-    id: String,
+    id: Option<String>,
     default_message: String,
     description: Option<String>,
 }
@@ -149,7 +164,7 @@ impl Parse for MessageArgs {
         }
 
         Ok(Self {
-            id: id.ok_or_else(|| syn::Error::new(Span::call_site(), "id is required"))?,
+            id,
             default_message: default_message
                 .ok_or_else(|| syn::Error::new(Span::call_site(), "default_message is required"))?,
             description,
@@ -164,8 +179,7 @@ mod tests {
     #[test]
     fn extracts_message_descriptors() {
         let source = r#"fn main() {
-            let descriptor = message!(
-                id: "hello",
+            let descriptor = message_descriptor!(
                 default_message: "Hello, {name}!",
                 description: "Greeting"
             );
@@ -180,7 +194,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(messages.len(), 1);
-        assert_eq!(messages[0].id.as_deref(), Some("hello"));
+        assert_eq!(messages[0].id.as_deref(), Some("EG1xJTTqQy"));
         assert_eq!(
             messages[0].default_message.as_deref(),
             Some("Hello, {name}!")
@@ -192,22 +206,22 @@ mod tests {
     }
 
     #[test]
-    fn requires_explicit_id() {
-        let error = extract_messages_from_rust_source(
-            r#"fn main() { message!(default_message: "Hello"); }"#,
+    fn preserves_explicit_id() {
+        let messages = extract_messages_from_rust_source(
+            r#"fn main() { message_descriptor!(id: "hello", default_message: "Hello"); }"#,
             Path::new("src/main.rs"),
             false,
             false,
             false,
             true,
         )
-        .unwrap_err();
-        assert!(error.to_string().contains("id is required"));
+        .unwrap();
+        assert_eq!(messages[0].id.as_deref(), Some("hello"));
     }
 
     #[test]
     fn reports_source_offsets() {
-        let source = "fn main() {\n    message!(id: \"hello\", default_message: \"Hello\");\n}\n";
+        let source = "fn main() {\n    message_descriptor!(default_message: \"Hello\");\n}\n";
         let messages = extract_messages_from_rust_source(
             source,
             Path::new("src/main.rs"),

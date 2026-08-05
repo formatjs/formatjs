@@ -16,6 +16,7 @@ rust_library(
     crate_name = "formatjs_intl",
     visibility = ["//visibility:public"],
     deps = [
+        "//crates/formatjs_intl_macros",
         "//crates/icu_messageformat",
         "@crates//:icu_locale",
     ],
