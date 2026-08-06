@@ -44,17 +44,10 @@ This means that any usage of `@rules_formatjs` on your system will point to this
 
 ## Releasing
 
-The release workflow chooses the next version from Conventional Commits, creates
-the tag and GitHub release, and opens the Bazel Central Registry PR. It also
-runs on a schedule.
+Release Please opens or updates a version bump PR from Conventional Commits.
+Merging that PR creates the tag and GitHub release, then builds release assets,
+creates attestations, and opens the Bazel Central Registry PR automatically.
 
-To start a normal release without waiting for the schedule, dispatch the
-no-input tag workflow on `main`:
-
-```shell
-gh workflow run tag.yaml --repo formatjs/rules_formatjs --ref main
-```
-
-Do not push a tag manually for a normal patch or minor release. See
-[docs/releasing.md](docs/releasing.md) for preflight checks, monitoring, major
-releases, and recovery.
+Do not choose or push a tag manually. See
+[docs/releasing.md](docs/releasing.md) for setup, checks, monitoring, and
+recovery.

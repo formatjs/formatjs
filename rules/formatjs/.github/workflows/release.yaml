@@ -1,22 +1,13 @@
-# Cut a release whenever a new tag is pushed to the repo.
+# Build and publish whenever Release Please creates a version tag.
 name: Release
 on:
-  # Can be triggered from the tag.yaml workflow
-  workflow_call:
-    inputs:
-      tag_name:
-        required: true
-        type: string
-    secrets:
-      publish_token:
-        required: true
-  # Can be triggered from the tag.yaml workflow
+  # Recover an existing tag whose release did not finish.
   workflow_dispatch:
     inputs:
       tag_name:
         required: true
         type: string
-  # Or, developers can manually push a tag from their clone
+  # Release Please creates version tags after its release PR lands.
   push:
     tags:
       - "v*.*.*"
@@ -41,4 +32,4 @@ jobs:
       contents: write
       id-token: write
     secrets:
-      publish_token: ${{ secrets.publish_token || secrets.BCR_PUBLISH_TOKEN }}
+      publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}
