@@ -94,8 +94,25 @@ export function getNavigationTree(): NavSection[] {
       ],
     },
     {
-      title: 'Tooling',
+      title: 'Rust',
       order: 5,
+      items: [
+        {title: 'Overview', path: 'rust'},
+        {title: 'Intl Runtime', path: 'rust/intl'},
+        {title: 'ICU MessageFormat', path: 'rust/icu-messageformat'},
+        {
+          title: 'ICU MessageFormat Parser',
+          path: 'tooling/rust-icu-messageformat-parser',
+        },
+        {
+          title: 'ICU Skeleton Parser',
+          path: 'tooling/rust-icu-skeleton-parser',
+        },
+      ],
+    },
+    {
+      title: 'Tooling',
+      order: 6,
       items: [
         {title: 'CLI', path: 'tooling/cli'},
         {title: 'Bazel', path: 'tooling/bazel'},
@@ -104,19 +121,11 @@ export function getNavigationTree(): NavSection[] {
         {title: 'Unplugin', path: 'tooling/unplugin'},
         {title: 'SWC Plugin', path: 'tooling/swc-plugin'},
         {title: 'ESLint Plugin', path: 'tooling/linter'},
-        {
-          title: 'Rust: ICU MessageFormat Parser',
-          path: 'tooling/rust-icu-messageformat-parser',
-        },
-        {
-          title: 'Rust: ICU Skeleton Parser',
-          path: 'tooling/rust-icu-skeleton-parser',
-        },
       ],
     },
     {
       title: 'Guides',
-      order: 6,
+      order: 7,
       items: [
         {title: 'Best Practices', path: 'guides/best-practices'},
         {
@@ -144,7 +153,7 @@ export function getNavigationTree(): NavSection[] {
     },
     {
       title: 'Other APIs',
-      order: 7,
+      order: 8,
       items: [
         {title: '@formatjs/intl', path: 'intl'},
         {title: '@formatjs/svelte-intl', path: 'svelte-intl'},

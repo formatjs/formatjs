@@ -1,0 +1,108 @@
+---
+title: Intl Runtime (Rust)
+---
+
+`formatjs_intl` is the application-level Rust runtime. It combines message
+descriptors, translation catalogs, ICU4X locale negotiation, and a shared
+compiled-message cache.
+
+## Installation
+
+```toml
+[dependencies]
+formatjs_intl = "0.1"
+formatjs_icu_messageformat = "0.1"
+```
+
+The second dependency provides `Value` and `Values` for runtime arguments.
+
+## Create a catalog and format a message
+
+```rust
+use formatjs_icu_messageformat::{Value, Values};
+use formatjs_intl::{Intl, IntlCache, MessageCatalog, MessageDescriptor, message_descriptor};
+use std::{collections::HashMap, sync::Arc};
+
+const TASKS: MessageDescriptor = message_descriptor!(
+    id: "tasks.count",
+    default_message: "{count, plural, one {# task} other {# tasks}}",
+    description: "Task count"
+);
+
+fn main() -> Result<(), formatjs_intl::Error> {
+    let mut catalog = MessageCatalog::new();
+    catalog.insert("en", HashMap::new())?;
+    catalog.insert(
+        "fr",
+        HashMap::from([(
+            "tasks.count".to_owned(),
+            "{count, plural, one {# tâche} other {# tâches}}".to_owned(),
+        )]),
+    )?;
+
+    let catalog = Arc::new(catalog);
+    let cache = Arc::new(IntlCache::new());
+    let intl = Intl::try_new(["fr-CA", "fr"], "en", catalog, cache)?;
+    let values: Values =
+        HashMap::from([("count".to_owned(), Value::from(2_i64))]);
+
+    assert_eq!(intl.locale().to_string(), "fr");
+    assert_eq!(intl.format_message_to_string(TASKS, &values)?, "2 tâches");
+    Ok(())
+}
+```
+
+The default locale must have a catalog, but that catalog may be empty. Message
+lookup falls back in this order:
+
+1. selected locale catalog
+2. default locale catalog
+3. descriptor `default_message`
+
+## Request-scoped locales
+
+Build `MessageCatalog` and `IntlCache` once, then create a lightweight `Intl`
+for each request:
+
+```rust
+let intl = Intl::try_new(
+    requested_locales,
+    "en",
+    catalog.clone(),
+    cache.clone(),
+)?;
+```
+
+Requested locales must already be ordered by preference. ICU4X performs locale
+fallback against available catalogs, such as `fr-CA` to `fr`. Parsing an HTTP
+`Accept-Language` header remains the responsibility of the application or web
+framework adapter.
+
+## Descriptors and IDs
+
+`message_descriptor!` accepts compile-time string literals:
+
+```rust
+const GREETING: MessageDescriptor = message_descriptor!(
+    default_message: "Hello, {name}!",
+    description: "Greeting shown after sign-in"
+);
+```
+
+Without an explicit `id`, it generates
+`[sha512:contenthash:base64:10]` from `default_message` and `description`. The
+native FormatJS CLI recognizes the same macro and emits the same ID:
+
+```sh
+formatjs extract "src/**/*.rs" --out-file messages.json
+```
+
+Use `id: "greeting"` when a stable semantic ID is preferred.
+
+## Shared cache
+
+`IntlCache` stores parsed messages by source string. Share one `Arc<IntlCache>`
+across request-scoped `Intl` values to avoid reparsing translations and default
+messages.
+
+See the complete [`formatjs_intl` API](https://docs.rs/formatjs_intl).

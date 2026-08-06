@@ -1,0 +1,72 @@
+---
+title: ICU MessageFormat (Rust)
+---
+
+`formatjs_icu_messageformat` is the low-level Rust runtime for ICU
+MessageFormat. It parses each message once and accepts a locale for every
+formatting call, so one compiled message can serve requests in many locales.
+
+## Installation
+
+```toml
+[dependencies]
+formatjs_icu_messageformat = "0.1"
+```
+
+## Format a message
+
+```rust
+use formatjs_icu_messageformat::{IcuMessageFormat, Value, Values};
+use std::collections::HashMap;
+
+fn main() -> Result<(), formatjs_icu_messageformat::Error> {
+    let message = IcuMessageFormat::try_new(
+        "Hello, {name}. You have {count, plural, one {# task} other {# tasks}}.",
+    )?;
+    let values: Values = HashMap::from([
+        ("name".to_owned(), Value::from("Ada")),
+        ("count".to_owned(), Value::from(2_i64)),
+    ]);
+
+    assert_eq!(
+        message.format_to_string("en-US", &values)?,
+        "Hello, Ada. You have 2 tasks."
+    );
+    Ok(())
+}
+```
+
+## Supply locale per request
+
+Locale is not part of `IcuMessageFormat::try_new`. Keep the compiled message in
+shared application state, then pass the request locale to `format`,
+`format_to_parts`, or `format_to_string`:
+
+```rust
+let english = message.format_to_string("en-US", &values)?;
+let french = message.format_to_string("fr-FR", &values)?;
+```
+
+`IcuMessageFormat` is `Send + Sync`, so it can be shared through `Arc` in a
+multi-request server.
+
+## Supported message features
+
+- arguments, `select`, `plural`, `selectordinal`, plural offsets, and `#`
+- locale-aware numbers, dates, times, and plural rules through ICU4X
+- named number, date, and time formats
+- ICU number and date/time skeletons
+- rich-text tags through `Value::Tag`
+- pre-parsed ASTs through `IcuMessageFormat::from_ast`
+
+Use `format_to_string` for text-only output. Use `format` or
+`format_to_parts` when rich values must survive formatting.
+
+## Custom formatters
+
+`Options::formatters` accepts an implementation of the `Formatters` trait.
+Use it when application-specific number or date/time behavior is required.
+ICU4X currently does not provide full ECMA-402 parity for currency, unit, and
+time-zone formatting.
+
+See the complete [`formatjs_icu_messageformat` API](https://docs.rs/formatjs_icu_messageformat).
