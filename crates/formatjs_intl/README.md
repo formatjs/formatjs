@@ -13,6 +13,7 @@ use formatjs_intl::{Intl, IntlCache, MessageCatalog, message_descriptor};
 use std::{collections::HashMap, sync::Arc};
 
 const TASKS: formatjs_intl::MessageDescriptor = message_descriptor!(
+    id: "tasks.count",
     default_message: "{count, plural, one {# task} other {# tasks}}",
     description: "Task count"
 );
@@ -36,6 +37,21 @@ let intl = Intl::try_new(
 let values: Values = HashMap::from([("count".to_owned(), Value::from(2_i64))]);
 assert_eq!(intl.format_message_to_string(TASKS, &values)?, "2 tâches");
 # Ok::<(), formatjs_intl::Error>(())
+```
+
+Message formatting falls back from the selected locale catalog to the default
+locale catalog, then the descriptor's `default_message`. Invalid translations
+also use this chain. Attach `with_on_error` to observe formatting errors while
+returning the fallback:
+
+```rust
+# use formatjs_intl::{FormatMessageError, Intl};
+# fn configure(intl: Intl) -> Intl {
+let intl = intl.with_on_error(|error: &FormatMessageError| {
+    eprintln!("{error}");
+});
+# intl
+# }
 ```
 
 Requested locales must already be ordered by preference. HTTP

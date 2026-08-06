@@ -141,6 +141,10 @@ support Rust 1.92 and newer.
 - Generates missing IDs with `[sha512:contenthash:base64:10]`; explicit IDs remain supported.
 - Selects translation catalogs with ICU4X locale fallback.
 - Falls back from selected catalog to default catalog, then descriptor message.
+- Retries parse and format failures through the same chain, using each source's
+  locale; `with_on_error` exposes recovered message errors.
+- Returns the first source verbatim, then the message ID, when every formatting
+  candidate fails.
 - Shares parsed messages through `IntlCache` across request-scoped `Intl` values.
 - Keeps requested-locale ordering and HTTP header parsing in application adapters.
 
