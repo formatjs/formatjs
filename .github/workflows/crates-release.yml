@@ -27,6 +27,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}
+  queue: max
   cancel-in-progress: false
 
 jobs:
