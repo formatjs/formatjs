@@ -54,5 +54,23 @@ let intl = intl.with_on_error(|error: &FormatMessageError| {
 # }
 ```
 
+Precompile catalogs with the FormatJS CLI to skip runtime message parsing:
+
+```sh
+formatjs compile translations/fr.json --out-file translations/fr.compiled.json --ast
+```
+
+```rust
+# use formatjs_intl::{MessageCatalog, PrecompiledMessages};
+let messages: PrecompiledMessages =
+    serde_json::from_str(include_str!("../translations/fr.compiled.json"))?;
+let mut catalog = MessageCatalog::new();
+catalog.insert_precompiled("fr", messages)?;
+# Ok::<(), Box<dyn std::error::Error>>(())
+```
+
+Precompiled messages are ready to format when inserted and do not use
+`IntlCache`.
+
 Requested locales must already be ordered by preference. HTTP
 `Accept-Language` parsing stays in the application or web-framework adapter.

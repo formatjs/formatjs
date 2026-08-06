@@ -1,7 +1,7 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 /// Location details for error reporting
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LocationDetails {
     pub offset: usize,
     pub line: usize,
@@ -9,7 +9,7 @@ pub struct LocationDetails {
 }
 
 /// Location range in the source string
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Location {
     pub start: LocationDetails,
     pub end: LocationDetails,

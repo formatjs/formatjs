@@ -21,3 +21,6 @@ icu_locale = "2.1"
 [lib]
 path = "lib.rs"
 crate-type = ["rlib"]
+
+[dev-dependencies]
+serde_json = "1.0"
