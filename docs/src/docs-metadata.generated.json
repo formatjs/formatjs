@@ -195,6 +195,18 @@
     "title": "Upgrade Guide 8.x",
     "description": "react-intl v8 requires React 19. If you are using React 18 or below, stay on react-intl v7."
   },
+  "rust": {
+    "title": "Rust",
+    "description": "---"
+  },
+  "rust/icu-messageformat": {
+    "title": "Icu Messageformat",
+    "description": "---"
+  },
+  "rust/intl": {
+    "title": "Intl",
+    "description": "---"
+  },
   "svelte-intl": {
     "title": "Svelte Intl",
     "description": "This library provides FormatJS internationalization bindings for Svelte 5."

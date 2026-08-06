@@ -1,0 +1,67 @@
+---
+title: Rust
+---
+
+FormatJS provides Rust crates for message formatting, locale negotiation,
+message extraction, and the ICU parsers used by the runtime.
+
+## Choose a crate
+
+| Crate                                                                                             | Use it for                                                                                                             |
+| ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`formatjs_intl`](https://crates.io/crates/formatjs_intl)                                         | Application-level descriptors, translation catalogs, locale negotiation, and shared message caching                    |
+| [`formatjs_icu_messageformat`](https://crates.io/crates/formatjs_icu_messageformat)               | Low-level ICU MessageFormat formatting with a locale supplied for each call                                            |
+| [`formatjs_intl_macros`](https://crates.io/crates/formatjs_intl_macros)                           | Procedural macro used by `formatjs_intl::message_descriptor!`; applications normally depend on `formatjs_intl` instead |
+| [`formatjs_icu_messageformat_parser`](https://crates.io/crates/formatjs_icu_messageformat_parser) | Parsing ICU MessageFormat into a strongly typed AST                                                                    |
+| [`formatjs_icu_skeleton_parser`](https://crates.io/crates/formatjs_icu_skeleton_parser)           | Parsing ICU number and date/time skeletons                                                                             |
+| [`formatjs_cli`](https://crates.io/crates/formatjs_cli)                                           | Extracting, compiling, and verifying messages from the `formatjs` command                                              |
+
+Use [`formatjs_intl`](/docs/rust/intl) for a Rust backend with translation
+catalogs. Use
+[`formatjs_icu_messageformat`](/docs/rust/icu-messageformat) when message
+selection, locale negotiation, and catalog loading already happen elsewhere.
+
+## Runtime layers
+
+```text
+formatjs_intl
+├── message_descriptor! and stable message IDs
+├── MessageCatalog and ICU4X locale negotiation
+├── IntlCache shared across requests
+└── formatjs_icu_messageformat
+    ├── ICU MessageFormat parser
+    ├── ICU skeleton parser
+    └── ICU4X number, date/time, and plural formatting
+```
+
+## Rust message workflow
+
+Declare messages next to their use:
+
+```rust
+use formatjs_intl::{MessageDescriptor, message_descriptor};
+
+const GREETING: MessageDescriptor = message_descriptor!(
+    default_message: "Hello, {name}!",
+    description: "Greeting shown after sign-in"
+);
+```
+
+Extract descriptors with the native CLI:
+
+```sh
+cargo install formatjs_cli
+formatjs extract "src/**/*.rs" --out-file messages.json
+```
+
+When `id` is omitted, the macro and extractor generate the same ID with
+`[sha512:contenthash:base64:10]`. Add `id: "greeting"` when your application
+uses semantic IDs.
+
+## API documentation
+
+- [`formatjs_intl`](https://docs.rs/formatjs_intl)
+- [`formatjs_icu_messageformat`](https://docs.rs/formatjs_icu_messageformat)
+- [`formatjs_icu_messageformat_parser`](https://docs.rs/formatjs_icu_messageformat_parser)
+- [`formatjs_icu_skeleton_parser`](https://docs.rs/formatjs_icu_skeleton_parser)
+- [`formatjs_cli`](https://docs.rs/formatjs_cli)
