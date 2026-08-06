@@ -60,6 +60,13 @@ Precompile catalogs with the FormatJS CLI to skip runtime message parsing:
 formatjs compile translations/fr.json --out-file translations/fr.compiled.json --ast
 ```
 
+Add `serde_json` to load the compiled catalog:
+
+```toml
+[dependencies]
+serde_json = "1"
+```
+
 ```rust
 # use formatjs_intl::{MessageCatalog, PrecompiledMessages};
 let messages: PrecompiledMessages =
