@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_macros"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Procedural macros for formatjs_intl"

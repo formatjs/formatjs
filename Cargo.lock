@@ -531,7 +531,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "fixed_decimal",
  "formatjs_icu_messageformat_parser",
@@ -541,7 +541,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_macros"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "base64",
  "quote",
