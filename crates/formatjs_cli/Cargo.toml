@@ -39,7 +39,7 @@ base64 = "0.23"
 hex = "0.4"
 rayon = "1.12"
 proc-macro2 = { version = "1.0", features = ["span-locations"] }
-syn = { version = "2.0", features = ["full", "parsing", "visit"] }
+syn = { version = "3.0", features = ["full", "parsing", "visit"] }
 
 [dev-dependencies]
 tempfile = "3.0"
