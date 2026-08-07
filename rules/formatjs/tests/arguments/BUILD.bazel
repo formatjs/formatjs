@@ -54,8 +54,14 @@ formatjs_extract(
     id_interpolation_pattern = "[sha512:contenthash:base64:6]",
 )
 
+# Test extraction from Rust message descriptors
+formatjs_extract(
+    name = "messages_rust",
+    srcs = ["test.rs"],
+)
+
 # Note: Testing with invalid file extensions is not possible because Bazel's
-# allow_files restriction on srcs prevents non-JS/TS files at analysis time.
+# allow_files restriction on srcs prevents unsupported files at analysis time.
 # This is actually good - it provides early validation before the CLI runs.
 
 # Test compilation with ast parameter
@@ -93,6 +99,7 @@ write_source_files(
         "fixtures/messages_default.json": ":messages_default",
         "fixtures/messages_merge.json": ":messages_merge",
         "fixtures/messages_crowdin.json": ":messages_crowdin",
+        "fixtures/messages_rust.json": ":messages_rust",
         "fixtures/compiled_ast.json": ":compiled_ast",
         "fixtures/compiled_multiple.json": ":compiled_multiple",
     },
@@ -106,6 +113,7 @@ write_source_files(
         "fixtures/messages_default.json": ":messages_default",
         "fixtures/messages_merge.json": ":messages_merge",
         "fixtures/messages_crowdin.json": ":messages_crowdin",
+        "fixtures/messages_rust.json": ":messages_rust",
         "fixtures/compiled_ast.json": ":compiled_ast",
         "fixtures/compiled_multiple.json": ":compiled_multiple",
     },

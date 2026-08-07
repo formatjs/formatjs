@@ -4,7 +4,7 @@ Bazel rules for [FormatJS](https://formatjs.io/) - Internationalize your web app
 
 ## Features
 
-- Extract messages from source files (TypeScript, JavaScript, JSX, TSX)
+- Extract messages from source files (TypeScript, JavaScript, JSX, TSX, Rust)
 - Compile messages for optimized runtime performance
 - Verify translations for completeness
 - Aggregate messages across multiple modules

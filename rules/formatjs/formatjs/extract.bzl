@@ -1,7 +1,7 @@
 """Rules for extracting internationalized messages from source files.
 
 This module provides the `formatjs_extract` rule for extracting messages from
-TypeScript, JavaScript, JSX, and TSX files using the FormatJS CLI. The extracted
+TypeScript, JavaScript, JSX, TSX, and Rust files using the FormatJS CLI. The extracted
 messages are output in JSON format with automatic key sorting.
 
 The FormatJS CLI supports various message formats including:
@@ -112,7 +112,7 @@ formatjs_extract = rule(
     implementation = _formatjs_extract_impl,
     doc = """Extract internationalized messages from source files using FormatJS CLI.
 
-    This rule extracts i18n messages from TypeScript, JavaScript, JSX, and TSX files
+    This rule extracts i18n messages from TypeScript, JavaScript, JSX, TSX, and Rust files
     using the native FormatJS CLI toolchain. The extracted messages are output as a
     JSON file with alphabetically sorted keys for deterministic builds.
 
@@ -182,10 +182,11 @@ formatjs_extract = rule(
     """,
     attrs = {
         "srcs": attr.label_list(
-            allow_files = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"],
+            allow_files = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".rs"],
             doc = """Source files to extract messages from.
 
-            Supports TypeScript (.ts, .tsx), JavaScript (.js, .jsx), and ES modules (.mjs, .cjs).
+            Supports TypeScript (.ts, .tsx), JavaScript (.js, .jsx), ES modules (.mjs, .cjs),
+            and Rust (.rs).
             Use glob patterns to extract from multiple files:
             ```starlark
             srcs = glob(["src/**/*.{ts,tsx}"])
