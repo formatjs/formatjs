@@ -12,13 +12,22 @@ interface CargoWorkspacePackages {
   candidatesByPackage: Record<string, unknown>
 }
 
+interface WorkspacePluginOptions extends Record<string, unknown> {
+  merge?: boolean
+  separatePullRequests?: boolean
+  type?: unknown
+}
+
 export function filterPublishableCrates({
   allPackages,
   candidatesByPackage,
 }: CargoWorkspacePackages): CargoWorkspacePackages {
-  const publishablePackages = allPackages.filter(
-    pkg => pkg.manifest.package?.publish !== false
-  )
+  const publishablePackages = allPackages.filter(pkg => {
+    const publish = pkg.manifest.package?.publish
+    return (
+      publish !== false && !(Array.isArray(publish) && publish.length === 0)
+    )
+  })
   const publishableNames = new Set(publishablePackages.map(pkg => pkg.name))
 
   return {
@@ -28,6 +37,24 @@ export function filterPublishableCrates({
         publishableNames.has(name)
       )
     ),
+  }
+}
+
+export function resolveWorkspacePluginOptions(
+  options: WorkspacePluginOptions
+): WorkspacePluginOptions {
+  const typeOptions =
+    options.type && typeof options.type === 'object'
+      ? (options.type as Record<string, unknown>)
+      : {}
+
+  return {
+    ...options,
+    ...typeOptions,
+    merge:
+      (typeOptions.merge as boolean | undefined) ??
+      options.merge ??
+      !options.separatePullRequests,
   }
 }
 
