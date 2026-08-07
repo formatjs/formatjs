@@ -45,7 +45,6 @@ npm.npm_translate_lock(
         "//:patches/unicode-match-property-ecmascript@2.0.0.patch",
         "//:patches/unicode-match-property-value-ecmascript@2.2.1.patch",
     ],
-    npmrc = "//:.npmrc",
     patch_args = {"*": ["-p1"]},
     pnpm_lock = "//:pnpm-lock.yaml",
 )
@@ -55,7 +54,6 @@ npm.npm_translate_lock(
         "//packages/react-intl/tests/react18-typecheck:package.json",
         "//packages/react-intl/tests/react18-typecheck:pnpm-workspace.yaml",
     ],
-    npmrc = "//:.npmrc",
     pnpm_lock = "//packages/react-intl/tests/react18-typecheck:pnpm-lock.yaml",
 )
 use_repo(npm, "npm", "react18_npm")
