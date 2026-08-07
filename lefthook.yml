@@ -14,6 +14,7 @@ pre-commit:
       glob: '**/*.rs'
       exclude:
         - '*_generated.rs'
+        - 'rules/formatjs/tests/arguments/test.rs'
       run: bazel run @rules_rust//:rustfmt -- {staged_files}
       stage_fixed: true
     format-oxfmt:

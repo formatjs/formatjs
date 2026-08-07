@@ -333,6 +333,7 @@ jobs:
 
       - name: rules_formatjs Windows Smoke Test
         working-directory: rules/formatjs/examples/simple
+        shell: bash
         run: bazel run "@rules_formatjs//cli" -- --version
 
   validate-pnpm-lock:
