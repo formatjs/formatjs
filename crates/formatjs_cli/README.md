@@ -244,7 +244,7 @@ formatjs extract "src/**/*.{js,ts,tsx}" \
 - `--additional-component-names <NAMES>` - Additional component names to extract from (comma-separated)
 - `--additional-function-names <NAMES>` - Additional function names to extract from (comma-separated)
 - `--ignore <PATTERNS>` - Glob patterns to exclude
-- `--throws` - Throw exception when failing to process any file
+- `--throws` - Exit with an error when input resolution, traversal, or extraction fails
 - `--pragma <PRAGMA>` - Parse custom pragma for file metadata (e.g., `@intl-meta`)
 - `--preserve-whitespace` - Preserve whitespace and newlines
 - `--flatten` - Hoist selectors and flatten sentences
