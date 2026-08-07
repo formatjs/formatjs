@@ -1,0 +1,33 @@
+name: Publish rules_formatjs to BCR
+
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        required: true
+        type: string
+    secrets:
+      publish_token:
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Existing rules_formatjs tag
+        required: true
+        type: string
+
+jobs:
+  publish:
+    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@v1.4.2
+    with:
+      draft: false
+      module_roots: rules/formatjs
+      registry_fork: formatjs/bazel-central-registry
+      tag_name: ${{ inputs.tag_name }}
+      tag_prefix: rules_formatjs_v
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
+    secrets:
+      publish_token: ${{ secrets.publish_token || secrets.BCR_PUBLISH_TOKEN }}

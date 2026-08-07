@@ -1,0 +1,37 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(":toolchain.bzl", "formatjs_cli_executable")
+
+bzl_library(
+    name = "extensions",
+    srcs = ["extensions.bzl"],
+    deps = [":repositories"],
+)
+
+bzl_library(
+    name = "repositories",
+    srcs = ["repositories.bzl"],
+    deps = [":toolchain"],
+)
+
+bzl_library(
+    name = "toolchain",
+    srcs = ["toolchain.bzl"],
+)
+
+# Toolchain type for FormatJS CLI
+toolchain_type(
+    name = "toolchain_type",
+    visibility = ["//visibility:public"],
+)
+
+starlark_doc_extract(
+    name = "extensions.doc_extract",
+    src = "extensions.bzl",
+    deps = [":extensions"],
+)
+
+# Executable that resolves the CLI through the registered toolchain.
+formatjs_cli_executable(
+    name = "cli",
+    visibility = ["//visibility:public"],
+)

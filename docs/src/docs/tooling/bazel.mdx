@@ -15,17 +15,7 @@ Bazel rules for [FormatJS](https://formatjs.io/) - Internationalize your web app
 Add `rules_formatjs` to your `MODULE.bazel`:
 
 ```starlark
-bazel_dep(name = "rules_formatjs", version = "0.1.0")
-```
-
-Or use a specific commit from GitHub:
-
-```starlark
-git_override(
-    module_name = "rules_formatjs",
-    remote = "https://github.com/formatjs/rules_formatjs.git",
-    commit = "<commit-sha>",
-)
+bazel_dep(name = "rules_formatjs", version = "0.11.0")
 ```
 
 ## Usage
@@ -50,11 +40,11 @@ formatjs_extract(
 Compile extracted messages for optimized runtime:
 
 ```starlark
-load("@rules_formatjs//formatjs:defs.bzl", "formatjs_library")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile")
 
-formatjs_library(
+formatjs_compile(
     name = "messages_compiled",
-    src = ":messages_extracted",
+    srcs = [":messages_extracted"],
     out = "en-compiled.json",
     ast = True,  # Compile to AST for better performance
 )
@@ -65,12 +55,12 @@ formatjs_library(
 Verify that translations are complete and correctly formatted:
 
 ```starlark
-load("@rules_formatjs//formatjs:defs.bzl", "formatjs_verify")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_verify_test")
 
-formatjs_verify(
+formatjs_verify_test(
     name = "verify_translations",
-    reference = ":messages_extracted",  # Base language
     translations = [
+        ":messages_extracted",  # Base language
         "translations/es.json",
         "translations/fr.json",
     ],
@@ -107,7 +97,7 @@ bazel build //:all_messages \
 ### Complete Example
 
 ```starlark
-load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract", "formatjs_library", "formatjs_verify")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile", "formatjs_extract", "formatjs_verify_test")
 
 # Extract messages from source files
 formatjs_extract(
@@ -118,30 +108,28 @@ formatjs_extract(
     ]),
     out = "lang/en.json",
     id_interpolation_pattern = "[sha512:contenthash:base64:6]",
-    extract_from_format_message_call = True,
 )
 
 # Compile for production
-formatjs_library(
+formatjs_compile(
     name = "compile_en",
-    src = ":extract_en",
+    srcs = [":extract_en"],
     out = "lang/en-compiled.json",
     ast = True,
 )
 
 # Compile translations
-formatjs_library(
+formatjs_compile(
     name = "compile_es",
-    src = "translations/es.json",
+    srcs = ["translations/es.json"],
     out = "lang/es-compiled.json",
     ast = True,
 )
 
 # Verify translations are complete
-formatjs_verify(
+formatjs_verify_test(
     name = "verify_es",
-    reference = ":extract_en",
-    translations = ["translations/es.json"],
+    translations = [":extract_en", "translations/es.json"],
 )
 ```
 
@@ -153,16 +141,15 @@ Extract messages from source files. This is a **custom Bazel rule** (not a macro
 
 **Attributes:**
 
-| Attribute                          | Type          | Required | Description                                                                                                  |
-| ---------------------------------- | ------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
-| `name`                             | `string`      | Yes      | Target name                                                                                                  |
-| `srcs`                             | `label_list`  | Yes      | List of source files to extract from                                                                         |
-| `out`                              | `string`      | No       | Output JSON file (defaults to `name + ".json"`)                                                              |
-| `id_interpolation_pattern`         | `string`      | No       | Pattern for message ID generation (e.g., `"[sha512:contenthash:base64:6]"`)                                  |
-| `extract_from_format_message_call` | `bool`        | No       | Extract from `formatMessage()` calls                                                                         |
-| `additional_component_names`       | `string_list` | No       | Additional component names to extract from (see [Wrapper Components Guide](/docs/guides/wrapper-components)) |
-| `additional_function_names`        | `string_list` | No       | Additional function names to extract from (see [Wrapper Components Guide](/docs/guides/wrapper-components))  |
-| `ignore`                           | `string_list` | No       | List of glob patterns to ignore                                                                              |
+| Attribute                    | Type          | Required | Description                                                                                                  |
+| ---------------------------- | ------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `name`                       | `string`      | Yes      | Target name                                                                                                  |
+| `srcs`                       | `label_list`  | Yes      | List of source files to extract from                                                                         |
+| `out`                        | `string`      | No       | Output JSON file (defaults to `name + ".json"`)                                                              |
+| `id_interpolation_pattern`   | `string`      | No       | Pattern for message ID generation (e.g., `"[sha512:contenthash:base64:6]"`)                                  |
+| `additional_component_names` | `string_list` | No       | Additional component names to extract from (see [Wrapper Components Guide](/docs/guides/wrapper-components)) |
+| `additional_function_names`  | `string_list` | No       | Additional function names to extract from (see [Wrapper Components Guide](/docs/guides/wrapper-components))  |
+| `ignore`                     | `string_list` | No       | List of glob patterns to ignore                                                                              |
 
 **Providers:**
 
@@ -185,51 +172,50 @@ formatjs_extract(
 )
 ```
 
-### formatjs_library
+### formatjs_compile
 
 Compile extracted messages for optimized runtime.
 
 **Attributes:**
 
-| Attribute | Type     | Required | Description                                                        |
-| --------- | -------- | -------- | ------------------------------------------------------------------ |
-| `name`    | `string` | Yes      | Target name                                                        |
-| `src`     | `label`  | Yes      | Source JSON file with extracted messages                           |
-| `out`     | `string` | No       | Output compiled JSON file (defaults to `name + ".json"`)           |
-| `ast`     | `bool`   | No       | Compile to AST format for better runtime performance (recommended) |
-| `format`  | `string` | No       | Input format: `simple`, `crowdin`, `smartling`, or `transifex`     |
+| Attribute | Type         | Required | Description                                                        |
+| --------- | ------------ | -------- | ------------------------------------------------------------------ |
+| `name`    | `string`     | Yes      | Target name                                                        |
+| `srcs`    | `label_list` | Yes      | Source JSON files with extracted messages                          |
+| `out`     | `string`     | Yes      | Output compiled JSON file                                          |
+| `ast`     | `bool`       | No       | Compile to AST format for better runtime performance (recommended) |
+| `format`  | `string`     | No       | Input format: `simple`, `crowdin`, `smartling`, or `transifex`     |
 
 **Example:**
 
 ```starlark
-formatjs_library(
+formatjs_compile(
     name = "compile_messages",
-    src = ":extract_en",
+    srcs = [":extract_en"],
     out = "en-compiled.json",
     ast = True,
     format = "simple",
 )
 ```
 
-### formatjs_verify
+### formatjs_verify_test
 
 Verify that translations are complete and correctly formatted.
 
 **Attributes:**
 
-| Attribute      | Type         | Required | Description                                           |
-| -------------- | ------------ | -------- | ----------------------------------------------------- |
-| `name`         | `string`     | Yes      | Target name                                           |
-| `reference`    | `label`      | Yes      | Reference messages file (typically the base language) |
-| `translations` | `label_list` | Yes      | List of translation files to verify                   |
+| Attribute      | Type         | Required | Description                                     |
+| -------------- | ------------ | -------- | ----------------------------------------------- |
+| `name`         | `string`     | Yes      | Target name                                     |
+| `translations` | `label_list` | Yes      | Translation files, with the source locale first |
 
 **Example:**
 
 ```starlark
-formatjs_verify(
+formatjs_verify_test(
     name = "verify_translations",
-    reference = ":extract_en",
     translations = [
+        ":extract_en",
         "translations/es.json",
         "translations/fr.json",
         "translations/de.json",
@@ -448,16 +434,16 @@ formatjs_extract(
     id_interpolation_pattern = "[sha512:contenthash:base64:6]",
 )
 
-formatjs_library(
+formatjs_compile(
     name = "compile_dev",
-    src = ":extract_dev",
+    srcs = [":extract_dev"],
+    out = "messages-compiled.json",
     ast = True,
 )
 
-formatjs_verify(
+formatjs_verify_test(
     name = "verify_dev",
-    reference = ":extract_dev",
-    translations = glob(["translations/*.json"]),
+    translations = [":extract_dev"] + glob(["translations/*.json"]),
 )
 ```
 
@@ -481,18 +467,17 @@ formatjs_aggregate(
 )
 
 # Compile with AST
-formatjs_library(
+formatjs_compile(
     name = "compile_prod",
-    src = ":all_app_messages",
+    srcs = [":all_app_messages"],
     out = "app-messages.json",
     ast = True,
 )
 
 # Verify all translations
-formatjs_verify(
+formatjs_verify_test(
     name = "verify_all",
-    reference = ":all_app_messages",
-    translations = glob(["translations/*.json"]),
+    translations = [":all_app_messages"] + glob(["translations/*.json"]),
 )
 ```
 
@@ -518,10 +503,10 @@ bazel test //:verify_all //:verify_es //:verify_fr
 
 ## Examples
 
-Complete working examples are available in the [rules_formatjs repository](https://github.com/formatjs/rules_formatjs):
+Complete working examples live in the FormatJS repository:
 
-- [examples/simple](https://github.com/formatjs/rules_formatjs/tree/main/examples/simple) - Basic message extraction, compilation, and verification
-- [examples/aggregate](https://github.com/formatjs/rules_formatjs/tree/main/examples/aggregate) - Aggregating messages from multiple modules
+- [examples/simple](https://github.com/formatjs/formatjs/tree/main/rules/formatjs/examples/simple) - Basic message extraction, compilation, and verification
+- [examples/aggregate](https://github.com/formatjs/formatjs/tree/main/rules/formatjs/examples/aggregate) - Aggregating messages from multiple modules
 
 ## Comparison with Other Tools
 
@@ -543,8 +528,7 @@ Complete working examples are available in the [rules_formatjs repository](https
 
 1. Verify your `srcs` glob pattern matches your files
 2. Check that you're using standard prop names (see [Wrapper Components Guide](/docs/guides/wrapper-components))
-3. Ensure `extract_from_format_message_call` is enabled if using `formatMessage()`
-4. Add custom components/functions using `additional_component_names` and `additional_function_names`
+3. Add custom components/functions using `additional_component_names` and `additional_function_names`
 
 ### Build errors
 
@@ -573,7 +557,7 @@ Complete working examples are available in the [rules_formatjs repository](https
 - [React Intl](/docs/react-intl)
 - [Wrapper Components Guide](/docs/guides/wrapper-components)
 - [Bazel](https://bazel.build/)
-- [rules_formatjs GitHub Repository](https://github.com/formatjs/rules_formatjs)
+- [rules_formatjs source](https://github.com/formatjs/formatjs/tree/main/rules/formatjs)
 
 ## See Also
 

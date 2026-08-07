@@ -1,0 +1,15 @@
+{
+  "name": "rules_formatjs",
+  "private": true,
+  "description": "Bazel rules for FormatJS",
+  "scripts": {
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-angular": "^21.0.0",
+    "@evilmartians/lefthook": "^2.0.0",
+    "oxfmt": "^0.61.0"
+  },
+  "packageManager": "pnpm@11.11.0"
+}

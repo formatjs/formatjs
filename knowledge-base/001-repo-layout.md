@@ -7,6 +7,7 @@ formatjs/
   packages/           # 33 npm packages (polyfills, parsers, integrations, tools)
   crates/             # Rust crates (CLI, formatter, parser, skeleton parser, N-API)
   tools/              # Custom Bazel macros (ts_compile, vitest, oxc_transpiler, etc.)
+  rules/formatjs/     # Independently released rules_formatjs Bazel module
   docs/               # Documentation site (Vike + React + MDX)
   benchmarks/         # Cross-tool benchmarks (Rust CLI vs TS CLI)
   conformance-tests/  # ICU4J conformance testing
@@ -103,15 +104,16 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 ## CI/CD (GitHub Actions)
 
-| Workflow               | Trigger               | What it does                                                |
-| ---------------------- | --------------------- | ----------------------------------------------------------- |
-| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
-| `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
-| `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
-| `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
-| `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts                        |
-| `website.yml`          | Manual/push           | Deploy docs site                                            |
-| `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint                          |
+| Workflow                     | Trigger                 | What it does                                                |
+| ---------------------------- | ----------------------- | ----------------------------------------------------------- |
+| `test.yml`                   | PR, push to main        | `bazel test //...` on Ubuntu + macOS                        |
+| `release-please.yml`         | Push to main/manual     | Version/changelog PRs, GitHub releases, npm publish handoff |
+| `release.yml`                | Release Please/manual   | `bazel build :dist` then npm Trusted Publishing             |
+| `crates-release.yml`         | Crate releases/manual   | Publish Rust crates through crates.io OIDC                  |
+| `rust-cli-release.yml`       | Tag `formatjs_cli_v*`   | Cross-platform Rust binary artifacts                        |
+| `rules-formatjs-release.yml` | Tag `rules_formatjs_v*` | Rules archive, attestations, and BCR handoff                |
+| `website.yml`                | Manual/push             | Deploy docs site                                            |
+| `verify-hooks.yml`           | PR                      | Verify lefthook hooks + commitlint                          |
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
@@ -138,6 +140,12 @@ CLI binary artifacts remain Bazel-owned in
 when credentials are available, and cross-compiles the macOS, Linux, and Windows
 standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
+
+`rules/formatjs/` stays a separate Bazel module so BCR consumers retain the
+`rules_formatjs` module name and `@rules_formatjs//...` labels. Root Bazel uses
+a local path override plus a source-built CLI toolchain for integration tests;
+the nested module keeps its release-facing downloaded toolchains. Run its full
+suite with `cd rules/formatjs && bazel test //...`.
 
 ## Common Commands
 

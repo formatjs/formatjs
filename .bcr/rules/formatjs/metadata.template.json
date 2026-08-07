@@ -1,0 +1,13 @@
+{
+  "homepage": "https://github.com/formatjs/formatjs/tree/main/rules/formatjs",
+  "maintainers": [
+    {
+      "email": "holevietlong@gmail.com",
+      "github": "longlho",
+      "name": "Long Ho"
+    }
+  ],
+  "repository": ["github:formatjs/formatjs"],
+  "versions": [],
+  "yanked_versions": {}
+}

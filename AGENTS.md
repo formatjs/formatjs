@@ -63,6 +63,9 @@ installation; build and test work should still go through Bazel targets.
   CLIs, and developer tooling.
 - `crates/` contains Rust crates for the CLI and parser mirrors.
 - `tools/` contains Bazel macros and TypeScript build/generation helpers.
+- `rules/formatjs/` is the independently released `rules_formatjs` Bazel
+  module. Test it from that directory; root Bazel consumes it through a local
+  module override.
 - `docs/` is the Vike/React/MDX documentation site.
 - `packages/generated/` and package-local generated-package targets feed
   `@formatjs_generated/*` data packages.
@@ -178,6 +181,10 @@ checksums to the Release Please-created `formatjs_cli_v<version>` release
 without replacing changelog notes. Keep `crates/formatjs_cli/Cargo.toml`,
 `Cargo.lock`, and Bazel version metadata in sync, and verify the built binary's
 `--version`.
+
+`rules_formatjs` releases use `rules_formatjs_v<version>` tags. Keep
+`rules/formatjs/MODULE.bazel` version blank and follow
+`rules/formatjs/docs/releasing.md` through the GitHub release and BCR PR.
 
 ## Scripts And Generators
 

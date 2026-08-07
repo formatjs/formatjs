@@ -208,6 +208,15 @@ Generated package dependencies are ordinary `deps` labels under
 
 ## Custom Bazel Macros
 
+### `rules_formatjs` integration
+
+The independently published module lives under `rules/formatjs/`. Root
+`MODULE.bazel` loads it through `local_path_override`, while
+`//tools/rules_formatjs:local_formatjs_cli_toolchain` binds its actions to the
+source-built `//crates/formatjs_cli` binary. This catches CLI/rule drift before
+either component releases. BCR users still receive the nested module as a
+standalone archive and its downloaded CLI toolchains.
+
 ### `formatjs_library()` (`tools/compile.bzl`)
 
 Consumes Gazelle's mapped `ts_library` output.

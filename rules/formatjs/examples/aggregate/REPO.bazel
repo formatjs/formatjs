@@ -1,0 +1,8 @@
+"""Aggregate example workspace"""
+
+ignore_directories([
+    "bazel-bin",
+    "bazel-out",
+    "bazel-aggregate",
+    "bazel-testlogs",
+])

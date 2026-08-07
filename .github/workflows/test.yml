@@ -98,6 +98,39 @@ jobs:
         working-directory: examples/${{ matrix.example }}
         run: bazel test //...
 
+  rules_formatjs:
+    name: rules_formatjs (${{ matrix.os }}, ${{ matrix.directory }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        directory:
+          - rules/formatjs
+          - rules/formatjs/examples/simple
+          - rules/formatjs/examples/aggregate
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-rules-formatjs
+          repository-cache: true
+
+      - name: Run Tests
+        working-directory: ${{ matrix.directory }}
+        run: bazel test //...
+
+      - name: Run FormatJS CLI From Consumer Workspace
+        if: matrix.directory == 'rules/formatjs/examples/simple'
+        working-directory: ${{ matrix.directory }}
+        run: bazel run @rules_formatjs//cli -- --version
+
   linux_musl_native_smoke:
     name: Linux musl Native Binding Smoke Test (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
@@ -162,6 +195,11 @@ jobs:
           esac
           "$binary_path" --version
           "$binary_path" --help
+
+      - name: rules_formatjs Linux ARM64 Smoke Test
+        if: matrix.arch == 'arm64'
+        working-directory: rules/formatjs
+        run: bazel run @rules_formatjs//cli -- --version
 
       - name: Smoke Test Package In Alpine
         run: |
@@ -292,6 +330,10 @@ jobs:
           console.log(extractedOutput)
           '@
           $script | node - $pkgPath
+
+      - name: rules_formatjs Windows Smoke Test
+        working-directory: rules/formatjs/examples/simple
+        run: bazel run "@rules_formatjs//cli" -- --version
 
   validate-pnpm-lock:
     name: Validate pnpm-lock.yaml

@@ -1,0 +1,15 @@
+"""Simple example using rules_formatjs with native toolchain"""
+
+module(
+    name = "formatjs_example_simple",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_formatjs", version = "0.0.0")
+local_path_override(
+    module_name = "rules_formatjs",
+    path = "../..",
+)
+
+# Test utilities (not required by rules_formatjs users)
+bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")

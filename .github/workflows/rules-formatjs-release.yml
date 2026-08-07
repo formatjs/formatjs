@@ -1,0 +1,38 @@
+name: Release rules_formatjs
+
+on:
+  push:
+    tags:
+      - 'rules_formatjs_v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Existing rules_formatjs tag
+        required: true
+        type: string
+
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v7.7.0
+    with:
+      bazel_test_command: cd rules/formatjs && bazel test //...
+      prerelease: false
+      release_files: rules_formatjs-*.tar.gz
+      tag_name: ${{ inputs.tag_name || github.ref_name }}
+
+  publish:
+    needs: release
+    uses: ./.github/workflows/rules-formatjs-publish.yml
+    with:
+      tag_name: ${{ inputs.tag_name || github.ref_name }}
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
+    secrets:
+      publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}

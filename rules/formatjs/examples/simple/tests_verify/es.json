@@ -1,0 +1,5 @@
+{
+  "greeting": "¡Hola, {name}!",
+  "farewell": "¡Adiós!",
+  "count": "Tienes {count, plural, =0 {ningún artículo} one {# artículo} other {# artículos}}."
+}

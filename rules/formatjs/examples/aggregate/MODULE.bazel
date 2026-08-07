@@ -1,0 +1,20 @@
+"""
+Message Aggregation Example Workspace
+
+This is a standalone Bazel workspace demonstrating the formatjs_aggregate_aspect
+with native FormatJS CLI toolchain (no npm required).
+"""
+
+module(
+    name = "aggregate_example",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_formatjs", version = "0.0.0")
+local_path_override(
+    module_name = "rules_formatjs",
+    path = "../..",
+)
+
+# Test utilities (not required by rules_formatjs users)
+bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")

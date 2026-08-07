@@ -1,0 +1,33 @@
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract")
+load("@rules_formatjs//formatjs_cli:toolchain.bzl", "formatjs_cli_toolchain")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+formatjs_cli_toolchain(
+    name = "local_formatjs_cli",
+    cli = "//crates/formatjs_cli",
+)
+
+toolchain(
+    name = "local_formatjs_cli_toolchain",
+    toolchain = ":local_formatjs_cli",
+    toolchain_type = "@rules_formatjs//formatjs_cli:toolchain_type",
+)
+
+formatjs_extract(
+    name = "messages",
+    srcs = ["messages.tsx"],
+)
+
+sh_test(
+    name = "local_cli_test",
+    size = "small",
+    srcs = ["compare.sh"],
+    args = [
+        "$(location :messages)",
+        "$(location expected.json)",
+    ],
+    data = [
+        "expected.json",
+        ":messages",
+    ],
+)

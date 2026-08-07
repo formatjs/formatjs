@@ -1,0 +1,60 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@rules_formatjs//formatjs:defs.bzl", "formatjs_compile", "formatjs_extract", "formatjs_verify_test")
+
+# Extract messages from source files using native toolchain
+formatjs_extract(
+    name = "extract_messages",
+    srcs = ["src/App.tsx"],
+    out = "messages/en.json",
+)
+
+# Compile messages for production using native toolchain
+# Can reference the output file directly since it uses attr.output
+formatjs_compile(
+    name = "compile_messages",
+    srcs = [":messages/en.json"],
+    out = "messages/en-compiled.json",
+    ast = True,
+)
+
+# Snapshot test for extraction
+write_source_files(
+    name = "test_extract",
+    files = {
+        "extract_messages.fixture.json": ":extract_messages",
+    },
+)
+
+# Update extraction snapshot
+write_source_files(
+    name = "update_extract_fixture",
+    files = {
+        "extract_messages.fixture.json": ":extract_messages",
+    },
+)
+
+# Snapshot test for compilation
+write_source_files(
+    name = "test_compile",
+    files = {
+        "compile_messages.fixture.json": ":compile_messages",
+    },
+)
+
+# Update compilation snapshot
+write_source_files(
+    name = "update_compile_fixture",
+    files = {
+        "compile_messages.fixture.json": ":compile_messages",
+    },
+)
+
+# Verify French translation is valid and complete using native toolchain
+formatjs_verify_test(
+    name = "verify_french_translation",
+    source_locale = "en",
+    translations = [
+        ":extract_messages",  # en.json (source)
+        "messages/fr.json",  # fr.json (translation)
+    ],
+)

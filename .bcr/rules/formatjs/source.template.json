@@ -1,0 +1,6 @@
+{
+  "integrity": "**leave this alone**",
+  "strip_prefix": "rules_formatjs-{VERSION}",
+  "docs_url": "https://github.com/{OWNER}/{REPO}/releases/download/{TAG}/rules_formatjs-{VERSION}.docs.tar.gz",
+  "url": "https://github.com/{OWNER}/{REPO}/releases/download/{TAG}/rules_formatjs-{VERSION}.tar.gz"
+}

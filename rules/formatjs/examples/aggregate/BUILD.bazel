@@ -1,0 +1,2 @@
+# This example uses the native FormatJS CLI toolchain
+# No npm setup needed - the toolchain is configured in rules_formatjs

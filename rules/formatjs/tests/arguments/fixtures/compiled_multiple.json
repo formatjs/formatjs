@@ -1,0 +1,26 @@
+{
+  "merge.first": [
+    {
+      "type": 0,
+      "value": "First message from merge test"
+    }
+  ],
+  "merge.second": [
+    {
+      "type": 0,
+      "value": "Second message from merge test"
+    }
+  ],
+  "test.message": [
+    {
+      "type": 0,
+      "value": "This is a test message"
+    }
+  ],
+  "test.whitespace": [
+    {
+      "type": 0,
+      "value": "This has multiple spaces"
+    }
+  ]
+}

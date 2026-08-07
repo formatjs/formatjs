@@ -42,7 +42,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           git fetch origin ${{ github.base_ref }}
-          commits=$(git rev-list origin/${{ github.base_ref }}..HEAD)
+          # Ignore commits reachable only through imported or merged history.
+          commits=$(git rev-list --first-parent origin/${{ github.base_ref }}..HEAD)
 
           for commit in $commits; do
             echo "Validating commit: $(git log -1 --oneline $commit)"

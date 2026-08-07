@@ -1,0 +1,5 @@
+alias(
+    name = "cli",
+    actual = "//formatjs_cli:cli",
+    visibility = ["//visibility:public"],
+)

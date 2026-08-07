@@ -1,0 +1,14 @@
+{
+  "app.title": {
+    "defaultMessage": "Bienvenue à FormatJS",
+    "description": "Main application title"
+  },
+  "app.description": {
+    "defaultMessage": "Ceci est un exemple d'application React internationalisée utilisant FormatJS et Bazel.",
+    "description": "Application description"
+  },
+  "app.button": {
+    "defaultMessage": "Cliquez-moi!",
+    "description": "Button text"
+  }
+}

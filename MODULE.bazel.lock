@@ -140,6 +140,7 @@
     "https://bcr.bazel.build/modules/package_metadata/0.0.2/MODULE.bazel": "fb8d25550742674d63d7b250063d4580ca530499f045d70748b1b142081ebb92",
     "https://bcr.bazel.build/modules/package_metadata/0.0.3/MODULE.bazel": "77890552ecea9e284b5424c9de827a58099348763a4359e975c359a83d4faa83",
     "https://bcr.bazel.build/modules/package_metadata/0.0.5/MODULE.bazel": "ef4f9439e3270fdd6b9fd4dbc3d2f29d13888e44c529a1b243f7a31dfbc2e8e4",
+    "https://bcr.bazel.build/modules/package_metadata/0.0.6/MODULE.bazel": "341dab6f417197494517d54c8e557c0baee1de7aec83543a4fbefe57900acb7e",
     "https://bcr.bazel.build/modules/package_metadata/0.0.7/MODULE.bazel": "7adb03933fc8401f495800cf4eafcff0edc6da0ff55c7db223ef69d19f689486",
     "https://bcr.bazel.build/modules/package_metadata/0.0.7/source.json": "50639625e937b56115012674c797cca7a05a96b4878c87d803c13dc2b31de8a0",
     "https://bcr.bazel.build/modules/platforms/0.0.10/MODULE.bazel": "8cb8efaf200bdeb2150d93e162c40f388529a25852b332cec879373771e48ed5",
@@ -468,6 +469,88 @@
             "repoRuleId": "@@rules_android+//rules/android_sdk_repository:rule.bzl%_android_sdk_repository",
             "attributes": {}
           }
+        }
+      }
+    },
+    "@@rules_formatjs+//formatjs_cli:extensions.bzl%formatjs_cli": {
+      "general": {
+        "bzlTransitiveDigest": "UhjC1tkkbCBx90zvWjLwHCiEbG1g1/oyN7EsU21Kc8A=",
+        "usagesDigest": "1U2ewJL6iOI3cQOwC4jzNWaUzRppr/227KvS/Gt6J/M=",
+        "recordedInputs": [],
+        "generatedRepoSpecs": {
+          "formatjs_cli_toolchains_darwin_arm64": {
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
+            "attributes": {
+              "version": "1.2.1",
+              "platform": "darwin-arm64",
+              "exec_compatible_with": [
+                "@platforms//os:macos",
+                "@platforms//cpu:arm64"
+              ],
+              "target_compatible_with": []
+            }
+          },
+          "formatjs_cli_toolchains_darwin_x86_64": {
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_placeholder_repo",
+            "attributes": {
+              "platform": "darwin-x86_64"
+            }
+          },
+          "formatjs_cli_toolchains_linux_x64": {
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
+            "attributes": {
+              "version": "1.2.1",
+              "platform": "linux-x64",
+              "exec_compatible_with": [
+                "@platforms//os:linux",
+                "@platforms//cpu:x86_64"
+              ],
+              "target_compatible_with": []
+            }
+          },
+          "formatjs_cli_toolchains_linux_aarch64": {
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
+            "attributes": {
+              "version": "1.2.1",
+              "platform": "linux-aarch64",
+              "exec_compatible_with": [
+                "@platforms//os:linux",
+                "@platforms//cpu:aarch64"
+              ],
+              "target_compatible_with": []
+            }
+          },
+          "formatjs_cli_toolchains_windows_x86_64": {
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_repo",
+            "attributes": {
+              "version": "1.2.1",
+              "platform": "windows-x86_64",
+              "exec_compatible_with": [
+                "@platforms//os:windows",
+                "@platforms//cpu:x86_64"
+              ],
+              "target_compatible_with": []
+            }
+          },
+          "formatjs_cli_toolchains": {
+            "repoRuleId": "@@rules_formatjs+//formatjs_cli:repositories.bzl%_formatjs_cli_toolchains_repo",
+            "attributes": {
+              "user_repository_name": "formatjs_cli_toolchains"
+            }
+          }
+        },
+        "moduleExtensionMetadata": {
+          "explicitRootModuleDirectDeps": [
+            "formatjs_cli_toolchains",
+            "formatjs_cli_toolchains_darwin_arm64",
+            "formatjs_cli_toolchains_darwin_x86_64",
+            "formatjs_cli_toolchains_linux_x64",
+            "formatjs_cli_toolchains_linux_aarch64",
+            "formatjs_cli_toolchains_windows_x86_64"
+          ],
+          "explicitRootModuleDirectDevDeps": [],
+          "useAllRepos": "NO",
+          "reproducible": false
         }
       }
     },

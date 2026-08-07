@@ -1,0 +1,7 @@
+# Examples are separate workspaces
+examples
+# Bazel convenience symlinks
+bazel-bin
+bazel-out
+bazel-rules_formatjs
+bazel-testlogs

@@ -1,0 +1,49 @@
+"""FormatJS build rules"""
+
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+exports_files([
+    "defs.bzl",
+    "extract.bzl",
+    "compile.bzl",
+    "aggregate.bzl",
+    "verify.bzl",
+])
+
+bzl_library(
+    name = "aggregate",
+    srcs = ["aggregate.bzl"],
+    deps = [":extract"],
+)
+
+bzl_library(
+    name = "compile",
+    srcs = ["compile.bzl"],
+)
+
+bzl_library(
+    name = "defs",
+    srcs = ["defs.bzl"],
+    deps = [
+        ":aggregate",
+        ":compile",
+        ":extract",
+        ":verify",
+    ],
+)
+
+bzl_library(
+    name = "extract",
+    srcs = ["extract.bzl"],
+)
+
+bzl_library(
+    name = "verify",
+    srcs = ["verify.bzl"],
+)
+
+starlark_doc_extract(
+    name = "defs.doc_extract",
+    src = "defs.bzl",
+    deps = [":defs"],
+)

@@ -1,0 +1,6 @@
+{
+  "rust.greeting": {
+    "defaultMessage": "Hello from Rust!",
+    "description": "Greeting from Rust"
+  }
+}

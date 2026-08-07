@@ -93,6 +93,19 @@ use_repo(rules_ts_ext, "npm_typescript")
 
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
 
+######### FormatJS Bazel rules #########
+
+bazel_dep(name = "rules_formatjs", version = "0.0.0", dev_dependency = True)
+local_path_override(
+    module_name = "rules_formatjs",
+    path = "rules/formatjs",
+)
+
+register_toolchains(
+    "//tools/rules_formatjs:local_formatjs_cli_toolchain",
+    dev_dependency = True,
+)
+
 ######### Multirun rules #########
 
 bazel_dep(name = "rules_multirun", version = "0.13.0")
