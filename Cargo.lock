@@ -492,7 +492,7 @@ dependencies = [
  "serde_json",
  "sha1",
  "sha2",
- "syn 2.0.119",
+ "syn 3.0.3",
  "tempfile",
  "walkdir",
 ]
@@ -566,7 +566,7 @@ dependencies = [
  "base64",
  "quote",
  "sha2",
- "syn 2.0.119",
+ "syn 3.0.3",
 ]
 
 [[package]]
