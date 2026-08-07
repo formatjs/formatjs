@@ -1,5 +1,46 @@
 # Changelog
 
+## 0.3.0 (2026-08-07)
+
+## What's Changed
+* chore(deps): update dependency webpack to v5.109.2 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6987
+* build: remove root npmrc by @longlho in https://github.com/formatjs/formatjs/pull/6988
+* fix: skip unpublished Rust crates by @longlho in https://github.com/formatjs/formatjs/pull/6992
+* chore(deps): update rust crate serde_json to v1.0.151 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6945
+* chore(deps): update rust crate serde to v1.0.229 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6944
+* chore(deps): update rust crate anyhow to v1.0.104 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6943
+* fix(deps): update rust crate base64 to 0.23 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6971
+* chore(deps): update rust crate fast-glob to v1.1.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6969
+* chore(deps): update rust crate proc-macro2 to v1.0.107 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6990
+* fix: handle Cargo publish and merge options by @longlho in https://github.com/formatjs/formatjs/pull/6993
+* chore(deps): update pnpm to v11.18.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6968
+* chore(deps): update rust crate quote to v1.0.47 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6995
+* chore(deps): update rust crate syn to v2.0.119 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6996
+* fix(deps): update formatjs monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6999
+* fix(deps): update dependency eslint-plugin-formatjs to v6.4.20 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6998
+* chore(deps): update dependency rolldown to v1.2.1 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6965
+* chore(deps): update dependency eslint to v10.8.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6957
+* fix(deps): update react monorepo by @renovate[bot] in https://github.com/formatjs/formatjs/pull/6956
+* chore(deps): update dependency lucide-react to v1.28.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7001
+* chore(deps): update dependency codescythe to ^0.10.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7000
+* chore(deps): update dependency oxlint to v1.76.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7003
+* chore(deps): update dependency vite to v8.2.0 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7007
+* fix(formatjs_cli): fail on input resolution errors by @longlho in https://github.com/formatjs/formatjs/pull/7005
+* feat(formatjs_intl): add extractable format_message macro by @longlho in https://github.com/formatjs/formatjs/pull/7018
+* fix(deps): update rust crate syn to v3 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7017
+* fix(deps): update dependency babel-plugin-formatjs to v13 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7014
+* chore(deps): update actions/stale action to v11 by @renovate[bot] in https://github.com/formatjs/formatjs/pull/7011
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_intl_v0.2.0...formatjs_intl_v0.3.0
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_macros bumped from 0.1.1 to 0.1.2
+
 ## 0.2.0 (2026-08-07)
 
 ## What's Changed
