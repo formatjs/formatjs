@@ -83,11 +83,12 @@ pub fn extract_to_string(
     follow_links: bool,
 ) -> Result<String> {
     // Step 1: Resolve file list from glob patterns or in_file
-    let file_list = if let Some(in_f) = in_file {
+    let input_files = if let Some(in_f) = in_file {
         read_file_list(in_f)?
     } else {
-        resolve_files_from_globs(files, ignore, follow_links, throws)?
+        files.to_vec()
     };
+    let file_list = resolve_files_from_globs(&input_files, ignore, follow_links, throws)?;
 
     // Step 2: Extract messages from all files
     let mut all_messages: BTreeMap<String, MessageDescriptor> = BTreeMap::new();
@@ -252,9 +253,19 @@ fn resolve_files_from_globs(
 
         match fs::metadata(glob_path) {
             Ok(metadata) if metadata.is_file() => {
-                if !should_ignore(glob_path, ignore) && is_supported_file(glob_path) {
-                    files.push(glob_path.to_path_buf());
+                if should_ignore(glob_path, ignore) {
+                    continue;
                 }
+                if is_supported_file(glob_path) {
+                    files.push(glob_path.to_path_buf());
+                    continue;
+                }
+
+                let message = format!("Unsupported input file type: {}", glob_path.display());
+                if throws {
+                    anyhow::bail!(message);
+                }
+                eprintln!("{message}");
                 continue;
             }
             Ok(_) if !is_glob => {
@@ -290,6 +301,7 @@ fn resolve_files_from_globs(
                         base_dir.display()
                     );
                 }
+                // A glob matching nothing is valid in best-effort mode.
                 continue;
             }
             Err(error) => {
@@ -833,6 +845,20 @@ fn main() {
             error
                 .to_string()
                 .contains(&format!("Failed to resolve input file {}", missing_file.display()))
+        );
+    }
+
+    #[test]
+    fn test_resolve_files_unsupported_literal_throws() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let unsupported_file = temp_dir.path().join("messages.txt");
+        fs::write(&unsupported_file, "not source").unwrap();
+        let error =
+            resolve_files_from_globs(&[unsupported_file.clone()], &[], true, true).unwrap_err();
+
+        assert_eq!(
+            error.to_string(),
+            format!("Unsupported input file type: {}", unsupported_file.display())
         );
     }
 
@@ -2239,6 +2265,40 @@ const msg = defineMessage({
             &[missing_file.clone()],
             None,
             None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap_err();
+
+        assert!(
+            error
+                .to_string()
+                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
+        );
+        assert!(!output_file.exists());
+    }
+
+    #[test]
+    fn test_extract_in_file_with_throws_true_fails_on_missing_input() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let missing_file = temp_dir.path().join("missing.tsx");
+        let input_file = temp_dir.path().join("files.txt");
+        let output_file = temp_dir.path().join("output.json");
+        fs::write(&input_file, format!("{}\n", missing_file.display())).unwrap();
+
+        let error = extract(
+            &[],
+            None,
+            Some(&input_file),
             Some(&output_file),
             "[sha512:contenthash:base64:6]",
             false,
