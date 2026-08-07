@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-formatjs",
-  "version": "6.4.20",
+  "version": "6.4.21",
   "description": "ESLint plugin for formatjs",
   "keywords": [
     "eslint",
