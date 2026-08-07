@@ -12,13 +12,13 @@ importers:
     dependencies:
       '@rescripts/cli':
         specifier: 0.0.16
-        version: 0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))(supports-color@8.1.1)(typescript@7.0.2)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))
+        version: 0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))(supports-color@8.1.1)(typescript@7.0.2)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))
       '@rescripts/rescript-use-babel-config':
         specifier: 0.0.12
-        version: 0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
+        version: 0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
       '@rescripts/rescript-use-eslint-config':
         specifier: 0.0.11
-        version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
+        version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
       babel-plugin-formatjs:
         specifier: 11.3.16
         version: 11.3.16(supports-color@8.1.1)
@@ -26,24 +26,24 @@ importers:
         specifier: 6.4.20
         version: 6.4.20(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))
       react:
-        specifier: 19.2.7
-        version: 19.2.7
+        specifier: 19.2.8
+        version: 19.2.8
       react-dom:
-        specifier: 19.2.7
-        version: 19.2.7(react@19.2.7)
+        specifier: 19.2.8
+        version: 19.2.8(react@19.2.8)
       react-intl:
         specifier: 10.1.19
-        version: 10.1.19(@types/react@19.2.17)(react@19.2.7)
+        version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
       react-scripts:
         specifier: 5.0.1
-        version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
+        version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
     devDependencies:
       '@types/react':
-        specifier: 19.2.17
-        version: 19.2.17
+        specifier: 19.2.18
+        version: 19.2.18
       '@types/react-dom':
-        specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.17)
+        specifier: 19.2.4
+        version: 19.2.4(@types/react@19.2.18)
       babel-plugin-react-require:
         specifier: 4.0.3
         version: 4.0.3
@@ -1350,13 +1350,13 @@ packages:
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
-  '@types/react-dom@19.2.3':
-    resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
+  '@types/react-dom@19.2.4':
+    resolution: {integrity: sha512-Bsc+QHgp+P/F02XDzNCY9jnZNCUuLki36KT7VKrTXXLdHf+vHMNZnW1rVu5DNW/rCK+fya3DATySbLM4yhtKUw==}
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.17':
-    resolution: {integrity: sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==}
+  '@types/react@19.2.18':
+    resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -5040,10 +5040,10 @@ packages:
       typescript:
         optional: true
 
-  react-dom@19.2.7:
-    resolution: {integrity: sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ==}
+  react-dom@19.2.8:
+    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
-      react: ^19.2.7
+      react: ^19.2.8
 
   react-error-overlay@5.1.6:
     resolution: {integrity: sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==}
@@ -5082,8 +5082,8 @@ packages:
       typescript:
         optional: true
 
-  react@19.2.7:
-    resolution: {integrity: sha512-HNe9WslTbXmFK8o8cmwgAeJFSBvt1bPdHCVKtaaV+WlAN36mpT4hcRpwbf3fY56ar2oIXzsBpOAiIRHAdY0OlQ==}
+  react@19.2.8:
+    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -7594,40 +7594,40 @@ snapshots:
       type-fest: 0.21.3
       webpack-dev-server: 4.15.2(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))
 
-  '@rescripts/cli@0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))(supports-color@8.1.1)(typescript@7.0.2)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))':
+  '@rescripts/cli@0.0.16(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))(supports-color@8.1.1)(typescript@7.0.2)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))':
     dependencies:
-      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
+      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
       ramda: 0.26.1
       react-dev-utils: 7.0.5(supports-color@8.1.1)(typescript@7.0.2)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
       - webpack
 
-  '@rescripts/rescript-use-babel-config@0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
+  '@rescripts/rescript-use-babel-config@0.0.12(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
     dependencies:
-      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
+      '@rescripts/utilities': 0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
       ramda: 0.26.1
     transitivePeerDependencies:
       - react-scripts
 
-  '@rescripts/rescript-use-eslint-config@0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
+  '@rescripts/rescript-use-eslint-config@0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
     dependencies:
-      '@rescripts/utilities': 0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
+      '@rescripts/utilities': 0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
       ramda: 0.26.1
     transitivePeerDependencies:
       - react-scripts
 
-  '@rescripts/utilities@0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
+  '@rescripts/utilities@0.0.7(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
     dependencies:
       ramda: 0.26.1
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
 
-  '@rescripts/utilities@0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
+  '@rescripts/utilities@0.0.8(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))':
     dependencies:
       ramda: 0.26.1
-      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
+      react-scripts: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
 
   '@rollup/plugin-babel@5.3.1(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@2.80.0)(supports-color@8.1.1)':
     dependencies:
@@ -7884,11 +7884,11 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@19.2.3(@types/react@19.2.17)':
+  '@types/react-dom@19.2.4(@types/react@19.2.18)':
     dependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.2.18
 
-  '@types/react@19.2.17':
+  '@types/react@19.2.18':
     dependencies:
       csstype: 3.2.3
 
@@ -12176,22 +12176,22 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-dom@19.2.7(react@19.2.7):
+  react-dom@19.2.8(react@19.2.8):
     dependencies:
-      react: 19.2.7
+      react: 19.2.8
       scheduler: 0.27.0
 
   react-error-overlay@5.1.6: {}
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@10.1.19(@types/react@19.2.17)(react@19.2.7):
+  react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.16
       '@formatjs/intl': 4.1.18
-      '@types/react': 19.2.17
+      '@types/react': 19.2.18
       intl-messageformat: 11.2.13
-      react: 19.2.7
+      react: 19.2.8
 
   react-is@16.13.1: {}
 
@@ -12201,7 +12201,7 @@ snapshots:
 
   react-refresh@0.11.0: {}
 
-  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.7)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2):
+  react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.17(react-refresh@0.11.0)(type-fest@0.21.3)(webpack-dev-server@4.15.2(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15)))(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))
@@ -12235,7 +12235,7 @@ snapshots:
       postcss-normalize: 10.0.1(browserslist@4.28.2)(postcss@8.5.15)
       postcss-preset-env: 7.8.3(postcss@8.5.15)
       prompts: 2.4.2
-      react: 19.2.7
+      react: 19.2.8
       react-app-polyfill: 3.0.0
       react-dev-utils: 12.0.1(eslint@10.8.0(jiti@1.21.7)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@7.0.2)(webpack@5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15))
       react-refresh: 0.11.0
@@ -12296,7 +12296,7 @@ snapshots:
       - webpack-plugin-serve
       - yaml
 
-  react@19.2.7: {}
+  react@19.2.8: {}
 
   read-cache@1.0.0:
     dependencies:
