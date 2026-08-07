@@ -2,7 +2,10 @@ import {appendFileSync} from 'node:fs'
 import {createRequire} from 'node:module'
 
 import {githubOutputRecord} from './github-output.ts'
-import {createCargoWorkspacePlugin} from './cargo-workspace-plugin.ts'
+import {
+  createCargoWorkspacePlugin,
+  resolveWorkspacePluginOptions,
+} from './cargo-workspace-plugin.ts'
 import {BazelNpmWorkspace} from './npm-workspace-plugin.ts'
 
 const require = createRequire(import.meta.url)
@@ -84,32 +87,20 @@ function outputPullRequests(pullRequests) {
 
 function registerFormatjsPlugin() {
   registerPlugin('formatjs-cargo-workspace', options => {
-    const typeOptions =
-      options.type && typeof options.type === 'object' ? options.type : {}
     return new FormatjsCargoWorkspace(
       options.github,
       options.targetBranch,
       options.repositoryConfig,
-      {
-        ...options,
-        ...typeOptions,
-        merge: typeOptions.merge ?? !options.separatePullRequests,
-      }
+      resolveWorkspacePluginOptions(options)
     )
   })
 
   registerPlugin('formatjs-bazel-workspace', options => {
-    const typeOptions =
-      options.type && typeof options.type === 'object' ? options.type : {}
     return new BazelNpmWorkspace(
       options.github,
       options.targetBranch,
       options.repositoryConfig,
-      {
-        ...options,
-        ...typeOptions,
-        merge: typeOptions.merge ?? !options.separatePullRequests,
-      }
+      resolveWorkspacePluginOptions(options)
     )
   })
 }
