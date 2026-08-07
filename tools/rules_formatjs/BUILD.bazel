@@ -1,6 +1,7 @@
 load("@rules_formatjs//formatjs:defs.bzl", "formatjs_extract")
 load("@rules_formatjs//formatjs_cli:toolchain.bzl", "formatjs_cli_toolchain")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//tools:compile.bzl", "formatjs_library")
 
 formatjs_cli_toolchain(
     name = "local_formatjs_cli",
@@ -30,4 +31,11 @@ sh_test(
         "expected.json",
         ":messages",
     ],
+)
+
+formatjs_library(
+    name = "rules_formatjs",
+    srcs = ["messages.tsx"],
+    visibility = ["//visibility:public"],
+    deps = ["//:node_modules/react-intl"],
 )
