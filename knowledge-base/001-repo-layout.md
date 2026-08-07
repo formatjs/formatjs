@@ -129,7 +129,9 @@ npm publish workflow builds the Bazel `:dist` output and uses npm Trusted
 Publishing, then publishes only the package paths Release Please released. Rust
 crate publishing happens in
 `crates-release.yml` from crate GitHub releases using crates.io trusted
-publishing. Crate release runs share a FIFO `queue: max` concurrency group so
+publishing. The custom Cargo workspace plugin excludes crates with
+`package.publish = false` before dependency release propagation. Crate release
+runs share a FIFO `queue: max` concurrency group so
 dependency-ordered releases wait instead of replacing pending runs. The Rust
 CLI binary artifacts remain Bazel-owned in
 `rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE

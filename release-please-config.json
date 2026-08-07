@@ -493,7 +493,7 @@
   },
   "plugins": [
     {
-      "type": "cargo-workspace",
+      "type": "formatjs-cargo-workspace",
       "merge": false
     },
     {
