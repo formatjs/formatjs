@@ -101,6 +101,32 @@ formatjs extract "src/**/*.rs" --out-file messages.json
 
 Use `id: "greeting"` when a stable semantic ID is preferred.
 
+## Inline formatting
+
+`format_message!` creates an extractable descriptor and formats it in one
+expression. `values` is optional:
+
+```rust
+use formatjs_intl::format_message;
+
+let title = format_message!(
+    &intl,
+    default_message: "Approve to continue",
+    description: "Approval card title",
+);
+let greeting = format_message!(
+    &intl,
+    default_message: "Hello, {name}!",
+    description: "Greeting shown after sign-in",
+    values: &values,
+);
+```
+
+The macro returns `String`. It uses normal catalog and default-message fallback.
+If cache infrastructure prevents formatting, it reports the error through
+`with_on_error` and returns `default_message` verbatim. Use
+`format_message_to_string` when explicit `Result` handling is required.
+
 ## Shared cache
 
 `IntlCache` stores parsed messages by source string. Share one `Arc<IntlCache>`

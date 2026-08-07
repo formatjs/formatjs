@@ -39,10 +39,35 @@ assert_eq!(intl.format_message_to_string(TASKS, &values)?, "2 tâches");
 # Ok::<(), formatjs_intl::Error>(())
 ```
 
+Use `format_message!` for inline application copy. It creates the same
+descriptor, is recognized by `formatjs extract`, and returns a `String`:
+
+```rust
+# use formatjs_icu_messageformat::Values;
+# use formatjs_intl::{Intl, format_message};
+# fn render(intl: &Intl, values: &Values<String>) {
+let title = format_message!(
+    intl,
+    default_message: "Approve to continue",
+    description: "Approval card title",
+);
+let detail = format_message!(
+    intl,
+    default_message: "Allow access to {path}?",
+    description: "Directory approval explanation",
+    values: values,
+);
+# }
+```
+
+If cache infrastructure fails, this macro reports the error through
+`with_on_error` and returns `default_message` verbatim. Fallible formatting
+methods remain available when callers need explicit error handling.
+
 Message formatting falls back from the selected locale catalog to the default
 locale catalog, then the descriptor's `default_message`. Invalid translations
-also use this chain. Attach `with_on_error` to observe formatting errors while
-returning the fallback:
+also use this chain. Attach `with_on_error` to observe recovered formatting and
+infrastructure errors:
 
 ```rust
 # use formatjs_intl::{FormatMessageError, Intl};
