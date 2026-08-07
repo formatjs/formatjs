@@ -507,6 +507,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_icu_messageformat"
+version = "0.1.2"
+dependencies = [
+ "fixed_decimal",
+ "formatjs_icu_messageformat_parser",
+ "formatjs_icu_skeleton_parser",
+ "icu",
+]
+
+[[package]]
 name = "formatjs_icu_messageformat_parser"
 version = "0.3.0"
 dependencies = [
@@ -530,13 +540,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "formatjs_icu_messageformat"
+name = "formatjs_icu_skeleton_parser"
 version = "0.1.2"
 dependencies = [
- "fixed_decimal",
- "formatjs_icu_messageformat_parser",
- "formatjs_icu_skeleton_parser",
- "icu",
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -557,16 +567,6 @@ dependencies = [
  "quote",
  "sha2",
  "syn 2.0.117",
-]
-
-[[package]]
-name = "formatjs_icu_skeleton_parser"
-version = "0.1.2"
-dependencies = [
- "once_cell",
- "regex",
- "serde",
- "serde_json",
 ]
 
 [[package]]
@@ -1895,9 +1895,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.150"
+version = "1.0.151"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8014e44b4736ed0538adeecded0fce2a272f22dc9578a7eb6b2d9993c74cfb9"
+checksum = "c841b55ecdae098c80dcae9cf767f6f8a0c2cdb3416bbef72181df4d0fe73f14"
 dependencies = [
  "indexmap",
  "itoa",
