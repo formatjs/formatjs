@@ -35,7 +35,7 @@ oxc_span = "0.141"
 sha2 = "0.11"
 sha1 = "0.11"
 md-5 = "0.11"
-base64 = "0.22"
+base64 = "0.23"
 hex = "0.4"
 rayon = "1.12"
 proc-macro2 = { version = "1.0", features = ["span-locations"] }

@@ -17,7 +17,7 @@ path = "lib.rs"
 proc-macro = true
 
 [dependencies]
-base64 = "0.22"
+base64 = "0.23"
 quote = "1.0"
 sha2 = "0.11"
 syn = { version = "2.0", features = ["full", "parsing"] }

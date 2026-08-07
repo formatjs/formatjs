@@ -102,9 +102,9 @@ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
 name = "base64"
-version = "0.22.1"
+version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
+checksum = "ac07cdecf99051d9a5238b80f35af32cdeba5b336e55d957b318b50137e18da5"
 
 [[package]]
 name = "bitflags"
@@ -507,6 +507,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_icu_messageformat"
+version = "0.1.2"
+dependencies = [
+ "fixed_decimal",
+ "formatjs_icu_messageformat_parser",
+ "formatjs_icu_skeleton_parser",
+ "icu",
+]
+
+[[package]]
 name = "formatjs_icu_messageformat_parser"
 version = "0.3.0"
 dependencies = [
@@ -530,13 +540,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "formatjs_icu_messageformat"
+name = "formatjs_icu_skeleton_parser"
 version = "0.1.2"
 dependencies = [
- "fixed_decimal",
- "formatjs_icu_messageformat_parser",
- "formatjs_icu_skeleton_parser",
- "icu",
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -557,16 +567,6 @@ dependencies = [
  "quote",
  "sha2",
  "syn 2.0.117",
-]
-
-[[package]]
-name = "formatjs_icu_skeleton_parser"
-version = "0.1.2"
-dependencies = [
- "once_cell",
- "regex",
- "serde",
- "serde_json",
 ]
 
 [[package]]
