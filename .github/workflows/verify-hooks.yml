@@ -35,6 +35,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
             git diff
+            git diff --cached
             exit 1
           fi
 
