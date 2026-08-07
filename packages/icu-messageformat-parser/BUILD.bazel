@@ -32,7 +32,7 @@ formatjs_library(
     },
     type = "module",
     types = True,
-    version = "3.5.16",  # x-release-please-version
+    version = "3.5.17",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
