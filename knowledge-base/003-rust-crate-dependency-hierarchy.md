@@ -118,6 +118,7 @@ support Rust 1.92 and newer.
 **Key implementation details:**
 
 - Uses **oxc** (v0.120) for JS/TS/JSX/TSX AST parsing (no Node.js dependency)
+- With `extract --throws`, input metadata and directory traversal errors fail the command instead of producing a partial catalog
 - **Whitespace normalization** (`extractor.rs`): Matches TypeScript CLI behavior exactly, including U+00A0 (non-breaking space) preservation via placeholder technique
 - **ID generation** (`id_generator.rs`): loader-utils style `hash`/`contenthash` interpolation with md5, sha1, and SHA-2 algorithms plus base64/base64url/base62/hex encodings. Hash is computed AFTER flattening (matching TypeScript CLI order)
 - **6 output formatters:** default, simple, crowdin, lokalise, transifex, smartling
