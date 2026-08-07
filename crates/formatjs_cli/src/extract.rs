@@ -83,11 +83,12 @@ pub fn extract_to_string(
     follow_links: bool,
 ) -> Result<String> {
     // Step 1: Resolve file list from glob patterns or in_file
-    let file_list = if let Some(in_f) = in_file {
+    let input_files = if let Some(in_f) = in_file {
         read_file_list(in_f)?
     } else {
-        resolve_files_from_globs(files, ignore, follow_links)?
+        files.to_vec()
     };
+    let file_list = resolve_files_from_globs(&input_files, ignore, follow_links, throws)?;
 
     // Step 2: Extract messages from all files
     let mut all_messages: BTreeMap<String, MessageDescriptor> = BTreeMap::new();
@@ -240,32 +241,96 @@ fn resolve_files_from_globs(
     globs: &[PathBuf],
     ignore: &[String],
     follow_links: bool,
+    throws: bool,
 ) -> Result<Vec<PathBuf>> {
     let mut files = Vec::new();
 
     for glob_path in globs {
-        if glob_path.is_file() {
-            if !should_ignore(glob_path, ignore) && is_supported_file(glob_path) {
-                files.push(glob_path.to_path_buf());
-            }
-            continue;
-        }
-
         let glob_str = glob_path
             .to_str()
             .context("Invalid UTF-8 in glob pattern")?;
+        let is_glob = glob_str.contains(|c| matches!(c, '*' | '?' | '[' | '{'));
+
+        match fs::metadata(glob_path) {
+            Ok(metadata) if metadata.is_file() => {
+                if should_ignore(glob_path, ignore) {
+                    continue;
+                }
+                if is_supported_file(glob_path) {
+                    files.push(glob_path.to_path_buf());
+                    continue;
+                }
+
+                let message = format!("Unsupported input file type: {}", glob_path.display());
+                if throws {
+                    anyhow::bail!(message);
+                }
+                eprintln!("{message}");
+                continue;
+            }
+            Ok(_) if !is_glob => {
+                let message = format!("Input path is not a file: {}", glob_path.display());
+                if throws {
+                    anyhow::bail!(message);
+                }
+                eprintln!("{message}");
+                continue;
+            }
+            Err(error) if !is_glob => {
+                let message = format!(
+                    "Failed to resolve input file {}: {error}",
+                    glob_path.display()
+                );
+                if throws {
+                    anyhow::bail!(message);
+                }
+                eprintln!("{message}");
+                continue;
+            }
+            _ => {}
+        }
 
         let base_dir = extract_base_dir(glob_str);
 
-        if !base_dir.exists() {
-            continue;
+        match base_dir.try_exists() {
+            Ok(true) => {}
+            Ok(false) => {
+                if throws {
+                    anyhow::bail!(
+                        "Failed to resolve glob pattern {glob_str}: base directory {} does not exist",
+                        base_dir.display()
+                    );
+                }
+                // A glob matching nothing is valid in best-effort mode.
+                continue;
+            }
+            Err(error) => {
+                let message = format!(
+                    "Failed to access base directory {} for glob pattern {glob_str}: {error}",
+                    base_dir.display()
+                );
+                if throws {
+                    anyhow::bail!(message);
+                }
+                eprintln!("{message}");
+                continue;
+            }
         }
 
-        for entry in WalkDir::new(&base_dir)
-            .follow_links(follow_links)
-            .into_iter()
-            .filter_map(|e| e.ok())
-        {
+        for entry in WalkDir::new(&base_dir).follow_links(follow_links) {
+            let entry = match entry {
+                Ok(entry) => entry,
+                Err(error) => {
+                    let message = format!(
+                        "Failed to traverse files for glob pattern {glob_str}: {error}"
+                    );
+                    if throws {
+                        anyhow::bail!(message);
+                    }
+                    eprintln!("{message}");
+                    continue;
+                }
+            };
             let path = entry.path();
 
             // Skip directories
@@ -499,7 +564,7 @@ import { FormattedMessage } from 'react-intl';
 
         let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
         let globs = vec![PathBuf::from(&pattern)];
-        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true, false).unwrap();
 
         assert_eq!(files.len(), 2);
         let extensions: Vec<String> = files
@@ -725,7 +790,7 @@ fn main() {
         let pattern = format!("{}/**/*.ts", temp_dir.path().display());
         let globs = vec![PathBuf::from(&pattern)];
         let ignore = vec!["**/node_modules/**".to_string(), "**/*.test.ts".to_string()];
-        let files = resolve_files_from_globs(&globs, &ignore, true).unwrap();
+        let files = resolve_files_from_globs(&globs, &ignore, true, false).unwrap();
 
         assert_eq!(files.len(), 1);
         assert!(files[0].to_string_lossy().contains("app.ts"));
@@ -743,7 +808,7 @@ fn main() {
 
         let pattern = format!("{}/**/*.{{ts,tsx}}", temp_dir.path().display());
         let globs = vec![PathBuf::from(&pattern)];
-        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true, false).unwrap();
 
         assert_eq!(files.len(), 2);
         let names: Vec<String> = files
@@ -757,8 +822,58 @@ fn main() {
     #[test]
     fn test_resolve_files_nonexistent_base_dir() {
         let globs = vec![PathBuf::from("/nonexistent/path/**/*.ts")];
-        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true, false).unwrap();
         assert!(files.is_empty());
+    }
+
+    #[test]
+    fn test_resolve_files_nonexistent_base_dir_throws() {
+        let globs = vec![PathBuf::from("/nonexistent/path/**/*.ts")];
+        let error = resolve_files_from_globs(&globs, &[], true, true).unwrap_err();
+
+        assert!(error.to_string().contains("base directory /nonexistent/path does not exist"));
+    }
+
+    #[test]
+    fn test_resolve_files_missing_literal_throws() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let missing_file = temp_dir.path().join("missing.tsx");
+        let error =
+            resolve_files_from_globs(&[missing_file.clone()], &[], true, true).unwrap_err();
+
+        assert!(
+            error
+                .to_string()
+                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
+        );
+    }
+
+    #[test]
+    fn test_resolve_files_unsupported_literal_throws() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let unsupported_file = temp_dir.path().join("messages.txt");
+        fs::write(&unsupported_file, "not source").unwrap();
+        let error =
+            resolve_files_from_globs(&[unsupported_file.clone()], &[], true, true).unwrap_err();
+
+        assert_eq!(
+            error.to_string(),
+            format!("Unsupported input file type: {}", unsupported_file.display())
+        );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn test_resolve_files_walk_error_throws() {
+        use std::os::unix::fs::symlink;
+
+        let temp_dir = tempfile::tempdir().unwrap();
+        symlink(temp_dir.path(), temp_dir.path().join("loop")).unwrap();
+        let pattern = format!("{}/**/*.ts", temp_dir.path().display());
+        let error =
+            resolve_files_from_globs(&[PathBuf::from(pattern)], &[], true, true).unwrap_err();
+
+        assert!(error.to_string().contains("Failed to traverse files"));
     }
 
     #[test]
@@ -769,7 +884,7 @@ fn main() {
         fs::write(&file, "// app").unwrap();
 
         let globs = vec![file.clone()];
-        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true, false).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0], file);
@@ -784,7 +899,7 @@ fn main() {
         fs::write(&file, "// app").unwrap();
 
         let globs = vec![file.clone()];
-        let files = resolve_files_from_globs(&globs, &[], true).unwrap();
+        let files = resolve_files_from_globs(&globs, &[], true, false).unwrap();
 
         assert_eq!(files.len(), 1);
         assert_eq!(files[0], file);
@@ -2138,5 +2253,71 @@ const msg = defineMessage({
             result.is_err(),
             "Extract should fail with throws:true when any file has errors"
         );
+    }
+
+    #[test]
+    fn test_extract_with_throws_true_fails_on_missing_input() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let missing_file = temp_dir.path().join("missing.tsx");
+        let output_file = temp_dir.path().join("output.json");
+
+        let error = extract(
+            &[missing_file.clone()],
+            None,
+            None,
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap_err();
+
+        assert!(
+            error
+                .to_string()
+                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
+        );
+        assert!(!output_file.exists());
+    }
+
+    #[test]
+    fn test_extract_in_file_with_throws_true_fails_on_missing_input() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let missing_file = temp_dir.path().join("missing.tsx");
+        let input_file = temp_dir.path().join("files.txt");
+        let output_file = temp_dir.path().join("output.json");
+        fs::write(&input_file, format!("{}\n", missing_file.display())).unwrap();
+
+        let error = extract(
+            &[],
+            None,
+            Some(&input_file),
+            Some(&output_file),
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap_err();
+
+        assert!(
+            error
+                .to_string()
+                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
+        );
+        assert!(!output_file.exists());
     }
 }
