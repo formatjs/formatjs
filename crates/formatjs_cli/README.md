@@ -208,13 +208,21 @@ Extract string messages from React components that use react-intl:
 formatjs extract "src/**/*.tsx" --out-file messages.json
 ```
 
-Rust extraction reads `formatjs_intl::message_descriptor!` descriptors. Missing
-IDs use `[sha512:contenthash:base64:10]`:
+Rust extraction reads `formatjs_intl::message_descriptor!` descriptors and
+inline `formatjs_intl::format_message!` calls. Missing IDs use
+`[sha512:contenthash:base64:10]`:
 
 ```rust
 const GREETING: formatjs_intl::MessageDescriptor = formatjs_intl::message_descriptor!(
     default_message: "Hello, {name}!",
     description: "Greeting"
+);
+
+let greeting = formatjs_intl::format_message!(
+    &intl,
+    default_message: "Hello, {name}!",
+    description: "Greeting",
+    values: &values,
 );
 ```
 

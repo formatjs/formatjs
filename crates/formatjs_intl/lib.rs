@@ -8,6 +8,8 @@ use std::fmt;
 use std::sync::{Arc, RwLock};
 
 #[doc(hidden)]
+pub use formatjs_icu_messageformat::Values as __Values;
+#[doc(hidden)]
 pub use formatjs_intl_macros::__message_descriptor;
 
 pub type Messages = HashMap<String, String>;
@@ -93,8 +95,8 @@ pub struct FormatMessageError {
     pub locale: String,
     /// Source of the message that failed.
     pub source: MessageSource,
-    /// Low-level parse or formatting error.
-    pub error: formatjs_icu_messageformat::Error,
+    /// Formatting or infrastructure error.
+    pub error: Error,
 }
 
 impl fmt::Display for FormatMessageError {
@@ -145,6 +147,40 @@ macro_rules! message_descriptor {
             default_message: DATA.1,
             description: DATA.2,
         }
+    }};
+}
+
+/// Formats an extractable message and returns its default message if infrastructure fails.
+#[macro_export]
+macro_rules! format_message {
+    (
+        $intl:expr,
+        $(id: $id:literal,)?
+        default_message: $default_message:literal
+        $(, description: $description:literal)?
+        , values: $values:expr
+        $(,)?
+    ) => {{
+        let descriptor = $crate::message_descriptor!(
+            $(id: $id,)?
+            default_message: $default_message
+            $(, description: $description)?
+        );
+        $intl.format_message_to_string_or_default(descriptor, $values)
+    }};
+    (
+        $intl:expr,
+        $(id: $id:literal,)?
+        default_message: $default_message:literal
+        $(, description: $description:literal)?
+        $(,)?
+    ) => {{
+        let descriptor = $crate::message_descriptor!(
+            $(id: $id,)?
+            default_message: $default_message
+            $(, description: $description)?
+        );
+        $intl.format_message_to_string_or_default(descriptor, &$crate::__Values::new())
     }};
 }
 
@@ -343,6 +379,16 @@ impl Intl {
         )
     }
 
+    /// Formats a string, returning `default_message` if infrastructure prevents formatting.
+    pub fn format_message_to_string_or_default(
+        &self,
+        descriptor: MessageDescriptor,
+        values: &Values<String>,
+    ) -> String {
+        self.format_message_to_string(descriptor, values)
+            .unwrap_or_else(|_| descriptor.default_message.to_owned())
+    }
+
     fn format_with_fallback<T>(
         &self,
         descriptor: MessageDescriptor,
@@ -371,13 +417,19 @@ impl Intl {
             };
             match result {
                 Ok(message) => return Ok(message),
-                Err(Error::Message(error)) => self.report_error(FormatMessageError {
-                    descriptor,
-                    locale: candidate.locale.to_owned(),
-                    source: candidate.source,
-                    error,
-                }),
-                Err(error) => return Err(error),
+                Err(error) => {
+                    let is_message_error = matches!(error, Error::Message(_));
+                    let error = FormatMessageError {
+                        descriptor,
+                        locale: candidate.locale.to_owned(),
+                        source: candidate.source,
+                        error,
+                    };
+                    self.report_error(&error);
+                    if !is_message_error {
+                        return Err(error.error);
+                    }
+                }
             }
         }
 
@@ -415,9 +467,9 @@ impl Intl {
         candidates
     }
 
-    fn report_error(&self, error: FormatMessageError) {
+    fn report_error(&self, error: &FormatMessageError) {
         if let Some(on_error) = &self.on_error {
-            on_error(&error);
+            on_error(error);
         }
     }
 }
@@ -539,6 +591,64 @@ mod tests {
         assert_eq!(TASKS.id, "LURAmALj1U");
         assert_eq!(GREETING.id, "EG1xJTTqQy");
         assert_eq!(EXPLICIT_ID.id, "tasks.explicit");
+    }
+
+    #[test]
+    fn format_message_macro_formats_with_optional_values() {
+        let intl = Intl::try_new(["fr"], "en", catalog(), Arc::new(IntlCache::new())).unwrap();
+        let values: Values = HashMap::from([("count".to_owned(), Value::from(2_i64))]);
+
+        assert_eq!(
+            format_message!(
+                &intl,
+                default_message: "{count, plural, one {# task} other {# tasks}}",
+                description: "Task count",
+                values: &values,
+            ),
+            "2 tâches"
+        );
+        assert_eq!(
+            format_message!(
+                &intl,
+                id: "approval.title",
+                default_message: "Approve to continue",
+            ),
+            "Approve to continue"
+        );
+    }
+
+    #[test]
+    fn format_message_macro_reports_cache_failure_and_returns_default() {
+        let cache = Arc::new(IntlCache::new());
+        let poisoned_cache = cache.clone();
+        let _ = std::panic::catch_unwind(move || {
+            let _messages = poisoned_cache.messages.write().unwrap();
+            panic!("poison cache");
+        });
+        let errors = Arc::new(Mutex::new(Vec::new()));
+        let captured_errors = errors.clone();
+        let intl = Intl::try_new(["en"], "en", catalog(), cache)
+            .unwrap()
+            .with_on_error(move |error| {
+                captured_errors.lock().unwrap().push((
+                    error.descriptor.id,
+                    error.source,
+                    matches!(error.error, Error::CachePoisoned),
+                ));
+            });
+
+        assert_eq!(
+            format_message!(
+                &intl,
+                default_message: "Approve to continue",
+                description: "Approval card title",
+            ),
+            "Approve to continue"
+        );
+        assert_eq!(
+            *errors.lock().unwrap(),
+            vec![("n5ixSZR8gf", MessageSource::DefaultMessage, true)]
+        );
     }
 
     fn catalog() -> Arc<MessageCatalog> {

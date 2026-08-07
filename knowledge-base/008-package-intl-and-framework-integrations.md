@@ -32,7 +32,9 @@ the backend. ICU4X negotiates each ordered locale list against available
 catalogs. Translation lookup falls back to the default catalog, then the
 descriptor default message. `message_descriptor!` generates missing IDs with
 `[sha512:contenthash:base64:10]` and is extracted from Rust source by
-`formatjs_cli`.
+`formatjs_cli`. `format_message!` provides the same extraction and ID behavior
+for inline calls, returns `String`, and uses the descriptor default verbatim if
+cache infrastructure fails.
 
 ## react-intl
 

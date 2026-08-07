@@ -139,11 +139,14 @@ support Rust 1.92 and newer.
 **Purpose:** High-level Rust intl runtime.
 
 - Defines `message_descriptor!` through a re-exported procedural macro.
+- Defines extractable `format_message!` for infallible inline string formatting.
 - Generates missing IDs with `[sha512:contenthash:base64:10]`; explicit IDs remain supported.
 - Selects translation catalogs with ICU4X locale fallback.
 - Falls back from selected catalog to default catalog, then descriptor message.
 - Retries parse and format failures through the same chain, using each source's
-  locale; `with_on_error` exposes recovered message errors.
+  locale; `with_on_error` exposes recovered message and infrastructure errors.
+- `format_message!` returns the descriptor default verbatim when cache
+  infrastructure prevents formatting; fallible methods preserve explicit errors.
 - Returns the first source verbatim, then the message ID, when every formatting
   candidate fails.
 - Shares parsed messages through `IntlCache` across request-scoped `Intl` values.
