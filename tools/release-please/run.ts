@@ -2,10 +2,15 @@ import {appendFileSync} from 'node:fs'
 import {createRequire} from 'node:module'
 
 import {githubOutputRecord} from './github-output.ts'
+import {createCargoWorkspacePlugin} from './cargo-workspace-plugin.ts'
 import {BazelNpmWorkspace} from './npm-workspace-plugin.ts'
 
 const require = createRequire(import.meta.url)
 const {GitHub, Manifest, VERSION, registerPlugin} = require('release-please')
+const {
+  CargoWorkspace,
+} = require('release-please/build/src/plugins/cargo-workspace')
+const FormatjsCargoWorkspace = createCargoWorkspacePlugin(CargoWorkspace)
 
 const DEFAULT_CONFIG_FILE = 'release-please-config.json'
 const DEFAULT_MANIFEST_FILE = '.release-please-manifest.json'
@@ -78,6 +83,21 @@ function outputPullRequests(pullRequests) {
 }
 
 function registerFormatjsPlugin() {
+  registerPlugin('formatjs-cargo-workspace', options => {
+    const typeOptions =
+      options.type && typeof options.type === 'object' ? options.type : {}
+    return new FormatjsCargoWorkspace(
+      options.github,
+      options.targetBranch,
+      options.repositoryConfig,
+      {
+        ...options,
+        ...typeOptions,
+        merge: typeOptions.merge ?? !options.separatePullRequests,
+      }
+    )
+  })
+
   registerPlugin('formatjs-bazel-workspace', options => {
     const typeOptions =
       options.type && typeof options.type === 'object' ? options.type : {}

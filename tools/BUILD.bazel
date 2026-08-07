@@ -56,6 +56,14 @@ ts_binary(
 )
 
 js_test(
+    name = "release_please_cargo_workspace_test",
+    size = "small",
+    data = ["release-please/cargo-workspace-plugin.ts"],
+    entry_point = "release-please/cargo-workspace-plugin.test.ts",
+    node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],
+)
+
+js_test(
     name = "release_please_npm_workspace_test",
     size = "small",
     args = ["$(rootpath //:release_please_config)"],
