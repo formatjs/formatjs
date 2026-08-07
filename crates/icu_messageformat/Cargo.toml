@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_icu_messageformat"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ICU MessageFormat runtime implementation in Rust"
@@ -15,7 +15,7 @@ rust-version = "1.92"
 
 [dependencies]
 fixed_decimal = "0.7"
-formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.2.7" }
+formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.3.0" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.2" }
 icu = "2.1"
 
