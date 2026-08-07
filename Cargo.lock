@@ -546,6 +546,7 @@ dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
  "icu_locale",
+ "serde_json",
 ]
 
 [[package]]

@@ -26,4 +26,5 @@ rust_test(
     name = "formatjs_intl_test",
     size = "small",
     crate = ":formatjs_intl",
+    deps = ["@crates//:serde_json"],
 )

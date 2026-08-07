@@ -146,6 +146,8 @@ support Rust 1.92 and newer.
 - Returns the first source verbatim, then the message ID, when every formatting
   candidate fails.
 - Shares parsed messages through `IntlCache` across request-scoped `Intl` values.
+- Accepts `formatjs compile --ast` output through `insert_precompiled`, making
+  messages ready to format without runtime parsing or cache entries.
 - Keeps requested-locale ordering and HTTP header parsing in application adapters.
 
 ## Connection to TypeScript Packages

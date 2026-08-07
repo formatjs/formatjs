@@ -1,4 +1,6 @@
-use formatjs_icu_messageformat::{FormattedMessage, IcuMessageFormat, Part, Values};
+use formatjs_icu_messageformat::{
+    FormattedMessage, IcuMessageFormat, MessageFormatElement, Part, Values,
+};
 use icu_locale::{Locale, fallback::LocaleFallbacker};
 use std::collections::HashMap;
 use std::error::Error as StdError;
@@ -9,6 +11,26 @@ use std::sync::{Arc, RwLock};
 pub use formatjs_intl_macros::__message_descriptor;
 
 pub type Messages = HashMap<String, String>;
+pub type PrecompiledMessages = HashMap<String, Vec<MessageFormatElement>>;
+
+type CompiledMessages = HashMap<String, Arc<IcuMessageFormat>>;
+
+#[derive(Clone)]
+enum CatalogBundle {
+    Source(Arc<Messages>),
+    Precompiled(Arc<CompiledMessages>),
+}
+
+impl CatalogBundle {
+    fn get(&self, id: &str) -> Option<CatalogMessage<'_>> {
+        match self {
+            Self::Source(messages) => messages.get(id).map(|message| CatalogMessage::Source(message)),
+            Self::Precompiled(messages) => messages
+                .get(id)
+                .map(|message| CatalogMessage::Precompiled(message)),
+        }
+    }
+}
 
 #[derive(Debug)]
 pub enum Error {
@@ -126,9 +148,18 @@ macro_rules! message_descriptor {
     }};
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Clone, Default)]
 pub struct MessageCatalog {
-    bundles: HashMap<String, Arc<Messages>>,
+    bundles: HashMap<String, CatalogBundle>,
+}
+
+impl fmt::Debug for MessageCatalog {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter
+            .debug_struct("MessageCatalog")
+            .field("available_locales", &self.bundles.keys())
+            .finish()
+    }
 }
 
 impl MessageCatalog {
@@ -138,7 +169,26 @@ impl MessageCatalog {
 
     pub fn insert(&mut self, locale: impl AsRef<str>, messages: Messages) -> Result<()> {
         let locale = parse_locale(locale.as_ref())?;
-        self.bundles.insert(locale.to_string(), Arc::new(messages));
+        self.bundles
+            .insert(locale.to_string(), CatalogBundle::Source(Arc::new(messages)));
+        Ok(())
+    }
+
+    /// Inserts AST messages emitted by `formatjs compile --ast`.
+    pub fn insert_precompiled(
+        &mut self,
+        locale: impl AsRef<str>,
+        messages: PrecompiledMessages,
+    ) -> Result<()> {
+        let locale = parse_locale(locale.as_ref())?;
+        let messages = messages
+            .into_iter()
+            .map(|(id, ast)| (id, Arc::new(IcuMessageFormat::from_ast(ast))))
+            .collect();
+        self.bundles.insert(
+            locale.to_string(),
+            CatalogBundle::Precompiled(Arc::new(messages)),
+        );
         Ok(())
     }
 
@@ -146,12 +196,20 @@ impl MessageCatalog {
         self.bundles.contains_key(&locale.to_string())
     }
 
+    /// Returns source messages for a locale. Precompiled catalogs have no source map.
     pub fn messages(&self, locale: impl fmt::Display) -> Option<Arc<Messages>> {
-        self.bundles.get(&locale.to_string()).cloned()
+        match self.bundles.get(&locale.to_string()) {
+            Some(CatalogBundle::Source(messages)) => Some(messages.clone()),
+            _ => None,
+        }
     }
 
     pub fn available_locales(&self) -> impl Iterator<Item = &str> {
         self.bundles.keys().map(String::as_str)
+    }
+
+    fn bundle(&self, locale: impl fmt::Display) -> Option<CatalogBundle> {
+        self.bundles.get(&locale.to_string()).cloned()
     }
 }
 
@@ -197,8 +255,8 @@ pub struct Intl {
     locale: Locale,
     locale_string: String,
     default_locale_string: String,
-    messages: Arc<Messages>,
-    default_messages: Arc<Messages>,
+    messages: CatalogBundle,
+    default_messages: CatalogBundle,
     cache: Arc<IntlCache>,
     on_error: Option<Arc<dyn Fn(&FormatMessageError) + Send + Sync>>,
 }
@@ -216,11 +274,11 @@ impl Intl {
     {
         let default_locale = parse_locale(default_locale.as_ref())?;
         let default_messages = catalog
-            .messages(&default_locale)
+            .bundle(&default_locale)
             .ok_or_else(|| Error::MissingDefaultLocale(default_locale.to_string()))?;
         let locale = negotiate_locale(requested_locales, &default_locale, &catalog)?;
         let messages = catalog
-            .messages(&locale)
+            .bundle(&locale)
             .unwrap_or_else(|| default_messages.clone());
         let locale_string = locale.to_string();
         let default_locale_string = default_locale.to_string();
@@ -293,17 +351,24 @@ impl Intl {
     ) -> Result<T> {
         let candidates = self.message_candidates(descriptor);
         let verbatim_source = candidates
-            .first()
-            .map(|candidate| candidate.message)
-            .filter(|message| !message.is_empty())
+            .iter()
+            .find_map(|candidate| match candidate.message {
+                CatalogMessage::Source(message) if !message.is_empty() => Some(message),
+                _ => None,
+            })
             .unwrap_or(descriptor.id)
             .to_owned();
 
         for candidate in candidates {
-            let result = self
-                .cache
-                .get_or_compile(candidate.message)
-                .and_then(|message| format(&message, candidate.locale).map_err(Error::from));
+            let result = match candidate.message {
+                CatalogMessage::Source(source) => self
+                    .cache
+                    .get_or_compile(source)
+                    .and_then(|message| format(&message, candidate.locale).map_err(Error::from)),
+                CatalogMessage::Precompiled(message) => {
+                    format(message, candidate.locale).map_err(Error::from)
+                }
+            };
             match result {
                 Ok(message) => return Ok(message),
                 Err(Error::Message(error)) => self.report_error(FormatMessageError {
@@ -342,7 +407,7 @@ impl Intl {
         }
         push_candidate(
             &mut candidates,
-            descriptor.default_message,
+            CatalogMessage::Source(descriptor.default_message),
             &self.default_locale_string,
             MessageSource::DefaultMessage,
         );
@@ -358,22 +423,39 @@ impl Intl {
 }
 
 struct MessageCandidate<'a> {
-    message: &'a str,
+    message: CatalogMessage<'a>,
     locale: &'a str,
     source: MessageSource,
 }
 
+#[derive(Clone, Copy)]
+enum CatalogMessage<'a> {
+    Source(&'a str),
+    Precompiled(&'a IcuMessageFormat),
+}
+
 fn push_candidate<'a>(
     candidates: &mut Vec<MessageCandidate<'a>>,
-    message: &'a str,
+    message: CatalogMessage<'a>,
     locale: &'a str,
     source: MessageSource,
 ) {
-    if message.is_empty()
-        || candidates
-            .iter()
-            .any(|candidate| candidate.message == message && candidate.locale == locale)
-    {
+    if matches!(message, CatalogMessage::Source("")) {
+        return;
+    }
+    let duplicate = candidates.iter().any(|candidate| {
+        if candidate.locale != locale {
+            return false;
+        }
+        match (candidate.message, message) {
+            (CatalogMessage::Source(left), CatalogMessage::Source(right)) => left == right,
+            (CatalogMessage::Precompiled(left), CatalogMessage::Precompiled(right)) => {
+                std::ptr::eq(left, right)
+            }
+            _ => false,
+        }
+    });
+    if duplicate {
         return;
     }
     candidates.push(MessageCandidate {
@@ -515,6 +597,40 @@ mod tests {
         );
         assert_eq!(intl.locale().to_string(), "fr");
         assert_eq!(cache.len().unwrap(), 1);
+    }
+
+    #[test]
+    fn loads_formatjs_cli_precompiled_ast_without_using_cache() {
+        let messages: PrecompiledMessages = serde_json::from_str(
+            r##"{
+                "tasks.precompiled": [{
+                    "type": 6,
+                    "value": "count",
+                    "options": {
+                        "one": {"value": [{"type": 0, "value": "# tâche"}]},
+                        "other": {"value": [{"type": 7}, {"type": 0, "value": " tâches"}]}
+                    },
+                    "offset": 0,
+                    "pluralType": "cardinal"
+                }]
+            }"##,
+        )
+        .unwrap();
+        let mut catalog = MessageCatalog::new();
+        catalog.insert_precompiled("fr", messages).unwrap();
+        let cache = Arc::new(IntlCache::new());
+        let intl = Intl::try_new(["fr"], "fr", Arc::new(catalog), cache.clone()).unwrap();
+        let values: Values = HashMap::from([("count".to_owned(), Value::from(2_i64))]);
+        let descriptor = MessageDescriptor::new(
+            "tasks.precompiled",
+            "{count, plural, one {# task} other {# tasks}}",
+        );
+
+        assert_eq!(
+            intl.format_message_to_string(descriptor, &values).unwrap(),
+            "2 tâches"
+        );
+        assert!(cache.is_empty().unwrap());
     }
 
     #[test]

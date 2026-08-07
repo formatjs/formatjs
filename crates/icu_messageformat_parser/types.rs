@@ -1,6 +1,6 @@
 use crate::error::Location;
 use indexmap::IndexMap;
-use serde::Serialize;
+use serde::{Deserialize, Serialize, de};
 
 // Re-export types from icu-skeleton-parser
 pub use formatjs_icu_skeleton_parser::{
@@ -98,7 +98,7 @@ impl ValidPluralRule {
 }
 
 /// Plural type corresponding to Intl.PluralRulesOptions['type']
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum PluralType {
     Cardinal,
@@ -196,7 +196,7 @@ impl Serialize for DateTimeSkeletonOrStyle {
 }
 
 /// Plural or select option with message elements
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PluralOrSelectOption {
     pub value: Vec<MessageFormatElement>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -242,6 +242,125 @@ pub enum MessageFormatElement {
     Plural(PluralElement),
     Pound(PoundElement),
     Tag(TagElement),
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum DeserializedStyle {
+    String(String),
+    Number(NumberSkeleton),
+    DateTime(DateTimeSkeleton),
+}
+
+#[derive(Deserialize)]
+struct DeserializedElement {
+    #[serde(rename = "type")]
+    element_type: u8,
+    value: Option<String>,
+    style: Option<DeserializedStyle>,
+    options: Option<IndexMap<String, PluralOrSelectOption>>,
+    offset: Option<i32>,
+    #[serde(rename = "pluralType")]
+    plural_type: Option<PluralType>,
+    children: Option<Vec<MessageFormatElement>>,
+    location: Option<Location>,
+}
+
+impl<'de> Deserialize<'de> for MessageFormatElement {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let element = DeserializedElement::deserialize(deserializer)?;
+        let value = || {
+            element
+                .value
+                .clone()
+                .ok_or_else(|| de::Error::missing_field("value"))
+        };
+        let number_style = || match &element.style {
+            None => Ok(None),
+            Some(DeserializedStyle::String(style)) => {
+                Ok(Some(NumberSkeletonOrStyle::String(style.clone())))
+            }
+            Some(DeserializedStyle::Number(skeleton)) => {
+                Ok(Some(NumberSkeletonOrStyle::Skeleton(skeleton.clone())))
+            }
+            _ => Err(de::Error::custom("expected number style")),
+        };
+        let date_time_style = || match &element.style {
+            None => Ok(None),
+            Some(DeserializedStyle::String(style)) => {
+                Ok(Some(DateTimeSkeletonOrStyle::String(style.clone())))
+            }
+            Some(DeserializedStyle::DateTime(skeleton)) => Ok(Some(
+                DateTimeSkeletonOrStyle::Skeleton(skeleton.clone()),
+            )),
+            _ => Err(de::Error::custom("expected date/time style")),
+        };
+
+        match element.element_type {
+            0 => Ok(Self::Literal(LiteralElement {
+                value: value()?,
+                location: element.location,
+            })),
+            1 => Ok(Self::Argument(ArgumentElement {
+                value: value()?,
+                location: element.location,
+            })),
+            2 => Ok(Self::Number(SimpleFormatElement {
+                value: value()?,
+                style: number_style()?,
+                location: element.location,
+            })),
+            3 => Ok(Self::Date(SimpleFormatElement {
+                value: value()?,
+                style: date_time_style()?,
+                location: element.location,
+            })),
+            4 => Ok(Self::Time(SimpleFormatElement {
+                value: value()?,
+                style: date_time_style()?,
+                location: element.location,
+            })),
+            5 => Ok(Self::Select(SelectElement {
+                value: value()?,
+                options: element
+                    .options
+                    .ok_or_else(|| de::Error::missing_field("options"))?,
+                location: element.location,
+            })),
+            6 => Ok(Self::Plural(PluralElement {
+                value: value()?,
+                options: element
+                    .options
+                    .ok_or_else(|| de::Error::missing_field("options"))?
+                    .into_iter()
+                    .map(|(rule, option)| (ValidPluralRule::from_str(&rule), option))
+                    .collect(),
+                offset: element
+                    .offset
+                    .ok_or_else(|| de::Error::missing_field("offset"))?,
+                plural_type: element
+                    .plural_type
+                    .ok_or_else(|| de::Error::missing_field("pluralType"))?,
+                location: element.location,
+            })),
+            7 => Ok(Self::Pound(PoundElement {
+                location: element.location,
+            })),
+            8 => Ok(Self::Tag(TagElement {
+                value: value()?,
+                children: element
+                    .children
+                    .ok_or_else(|| de::Error::missing_field("children"))?,
+                location: element.location,
+            })),
+            element_type => Err(de::Error::custom(format!(
+                "unknown message element type {element_type}"
+            ))),
+        }
+    }
 }
 
 impl MessageFormatElement {
@@ -415,7 +534,8 @@ impl Serialize for MessageFormatElement {
 }
 
 /// Number skeleton with tokens and parsed options
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct NumberSkeleton {
     pub tokens: Vec<NumberSkeletonToken>,
     pub location: Option<Location>,
@@ -445,7 +565,8 @@ impl Serialize for NumberSkeleton {
 // NumberFormatOptions and NumberSkeletonToken are now imported from icu-skeleton-parser above
 
 /// Date/Time skeleton with pattern and parsed options
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DateTimeSkeleton {
     pub pattern: String,
     pub location: Option<Location>,
@@ -593,5 +714,22 @@ mod tests {
         assert!(dt_skeleton.is_date_time_skeleton());
         assert!(!dt_skeleton.is_number_skeleton());
         assert_eq!(dt_skeleton.skeleton_type(), SkeletonType::DateTime);
+    }
+
+    #[test]
+    fn deserializes_compiled_ast() {
+        let ast = crate::Parser::new(
+            "<b>{name}</b> {gender, select, other {has}} {count, plural, one {# task} other {# tasks}} worth {total, number, ::currency/USD} on {date, date, ::yMMMd} at {date, time, short}",
+            crate::ParserOptions {
+                should_parse_skeletons: true,
+                ..Default::default()
+            },
+        )
+        .parse()
+        .unwrap();
+        let json = serde_json::to_string(&ast).unwrap();
+        let deserialized: Vec<MessageFormatElement> = serde_json::from_str(&json).unwrap();
+
+        assert_eq!(deserialized, ast);
     }
 }

@@ -53,6 +53,7 @@ rust_library(
         "@crates//:once_cell",
         "@crates//:regex",
         "@crates//:serde",
+        "@crates//:serde_json",
     ],
 )
 
