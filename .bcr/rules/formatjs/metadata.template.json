@@ -5,6 +5,11 @@
       "email": "holevietlong@gmail.com",
       "github": "longlho",
       "name": "Long Ho"
+    },
+    {
+      "email": "formatjsproject@gmail.com",
+      "github": "formatjs",
+      "name": "FormatJS"
     }
   ],
   "repository": ["github:formatjs/formatjs"],

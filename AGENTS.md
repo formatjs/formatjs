@@ -183,8 +183,9 @@ without replacing changelog notes. Keep `crates/formatjs_cli/Cargo.toml`,
 `--version`.
 
 `rules_formatjs` releases use `rules_formatjs_v<version>` tags. Keep
-`rules/formatjs/MODULE.bazel` version blank and follow
-`rules/formatjs/docs/releasing.md` through the GitHub release and BCR PR.
+`rules/formatjs/MODULE.bazel` version blank and follow the
+[`rules_formatjs` release guide](CONTRIBUTING.md#rules_formatjs-releases)
+through the GitHub release and BCR PR.
 
 ## Scripts And Generators
 

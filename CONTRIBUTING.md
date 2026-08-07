@@ -95,21 +95,22 @@ This separation allows both operations to run in parallel, dramatically improvin
 The repository uses `verbatimModuleSyntax: true` in `tsconfig.json`. This means:
 
 - **Type-only imports must use `import type`**:
+
   ```typescript
   // ✅ Correct
-  import type { MyType } from './types.js'
+  import type {MyType} from './types.js'
 
   // ❌ Wrong - will cause build errors
-  import { MyType } from './types.js'
+  import {MyType} from './types.js'
   ```
 
 - **Type-only exports must use `export type`**:
   ```typescript
   // ✅ Correct
-  export type { MyType } from './types.js'
+  export type {MyType} from './types.js'
 
   // ❌ Wrong - will cause runtime errors
-  export { MyType } from './types.js'
+  export {MyType} from './types.js'
   ```
 
 This ensures compatibility with fast transpilers that operate in isolated mode without full type information.
@@ -143,6 +144,48 @@ Releases are automated via GitHub Actions:
 4. The **Rust CLI Release** workflow still owns Bazel-built binary artifacts for
    `formatjs_cli_v*` tags. It uploads binaries and checksums to the GitHub
    release without replacing Release Please changelog notes.
+
+#### `rules_formatjs` releases
+
+`rules/formatjs` remains an independently released Bazel module. Release Please
+maintains its version and changelog PR. Merging that PR creates the
+`rules_formatjs_v<version>` tag and GitHub release. The tag triggers
+`rules-formatjs-release.yml`, which tests the module, builds and attests source
+and Stardoc archives, updates the release, then opens the Bazel Central Registry
+PR.
+
+Before merging the release PR, confirm `main` CI and Verify Hooks are green, no
+release run is active, and the proposed version is expected. Do not create a
+version or tag manually. Keep `rules/formatjs/MODULE.bazel` version blank; the
+BCR publisher sets it in the registry PR.
+
+Release automation requires `GH_RELEASE_TOKEN` and `BCR_PUBLISH_TOKEN` Classic
+PATs with `repo` and `workflow` scopes. The BCR token must be able to push to
+`formatjs/bazel-central-registry` and open the upstream PR.
+
+For recovery, dispatch `rules-formatjs-release.yml` only when the tag already
+exists and release assets are missing. Dispatch `rules-formatjs-publish.yml`
+only to retry BCR publication for an existing release. If BCR rejects the
+token, rotate `BCR_PUBLISH_TOKEN` and retry publication; do not rerun Release
+Please or create another tag.
+
+Completion means the GitHub release contains source and docs archives with
+attestations and the BCR PR is open.
+
+### Working on `rules_formatjs`
+
+Root hooks, formatting, Renovate, and GitHub Actions own the module. Run its
+standalone tests from the nested Bazel workspace and the source-built CLI
+integration from the repository root:
+
+```sh
+cd rules/formatjs && bazel test //...
+bazel test //tools/rules_formatjs:local_cli_test
+```
+
+Examples are separate Bazel workspaces under `rules/formatjs/examples`. For
+development against another repository, use `local_path_override` pointing to
+`rules/formatjs`; do not commit a `git_override`.
 
 ### Updating tzdata version
 

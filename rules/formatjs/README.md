@@ -357,7 +357,8 @@ See the [examples](examples/) directory for complete working examples:
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development instructions.
+See the monorepo [contributing guide](../../CONTRIBUTING.md#working-on-rules_formatjs)
+for development instructions.
 
 ## License
 
