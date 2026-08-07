@@ -26,7 +26,7 @@
     "@types/estree-jsx": "1",
     "@types/picomatch": "4",
     "@unicode/unicode-17.0.0": "1",
-    "magic-string": "0",
+    "magic-string": "1",
     "picomatch": "2 || 3 || 4"
   },
   "peerDependencies": {

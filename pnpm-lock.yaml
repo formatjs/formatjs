@@ -4,12 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-catalogs:
-  default:
-    vite:
-      specifier: ^8.0.0
-      version: 8.2.0
-
 overrides:
   '@jest/transform': ^29.0.0
   '@jest/types': ^29.0.0
@@ -362,8 +356,8 @@ importers:
         specifier: ^1.0.0
         version: 1.28.0(react@19.2.8)
       magic-string:
-        specifier: ^0.30.0
-        version: 0.30.21
+        specifier: ^1.0.0
+        version: 1.1.0
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
@@ -672,8 +666,8 @@ importers:
         specifier: 9 || 10
         version: 10.4.1(jiti@2.7.0)(supports-color@8.1.1)
       magic-string:
-        specifier: '0'
-        version: 0.30.21
+        specifier: '1'
+        version: 1.1.0
       picomatch:
         specifier: 2 || 3 || 4
         version: 4.0.5
@@ -873,8 +867,8 @@ importers:
         specifier: '>=0.17'
         version: 0.28.1
       magic-string:
-        specifier: '0'
-        version: 0.30.21
+        specifier: '1'
+        version: 1.1.0
       oxc-parser:
         specifier: '0'
         version: 0.141.0
@@ -5978,6 +5972,9 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
+  magic-string@1.1.0:
+    resolution: {integrity: sha512-kS3VHe0nEPST2saQV4Rbkchcd3UBRkVTQHo1D3h/ZTwFDhai/mfKkmtPAtD129EOI7K3HlHIsFOt0WrI2/oU9g==}
+
   make-dir@4.0.0:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
@@ -6297,11 +6294,6 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@3.3.16:
-    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.17:
     resolution: {integrity: sha512-xQLf0A3HOMlgHq0n247/LRuAOYmB7dXJ/DvAxGvsSBij45XtBSmQycu+F8ODbHwns/XyFZagyL1+J0Offw1E0g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -6537,10 +6529,6 @@ packages:
 
   postcss@8.5.19:
     resolution: {integrity: sha512-Mz8SaolMd8nB+G13WkORcxQKHZ/NE4xXevtkJHVuG+guo9/wYKlIMTKAqGdEmYOXR2ijPjTYNHssizdaVSUNdQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.25:
-    resolution: {integrity: sha512-DTPx3RWSSnWyzLxQnlH0rJP+EW5ekl16ZU4/psbIhA0e53kJfdgaN5vKM+xP7yJtXVu+nfdVFmlgFDEKAe4Pyw==}
     engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.5.26:
@@ -10686,7 +10674,7 @@ snapshots:
       '@vue/shared': 3.5.40
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.25
+      postcss: 8.5.26
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.39':
@@ -13051,6 +13039,10 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  magic-string@1.1.0:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.5
+
   make-dir@4.0.0:
     dependencies:
       semver: 7.8.5
@@ -13609,8 +13601,6 @@ snapshots:
 
   nanoid@3.3.15: {}
 
-  nanoid@3.3.16: {}
-
   nanoid@3.3.17: {}
 
   natural-compare@1.4.0: {}
@@ -13879,12 +13869,6 @@ snapshots:
   postcss@8.5.19:
     dependencies:
       nanoid: 3.3.15
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.25:
-    dependencies:
-      nanoid: 3.3.16
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
