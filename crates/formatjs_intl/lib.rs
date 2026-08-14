@@ -8,9 +8,9 @@ use std::fmt;
 use std::sync::{Arc, RwLock};
 
 #[doc(hidden)]
-pub use formatjs_icu_messageformat::Values as __Values;
+pub use formatjs_icu_messageformat::{Value as __Value, Values as __Values};
 #[doc(hidden)]
-pub use formatjs_intl_macros::__message_descriptor;
+pub use formatjs_intl_macros::{__message_descriptor, __validate_message_values};
 
 pub type Messages = HashMap<String, String>;
 pub type PrecompiledMessages = HashMap<String, Vec<MessageFormatElement>>;
@@ -158,6 +158,32 @@ macro_rules! format_message {
         $(id: $id:literal,)?
         default_message: $default_message:literal
         $(, description: $description:literal)?
+        , values: { $($name:ident : $value:expr),+ $(,)? }
+        $(,)?
+    ) => {{
+        const _: () = $crate::__validate_message_values!(
+            $default_message; $($name),+
+        );
+        let values = $crate::__Values::from([
+            $(
+                (
+                    ::std::string::String::from(::core::stringify!($name)),
+                    $crate::__Value::from($value),
+                ),
+            )+
+        ]);
+        let descriptor = $crate::message_descriptor!(
+            $(id: $id,)?
+            default_message: $default_message
+            $(, description: $description)?
+        );
+        $intl.format_message_to_string_or_default(descriptor, &values)
+    }};
+    (
+        $intl:expr,
+        $(id: $id:literal,)?
+        default_message: $default_message:literal
+        $(, description: $description:literal)?
         , values: $values:expr
         $(,)?
     ) => {{
@@ -175,6 +201,7 @@ macro_rules! format_message {
         $(, description: $description:literal)?
         $(,)?
     ) => {{
+        const _: () = $crate::__validate_message_values!($default_message;);
         let descriptor = $crate::message_descriptor!(
             $(id: $id,)?
             default_message: $default_message
@@ -598,6 +625,15 @@ mod tests {
         let intl = Intl::try_new(["fr"], "en", catalog(), Arc::new(IntlCache::new())).unwrap();
         let values: Values = HashMap::from([("count".to_owned(), Value::from(2_i64))]);
 
+        assert_eq!(
+            format_message!(
+                &intl,
+                default_message: "{count, plural, one {# task} other {# tasks}}",
+                description: "Task count",
+                values: { count: 2_i64 },
+            ),
+            "2 tâches"
+        );
         assert_eq!(
             format_message!(
                 &intl,
