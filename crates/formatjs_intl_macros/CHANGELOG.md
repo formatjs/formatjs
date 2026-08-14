@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 (2026-08-14)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* feat(formatjs_intl): accept inline named values by @longlho in https://github.com/formatjs/formatjs/pull/7031
+* chore(deps): exclude Renovate from release notes by @longlho in https://github.com/formatjs/formatjs/pull/7030
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_intl_macros_v0.1.2...formatjs_intl_macros_v0.2.0
+
 ## 0.1.2 (2026-08-07)
 
 ## What's Changed
