@@ -18,6 +18,7 @@ proc-macro = true
 
 [dependencies]
 base64 = "0.23"
+formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.3.0" }
 quote = "1.0"
 sha2 = "0.11"
 syn = { version = "3.0", features = ["full", "parsing"] }
