@@ -115,6 +115,8 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
 GitHub-generated changelog notes include PR titles, PR links, and contributors.
+`.github/release.yml` excludes Renovate-authored PRs from those notes so
+dependency maintenance does not hide user-facing changes.
 For npm packages, Release Please advances versions in both package-local Bazel
 `BUILD.bazel` `x-release-please-version` markers and checked-in `package.json`
 files; `package_json_sync` keeps the rest of each generated manifest in sync.
