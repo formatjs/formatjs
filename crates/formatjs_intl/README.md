@@ -43,9 +43,8 @@ Use `format_message!` for inline application copy. It creates the same
 descriptor, is recognized by `formatjs extract`, and returns a `String`:
 
 ```rust
-# use formatjs_icu_messageformat::Values;
 # use formatjs_intl::{Intl, format_message};
-# fn render(intl: &Intl, values: &Values<String>) {
+# fn render(intl: &Intl, path: &str) {
 let title = format_message!(
     intl,
     default_message: "Approve to continue",
@@ -55,10 +54,14 @@ let detail = format_message!(
     intl,
     default_message: "Allow access to {path}?",
     description: "Directory approval explanation",
-    values: values,
+    values: { path: path },
 );
 # }
 ```
+
+Inline values are converted to `Value` automatically. Their names are checked
+against `default_message` at compile time, including nested select and plural
+arguments. Use `values: &values` to pass a dynamically assembled or reused map.
 
 If cache infrastructure fails, this macro reports the error through
 `with_on_error` and returns `default_message` verbatim. Fallible formatting

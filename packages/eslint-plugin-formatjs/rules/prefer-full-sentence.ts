@@ -1,17 +1,20 @@
+import {CORE_MESSAGES} from '#packages/eslint-plugin-formatjs/messages.js'
+import {
+  extractMessages,
+  getSettings,
+} from '#packages/eslint-plugin-formatjs/util.js'
 import {
   type MessageFormatElement,
   parse,
   TYPE,
 } from '@formatjs/icu-messageformat-parser'
-import type {Node} from 'estree-jsx'
 import type {Rule} from 'eslint'
-import {
-  extractMessages,
-  getSettings,
-} from '#packages/eslint-plugin-formatjs/util.js'
-import {CORE_MESSAGES} from '#packages/eslint-plugin-formatjs/messages.js'
+import type {Node} from 'estree-jsx'
 
-type WhitespaceIssue = 'leadingWhitespace' | 'trailingWhitespace'
+type MessageIssue =
+  | 'leadingWhitespace'
+  | 'placeholderAdjacentToWord'
+  | 'trailingWhitespace'
 
 /**
  * Get the first boundary element, recursing into tags since
@@ -42,8 +45,12 @@ function getLastBoundaryElement(
   return last
 }
 
-function findWhitespaceIssues(ast: MessageFormatElement[]): WhitespaceIssue[] {
-  const issues: WhitespaceIssue[] = []
+function isPlaceholder(element: MessageFormatElement): boolean {
+  return element.type !== TYPE.literal && element.type !== TYPE.tag
+}
+
+function findMessageIssues(ast: MessageFormatElement[]): MessageIssue[] {
+  const issues: MessageIssue[] = []
 
   const first = getFirstBoundaryElement(ast)
   const last = getLastBoundaryElement(ast)
@@ -66,16 +73,34 @@ function findWhitespaceIssues(ast: MessageFormatElement[]): WhitespaceIssue[] {
     issues.push('trailingWhitespace')
   }
 
-  // Check each plural/select option branch independently
+  for (let index = 0; index < ast.length - 1; index++) {
+    const current = ast[index]
+    const next = ast[index + 1]
+    if (
+      (current.type === TYPE.literal &&
+        /\p{L}$/u.test(current.value) &&
+        isPlaceholder(next)) ||
+      (isPlaceholder(current) &&
+        next.type === TYPE.literal &&
+        /^\p{L}/u.test(next.value))
+    ) {
+      issues.push('placeholderAdjacentToWord')
+    }
+  }
+
+  // Check nested message branches independently.
   for (const element of ast) {
     switch (element.type) {
       case TYPE.plural:
       case TYPE.select: {
         for (const option of Object.values(element.options)) {
-          issues.push(...findWhitespaceIssues(option.value))
+          issues.push(...findMessageIssues(option.value))
         }
         break
       }
+      case TYPE.tag:
+        issues.push(...findMessageIssues(element.children))
+        break
     }
   }
 
@@ -107,7 +132,7 @@ function checkNode(context: Rule.RuleContext, node: Node) {
       return
     }
 
-    const issues = findWhitespaceIssues(ast)
+    const issues = findMessageIssues(ast)
 
     // Deduplicate
     const seen = new Set<string>()
@@ -138,6 +163,8 @@ export const rule: Rule.RuleModule = {
         'Messages should be full sentences — leading whitespace suggests string concatenation',
       trailingWhitespace:
         'Messages should be full sentences — trailing whitespace suggests string concatenation',
+      placeholderAdjacentToWord:
+        'Placeholders should not be joined directly to words or units — use ICU syntax or an Intl formatter',
     },
     schema: [],
   },

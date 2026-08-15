@@ -1,0 +1,4 @@
+changelog:
+  exclude:
+    authors:
+      - 'renovate[bot]'

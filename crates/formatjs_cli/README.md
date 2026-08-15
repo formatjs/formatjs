@@ -222,9 +222,12 @@ let greeting = formatjs_intl::format_message!(
     &intl,
     default_message: "Hello, {name}!",
     description: "Greeting",
-    values: &values,
+    values: { name: user.name() },
 );
 ```
+
+Inline value names are checked against `default_message` at compile time.
+Existing values maps remain supported for dynamic or reused values.
 
 ```bash
 formatjs extract "src/**/*.rs" --out-file messages.json

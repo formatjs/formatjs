@@ -99,6 +99,26 @@ ruleTester.run(name, rule, {
       code: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: 'Hello {name} '})`,
       errors: [{messageId: 'trailingWhitespace'}],
     },
+    // Placeholder joined to a unit
+    {
+      code: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: '{count}day'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    // Formatted placeholder joined to a unit abbreviation
+    {
+      code: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: '{size, number}MB'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    // Word joined before a placeholder
+    {
+      code: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: 'USD{amount}'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    // Pound placeholder joined to a pluralized unit
+    {
+      code: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: '{count, plural, one {#day} other {#days}}'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
     // JSX
     {
       code: `<FormattedMessage defaultMessage=" hello" />`,
