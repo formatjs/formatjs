@@ -39,7 +39,7 @@
     "@formatjs/ts-transformer": "workspace:*",
     "@types/node": "22 || 24",
     "decode-named-character-reference": "1",
-    "magic-string": "0",
+    "magic-string": "1",
     "oxc-parser": "0",
     "unplugin": ">=3.3.0"
   },
