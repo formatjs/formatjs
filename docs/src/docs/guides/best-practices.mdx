@@ -55,6 +55,30 @@ intl.formatMessage(
 
 Skeletons describe formatting, not sentence structure. Keep surrounding punctuation and words inside the message so translators can move them. See [ICU Message Syntax](/docs/core-concepts/icu-syntax) for supported skeletons.
 
+Treat measurements as formatted values. Do not join a placeholder to a unit (`{duration}day`, `{size}MB`) or format the number separately and concatenate the unit. Use an ICU number skeleton inside a message, or `formatNumber` / `<FormattedNumber>` with `style: 'unit'` for a standalone value.
+
+```tsx
+// In a message, keep the raw value and its unit format together.
+intl.formatMessage(
+  {defaultMessage: 'Retry in {duration, number, ::measure-unit/duration-day}.'},
+  {duration}
+)
+
+// For a standalone measurement, use the unit formatter directly.
+intl.formatNumber(size, {
+  style: 'unit',
+  unit: 'megabyte',
+  unitDisplay: 'short',
+})
+```
+
+Calendar names are locale data, not message copy. Do not declare or translate arrays such as `['Mon', 'Tue', ...]` or month-name maps. Format an actual date with `formatDate`, `<FormattedDate>`, or `Intl.DateTimeFormat`. For weekday-only controls, use stable reference dates and pin the time zone so the day cannot shift.
+
+```tsx
+const monday = new Date(Date.UTC(2024, 0, 1))
+intl.formatDate(monday, {weekday: 'short', timeZone: 'UTC'})
+```
+
 When a value is not part of a message, use FormatJS or the equivalent built-in `Intl` API instead of constructing locale-sensitive text yourself:
 
 - `formatNumber` or `<FormattedNumber>` for numbers and currencies
