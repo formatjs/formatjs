@@ -9,9 +9,11 @@ const require = createRequire(import.meta.url)
 const {VERSION} = require('release-please')
 const {Bazel} = require('release-please/build/src/strategies/bazel')
 const {Version} = require('release-please/build/src/version')
+const {parse} = require('yaml')
 
 const SENTINEL_VERSION = '99.88.77'
 const config = JSON.parse(readFileSync('release-please-config.json', 'utf8'))
+const releaseNotesConfig = parse(readFileSync('.github/release.yml', 'utf8'))
 const logger = {
   debug() {},
   error() {},
@@ -21,6 +23,10 @@ const logger = {
 let checked = 0
 
 assert.equal(VERSION, '17.6.0')
+assert.equal(config['changelog-type'], 'github')
+assert.deepEqual(releaseNotesConfig.changelog.exclude.authors, [
+  'renovate[bot]',
+])
 
 for (const [path, packageConfig] of Object.entries(config.packages)) {
   if (!path.startsWith('packages/')) {

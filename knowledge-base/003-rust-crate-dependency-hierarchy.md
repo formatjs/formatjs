@@ -140,6 +140,9 @@ support Rust 1.92 and newer.
 
 - Defines `message_descriptor!` through a re-exported procedural macro.
 - Defines extractable `format_message!` for infallible inline string formatting.
+- Accepts checked inline `values: { name: expression }`; its procedural macro
+  parses the default ICU message and rejects missing, unused, or duplicate names.
+- Keeps `values: &values` for dynamically assembled or reused maps.
 - Generates missing IDs with `[sha512:contenthash:base64:10]`; explicit IDs remain supported.
 - Selects translation catalogs with ICU4X locale fallback.
 - Falls back from selected catalog to default catalog, then descriptor message.

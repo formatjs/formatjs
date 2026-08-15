@@ -564,6 +564,7 @@ name = "formatjs_intl_macros"
 version = "0.1.2"
 dependencies = [
  "base64",
+ "formatjs_icu_messageformat_parser",
  "quote",
  "sha2",
  "syn 3.0.3",

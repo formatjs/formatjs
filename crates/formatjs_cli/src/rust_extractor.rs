@@ -7,7 +7,7 @@ use std::path::Path;
 use syn::parse::{Parse, ParseStream};
 use syn::spanned::Spanned;
 use syn::visit::{self, Visit};
-use syn::{Expr, Ident, LitStr, Macro, Token};
+use syn::{Expr, Ident, LitStr, Macro, Token, braced};
 
 const RUST_ID_INTERPOLATION_PATTERN: &str = "[sha512:contenthash:base64:10]";
 
@@ -170,7 +170,22 @@ fn parse_message_args(input: ParseStream<'_>, allow_values: bool) -> syn::Result
         }
         match key.to_string().as_str() {
             "values" if allow_values && !values => {
-                input.parse::<Expr>()?;
+                if input.peek(syn::token::Brace) {
+                    let content;
+                    braced!(content in input);
+                    while !content.is_empty() {
+                        content.parse::<Ident>()?;
+                        content.parse::<Token![:]>()?;
+                        content.parse::<Expr>()?;
+                        if content.peek(Token![,]) {
+                            content.parse::<Token![,]>()?;
+                        } else if !content.is_empty() {
+                            return Err(content.error("expected comma"));
+                        }
+                    }
+                } else {
+                    input.parse::<Expr>()?;
+                }
                 values = true;
             }
             "values" if allow_values => {
@@ -264,6 +279,11 @@ mod tests {
                     description: "Greeting",
                     values: values,
                 );
+                format_message!(
+                    &intl,
+                    default_message: "{count, plural, one {# task} other {{name} has # tasks}}",
+                    values: { count: count, name: user.name() },
+                );
                 formatjs_intl::format_message!(
                     &intl,
                     id: "approval.title",
@@ -278,9 +298,13 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(messages.len(), 2);
+        assert_eq!(messages.len(), 3);
         assert_eq!(messages[0].id.as_deref(), Some("EG1xJTTqQy"));
-        assert_eq!(messages[1].id.as_deref(), Some("approval.title"));
+        assert_eq!(
+            messages[1].default_message.as_deref(),
+            Some("{count, plural, one {# task} other {{name} has # tasks}}")
+        );
+        assert_eq!(messages[2].id.as_deref(), Some("approval.title"));
     }
 
     #[test]
