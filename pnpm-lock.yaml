@@ -356,8 +356,8 @@ importers:
         specifier: ^1.0.0
         version: 1.30.0(react@19.2.8)
       magic-string:
-        specifier: ^0.30.0
-        version: 0.30.21
+        specifier: ^1.0.0
+        version: 1.2.0
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
@@ -666,8 +666,8 @@ importers:
         specifier: 9 || 10
         version: 10.4.1(jiti@2.7.0)(supports-color@8.1.1)
       magic-string:
-        specifier: '0'
-        version: 0.30.21
+        specifier: '1'
+        version: 1.2.0
       picomatch:
         specifier: 2 || 3 || 4
         version: 4.0.5
@@ -867,8 +867,8 @@ importers:
         specifier: '>=0.17'
         version: 0.28.1
       magic-string:
-        specifier: '0'
-        version: 0.30.21
+        specifier: '1'
+        version: 1.2.0
       oxc-parser:
         specifier: '0'
         version: 0.143.0
@@ -5980,6 +5980,9 @@ packages:
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
+
+  magic-string@1.2.0:
+    resolution: {integrity: sha512-ptco+HFxTLgjafSLim2LojBSwfg5feBjd+SqyiwdGkzC38UPdZy3zgrHMI2CoTf5fJL38tbHMYWVzIH8BxGqJw==}
 
   make-dir@4.0.0:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
@@ -13030,6 +13033,10 @@ snapshots:
   lz-string@1.5.0: {}
 
   magic-string@0.30.21:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.5
+
+  magic-string@1.2.0:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
