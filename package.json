@@ -70,7 +70,7 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@rspack/core": "^2.0.0",
     "@tailwindcss/vite": "^4.1.18",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.1",
     "@types/aria-query": "^5.0.4",
     "@types/babel__core": "^7.20.5",
