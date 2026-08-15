@@ -131,7 +131,7 @@
     "minimist": "^1.2.8",
     "oxc-parser": "^0.143.0",
     "oxc-transform": "^0.143.0",
-    "oxfmt": "^0.60.0",
+    "oxfmt": "^0.62.0",
     "oxlint": "^1.64.0",
     "picomatch": "^4.0.4",
     "prismjs": "^1.30.0",
