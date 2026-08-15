@@ -10,7 +10,7 @@ Produce UI that preserves translator context, delegates locale-sensitive output 
 ## Workflow
 
 1. Inspect repository conventions and the i18n framework already in use.
-2. Find affected user-facing text, formatters, message declarations, and glossary files.
+2. Find affected user-facing text, formatters, message declarations, and glossary files. Flag values preformatted before `formatMessage`, placeholders joined to words or units, and hand-declared calendar labels.
 3. Apply the rules below without replacing established project abstractions unnecessarily.
 4. Run extraction, type checks, lint, formatting, tests, or catalog validation used by the repository.
 5. Report remaining language, legal, or product decisions that require human owners or translators.
@@ -57,6 +57,43 @@ Use framework-native or built-in `Intl` APIs when skeletons do not express opera
 - relative time: `formatRelativeTime`, `<FormattedRelativeTime>`, or `Intl.RelativeTimeFormat`
 
 Do not recreate relative time with ICU plural branches such as `=0 {today} one {# day ago}`. Relative-time grammar is locale-specific; native relative-time APIs own it.
+
+Pass raw typed values when they participate in sentence grammar. Do not translate or format a fragment separately and pass the resulting string into another message when ICU needs the value for plural, select, number, date, or time grammar.
+
+```tsx
+// Avoid: ICU receives a string and cannot select plural grammar.
+intl.formatMessage(
+  {defaultMessage: 'Expires in {duration}'},
+  {
+    duration: intl.formatMessage({defaultMessage: '{days} days'}, {days}),
+  }
+)
+
+// Prefer: one message owns formatting and grammar.
+intl.formatMessage(
+  {defaultMessage: 'Expires in {days, plural, one {# day} other {# days}}'},
+  {days}
+)
+```
+
+Treat measurements as formatted values. Never join placeholders to units, such as `{duration}day`, `{size}MB`, or `{hours}h`. Inside a sentence, prefer an ICU number skeleton. For a standalone value, use a unit formatter:
+
+```tsx
+intl.formatNumber(size, {
+  style: 'unit',
+  unit: 'megabyte',
+  unitDisplay: 'short',
+})
+```
+
+Calendar names are locale data. Do not declare or translate weekday, month, era, or day-period tables such as `['Mon', 'Tue', ...]`. Format dates with `formatDate`, `<FormattedDate>`, or `Intl.DateTimeFormat`. For weekday-only controls, use stable reference dates and pin the time zone so labels cannot shift:
+
+```tsx
+const monday = new Date(Date.UTC(2024, 0, 1))
+intl.formatDate(monday, {weekday: 'short', timeZone: 'UTC'})
+```
+
+Apply the same rule to accessibility labels.
 
 Separating text is valid when UI contains a semantic label plus an independently formatted value, not one sentence. Keep label translatable, format value natively, and combine them through layout:
 
