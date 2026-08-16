@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 9.0.4 (2026-08-16)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* feat(formatjs_intl): accept inline named values by @longlho in https://github.com/formatjs/formatjs/pull/7031
+* chore(deps): exclude Renovate from release notes by @longlho in https://github.com/formatjs/formatjs/pull/7030
+* feat(eslint-plugin-formatjs): detect glued placeholders by @longlho in https://github.com/formatjs/formatjs/pull/7036
+* docs: cover units and calendar names in i18n skill by @longlho in https://github.com/formatjs/formatjs/pull/7042
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@9.0.3...@formatjs/cli-lib@9.0.4
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.12
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.12
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.10
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.12
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.10
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.13
+
 ## 9.0.3 (2026-08-07)
 
 ## What's Changed
