@@ -122,9 +122,17 @@ function calculateLineColFromOffset(
 function nativeScriptFilename(filename: string): string {
   const extension = extname(filename).toLowerCase()
   if (
-    ['.cjs', '.cts', '.js', '.jsx', '.mjs', '.mts', '.rs', '.ts', '.tsx'].includes(
-      extension
-    )
+    [
+      '.cjs',
+      '.cts',
+      '.js',
+      '.jsx',
+      '.mjs',
+      '.mts',
+      '.rs',
+      '.ts',
+      '.tsx',
+    ].includes(extension)
   ) {
     return filename
   }
@@ -148,11 +156,7 @@ function applyOverrideId(
   return {...message, id: id || ''}
 }
 
-async function processFile(
-  source: string,
-  fn: string,
-  opts: ExtractOpts
-) {
+async function processFile(source: string, fn: string, opts: ExtractOpts) {
   let messages: ExtractedMessageDescriptor[] = []
   let meta: Record<string, string> | undefined
   const idInterpolationPattern =
@@ -162,7 +166,10 @@ async function processFile(
 
   debug('Processing opts for %s: %s', fn, opts)
 
-  const collectMessages = (filePath: string, extracted: MessageDescriptor[]) => {
+  const collectMessages = (
+    filePath: string,
+    extracted: MessageDescriptor[]
+  ) => {
     messages = messages.concat(extracted)
     opts.onMsgExtracted?.(filePath, extracted)
   }

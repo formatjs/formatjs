@@ -59,10 +59,7 @@ defineMessage({
     tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
     const filePath = join(tempDir, 'native.ts')
 
-    await writeFile(
-      filePath,
-      `defineMessage({defaultMessage: 'Native'})`
-    )
+    await writeFile(filePath, `defineMessage({defaultMessage: 'Native'})`)
 
     const result = JSON.parse(await extract([filePath], {throws: true}))
 
