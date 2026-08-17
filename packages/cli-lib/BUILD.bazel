@@ -186,7 +186,9 @@ formatjs_test(
         "tests/unit/svelte_extractor.test.ts",
         "tests/unit/vue_extractor.test.ts",
     ],
-    data = [":native_test_binary"],
+    data = [
+        ":native_test_binary",  # keep: native binding loaded from FORMATJS_CLI_LIB_NATIVE_PATH
+    ],
     env = {
         "FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath :native_test_binary)",
     },
@@ -197,7 +199,6 @@ formatjs_test(
     deps = [
         ":cli-lib",
         "//:node_modules/@types/node",
-        "//:node_modules/fast-glob",
         "//:node_modules/vitest",
     ],
 )
