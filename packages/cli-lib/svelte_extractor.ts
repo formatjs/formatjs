@@ -108,7 +108,7 @@ function extractMessageComponent(
     return
   }
 
-  const props: string[] = []
+  const attributes: string[] = []
   for (const attr of node.attributes || []) {
     if (
       attr.type !== 'Attribute' ||
@@ -120,16 +120,16 @@ function extractMessageComponent(
 
     const expression = getAttributeExpression(attr, source)
     if (expression != null) {
-      props.push(`${attr.name}: ${expression}`)
+      attributes.push(`${attr.name}={${expression}}`)
     }
   }
 
-  if (!props.length) {
+  if (!attributes.length) {
     return
   }
 
   try {
-    parseScriptFn(`${node.name}({${props.join(', ')}})`)
+    parseScriptFn(`<${node.name} ${attributes.join(' ')} />`)
   } catch (e) {
     console.warn(
       `Failed to parse ${node.name} message component. Ignore this if component has no extractable message`,
