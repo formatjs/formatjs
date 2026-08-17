@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build_windows_native:
     name: Build Windows Native Package
-    if: ${{ inputs.npm_paths != '[]' }}
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') }}
     runs-on: windows-latest
 
     steps:
@@ -66,7 +66,7 @@ jobs:
 
   build_linux_musl_native:
     name: Build Linux musl Native Package (${{ matrix.arch }})
-    if: ${{ inputs.npm_paths != '[]' }}
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
     runs-on: ${{ matrix.runner }}
 
     strategy:
@@ -129,7 +129,7 @@ jobs:
     needs:
       - build_windows_native
       - build_linux_musl_native
-    if: ${{ inputs.npm_paths != '[]' }}
+    if: ${{ always() && inputs.npm_paths != '[]' && (needs.build_windows_native.result == 'success' || needs.build_windows_native.result == 'skipped') && (needs.build_linux_musl_native.result == 'success' || needs.build_linux_musl_native.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -170,18 +170,21 @@ jobs:
           chmod -R +w release/
 
       - name: Download Windows Native Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') }}
         uses: actions/download-artifact@v8
         with:
           name: cli-native-win32-x64
           path: release/packages/cli-native-win32-x64
 
       - name: Download Linux x64 musl Native Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') }}
         uses: actions/download-artifact@v8
         with:
           name: cli-native-linux-x64-musl
           path: release/packages/cli-native-linux-x64-musl
 
       - name: Download Linux arm64 musl Native Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
         uses: actions/download-artifact@v8
         with:
           name: cli-native-linux-arm64-musl
@@ -189,6 +192,8 @@ jobs:
 
       - name: Prepare npm Package Manifests
         working-directory: release
+        env:
+          NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
         run: |
           node <<'JS'
           const fs = require('node:fs')
@@ -209,6 +214,16 @@ jobs:
             file,
             packageJson: JSON.parse(fs.readFileSync(file, 'utf8')),
           }))
+          const publishManifests = JSON.parse(
+            process.env.NPM_RELEASE_PATHS || '[]'
+          ).map(packagePath => {
+            const file = path.join(process.cwd(), packagePath, 'package.json')
+            const manifest = manifests.find(manifest => manifest.file === file)
+            if (!manifest) {
+              throw new Error(`Missing release package manifest: ${file}`)
+            }
+            return manifest
+          })
           const packageVersions = new Map(
             manifests.map(({packageJson}) => [
               packageJson.name,
@@ -217,7 +232,7 @@ jobs:
           )
           let replacements = 0
 
-          for (const {file, packageJson} of manifests) {
+          for (const {file, packageJson} of publishManifests) {
             let changed = false
 
             for (const field of dependencyFields) {
@@ -284,6 +299,24 @@ jobs:
               exit 1
             fi
 
-            echo "Publishing $package_path"
-            (cd "$package_path" && pnpm publish --access public --no-git-checks)
+            package_spec="$(
+              node -e 'const pkg = require(`./${process.argv[1]}/package.json`); process.stdout.write(`${pkg.name}@${pkg.version}`)' "$package_path"
+            )"
+            if npm view "$package_spec" version --json >/dev/null 2>&1; then
+              echo "Skipping already published $package_spec"
+              continue
+            fi
+
+            echo "Publishing $package_spec"
+            if (cd "$package_path" && pnpm publish --access public --no-git-checks); then
+              continue
+            fi
+
+            # A concurrent or partially completed run may have published it.
+            if npm view "$package_spec" version --json >/dev/null 2>&1; then
+              echo "Skipping concurrently published $package_spec"
+              continue
+            fi
+
+            exit 1
           done

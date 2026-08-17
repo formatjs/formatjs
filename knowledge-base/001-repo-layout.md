@@ -120,6 +120,11 @@ dependency maintenance does not hide user-facing changes.
 For npm packages, Release Please advances versions in both package-local Bazel
 `BUILD.bazel` `x-release-please-version` markers and checked-in `package.json`
 files; `package_json_sync` keeps the rest of each generated manifest in sync.
+The workflow also derives npm publish paths from the release manifest diff so
+a retry still publishes packages whose GitHub releases were created before a
+partial failure. npm publishing skips versions already present in the registry,
+prepares only requested package manifests, and builds native CLI artifacts only
+when their package paths are released.
 When Release Please creates or updates release PRs,
 `.github/workflows/release-please.yml` first builds
 `//:release_please_npm_workspace_graph` from the package manifests and runs the

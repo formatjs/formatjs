@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
@@ -87,10 +89,33 @@ jobs:
         env:
           PATHS_RELEASED: ${{ steps.release.outputs.paths_released || '[]' }}
         run: |
-          node <<'JS'
-          const fs = require('node:fs')
-          const paths = JSON.parse(process.env.PATHS_RELEASED || '[]')
-          const npmPaths = paths.filter(path => path.startsWith('packages/'))
+          previous_manifest="$RUNNER_TEMP/release-please-manifest.previous.json"
+          if ! git show HEAD^:.release-please-manifest.json > "$previous_manifest"; then
+            echo '{}' > "$previous_manifest"
+          fi
+
+          CURRENT_MANIFEST=.release-please-manifest.json \
+          PREVIOUS_MANIFEST="$previous_manifest" \
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-transform-types --input-type=module <<'JS'
+          import fs from 'node:fs'
+
+          const {collectNpmReleasePaths} = await import(
+            './tools/release-please/npm-release-paths.ts'
+          )
+          const currentManifest = JSON.parse(
+            fs.readFileSync(process.env.CURRENT_MANIFEST, 'utf8')
+          )
+          const previousManifest = JSON.parse(
+            fs.readFileSync(process.env.PREVIOUS_MANIFEST, 'utf8')
+          )
+          const pathsReleased = JSON.parse(
+            process.env.PATHS_RELEASED || '[]'
+          )
+          const npmPaths = collectNpmReleasePaths(
+            previousManifest,
+            currentManifest,
+            pathsReleased
+          )
           fs.appendFileSync(
             process.env.GITHUB_OUTPUT,
             `npm_paths=${JSON.stringify(npmPaths)}\n`

@@ -76,6 +76,14 @@ js_test(
     node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],
 )
 
+js_test(
+    name = "release_please_npm_release_paths_test",
+    size = "small",
+    data = ["release-please/npm-release-paths.ts"],
+    entry_point = "release-please/npm-release-paths.test.ts",
+    node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],
+)
+
 formatjs_package_json(
     name = "package_json_fixture",
     package_name = "@formatjs/package-json-fixture",
