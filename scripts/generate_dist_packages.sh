@@ -9,6 +9,7 @@ OUTPUT="$REPO_ROOT/tools/dist_packages_registry.bzl"
 # Native packages share release ownership across N-API code and platforms.
 NATIVE_RELEASE_DEPS=$(
   bazel query \
+    --noimplicit_deps \
     'deps(set(//crates/formatjs_cli_napi:formatjs_cli_napi //crates/formatjs_cli/platforms:all))' \
     2>/dev/null \
     | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
@@ -16,7 +17,13 @@ NATIVE_RELEASE_DEPS=$(
     | paste -sd, -
 )
 
-TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
+PACKAGE_TARGETS=()
+for build_file in "$REPO_ROOT"/packages/*/BUILD.bazel; do
+  package_dir=$(basename "$(dirname "$build_file")")
+  PACKAGE_TARGETS+=("//packages/$package_dir:all")
+done
+
+TARGETS=$(bazel query "kind(\"npm_package rule\", set(${PACKAGE_TARGETS[*]}))" 2>/dev/null \
   | grep -v '^//packages/generated/' \
   | grep ':pkg$' \
   | while read -r target; do
@@ -36,7 +43,7 @@ TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
     if [[ "$package_dir" == cli-native-* ]]; then
       release_deps="$NATIVE_RELEASE_DEPS"
     else
-      release_deps=$(bazel query "deps($target)" 2>/dev/null \
+      release_deps=$(bazel query --noimplicit_deps "deps($target)" 2>/dev/null \
         | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
         | sort -u \
         | paste -sd, -
