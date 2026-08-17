@@ -569,9 +569,6 @@ importers:
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
-      '@formatjs/ts-transformer':
-        specifier: workspace:*
-        version: link:../ts-transformer
       '@glimmer/syntax':
         specifier: ^0.84.3 || ^0.95.0
         version: 0.95.0
@@ -605,9 +602,6 @@ importers:
       svelte:
         specifier: '5'
         version: 5.56.4
-      typescript:
-        specifier: ^5.6 || 6 || 7
-        version: 7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0)
       vue:
         specifier: '3'
         version: 3.5.39(typescript@7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0))

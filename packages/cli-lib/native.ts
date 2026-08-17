@@ -45,6 +45,32 @@ export interface NativeExtractOptions {
   throws?: boolean
 }
 
+export interface NativeExtractSourceInput {
+  filename: string
+  source: string
+}
+
+export interface NativeMessageDescriptor {
+  id?: string
+  defaultMessage?: string
+  description?: string | object
+  file?: string
+  start?: number
+  end?: number
+}
+
+export interface NativeExtractSourceResult {
+  filename: string
+  messages: NativeMessageDescriptor[]
+  meta?: Record<string, string>
+  errors?: string[]
+}
+
+export interface NativeExtractSourcesResult {
+  files: NativeExtractSourceResult[]
+  warnings?: string[]
+}
+
 export interface NativeBinding {
   compile(inputFiles: string[], opts?: NativeCompileOptions): string
   compileMessages(
@@ -52,6 +78,17 @@ export interface NativeBinding {
     opts?: NativeCompileOptions
   ): string
   extract(inputFiles: string[], opts?: NativeExtractOptions): string
+  extractSources(
+    sources: NativeExtractSourceInput[],
+    opts?: NativeExtractOptions,
+    generateIds?: boolean
+  ): string
+  generateId(
+    pattern: string,
+    defaultMessage?: string,
+    descriptionJson?: string,
+    filename?: string
+  ): string
   supportedBuiltinFormatters(): string[]
 }
 
@@ -161,4 +198,27 @@ export function extractWithNative(
     preserveWhitespace: opts.preserveWhitespace,
     throws: opts.throws,
   })
+}
+
+export function extractSourcesWithNative(
+  sources: NativeExtractSourceInput[],
+  opts: NativeExtractOptions = {},
+  generateIds = true
+): NativeExtractSourcesResult {
+  const native = loadNative()
+  return JSON.parse(native.extractSources(sources, opts, generateIds))
+}
+
+export function generateIdWithNative(
+  pattern: string,
+  defaultMessage?: string,
+  description?: string | object,
+  filename?: string
+): string {
+  return loadNative().generateId(
+    pattern,
+    defaultMessage,
+    description === undefined ? undefined : JSON.stringify(description),
+    filename
+  )
 }

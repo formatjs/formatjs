@@ -1,34 +1,18 @@
 import {test, expect} from 'vitest'
-import {type MessageDescriptor, interpolateName} from '@formatjs/ts-transformer'
-import {readFile} from 'node:fs/promises'
 import {join} from 'path'
-import {parseFile} from '#packages/cli-lib/hbs_extractor'
+import {extract} from '#packages/cli-lib/extract'
 
 test('hbs_extractor', async function () {
-  let messages: MessageDescriptor[] = []
   const fixturePath = join(import.meta.dirname, './fixtures/comp.hbs')
-  parseFile(await readFile(fixturePath, 'utf8'), fixturePath, {
-    onMsgExtracted(_: any, msgs: any) {
-      messages = messages.concat(msgs)
-    },
-    overrideIdFn: (
-      id: any,
-      defaultMessage: any,
-      description: any,
-      fileName: any
-    ) =>
-      id ||
-      interpolateName(
-        {
-          resourcePath: fileName,
-        } as any,
-        '[sha512:contenthash:base64:6]',
-        {
-          content: description
-            ? `${defaultMessage}#${description}`
-            : defaultMessage,
-        }
-      ),
-  })
+  const result = JSON.parse(
+    await extract([fixturePath], {
+      idInterpolationPattern: '[sha512:contenthash:base64:6]',
+      throws: true,
+    })
+  )
+  const messages = Object.entries(result).map(([id, message]) => ({
+    id,
+    ...(message as object),
+  }))
   expect(messages).toMatchSnapshot()
 })

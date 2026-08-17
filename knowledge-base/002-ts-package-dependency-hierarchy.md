@@ -60,7 +60,7 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 | `babel-plugin-formatjs`    | icu-messageformat-parser, ts-transformer                                     |
 | `eslint-plugin-formatjs`   | icu-messageformat-parser, ts-transformer                                     |
 | `@formatjs/unplugin`       | icu-messageformat-parser, ts-transformer                                     |
-| `@formatjs/cli-lib`        | icu-messageformat-parser, icu-skeleton-parser, ts-transformer                |
+| `@formatjs/cli-lib`        | icu-messageformat-parser                                                     |
 
 ### Layer 4 — Framework Integrations & CLI
 
@@ -80,7 +80,7 @@ Ranked by number of direct internal dependents:
 2. **`@formatjs/icu-messageformat-parser`** — 10+ packages (formatters, tools, integrations)
 3. **`@formatjs/intl-localematcher`** — 9 packages (all major polyfills)
 4. **`@formatjs/fast-memoize`** — 5 packages
-5. **`@formatjs/ts-transformer`** — 4 packages (babel-plugin, eslint-plugin, cli-lib, unplugin)
+5. **`@formatjs/ts-transformer`** — 3 packages (babel-plugin, eslint-plugin, unplugin)
 
 ## Visual Dependency Graph
 

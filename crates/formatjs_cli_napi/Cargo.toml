@@ -16,3 +16,4 @@ crate-type = ["cdylib"]
 formatjs_cli = { path = "../formatjs_cli" }
 napi = { version = "3.8.6", default-features = false, features = ["napi4"] }
 napi-derive = "3.5.4"
+serde_json = "1.0"

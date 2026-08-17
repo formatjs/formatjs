@@ -41,6 +41,11 @@ formatjs_cli (v0.1.14)
 ├── anyhow (error handling)
 └── regex 1.12
 
+formatjs_cli_napi
+├── formatjs_cli
+├── napi + napi-derive
+└── serde_json
+
 formatjs_icu_messageformat (v0.1.0)
 ├── formatjs_icu_messageformat_parser
 ├── formatjs_icu_skeleton_parser
@@ -124,6 +129,17 @@ support Rust 1.92 and newer.
 - **6 output formatters:** default, simple, crowdin, lokalise, transifex, smartling
 
 **176 unit tests.** Integration tests via `packages/cli/integration-tests/` ensure 100% conformance with the TypeScript CLI (60/60 tests passing).
+
+### `formatjs_cli_napi`
+
+**Purpose:** Native Node.js boundary used by `@formatjs/cli-lib`.
+
+- File-based `extract` and compile APIs support the CLI fast path.
+- Structured `extractSources` accepts in-memory virtual sources and returns
+  per-file messages, pragma metadata, and diagnostics.
+- `generateId` exposes Rust ID interpolation for JavaScript container adapters.
+- Vue, Svelte, Handlebars, and GTS stay JavaScript adapters; all embedded
+  JavaScript/TypeScript parsing uses `formatjs_cli`.
 
 ### `formatjs_icu_messageformat` (v0.1.0)
 
