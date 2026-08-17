@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use formatjs_cli::compile::{self as cli_compile, PseudoLocale};
 use formatjs_cli::extract as cli_extract;
 use formatjs_cli::formatters::Formatter;
+use formatjs_cli::id_generator::IdGenerator;
 use napi::Error;
 use napi_derive::napi;
 
@@ -39,6 +40,12 @@ pub struct ExtractOptions {
     pub preserve_whitespace: Option<bool>,
     pub flatten: Option<bool>,
     pub follow_links: Option<bool>,
+}
+
+#[napi(object)]
+pub struct ExtractSourceInput {
+    pub filename: String,
+    pub source: String,
 }
 
 #[napi]
@@ -92,7 +99,9 @@ pub fn compile_messages(
             if existing != &message.message {
                 return Err(Error::from_reason(format!(
                     "Conflicting ID \"{}\" with different translation found in these 2 files:\n  {}\n  {}",
-                    message.id, existing_file.display(), message.source_file
+                    message.id,
+                    existing_file.display(),
+                    message.source_file
                 )));
             }
         }
@@ -145,6 +154,67 @@ pub fn extract(files: Vec<String>, opts: Option<ExtractOptions>) -> napi::Result
         opts.follow_links.unwrap_or(true),
     )
     .map_err(to_napi_error)
+}
+
+#[napi]
+pub fn extract_sources(
+    sources: Vec<ExtractSourceInput>,
+    opts: Option<ExtractOptions>,
+    generate_ids: Option<bool>,
+) -> napi::Result<String> {
+    let opts = opts.unwrap_or_default();
+    let additional_component_names = opts.additional_component_names.unwrap_or_default();
+    let additional_function_names = opts.additional_function_names.unwrap_or_default();
+    let sources = sources
+        .into_iter()
+        .map(|source| cli_extract::ExtractSourceInput {
+            filename: source.filename,
+            source: source.source,
+        })
+        .collect::<Vec<_>>();
+    let id_interpolation_pattern = generate_ids.unwrap_or(true).then(|| {
+        opts.id_interpolation_pattern
+            .as_deref()
+            .unwrap_or("[sha1:contenthash:base64:6]")
+    });
+
+    let result = cli_extract::extract_sources(
+        &sources,
+        id_interpolation_pattern,
+        opts.extract_source_location.unwrap_or(false),
+        &additional_component_names,
+        &additional_function_names,
+        opts.throws.unwrap_or(false),
+        opts.pragma.as_deref(),
+        opts.preserve_whitespace.unwrap_or(false),
+        opts.flatten.unwrap_or(false),
+    )
+    .map_err(to_napi_error)?;
+
+    serde_json::to_string(&result).map_err(to_napi_error)
+}
+
+#[napi]
+pub fn generate_id(
+    pattern: String,
+    default_message: Option<String>,
+    description_json: Option<String>,
+    filename: Option<String>,
+) -> napi::Result<String> {
+    let description = description_json
+        .as_deref()
+        .map(serde_json::from_str)
+        .transpose()
+        .map_err(to_napi_error)?;
+    IdGenerator::new(&pattern)
+        .and_then(|generator| {
+            generator.generate(
+                default_message.as_deref(),
+                &description,
+                filename.as_deref().map(std::path::Path::new),
+            )
+        })
+        .map_err(to_napi_error)
 }
 
 impl Default for CompileOptions {

@@ -1,10 +1,10 @@
-import {type Opts} from '@formatjs/ts-transformer'
+import {type ExtractTransformOptions} from '#packages/cli-lib/types.js'
 import {preprocess, traverse, type AST, type ASTv1} from '@glimmer/syntax'
 
 function extractText(
   node: AST.MustacheStatement | AST.SubExpression,
   fileName: string,
-  options: Opts
+  options: ExtractTransformOptions
 ) {
   if (!options.onMsgExtracted) return
   if (!options.overrideIdFn) return

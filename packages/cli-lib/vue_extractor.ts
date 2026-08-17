@@ -11,7 +11,11 @@ import {
 } from '@vue/compiler-core'
 import {parse} from 'vue/compiler-sfc'
 
-export type ScriptParseFn = (source: string) => void
+export type ScriptParseFn = (
+  source: string,
+  sourceOffset?: number,
+  wrapperOffset?: number
+) => void
 
 function walk(
   node:
@@ -76,12 +80,12 @@ function templateSimpleExpressionNodeVisitor(parseScriptFn: ScriptParseFn) {
       return
     }
 
-    const {content} = n as SimpleExpressionNode
+    const {content, loc} = n as SimpleExpressionNode
     // Wrap this in () since a vue comp node attribute can just be
     // an object literal which, by itself is invalid TS
     // but with () it becomes an ExpressionStatement
     try {
-      parseScriptFn(`(${content})`)
+      parseScriptFn(`(${content})`, loc.start.offset, 1)
     } catch (e) {
       console.warn(
         `Failed to parse "${content}". Ignore this if content has no extractable message`,
@@ -109,10 +113,10 @@ export function parseFile(
   }
 
   if (script) {
-    parseScriptFn(script.content)
+    parseScriptFn(script.content, script.loc.start.offset)
   }
 
   if (scriptSetup) {
-    parseScriptFn(scriptSetup.content)
+    parseScriptFn(scriptSetup.content, scriptSetup.loc.start.offset)
   }
 }

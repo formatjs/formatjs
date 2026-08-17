@@ -1,9 +1,3 @@
-import {
-  type MessageDescriptor,
-  type Opts,
-  interpolateName,
-} from '@formatjs/ts-transformer'
-import {existsSync} from 'fs'
 import {outputFile} from 'fs-extra/esm'
 import {
   debug,
@@ -18,27 +12,19 @@ import {
   type Formatter,
   resolveBuiltinFormatter,
 } from '#packages/cli-lib/formatters/index.js'
-import {extractWithNative} from '#packages/cli-lib/native.js'
-import {parseScript} from '#packages/cli-lib/parse_script.js'
+import {
+  extractSourcesWithNative,
+  generateIdWithNative,
+  type NativeMessageDescriptor,
+} from '#packages/cli-lib/native.js'
+import {
+  type ExtractTransformOptions,
+  type MessageDescriptor,
+} from '#packages/cli-lib/types.js'
 import {readFile} from 'fs/promises'
 
 const stringify = (stringifyNs as any).default || stringifyNs
-const BUILTIN_FORMATTERS = new Set([
-  'default',
-  'simple',
-  'transifex',
-  'smartling',
-  'lokalise',
-  'crowdin',
-])
-const NATIVE_SUPPORTED_EXTENSIONS = new Set([
-  '.cjs',
-  '.js',
-  '.jsx',
-  '.mjs',
-  '.ts',
-  '.tsx',
-])
+const DEFAULT_ID_INTERPOLATION_PATTERN = '[sha1:contenthash:base64:6]'
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -88,7 +74,7 @@ export type ExtractCLIOptions = Omit<
   followLinks?: boolean
 }
 
-export type ExtractOpts = Opts & {
+export type ExtractOpts = ExtractTransformOptions & {
   /**
    * Whether to throw an error if we had any issues with
    * 1 of the source files
@@ -114,7 +100,11 @@ export type ExtractOpts = Opts & {
    * An AbortSignal to cancel the extraction
    */
   signal?: AbortSignal
-} & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>
+}
+
+function byteOffsetToStringOffset(text: string, offset: number): number {
+  return Buffer.from(text).subarray(0, offset).toString().length
+}
 
 function calculateLineColFromOffset(
   text: string,
@@ -129,104 +119,142 @@ function calculateLineColFromOffset(
   return {line: lines.length, col: lastLine.length}
 }
 
-function isBuiltinFormatter(
-  format: ExtractOpts['format']
-): format is string | undefined {
-  return (
-    !format || (typeof format === 'string' && BUILTIN_FORMATTERS.has(format))
-  )
+function nativeScriptFilename(filename: string): string {
+  const extension = extname(filename).toLowerCase()
+  if (
+    [
+      '.cjs',
+      '.cts',
+      '.js',
+      '.jsx',
+      '.mjs',
+      '.mts',
+      '.rs',
+      '.ts',
+      '.tsx',
+    ].includes(extension)
+  ) {
+    return filename
+  }
+  return `${filename}.tsx`
 }
 
-function canExtractWithNative(
-  files: readonly string[],
-  opts: Omit<ExtractOpts, 'readFromStdin' | 'signal' | 'throws'>,
-  readFromStdin: boolean | undefined
-): boolean {
-  return (
-    !readFromStdin &&
-    typeof opts.idInterpolationPattern === 'string' &&
-    !opts.ast &&
-    !opts.extractSourceLocation &&
-    !opts.onMetaExtracted &&
-    !opts.onMsgError &&
-    !opts.onMsgExtracted &&
-    !opts.overrideIdFn &&
-    !opts.pragma &&
-    !opts.removeDefaultMessage &&
-    isBuiltinFormatter(opts.format) &&
-    files.every(
-      file =>
-        existsSync(file) &&
-        NATIVE_SUPPORTED_EXTENSIONS.has(extname(file).toLowerCase())
-    )
-  )
+function applyOverrideId(
+  message: NativeMessageDescriptor,
+  filename: string,
+  overrideIdFn: ExtractTransformOptions['overrideIdFn']
+): MessageDescriptor {
+  const id =
+    typeof overrideIdFn === 'function'
+      ? overrideIdFn(
+          message.id,
+          message.defaultMessage,
+          message.description,
+          filename
+        )
+      : message.id
+  return {...message, id: id || ''}
 }
 
-async function processFile(
-  source: string,
-  fn: string,
-  {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
-) {
+async function processFile(source: string, fn: string, opts: ExtractOpts) {
   let messages: ExtractedMessageDescriptor[] = []
   let meta: Record<string, string> | undefined
-
-  const onMsgExtracted = opts.onMsgExtracted
-  const onMetaExtracted = opts.onMetaExtracted
-
-  opts = {
-    ...opts,
-    additionalComponentNames: [
-      '$formatMessage',
-      ...(opts.additionalComponentNames || []),
-    ],
-    onMsgExtracted(filePath, msgs) {
-      if (opts.extractSourceLocation) {
-        msgs = msgs.map(msg => ({
-          ...msg,
-          ...calculateLineColFromOffset(source, msg.start),
-        }))
-      }
-      messages = messages.concat(msgs)
-
-      if (onMsgExtracted) {
-        onMsgExtracted(filePath, msgs)
-      }
-    },
-    onMetaExtracted(filePath, m) {
-      meta = m
-
-      if (onMetaExtracted) {
-        onMetaExtracted(filePath, m)
-      }
-    },
-  }
-
-  if (!opts.overrideIdFn && idInterpolationPattern) {
-    opts = {
-      ...opts,
-      overrideIdFn: (id, defaultMessage, description, fileName) =>
-        id ||
-        interpolateName(
-          {
-            resourcePath: fileName,
-          } as any,
-          idInterpolationPattern,
-          {
-            content: description
-              ? `${defaultMessage}#${
-                  typeof description === 'string'
-                    ? description
-                    : stringify(description)
-                }`
-              : defaultMessage,
-          }
-        ),
-    }
-  }
+  const idInterpolationPattern =
+    typeof opts.overrideIdFn === 'string'
+      ? opts.overrideIdFn
+      : opts.idInterpolationPattern || DEFAULT_ID_INTERPOLATION_PATTERN
 
   debug('Processing opts for %s: %s', fn, opts)
 
-  const scriptParseFn = parseScript(opts, fn)
+  const collectMessages = (
+    filePath: string,
+    extracted: MessageDescriptor[]
+  ) => {
+    messages = messages.concat(extracted)
+    opts.onMsgExtracted?.(filePath, extracted)
+  }
+  const scriptParseFn = (
+    scriptSource: string,
+    sourceOffset = 0,
+    wrapperOffset = 0
+  ): void => {
+    const result = extractSourcesWithNative(
+      [{filename: nativeScriptFilename(fn), source: scriptSource}],
+      {
+        additionalComponentNames: [
+          '$formatMessage',
+          ...(opts.additionalComponentNames || []),
+        ],
+        additionalFunctionNames: opts.additionalFunctionNames,
+        extractSourceLocation: opts.extractSourceLocation,
+        idInterpolationPattern,
+        pragma: opts.pragma,
+        preserveWhitespace: opts.preserveWhitespace,
+        flatten: opts.flatten,
+        throws: opts.throws,
+      },
+      typeof opts.overrideIdFn !== 'function'
+    )
+    const file = result.files[0]
+    if (!file) return
+    if (file.meta) {
+      meta = {...meta, ...file.meta}
+    }
+    for (const error of file.errors || []) {
+      opts.onMsgError?.(fn, new Error(error))
+    }
+    let extracted = file.messages.map(message =>
+      applyOverrideId(message, fn, opts.overrideIdFn)
+    )
+    if (opts.extractSourceLocation) {
+      extracted = extracted.map(message => {
+        const start =
+          message.start === undefined
+            ? undefined
+            : sourceOffset +
+              Math.max(
+                0,
+                byteOffsetToStringOffset(scriptSource, message.start) -
+                  wrapperOffset
+              )
+        const end =
+          message.end === undefined
+            ? undefined
+            : sourceOffset +
+              Math.max(
+                0,
+                byteOffsetToStringOffset(scriptSource, message.end) -
+                  wrapperOffset
+              )
+        return {
+          ...message,
+          file: fn,
+          start,
+          end,
+          ...calculateLineColFromOffset(source, start),
+        }
+      })
+    }
+    collectMessages(fn, extracted)
+  }
+  const hbsOptions: ExtractTransformOptions = {
+    ...opts,
+    overrideIdFn:
+      typeof opts.overrideIdFn === 'function'
+        ? opts.overrideIdFn
+        : (id, defaultMessage, description, filename) =>
+            id ||
+            generateIdWithNative(
+              idInterpolationPattern,
+              defaultMessage,
+              description,
+              filename
+            ),
+    onMsgExtracted: collectMessages,
+    onMetaExtracted(_filePath, extractedMeta) {
+      meta = {...meta, ...extractedMeta}
+    },
+  }
   if (fn.endsWith('.vue')) {
     debug('Processing %s using vue extractor', fn)
     const {parseFile} = await import('./vue_extractor.js')
@@ -238,19 +266,20 @@ async function processFile(
   } else if (fn.endsWith('.hbs')) {
     debug('Processing %s using hbs extractor', fn)
     const {parseFile} = await import('./hbs_extractor.js')
-    parseFile(source, fn, opts)
+    parseFile(source, fn, hbsOptions)
   } else if (fn.endsWith('.gts') || fn.endsWith('.gjs')) {
     debug('Processing %s as gts/gjs file', fn)
     const {parseFile} = await import('./gts_extractor.js')
-    parseFile(source, fn, opts)
+    parseFile(source, fn, hbsOptions, scriptParseFn)
   } else {
-    debug('Processing %s using typescript extractor', fn)
+    debug('Processing %s using native extractor', fn)
     scriptParseFn(source)
   }
   debug('Done extracting %s messages: %s', fn, messages)
   if (meta) {
     debug('Extracted meta:', meta)
     messages.forEach(m => (m.meta = meta))
+    opts.onMetaExtracted?.(fn, meta)
   }
   return {messages, meta}
 }
@@ -272,25 +301,12 @@ export async function extract(
   // Pass throws option to transformer for per-message error handling
   const optsWithThrows = {
     ...opts,
+    idInterpolationPattern:
+      opts.idInterpolationPattern || DEFAULT_ID_INTERPOLATION_PATTERN,
     throws: shouldThrow,
     onMsgError: !shouldThrow
-      ? (_: string, e: Error) => warn(e.message)
+      ? opts.onMsgError || ((_: string, e: Error) => warn(e.message))
       : undefined,
-  }
-
-  if (!signal?.aborted && canExtractWithNative(files, opts, readFromStdin)) {
-    return extractWithNative(files, {
-      additionalComponentNames: [
-        '$formatMessage',
-        ...(opts.additionalComponentNames || []),
-      ],
-      additionalFunctionNames: opts.additionalFunctionNames,
-      flatten: opts.flatten,
-      format: typeof opts.format === 'string' ? opts.format : undefined,
-      idInterpolationPattern: opts.idInterpolationPattern,
-      preserveWhitespace: opts.preserveWhitespace,
-      throws: shouldThrow,
-    })
   }
 
   let rawResults: Array<ExtractionResult | undefined> = []
@@ -302,7 +318,7 @@ export async function extract(
         warn('Reading source file from TTY.')
       }
       const stdinSource = await getStdinAsString()
-      rawResults = [await processFile(stdinSource, 'dummy', optsWithThrows)]
+      rawResults = [await processFile(stdinSource, 'dummy.ts', optsWithThrows)]
     } else {
       // Use Promise.allSettled when throws is not explicitly true to collect partial results
       if (!shouldThrow) {

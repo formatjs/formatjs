@@ -58,6 +58,7 @@ rust_shared_library(
     deps = [
         "//crates/formatjs_cli:formatjs_cli_lib",
         "@crates//:napi",
+        "@crates//:serde_json",
     ],
 )
 

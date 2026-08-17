@@ -12,7 +12,7 @@
 - ID interpolation via `interpolateName` (webpack loader-utils compatible pattern: `[sha512:contenthash:base64:6]`)
 - Can strip `defaultMessage` from production builds to reduce bundle size
 
-**Used by:** babel-plugin-formatjs, eslint-plugin-formatjs, cli-lib, unplugin
+**Used by:** babel-plugin-formatjs, eslint-plugin-formatjs, unplugin
 
 ## babel-plugin-formatjs
 
@@ -67,11 +67,16 @@
 
 **Extractor support:**
 
-- React (JSX/TSX) — default
-- Vue SFC (`vue_extractor.ts`)
-- Svelte (`svelte_extractor.ts`)
-- Handlebars (`hbs_extractor.ts`)
-- GTS/Glimmer (`gts_extractor.ts`)
+- JavaScript, TypeScript, JSX, TSX, and Rust source use the native OXC/syn
+  extractor through `formatjs_cli_napi`.
+- Vue, Svelte, Handlebars, and GTS/Glimmer keep small JavaScript container
+  adapters. Embedded script fragments are sent to the same native extractor.
+- Programmatic options such as callbacks, custom ID functions, pragma metadata,
+  source locations, stdin, and custom formatters are applied around structured
+  native results.
+
+`cli-lib` has no runtime dependency on TypeScript or `@formatjs/ts-transformer`.
+The native binding is required for extraction and compilation.
 
 **Pseudo-locale generation:** Creates fake translations for testing (XxLs, XxAc, XxHa, EnXa, EnXb)
 

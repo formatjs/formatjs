@@ -1,4 +1,5 @@
 import {createRequire} from 'module'
+import {resolve} from 'node:path'
 
 const require = createRequire(import.meta.url)
 
@@ -45,6 +46,32 @@ export interface NativeExtractOptions {
   throws?: boolean
 }
 
+export interface NativeExtractSourceInput {
+  filename: string
+  source: string
+}
+
+export interface NativeMessageDescriptor {
+  id?: string
+  defaultMessage?: string
+  description?: string | object
+  file?: string
+  start?: number
+  end?: number
+}
+
+export interface NativeExtractSourceResult {
+  filename: string
+  messages: NativeMessageDescriptor[]
+  meta?: Record<string, string>
+  errors?: string[]
+}
+
+export interface NativeExtractSourcesResult {
+  files: NativeExtractSourceResult[]
+  warnings?: string[]
+}
+
 export interface NativeBinding {
   compile(inputFiles: string[], opts?: NativeCompileOptions): string
   compileMessages(
@@ -52,6 +79,17 @@ export interface NativeBinding {
     opts?: NativeCompileOptions
   ): string
   extract(inputFiles: string[], opts?: NativeExtractOptions): string
+  extractSources(
+    sources: NativeExtractSourceInput[],
+    opts?: NativeExtractOptions,
+    generateIds?: boolean
+  ): string
+  generateId(
+    pattern: string,
+    defaultMessage?: string,
+    descriptionJson?: string,
+    filename?: string
+  ): string
   supportedBuiltinFormatters(): string[]
 }
 
@@ -92,7 +130,7 @@ export function loadNative(): NativeBinding {
   const installedPackageCandidates =
     getInstalledNativePackageCandidates(packageCandidates)
   const candidates = [
-    overridePath,
+    overridePath ? resolve(overridePath) : undefined,
     ...(installedPackageCandidates.length
       ? installedPackageCandidates
       : packageCandidates),
@@ -142,23 +180,25 @@ export function compileMessagesWithNative(
   })
 }
 
-export function extractWithNative(
-  inputFiles: readonly string[],
-  opts: NativeExtractOptions = {}
-): string {
+export function extractSourcesWithNative(
+  sources: NativeExtractSourceInput[],
+  opts: NativeExtractOptions = {},
+  generateIds = true
+): NativeExtractSourcesResult {
   const native = loadNative()
-  return native.extract([...inputFiles], {
-    additionalComponentNames: opts.additionalComponentNames,
-    additionalFunctionNames: opts.additionalFunctionNames,
-    extractSourceLocation: opts.extractSourceLocation,
-    flatten: opts.flatten,
-    followLinks: opts.followLinks,
-    format: opts.format,
-    idInterpolationPattern: opts.idInterpolationPattern,
-    ignore: opts.ignore,
-    inFile: opts.inFile,
-    pragma: opts.pragma,
-    preserveWhitespace: opts.preserveWhitespace,
-    throws: opts.throws,
-  })
+  return JSON.parse(native.extractSources(sources, opts, generateIds))
+}
+
+export function generateIdWithNative(
+  pattern: string,
+  defaultMessage?: string,
+  description?: string | object,
+  filename?: string
+): string {
+  return loadNative().generateId(
+    pattern,
+    defaultMessage,
+    description === undefined ? undefined : JSON.stringify(description),
+    filename
+  )
 }

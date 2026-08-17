@@ -1,4 +1,4 @@
-import {type MessageDescriptor} from '@formatjs/ts-transformer'
+import {type MessageDescriptor} from '#packages/cli-lib/types.js'
 export type FormatFn<T = Record<string, MessageDescriptor>> = (
   msgs: Record<string, MessageDescriptor>
 ) => T

@@ -31,6 +31,11 @@ pub struct MessageDescriptor {
     pub end: Option<u32>,
 }
 
+pub struct MessageExtraction {
+    pub messages: Vec<MessageDescriptor>,
+    pub errors: Vec<String>,
+}
+
 /// Normalize whitespace in a string by:
 /// - Replacing all whitespace sequences (newlines, tabs, multiple spaces) with single spaces
 /// - Trimming leading and trailing whitespace
@@ -79,6 +84,37 @@ pub fn extract_messages_from_source(
     flatten: bool,
     throws: bool,
 ) -> Result<Vec<MessageDescriptor>> {
+    let extraction = extract_messages_from_source_with_diagnostics(
+        source_text,
+        file_path,
+        source_type,
+        extract_source_location,
+        component_names,
+        function_names,
+        pragma_meta,
+        preserve_whitespace,
+        flatten,
+        throws,
+    )?;
+    for error in extraction.errors {
+        eprintln!("{error}");
+    }
+    Ok(extraction.messages)
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn extract_messages_from_source_with_diagnostics(
+    source_text: &str,
+    file_path: &Path,
+    source_type: SourceType,
+    extract_source_location: bool,
+    component_names: &[String],
+    function_names: &[String],
+    pragma_meta: HashMap<String, String>,
+    preserve_whitespace: bool,
+    flatten: bool,
+    throws: bool,
+) -> Result<MessageExtraction> {
     // Parse the file
     let allocator = Allocator::default();
     let ParserReturn {
@@ -103,11 +139,17 @@ pub fn extract_messages_from_source(
         function_names,
         pragma_meta,
         preserve_whitespace,
-        throws,
     );
 
     visitor.visit_program(&program);
-    flatten_message_descriptors(visitor.messages, source_text, file_path, flatten)
+    if throws && !visitor.errors.is_empty() {
+        anyhow::bail!(visitor.errors.join("\n"));
+    }
+    let messages = flatten_message_descriptors(visitor.messages, source_text, file_path, flatten)?;
+    Ok(MessageExtraction {
+        messages,
+        errors: visitor.errors,
+    })
 }
 
 pub(crate) fn flatten_message_descriptors(
@@ -195,8 +237,8 @@ struct MessageExtractor<'a> {
     function_names: &'a [String],
     _pragma_meta: HashMap<String, String>,
     preserve_whitespace: bool,
-    throws: bool,
     messages: Vec<MessageDescriptor>,
+    errors: Vec<String>,
 }
 
 impl<'a> MessageExtractor<'a> {
@@ -209,7 +251,6 @@ impl<'a> MessageExtractor<'a> {
         function_names: &'a [String],
         pragma_meta: HashMap<String, String>,
         preserve_whitespace: bool,
-        throws: bool,
     ) -> Self {
         Self {
             file_path,
@@ -220,8 +261,8 @@ impl<'a> MessageExtractor<'a> {
             function_names,
             _pragma_meta: pragma_meta,
             preserve_whitespace,
-            throws,
             messages: Vec::new(),
+            errors: Vec::new(),
         }
     }
 
@@ -331,15 +372,11 @@ impl<'a> MessageExtractor<'a> {
 
             // Member expression: something.formatMessage()
             // Matches any object — aligns with JS CLI (ts-transformer) behavior
-            Expression::StaticMemberExpression(member) => {
-                Some(member.property.name.as_str())
-            }
+            Expression::StaticMemberExpression(member) => Some(member.property.name.as_str()),
 
             // Optional chaining wrapper: something?.formatMessage()
             Expression::ChainExpression(chain) => match &chain.expression {
-                ChainElement::StaticMemberExpression(member) => {
-                    Some(member.property.name.as_str())
-                }
+                ChainElement::StaticMemberExpression(member) => Some(member.property.name.as_str()),
                 _ => None,
             },
 
@@ -419,16 +456,10 @@ impl<'a> MessageExtractor<'a> {
                                             if descriptor.id.is_none() {
                                                 extraction_error = true;
                                                 let loc = self.format_location(jsx_attr.span.start);
-                                                if self.throws {
-                                                    panic!(
-                                                        "{} [FormatJS] `id` must be a string literal to be extracted.",
-                                                        loc
-                                                    );
-                                                }
-                                                eprintln!(
+                                                self.errors.push(format!(
                                                     "{} [FormatJS] `id` must be a string literal to be extracted.",
                                                     loc
-                                                );
+                                                ));
                                             }
                                         }
                                         "defaultMessage" => {
@@ -437,16 +468,10 @@ impl<'a> MessageExtractor<'a> {
                                             if descriptor.default_message.is_none() {
                                                 extraction_error = true;
                                                 let loc = self.format_location(jsx_attr.span.start);
-                                                if self.throws {
-                                                    panic!(
-                                                        "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
-                                                        loc
-                                                    );
-                                                }
-                                                eprintln!(
+                                                self.errors.push(format!(
                                                     "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
                                                     loc
-                                                );
+                                                ));
                                             }
                                         }
                                         "description" => {
@@ -504,9 +529,11 @@ impl<'a> MessageExtractor<'a> {
                         if let Expression::ObjectExpression(msg_obj) =
                             self.unwrap_transparent_ts_expression(&p.value)
                         {
-                            if let Some(descriptor) =
-                                self.extract_object_descriptor(&msg_obj, call.span.start)
-                            {
+                            if let Some(descriptor) = self.extract_object_descriptor(
+                                &msg_obj,
+                                call.span.start,
+                                call.span.end,
+                            ) {
                                 self.messages.push(descriptor);
                             }
                         }
@@ -516,7 +543,9 @@ impl<'a> MessageExtractor<'a> {
         } else {
             // For defineMessage and formatMessage, the argument is the descriptor
             if let Expression::ObjectExpression(obj) = arg_expr {
-                if let Some(descriptor) = self.extract_object_descriptor(&obj, call.span.start) {
+                if let Some(descriptor) =
+                    self.extract_object_descriptor(&obj, call.span.start, call.span.end)
+                {
                     self.messages.push(descriptor);
                 }
             }
@@ -524,9 +553,10 @@ impl<'a> MessageExtractor<'a> {
     }
 
     fn extract_object_descriptor(
-        &self,
+        &mut self,
         obj: &ObjectExpression,
         span_start: u32,
+        span_end: u32,
     ) -> Option<MessageDescriptor> {
         let mut descriptor = MessageDescriptor {
             id: None,
@@ -541,6 +571,7 @@ impl<'a> MessageExtractor<'a> {
         if self.extract_source_location {
             descriptor.file = Some(self.file_path.to_string_lossy().to_string());
             descriptor.start = Some(span_start);
+            descriptor.end = Some(span_end);
         }
 
         for prop in &obj.properties {
@@ -548,21 +579,14 @@ impl<'a> MessageExtractor<'a> {
                 if let PropertyKey::StaticIdentifier(key) = &p.key {
                     match key.name.as_str() {
                         "id" => {
-                            descriptor.id =
-                                self.extract_string_literal(&p.value, Some(true));
+                            descriptor.id = self.extract_string_literal(&p.value, Some(true));
                             if descriptor.id.is_none() {
                                 extraction_error = true;
                                 let loc = self.format_location(p.span.start);
-                                if self.throws {
-                                    panic!(
-                                        "{} [FormatJS] `id` must be a string literal to be extracted.",
-                                        loc
-                                    );
-                                }
-                                eprintln!(
+                                self.errors.push(format!(
                                     "{} [FormatJS] `id` must be a string literal to be extracted.",
                                     loc
-                                );
+                                ));
                             }
                         }
                         "defaultMessage" => {
@@ -571,16 +595,10 @@ impl<'a> MessageExtractor<'a> {
                             if descriptor.default_message.is_none() {
                                 extraction_error = true;
                                 let loc = self.format_location(p.span.start);
-                                if self.throws {
-                                    panic!(
-                                        "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
-                                        loc
-                                    );
-                                }
-                                eprintln!(
+                                self.errors.push(format!(
                                     "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
                                     loc
-                                );
+                                ));
                             }
                         }
                         "description" => {
@@ -1532,7 +1550,9 @@ mod tests {
             MessageDescriptor {
                 id: None,
                 default_message: Some("In a callback inside an optional chain".to_string()),
-                description: Some(Value::String("Test callbacks inside an optional chain".to_string())),
+                description: Some(Value::String(
+                    "Test callbacks inside an optional chain".to_string(),
+                )),
                 file: None,
                 start: None,
                 end: None,
@@ -1721,10 +1741,7 @@ mod tests {
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0].id, Some("spacing".to_string()));
         // \xa0 is a non-breaking space (U+00A0), which JavaScript /\s/ normalizes.
-        assert_eq!(
-            messages[0].default_message,
-            Some("foo bar baz".to_string())
-        );
+        assert_eq!(messages[0].default_message, Some("foo bar baz".to_string()));
     }
 
     #[test]
@@ -1804,22 +1821,40 @@ export default function Test() {
             false,
         );
 
-        assert!(result.is_err(), "Should fail when trying to flatten plural within tag");
+        assert!(
+            result.is_err(),
+            "Should fail when trying to flatten plural within tag"
+        );
         let error = result.unwrap_err().to_string();
 
         // Verify error message contains all expected information
-        assert!(error.contains("[formatjs]"), "Error should include [formatjs] prefix");
+        assert!(
+            error.contains("[formatjs]"),
+            "Error should include [formatjs] prefix"
+        );
         assert!(error.contains("test.tsx"), "Error should include file name");
         assert!(error.contains("line"), "Error should include line number");
-        assert!(error.contains("column"), "Error should include column number");
-        assert!(error.contains("test.message"), "Error should include message ID");
-        assert!(error.contains("Cannot hoist plural/select within a tag element"), "Error should include original error message");
-        assert!(error.contains("<b>{count"), "Error should include problematic message");
+        assert!(
+            error.contains("column"),
+            "Error should include column number"
+        );
+        assert!(
+            error.contains("test.message"),
+            "Error should include message ID"
+        );
+        assert!(
+            error.contains("Cannot hoist plural/select within a tag element"),
+            "Error should include original error message"
+        );
+        assert!(
+            error.contains("<b>{count"),
+            "Error should include problematic message"
+        );
     }
 
     #[test]
     fn test_non_static_id_throws_includes_location() {
-        // When throws=true and id is non-static, the panic message should include file:line:col
+        // When throws=true and id is non-static, the error should include file:line:col
         let source = r#"import { defineMessage } from 'react-intl';
 const dynamicId = 'foo';
 const msg = defineMessage({
@@ -1837,42 +1872,35 @@ const msg = defineMessage({
             "formatMessage".to_string(),
         ];
 
-        let result = std::panic::catch_unwind(|| {
-            extract_messages_from_source(
-                source,
-                &file_path,
-                source_type,
-                false,
-                &component_names,
-                &function_names,
-                HashMap::new(),
-                false,
-                false,
-                true, // throws = true
-            )
-        });
-
-        assert!(result.is_err(), "Should panic with throws=true on non-static id");
-        let panic_msg = result
-            .unwrap_err()
-            .downcast_ref::<String>()
-            .cloned()
-            .unwrap_or_default();
+        let error = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            true,
+        )
+        .unwrap_err()
+        .to_string();
         assert!(
-            panic_msg.contains("src/App.tsx:4:"),
-            "Panic message should include file:line:col, got: {}",
-            panic_msg
+            error.contains("src/App.tsx:4:"),
+            "Error should include file:line:col, got: {}",
+            error
         );
         assert!(
-            panic_msg.contains("[FormatJS]"),
-            "Panic message should include [FormatJS] prefix, got: {}",
-            panic_msg
+            error.contains("[FormatJS]"),
+            "Error should include [FormatJS] prefix, got: {}",
+            error
         );
     }
 
     #[test]
     fn test_non_static_default_message_throws_includes_location() {
-        // When throws=true and defaultMessage is non-static, the panic message should include file:line:col
+        // When throws=true and defaultMessage is non-static, the error should include file:line:col
         let source = r#"import { FormattedMessage } from 'react-intl';
 export default function App() {
     const msg = getDynamicMessage();
@@ -1885,36 +1913,29 @@ export default function App() {
         let component_names = vec!["FormattedMessage".to_string()];
         let function_names = vec!["formatMessage".to_string()];
 
-        let result = std::panic::catch_unwind(|| {
-            extract_messages_from_source(
-                source,
-                &file_path,
-                source_type,
-                false,
-                &component_names,
-                &function_names,
-                HashMap::new(),
-                false,
-                false,
-                true, // throws = true
-            )
-        });
-
-        assert!(result.is_err(), "Should panic with throws=true on non-static defaultMessage");
-        let panic_msg = result
-            .unwrap_err()
-            .downcast_ref::<String>()
-            .cloned()
-            .unwrap_or_default();
+        let error = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            false,
+            false,
+            true,
+        )
+        .unwrap_err()
+        .to_string();
         assert!(
-            panic_msg.contains("src/Component.tsx:4:"),
-            "Panic message should include file:line:col, got: {}",
-            panic_msg
+            error.contains("src/Component.tsx:4:"),
+            "Error should include file:line:col, got: {}",
+            error
         );
         assert!(
-            panic_msg.contains("`defaultMessage`"),
-            "Panic message should mention defaultMessage, got: {}",
-            panic_msg
+            error.contains("`defaultMessage`"),
+            "Error should mention defaultMessage, got: {}",
+            error
         );
     }
 
@@ -1967,9 +1988,8 @@ const msg2 = defineMessage({
 
     #[test]
     fn test_many_non_static_messages_keep_location_lookup_linear() {
-        let mut source = String::from(
-            "import { defineMessage } from 'react-intl';\nconst dynamic = {};\n",
-        );
+        let mut source =
+            String::from("import { defineMessage } from 'react-intl';\nconst dynamic = {};\n");
         for index in 0..4_000 {
             source.push_str(&format!(
                 "const msg{index} = defineMessage({{ id: 'dynamic.{index}', defaultMessage: dynamic[{index}] }});\n"
@@ -1997,7 +2017,10 @@ const msg2 = defineMessage({
         .unwrap();
         let elapsed = start.elapsed();
 
-        assert!(messages.is_empty(), "non-static descriptors should be skipped");
+        assert!(
+            messages.is_empty(),
+            "non-static descriptors should be skipped"
+        );
         assert!(
             elapsed < std::time::Duration::from_secs(3),
             "warning-heavy extraction should stay linear, took {:?}",

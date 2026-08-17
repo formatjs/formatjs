@@ -1,15 +1,136 @@
 use anyhow::{Context, Result};
 use rayon::prelude::*;
+use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
-use crate::extractor::{determine_source_type, extract_messages_from_source, MessageDescriptor};
+use crate::extractor::{
+    MessageDescriptor, determine_source_type, extract_messages_from_source,
+    extract_messages_from_source_with_diagnostics,
+};
 use crate::formatters::Formatter;
 use crate::id_generator::IdGenerator;
-use crate::rust_extractor::extract_messages_from_rust_source;
+use crate::rust_extractor::{
+    extract_messages_from_rust_source, extract_messages_from_rust_source_with_diagnostics,
+};
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ExtractSourceInput {
+    pub filename: String,
+    pub source: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ExtractSourceResult {
+    pub filename: String,
+    pub messages: Vec<MessageDescriptor>,
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    pub meta: HashMap<String, String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub errors: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ExtractSourcesResult {
+    pub files: Vec<ExtractSourceResult>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub warnings: Vec<String>,
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn extract_sources(
+    sources: &[ExtractSourceInput],
+    id_interpolation_pattern: Option<&str>,
+    extract_source_location: bool,
+    additional_component_names: &[String],
+    additional_function_names: &[String],
+    throws: bool,
+    pragma: Option<&str>,
+    preserve_whitespace: bool,
+    flatten: bool,
+) -> Result<ExtractSourcesResult> {
+    let component_names = build_component_names(additional_component_names);
+    let function_names = build_function_names(additional_function_names);
+    let id_generator = id_interpolation_pattern.map(IdGenerator::new).transpose()?;
+
+    let files = sources
+        .par_iter()
+        .map(|input| {
+            let path = Path::new(&input.filename);
+            let meta = pragma
+                .map(|pragma| extract_pragma(&input.source, pragma))
+                .unwrap_or_default();
+            let result = if path.extension().and_then(|extension| extension.to_str()) == Some("rs")
+            {
+                extract_messages_from_rust_source_with_diagnostics(
+                    &input.source,
+                    path,
+                    extract_source_location,
+                    preserve_whitespace,
+                    flatten,
+                    throws,
+                )
+                .map(|extraction| (extraction.messages, extraction.errors))
+            } else {
+                determine_source_type(path).and_then(|source_type| {
+                    extract_messages_from_source_with_diagnostics(
+                        &input.source,
+                        path,
+                        source_type,
+                        extract_source_location,
+                        &component_names,
+                        &function_names,
+                        meta.clone(),
+                        preserve_whitespace,
+                        flatten,
+                        throws,
+                    )
+                    .map(|extraction| (extraction.messages, extraction.errors))
+                })
+            };
+
+            match result {
+                Ok((mut messages, errors)) => {
+                    if let Some(id_generator) = &id_generator {
+                        for message in &mut messages {
+                            if message.id.is_none() {
+                                message.id = Some(id_generator.generate(
+                                    message.default_message.as_deref(),
+                                    &message.description,
+                                    Some(path),
+                                )?);
+                            }
+                        }
+                    }
+                    Ok(ExtractSourceResult {
+                        filename: input.filename.clone(),
+                        messages,
+                        meta,
+                        errors,
+                    })
+                }
+                Err(error) if throws => Err(error),
+                Err(error) => Ok(ExtractSourceResult {
+                    filename: input.filename.clone(),
+                    messages: Vec::new(),
+                    meta,
+                    errors: vec![error.to_string()],
+                }),
+            }
+        })
+        .collect::<Result<Vec<_>>>()?;
+
+    Ok(ExtractSourcesResult {
+        files,
+        warnings: Vec::new(),
+    })
+}
 
 /// Extract messages from JavaScript, TypeScript, and Rust source files.
 #[allow(clippy::too_many_arguments)]
@@ -321,9 +442,8 @@ fn resolve_files_from_globs(
             let entry = match entry {
                 Ok(entry) => entry,
                 Err(error) => {
-                    let message = format!(
-                        "Failed to traverse files for glob pattern {glob_str}: {error}"
-                    );
+                    let message =
+                        format!("Failed to traverse files for glob pattern {glob_str}: {error}");
                     if throws {
                         anyhow::bail!(message);
                     }
@@ -373,7 +493,7 @@ fn is_supported_file(path: &Path) -> bool {
     if let Some(ext) = path.extension() {
         matches!(
             ext.to_string_lossy().as_ref(),
-            "ts" | "tsx" | "js" | "jsx" | "mjs" | "cjs" | "rs"
+            "ts" | "tsx" | "mts" | "cts" | "js" | "jsx" | "mjs" | "cjs" | "rs"
         )
     } else {
         false
@@ -492,6 +612,8 @@ mod tests {
     fn test_is_supported_file() {
         assert!(is_supported_file(&PathBuf::from("test.ts")));
         assert!(is_supported_file(&PathBuf::from("test.tsx")));
+        assert!(is_supported_file(&PathBuf::from("test.mts")));
+        assert!(is_supported_file(&PathBuf::from("test.cts")));
         assert!(is_supported_file(&PathBuf::from("test.js")));
         assert!(is_supported_file(&PathBuf::from("test.jsx")));
         assert!(is_supported_file(&PathBuf::from("test.mjs")));
@@ -831,21 +953,23 @@ fn main() {
         let globs = vec![PathBuf::from("/nonexistent/path/**/*.ts")];
         let error = resolve_files_from_globs(&globs, &[], true, true).unwrap_err();
 
-        assert!(error.to_string().contains("base directory /nonexistent/path does not exist"));
+        assert!(
+            error
+                .to_string()
+                .contains("base directory /nonexistent/path does not exist")
+        );
     }
 
     #[test]
     fn test_resolve_files_missing_literal_throws() {
         let temp_dir = tempfile::tempdir().unwrap();
         let missing_file = temp_dir.path().join("missing.tsx");
-        let error =
-            resolve_files_from_globs(&[missing_file.clone()], &[], true, true).unwrap_err();
+        let error = resolve_files_from_globs(&[missing_file.clone()], &[], true, true).unwrap_err();
 
-        assert!(
-            error
-                .to_string()
-                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
-        );
+        assert!(error.to_string().contains(&format!(
+            "Failed to resolve input file {}",
+            missing_file.display()
+        )));
     }
 
     #[test]
@@ -858,7 +982,10 @@ fn main() {
 
         assert_eq!(
             error.to_string(),
-            format!("Unsupported input file type: {}", unsupported_file.display())
+            format!(
+                "Unsupported input file type: {}",
+                unsupported_file.display()
+            )
         );
     }
 
@@ -2279,11 +2406,10 @@ const msg = defineMessage({
         )
         .unwrap_err();
 
-        assert!(
-            error
-                .to_string()
-                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
-        );
+        assert!(error.to_string().contains(&format!(
+            "Failed to resolve input file {}",
+            missing_file.display()
+        )));
         assert!(!output_file.exists());
     }
 
@@ -2313,11 +2439,87 @@ const msg = defineMessage({
         )
         .unwrap_err();
 
-        assert!(
-            error
-                .to_string()
-                .contains(&format!("Failed to resolve input file {}", missing_file.display()))
-        );
+        assert!(error.to_string().contains(&format!(
+            "Failed to resolve input file {}",
+            missing_file.display()
+        )));
         assert!(!output_file.exists());
+    }
+
+    #[test]
+    fn test_extract_sources_returns_structured_virtual_source_results() {
+        let result = extract_sources(
+            &[ExtractSourceInput {
+                filename: "virtual.tsx".to_string(),
+                source: r#"// @intl-meta project:api
+                    defineMessage({defaultMessage: "Hello", description: "Greeting"})"#
+                    .to_string(),
+            }],
+            Some("[sha512:contenthash:base64:6]"),
+            true,
+            &[],
+            &[],
+            true,
+            Some("@intl-meta"),
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert_eq!(result.files.len(), 1);
+        assert!(result.warnings.is_empty());
+        let file = &result.files[0];
+        assert_eq!(file.filename, "virtual.tsx");
+        assert_eq!(file.meta.get("project").map(String::as_str), Some("api"));
+        assert!(file.errors.is_empty());
+        assert_eq!(file.messages.len(), 1);
+        assert!(file.messages[0].id.is_some());
+        assert_eq!(file.messages[0].file.as_deref(), Some("virtual.tsx"));
+    }
+
+    #[test]
+    fn test_extract_sources_returns_parse_errors_when_throws_is_false() {
+        let result = extract_sources(
+            &[ExtractSourceInput {
+                filename: "broken.ts".to_string(),
+                source: "defineMessage({".to_string(),
+            }],
+            None,
+            false,
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert_eq!(result.files.len(), 1);
+        assert!(result.files[0].messages.is_empty());
+        assert_eq!(result.files[0].errors.len(), 1);
+    }
+
+    #[test]
+    fn test_extract_sources_returns_message_errors_when_throws_is_false() {
+        let result = extract_sources(
+            &[ExtractSourceInput {
+                filename: "non_static.ts".to_string(),
+                source: "defineMessage({defaultMessage: value})".to_string(),
+            }],
+            None,
+            false,
+            &[],
+            &[],
+            false,
+            None,
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert!(result.files[0].messages.is_empty());
+        assert_eq!(result.files[0].errors.len(), 1);
+        assert!(result.files[0].errors[0].contains("defaultMessage"));
     }
 }

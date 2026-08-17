@@ -4,6 +4,48 @@ load("//tools:test.bzl", "formatjs_test")
 
 PACKAGE_NAME = "cli-lib"
 
+config_setting(
+    name = "native_test_darwin_arm64",
+    constraint_values = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:macos",
+    ],
+)
+
+config_setting(
+    name = "native_test_linux_arm64",
+    constraint_values = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:linux",
+    ],
+)
+
+config_setting(
+    name = "native_test_linux_x64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+)
+
+config_setting(
+    name = "native_test_windows_x64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:windows",
+    ],
+)
+
+alias(
+    name = "native_test_binary",
+    actual = select({
+        ":native_test_darwin_arm64": "//crates/formatjs_cli_napi:release_node_darwin_arm64",
+        ":native_test_linux_arm64": "//crates/formatjs_cli_napi:release_node_linux_arm64",
+        ":native_test_linux_x64": "//crates/formatjs_cli_napi:release_node_linux_x64",
+        ":native_test_windows_x64": "//crates/formatjs_cli_napi:release_node_win32_x64",
+    }),
+)
+
 formatjs_library(
     name = "cli-lib",
     package_name = "@formatjs/cli-lib",
@@ -25,9 +67,9 @@ formatjs_library(
         "index.ts",
         "main.ts",
         "native.ts",
-        "parse_script.ts",
         "pseudo_locale.ts",
         "svelte_extractor.ts",
+        "types.ts",
         "verify/checkExtraKeys.ts",
         "verify/checkMissingKeys.ts",
         "verify/checkStructuralEquality.ts",
@@ -62,7 +104,6 @@ formatjs_library(
     main = "index.js",
     package_dependency_version_overrides = {
         "@glimmer/syntax": "^0.84.3 || ^0.95.0",
-        "typescript": "^5.6 || 6 || 7",
     },
     package_optional_deps = [
         "//:node_modules/@formatjs/cli-native-darwin-arm64",
@@ -117,7 +158,6 @@ formatjs_library(
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
         "//:node_modules/@formatjs/icu-messageformat-parser",
-        "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@glimmer/syntax",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/node",
@@ -129,7 +169,6 @@ formatjs_library(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/loud-rejection",
         "//:node_modules/svelte",
-        "//:node_modules/typescript",
         "//:node_modules/vue",
     ],
 )
@@ -145,19 +184,21 @@ formatjs_test(
         "tests/unit/native.test.ts",
         "tests/unit/pseudo_locale.test.ts",
         "tests/unit/svelte_extractor.test.ts",
-        "tests/unit/unit.test.ts",
         "tests/unit/vue_extractor.test.ts",
     ],
+    data = [
+        ":native_test_binary",  # keep: native binding loaded from FORMATJS_CLI_LIB_NATIVE_PATH
+    ],
+    env = {
+        "FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath :native_test_binary)",
+    },
     fixtures = glob(
         ["tests/unit/fixtures/**/*"],
     ),
     tsconfig_types = ["node"],
     deps = [
         ":cli-lib",
-        "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
-        "//:node_modules/fast-glob",
-        "//:node_modules/typescript",
         "//:node_modules/vitest",
     ],
 )
@@ -193,7 +234,6 @@ rolldown_bundle(
         "//:node_modules/@babel/types",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/icu-skeleton-parser",
-        "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@glimmer/syntax",
         "//:node_modules/@types/estree",
         "//:node_modules/@types/fs-extra",
@@ -206,7 +246,6 @@ rolldown_bundle(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/loud-rejection",
         "//:node_modules/svelte",
-        "//:node_modules/typescript",
         "//:node_modules/vue",
     ],
 )

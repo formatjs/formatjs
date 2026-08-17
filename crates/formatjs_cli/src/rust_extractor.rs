@@ -1,4 +1,6 @@
-use crate::extractor::{MessageDescriptor, flatten_message_descriptors, normalize_whitespace};
+use crate::extractor::{
+    MessageDescriptor, MessageExtraction, flatten_message_descriptors, normalize_whitespace,
+};
 use crate::id_generator::IdGenerator;
 use anyhow::{Result, bail};
 use proc_macro2::{LineColumn, Span};
@@ -19,6 +21,28 @@ pub fn extract_messages_from_rust_source(
     flatten: bool,
     throws: bool,
 ) -> Result<Vec<MessageDescriptor>> {
+    let extraction = extract_messages_from_rust_source_with_diagnostics(
+        source_text,
+        file_path,
+        extract_source_location,
+        preserve_whitespace,
+        flatten,
+        throws,
+    )?;
+    for error in extraction.errors {
+        eprintln!("{error}");
+    }
+    Ok(extraction.messages)
+}
+
+pub fn extract_messages_from_rust_source_with_diagnostics(
+    source_text: &str,
+    file_path: &Path,
+    extract_source_location: bool,
+    preserve_whitespace: bool,
+    flatten: bool,
+    throws: bool,
+) -> Result<MessageExtraction> {
     let file = syn::parse_file(source_text)?;
     let id_generator = IdGenerator::new(RUST_ID_INTERPOLATION_PATTERN)?;
     let mut extractor = RustMessageExtractor {
@@ -26,16 +50,20 @@ pub fn extract_messages_from_rust_source(
         file_path,
         extract_source_location,
         preserve_whitespace,
-        throws,
         id_generator,
         messages: Vec::new(),
         errors: Vec::new(),
     };
     extractor.visit_file(&file);
-    if let Some(error) = extractor.errors.into_iter().next() {
-        bail!(error);
+    if throws && let Some(error) = extractor.errors.first() {
+        bail!("{error}");
     }
-    flatten_message_descriptors(extractor.messages, source_text, file_path, flatten)
+    let messages =
+        flatten_message_descriptors(extractor.messages, source_text, file_path, flatten)?;
+    Ok(MessageExtraction {
+        messages,
+        errors: extractor.errors,
+    })
 }
 
 struct RustMessageExtractor<'a> {
@@ -43,7 +71,6 @@ struct RustMessageExtractor<'a> {
     file_path: &'a Path,
     extract_source_location: bool,
     preserve_whitespace: bool,
-    throws: bool,
     id_generator: IdGenerator,
     messages: Vec<MessageDescriptor>,
     errors: Vec<String>,
@@ -86,16 +113,14 @@ impl RustMessageExtractor<'_> {
     }
 
     fn error(&mut self, span: Span, message: impl AsRef<str>) {
-        if self.throws {
-            let start = span.start();
-            self.errors.push(format!(
-                "{}:{}:{}: {}",
-                self.file_path.display(),
-                start.line,
-                start.column + 1,
-                message.as_ref()
-            ));
-        }
+        let start = span.start();
+        self.errors.push(format!(
+            "{}:{}:{}: {}",
+            self.file_path.display(),
+            start.line,
+            start.column + 1,
+            message.as_ref()
+        ));
     }
 }
 

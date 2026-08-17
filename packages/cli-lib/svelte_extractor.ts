@@ -1,6 +1,10 @@
 import {parse} from 'svelte/compiler'
 
-export type ScriptParseFn = (source: string) => void
+export type ScriptParseFn = (
+  source: string,
+  sourceOffset?: number,
+  wrapperOffset?: number
+) => void
 
 interface SvelteNode {
   type: string
@@ -42,7 +46,7 @@ function extractExpression(
   }
   const content = source.slice(expression.start, expression.end)
   try {
-    parseScriptFn(`(${content})`)
+    parseScriptFn(`(${content})`, expression.start, 1)
   } catch (e) {
     console.warn(
       `Failed to parse "${content}". Ignore this if content has no extractable message`,
@@ -104,7 +108,7 @@ function extractMessageComponent(
     return
   }
 
-  const props: string[] = []
+  const attributes: string[] = []
   for (const attr of node.attributes || []) {
     if (
       attr.type !== 'Attribute' ||
@@ -116,16 +120,16 @@ function extractMessageComponent(
 
     const expression = getAttributeExpression(attr, source)
     if (expression != null) {
-      props.push(`${attr.name}: ${expression}`)
+      attributes.push(`${attr.name}={${expression}}`)
     }
   }
 
-  if (!props.length) {
+  if (!attributes.length) {
     return
   }
 
   try {
-    parseScriptFn(`${node.name}({${props.join(', ')}})`)
+    parseScriptFn(`<${node.name} ${attributes.join(' ')} />`)
   } catch (e) {
     console.warn(
       `Failed to parse ${node.name} message component. Ignore this if component has no extractable message`,
@@ -152,7 +156,7 @@ function walkNode(
           node.declaration.end
         )
         try {
-          parseScriptFn(content)
+          parseScriptFn(content, node.declaration.start)
         } catch (e) {
           console.warn(
             `Failed to parse const declaration. Ignore this if content has no extractable message`,
@@ -251,12 +255,12 @@ export function parseFile(
   // Process <script> block
   if (ast.instance) {
     const program = ast.instance.content as unknown as SvelteNode
-    parseScriptFn(source.slice(program.start, program.end))
+    parseScriptFn(source.slice(program.start, program.end), program.start)
   }
 
   // Process <script context="module"> / <script module> block
   if (ast.module) {
     const program = ast.module.content as unknown as SvelteNode
-    parseScriptFn(source.slice(program.start, program.end))
+    parseScriptFn(source.slice(program.start, program.end), program.start)
   }
 }

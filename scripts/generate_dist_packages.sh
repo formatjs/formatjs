@@ -7,16 +7,32 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT="$REPO_ROOT/tools/dist_packages_registry.bzl"
 
 # Native packages share release ownership across N-API code and platforms.
-NATIVE_RELEASE_DEPS=$(
-  bazel query \
-    'deps(set(//crates/formatjs_cli_napi:formatjs_cli_napi //crates/formatjs_cli/platforms:all))' \
-    2>/dev/null \
-    | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
-    | sort -u \
-    | paste -sd, -
-)
+# Walk direct local labels so registry generation never loads external repos.
+native_targets=("//crates/formatjs_cli_napi:formatjs_cli_napi")
+native_seen=()
+native_packages=("crates/formatjs_cli/platforms")
+for ((i = 0; i < ${#native_targets[@]}; i++)); do
+  target="${native_targets[$i]}"
+  if [[ " ${native_seen[*]} " == *" $target "* ]]; then
+    continue
+  fi
+  native_seen+=("$target")
 
-TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
+  package="${target#//}"
+  native_packages+=("${package%%:*}")
+  while read -r dep; do
+    native_targets+=("$dep")
+  done < <(bazel query "labels(deps, $target)" 2>/dev/null | grep '^//crates/' || true)
+done
+NATIVE_RELEASE_DEPS=$(printf '%s\n' "${native_packages[@]}" | sort -u | paste -sd, -)
+
+PACKAGE_TARGETS=()
+for build_file in "$REPO_ROOT"/packages/*/BUILD.bazel; do
+  package_dir=$(basename "$(dirname "$build_file")")
+  PACKAGE_TARGETS+=("//packages/$package_dir:all")
+done
+
+TARGETS=$(bazel query "kind(\"npm_package rule\", set(${PACKAGE_TARGETS[*]}))" 2>/dev/null \
   | grep -v '^//packages/generated/' \
   | grep ':pkg$' \
   | while read -r target; do
@@ -33,14 +49,9 @@ TARGETS=$(bazel query 'kind("npm_package rule", //packages/...)' 2>/dev/null \
     fi
     package_dir="${target#//packages/}"
     package_dir="${package_dir%:pkg}"
+    release_deps=""
     if [[ "$package_dir" == cli-native-* ]]; then
       release_deps="$NATIVE_RELEASE_DEPS"
-    else
-      release_deps=$(bazel query "deps($target)" 2>/dev/null \
-        | sed -nE 's#^//(crates/[^:]+):.*#\1#p' \
-        | sort -u \
-        | paste -sd, -
-      )
     fi
 
     echo "$package_dir|$target|$package_json|$package_name|$release_deps"

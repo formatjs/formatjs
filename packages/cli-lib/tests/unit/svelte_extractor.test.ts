@@ -1,9 +1,51 @@
 import {test, expect} from 'vitest'
-import {type MessageDescriptor} from '@formatjs/ts-transformer'
-import {parseScript} from '#packages/cli-lib/parse_script'
+import {
+  extractSourcesWithNative,
+  generateIdWithNative,
+  type NativeMessageDescriptor,
+} from '#packages/cli-lib/native'
 import {parseFile} from '#packages/cli-lib/svelte_extractor'
+import {
+  type ExtractTransformOptions,
+  type MessageDescriptor,
+} from '#packages/cli-lib/types'
 import {join} from 'path'
 import {readFileSync} from 'fs'
+
+function parseScript(opts: ExtractTransformOptions) {
+  return (source: string) => {
+    const result = extractSourcesWithNative(
+      [{filename: 'fixture.tsx', source}],
+      {
+        additionalComponentNames: opts.additionalComponentNames,
+        additionalFunctionNames: opts.additionalFunctionNames,
+        throws: true,
+      },
+      !opts.overrideIdFn
+    )
+    const messages = result.files[0].messages.map(
+      (message: NativeMessageDescriptor): MessageDescriptor => ({
+        ...message,
+        id:
+          typeof opts.overrideIdFn === 'function'
+            ? opts.overrideIdFn(
+                message.id,
+                message.defaultMessage,
+                message.description,
+                'fixture.tsx'
+              )
+            : message.id ||
+              generateIdWithNative(
+                opts.overrideIdFn || '[sha1:contenthash:base64:6]',
+                message.defaultMessage,
+                message.description,
+                'fixture.tsx'
+              ),
+      })
+    )
+    opts.onMsgExtracted?.('fixture.tsx', messages)
+  }
+}
 
 test('svelte_extractor', async function () {
   let messages: MessageDescriptor[] = []

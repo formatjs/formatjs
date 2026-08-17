@@ -55,65 +55,71 @@ defineMessage({
     })
   })
 
-  it('uses the native binding for supported extraction options', async () => {
+  it('uses native extraction without an explicit id pattern', async () => {
     tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
     const filePath = join(tempDir, 'native.ts')
-    const nativePath = join(tempDir, 'native.cjs')
-    const previousNativePath = process.env.FORMATJS_CLI_LIB_NATIVE_PATH
+
+    await writeFile(filePath, `defineMessage({defaultMessage: 'Native'})`)
+
+    const result = JSON.parse(await extract([filePath], {throws: true}))
+
+    expect(Object.keys(result)).toHaveLength(1)
+    expect(Object.values(result)).toEqual([{defaultMessage: 'Native'}])
+  })
+
+  it('keeps custom IDs, callbacks, metadata, and locations', async () => {
+    tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
+    const filePath = join(tempDir, 'callbacks.ts')
+    const extracted: unknown[] = []
+    const metadata: unknown[] = []
 
     await writeFile(
       filePath,
-      `defineMessage({id: 'native', defaultMessage: 'Native'})`
-    )
-    await writeFile(
-      nativePath,
-      `
-module.exports = {
-  extract(files, opts) {
-    return JSON.stringify({files, opts})
-  },
-  compile() {
-    return '{}'
-  },
-  compileMessages() {
-    return '{}'
-  },
-  supportedBuiltinFormatters() {
-    return []
-  },
-}
-`
+      `// @intl-meta project:test
+defineMessage({defaultMessage: 'Callbacks'})`
     )
 
-    process.env.FORMATJS_CLI_LIB_NATIVE_PATH = nativePath
-    try {
-      const result = JSON.parse(
-        await extract([filePath], {
-          additionalFunctionNames: ['t'],
-          flatten: true,
-          idInterpolationPattern: '[sha512:contenthash:base64:6]',
-          preserveWhitespace: true,
-          throws: true,
-        })
-      )
-
-      expect(result).toEqual({
-        files: [filePath],
-        opts: {
-          additionalComponentNames: ['$formatMessage'],
-          additionalFunctionNames: ['t'],
-          flatten: true,
-          idInterpolationPattern: '[sha512:contenthash:base64:6]',
-          preserveWhitespace: true,
-          throws: true,
-        },
+    const result = JSON.parse(
+      await extract([filePath], {
+        extractSourceLocation: true,
+        onMetaExtracted: (_, meta) => metadata.push(meta),
+        onMsgExtracted: (_, messages) => extracted.push(...messages),
+        overrideIdFn: (_id, defaultMessage) => `custom-${defaultMessage}`,
+        pragma: '@intl-meta',
+        throws: true,
       })
-    } finally {
-      if (previousNativePath === undefined) {
-        delete process.env.FORMATJS_CLI_LIB_NATIVE_PATH
-      } else {
-        process.env.FORMATJS_CLI_LIB_NATIVE_PATH = previousNativePath
-      }
-    }
+    )
+
+    expect(result['custom-Callbacks']).toMatchObject({
+      defaultMessage: 'Callbacks',
+      file: filePath,
+      start: expect.any(Number),
+      end: expect.any(Number),
+    })
+    expect(extracted).toHaveLength(1)
+    expect(metadata).toEqual([{project: 'test'}])
+  })
+
+  it('reports native extraction errors without dropping partial output', async () => {
+    tempDir = await mkdtemp(join(tmpdir(), 'formatjs-cli-lib-'))
+    const filePath = join(tempDir, 'errors.ts')
+    const errors: Error[] = []
+
+    await writeFile(
+      filePath,
+      `defineMessage({defaultMessage: dynamic})
+defineMessage({id: 'valid', defaultMessage: 'Valid'})`
+    )
+
+    const result = JSON.parse(
+      await extract([filePath], {
+        onMsgError: (_filename, error) => errors.push(error),
+        throws: false,
+      })
+    )
+
+    expect(result).toEqual({valid: {defaultMessage: 'Valid'}})
+    expect(errors).toHaveLength(1)
+    expect(errors[0].message).toContain('defaultMessage')
   })
 })
