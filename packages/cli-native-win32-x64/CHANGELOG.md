@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.1.14 (2026-08-18)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* fix(@formatjs/cli-lib): use native extraction by @longlho in https://github.com/formatjs/formatjs/pull/7046
+* fix: recover partial npm releases by @longlho in https://github.com/formatjs/formatjs/pull/7053
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-win32-x64@1.1.13...@formatjs/cli-native-win32-x64@1.1.14
+
 ## 1.1.13 (2026-08-16)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
