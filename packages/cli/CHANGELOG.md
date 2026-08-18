@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.19 (2026-08-18)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* fix(@formatjs/cli-lib): use native extraction by @longlho in https://github.com/formatjs/formatjs/pull/7046
+* fix: recover partial npm releases by @longlho in https://github.com/formatjs/formatjs/pull/7053
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.18...@formatjs/cli@6.16.19
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.13
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.13
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.11
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.13
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.11
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.14
+
 ## 6.16.18 (2026-08-16)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

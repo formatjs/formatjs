@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.4.1 (2026-08-18)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* fix(@formatjs/cli-lib): use native extraction by @longlho in https://github.com/formatjs/formatjs/pull/7046
+* fix: recover partial npm releases by @longlho in https://github.com/formatjs/formatjs/pull/7053
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.4.0...formatjs_cli_v1.4.1
+
 ## 1.4.0 (2026-08-16)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
