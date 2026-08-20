@@ -27,6 +27,8 @@ return intl.formatMessage({defaultMessage: 'Welcome, {name}!'}, {name})
 
 For the same reason, do not reuse one message for a button, page title, and status label only because their English text matches. Give each usage its own message and description.
 
+A message must contain human language. Do not declare a message whose entire content is punctuation or a symbol, such as `—`, `•`, or `N/A`-style glyphs. It gives translators nothing to act on and adds noise to every locale's catalog. Render such glyphs as literal text or markup, and when a glyph is genuinely locale-sensitive — list separators or quotation marks — use `formatList` or CSS `quotes` instead of a message.
+
 ## Put grammar and formatting in the message
 
 Use ICU `plural` and `select` arguments instead of branching in application code. This keeps every grammatical variant together and allows each locale to define the variants it needs.
@@ -54,6 +56,43 @@ intl.formatMessage(
 ```
 
 Skeletons describe formatting, not sentence structure. Keep surrounding punctuation and words inside the message so translators can move them. See [ICU Message Syntax](/docs/core-concepts/icu-syntax) for supported skeletons.
+
+Do not hardcode a currency symbol or code around a placeholder. Symbol choice, placement, spacing, and grouping all vary by locale, and writing `$` or `USD` into the text freezes the English convention everywhere.
+
+```tsx
+// Avoid: '$' and 'USD' are frozen in every locale.
+intl.formatMessage(
+  {defaultMessage: 'Minimum ${min} USD, maximum ${max} USD'},
+  {min, max}
+)
+
+// Prefer: the skeleton emits the right symbol and placement per locale.
+intl.formatMessage(
+  {
+    defaultMessage:
+      'Minimum {min, number, ::currency/USD}, maximum {max, number, ::currency/USD}',
+  },
+  {min, max}
+)
+```
+
+If the currency code is only known at runtime, format the value with `formatNumber(value, {style: 'currency', currency})` and pass the result as the placeholder value instead of spelling the currency in the message.
+
+The same applies to signs. A hardcoded `+` or `-` glued to a placeholder bypasses locale-aware sign placement and glyphs, such as locale-specific minus signs and accounting notation. Use the [sign-display](https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#sign-display) skeleton options instead.
+
+```tsx
+// Avoid: the '+' is attached to the number by hand.
+intl.formatMessage(
+  {defaultMessage: 'Subtotal (+{amount} credits)'},
+  {amount}
+)
+
+// Prefer: sign display is part of number formatting.
+intl.formatMessage(
+  {defaultMessage: 'Subtotal ({amount, number, ::sign-always} credits)'},
+  {amount}
+)
+```
 
 Treat measurements as formatted values. Do not join a placeholder to a unit (`{duration}day`, `{size}MB`) or format the number separately and concatenate the unit. Use an ICU number skeleton inside a message, or `formatNumber` / `<FormattedNumber>` with `style: 'unit'` for a standalone value.
 
