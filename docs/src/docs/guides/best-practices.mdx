@@ -29,7 +29,7 @@ For the same reason, do not reuse one message for a button, page title, and stat
 
 ## Put grammar and formatting in the message
 
-Use ICU `plural` and `select` arguments instead of branching in application code. This keeps every grammatical variant together and allows each locale to define the variants it needs.
+Use ICU `plural` and `select` arguments when their branches are grammatical variants of one message. This keeps every grammatical variant together and allows each locale to define the variants it needs.
 
 ```tsx
 intl.formatMessage(
@@ -40,6 +40,47 @@ intl.formatMessage(
   {count}
 )
 ```
+
+### Do not use `select` to choose unrelated messages
+
+An ICU `select` should express grammatical variation within one message. Do not use it as a lookup table for application states, resource types, or error codes. Those branches are independent messages, even when their source text has a similar structure.
+
+```tsx
+// Avoid: `subject` is application state, not a grammatical distinction.
+intl.formatMessage(
+  {
+    defaultMessage:
+      '{subject, select, other {{recipient} can’t be added because this session has reached its member limit.} project {{recipient} can’t be added because this project has reached its contributor limit.}}',
+  },
+  {subject, recipient}
+)
+```
+
+Choose a complete message in application code instead. For example, map each error code to its own statically defined message:
+
+```tsx
+const limitMessages = defineMessages({
+  sessionMember: {
+    defaultMessage:
+      '{recipient} can’t be added because this session has reached its member limit.',
+    description: 'Error shown when a session has no remaining member slots',
+  },
+  projectContributor: {
+    defaultMessage:
+      '{recipient} can’t be added because this project has reached its contributor limit.',
+    description: 'Error shown when a project has no remaining contributor slots',
+  },
+})
+
+const messageByErrorCode = {
+  SESSION_MEMBER_LIMIT: limitMessages.sessionMember,
+  PROJECT_CONTRIBUTOR_LIMIT: limitMessages.projectContributor,
+} as const
+
+intl.formatMessage(messageByErrorCode[errorCode], {recipient})
+```
+
+Each message is now a separate translation unit with a precise description. The required `other` branch can no longer hide an unsupported application state, and adding another error does not make an existing message more complex.
 
 Prefer ICU number and date skeletons when formatting is part of a sentence. Skeletons make intent visible to translators while preserving locale-appropriate output.
 
