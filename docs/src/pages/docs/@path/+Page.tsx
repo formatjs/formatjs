@@ -2,11 +2,11 @@ export {Page}
 
 import * as React from 'react'
 import {MDXProvider} from '@mdx-js/react'
-import {usePageContext} from 'vike-react/usePageContext'
+import {usePageContext} from '../../../utils/page-context'
 import Layout from '../../../components/Layout'
 import {mdxComponents} from '../../../components/MDXComponents'
 
-// Eagerly import all MDX files for SSR
+// Eagerly import all MDX files for static page generation.
 const modules = import.meta.glob<{default: React.ComponentType}>(
   '../../../docs/**/*.mdx',
   {eager: true}

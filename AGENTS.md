@@ -19,6 +19,8 @@ changes. The highest-signal entry points are:
 - `knowledge-base/010-script-conventions.md` for TypeScript generator and CLI
   script shape.
 - `knowledge-base/011-generated-packages.md` for `@formatjs_generated/*`.
+- `knowledge-base/012-documentation-site.md` for the static Vite/React/MDX
+  documentation site and GitHub Pages deployment.
 
 Treat files under `knowledge-base/migrations/` as historical plans unless the
 live BUILD files confirm that the plan is still current.
@@ -63,7 +65,7 @@ installation; build and test work should still go through Bazel targets.
   CLIs, and developer tooling.
 - `crates/` contains Rust crates for the CLI and parser mirrors.
 - `tools/` contains Bazel macros and TypeScript build/generation helpers.
-- `docs/` is the Vike/React/MDX documentation site.
+- `docs/` is the static Vite/React/MDX documentation site.
 - `packages/generated/` and package-local generated-package targets feed
   `@formatjs_generated/*` data packages.
 - `conformance-tests/` and package integration tests compare behavior against

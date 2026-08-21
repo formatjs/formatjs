@@ -7,7 +7,7 @@ formatjs/
   packages/           # 33 npm packages (polyfills, parsers, integrations, tools)
   crates/             # Rust crates (CLI, formatter, parser, skeleton parser, N-API)
   tools/              # Custom Bazel macros (ts_compile, vitest, oxc_transpiler, etc.)
-  docs/               # Documentation site (Vike + React + MDX)
+  docs/               # Static documentation site (Vite + React + MDX)
   benchmarks/         # Cross-tool benchmarks (Rust CLI vs TS CLI)
   conformance-tests/  # ICU4J conformance testing
   knowledge-base/     # Architecture docs and migration plans
@@ -15,6 +15,10 @@ formatjs/
   .github/workflows/  # CI/CD (test, release, rust-cli-release, website)
   sg-rules/           # ast-grep structural lint rules
 ```
+
+`docs/` uses Vite, React, MDX, Tailwind CSS, and Typesense. Bazel prerenders
+static HTML for GitHub Pages while the browser uses History API navigation. See
+`knowledge-base/012-documentation-site.md` for its architecture and build flow.
 
 ## Package Management: pnpm
 

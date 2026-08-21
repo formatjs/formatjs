@@ -163,8 +163,6 @@
     "typescript": "7.0.2",
     "typesense": "3.0.6",
     "unplugin": "^3.3.0",
-    "vike": "^0.4.251",
-    "vike-react": "^0.6.18",
     "vite": "^8.0.0",
     "vitest": "^4.1.0",
     "vue": "^3.5.0",
