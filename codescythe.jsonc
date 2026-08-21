@@ -95,6 +95,8 @@
     "packages/ts-transformer/examples/compile.ts",
     "packages/*/benchmark/**/*.{ts,tsx}",
     "tools/**/*.ts",
+    "docs/src/main.tsx",
+    "docs/src/entry-server.tsx",
     "docs/src/pages/**/*.{ts,tsx}",
     "docs/scripts/*.ts",
     "docs/tailwind.config.ts",

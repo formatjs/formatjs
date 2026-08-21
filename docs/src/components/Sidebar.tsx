@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {usePageContext} from 'vike-react/usePageContext'
+import {usePageContext} from '../utils/page-context'
 import {Separator} from './ui/separator'
 import {getNavigationTree} from '../utils/navigation'
 

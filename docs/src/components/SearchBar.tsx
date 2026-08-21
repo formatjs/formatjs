@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useState, useEffect, useRef, useCallback} from 'react'
-import {navigate} from 'vike/client/router'
+import {navigate} from '../utils/client-navigation'
 import {Search, Loader2} from 'lucide-react'
 import {Dialog, DialogContent} from './ui/dialog'
 import Typesense, {type Client} from 'typesense'

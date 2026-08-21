@@ -1,4 +1,4 @@
-import {usePageContext} from 'vike-react/usePageContext'
+import {usePageContext} from '../../../utils/page-context'
 import * as React from 'react'
 import * as docsMetadata from '../../../docs-metadata.generated.json'
 

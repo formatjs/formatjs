@@ -5,6 +5,7 @@ load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "generate_src_file", "ts_binary", "ts_run_binary")
 load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
+load("//tools:vitest.bzl", "vitest")
 
 # Manually-managed: a custom copy_to_bin(name = "srcs") globs both src/**
 # and public/** assets; auto-generated formatjs_library would create a
@@ -79,14 +80,21 @@ formatjs_library(
         "//:node_modules/react-live",
         "//:node_modules/tailwind-merge",
         "//:node_modules/typesense",
-        "//:node_modules/vike",
-        "//:node_modules/vike-react",
         "//:node_modules/vite",
     ],
 )
 
 # Generate tsconfig.json with correct extends path
 generate_ide_tsconfig_json()
+
+vitest(
+    name = "client_navigation_test",
+    srcs = [
+        "src/utils/client-navigation.ts",
+        "tests/client-navigation.test.ts",
+    ],
+    dom = True,
+)
 
 # Build Typesense index tool
 ts_binary(
@@ -181,7 +189,7 @@ copy_to_bin(
     ],
 )
 
-# Build production bundle with Vite (Vike plugin handles SSR)
+# Build the client bundle and prerender static HTML with Vite.
 vite_bin.vite(
     name = "dist",
     srcs = [
@@ -221,15 +229,10 @@ vite_bin.vite(
         "//:node_modules/tailwindcss",
         "//:node_modules/typescript",
         "//:node_modules/typesense",
-        "//:node_modules/vike",
-        "//:node_modules/vike-react",
         "//:node_modules/vite",
     ],
     args = ["build"],
     chdir = package_name(),
-    env = {
-        "VITE_PLUGIN_SERVER_ENTRY_DISABLE_AUTO_IMPORT": "true",
-    },
     out_dirs = ["dist"],
     tags = ["no-sandbox"],
 )
@@ -276,8 +279,6 @@ vite_bin.vite_binary(
         "//:node_modules/tailwindcss",
         "//:node_modules/typescript",
         "//:node_modules/typesense",
-        "//:node_modules/vike",
-        "//:node_modules/vike-react",
         "//:node_modules/vite",
     ],
 )
