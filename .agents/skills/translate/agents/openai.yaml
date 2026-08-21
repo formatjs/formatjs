@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Translate'
+  short_description: 'Translate UI copy and ICU message catalogs'
+  default_prompt: 'Use $translate to localize these messages while preserving their ICU syntax and glossary terms.'

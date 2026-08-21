@@ -37,7 +37,7 @@
   },
   "guides/best-practices": {
     "title": "Best Practices",
-    "description": "Give translators full meaning. Give native APIs locale-sensitive output. Keep product terms consistent."
+    "description": "Review localized UI and translations without changing files, pull requests,"
   },
   "guides/bundler-plugins": {
     "title": "Bundler Plugins",

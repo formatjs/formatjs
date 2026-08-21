@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Localization Review'
+  short_description: 'Review localized UI and translations safely'
+  default_prompt: 'Use $localization-review to review these translations and report evidence-backed localization issues.'
