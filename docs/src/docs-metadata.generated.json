@@ -207,6 +207,10 @@
     "title": "Intl",
     "description": "---"
   },
+  "skills": {
+    "title": "Skills",
+    "description": "FormatJS agent skills review and translate localized UI and message catalogs."
+  },
   "skills/localization-review": {
     "title": "Localization Review",
     "description": "Review localized UI and translations without changing files, pull requests,"

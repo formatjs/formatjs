@@ -155,6 +155,7 @@ export function getNavigationTree(): NavSection[] {
       title: 'Skills',
       order: 8,
       items: [
+        {title: 'Overview', path: 'skills'},
         {title: 'Localization Review', path: 'skills/localization-review'},
         {title: 'Translate', path: 'skills/translate'},
       ],
