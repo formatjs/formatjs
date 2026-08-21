@@ -152,8 +152,16 @@ export function getNavigationTree(): NavSection[] {
       ],
     },
     {
-      title: 'Other APIs',
+      title: 'Skills',
       order: 8,
+      items: [
+        {title: 'Localization Review', path: 'skills/localization-review'},
+        {title: 'Translate', path: 'skills/translate'},
+      ],
+    },
+    {
+      title: 'Other APIs',
+      order: 9,
       items: [
         {title: '@formatjs/intl', path: 'intl'},
         {title: '@formatjs/svelte-intl', path: 'svelte-intl'},
