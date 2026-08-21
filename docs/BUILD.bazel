@@ -13,6 +13,13 @@ load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
 
 npm_link_all_packages()
 
+genrule(
+    name = "i18n_best_practices_doc",
+    srcs = ["//:i18n_best_practices_skill"],
+    outs = ["src/docs/guides/best-practices.mdx"],
+    cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' > $@",
+)
+
 # Shared copy_to_bin for all source/public files to avoid conflicting actions
 # in aspect_rules_js v3 (where ts_project/js_run_binary auto-copy srcs to bin)
 copy_to_bin(
@@ -20,7 +27,7 @@ copy_to_bin(
     srcs = glob([
         "src/**/*",
         "public/**/*",
-    ]),
+    ]) + [":i18n_best_practices_doc"],
 )
 
 # TypeScript type checking
@@ -114,7 +121,7 @@ ts_binary(
 generate_src_file(
     name = "sitemap",
     src = "public/sitemap.xml",
-    data = glob(["src/docs/**/*.mdx"]),
+    data = glob(["src/docs/**/*.mdx"]) + [":i18n_best_practices_doc"],
     tool = ":generate_sitemap_tool",
 )
 
@@ -134,7 +141,7 @@ ts_binary(
 generate_src_file(
     name = "docs_metadata",
     src = "src/docs-metadata.generated.json",
-    data = glob(["src/docs/**/*.mdx"]),
+    data = glob(["src/docs/**/*.mdx"]) + [":i18n_best_practices_doc"],
     tool = ":extract_metadata_tool",
 )
 
