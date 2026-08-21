@@ -47,6 +47,12 @@ filegroup(
     visibility = ["//docs:__pkg__"],
 )
 
+filegroup(
+    name = "translate_skill",
+    srcs = [".agents/skills/translate/SKILL.md"],
+    visibility = ["//docs:__pkg__"],
+)
+
 js_library(
     name = "release_please_config",
     srcs = ["release-please-config.json"],

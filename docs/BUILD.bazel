@@ -20,6 +20,26 @@ genrule(
     cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' > $@",
 )
 
+genrule(
+    name = "localization_review_doc",
+    srcs = ["//:localization_review_skill"],
+    outs = ["src/docs/skills/localization-review.mdx"],
+    cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' | sed '1s/^# .*/# Localization Review/' > $@",
+)
+
+genrule(
+    name = "translate_skill_doc",
+    srcs = ["//:translate_skill"],
+    outs = ["src/docs/skills/translate.mdx"],
+    cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' > $@",
+)
+
+GENERATED_DOCS = [
+    ":i18n_best_practices_doc",
+    ":localization_review_doc",
+    ":translate_skill_doc",
+]
+
 # Shared copy_to_bin for all source/public files to avoid conflicting actions
 # in aspect_rules_js v3 (where ts_project/js_run_binary auto-copy srcs to bin)
 copy_to_bin(
@@ -27,7 +47,7 @@ copy_to_bin(
     srcs = glob([
         "src/**/*",
         "public/**/*",
-    ]) + [":i18n_best_practices_doc"],
+    ]) + GENERATED_DOCS,
 )
 
 # TypeScript type checking
@@ -121,7 +141,7 @@ ts_binary(
 generate_src_file(
     name = "sitemap",
     src = "public/sitemap.xml",
-    data = glob(["src/docs/**/*.mdx"]) + [":i18n_best_practices_doc"],
+    data = glob(["src/docs/**/*.mdx"]) + GENERATED_DOCS,
     tool = ":generate_sitemap_tool",
 )
 
@@ -141,7 +161,7 @@ ts_binary(
 generate_src_file(
     name = "docs_metadata",
     src = "src/docs-metadata.generated.json",
-    data = glob(["src/docs/**/*.mdx"]) + [":i18n_best_practices_doc"],
+    data = glob(["src/docs/**/*.mdx"]) + GENERATED_DOCS,
     tool = ":extract_metadata_tool",
 )
 

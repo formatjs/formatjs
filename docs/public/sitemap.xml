@@ -266,6 +266,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://formatjs.io/docs/skills/localization-review</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://formatjs.io/docs/skills/translate</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://formatjs.io/docs/svelte-intl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

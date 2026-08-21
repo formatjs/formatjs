@@ -207,6 +207,14 @@
     "title": "Intl",
     "description": "---"
   },
+  "skills/localization-review": {
+    "title": "Localization Review",
+    "description": "Review localized UI and translations without changing files, pull requests,"
+  },
+  "skills/translate": {
+    "title": "Translate",
+    "description": "Translate requested messages into their target locale. Preserve source meaning,"
+  },
   "svelte-intl": {
     "title": "Svelte Intl",
     "description": "This library provides FormatJS internationalization bindings for Svelte 5."
