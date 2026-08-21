@@ -15,7 +15,7 @@ npm_link_all_packages()
 
 genrule(
     name = "i18n_best_practices_doc",
-    srcs = ["//:i18n_best_practices_skill"],
+    srcs = ["//:localization_review_skill"],
     outs = ["src/docs/guides/best-practices.mdx"],
     cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' > $@",
 )

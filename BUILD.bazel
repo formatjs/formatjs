@@ -42,8 +42,8 @@ exports_files(
 )
 
 filegroup(
-    name = "i18n_best_practices_skill",
-    srcs = [".agents/skills/i18n-best-practices/SKILL.md"],
+    name = "localization_review_skill",
+    srcs = [".agents/skills/localization-review/SKILL.md"],
     visibility = ["//docs:__pkg__"],
 )
 

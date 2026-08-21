@@ -8,10 +8,10 @@
       "url": "https://formatjs.io/sitemap.xml"
     },
     {
-      "name": "i18n-best-practices",
+      "name": "localization-review",
       "type": "skill-md",
-      "description": "Write, refactor, or review localization-ready product UI and message catalogs. Use for i18n or l10n implementation, translation-readiness reviews, React Intl or ICU messages, locale-aware value formatting, brand-name handling, terminology glossaries, or changed UI containing user-facing text.",
-      "url": "https://raw.githubusercontent.com/formatjs/formatjs/main/.agents/skills/i18n-best-practices/SKILL.md"
+      "description": "Review localized UI, translations, message catalogs, and pull requests for ICU syntax, placeholder integrity, glossary compliance, locale-aware formatting, accessibility, and translation readiness. Use for explicit localization reviews or changed user-facing text; report evidence-backed findings without modifying files or external systems.",
+      "url": "https://raw.githubusercontent.com/formatjs/formatjs/main/.agents/skills/localization-review/SKILL.md"
     },
     {
       "name": "translate",
