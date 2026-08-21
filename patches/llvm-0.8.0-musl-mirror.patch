@@ -1,0 +1,15 @@
+diff --git a/runtimes/musl/extension/musl.bzl b/runtimes/musl/extension/musl.bzl
+--- a/runtimes/musl/extension/musl.bzl
++++ b/runtimes/musl/extension/musl.bzl
+@@ -7,7 +7,10 @@ def _musl_extension_impl(module_ctx):
+     http_archive(
+         name = "musl_libc",
+         # When bumping musl, also update version_h in 3rd_party/libc/musl/musl.BUILD.bazel.
+-        urls = ["https://musl.libc.org/releases/musl-1.2.6.tar.gz"],
++        urls = [
++            "https://sources.buildroot.net/musl/musl-1.2.6.tar.gz",
++            "https://musl.libc.org/releases/musl-1.2.6.tar.gz",
++        ],
+         strip_prefix = "musl-1.2.6",
+         integrity = "sha256-1YX9O2E8ZhUfwySejtRPdwIMtebB5jWmFtP5+CRgUSo=",
+         build_file = "//3rd_party/libc/musl:musl.BUILD.bazel",

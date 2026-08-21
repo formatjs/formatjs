@@ -40,6 +40,8 @@ actions so they can cache and run independently across the monorepo.
   linux arm64/x64, and windows x64.
 - C/C++ builds use **hermetic LLVM 22.1.4** toolchains. Build actions that need
   native executables must keep them in the execution configuration.
+- LLVM's musl source uses a checksum-verified Buildroot mirror plus the
+  upstream release URL so temporary upstream outages do not break Linux builds.
 - Bazel's pnpm extension is pinned to **pnpm 10.4.1** for repository rules.
 - `rules_ts` reads TypeScript 7.0.2 from root `package.json` and exposes its
   native compiler as `@npm_typescript//:tsc`.
