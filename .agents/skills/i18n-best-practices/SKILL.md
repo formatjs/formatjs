@@ -23,7 +23,7 @@ Give translators full meaning. Give native APIs locale-sensitive output. Keep pr
 - Add useful `description` when meaning or placement is unclear.
 - Never concatenate translated fragments.
 - Never reuse same message across unrelated contexts because English matches.
-- Put grammar in ICU `plural` or `select`, not application branches.
+- Put grammatical variants in ICU `plural` or `select`.
 - Put layout spacing in CSS, not messages.
 
 ```tsx
@@ -36,6 +36,43 @@ return intl.formatMessage({defaultMessage: 'Welcome, {name}!'}, {name})
 ```
 
 Do not extract punctuation-only messages such as `—` or `•`. Render fixed decoration directly. Use locale-aware APIs for meaningful separators or quotes. Keep abbreviations such as `N/A` translatable; they carry language.
+
+## Use `select` only for grammar
+
+Use ICU `select` for grammatical variants inside one thought. Never use it as lookup table for application states, resource types, error codes. Those branches are separate messages.
+
+```tsx
+// Avoid: application state hidden inside one translation unit.
+intl.formatMessage(
+  {
+    defaultMessage:
+      '{subject, select, session {{recipient} can’t be added because this session is full.} project {{recipient} can’t be added because this project is full.} other {{recipient} can’t be added.}}',
+  },
+  {subject, recipient}
+)
+
+// Prefer: application chooses one complete, static message.
+const limitMessages = defineMessages({
+  session: {
+    defaultMessage: '{recipient} can’t be added because this session is full.',
+    description: 'Error shown when a session has no remaining member slots',
+  },
+  project: {
+    defaultMessage: '{recipient} can’t be added because this project is full.',
+    description:
+      'Error shown when a project has no remaining contributor slots',
+  },
+})
+
+const messageByErrorCode = {
+  SESSION_MEMBER_LIMIT: limitMessages.session,
+  PROJECT_CONTRIBUTOR_LIMIT: limitMessages.project,
+} as const
+
+intl.formatMessage(messageByErrorCode[errorCode], {recipient})
+```
+
+Separate translation units gain precise descriptions. Required `other` branch cannot hide unsupported state. New errors do not complicate old messages.
 
 ## Format values natively
 
