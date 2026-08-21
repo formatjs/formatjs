@@ -1,5 +1,4 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
@@ -15,17 +14,10 @@ load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
 npm_link_all_packages()
 
 genrule(
-    name = "i18n_best_practices_doc_generated",
+    name = "i18n_best_practices_doc",
     srcs = ["//:i18n_best_practices_skill"],
-    outs = ["best-practices.generated.mdx"],
+    outs = ["src/docs/guides/best-practices.mdx"],
     cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' > $@",
-)
-
-write_source_files(
-    name = "i18n_best_practices_doc_sync",
-    files = {
-        "src/docs/guides/best-practices.mdx": ":i18n_best_practices_doc_generated",
-    },
 )
 
 # Shared copy_to_bin for all source/public files to avoid conflicting actions
@@ -35,7 +27,7 @@ copy_to_bin(
     srcs = glob([
         "src/**/*",
         "public/**/*",
-    ]),
+    ]) + [":i18n_best_practices_doc"],
 )
 
 # TypeScript type checking
@@ -129,7 +121,7 @@ ts_binary(
 generate_src_file(
     name = "sitemap",
     src = "public/sitemap.xml",
-    data = glob(["src/docs/**/*.mdx"]),
+    data = glob(["src/docs/**/*.mdx"]) + [":i18n_best_practices_doc"],
     tool = ":generate_sitemap_tool",
 )
 
@@ -149,7 +141,7 @@ ts_binary(
 generate_src_file(
     name = "docs_metadata",
     src = "src/docs-metadata.generated.json",
-    data = glob(["src/docs/**/*.mdx"]),
+    data = glob(["src/docs/**/*.mdx"]) + [":i18n_best_practices_doc"],
     tool = ":extract_metadata_tool",
 )
 
