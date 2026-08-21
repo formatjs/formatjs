@@ -12,6 +12,12 @@
       "type": "skill-md",
       "description": "Write, refactor, or review localization-ready product UI and message catalogs. Use for i18n or l10n implementation, translation-readiness reviews, React Intl or ICU messages, locale-aware value formatting, brand-name handling, terminology glossaries, or changed UI containing user-facing text.",
       "url": "https://raw.githubusercontent.com/formatjs/formatjs/main/.agents/skills/i18n-best-practices/SKILL.md"
+    },
+    {
+      "name": "translate",
+      "type": "skill-md",
+      "description": "Translate or repair localized UI copy and message catalogs while preserving glossary terms, ICU MessageFormat syntax, placeholders, rich-text markup, and locale-specific grammar. Use for translation requests, localization shards, catalog updates, or corrections to existing translations.",
+      "url": "https://raw.githubusercontent.com/formatjs/formatjs/main/.agents/skills/translate/SKILL.md"
     }
   ]
 }

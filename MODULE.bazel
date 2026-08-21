@@ -47,6 +47,7 @@ npm.npm_translate_lock(
     ],
     patch_args = {"*": ["-p1"]},
     pnpm_lock = "//:pnpm-lock.yaml",
+    use_home_npmrc = True,
 )
 npm.npm_translate_lock(
     name = "react18_npm",
@@ -55,6 +56,7 @@ npm.npm_translate_lock(
         "//packages/react-intl/tests/react18-typecheck:pnpm-workspace.yaml",
     ],
     pnpm_lock = "//packages/react-intl/tests/react18-typecheck:pnpm-lock.yaml",
+    use_home_npmrc = True,
 )
 use_repo(npm, "npm", "react18_npm")
 

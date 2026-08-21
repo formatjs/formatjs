@@ -386,6 +386,11 @@ Building a published package such as `//packages/intl-locale:pkg`:
 10. root :dist aggregates all package :pkg targets
 ```
 
+Both `npm_translate_lock` dependency graphs read the developer's home `.npmrc`.
+This keeps npm registry selection and private-registry authentication consistent
+with host npm settings without embedding machine-specific registry URLs in
+checked-in lockfiles.
+
 Generated-data imports add this path:
 
 ```
