@@ -37,7 +37,7 @@
   },
   "guides/best-practices": {
     "title": "Best Practices",
-    "description": "Good messages give translators enough context to express the same meaning naturally in every locale. Keep complete thoughts together, format values with..."
+    "description": "Give translators full meaning. Give native APIs locale-sensitive output. Keep product terms consistent."
   },
   "guides/bundler-plugins": {
     "title": "Bundler Plugins",

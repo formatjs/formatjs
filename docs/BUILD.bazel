@@ -1,4 +1,5 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
@@ -12,6 +13,20 @@ load("//tools:tsconfig.bzl", "DOCS_TSCONFIG")
 # gazelle:ts_enabled false
 
 npm_link_all_packages()
+
+genrule(
+    name = "i18n_best_practices_doc_generated",
+    srcs = ["//:i18n_best_practices_skill"],
+    outs = ["best-practices.generated.mdx"],
+    cmd = "sed '1,/^---$$/d' $< | sed '/./,$$!d' > $@",
+)
+
+write_source_files(
+    name = "i18n_best_practices_doc_sync",
+    files = {
+        "src/docs/guides/best-practices.mdx": ":i18n_best_practices_doc_generated",
+    },
+)
 
 # Shared copy_to_bin for all source/public files to avoid conflicting actions
 # in aspect_rules_js v3 (where ts_project/js_run_binary auto-copy srcs to bin)
