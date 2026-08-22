@@ -99,7 +99,7 @@ function main(args: Args) {
         '--available-tools=skill',
         '--allow-all-tools',
         `--model=${model}`,
-        '--max-ai-credits=2',
+        '--max-ai-credits=30',
         '-p',
         buildPrompt(suite),
       ],
