@@ -82,15 +82,16 @@ function main(args: Args) {
   const workdir = mkdtempSync(
     path.join(tmpdir(), `formatjs-skill-eval-${suite.skill}-`)
   )
-  const responsePath = path.join(workdir, 'response.json')
-  const schemaPath = path.join(workdir, 'response-schema.json')
-  const skillInstructions = readFileSync(skillPath, 'utf8')
-  writeFileSync(
-    schemaPath,
-    `${JSON.stringify(EVAL_RESPONSE_SCHEMA, null, 2)}\n`
-  )
 
   try {
+    const responsePath = path.join(workdir, 'response.json')
+    const schemaPath = path.join(workdir, 'response-schema.json')
+    const skillInstructions = readFileSync(skillPath, 'utf8')
+    writeFileSync(
+      schemaPath,
+      `${JSON.stringify(EVAL_RESPONSE_SCHEMA, null, 2)}\n`
+    )
+
     const codexArgs = [
       'exec',
       '--json',
