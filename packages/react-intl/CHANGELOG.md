@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 10.1.23 (2026-08-22)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* fix(@formatjs/cli-lib): use native extraction by @longlho in https://github.com/formatjs/formatjs/pull/7046
+* fix: recover partial npm releases by @longlho in https://github.com/formatjs/formatjs/pull/7053
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7047
+* docs: sync i18n best practices skill and guide by @longlho in https://github.com/formatjs/formatjs/pull/7062
+* feat: add localization review and translation skills by @longlho in https://github.com/formatjs/formatjs/pull/7065
+* docs: add top-level skills section by @longlho in https://github.com/formatjs/formatjs/pull/7066
+* refactor: replace Vike with static Vite docs by @longlho in https://github.com/formatjs/formatjs/pull/7068
+* docs: add agent skills overview by @longlho in https://github.com/formatjs/formatjs/pull/7069
+* docs: document native date range formatting by @longlho in https://github.com/formatjs/formatjs/pull/7070
+* test: add local Codex skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7071
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/react-intl@10.1.22...react-intl@10.1.23
+
 ## 10.1.22 (2026-08-16)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

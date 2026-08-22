@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.20 (2026-08-22)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* docs: sync i18n best practices skill and guide by @longlho in https://github.com/formatjs/formatjs/pull/7062
+* feat: add localization review and translation skills by @longlho in https://github.com/formatjs/formatjs/pull/7065
+* docs: add top-level skills section by @longlho in https://github.com/formatjs/formatjs/pull/7066
+* refactor: replace Vike with static Vite docs by @longlho in https://github.com/formatjs/formatjs/pull/7068
+* docs: add agent skills overview by @longlho in https://github.com/formatjs/formatjs/pull/7069
+* docs: document native date range formatting by @longlho in https://github.com/formatjs/formatjs/pull/7070
+* test: add local Codex skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7071
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.19...@formatjs/cli@6.16.20
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.14
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.14
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.12
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.14
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.12
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.15
+
 ## 6.16.19 (2026-08-18)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
