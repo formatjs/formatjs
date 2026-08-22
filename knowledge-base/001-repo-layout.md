@@ -152,6 +152,8 @@ standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
 
 `skill-evals.yml` runs one batched Copilot CLI request per repository skill.
+The organization must enable **Allow use of Copilot CLI billed to the
+organization** for its built-in `GITHUB_TOKEN` authentication.
 The Bazel-owned harness copies only the target skill into a temporary workspace,
 so model-visible prompts never contain hidden expectations. Copilot receives only
 the skill tool: no shell, file writes, web, or MCP. Fork pull requests skip the
