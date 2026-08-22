@@ -164,6 +164,32 @@ Use framework-native or built-in `Intl` APIs when skeletons cannot express opera
 - lists: `formatList`, `<FormattedList>`, `Intl.ListFormat`
 - relative time: `formatRelativeTime`, `<FormattedRelativeTime>`, `Intl.RelativeTimeFormat`
 
+Never build date or time ranges from separately formatted placeholders plus fixed punctuation. Range separators, field elision, and ordering are locale-specific.
+
+```tsx
+// Avoid: fixed dash bypasses locale range rules.
+intl.formatMessage(
+  {defaultMessage: 'Vesting {startDate} – {endDate}'},
+  {
+    startDate: intl.formatDate(startDate),
+    endDate: intl.formatDate(endDate),
+  }
+)
+
+// Prefer: translatable label plus native range output.
+<dl>
+  <dt>
+    <FormattedMessage
+      defaultMessage="Vesting"
+      description="Label for a vesting date range"
+    />
+  </dt>
+  <dd>
+    <FormattedDateTimeRange from={startDate} to={endDate} />
+  </dd>
+</dl>
+```
+
 Do not recreate relative time with plural branches. Native formatter owns locale grammar.
 
 Pass raw typed values when sentence grammar needs them. Never preformat or translate fragment into string before ICU plural, select, number, date, time logic.
