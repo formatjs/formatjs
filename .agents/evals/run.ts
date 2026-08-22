@@ -1,7 +1,6 @@
 import {spawnSync} from 'node:child_process'
 import {
   appendFileSync,
-  cpSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -14,15 +13,16 @@ import minimist from 'minimist'
 import {
   assertSuite,
   buildPrompt,
+  EVAL_RESPONSE_SCHEMA,
   evaluateSuite,
-  parseCopilotOutput,
+  parseEvalResponse,
   type CaseEvaluation,
 } from './eval.ts'
 
 interface Args extends minimist.ParsedArgs {
-  suite: string
-  skill: string
-  copilot?: string
+  suite?: string
+  skill?: string
+  codex?: string
   model?: string
   transcript?: string
   summary?: string
@@ -77,41 +77,59 @@ function main(args: Args) {
     )
   }
 
-  const model = args.model || process.env.COPILOT_MODEL || 'claude-sonnet-4.6'
   const workdir = mkdtempSync(
     path.join(tmpdir(), `formatjs-skill-eval-${suite.skill}-`)
   )
-  const skillDestination = path.join(workdir, '.agents', 'skills', suite.skill)
-  mkdirSync(path.dirname(skillDestination), {recursive: true})
-  cpSync(path.resolve(args.skill), skillDestination, {recursive: true})
+  const responsePath = path.join(workdir, 'response.json')
+  const schemaPath = path.join(workdir, 'response-schema.json')
+  const skillInstructions = readFileSync(
+    path.join(path.resolve(args.skill), 'SKILL.md'),
+    'utf8'
+  )
+  writeFileSync(
+    schemaPath,
+    `${JSON.stringify(EVAL_RESPONSE_SCHEMA, null, 2)}\n`
+  )
 
   try {
-    const result = spawnSync(
-      args.copilot || 'copilot',
-      [
-        '--no-auto-update',
-        '--no-custom-instructions',
-        '--disable-builtin-mcps',
-        '--no-ask-user',
-        '--no-remote',
-        '--no-remote-export',
-        '--output-format=json',
-        '--available-tools=skill',
-        '--allow-all-tools',
-        `--model=${model}`,
-        '--max-ai-credits=30',
-        '-p',
-        buildPrompt(suite),
-      ],
-      {
-        cwd: workdir,
-        encoding: 'utf8',
-        env: {
-          ...process.env,
-          COPILOT_HOME: path.join(workdir, '.copilot'),
-        },
-      }
-    )
+    const codexArgs = [
+      'exec',
+      '--json',
+      '--ephemeral',
+      '--skip-git-repo-check',
+      '--ignore-user-config',
+      '--ignore-rules',
+      '--disable',
+      'shell_tool',
+      '--disable',
+      'skill_search',
+      '--disable',
+      'memories',
+      '--disable',
+      'plugins',
+      '--disable',
+      'apps',
+      '--disable',
+      'browser_use',
+      '--disable',
+      'computer_use',
+      '--sandbox',
+      'read-only',
+      '--output-schema',
+      schemaPath,
+      '--output-last-message',
+      responsePath,
+    ]
+    if (args.model) {
+      codexArgs.push('--model', args.model)
+    }
+    codexArgs.push(buildPrompt(suite, skillInstructions))
+
+    const result = spawnSync(args.codex || 'codex', codexArgs, {
+      cwd: workdir,
+      encoding: 'utf8',
+      env: process.env,
+    })
 
     if (args.transcript) {
       const transcript = path.resolve(args.transcript)
@@ -121,13 +139,18 @@ function main(args: Args) {
 
     if (result.status !== 0) {
       throw new Error(
-        `Copilot exited ${result.status ?? 'without status'}: ${result.stderr.trim()}`
+        `Codex exited ${result.status ?? 'without status'}: ${result.stderr.trim()}`
       )
     }
 
-    const response = parseCopilotOutput(result.stdout)
+    const response = parseEvalResponse(readFileSync(responsePath, 'utf8'))
     const evaluations = evaluateSuite(suite, response)
-    writeSummary(args.summary, suite.skill, model, evaluations)
+    writeSummary(
+      args.summary,
+      suite.skill,
+      args.model || 'Codex account default',
+      evaluations
+    )
 
     let failed = false
     for (const evaluation of evaluations) {

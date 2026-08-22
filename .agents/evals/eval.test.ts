@@ -2,8 +2,9 @@ import {describe, expect, it} from 'vitest'
 import {
   assertSuite,
   buildPrompt,
+  EVAL_RESPONSE_SCHEMA,
   evaluateSuite,
-  parseCopilotOutput,
+  parseEvalResponse,
   type EvalSuite,
 } from './eval.js'
 
@@ -24,33 +25,26 @@ const SUITE: EvalSuite = {
 
 describe('skill eval harness', () => {
   it('keeps hidden expectations out of the model prompt', () => {
-    const prompt = buildPrompt(SUITE)
+    const prompt = buildPrompt(SUITE, 'Review dates with native formatters.')
     expect(prompt).toContain('Review a manually formatted date range.')
     expect(prompt).not.toContain('FormattedDateTimeRange')
     expect(prompt).not.toContain('deterministic-error')
   })
 
-  it('parses the last assistant JSON message', () => {
-    const output = [
-      JSON.stringify({type: 'assistant.message', data: {content: 'thinking'}}),
-      JSON.stringify({
-        type: 'assistant.message',
-        data: {
-          content: JSON.stringify({
-            results: [
-              {
-                id: 'date-range',
-                outcome: 'arbitration-needed',
-                labels: ['deterministic-error'],
-                answer: 'Use FormattedDateTimeRange.',
-              },
-            ],
-          }),
+  it('parses a structured model response', () => {
+    const output = JSON.stringify({
+      results: [
+        {
+          id: 'date-range',
+          outcome: 'arbitration-needed',
+          labels: ['deterministic-error'],
+          answer: 'Use FormattedDateTimeRange.',
         },
-      }),
-    ].join('\n')
+      ],
+    })
 
-    expect(parseCopilotOutput(output).results[0].id).toBe('date-range')
+    expect(parseEvalResponse(output).results[0].id).toBe('date-range')
+    expect(EVAL_RESPONSE_SCHEMA.properties.results.type).toBe('array')
   })
 
   it('reports deterministic expectation failures', () => {

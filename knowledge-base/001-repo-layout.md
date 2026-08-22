@@ -110,7 +110,6 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | Workflow               | Trigger               | What it does                                                |
 | ---------------------- | --------------------- | ----------------------------------------------------------- |
 | `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
-| `skill-evals.yml`      | Skill changes/manual  | Copilot CLI behavioral evals for repository agent skills    |
 | `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
 | `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
 | `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
@@ -151,15 +150,13 @@ when credentials are available, and cross-compiles the macOS, Linux, and Windows
 standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
 
-`skill-evals.yml` runs one batched Copilot CLI request per repository skill.
-The organization must enable **Allow use of Copilot CLI billed to the
-organization** for its built-in `GITHUB_TOKEN` authentication.
-The Bazel-owned harness copies only the target skill into a temporary workspace,
-so model-visible prompts never contain hidden expectations. Copilot receives only
-the skill tool: no shell, file writes, web, or MCP. Fork pull requests skip the
-job because their workflow and eval prompts are untrusted. Each skill gets one
-request with no automatic retry; the workflow retains its JSONL transcript for
-seven days.
+Repository skill evals run locally through the Bazel-owned harness and the
+developer's existing Codex login. The harness copies only the target skill into
+a temporary workspace, so model-visible prompts never contain hidden
+expectations. Codex runs in a read-only sandbox. Each skill gets one request with
+no automatic retry; `--transcript` optionally retains its JSONL event stream.
+The runner resolves `codex` from `PATH`; use `--codex <path>` to select another
+binary. It does not pin or validate a CLI or model version.
 
 ## Common Commands
 
@@ -172,4 +169,5 @@ bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench  # Ru
 pnpm format               # runs lefthook pre-commit --all-files
 bazel run //docs:serve    # Run docs site
 bazel query 'kind(test, //packages/...)'  # Query test targets
+bazel run //.agents/evals:run -- --skill .agents/skills/localization-review --suite .agents/evals/cases/localization-review.json
 ```

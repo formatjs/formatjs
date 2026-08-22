@@ -30,49 +30,54 @@ export interface EvalResponse {
   results: EvalResult[]
 }
 
+export const EVAL_RESPONSE_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['results'],
+  properties: {
+    results: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['id', 'outcome', 'labels', 'answer'],
+        properties: {
+          id: {type: 'string'},
+          outcome: {
+            type: 'string',
+            enum: ['pass', 'arbitration-needed', 'blocked'],
+          },
+          labels: {type: 'array', items: {type: 'string'}},
+          answer: {type: 'string'},
+        },
+      },
+    },
+  },
+} as const
+
 export interface CaseEvaluation {
   id: string
   failures: string[]
 }
 
-export function buildPrompt(suite: EvalSuite): string {
+export function buildPrompt(
+  suite: EvalSuite,
+  skillInstructions: string
+): string {
   const cases = suite.cases.map(({id, request}) => ({id, request}))
 
   return [
-    `Use /${suite.skill} to handle every case below.`,
-    'Treat each case independently. Do not inspect or modify files.',
+    `Follow only the embedded ${suite.skill} skill instructions below.`,
+    'Do not invoke other skills or tools. Treat each case independently.',
     'Return only one JSON object with this shape:',
     '{"results":[{"id":"case-id","outcome":"pass|arbitration-needed|blocked","labels":["classification"],"answer":"concise answer"}]}',
-    'For localization reviews, use the skill classification names as labels. Use outcome "pass" only when the review passes.',
+    'For localization reviews, use the skill classification names as labels. Use outcome "pass" only when the review passes; use "arbitration-needed" whenever any finding remains, including a blocked finding.',
     'For translations, use outcome "pass" when translation completes. Use "blocked" for malformed source or missing required decisions.',
+    'Skill instructions:',
+    skillInstructions,
     'Cases:',
     JSON.stringify(cases),
   ].join('\n')
-}
-
-function messageText(content: unknown): string | undefined {
-  if (typeof content === 'string') {
-    return content
-  }
-  if (!Array.isArray(content)) {
-    return undefined
-  }
-
-  const parts = content.flatMap(part => {
-    if (typeof part === 'string') {
-      return [part]
-    }
-    if (
-      typeof part === 'object' &&
-      part !== null &&
-      'text' in part &&
-      typeof part.text === 'string'
-    ) {
-      return [part.text]
-    }
-    return []
-  })
-  return parts.length > 0 ? parts.join('') : undefined
 }
 
 function parseJsonObject(text: string): unknown {
@@ -118,51 +123,10 @@ function assertResponse(value: unknown): asserts value is EvalResponse {
   }
 }
 
-export function parseCopilotOutput(jsonl: string): EvalResponse {
-  const messages: string[] = []
-
-  for (const line of jsonl.split('\n')) {
-    if (!line.trim()) {
-      continue
-    }
-
-    let event: unknown
-    try {
-      event = JSON.parse(line)
-    } catch {
-      continue
-    }
-
-    if (
-      typeof event !== 'object' ||
-      event === null ||
-      !('type' in event) ||
-      event.type !== 'assistant.message' ||
-      !('data' in event) ||
-      typeof event.data !== 'object' ||
-      event.data === null ||
-      !('content' in event.data)
-    ) {
-      continue
-    }
-
-    const text = messageText(event.data.content)
-    if (text) {
-      messages.push(text)
-    }
-  }
-
-  for (const message of messages.reverse()) {
-    try {
-      const response = parseJsonObject(message)
-      assertResponse(response)
-      return response
-    } catch {
-      continue
-    }
-  }
-
-  throw new Error('Copilot output contained no valid eval response')
+export function parseEvalResponse(text: string): EvalResponse {
+  const response = parseJsonObject(text)
+  assertResponse(response)
+  return response
 }
 
 function missingValues(actual: string[], expected: string[]): string[] {
