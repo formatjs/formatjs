@@ -150,6 +150,18 @@ when credentials are available, and cross-compiles the macOS, Linux, and Windows
 standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
 
+Repository skill evals are manual Bazel functional tests using the developer's
+existing Codex login. Each target supplies one skill and its hidden cases to the
+harness. Model-visible prompts never contain hidden expectations. Codex runs in
+a read-only sandbox. Each skill gets one request with no automatic retry;
+`--test_arg=--transcript=<path>` optionally retains its JSONL event stream. The
+runner resolves `codex` from `PATH`; use
+`--test_arg=--codex=/path/to/codex` to select another binary. It does not pin or
+validate a CLI or model version. The `manual` tag keeps model-backed evals out of
+`bazel test //...` and CI. Tests run locally without Bazel sandboxing because
+Codex needs host account credentials and network access; Codex itself still uses
+its read-only sandbox. The `external` tag disables cached test results.
+
 ## Common Commands
 
 ```bash
@@ -161,4 +173,6 @@ bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench  # Ru
 pnpm format               # runs lefthook pre-commit --all-files
 bazel run //docs:serve    # Run docs site
 bazel query 'kind(test, //packages/...)'  # Query test targets
+bazel test //.agents/evals:localization_review_eval_test --test_output=streamed
+bazel test //.agents/evals:skill_evals --test_output=streamed
 ```

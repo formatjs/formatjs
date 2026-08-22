@@ -1,0 +1,82 @@
+# gazelle:ignore
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("//tools:vitest.bzl", "vitest")
+
+js_test(
+    name = "localization_review_eval_test",
+    timeout = "long",
+    args = [
+        "--skill=$(rootpath //:localization_review_skill_runfiles)",
+        "--suite=$(rootpath cases/localization-review.json)",
+    ],
+    data = [
+        "cases/localization-review.json",
+        "eval.ts",
+        "//:localization_review_skill_runfiles",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "run.ts",
+    env_inherit = [
+        "HOME",
+        "PATH",
+    ],
+    node_options = ["--experimental-transform-types"],
+    tags = [
+        "external",
+        "manual",
+        "no-sandbox",
+        "requires-network",
+    ],
+)
+
+js_test(
+    name = "translate_eval_test",
+    timeout = "long",
+    args = [
+        "--skill=$(rootpath //:translate_skill_runfiles)",
+        "--suite=$(rootpath cases/translate.json)",
+    ],
+    data = [
+        "cases/translate.json",
+        "eval.ts",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//:translate_skill_runfiles",
+    ],
+    entry_point = "run.ts",
+    env_inherit = [
+        "HOME",
+        "PATH",
+    ],
+    node_options = ["--experimental-transform-types"],
+    tags = [
+        "external",
+        "manual",
+        "no-sandbox",
+        "requires-network",
+    ],
+)
+
+test_suite(
+    name = "skill_evals",
+    tags = ["manual"],
+    tests = [
+        ":localization_review_eval_test",
+        ":translate_eval_test",
+    ],
+)
+
+vitest(
+    name = "eval_test",
+    srcs = [
+        "eval.test.ts",
+        "eval.ts",
+    ],
+    deps = [
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
