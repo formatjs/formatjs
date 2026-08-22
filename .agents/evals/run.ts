@@ -71,9 +71,11 @@ function main(args: Args) {
 
   const suite = JSON.parse(readFileSync(path.resolve(args.suite), 'utf8'))
   assertSuite(suite)
-  if (suite.skill !== path.basename(args.skill)) {
+  const skillPath = path.resolve(args.skill)
+  const skillName = path.basename(path.dirname(skillPath))
+  if (suite.skill !== skillName) {
     throw new Error(
-      `suite targets ${suite.skill}, but skill path targets ${path.basename(args.skill)}`
+      `suite targets ${suite.skill}, but skill path targets ${skillName}`
     )
   }
 
@@ -82,10 +84,7 @@ function main(args: Args) {
   )
   const responsePath = path.join(workdir, 'response.json')
   const schemaPath = path.join(workdir, 'response-schema.json')
-  const skillInstructions = readFileSync(
-    path.join(path.resolve(args.skill), 'SKILL.md'),
-    'utf8'
-  )
+  const skillInstructions = readFileSync(skillPath, 'utf8')
   writeFileSync(
     schemaPath,
     `${JSON.stringify(EVAL_RESPONSE_SCHEMA, null, 2)}\n`
@@ -131,6 +130,12 @@ function main(args: Args) {
       env: process.env,
     })
 
+    if (result.error) {
+      throw new Error(
+        `Could not start Codex binary ${args.codex || 'codex'}: ${result.error.message}. Pass --codex=/path/to/codex.`
+      )
+    }
+
     if (args.transcript) {
       const transcript = path.resolve(args.transcript)
       mkdirSync(path.dirname(transcript), {recursive: true})
@@ -139,7 +144,7 @@ function main(args: Args) {
 
     if (result.status !== 0) {
       throw new Error(
-        `Codex exited ${result.status ?? 'without status'}: ${result.stderr.trim()}`
+        `Codex exited ${result.status ?? 'without status'}: ${(result.stderr || '').trim()}`
       )
     }
 
