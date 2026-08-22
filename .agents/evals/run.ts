@@ -17,7 +17,7 @@ import {
   evaluateSuite,
   parseCopilotOutput,
   type CaseEvaluation,
-} from './eval.js'
+} from './eval.ts'
 
 interface Args extends minimist.ParsedArgs {
   suite: string
