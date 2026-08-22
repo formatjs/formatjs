@@ -47,10 +47,22 @@ filegroup(
     visibility = ["//docs:__pkg__"],
 )
 
+js_library(
+    name = "localization_review_skill_runfiles",
+    srcs = [":localization_review_skill"],
+    visibility = ["//.agents/evals:__pkg__"],
+)
+
 filegroup(
     name = "translate_skill",
     srcs = [".agents/skills/translate/SKILL.md"],
     visibility = ["//docs:__pkg__"],
+)
+
+js_library(
+    name = "translate_skill_runfiles",
+    srcs = [":translate_skill"],
+    visibility = ["//.agents/evals:__pkg__"],
 )
 
 js_library(

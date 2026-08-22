@@ -1,0 +1,35 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+load("//tools:vitest.bzl", "vitest")
+
+filegroup(
+    name = "cases",
+    srcs = glob(["cases/*.json"]),
+)
+
+ts_binary(
+    name = "run",
+    data = [
+        "eval.ts",
+        ":cases",
+        "//:localization_review_skill_runfiles",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//:translate_skill_runfiles",
+    ],
+    entry_point = "run.ts",
+    visibility = ["//visibility:public"],
+)
+
+vitest(
+    name = "eval_test",
+    srcs = [
+        "eval.test.ts",
+        "eval.ts",
+    ],
+    deps = [
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)

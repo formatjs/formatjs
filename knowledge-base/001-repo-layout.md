@@ -110,6 +110,7 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | Workflow               | Trigger               | What it does                                                |
 | ---------------------- | --------------------- | ----------------------------------------------------------- |
 | `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
+| `skill-evals.yml`      | Skill changes/manual  | Copilot CLI behavioral evals for repository agent skills    |
 | `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
 | `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
 | `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
@@ -149,6 +150,14 @@ CLI binary artifacts remain Bazel-owned in
 when credentials are available, and cross-compiles the macOS, Linux, and Windows
 standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
+
+`skill-evals.yml` runs one batched Copilot CLI request per repository skill.
+The Bazel-owned harness copies only the target skill into a temporary workspace,
+so model-visible prompts never contain hidden expectations. Copilot receives only
+the skill tool: no shell, file writes, web, or MCP. Fork pull requests skip the
+job because their workflow and eval prompts are untrusted. Each skill gets one
+request with no automatic retry; the workflow retains its JSONL transcript for
+seven days.
 
 ## Common Commands
 
