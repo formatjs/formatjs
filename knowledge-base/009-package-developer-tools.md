@@ -53,6 +53,12 @@
 - Validate message syntax
 - Enforce consistent ID patterns
 
+`blocklist-elements` accepts blocked element names or objects containing `type`
+and an `allow` exception. Exceptions match a `variable` and, when configured,
+the exact selector `options`. The `recommended` and `strict` configs block
+`selectordinal` and restrict `select` to `gender` with `male`, `female`, and
+`other` options.
+
 **Peer dep:** `eslint@9 || 10`
 
 ## @formatjs/cli-lib

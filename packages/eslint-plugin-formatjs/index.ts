@@ -173,7 +173,16 @@ const configs: Plugin['configs'] = {
           },
         },
       ],
-      'formatjs/blocklist-elements': ['error', ['selectordinal']],
+      'formatjs/blocklist-elements': [
+        'error',
+        [
+          'selectordinal',
+          {
+            type: 'select',
+            allow: {variable: 'gender', options: ['male', 'female', 'other']},
+          },
+        ],
+      ],
       'formatjs/prefer-full-sentence': 'error',
     },
   },
@@ -207,7 +216,16 @@ const configs: Plugin['configs'] = {
           },
         },
       ],
-      'formatjs/blocklist-elements': ['error', ['selectordinal']],
+      'formatjs/blocklist-elements': [
+        'error',
+        [
+          'selectordinal',
+          {
+            type: 'select',
+            allow: {variable: 'gender', options: ['male', 'female', 'other']},
+          },
+        ],
+      ],
       'formatjs/prefer-full-sentence': 'error',
     },
   },

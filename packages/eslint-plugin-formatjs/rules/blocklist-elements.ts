@@ -47,37 +47,88 @@ export enum Element {
   tag = 'tag',
 }
 
-function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
+interface BlocklistException {
+  variable: string
+  options?: string[]
+}
+
+type BlocklistedElement =
+  | Element
+  | {
+      type: Element
+      allow: BlocklistException
+    }
+
+function isBlocklisted(
+  blocklist: BlocklistedElement[],
+  type: Element,
+  element: MessageFormatElement
+): boolean {
+  return blocklist.some(entry => {
+    if (typeof entry === 'string') {
+      return entry === type
+    }
+    if (entry.type !== type) {
+      return false
+    }
+    if (!('value' in element) || element.value !== entry.allow.variable) {
+      return true
+    }
+    const allowedOptions = entry.allow.options
+    if (!allowedOptions) {
+      return false
+    }
+    if (!isSelectElement(element) && !isPluralElement(element)) {
+      return true
+    }
+    const options = Object.keys(element.options)
+    return (
+      options.length !== allowedOptions.length ||
+      options.some(option => !allowedOptions.includes(option))
+    )
+  })
+}
+
+function verifyAst(
+  blocklist: BlocklistedElement[],
+  ast: MessageFormatElement[]
+) {
   const errors: ReturnType<typeof getMessage>[] = []
   for (const el of ast) {
-    if (isLiteralElement(el) && blocklist.includes(Element.literal)) {
+    if (isLiteralElement(el) && isBlocklisted(blocklist, Element.literal, el)) {
       errors.push(getMessage(Element.literal))
     }
-    if (isArgumentElement(el) && blocklist.includes(Element.argument)) {
+    if (
+      isArgumentElement(el) &&
+      isBlocklisted(blocklist, Element.argument, el)
+    ) {
       errors.push(getMessage(Element.argument))
     }
-    if (isNumberElement(el) && blocklist.includes(Element.number)) {
+    if (isNumberElement(el) && isBlocklisted(blocklist, Element.number, el)) {
       errors.push(getMessage(Element.number))
     }
-    if (isDateElement(el) && blocklist.includes(Element.date)) {
+    if (isDateElement(el) && isBlocklisted(blocklist, Element.date, el)) {
       errors.push(getMessage(Element.date))
     }
-    if (isTimeElement(el) && blocklist.includes(Element.time)) {
+    if (isTimeElement(el) && isBlocklisted(blocklist, Element.time, el)) {
       errors.push(getMessage(Element.time))
     }
-    if (isSelectElement(el) && blocklist.includes(Element.select)) {
+    if (isSelectElement(el) && isBlocklisted(blocklist, Element.select, el)) {
       errors.push(getMessage(Element.select))
     }
-    if (isTagElement(el) && blocklist.includes(Element.tag)) {
+    if (isTagElement(el) && isBlocklisted(blocklist, Element.tag, el)) {
       errors.push(getMessage(Element.tag))
     }
+    if (isTagElement(el)) {
+      errors.push(...verifyAst(blocklist, el.children))
+    }
     if (isPluralElement(el)) {
-      if (blocklist.includes(Element.plural)) {
+      if (isBlocklisted(blocklist, Element.plural, el)) {
         errors.push(getMessage(Element.argument))
       }
       if (
         el.pluralType === 'ordinal' &&
-        blocklist.includes(Element.selectordinal)
+        isBlocklisted(blocklist, Element.selectordinal, el)
       ) {
         errors.push(getMessage(Element.selectordinal))
       }
@@ -85,7 +136,7 @@ function verifyAst(blocklist: Element[], ast: MessageFormatElement[]) {
     if (isSelectElement(el) || isPluralElement(el)) {
       const {options} = el
       for (const selector of Object.keys(options)) {
-        verifyAst(blocklist, options[selector].value)
+        errors.push(...verifyAst(blocklist, options[selector].value))
       }
     }
   }
@@ -150,8 +201,36 @@ export const rule: Rule.RuleModule = {
       {
         type: 'array',
         items: {
-          type: 'string',
-          enum: Object.keys(Element),
+          oneOf: [
+            {
+              type: 'string',
+              enum: Object.keys(Element),
+            },
+            {
+              type: 'object',
+              additionalProperties: false,
+              required: ['type', 'allow'],
+              properties: {
+                type: {
+                  type: 'string',
+                  enum: Object.keys(Element),
+                },
+                allow: {
+                  type: 'object',
+                  additionalProperties: false,
+                  required: ['variable'],
+                  properties: {
+                    variable: {type: 'string'},
+                    options: {
+                      type: 'array',
+                      uniqueItems: true,
+                      items: {type: 'string'},
+                    },
+                  },
+                },
+              },
+            },
+          ],
         },
       },
     ],
