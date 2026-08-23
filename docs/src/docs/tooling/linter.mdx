@@ -167,11 +167,29 @@ export default [
       formatjs,
     },
     rules: {
-      'formatjs/blocklist-elements': [2, ['selectordinal']],
+      'formatjs/blocklist-elements': [
+        2,
+        [
+          'selectordinal',
+          {
+            type: 'select',
+            allow: {
+              variable: 'gender',
+              options: ['male', 'female', 'other'],
+            },
+          },
+        ],
+      ],
     },
   },
 ]
 ```
+
+String entries block every element of that type. Object entries allow an
+exception for the named variable. When `options` is present, selector options
+must match that list exactly. Both `recommended` and `strict` block
+`selectordinal` and allow `select` only for `gender` with `male`, `female`, and
+`other` options.
 
 ### `enforce-description`
 

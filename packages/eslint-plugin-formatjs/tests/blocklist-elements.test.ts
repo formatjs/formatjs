@@ -14,8 +14,27 @@ import {
   vueRuleTester,
 } from '#packages/eslint-plugin-formatjs/tests/util'
 
+const genderSelect = {
+  type: Element.select,
+  allow: {variable: 'gender', options: ['male', 'female', 'other']},
+}
+
 ruleTester.run(name, rule, {
   valid: [
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{gender, select, female {She} male {He} other {They}}'
+  })`,
+      options: [[genderSelect]],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{foo}'
+  })`,
+      options: [[{type: Element.argument, allow: {variable: 'foo'}}]],
+    },
     {
       code: `import {defineMessage} from 'react-intl'
   defineMessage({
@@ -53,6 +72,54 @@ ruleTester.run(name, rule, {
     emptyFnCall,
   ],
   invalid: [
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{status, select, male {He} female {She} other {They}}'
+  })`,
+      options: [[genderSelect]],
+      errors: [{messageId: 'blocklist', data: {type: 'select'}}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{gender, select, male {He} other {They}}'
+  })`,
+      options: [[genderSelect]],
+      errors: [{messageId: 'blocklist', data: {type: 'select'}}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{gender, select, male {He} female {She} nonbinary {They} other {They}}'
+  })`,
+      options: [[genderSelect]],
+      errors: [{messageId: 'blocklist', data: {type: 'select'}}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{gender, select, male {{status, select, active {He} other {They}}} female {She} other {They}}'
+  })`,
+      options: [[genderSelect]],
+      errors: [{messageId: 'blocklist', data: {type: 'select'}}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '<strong>{status, select, active {Active} other {Inactive}}</strong>'
+  })`,
+      options: [[genderSelect]],
+      errors: [{messageId: 'blocklist', data: {type: 'select'}}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'
+  defineMessage({
+      defaultMessage: '{bar}'
+  })`,
+      options: [[{type: Element.argument, allow: {variable: 'foo'}}]],
+      errors: [{messageId: 'blocklist', data: {type: 'argument'}}],
+    },
     {
       code: `
               import {defineMessage} from 'react-intl'
@@ -93,6 +160,14 @@ vueRuleTester.run(`vue-${name}`, rule, {
     {
       code: `<template>
       <p>{{ $formatMessage({
+        defaultMessage: '{gender, select, male {He} female {She} other {They} }'
+      }) }}</p>
+    </template>`,
+      options: [[genderSelect]],
+    },
+    {
+      code: `<template>
+      <p>{{ $formatMessage({
         defaultMessage: '{count, plural, offset:1 one {#} other {# more} }'
       }) }} World!</p>
     </template>`,
@@ -103,6 +178,15 @@ vueRuleTester.run(`vue-${name}`, rule, {
     {code: `<script>${emptyFnCall.code}</script>`},
   ],
   invalid: [
+    {
+      code: `<template>
+      <p>{{ $formatMessage({
+        defaultMessage: '{status, select, active {Active} other {Inactive} }'
+      }) }}</p>
+    </template>`,
+      options: [[genderSelect]],
+      errors: [{messageId: 'blocklist', data: {type: 'select'}}],
+    },
     {
       code: `
               <script>
