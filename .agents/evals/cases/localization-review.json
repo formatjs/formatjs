@@ -37,11 +37,11 @@
     },
     {
       "id": "brand-placeholder",
-      "request": "Review this message: `{brand} helps you find answers.` The runtime always passes the fixed product name `Perplexity`; this is not tenant data.",
+      "request": "Review this message: `{brand} helps you find answers.` The runtime always passes the fixed product name `Northstar`; this is not tenant data.",
       "expect": {
         "outcome": "arbitration-needed",
         "labelsInclude": ["deterministic-error"],
-        "answerIncludes": ["Perplexity"]
+        "answerIncludes": ["Northstar"]
       }
     },
     {
