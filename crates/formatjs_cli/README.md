@@ -233,6 +233,24 @@ Existing values maps remain supported for dynamic or reused values.
 formatjs extract "src/**/*.rs" --out-file messages.json
 ```
 
+Python extraction reads explicit `define_message` calls. Message IDs and default
+messages are required string literals; descriptions are optional string literals.
+Dynamic expressions, positional arguments, and `**kwargs` are rejected.
+
+```python
+from my_app.i18n import define_message
+
+GREETING = define_message(
+    id="greeting",
+    default_message="Hello, {name}!",
+    description="Greeting shown on the home page",
+)
+```
+
+```bash
+formatjs extract "src/**/*.py" --out-file messages.json
+```
+
 **Full example with options:**
 
 ```bash
@@ -246,7 +264,7 @@ formatjs extract "src/**/*.{js,ts,tsx}" \
 
 **Options:**
 
-- `[FILES]...` - JavaScript, TypeScript, or Rust glob patterns (e.g., `src/**/*.tsx`)
+- `[FILES]...` - JavaScript, TypeScript, Rust, or Python glob patterns (e.g., `src/**/*.tsx`)
 - `--format <FORMATTER>` - Built-in formatter controlling JSON output shape (`default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`)
 - `--in-file <PATH>` - File containing list of files to extract (one per line)
 - `--out-file <PATH>` - Target file for aggregated .json output

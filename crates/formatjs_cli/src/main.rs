@@ -75,7 +75,7 @@ impl From<PseudoLocale> for compile::PseudoLocale {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Extract messages from JavaScript, TypeScript, and Rust source files.
+    /// Extract messages from JavaScript, TypeScript, Rust, and Python source files.
     Extract {
         /// File glob patterns to extract from (e.g., src/**/*.tsx)
         #[arg(value_name = "FILES")]

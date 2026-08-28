@@ -13,6 +13,9 @@ use crate::extractor::{
 };
 use crate::formatters::Formatter;
 use crate::id_generator::IdGenerator;
+use crate::python_extractor::{
+    extract_messages_from_python_source, extract_messages_from_python_source_with_diagnostics,
+};
 use crate::rust_extractor::{
     extract_messages_from_rust_source, extract_messages_from_rust_source_with_diagnostics,
 };
@@ -66,9 +69,8 @@ pub fn extract_sources(
             let meta = pragma
                 .map(|pragma| extract_pragma(&input.source, pragma))
                 .unwrap_or_default();
-            let result = if path.extension().and_then(|extension| extension.to_str()) == Some("rs")
-            {
-                extract_messages_from_rust_source_with_diagnostics(
+            let result = match path.extension().and_then(|extension| extension.to_str()) {
+                Some("rs") => extract_messages_from_rust_source_with_diagnostics(
                     &input.source,
                     path,
                     extract_source_location,
@@ -76,9 +78,17 @@ pub fn extract_sources(
                     flatten,
                     throws,
                 )
-                .map(|extraction| (extraction.messages, extraction.errors))
-            } else {
-                determine_source_type(path).and_then(|source_type| {
+                .map(|extraction| (extraction.messages, extraction.errors)),
+                Some("py") => extract_messages_from_python_source_with_diagnostics(
+                    &input.source,
+                    path,
+                    extract_source_location,
+                    preserve_whitespace,
+                    flatten,
+                    throws,
+                )
+                .map(|extraction| (extraction.messages, extraction.errors)),
+                _ => determine_source_type(path).and_then(|source_type| {
                     extract_messages_from_source_with_diagnostics(
                         &input.source,
                         path,
@@ -92,7 +102,7 @@ pub fn extract_sources(
                         throws,
                     )
                     .map(|extraction| (extraction.messages, extraction.errors))
-                })
+                }),
             };
 
             match result {
@@ -132,7 +142,7 @@ pub fn extract_sources(
     })
 }
 
-/// Extract messages from JavaScript, TypeScript, and Rust source files.
+/// Extract messages from JavaScript, TypeScript, Rust, and Python source files.
 #[allow(clippy::too_many_arguments)]
 pub fn extract(
     files: &[PathBuf],
@@ -493,7 +503,7 @@ fn is_supported_file(path: &Path) -> bool {
     if let Some(ext) = path.extension() {
         matches!(
             ext.to_string_lossy().as_ref(),
-            "ts" | "tsx" | "mts" | "cts" | "js" | "jsx" | "mjs" | "cjs" | "rs"
+            "ts" | "tsx" | "mts" | "cts" | "js" | "jsx" | "mjs" | "cjs" | "rs" | "py"
         )
     } else {
         false
@@ -543,6 +553,17 @@ fn extract_from_file(
 
     if path.extension().and_then(|extension| extension.to_str()) == Some("rs") {
         return extract_messages_from_rust_source(
+            &source_text,
+            path,
+            extract_source_location,
+            preserve_whitespace,
+            flatten,
+            throws,
+        );
+    }
+
+    if path.extension().and_then(|extension| extension.to_str()) == Some("py") {
+        return extract_messages_from_python_source(
             &source_text,
             path,
             extract_source_location,
@@ -619,7 +640,7 @@ mod tests {
         assert!(is_supported_file(&PathBuf::from("test.mjs")));
         assert!(is_supported_file(&PathBuf::from("test.cjs")));
         assert!(is_supported_file(&PathBuf::from("test.rs")));
-        assert!(!is_supported_file(&PathBuf::from("test.py")));
+        assert!(is_supported_file(&PathBuf::from("test.py")));
         assert!(!is_supported_file(&PathBuf::from("test.txt")));
     }
 
@@ -862,6 +883,50 @@ fn main() {
 
         assert_eq!(json["EG1xJTTqQy"]["defaultMessage"], "Hello, {name}!");
         assert_eq!(json["EG1xJTTqQy"]["description"], "Greeting");
+        assert_eq!(json.as_object().unwrap().len(), 1);
+    }
+
+    #[test]
+    fn test_extract_to_string_reads_python_message_declaration() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let file = temp_dir.path().join("messages.py");
+        fs::write(
+            &file,
+            r#"
+from my_app.i18n import define_message
+
+GREETING = define_message(
+    id="greeting",
+    default_message="Hello, {name}!",
+    description="Greeting shown on the home page",
+)
+"#,
+        )
+        .unwrap();
+
+        let output = extract_to_string(
+            &[file],
+            None,
+            None,
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output).unwrap();
+
+        assert_eq!(json["greeting"]["defaultMessage"], "Hello, {name}!");
+        assert_eq!(
+            json["greeting"]["description"],
+            "Greeting shown on the home page"
+        );
         assert_eq!(json.as_object().unwrap().len(), 1);
     }
 

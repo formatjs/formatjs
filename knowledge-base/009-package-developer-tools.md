@@ -73,8 +73,8 @@ the exact selector `options`. The `recommended` and `strict` configs block
 
 **Extractor support:**
 
-- JavaScript, TypeScript, JSX, TSX, and Rust source use the native OXC/syn
-  extractor through `formatjs_cli_napi`.
+- JavaScript, TypeScript, JSX, and TSX source use OXC, Rust uses syn, and Python
+  uses Ruff through the native `formatjs_cli_napi` extractor.
 - Vue, Svelte, Handlebars, and GTS/Glimmer keep small JavaScript container
   adapters. Embedded script fragments are sent to the same native extractor.
 - Programmatic options such as callbacks, custom ID functions, pragma metadata,
