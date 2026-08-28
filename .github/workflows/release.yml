@@ -23,6 +23,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
+      - name: Enable Git long paths
+        run: git config --global core.longpaths true
+
       - name: Setup MSVC
         uses: ./.github/actions/setup-msvc
 
