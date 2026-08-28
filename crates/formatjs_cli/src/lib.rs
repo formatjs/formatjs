@@ -4,5 +4,6 @@ pub mod extract;
 pub mod extractor;
 pub mod formatters;
 pub mod id_generator;
+pub mod python_extractor;
 pub mod rust_extractor;
 pub mod verify;

@@ -140,8 +140,9 @@ npm publish workflow builds the Bazel `:dist` output and uses npm Trusted
 Publishing, then publishes only the package paths Release Please released. Rust
 crate publishing happens in
 `crates-release.yml` from crate GitHub releases using crates.io trusted
-publishing. The custom Cargo workspace plugin excludes crates with
-`package.publish = false` before dependency release propagation. Crate release
+publishing. `formatjs_cli` is binary-only and excluded from crates.io publishing.
+The custom Cargo workspace plugin excludes crates with `package.publish = false`
+before dependency release propagation. Crate release
 runs share a FIFO `queue: max` concurrency group so
 dependency-ordered releases wait instead of replacing pending runs. The Rust
 CLI binary artifacts remain Bazel-owned in
@@ -149,6 +150,8 @@ CLI binary artifacts remain Bazel-owned in
 when credentials are available, and cross-compiles the macOS, Linux, and Windows
 standalone CLI artifacts before uploading assets and checksums to the
 `formatjs_cli_v*` release without replacing Release Please notes.
+Windows CI enables Git long-path support before Bazel fetches git-backed Rust
+dependencies.
 
 Repository skill evals are manual Bazel functional tests using the developer's
 existing Codex login. Each target supplies one skill and its hidden cases to the

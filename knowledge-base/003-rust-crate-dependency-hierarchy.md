@@ -35,6 +35,7 @@ formatjs_cli (v0.1.14)
 ├── formatjs_icu_skeleton_parser (v0.1.1)
 ├── clap 4.5 (CLI argument parsing)
 ├── oxc 0.120 + oxc_parser + oxc_ast + oxc_allocator + oxc_span (JS/TS parsing)
+├── ruff_python_parser + ruff_python_ast (Python parsing)
 ├── serde + serde_json (serialization)
 ├── md-5, sha1, sha2, base64, hex (hashing for ID generation)
 ├── fast-glob 1.0, walkdir 2 (file discovery)
@@ -113,9 +114,12 @@ support Rust 1.92 and newer.
 
 **Binary:** `formatjs`
 
+**Distribution:** Bazel-built GitHub release binaries and npm native packages;
+the crate is not published to crates.io.
+
 **Commands:**
 
-1. **extract** — Extract messages from JS/TS/JSX/TSX source files
+1. **extract** — Extract messages from JS/TS/JSX/TSX, Rust, and Python source files
 2. **compile** — Compile translation files to ICU format
 3. **compile-folder** — Batch compilation from directories
 4. **verify** — Validate translations (missing keys, extra keys, structural equality)
@@ -123,6 +127,7 @@ support Rust 1.92 and newer.
 **Key implementation details:**
 
 - Uses **oxc** (v0.120) for JS/TS/JSX/TSX AST parsing (no Node.js dependency)
+- Uses Ruff's Python parser for literal `define_message(...)` declarations
 - With `extract --throws`, input metadata and directory traversal errors fail the command instead of producing a partial catalog
 - **Whitespace normalization** (`extractor.rs`): Matches TypeScript CLI behavior exactly, including U+00A0 (non-breaking space) preservation via placeholder technique
 - **ID generation** (`id_generator.rs`): loader-utils style `hash`/`contenthash` interpolation with md5, sha1, and SHA-2 algorithms plus base64/base64url/base62/hex encodings. Hash is computed AFTER flattening (matching TypeScript CLI order)

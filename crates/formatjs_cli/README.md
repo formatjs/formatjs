@@ -55,8 +55,8 @@ RAYON_NUM_THREADS=4 formatjs extract "src/**/*.tsx" --out-file messages.json
 ## Quick Start
 
 ```bash
-# Install from Cargo
-cargo install formatjs_cli
+# Download a pre-built binary from the GitHub release
+# https://github.com/formatjs/formatjs/releases
 
 # Extract messages from your source code
 formatjs extract "src/**/*.tsx" --out-file messages.json
@@ -70,28 +70,10 @@ formatjs verify "translations/*.json" --source-locale en --missing-keys
 
 ## Installation
 
-### Cargo
+### Local Cargo installation
 
-Install the published crate with Cargo:
-
-```bash
-cargo install formatjs_cli
-```
-
-Cargo installs the command as `formatjs` in `~/.cargo/bin`:
-
-```bash
-formatjs --help
-formatjs --version
-```
-
-If `formatjs` is not found, add Cargo's bin directory to your `PATH`:
-
-```bash
-export PATH="$HOME/.cargo/bin:$PATH"
-```
-
-For local development from this repository:
+`formatjs_cli` is distributed as pre-built GitHub release binaries, not through
+crates.io. For local development from this repository:
 
 ```bash
 cargo install --path crates/formatjs_cli
@@ -233,6 +215,24 @@ Existing values maps remain supported for dynamic or reused values.
 formatjs extract "src/**/*.rs" --out-file messages.json
 ```
 
+Python extraction reads explicit `define_message` calls. Message IDs and default
+messages are required string literals; descriptions are optional string literals.
+Dynamic expressions, positional arguments, and `**kwargs` are rejected.
+
+```python
+from my_app.i18n import define_message
+
+GREETING = define_message(
+    id="greeting",
+    default_message="Hello, {name}!",
+    description="Greeting shown on the home page",
+)
+```
+
+```bash
+formatjs extract "src/**/*.py" --out-file messages.json
+```
+
 **Full example with options:**
 
 ```bash
@@ -246,7 +246,7 @@ formatjs extract "src/**/*.{js,ts,tsx}" \
 
 **Options:**
 
-- `[FILES]...` - JavaScript, TypeScript, or Rust glob patterns (e.g., `src/**/*.tsx`)
+- `[FILES]...` - JavaScript, TypeScript, Rust, or Python glob patterns (e.g., `src/**/*.tsx`)
 - `--format <FORMATTER>` - Built-in formatter controlling JSON output shape (`default`, `simple`, `transifex`, `smartling`, `lokalise`, or `crowdin`)
 - `--in-file <PATH>` - File containing list of files to extract (one per line)
 - `--out-file <PATH>` - Target file for aggregated .json output
