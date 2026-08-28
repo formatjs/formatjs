@@ -36,6 +36,24 @@
       }
     },
     {
+      "id": "preformatted-number-element",
+      "request": "Review this React Intl message: `{priceFormatted} per month`. `priceFormatted` receives `<FormattedNumber value={price} style=\"currency\" currency=\"USD\" />`.",
+      "expect": {
+        "outcome": "arbitration-needed",
+        "labelsInclude": ["deterministic-error"],
+        "answerIncludes": ["currency/USD"]
+      }
+    },
+    {
+      "id": "preformatted-date-placeholder",
+      "request": "Review this React Intl message: `Renews on {renewalDateFormatted}`. `renewalDateFormatted` receives the string returned by `intl.formatDate(renewalDate)`.",
+      "expect": {
+        "outcome": "arbitration-needed",
+        "labelsInclude": ["deterministic-error"],
+        "answerIncludes": ["date", "skeleton"]
+      }
+    },
+    {
       "id": "empty-rich-text-element-slots",
       "request": "Review this React Intl message: `<regularPrice></regularPrice> <discountedPrice></discountedPrice> per month`. Both tags receive functions that return `<FormattedNumber>` elements.",
       "expect": {

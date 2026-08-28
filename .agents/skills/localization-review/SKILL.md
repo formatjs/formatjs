@@ -110,15 +110,19 @@ Separate translation units gain precise descriptions. Required `other` branch ca
 
 ## Format values natively
 
-Use ICU number or date skeletons when value belongs inside sentence.
+Prefer inline skeletons over preformatted placeholders. Sentence embeds number,
+percentage, or date expressible by skeleton: keep skeleton in message. Flag
+placeholders receiving `formatNumber` or `formatDate` output, or
+`<FormattedNumber>` or `<FormattedDate>` elements. Names such as
+`{priceFormatted}` or `{discountPercentageFormatted}` strongly signal this bug.
 
-Rich-text tags must wrap translatable text. Flag empty tag pairs used as slots
-for elements. They add ICU syntax without giving translators text to style and
-can become unbalanced in translations. Use a plain argument with the element
-as its value instead.
+Never use empty rich-text tag pair as element slot. Tags wrap translatable text.
+Empty tag is semantically argument. Flag any `defaultMessage` containing
+`<tag></tag>` with no children. Suggest plain `{placeholder}` receiving element
+as value.
 
 ```tsx
-// Avoid: empty tags are positional element slots.
+// Avoid: empty tags are element slots.
 <FormattedMessage
   defaultMessage="<regularPrice></regularPrice> <discountedPrice></discountedPrice> per month"
   values={{
@@ -127,7 +131,7 @@ as its value instead.
   }}
 />
 
-// Prefer: plain arguments receive elements directly.
+// Prefer: plain arguments receive elements.
 <FormattedMessage
   defaultMessage="{regularPrice} {discountedPrice} per month"
   values={{
