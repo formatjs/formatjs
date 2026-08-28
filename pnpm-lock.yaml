@@ -369,7 +369,7 @@ importers:
         version: 0.144.0
       oxfmt:
         specifier: ^0.63.0
-        version: 0.63.0(svelte@5.56.9)
+        version: 0.63.0(svelte@5.56.10)
       oxlint:
         specifier: ^1.64.0
         version: 1.78.0
@@ -432,7 +432,7 @@ importers:
         version: 7.1.0
       svelte:
         specifier: ^5.0.0
-        version: 5.56.9
+        version: 5.56.10
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.6.0
@@ -4634,8 +4634,8 @@ packages:
   devalue@5.8.1:
     resolution: {integrity: sha512-4CXDYRBGqN+57wVJkuXBYmpAVUSg3L6JAQa/DFqm238G73E1wuyc/JhGQJzN7vUf/CMphYau2zXbfWzDR5aTEw==}
 
-  devalue@5.9.0:
-    resolution: {integrity: sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}
+  devalue@5.9.1:
+    resolution: {integrity: sha512-+17vil3EVQRzvtDJSFuTWEb8XJRvXqAiV3qZyQWD398QeXUa6CxsUyMdD1fxzEhUrd4FojitFz7lhIHBTlV4fw==}
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
@@ -4855,8 +4855,8 @@ packages:
       '@typescript-eslint/types':
         optional: true
 
-  esrap@2.3.5:
-    resolution: {integrity: sha512-KciPkeZZX8srrh6xELzLR2cBaWOzgBQ4CwggO6Dh/KMlrfOcIcfyXCVy/Vvc3/OlS5gvFOd5tcxUYuaGM8o45A==}
+  esrap@2.3.6:
+    resolution: {integrity: sha512-yc0OC12UjPqLoc+fe+v5GNs4TOjAigUw3sTikfC+xeBPGUw7gDRz3DtYaqEhxyMVJojcSWJw7jT0QWR+CbuE/A==}
     peerDependencies:
       '@typescript-eslint/types': ^8.2.0
     peerDependenciesMeta:
@@ -6981,12 +6981,12 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  svelte@5.56.4:
-    resolution: {integrity: sha512-/d0QHehmRuJW8gVz395MTkPcPozxzdjBMBE8oEYGz8O3b9KTMzzQ9ZHJQLuFKOHOPQbU6kx/X4iid/EBBzH7iw==}
+  svelte@5.56.10:
+    resolution: {integrity: sha512-Lcxbj8I/KAbpY+VjtY4ENQBV0dDCipfGAhqb51XQZ67CIQqXgsv/8dPkbILaj4Fb6/b6JAEM/PIVbILXgDQy2g==}
     engines: {node: '>=18'}
 
-  svelte@5.56.9:
-    resolution: {integrity: sha512-VT8kSnlEg8069w7AiCcAk3Yf5xvMnrGTagVOmU/OpOLHaHnNqXhWZCH/4EVga/bT/HtWhvE6/fHrXLErx7OnJA==}
+  svelte@5.56.4:
+    resolution: {integrity: sha512-/d0QHehmRuJW8gVz395MTkPcPozxzdjBMBE8oEYGz8O3b9KTMzzQ9ZHJQLuFKOHOPQbU6kx/X4iid/EBBzH7iw==}
     engines: {node: '>=18'}
 
   tailwind-merge@3.6.0:
@@ -11221,7 +11221,7 @@ snapshots:
 
   devalue@5.8.1: {}
 
-  devalue@5.9.0: {}
+  devalue@5.9.1: {}
 
   devlop@1.1.0:
     dependencies:
@@ -11535,7 +11535,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  esrap@2.3.5:
+  esrap@2.3.6:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
@@ -13432,7 +13432,7 @@ snapshots:
       '@oxc-transform/binding-win32-ia32-msvc': 0.144.0
       '@oxc-transform/binding-win32-x64-msvc': 0.144.0
 
-  oxfmt@0.63.0(svelte@5.56.9):
+  oxfmt@0.63.0(svelte@5.56.10):
     dependencies:
       tinypool: 2.1.0
     optionalDependencies:
@@ -13455,7 +13455,7 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.63.0
       '@oxfmt/binding-win32-ia32-msvc': 0.63.0
       '@oxfmt/binding-win32-x64-msvc': 0.63.0
-      svelte: 5.56.9
+      svelte: 5.56.10
 
   oxlint@1.78.0:
     optionalDependencies:
@@ -14283,6 +14283,27 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
+  svelte@5.56.10:
+    dependencies:
+      '@jridgewell/remapping': 2.3.5
+      '@jridgewell/sourcemap-codec': 1.5.5
+      '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
+      '@types/estree': 1.0.9
+      '@types/trusted-types': 2.0.7
+      acorn: 8.18.0
+      aria-query: 5.3.1
+      axobject-query: 4.1.0
+      clsx: 2.1.1
+      devalue: 5.9.1
+      esm-env: 1.2.2
+      esrap: 2.3.6
+      is-reference: 3.0.3
+      locate-character: 3.0.0
+      magic-string: 0.30.21
+      zimmerframe: 1.1.4
+    transitivePeerDependencies:
+      - '@typescript-eslint/types'
+
   svelte@5.56.4:
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -14297,27 +14318,6 @@ snapshots:
       devalue: 5.8.1
       esm-env: 1.2.2
       esrap: 2.2.13
-      is-reference: 3.0.3
-      locate-character: 3.0.0
-      magic-string: 0.30.21
-      zimmerframe: 1.1.4
-    transitivePeerDependencies:
-      - '@typescript-eslint/types'
-
-  svelte@5.56.9:
-    dependencies:
-      '@jridgewell/remapping': 2.3.5
-      '@jridgewell/sourcemap-codec': 1.5.5
-      '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
-      '@types/estree': 1.0.9
-      '@types/trusted-types': 2.0.7
-      acorn: 8.18.0
-      aria-query: 5.3.1
-      axobject-query: 4.1.0
-      clsx: 2.1.1
-      devalue: 5.9.0
-      esm-env: 1.2.2
-      esrap: 2.3.5
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.21
