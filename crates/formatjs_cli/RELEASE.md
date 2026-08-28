@@ -4,7 +4,7 @@ This document explains how to build release binaries for the FormatJS Rust CLI f
 
 ## Quick Start
 
-### Option 1: Using GitHub Actions (Recommended for Releases)
+### Using GitHub Actions
 
 The repository includes two GitHub Actions workflows:
 
@@ -45,37 +45,9 @@ GitHub releases, and the npm publish handoff stay in one flow.
 - `formatjs_cli-win32-x64.exe` (Windows x64)
 - `checksums.txt` (SHA-256 checksums)
 
-### Option 2: Publishing to crates.io
-
-Cargo distribution is source-based: users install the package and build the `formatjs` executable locally.
-
-```bash
-cargo install formatjs_cli
-formatjs --help
-```
-
-Before publishing `formatjs_cli`, ensure any workspace dependencies are already published with compatible versions. This crate depends on the FormatJS Rust parser crates, so publish or update those crates first:
-
-1. `formatjs_icu_skeleton_parser`
-2. `formatjs_icu_messageformat_parser`
-3. `formatjs_cli`
-
-The normal repository workflow handles this ordering automatically:
-
-1. Release Please opens and maintains release PRs for the Rust crates.
-2. Merging the release PR creates GitHub releases with generated changelog
-   notes that include PR titles, PR links, and contributors.
-3. The `crates-release.yml` workflow publishes matching crate releases to
-   crates.io with trusted publishing and waits for workspace dependencies before
-   publishing dependents.
-
-The package name is `formatjs_cli`, but the installed command is `formatjs` because `Cargo.toml` defines:
-
-```toml
-[[bin]]
-name = "formatjs"
-path = "src/main.rs"
-```
+`formatjs_cli` is a binary-only release component and is not published to
+crates.io. Release Please still owns its version, changelog, tag, and GitHub
+release. Bazel builds the standalone binaries and npm native packages.
 
 ## Platform Support
 
@@ -223,7 +195,7 @@ chmod +x formatjs_cli-linux-x64
 
 ## Publishing
 
-The GitHub Actions workflows automate the GitHub release, crate publish, and
+The GitHub Actions workflows automate the GitHub release, npm publish, and
 binary artifact process:
 
 1. **Merge the Release Please PR**:
@@ -238,28 +210,18 @@ binary artifact process:
    paths released by Release Please. `release.yml` builds the Bazel `:dist`
    output and publishes those packages through npm Trusted Publishing.
 
-3. **Crates.io publish runs automatically**:
-
-   The `crates-release.yml` workflow publishes `formatjs_cli` through crates.io
-   trusted publishing after the parser crate dependencies are available.
-
-4. **Rust CLI Release runs automatically**:
+3. **Rust CLI Release runs automatically**:
    - Builds macOS, Linux, and Windows binaries through Bazel on Linux BuildBuddy RBE
    - Runs smoke tests on macOS, Linux, and Windows runners
    - Uploads binaries and checksums to the existing GitHub release
    - Appends binary installation notes without replacing the changelog
 
-5. **Manual verification** (optional):
+4. **Manual verification** (optional):
    - Check GitHub Actions run completed successfully
    - Download and test binaries from the release
    - Verify checksums
 
-   Users can then install and run:
-
-   ```bash
-   cargo install formatjs_cli
-   formatjs --version
-   ```
+   Users can then download the matching binary and run `formatjs --version`.
 
 ## Troubleshooting
 

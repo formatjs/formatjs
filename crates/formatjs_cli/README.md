@@ -55,8 +55,8 @@ RAYON_NUM_THREADS=4 formatjs extract "src/**/*.tsx" --out-file messages.json
 ## Quick Start
 
 ```bash
-# Install from Cargo
-cargo install formatjs_cli
+# Download a pre-built binary from the GitHub release
+# https://github.com/formatjs/formatjs/releases
 
 # Extract messages from your source code
 formatjs extract "src/**/*.tsx" --out-file messages.json
@@ -70,28 +70,10 @@ formatjs verify "translations/*.json" --source-locale en --missing-keys
 
 ## Installation
 
-### Cargo
+### Local Cargo installation
 
-Install the published crate with Cargo:
-
-```bash
-cargo install formatjs_cli
-```
-
-Cargo installs the command as `formatjs` in `~/.cargo/bin`:
-
-```bash
-formatjs --help
-formatjs --version
-```
-
-If `formatjs` is not found, add Cargo's bin directory to your `PATH`:
-
-```bash
-export PATH="$HOME/.cargo/bin:$PATH"
-```
-
-For local development from this repository:
+`formatjs_cli` is distributed as pre-built GitHub release binaries, not through
+crates.io. For local development from this repository:
 
 ```bash
 cargo install --path crates/formatjs_cli

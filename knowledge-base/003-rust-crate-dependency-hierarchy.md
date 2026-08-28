@@ -114,6 +114,9 @@ support Rust 1.92 and newer.
 
 **Binary:** `formatjs`
 
+**Distribution:** Bazel-built GitHub release binaries and npm native packages;
+the crate is not published to crates.io.
+
 **Commands:**
 
 1. **extract** — Extract messages from JS/TS/JSX/TSX, Rust, and Python source files
