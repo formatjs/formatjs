@@ -18,6 +18,7 @@ actions so they can cache and run independently across the monorepo.
 | ----------------------- | ------------- | ------------------------------------------------- |
 | `aspect_rules_js`       | 3.0.3         | JS/Node.js rules, npm lock translation            |
 | `rules_nodejs`          | 6.7.4         | Hermetic Node.js toolchain                        |
+| `rules_cc`              | 0.2.20        | C/C++ rules and toolchain setup                   |
 | `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration     |
 | `aspect_bazel_lib`      | 2.22.5        | `copy_to_bin`, `copy_to_directory`, source writes |
 | `rules_multirun`        | 0.13.0        | Multi-target run orchestration                    |
@@ -28,7 +29,7 @@ actions so they can cache and run independently across the monorepo.
 | `gazelle`               | 0.50.0        | BUILD file generation driver                      |
 | `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                      |
 | `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                    |
-| `llvm`                  | 0.8.0         | Hermetic LLVM C/C++ toolchains                    |
+| `llvm`                  | 0.8.11        | Hermetic LLVM C/C++ toolchains                    |
 | `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests        |
 | `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE platform and C/C++ definitions     |
 
@@ -40,6 +41,10 @@ actions so they can cache and run independently across the monorepo.
   linux arm64/x64, and windows x64.
 - C/C++ builds use **hermetic LLVM 22.1.4** toolchains. Build actions that need
   native executables must keep them in the execution configuration.
+- A local LLVM patch wires pinned MSVC 14.50 and Windows SDK 10.0.26100 into
+  `clang-cl`/`lld-link`. Linux and macOS hosts can produce MSVC ABI artifacts.
+- GitHub test and release workflows build all release artifacts on Linux x64.
+  macOS, Windows, and Linux arm64 runners only download and execute artifacts.
 - LLVM's musl source uses a checksum-verified Buildroot mirror plus the
   upstream release URL so temporary upstream outages do not break Linux builds.
 - Bazel's pnpm extension is pinned to **pnpm 10.4.1** for repository rules.

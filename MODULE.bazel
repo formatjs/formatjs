@@ -6,8 +6,9 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.1.0")
-bazel_dep(name = "rules_cc", version = "0.2.18")
+bazel_dep(name = "rules_cc", version = "0.2.20")
 bazel_dep(name = "rules_shell", version = "0.8.0")
+bazel_dep(name = "windows_support", version = "0.2.0")
 
 cc_configure = use_extension("@rules_cc//cc:extensions.bzl", "cc_configure_extension")
 use_repo(cc_configure, "local_config_cc")
@@ -130,20 +131,20 @@ bazel_dep(name = "gazelle_ts", version = "0.4.18")
 ######### Rust rules #########
 
 bazel_dep(name = "rules_rs", version = "0.0.73")
-bazel_dep(name = "llvm", version = "0.8.0")
+bazel_dep(name = "llvm", version = "0.8.11")
 single_version_override(
     module_name = "llvm",
     patch_strip = 1,
-    patches = ["//:patches/llvm-0.8.0-musl-mirror.patch"],
-    version = "0.8.0",
+    patches = [
+        "//:patches/llvm-0.8.11-msvc-support.patch",
+        "//:patches/llvm-0.8.11-musl-mirror.patch",
+    ],
+    version = "0.8.11",
 )
 
 bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
-llvm_toolchain = use_extension("@llvm//extensions:toolchain.bzl", "toolchain")
-use_repo(llvm_toolchain, "llvm_toolchains")
-
-register_toolchains("@llvm_toolchains//:all")
+register_toolchains("@llvm//toolchain:all")
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")
 toolchains.toolchain(

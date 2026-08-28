@@ -14,16 +14,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        include:
-          - os: ubuntu-latest
-            bazel-config: ci
-          - os: macos-latest
-            bazel-config: ci-darwin
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -40,22 +31,20 @@ jobs:
         run: bazel build //packages/intl-datetimeformat:tz_data_generated
 
       - name: Run Tests
-        if: matrix.os != 'macos-latest' || github.event_name != 'pull_request'
         run: |
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            echo "Running with BuildBuddy ${{ matrix.bazel-config }} config"
-            bazel test --config=${{ matrix.bazel-config }} --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
+            echo "Running with BuildBuddy ci config"
+            bazel test --config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
           else
             echo "Running without BuildBuddy (no API key)"
             bazel test //...
           fi
 
       - name: Rust CLI Smoke Test
-        if: matrix.os != 'macos-latest' || github.event_name != 'pull_request'
         run: |
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel build \
-              --config=${{ matrix.bazel-config }} \
+              --config=ci \
               --compilation_mode=opt \
               --remote_download_outputs=all \
               --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
@@ -98,20 +87,20 @@ jobs:
         working-directory: examples/${{ matrix.example }}
         run: bazel test //...
 
-  linux_musl_native_smoke:
-    name: Linux musl Native Binding Smoke Test (${{ matrix.arch }})
-    runs-on: ${{ matrix.runner }}
+  linux_musl_cross_build:
+    name: Cross-build Linux musl Artifacts (${{ matrix.arch }})
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         include:
           - arch: x64
-            runner: ubuntu-latest
+            file_arch: x86-64
             package: cli-native-linux-x64-musl
             cli-target: //crates/formatjs_cli:release_binary_linux_x64
           - arch: arm64
-            runner: ubuntu-24.04-arm
+            file_arch: ARM aarch64
             package: cli-native-linux-arm64-musl
             cli-target: //crates/formatjs_cli:release_binary_linux_arm64
 
@@ -123,18 +112,31 @@ jobs:
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-alpine-native-smoke
+          disk-cache: ${{ github.workflow }}-linux-musl-cross-build
           repository-cache: true
 
-      - name: Build Linux musl Native Package
+      - name: Build Linux musl Artifacts
         run: |
-          bazel build //packages/${{ matrix.package }}:pkg
-          package_dir=$(bazel cquery --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
+          bazel build --compilation_mode=opt \
+            //packages/${{ matrix.package }}:pkg \
+            ${{ matrix.cli-target }}
+          package_dir=$(bazel cquery --compilation_mode=opt --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
+          binary_path=$(bazel cquery --compilation_mode=opt --output=files ${{ matrix.cli-target }} | tail -n 1)
           mkdir -p artifacts/${{ matrix.package }}
           cp -R "$package_dir"/. artifacts/${{ matrix.package }}/
+          cp "$binary_path" artifacts/${{ matrix.package }}/formatjs_cli
 
           artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
+          binary_info=$(file artifacts/${{ matrix.package }}/formatjs_cli)
           echo "$artifact_info"
+          echo "$binary_info"
+          case "$artifact_info" in
+            *"${{ matrix.file_arch }}"*) ;;
+            *)
+              echo "Linux native addon has wrong architecture"
+              exit 1
+              ;;
+          esac
           case "$artifact_info" in
             *"static-pie linked"* | *"statically linked"*)
               echo "musl Node addon must dynamically link libc"
@@ -145,14 +147,14 @@ jobs:
             echo "musl Node addon must not run compiler-rt outline atomics init during dlopen"
             exit 1
           fi
-
-      - name: Smoke Test Static musl CLI On GNU
-        run: |
-          bazel build ${{ matrix.cli-target }}
-          binary_path=$(bazel cquery --output=files ${{ matrix.cli-target }} | tail -n 1)
-          artifact_info=$(file "$binary_path")
-          echo "$artifact_info"
-          case "$artifact_info" in
+          case "$binary_info" in
+            *"${{ matrix.file_arch }}"*) ;;
+            *)
+              echo "Linux CLI has wrong architecture"
+              exit 1
+              ;;
+          esac
+          case "$binary_info" in
             *"static-pie linked"* | *"statically linked"*)
               ;;
             *)
@@ -160,8 +162,42 @@ jobs:
               exit 1
               ;;
           esac
-          "$binary_path" --version
-          "$binary_path" --help
+
+      - name: Upload Linux musl Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-musl-smoke-${{ matrix.arch }}
+          path: artifacts/${{ matrix.package }}
+          retention-days: 7
+
+  linux_musl_smoke:
+    name: Linux musl Smoke Tests (${{ matrix.arch }})
+    needs: linux_musl_cross_build
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: ubuntu-latest
+            package: cli-native-linux-x64-musl
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            package: cli-native-linux-arm64-musl
+
+    steps:
+      - name: Download Linux musl Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: linux-musl-smoke-${{ matrix.arch }}
+          path: artifacts/${{ matrix.package }}
+
+      - name: Smoke Test Static musl CLI On GNU
+        run: |
+          chmod +x artifacts/${{ matrix.package }}/formatjs_cli
+          artifacts/${{ matrix.package }}/formatjs_cli --version
+          artifacts/${{ matrix.package }}/formatjs_cli --help
 
       - name: Smoke Test Package In Alpine
         run: |
@@ -170,44 +206,145 @@ jobs:
             node:24-alpine \
             node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
 
-  windows_smoke:
-    name: Windows Smoke Tests
-    runs-on: windows-latest
+  release_cross_build:
+    name: Cross-build Release Artifacts
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - name: Enable Git long paths
-        run: git config --global core.longpaths true
-
-      - name: Setup MSVC
-        uses: ./.github/actions/setup-msvc
-
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-windows-smoke
+          disk-cache: ${{ github.workflow }}-release-cross-build
           repository-cache: true
 
+      - name: Build Release Artifacts
+        run: |
+          bazel_build_args=(--compilation_mode=opt)
+          bazel_query_args=(--compilation_mode=opt)
+
+          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
+            bazel_build_args+=(
+              --config=ci
+              --remote_download_outputs=all
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+            )
+            bazel_query_args+=(
+              --config=ci
+              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+            )
+          fi
+
+          bazel build "${bazel_build_args[@]}" \
+            //crates/formatjs_cli:release_binary_darwin_arm64 \
+            //crates/formatjs_cli:release_binary_windows_x64 \
+            //packages/cli-native-darwin-arm64:pkg \
+            //packages/cli-native-win32-x64:pkg
+
+          darwin_path=$(bazel cquery "${bazel_query_args[@]}" --output=files //crates/formatjs_cli:release_binary_darwin_arm64 | tail -n 1)
+          darwin_package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files //packages/cli-native-darwin-arm64:pkg | tail -n 1)
+          binary_path=$(bazel cquery "${bazel_query_args[@]}" --output=files //crates/formatjs_cli:release_binary_windows_x64 | tail -n 1)
+          package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files //packages/cli-native-win32-x64:pkg | tail -n 1)
+          mkdir -p artifacts/cli-native-darwin-arm64 artifacts/cli-native-win32-x64
+          cp "$darwin_path" artifacts/formatjs_cli-darwin-arm64
+          cp -R "$darwin_package_dir"/. artifacts/cli-native-darwin-arm64/
+          cp "$binary_path" artifacts/formatjs_cli-win32-x64.exe
+          cp -R "$package_dir"/. artifacts/cli-native-win32-x64/
+
+          darwin_info=$(file artifacts/formatjs_cli-darwin-arm64)
+          darwin_addon_info=$(file artifacts/cli-native-darwin-arm64/formatjs_cli_napi.node)
+          binary_info=$(file artifacts/formatjs_cli-win32-x64.exe)
+          addon_info=$(file artifacts/cli-native-win32-x64/formatjs_cli_napi.node)
+          echo "$darwin_info"
+          echo "$darwin_addon_info"
+          echo "$binary_info"
+          echo "$addon_info"
+          case "$darwin_info" in
+            *"Mach-O 64-bit"*"arm64"*) ;;
+            *)
+              echo "Darwin CLI must be an arm64 Mach-O executable"
+              exit 1
+              ;;
+          esac
+          case "$darwin_addon_info" in
+            *"Mach-O 64-bit"*"shared library"*"arm64"*) ;;
+            *)
+              echo "Darwin native addon must be an arm64 Mach-O shared library"
+              exit 1
+              ;;
+          esac
+          case "$binary_info" in
+            *"PE32+"*"console"*"x86-64"*) ;;
+            *)
+              echo "Windows CLI must be an x86-64 PE console executable"
+              exit 1
+              ;;
+          esac
+          case "$addon_info" in
+            *"PE32+"*"DLL"*"x86-64"*) ;;
+            *)
+              echo "Windows native addon must be an x86-64 PE DLL"
+              exit 1
+              ;;
+          esac
+
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+          retention-days: 7
+
+  macos_smoke:
+    name: macOS Smoke Tests
+    needs: release_cross_build
+    runs-on: macos-latest
+
+    steps:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '24'
 
+      - name: Download Darwin Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+
       - name: Rust CLI Smoke Test
         run: |
-          $ErrorActionPreference = 'Stop'
-          $PSNativeCommandUseErrorActionPreference = $true
-          $bazelWindowsFlags = @(
-            '--compilation_mode=opt',
-            '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
-            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
-          )
+          chmod +x artifacts/formatjs_cli-darwin-arm64
+          artifacts/formatjs_cli-darwin-arm64 --version
+          artifacts/formatjs_cli-darwin-arm64 --help
 
-          bazel build @bazelWindowsFlags //crates/formatjs_cli:release_binary_windows_x64
-          $binaryPath = (bazel cquery @bazelWindowsFlags --output=files //crates/formatjs_cli:release_binary_windows_x64 | Select-Object -Last 1)
+      - name: Native Binding Smoke Test
+        run: |
+          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-darwin-arm64
+
+  windows_smoke:
+    name: Windows Smoke Tests
+    needs: release_cross_build
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Download Windows MSVC Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+
+      - name: Rust CLI Smoke Test
+        run: |
+          $binaryPath = Resolve-Path .\artifacts\formatjs_cli-win32-x64.exe
           & $binaryPath --version
           & $binaryPath --help
 
@@ -215,14 +352,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $PSNativeCommandUseErrorActionPreference = $true
-          $bazelWindowsFlags = @(
-            '--compilation_mode=opt',
-            '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
-            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
-          )
-
-          bazel build @bazelWindowsFlags //packages/cli-native-win32-x64:pkg
-          $pkgPath = Resolve-Path (bazel cquery @bazelWindowsFlags --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
+          $pkgPath = Resolve-Path .\artifacts\cli-native-win32-x64
           $script = @'
           const fs = require('node:fs')
           const os = require('node:os')

@@ -38,7 +38,7 @@ jobs:
             //crates/formatjs_cli:release_binary_darwin_arm64
             //crates/formatjs_cli:release_binary_linux_x64
             //crates/formatjs_cli:release_binary_linux_arm64
-            //crates/formatjs_cli:release_binary_windows_x64_gnullvm
+            //crates/formatjs_cli:release_binary_windows_x64
           )
 
           bazel_build_args=(--compilation_mode=opt)
@@ -72,7 +72,17 @@ jobs:
           copy_artifact //crates/formatjs_cli:release_binary_darwin_arm64 formatjs_cli-darwin-arm64
           copy_artifact //crates/formatjs_cli:release_binary_linux_x64 formatjs_cli-linux-x64
           copy_artifact //crates/formatjs_cli:release_binary_linux_arm64 formatjs_cli-linux-arm64
-          copy_artifact //crates/formatjs_cli:release_binary_windows_x64_gnullvm formatjs_cli-win32-x64.exe
+          copy_artifact //crates/formatjs_cli:release_binary_windows_x64 formatjs_cli-win32-x64.exe
+
+          windows_info=$(file artifacts/formatjs_cli-win32-x64.exe)
+          echo "$windows_info"
+          case "$windows_info" in
+            *"PE32+"*"console"*"x86-64"*) ;;
+            *)
+              echo "Windows CLI must be an x86-64 PE console executable"
+              exit 1
+              ;;
+          esac
 
       - name: Upload macOS ARM64 Artifact
         uses: actions/upload-artifact@v7

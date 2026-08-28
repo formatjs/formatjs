@@ -121,7 +121,7 @@ bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_linux_x6
 bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_linux_arm64
 
 # Windows x64 release artifact:
-bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_windows_x64_gnullvm
+bazel build --compilation_mode=opt //crates/formatjs_cli:release_binary_windows_x64
 ```
 
 Use `bazel cquery --output=files <target>` to locate platform-specific release target outputs.

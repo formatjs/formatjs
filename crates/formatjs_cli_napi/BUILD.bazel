@@ -106,6 +106,19 @@ release_node_win32_x64(
     name = "release_node_win32_x64",
     srcs = [":formatjs_cli_napi"],
     outs = ["formatjs_cli_napi_win32_x64.node"],
+    cmd = """
+set -eu
+for f in $(locations :formatjs_cli_napi); do
+  case "$$f" in
+    *.dll)
+      cp "$$f" "$@"
+      exit 0
+      ;;
+  esac
+done
+echo 'Windows native library not found in $(locations :formatjs_cli_napi)' >&2
+exit 1
+""",
     cmd_ps = """
 $$ErrorActionPreference = 'Stop'
 foreach ($$f in '$(locations :formatjs_cli_napi)' -split ' ') {
@@ -116,10 +129,6 @@ foreach ($$f in '$(locations :formatjs_cli_napi)' -split ' ') {
 }
 throw 'Windows native library not found in $(locations :formatjs_cli_napi)'
 """,
-    target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:windows",
-    ],
     visibility = ["//visibility:public"],
 )
 

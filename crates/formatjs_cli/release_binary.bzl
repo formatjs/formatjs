@@ -11,10 +11,7 @@ _HOSTS = [
 
 def _llvm_toolchains(target):
     return [
-        Label("@llvm_toolchains//:bootstrap_%s_to_%s" % (host, target))
-        for host in _HOSTS
-    ] + [
-        Label("@llvm_toolchains//:%s_to_%s" % (host, target))
+        Label("@llvm//toolchain:%s_to_%s" % (host, target))
         for host in _HOSTS
     ]
 

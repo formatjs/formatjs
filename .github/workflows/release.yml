@@ -14,51 +14,119 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_windows_native:
-    name: Build Windows Native Package
-    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') }}
-    runs-on: windows-latest
+  build_darwin_arm64:
+    name: Cross-build Darwin arm64 Package
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-arm64') }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - name: Enable Git long paths
-        run: git config --global core.longpaths true
-
-      - name: Setup MSVC
-        uses: ./.github/actions/setup-msvc
-
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-windows-native
+          disk-cache: ${{ github.workflow }}-darwin-arm64
           repository-cache: true
 
+      - name: Build Package
+        run: |
+          bazel build \
+            --config=ci \
+            --compilation_mode=opt \
+            --remote_download_outputs=all \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            //packages/cli-native-darwin-arm64:pkg
+          package_dir=$(bazel cquery \
+            --config=ci \
+            --compilation_mode=opt \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            --output=files \
+            //packages/cli-native-darwin-arm64:pkg | tail -n 1)
+          mkdir -p artifacts/cli-native-darwin-arm64
+          cp -R "$package_dir"/. artifacts/cli-native-darwin-arm64/
+
+          artifact_info=$(file artifacts/cli-native-darwin-arm64/formatjs_cli_napi.node)
+          echo "$artifact_info"
+          case "$artifact_info" in
+            *"Mach-O 64-bit"*"shared library"*"arm64"*) ;;
+            *)
+              echo "Darwin native addon must be an arm64 Mach-O shared library"
+              exit 1
+              ;;
+          esac
+
+      - name: Upload Package
+        uses: actions/upload-artifact@v7
+        with:
+          name: cli-native-darwin-arm64
+          path: artifacts/cli-native-darwin-arm64
+          retention-days: 7
+
+  smoke_darwin_arm64:
+    name: Smoke-test Darwin arm64 Package
+    needs: build_darwin_arm64
+    runs-on: macos-latest
+
+    steps:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '24'
 
-      - name: Build Package
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $PSNativeCommandUseErrorActionPreference = $true
-          $bazelWindowsFlags = @(
-            '--compilation_mode=opt',
-            '--repo_env==BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN',
-            '--extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows'
-          )
-
-          bazel build @bazelWindowsFlags //packages/cli-native-win32-x64:pkg
-          $pkgPath = (bazel cquery @bazelWindowsFlags --output=files //packages/cli-native-win32-x64:pkg | Select-Object -Last 1)
-          New-Item -ItemType Directory -Force artifacts\cli-native-win32-x64
-          Copy-Item -Path (Join-Path $pkgPath '*') -Destination artifacts\cli-native-win32-x64 -Recurse -Force
+      - name: Download Package
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-darwin-arm64
+          path: artifacts/cli-native-darwin-arm64
 
       - name: Smoke Test Package
         run: |
-          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-win32-x64
+          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-darwin-arm64
+
+  build_windows_msvc:
+    name: Cross-build Windows MSVC Package
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-windows-msvc
+          repository-cache: true
+
+      - name: Build Package
+        run: |
+          bazel build \
+            --config=ci \
+            --compilation_mode=opt \
+            --remote_download_outputs=all \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            //packages/cli-native-win32-x64:pkg
+          package_dir=$(bazel cquery \
+            --config=ci \
+            --compilation_mode=opt \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            --output=files \
+            //packages/cli-native-win32-x64:pkg | tail -n 1)
+          mkdir -p artifacts/cli-native-win32-x64
+          cp -R "$package_dir"/. artifacts/cli-native-win32-x64/
+
+          artifact_info=$(file artifacts/cli-native-win32-x64/formatjs_cli_napi.node)
+          echo "$artifact_info"
+          case "$artifact_info" in
+            *"PE32+"*"DLL"*"x86-64"*) ;;
+            *)
+              echo "Windows native addon must be an x86-64 PE DLL"
+              exit 1
+              ;;
+          esac
 
       - name: Upload Package
         uses: actions/upload-artifact@v7
@@ -67,20 +135,41 @@ jobs:
           path: artifacts/cli-native-win32-x64
           retention-days: 7
 
-  build_linux_musl_native:
-    name: Build Linux musl Native Package (${{ matrix.arch }})
+  smoke_windows_msvc:
+    name: Smoke-test Windows MSVC Package
+    needs: build_windows_msvc
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Download Package
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-win32-x64
+          path: artifacts/cli-native-win32-x64
+
+      - name: Smoke Test Package
+        run: |
+          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-win32-x64
+
+  build_linux_musl:
+    name: Cross-build Linux musl Package (${{ matrix.arch }})
     if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         include:
           - arch: x64
-            runner: ubuntu-latest
+            file_arch: x86-64
             package: cli-native-linux-x64-musl
           - arch: arm64
-            runner: ubuntu-24.04-arm
+            file_arch: ARM aarch64
             package: cli-native-linux-arm64-musl
 
     steps:
@@ -96,13 +185,30 @@ jobs:
 
       - name: Build Package
         run: |
-          bazel build --compilation_mode=opt //packages/${{ matrix.package }}:pkg
-          package_dir=$(bazel cquery --compilation_mode=opt --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
+          bazel build \
+            --config=ci \
+            --compilation_mode=opt \
+            --remote_download_outputs=all \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            //packages/${{ matrix.package }}:pkg
+          package_dir=$(bazel cquery \
+            --config=ci \
+            --compilation_mode=opt \
+            --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
+            --output=files \
+            //packages/${{ matrix.package }}:pkg | tail -n 1)
           mkdir -p artifacts/${{ matrix.package }}
           cp -R "$package_dir"/. artifacts/${{ matrix.package }}/
 
           artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
           echo "$artifact_info"
+          case "$artifact_info" in
+            *"${{ matrix.file_arch }}"*) ;;
+            *)
+              echo "Linux native addon has wrong architecture"
+              exit 1
+              ;;
+          esac
           case "$artifact_info" in
             *"static-pie linked"* | *"statically linked"*)
               echo "musl Node addon must dynamically link libc"
@@ -114,13 +220,6 @@ jobs:
             exit 1
           fi
 
-      - name: Smoke Test Package
-        run: |
-          docker run --rm \
-            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
-            node:24-alpine \
-            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
-
       - name: Upload Package
         uses: actions/upload-artifact@v7
         with:
@@ -128,11 +227,46 @@ jobs:
           path: artifacts/${{ matrix.package }}
           retention-days: 7
 
+  smoke_linux_musl:
+    name: Smoke-test Linux musl Package (${{ matrix.arch }})
+    needs: build_linux_musl
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: ubuntu-latest
+            package: cli-native-linux-x64-musl
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            package: cli-native-linux-arm64-musl
+
+    steps:
+      - name: Download Package
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ matrix.package }}
+          path: artifacts/${{ matrix.package }}
+
+      - name: Smoke Test Package
+        run: |
+          docker run --rm \
+            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
+            node:24-alpine \
+            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
+
   release:
     needs:
-      - build_windows_native
-      - build_linux_musl_native
-    if: ${{ always() && inputs.npm_paths != '[]' && (needs.build_windows_native.result == 'success' || needs.build_windows_native.result == 'skipped') && (needs.build_linux_musl_native.result == 'success' || needs.build_linux_musl_native.result == 'skipped') }}
+      - build_darwin_arm64
+      - build_windows_msvc
+      - build_linux_musl
+      - smoke_darwin_arm64
+      - smoke_linux_musl
+      - smoke_windows_msvc
+    if: ${{ always() && inputs.npm_paths != '[]' && (needs.build_darwin_arm64.result == 'success' || needs.build_darwin_arm64.result == 'skipped') && (needs.smoke_darwin_arm64.result == 'success' || needs.smoke_darwin_arm64.result == 'skipped') && (needs.build_windows_msvc.result == 'success' || needs.build_windows_msvc.result == 'skipped') && (needs.smoke_windows_msvc.result == 'success' || needs.smoke_windows_msvc.result == 'skipped') && (needs.build_linux_musl.result == 'success' || needs.build_linux_musl.result == 'skipped') && (needs.smoke_linux_musl.result == 'success' || needs.smoke_linux_musl.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -178,6 +312,13 @@ jobs:
         with:
           name: cli-native-win32-x64
           path: release/packages/cli-native-win32-x64
+
+      - name: Download Darwin arm64 Native Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-arm64') }}
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-darwin-arm64
+          path: release/packages/cli-native-darwin-arm64
 
       - name: Download Linux x64 musl Native Package
         if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') }}
