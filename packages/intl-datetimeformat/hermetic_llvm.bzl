@@ -12,9 +12,8 @@ _EXEC_HOSTS = [
 
 def _llvm_exec_toolchains():
     return [
-        Label("@llvm_toolchains//:%s%s_to_%s" % (prefix, host, host))
+        Label("@llvm//toolchain:%s_to_%s" % (host, host))
         for host in _EXEC_HOSTS
-        for prefix in ["bootstrap_", ""]
     ]
 
 def with_hermetic_llvm(rule):

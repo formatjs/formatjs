@@ -87,92 +87,9 @@ jobs:
         working-directory: examples/${{ matrix.example }}
         run: bazel test //...
 
-  linux_musl_cross_build:
-    name: Cross-build Linux musl Artifacts (${{ matrix.arch }})
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - arch: x64
-            file_arch: x86-64
-            package: cli-native-linux-x64-musl
-            cli-target: //crates/formatjs_cli:release_binary_linux_x64
-          - arch: arm64
-            file_arch: ARM aarch64
-            package: cli-native-linux-arm64-musl
-            cli-target: //crates/formatjs_cli:release_binary_linux_arm64
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v7
-
-      - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
-        with:
-          bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}-linux-musl-cross-build
-          repository-cache: true
-
-      - name: Build Linux musl Artifacts
-        run: |
-          bazel build --compilation_mode=opt \
-            //packages/${{ matrix.package }}:pkg \
-            ${{ matrix.cli-target }}
-          package_dir=$(bazel cquery --compilation_mode=opt --output=files //packages/${{ matrix.package }}:pkg | tail -n 1)
-          binary_path=$(bazel cquery --compilation_mode=opt --output=files ${{ matrix.cli-target }} | tail -n 1)
-          mkdir -p artifacts/${{ matrix.package }}
-          cp -R "$package_dir"/. artifacts/${{ matrix.package }}/
-          cp "$binary_path" artifacts/${{ matrix.package }}/formatjs_cli
-
-          artifact_info=$(file artifacts/${{ matrix.package }}/formatjs_cli_napi.node)
-          binary_info=$(file artifacts/${{ matrix.package }}/formatjs_cli)
-          echo "$artifact_info"
-          echo "$binary_info"
-          case "$artifact_info" in
-            *"${{ matrix.file_arch }}"*) ;;
-            *)
-              echo "Linux native addon has wrong architecture"
-              exit 1
-              ;;
-          esac
-          case "$artifact_info" in
-            *"static-pie linked"* | *"statically linked"*)
-              echo "musl Node addon must dynamically link libc"
-              exit 1
-              ;;
-          esac
-          if nm -a artifacts/${{ matrix.package }}/formatjs_cli_napi.node | grep 'init_have_lse_atomics' >/dev/null; then
-            echo "musl Node addon must not run compiler-rt outline atomics init during dlopen"
-            exit 1
-          fi
-          case "$binary_info" in
-            *"${{ matrix.file_arch }}"*) ;;
-            *)
-              echo "Linux CLI has wrong architecture"
-              exit 1
-              ;;
-          esac
-          case "$binary_info" in
-            *"static-pie linked"* | *"statically linked"*)
-              ;;
-            *)
-              echo "linux release CLI should be a static musl binary"
-              exit 1
-              ;;
-          esac
-
-      - name: Upload Linux musl Artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: linux-musl-smoke-${{ matrix.arch }}
-          path: artifacts/${{ matrix.package }}
-          retention-days: 7
-
   linux_musl_smoke:
     name: Linux musl Smoke Tests (${{ matrix.arch }})
-    needs: linux_musl_cross_build
+    needs: release_cross_build
     runs-on: ${{ matrix.runner }}
 
     strategy:
@@ -190,8 +107,8 @@ jobs:
       - name: Download Linux musl Artifacts
         uses: actions/download-artifact@v8
         with:
-          name: linux-musl-smoke-${{ matrix.arch }}
-          path: artifacts/${{ matrix.package }}
+          name: release-cross-build-smoke
+          path: artifacts
 
       - name: Smoke Test Static musl CLI On GNU
         run: |
@@ -240,19 +157,32 @@ jobs:
 
           bazel build "${bazel_build_args[@]}" \
             //crates/formatjs_cli:release_binary_darwin_arm64 \
+            //crates/formatjs_cli:release_binary_linux_x64 \
+            //crates/formatjs_cli:release_binary_linux_arm64 \
             //crates/formatjs_cli:release_binary_windows_x64 \
             //packages/cli-native-darwin-arm64:pkg \
+            //packages/cli-native-linux-x64-musl:pkg \
+            //packages/cli-native-linux-arm64-musl:pkg \
             //packages/cli-native-win32-x64:pkg
 
           darwin_path=$(bazel cquery "${bazel_query_args[@]}" --output=files //crates/formatjs_cli:release_binary_darwin_arm64 | tail -n 1)
           darwin_package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files //packages/cli-native-darwin-arm64:pkg | tail -n 1)
-          binary_path=$(bazel cquery "${bazel_query_args[@]}" --output=files //crates/formatjs_cli:release_binary_windows_x64 | tail -n 1)
-          package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files //packages/cli-native-win32-x64:pkg | tail -n 1)
+          windows_path=$(bazel cquery "${bazel_query_args[@]}" --output=files //crates/formatjs_cli:release_binary_windows_x64 | tail -n 1)
+          windows_package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files //packages/cli-native-win32-x64:pkg | tail -n 1)
           mkdir -p artifacts/cli-native-darwin-arm64 artifacts/cli-native-win32-x64
           cp "$darwin_path" artifacts/formatjs_cli-darwin-arm64
           cp -R "$darwin_package_dir"/. artifacts/cli-native-darwin-arm64/
-          cp "$binary_path" artifacts/formatjs_cli-win32-x64.exe
-          cp -R "$package_dir"/. artifacts/cli-native-win32-x64/
+          cp "$windows_path" artifacts/formatjs_cli-win32-x64.exe
+          cp -R "$windows_package_dir"/. artifacts/cli-native-win32-x64/
+
+          for arch in x64 arm64; do
+            package="cli-native-linux-$arch-musl"
+            package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files "//packages/$package:pkg" | tail -n 1)
+            binary_path=$(bazel cquery "${bazel_query_args[@]}" --output=files "//crates/formatjs_cli:release_binary_linux_$arch" | tail -n 1)
+            mkdir -p "artifacts/$package"
+            cp -R "$package_dir"/. "artifacts/$package/"
+            cp "$binary_path" "artifacts/$package/formatjs_cli"
+          done
 
           darwin_info=$(file artifacts/formatjs_cli-darwin-arm64)
           darwin_addon_info=$(file artifacts/cli-native-darwin-arm64/formatjs_cli_napi.node)
@@ -290,6 +220,44 @@ jobs:
               exit 1
               ;;
           esac
+
+          for package in cli-native-linux-x64-musl cli-native-linux-arm64-musl; do
+            artifact_info=$(file "artifacts/$package/formatjs_cli_napi.node")
+            binary_info=$(file "artifacts/$package/formatjs_cli")
+            echo "$artifact_info"
+            echo "$binary_info"
+            case "$package:$artifact_info" in
+              cli-native-linux-x64-musl:*"x86-64"* | cli-native-linux-arm64-musl:*"ARM aarch64"*) ;;
+              *)
+                echo "Linux native addon has wrong architecture"
+                exit 1
+                ;;
+            esac
+            case "$artifact_info" in
+              *"static-pie linked"* | *"statically linked"*)
+                echo "musl Node addon must dynamically link libc"
+                exit 1
+                ;;
+            esac
+            if nm -a "artifacts/$package/formatjs_cli_napi.node" | grep 'init_have_lse_atomics' >/dev/null; then
+              echo "musl Node addon must not run compiler-rt outline atomics init during dlopen"
+              exit 1
+            fi
+            case "$package:$binary_info" in
+              cli-native-linux-x64-musl:*"x86-64"* | cli-native-linux-arm64-musl:*"ARM aarch64"*) ;;
+              *)
+                echo "Linux CLI has wrong architecture"
+                exit 1
+                ;;
+            esac
+            case "$binary_info" in
+              *"static-pie linked"* | *"statically linked"*) ;;
+              *)
+                echo "Linux release CLI should be a static musl binary"
+                exit 1
+                ;;
+            esac
+          done
 
       - name: Upload Release Artifacts
         uses: actions/upload-artifact@v7
