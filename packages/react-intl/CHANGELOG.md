@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 10.1.24 (2026-08-28)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* test: use neutral brands in skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7090
+* feat(formatjs_cli): extract messages from Python by @longlho in https://github.com/formatjs/formatjs/pull/7097
+* fix: tighten formatted value placeholder guidance by @longlho in https://github.com/formatjs/formatjs/pull/7099
+* fix: retain binary-only Cargo release candidates by @longlho in https://github.com/formatjs/formatjs/pull/7102
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/react-intl@10.1.23...react-intl@10.1.24
+
 ## 10.1.23 (2026-08-23)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
