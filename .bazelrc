@@ -8,6 +8,7 @@ common:linux --host_platform=//platforms:local_linux_gnu
 common:windows --host_platform=//platforms:local_windows_msvc
 common --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 common --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=1
+common --repo_env=BAZEL_MSVC_RUNTIME_VISUAL_STUDIO_EULA=1
 common --@llvm//config:experimental_stub_libgcc_s=True
 
 # Track source directory inputs used by rules_js/npm packages.

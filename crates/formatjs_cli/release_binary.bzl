@@ -11,10 +11,7 @@ _HOSTS = [
 
 def _llvm_toolchains(target):
     return [
-        Label("@llvm_toolchains//:bootstrap_%s_to_%s" % (host, target))
-        for host in _HOSTS
-    ] + [
-        Label("@llvm_toolchains//:%s_to_%s" % (host, target))
+        Label("@llvm//toolchain:%s_to_%s" % (host, target))
         for host in _HOSTS
     ]
 
@@ -92,9 +89,4 @@ release_binary_linux_arm64_gnu, _release_binary_linux_arm64_gnu_internal = _rele
 
 release_binary_windows_x64, _release_binary_windows_x64_internal = _release_binary(
     "//crates/formatjs_cli/platforms:windows_x86_64_msvc",
-)
-
-release_binary_windows_x64_gnullvm, _release_binary_windows_x64_gnullvm_internal = _release_binary(
-    "//crates/formatjs_cli/platforms:windows_x86_64_gnullvm",
-    "windows_x86_64",
 )

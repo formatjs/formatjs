@@ -19,7 +19,7 @@ _NODE_TOOLCHAIN_TYPE = "@rules_nodejs//nodejs:toolchain_type"
 
 def _hermetic_llvm_toolchain_contract_impl(ctx):
     cc_toolchain = find_cc_toolchain(ctx)
-    if cc_toolchain.compiler != "clang" or "llvm_toolchains" not in cc_toolchain.toolchain_id:
+    if cc_toolchain.compiler != "clang" or "llvm" not in cc_toolchain.toolchain_id:
         fail("timezone tools require hermetic LLVM, got compiler=%s toolchain_id=%s" % (
             cc_toolchain.compiler,
             cc_toolchain.toolchain_id,

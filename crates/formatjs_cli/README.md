@@ -156,7 +156,7 @@ bazel build --compilation_mode=opt \
   //crates/formatjs_cli:release_binary_darwin_arm64 \
   //crates/formatjs_cli:release_binary_linux_x64 \
   //crates/formatjs_cli:release_binary_linux_arm64 \
-  //crates/formatjs_cli:release_binary_windows_x64_gnullvm
+  //crates/formatjs_cli:release_binary_windows_x64
 ```
 
 Use `bazel cquery --output=files <target>` to locate each binary:
@@ -165,7 +165,7 @@ Use `bazel cquery --output=files <target>` to locate each binary:
 bazel cquery --output=files //crates/formatjs_cli:release_binary_darwin_arm64
 bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_x64
 bazel cquery --output=files //crates/formatjs_cli:release_binary_linux_arm64
-bazel cquery --output=files //crates/formatjs_cli:release_binary_windows_x64_gnullvm
+bazel cquery --output=files //crates/formatjs_cli:release_binary_windows_x64
 ```
 
 ### Local Cargo Build
