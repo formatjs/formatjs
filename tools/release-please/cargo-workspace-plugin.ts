@@ -18,23 +18,26 @@ interface WorkspacePluginOptions extends Record<string, unknown> {
   type?: unknown
 }
 
-export function filterPublishableCrates({
+export function filterReleaseCrates({
   allPackages,
   candidatesByPackage,
 }: CargoWorkspacePackages): CargoWorkspacePackages {
-  const publishablePackages = allPackages.filter(pkg => {
+  const candidateNames = new Set(Object.keys(candidatesByPackage))
+  const releasePackages = allPackages.filter(pkg => {
     const publish = pkg.manifest.package?.publish
+    // Explicit candidates may release binaries without publishing a crate.
     return (
-      publish !== false && !(Array.isArray(publish) && publish.length === 0)
+      candidateNames.has(pkg.name) ||
+      (publish !== false && !(Array.isArray(publish) && publish.length === 0))
     )
   })
-  const publishableNames = new Set(publishablePackages.map(pkg => pkg.name))
+  const releaseNames = new Set(releasePackages.map(pkg => pkg.name))
 
   return {
-    allPackages: publishablePackages,
+    allPackages: releasePackages,
     candidatesByPackage: Object.fromEntries(
       Object.entries(candidatesByPackage).filter(([name]) =>
-        publishableNames.has(name)
+        releaseNames.has(name)
       )
     ),
   }
@@ -61,7 +64,7 @@ export function resolveWorkspacePluginOptions(
 export function createCargoWorkspacePlugin(CargoWorkspace: any) {
   return class FormatjsCargoWorkspace extends CargoWorkspace {
     async buildAllPackages(candidates: unknown[]) {
-      return filterPublishableCrates(await super.buildAllPackages(candidates))
+      return filterReleaseCrates(await super.buildAllPackages(candidates))
     }
   }
 }

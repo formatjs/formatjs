@@ -12,8 +12,14 @@ const packages = {
       manifest: {package: {name: 'published'}},
     },
     {
-      name: 'private',
-      manifest: {package: {name: 'private', publish: false}},
+      name: 'private-release-component',
+      manifest: {package: {name: 'private-release-component', publish: false}},
+    },
+    {
+      name: 'private-workspace-dependency',
+      manifest: {
+        package: {name: 'private-workspace-dependency', publish: false},
+      },
     },
     {
       name: 'private-empty-registries',
@@ -26,9 +32,8 @@ const packages = {
   ],
   candidatesByPackage: {
     published: {path: 'crates/published'},
-    private: {path: 'crates/private'},
-    'private-empty-registries': {
-      path: 'crates/private-empty-registries',
+    'private-release-component': {
+      path: 'crates/private-release-component',
     },
     'private-registry': {path: 'crates/private-registry'},
   },
@@ -45,10 +50,11 @@ const result = await new FormatjsCargoWorkspace().buildAllPackages([])
 
 assert.deepEqual(
   result.allPackages.map(pkg => pkg.name),
-  ['published', 'private-registry']
+  ['published', 'private-release-component', 'private-registry']
 )
 assert.deepEqual(Object.keys(result.candidatesByPackage), [
   'published',
+  'private-release-component',
   'private-registry',
 ])
 
