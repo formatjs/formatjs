@@ -36,6 +36,23 @@
       }
     },
     {
+      "id": "empty-rich-text-element-slots",
+      "request": "Review this React Intl message: `<regularPrice></regularPrice> <discountedPrice></discountedPrice> per month`. Both tags receive functions that return `<FormattedNumber>` elements.",
+      "expect": {
+        "outcome": "arbitration-needed",
+        "labelsInclude": ["deterministic-error"],
+        "answerIncludes": ["element slots"]
+      }
+    },
+    {
+      "id": "rich-text-with-content",
+      "request": "Review this React Intl message: `<strong>Save now</strong> to get {discount, number, ::percent} off`. `strong` wraps chunks in `<strong>`, and `discount` is the raw number `0.2`.",
+      "expect": {
+        "outcome": "pass",
+        "labelsExclude": ["deterministic-error", "ambiguous", "blocked"]
+      }
+    },
+    {
       "id": "brand-placeholder",
       "request": "Review this message: `{brand} helps you find answers.` The runtime always passes the fixed product name `Northstar`; this is not tenant data.",
       "expect": {

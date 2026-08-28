@@ -112,6 +112,34 @@ Separate translation units gain precise descriptions. Required `other` branch ca
 
 Use ICU number or date skeletons when value belongs inside sentence.
 
+Rich-text tags must wrap translatable text. Flag empty tag pairs used as slots
+for elements. They add ICU syntax without giving translators text to style and
+can become unbalanced in translations. Use a plain argument with the element
+as its value instead.
+
+```tsx
+// Avoid: empty tags are positional element slots.
+<FormattedMessage
+  defaultMessage="<regularPrice></regularPrice> <discountedPrice></discountedPrice> per month"
+  values={{
+    regularPrice: () => <FormattedNumber value={regularPrice} />,
+    discountedPrice: () => <FormattedNumber value={discountedPrice} />,
+  }}
+/>
+
+// Prefer: plain arguments receive elements directly.
+<FormattedMessage
+  defaultMessage="{regularPrice} {discountedPrice} per month"
+  values={{
+    regularPrice: <FormattedNumber value={regularPrice} />,
+    discountedPrice: <FormattedNumber value={discountedPrice} />,
+  }}
+/>
+```
+
+Keep rich-text tags when they wrap translatable content, such as
+`<strong>Save now</strong>`.
+
 ```tsx
 intl.formatMessage(
   {
