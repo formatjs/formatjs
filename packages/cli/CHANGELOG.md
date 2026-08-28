@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.21 (2026-08-28)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* test: use neutral brands in skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7090
+* feat(formatjs_cli): extract messages from Python by @longlho in https://github.com/formatjs/formatjs/pull/7097
+* fix: tighten formatted value placeholder guidance by @longlho in https://github.com/formatjs/formatjs/pull/7099
+* fix: retain binary-only Cargo release candidates by @longlho in https://github.com/formatjs/formatjs/pull/7102
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.20...@formatjs/cli@6.16.21
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.15
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.15
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.13
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.15
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.13
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.16
+
 ## 6.16.20 (2026-08-23)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
