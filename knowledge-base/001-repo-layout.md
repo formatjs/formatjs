@@ -141,9 +141,10 @@ Publishing, then publishes only the package paths Release Please released. Rust
 crate publishing happens in
 `crates-release.yml` from crate GitHub releases using crates.io trusted
 publishing. `formatjs_cli` is binary-only and excluded from crates.io publishing.
-The custom Cargo workspace plugin excludes crates with `package.publish = false`
-before dependency release propagation. Crate release
-runs share a FIFO `queue: max` concurrency group so
+The custom Cargo workspace plugin excludes noncandidate crates with
+`package.publish = false` or `publish = []` before dependency release
+propagation. It retains explicit binary-only candidates such as `formatjs_cli`.
+Crate release runs share a FIFO `queue: max` concurrency group so
 dependency-ordered releases wait instead of replacing pending runs. The Rust
 CLI binary artifacts remain Bazel-owned in
 `rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE
