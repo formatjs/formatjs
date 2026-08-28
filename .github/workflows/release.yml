@@ -74,7 +74,7 @@ jobs:
             copy_package cli-native-darwin-arm64
             artifact_info=$(file artifacts/cli-native-darwin-arm64/formatjs_cli_napi.node)
             echo "$artifact_info"
-            [[ "$artifact_info" == *"Mach-O 64-bit"*"shared library"*"arm64"* ]] || {
+            [[ "$artifact_info" == *"Mach-O 64-bit"* && "$artifact_info" == *"shared library"* && "$artifact_info" == *"arm64"* ]] || {
               echo "Darwin native addon must be an arm64 Mach-O shared library"
               exit 1
             }

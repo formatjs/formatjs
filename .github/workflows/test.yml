@@ -199,13 +199,10 @@ jobs:
               exit 1
               ;;
           esac
-          case "$darwin_addon_info" in
-            *"Mach-O 64-bit"*"shared library"*"arm64"*) ;;
-            *)
-              echo "Darwin native addon must be an arm64 Mach-O shared library"
-              exit 1
-              ;;
-          esac
+          [[ "$darwin_addon_info" == *"Mach-O 64-bit"* && "$darwin_addon_info" == *"shared library"* && "$darwin_addon_info" == *"arm64"* ]] || {
+            echo "Darwin native addon must be an arm64 Mach-O shared library"
+            exit 1
+          }
           case "$binary_info" in
             *"PE32+"*"console"*"x86-64"*) ;;
             *)

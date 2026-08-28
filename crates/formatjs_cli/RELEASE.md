@@ -56,9 +56,9 @@ release. Bazel builds the standalone binaries and npm native packages.
 | macOS    | Apple Silicon | aarch64-apple-darwin       | ✅ LLVM cross target |
 | Linux    | ARM64         | aarch64-unknown-linux-musl | ✅ LLVM cross target |
 | Linux    | x86_64        | x86_64-unknown-linux-musl  | ✅ LLVM cross target |
-| Windows  | x86_64        | x86_64-pc-windows-gnullvm  | ✅ LLVM cross target |
+| Windows  | x86_64        | x86_64-pc-windows-msvc     | ✅ MSVC cross target |
 
-**Note**: The GitHub Actions workflow builds release artifacts through Bazel targets on Linux BuildBuddy RBE when credentials are available. Linux release binaries use musl targets for static artifacts; the standalone Windows CLI uses the LLVM gnullvm target and is smoke-tested on a Windows runner.
+**Note**: The GitHub Actions workflow builds all release artifacts together through Bazel on Linux x64. Linux release binaries use musl targets for static artifacts; Windows uses the MSVC ABI. macOS, Windows, and Linux arm64 runners only smoke-test downloaded artifacts.
 
 ## Cross-Compilation Setup
 

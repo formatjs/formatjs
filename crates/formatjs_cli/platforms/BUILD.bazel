@@ -44,11 +44,3 @@ platform(
     parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-msvc"],
     visibility = ["//visibility:public"],
 )
-
-# Windows x64 with the LLVM GNU ABI. Kept for explicit compatibility builds;
-# published Windows artifacts use MSVC.
-platform(
-    name = "windows_x86_64_gnullvm",
-    parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-gnullvm"],
-    visibility = ["//visibility:public"],
-)
