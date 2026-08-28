@@ -110,7 +110,59 @@ Separate translation units gain precise descriptions. Required `other` branch ca
 
 ## Format values natively
 
-Use ICU number or date skeletons when value belongs inside sentence.
+Prefer inline skeletons over preformatted placeholders. Sentence embeds number,
+percentage, or date expressible by skeleton: keep skeleton in message. Flag
+placeholders receiving `formatNumber` or `formatDate` output, or
+`<FormattedNumber>` or `<FormattedDate>` elements. Names such as
+`{priceFormatted}` or `{discountPercentageFormatted}` strongly signal this bug.
+
+```tsx
+// Avoid: message receives preformatted elements.
+<FormattedMessage
+  defaultMessage="Save {discountFormatted} on {priceFormatted} until {dateFormatted}"
+  values={{
+    discountFormatted: <FormattedNumber value={discount} style="percent" />,
+    priceFormatted: (
+      <FormattedNumber value={price} style="currency" currency="USD" />
+    ),
+    dateFormatted: <FormattedDate value={renewalDate} />,
+  }}
+/>
+
+// Prefer: message owns skeletons; values stay raw.
+<FormattedMessage
+  defaultMessage="Save {discount, number, ::percent} on {price, number, ::currency/USD} until {renewalDate, date, ::yyyyMMdd}"
+  values={{discount, price, renewalDate}}
+/>
+```
+
+Never use empty rich-text tag pair as element slot. Tags wrap translatable text.
+Empty tag is semantically argument. Flag any `defaultMessage` containing
+`<tag></tag>` with no children. Suggest plain `{placeholder}` receiving element
+as value.
+
+```tsx
+// Avoid: empty tags are element slots.
+<FormattedMessage
+  defaultMessage="<regularPrice></regularPrice> <discountedPrice></discountedPrice> per month"
+  values={{
+    regularPrice: () => <FormattedNumber value={regularPrice} />,
+    discountedPrice: () => <FormattedNumber value={discountedPrice} />,
+  }}
+/>
+
+// Prefer: plain arguments receive elements.
+<FormattedMessage
+  defaultMessage="{regularPrice} {discountedPrice} per month"
+  values={{
+    regularPrice: <FormattedNumber value={regularPrice} />,
+    discountedPrice: <FormattedNumber value={discountedPrice} />,
+  }}
+/>
+```
+
+Keep rich-text tags when they wrap translatable content, such as
+`<strong>Save now</strong>`.
 
 ```tsx
 intl.formatMessage(
