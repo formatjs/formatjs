@@ -116,6 +116,26 @@ placeholders receiving `formatNumber` or `formatDate` output, or
 `<FormattedNumber>` or `<FormattedDate>` elements. Names such as
 `{priceFormatted}` or `{discountPercentageFormatted}` strongly signal this bug.
 
+```tsx
+// Avoid: message receives preformatted elements.
+<FormattedMessage
+  defaultMessage="Save {discountFormatted} on {priceFormatted} until {dateFormatted}"
+  values={{
+    discountFormatted: <FormattedNumber value={discount} style="percent" />,
+    priceFormatted: (
+      <FormattedNumber value={price} style="currency" currency="USD" />
+    ),
+    dateFormatted: <FormattedDate value={renewalDate} />,
+  }}
+/>
+
+// Prefer: message owns skeletons; values stay raw.
+<FormattedMessage
+  defaultMessage="Save {discount, number, ::percent} on {price, number, ::currency/USD} until {renewalDate, date, ::yyyyMMdd}"
+  values={{discount, price, renewalDate}}
+/>
+```
+
 Never use empty rich-text tag pair as element slot. Tags wrap translatable text.
 Empty tag is semantically argument. Flag any `defaultMessage` containing
 `<tag></tag>` with no children. Suggest plain `{placeholder}` receiving element
