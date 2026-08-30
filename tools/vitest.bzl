@@ -1,7 +1,7 @@
 "Utility macro the vanilla aspect.dev rules_jest to supply common dependencies."
 
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file", "write_source_files")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_file", "write_source_files")
 load("@npm//:vitest/package_json.bzl", vitest_bin = "bin")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 

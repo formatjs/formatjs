@@ -1,6 +1,7 @@
-# gazelle:ignore
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+
+# gazelle:ignore
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@npm//:http-server/package_json.bzl", "bin")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")

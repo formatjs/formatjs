@@ -15,26 +15,25 @@ across the monorepo.
 
 ### Key Module Dependencies
 
-| Dependency              | Version / pin | Purpose                                           |
-| ----------------------- | ------------- | ------------------------------------------------- |
-| `aspect_rules_js`       | 3.0.3         | JS/Node.js rules, npm lock translation            |
-| `rules_nodejs`          | 6.7.4         | Hermetic Node.js toolchain                        |
-| `rules_cc`              | 0.2.20        | C/C++ rules and toolchain setup                   |
-| `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration     |
-| `aspect_bazel_lib`      | 2.22.5        | `copy_to_bin`, `copy_to_directory`, source writes |
-| `bazel_lib`             | 3.7.1         | Current Bazel helper rules for new tooling        |
-| `rules_multirun`        | 0.13.0        | Multi-target run orchestration                    |
-| `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                               |
-| `protobuf`              | 34.0.bcr.1    | Proto runtime for Rust/Go tooling                 |
-| `rules_proto`           | 7.1.0         | Proto rules                                       |
-| `rules_go`              | 0.60.0        | Go SDK/rules for Gazelle                          |
-| `gazelle`               | 0.50.0        | BUILD file generation driver                      |
-| `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                      |
-| `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                    |
-| `rules_python`          | 2.3.2         | Hermetic Python and wheel packaging               |
-| `llvm`                  | 0.8.11        | Hermetic LLVM C/C++ toolchains                    |
-| `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests        |
-| `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE platform and C/C++ definitions     |
+| Dependency              | Version / pin | Purpose                                        |
+| ----------------------- | ------------- | ---------------------------------------------- |
+| `aspect_rules_js`       | 3.0.3         | JS/Node.js rules, npm lock translation         |
+| `rules_nodejs`          | 6.7.4         | Hermetic Node.js toolchain                     |
+| `rules_cc`              | 0.2.20        | C/C++ rules and toolchain setup                |
+| `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration  |
+| `bazel_lib`             | 3.7.1         | Copy, directory, and source-write helper rules |
+| `rules_multirun`        | 0.13.0        | Multi-target run orchestration                 |
+| `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                            |
+| `protobuf`              | 34.0.bcr.1    | Proto runtime for Rust/Go tooling              |
+| `rules_proto`           | 7.1.0         | Proto rules                                    |
+| `rules_go`              | 0.60.0        | Go SDK/rules for Gazelle                       |
+| `gazelle`               | 0.50.0        | BUILD file generation driver                   |
+| `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                   |
+| `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                 |
+| `rules_python`          | 2.3.2         | Hermetic Python and wheel packaging            |
+| `llvm`                  | 0.8.11        | Hermetic LLVM C/C++ toolchains                 |
+| `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests     |
+| `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE platform and C/C++ definitions  |
 
 `gazelle_ts` and `rules_rs` are consumed from BCR.
 

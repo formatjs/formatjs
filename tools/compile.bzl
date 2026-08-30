@@ -1,9 +1,9 @@
 "Macro for TypeScript compilation + rolldown bundling + npm packaging."
 
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:index.bzl", "generate_ide_tsconfig_json", "no_internal_imports_test", "package_exports_test", "package_json_test")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:package_json.bzl", "formatjs_package_json", "package_json_sync")

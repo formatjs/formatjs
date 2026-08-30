@@ -94,7 +94,6 @@ use_repo(rules_ts_ext, "npm_typescript")
 
 ######### Bazel lib rules #########
 
-bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
 bazel_dep(name = "bazel_lib", version = "3.7.1")
 
 ######### Multirun rules #########

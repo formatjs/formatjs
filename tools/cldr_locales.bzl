@@ -1,4 +1,4 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("//tools:index.bzl", "ts_run_binary")
 
 def cldr_locale_list(name, cldr_package, file_glob, data, base_dir = "main", json_path = None, out_file = "locales.generated.bzl", variable = "ALL_LOCALES"):

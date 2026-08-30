@@ -1,4 +1,4 @@
-load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@npm//:tsd/package_json.bzl", tsd_bin = "bin")
 
 # tsd type-tests use a custom copy_to_directory pipeline; an auto-generated

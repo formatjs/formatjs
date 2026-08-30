@@ -1,4 +1,4 @@
-load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//packages/intl-segmenter:index.bzl", "unicode_file_name")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 

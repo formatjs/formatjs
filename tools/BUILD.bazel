@@ -1,6 +1,7 @@
-# gazelle:ignore
-load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@aspect_rules_js//js:defs.bzl", "js_test")
+
+# gazelle:ignore
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:package_json.bzl", "formatjs_package_json")
 load("//tools:vitest.bzl", "vitest")
