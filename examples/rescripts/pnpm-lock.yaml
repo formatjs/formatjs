@@ -23,8 +23,8 @@ importers:
         specifier: 13.0.1
         version: 13.0.1
       eslint-plugin-formatjs:
-        specifier: 6.5.0
-        version: 6.5.0(eslint@10.8.1(jiti@1.21.7)(supports-color@8.1.1))
+        specifier: 6.6.0
+        version: 6.6.0(eslint@10.8.1(jiti@1.21.7)(supports-color@8.1.1))
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -2840,8 +2840,8 @@ packages:
       '@babel/plugin-transform-react-jsx': ^7.14.9
       eslint: ^8.1.0
 
-  eslint-plugin-formatjs@6.5.0:
-    resolution: {integrity: sha512-0vO54Z55gcFkky7EzUk6LlDHz8d0KgF7CEz5kPl024wAGO9XPQJhbDfZb7qt2isKH+muTPo9qbmZaAt4/7XXpA==}
+  eslint-plugin-formatjs@6.6.0:
+    resolution: {integrity: sha512-IeVBg6r8QbUXnUrZ/ydJToPzi1GC0AV9fRLxJKy4MnfdNI0qfpskqghxWIzbXorkkYrxU98Eqnf97/WfGHoHpQ==}
     peerDependencies:
       eslint: 9 || 10
 
@@ -9613,7 +9613,7 @@ snapshots:
       lodash: 4.18.1
       string-natural-compare: 3.0.1
 
-  eslint-plugin-formatjs@6.5.0(eslint@10.8.1(jiti@1.21.7)(supports-color@8.1.1)):
+  eslint-plugin-formatjs@6.6.0(eslint@10.8.1(jiti@1.21.7)(supports-color@8.1.1)):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.17
       '@formatjs/ts-transformer': 4.4.19
