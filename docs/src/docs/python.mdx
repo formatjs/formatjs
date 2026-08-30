@@ -10,7 +10,7 @@ newer for the same platform.
 
 | Package                    | Rust backend                        | Use it for                                       |
 | -------------------------- | ----------------------------------- | ------------------------------------------------ |
-| `intl`                     | `formatjs_intl`                     | Catalog lookup, locale negotiation, and fallback |
+| `py_intl`                  | `formatjs_intl`                     | Catalog lookup, locale negotiation, and fallback |
 | `icu_messageformat`        | `formatjs_icu_messageformat`        | Formatting one ICU message                       |
 | `icu_messageformat_parser` | `formatjs_icu_messageformat_parser` | Parsing or printing ICU MessageFormat ASTs       |
 | `icu_skeleton_parser`      | `formatjs_icu_skeleton_parser`      | Parsing ICU number and date/time skeletons       |
@@ -18,7 +18,7 @@ newer for the same platform.
 Install only the layer needed by the application:
 
 ```sh
-python -m pip install intl
+python -m pip install py_intl
 ```
 
 ## Format messages
@@ -63,6 +63,6 @@ assert print_ast(ast) == "Hello, {name}!"
 options = parse_number_skeleton("currency/USD compact-short")
 ```
 
-Python APIs use `snake_case`. Distribution names and import package names are
-identical. Hermetic cross-compiled wheels target macOS and manylinux 2.28 on
-arm64 and x86_64.
+Python APIs use `snake_case`. The `py_intl` distribution imports as `intl`;
+other distribution and import package names match. Hermetic cross-compiled
+wheels target macOS and manylinux 2.28 on arm64 and x86_64.

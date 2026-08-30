@@ -529,14 +529,14 @@
     "python/intl": {
       "release-type": "python",
       "changelog-type": "default",
-      "component": "intl",
+      "component": "py_intl",
       "extra-files": [
         {
           "type": "generic",
           "path": "BUILD.bazel"
         }
       ],
-      "package-name": "intl"
+      "package-name": "py_intl"
     }
   },
   "plugins": [

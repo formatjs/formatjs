@@ -1,9 +1,9 @@
-# intl
+# py_intl
 
 Python bindings for FormatJS's high-level Rust internationalization runtime.
 
 ```sh
-python -m pip install intl
+python -m pip install py_intl
 ```
 
 ```python

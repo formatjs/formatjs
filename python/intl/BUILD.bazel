@@ -32,7 +32,7 @@ py_test(
 formatjs_python_wheel(
     name = "wheel",
     description_file = "README.md",
-    distribution = "intl",
+    distribution = "py_intl",
     extension = "//crates/intl_python:intl",
     library = ":intl",
     license = "BSD-3-Clause",

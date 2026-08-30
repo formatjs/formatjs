@@ -57,7 +57,7 @@ jobs:
               icu_skeleton_parser@*) package=icu_skeleton_parser ;;
               icu_messageformat_parser@*) package=icu_messageformat_parser ;;
               icu_messageformat@*) package=icu_messageformat ;;
-              intl@*) package=intl ;;
+              py_intl@*) package=intl ;;
               *)
                 echo "selected=false" >> "$GITHUB_OUTPUT"
                 exit 0
