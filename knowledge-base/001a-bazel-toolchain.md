@@ -22,6 +22,7 @@ across the monorepo.
 | `rules_cc`              | 0.2.20        | C/C++ rules and toolchain setup                   |
 | `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration     |
 | `aspect_bazel_lib`      | 2.22.5        | `copy_to_bin`, `copy_to_directory`, source writes |
+| `bazel_lib`             | 3.7.1         | Current Bazel helper rules for new tooling        |
 | `rules_multirun`        | 0.13.0        | Multi-target run orchestration                    |
 | `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                               |
 | `protobuf`              | 34.0.bcr.1    | Proto runtime for Rust/Go tooling                 |
