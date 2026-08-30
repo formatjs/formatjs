@@ -1,6 +1,6 @@
 """PyO3 extension rule for the repository's rules_rs toolchain."""
 
-load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 
 def pyo3_extension(name, srcs, deps, module_name, visibility = None):
