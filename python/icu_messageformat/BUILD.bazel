@@ -41,5 +41,5 @@ formatjs_python_wheel(
         "python/icu_messageformat",
     ],
     summary = "ICU MessageFormat runtime backed by Rust and ICU4X",
-    version = "0.1.0",  # x-release-please-version
+    version = "0.0.0",  # x-release-please-version
 )
