@@ -855,9 +855,9 @@ dependencies = [
 
 [[package]]
 name = "icu"
-version = "2.3.0"
+version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d5080b89807979ab05f8b6f3c6bbd580ece1512a6cf4cf800baa76937e488b3"
+checksum = "4867dd3a39b9d48632416cc7fc3dfa1913d89fd36cc02fe7bfc1dddc6fda3cde"
 dependencies = [
  "icu_calendar",
  "icu_casemap",
