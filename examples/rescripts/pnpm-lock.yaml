@@ -32,8 +32,8 @@ importers:
         specifier: 19.2.8
         version: 19.2.8(react@19.2.8)
       react-intl:
-        specifier: 10.1.22
-        version: 10.1.22(@types/react@19.2.18)(react@19.2.8)
+        specifier: 10.1.23
+        version: 10.1.23(@types/react@19.2.18)(react@19.2.8)
       react-scripts:
         specifier: 5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.8.1(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
@@ -5129,8 +5129,8 @@ packages:
   react-error-overlay@6.1.0:
     resolution: {integrity: sha512-SN/U6Ytxf1QGkw/9ve5Y+NxBbZM6Ht95tuXNMKs8EJyFa/Vy/+Co3stop3KBHARfn/giv+Lj1uUnTfOJ3moFEQ==}
 
-  react-intl@10.1.22:
-    resolution: {integrity: sha512-6PxlTKapYpv/Kl+yYEH06J3T5T7gUVx6STjrWJedeITOAkGEn6sBvb6r0qtjg2pK7PZsom7gXKUFKwNykLoLSQ==}
+  react-intl@10.1.23:
+    resolution: {integrity: sha512-ky6bkRTUAiymd2l+qOhv4eV46gOd4JuAry2qDgSA3mjk49BrmQMPRumtrLzpUYdvfg0+iq5iPjpBGHgM4XtMJg==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -12344,7 +12344,7 @@ snapshots:
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@10.1.22(@types/react@19.2.18)(react@19.2.8):
+  react-intl@10.1.23(@types/react@19.2.18)(react@19.2.8):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.17
       '@formatjs/intl': 4.1.19
