@@ -2,10 +2,11 @@
 
 ## Overview
 
-The build uses Bazel/bzlmod to keep TypeScript, generated data, Rust crates, and
-published npm packages under one dependency graph. The TypeScript pipeline keeps
-type checking, transpilation, bundling, testing, and package assembly as separate
-actions so they can cache and run independently across the monorepo.
+The build uses Bazel/bzlmod to keep TypeScript, generated data, Rust crates,
+native Python packages, and published npm packages under one dependency graph.
+The TypeScript pipeline keeps type checking, transpilation, bundling, testing,
+and package assembly as separate actions so they can cache and run independently
+across the monorepo.
 
 ## Bazel Version & Module System
 
@@ -21,6 +22,7 @@ actions so they can cache and run independently across the monorepo.
 | `rules_cc`              | 0.2.20        | C/C++ rules and toolchain setup                   |
 | `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration     |
 | `aspect_bazel_lib`      | 2.22.5        | `copy_to_bin`, `copy_to_directory`, source writes |
+| `bazel_lib`             | 3.7.1         | Current Bazel helper rules for new tooling        |
 | `rules_multirun`        | 0.13.0        | Multi-target run orchestration                    |
 | `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                               |
 | `protobuf`              | 34.0.bcr.1    | Proto runtime for Rust/Go tooling                 |
@@ -29,6 +31,7 @@ actions so they can cache and run independently across the monorepo.
 | `gazelle`               | 0.50.0        | BUILD file generation driver                      |
 | `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                      |
 | `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                    |
+| `rules_python`          | 2.3.2         | Hermetic Python and wheel packaging               |
 | `llvm`                  | 0.8.11        | Hermetic LLVM C/C++ toolchains                    |
 | `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests        |
 | `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE platform and C/C++ definitions     |
@@ -58,6 +61,7 @@ actions so they can cache and run independently across the monorepo.
   6.0.3 while `ts_project` compiles with native TypeScript 7.
 - Go SDK is pinned to **1.24.12**.
 - Rust is pinned to **1.95.0**, edition **2024**, through `rules_rs`.
+- Python is pinned to **3.12.7** through `rules_python`.
 
 ## Remote Cache & RBE
 
@@ -337,6 +341,29 @@ See `knowledge-base/011-generated-packages.md` for the generated package layout.
 - Outputs: `.js` and `.d.ts`.
 - Uses `onlyRemoveTypeImports: true` and declaration generation.
 - Rewrites relative `.ts` imports to `.js` for runtime ESM compatibility.
+
+### Rust Crates (`rules_rs`)
+
+`rules_rs` owns Rust compilation. `MODULE.bazel` registers the pinned Rust
+toolchain and translates root `Cargo.toml` plus `Cargo.lock` into the external
+`@crates` repository. Crate BUILD files use `rust_library`, `rust_binary`, and
+`rust_test`; Bazel targets remain the build and test entry points.
+
+The generated `@rules_rust` repository is a compatibility facade for rules that
+still load that label, including WASM tooling. Keep Cargo manifests, lock data,
+and Bazel dependency labels synchronized when dependencies change. See
+`knowledge-base/003-rust-crate-dependency-hierarchy.md` for dependency direction
+and crate responsibilities.
+
+### Native Python Packages (`tools/python`)
+
+`pyo3_extension()` builds a `cp312-abi3` extension with `rules_rs`, then places
+the shared library at its Python import path. `formatjs_python_wheel()` combines
+that extension with a Python facade and emits a host-platform wheel through
+`rules_python`.
+
+Wheel targets keep the `platform_specific_wheel` metadata tag but are not
+`manual`, so wildcard CI builds analyze and build them.
 
 ## Composite Subpackages
 

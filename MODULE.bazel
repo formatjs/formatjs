@@ -95,6 +95,7 @@ use_repo(rules_ts_ext, "npm_typescript")
 ######### Bazel lib rules #########
 
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
+bazel_dep(name = "bazel_lib", version = "3.7.1")
 
 ######### Multirun rules #########
 
@@ -143,6 +144,15 @@ single_version_override(
 )
 
 bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
+
+######### Python #########
+
+bazel_dep(name = "rules_python", version = "2.3.2", dev_dependency = True)
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
+python.toolchain(
+    python_version = "3.12.7",
+)
 
 register_toolchains("@llvm//toolchain:all")
 
