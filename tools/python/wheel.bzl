@@ -50,7 +50,7 @@ def formatjs_python_wheel(
         python_tag = "cp312",
         strip_path_prefixes = strip_path_prefixes,
         summary = summary,
-        tags = ["manual", "platform_specific_wheel"],
+        tags = ["platform_specific_wheel"],
         version = version,
         visibility = ["//visibility:public"],
     )
