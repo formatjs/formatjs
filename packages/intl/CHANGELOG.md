@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.1.20 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* feat(formatjs_intl): accept inline named values by @longlho in https://github.com/formatjs/formatjs/pull/7031
+* chore(deps): exclude Renovate from release notes by @longlho in https://github.com/formatjs/formatjs/pull/7030
+* feat(eslint-plugin-formatjs): detect glued placeholders by @longlho in https://github.com/formatjs/formatjs/pull/7036
+* docs: cover units and calendar names in i18n skill by @longlho in https://github.com/formatjs/formatjs/pull/7042
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7037
+* fix(@formatjs/cli-lib): use native extraction by @longlho in https://github.com/formatjs/formatjs/pull/7046
+* fix: recover partial npm releases by @longlho in https://github.com/formatjs/formatjs/pull/7053
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7047
+* docs: sync i18n best practices skill and guide by @longlho in https://github.com/formatjs/formatjs/pull/7062
+* feat: add localization review and translation skills by @longlho in https://github.com/formatjs/formatjs/pull/7065
+* docs: add top-level skills section by @longlho in https://github.com/formatjs/formatjs/pull/7066
+* refactor: replace Vike with static Vite docs by @longlho in https://github.com/formatjs/formatjs/pull/7068
+* docs: add agent skills overview by @longlho in https://github.com/formatjs/formatjs/pull/7069
+* docs: document native date range formatting by @longlho in https://github.com/formatjs/formatjs/pull/7070
+* test: add local Codex skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7071
+* feat(eslint-plugin-formatjs): allow conditional ICU element blocklists by @longlho in https://github.com/formatjs/formatjs/pull/7073
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7064
+* test: use neutral brands in skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7090
+* feat(formatjs_cli): extract messages from Python by @longlho in https://github.com/formatjs/formatjs/pull/7097
+* fix: tighten formatted value placeholder guidance by @longlho in https://github.com/formatjs/formatjs/pull/7099
+* fix: retain binary-only Cargo release candidates by @longlho in https://github.com/formatjs/formatjs/pull/7102
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7079
+* fix: enable Git long paths for Windows release by @longlho in https://github.com/formatjs/formatjs/pull/7105
+* build: cross-compile release artifacts on Linux by @longlho in https://github.com/formatjs/formatjs/pull/7106
+* build: add Python native wheel scaffolding by @longlho in https://github.com/formatjs/formatjs/pull/7108
+* build: migrate to bazel_lib by @longlho in https://github.com/formatjs/formatjs/pull/7109
+* feat: add Python bindings for Rust intl packages by @longlho in https://github.com/formatjs/formatjs/pull/7111
+* fix: configure Python Release Please strategy by @longlho in https://github.com/formatjs/formatjs/pull/7114
+* fix: bootstrap Python package versions by @longlho in https://github.com/formatjs/formatjs/pull/7117
+* build(deps): regenerate Bazel lockfile in Renovate updates by @longlho in https://github.com/formatjs/formatjs/pull/7119
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.19...@formatjs/intl@4.1.20
+
 ## 4.1.19 (2026-08-07)
 
 ## What's Changed

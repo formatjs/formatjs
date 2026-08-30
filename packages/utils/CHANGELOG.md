@@ -3,6 +3,87 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.2.12 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* docs: add Korean (ko-KR) to homepage live demo by @moduvoice in https://github.com/formatjs/formatjs/pull/6858
+* fix(deps): restore Jest 29 compatibility by @longlho in https://github.com/formatjs/formatjs/pull/6872
+* fix(icu_messageformat_parser): dedupe structural variables by @longlho in https://github.com/formatjs/formatjs/pull/6883
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6859
+* fix(@formatjs/intl-datetimeformat): apply Date method defaults by @longlho in https://github.com/formatjs/formatjs/pull/6893
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6894
+* fix(@formatjs/unplugin): parse module ids with queries by @longlho in https://github.com/formatjs/formatjs/pull/6896
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6898
+* fix: repair corrupted `patches/typescript@7.0.2.patch` by @andersk in https://github.com/formatjs/formatjs/pull/6929
+* fix(babel-plugin-formatjs): stop enabling JSX syntax implicitly by @andersk in https://github.com/formatjs/formatjs/pull/6930
+* test(@formatjs/intl-datetimeformat): cover ar-EG locale data by @longlho in https://github.com/formatjs/formatjs/pull/6933
+* feat: upgrade CLDR to 48.2.0 by @longlho in https://github.com/formatjs/formatjs/pull/6934
+* fix(@formatjs/intl): include context in missing id errors by @longlho in https://github.com/formatjs/formatjs/pull/6935
+* fix(deps): make native release deps host-independent by @longlho in https://github.com/formatjs/formatjs/pull/6936
+* fix(icu-messageformat-parser): preserve plural context in tags by @eoinest in https://github.com/formatjs/formatjs/pull/6908
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6932
+* fix(formatjs_cli): extract id-only messages by @longlho in https://github.com/formatjs/formatjs/pull/6962
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6955
+* docs: add internationalization best practices by @longlho in https://github.com/formatjs/formatjs/pull/6972
+* docs: add i18n best practices skill by @longlho in https://github.com/formatjs/formatjs/pull/6973
+* feat(formatjs_icu_messageformat): add Rust message formatter by @longlho in https://github.com/formatjs/formatjs/pull/6974
+* feat(formatjs_intl): add Rust intl runtime by @longlho in https://github.com/formatjs/formatjs/pull/6975
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6977
+* Documented how to use ember-intl by @ijlee2 in https://github.com/formatjs/formatjs/pull/6946
+* fix: support Rust 1.92 in new intl crates by @longlho in https://github.com/formatjs/formatjs/pull/6978
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6979
+* fix: queue crate release workflows by @longlho in https://github.com/formatjs/formatjs/pull/6980
+* docs: document Rust support by @longlho in https://github.com/formatjs/formatjs/pull/6981
+* feat(formatjs_intl): add message fallbacks by @longlho in https://github.com/formatjs/formatjs/pull/6982
+* feat(formatjs_intl): support precompiled catalogs by @longlho in https://github.com/formatjs/formatjs/pull/6985
+* chore: release main by @longlho in https://github.com/formatjs/formatjs/pull/6984
+* build: remove root npmrc by @longlho in https://github.com/formatjs/formatjs/pull/6988
+* fix: skip unpublished Rust crates by @longlho in https://github.com/formatjs/formatjs/pull/6992
+* fix: handle Cargo publish and merge options by @longlho in https://github.com/formatjs/formatjs/pull/6993
+* fix(formatjs_cli): fail on input resolution errors by @longlho in https://github.com/formatjs/formatjs/pull/7005
+* feat(formatjs_intl): add extractable format_message macro by @longlho in https://github.com/formatjs/formatjs/pull/7018
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/6997
+* feat(formatjs_intl): accept inline named values by @longlho in https://github.com/formatjs/formatjs/pull/7031
+* chore(deps): exclude Renovate from release notes by @longlho in https://github.com/formatjs/formatjs/pull/7030
+* feat(eslint-plugin-formatjs): detect glued placeholders by @longlho in https://github.com/formatjs/formatjs/pull/7036
+* docs: cover units and calendar names in i18n skill by @longlho in https://github.com/formatjs/formatjs/pull/7042
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7037
+* fix(@formatjs/cli-lib): use native extraction by @longlho in https://github.com/formatjs/formatjs/pull/7046
+* fix: recover partial npm releases by @longlho in https://github.com/formatjs/formatjs/pull/7053
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7047
+* docs: sync i18n best practices skill and guide by @longlho in https://github.com/formatjs/formatjs/pull/7062
+* feat: add localization review and translation skills by @longlho in https://github.com/formatjs/formatjs/pull/7065
+* docs: add top-level skills section by @longlho in https://github.com/formatjs/formatjs/pull/7066
+* refactor: replace Vike with static Vite docs by @longlho in https://github.com/formatjs/formatjs/pull/7068
+* docs: add agent skills overview by @longlho in https://github.com/formatjs/formatjs/pull/7069
+* docs: document native date range formatting by @longlho in https://github.com/formatjs/formatjs/pull/7070
+* test: add local Codex skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7071
+* feat(eslint-plugin-formatjs): allow conditional ICU element blocklists by @longlho in https://github.com/formatjs/formatjs/pull/7073
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7064
+* test: use neutral brands in skill evals by @longlho in https://github.com/formatjs/formatjs/pull/7090
+* feat(formatjs_cli): extract messages from Python by @longlho in https://github.com/formatjs/formatjs/pull/7097
+* fix: tighten formatted value placeholder guidance by @longlho in https://github.com/formatjs/formatjs/pull/7099
+* fix: retain binary-only Cargo release candidates by @longlho in https://github.com/formatjs/formatjs/pull/7102
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7079
+* fix: enable Git long paths for Windows release by @longlho in https://github.com/formatjs/formatjs/pull/7105
+* build: cross-compile release artifacts on Linux by @longlho in https://github.com/formatjs/formatjs/pull/7106
+* build: add Python native wheel scaffolding by @longlho in https://github.com/formatjs/formatjs/pull/7108
+* build: migrate to bazel_lib by @longlho in https://github.com/formatjs/formatjs/pull/7109
+* feat: add Python bindings for Rust intl packages by @longlho in https://github.com/formatjs/formatjs/pull/7111
+* fix: configure Python Release Please strategy by @longlho in https://github.com/formatjs/formatjs/pull/7114
+* fix: bootstrap Python package versions by @longlho in https://github.com/formatjs/formatjs/pull/7117
+* build(deps): regenerate Bazel lockfile in Renovate updates by @longlho in https://github.com/formatjs/formatjs/pull/7119
+
+## New Contributors
+* @moduvoice made their first contribution in https://github.com/formatjs/formatjs/pull/6858
+* @eoinest made their first contribution in https://github.com/formatjs/formatjs/pull/6908
+* @ijlee2 made their first contribution in https://github.com/formatjs/formatjs/pull/6946
+* @formatjsproject made their first contribution in https://github.com/formatjs/formatjs/pull/6997
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/utils@2.2.11...@formatjs/utils@2.2.12
+
 ## 2.2.11 (2026-07-11)
 
 ## What's Changed

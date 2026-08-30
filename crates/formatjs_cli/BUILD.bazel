@@ -9,7 +9,7 @@ load(
     "release_binary_windows_x64",
 )
 
-FORMATJS_CLI_VERSION = "1.5.0"  # x-release-please-version
+FORMATJS_CLI_VERSION = "1.5.1"  # x-release-please-version
 
 exports_files(
     [

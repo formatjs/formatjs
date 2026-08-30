@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.5.1 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* fix: enable Git long paths for Windows release by @longlho in https://github.com/formatjs/formatjs/pull/7105
+* build: cross-compile release artifacts on Linux by @longlho in https://github.com/formatjs/formatjs/pull/7106
+* build: add Python native wheel scaffolding by @longlho in https://github.com/formatjs/formatjs/pull/7108
+* build: migrate to bazel_lib by @longlho in https://github.com/formatjs/formatjs/pull/7109
+* feat: add Python bindings for Rust intl packages by @longlho in https://github.com/formatjs/formatjs/pull/7111
+* fix: configure Python Release Please strategy by @longlho in https://github.com/formatjs/formatjs/pull/7114
+* fix: bootstrap Python package versions by @longlho in https://github.com/formatjs/formatjs/pull/7117
+* build(deps): regenerate Bazel lockfile in Renovate updates by @longlho in https://github.com/formatjs/formatjs/pull/7119
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.5.0...formatjs_cli_v1.5.1
+
 ## 1.5.0 (2026-08-28)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
