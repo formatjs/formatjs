@@ -299,8 +299,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       codescythe:
-        specifier: ^0.10.0
-        version: 0.10.1
+        specifier: ^0.11.0
+        version: 0.11.1
       commander:
         specifier: ^14.0.0
         version: 14.0.3
@@ -4411,23 +4411,23 @@ packages:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
 
-  codescythe-darwin-arm64@0.10.1:
-    resolution: {integrity: sha512-6WUWnQnX7janq7MrPv4WsS+gDIHOqnvj0ULEZRef3mTCzywtnjEVYiRQvIvj444V7HOPlNSBy98mbjkF5f1UQw==}
+  codescythe-darwin-arm64@0.11.1:
+    resolution: {integrity: sha512-v05x8kjMjA+3DC5PdQ1oH+Q9iGlpUP/HG12FwqmIwtVq98/monFYLxdEZeuM+258iicSTvU85rwTleERleng4g==}
     cpu: [arm64]
     os: [darwin]
 
-  codescythe-linux-amd64@0.10.1:
-    resolution: {integrity: sha512-jhpay7Kaxxey8J6G00c0iOGmOvsY9vShv5/ljz/6cH3BPZEzntx3KrMoT4Hqt4BSf6hMN+jC7K4BJlTwmaJSnQ==}
+  codescythe-linux-amd64@0.11.1:
+    resolution: {integrity: sha512-C1kfj3al32fB/gE/lXquueQQI2xmnIjgwD+JlrlSbtmDwDDGRuNQmqQBPH0CqqsQL6U+AWTYPPocj2APTYUDAQ==}
     cpu: [x64]
     os: [linux]
 
-  codescythe-linux-arm64@0.10.1:
-    resolution: {integrity: sha512-gduC+7bGgLQsV5rr4qkhozXMFEBRbSPvRloH+s1Y9Dv2B93fOz2yyxpOsjfl/hp7qBmHw3tIwv6FZChUgkHF+Q==}
+  codescythe-linux-arm64@0.11.1:
+    resolution: {integrity: sha512-jWD+m2c4cToz/fca3z6LukSEf/GqVTK8z0W0YQ4T11nbvocSNPGqgso68yXmvZgG1m5d9CsSlJhjUojDq/6BnA==}
     cpu: [arm64]
     os: [linux]
 
-  codescythe@0.10.1:
-    resolution: {integrity: sha512-lRryc4gtU3XT5+PKr5O2ozTWFTFasz3SnEsc/lZd/hfHSQjny+nTVw+x04XKRiJBo/7yFmnYHni2rF/ohU3eYg==}
+  codescythe@0.11.1:
+    resolution: {integrity: sha512-eYiO9g08dyog0HjUXCdr5kW9C0hriCec/0gBrIipBcZzm9Qn7G2o9jdU+XqmA9Yyj2X4Gi0kz1lt7YceWftE0g==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
@@ -11041,20 +11041,20 @@ snapshots:
 
   co@4.6.0: {}
 
-  codescythe-darwin-arm64@0.10.1:
+  codescythe-darwin-arm64@0.11.1:
     optional: true
 
-  codescythe-linux-amd64@0.10.1:
+  codescythe-linux-amd64@0.11.1:
     optional: true
 
-  codescythe-linux-arm64@0.10.1:
+  codescythe-linux-arm64@0.11.1:
     optional: true
 
-  codescythe@0.10.1:
+  codescythe@0.11.1:
     optionalDependencies:
-      codescythe-darwin-arm64: 0.10.1
-      codescythe-linux-amd64: 0.10.1
-      codescythe-linux-arm64: 0.10.1
+      codescythe-darwin-arm64: 0.11.1
+      codescythe-linux-amd64: 0.11.1
+      codescythe-linux-arm64: 0.11.1
 
   collapse-white-space@2.1.0: {}
 
