@@ -358,7 +358,7 @@ and crate responsibilities.
 
 `pyo3_extension()` builds a `cp312-abi3` extension with `rules_rs`, then places
 the shared library at its Python import path. `formatjs_python_wheel()` combines
-that extension with a Python facade and emits a host-platform wheel through
+that extension with a Python facade and emits a target-platform wheel through
 `rules_python`.
 
 Wheel targets keep the `platform_specific_wheel` metadata tag but are not
@@ -368,10 +368,12 @@ The published Python packages mirror the four non-CLI Rust layers:
 `icu_skeleton_parser`, `icu_messageformat_parser`, `icu_messageformat`, and
 `intl`. Distribution names and import package names both use underscores.
 
-`.github/workflows/python-release.yml` builds `cp312-abi3` wheels for macOS
-arm64/x86_64 and manylinux 2.28 arm64/x86_64. Release Please owns independent
-Python versions through its Python strategy; generic extra-file updaters change
-the wheel versions in `BUILD.bazel`. Published releases use PyPI trusted publishing through a
+`.github/workflows/python-release.yml` cross-compiles `cp312-abi3` wheels from
+one Linux runner for macOS arm64/x86_64 and manylinux 2.28 arm64/x86_64. The
+Linux platforms select hermetic LLVM's glibc 2.28 ABI; the macOS platforms use
+its hermetic Apple SDK. Release Please owns independent Python versions through
+its Python strategy; generic extra-file updaters change the wheel versions in
+`BUILD.bazel`. Published releases use PyPI trusted publishing through a
 `pypi-<distribution>` GitHub environment. PyPI permits one pending project at a
 time; publish it once before registering the next unclaimed name. Manual
 dispatch defaults to a build-only dry run.
