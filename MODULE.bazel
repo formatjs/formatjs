@@ -199,6 +199,12 @@ crate.annotation(
     crate = "pyo3-ffi",
     repositories = ["crates"],
 )
+crate.annotation(
+    crate = "stacker",
+    patch_args = ["-p1"],
+    patches = ["//:patches/stacker-0.1.25-windows-x86_64.patch"],
+    version = "0.1.25",
+)
 use_repo(crate, "crates")
 
 rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")

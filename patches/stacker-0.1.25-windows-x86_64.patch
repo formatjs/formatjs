@@ -1,0 +1,43 @@
+diff --git a/build.rs b/build.rs
+index 4d8f0bf..0729a11 100644
+--- a/build.rs
++++ b/build.rs
+@@ -3,7 +3,7 @@ use std::env;
+ fn main() {
+     let target = env::var("TARGET").unwrap();
+     let mut cfg = cc::Build::new();
+-    if target.contains("windows") {
++    if target.contains("windows") && !target.contains("x86_64") {
+         cfg.define("WINDOWS", None);
+         cfg.file("src/arch/windows.c");
+         cfg.include("src/arch").compile("libstacker.a");
+diff --git a/src/backends/windows.rs b/src/backends/windows.rs
+index 3fdf9ef..4af55da 100644
+--- a/src/backends/windows.rs
++++ b/src/backends/windows.rs
+@@ -9,11 +9,23 @@ use windows_sys::Win32::System::Threading::{
+     SetThreadStackGuarantee, SwitchToFiber,
+ };
+ 
++#[cfg(not(target_arch = "x86_64"))]
+ // Make sure the libstacker.a (implemented in C) is linked.
+ // See https://github.com/rust-lang/rust/issues/65610
+ #[link(name = "stacker")]
+ extern "C" {
+     fn __stacker_get_current_fiber() -> *mut c_void;
+ }
+ 
++#[cfg(target_arch = "x86_64")]
++unsafe fn __stacker_get_current_fiber() -> *mut c_void {
++    let fiber;
++    core::arch::asm!(
++        "mov {}, gs:[0x20]",
++        out(reg) fiber,
++        options(nostack, preserves_flags, readonly)
++    );
++    fiber
++}
++
+ struct FiberInfo<F> {
+     callback: std::mem::MaybeUninit<F>,
+     panic: Option<Box<dyn std::any::Any + Send + 'static>>,
