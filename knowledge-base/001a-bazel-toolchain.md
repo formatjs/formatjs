@@ -376,6 +376,10 @@ the wheel versions in `BUILD.bazel`. Published releases use PyPI trusted publish
 time; publish it once before registering the next unclaimed name. Manual
 dispatch defaults to a build-only dry run.
 
+Unreleased Python packages use `0.0.0` in `.release-please-manifest.json` so
+the Python strategy creates their first release at `0.1.0` independently from
+the backing Rust crate versions.
+
 ## Composite Subpackages
 
 Internal packages can be split across Bazel packages:
