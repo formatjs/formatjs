@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.5.1...formatjs_cli_v1.6.0
+
 ## 1.5.1 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

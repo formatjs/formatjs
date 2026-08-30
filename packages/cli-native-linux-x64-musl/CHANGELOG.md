@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.15 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64-musl@1.0.14...@formatjs/cli-native-linux-x64-musl@1.0.15
+
 ## 1.0.14 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

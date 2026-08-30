@@ -150,7 +150,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     tsconfig_types = ["node"],
     type = "module",
-    version = "9.0.8",  # x-release-please-version
+    version = "10.0.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

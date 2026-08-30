@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.23 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.22...@formatjs/cli@6.16.23
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.17
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.17
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.15
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.17
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.15
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.18
+
 ## 6.16.22 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.1.21 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.1.20...@formatjs/intl@4.1.21
+
 ## 4.1.20 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 14.0.0 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@13.0.2...babel-plugin-formatjs@14.0.0
+
 ## 13.0.2 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

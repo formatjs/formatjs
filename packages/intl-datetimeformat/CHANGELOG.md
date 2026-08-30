@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 7.7.0 (2026-08-30)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.6.1...@formatjs/intl-datetimeformat@7.7.0
+
 ## 7.6.1 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
