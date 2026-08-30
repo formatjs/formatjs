@@ -144,6 +144,15 @@ single_version_override(
 
 bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
+######### Python #########
+
+bazel_dep(name = "rules_python", version = "2.2.0", dev_dependency = True)
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
+python.toolchain(
+    python_version = "3.12.7",
+)
+
 register_toolchains("@llvm//toolchain:all")
 
 toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "toolchains")

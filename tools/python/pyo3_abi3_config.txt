@@ -1,0 +1,4 @@
+implementation=CPython
+version=3.12
+abi3=true
+suppress_build_script_link_lines=true
