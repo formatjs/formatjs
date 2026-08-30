@@ -146,7 +146,7 @@ bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
 ######### Python #########
 
-bazel_dep(name = "rules_python", version = "2.2.0", dev_dependency = True)
+bazel_dep(name = "rules_python", version = "2.3.2", dev_dependency = True)
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
 python.toolchain(
