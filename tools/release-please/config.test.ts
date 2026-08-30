@@ -101,7 +101,14 @@ for (const path of pythonPackages) {
   assert(packageConfig, `${path} is missing from Release Please config`)
   assert.equal(packageConfig['release-type'], 'python')
   assert.equal(packageConfig['changelog-type'], 'default')
-  assert.equal(releasedVersions[path], '0.0.0')
+  const releasedVersion = releasedVersions[path]
+  assert(releasedVersion, `${path} is missing from Release Please manifest`)
+  const file = `${path}/BUILD.bazel`
+  const content = readFileSync(file, 'utf8')
+  assert(
+    content.includes(`version = "${releasedVersion}"`),
+    `${file} version does not match Release Please manifest`
+  )
 
   const strategy = new Python({
     changelogNotes: {buildNotes: async () => '* fixture'},
@@ -133,10 +140,9 @@ for (const path of pythonPackages) {
   )
   assert(candidate, `${path} did not produce a release candidate`)
 
-  const file = `${path}/BUILD.bazel`
   const update = candidate.updates.find(candidate => candidate.path === file)
   assert(update, `${path} did not update ${file}`)
-  const updated = update.updater.updateContent(readFileSync(file, 'utf8'))
+  const updated = update.updater.updateContent(content)
   assert(updated.includes(SENTINEL_VERSION), `${file} version did not update`)
   checkedPython++
 }
