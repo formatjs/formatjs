@@ -124,6 +124,8 @@ dependency maintenance does not hide user-facing changes.
 For npm packages, Release Please advances versions in both package-local Bazel
 `BUILD.bazel` `x-release-please-version` markers and checked-in `package.json`
 files; `package_json_sync` keeps the rest of each generated manifest in sync.
+Python packages use the Python release strategy while generic extra-file
+updaters advance their Bazel wheel versions in `BUILD.bazel`.
 The workflow also derives npm publish paths from the release manifest diff so
 a retry still publishes packages whose GitHub releases were created before a
 partial failure. npm publishing skips versions already present in the registry,

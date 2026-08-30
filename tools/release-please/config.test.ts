@@ -8,6 +8,7 @@ const require = createRequire(import.meta.url)
 // strategy graph before the deep imports below.
 const {VERSION} = require('release-please')
 const {Bazel} = require('release-please/build/src/strategies/bazel')
+const {Python} = require('release-please/build/src/strategies/python')
 const {Version} = require('release-please/build/src/version')
 const {parse} = require('yaml')
 
@@ -95,8 +96,10 @@ let checkedPython = 0
 for (const path of pythonPackages) {
   const packageConfig = config.packages[path]
   assert(packageConfig, `${path} is missing from Release Please config`)
+  assert.equal(packageConfig['release-type'], 'python')
+  assert.equal(packageConfig['changelog-type'], 'default')
 
-  const strategy = new Bazel({
+  const strategy = new Python({
     changelogNotes: {buildNotes: async () => '* fixture'},
     component: packageConfig.component,
     extraFiles: packageConfig['extra-files'],
@@ -106,13 +109,16 @@ for (const path of pythonPackages) {
         owner: 'formatjs',
         repo: 'formatjs',
       },
+      findFilesByFilenameAndRef: async () => [],
+      getFileContentsOnBranch: async () => {
+        throw new Error('not found')
+      },
     },
     logger,
     packageName: packageConfig['package-name'],
     path,
     skipChangelog: true,
     targetBranch: 'main',
-    versionFile: packageConfig['version-file'],
   })
   const candidate = await strategy.buildReleasePullRequest(
     [],

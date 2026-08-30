@@ -491,6 +491,8 @@
       ]
     },
     "python/icu_skeleton_parser": {
+      "release-type": "python",
+      "changelog-type": "default",
       "component": "icu_skeleton_parser",
       "extra-files": [
         {
@@ -498,10 +500,11 @@
           "path": "BUILD.bazel"
         }
       ],
-      "package-name": "icu_skeleton_parser",
-      "version-file": "BUILD.bazel"
+      "package-name": "icu_skeleton_parser"
     },
     "python/icu_messageformat_parser": {
+      "release-type": "python",
+      "changelog-type": "default",
       "component": "icu_messageformat_parser",
       "extra-files": [
         {
@@ -509,10 +512,11 @@
           "path": "BUILD.bazel"
         }
       ],
-      "package-name": "icu_messageformat_parser",
-      "version-file": "BUILD.bazel"
+      "package-name": "icu_messageformat_parser"
     },
     "python/icu_messageformat": {
+      "release-type": "python",
+      "changelog-type": "default",
       "component": "icu_messageformat",
       "extra-files": [
         {
@@ -520,10 +524,11 @@
           "path": "BUILD.bazel"
         }
       ],
-      "package-name": "icu_messageformat",
-      "version-file": "BUILD.bazel"
+      "package-name": "icu_messageformat"
     },
     "python/intl": {
+      "release-type": "python",
+      "changelog-type": "default",
       "component": "intl",
       "extra-files": [
         {
@@ -531,8 +536,7 @@
           "path": "BUILD.bazel"
         }
       ],
-      "package-name": "intl",
-      "version-file": "BUILD.bazel"
+      "package-name": "intl"
     }
   },
   "plugins": [
