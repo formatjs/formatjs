@@ -14,6 +14,9 @@ const {parse} = require('yaml')
 
 const SENTINEL_VERSION = '99.88.77'
 const config = JSON.parse(readFileSync('release-please-config.json', 'utf8'))
+const releasedVersions = JSON.parse(
+  readFileSync('.release-please-manifest.json', 'utf8')
+)
 const releaseNotesConfig = parse(readFileSync('.github/release.yml', 'utf8'))
 const logger = {
   debug() {},
@@ -98,6 +101,7 @@ for (const path of pythonPackages) {
   assert(packageConfig, `${path} is missing from Release Please config`)
   assert.equal(packageConfig['release-type'], 'python')
   assert.equal(packageConfig['changelog-type'], 'default')
+  assert.equal(releasedVersions[path], '0.0.0')
 
   const strategy = new Python({
     changelogNotes: {buildNotes: async () => '* fixture'},

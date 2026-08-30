@@ -42,8 +42,8 @@
   "crates/formatjs_intl": "0.4.0",
   "crates/formatjs_cli": "1.5.0",
   "crates/formatjs_cli_napi": "0.0.15",
-  "python/icu_skeleton_parser": "0.1.2",
-  "python/icu_messageformat_parser": "0.3.0",
-  "python/icu_messageformat": "0.1.2",
-  "python/intl": "0.4.0"
+  "python/icu_skeleton_parser": "0.0.0",
+  "python/icu_messageformat_parser": "0.0.0",
+  "python/icu_messageformat": "0.0.0",
+  "python/intl": "0.0.0"
 }
