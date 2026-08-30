@@ -10,6 +10,26 @@
     "browser": true
   },
   "rules": {
+    "no-irregular-whitespace": [
+      "error",
+      {
+        "skipComments": true,
+        "skipJSXText": true,
+        "skipRegExps": true,
+        "skipStrings": true,
+        "skipTemplates": true
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "react/purity": "off",
+    "react/refs": "off",
+    "react/set-state-in-effect": "off",
     "typescript/consistent-type-imports": [
       "error",
       {
