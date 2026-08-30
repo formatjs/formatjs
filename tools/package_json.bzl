@@ -1,6 +1,6 @@
 """Generate npm package.json files from Bazel dependency labels."""
 
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:package_json_policy.bzl", "PACKAGE_JSON_SORT_EXPORTS", "PACKAGE_JSON_SORT_FIRST")
 

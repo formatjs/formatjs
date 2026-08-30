@@ -1,4 +1,4 @@
-load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 

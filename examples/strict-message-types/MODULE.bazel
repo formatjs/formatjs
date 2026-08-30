@@ -3,7 +3,7 @@ module(
     version = "1.0.0",
 )
 
-bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
+bazel_dep(name = "bazel_lib", version = "3.7.1")
 bazel_dep(name = "aspect_rules_js", version = "3.1.1")
 bazel_dep(name = "rules_nodejs", version = "6.7.4")
 

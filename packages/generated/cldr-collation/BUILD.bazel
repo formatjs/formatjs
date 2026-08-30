@@ -1,5 +1,5 @@
-load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 
 copy_file(

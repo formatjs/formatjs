@@ -1,8 +1,8 @@
 "Custom macro"
 
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library", "js_run_binary", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("//tools:oxc_transpiler.bzl", "oxc_transpiler")
 load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "BASE_TSCONFIG", "ESNEXT_TSCONFIG", "packages_tsconfig")
 

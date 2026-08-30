@@ -53,7 +53,7 @@ generate_package_json(
 generate_ide_tsconfig_json()
 
 # load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-# load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+# load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # load("@npm//:http-server/package_json.bzl", "http_server")
 
