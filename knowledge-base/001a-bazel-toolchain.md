@@ -370,7 +370,8 @@ The published Python packages mirror the four non-CLI Rust layers:
 
 `.github/workflows/python-release.yml` builds `cp312-abi3` wheels for macOS
 arm64/x86_64 and manylinux 2.28 arm64/x86_64. Release Please owns independent
-Python versions. Published releases use PyPI trusted publishing through a
+Python versions through its Python strategy; generic extra-file updaters change
+the wheel versions in `BUILD.bazel`. Published releases use PyPI trusted publishing through a
 `pypi-<distribution>` GitHub environment. PyPI permits one pending project at a
 time; publish it once before registering the next unclaimed name. Manual
 dispatch defaults to a build-only dry run.
