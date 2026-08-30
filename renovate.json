@@ -9,7 +9,7 @@
     "packages/react-intl/example-sandboxes/**"
   ],
   "postUpgradeTasks": {
-    "commands": ["bazelisk mod deps"],
+    "commands": ["bazel mod deps --lockfile_mode=update"],
     "fileFilters": ["MODULE.bazel.lock"],
     "executionMode": "branch",
     "installTools": {
