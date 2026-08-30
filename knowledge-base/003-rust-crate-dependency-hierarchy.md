@@ -2,7 +2,7 @@
 
 ## Workspace Members
 
-The Rust workspace (`Cargo.toml`) contains 8 members:
+The Rust workspace (`Cargo.toml`) contains 12 members:
 
 ```
 crates/
@@ -13,6 +13,10 @@ crates/
   formatjs_intl/               # Descriptors, catalogs, locale negotiation, cache
   formatjs_cli/                # CLI binary (extract, compile, verify)
   formatjs_cli_napi/           # Node.js bindings for the Rust CLI
+  icu_skeleton_parser_python/  # PyO3 skeleton parser binding
+  icu_messageformat_parser_python/ # PyO3 message parser binding
+  icu_messageformat_python/    # PyO3 message runtime binding
+  intl_python/                 # PyO3 high-level runtime binding
 packages/
   icu-messageformat-parser/integration-tests/   # Cross-language integration tests
 ```
@@ -56,6 +60,11 @@ formatjs_intl (v0.1.0)
 ├── formatjs_icu_messageformat
 ├── formatjs_intl_macros
 └── icu_locale 2.1 (locale parsing and fallback)
+
+*_python
+├── matching Rust parser or runtime crate
+├── pyo3 0.29 (`cp312-abi3` extension boundary)
+└── pythonize 0.29 where Rust AST or option types cross as Python values
 ```
 
 `formatjs_icu_messageformat`, `formatjs_intl_macros`, and `formatjs_intl`
@@ -204,3 +213,19 @@ bazel build --compilation_mode=opt --platforms=//crates/formatjs_cli/platforms:l
 ```
 
 GitHub Actions (`rust-cli-release.yml`) builds and publishes binaries for both platforms on tag push.
+
+## Python Bindings
+
+`python/` contains typed Python facades and Bazel wheel targets for the four
+PyO3 binding crates. Python names mirror the Rust layers without the
+`formatjs_` prefix:
+
+| Python package             | Rust crate                          |
+| -------------------------- | ----------------------------------- |
+| `icu_skeleton_parser`      | `formatjs_icu_skeleton_parser`      |
+| `icu_messageformat_parser` | `formatjs_icu_messageformat_parser` |
+| `icu_messageformat`        | `formatjs_icu_messageformat`        |
+| `intl`                     | `formatjs_intl`                     |
+
+The CLI has no Python package. See [Python documentation](/docs/python) for
+public APIs.

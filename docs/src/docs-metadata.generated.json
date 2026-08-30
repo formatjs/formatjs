@@ -151,6 +151,10 @@
     "title": "Intl Supportedvaluesof",
     "description": "A spec-compliant polyfill/ponyfill for Intl.supportedValuesOf."
   },
+  "python": {
+    "title": "Python",
+    "description": "---"
+  },
   "react-intl": {
     "title": "React Intl",
     "description": "Welcome to React Intl's docs! This is the place to find React Intl's docs. Feel free to open a pull request and contribute to the docs to make them better."

@@ -1,0 +1,13 @@
+load("//tools/python:pyo3_extension.bzl", "pyo3_extension")
+
+pyo3_extension(
+    name = "intl",
+    srcs = ["lib.rs"],
+    module_name = "intl._native",
+    deps = [
+        "//crates/formatjs_intl",
+        "//crates/icu_messageformat",
+        "@crates//:icu_locale",
+        "@crates//:pyo3",
+    ],
+)

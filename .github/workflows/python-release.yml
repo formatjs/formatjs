@@ -1,0 +1,207 @@
+name: Python Package Release
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Python package to build'
+        type: choice
+        required: true
+        options:
+          - icu_skeleton_parser
+          - icu_messageformat_parser
+          - icu_messageformat
+          - intl
+      dry_run:
+        description: 'Build wheels without publishing to PyPI'
+        type: boolean
+        required: false
+        default: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.release.tag_name || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  select:
+    name: Select Package
+    runs-on: ubuntu-latest
+    outputs:
+      package: ${{ steps.package.outputs.package }}
+      publish: ${{ steps.package.outputs.publish }}
+      selected: ${{ steps.package.outputs.selected }}
+
+    steps:
+      - name: Select Package
+        id: package
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          INPUT_PACKAGE: ${{ inputs.package }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            package="$INPUT_PACKAGE"
+            publish=$([[ "$INPUT_DRY_RUN" == "true" ]] && echo false || echo true)
+          else
+            publish=true
+            case "$RELEASE_TAG" in
+              icu_skeleton_parser@*) package=icu_skeleton_parser ;;
+              icu_messageformat_parser@*) package=icu_messageformat_parser ;;
+              icu_messageformat@*) package=icu_messageformat ;;
+              intl@*) package=intl ;;
+              *)
+                echo "selected=false" >> "$GITHUB_OUTPUT"
+                exit 0
+                ;;
+            esac
+          fi
+
+          {
+            echo "package=$package"
+            echo "publish=$publish"
+            echo "selected=true"
+          } >> "$GITHUB_OUTPUT"
+
+  build_linux:
+    name: Build Linux ${{ matrix.arch }} Wheel
+    needs: select
+    if: ${{ needs.select.outputs.selected == 'true' }}
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+            container: quay.io/pypa/manylinux_2_28_x86_64:latest
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+            container: quay.io/pypa/manylinux_2_28_aarch64:latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-linux-${{ matrix.arch }}
+          repository-cache: true
+
+      - name: Test and Build Wheel
+        env:
+          PACKAGE: ${{ needs.select.outputs.package }}
+        run: |
+          set -euo pipefail
+          target="//python/$PACKAGE:wheel"
+          bazel test "//python/$PACKAGE:python_test" --test_output=errors
+          bazel build "$target"
+          wheel=$(bazel cquery --output=files "$target" | tail -n 1)
+          mkdir -p dist
+          cp "$wheel" dist/
+          /opt/python/cp312-cp312/bin/python -m pip install --no-index "$wheel"
+          /opt/python/cp312-cp312/bin/python -c 'import importlib, os; importlib.import_module(os.environ["PACKAGE"])'
+
+      - name: Upload Wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: python-wheel-linux-${{ matrix.arch }}
+          path: dist/*.whl
+          if-no-files-found: error
+          retention-days: 7
+
+  build_macos:
+    name: Build macOS ${{ matrix.arch }} Wheel
+    needs: select
+    if: ${{ needs.select.outputs.selected == 'true' }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-14
+          - arch: x86_64
+            runner: macos-15-intel
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}-macos-${{ matrix.arch }}
+          repository-cache: true
+
+      - name: Test and Build Wheel
+        env:
+          MACOSX_DEPLOYMENT_TARGET: '11.0'
+          PACKAGE: ${{ needs.select.outputs.package }}
+        run: |
+          set -euo pipefail
+          target="//python/$PACKAGE:wheel"
+          bazel test --action_env=MACOSX_DEPLOYMENT_TARGET "//python/$PACKAGE:python_test" --test_output=errors
+          bazel build --action_env=MACOSX_DEPLOYMENT_TARGET "$target"
+          wheel=$(bazel cquery --action_env=MACOSX_DEPLOYMENT_TARGET --output=files "$target" | tail -n 1)
+          mkdir -p dist
+          cp "$wheel" dist/
+          python -m pip install --no-index "$wheel"
+          python -c 'import importlib, os; importlib.import_module(os.environ["PACKAGE"])'
+
+      - name: Upload Wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: python-wheel-macos-${{ matrix.arch }}
+          path: dist/*.whl
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish to PyPI
+    needs:
+      - select
+      - build_linux
+      - build_macos
+    if: ${{ needs.select.outputs.selected == 'true' && needs.select.outputs.publish == 'true' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi-${{ needs.select.outputs.package }}
+      url: https://pypi.org/p/${{ needs.select.outputs.package }}
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download Wheels
+        uses: actions/download-artifact@v8
+        with:
+          pattern: python-wheel-*
+          path: dist
+          merge-multiple: true
+
+      - name: Publish Wheels
+        uses: pypa/gh-action-pypi-publish@release/v1

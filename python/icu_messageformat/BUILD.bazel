@@ -1,0 +1,45 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("//tools/python:wheel.bzl", "formatjs_python_wheel")
+
+py_library(
+    name = "icu_messageformat",
+    srcs = ["icu_messageformat/__init__.py"],
+    data = [
+        "icu_messageformat/__init__.pyi",
+        "icu_messageformat/py.typed",
+    ],
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)
+
+copy_file(
+    name = "native_for_test",
+    src = "//crates/icu_messageformat_python:icu_messageformat",
+    out = "icu_messageformat/_native.abi3.so",
+    allow_symlink = True,
+)
+
+py_test(
+    name = "python_test",
+    size = "small",
+    srcs = ["tests/test_binding.py"],
+    data = [":native_for_test"],
+    main = "tests/test_binding.py",
+    deps = [":icu_messageformat"],
+)
+
+formatjs_python_wheel(
+    name = "wheel",
+    description_file = "README.md",
+    distribution = "icu_messageformat",
+    extension = "//crates/icu_messageformat_python:icu_messageformat",
+    library = ":icu_messageformat",
+    license = "BSD-3-Clause",
+    strip_path_prefixes = [
+        "crates/icu_messageformat_python",
+        "python/icu_messageformat",
+    ],
+    summary = "ICU MessageFormat runtime backed by Rust and ICU4X",
+    version = "0.1.2",  # x-release-please-version
+)

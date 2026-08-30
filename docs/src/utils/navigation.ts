@@ -111,8 +111,13 @@ export function getNavigationTree(): NavSection[] {
       ],
     },
     {
-      title: 'Tooling',
+      title: 'Python',
       order: 6,
+      items: [{title: 'Overview', path: 'python'}],
+    },
+    {
+      title: 'Tooling',
+      order: 7,
       items: [
         {title: 'CLI', path: 'tooling/cli'},
         {title: 'Bazel', path: 'tooling/bazel'},
@@ -125,7 +130,7 @@ export function getNavigationTree(): NavSection[] {
     },
     {
       title: 'Guides',
-      order: 7,
+      order: 8,
       items: [
         {title: 'Best Practices', path: 'guides/best-practices'},
         {
@@ -153,7 +158,7 @@ export function getNavigationTree(): NavSection[] {
     },
     {
       title: 'Skills',
-      order: 8,
+      order: 9,
       items: [
         {title: 'Overview', path: 'skills'},
         {title: 'Localization Review', path: 'skills/localization-review'},
@@ -162,7 +167,7 @@ export function getNavigationTree(): NavSection[] {
     },
     {
       title: 'Other APIs',
-      order: 9,
+      order: 10,
       items: [
         {title: '@formatjs/intl', path: 'intl'},
         {title: '@formatjs/svelte-intl', path: 'svelte-intl'},

@@ -1,0 +1,45 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("//tools/python:wheel.bzl", "formatjs_python_wheel")
+
+py_library(
+    name = "intl",
+    srcs = ["intl/__init__.py"],
+    data = [
+        "intl/__init__.pyi",
+        "intl/py.typed",
+    ],
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)
+
+copy_file(
+    name = "native_for_test",
+    src = "//crates/intl_python:intl",
+    out = "intl/_native.abi3.so",
+    allow_symlink = True,
+)
+
+py_test(
+    name = "python_test",
+    size = "small",
+    srcs = ["tests/test_binding.py"],
+    data = [":native_for_test"],
+    main = "tests/test_binding.py",
+    deps = [":intl"],
+)
+
+formatjs_python_wheel(
+    name = "wheel",
+    description_file = "README.md",
+    distribution = "intl",
+    extension = "//crates/intl_python:intl",
+    library = ":intl",
+    license = "BSD-3-Clause",
+    strip_path_prefixes = [
+        "crates/intl_python",
+        "python/intl",
+    ],
+    summary = "High-level internationalization runtime backed by FormatJS Rust",
+    version = "0.4.0",  # x-release-please-version
+)

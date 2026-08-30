@@ -3,8 +3,8 @@
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 
 _PLATFORMS = {
-    "//tools/python:linux_x86_64": "manylinux2014_x86_64",
-    "//tools/python:linux_arm64": "manylinux2014_aarch64",
+    "//tools/python:linux_x86_64": "manylinux_2_28_x86_64",
+    "//tools/python:linux_arm64": "manylinux_2_28_aarch64",
     "//tools/python:macos_x86_64": "macosx_11_0_x86_64",
     "//tools/python:macos_arm64": "macosx_11_0_arm64",
 }
