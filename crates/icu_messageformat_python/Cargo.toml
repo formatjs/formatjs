@@ -1,0 +1,14 @@
+[package]
+name = "icu_messageformat_python"
+version = "0.1.2"
+edition = "2024"
+publish = false
+
+[lib]
+path = "lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+formatjs_icu_messageformat = { path = "../icu_messageformat" }
+pyo3.workspace = true
+pythonize.workspace = true

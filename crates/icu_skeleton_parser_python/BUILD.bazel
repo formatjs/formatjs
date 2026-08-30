@@ -1,0 +1,12 @@
+load("//tools/python:pyo3_extension.bzl", "pyo3_extension")
+
+pyo3_extension(
+    name = "icu_skeleton_parser",
+    srcs = ["lib.rs"],
+    module_name = "icu_skeleton_parser._native",
+    deps = [
+        "//crates/icu_skeleton_parser",
+        "@crates//:pyo3",
+        "@crates//:pythonize",
+    ],
+)

@@ -364,6 +364,17 @@ that extension with a Python facade and emits a host-platform wheel through
 Wheel targets keep the `platform_specific_wheel` metadata tag but are not
 `manual`, so wildcard CI builds analyze and build them.
 
+The published Python packages mirror the four non-CLI Rust layers:
+`icu_skeleton_parser`, `icu_messageformat_parser`, `icu_messageformat`, and
+`intl`. Distribution names and import package names both use underscores.
+
+`.github/workflows/python-release.yml` builds `cp312-abi3` wheels for macOS
+arm64/x86_64 and manylinux 2.28 arm64/x86_64. Release Please owns independent
+Python versions. Published releases use PyPI trusted publishing through a
+`pypi-<distribution>` GitHub environment. PyPI permits one pending project at a
+time; publish it once before registering the next unclaimed name. Manual
+dispatch defaults to a build-only dry run.
+
 ## Composite Subpackages
 
 Internal packages can be split across Bazel packages:

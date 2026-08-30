@@ -83,3 +83,53 @@ for (const [path, packageConfig] of Object.entries(config.packages)) {
 
 assert(checked > 0, 'no npm release packages were checked')
 console.log(`Verified ${checked} Release Please package.json updates`)
+
+const pythonPackages = [
+  'python/icu_skeleton_parser',
+  'python/icu_messageformat_parser',
+  'python/icu_messageformat',
+  'python/intl',
+]
+let checkedPython = 0
+
+for (const path of pythonPackages) {
+  const packageConfig = config.packages[path]
+  assert(packageConfig, `${path} is missing from Release Please config`)
+
+  const strategy = new Bazel({
+    changelogNotes: {buildNotes: async () => '* fixture'},
+    component: packageConfig.component,
+    extraFiles: packageConfig['extra-files'],
+    github: {
+      repository: {
+        defaultBranch: 'main',
+        owner: 'formatjs',
+        repo: 'formatjs',
+      },
+    },
+    logger,
+    packageName: packageConfig['package-name'],
+    path,
+    skipChangelog: true,
+    targetBranch: 'main',
+    versionFile: packageConfig['version-file'],
+  })
+  const candidate = await strategy.buildReleasePullRequest(
+    [],
+    undefined,
+    false,
+    [],
+    {newVersion: Version.parse(SENTINEL_VERSION)}
+  )
+  assert(candidate, `${path} did not produce a release candidate`)
+
+  const file = `${path}/BUILD.bazel`
+  const update = candidate.updates.find(candidate => candidate.path === file)
+  assert(update, `${path} did not update ${file}`)
+  const updated = update.updater.updateContent(readFileSync(file, 'utf8'))
+  assert(updated.includes(SENTINEL_VERSION), `${file} version did not update`)
+  checkedPython++
+}
+
+assert.equal(checkedPython, 4)
+console.log(`Verified ${checkedPython} Release Please Python package updates`)

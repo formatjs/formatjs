@@ -489,6 +489,50 @@
           "path": "BUILD.bazel"
         }
       ]
+    },
+    "python/icu_skeleton_parser": {
+      "component": "icu_skeleton_parser",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "icu_skeleton_parser",
+      "version-file": "BUILD.bazel"
+    },
+    "python/icu_messageformat_parser": {
+      "component": "icu_messageformat_parser",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "icu_messageformat_parser",
+      "version-file": "BUILD.bazel"
+    },
+    "python/icu_messageformat": {
+      "component": "icu_messageformat",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "icu_messageformat",
+      "version-file": "BUILD.bazel"
+    },
+    "python/intl": {
+      "component": "intl",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "intl",
+      "version-file": "BUILD.bazel"
     }
   },
   "plugins": [

@@ -1,0 +1,67 @@
+---
+title: Python
+---
+
+FormatJS ships Python 3.12+ bindings for its Rust parsers and runtimes. Wheels
+use Python's stable ABI, so one `cp312-abi3` wheel works on CPython 3.12 and
+newer for the same platform.
+
+## Packages
+
+| Package                    | Rust backend                        | Use it for                                       |
+| -------------------------- | ----------------------------------- | ------------------------------------------------ |
+| `intl`                     | `formatjs_intl`                     | Catalog lookup, locale negotiation, and fallback |
+| `icu_messageformat`        | `formatjs_icu_messageformat`        | Formatting one ICU message                       |
+| `icu_messageformat_parser` | `formatjs_icu_messageformat_parser` | Parsing or printing ICU MessageFormat ASTs       |
+| `icu_skeleton_parser`      | `formatjs_icu_skeleton_parser`      | Parsing ICU number and date/time skeletons       |
+
+Install only the layer needed by the application:
+
+```sh
+python -m pip install intl
+```
+
+## Format messages
+
+```python
+from intl import Intl
+
+intl = Intl(
+    ["fr-CA", "fr"],
+    "en",
+    {
+        "en": {},
+        "fr": {"tasks": "{count, plural, one {# tâche} other {# tâches}}"},
+    },
+)
+
+assert intl.locale == "fr"
+assert intl.format_message("tasks", values={"count": 2}) == "2 tâches"
+```
+
+Use `icu_messageformat` when catalog lookup happens elsewhere:
+
+```python
+from icu_messageformat import IcuMessageFormat
+
+message = IcuMessageFormat(
+    "{count, plural, one {# item} other {# items}}",
+    locale="en",
+)
+assert message.format({"count": 2}) == "2 items"
+```
+
+## Parse messages and skeletons
+
+```python
+from icu_messageformat_parser import parse, print_ast
+from icu_skeleton_parser import parse_number_skeleton
+
+ast = parse("Hello, {name}!")
+assert print_ast(ast) == "Hello, {name}!"
+
+options = parse_number_skeleton("currency/USD compact-short")
+```
+
+Python APIs use `snake_case`. Distribution names and import package names are
+identical. Wheels currently target macOS and manylinux on arm64 and x86_64.

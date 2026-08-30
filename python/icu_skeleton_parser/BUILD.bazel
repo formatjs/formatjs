@@ -1,0 +1,45 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("//tools/python:wheel.bzl", "formatjs_python_wheel")
+
+py_library(
+    name = "icu_skeleton_parser",
+    srcs = ["icu_skeleton_parser/__init__.py"],
+    data = [
+        "icu_skeleton_parser/__init__.pyi",
+        "icu_skeleton_parser/py.typed",
+    ],
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)
+
+copy_file(
+    name = "native_for_test",
+    src = "//crates/icu_skeleton_parser_python:icu_skeleton_parser",
+    out = "icu_skeleton_parser/_native.abi3.so",
+    allow_symlink = True,
+)
+
+py_test(
+    name = "python_test",
+    size = "small",
+    srcs = ["tests/test_binding.py"],
+    data = [":native_for_test"],
+    main = "tests/test_binding.py",
+    deps = [":icu_skeleton_parser"],
+)
+
+formatjs_python_wheel(
+    name = "wheel",
+    description_file = "README.md",
+    distribution = "icu_skeleton_parser",
+    extension = "//crates/icu_skeleton_parser_python:icu_skeleton_parser",
+    library = ":icu_skeleton_parser",
+    license = "MIT",
+    strip_path_prefixes = [
+        "crates/icu_skeleton_parser_python",
+        "python/icu_skeleton_parser",
+    ],
+    summary = "ICU number and date skeleton parser backed by Rust",
+    version = "0.1.2",  # x-release-please-version
+)

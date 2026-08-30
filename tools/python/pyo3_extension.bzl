@@ -11,6 +11,10 @@ def pyo3_extension(name, srcs, deps, module_name, visibility = None):
     rust_shared_library(
         name = name + "_cdylib",
         srcs = srcs,
+        compile_data = select({
+            "@platforms//os:linux": ["@llvm//runtimes/libunwind:libunwind.static"],
+            "//conditions:default": [],
+        }),
         crate_features = [
             "pyo3/abi3-py312",
             "pyo3/extension-module",
@@ -26,6 +30,8 @@ def pyo3_extension(name, srcs, deps, module_name, visibility = None):
             ],
             "@platforms//os:linux": [
                 "-Cpanic=abort",
+                # Keep wheels independent of a host libunwind installation.
+                "-Clink-arg=$(location @llvm//runtimes/libunwind:libunwind.static)",
                 "-Clink-arg=-Wl,--unresolved-symbols=ignore-all",
             ],
             "//conditions:default": [],

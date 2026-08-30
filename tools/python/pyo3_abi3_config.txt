@@ -1,4 +1,4 @@
 implementation=CPython
 version=3.12
-abi3=true
+target_abi=CPython-abi3-3.12
 suppress_build_script_link_lines=true

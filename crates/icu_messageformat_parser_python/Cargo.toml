@@ -1,0 +1,14 @@
+[package]
+name = "icu_messageformat_parser_python"
+version = "0.3.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser" }
+pyo3.workspace = true
+pythonize.workspace = true

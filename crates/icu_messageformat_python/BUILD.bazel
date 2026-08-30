@@ -1,0 +1,12 @@
+load("//tools/python:pyo3_extension.bzl", "pyo3_extension")
+
+pyo3_extension(
+    name = "icu_messageformat",
+    srcs = ["lib.rs"],
+    module_name = "icu_messageformat._native",
+    deps = [
+        "//crates/icu_messageformat",
+        "@crates//:pyo3",
+        "@crates//:pythonize",
+    ],
+)

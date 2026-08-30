@@ -187,6 +187,18 @@ crate.from_cargo(
         "x86_64-unknown-linux-musl",
     ],
 )
+crate.annotation(
+    build_script_data = ["@@//tools/python:pyo3_abi3_config.txt"],
+    build_script_env = {"PYO3_CONFIG_FILE": "$(execpath @@//tools/python:pyo3_abi3_config.txt)"},
+    crate = "pyo3-build-config",
+    repositories = ["crates"],
+)
+crate.annotation(
+    build_script_data = ["@@//tools/python:pyo3_abi3_config.txt"],
+    build_script_env = {"PYO3_CONFIG_FILE": "$(execpath @@//tools/python:pyo3_abi3_config.txt)"},
+    crate = "pyo3-ffi",
+    repositories = ["crates"],
+)
 use_repo(crate, "crates")
 
 rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")

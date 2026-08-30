@@ -1,0 +1,14 @@
+[package]
+name = "icu_skeleton_parser_python"
+version = "0.1.2"
+edition = "2024"
+publish = false
+
+[lib]
+path = "lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser" }
+pyo3.workspace = true
+pythonize.workspace = true
