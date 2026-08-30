@@ -317,20 +317,6 @@ checksum = "1d07550c9036bf2ae0c684c4297d503f838287c83c53686d05370d0e139ae570"
 
 [[package]]
 name = "compact_str"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9dfdd1c2274d9aa354115b09dc9a901d6c5576818cdf70d14cae2bdb47df00ab"
-dependencies = [
- "castaway",
- "cfg-if",
- "itoa",
- "rustversion",
- "ryu",
- "static_assertions",
-]
-
-[[package]]
-name = "compact_str"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "79fcda08c33bb58b97008b2cdada6622500e949e060f5913361763121abd2416"
@@ -587,9 +573,9 @@ dependencies = [
  "oxc_span",
  "proc-macro2",
  "rayon",
- "ruff_python_ast 0.0.0",
+ "ruff_python_ast",
  "ruff_python_parser",
- "ruff_text_size 0.0.0",
+ "ruff_text_size",
  "serde",
  "serde_json",
  "sha1",
@@ -778,7 +764,7 @@ version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b411f34418305908ab15a82ff78958c2a9aee9a272b2a2e663836b20a4e4b9d3"
 dependencies = [
- "compact_str 0.10.0",
+ "compact_str",
  "get-size-derive2",
  "hashbrown",
  "ordermap",
@@ -1364,15 +1350,6 @@ dependencies = [
 
 [[package]]
 name = "itertools"
-version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
-dependencies = [
- "either",
-]
-
-[[package]]
-name = "itertools"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b4baf93f58d4425749ca49a51c50ebab072c5df6994d08fed93541c331481dc"
@@ -1829,7 +1806,7 @@ version = "0.144.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "abd732008dbfb09984106925f7ff7268687c8020b89bd7ee0f0b695c5bb07950"
 dependencies = [
- "compact_str 0.10.0",
+ "compact_str",
  "oxc-miette",
  "oxc_allocator",
  "oxc_ast_macros",
@@ -1843,7 +1820,7 @@ version = "0.144.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1d2ccb0f5aa4da9fc98ef70f59553c2779e28e064a8b271fcb1e88c11a63607"
 dependencies = [
- "compact_str 0.10.0",
+ "compact_str",
  "hashbrown",
  "oxc_allocator",
  "oxc_estree",
@@ -2261,23 +2238,6 @@ dependencies = [
 
 [[package]]
 name = "ruff_python_ast"
-version = "0.0.0"
-source = "git+https://github.com/astral-sh/ruff.git?tag=0.15.10#252f76102a618bff6537b6c53c316ca3837f4abf"
-dependencies = [
- "aho-corasick",
- "bitflags",
- "compact_str 0.9.1",
- "is-macro",
- "memchr",
- "ruff_python_trivia 0.0.0",
- "ruff_source_file 0.0.0",
- "ruff_text_size 0.0.0",
- "rustc-hash",
- "thiserror",
-]
-
-[[package]]
-name = "ruff_python_ast"
 version = "0.0.10"
 source = "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77"
 dependencies = [
@@ -2285,13 +2245,13 @@ dependencies = [
  "arrayvec",
  "bitflags",
  "char_str",
- "compact_str 0.10.0",
+ "compact_str",
  "get-size2",
  "is-macro",
  "memchr",
- "ruff_python_trivia 0.0.10",
- "ruff_source_file 0.0.10",
- "ruff_text_size 0.0.10",
+ "ruff_python_trivia",
+ "ruff_source_file",
+ "ruff_text_size",
  "rustc-hash",
  "thin-vec",
  "thiserror",
@@ -2307,9 +2267,9 @@ dependencies = [
  "drop_bomb",
  "get-size2",
  "memchr",
- "ruff_python_ast 0.0.10",
- "ruff_python_trivia 0.0.10",
- "ruff_text_size 0.0.10",
+ "ruff_python_ast",
+ "ruff_python_trivia",
+ "ruff_text_size",
  "rustc-hash",
  "stacker",
  "static_assertions",
@@ -2321,49 +2281,24 @@ dependencies = [
 
 [[package]]
 name = "ruff_python_trivia"
-version = "0.0.0"
-source = "git+https://github.com/astral-sh/ruff.git?tag=0.15.10#252f76102a618bff6537b6c53c316ca3837f4abf"
-dependencies = [
- "itertools 0.14.0",
- "ruff_source_file 0.0.0",
- "ruff_text_size 0.0.0",
- "unicode-ident",
-]
-
-[[package]]
-name = "ruff_python_trivia"
 version = "0.0.10"
 source = "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77"
 dependencies = [
  "itertools 0.15.0",
- "ruff_source_file 0.0.10",
- "ruff_text_size 0.0.10",
+ "ruff_source_file",
+ "ruff_text_size",
  "rustc-hash",
  "unicode-ident",
 ]
 
 [[package]]
 name = "ruff_source_file"
-version = "0.0.0"
-source = "git+https://github.com/astral-sh/ruff.git?tag=0.15.10#252f76102a618bff6537b6c53c316ca3837f4abf"
-dependencies = [
- "memchr",
- "ruff_text_size 0.0.0",
-]
-
-[[package]]
-name = "ruff_source_file"
 version = "0.0.10"
 source = "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77"
 dependencies = [
  "memchr",
- "ruff_text_size 0.0.10",
+ "ruff_text_size",
 ]
-
-[[package]]
-name = "ruff_text_size"
-version = "0.0.0"
-source = "git+https://github.com/astral-sh/ruff.git?tag=0.15.10#252f76102a618bff6537b6c53c316ca3837f4abf"
 
 [[package]]
 name = "ruff_text_size"
