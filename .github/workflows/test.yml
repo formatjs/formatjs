@@ -409,3 +409,26 @@ jobs:
 
       - name: Install dependencies with pnpm
         run: pnpm install --frozen-lockfile
+
+  publish-test-status:
+    needs: test
+    if: >-
+      always() &&
+      github.event_name == 'workflow_dispatch' &&
+      github.actor == 'github-actions[bot]' &&
+      startsWith(github.ref_name, 'renovate/')
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    env:
+      CHECK_STATE: ${{ needs.test.result == 'success' && 'success' || 'failure' }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Publish Required Check Status
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state="$CHECK_STATE" \
+            -f context=test \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            -f description="Dispatched test workflow $CHECK_STATE"
