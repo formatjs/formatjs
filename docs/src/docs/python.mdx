@@ -24,8 +24,11 @@ python -m pip install py_intl
 ## Format messages
 
 ```python
-from intl import Intl
+from datetime import date
 
+from intl import Intl, IntlError
+
+errors: list[IntlError] = []
 intl = Intl(
     ["fr-CA", "fr"],
     "en",
@@ -33,6 +36,7 @@ intl = Intl(
         "en": {},
         "fr": {"tasks": "{count, plural, one {# tâche} other {# tâches}}"},
     },
+    on_error=errors.append,
 )
 
 assert intl.locale == "fr"
@@ -51,7 +55,7 @@ as Rust.
 ```python
 title = intl.format_message(
     default_message="Welcome, {name}!",
-    name=user.name,
+    values={"name": user.name},
 )
 ```
 
@@ -61,8 +65,23 @@ Reusable descriptors match the backend authoring shape used by Bazel consumers:
 from intl import define_message
 
 TITLE = define_message(default_message="Welcome, {name}!")
-title = intl.format_message(TITLE, name=user.name)
+title = intl.format_message(TITLE, values={"name": user.name})
 ```
+
+Python `date` and `datetime` values work with ICU date and time arguments:
+
+```python
+created = intl.format_message(
+    default_message="Created {value, date, medium}",
+    values={"value": date(2024, 1, 2)},
+)
+```
+
+Datetime fields are formatted as supplied. Convert timezone-aware values to the
+desired presentation timezone before formatting.
+
+Like `@formatjs/intl`, formatting returns the formatted value directly.
+Recovered missing translations and formatting failures are sent to `on_error`.
 
 Use `icu_messageformat` when catalog lookup happens elsewhere:
 
