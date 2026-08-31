@@ -38,6 +38,7 @@ impl CatalogBundle {
 pub enum Error {
     InvalidLocale(String),
     MissingDefaultLocale(String),
+    MissingTranslation { id: String, locale: String },
     CachePoisoned,
     Message(formatjs_icu_messageformat::Error),
 }
@@ -51,6 +52,9 @@ impl fmt::Display for Error {
                     formatter,
                     "Default locale has no translation catalog: {locale}"
                 )
+            }
+            Self::MissingTranslation { id, locale } => {
+                write!(formatter, "Missing message \"{id}\" for locale \"{locale}\"")
             }
             Self::CachePoisoned => formatter.write_str("Intl cache lock is poisoned"),
             Self::Message(error) => error.fmt(formatter),
@@ -90,7 +94,7 @@ pub enum MessageSource {
 #[derive(Debug)]
 pub struct FormatMessageError {
     /// Descriptor passed to the formatting call.
-    pub descriptor: MessageDescriptor,
+    pub descriptor: OwnedMessageDescriptor,
     /// Locale used for the failed formatting attempt.
     pub locale: String,
     /// Source of the message that failed.
@@ -134,6 +138,55 @@ impl MessageDescriptor {
     pub const fn with_description(mut self, description: &'static str) -> Self {
         self.description = Some(description);
         self
+    }
+
+    pub const fn as_ref(self) -> MessageDescriptorRef<'static> {
+        MessageDescriptorRef {
+            id: self.id,
+            default_message: self.default_message,
+            description: self.description,
+        }
+    }
+}
+
+/// Borrowed message descriptor for runtime-defined messages.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct MessageDescriptorRef<'a> {
+    pub id: &'a str,
+    pub default_message: &'a str,
+    pub description: Option<&'a str>,
+}
+
+impl<'a> MessageDescriptorRef<'a> {
+    pub const fn new(id: &'a str, default_message: &'a str) -> Self {
+        Self {
+            id,
+            default_message,
+            description: None,
+        }
+    }
+
+    pub const fn with_description(mut self, description: &'a str) -> Self {
+        self.description = Some(description);
+        self
+    }
+}
+
+/// Owned descriptor snapshot attached to recovered formatting errors.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct OwnedMessageDescriptor {
+    pub id: String,
+    pub default_message: String,
+    pub description: Option<String>,
+}
+
+impl From<MessageDescriptorRef<'_>> for OwnedMessageDescriptor {
+    fn from(descriptor: MessageDescriptorRef<'_>) -> Self {
+        Self {
+            id: descriptor.id.to_owned(),
+            default_message: descriptor.default_message.to_owned(),
+            description: descriptor.description.map(str::to_owned),
+        }
     }
 }
 
@@ -375,6 +428,14 @@ impl Intl {
         descriptor: MessageDescriptor,
         values: &Values<T>,
     ) -> Result<FormattedMessage<T>> {
+        self.format_message_ref(descriptor.as_ref(), values)
+    }
+
+    pub fn format_message_ref<T: Clone>(
+        &self,
+        descriptor: MessageDescriptorRef<'_>,
+        values: &Values<T>,
+    ) -> Result<FormattedMessage<T>> {
         self.format_with_fallback(
             descriptor,
             |message, locale| message.format(locale, values),
@@ -387,6 +448,14 @@ impl Intl {
         descriptor: MessageDescriptor,
         values: &Values<T>,
     ) -> Result<Vec<Part<T>>> {
+        self.format_message_to_parts_ref(descriptor.as_ref(), values)
+    }
+
+    pub fn format_message_to_parts_ref<T: Clone>(
+        &self,
+        descriptor: MessageDescriptorRef<'_>,
+        values: &Values<T>,
+    ) -> Result<Vec<Part<T>>> {
         self.format_with_fallback(
             descriptor,
             |message, locale| message.format_to_parts(locale, values),
@@ -397,6 +466,14 @@ impl Intl {
     pub fn format_message_to_string(
         &self,
         descriptor: MessageDescriptor,
+        values: &Values<String>,
+    ) -> Result<String> {
+        self.format_message_to_string_ref(descriptor.as_ref(), values)
+    }
+
+    pub fn format_message_to_string_ref(
+        &self,
+        descriptor: MessageDescriptorRef<'_>,
         values: &Values<String>,
     ) -> Result<String> {
         self.format_with_fallback(
@@ -416,12 +493,23 @@ impl Intl {
             .unwrap_or_else(|_| descriptor.default_message.to_owned())
     }
 
-    fn format_with_fallback<T>(
+    /// Formats a runtime-defined string descriptor, returning its default on infrastructure errors.
+    pub fn format_message_to_string_or_default_ref(
         &self,
-        descriptor: MessageDescriptor,
+        descriptor: MessageDescriptorRef<'_>,
+        values: &Values<String>,
+    ) -> String {
+        self.format_message_to_string_ref(descriptor, values)
+            .unwrap_or_else(|_| descriptor.default_message.to_owned())
+    }
+
+    fn format_with_fallback<'a, T>(
+        &'a self,
+        descriptor: MessageDescriptorRef<'a>,
         format: impl Fn(&IcuMessageFormat, &str) -> formatjs_icu_messageformat::Result<T>,
         verbatim: impl Fn(String) -> T,
     ) -> Result<T> {
+        self.report_missing_translation(descriptor);
         let candidates = self.message_candidates(descriptor);
         let verbatim_source = candidates
             .iter()
@@ -447,7 +535,7 @@ impl Intl {
                 Err(error) => {
                     let is_message_error = matches!(error, Error::Message(_));
                     let error = FormatMessageError {
-                        descriptor,
+                        descriptor: descriptor.into(),
                         locale: candidate.locale.to_owned(),
                         source: candidate.source,
                         error,
@@ -463,7 +551,10 @@ impl Intl {
         Ok(verbatim(verbatim_source))
     }
 
-    fn message_candidates(&self, descriptor: MessageDescriptor) -> Vec<MessageCandidate<'_>> {
+    fn message_candidates<'a>(
+        &'a self,
+        descriptor: MessageDescriptorRef<'a>,
+    ) -> Vec<MessageCandidate<'a>> {
         let mut candidates = Vec::with_capacity(3);
 
         if let Some(message) = self.messages.get(descriptor.id) {
@@ -492,6 +583,30 @@ impl Intl {
         );
 
         candidates
+    }
+
+    fn report_missing_translation(&self, descriptor: MessageDescriptorRef<'_>) {
+        if self.on_error.is_none() {
+            return;
+        }
+        let missing = matches!(
+            self.messages.get(descriptor.id),
+            None | Some(CatalogMessage::Source(""))
+        );
+        if missing
+            && (self.locale_string != self.default_locale_string
+                || descriptor.default_message.is_empty())
+        {
+            self.report_error(&FormatMessageError {
+                descriptor: descriptor.into(),
+                locale: self.locale_string.clone(),
+                source: MessageSource::Translation,
+                error: Error::MissingTranslation {
+                    id: descriptor.id.to_owned(),
+                    locale: self.locale_string.clone(),
+                },
+            });
+        }
     }
 
     fn report_error(&self, error: &FormatMessageError) {
@@ -667,7 +782,7 @@ mod tests {
             .unwrap()
             .with_on_error(move |error| {
                 captured_errors.lock().unwrap().push((
-                    error.descriptor.id,
+                    error.descriptor.id.to_owned(),
                     error.source,
                     matches!(error.error, Error::CachePoisoned),
                 ));
@@ -683,7 +798,7 @@ mod tests {
         );
         assert_eq!(
             *errors.lock().unwrap(),
-            vec![("n5ixSZR8gf", MessageSource::DefaultMessage, true)]
+            vec![("n5ixSZR8gf".to_owned(), MessageSource::DefaultMessage, true)]
         );
     }
 
@@ -787,6 +902,32 @@ mod tests {
         assert_eq!(
             intl.format_message_to_string(TASKS, &values).unwrap(),
             "1 task"
+        );
+    }
+
+    #[test]
+    fn reports_missing_translation_before_fallback() {
+        let errors = Arc::new(Mutex::new(Vec::new()));
+        let captured_errors = errors.clone();
+        let intl = Intl::try_new(["fr"], "en", catalog(), Arc::new(IntlCache::new()))
+            .unwrap()
+            .with_on_error(move |error| {
+                captured_errors.lock().unwrap().push((
+                    error.descriptor.id.to_owned(),
+                    error.locale.clone(),
+                    matches!(error.error, Error::MissingTranslation { .. }),
+                ));
+            });
+
+        let descriptor = MessageDescriptor::new("missing", "Fallback");
+        assert_eq!(
+            intl.format_message_to_string(descriptor, &Values::new())
+                .unwrap(),
+            "Fallback"
+        );
+        assert_eq!(
+            *errors.lock().unwrap(),
+            vec![("missing".to_owned(), "fr".to_owned(), true)]
         );
     }
 

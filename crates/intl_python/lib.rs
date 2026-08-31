@@ -1,12 +1,16 @@
 use base64::Engine;
-use formatjs_icu_messageformat::{IcuMessageFormat, Value, Values};
-use formatjs_intl::{MessageCatalog, negotiate_locale};
+use formatjs_icu_messageformat::{DateTimeValue, Value, Values};
+use formatjs_intl::{
+    Error as IntlError, Intl, IntlCache, MessageCatalog, MessageDescriptorRef, MessageSource,
+    negotiate_locale,
+};
 use icu_locale::Locale;
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyAny, PyDict};
+use pyo3::types::{PyAny, PyDate, PyDateTime, PyDict};
 use sha2::{Digest, Sha512};
 use std::collections::HashMap;
+use std::sync::{Arc, Mutex, OnceLock};
 
 const GENERATED_ID_LENGTH: usize = 10;
 
@@ -45,6 +49,32 @@ fn value_from_python(value: &Bound<'_, PyAny>) -> PyResult<Value<String>> {
     if value.is_none() {
         return Ok(Value::Null);
     }
+    if let Ok(value) = value.cast::<PyDateTime>() {
+        return DateTimeValue::try_new(
+            value.getattr("year")?.extract()?,
+            value.getattr("month")?.extract()?,
+            value.getattr("day")?.extract()?,
+            value.getattr("hour")?.extract()?,
+            value.getattr("minute")?.extract()?,
+            value.getattr("second")?.extract()?,
+            value.getattr("microsecond")?.extract::<u32>()? * 1_000,
+        )
+        .map(Value::DateTime)
+        .map_err(|error| PyValueError::new_err(error.to_string()));
+    }
+    if let Ok(value) = value.cast::<PyDate>() {
+        return DateTimeValue::try_new(
+            value.getattr("year")?.extract()?,
+            value.getattr("month")?.extract()?,
+            value.getattr("day")?.extract()?,
+            0,
+            0,
+            0,
+            0,
+        )
+        .map(Value::DateTime)
+        .map_err(|error| PyValueError::new_err(error.to_string()));
+    }
     if let Ok(value) = value.extract::<bool>() {
         return Ok(Value::Boolean(value));
     }
@@ -61,7 +91,7 @@ fn value_from_python(value: &Bound<'_, PyAny>) -> PyResult<Value<String>> {
         return Ok(Value::String(value));
     }
     Err(PyTypeError::new_err(
-        "message values must be str, bool, int, float, or None",
+        "message values must be str, bool, int, float, date, datetime, or None",
     ))
 }
 
@@ -78,19 +108,32 @@ fn values_from_python(values: Option<&Bound<'_, PyDict>>) -> PyResult<Values<Str
 
 #[pyclass(name = "Intl", unsendable)]
 struct PyIntl {
-    locale: String,
-    default_locale: String,
-    catalog: MessageCatalog,
-    cache: HashMap<String, IcuMessageFormat>,
+    intl: Intl,
+    callback_error: Arc<Mutex<Option<PyErr>>>,
+}
+
+fn cache() -> Arc<IntlCache> {
+    static CACHE: OnceLock<Arc<IntlCache>> = OnceLock::new();
+    CACHE.get_or_init(|| Arc::new(IntlCache::new())).clone()
+}
+
+fn source_name(source: MessageSource) -> &'static str {
+    match source {
+        MessageSource::Translation => "translation",
+        MessageSource::DefaultCatalog => "default_catalog",
+        MessageSource::DefaultMessage => "default_message",
+    }
 }
 
 #[pymethods]
 impl PyIntl {
     #[new]
+    #[pyo3(signature = (requested_locales, default_locale, messages, on_error = None))]
     fn new(
         requested_locales: Vec<String>,
         default_locale: String,
         messages: HashMap<String, HashMap<String, String>>,
+        on_error: Option<Py<PyAny>>,
     ) -> PyResult<Self> {
         let mut catalog = MessageCatalog::new();
         for (locale, messages) in messages {
@@ -98,38 +141,69 @@ impl PyIntl {
                 .insert(locale, messages)
                 .map_err(|error| PyValueError::new_err(error.to_string()))?;
         }
-        if !catalog.contains_locale(&default_locale) {
-            return Err(PyValueError::new_err(format!(
-                "Default locale has no translation catalog: {default_locale}"
-            )));
-        }
-        let parsed_default_locale = default_locale
-            .parse::<Locale>()
-            .map_err(|error| PyValueError::new_err(error.to_string()))?;
-        let locale = negotiate_locale(&requested_locales, &parsed_default_locale, &catalog)
-            .map_err(|error| PyValueError::new_err(error.to_string()))?
-            .to_string();
-        Ok(Self {
-            locale,
+        let mut intl = Intl::try_new(
+            requested_locales,
             default_locale,
-            catalog,
-            cache: HashMap::new(),
+            Arc::new(catalog),
+            cache(),
+        )
+        .map_err(|error| PyValueError::new_err(error.to_string()))?;
+        let callback_error = Arc::new(Mutex::new(None));
+        if let Some(callback) = on_error {
+            let captured_error = callback_error.clone();
+            intl = intl.with_on_error(move |error| {
+                if captured_error
+                    .lock()
+                    .expect("callback error lock")
+                    .is_some()
+                {
+                    return;
+                }
+                let code = match &error.error {
+                    IntlError::MissingTranslation { .. } => "MISSING_TRANSLATION",
+                    _ => "FORMAT_ERROR",
+                };
+                Python::attach(|py| {
+                    if let Err(callback_error) = callback.call1(
+                        py,
+                        (
+                            code,
+                            error.descriptor.id.as_str(),
+                            error.descriptor.default_message.as_str(),
+                            error.descriptor.description.as_deref(),
+                            error.locale.as_str(),
+                            source_name(error.source),
+                            error.to_string(),
+                        ),
+                    ) {
+                        *captured_error.lock().expect("callback error lock") = Some(callback_error);
+                    }
+                });
+            });
+        }
+        Ok(Self {
+            intl,
+            callback_error,
         })
     }
 
     #[getter]
-    fn locale(&self) -> &str {
-        &self.locale
+    fn locale(&self) -> String {
+        self.intl.locale().to_string()
     }
 
     #[pyo3(signature = (id = None, *, default_message = "", description = None, values = None))]
     fn format_message(
-        &mut self,
+        &self,
         id: Option<&str>,
         default_message: &str,
         description: Option<&str>,
         values: Option<&Bound<'_, PyDict>>,
     ) -> PyResult<String> {
+        self.callback_error
+            .lock()
+            .expect("callback error lock")
+            .take();
         let id = match id {
             Some(id) => id.to_owned(),
             None if default_message.is_empty() => {
@@ -140,42 +214,24 @@ impl PyIntl {
             None => generate_id(default_message, description),
         };
         let values = values_from_python(values)?;
-        let mut candidates = Vec::with_capacity(3);
-        if let Some(messages) = self.catalog.messages(&self.locale) {
-            if let Some(message) = messages.get(&id).filter(|message| !message.is_empty()) {
-                candidates.push((message.clone(), self.locale.clone()));
+        let descriptor = match description {
+            Some(description) => {
+                MessageDescriptorRef::new(&id, default_message).with_description(description)
             }
+            None => MessageDescriptorRef::new(&id, default_message),
+        };
+        let formatted = self
+            .intl
+            .format_message_to_string_or_default_ref(descriptor, &values);
+        if let Some(error) = self
+            .callback_error
+            .lock()
+            .expect("callback error lock")
+            .take()
+        {
+            return Err(error);
         }
-        if self.locale != self.default_locale {
-            if let Some(messages) = self.catalog.messages(&self.default_locale) {
-                if let Some(message) = messages.get(&id).filter(|message| !message.is_empty()) {
-                    candidates.push((message.clone(), self.default_locale.clone()));
-                }
-            }
-        }
-        if !default_message.is_empty() {
-            candidates.push((default_message.to_owned(), self.default_locale.clone()));
-        }
-
-        for (message, locale) in candidates {
-            if !self.cache.contains_key(&message) {
-                let compiled = match IcuMessageFormat::try_new(&message) {
-                    Ok(compiled) => compiled,
-                    Err(_) => continue,
-                };
-                self.cache.insert(message.clone(), compiled);
-            }
-            let compiled = self.cache.get(&message).expect("cached message");
-            if let Ok(formatted) = compiled.format_to_string(&locale, &values) {
-                return Ok(formatted);
-            }
-        }
-
-        Ok(if default_message.is_empty() {
-            id
-        } else {
-            default_message.to_owned()
-        })
+        Ok(formatted)
     }
 }
 

@@ -2,13 +2,15 @@
 
 import base64
 import hashlib
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from datetime import date, datetime
+from enum import StrEnum
 
 from intl._native import Intl as _NativeIntl
 from intl._native import negotiate
 
-MessageValue = str | bool | int | float | None
+MessageValue = str | bool | int | float | date | datetime | None
 
 
 def _generate_id(default_message: str, description: str | None) -> str:
@@ -46,17 +48,71 @@ def define_message(
     )
 
 
+class IntlErrorCode(StrEnum):
+    FORMAT_ERROR = "FORMAT_ERROR"
+    MISSING_TRANSLATION = "MISSING_TRANSLATION"
+
+
+class MessageSource(StrEnum):
+    TRANSLATION = "translation"
+    DEFAULT_CATALOG = "default_catalog"
+    DEFAULT_MESSAGE = "default_message"
+
+
+class IntlError(Exception):
+    def __init__(
+        self,
+        code: IntlErrorCode,
+        descriptor: MessageDescriptor,
+        locale: str,
+        source: MessageSource,
+        message: str,
+    ) -> None:
+        super().__init__(message)
+        self.code = code
+        self.descriptor = descriptor
+        self.locale = locale
+        self.source = source
+        self.message = message
+
+
 class Intl:
     def __init__(
         self,
         requested_locales: list[str],
         default_locale: str,
         messages: Mapping[str, Mapping[str, str]],
+        on_error: Callable[[IntlError], None] | None = None,
     ) -> None:
+        def handle_error(
+            code: str,
+            message_id: str,
+            default_message: str,
+            description: str | None,
+            locale: str,
+            source: str,
+            message: str,
+        ) -> None:
+            if on_error is not None:
+                on_error(
+                    IntlError(
+                        code=IntlErrorCode(code),
+                        descriptor=MessageDescriptor(
+                            id=message_id,
+                            default_message=default_message,
+                            description=description,
+                        ),
+                        locale=locale,
+                        source=MessageSource(source),
+                        message=message,
+                    )
+                )
+
         self._native = _NativeIntl(
             requested_locales,
             default_locale,
             {locale: dict(locale_messages) for locale, locale_messages in messages.items()},
+            handle_error if on_error is not None else None,
         )
 
     @property
@@ -71,7 +127,6 @@ class Intl:
         default_message: str | None = None,
         description: str | None = None,
         values: Mapping[str, MessageValue] | None = None,
-        **message_values: MessageValue,
     ) -> str:
         if isinstance(descriptor, str):
             if id is not None:
@@ -84,18 +139,20 @@ class Intl:
             default_message = descriptor.default_message
             description = descriptor.description
 
-        merged_values: dict[str, MessageValue] = dict(values or {})
-        duplicates = merged_values.keys() & message_values.keys()
-        if duplicates:
-            duplicate = min(duplicates)
-            raise TypeError(f"message value was provided twice: {duplicate}")
-        merged_values.update(message_values)
         return self._native.format_message(
             id,
             default_message=default_message or "",
             description=description,
-            values=merged_values,
+            values=dict(values or {}),
         )
 
 
-__all__ = ["Intl", "MessageDescriptor", "define_message", "negotiate"]
+__all__ = [
+    "Intl",
+    "IntlError",
+    "IntlErrorCode",
+    "MessageDescriptor",
+    "MessageSource",
+    "define_message",
+    "negotiate",
+]

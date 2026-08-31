@@ -185,6 +185,10 @@ the crate is not published to crates.io.
 - Falls back from selected catalog to default catalog, then descriptor message.
 - Retries parse and format failures through the same chain, using each source's
   locale; `with_on_error` exposes recovered message and infrastructure errors.
+- Reports missing negotiated-locale messages through `with_on_error` before
+  continuing through the fallback chain.
+- Accepts borrowed runtime descriptors through `MessageDescriptorRef`; static
+  Rust descriptors keep the existing `MessageDescriptor` API.
 - `format_message!` returns the descriptor default verbatim when cache
   infrastructure prevents formatting; fallible methods preserve explicit errors.
 - Returns the first source verbatim, then the message ID, when every formatting
@@ -233,6 +237,11 @@ PyO3 binding crates. Python names mirror the Rust layers without the
 | `icu_messageformat_parser` | `formatjs_icu_messageformat_parser` |
 | `icu_messageformat`        | `formatjs_icu_messageformat`        |
 | `intl`                     | `formatjs_intl`                     |
+
+The `intl` binding delegates catalog lookup, caching, and fallback to the Rust
+`Intl` implementation. Its Python facade accepts `date` and `datetime` message
+values and exposes recovered runtime issues through `on_error` while returning
+formatted strings directly.
 
 The CLI has no Python package. See [Python documentation](/docs/python) for
 public APIs.

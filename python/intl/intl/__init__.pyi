@@ -1,7 +1,9 @@
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from typing import Mapping
+from datetime import date, datetime
+from enum import StrEnum
 
-MessageValue = str | bool | int | float | None
+MessageValue = str | bool | int | float | date | datetime | None
 
 @dataclass(frozen=True, slots=True)
 class MessageDescriptor:
@@ -17,12 +19,37 @@ def define_message(
     description: str | None = None,
 ) -> MessageDescriptor: ...
 
+class IntlErrorCode(StrEnum):
+    FORMAT_ERROR = "FORMAT_ERROR"
+    MISSING_TRANSLATION = "MISSING_TRANSLATION"
+
+class MessageSource(StrEnum):
+    TRANSLATION = "translation"
+    DEFAULT_CATALOG = "default_catalog"
+    DEFAULT_MESSAGE = "default_message"
+
+class IntlError(Exception):
+    code: IntlErrorCode
+    descriptor: MessageDescriptor
+    locale: str
+    source: MessageSource
+    message: str
+    def __init__(
+        self,
+        code: IntlErrorCode,
+        descriptor: MessageDescriptor,
+        locale: str,
+        source: MessageSource,
+        message: str,
+    ) -> None: ...
+
 class Intl:
     def __init__(
         self,
         requested_locales: list[str],
         default_locale: str,
         messages: Mapping[str, Mapping[str, str]],
+        on_error: Callable[[IntlError], None] | None = None,
     ) -> None: ...
     @property
     def locale(self) -> str: ...
@@ -34,7 +61,6 @@ class Intl:
         default_message: str | None = None,
         description: str | None = None,
         values: Mapping[str, MessageValue] | None = None,
-        **message_values: MessageValue,
     ) -> str: ...
 
 def negotiate(
