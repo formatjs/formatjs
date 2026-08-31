@@ -136,7 +136,14 @@ the crate is not published to crates.io.
 **Key implementation details:**
 
 - Uses **oxc** (v0.120) for JS/TS/JSX/TSX AST parsing (no Node.js dependency)
-- Uses Ruff's Python parser for literal `define_message(...)` declarations
+- Uses Ruff's Python parser for literal `define_message(...)` declarations and
+  inline `format_message(...)` calls
+- Python inline calls mirror Rust named fields; missing IDs use
+  `[sha512:contenthash:base64:10]`
+- Python runtime calls accept reusable `MessageDescriptor` objects, inline
+  descriptor fields, mapping values, or arbitrary value keyword arguments
+- Generated IDs are locale-independent; request-specific `Intl` instances use
+  the same descriptor IDs across locale catalogs
 - With `extract --throws`, input metadata and directory traversal errors fail the command instead of producing a partial catalog
 - **Whitespace normalization** (`extractor.rs`): Matches TypeScript CLI behavior exactly, including U+00A0 (non-breaking space) preservation via placeholder technique
 - **ID generation** (`id_generator.rs`): loader-utils style `hash`/`contenthash` interpolation with md5, sha1, and SHA-2 algorithms plus base64/base64url/base62/hex encodings. Hash is computed AFTER flattening (matching TypeScript CLI order)

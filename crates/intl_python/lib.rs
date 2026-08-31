@@ -1,10 +1,45 @@
+use base64::Engine;
 use formatjs_icu_messageformat::{IcuMessageFormat, Value, Values};
 use formatjs_intl::{MessageCatalog, negotiate_locale};
 use icu_locale::Locale;
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyAny, PyDict};
+use sha2::{Digest, Sha512};
 use std::collections::HashMap;
+
+const GENERATED_ID_LENGTH: usize = 10;
+
+fn normalize_whitespace(value: &str) -> String {
+    let trimmed = value.trim_matches(char::is_whitespace);
+    let mut normalized = String::with_capacity(trimmed.len());
+    let mut in_whitespace = false;
+    for character in trimmed.chars() {
+        if character.is_whitespace() {
+            if !in_whitespace {
+                normalized.push(' ');
+                in_whitespace = true;
+            }
+        } else {
+            normalized.push(character);
+            in_whitespace = false;
+        }
+    }
+    normalized
+}
+
+fn generate_id(default_message: &str, description: Option<&str>) -> String {
+    let mut content = normalize_whitespace(default_message).into_bytes();
+    if let Some(description) = description {
+        content.push(b'#');
+        content.extend_from_slice(description.as_bytes());
+    }
+    base64::engine::general_purpose::STANDARD
+        .encode(Sha512::digest(content))
+        .chars()
+        .take(GENERATED_ID_LENGTH)
+        .collect()
+}
 
 fn value_from_python(value: &Bound<'_, PyAny>) -> PyResult<Value<String>> {
     if value.is_none() {
@@ -35,9 +70,7 @@ fn values_from_python(values: Option<&Bound<'_, PyDict>>) -> PyResult<Values<Str
         .map(|values| {
             values
                 .iter()
-                .map(|(key, value)| {
-                    Ok((key.extract::<String>()?, value_from_python(&value)?))
-                })
+                .map(|(key, value)| Ok((key.extract::<String>()?, value_from_python(&value)?)))
                 .collect()
         })
         .unwrap_or_else(|| Ok(Values::new()))
@@ -89,23 +122,33 @@ impl PyIntl {
         &self.locale
     }
 
-    #[pyo3(signature = (id, *, default_message = "", values = None))]
+    #[pyo3(signature = (id = None, *, default_message = "", description = None, values = None))]
     fn format_message(
         &mut self,
-        id: &str,
+        id: Option<&str>,
         default_message: &str,
+        description: Option<&str>,
         values: Option<&Bound<'_, PyDict>>,
     ) -> PyResult<String> {
+        let id = match id {
+            Some(id) => id.to_owned(),
+            None if default_message.is_empty() => {
+                return Err(PyValueError::new_err(
+                    "default_message is required when id is omitted",
+                ));
+            }
+            None => generate_id(default_message, description),
+        };
         let values = values_from_python(values)?;
         let mut candidates = Vec::with_capacity(3);
         if let Some(messages) = self.catalog.messages(&self.locale) {
-            if let Some(message) = messages.get(id).filter(|message| !message.is_empty()) {
+            if let Some(message) = messages.get(&id).filter(|message| !message.is_empty()) {
                 candidates.push((message.clone(), self.locale.clone()));
             }
         }
         if self.locale != self.default_locale {
             if let Some(messages) = self.catalog.messages(&self.default_locale) {
-                if let Some(message) = messages.get(id).filter(|message| !message.is_empty()) {
+                if let Some(message) = messages.get(&id).filter(|message| !message.is_empty()) {
                     candidates.push((message.clone(), self.default_locale.clone()));
                 }
             }
@@ -129,7 +172,7 @@ impl PyIntl {
         }
 
         Ok(if default_message.is_empty() {
-            id.to_owned()
+            id
         } else {
             default_message.to_owned()
         })

@@ -39,6 +39,31 @@ assert intl.locale == "fr"
 assert intl.format_message("tasks", values={"count": 2}) == "2 tâches"
 ```
 
+Create or select an `Intl` instance for each request locale. Generated message
+IDs depend only on the normalized default message and description, so catalogs
+use the same IDs across locales.
+
+`formatjs extract "src/**/*.py"` extracts literal `define_message(...)`
+declarations and `format_message(...)` calls. Inline calls accept dynamic
+`values`. IDs are optional; missing IDs use the same 10-character generated ID
+as Rust.
+
+```python
+title = intl.format_message(
+    default_message="Welcome, {name}!",
+    name=user.name,
+)
+```
+
+Reusable descriptors match the backend authoring shape used by Bazel consumers:
+
+```python
+from intl import define_message
+
+TITLE = define_message(default_message="Welcome, {name}!")
+title = intl.format_message(TITLE, name=user.name)
+```
+
 Use `icu_messageformat` when catalog lookup happens elsewhere:
 
 ```python

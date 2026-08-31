@@ -215,9 +215,11 @@ Existing values maps remain supported for dynamic or reused values.
 formatjs extract "src/**/*.rs" --out-file messages.json
 ```
 
-Python extraction reads explicit `define_message` calls. Message IDs and default
-messages are required string literals; descriptions are optional string literals.
-Dynamic expressions, positional arguments, and `**kwargs` are rejected.
+Python extraction reads explicit `define_message` declarations and inline
+`format_message` calls. `id` is optional; missing IDs use
+`[sha512:contenthash:base64:10]`. Descriptor fields must be string literals;
+`values` may be dynamic mappings or arbitrary keyword arguments. Descriptor
+objects declared elsewhere are extracted from their `define_message` call.
 
 ```python
 from my_app.i18n import define_message
@@ -226,6 +228,12 @@ GREETING = define_message(
     id="greeting",
     default_message="Hello, {name}!",
     description="Greeting shown on the home page",
+)
+
+greeting = intl.format_message(
+    default_message="Hello, {name}!",
+    description="Greeting shown on the home page",
+    name=user.name,
 )
 ```
 

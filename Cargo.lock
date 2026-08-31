@@ -1315,10 +1315,12 @@ checksum = "71dd52191aae121e8611f1e8dc3e324dd0dd1dee1e6dd91d10ee07a3cfb4d9d8"
 name = "intl_python"
 version = "0.4.0"
 dependencies = [
+ "base64",
  "formatjs_icu_messageformat",
  "formatjs_intl",
  "icu_locale",
  "pyo3",
+ "sha2",
 ]
 
 [[package]]
