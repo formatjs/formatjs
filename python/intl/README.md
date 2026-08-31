@@ -7,8 +7,17 @@ python -m pip install py_intl
 ```
 
 ```python
-from intl import Intl
+from intl import Intl, define_message
 
 intl = Intl(["fr-CA", "fr"], "en", {"fr": {"hello": "Bonjour"}, "en": {}})
 assert intl.format_message("hello", default_message="Hello") == "Bonjour"
+
+# IDs are optional and generated from the descriptor.
+assert intl.format_message(default_message="Welcome") == "Welcome"
+
+greeting = define_message(default_message="Hello, {name}!")
+assert intl.format_message(greeting, name="Ada") == "Hello, Ada!"
 ```
+
+Use the `Intl` instance negotiated for the current request. Generated IDs are
+locale-independent.

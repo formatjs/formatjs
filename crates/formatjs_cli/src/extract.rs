@@ -931,6 +931,46 @@ GREETING = define_message(
     }
 
     #[test]
+    fn test_extract_to_string_reads_python_format_message_call() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let file = temp_dir.path().join("messages.py");
+        fs::write(
+            &file,
+            r#"
+from intl import Intl
+
+greeting = intl.format_message(
+    default_message="Hello, {name}!",
+    values={"name": user.name},
+)
+"#,
+        )
+        .unwrap();
+
+        let output = extract_to_string(
+            &[file],
+            None,
+            None,
+            "[sha512:contenthash:base64:6]",
+            false,
+            &[],
+            &[],
+            &[],
+            true,
+            None,
+            false,
+            false,
+            true,
+        )
+        .unwrap();
+        let json: serde_json::Value = serde_json::from_str(&output).unwrap();
+
+        let message = json.as_object().unwrap().values().next().unwrap();
+        assert_eq!(message["defaultMessage"], "Hello, {name}!");
+        assert_eq!(json.as_object().unwrap().len(), 1);
+    }
+
+    #[test]
     fn test_extract_base_dir() {
         assert_eq!(extract_base_dir("src/**/*.ts"), PathBuf::from("src"));
         assert_eq!(
