@@ -6,6 +6,12 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: Base branch used for commit validation
+        required: true
+        default: main
 
 jobs:
   verify-hooks:
@@ -39,10 +45,12 @@ jobs:
           fi
 
       - name: Validate Commit Messages
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && github.base_ref || inputs.base_ref }}
         run: |
-          git fetch origin ${{ github.base_ref }}
-          commits=$(git rev-list origin/${{ github.base_ref }}..HEAD)
+          git fetch origin "$BASE_REF"
+          commits=$(git rev-list "origin/$BASE_REF"..HEAD)
 
           for commit in $commits; do
             echo "Validating commit: $(git log -1 --oneline $commit)"
