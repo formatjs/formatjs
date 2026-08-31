@@ -1,0 +1,37 @@
+name: Publish Renovate Required Check Status
+
+on:
+  workflow_run:
+    workflows:
+      - Test
+      - Verify Commit Hooks
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  publish:
+    if: >-
+      github.event.workflow_run.event == 'workflow_dispatch' &&
+      github.event.workflow_run.actor.login == 'github-actions[bot]' &&
+      github.event.workflow_run.triggering_actor.login == 'github-actions[bot]' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      startsWith(github.event.workflow_run.head_branch, 'renovate/')
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    env:
+      CHECK_CONTEXT: ${{ github.event.workflow_run.name == 'Test' && 'test' || 'verify-hooks' }}
+      CHECK_STATE: ${{ github.event.workflow_run.conclusion == 'success' && 'success' || 'failure' }}
+      GH_TOKEN: ${{ github.token }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      RUN_URL: ${{ github.event.workflow_run.html_url }}
+
+    steps:
+      - name: Publish Required Check Status
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" \
+            -f state="$CHECK_STATE" \
+            -f context="$CHECK_CONTEXT" \
+            -f target_url="$RUN_URL" \
+            -f description="Dispatched $CHECK_CONTEXT workflow $CHECK_STATE"
