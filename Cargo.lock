@@ -555,7 +555,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_cli"
-version = "1.5.1"
+version = "1.6.0"
 dependencies = [
  "anyhow",
  "base64",
@@ -640,7 +640,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
