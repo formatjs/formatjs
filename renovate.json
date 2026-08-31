@@ -8,14 +8,6 @@
     "**/node_modules/**",
     "packages/react-intl/example-sandboxes/**"
   ],
-  "postUpgradeTasks": {
-    "commands": ["bazel mod deps --lockfile_mode=update"],
-    "fileFilters": ["MODULE.bazel.lock"],
-    "executionMode": "branch",
-    "installTools": {
-      "bazelisk": {}
-    }
-  },
   "packageRules": [
     {
       "description": "Group NAPI-RS updates",

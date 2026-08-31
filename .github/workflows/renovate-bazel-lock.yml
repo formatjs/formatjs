@@ -1,0 +1,113 @@
+name: Update Renovate Bazel Lockfile
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  generate:
+    if: >-
+      github.actor == 'renovate[bot]' &&
+      github.event.pull_request.user.login == 'renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.lockfile.outputs.changed }}
+
+    steps:
+      - name: Checkout Renovate Branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Update Bazel Lockfile
+        id: lockfile
+        run: |
+          bazel mod deps --lockfile_mode=update
+          bazel mod deps --lockfile_mode=error
+          if git diff --quiet -- MODULE.bazel.lock; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            jq empty MODULE.bazel.lock
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload Bazel Lockfile
+        if: steps.lockfile.outputs.changed == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: bazel-lock-${{ github.run_id }}
+          path: MODULE.bazel.lock
+          if-no-files-found: error
+          retention-days: 1
+
+  commit:
+    needs: generate
+    if: >-
+      needs.generate.outputs.changed == 'true' &&
+      github.actor == 'renovate[bot]' &&
+      github.event.pull_request.user.login == 'renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+    env:
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
+    steps:
+      - name: Checkout Renovate Branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Verify Renovate Head
+        run: test "$(git rev-parse HEAD)" = "$HEAD_SHA"
+
+      - name: Download Bazel Lockfile
+        uses: actions/download-artifact@v8
+        with:
+          name: bazel-lock-${{ github.run_id }}
+          path: generated-lock
+
+      - name: Commit Bazel Lockfile
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f generated-lock/MODULE.bazel.lock
+          test ! -L generated-lock/MODULE.bazel.lock
+          test "$(wc -c < generated-lock/MODULE.bazel.lock)" -lt 10000000
+          jq empty generated-lock/MODULE.bazel.lock
+          cp generated-lock/MODULE.bazel.lock MODULE.bazel.lock
+
+          if git diff --quiet -- MODULE.bazel.lock; then
+            exit 0
+          fi
+
+          test "$(git diff --name-only)" = 'MODULE.bazel.lock'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add MODULE.bazel.lock
+          git commit --no-verify -m 'fix(deps): update Bazel lockfile'
+          git push origin "HEAD:$HEAD_REF"
+
+          gh workflow run test.yml --ref "$HEAD_REF"
+          gh workflow run verify-hooks.yml --ref "$HEAD_REF" -f base_ref="$BASE_REF"
