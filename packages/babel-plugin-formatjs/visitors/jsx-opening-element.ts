@@ -15,6 +15,7 @@ import {
   storeMessage,
   tagAsExtracted,
   wasExtracted,
+  unwrapExpression,
 } from '#packages/babel-plugin-formatjs/utils.js'
 
 export const visitor: VisitorFunction<'JSXOpeningElement'> = function (
@@ -126,7 +127,17 @@ export const visitor: VisitorFunction<'JSXOpeningElement'> = function (
   // Insert ID before removing node to prevent null node insertBefore
   if (overrideIdFn || (descriptor.id && idInterpolationPattern)) {
     if (idAttr) {
-      idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id))
+      const value = idAttr.get('value')
+      if (
+        value.isJSXExpressionContainer() &&
+        unwrapExpression(value.get('expression')) !== value.get('expression')
+      ) {
+        unwrapExpression(value.get('expression')).replaceWith(
+          t.stringLiteral(descriptor.id)
+        )
+      } else {
+        value.replaceWith(t.stringLiteral(descriptor.id))
+      }
     } else if (firstAttr) {
       firstAttr.insertBefore(
         t.jsxAttribute(t.jsxIdentifier('id'), t.stringLiteral(descriptor.id))

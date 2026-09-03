@@ -13,6 +13,7 @@ import {
   wasExtracted,
   storeMessage,
   tagAsExtracted,
+  unwrapExpression,
 } from '#packages/babel-plugin-formatjs/utils.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 
@@ -21,9 +22,11 @@ function assertObjectExpression(
   callee: NodePath<t.Expression | t.Super | t.Import | t.V8IntrinsicIdentifier>
 ): asserts path is NodePath<t.ObjectExpression> {
   if (!path || !path.isObjectExpression()) {
-    throw path.buildCodeFrameError(
+    throw (path || callee).buildCodeFrameError(
       `[React Intl] \`${
-        (callee.get('property') as NodePath<t.Identifier>).node.name
+        callee.isIdentifier()
+          ? callee.node.name
+          : (callee.get('property') as NodePath<t.Identifier>).node.name
       }()\` must be called with an object expression with values that are React Intl Message Descriptors, also defined as object expressions.`
     )
   }
@@ -44,20 +47,6 @@ function isFormatMessageCall(
     return !!functionNames.find(name => property.isIdentifier({name}))
   }
   return false
-}
-
-function getMessagesObjectFromExpression(
-  nodePath: NodePath<any>
-): NodePath<any> {
-  let currentPath = nodePath
-  while (
-    t.isTSAsExpression(currentPath.node) ||
-    t.isTSTypeAssertion(currentPath.node) ||
-    t.isTypeCastExpression(currentPath.node)
-  ) {
-    currentPath = currentPath.get('expression') as NodePath<any>
-  }
-  return currentPath
 }
 
 type CallExpressionPath = Parameters<VisitorFunction<'CallExpression'>>[0]
@@ -96,9 +85,8 @@ const visitCallExpression = function (
    * Process MessageDescriptor
    * @param messageDescriptor Message Descriptor
    */
-  function processMessageObject(
-    messageDescriptor: NodePath<t.ObjectExpression>
-  ) {
+  function processMessageObject(messageDescriptor: NodePath<any>) {
+    messageDescriptor = unwrapExpression(messageDescriptor)
     assertObjectExpression(messageDescriptor, callee)
 
     const properties = messageDescriptor.get(
@@ -119,7 +107,10 @@ const visitCallExpression = function (
       )
 
       // If the message is already compiled, don't re-compile it
-      if (descriptorPath.defaultMessage?.isArrayExpression()) {
+      if (
+        descriptorPath.defaultMessage &&
+        unwrapExpression(descriptorPath.defaultMessage).isArrayExpression()
+      ) {
         return
       }
 
@@ -166,7 +157,9 @@ const visitCallExpression = function (
 
     // Insert ID potentially 1st before removing nodes
     if (idProp) {
-      idProp.get('value').replaceWith(t.stringLiteral(descriptor.id))
+      unwrapExpression(idProp.get('value')).replaceWith(
+        t.stringLiteral(descriptor.id)
+      )
     } else {
       firstProp.insertBefore(
         t.objectProperty(t.identifier('id'), t.stringLiteral(descriptor.id))
@@ -195,7 +188,9 @@ const visitCallExpression = function (
             JSON.stringify(parse(descriptor.defaultMessage))
           )
         } else {
-          valueProp.replaceWith(t.stringLiteral(descriptor.defaultMessage))
+          unwrapExpression(valueProp).replaceWith(
+            t.stringLiteral(descriptor.defaultMessage)
+          )
         }
       }
     }
@@ -209,7 +204,7 @@ const visitCallExpression = function (
     callee.isIdentifier({name: 'defineMessage'})
   ) {
     const firstArgument = args[0]
-    const messagesObj = getMessagesObjectFromExpression(firstArgument)
+    const messagesObj = firstArgument && unwrapExpression(firstArgument)
 
     assertObjectExpression(messagesObj, callee)
     if (callee.isIdentifier({name: 'defineMessage'})) {
@@ -226,7 +221,7 @@ const visitCallExpression = function (
 
   // Check that this is `intl.formatMessage` call
   if (isFormatMessageCall(callee, functionNames)) {
-    const messageDescriptor = args[0]
+    const messageDescriptor = args[0] && unwrapExpression(args[0])
     if (messageDescriptor && messageDescriptor.isObjectExpression()) {
       processMessageObject(messageDescriptor)
     }

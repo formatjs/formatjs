@@ -46,6 +46,25 @@ The default message descriptors for the app's default language will be processed
 
 This plugin does not enable any syntax on its own. To extract messages from `<FormattedMessage>` elements, JSX parsing must be enabled by your own Babel configuration (e.g. `@babel/preset-react`, `@babel/preset-typescript` for `.tsx` files, or `@babel/plugin-syntax-jsx`), as it normally already is in projects that use JSX.
 
+With TypeScript parsing enabled, message values and inline descriptors can use
+`satisfies`, `as`, non-null assertions, and type assertions. These wrappers also
+work around `defineMessages` maps and entries, including nested wrappers:
+
+```tsx
+;<FormattedMessage defaultMessage={`Hello` satisfies string} />
+
+const messages = defineMessages({
+  greeting: {
+    defaultMessage: 'Hello' as const,
+    description: 'Greeting',
+  } satisfies MessageDescriptor,
+} as const)
+```
+
+Values must still be statically evaluable. String rewrites preserve their
+wrappers; `ast: true` replaces the whole message value with the compiled AST,
+and `removeDefaultMessage: true` removes the property or attribute.
+
 ### Via `babel.config.json` (Recommended)
 
 **babel.config.json**

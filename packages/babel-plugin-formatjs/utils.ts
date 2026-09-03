@@ -21,8 +21,22 @@ const DESCRIPTOR_PROPS = new Set<keyof MessageDescriptorPath>([
   'defaultMessage',
 ])
 
+export function unwrapExpression(path: NodePath<any>): NodePath<any> {
+  while (
+    path.isTSAsExpression() ||
+    path.isTSSatisfiesExpression() ||
+    path.isTSNonNullExpression() ||
+    path.isTSTypeAssertion() ||
+    path.isTypeCastExpression() ||
+    path.isParenthesizedExpression()
+  ) {
+    path = path.get('expression') as NodePath<any>
+  }
+  return path
+}
+
 function evaluatePath(path: NodePath<any>): string {
-  const evaluated = path.evaluate()
+  const evaluated = unwrapExpression(path).evaluate()
   if (evaluated.confident) {
     return evaluated.value
   }
@@ -52,7 +66,10 @@ function getMessageDescriptorValue(
   }
   if (path.isJSXExpressionContainer()) {
     // If this is already compiled, no need to recompiled it
-    if (isMessageNode && path.get('expression').isArrayExpression()) {
+    if (
+      isMessageNode &&
+      unwrapExpression(path.get('expression')).isArrayExpression()
+    ) {
       return ''
     }
     path = path.get('expression') as NodePath<t.StringLiteral>

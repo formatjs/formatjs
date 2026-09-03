@@ -44,7 +44,10 @@ formatjs_library(
 
 formatjs_test(
     name = "babel-plugin-formatjs_test",
-    srcs = ["tests/index.test.ts"],
+    srcs = [
+        "tests/index.test.ts",
+        "tests/typescript-wrappers.test.ts",
+    ],
     data = [
         "//:node_modules/@babel/preset-env",  # keep: loaded dynamically via babel config in tests
         "//:node_modules/@babel/preset-react",  # keep: loaded dynamically via babel config in tests

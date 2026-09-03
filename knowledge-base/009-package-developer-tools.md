@@ -22,6 +22,9 @@
 
 - Babel AST visitor detects `FormattedMessage`, `formatMessage`, `defineMessage(s)` calls
 - Extracts `defaultMessage` and generates IDs
+- Unwraps TypeScript `as`, `satisfies`, non-null and type assertions, Flow casts, and parentheses before evaluating descriptor values and recognizing inline descriptors or `defineMessages` maps/entries
+- Rewrites strings inside wrappers; AST compilation replaces the whole message value
+- Wrapper regressions live in `tests/typescript-wrappers.test.ts`; `//packages/babel-plugin-formatjs/conformance-tests:conformance-tests_test` compares extracted messages and generated IDs with unplugin and the native CLI (required, never skipped)
 - Options: `removeDefaultMessage`, `idInterpolationPattern`, `overrideIdFn`, `ast` (pre-compile messages)
 
 **Dependencies:** @babel/core, @babel/traverse, @babel/types, ts-transformer, icu-messageformat-parser
