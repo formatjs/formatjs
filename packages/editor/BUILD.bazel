@@ -1,114 +1,65 @@
-# Editor demo app — not published. Auto-generated formatjs_library defaults
-# to index.ts as entry point, but the entry here is index.tsx; opt out of
-# gazelle-driven rule generation entirely for this dir.
-# gazelle:ts_enabled false
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:test.bzl", "formatjs_test")
 
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:package_json.bzl", "generate_package_json")
-
-generate_package_json(
+formatjs_library(
+    name = "editor",
     package_name = "@formatjs/editor",
+    srcs = [
+        "editor.tsx",
+        "index.ts",
+        "message.tsx",
+        "types.ts",
+        "validation.ts",
+    ],
     author = "Long Ho <holevietlong@gmail.com>",
-    bugs = {
-        "url": "https://github.com/formatjs/formatjs/issues",
-    },
-    description = "A ICU MessageFormat Editor UI",
-    homepage = "https://github.com/formatjs/formatjs",
+    description = "An ICU MessageFormat editor UI",
+    entry_points = ["index.ts"],
+    extra_npm_srcs = ["styles.css"],
+    homepage = "https://formatjs.github.io/",
     keywords = [
-        "intl",
-        "i18n",
-        "internationalization",
-        "locale",
-        "localization",
-        "globalization",
-        "react",
-        "react-intl",
-        "reactjs",
-        "format",
         "formatjs",
-        "formatting",
-        "translate",
+        "i18n",
+        "icu",
+        "internationalization",
+        "localization",
+        "react",
         "translation",
-        "cli",
     ],
     license = "MIT",
-    repository = {
-        "type": "git",
-        "url": "git+ssh://git@github.com/formatjs/formatjs.git",
+    package_dependency_version_overrides = {
+        "@types/react": ">=18.0.0",
+        "react": ">=18.0.0",
     },
+    package_peer_deps = [
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+    ],
+    package_types = "index.d.ts",
+    repository = "formatjs/formatjs.git",
+    side_effects = ["./styles.css"],
     type = "module",
-    types = "index.d.ts",
-    version = "3.0.28",
+    version = "3.0.28",  # x-release-please-version
+    visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
+        "./styles.css": "./styles.css",
     },
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/react",
         "//:node_modules/react",
-        "//:node_modules/react-intl",
     ],
 )
 
-generate_ide_tsconfig_json()
-
-# load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-# load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-
-# load("@npm//:http-server/package_json.bzl", "http_server")
-
-# exports_files(["package.json", "tsconfig.json"])
-
-# PACKAGE_NAME = "editor"
-
-# npm_package(
-#     name ="pkg",
-#     package = "@formatjs/%s" % PACKAGE_NAME,
-#     srcs = [
-#         "LICENSE.md",
-#         "README.md",
-#         ":editor",
-#         ":dist-esm",
-#     ],
-# )
-
-# SRCS = glob(["*.ts*"])
-
-# SRC_DEPS = [
-#     "//:node_modules/@material-ui/core",
-#     "//:node_modules/@material-ui/icons",
-#     "//:node_modules/@material-ui/lab",
-#     "//:node_modules/react",
-#     "//:node_modules/@types/react",
-#     "//:node_modules/react-dom",
-#     "//:node_modules/@types/react-dom",
-#     "//:node_modules/react-intl",
-#     "//:node_modules/@formatjs/icu-messageformat-parser",
-# ]
-
-# ts_compile(
-#     name = "dist",
-#     srcs = [":srcs"],
-#     deps = SRC_DEPS,
-# )
-
-# copy_to_bin(
-#     name = "index",
-#     srcs = ["index.html"],
-# )
-
-# http_server(
-#     name = "server",
-#     data = [
-#         ":index",
-#         ":app",
-#     ] + glob(["fixtures/*.json"]),
-#     args = [
-#         "packages/editor",
-#     ],
-# )
-
-# # package_json_test(
-# #     name="package_json_test",
-# #     deps=SRC_DEPS
-# # )
+formatjs_test(
+    name = "editor_test",
+    srcs = ["editor.test.tsx"],
+    dom = True,
+    no_copy_to_bin = ["//:package.json"],
+    deps = [
+        ":editor",
+        "//:node_modules/@testing-library/jest-dom",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/vitest",
+    ],
+)

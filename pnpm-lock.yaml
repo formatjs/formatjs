@@ -85,6 +85,9 @@ importers:
       '@formatjs/ecma376':
         specifier: workspace:*
         version: link:packages/ecma376
+      '@formatjs/editor':
+        specifier: workspace:*
+        version: link:packages/editor
       '@formatjs/fast-memoize':
         specifier: workspace:*
         version: link:packages/fast-memoize
@@ -632,6 +635,18 @@ importers:
   packages/cli-native-win32-x64: {}
 
   packages/ecma376: {}
+
+  packages/editor:
+    dependencies:
+      '@formatjs/icu-messageformat-parser':
+        specifier: workspace:*
+        version: link:../icu-messageformat-parser
+      '@types/react':
+        specifier: '>=18.0.0'
+        version: 19.2.18
+      react:
+        specifier: '>=18.0.0'
+        version: 19.2.8
 
   packages/eslint-plugin-formatjs:
     dependencies:
