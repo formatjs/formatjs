@@ -1,0 +1,17 @@
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "conformance-tests_test",
+    srcs = ["typescript-wrappers.test.ts"],
+    data = ["//crates/formatjs_cli"],  # keep: execute native CLI for conformance
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@babel/core",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/unplugin",
+        "//:node_modules/@types/babel__core",
+        "//:node_modules/@types/node",
+        "//:node_modules/babel-plugin-formatjs",
+        "//:node_modules/vitest",
+    ],
+)
