@@ -914,6 +914,134 @@ mod tests {
     }
 
     #[test]
+    fn test_message_recognition_parenthesized_descriptors() {
+        let descriptor = "{id: 'greeting', defaultMessage: 'Hello', description: 'Greeting'}";
+        let sources = [
+            format!("wrappedIntl.formatMessage(({descriptor}))"),
+            format!("messages.defineMessage((({descriptor} as const) satisfies MessageDescriptor)!)"),
+            format!("messages.defineMessages(({{greeting: {descriptor}}}))"),
+            format!("messages.defineMessages({{greeting: ({descriptor})}})"),
+            format!("messages.defineMessages(({{greeting: (<MessageDescriptor>{descriptor})!}} as const)!)"),
+            "wrappedIntl.formatMessage({id: ('greeting' as const), defaultMessage: ('Hello'), description: ('Greeting' satisfies string)})".to_string(),
+        ];
+        let function_names = vec![
+            "formatMessage".to_string(),
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+        ];
+
+        for source in sources {
+            let messages = extract_messages_from_source(
+                &source,
+                Path::new("test.ts"),
+                SourceType::default().with_typescript(true),
+                true,
+                &[],
+                &function_names,
+                HashMap::new(),
+                false,
+                false,
+                false,
+            )
+            .unwrap();
+
+            assert_eq!(messages.len(), 1, "{source}");
+            let message = &messages[0];
+            assert_eq!(message.id.as_deref(), Some("greeting"), "{source}");
+            assert_eq!(
+                message.default_message.as_deref(),
+                Some("Hello"),
+                "{source}"
+            );
+            assert_eq!(
+                message.description,
+                Some(Value::String("Greeting".to_string())),
+                "{source}"
+            );
+            assert_eq!(message.start, Some(0), "{source}");
+            assert_eq!(message.end, Some(source.len() as u32), "{source}");
+        }
+    }
+
+    #[test]
+    fn test_message_recognition_quoted_descriptor_keys() {
+        let sources = [
+            r#"wrappedIntl.formatMessage({'id': 'greeting', "defaultMessage": 'Hello', 'description': 'Greeting'})"#,
+            r#"messages.defineMessage({"id": 'greeting', 'defaultMessage': 'Hello', "description": 'Greeting'})"#,
+            r#"messages.defineMessages({'greeting': {'id': 'greeting', 'defaultMessage': 'Hello', 'description': 'Greeting'}})"#,
+        ];
+        let function_names = vec![
+            "formatMessage".to_string(),
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+        ];
+
+        for source in sources {
+            let messages = extract_messages_from_source(
+                source,
+                Path::new("test.ts"),
+                SourceType::default().with_typescript(true),
+                false,
+                &[],
+                &function_names,
+                HashMap::new(),
+                false,
+                false,
+                false,
+            )
+            .unwrap();
+
+            assert_eq!(messages.len(), 1, "{source}");
+            assert_eq!(messages[0].id.as_deref(), Some("greeting"), "{source}");
+            assert_eq!(
+                messages[0].default_message.as_deref(),
+                Some("Hello"),
+                "{source}"
+            );
+            assert_eq!(
+                messages[0].description,
+                Some(Value::String("Greeting".to_string())),
+                "{source}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_message_recognition_quoted_keys_reject_non_static_values() {
+        for (source, property) in [
+            (
+                "wrappedIntl.formatMessage({'id': getId(), defaultMessage: 'Hello'})",
+                "id",
+            ),
+            (
+                "wrappedIntl.formatMessage({id: 'greeting', 'defaultMessage': getMessage()})",
+                "defaultMessage",
+            ),
+        ] {
+            let extraction = extract_messages_from_source_with_diagnostics(
+                source,
+                Path::new("test.ts"),
+                SourceType::default().with_typescript(true),
+                false,
+                &[],
+                &["formatMessage".to_string()],
+                HashMap::new(),
+                false,
+                false,
+                false,
+            )
+            .unwrap();
+
+            assert!(extraction.messages.is_empty(), "{source}");
+            assert_eq!(extraction.errors.len(), 1, "{source}");
+            assert!(
+                extraction.errors[0].contains(&format!("`{property}` must be a string literal")),
+                "{source}"
+            );
+        }
+    }
+
+    #[test]
     fn test_extract_with_source_location() {
         let source = r#"
             <FormattedMessage defaultMessage="Test message" />
