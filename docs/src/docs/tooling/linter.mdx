@@ -51,7 +51,7 @@ export default [
 
 ### React
 
-Currently this uses `intl.formatMessage`, `defineMessage`, `defineMessages`, `<FormattedMessage>` from `react-intl` as hooks to verify the message. Therefore, in your code use 1 of the following mechanisms:
+The plugin checks `formatMessage`, `$formatMessage`, `$t`, `defineMessage`, `defineMessages`, and `<FormattedMessage>` messages. Function calls match by name, including methods on any receiver, just like `@formatjs/unplugin`. For example, `wrappedIntl.formatMessage(...)` and `messages.defineMessages(...)` are checked without resolving imports or receiver types:
 
 ```tsx
 const messages = defineMessages({
@@ -78,6 +78,20 @@ function foo() {
 }
 ```
 
+TypeScript wrappers (`as`, `satisfies`, non-null assertions, and angle-bracket
+assertions in `.ts` files) do not hide inline descriptors. This also applies to
+`defineMessages` maps and their individual entries. Autofixes preserve the
+surrounding wrappers.
+
+```tsx
+const wrappedIntl = useIntl()
+wrappedIntl.formatMessage({defaultMessage: 'Hello'} as const)
+
+messages.defineMessages({
+  greeting: {defaultMessage: 'Hello'} satisfies MessageDescriptor,
+} as const)
+```
+
 ### Vue
 
 This will check against `intl.formatMessage`, `$formatMessage` function calls in both your JS/TS & your SFC `.vue` files. For example:
@@ -100,7 +114,7 @@ These settings are applied globally to all formatjs rules once specified. See [S
 
 ### `formatjs.additionalFunctionNames`
 
-Similar to [babel-plugin-formatjs](/docs/tooling/babel-plugin#additionalfunctionnames) & [@formatjs/ts-transformer](/docs/tooling/ts-transformer#additionalfunctionnames), this allows you to specify additional function names to check besides `formatMessage` & `$formatMessage`.
+Similar to [babel-plugin-formatjs](/docs/tooling/babel-plugin#additionalfunctionnames) & [@formatjs/ts-transformer](/docs/tooling/ts-transformer#additionalfunctionnames), this allows you to specify additional function names to check besides `formatMessage`, `$formatMessage`, and `$t`. These names also match methods: configuring `customMessage` checks both `customMessage(...)` and `helpers.customMessage(...)`.
 
 ### `formatjs.additionalComponentNames`
 

@@ -8,6 +8,7 @@ RuleTester.describe = describe
 RuleTester.it = it
 
 interface TestCaseBase {
+  filename?: string
   code: string
   output?: string
   options?: unknown[]

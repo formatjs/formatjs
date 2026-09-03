@@ -116,6 +116,7 @@ export function transform(
   function unwrapTransparentTypeScriptExpression(node: any): any {
     let current = node
     while (
+      current?.type === 'ParenthesizedExpression' ||
       current?.type === 'TSAsExpression' ||
       current?.type === 'TSSatisfiesExpression' ||
       current?.type === 'TSTypeAssertion' ||

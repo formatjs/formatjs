@@ -36,6 +36,7 @@
 - Uses `magic-string` for source map-preserving transformations
 - Single codebase for all bundlers via the `unplugin` framework
 - Replicates babel-plugin-formatjs + ts-transformer functionality without Babel/TS dependency
+- Unwraps parentheses and TypeScript wrappers around descriptors and declaration maps
 - Separate entry points per bundler: `vite.ts`, `webpack.ts`, `rollup.ts`, `esbuild.ts`, `rspack.ts`
 
 **Options:** `idInterpolationPattern`, `overrideIdFn`, `removeDefaultMessage`, `ast`, `preserveWhitespace`
@@ -59,6 +60,18 @@ the exact selector `options`. The `recommended` and `strict` configs block
 `selectordinal` and restrict `select` to `gender` with `male`, `female`, and
 `other` options.
 
+Message call recognition matches unplugin by callee name, regardless of receiver:
+`formatMessage`, `$formatMessage`, `$t`, `defineMessage(s)`, and configured
+`additionalFunctionNames` work as direct calls or methods, including optional
+calls. `util.ts` unwraps TypeScript assertions, `satisfies`, and non-null
+expressions around descriptors, `defineMessages` maps, and map entries. It keeps
+the inner object/property nodes for diagnostics and fixes. Descriptor keys may
+be identifiers or quoted strings. `excludeMessageDeclCalls` still excludes both
+direct and namespaced declarations. Cross-tool regression tests live in
+`tests/message-recognition.test.ts`. Native CLI/unplugin conformance also covers
+receiver names, configured functions, descriptor keys, and wrapper combinations
+in `packages/unplugin/conformance-tests/cli-unplugin-conformance.test.ts`.
+
 **Peer dep:** `eslint@9 || 10`
 
 ## @formatjs/cli-lib
@@ -77,6 +90,8 @@ the exact selector `options`. The `recommended` and `strict` configs block
   uses Ruff through the native `formatjs_cli_napi` extractor.
 - Vue, Svelte, Handlebars, and GTS/Glimmer keep small JavaScript container
   adapters. Embedded script fragments are sent to the same native extractor.
+- Native JS/TS extraction unwraps parentheses and TypeScript wrappers around
+  descriptors and declaration maps, and accepts quoted descriptor keys.
 - Programmatic options such as callbacks, custom ID functions, pragma metadata,
   source locations, stdin, and custom formatters are applied around structured
   native results.

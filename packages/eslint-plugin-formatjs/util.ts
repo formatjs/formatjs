@@ -18,7 +18,6 @@ export interface MessageDescriptor {
 
 const FORMAT_FUNCTION_NAMES = new Set(['$formatMessage', 'formatMessage', '$t'])
 const COMPONENT_NAMES = new Set(['FormattedMessage'])
-const DECLARATION_FUNCTION_NAMES = new Set(['defineMessage'])
 
 export interface Settings {
   excludeMessageDeclCalls?: boolean
@@ -146,65 +145,55 @@ function staticallyEvaluateStringConcat(
     : ['', false]
 }
 
-export function isIntlFormatMessageCall(node: Node): boolean {
-  // GH #4890: Check for both MemberExpression (intl.formatMessage) and Identifier (formatMessage) patterns
+function unwrapObjectExpression(
+  node?: MessagePropertyValue
+): ObjectExpression | undefined {
+  switch (node?.type) {
+    case 'TSAsExpression':
+    case 'TSSatisfiesExpression':
+    case 'TSNonNullExpression':
+    case 'TSTypeAssertion':
+      return unwrapObjectExpression(node.expression)
+    case 'ObjectExpression':
+      return node
+  }
+}
+
+function getCalleeName(node: Node): string | undefined {
+  if (node.type === 'Identifier') {
+    return node.name
+  }
+  if (node.type === 'MemberExpression' && node.property.type === 'Identifier') {
+    return node.property.name
+  }
+}
+
+export function isIntlFormatMessageCall(
+  node: Node,
+  additionalFunctionNames: string[] = []
+): boolean {
+  if (node.type === 'ChainExpression') {
+    return isIntlFormatMessageCall(node.expression, additionalFunctionNames)
+  }
   if (node.type !== 'CallExpression') {
     return false
   }
-
-  // Check if call has at least one argument that is an object expression
-  if (
-    node.arguments.length < 1 ||
-    node.arguments[0].type !== 'ObjectExpression'
-  ) {
-    return false
-  }
-
-  // Pattern 1: intl.formatMessage() or something.intl.formatMessage()
-  if (node.callee.type === 'MemberExpression') {
-    return (
-      ((node.callee.object.type === 'Identifier' &&
-        node.callee.object.name === 'intl') ||
-        (node.callee.object.type === 'MemberExpression' &&
-          node.callee.object.property.type === 'Identifier' &&
-          node.callee.object.property.name === 'intl')) &&
-      node.callee.property.type === 'Identifier' &&
-      (node.callee.property.name === 'formatMessage' ||
-        node.callee.property.name === '$t')
-    )
-  }
-
-  // Pattern 2: formatMessage() (destructured from useIntl)
-  if (node.callee.type === 'Identifier') {
-    return FORMAT_FUNCTION_NAMES.has(node.callee.name)
-  }
-
-  return false
-}
-
-function isSingleMessageDescriptorDeclaration(
-  node: Node,
-  functionNames: Set<string>
-) {
-  return (
-    node.type === 'CallExpression' &&
-    node.callee.type === 'Identifier' &&
-    functionNames.has(node.callee.name)
-  )
-}
-
-function isMultipleMessageDescriptorDeclaration(node: Node) {
-  return (
-    node.type === 'CallExpression' &&
-    node.callee.type === 'Identifier' &&
-    node.callee.name === 'defineMessages'
+  const descriptor = node.arguments[0]
+  const calleeName = getCalleeName(node.callee)
+  return !!(
+    calleeName &&
+    (FORMAT_FUNCTION_NAMES.has(calleeName) ||
+      additionalFunctionNames.includes(calleeName)) &&
+    descriptor?.type !== 'SpreadElement' &&
+    unwrapObjectExpression(descriptor)
   )
 }
 
 export function extractMessageDescriptor(
-  node?: Expression
+  expression?: MessagePropertyValue
 ): MessageDescriptorNodeInfo | undefined {
-  if (!node || node.type !== 'ObjectExpression') {
+  const node = unwrapObjectExpression(expression)
+  if (!node) {
     return
   }
   const result: MessageDescriptorNodeInfo = {
@@ -216,13 +205,18 @@ export function extractMessageDescriptor(
     idValueNode: undefined,
   }
   for (const prop of node.properties) {
-    if (prop.type !== 'Property' || prop.key.type !== 'Identifier') {
+    if (prop.type !== 'Property') {
       continue
     }
 
     // Only extract values for message-related props
     // GH #5069: Don't process other props like tagName, values, etc.
-    const propName = prop.key.name
+    const propName =
+      prop.key.type === 'Identifier'
+        ? prop.key.name
+        : prop.key.type === 'Literal'
+          ? prop.key.value
+          : undefined
     if (
       propName !== 'id' &&
       propName !== 'defaultMessage' &&
@@ -347,8 +341,9 @@ function extractMessageDescriptorFromJSXElement(
   return [result, values]
 }
 
-function extractMessageDescriptors(node?: Expression) {
-  if (!node || node.type !== 'ObjectExpression' || !node.properties.length) {
+function extractMessageDescriptors(expression?: Expression) {
+  const node = unwrapObjectExpression(expression)
+  if (!node) {
     return []
   }
   const msgs = []
@@ -356,11 +351,7 @@ function extractMessageDescriptors(node?: Expression) {
     if (prop.type !== 'Property') {
       continue
     }
-    const msg = prop.value
-    if (msg.type !== 'ObjectExpression') {
-      continue
-    }
-    const nodeInfo = extractMessageDescriptor(msg as Expression)
+    const nodeInfo = extractMessageDescriptor(prop.value)
     if (nodeInfo) {
       msgs.push(nodeInfo)
     }
@@ -392,24 +383,24 @@ export function extractMessages(
     if (!args0 || args0.type === 'SpreadElement') {
       return []
     }
+    const calleeName = getCalleeName(node.callee)
+    if (!calleeName) {
+      return []
+    }
+    if (calleeName === 'defineMessages') {
+      return excludeMessageDeclCalls
+        ? []
+        : extractMessageDescriptors(args0).map(msg => [msg, undefined])
+    }
     if (
-      (!excludeMessageDeclCalls &&
-        isSingleMessageDescriptorDeclaration(
-          node,
-          DECLARATION_FUNCTION_NAMES
-        )) ||
-      isIntlFormatMessageCall(node) ||
-      isSingleMessageDescriptorDeclaration(node, allFormatFunctionNames)
+      calleeName === 'defineMessage'
+        ? !excludeMessageDeclCalls
+        : allFormatFunctionNames.has(calleeName)
     ) {
       const msgDescriptorNodeInfo = extractMessageDescriptor(args0)
       if (msgDescriptorNodeInfo && (!args1 || args1.type !== 'SpreadElement')) {
         return [[msgDescriptorNodeInfo, args1 as Expression]]
       }
-    } else if (
-      !excludeMessageDeclCalls &&
-      isMultipleMessageDescriptorDeclaration(node)
-    ) {
-      return extractMessageDescriptors(args0).map(msg => [msg, undefined])
     }
   } else if (
     node.type === 'JSXOpeningElement' &&

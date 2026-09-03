@@ -1,6 +1,9 @@
 import type {JSXElement} from 'estree-jsx'
 import type {Rule} from 'eslint'
-import {isIntlFormatMessageCall} from '#packages/eslint-plugin-formatjs/util.js'
+import {
+  getSettings,
+  isIntlFormatMessageCall,
+} from '#packages/eslint-plugin-formatjs/util.js'
 
 export const name = 'prefer-formatted-message'
 
@@ -20,12 +23,13 @@ export const rule: Rule.RuleModule = {
   },
   // TODO: Vue support
   create(context) {
+    const {additionalFunctionNames} = getSettings(context)
     return {
       JSXElement: (node: JSXElement) => {
         node.children.forEach(child => {
           if (
             child.type !== 'JSXExpressionContainer' ||
-            !isIntlFormatMessageCall(child.expression)
+            !isIntlFormatMessageCall(child.expression, additionalFunctionNames)
           ) {
             return
           }

@@ -9,7 +9,7 @@
  * transformed at bundle time by the Vite/Rollup/esbuild plugin share identical
  * IDs, preventing mismatches in production.
  */
-import {exec as nodeExec} from 'child_process'
+import {execFile as nodeExecFile} from 'child_process'
 import {mkdirSync, rmSync, writeFileSync} from 'fs'
 import {join, resolve} from 'path'
 import {promisify} from 'util'
@@ -17,7 +17,7 @@ import {afterAll, beforeAll, describe, expect, test} from 'vitest'
 import {transform} from '#packages/unplugin/transform.js'
 import {resolveRustBinaryPath} from '#packages/unplugin/conformance-tests/rust-binary-utils.js'
 
-const exec = promisify(nodeExec)
+const execFile = promisify(nodeExecFile)
 
 const RUST_BIN_PATH = resolveRustBinaryPath(import.meta.dirname)
 const ARTIFACT_PATH = resolve(import.meta.dirname, 'test_artifacts')
@@ -52,25 +52,91 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
    * Assert that `formatjs_cli extract --flatten` and the unplugin transform
    * (default options: flatten=true) produce identical IDs for the given code.
    */
-  async function assertConformance(code: string, filename: string) {
+  async function assertConformance(
+    code: string,
+    filename: string,
+    additionalFunctionNames: string[] = []
+  ) {
     const tempFile = join(ARTIFACT_PATH, filename)
     writeFileSync(tempFile, code)
 
     // CLI: --flatten matches the plugin's default flatten=true
-    const {stdout} = await exec(
-      `"${RUST_BIN_PATH}" extract --flatten "${tempFile}"`
-    )
+    const {stdout} = await execFile(RUST_BIN_PATH!, [
+      'extract',
+      '--flatten',
+      ...additionalFunctionNames.flatMap(name => [
+        '--additional-function-names',
+        name,
+      ]),
+      tempFile,
+    ])
     const cliOutput: Record<string, {defaultMessage: string}> =
       JSON.parse(stdout)
     const cliIds = Object.keys(cliOutput).sort()
 
     // Plugin: default options (flatten=true, idInterpolationPattern=[sha512:contenthash:base64:6])
-    const result = transform(code, tempFile, {})
+    const result = transform(code, tempFile, {additionalFunctionNames})
     expect(result, 'unplugin should transform the code').toBeDefined()
     const pluginIds = extractPluginIds(result!.code)
 
+    expect(cliIds.length).toBeGreaterThan(0)
     expect(pluginIds).toEqual(cliIds)
   }
+
+  test.each([
+    'formatMessage',
+    '$formatMessage',
+    '$t',
+    'wrappedIntl.formatMessage',
+    'this.props.wrappedIntl.formatMessage',
+    'getIntl().formatMessage',
+    'wrappedIntl.$formatMessage',
+    'wrappedIntl.$t',
+    'wrappedIntl?.formatMessage',
+    'wrappedIntl.formatMessage?.',
+    'wrappedIntl?.formatMessage?.',
+    'defineMessage',
+    'messages.defineMessage',
+    'customMessage',
+    'helpers.customMessage',
+  ])('recognizes %s with a wrapped descriptor', async callee => {
+    await assertConformance(
+      `${callee}(({defaultMessage: 'Hello'} as const satisfies MessageDescriptor)!)`,
+      'wrapped-receiver.ts',
+      ['customMessage']
+    )
+  })
+
+  const descriptorWrappers = [
+    (expression: string) => expression,
+    (expression: string) => `(${expression})`,
+    (expression: string) => `${expression} as const`,
+    (expression: string) => `${expression} satisfies MessageDescriptor`,
+    (expression: string) => `${expression}!`,
+    (expression: string) => `<MessageDescriptor>${expression}`,
+    (expression: string) =>
+      `(${expression} as const satisfies MessageDescriptor)!`,
+  ]
+  for (const [mapIndex, wrapMap] of descriptorWrappers.entries()) {
+    for (const [
+      descriptorIndex,
+      wrapDescriptor,
+    ] of descriptorWrappers.entries()) {
+      test(`namespaced defineMessages wrappers ${mapIndex}/${descriptorIndex}`, async () => {
+        await assertConformance(
+          `messages.defineMessages(${wrapMap(`{hello: ${wrapDescriptor(`{defaultMessage: 'Hello'}`)}}`)})`,
+          'wrapped-map.ts'
+        )
+      })
+    }
+  }
+
+  test('quoted descriptor keys', async () => {
+    await assertConformance(
+      `wrappedIntl.formatMessage({'defaultMessage': 'Hello', 'description': 'Greeting'})`,
+      'quoted-keys.ts'
+    )
+  })
 
   test('plain formatMessage without description', async () => {
     await assertConformance(

@@ -348,6 +348,9 @@ impl<'a> MessageExtractor<'a> {
     ) -> &'b Expression<'a> {
         loop {
             match expr {
+                Expression::ParenthesizedExpression(parenthesized) => {
+                    expr = &parenthesized.expression
+                }
                 Expression::TSAsExpression(ts_as) => expr = &ts_as.expression,
                 Expression::TSSatisfiesExpression(ts_satisfies) => expr = &ts_satisfies.expression,
                 Expression::TSTypeAssertion(ts_type_assertion) => {
@@ -576,36 +579,38 @@ impl<'a> MessageExtractor<'a> {
 
         for prop in &obj.properties {
             if let ObjectPropertyKind::ObjectProperty(p) = prop {
-                if let PropertyKey::StaticIdentifier(key) = &p.key {
-                    match key.name.as_str() {
-                        "id" => {
-                            descriptor.id = self.extract_string_literal(&p.value, Some(true));
-                            if descriptor.id.is_none() {
-                                extraction_error = true;
-                                let loc = self.format_location(p.span.start);
-                                self.errors.push(format!(
-                                    "{} [FormatJS] `id` must be a string literal to be extracted.",
-                                    loc
-                                ));
-                            }
+                let name = match &p.key {
+                    PropertyKey::StaticIdentifier(key) => key.name.as_str(),
+                    PropertyKey::StringLiteral(key) => key.value.as_str(),
+                    _ => continue,
+                };
+                match name {
+                    "id" => {
+                        descriptor.id = self.extract_string_literal(&p.value, Some(true));
+                        if descriptor.id.is_none() {
+                            extraction_error = true;
+                            let loc = self.format_location(p.span.start);
+                            self.errors.push(format!(
+                                "{} [FormatJS] `id` must be a string literal to be extracted.",
+                                loc
+                            ));
                         }
-                        "defaultMessage" => {
-                            descriptor.default_message =
-                                self.extract_string_literal(&p.value, None);
-                            if descriptor.default_message.is_none() {
-                                extraction_error = true;
-                                let loc = self.format_location(p.span.start);
-                                self.errors.push(format!(
+                    }
+                    "defaultMessage" => {
+                        descriptor.default_message = self.extract_string_literal(&p.value, None);
+                        if descriptor.default_message.is_none() {
+                            extraction_error = true;
+                            let loc = self.format_location(p.span.start);
+                            self.errors.push(format!(
                                     "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
                                     loc
                                 ));
-                            }
                         }
-                        "description" => {
-                            descriptor.description = self.extract_description(&p.value);
-                        }
-                        _ => {}
                     }
+                    "description" => {
+                        descriptor.description = self.extract_description(&p.value);
+                    }
+                    _ => {}
                 }
             }
         }
