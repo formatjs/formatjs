@@ -170,6 +170,11 @@ formatjs compile "lang/*.json" --out-file compiled.json --ast
 formatjs verify "lang/*.json" --source-locale en --missing-keys
 ```
 
+JavaScript and TypeScript extraction accepts inline message descriptors wrapped
+in parentheses, `as`, `satisfies`, non-null assertions, and angle-bracket
+assertions. This includes `defineMessages` maps and their entries. Descriptor
+keys such as `defaultMessage`, `description`, and `id` may be quoted strings.
+
 The native CLI also extracts `formatjs_intl::message_descriptor!` calls from
 Rust source:
 

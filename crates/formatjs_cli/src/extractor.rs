@@ -348,6 +348,9 @@ impl<'a> MessageExtractor<'a> {
     ) -> &'b Expression<'a> {
         loop {
             match expr {
+                Expression::ParenthesizedExpression(parenthesized) => {
+                    expr = &parenthesized.expression
+                }
                 Expression::TSAsExpression(ts_as) => expr = &ts_as.expression,
                 Expression::TSSatisfiesExpression(ts_satisfies) => expr = &ts_satisfies.expression,
                 Expression::TSTypeAssertion(ts_type_assertion) => {
@@ -576,36 +579,38 @@ impl<'a> MessageExtractor<'a> {
 
         for prop in &obj.properties {
             if let ObjectPropertyKind::ObjectProperty(p) = prop {
-                if let PropertyKey::StaticIdentifier(key) = &p.key {
-                    match key.name.as_str() {
-                        "id" => {
-                            descriptor.id = self.extract_string_literal(&p.value, Some(true));
-                            if descriptor.id.is_none() {
-                                extraction_error = true;
-                                let loc = self.format_location(p.span.start);
-                                self.errors.push(format!(
-                                    "{} [FormatJS] `id` must be a string literal to be extracted.",
-                                    loc
-                                ));
-                            }
+                let name = match &p.key {
+                    PropertyKey::StaticIdentifier(key) => key.name.as_str(),
+                    PropertyKey::StringLiteral(key) => key.value.as_str(),
+                    _ => continue,
+                };
+                match name {
+                    "id" => {
+                        descriptor.id = self.extract_string_literal(&p.value, Some(true));
+                        if descriptor.id.is_none() {
+                            extraction_error = true;
+                            let loc = self.format_location(p.span.start);
+                            self.errors.push(format!(
+                                "{} [FormatJS] `id` must be a string literal to be extracted.",
+                                loc
+                            ));
                         }
-                        "defaultMessage" => {
-                            descriptor.default_message =
-                                self.extract_string_literal(&p.value, None);
-                            if descriptor.default_message.is_none() {
-                                extraction_error = true;
-                                let loc = self.format_location(p.span.start);
-                                self.errors.push(format!(
+                    }
+                    "defaultMessage" => {
+                        descriptor.default_message = self.extract_string_literal(&p.value, None);
+                        if descriptor.default_message.is_none() {
+                            extraction_error = true;
+                            let loc = self.format_location(p.span.start);
+                            self.errors.push(format!(
                                     "{} [FormatJS] `defaultMessage` must be a string literal to be extracted.",
                                     loc
                                 ));
-                            }
                         }
-                        "description" => {
-                            descriptor.description = self.extract_description(&p.value);
-                        }
-                        _ => {}
                     }
+                    "description" => {
+                        descriptor.description = self.extract_description(&p.value);
+                    }
+                    _ => {}
                 }
             }
         }
@@ -906,6 +911,134 @@ mod tests {
             messages[0].default_message,
             Some("Welcome to our app!".to_string())
         );
+    }
+
+    #[test]
+    fn test_message_recognition_parenthesized_descriptors() {
+        let descriptor = "{id: 'greeting', defaultMessage: 'Hello', description: 'Greeting'}";
+        let sources = [
+            format!("wrappedIntl.formatMessage(({descriptor}))"),
+            format!("messages.defineMessage((({descriptor} as const) satisfies MessageDescriptor)!)"),
+            format!("messages.defineMessages(({{greeting: {descriptor}}}))"),
+            format!("messages.defineMessages({{greeting: ({descriptor})}})"),
+            format!("messages.defineMessages(({{greeting: (<MessageDescriptor>{descriptor})!}} as const)!)"),
+            "wrappedIntl.formatMessage({id: ('greeting' as const), defaultMessage: ('Hello'), description: ('Greeting' satisfies string)})".to_string(),
+        ];
+        let function_names = vec![
+            "formatMessage".to_string(),
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+        ];
+
+        for source in sources {
+            let messages = extract_messages_from_source(
+                &source,
+                Path::new("test.ts"),
+                SourceType::default().with_typescript(true),
+                true,
+                &[],
+                &function_names,
+                HashMap::new(),
+                false,
+                false,
+                false,
+            )
+            .unwrap();
+
+            assert_eq!(messages.len(), 1, "{source}");
+            let message = &messages[0];
+            assert_eq!(message.id.as_deref(), Some("greeting"), "{source}");
+            assert_eq!(
+                message.default_message.as_deref(),
+                Some("Hello"),
+                "{source}"
+            );
+            assert_eq!(
+                message.description,
+                Some(Value::String("Greeting".to_string())),
+                "{source}"
+            );
+            assert_eq!(message.start, Some(0), "{source}");
+            assert_eq!(message.end, Some(source.len() as u32), "{source}");
+        }
+    }
+
+    #[test]
+    fn test_message_recognition_quoted_descriptor_keys() {
+        let sources = [
+            r#"wrappedIntl.formatMessage({'id': 'greeting', "defaultMessage": 'Hello', 'description': 'Greeting'})"#,
+            r#"messages.defineMessage({"id": 'greeting', 'defaultMessage': 'Hello', "description": 'Greeting'})"#,
+            r#"messages.defineMessages({'greeting': {'id': 'greeting', 'defaultMessage': 'Hello', 'description': 'Greeting'}})"#,
+        ];
+        let function_names = vec![
+            "formatMessage".to_string(),
+            "defineMessage".to_string(),
+            "defineMessages".to_string(),
+        ];
+
+        for source in sources {
+            let messages = extract_messages_from_source(
+                source,
+                Path::new("test.ts"),
+                SourceType::default().with_typescript(true),
+                false,
+                &[],
+                &function_names,
+                HashMap::new(),
+                false,
+                false,
+                false,
+            )
+            .unwrap();
+
+            assert_eq!(messages.len(), 1, "{source}");
+            assert_eq!(messages[0].id.as_deref(), Some("greeting"), "{source}");
+            assert_eq!(
+                messages[0].default_message.as_deref(),
+                Some("Hello"),
+                "{source}"
+            );
+            assert_eq!(
+                messages[0].description,
+                Some(Value::String("Greeting".to_string())),
+                "{source}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_message_recognition_quoted_keys_reject_non_static_values() {
+        for (source, property) in [
+            (
+                "wrappedIntl.formatMessage({'id': getId(), defaultMessage: 'Hello'})",
+                "id",
+            ),
+            (
+                "wrappedIntl.formatMessage({id: 'greeting', 'defaultMessage': getMessage()})",
+                "defaultMessage",
+            ),
+        ] {
+            let extraction = extract_messages_from_source_with_diagnostics(
+                source,
+                Path::new("test.ts"),
+                SourceType::default().with_typescript(true),
+                false,
+                &[],
+                &["formatMessage".to_string()],
+                HashMap::new(),
+                false,
+                false,
+                false,
+            )
+            .unwrap();
+
+            assert!(extraction.messages.is_empty(), "{source}");
+            assert_eq!(extraction.errors.len(), 1, "{source}");
+            assert!(
+                extraction.errors[0].contains(&format!("`{property}` must be a string literal")),
+                "{source}"
+            );
+        }
     }
 
     #[test]

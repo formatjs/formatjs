@@ -114,6 +114,7 @@ formatjs_test(
         "tests/enforce-placeholders.test.ts",
         "tests/enforce-plural-rules.test.ts",
         "tests/fixtures.ts",
+        "tests/message-recognition.test.ts",
         "tests/no-camel-case.test.ts",
         "tests/no-complex-selectors.test.ts",
         "tests/no-emoji.test.ts",
@@ -135,6 +136,7 @@ formatjs_test(
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         ":eslint-plugin-formatjs",
+        "//:node_modules/@formatjs/unplugin",
         "//:node_modules/eslint",
         "//:node_modules/oxlint",
         "//:node_modules/vitest",

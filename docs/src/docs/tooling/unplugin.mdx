@@ -46,6 +46,13 @@ pnpm add -D @formatjs/unplugin
 
 The plugin processes message descriptors from: `defineMessages()`, `defineMessage()`, `intl.formatMessage`, `$t`, `$formatMessage` and `<FormattedMessage>`.
 
+Calls match by function or method name, regardless of receiver. This includes
+namespaced declarations and configured `additionalFunctionNames`. Parentheses
+and TypeScript wrappers (`as`, `satisfies`, non-null assertions, and angle-bracket
+assertions) are transparent around inline descriptors, `defineMessages` maps,
+and individual entries, including nested combinations. Transformations preserve
+these wrappers.
+
 ### Vite
 
 ```ts
