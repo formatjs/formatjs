@@ -25,7 +25,7 @@
     "@formatjs/ts-transformer": "workspace:*",
     "@types/estree-jsx": "1",
     "@types/picomatch": "4",
-    "@unicode/unicode-17.0.0": "1",
+    "@unicode/unicode-17.0.0": "2",
     "magic-string": "1",
     "picomatch": "2 || 3 || 4"
   },
