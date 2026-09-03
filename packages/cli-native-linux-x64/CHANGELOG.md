@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.1.17 (2026-09-03)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* build(deps): align Renovate Bazel lock command by @longlho in https://github.com/formatjs/formatjs/pull/7122
+* build: cross-compile Python release wheels by @longlho in https://github.com/formatjs/formatjs/pull/7121
+* fix: rename Python intl distribution by @longlho in https://github.com/formatjs/formatjs/pull/7123
+* fix: validate released Python versions by @longlho in https://github.com/formatjs/formatjs/pull/7125
+* feat(formatjs_cli): extract Python format_message calls by @longlho in https://github.com/formatjs/formatjs/pull/7129
+* feat(formatjs_intl): align Python runtime fallback by @longlho in https://github.com/formatjs/formatjs/pull/7130
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7133
+* build(deps): update Bazel lockfiles for Renovate PRs by @longlho in https://github.com/formatjs/formatjs/pull/7135
+* build(deps): publish dispatched Renovate check results by @longlho in https://github.com/formatjs/formatjs/pull/7136
+* build(deps): publish Renovate required statuses by @longlho in https://github.com/formatjs/formatjs/pull/7137
+* fix(eslint-plugin-formatjs): align message recognition across tools by @longlho in https://github.com/formatjs/formatjs/pull/7151
+* fix(babel-plugin-formatjs): support transparent expression wrappers by @longlho in https://github.com/formatjs/formatjs/pull/7156
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64@1.1.16...@formatjs/cli-native-linux-x64@1.1.17
+
 ## 1.1.16 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

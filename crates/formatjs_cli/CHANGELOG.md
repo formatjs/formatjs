@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.6.1 (2026-09-03)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* build(deps): update Bazel lockfiles for Renovate PRs by @longlho in https://github.com/formatjs/formatjs/pull/7135
+* build(deps): publish dispatched Renovate check results by @longlho in https://github.com/formatjs/formatjs/pull/7136
+* build(deps): publish Renovate required statuses by @longlho in https://github.com/formatjs/formatjs/pull/7137
+* fix(eslint-plugin-formatjs): align message recognition across tools by @longlho in https://github.com/formatjs/formatjs/pull/7151
+* fix(babel-plugin-formatjs): support transparent expression wrappers by @longlho in https://github.com/formatjs/formatjs/pull/7156
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.6.0...formatjs_cli_v1.6.1
+
 ## 1.6.0 (2026-08-31)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
