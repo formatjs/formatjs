@@ -287,15 +287,13 @@ impl<'a> MessageExtractor<'a> {
                     Some(normalize_whitespace(&value))
                 }
             }
-            Expression::TemplateLiteral(tpl)
-                if tpl.quasis.len() == 1 && tpl.expressions.is_empty() =>
-            {
-                let value = tpl.quasis[0].value.cooked.as_ref()?.to_string();
-                if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
-                    Some(value)
-                } else {
-                    Some(normalize_whitespace(&value))
-                }
+            Expression::TemplateLiteral(tpl) => {
+                self.extract_template_literal(tpl, preserve_whitespace)
+            }
+            // Tagged templates like dedent`...` are treated as their raw template,
+            // matching @formatjs/ts-transformer and eslint-plugin-formatjs.
+            Expression::TaggedTemplateExpression(tagged) => {
+                self.extract_template_literal(&tagged.quasi, preserve_whitespace)
             }
             // Handle string concatenation (e.g., 'Hello' + ' ' + 'World')
             Expression::BinaryExpression(bin) if bin.operator == BinaryOperator::Addition => {
@@ -304,6 +302,22 @@ impl<'a> MessageExtractor<'a> {
                 Some(format!("{}{}", left, right))
             }
             _ => None,
+        }
+    }
+
+    fn extract_template_literal(
+        &self,
+        tpl: &TemplateLiteral,
+        preserve_whitespace: Option<bool>,
+    ) -> Option<String> {
+        if tpl.quasis.len() != 1 || !tpl.expressions.is_empty() {
+            return None;
+        }
+        let value = tpl.quasis[0].value.cooked.as_ref()?.to_string();
+        if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
+            Some(value)
+        } else {
+            Some(normalize_whitespace(&value))
         }
     }
 
