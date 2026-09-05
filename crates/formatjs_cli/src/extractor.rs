@@ -1536,7 +1536,7 @@ mod tests {
     #[test]
     fn test_fixture_template_literal() {
         let component_names = vec!["FormattedMessage".to_string()];
-        let function_names = vec![];
+        let function_names = vec!["defineMessage".to_string()];
 
         let messages = extract_from_fixture(
             "templateLiteral.tsx",
@@ -1546,8 +1546,91 @@ mod tests {
         )
         .expect("Failed to extract from templateLiteral.tsx");
 
-        // Should extract messages from template literals
-        assert!(messages.len() >= 1);
+        // Matches the ts-transformer snapshot for this fixture: plain and tagged
+        // (dedent`...`) no-substitution templates are both extracted.
+        let by_id = |id: &str| {
+            messages
+                .iter()
+                .find(|m| m.id.as_deref() == Some(id))
+                .unwrap_or_else(|| panic!("missing message `{id}`"))
+        };
+        assert_eq!(messages.len(), 4);
+        assert_eq!(
+            by_id("template").default_message.as_deref(),
+            Some("should remove newline and extra spaces")
+        );
+        assert_eq!(
+            by_id("template dedent").default_message.as_deref(),
+            Some("dedent Hello World!")
+        );
+        assert_eq!(
+            by_id("foo.bar.baz").default_message.as_deref(),
+            Some("Hello World!")
+        );
+        assert_eq!(
+            by_id("dedent foo.bar.baz").default_message.as_deref(),
+            Some("dedent Hello World!")
+        );
+    }
+
+    #[test]
+    fn test_tagged_template_literal() {
+        let source = r#"
+            import { defineMessage, FormattedMessage } from 'react-intl';
+            defineMessage({
+                id: 'greeting',
+                defaultMessage: dedent`
+                    Hello {name},
+                    welcome back.
+                `,
+                description: dedent`Shown after login`,
+            });
+            <FormattedMessage
+                id={dedent`farewell`}
+                defaultMessage={dedent`Goodbye {name}`}
+            />;
+            defineMessage({
+                id: 'dynamic',
+                defaultMessage: dedent`Hello ${name}`,
+            });
+        "#;
+
+        let file_path = PathBuf::from("test.tsx");
+        let source_type = SourceType::from_path(&file_path).unwrap();
+        let component_names = vec!["FormattedMessage".to_string()];
+        let function_names = vec!["defineMessage".to_string()];
+
+        let messages = extract_messages_from_source(
+            source,
+            &file_path,
+            source_type,
+            false,
+            &component_names,
+            &function_names,
+            HashMap::new(),
+            true,
+            false,
+            false,
+        )
+        .unwrap();
+
+        assert_eq!(messages.len(), 2);
+        assert_eq!(messages[0].id.as_deref(), Some("greeting"));
+        assert_eq!(
+            messages[0].default_message.as_deref(),
+            Some(
+                "\n                    Hello {name},\n                    welcome back.\n                "
+            )
+        );
+        assert_eq!(
+            messages[0].description,
+            Some(Value::String("Shown after login".to_string()))
+        );
+        assert_eq!(messages[1].id.as_deref(), Some("farewell"));
+        assert_eq!(
+            messages[1].default_message.as_deref(),
+            Some("Goodbye {name}")
+        );
     }
 
     #[test]
