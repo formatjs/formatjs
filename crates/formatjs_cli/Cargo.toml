@@ -43,7 +43,7 @@ proc-macro2 = { version = "1.0", features = ["span-locations"] }
 syn = { version = "3.0", features = ["full", "parsing", "visit"] }
 ruff_python_ast = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.4" }
 ruff_python_parser = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.4" }
-ruff_text_size = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.4" }
+ruff_text_size = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.5" }
 
 [dev-dependencies]
 tempfile = "3.0"
