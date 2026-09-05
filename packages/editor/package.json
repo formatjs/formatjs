@@ -1,0 +1,34 @@
+{
+  "name": "@formatjs/editor",
+  "version": "3.0.28",
+  "description": "An ICU MessageFormat editor UI",
+  "keywords": [
+    "formatjs",
+    "i18n",
+    "icu",
+    "internationalization",
+    "localization",
+    "react",
+    "translation"
+  ],
+  "homepage": "https://formatjs.github.io/",
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "sideEffects": [
+    "./styles.css"
+  ],
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./styles.css": "./styles.css"
+  },
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "workspace:*"
+  },
+  "peerDependencies": {
+    "@types/react": ">=18.0.0",
+    "react": ">=18.0.0"
+  }
+}

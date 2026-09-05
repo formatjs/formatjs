@@ -4,7 +4,6 @@ packages:
   - 'website'
   - 'docs'
   - 'benchmarks/*'
-  - '!packages/editor'
 
 linkWorkspacePackages: true
 

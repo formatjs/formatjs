@@ -1,0 +1,385 @@
+.formatjs-editor {
+  --formatjs-editor-background: #fff;
+  --formatjs-editor-surface: #f7f7f8;
+  --formatjs-editor-border: #dedee3;
+  --formatjs-editor-text: #202124;
+  --formatjs-editor-muted: #686970;
+  --formatjs-editor-accent: #315efb;
+  --formatjs-editor-danger: #b42318;
+  --formatjs-editor-success: #16794c;
+  --formatjs-editor-warning: #9a6700;
+  background: var(--formatjs-editor-background);
+  color: var(--formatjs-editor-text);
+  display: flex;
+  flex-direction: column;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  min-height: 36rem;
+}
+
+.formatjs-editor *,
+.formatjs-editor *::before,
+.formatjs-editor *::after {
+  box-sizing: border-box;
+}
+
+.formatjs-editor button,
+.formatjs-editor input,
+.formatjs-editor select,
+.formatjs-editor textarea {
+  font: inherit;
+}
+
+.formatjs-editor button,
+.formatjs-editor select {
+  cursor: pointer;
+}
+
+.formatjs-editor button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.formatjs-editor__header {
+  align-items: flex-end;
+  background: var(--formatjs-editor-surface);
+  border-bottom: 1px solid var(--formatjs-editor-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+}
+
+.formatjs-editor__header h1 {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.formatjs-editor__header p,
+.formatjs-editor__search p,
+.formatjs-editor__hint {
+  color: var(--formatjs-editor-muted);
+  font-size: 0.75rem;
+  margin: 0.25rem 0 0;
+}
+
+.formatjs-editor__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.formatjs-editor__filters label,
+.formatjs-editor__search label,
+.formatjs-editor__translation label {
+  color: var(--formatjs-editor-muted);
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  font-weight: 600;
+  gap: 0.25rem;
+}
+
+.formatjs-editor input,
+.formatjs-editor select,
+.formatjs-editor textarea {
+  background: var(--formatjs-editor-background);
+  border: 1px solid var(--formatjs-editor-border);
+  border-radius: 0.375rem;
+  color: var(--formatjs-editor-text);
+  padding: 0.5rem 0.625rem;
+}
+
+.formatjs-editor input:focus,
+.formatjs-editor select:focus,
+.formatjs-editor textarea:focus,
+.formatjs-editor button:focus-visible {
+  outline: 2px solid var(--formatjs-editor-accent);
+  outline-offset: 2px;
+}
+
+.formatjs-editor__notice,
+.formatjs-editor__error-banner {
+  border-bottom: 1px solid var(--formatjs-editor-border);
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+}
+
+.formatjs-editor__notice {
+  color: var(--formatjs-editor-success);
+}
+
+.formatjs-editor__error-banner,
+.formatjs-editor__error {
+  color: var(--formatjs-editor-danger);
+}
+
+.formatjs-editor__layout {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(16rem, 30%) minmax(24rem, 1fr) minmax(
+      14rem,
+      24%
+    );
+  min-height: 0;
+}
+
+.formatjs-editor__messages,
+.formatjs-editor__translation {
+  border-right: 1px solid var(--formatjs-editor-border);
+}
+
+.formatjs-editor__messages {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.formatjs-editor__search {
+  border-bottom: 1px solid var(--formatjs-editor-border);
+  padding: 0.75rem;
+}
+
+.formatjs-editor__search input {
+  width: 100%;
+}
+
+.formatjs-editor__message-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.formatjs-editor__message-list > p {
+  color: var(--formatjs-editor-muted);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.formatjs-editor__message-button {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--formatjs-editor-border);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  width: 100%;
+}
+
+.formatjs-editor__message-button:hover,
+.formatjs-editor__message-button[aria-pressed='true'] {
+  background: var(--formatjs-editor-surface);
+}
+
+.formatjs-editor__message-button > span:first-child {
+  display: -webkit-box;
+  font-size: 0.875rem;
+  font-weight: 600;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.formatjs-editor__message-button small {
+  align-items: center;
+  color: var(--formatjs-editor-muted);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.formatjs-editor__message-button code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.formatjs-editor [data-status='translated'] {
+  color: var(--formatjs-editor-success);
+}
+
+.formatjs-editor [data-status='missing'] {
+  color: var(--formatjs-editor-warning);
+}
+
+.formatjs-editor__pagination,
+.formatjs-editor__actions {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.75rem;
+}
+
+.formatjs-editor__pagination {
+  border-top: 1px solid var(--formatjs-editor-border);
+  font-size: 0.75rem;
+}
+
+.formatjs-editor button {
+  background: var(--formatjs-editor-background);
+  border: 1px solid var(--formatjs-editor-border);
+  border-radius: 0.375rem;
+  color: var(--formatjs-editor-text);
+  padding: 0.5rem 0.75rem;
+}
+
+.formatjs-editor__translation {
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+
+.formatjs-editor__translation form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 50rem;
+}
+
+.formatjs-editor h2 {
+  color: var(--formatjs-editor-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.formatjs-editor__preview,
+.formatjs-editor__context code,
+.formatjs-editor__context li {
+  background: var(--formatjs-editor-surface);
+  border: 1px solid var(--formatjs-editor-border);
+  border-radius: 0.5rem;
+  padding: 0.875rem;
+}
+
+.formatjs-editor__message-preview {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  line-height: 1.75;
+}
+
+.formatjs-editor__token {
+  background: var(--formatjs-editor-background);
+  border: 1px solid var(--formatjs-editor-border);
+  border-radius: 999px;
+  color: var(--formatjs-editor-accent);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.3125rem 0.5rem;
+  user-select: all;
+}
+
+.formatjs-editor__description {
+  color: var(--formatjs-editor-muted);
+  font-size: 0.875rem;
+}
+
+.formatjs-editor__translation label {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.formatjs-editor__translation textarea {
+  margin-top: 0.5rem;
+  resize: vertical;
+  width: 100%;
+}
+
+.formatjs-editor__error {
+  display: block;
+  font-size: 0.875rem;
+  margin: 0.5rem 0 0;
+}
+
+.formatjs-editor__actions {
+  border-top: 1px solid var(--formatjs-editor-border);
+  justify-content: flex-end;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.formatjs-editor__actions button[type='submit'] {
+  background: var(--formatjs-editor-accent);
+  border-color: var(--formatjs-editor-accent);
+  color: #fff;
+}
+
+.formatjs-editor__context {
+  background: var(--formatjs-editor-surface);
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+
+.formatjs-editor__context > * + * {
+  margin-top: 1.5rem;
+}
+
+.formatjs-editor__context code {
+  display: block;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.formatjs-editor__context ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.formatjs-editor__context li {
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+  padding: 0.5rem;
+}
+
+.formatjs-editor--empty {
+  align-items: center;
+  color: var(--formatjs-editor-muted);
+  justify-content: center;
+  padding: 2rem;
+}
+
+@media (max-width: 64rem) {
+  .formatjs-editor__layout {
+    grid-template-columns: minmax(15rem, 35%) 1fr;
+  }
+
+  .formatjs-editor__context {
+    border-top: 1px solid var(--formatjs-editor-border);
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 44rem) {
+  .formatjs-editor__layout {
+    display: block;
+  }
+
+  .formatjs-editor__messages,
+  .formatjs-editor__translation {
+    border-bottom: 1px solid var(--formatjs-editor-border);
+    border-right: 0;
+  }
+
+  .formatjs-editor__message-list {
+    max-height: 20rem;
+  }
+}

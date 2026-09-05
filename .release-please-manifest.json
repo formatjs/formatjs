@@ -10,6 +10,7 @@
   "packages/cli-native-win32-x64": "1.1.18",
   "packages/cli": "6.16.23",
   "packages/ecma376": "0.5.8",
+  "packages/editor": "3.0.28",
   "packages/eslint-plugin-formatjs": "6.6.2",
   "packages/fast-memoize": "3.1.7",
   "packages/icu-messageformat-parser": "3.5.17",
