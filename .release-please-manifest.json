@@ -29,7 +29,7 @@
   "packages/intl-relativetimeformat": "12.3.13",
   "packages/intl-segmenter": "12.2.13",
   "packages/intl": "4.1.20",
-  "packages/react-intl": "10.1.26",
+  "packages/react-intl": "10.1.27",
   "packages/svelte-intl": "1.1.17",
   "packages/ts-transformer": "4.4.19",
   "packages/unplugin": "1.2.8",
