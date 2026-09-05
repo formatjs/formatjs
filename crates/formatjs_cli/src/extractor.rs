@@ -290,8 +290,7 @@ impl<'a> MessageExtractor<'a> {
             Expression::TemplateLiteral(tpl) => {
                 self.extract_template_literal(tpl, preserve_whitespace)
             }
-            // Tagged templates like dedent`...` are treated as their raw template,
-            // matching @formatjs/ts-transformer and eslint-plugin-formatjs.
+            // The tag is ignored: dedent`...` extracts as its raw template, like ts-transformer.
             Expression::TaggedTemplateExpression(tagged) => {
                 self.extract_template_literal(&tagged.quasi, preserve_whitespace)
             }
