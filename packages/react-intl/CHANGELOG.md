@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 10.1.27 (2026-09-05)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/react-intl@10.1.26...react-intl@10.1.27
+
 ## 10.1.26 (2026-09-03)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
