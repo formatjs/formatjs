@@ -47,3 +47,13 @@ describe('Intl.RelativeTimeFormat', function () {
     }
   })
 })
+
+it('rejects BigInt values in both formatting methods', () => {
+  const formatter = new RelativeTimeFormat('en')
+  for (const value of [1n, Object(1n), {valueOf: () => 1n}]) {
+    expect(() => formatter.format(value as any, 'day')).toThrow(TypeError)
+    expect(() => formatter.formatToParts(value as any, 'day')).toThrow(
+      TypeError
+    )
+  }
+})

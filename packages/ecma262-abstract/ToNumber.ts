@@ -1,47 +1,15 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
-
-const ZERO = new Decimal(0)
-
-function invariant(
-  condition: boolean,
-  message: string,
-  Err: typeof Error = Error
-): asserts condition {
-  if (!condition) {
-    throw new Err(message)
-  }
-}
 
 /**
+ * ECMA-262 §7.1.4 ToNumber, steps 2, 8–10.
  * https://tc39.es/ecma262/#sec-tonumber
+ * https://github.com/tc39/ecma262/blob/dcf59856a8184792a9e42f0ffb7dc064094a5dcc/spec.html#L5183-L5191
  */
 export function ToNumber(arg: any): Decimal {
-  if (typeof arg === 'number') {
-    return new Decimal(arg)
-  }
-  if (typeof arg === 'bigint') {
-    return new Decimal(arg.toString())
-  }
-  invariant(typeof arg !== 'symbol', 'Symbol is not supported', TypeError)
-  if (arg === undefined) {
-    return new Decimal(NaN)
-  }
-  if (arg === null || arg === 0) {
-    return ZERO
-  }
-  if (arg === true) {
-    return new Decimal(1)
-  }
-  if (typeof arg === 'string') {
-    try {
-      return new Decimal(arg)
-    } catch {
-      return new Decimal(NaN)
-    }
-  }
-  invariant(typeof arg === 'object', 'object expected', TypeError)
-  let primValue = ToPrimitive(arg, 'number')
-  invariant(typeof primValue !== 'object', 'object expected', TypeError)
-  return ToNumber(primValue)
+  // Unary + evaluation step 2 returns ? ToNumber, preserving abrupt completions
+  // from ToPrimitive and rejecting BigInt/Symbol before constructing Decimal.
+  // ECMA-262 §13.5.4.1 Unary + evaluation, step 2.
+  // https://tc39.es/ecma262/#sec-unary-plus-operator-runtime-semantics-evaluation
+  // https://github.com/tc39/ecma262/blob/dcf59856a8184792a9e42f0ffb7dc064094a5dcc/spec.html#L20666
+  return new Decimal(+arg)
 }

@@ -39,7 +39,10 @@ export default class RelativeTimeFormat {
     }
     return PartitionRelativeTimePattern(
       this,
-      Number(value),
+      // ECMA-402 §18.3.3 Intl.RelativeTimeFormat.prototype.format, step 3.
+      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.format
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L175
+      +value,
       ToString(unit) as Intl.RelativeTimeFormatUnit,
       {
         getInternalSlots,
@@ -61,7 +64,10 @@ export default class RelativeTimeFormat {
     }
     return PartitionRelativeTimePattern(
       this,
-      Number(value),
+      // ECMA-402 §18.3.4 Intl.RelativeTimeFormat.prototype.formatToParts, step 3.
+      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.formatToParts
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L189
+      +value,
       ToString(unit) as Intl.RelativeTimeFormatUnit,
       {getInternalSlots}
     )

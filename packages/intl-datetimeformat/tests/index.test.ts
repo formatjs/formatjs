@@ -878,3 +878,11 @@ describe('hourCycle override', function () {
     expect(dtf12.format(date)).toMatch(/3/)
   })
 })
+
+it('rejects BigInt date arguments', () => {
+  const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+  for (const value of [0n, Object(0n), {valueOf: () => 0n}]) {
+    expect(() => formatter.format(value as any)).toThrow(TypeError)
+    expect(() => formatter.formatToParts(value as any)).toThrow(TypeError)
+  }
+})

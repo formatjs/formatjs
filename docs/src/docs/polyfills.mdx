@@ -18,6 +18,13 @@ Our current list of polyfills includes:
 
 ![Polyfill Hierarchy](/img/polyfills.svg)
 
+# Numeric inputs
+
+DateTimeFormat, RelativeTimeFormat, duration fields, and numeric options use
+ECMAScript Number conversion and reject BigInt inputs. NumberFormat and
+PluralRules formatting values support BigInt through their separate
+mathematical-value conversion.
+
 # polyfill-fastly.io Integration
 
 For basic use cases, we recommend using [polyfill-fastly.io](https://polyfill-fastly.io/) or [polyfill-library](https://github.com/Financial-Times/polyfill-library) to generate polyfill bundle since it automatically resolves the dependencies above for you.
