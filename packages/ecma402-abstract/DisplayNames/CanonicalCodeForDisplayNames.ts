@@ -6,7 +6,9 @@ import {IsValidDateTimeFieldCode} from '#packages/ecma402-abstract/DisplayNames/
 
 const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
 const ALPHA_4 = /^[a-z]{4}$/i
-const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}([-_][a-z0-9]{3,8})*$/i
+// Calendar codes reject backwards-compatible underscore syntax.
+// https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
+const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 function isUnicodeRegionSubtag(region: string): boolean {
   return UNICODE_REGION_SUBTAG_REGEX.test(region)

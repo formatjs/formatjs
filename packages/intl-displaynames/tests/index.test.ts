@@ -288,3 +288,15 @@ describe('.resolvedOptions()', () => {
 })
 
 // TODO: add snapshot tests
+
+it('rejects underscore calendar identifiers', () => {
+  const names = new DisplayNames('en', {type: 'calendar'})
+  expect(() => names.of('islamic_civil')).toThrow(RangeError)
+  expect(() => names.of('islamic-civil')).not.toThrow()
+})
+it('returns canonical codes when display names are missing', () => {
+  expect(new DisplayNames('en', {type: 'currency'}).of('zzz')).toBe('ZZZ')
+  expect(
+    new DisplayNames('en', {type: 'currency', fallback: 'none'}).of('zzz')
+  ).toBeUndefined()
+})

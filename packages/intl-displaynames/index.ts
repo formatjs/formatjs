@@ -214,7 +214,9 @@ export class DisplayNames {
     }
 
     if (fallback === 'code') {
-      return codeAsString
+      // Return the canonical code after lookup fails.
+      // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
+      return canonicalCode
     }
   }
 
@@ -268,7 +270,7 @@ function isValidCodeForDisplayNames(
       return IsWellFormedCurrencyCode(code)
     case 'calendar':
       // unicode locale identifier type
-      return /^[a-z0-9]{3,8}([-_][a-z0-9]{3,8})*$/i.test(code)
+      return /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(code)
     case 'dateTimeField':
       return IsValidDateTimeFieldCode(code)
   }
