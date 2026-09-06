@@ -7,7 +7,7 @@ use oxc_allocator::Allocator;
 use oxc_ast::ast::*;
 use oxc_data_structures::rope::{Rope, get_line_column};
 use oxc_parser::{Parser, ParserReturn};
-use oxc_span::SourceType;
+use oxc_span::{SourceType, Span};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
@@ -59,6 +59,19 @@ pub(crate) fn normalize_whitespace(s: &str) -> String {
     }
 
     normalized
+}
+
+/// Comment that opts the following call or element out of extraction.
+const IGNORE_COMMENT: &str = "formatjs-ignore";
+
+/// `// formatjs-ignore` or `/* formatjs-ignore */`, optionally followed by a reason.
+fn is_ignore_comment(source: &str, comment: &Comment) -> bool {
+    let content = comment.content_span();
+    let text = source[content.start as usize..content.end as usize].trim();
+    match text.strip_prefix(IGNORE_COMMENT) {
+        Some(rest) => rest.is_empty() || rest.starts_with(char::is_whitespace),
+        None => false,
+    }
 }
 
 /// Convert byte offset to (line, UTF-16 column) - both 1-indexed.
@@ -128,6 +141,13 @@ pub fn extract_messages_from_source_with_diagnostics(
         anyhow::bail!("Parse errors:\n{}", error_messages.join("\n"));
     }
 
+    let ignore_comments: Vec<Span> = program
+        .comments
+        .iter()
+        .filter(|comment| is_ignore_comment(source_text, comment))
+        .map(|comment| comment.span)
+        .collect();
+
     // Visit the AST to extract messages
     let source_rope = Rope::from_str(source_text);
     let mut visitor = MessageExtractor::new(
@@ -139,6 +159,7 @@ pub fn extract_messages_from_source_with_diagnostics(
         function_names,
         pragma_meta,
         preserve_whitespace,
+        ignore_comments,
     );
 
     visitor.visit_program(&program);
@@ -237,6 +258,7 @@ struct MessageExtractor<'a> {
     function_names: &'a [String],
     _pragma_meta: HashMap<String, String>,
     preserve_whitespace: bool,
+    ignore_comments: Vec<Span>,
     messages: Vec<MessageDescriptor>,
     errors: Vec<String>,
 }
@@ -251,6 +273,7 @@ impl<'a> MessageExtractor<'a> {
         function_names: &'a [String],
         pragma_meta: HashMap<String, String>,
         preserve_whitespace: bool,
+        ignore_comments: Vec<Span>,
     ) -> Self {
         Self {
             file_path,
@@ -261,9 +284,22 @@ impl<'a> MessageExtractor<'a> {
             function_names,
             _pragma_meta: pragma_meta,
             preserve_whitespace,
+            ignore_comments,
             messages: Vec::new(),
             errors: Vec::new(),
         }
+    }
+
+    /// Whether a `formatjs-ignore` comment sits on the node's line or the line above it.
+    fn is_ignored(&self, node_start: u32) -> bool {
+        let (node_line, _) = get_line_col(self.source_text, &self.source_rope, node_start);
+        self.ignore_comments.iter().any(|span| {
+            if span.end > node_start {
+                return false;
+            }
+            let (comment_line, _) = get_line_col(self.source_text, &self.source_rope, span.end);
+            node_line - comment_line <= 1
+        })
     }
 
     /// Format a source location string like "file.tsx:line:col"
@@ -404,6 +440,10 @@ impl<'a> MessageExtractor<'a> {
             return;
         }
 
+        if self.is_ignored(opening_element.span.start) {
+            return;
+        }
+
         let mut descriptor = MessageDescriptor {
             id: None,
             default_message: None,
@@ -507,6 +547,10 @@ impl<'a> MessageExtractor<'a> {
         let function_name = function_name.unwrap();
 
         if !self.function_names.iter().any(|n| n == function_name) {
+            return;
+        }
+
+        if self.is_ignored(call.span.start) {
             return;
         }
 
@@ -1800,6 +1844,90 @@ mod tests {
         assert!(messages[0].file.is_some());
         assert!(messages[0].start.is_some());
         assert!(messages[0].end.is_some());
+    }
+
+    fn extract_with_errors(source: &str) -> MessageExtraction {
+        let file_path = PathBuf::from("test.tsx");
+        extract_messages_from_source_with_diagnostics(
+            source,
+            &file_path,
+            SourceType::from_path(&file_path).unwrap(),
+            false,
+            &["FormattedMessage".to_string()],
+            &["defineMessage".to_string()],
+            HashMap::new(),
+            false,
+            false,
+            false,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn test_ignore_comment_skips_call_and_jsx() {
+        let extraction = extract_with_errors(
+            r#"
+            // formatjs-ignore
+            defineMessage({ defaultMessage: dynamic.message, id: dynamic.id });
+
+            /* formatjs-ignore title is defined with notifT */
+            defineMessage({ defaultMessage: dynamic.message, id: dynamic.id });
+
+            // formatjs-ignore
+            defineMessage({ defaultMessage: 'Static but skipped', id: 'skipped' });
+
+            const el = (
+                <div>
+                    {/* formatjs-ignore */}
+                    <FormattedMessage defaultMessage={dynamic.message} id={dynamic.id} />
+                    {/* formatjs-ignore */}<FormattedMessage defaultMessage={dynamic.message} id={dynamic.id} />
+                </div>
+            );
+
+            defineMessage({ defaultMessage: 'Kept', id: 'kept' });
+            "#,
+        );
+
+        assert_eq!(extraction.errors, Vec::<String>::new());
+        assert_eq!(extraction.messages.len(), 1);
+        assert_eq!(extraction.messages[0].id.as_deref(), Some("kept"));
+    }
+
+    #[test]
+    fn test_ignore_comment_only_applies_to_the_next_line() {
+        let extraction = extract_with_errors(
+            r#"
+            // formatjs-ignore
+            const unrelated = 1;
+            defineMessage({ defaultMessage: dynamic.message, id: dynamic.id });
+
+            // formatjs-ignore
+            defineMessage({ defaultMessage: 'Skipped', id: 'skipped' });
+            defineMessage({ defaultMessage: 'Kept', id: 'kept' });
+            "#,
+        );
+
+        assert_eq!(extraction.errors.len(), 2);
+        assert!(extraction.errors[0].contains("test.tsx:4:29"));
+        assert_eq!(extraction.messages.len(), 1);
+        assert_eq!(extraction.messages[0].id.as_deref(), Some("kept"));
+    }
+
+    #[test]
+    fn test_ignore_comment_requires_word_boundary() {
+        let extraction = extract_with_errors(
+            r#"
+            // formatjs-ignored
+            defineMessage({ defaultMessage: 'One', id: 'one' });
+            // formatjs-ignore-file
+            defineMessage({ defaultMessage: 'Two', id: 'two' });
+            // see formatjs-ignore
+            defineMessage({ defaultMessage: 'Three', id: 'three' });
+            "#,
+        );
+
+        assert_eq!(extraction.errors, Vec::<String>::new());
+        assert_eq!(extraction.messages.len(), 3);
     }
 
     #[test]

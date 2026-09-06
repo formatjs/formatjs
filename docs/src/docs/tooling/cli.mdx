@@ -436,6 +436,20 @@ becomes
 The goal is to provide as many full sentences as possible since fragmented
 sentences are not translator-friendly.
 
+### Skipping a message with `formatjs-ignore`
+
+Sometimes a call renders a message whose `id` and `defaultMessage` come from a variable, for example a notification title that was declared and extracted elsewhere. The extractor cannot read those and warns that they must be string literals. Put a `formatjs-ignore` comment on the line before the call or element to skip it without a warning. Anything after the marker is treated as a reason.
+
+```tsx
+// formatjs-ignore title is extracted from its definition
+intl.formatMessage({id: notification.id, defaultMessage: notification.template}, values)
+
+{/* formatjs-ignore */}
+<FormattedMessage id={notification.id} defaultMessage={notification.template} />
+```
+
+The comment applies only to the call or element that starts on the same line or the next line, and the message is not extracted at all, even when its values are static.
+
 ## Verification
 
 Verify translation files to make sure keys are translated and messages are structurally compatible with source locale.
