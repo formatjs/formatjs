@@ -49,3 +49,9 @@ Stage 3: supported-locales.generated.ts
 - Dynamic per-locale loading via `DisplayNames.__addLocaleData()`
 - Buffered via `globalThis.__FORMATJS_DISPLAYNAMES_DATA__`
 - Tree-shakeable: `import '@formatjs/intl-displaynames/locale-data/en'`
+
+## Code validation and fallback
+
+Calendar codes use hyphen-separated Unicode type identifiers; underscore forms
+throw `RangeError`. When `fallback: 'code'` applies, `of` returns the canonical
+code, such as `ZZZ` for an unknown currency supplied as `zzz`.

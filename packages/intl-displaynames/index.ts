@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
@@ -214,7 +215,11 @@ export class DisplayNames {
     }
 
     if (fallback === 'code') {
-      return codeAsString
+      // Return the canonical code after lookup fails.
+      // ECMA-402 §12.3.3 Intl.DisplayNames.prototype.of, steps 4–7.
+      // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L185-L188
+      return canonicalCode
     }
   }
 
@@ -268,7 +273,7 @@ function isValidCodeForDisplayNames(
       return IsWellFormedCurrencyCode(code)
     case 'calendar':
       // unicode locale identifier type
-      return /^[a-z0-9]{3,8}([-_][a-z0-9]{3,8})*$/i.test(code)
+      return IsUnicodeLocaleIdentifierType(code)
     case 'dateTimeField':
       return IsValidDateTimeFieldCode(code)
   }

@@ -205,3 +205,9 @@ async function polyfill(locale: string) {
   await import(`@formatjs/intl-displaynames/locale-data/${locale}.js`)
 }
 ```
+
+## Code validation and fallback
+
+Calendar codes use hyphen-separated Unicode type identifiers; underscore forms
+throw `RangeError`. When `fallback: 'code'` applies, `of` returns the canonical
+code, such as `ZZZ` for an unknown currency supplied as `zzz`.
