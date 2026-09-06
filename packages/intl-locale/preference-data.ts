@@ -67,8 +67,14 @@ export function getTimeZonePreferenceForRegion(region: string): string[] {
   return []
 }
 
-export function getWeekDataForRegion(region?: string): WeekInfoInternal {
+export function getWeekDataForRegion(
+  region?: string,
+  regionOverride?: string
+): WeekInfoInternal {
   const _region = (region ? region.toUpperCase() : '') as WeekDataKey
 
-  return weekData[_region || '001'] || weekData['001']
+  // Available region override data takes precedence over the locale's region.
+  // https://tc39.es/ecma402/#sec-weekinfooflocale
+  const override = (regionOverride || '').toUpperCase() as WeekDataKey
+  return weekData[override] || weekData[_region] || weekData['001']
 }
