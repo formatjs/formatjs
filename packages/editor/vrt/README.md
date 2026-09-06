@@ -5,6 +5,7 @@ It captures the loaded UI and a populated translation field. A local Vite
 middleware serves deterministic message fixtures; no external service is needed.
 
 ```sh
+bazel build //packages/editor/vrt:typecheck
 bazel test //packages/editor/vrt:visual_test --test_output=errors
 bazel run //packages/editor/vrt:visual_test.update
 ```
@@ -31,3 +32,7 @@ bazel test //packages/editor/vrt:visual_test \
 
 The VRT target is manual and requires Docker/network access; invoke it explicitly
 in a browser-test CI job. It does not run in the default `bazel test //...` lane.
+
+The TypeScript config, browser test, and editor sources are strictly typechecked
+as a required input to the visual test. The runtime package supplies generated
+TypeScript declarations.

@@ -2,12 +2,14 @@
   "name": "editor-vrt",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.17.0",
   "devDependencies": {
     "@formatjs/icu-messageformat-parser": "2.11.4",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
+    "@types/node": "24.10.1",
+    "@types/react": "17.0.90",
+    "@types/react-dom": "17.0.26",
     "@vitejs/plugin-react": "6.0.1",
     "@vitest/browser-playwright": "4.1.6",
     "playwright": "1.62.0",
@@ -15,7 +17,9 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-intl": "6.8.9",
+    "typescript": "5.9.3",
     "vite": "8.1.0",
     "vitest": "4.1.6"
-  }
+  },
+  "packageManager": "pnpm@11.17.0"
 }

@@ -1,6 +1,6 @@
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {mergeConfig} from 'vitest/config'
+import {defineConfig, mergeConfig} from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import {playwright} from '@vitest/browser-playwright'
 import {visualConfig} from '@rules-web-e2e/vrt'
@@ -14,14 +14,14 @@ export default mergeConfig(
     root,
     viewport: {width: 1280, height: 720},
   }),
-  {
+  defineConfig({
     plugins: [
       react(),
       {
         name: 'editor-source-imports',
         configureServer(server) {
           server.middlewares.use('/fixtures', (req, res, next) => {
-            if (!['/en.json', '/ru.json'].includes(req.url)) return next()
+            if (!['/en.json', '/ru.json'].includes(req.url ?? '')) return next()
             const messages = Object.fromEntries(
               Array.from({length: 53}, (_, index) => [
                 `message-${index}`,
@@ -73,5 +73,5 @@ export default mergeConfig(
       ],
     },
     test: {include: ['editor.visual.test.tsx']},
-  }
+  })
 )
