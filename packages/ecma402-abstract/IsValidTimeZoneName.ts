@@ -4,7 +4,9 @@ const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
 
 /**
  * IsValidDateTimeFormatOffset ( offsetString )
+ * ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
  * https://tc39.es/ecma402/#sec-createdatetimeformat
+ * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
  *
  * Validates whether a string represents a valid UTC offset timezone.
  * Supports DateTimeFormat offsets: ±HH, ±HHMM, ±HH:MM
@@ -19,7 +21,9 @@ function IsValidDateTimeFormatOffset(offsetString: string): boolean {
 
   // CreateDateTimeFormat step 19.c rejects more than one MinuteSecond node:
   // minutes are allowed, but seconds (including :00) are not.
-  // https://tc39.es/ecma402/#sec-createdatetimeformat:~:text=If%20parseResult%20contains%20more%20than%20one
+  // ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
   const match = OFFSET_TIMEZONE_FORMAT_REGEX.exec(offsetString)
 
   if (!match) {
