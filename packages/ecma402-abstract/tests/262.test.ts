@@ -62,12 +62,14 @@ describe('Number coercion', () => {
       }
     }
   )
-  it.each([
-    {[Symbol.toPrimitive]: 1},
-    {[Symbol.toPrimitive]: () => ({})},
-    {valueOf: () => ({}), toString: () => ({})},
-  ])('rejects invalid object coercion: %s', value => {
-    expect(() => ToNumber(value)).toThrow(TypeError)
+  it('rejects invalid object coercion', () => {
+    for (const value of [
+      {[Symbol.toPrimitive]: 1},
+      {[Symbol.toPrimitive]: () => ({})},
+      {valueOf: () => ({}), toString: () => ({})},
+    ]) {
+      expect(() => ToNumber(value)).toThrow(TypeError)
+    }
   })
   it('coerces an object once with a number hint', () => {
     const hints: string[] = []
