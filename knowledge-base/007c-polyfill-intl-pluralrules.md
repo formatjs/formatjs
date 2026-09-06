@@ -119,7 +119,7 @@ When `selectRange(start, end)` is called:
 - **No make-plural dependency**: Custom compiler replaced previous make-plural dependency
 - **BigInt support**: `ToIntlMathematicalValue()` handles BigInt per ECMA-402
 - **String-based integer digits**: Stored as string for numbers > 2^53 to prevent precision loss
-- **Compact notation extension**: Non-standard but mirrors Intl.NumberFormat for consistent plural selection
+- **Notation options**: The current ECMA-402 draft includes notation and compactDisplay; compact exponents use available NumberFormat locale data
 
 ## Examples by Locale Complexity
 
