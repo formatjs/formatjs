@@ -47,8 +47,6 @@ export interface IntlLocaleOptions {
   firstDayOfWeek?: string
 }
 
-const ALPHANUM_3_8 = /^[a-z0-9]{3,8}$/i
-
 const RELEVANT_EXTENSION_KEYS = [
   'ca',
   'co',
@@ -441,7 +439,9 @@ function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
 const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
 
 function weekdayToString(fw: string) {
-  return TABLE_1[+fw]
+  // WeekdayToUValue maps only exact numeric strings; other strings pass through.
+  // https://tc39.es/ecma402/#sec-weekdaytouvalue
+  return /^[0-7]$/.test(fw) ? TABLE_1[Number(fw) % 7] : fw
 }
 
 export class Locale {
@@ -535,7 +535,7 @@ export class Locale {
     )
     if (fw !== undefined) {
       fw = weekdayToString(fw)
-      if (!ALPHANUM_3_8.test(fw)) {
+      if (!UNICODE_TYPE_REGEX.test(fw)) {
         throw new RangeError('Invalid firstDayOfWeek')
       }
     }
@@ -586,7 +586,9 @@ export class Locale {
       internalSlots.caseFirst = r.kf as 'upper'
     }
     if (relevantExtensionKeys.indexOf('kn') > -1) {
-      internalSlots.numeric = SameValue(r.kn, 'true')
+      // An empty Unicode boolean keyword has the same meaning as 'true'.
+      // https://tc39.es/ecma402/#sec-Intl.Locale
+      internalSlots.numeric = r.kn === '' || SameValue(r.kn, 'true')
     }
     internalSlots.numberingSystem = r.nu
   }

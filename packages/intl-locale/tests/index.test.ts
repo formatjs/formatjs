@@ -230,3 +230,26 @@ test('GH #5112 - All Intl Locale Info methods should be available', function () 
   expect(typeof locale.getTextInfo()).toBe('object')
   expect(typeof locale.getWeekInfo()).toBe('object')
 })
+
+test('canonicalizes weekday options without discarding string identifiers', () => {
+  for (const [input, expected] of [
+    ['mon', 'mon'],
+    ['7', 'sun'],
+    ['0', 'sun'],
+    ['1', 'mon'],
+    ['foo-bar', 'foo-bar'],
+  ]) {
+    const locale = new Locale('en', {firstDayOfWeek: input})
+    expect(locale.firstDayOfWeek).toBe(expected)
+    expect(locale.toString()).toBe(`en-u-fw-${expected}`)
+  }
+  for (const input of ['8', '1.0', '01', '', 'a_b']) {
+    expect(() => new Locale('en', {firstDayOfWeek: input})).toThrow(RangeError)
+  }
+})
+test('treats an empty numeric keyword as true', () => {
+  expect(new Locale('en-u-kn').numeric).toBe(true)
+  expect(new Locale('en-u-kn-true').numeric).toBe(true)
+  expect(new Locale('en-u-kn-false').numeric).toBe(false)
+  expect(new Locale('en-u-kn', {numeric: false}).numeric).toBe(false)
+})
