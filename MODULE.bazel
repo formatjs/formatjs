@@ -397,3 +397,18 @@ http_file(
     sha256 = "bbb70d3be23110d7295823eee0c2e896ac3b619b3c0f26168f65eb972df51d2a",
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
+
+# Component VRT testbed. Use a release once rules_web_e2e is published.
+bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
+git_override(
+    module_name = "rules_web_e2e",
+    commit = "a4b7a0b487ff2b7aac3276c529e97ebc00fccea1",
+    remote = "https://github.com/perplexityai/rules_web_e2e.git",
+)
+
+editor_vrt_npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
+editor_vrt_npm.npm_translate_lock(
+    name = "editor_vrt_npm",
+    pnpm_lock = "//packages/editor/vrt:pnpm-lock.yaml",
+)
+use_repo(editor_vrt_npm, "editor_vrt_npm")

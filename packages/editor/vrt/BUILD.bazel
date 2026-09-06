@@ -1,0 +1,42 @@
+# gazelle:ts_enabled false
+load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
+load("@editor_vrt_npm//:defs.bzl", "npm_link_all_packages")
+load("@editor_vrt_npm//packages/editor/vrt:vitest/package_json.bzl", vitest = "bin")
+load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
+
+npm_link_all_packages(name = "node_modules")
+
+npm_link_package(
+    name = "node_modules/@rules-web-e2e/vrt",
+    src = "@rules_web_e2e//runtime:package",
+)
+
+vitest.vitest_binary(name = "vitest")
+
+component_visual_test(
+    name = "visual_test",
+    srcs = ["editor.visual.test.tsx"],
+    baselines = glob(
+        ["__screenshots__/*.png"],
+        allow_empty = True,
+    ),
+    config = "vitest.config.mjs",
+    data = ["//packages/editor:vrt_sources"],
+    playwright_core = ":node_modules/playwright-core/dir",
+    runner = ":vitest",
+    deps = [
+        ":node_modules/@formatjs/icu-messageformat-parser",
+        ":node_modules/@material-ui/core",
+        ":node_modules/@material-ui/icons",
+        ":node_modules/@material-ui/lab",
+        ":node_modules/@rules-web-e2e/vrt",
+        ":node_modules/@vitejs/plugin-react",
+        ":node_modules/@vitest/browser-playwright",
+        ":node_modules/playwright",
+        ":node_modules/react",
+        ":node_modules/react-dom",
+        ":node_modules/react-intl",
+        ":node_modules/vite",
+        ":node_modules/vitest",
+    ],
+)
