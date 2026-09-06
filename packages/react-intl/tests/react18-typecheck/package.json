@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.17",
-    "@formatjs/intl": "4.1.19",
+    "@formatjs/intl": "4.1.20",
     "intl-messageformat": "11.2.14",
     "react": "18.3.1",
     "react-dom": "18.3.1"
