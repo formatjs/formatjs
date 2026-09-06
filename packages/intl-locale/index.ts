@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
@@ -47,8 +48,6 @@ export interface IntlLocaleOptions {
   firstDayOfWeek?: string
 }
 
-const ALPHANUM_3_8 = /^[a-z0-9]{3,8}$/i
-
 const RELEVANT_EXTENSION_KEYS = [
   'ca',
   'co',
@@ -65,8 +64,6 @@ export interface IntlLocaleInternal extends IntlLocaleOptions {
   locale: string
   initializedLocale: boolean
 }
-
-const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   invariant(typeof tag === 'string', 'language tag must be a string')
@@ -441,7 +438,11 @@ function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
 const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
 
 function weekdayToString(fw: string) {
-  return TABLE_1[+fw]
+  // WeekdayToUValue maps only exact numeric strings; other strings pass through.
+  // ECMA-402 §15.5.15 WeekdayToUValue, steps 1–2, Table 26.
+  // https://tc39.es/ecma402/#sec-weekdaytouvalue
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L786-L790
+  return /^[0-7]$/.test(fw) ? TABLE_1[Number(fw) % 7] : fw
 }
 
 export class Locale {
@@ -507,7 +508,7 @@ export class Locale {
       undefined
     )
     if (calendar !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(calendar)) {
+      if (!IsUnicodeLocaleIdentifierType(calendar)) {
         throw new RangeError('invalid calendar')
       }
     }
@@ -521,7 +522,7 @@ export class Locale {
       undefined
     )
     if (collation !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(collation)) {
+      if (!IsUnicodeLocaleIdentifierType(collation)) {
         throw new RangeError('invalid collation')
       }
     }
@@ -535,11 +536,15 @@ export class Locale {
     )
     if (fw !== undefined) {
       fw = weekdayToString(fw)
-      if (!ALPHANUM_3_8.test(fw)) {
+      if (!IsUnicodeLocaleIdentifierType(fw)) {
         throw new RangeError('Invalid firstDayOfWeek')
       }
     }
-    opt.fw = fw
+    // MakeLocaleRecord canonicalizes Unicode option values before storing them.
+    // ECMA-402 §15.1.3 MakeLocaleRecord, step 4.e.i.
+    // https://tc39.es/ecma402/#sec-makelocalerecord
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L151
+    opt.fw = fw?.toLowerCase()
     const hc = GetOption(
       options,
       'hourCycle',
@@ -570,7 +575,7 @@ export class Locale {
       undefined
     )
     if (numberingSystem !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(numberingSystem)) {
+      if (!IsUnicodeLocaleIdentifierType(numberingSystem)) {
         throw new RangeError('Invalid numberingSystem')
       }
     }
@@ -586,7 +591,11 @@ export class Locale {
       internalSlots.caseFirst = r.kf as 'upper'
     }
     if (relevantExtensionKeys.indexOf('kn') > -1) {
-      internalSlots.numeric = SameValue(r.kn, 'true')
+      // An empty Unicode boolean keyword has the same meaning as 'true'.
+      // ECMA-402 §15.1.1 Intl.Locale, steps 42.a–42.b.i.
+      // https://tc39.es/ecma402/#sec-Intl.Locale
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L71-L74
+      internalSlots.numeric = r.kn === '' || SameValue(r.kn, 'true')
     }
     internalSlots.numberingSystem = r.nu
   }

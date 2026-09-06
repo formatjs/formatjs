@@ -161,3 +161,9 @@ async function polyfill() {
 ## Tests
 
 This library is [test262](https://github.com/tc39/test262/tree/master/test/intl402/Locale)-compliant.
+
+## Weekday and numeric options
+
+`firstDayOfWeek` accepts Unicode type identifiers such as `mon`. Numeric strings
+`0` and `7` both become `sun`; `1` through `6` become `mon` through `sat`.
+The empty Unicode numeric keyword in `en-u-kn` sets `numeric` to `true`.

@@ -52,3 +52,9 @@ numbering-systems.ts  → numbering-systems.generated.ts
 - **No dynamic locale loading** — all preference data compiled into the bundle
 - Static lookups via helper functions: `getCalendarPreferenceDataForRegion()`, `getWeekDataForRegion()`, `getHourCyclesPreferenceDataForLocaleOrRegion()`, `getTimeZonePreferenceForRegion()`
 - Region is resolved from the locale tag (e.g., `en-US` → `US`)
+
+## Weekday and numeric options
+
+`firstDayOfWeek` accepts Unicode type identifiers such as `mon`. Numeric strings
+`0` and `7` both become `sun`; `1` through `6` become `mon` through `sat`.
+The empty Unicode numeric keyword in `en-u-kn` sets `numeric` to `true`.
