@@ -15,7 +15,9 @@ export function IsValidDurationRecord(record: DurationRecord): boolean {
     }
   }
   // IsValidDuration bounds calendar units and exact normalized seconds.
+  // ECMA-402 §13.5.5 IsValidDuration, steps 3–8.
   // https://tc39.es/ecma402/#sec-isvalidduration
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L569-L574
   if (
     (['years', 'months', 'weeks'] as const).some(
       unit => Math.abs(record[unit]) >= 2 ** 32

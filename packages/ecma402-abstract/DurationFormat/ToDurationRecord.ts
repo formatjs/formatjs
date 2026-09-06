@@ -28,7 +28,9 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
     nanoseconds: 0,
   }
   // Read each field once, in ToDurationRecord's specified order.
+  // ECMA-402 §13.5.3 ToDurationRecord, steps 3–24.a.
   // https://tc39.es/ecma402/#sec-todurationrecord
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L495-L517
   let anyDefined = false
   for (const field of [
     'days',
