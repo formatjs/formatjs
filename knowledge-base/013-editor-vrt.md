@@ -13,4 +13,6 @@ React dependency resolution, and deterministic fixture HTTP responses.
 Run the target explicitly with a local Docker daemon. It is tagged manual,
 local, and uncached by the upstream macro. See
 [the consumer guide](../packages/editor/vrt/README.md) for commands and supported
-runtime details. Typechecking and formatter-library tests remain separate.
+runtime details. The strict `:typecheck` target checks editor sources, the browser test, and
+`vitest.config.ts`. It is a required VRT input, and can also be built separately.
+Formatter-library tests remain separate.
