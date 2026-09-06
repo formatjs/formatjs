@@ -1,43 +1,42 @@
 // Cached regex patterns for performance
 const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
-const OFFSET_TIMEZONE_FORMAT_REGEX =
-  /^([+-])(\d{2})(?::?(\d{2}))?(?::?(\d{2}))?(?:\.(\d{1,9}))?$/
+const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
 
 /**
- * IsTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-istimezoneoffsetstring
+ * IsValidDateTimeFormatOffset ( offsetString )
+ * ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
+ * https://tc39.es/ecma402/#sec-createdatetimeformat
+ * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
  *
  * Validates whether a string represents a valid UTC offset timezone.
- * Supports formats: ±HH, ±HHMM, ±HH:MM, ±HH:MM:SS, ±HH:MM:SS.sss
+ * Supports DateTimeFormat offsets: ±HH, ±HHMM, ±HH:MM
  *
  * @param offsetString - The string to validate as a timezone offset
  * @returns true if offsetString is a valid UTC offset format
  */
-function IsTimeZoneOffsetString(offsetString: string): boolean {
-  // 1. If offsetString does not start with '+' or '-', return false
+function IsValidDateTimeFormatOffset(offsetString: string): boolean {
   if (!OFFSET_TIMEZONE_PREFIX_REGEX.test(offsetString)) {
     return false
   }
 
-  // 2. Let parseResult be ParseText(offsetString, UTCOffset)
+  // CreateDateTimeFormat step 19.c rejects more than one MinuteSecond node:
+  // minutes are allowed, but seconds (including :00) are not.
+  // ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
   const match = OFFSET_TIMEZONE_FORMAT_REGEX.exec(offsetString)
 
-  // 3. If parseResult is a List of errors, return false
   if (!match) {
     return false
   }
 
-  // 4. Validate component ranges per ECMA-262 grammar
-  // Hour must be 0-23, Minute must be 0-59, Second must be 0-59
   const hours = parseInt(match[2], 10)
   const minutes = match[3] ? parseInt(match[3], 10) : 0
-  const seconds = match[4] ? parseInt(match[4], 10) : 0
 
-  if (hours > 23 || minutes > 59 || seconds > 59) {
+  if (hours > 23 || minutes > 59) {
     return false
   }
 
-  // 5. Return true
   return true
 }
 
@@ -64,9 +63,9 @@ export function IsValidTimeZoneName(
     uppercaseLinks: Record<string, string>
   }
 ): boolean {
-  // 1. If IsTimeZoneOffsetString(timeZone) is true, return true
+  // 1. If IsValidDateTimeFormatOffset(timeZone) is true, return true
   // Per ECMA-402 PR #788, UTC offset identifiers are valid
-  if (IsTimeZoneOffsetString(tz)) {
+  if (IsValidDateTimeFormatOffset(tz)) {
     return true
   }
 
