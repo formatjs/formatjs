@@ -165,3 +165,9 @@ async function polyfill(locale: string) {
 ## Tests
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/ListFormat)-compliant.
+
+## Iterable inputs
+
+`format` and `formatToParts` accept iterables of strings, including a string's
+individual code points. `undefined` produces an empty list. Non-iterables and
+non-string elements throw `TypeError`; an invalid element also closes the iterator.

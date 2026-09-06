@@ -40,3 +40,57 @@ describe('Intl.ListFormat', function () {
     })
   })
 })
+
+describe('StringListFromIterable', () => {
+  for (const method of ['format', 'formatToParts'] as const) {
+    it(`${method} accepts strings and rejects non-iterables`, () => {
+      const formatter = new ListFormat('en')
+      expect(formatter[method]('ab')).toEqual(formatter[method](['a', 'b']))
+      expect(formatter[method](undefined as any)).toEqual(formatter[method]([]))
+      for (const value of [1, true, null, {}, Symbol('list')]) {
+        expect(() => formatter[method](value as any)).toThrow(TypeError)
+      }
+    })
+    it(`${method} closes the iterator without coercing invalid values`, () => {
+      let closed = false
+      function* values() {
+        try {
+          yield {
+            toString() {
+              throw new Error('must not coerce')
+            },
+          }
+        } finally {
+          closed = true
+        }
+      }
+      expect(() => new ListFormat('en')[method](values() as any)).toThrow(
+        TypeError
+      )
+      expect(closed).toBe(true)
+    })
+    it(`${method} reads each iterator value once`, () => {
+      let reads = 0
+      const iterable = {
+        [Symbol.iterator]() {
+          let done = false
+          return {
+            next(): IteratorResult<string> {
+              if (done) return {done: true, value: undefined}
+              done = true
+              return {
+                done: false,
+                get value() {
+                  reads++
+                  return 'a'
+                },
+              }
+            },
+          }
+        },
+      }
+      new ListFormat('en')[method](iterable)
+      expect(reads).toBe(1)
+    })
+  }
+})
