@@ -50,3 +50,55 @@ it('resolves a valid locale for default and unsupported requests', () => {
   }
   expect(Segmenter.supportedLocalesOf('en')).toEqual(['en'])
 })
+
+it.each([
+  BigInt(0),
+  Object(BigInt(0)),
+  {valueOf: () => BigInt(0)},
+  {[Symbol.toPrimitive]: () => BigInt(0)},
+])('rejects BigInt indices after coercion: %s', index => {
+  const segments = new Segmenter('en', {}).segment('ab')
+  expect(() => segments.containing(index as number)).toThrow(TypeError)
+})
+
+it('coerces containing indices once with the number hint', () => {
+  const hints: string[] = []
+  const index = {
+    [Symbol.toPrimitive](hint: string) {
+      hints.push(hint)
+      return 1.9
+    },
+  }
+  const segments = new Segmenter('en', {}).segment('ab')
+  expect(segments.containing(index as unknown as number)?.segment).toBe('b')
+  expect(hints).toEqual(['number'])
+})
+
+it('preserves errors thrown while coercing containing indices', () => {
+  const error = new Error('coercion')
+  const index = {
+    valueOf() {
+      throw error
+    },
+  }
+  const segments = new Segmenter('en', {}).segment('ab')
+  expect.assertions(1)
+  try {
+    segments.containing(index as unknown as number)
+  } catch (caught) {
+    expect(caught).toBe(error)
+  }
+})
+
+it.each([
+  [undefined, 'a'],
+  [NaN, 'a'],
+  [-0, 'a'],
+  [-0.5, 'a'],
+  ['1.9', 'b'],
+  [Infinity, undefined],
+  [-Infinity, undefined],
+])('handles containing index %s', (index, expected) => {
+  const segments = new Segmenter('en', {}).segment('ab')
+  expect(segments.containing(index as number)?.segment).toBe(expected)
+})

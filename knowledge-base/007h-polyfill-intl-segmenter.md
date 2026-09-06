@@ -75,3 +75,7 @@ export const CLDR_SEGMENTATION_RULES: Record<Granularity, Record<Locale, RuleSet
 from `Symbol.iterator` and resumes from its current position. `next()` belongs
 to the iterator, not the iterable returned by `segment()`.
 The fallback locale is `en`, backed by the root segmentation rules.
+
+`containing(index)` coerces its index to a number and truncates toward zero.
+BigInt values throw `TypeError`, including boxed BigInts and objects that
+coerce to BigInt. Errors thrown during coercion propagate unchanged.
