@@ -33,6 +33,42 @@ describe('Number coercion', () => {
       expect(ToNumber(value).toNumber()).toBe(Number(value))
     }
   )
+  it.each(['getter', 'method', 'valueOf', 'toString'])(
+    'preserves the exact exception from %s coercion',
+    kind => {
+      const error = new Error('coercion failed')
+      const fail = () => {
+        throw error
+      }
+      const value =
+        kind === 'getter'
+          ? Object.defineProperty({}, Symbol.toPrimitive, {get: fail})
+          : kind === 'method'
+            ? {[Symbol.toPrimitive]: fail}
+            : kind === 'valueOf'
+              ? {valueOf: fail}
+              : {valueOf: () => ({}), toString: fail}
+      for (const convert of [
+        ToNumber,
+        (input: unknown) => DefaultNumberOption(input, 0, 10, 0),
+      ]) {
+        let caught: unknown
+        try {
+          convert(value)
+        } catch (error) {
+          caught = error
+        }
+        expect(caught).toBe(error)
+      }
+    }
+  )
+  it.each([
+    {[Symbol.toPrimitive]: 1},
+    {[Symbol.toPrimitive]: () => ({})},
+    {valueOf: () => ({}), toString: () => ({})},
+  ])('rejects invalid object coercion: %s', value => {
+    expect(() => ToNumber(value)).toThrow(TypeError)
+  })
   it('coerces an object once with a number hint', () => {
     const hints: string[] = []
     expect(
