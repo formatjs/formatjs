@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
@@ -63,8 +64,6 @@ export interface IntlLocaleInternal extends IntlLocaleOptions {
   locale: string
   initializedLocale: boolean
 }
-
-const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   invariant(typeof tag === 'string', 'language tag must be a string')
@@ -507,7 +506,7 @@ export class Locale {
       undefined
     )
     if (calendar !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(calendar)) {
+      if (!IsUnicodeLocaleIdentifierType(calendar)) {
         throw new RangeError('invalid calendar')
       }
     }
@@ -521,7 +520,7 @@ export class Locale {
       undefined
     )
     if (collation !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(collation)) {
+      if (!IsUnicodeLocaleIdentifierType(collation)) {
         throw new RangeError('invalid collation')
       }
     }
@@ -535,7 +534,7 @@ export class Locale {
     )
     if (fw !== undefined) {
       fw = weekdayToString(fw)
-      if (!UNICODE_TYPE_REGEX.test(fw)) {
+      if (!IsUnicodeLocaleIdentifierType(fw)) {
         throw new RangeError('Invalid firstDayOfWeek')
       }
     }
@@ -572,7 +571,7 @@ export class Locale {
       undefined
     )
     if (numberingSystem !== undefined) {
-      if (!UNICODE_TYPE_REGEX.test(numberingSystem)) {
+      if (!IsUnicodeLocaleIdentifierType(numberingSystem)) {
         throw new RangeError('Invalid numberingSystem')
       }
     }
