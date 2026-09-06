@@ -20,8 +20,8 @@ importers:
         specifier: 0.0.11
         version: 0.0.11(react-scripts@5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.9.1(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.2.8)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2))
       babel-plugin-formatjs:
-        specifier: 13.0.1
-        version: 13.0.1
+        specifier: 13.0.2
+        version: 13.0.2
       eslint-plugin-formatjs:
         specifier: 6.6.0
         version: 6.6.0(eslint@10.9.1(jiti@1.21.7)(supports-color@8.1.1))
@@ -1978,8 +1978,8 @@ packages:
       '@babel/core': ^7.0.0
       webpack: '>=2'
 
-  babel-plugin-formatjs@13.0.1:
-    resolution: {integrity: sha512-PpKf0fgymkOnNO8AG22vSZ6rl9IIFXmFoj9aL+ZeCTKoup3oDmK5B/IEZdBs6pkkUpCNjAoM8kbQcj7K+fP1Mg==}
+  babel-plugin-formatjs@13.0.2:
+    resolution: {integrity: sha512-oExIFlaJV2wAp5Kyjk4eN/sFwd5FvBnUlEKlwCCJrh2YlFFmm8dOe1ahSCKLiMovrhqZAImFgUtLLZ9AoeZ4Ag==}
 
   babel-plugin-istanbul@6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
@@ -8598,7 +8598,7 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.107.2(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(html-minifier-terser@6.1.0)(postcss@8.5.15)
 
-  babel-plugin-formatjs@13.0.1:
+  babel-plugin-formatjs@13.0.2:
     dependencies:
       '@babel/core': 8.0.1
       '@babel/helper-plugin-utils': 8.0.1(@babel/core@8.0.1)
