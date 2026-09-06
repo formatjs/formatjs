@@ -420,11 +420,14 @@ class Segments implements Iterable<SegmentResult> {
         isWordLike?: boolean
       }
     | undefined {
-    if (typeof positionInput === 'bigint') {
-      throw TypeError('Index must not be a BigInt')
-    }
-
-    let position = Number(positionInput)
+    // ECMA-402 §19.5.2.1 containing, step 6: ToIntegerOrInfinity uses ToNumber.
+    // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%.containing
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L214
+    // Unary + rejects BigInt after object coercion and preserves thrown errors.
+    // ECMA-262 §7.1.4 ToNumber, steps 2, 8–10.
+    // https://tc39.es/ecma262/#sec-tonumber
+    // https://github.com/tc39/ecma262/blob/dcf59856a8184792a9e42f0ffb7dc064094a5dcc/spec.html#L5183-L5191
+    let position = +positionInput
 
     //https://tc39.es/ecma262/#sec-tointegerorinfinity
     // 2. If number is NaN, +0𝔽, or -0𝔽, return 0.
