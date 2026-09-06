@@ -55,6 +55,7 @@ formatjs_library(
     },
     deps = [
         "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
     ],
 )

@@ -65,3 +65,11 @@ export const likelySubtags: Record<string, string> = {
 - Static imports in `index.ts`
 - Used by `parseUnicodeLanguageId()` for locale string parsing and canonicalization
 - No dynamic loading needed — data is small enough to bundle directly
+
+## Locale-list coercion
+
+`getCanonicalLocales` rejects `null`, coerces array-like lengths once with
+`ToLength`, and accepts string-coercible object entries. Native Locale values
+and values from the installed Locale polyfill use their intrinsic locale tag,
+ignoring overridden instance properties. Objects that merely expose `language`
+and `baseName` are treated as ordinary array-like inputs.
