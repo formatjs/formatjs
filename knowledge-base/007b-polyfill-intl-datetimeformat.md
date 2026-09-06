@@ -141,3 +141,9 @@ Stage 4: supported-locales.generated.ts
 - **Golden timezone subset**: Allows apps to ship 251 zones instead of 427 for smaller bundles
 - **Hour cycle fallback**: When interval formats don't exist for a locale's hour cycle, synthesizes from alternate cycle
 - **Metazone resolution**: Maps IANA zones to CLDR metazones for localized timezone names (EDT vs GMT offset)
+
+## Offset time zones
+
+The `timeZone` option accepts offsets in `±HH`, `±HHMM`, and `±HH:MM` form.
+Offsets containing seconds or fractional components throw `RangeError`, including
+an explicit zero-second component.

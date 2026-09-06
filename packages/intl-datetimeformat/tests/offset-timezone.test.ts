@@ -49,7 +49,7 @@ describe('Intl.DateTimeFormat with UTC offset timezones', function () {
   })
 
   it('should accept various offset formats', function () {
-    const formats = ['+01', '+0100', '+01:00', '+01:30', '+05:30:45']
+    const formats = ['+01', '+0100', '+01:00', '+01:30']
     formats.forEach(timeZone => {
       expect(() => new DateTimeFormat('en-GB', {timeZone})).not.toThrow()
     })
@@ -57,6 +57,7 @@ describe('Intl.DateTimeFormat with UTC offset timezones', function () {
 
   it('should reject invalid offset timezones', function () {
     const invalidFormats = [
+      '+05:30:45', // Seconds are not allowed by CreateDateTimeFormat
       '+24:00', // Out of range
       '+01:60', // Invalid minutes
       '+1:00', // Wrong format

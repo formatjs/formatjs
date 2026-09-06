@@ -886,3 +886,24 @@ it('rejects BigInt date arguments', () => {
     expect(() => formatter.formatToParts(value as any)).toThrow(TypeError)
   }
 })
+
+it('accepts minute offsets but rejects second and fractional offsets', () => {
+  for (const timeZone of [
+    '+01:00:00',
+    '+010000',
+    '+01:00:01',
+    '+01:00:00.1',
+    '+01.1',
+  ]) {
+    expect(() => new DateTimeFormat('en', {timeZone})).toThrow(RangeError)
+  }
+  for (const [timeZone, canonical] of [
+    ['+01', '+01:00'],
+    ['+0130', '+01:30'],
+    ['-05:30', '-05:30'],
+  ]) {
+    expect(
+      new DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone
+    ).toBe(canonical)
+  }
+})

@@ -61,13 +61,13 @@ describe('IsValidTimeZoneName', () => {
     expect(IsValidTimeZoneName('-05', testData)).toBe(true)
     expect(IsValidTimeZoneName('+00', testData)).toBe(true)
 
-    // With seconds ±HH:MM:SS
-    expect(IsValidTimeZoneName('+01:30:45', testData)).toBe(true)
-    expect(IsValidTimeZoneName('-05:00:00', testData)).toBe(true)
+    // DateTimeFormat rejects seconds, including zero.
+    expect(IsValidTimeZoneName('+01:30:45', testData)).toBe(false)
+    expect(IsValidTimeZoneName('-05:00:00', testData)).toBe(false)
 
-    // With fractional seconds ±HH:MM:SS.sss
-    expect(IsValidTimeZoneName('+01:30:45.123', testData)).toBe(true)
-    expect(IsValidTimeZoneName('-05:00:00.999999999', testData)).toBe(true)
+    // Fractional seconds are also rejected.
+    expect(IsValidTimeZoneName('+01:30:45.123', testData)).toBe(false)
+    expect(IsValidTimeZoneName('-05:00:00.999999999', testData)).toBe(false)
   })
 
   test('UTC offset timezones - invalid formats', () => {

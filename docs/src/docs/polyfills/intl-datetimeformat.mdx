@@ -260,3 +260,9 @@ if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
 ## Tests
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/DateTimeFormat)-compliant.
+
+## Offset time zones
+
+The `timeZone` option accepts offsets in `±HH`, `±HHMM`, and `±HH:MM` form.
+Offsets containing seconds or fractional components throw `RangeError`, including
+an explicit zero-second component.

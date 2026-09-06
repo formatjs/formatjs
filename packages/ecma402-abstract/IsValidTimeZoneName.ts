@@ -1,19 +1,18 @@
 // Cached regex patterns for performance
 const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
-const OFFSET_TIMEZONE_FORMAT_REGEX =
-  /^([+-])(\d{2})(?::?(\d{2}))?(?::?(\d{2}))?(?:\.(\d{1,9}))?$/
+const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
 
 /**
- * IsTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-istimezoneoffsetstring
+ * IsValidDateTimeFormatOffset ( offsetString )
+ * https://tc39.es/ecma402/#sec-createdatetimeformat
  *
  * Validates whether a string represents a valid UTC offset timezone.
- * Supports formats: ±HH, ±HHMM, ±HH:MM, ±HH:MM:SS, ±HH:MM:SS.sss
+ * Supports DateTimeFormat offsets: ±HH, ±HHMM, ±HH:MM
  *
  * @param offsetString - The string to validate as a timezone offset
  * @returns true if offsetString is a valid UTC offset format
  */
-function IsTimeZoneOffsetString(offsetString: string): boolean {
+function IsValidDateTimeFormatOffset(offsetString: string): boolean {
   // 1. If offsetString does not start with '+' or '-', return false
   if (!OFFSET_TIMEZONE_PREFIX_REGEX.test(offsetString)) {
     return false
@@ -27,13 +26,12 @@ function IsTimeZoneOffsetString(offsetString: string): boolean {
     return false
   }
 
-  // 4. Validate component ranges per ECMA-262 grammar
-  // Hour must be 0-23, Minute must be 0-59, Second must be 0-59
+  // CreateDateTimeFormat rejects offsets containing seconds, even zero seconds.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
   const hours = parseInt(match[2], 10)
   const minutes = match[3] ? parseInt(match[3], 10) : 0
-  const seconds = match[4] ? parseInt(match[4], 10) : 0
 
-  if (hours > 23 || minutes > 59 || seconds > 59) {
+  if (hours > 23 || minutes > 59) {
     return false
   }
 
@@ -64,9 +62,9 @@ export function IsValidTimeZoneName(
     uppercaseLinks: Record<string, string>
   }
 ): boolean {
-  // 1. If IsTimeZoneOffsetString(timeZone) is true, return true
+  // 1. If IsValidDateTimeFormatOffset(timeZone) is true, return true
   // Per ECMA-402 PR #788, UTC offset identifiers are valid
-  if (IsTimeZoneOffsetString(tz)) {
+  if (IsValidDateTimeFormatOffset(tz)) {
     return true
   }
 
