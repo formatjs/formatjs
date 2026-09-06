@@ -173,7 +173,9 @@ export class DurationFormat implements DurationFormatType {
       !IsUnicodeLocaleIdentifierType(numberingSystem)
     ) {
       // ResolveOptions step 6.d.ii rejects malformed Unicode types.
-      // https://tc39.es/ecma402/#sec-resolveoptions:~:text=If%20value%20cannot%20be%20matched
+      // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
+      // https://tc39.es/ecma402/#sec-resolveoptions
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
       throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
     }
     opt.nu = numberingSystem
