@@ -39,7 +39,7 @@ export default class RelativeTimeFormat {
     }
     return PartitionRelativeTimePattern(
       this,
-      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-intl.relativetimeformat.prototype.format
+      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.format
       +value,
       ToString(unit) as Intl.RelativeTimeFormatUnit,
       {
@@ -62,7 +62,7 @@ export default class RelativeTimeFormat {
     }
     return PartitionRelativeTimePattern(
       this,
-      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-intl.relativetimeformat.prototype.formattoparts
+      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.formatToParts
       +value,
       ToString(unit) as Intl.RelativeTimeFormatUnit,
       {getInternalSlots}

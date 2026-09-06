@@ -4,7 +4,7 @@ import Decimal from '@formatjs/bigdecimal'
 
 /**
  * CLDR Spec: Operands as defined in https://unicode.org/reports/tr35/tr35-numbers.html#Operands
- * ECMA-402 Spec: GetOperands abstract operation (https://tc39.es/ecma402/#sec-getoperands)
+ * CLDR operands for the implementation-defined PluralRuleSelect (https://tc39.es/ecma402/#sec-pluralruleselect)
  *
  * Maps CLDR operand symbols to JavaScript property names:
  * - n → Number (absolute value)
@@ -52,8 +52,8 @@ export interface OperandsRecord {
 }
 
 /**
- * ECMA-402 Spec: GetOperands abstract operation
- * https://tc39.es/ecma402/#sec-getoperands
+ * CLDR operands for the implementation-defined PluralRuleSelect
+ * https://tc39.es/ecma402/#sec-pluralruleselect
  *
  * Implementation: Extended to support compact exponent (c/e operands)
  *
@@ -66,7 +66,7 @@ export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
     `GetOperands should have been called with a string`
   )
   // GetOperands consumes a formatted decimal string, not an ECMAScript Number.
-  // Preserve its mathematical value: https://tc39.es/ecma402/#sec-getoperands
+  // Preserve its mathematical value: https://tc39.es/ecma402/#sec-pluralruleselect
   const n = new Decimal(s)
   invariant(n.isFinite(), 'n should be finite')
   let dp = s.indexOf('.')
