@@ -154,7 +154,9 @@ export class Segmenter {
     setSlot(this, 'granularity', granularity)
 
     // DefaultLocale must be a structurally valid, canonical language tag.
+    // ECMA-402 §6.2.3 DefaultLocale, return-value definition.
     // https://tc39.es/ecma402/#sec-defaultlocale
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L109
     const r = ResolveLocale(
       Segmenter.availableLocales,
       requestedLocales,
@@ -397,7 +399,9 @@ const createSegmentDataObject = (
   return returnValue
 }
 // Segments creates independent iterators; iterators retain their own position.
-// https://tc39.es/ecma402/#sec-%segmentsprototype%-@@iterator
+// ECMA-402 §19.5.2.2 %IntlSegmentsPrototype% [ %Symbol.iterator% ], step 5.
+// https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-%symbol.iterator%
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L230
 class Segments implements Iterable<SegmentResult> {
   constructor(
     private readonly segmenter: Segmenter,
@@ -519,7 +523,9 @@ class SegmentIterator
 }
 
 // %IntlSegmentIteratorPrototype% inherits the standard iterator prototype.
+// ECMA-402 §19.6.2 The %IntlSegmentIteratorPrototype% Object, third bullet.
 // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%-object
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L279
 Object.setPrototypeOf(
   SegmentIterator.prototype,
   Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))
