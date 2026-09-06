@@ -234,6 +234,7 @@ test('GH #5112 - All Intl Locale Info methods should be available', function () 
 test('canonicalizes weekday options without discarding string identifiers', () => {
   for (const [input, expected] of [
     ['mon', 'mon'],
+    ['MON', 'mon'],
     ['7', 'sun'],
     ['0', 'sun'],
     ['1', 'mon'],

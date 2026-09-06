@@ -539,7 +539,9 @@ export class Locale {
         throw new RangeError('Invalid firstDayOfWeek')
       }
     }
-    opt.fw = fw
+    // MakeLocaleRecord canonicalizes Unicode option values before storing them.
+    // https://tc39.es/ecma402/#sec-makelocalerecord
+    opt.fw = fw?.toLowerCase()
     const hc = GetOption(
       options,
       'hourCycle',
