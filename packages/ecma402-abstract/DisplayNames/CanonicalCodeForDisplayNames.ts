@@ -43,7 +43,9 @@ export function CanonicalCodeForDisplayNames(
   }
   if (type === 'calendar') {
     // CanonicalCodeForDisplayNames requires a Unicode type, excluding underscores.
+    // ECMA-402 §12.5.1 CanonicalCodeForDisplayNames, steps 4.a–4.c.
     // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L249-L251
     if (!IsUnicodeLocaleIdentifierType(code)) {
       throw RangeError('invalid calendar')
     }
