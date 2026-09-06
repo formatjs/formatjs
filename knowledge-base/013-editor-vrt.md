@@ -1,0 +1,16 @@
+# Editor visual regression testing
+
+`//packages/editor/vrt:visual_test` uses the external `rules_web_e2e`
+`component_visual_test` macro. Its `.update` target writes reviewed PNG
+baselines; comparison only reads declared baseline inputs.
+
+The editor is a legacy Material UI 4 / React 17 application. Keep its isolated
+`packages/editor/vrt/pnpm-lock.yaml` and `editor_vrt_npm` module extension separate
+from root frontend dependencies. `//packages/editor:vrt_sources` supplies the
+actual editor source files through Bazel. The Vite config owns source aliases,
+React dependency resolution, and deterministic fixture HTTP responses.
+
+Run the target explicitly with a local Docker daemon. It is tagged manual,
+local, and uncached by the upstream macro. See
+[the consumer guide](../packages/editor/vrt/README.md) for commands and supported
+runtime details. Typechecking and formatter-library tests remain separate.

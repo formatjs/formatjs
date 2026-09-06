@@ -3,6 +3,7 @@
 # gazelle-driven rule generation entirely for this dir.
 # gazelle:ts_enabled false
 
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("//tools:index.bzl", "generate_ide_tsconfig_json")
 load("//tools:package_json.bzl", "generate_package_json")
 
@@ -112,3 +113,12 @@ generate_ide_tsconfig_json()
 # #     name="package_json_test",
 # #     deps=SRC_DEPS
 # # )
+
+js_library(
+    name = "vrt_sources",
+    srcs = glob([
+        "*.tsx",
+        "*.ts",
+    ]),
+    visibility = ["//packages/editor/vrt:__pkg__"],
+)
