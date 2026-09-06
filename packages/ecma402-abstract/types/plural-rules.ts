@@ -18,9 +18,9 @@ export interface PluralRulesData {
 
 export type PluralRulesLocaleData = LocaleData<PluralRulesData>
 
-// Extends built-in PluralRulesOptions with formatjs-specific extensions
+// ECMA-402 options not yet present in all TypeScript Intl declarations.
 export interface PluralRulesOptions extends Intl.PluralRulesOptions {
-  notation?: 'standard' | 'compact'
+  notation?: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'
 }
 
@@ -28,7 +28,7 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean
   locale: string
   type: 'cardinal' | 'ordinal'
-  notation: 'standard' | 'compact'
+  notation: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'
   dataLocaleData?: any // NumberFormatLocaleInternalData from number.ts
 }

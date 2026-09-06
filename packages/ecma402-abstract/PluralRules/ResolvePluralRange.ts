@@ -16,7 +16,9 @@ import {ResolvePluralInternal} from '#packages/ecma402-abstract/PluralRules/Reso
  * It resolves the appropriate plural form for a range by determining the plural forms of both the
  * start and end values, then consulting locale-specific range data.
  *
+ * ECMA-402 §17.5.4 ResolvePluralRange, steps 1–3.
  * Specification: https://tc39.es/ecma402/#sec-resolvepluralrange
+ * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L358
  *
  * @param pluralRules - An initialized PluralRules object
  * @param x - Mathematical value for the range start
@@ -47,10 +49,13 @@ export function ResolvePluralRange(
     ) => LDMLPluralRule
   }
 ): LDMLPluralRule {
-  // 1. If x is not-a-number or y is not-a-number, throw a RangeError exception.
-  if (!x.isFinite() || !y.isFinite()) {
+  // ResolvePluralRange rejects NaN but permits either infinity.
+  // ECMA-402 §17.5.4 ResolvePluralRange, steps 1–3.
+  // https://tc39.es/ecma402/#sec-resolvepluralrange
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L358
+  if (x.isNaN() || y.isNaN()) {
     throw new RangeError(
-      'selectRange requires start and end values to be finite numbers'
+      'selectRange requires start and end values not to be NaN'
     )
   }
 
