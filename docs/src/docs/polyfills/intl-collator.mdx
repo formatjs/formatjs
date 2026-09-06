@@ -89,3 +89,9 @@ data and LDML collation XML so applications do not parse XML at runtime.
 
 This package is tested against FormatJS unit tests, parser tests, and
 conformance data generated from ICU4J and native `Intl.Collator`.
+
+## Input validation
+
+Malformed `collation` options throw `RangeError`; well-formed unsupported values
+fall back during locale negotiation. `compare` converts arguments to strings in
+left-to-right order and rejects Symbols with `TypeError`.
