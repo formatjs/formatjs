@@ -86,3 +86,8 @@ Stage 3: Metadata generation (generate_src_file)
 - **BigDecimal for precision**: ECMA-402 requires correct rounding for all digit options; JavaScript's IEEE 754 doubles are insufficient
 - **Plural rule integration**: Compact notation and unit patterns use plural categories from CLDR; collapses single-value plural rules if same as "other"
 - **571 locales**: Full CLDR coverage with tree-shakeable per-locale imports
+
+## Numbering system validation
+
+A well-formed but unsupported `numberingSystem` option falls back to the locale's
+supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.

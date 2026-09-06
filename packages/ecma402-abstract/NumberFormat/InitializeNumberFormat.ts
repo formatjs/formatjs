@@ -25,14 +25,12 @@ export function InitializeNumberFormat(
     getInternalSlots,
     localeData,
     availableLocales,
-    numberingSystemNames,
     getDefaultLocale,
     currencyDigitsData,
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
     localeData: Record<string, NumberFormatLocaleInternalData | undefined>
     availableLocales: Set<string>
-    numberingSystemNames: ReadonlyArray<string>
     getDefaultLocale(): string
     currencyDigitsData: Record<string, number>
   }
@@ -58,10 +56,10 @@ export function InitializeNumberFormat(
   )
   if (
     numberingSystem !== undefined &&
-    numberingSystemNames.indexOf(numberingSystem) < 0
+    !/^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(numberingSystem)
   ) {
-    // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
-    // throw a RangeError exception.
+    // Validate syntax; unsupported types fall back during ResolveLocale.
+    // https://tc39.es/ecma402/#sec-resolveoptions
     throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
   }
   opt.nu = numberingSystem

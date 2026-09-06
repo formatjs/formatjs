@@ -61,3 +61,8 @@ export const TIME_SEPARATORS = {
 - `TIME_SEPARATORS.localeData[locale].nu` is the default/alternate set needed
   by the generator. `core.ts` ensures `latn` is present before calling
   `ResolveLocale`.
+
+## Numbering system validation
+
+A well-formed but unsupported `numberingSystem` option falls back to the locale's
+supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.

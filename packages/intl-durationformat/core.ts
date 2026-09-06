@@ -13,7 +13,6 @@ import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/
 import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
 import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
-import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
 import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
   DurationFormatLocaleInternalData,
@@ -170,9 +169,10 @@ export class DurationFormat implements DurationFormatType {
     )
     if (
       numberingSystem !== undefined &&
-      numberingSystemNames.indexOf(numberingSystem) < 0
+      !/^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(numberingSystem)
     ) {
-      // Validate that the numbering system is recognized
+      // Validate syntax before locale negotiation, not membership in CLDR.
+      // https://tc39.es/ecma402/#sec-resolveoptions
       throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
     }
     opt.nu = numberingSystem
