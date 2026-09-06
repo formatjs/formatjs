@@ -439,7 +439,9 @@ const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
 
 function weekdayToString(fw: string) {
   // WeekdayToUValue maps only exact numeric strings; other strings pass through.
+  // ECMA-402 §15.5.15 WeekdayToUValue, steps 1–2, Table 26.
   // https://tc39.es/ecma402/#sec-weekdaytouvalue
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L786-L790
   return /^[0-7]$/.test(fw) ? TABLE_1[Number(fw) % 7] : fw
 }
 
@@ -539,7 +541,9 @@ export class Locale {
       }
     }
     // MakeLocaleRecord canonicalizes Unicode option values before storing them.
+    // ECMA-402 §15.1.3 MakeLocaleRecord, step 4.e.i.
     // https://tc39.es/ecma402/#sec-makelocalerecord
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L151
     opt.fw = fw?.toLowerCase()
     const hc = GetOption(
       options,
@@ -588,7 +592,9 @@ export class Locale {
     }
     if (relevantExtensionKeys.indexOf('kn') > -1) {
       // An empty Unicode boolean keyword has the same meaning as 'true'.
+      // ECMA-402 §15.1.1 Intl.Locale, steps 42.a–42.b.i.
       // https://tc39.es/ecma402/#sec-Intl.Locale
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L71-L74
       internalSlots.numeric = r.kn === '' || SameValue(r.kn, 'true')
     }
     internalSlots.numberingSystem = r.nu
