@@ -13,21 +13,19 @@ const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
  * @returns true if offsetString is a valid UTC offset format
  */
 function IsValidDateTimeFormatOffset(offsetString: string): boolean {
-  // 1. If offsetString does not start with '+' or '-', return false
   if (!OFFSET_TIMEZONE_PREFIX_REGEX.test(offsetString)) {
     return false
   }
 
-  // 2. Let parseResult be ParseText(offsetString, UTCOffset)
+  // CreateDateTimeFormat step 19.c rejects more than one MinuteSecond node:
+  // minutes are allowed, but seconds (including :00) are not.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat:~:text=If%20parseResult%20contains%20more%20than%20one
   const match = OFFSET_TIMEZONE_FORMAT_REGEX.exec(offsetString)
 
-  // 3. If parseResult is a List of errors, return false
   if (!match) {
     return false
   }
 
-  // CreateDateTimeFormat rejects offsets containing seconds, even zero seconds.
-  // https://tc39.es/ecma402/#sec-createdatetimeformat
   const hours = parseInt(match[2], 10)
   const minutes = match[3] ? parseInt(match[3], 10) : 0
 
@@ -35,7 +33,6 @@ function IsValidDateTimeFormatOffset(offsetString: string): boolean {
     return false
   }
 
-  // 5. Return true
   return true
 }
 
