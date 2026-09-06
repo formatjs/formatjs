@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
@@ -25,14 +26,12 @@ export function InitializeNumberFormat(
     getInternalSlots,
     localeData,
     availableLocales,
-    numberingSystemNames,
     getDefaultLocale,
     currencyDigitsData,
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
     localeData: Record<string, NumberFormatLocaleInternalData | undefined>
     availableLocales: Set<string>
-    numberingSystemNames: ReadonlyArray<string>
     getDefaultLocale(): string
     currencyDigitsData: Record<string, number>
   }
@@ -58,10 +57,12 @@ export function InitializeNumberFormat(
   )
   if (
     numberingSystem !== undefined &&
-    numberingSystemNames.indexOf(numberingSystem) < 0
+    !IsUnicodeLocaleIdentifierType(numberingSystem)
   ) {
-    // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
-    // throw a RangeError exception.
+    // ResolveOptions step 6.d.ii rejects malformed Unicode types.
+    // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
+    // https://tc39.es/ecma402/#sec-resolveoptions
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
     throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
   }
   opt.nu = numberingSystem

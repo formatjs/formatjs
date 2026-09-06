@@ -184,3 +184,8 @@ async function polyfill(locale: string) {
   await import('@formatjs/intl-durationformat/polyfill-force.js')
 }
 ```
+
+## Numbering system validation
+
+A well-formed but unsupported `numberingSystem` option falls back to the locale's
+supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.

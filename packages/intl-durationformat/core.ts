@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
 
@@ -13,7 +14,6 @@ import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/
 import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
 import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
-import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
 import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
   DurationFormatLocaleInternalData,
@@ -170,9 +170,12 @@ export class DurationFormat implements DurationFormatType {
     )
     if (
       numberingSystem !== undefined &&
-      numberingSystemNames.indexOf(numberingSystem) < 0
+      !IsUnicodeLocaleIdentifierType(numberingSystem)
     ) {
-      // Validate that the numbering system is recognized
+      // ResolveOptions step 6.d.ii rejects malformed Unicode types.
+      // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
+      // https://tc39.es/ecma402/#sec-resolveoptions
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
       throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
     }
     opt.nu = numberingSystem

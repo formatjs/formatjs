@@ -493,3 +493,15 @@ test('#4236 compact notation with very large numbers (quadrillion scale)', () =>
   expect(formatter.format(1e16)).toBe('10000T') // 10 quadrillion
   expect(formatter.format(5.5e16)).toBe('55000T') // 55 quadrillion
 })
+
+it('negotiates well-formed numbering systems and rejects malformed ones', () => {
+  for (const numberingSystem of ['foobar', 'foo-bar', 'LATN']) {
+    expect(
+      new NumberFormat('en', {numberingSystem}).resolvedOptions()
+        .numberingSystem
+    ).toBe('latn')
+  }
+  for (const numberingSystem of ['', 'ab', 'abc_def', 'abcdefghi']) {
+    expect(() => new NumberFormat('en', {numberingSystem})).toThrow(RangeError)
+  }
+})

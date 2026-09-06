@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
@@ -11,8 +12,6 @@ import {
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
-
-const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 export function InitializeRelativeTimeFormat(
   rtf: Intl.RelativeTimeFormat,
@@ -54,7 +53,7 @@ export function InitializeRelativeTimeFormat(
     undefined
   )
   if (numberingSystem !== undefined) {
-    if (!NUMBERING_SYSTEM_REGEX.test(numberingSystem)) {
+    if (!IsUnicodeLocaleIdentifierType(numberingSystem)) {
       throw new RangeError(`Invalid numbering system ${numberingSystem}`)
     }
   }

@@ -17,7 +17,6 @@ import {
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {currencyDigitsData} from '@formatjs_generated/cldr.number/currency-digits.js'
-import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
 // eslint-disable-next-line import/no-cycle
 import type Decimal from '@formatjs/bigdecimal'
 import getInternalSlots from '#packages/intl-numberformat/get_internal_slots.js'
@@ -71,7 +70,6 @@ export const NumberFormat = function (
     availableLocales: NumberFormat.availableLocales,
     getDefaultLocale: NumberFormat.getDefaultLocale,
     currencyDigitsData,
-    numberingSystemNames,
   })
 
   const internalSlots = getInternalSlots(this as any)

@@ -194,3 +194,17 @@ test('duration fields use Number coercion', () => {
     expect(() => formatter.formatToParts({seconds} as any)).toThrow(TypeError)
   }
 })
+
+test('negotiates well-formed numbering systems and rejects malformed ones', () => {
+  for (const numberingSystem of ['foobar', 'foo-bar', 'LATN']) {
+    expect(
+      new DurationFormat('en', {numberingSystem}).resolvedOptions()
+        .numberingSystem
+    ).toBe('latn')
+  }
+  for (const numberingSystem of ['', 'ab', 'abc_def', 'abcdefghi']) {
+    expect(() => new DurationFormat('en', {numberingSystem})).toThrow(
+      RangeError
+    )
+  }
+})

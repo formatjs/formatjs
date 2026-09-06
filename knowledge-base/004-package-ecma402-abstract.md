@@ -31,3 +31,10 @@ Decimal. DateTimeFormat values, duration fields, RelativeTimeFormat values, and
 numeric options reject BigInt, including objects that coerce to BigInt.
 `ToIntlMathematicalValue` and formatted plural operands retain exact decimal
 values; do not route them through Number conversion.
+
+## Unicode Locale Types
+
+`IsUnicodeLocaleIdentifierType` shares the Unicode `type` grammar check used by
+locale options. It validates syntax only; `ResolveLocale` handles support and
+fallback. Keep this helper in the shared layer rather than depending on
+`Intl.Locale` from other polyfills.

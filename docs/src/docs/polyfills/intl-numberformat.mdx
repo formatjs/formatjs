@@ -332,3 +332,8 @@ type Unit =
 
 You can specify `X-per-Y` unit, where `X` and `Y` are sanctioned simple units (e.g. `kilometer-per-hour`).
 The library will choose the best-fit localized pattern to format this compound unit.
+
+## Numbering system validation
+
+A well-formed but unsupported `numberingSystem` option falls back to the locale's
+supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.
