@@ -87,7 +87,9 @@ export const Collator = function (
   opt.localeMatcher = matcher
   const collation = GetOption(opts, 'collation', 'string', undefined, undefined)
   // ResolveOptions step 6.d.ii rejects malformed Unicode types.
-  // https://tc39.es/ecma402/#sec-resolveoptions:~:text=If%20value%20cannot%20be%20matched
+  // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
+  // https://tc39.es/ecma402/#sec-resolveoptions
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
   if (collation !== undefined && !IsUnicodeLocaleIdentifierType(collation)) {
     throw new RangeError('Invalid collation')
   }
@@ -174,7 +176,9 @@ Object.defineProperty(Collator.prototype, 'compare', {
       // Collator Compare Functions convert both arguments with ToString and
       // then call CompareStrings. The getter caches the bound compare function
       // in the collator internal slots.
+      // ECMA-402 §10.3.3.1 Collator Compare Functions, steps 5–6.
       // https://tc39.es/ecma402/#sec-collator-compare-functions
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L222-L223
       boundCompare = (x: string, y: string) =>
         compareCollatorStrings(internalSlots, ToString(x), ToString(y))
       internalSlots.boundCompare = boundCompare
