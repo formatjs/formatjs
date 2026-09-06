@@ -137,7 +137,7 @@ describe('.of()', () => {
 
     it('handles calendar codes with hyphens', () => {
       const dn = new DisplayNames('en', {type: 'calendar'})
-      // These have hyphens so they match the pattern [a-z0-9]{3,8}([-_][a-z0-9]{3,8})*
+      // These have hyphens so they match the pattern [a-z0-9]{3,8}(-[a-z0-9]{3,8})*
       expect(dn.of('islamic-civil')).toBe(
         'Hijri Calendar (tabular, civil epoch)'
       )

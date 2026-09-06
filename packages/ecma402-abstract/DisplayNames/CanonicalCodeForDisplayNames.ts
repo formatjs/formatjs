@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
@@ -6,9 +7,6 @@ import {IsValidDateTimeFieldCode} from '#packages/ecma402-abstract/DisplayNames/
 
 const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
 const ALPHA_4 = /^[a-z]{4}$/i
-// Calendar codes reject backwards-compatible underscore syntax.
-// https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
-const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 
 function isUnicodeRegionSubtag(region: string): boolean {
   return UNICODE_REGION_SUBTAG_REGEX.test(region)
@@ -16,10 +14,6 @@ function isUnicodeRegionSubtag(region: string): boolean {
 
 function isUnicodeScriptSubtag(script: string): boolean {
   return ALPHA_4.test(script)
-}
-
-function isUnicodeLocaleIdentifierType(code: string): boolean {
-  return UNICODE_TYPE_REGEX.test(code)
 }
 
 export function CanonicalCodeForDisplayNames(
@@ -48,7 +42,9 @@ export function CanonicalCodeForDisplayNames(
     return `${code[0].toUpperCase()}${code.slice(1).toLowerCase()}`
   }
   if (type === 'calendar') {
-    if (!isUnicodeLocaleIdentifierType(code)) {
+    // CanonicalCodeForDisplayNames requires a Unicode type, excluding underscores.
+    // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
+    if (!IsUnicodeLocaleIdentifierType(code)) {
       throw RangeError('invalid calendar')
     }
     return code.toLowerCase()

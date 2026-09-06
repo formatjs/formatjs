@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
@@ -270,7 +271,7 @@ function isValidCodeForDisplayNames(
       return IsWellFormedCurrencyCode(code)
     case 'calendar':
       // unicode locale identifier type
-      return /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(code)
+      return IsUnicodeLocaleIdentifierType(code)
     case 'dateTimeField':
       return IsValidDateTimeFieldCode(code)
   }
