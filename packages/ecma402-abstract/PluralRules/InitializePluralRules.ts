@@ -58,26 +58,26 @@ export function InitializePluralRules(
     'cardinal'
   )
 
-  // Extension: notation options for compact notation support
-  // Not in ECMA-402 spec, but mirrors Intl.NumberFormat notation option
-  // Enables proper plural selection for compact numbers (e.g., "1.2M")
+  // Read and validate notation and compactDisplay before digit options.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules
   const notation = GetOption(
     opts,
     'notation',
     'string',
-    ['standard', 'compact'],
+    ['standard', 'scientific', 'engineering', 'compact'],
     'standard'
   )
   internalSlots.notation = notation
 
+  const compactDisplay = GetOption(
+    opts,
+    'compactDisplay',
+    'string',
+    ['short', 'long'],
+    'short'
+  )
   if (notation === 'compact') {
-    internalSlots.compactDisplay = GetOption(
-      opts,
-      'compactDisplay',
-      'string',
-      ['short', 'long'],
-      'short'
-    )
+    internalSlots.compactDisplay = compactDisplay
     // Implementation: Load NumberFormat locale data if available (soft dependency)
     // This is needed to calculate compact exponents using ComputeExponentForMagnitude
     if (
@@ -91,7 +91,7 @@ export function InitializePluralRules(
     }
   }
 
-  SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard')
+  SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, notation)
 
   return pl
 }

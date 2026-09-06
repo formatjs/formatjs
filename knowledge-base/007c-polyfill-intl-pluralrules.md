@@ -127,3 +127,12 @@ When `selectRange(start, end)` is called:
 - **English**: Cardinal: one/other; Ordinal: one/two/few/other
 - **French**: Cardinal: one/many/other (compact notation uses `e` operand for "many")
 - **Arabic**: Cardinal: zero/one/two/few/many/other (most complex, uses all 6 categories)
+
+## Draft options and range behavior
+
+`notation` accepts `standard`, `scientific`, `engineering`, and `compact`.
+`compactDisplay` is validated for every notation and reported only for `compact`.
+Compact notation uses the shared compact digit defaults. `resolvedOptions()`
+returns an ordinary object, reports notation and rounding settings, and lists
+plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
+`selectRange()` accepts infinite endpoints; NaN still throws `RangeError`.

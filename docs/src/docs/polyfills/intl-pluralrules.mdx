@@ -147,3 +147,12 @@ async function polyfill(locale: string) {
   await import(`@formatjs/intl-pluralrules/locale-data/${unsupportedLocale}.js`)
 }
 ```
+
+## Draft options and range behavior
+
+`notation` accepts `standard`, `scientific`, `engineering`, and `compact`.
+`compactDisplay` is validated for every notation and reported only for `compact`.
+Compact notation uses the shared compact digit defaults. `resolvedOptions()`
+returns an ordinary object, reports notation and rounding settings, and lists
+plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
+`selectRange()` accepts infinite endpoints; NaN still throws `RangeError`.

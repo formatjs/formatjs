@@ -47,10 +47,11 @@ export function ResolvePluralRange(
     ) => LDMLPluralRule
   }
 ): LDMLPluralRule {
-  // 1. If x is not-a-number or y is not-a-number, throw a RangeError exception.
-  if (!x.isFinite() || !y.isFinite()) {
+  // ResolvePluralRange rejects NaN but permits either infinity.
+  // https://tc39.es/ecma402/#sec-resolvepluralrange
+  if (x.isNaN() || y.isNaN()) {
     throw new RangeError(
-      'selectRange requires start and end values to be finite numbers'
+      'selectRange requires start and end values not to be NaN'
     )
   }
 

@@ -17,6 +17,11 @@ describe('PluralRules', function () {
       minimumIntegerDigits: 1,
       pluralCategories: ['one', 'other'],
       type: 'cardinal',
+      notation: 'standard',
+      roundingIncrement: 1,
+      roundingMode: 'halfExpand',
+      roundingPriority: 'auto',
+      trailingZeroDisplay: 'auto',
     })
   })
   it('should work for cardinal', function () {
@@ -193,8 +198,8 @@ describe('PluralRules', function () {
 
     it('should throw RangeError for non-finite values', function () {
       const pr = new PluralRules('en')
-      expect(() => pr.selectRange(Infinity, 5)).toThrow(RangeError)
-      expect(() => pr.selectRange(1, Infinity)).toThrow(RangeError)
+      expect(pr.selectRange(Infinity, 5)).toBe('other')
+      expect(pr.selectRange(1, Infinity)).toBe('other')
       expect(() => pr.selectRange(NaN, 5)).toThrow(RangeError)
       expect(() => pr.selectRange(1, NaN)).toThrow(RangeError)
     })
@@ -340,4 +345,94 @@ describe('PluralRules', function () {
 
 it('preserves plural operands above Number.MAX_SAFE_INTEGER', () => {
   expect(GetOperands('9007199254740993').IntegerDigits).toBe('9007199254740993')
+})
+
+it('reads notation and compactDisplay before digit options', () => {
+  const reads: string[] = []
+  new PluralRules(
+    'en',
+    new Proxy(
+      {},
+      {
+        get(_target, key) {
+          reads.push(String(key))
+          return undefined
+        },
+      }
+    )
+  )
+  expect(reads.slice(0, 5)).toEqual([
+    'localeMatcher',
+    'type',
+    'notation',
+    'compactDisplay',
+    'minimumIntegerDigits',
+  ])
+  for (const notation of [
+    'standard',
+    'scientific',
+    'engineering',
+    'compact',
+  ] as const) {
+    expect(
+      () => new PluralRules('en', {notation, compactDisplay: 'invalid' as any})
+    ).toThrow(RangeError)
+    const result = new PluralRules('en', {notation}).resolvedOptions() as any
+    expect(result.notation).toBe(notation)
+    expect('compactDisplay' in result).toBe(notation === 'compact')
+  }
+})
+it('reports compact digit defaults, rounding settings, and ordered categories', () => {
+  const compact = new PluralRules('en', {
+    notation: 'compact',
+    compactDisplay: 'long',
+  }).resolvedOptions() as any
+  expect(Object.getPrototypeOf(compact)).toBe(Object.prototype)
+  expect(Object.keys(compact)).toEqual([
+    'locale',
+    'type',
+    'notation',
+    'compactDisplay',
+    'minimumIntegerDigits',
+    'minimumFractionDigits',
+    'maximumFractionDigits',
+    'minimumSignificantDigits',
+    'maximumSignificantDigits',
+    'pluralCategories',
+    'roundingIncrement',
+    'roundingMode',
+    'roundingPriority',
+    'trailingZeroDisplay',
+  ])
+  expect(compact).toMatchObject({
+    compactDisplay: 'long',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+    minimumSignificantDigits: 1,
+    maximumSignificantDigits: 2,
+    roundingPriority: 'morePrecision',
+  })
+  expect(
+    new PluralRules('en', {type: 'ordinal'}).resolvedOptions().pluralCategories
+  ).toEqual(['one', 'two', 'few', 'other'])
+  const options = {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    roundingIncrement: 5,
+    roundingMode: 'ceil',
+    trailingZeroDisplay: 'stripIfInteger',
+  } as const
+  expect(new PluralRules('en', options).resolvedOptions()).toMatchObject(
+    options
+  )
+})
+it('accepts infinite range endpoints but still rejects NaN', () => {
+  const rules = new PluralRules('en')
+  for (const infinity of [-Infinity, Infinity]) {
+    expect(rules.selectRange(infinity, infinity)).toBe('other')
+    expect(rules.selectRange(infinity, 2)).toBe('other')
+    expect(rules.selectRange(2, infinity)).toBe('other')
+  }
+  expect(() => rules.selectRange(NaN, 2)).toThrow(RangeError)
+  expect(() => rules.selectRange(2, NaN)).toThrow(RangeError)
 })

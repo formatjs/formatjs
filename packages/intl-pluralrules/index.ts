@@ -20,7 +20,7 @@ import getInternalSlots from '#packages/intl-pluralrules/get_internal_slots.js'
  * ECMA-402 Spec: selectRange method (Intl.PluralRules.prototype.selectRange)
  * https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
  *
- * Extension: notation and compactDisplay options (not in ECMA-402 spec)
+ * ECMA-402 notation and compactDisplay options
  * Mirrors Intl.NumberFormat notation option for proper plural selection with compact numbers
  */
 declare global {
@@ -30,9 +30,9 @@ declare global {
       selectRange(start: number | bigint, end: number | bigint): LDMLPluralRule
     }
     interface PluralRulesOptions {
-      // Extension: notation option (mirrors Intl.NumberFormat)
-      notation?: 'standard' | 'compact'
-      // Extension: compactDisplay option (mirrors Intl.NumberFormat)
+      // https://tc39.es/ecma402/#sec-intl.pluralrules
+      notation?: 'standard' | 'scientific' | 'engineering' | 'compact'
+      // Only reported in resolvedOptions when notation is compact.
       compactDisplay?: 'short' | 'long'
     }
   }
@@ -52,7 +52,7 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean
   locale: string
   type: 'cardinal' | 'ordinal'
-  notation: 'standard' | 'compact'
+  notation: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'
   dataLocaleData?: any // NumberFormatLocaleInternalData
 }
@@ -151,12 +151,16 @@ export class PluralRules {
   }
   public resolvedOptions(): Intl.ResolvedPluralRulesOptions {
     validateInstance(this, 'resolvedOptions')
-    const opts = Object.create(null)
+    // Ordinary result object and property order follow the resolved-options table.
+    // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.resolvedoptions
+    const opts: Record<string, any> = {}
     const internalSlots = getInternalSlots(this)
     opts.locale = internalSlots.locale
     opts.type = internalSlots.type
     ;(
       [
+        'notation',
+        'compactDisplay',
         'minimumIntegerDigits',
         'minimumFractionDigits',
         'maximumFractionDigits',
@@ -170,13 +174,29 @@ export class PluralRules {
       }
     })
 
+    const categories =
+      PluralRules.localeData[internalSlots.locale].categories[
+        internalSlots.type
+      ]
     opts.pluralCategories = [
-      ...PluralRules.localeData[opts.locale].categories[
-        opts.type as 'cardinal'
-      ],
-    ]
-    return opts
+      'zero',
+      'one',
+      'two',
+      'few',
+      'many',
+      'other',
+    ].filter(category => categories.includes(category))
+    for (const field of [
+      'roundingIncrement',
+      'roundingMode',
+      'roundingPriority',
+      'trailingZeroDisplay',
+    ] as const) {
+      opts[field] = internalSlots[field]
+    }
+    return opts as Intl.ResolvedPluralRulesOptions
   }
+
   public select(val: number | bigint): LDMLPluralRule {
     validateInstance(this, 'select')
     // Use ToIntlMathematicalValue which handles bigint per ECMA-402
@@ -212,7 +232,7 @@ export class PluralRules {
    * pr.selectRange(BigInt(1), BigInt(2)); // "other"
    *
    * @throws {TypeError} If start or end is undefined
-   * @throws {RangeError} If start or end is not a finite number (Infinity, NaN)
+   * @throws {RangeError} If start or end converts to NaN
    *
    * @note Chrome's native implementation (as of early 2025) has a bug where it throws
    * "Cannot convert a BigInt value to a number" when using BigInt arguments. This is
