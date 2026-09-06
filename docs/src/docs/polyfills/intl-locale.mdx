@@ -70,7 +70,7 @@ locale.getTimeZones() // ["America/Adak", "America/Anchorage", ...]
 
 // Text and week info
 locale.getTextInfo() // {direction: "ltr"}
-locale.getWeekInfo() // {firstDay: 7, weekend: [6, 7], minimalDays: 1}
+locale.getWeekInfo() // {firstDay: 7, weekend: [6, 7]}
 ```
 
 <Admonition type="info">
@@ -167,3 +167,12 @@ This library is [test262](https://github.com/tc39/test262/tree/master/test/intl4
 `firstDayOfWeek` accepts Unicode type identifiers such as `mon`. Numeric strings
 `0` and `7` both become `sun`; `1` through `6` become `mon` through `sat`.
 The empty Unicode numeric keyword in `en-u-kn` sets `numeric` to `true`.
+
+## Week info compatibility
+
+`getWeekInfo()` follows the current ECMA-402 draft: `{firstDay, weekend}` with
+ISO weekday numbers (Monday = 1, Sunday = 7) and a fresh weekend array per call.
+**Breaking change:** the earlier proposal's `minimalDays` property is removed.
+Consumers that calculate local week numbers must obtain that value separately.
+Week data honors available `rg` region overrides, `sd` subdivision preferences
+when no region is explicit, and recognized `fw` first-day overrides.

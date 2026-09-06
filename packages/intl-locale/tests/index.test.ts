@@ -167,7 +167,6 @@ test('getWeekInfo', function () {
   expect(new Locale('en-uS').getWeekInfo()).toEqual({
     firstDay: 7,
     weekend: [6, 7],
-    minimalDays: 1,
   })
 })
 
@@ -181,9 +180,7 @@ test('GH #4575', function () {
 })
 
 test('GH #5112 - getWeekInfo should be available for week calculations', function () {
-  // Issue #5112: Firefox has incomplete Intl.Locale implementation
-  // missing getWeekInfo() which breaks Luxon's localWeekNumber calculation
-  // This test ensures the polyfill provides getWeekInfo() for all locales
+  // Keep getWeekInfo available with the current ECMA-402 result shape.
 
   const locale = new Locale('en-US')
 
@@ -193,18 +190,16 @@ test('GH #5112 - getWeekInfo should be available for week calculations', functio
   const weekInfo = locale.getWeekInfo()
   expect(weekInfo).toHaveProperty('firstDay')
   expect(weekInfo).toHaveProperty('weekend')
-  expect(weekInfo).toHaveProperty('minimalDays')
+  expect(Object.keys(weekInfo)).toEqual(['firstDay', 'weekend'])
 
   // en-US uses Sunday (7) as first day of week
   expect(weekInfo.firstDay).toBe(7)
-  expect(weekInfo.minimalDays).toBe(1)
 
   // Test other locales that might have different week info
   const localeDe = new Locale('de-DE')
   const weekInfoDe = localeDe.getWeekInfo()
   // Germany uses Monday (1) as first day of week
   expect(weekInfoDe.firstDay).toBe(1)
-  expect(weekInfoDe.minimalDays).toBe(4)
 })
 
 test('GH #5112 - All Intl Locale Info methods should be available', function () {
@@ -253,4 +248,21 @@ test('treats an empty numeric keyword as true', () => {
   expect(new Locale('en-u-kn-true').numeric).toBe(true)
   expect(new Locale('en-u-kn-false').numeric).toBe(false)
   expect(new Locale('en-u-kn', {numeric: false}).numeric).toBe(false)
+})
+
+test('returns numeric weekdays and independent weekend arrays', () => {
+  const locale = new Locale('en-US', {firstDayOfWeek: 'mon'})
+  expect(locale.getWeekInfo()).toEqual({firstDay: 1, weekend: [6, 7]})
+  const info = locale.getWeekInfo()
+  info.weekend.length = 0
+  expect(locale.getWeekInfo().weekend).toEqual([6, 7])
+  expect(new Locale('en-US-u-fw-sun').getWeekInfo().firstDay).toBe(7)
+  expect(new Locale('en-US-u-fw-foobar').getWeekInfo().firstDay).toBe(7)
+})
+test('uses region and subdivision preferences for week data', () => {
+  expect(new Locale('en-US-u-rg-gbzzzz').getWeekInfo().firstDay).toBe(1)
+  expect(new Locale('en-US-u-rg-aazzzz').getWeekInfo().firstDay).toBe(7)
+  expect(new Locale('en-US-u-fw-sun-rg-gbzzzz').getWeekInfo().firstDay).toBe(7)
+  expect(new Locale('en-u-sd-gbeng').getWeekInfo().firstDay).toBe(1)
+  expect(new Locale('en-US-u-sd-gbeng').getWeekInfo().firstDay).toBe(7)
 })

@@ -427,12 +427,22 @@ function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
 
   const locale = locInternalSlots.locale
 
-  let region: string | undefined
-  if (locale !== 'root') {
-    region = loc.maximize().region
+  // RegionPreference uses the explicit region, subdivision, then likely subtags.
+  // ECMA-402 §15.5.8 RegionPreference, steps 1–4.
+  // https://tc39.es/ecma402/#sec-regionpreference
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L606-L616
+  const ast = parseUnicodeLocaleId(locale)
+  const extension = ast.extensions.find(ext => ext.type === 'u') as
+    | UnicodeExtension
+    | undefined
+  const subdivisionRegion = (key: string) => {
+    const value = extension?.keywords.find(entry => entry[0] === key)?.[1]
+    const match = value?.match(/^([a-z]{2}|[0-9]{3})[a-z0-9]{1,4}$/i)
+    return match ? new Locale(`und-${match[1]}`).region : undefined
   }
-
-  return getWeekDataForRegion(region)
+  const region =
+    ast.lang.region || subdivisionRegion('sd') || loc.maximize().region
+  return getWeekDataForRegion(region, subdivisionRegion('rg'))
 }
 
 const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
@@ -771,12 +781,13 @@ export class Locale {
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getWeekInfo
+   * ECMA-402 §15.3.22 Intl.Locale.prototype.getWeekInfo, steps 3–7.
+   * https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getWeekInfo
+   * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L420-L424
    */
   public getWeekInfo(): {
-    firstDay: string
-    weekend: {start: string; end: string}
-    minimalDays: number
+    firstDay: number
+    weekend: number[]
   } {
     const info = Object.create(Object.prototype)
     const internalSlots = getInternalSlots(this)
@@ -789,13 +800,20 @@ export class Locale {
 
     createDataProperty(info, 'firstDay', wi.firstDay)
 
-    createDataProperty(info, 'weekend', we)
-
-    createDataProperty(info, 'minimalDays', wi.minimalDays)
+    // getWeekInfo returns a fresh weekend array and no minimalDays property.
+    // ECMA-402 §15.3.22 Intl.Locale.prototype.getWeekInfo, steps 3–7.
+    // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getWeekInfo
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L420-L424
+    createDataProperty(info, 'weekend', [...we])
 
     const fw = internalSlots.firstDayOfWeek
-    if (fw !== undefined) {
-      info.firstDay = fw
+    // WeekInfoOfLocale applies recognized weekday identifiers as ISO day numbers.
+    // ECMA-402 §15.5.17 WeekInfoOfLocale, steps 8–9.b.
+    // https://tc39.es/ecma402/#sec-weekinfooflocale
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L887-L890
+    const day = TABLE_1.indexOf(fw as (typeof TABLE_1)[number])
+    if (day !== -1) {
+      info.firstDay = day || 7
     }
 
     return info
