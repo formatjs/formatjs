@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
@@ -85,12 +86,9 @@ export const Collator = function (
   const opt = Object.create(null)
   opt.localeMatcher = matcher
   const collation = GetOption(opts, 'collation', 'string', undefined, undefined)
-  // Resolution option types must be well-formed before negotiation.
-  // https://tc39.es/ecma402/#sec-resolveoptions
-  if (
-    collation !== undefined &&
-    !/^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(collation)
-  ) {
+  // ResolveOptions step 6.d.ii rejects malformed Unicode types.
+  // https://tc39.es/ecma402/#sec-resolveoptions:~:text=If%20value%20cannot%20be%20matched
+  if (collation !== undefined && !IsUnicodeLocaleIdentifierType(collation)) {
     throw new RangeError('Invalid collation')
   }
   if (typeof collation === 'string') {
