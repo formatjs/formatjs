@@ -6,7 +6,10 @@ import {IsValidDurationRecord} from '#packages/ecma402-abstract/DurationFormat/I
 import {ToIntegerIfIntegral} from '#packages/ecma402-abstract/DurationFormat/ToIntegerIfIntegral.js'
 
 export function ToDurationRecord(input: DurationInput): DurationRecord {
-  if (typeof input !== 'object') {
+  if (
+    (typeof input !== 'object' || input === null) &&
+    typeof input !== 'function'
+  ) {
     if (typeof input === 'string') {
       throw new RangeError('Invalid duration format')
     }
@@ -24,48 +27,28 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
     microseconds: 0,
     nanoseconds: 0,
   }
-  if (input.days !== undefined) {
-    result.days = ToIntegerIfIntegral(input.days)
+  // Read each field once, in ToDurationRecord's specified order.
+  // https://tc39.es/ecma402/#sec-todurationrecord
+  let anyDefined = false
+  for (const field of [
+    'days',
+    'hours',
+    'microseconds',
+    'milliseconds',
+    'minutes',
+    'months',
+    'nanoseconds',
+    'seconds',
+    'weeks',
+    'years',
+  ] as const) {
+    const value = input[field]
+    if (value !== undefined) {
+      anyDefined = true
+      result[field] = ToIntegerIfIntegral(value)
+    }
   }
-  if (input.hours !== undefined) {
-    result.hours = ToIntegerIfIntegral(input.hours)
-  }
-  if (input.microseconds !== undefined) {
-    result.microseconds = ToIntegerIfIntegral(input.microseconds)
-  }
-  if (input.milliseconds !== undefined) {
-    result.milliseconds = ToIntegerIfIntegral(input.milliseconds)
-  }
-  if (input.minutes !== undefined) {
-    result.minutes = ToIntegerIfIntegral(input.minutes)
-  }
-  if (input.months !== undefined) {
-    result.months = ToIntegerIfIntegral(input.months)
-  }
-  if (input.nanoseconds !== undefined) {
-    result.nanoseconds = ToIntegerIfIntegral(input.nanoseconds)
-  }
-  if (input.seconds !== undefined) {
-    result.seconds = ToIntegerIfIntegral(input.seconds)
-  }
-  if (input.weeks !== undefined) {
-    result.weeks = ToIntegerIfIntegral(input.weeks)
-  }
-  if (input.years !== undefined) {
-    result.years = ToIntegerIfIntegral(input.years)
-  }
-  if (
-    input.years === undefined &&
-    input.months === undefined &&
-    input.weeks === undefined &&
-    input.days === undefined &&
-    input.hours === undefined &&
-    input.minutes === undefined &&
-    input.seconds === undefined &&
-    input.milliseconds === undefined &&
-    input.microseconds === undefined &&
-    input.nanoseconds === undefined
-  ) {
+  if (!anyDefined) {
     throw new TypeError('Invalid duration format')
   }
   if (!IsValidDurationRecord(result)) {

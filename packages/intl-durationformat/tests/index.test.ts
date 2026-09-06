@@ -208,3 +208,78 @@ test('negotiates well-formed numbering systems and rejects malformed ones', () =
     )
   }
 })
+
+test('reads duration fields once in specification order', () => {
+  const reads: string[] = []
+  const input = new Proxy(
+    {seconds: 1},
+    {
+      get(target, key) {
+        reads.push(String(key))
+        return Reflect.get(target, key)
+      },
+    }
+  )
+  new DurationFormat('en').format(input)
+  expect(reads).toEqual([
+    'days',
+    'hours',
+    'microseconds',
+    'milliseconds',
+    'minutes',
+    'months',
+    'nanoseconds',
+    'seconds',
+    'weeks',
+    'years',
+  ])
+})
+test('accepts callable duration objects and rejects empty records', () => {
+  const formatter = new DurationFormat('en')
+  const input = Object.assign(() => {}, {seconds: 1})
+  expect(formatter.format(input)).toBe(formatter.format({seconds: 1}))
+  expect(() => formatter.format({})).toThrow(TypeError)
+  expect(() => formatter.format(null as any)).toThrow(TypeError)
+})
+test('uses RangeError for nonintegral fields without repeated coercion', () => {
+  const formatter = new DurationFormat('en')
+  for (const seconds of [1.5, NaN, Infinity, -Infinity]) {
+    expect(() => formatter.format({seconds})).toThrow(RangeError)
+    expect(() => formatter.formatToParts({seconds})).toThrow(RangeError)
+  }
+  let calls = 0
+  const seconds = {
+    [Symbol.toPrimitive]() {
+      calls++
+      return 1.5
+    },
+  }
+  expect(() => formatter.format({seconds} as any)).toThrow(RangeError)
+  expect(calls).toBe(1)
+})
+test('enforces exact duration magnitude limits', () => {
+  const formatter = new DurationFormat('en')
+  for (const sign of [-1, 1]) {
+    for (const unit of ['years', 'months', 'weeks'] as const) {
+      expect(() => formatter.format({[unit]: sign * 2 ** 32})).toThrow(
+        RangeError
+      )
+      expect(() =>
+        formatter.format({[unit]: sign * (2 ** 32 - 1)})
+      ).not.toThrow()
+    }
+    expect(() => formatter.format({seconds: sign * 2 ** 53})).toThrow(
+      RangeError
+    )
+    const below = {
+      seconds: sign * (2 ** 53 - 1),
+      milliseconds: sign * 999,
+      microseconds: sign * 999,
+      nanoseconds: sign * 999,
+    }
+    expect(() => formatter.format(below)).not.toThrow()
+    expect(() =>
+      formatter.format({...below, nanoseconds: sign * 1000})
+    ).toThrow(RangeError)
+  }
+})

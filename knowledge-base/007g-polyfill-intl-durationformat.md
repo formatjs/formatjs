@@ -66,3 +66,11 @@ export const TIME_SEPARATORS = {
 
 A well-formed but unsupported `numberingSystem` option falls back to the locale's
 supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.
+
+## Duration record validation
+
+Each duration field is read once in the ECMA-402 order. Fields must convert to
+finite integers of a common sign. Invalid numeric fields throw `RangeError`;
+an empty record throws `TypeError`. Absolute years, months, and weeks must be
+less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
+Subsecond contributions participate in the bound comparison exactly.
