@@ -337,3 +337,13 @@ The library will choose the best-fit localized pattern to format this compound u
 
 A well-formed but unsupported `numberingSystem` option falls back to the locale's
 supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.
+
+## Callable options
+
+Options can be function objects with formatting properties. The constructor
+reads those properties without calling the function.
+
+```tsx
+const options = Object.assign(() => {}, {maximumFractionDigits: 2})
+new Intl.NumberFormat('en', options).format(1.234) // '1.23'
+```

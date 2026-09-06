@@ -42,6 +42,7 @@ formatjs_test(
         "tests/FormatApproximately.test.ts",
         "tests/FormatNumericRange.test.ts",
         "tests/FormatNumericRangeToParts.test.ts",
+        "tests/GetOptionsObject.test.ts",
         "tests/GetStringOrBooleanOption.test.ts",
         "tests/GetUnsignedRoundingMode.test.ts",
         "tests/IsUnicodeLocaleIdentifierType.test.ts",

@@ -76,3 +76,9 @@ All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localem
 - [007j — intl-getcanonicallocales](./007j-polyfill-intl-getcanonicallocales.md) — ECMA-402 §8.2.1
 - [007k — intl-supportedvaluesof](./007k-polyfill-intl-supportedvaluesof.md) — ECMA-402 §8.3.2
 - [007l — intl-collator](./007l-polyfill-intl-collator.md) — ECMA-402 §10 (CLDR collation compiler)
+
+## Option objects
+
+Shared option helpers accept callable objects without invoking them. Property
+getters run normally and their errors propagate. `GetOptionsObject` rejects
+`null` and other primitives, while omitted options create a fresh empty object.
