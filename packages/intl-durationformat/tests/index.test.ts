@@ -183,3 +183,14 @@ test.skip('Intl.DurationFormat format with NumberFormatV3', function () {
     })
   ).toBe('1 yr, 2 mths, 3 days, 4 hr, 5 min, 6 sec, 7 ms, 8 μs, 9 ns')
 })
+
+test('duration fields use Number coercion', () => {
+  const formatter = new DurationFormat('en')
+  expect(formatter.format({seconds: false} as any)).toBe(
+    formatter.format({seconds: 0})
+  )
+  for (const seconds of [1n, Object(1n), {valueOf: () => 1n}]) {
+    expect(() => formatter.format({seconds} as any)).toThrow(TypeError)
+    expect(() => formatter.formatToParts({seconds} as any)).toThrow(TypeError)
+  }
+})

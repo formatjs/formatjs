@@ -1,7 +1,6 @@
-import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {ZERO} from '#packages/ecma402-abstract/constants.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import type Decimal from '@formatjs/bigdecimal'
+import Decimal from '@formatjs/bigdecimal'
 
 /**
  * CLDR Spec: Operands as defined in https://unicode.org/reports/tr35/tr35-numbers.html#Operands
@@ -66,7 +65,9 @@ export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
     typeof s === 'string',
     `GetOperands should have been called with a string`
   )
-  const n = ToNumber(s)
+  // GetOperands consumes a formatted decimal string, not an ECMAScript Number.
+  // Preserve its mathematical value: https://tc39.es/ecma402/#sec-getoperands
+  const n = new Decimal(s)
   invariant(n.isFinite(), 'n should be finite')
   let dp = s.indexOf('.')
   let iv
@@ -74,22 +75,22 @@ export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
   let v: number
   let fv = ''
   if (dp === -1) {
-    iv = n
+    iv = s
     f = ZERO
     v = 0
   } else {
     iv = s.slice(0, dp)
     fv = s.slice(dp, s.length)
-    f = ToNumber(fv)
+    f = new Decimal(fv)
     v = fv.length
   }
-  const i = ToNumber(iv).abs()
+  const i = new Decimal(iv).abs()
   let w: number
   let t: Decimal
   if (!f.isZero()) {
     const ft = fv.replace(/0+$/, '')
     w = ft.length
-    t = ToNumber(ft)
+    t = new Decimal(ft)
   } else {
     w = 0
     t = ZERO

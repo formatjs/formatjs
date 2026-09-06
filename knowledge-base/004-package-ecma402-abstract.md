@@ -23,3 +23,11 @@ Implements abstract operations from across the ECMA-402 specification:
 ## Dependencies
 
 `@formatjs/bigdecimal`, `@formatjs/fast-memoize`, `@formatjs/intl-localematcher`
+
+## Numeric Coercion
+
+`ToNumber` applies ECMAScript Number conversion before wrapping the result in
+Decimal. DateTimeFormat values, duration fields, RelativeTimeFormat values, and
+numeric options reject BigInt, including objects that coerce to BigInt.
+`ToIntlMathematicalValue` and formatted plural operands retain exact decimal
+values; do not route them through Number conversion.

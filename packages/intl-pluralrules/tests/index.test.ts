@@ -1,3 +1,4 @@
+import {GetOperands} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {PluralRules} from '#packages/intl-pluralrules/index.js'
@@ -335,4 +336,8 @@ describe('PluralRules', function () {
       )
     })
   })
+})
+
+it('preserves plural operands above Number.MAX_SAFE_INTEGER', () => {
+  expect(GetOperands('9007199254740993').IntegerDigits).toBe('9007199254740993')
 })
