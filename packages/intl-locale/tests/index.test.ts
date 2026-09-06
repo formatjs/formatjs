@@ -1,3 +1,4 @@
+import {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import {Locale} from '#packages/intl-locale/index.js'
 import {describe, expect, it, test} from 'vitest'
@@ -265,4 +266,23 @@ test('uses region and subdivision preferences for week data', () => {
   expect(new Locale('en-US-u-fw-sun-rg-gbzzzz').getWeekInfo().firstDay).toBe(7)
   expect(new Locale('en-u-sd-gbeng').getWeekInfo().firstDay).toBe(1)
   expect(new Locale('en-US-u-sd-gbeng').getWeekInfo().firstDay).toBe(7)
+})
+
+test('Locale intrinsic supports canonicalization after polyfill installation', () => {
+  const NativeLocale = Intl.Locale
+  const native = new NativeLocale('fr')
+  const locale = new Locale('en')
+  Object.defineProperty(locale, 'toString', {
+    value() {
+      throw new Error('must not call')
+    },
+  })
+  try {
+    Object.defineProperty(Intl, 'Locale', {value: Locale})
+    expect(getCanonicalLocales(locale as any)).toEqual(['en'])
+    expect(getCanonicalLocales([locale, native] as any)).toEqual(['en', 'fr'])
+    expect(() => Locale.prototype.toString.call({} as any)).toThrow(TypeError)
+  } finally {
+    Object.defineProperty(Intl, 'Locale', {value: NativeLocale})
+  }
 })

@@ -1,31 +1,36 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeUnicodeLocaleId} from '#packages/intl-getcanonicallocales/canonicalizer.js'
 import {emitUnicodeLocaleId} from '#packages/intl-getcanonicallocales/emitter.js'
 import {parseUnicodeLocaleId} from '#packages/intl-getcanonicallocales/parser.js'
 
-/**
- * Check if value is an Intl.Locale object by checking for [[InitializedLocale]] internal slot
- * We detect this by checking if it's an Intl.Locale instance
- *
- * Per ECMA-402 #sec-canonicalizelocalelist step 7.c:
- * "If Type(kValue) is Object and kValue has an [[InitializedLocale]] internal slot, then
- *  Let tag be kValue.[[Locale]]"
- *
- * https://tc39.es/ecma402/#sec-canonicalizelocalelist
- */
-function isLocaleObject(value: any): value is Intl.Locale {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    typeof value.toString === 'function' &&
-    typeof value.baseName === 'string' &&
-    typeof value.language === 'string'
+// Keep the original intrinsic when Intl.Locale is later replaced by a polyfill.
+const originalLocaleToString =
+  typeof Intl !== 'undefined' ? Intl.Locale?.prototype.toString : undefined
+
+function localeString(value: unknown): string | undefined {
+  if (
+    value === null ||
+    (typeof value !== 'object' && typeof value !== 'function')
   )
+    return undefined
+  // Probe the Locale brand without reading user properties or calling an own toString.
+  // https://tc39.es/ecma402/#sec-canonicalizelocalelist
+  const currentLocaleToString =
+    typeof Intl !== 'undefined' ? Intl.Locale?.prototype.toString : undefined
+  for (const method of [originalLocaleToString, currentLocaleToString]) {
+    if (method) {
+      try {
+        const tag = method.call(value)
+        if (typeof tag === 'string') return tag
+      } catch {
+        // The intrinsic rejects objects without its Locale internal slots.
+      }
+    }
+  }
+  return undefined
 }
 
-/**
- * https://tc39.es/ecma402/#sec-canonicalizelocalelist
- * @param locales
- */
+/** https://tc39.es/ecma402/#sec-canonicalizelocalelist */
 function CanonicalizeLocaleList(
   locales?:
     | string[]
@@ -34,58 +39,37 @@ function CanonicalizeLocaleList(
     | Intl.Locale[]
     | ArrayLike<string | Intl.Locale>
 ): string[] {
-  // Step 1-2: If locales is undefined, return empty list
-  if (locales === undefined) {
-    return []
-  }
-
+  if (locales === undefined) return []
+  if (locales === null) throw new TypeError('Cannot convert null to an object')
+  const singleLocale = localeString(locales)
+  const list =
+    typeof locales === 'string'
+      ? [locales]
+      : singleLocale !== undefined
+        ? [singleLocale]
+        : Object(locales)
+  // LengthOfArrayLike performs ToLength: read once, coerce, truncate, and clamp.
+  // https://tc39.es/ecma262/#sec-lengthofarraylike
+  const length = +list.length
+  const len = isNaN(length)
+    ? 0
+    : Math.min(Math.max(Math.floor(length), 0), 9007199254740991)
   const seen: string[] = []
-
-  // Step 3-4: Handle string or Locale object by wrapping in array
-  // Per spec: "If Type(locales) is String or Type(locales) is Object and locales has an
-  // [[InitializedLocale]] internal slot, then Let O be CreateArrayFromList(« locales »)"
-  if (typeof locales === 'string' || isLocaleObject(locales)) {
-    locales = [locales as string | Intl.Locale]
-  }
-
-  // Step 5-6: Convert to object and get length for array-like objects
-  // Per spec: "Let O be ? ToObject(locales)" and "Let len be ? ToLength(? Get(O, "length"))"
-  const O = Object(locales)
-  const len = typeof O.length === 'number' ? O.length : 0
-
-  // Step 7: Iterate through elements
   for (let k = 0; k < len; k++) {
-    // Check if property exists
-    if (!(k in O)) {
-      continue
+    if (!(k in list)) continue
+    const value = list[k]
+    if (
+      value === null ||
+      !['string', 'object', 'function'].includes(typeof value)
+    ) {
+      throw new TypeError('Locale list entries must be strings or objects')
     }
-
-    const kValue = O[k]
-
-    // Step 7c-d: Extract locale string
-    let tag: string
-    if (typeof kValue === 'string') {
-      tag = kValue
-    } else if (isLocaleObject(kValue)) {
-      // For Intl.Locale objects, use toString() which returns the canonicalized locale
-      tag = kValue.toString()
-    } else {
-      throw new TypeError(
-        `Invalid locale type: expected string or Intl.Locale, got ${typeof kValue}`
-      )
-    }
-
-    // Step 7e-g: Validate and canonicalize
+    const tag = localeString(value) ?? ToString(value)
     const canonicalizedTag = emitUnicodeLocaleId(
       CanonicalizeUnicodeLocaleId(parseUnicodeLocaleId(tag))
     )
-
-    // Step 7h: Deduplicate
-    if (seen.indexOf(canonicalizedTag) < 0) {
-      seen.push(canonicalizedTag)
-    }
+    if (seen.indexOf(canonicalizedTag) < 0) seen.push(canonicalizedTag)
   }
-
   return seen
 }
 

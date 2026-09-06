@@ -112,9 +112,9 @@ describe('Intl.getCanonicalLocales', () => {
       expect(() => getCanonicalLocales([123 as any])).toThrow(TypeError)
     })
 
-    it('should throw TypeError for invalid locale type in array-like', function () {
+    it('should throw RangeError after coercing an invalid object entry', function () {
       const arrayLike = {0: 'en-US', 1: {not: 'a locale'}, length: 2}
-      expect(() => getCanonicalLocales(arrayLike as any)).toThrow(TypeError)
+      expect(() => getCanonicalLocales(arrayLike as any)).toThrow(RangeError)
     })
 
     it('should throw RangeError for invalid locale string', function () {
@@ -132,4 +132,84 @@ describe('Intl.getCanonicalLocales', () => {
       )
     })
   })
+})
+
+it('applies ToObject and reads/coerces array-like length once', () => {
+  expect(() => getCanonicalLocales(null as any)).toThrow(TypeError)
+  let reads = 0
+  expect(
+    getCanonicalLocales({
+      0: 'en',
+      1: 'fr',
+      get length() {
+        reads++
+        return '1.9'
+      },
+    } as any)
+  ).toEqual(['en'])
+  expect(reads).toBe(1)
+  for (const length of [-1, NaN, undefined]) {
+    expect(getCanonicalLocales({0: 'en', length} as any)).toEqual([])
+  }
+  for (const length of [1n, Symbol()]) {
+    expect(() => getCanonicalLocales({length} as any)).toThrow(TypeError)
+  }
+})
+it('coerces object and callable entries with the string hint', () => {
+  const hints: string[] = []
+  const value = {
+    [Symbol.toPrimitive](hint: string) {
+      hints.push(hint)
+      return 'en'
+    },
+  }
+  const callable = Object.assign(() => {}, {toString: () => 'fr'})
+  expect(getCanonicalLocales([value, callable] as any)).toEqual(['en', 'fr'])
+  expect(hints).toEqual(['string'])
+  expect(() => getCanonicalLocales([null] as any)).toThrow(TypeError)
+  expect(() => getCanonicalLocales([Symbol()] as any)).toThrow(TypeError)
+})
+it('reads Locale internal data without invoking overridden properties', () => {
+  const locale = new Intl.Locale('en-US')
+  Object.defineProperties(locale, {
+    toString: {
+      value() {
+        throw new Error('must not call')
+      },
+    },
+    baseName: {
+      get() {
+        throw new Error('must not read')
+      },
+    },
+    language: {
+      get() {
+        throw new Error('must not read')
+      },
+    },
+  })
+  expect(getCanonicalLocales(locale)).toEqual(['en-US'])
+  expect(getCanonicalLocales([locale])).toEqual(['en-US'])
+})
+it('does not identify Locale objects by their visible properties', () => {
+  const reads: string[] = []
+  const list = new Proxy(
+    {0: 'en', length: 1},
+    {
+      get(target, key) {
+        reads.push(String(key))
+        return Reflect.get(target, key)
+      },
+    }
+  )
+  expect(getCanonicalLocales(list)).toEqual(['en'])
+  expect(reads).toEqual(['length', '0'])
+  const fake = {
+    baseName: 'fr',
+    language: 'fr',
+    toString: () => 'fr',
+    0: 'en',
+    length: 1,
+  }
+  expect(getCanonicalLocales(fake)).toEqual(['en'])
 })

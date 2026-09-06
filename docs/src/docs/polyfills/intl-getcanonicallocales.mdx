@@ -69,3 +69,11 @@ async function polyfill() {
 ## Tests
 
 This library is [test262](https://github.com/tc39/test262/tree/master/test/intl402/Intl/getCanonicalLocales)-compliant.
+
+## Locale-list coercion
+
+`getCanonicalLocales` rejects `null`, coerces array-like lengths once with
+`ToLength`, and accepts string-coercible object entries. Native Locale values
+and values from the installed Locale polyfill use their intrinsic locale tag,
+ignoring overridden instance properties. Objects that merely expose `language`
+and `baseName` are treated as ordinary array-like inputs.
