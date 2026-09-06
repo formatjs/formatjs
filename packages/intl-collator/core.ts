@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -84,6 +85,14 @@ export const Collator = function (
   const opt = Object.create(null)
   opt.localeMatcher = matcher
   const collation = GetOption(opts, 'collation', 'string', undefined, undefined)
+  // Resolution option types must be well-formed before negotiation.
+  // https://tc39.es/ecma402/#sec-resolveoptions
+  if (
+    collation !== undefined &&
+    !/^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(collation)
+  ) {
+    throw new RangeError('Invalid collation')
+  }
   if (typeof collation === 'string') {
     opt.co = collation
   }
@@ -167,9 +176,9 @@ Object.defineProperty(Collator.prototype, 'compare', {
       // Collator Compare Functions convert both arguments with ToString and
       // then call CompareStrings. The getter caches the bound compare function
       // in the collator internal slots.
-      // https://tc39.es/ecma402/#sec-collator-comparefunctions
+      // https://tc39.es/ecma402/#sec-collator-compare-functions
       boundCompare = (x: string, y: string) =>
-        compareCollatorStrings(internalSlots, String(x), String(y))
+        compareCollatorStrings(internalSlots, ToString(x), ToString(y))
       internalSlots.boundCompare = boundCompare
     }
     return boundCompare

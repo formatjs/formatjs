@@ -117,3 +117,9 @@ behavior.
 - The placeholder exists only to enable npm trusted publishing setup.
 - The first real release should come from the normal Release Please automation
   after npm OIDC is configured.
+
+## Input validation
+
+Malformed `collation` options throw `RangeError`; well-formed unsupported values
+fall back during locale negotiation. `compare` converts arguments to strings in
+left-to-right order and rejects Symbols with `TypeError`.

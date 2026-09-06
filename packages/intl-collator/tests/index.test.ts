@@ -91,3 +91,26 @@ describe('Intl.Collator', () => {
     expect(collator.compare('\u00e4', '\u00f6')).toBeLessThan(0)
   })
 })
+
+it('validates collation syntax before resolving support', () => {
+  for (const collation of ['!', '', 'ab', 'abc_def', 'abcdefghi']) {
+    expect(() => new Collator('en', {collation})).toThrow(RangeError)
+  }
+  expect(
+    new Collator('en', {collation: 'foobar'}).resolvedOptions().collation
+  ).toBe('default')
+})
+it('compare uses ToString and preserves coercion order', () => {
+  const compare = new Collator('en').compare
+  expect(() => compare(Symbol('a') as any, 'a')).toThrow(TypeError)
+  expect(() => compare('a', Symbol('a') as any)).toThrow(TypeError)
+  const calls: string[] = []
+  const value = (name: string) => ({
+    [Symbol.toPrimitive](hint: string) {
+      calls.push(`${name}:${hint}`)
+      return 'a'
+    },
+  })
+  expect(compare(value('left') as any, value('right') as any)).toBe(0)
+  expect(calls).toEqual(['left:string', 'right:string'])
+})
