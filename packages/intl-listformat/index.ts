@@ -108,18 +108,17 @@ function validateInstance(instance: any, method: string) {
  * @param iterable list
  */
 function stringListFromIterable(iterable: Iterable<unknown>): string[] {
-  if (typeof iterable !== 'object') return []
+  if (iterable === undefined) return []
   const elements: string[] = []
-  const iterator = iterable[Symbol.iterator]()
-  let result: IteratorResult<unknown>
-  while (true) {
-    result = iterator.next()
-    if (result.done) break
-    if (typeof result.value !== 'string') {
-      const nextValue = result.value
-      throw new TypeError(`Iterable yielded ${nextValue} which is not a string`)
+  // StringListFromIterable uses GetIterator and closes on a non-string value.
+  // ECMA-402 §14.5.5 StringListFromIterable, steps 2–4.c.ii.
+  // for-of provides those semantics: https://tc39.es/ecma402/#sec-createstringlistfromiterable
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L359-L367
+  for (const value of iterable) {
+    if (typeof value !== 'string') {
+      throw new TypeError('Iterable yielded a non-string value')
     }
-    elements.push(result.value)
+    elements.push(value)
   }
   return elements
 }

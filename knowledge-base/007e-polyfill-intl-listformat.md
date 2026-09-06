@@ -59,3 +59,9 @@ Stage 3: supported-locales.generated.ts
 
 - Dynamic per-locale via `ListFormat.__addLocaleData()`
 - Buffered via `globalThis.__FORMATJS_LISTFORMAT_DATA__`
+
+## Iterable inputs
+
+`format` and `formatToParts` accept iterables of strings, including a string's
+individual code points. `undefined` produces an empty list. Non-iterables and
+non-string elements throw `TypeError`; an invalid element also closes the iterator.
