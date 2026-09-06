@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {getSupportedCalendars} from '#packages/intl-supportedvaluesof/get-supported-calendars.js'
 import {getSupportedCollations} from '#packages/intl-supportedvaluesof/get-supported-collations.js'
 import {getSupportedCurrencies} from '#packages/intl-supportedvaluesof/get-supported-currencies.js'
@@ -15,7 +16,9 @@ export {shouldPolyfill} from '#packages/intl-supportedvaluesof/should-polyfill.j
 
 /**
  * ECMA-402 Spec: Intl.supportedValuesOf
+ * ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
  * https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+ * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
  */
 declare global {
   namespace Intl {
@@ -49,7 +52,9 @@ export type SupportedValuesOf =
 
 /**
  * ECMA-402 Spec: Intl.supportedValuesOf(key)
+ * ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
  * https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+ * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
  *
  * Returns an array containing the supported calendar, collation, currency,
  * numbering systems, time zone, or unit values supported by the implementation.
@@ -62,7 +67,10 @@ export type SupportedValuesOf =
  * @returns A sorted array of unique string values
  */
 export function supportedValuesOf(key: SupportedValuesOf): string[] {
-  // ECMA-402 Spec: Dispatch to appropriate getter based on key
+  // ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
+  // Coerce the key before dispatch: https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
+  key = ToString(key) as SupportedValuesOf
   switch (key) {
     case 'calendar':
       return getSupportedCalendars()

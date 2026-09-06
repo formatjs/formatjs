@@ -66,3 +66,8 @@ async function polyfill() {
 ## Tests
 
 This library is [test262](https://github.com/tc39/test262/tree/master/test/intl402/Intl/supportedValuesOf)-compliant.
+
+## Key coercion
+
+`Intl.supportedValuesOf` converts its key to a string before validating the
+category. String wrapper objects are accepted; Symbols throw `TypeError`.

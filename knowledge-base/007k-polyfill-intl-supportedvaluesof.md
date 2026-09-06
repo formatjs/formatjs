@@ -66,3 +66,8 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 - **No dynamic locale loading** — all value lists compiled into the bundle
 - `supportedValuesOf(key)` looks up the correct generated constant and returns a sorted copy
 - Each value type is a `const` array for type safety
+
+## Key coercion
+
+`Intl.supportedValuesOf` converts its key to a string before validating the
+category. String wrapper objects are accepted; Symbols throw `TypeError`.

@@ -63,6 +63,7 @@ formatjs_library(
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
     ],
 )

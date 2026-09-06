@@ -164,3 +164,29 @@ describe('Intl.supportedValuesOf', () => {
     })
   })
 })
+
+it('coerces keys once with a string hint', () => {
+  const hints: string[] = []
+  const key = {
+    [Symbol.toPrimitive](hint: string) {
+      hints.push(hint)
+      return 'unit'
+    },
+  }
+  expect(supportedValuesOf(key as any)).toEqual(supportedValuesOf('unit'))
+  expect(hints).toEqual(['string'])
+  expect(supportedValuesOf(new String('unit') as any)).toEqual(
+    supportedValuesOf('unit')
+  )
+})
+it('preserves key coercion errors', () => {
+  expect(() => supportedValuesOf(Symbol('unit') as any)).toThrow(TypeError)
+  const error = new Error('coercion')
+  expect(() =>
+    supportedValuesOf({
+      toString() {
+        throw error
+      },
+    } as any)
+  ).toThrow(error)
+})
