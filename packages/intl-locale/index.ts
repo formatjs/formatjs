@@ -638,7 +638,9 @@ export class Locale {
 
   public toString(): string {
     // The intrinsic must reject uninitialized receivers before exposing [[Locale]].
+    // ECMA-402 §15.3.15 Intl.Locale.prototype.toString, steps 2–3.
     // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.toString
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L346-L347
     const slots = getInternalSlots(this)
     if (!HasOwnProperty(slots, 'initializedLocale')) {
       throw new TypeError('Error uninitialized locale')

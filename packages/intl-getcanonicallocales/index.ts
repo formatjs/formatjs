@@ -14,7 +14,9 @@ function localeString(value: unknown): string | undefined {
   )
     return undefined
   // Probe the Locale brand without reading user properties or calling an own toString.
+  // ECMA-402 §9.2.1 CanonicalizeLocaleList, steps 3–7.
   // https://tc39.es/ecma402/#sec-canonicalizelocalelist
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L51-L70
   const currentLocaleToString =
     typeof Intl !== 'undefined' ? Intl.Locale?.prototype.toString : undefined
   for (const method of [originalLocaleToString, currentLocaleToString]) {
@@ -30,7 +32,11 @@ function localeString(value: unknown): string | undefined {
   return undefined
 }
 
-/** https://tc39.es/ecma402/#sec-canonicalizelocalelist */
+/**
+ * ECMA-402 §9.2.1 CanonicalizeLocaleList, steps 3–7.
+ * https://tc39.es/ecma402/#sec-canonicalizelocalelist
+ * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L51-L70
+ */
 function CanonicalizeLocaleList(
   locales?:
     | string[]
@@ -49,7 +55,9 @@ function CanonicalizeLocaleList(
         ? [singleLocale]
         : Object(locales)
   // LengthOfArrayLike performs ToLength: read once, coerce, truncate, and clamp.
+  // ECMA-262 §7.3.18 LengthOfArrayLike, step 1.
   // https://tc39.es/ecma262/#sec-lengthofarraylike
+  // https://github.com/tc39/ecma262/blob/dcf59856a8184792a9e42f0ffb7dc064094a5dcc/spec.html#L6576
   const length = +list.length
   const len = isNaN(length)
     ? 0
