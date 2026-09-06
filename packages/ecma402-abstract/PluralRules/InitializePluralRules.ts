@@ -59,7 +59,9 @@ export function InitializePluralRules(
   )
 
   // Read and validate notation and compactDisplay before digit options.
+  // ECMA-402 §17.1.1 Intl.PluralRules, steps 9–13.
   // https://tc39.es/ecma402/#sec-intl.pluralrules
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L29-L34
   const notation = GetOption(
     opts,
     'notation',

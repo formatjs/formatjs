@@ -30,7 +30,9 @@ declare global {
       selectRange(start: number | bigint, end: number | bigint): LDMLPluralRule
     }
     interface PluralRulesOptions {
+      // ECMA-402 §17.1.1 Intl.PluralRules, steps 9–13.
       // https://tc39.es/ecma402/#sec-intl.pluralrules
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L29-L34
       notation?: 'standard' | 'scientific' | 'engineering' | 'compact'
       // Only reported in resolvedOptions when notation is compact.
       compactDisplay?: 'short' | 'long'
@@ -152,7 +154,9 @@ export class PluralRules {
   public resolvedOptions(): Intl.ResolvedPluralRulesOptions {
     validateInstance(this, 'resolvedOptions')
     // Ordinary result object and property order follow the resolved-options table.
+    // ECMA-402 §17.3.2 Intl.PluralRules.prototype.resolvedOptions, steps 3–5, Table 32.
     // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.resolvedoptions
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L114-L126
     const opts: Record<string, any> = {}
     const internalSlots = getInternalSlots(this)
     opts.locale = internalSlots.locale
