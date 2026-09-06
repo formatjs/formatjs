@@ -505,3 +505,16 @@ it('negotiates well-formed numbering systems and rejects malformed ones', () => 
     expect(() => new NumberFormat('en', {numberingSystem})).toThrow(RangeError)
   }
 })
+
+test('accepts callable options and reads their properties', () => {
+  const options = Object.assign(
+    () => {
+      throw new Error('called')
+    },
+    {
+      maximumFractionDigits: 2,
+      useGrouping: false,
+    }
+  )
+  expect(new NumberFormat('en', options).format(1234.567)).toBe('1234.57')
+})
