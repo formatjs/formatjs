@@ -24,14 +24,15 @@ export function IsValidDurationRecord(record: DurationRecord): boolean {
     return false
   }
   // Scaling integral Number values with BigInt avoids rounding at 2**53 seconds.
+  const billion = BigInt(1000000000)
   const normalizedNanoseconds =
-    BigInt(record.days) * 86400n * 1000000000n +
-    BigInt(record.hours) * 3600n * 1000000000n +
-    BigInt(record.minutes) * 60n * 1000000000n +
-    BigInt(record.seconds) * 1000000000n +
-    BigInt(record.milliseconds) * 1000000n +
-    BigInt(record.microseconds) * 1000n +
+    BigInt(record.days) * BigInt(86400) * billion +
+    BigInt(record.hours) * BigInt(3600) * billion +
+    BigInt(record.minutes) * BigInt(60) * billion +
+    BigInt(record.seconds) * billion +
+    BigInt(record.milliseconds) * BigInt(1000000) +
+    BigInt(record.microseconds) * BigInt(1000) +
     BigInt(record.nanoseconds)
-  const limit = 2n ** 53n * 1000000000n
+  const limit = BigInt(2 ** 53) * billion
   return normalizedNanoseconds > -limit && normalizedNanoseconds < limit
 }
