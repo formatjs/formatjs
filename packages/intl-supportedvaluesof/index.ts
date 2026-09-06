@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {getSupportedCalendars} from '#packages/intl-supportedvaluesof/get-supported-calendars.js'
 import {getSupportedCollations} from '#packages/intl-supportedvaluesof/get-supported-collations.js'
 import {getSupportedCurrencies} from '#packages/intl-supportedvaluesof/get-supported-currencies.js'
@@ -62,7 +63,8 @@ export type SupportedValuesOf =
  * @returns A sorted array of unique string values
  */
 export function supportedValuesOf(key: SupportedValuesOf): string[] {
-  // ECMA-402 Spec: Dispatch to appropriate getter based on key
+  // Coerce the key before dispatch: https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+  key = ToString(key) as SupportedValuesOf
   switch (key) {
     case 'calendar':
       return getSupportedCalendars()
