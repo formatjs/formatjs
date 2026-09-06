@@ -47,6 +47,10 @@ Each polyfill has scripts in `scripts/` that extract data from CLDR npm packages
 3. **Generate**: Output as `.generated.ts` (static) or `locale-data/{locale}.js` (dynamic)
 4. **All orchestrated via Bazel** `generate_src_file` and `ts_run_binary` targets
 
+## Conformance Audit
+
+See the [2026-09-06 ECMA-402 draft audit](./013-ecma402-audit-2026-09-06.md) for confirmed gaps, reproductions, and follow-up checklists.
+
 ## Test Strategy
 
 - **Vitest unit tests** — Core functionality
