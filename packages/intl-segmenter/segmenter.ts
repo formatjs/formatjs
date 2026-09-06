@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
@@ -40,9 +41,12 @@ type SegmentationTypeTypeRaw = {
   suppressions: ReadonlyArray<string>
 }
 
-type SegmentResult =
-  | {segment: string; breakingRule?: string; nonBreakingRules?: string[]}
-  | undefined
+type SegmentResult = {
+  segment: string
+  index: number
+  input: string
+  isWordLike?: boolean
+}
 
 export interface SegmenterOptions {
   localeMatcher?: 'lookup' | 'best fit'
@@ -149,25 +153,28 @@ export class Segmenter {
     ) as keyof typeof SegmentationRules.root
     setSlot(this, 'granularity', granularity)
 
-    //TODO: figure out correct availible locales
+    // DefaultLocale must be a structurally valid, canonical language tag.
+    // ECMA-402 §6.2.3 DefaultLocale, return-value definition.
+    // https://tc39.es/ecma402/#sec-defaultlocale
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L109
     const r = ResolveLocale(
-      Segmenter.availableLocales, //availible locales
+      Segmenter.availableLocales,
       requestedLocales,
       opt,
       [], // there is no relevantExtensionKeys
       {},
-      () => '' //use only root rules
+      () => 'en'
     )
     setSlot(this, 'locale', r.locale)
 
     //root rules based on granularity
-    this.mergedSegmentationTypeValue = SegmentationRules.root[granularity]
+    this.mergedSegmentationTypeValue = {...SegmentationRules.root[granularity]}
 
     //merge root rules with locale ones if locale is specified
     if (r.locale.length) {
       const localeOverrides =
         SegmentationRules[r.locale as keyof typeof SegmentationRules]
-      if (granularity in localeOverrides) {
+      if (localeOverrides && granularity in localeOverrides) {
         const localeSegmentationTypeValue: SegmentationTypeTypeRaw =
           localeOverrides[granularity as keyof typeof localeOverrides]
         this.mergedSegmentationTypeValue.variables = {
@@ -260,9 +267,9 @@ export class Segmenter {
     return breaksAtResult(true, '999')
   }
 
-  segment(input: string): SegmentIterator {
+  segment(input: string): Segments {
     checkReceiver(this, 'segment')
-    return new SegmentIterator(this, input)
+    return new Segments(this, ToString(input))
   }
 
   resolvedOptions(): SegmenterResolvedOptions {
@@ -277,9 +284,10 @@ export class Segmenter {
     }
   }
 
-  static availableLocales: Set<string> = new Set(
-    Object.keys(SegmentationRules).filter(key => key !== 'root')
-  )
+  static availableLocales: Set<string> = new Set([
+    'en',
+    ...Object.keys(SegmentationRules).filter(key => key !== 'root'),
+  ])
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<SegmenterOptions, 'localeMatcher'>
@@ -390,67 +398,18 @@ const createSegmentDataObject = (
   }
   return returnValue
 }
-class SegmentIterator
-  implements Iterable<SegmentResult>, Iterator<SegmentResult>
-{
-  private readonly segmenter
-  private lastSegmentIndex
-  private input
-  constructor(segmenter: Segmenter, input: string) {
-    this.segmenter = segmenter
-    this.lastSegmentIndex = 0
-    if (typeof input == 'symbol') {
-      throw TypeError(`Input must not be a symbol`)
-    }
-    this.input = String(input)
-  }
+// Segments creates independent iterators; iterators retain their own position.
+// ECMA-402 §19.5.2.2 %IntlSegmentsPrototype% [ %Symbol.iterator% ], step 5.
+// https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-%symbol.iterator%
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L230
+class Segments implements Iterable<SegmentResult> {
+  constructor(
+    private readonly segmenter: Segmenter,
+    private readonly input: string
+  ) {}
 
   [Symbol.iterator](): SegmentIterator {
     return new SegmentIterator(this.segmenter, this.input)
-  }
-
-  next():
-    | {
-        done: boolean
-        value: {
-          segment: string
-          index: number
-          input: string
-          isWordLike?: boolean
-        }
-      }
-    | {
-        done: boolean
-        value: undefined
-      } {
-    //using only the relevant bit of the string
-    let checkString = this.input.substring(this.lastSegmentIndex)
-
-    //loop from the start of the checkString, until exactly length (breaksAt returns break at pos=== lenght)
-    for (let position = 1; position <= checkString.length; position++) {
-      const {breaks, matchingRule} = this.segmenter.breaksAt(
-        position,
-        checkString
-      )
-      if (breaks) {
-        const segment = checkString.substring(0, position)
-        const index = this.lastSegmentIndex
-        this.lastSegmentIndex += position
-
-        return {
-          done: false,
-          value: createSegmentDataObject(
-            this.segmenter,
-            segment,
-            index,
-            this.input,
-            matchingRule
-          ),
-        }
-      }
-    }
-    //no segment was found by the loop, therefore the segmentation is done
-    return {done: true, value: undefined}
   }
 
   containing(positionInput: number):
@@ -515,7 +474,68 @@ class SegmentIterator
   }
 }
 
-export type {SegmentIterator}
+class SegmentIterator
+  implements Iterable<SegmentResult>, Iterator<SegmentResult>
+{
+  private readonly segmenter
+  private lastSegmentIndex
+  private input
+  constructor(segmenter: Segmenter, input: string) {
+    this.segmenter = segmenter
+    this.lastSegmentIndex = 0
+    this.input = input
+  }
+
+  [Symbol.iterator](): SegmentIterator {
+    return this
+  }
+
+  next(): IteratorResult<SegmentResult> {
+    //using only the relevant bit of the string
+    let checkString = this.input.substring(this.lastSegmentIndex)
+
+    //loop from the start of the checkString, until exactly length (breaksAt returns break at pos=== lenght)
+    for (let position = 1; position <= checkString.length; position++) {
+      const {breaks, matchingRule} = this.segmenter.breaksAt(
+        position,
+        checkString
+      )
+      if (breaks) {
+        const segment = checkString.substring(0, position)
+        const index = this.lastSegmentIndex
+        this.lastSegmentIndex += position
+
+        return {
+          done: false,
+          value: createSegmentDataObject(
+            this.segmenter,
+            segment,
+            index,
+            this.input,
+            matchingRule
+          ),
+        }
+      }
+    }
+    //no segment was found by the loop, therefore the segmentation is done
+    return {done: true, value: undefined}
+  }
+}
+
+// %IntlSegmentIteratorPrototype% inherits the standard iterator prototype.
+// ECMA-402 §19.6.2 The %IntlSegmentIteratorPrototype% Object, third bullet.
+// https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%-object
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L279
+Object.setPrototypeOf(
+  SegmentIterator.prototype,
+  Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))
+)
+Object.defineProperty(SegmentIterator.prototype, Symbol.toStringTag, {
+  value: 'Segmenter String Iterator',
+  configurable: true,
+})
+
+export type {Segments, SegmentIterator}
 
 interface SegmenterInternalSlots {
   locale: string

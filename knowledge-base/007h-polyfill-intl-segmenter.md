@@ -67,3 +67,11 @@ export const CLDR_SEGMENTATION_RULES: Record<Granularity, Record<Locale, RuleSet
 - Static data structure passed to segmentation engine
 - Segmentation algorithm walks text character by character, applying rules in priority order
 - Known limitation: 35 test cases fail for Regional Indicator + Extend combinations
+
+## Iteration and default locale
+
+`segment()` returns a reusable iterable with `containing()`. Each call to its
+`Symbol.iterator` creates an independent iterator. An iterator returns itself
+from `Symbol.iterator` and resumes from its current position. `next()` belongs
+to the iterator, not the iterable returned by `segment()`.
+The fallback locale is `en`, backed by the root segmentation rules.

@@ -4,7 +4,7 @@ import {Bench} from 'tinybench'
 // const Segmenter = Intl.Segmenter
 import {Segmenter} from '#packages/intl-segmenter/segmenter.js'
 
-import type {SegmentIterator} from '#packages/intl-segmenter/segmenter.js'
+import type {Segments} from '#packages/intl-segmenter/segmenter.js'
 const locale = 'en'
 let inputString = `
 
@@ -28,7 +28,7 @@ const cachedSegmenters = {
   sentence: new Segmenter(locale, {granularity: 'sentence'}),
 }
 
-const collectSegments = (iterator: SegmentIterator) => {
+const collectSegments = (iterator: Segments) => {
   let r
   const collected = []
   let i = iterator[Symbol.iterator]()
