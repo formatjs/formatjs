@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
@@ -72,7 +73,6 @@ interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   nu: Intl.DateTimeFormatOptions['numberingSystem']
   hc: Intl.DateTimeFormatOptions['hourCycle']
 }
-const TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i
 /**
  * https://tc39.es/ecma402/#sec-createdatetimeformat
  * @param dtf DateTimeFormat
@@ -118,7 +118,7 @@ export function InitializeDateTimeFormat(
   )
   opt.localeMatcher = matcher
   let calendar = GetOption(options, 'calendar', 'string', undefined, undefined)
-  if (calendar !== undefined && !TYPE_REGEX.test(calendar)) {
+  if (calendar !== undefined && !IsUnicodeLocaleIdentifierType(calendar)) {
     throw new RangeError('Malformed calendar')
   }
   const internalSlots = getInternalSlots(dtf)
@@ -130,7 +130,10 @@ export function InitializeDateTimeFormat(
     undefined,
     undefined
   )
-  if (numberingSystem !== undefined && !TYPE_REGEX.test(numberingSystem)) {
+  if (
+    numberingSystem !== undefined &&
+    !IsUnicodeLocaleIdentifierType(numberingSystem)
+  ) {
     throw new RangeError('Malformed numbering system')
   }
   opt.nu = numberingSystem

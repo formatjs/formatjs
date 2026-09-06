@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
@@ -56,10 +57,10 @@ export function InitializeNumberFormat(
   )
   if (
     numberingSystem !== undefined &&
-    !/^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(numberingSystem)
+    !IsUnicodeLocaleIdentifierType(numberingSystem)
   ) {
-    // Validate syntax; unsupported types fall back during ResolveLocale.
-    // https://tc39.es/ecma402/#sec-resolveoptions
+    // ResolveOptions step 6.d.ii rejects malformed Unicode types.
+    // https://tc39.es/ecma402/#sec-resolveoptions:~:text=If%20value%20cannot%20be%20matched
     throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
   }
   opt.nu = numberingSystem

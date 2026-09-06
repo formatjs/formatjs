@@ -1,3 +1,4 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
 
@@ -169,10 +170,10 @@ export class DurationFormat implements DurationFormatType {
     )
     if (
       numberingSystem !== undefined &&
-      !/^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i.test(numberingSystem)
+      !IsUnicodeLocaleIdentifierType(numberingSystem)
     ) {
-      // Validate syntax before locale negotiation, not membership in CLDR.
-      // https://tc39.es/ecma402/#sec-resolveoptions
+      // ResolveOptions step 6.d.ii rejects malformed Unicode types.
+      // https://tc39.es/ecma402/#sec-resolveoptions:~:text=If%20value%20cannot%20be%20matched
       throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
     }
     opt.nu = numberingSystem
