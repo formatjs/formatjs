@@ -88,6 +88,7 @@ rolldown_bundle(
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@formatjs_generated/cldr.locale",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
         "//packages/ecma262-abstract",

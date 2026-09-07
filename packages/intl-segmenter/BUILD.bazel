@@ -137,6 +137,7 @@ rolldown_bundle(
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/unicode",
         "//packages/ecma402-abstract",
     ],
 )
