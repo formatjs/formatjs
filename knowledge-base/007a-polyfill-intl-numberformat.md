@@ -91,3 +91,10 @@ Stage 3: Metadata generation (generate_src_file)
 
 A well-formed but unsupported `numberingSystem` option falls back to the locale's
 supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.
+
+## NaN sign display
+
+`signDisplay: "exceptZero"` uses the unsigned pattern for NaN.
+GetNumberFormatPattern classifies NaN as positive-zero (step 11.a), then selects
+the zero pattern for exceptZero (step 18.a.i). `always` still emits a plus sign.
+See [ECMA-402 §16.5.11](https://tc39.es/ecma402/#sec-getnumberformatpattern).
