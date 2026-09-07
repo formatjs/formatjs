@@ -2,7 +2,8 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@editor_vrt_npm//:defs.bzl", "npm_link_all_packages")
-load("@editor_vrt_npm//packages/editor/vrt:vitest/package_json.bzl", vitest = "bin")
+load("@editor_vrt_npm//packages/editor/vrt:@playwright/test/package_json.bzl", playwright = "bin")
+load("@editor_vrt_npm//packages/editor/vrt:vite/package_json.bzl", vite = "bin")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -12,7 +13,9 @@ npm_link_package(
     src = "@rules_web_e2e//runtime:package",
 )
 
-vitest.vitest_binary(name = "vitest")
+playwright.playwright_binary(name = "playwright")
+
+vite.vite_binary(name = "vite")
 
 VRT_DEPS = [
     ":node_modules/@formatjs/icu-messageformat-parser",
@@ -21,32 +24,35 @@ VRT_DEPS = [
     ":node_modules/@material-ui/lab",
     ":node_modules/@rules-web-e2e/vrt",
     ":node_modules/@vitejs/plugin-react",
-    ":node_modules/@vitest/browser-playwright",
+    ":node_modules/@playwright/test",
     ":node_modules/playwright",
     ":node_modules/react",
     ":node_modules/react-dom",
     ":node_modules/react-intl",
     ":node_modules/vite",
-    ":node_modules/vitest",
 ]
 
 component_visual_test(
     name = "visual_test",
     srcs = [
-        "editor.visual.test.tsx",
+        "app.tsx",
+        "editor.visual.spec.ts",
+        "index.html",
         "package.json",
     ],
     baselines = glob(
         ["__screenshots__/*.png"],
         allow_empty = True,
     ),
-    config = "vitest.config.ts",
+    config = "playwright.config.ts",
     data = [
         ":typecheck",
         "//packages/editor:vrt_sources",
     ],
     playwright_core = ":node_modules/playwright-core/dir",
-    runner = ":vitest",
+    runner = ":playwright",
+    server = ":vite",
+    server_config = "vite.config.ts",
     deps = VRT_DEPS,
 )
 

@@ -36,3 +36,8 @@ in a browser-test CI job. It does not run in the default `bazel test //...` lane
 The TypeScript config, browser test, and editor sources are strictly typechecked
 as a required input to the visual test. The runtime package supplies generated
 TypeScript declarations.
+
+Playwright Test serves the editor fixture through Vite, navigates to the
+dynamically assigned `VRT_APP_URL`, and compares locator screenshots with
+`toHaveScreenshot`. The runner owns browser contexts, server readiness, traces,
+and teardown. No experimental component-testing harness is required.

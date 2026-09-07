@@ -14,5 +14,10 @@ Run the target explicitly with a local Docker daemon. It is tagged manual,
 local, and uncached by the upstream macro. See
 [the consumer guide](../packages/editor/vrt/README.md) for commands and supported
 runtime details. The strict `:typecheck` target checks editor sources, the browser test, and
-`vitest.config.ts`. It is a required VRT input, and can also be built separately.
+`playwright.config.ts` and `vite.config.ts`. It is a required VRT input, and can also be built separately.
 Formatter-library tests remain separate.
+
+Playwright Test serves the editor fixture through Vite, navigates to the
+dynamically assigned `VRT_APP_URL`, and compares locator screenshots with
+`toHaveScreenshot`. The runner owns browser contexts, server readiness, traces,
+and teardown. No experimental component-testing harness is required.
