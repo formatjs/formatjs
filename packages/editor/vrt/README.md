@@ -10,7 +10,7 @@ bazel test //packages/editor/vrt:visual_test --test_output=errors
 bazel run //packages/editor/vrt:visual_test.update
 ```
 
-Docker must be running and available on PATH. Baselines use the rule’s pinned
+A local Docker daemon must be reachable by Testcontainers. Baselines use the rule’s pinned
 Linux image; initial validation is Linux amd64. Review `__screenshots__/*.png`
 after an explicit update. Compare mode never modifies source baselines. Test
 failures retain JUnit and screenshot diffs in Bazel’s undeclared test outputs.
@@ -37,7 +37,13 @@ The TypeScript config, browser test, and editor sources are strictly typechecked
 as a required input to the visual test. The runtime package supplies generated
 TypeScript declarations.
 
-Playwright Test serves the editor fixture through Vite, navigates to the
-dynamically assigned `VRT_APP_URL`, and compares locator screenshots with
+The runtime serves the editor fixture through Vite. Playwright Test navigates
+to the dynamically assigned `VRT_APP_URL` and compares locator screenshots with
 `toHaveScreenshot`. The runner owns browser contexts, server readiness, traces,
 and teardown. No experimental component-testing harness is required.
+
+The runtime uses Testcontainers with pinned Linux amd64 images. It stages only
+declared runfiles, disables Vite dotenv loading, and uses the same allowlisted
+environment for comparison and updates. Browser traffic is restricted to the
+fixture server. A local Docker daemon is required; external API/font requests
+should be replaced with declared fixture responses.
