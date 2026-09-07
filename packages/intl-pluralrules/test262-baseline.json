@@ -1,4 +1,11 @@
 {
-  "total": 74,
-  "failures": {}
+  "total": 106,
+  "failures": {
+    "intl402/PluralRules/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.PluralRules must be called with 'new'",
+    "intl402/PluralRules/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.PluralRules must be called with 'new'",
+    "intl402/PluralRules/prototype/select/notation.js (default)": "compact notation: 1500000 Expected SameValue(«\"other\"», «\"many\"») to be true",
+    "intl402/PluralRules/prototype/select/notation.js (strict mode)": "compact notation: 1500000 Expected SameValue(«\"other\"», «\"many\"») to be true",
+    "intl402/PluralRules/prototype/selectRange/argument-tonumber-throws.js (default)": "Expected a TypeError but got a RangeError",
+    "intl402/PluralRules/prototype/selectRange/argument-tonumber-throws.js (strict mode)": "Expected a TypeError but got a RangeError"
+  }
 }

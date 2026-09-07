@@ -1,7 +1,14 @@
 import {spawnSync} from 'node:child_process'
 import {createRequire} from 'node:module'
-import {readFileSync, writeFileSync, mkdirSync} from 'node:fs'
+import {
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+} from 'node:fs'
 import {join, resolve} from 'node:path'
+import {tmpdir} from 'node:os'
 import minimist from 'minimist'
 
 interface Args extends minimist.ParsedArgs {
@@ -10,6 +17,7 @@ interface Args extends minimist.ParsedArgs {
   prelude?: string | string[]
   baseline?: string
   strict?: boolean
+  native?: boolean
 }
 interface Result {
   file: string
@@ -19,6 +27,25 @@ interface Result {
 export interface Baseline {
   total: number
   failures: Record<string, string>
+}
+
+export function failureDiagnostic(message: string, file = ''): string {
+  // This upstream test uses Date.now() as the other range endpoint. Keep its
+  // assertion and fractional input stable without snapshotting the wall clock.
+  if (
+    file.endsWith('DateTimeFormat/prototype/formatRange/argument-to-integer.js')
+  ) {
+    message = message.replace(/\b\d{1,2}:\d{2}:\d{2}\b/g, '<time>')
+  }
+  if (!message.startsWith('evalmachine.')) return message.split('\n')[0]
+  const lines = message.split('\n')
+  const start = lines.findIndex(line => /^\w*Error(?::| \{)/.test(line))
+  if (start < 0) throw new Error(`Unrecognized Test262 diagnostic: ${message}`)
+  return lines
+    .slice(start)
+    .filter(line => !/^\s+at /.test(line) && !line.startsWith('Node.js v'))
+    .join('\n')
+    .trim()
 }
 
 export function summarize(results: Result[]): Baseline {
@@ -42,8 +69,8 @@ export function summarize(results: Result[]): Baseline {
     if (!test.result.pass) {
       if (!test.result.message)
         throw new Error(`Missing failure detail: ${key}`)
-      // Stack traces contain sandbox paths. Keep the stable diagnostic line.
-      failures[key] = test.result.message.split('\n')[0]
+      // Preserve assertion details, excluding sandbox stack frames and engine version.
+      failures[key] = failureDiagnostic(test.result.message, file)
     }
   }
   return {
@@ -83,29 +110,64 @@ export function compare(actual: Baseline, expected: Baseline): string[] {
   return errors
 }
 
+// Test262 INTERPRETING.md: each test realm gets its own globals and $262 API.
+// https://github.com/tc39/test262/blob/419d3e0a2273ba01a3bfcbec423f2801425b8e93/INTERPRETING.md#L20-L51
+export function realmPrelude(source: string): string {
+  return `(function install(source) {
+    const createRealm = $262.createRealm;
+    $262.createRealm = function (...args) {
+      const realm = Reflect.apply(createRealm, this, args);
+      const completion = realm.evalScript('(' + install.toString() + ')(' + JSON.stringify(source) + ')');
+      if (completion && completion.type === 'throw') throw completion.value;
+      return realm;
+    };
+    const completion = $262.evalScript(source);
+    if (completion && completion.type === 'throw') throw completion.value;
+  })(${JSON.stringify(source)});`
+}
+
 export function main(args: Args): number {
   const require = createRequire(import.meta.url)
   const cli = require.resolve('test262-harness/bin/run.js')
-  const preludes = ([] as string[]).concat(args.prelude || [])
-  const child = spawnSync(
-    process.execPath,
-    [
-      cli,
-      '--reporter',
-      'json',
-      '--reporter-keys',
-      'file,scenario,result',
-      '--errorForFailures',
-      '--timeout',
-      '30000',
-      '--test262Dir',
-      args.root,
-      ...preludes.flatMap(p => ['--prelude', p]),
-      `${args.root}/test/${args.suite}/**/*.js`,
-    ],
-    {encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, timeout: 600000}
+  const preludes = args.native
+    ? []
+    : ([] as string[]).concat(args.prelude || [])
+  const directory = mkdtempSync(
+    join(process.env.TEST_TMPDIR || tmpdir(), 'test262-prelude-')
   )
-  if (child.stderr) process.stderr.write(child.stderr)
+  const prelude = join(directory, 'prelude.js')
+  writeFileSync(
+    prelude,
+    realmPrelude(preludes.map(p => readFileSync(p, 'utf8')).join('\n'))
+  )
+  let child: ReturnType<typeof spawnSync>
+  try {
+    child = spawnSync(
+      process.execPath,
+      [
+        cli,
+        ...(args.suite === 'intl402/DateTimeFormat'
+          ? ['--hostArgs=--harmony-temporal']
+          : []),
+        '--reporter',
+        'json',
+        '--reporter-keys',
+        'file,scenario,result',
+        '--errorForFailures',
+        '--timeout',
+        '30000',
+        '--test262Dir',
+        args.root,
+        '--prelude',
+        prelude,
+        `${args.root}/test/${args.suite}/**/*.js`,
+      ],
+      {encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, timeout: 600000}
+    )
+  } finally {
+    rmSync(directory, {recursive: true, force: true})
+  }
+  if (child.stderr) process.stderr.write(child.stderr.toString())
   if (child.error || child.signal || ![0, 1].includes(child.status!)) {
     throw (
       child.error ||
@@ -115,9 +177,9 @@ export function main(args: Args): number {
     )
   }
   // The upstream JSON reporter emits only a closing bracket for an empty stream.
-  if (child.stdout.trim() === ']')
+  if (child.stdout.toString().trim() === ']')
     throw new Error('Test262 discovered no tests')
-  const actual = summarize(JSON.parse(child.stdout))
+  const actual = summarize(JSON.parse(child.stdout.toString()))
   const failed = Object.keys(actual.failures).length
   if (child.status !== (failed ? 1 : 0))
     throw new Error('Test262 exit status disagrees with its results')
@@ -131,7 +193,7 @@ export function main(args: Args): number {
     )
   }
   const expected: Baseline =
-    args.baseline && !args.strict
+    args.baseline && !args.strict && !args.native
       ? JSON.parse(readFileSync(args.baseline, 'utf8'))
       : {total: actual.total, failures: {}}
   const errors = compare(actual, expected)
@@ -144,6 +206,6 @@ export function main(args: Args): number {
 
 if (import.meta.filename === resolve(process.argv[1])) {
   process.exitCode = main(
-    minimist<Args>(process.argv.slice(2), {boolean: ['strict']})
+    minimist<Args>(process.argv.slice(2), {boolean: ['strict', 'native']})
   )
 }
