@@ -1,0 +1,11 @@
+{
+  "total": 148,
+  "failures": {
+    "intl402/Segmenter/constructor/constructor/locales-valid.js (default)": "Single-element array: expected one of sr, found en",
+    "intl402/Segmenter/constructor/constructor/locales-valid.js (strict mode)": "Single-element array: expected one of sr, found en",
+    "intl402/Segmenter/constructor/supportedLocalesOf/locales-specific.js (default)": "Expected [] and [sr] to have the same contents. ",
+    "intl402/Segmenter/constructor/supportedLocalesOf/locales-specific.js (strict mode)": "Expected [] and [sr] to have the same contents. ",
+    "intl402/Segmenter/prototype/resolvedOptions/type-without-lbs.js (default)": "descriptor value should be en-US",
+    "intl402/Segmenter/prototype/resolvedOptions/type-without-lbs.js (strict mode)": "descriptor value should be en-US"
+  }
+}

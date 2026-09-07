@@ -82,3 +82,22 @@ All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localem
 Shared option helpers accept callable objects without invoking them. Property
 getters run normally and their errors propagate. `GetOptionsObject` rejects
 `null` and other primitives, while omitted options create a fresh empty object.
+
+## Test262 gates
+
+`bazel test //packages/intl-<package>:test262` runs the selected upstream tests,
+including tracked failures. Each package's `test262-baseline.json` records the
+execution count and exact failing test/scenario diagnostics. Changed counts,
+new failures, changed diagnostics, and unexpected passes fail CI. A green gate
+means the baseline is unchanged, not full conformance.
+
+`bazel test //packages/intl-<package>:test262-strict` requires zero failures.
+Strict targets are manual; baseline gates run in normal CI. Reports include
+separate pass/failure counts and write `results.json` plus a candidate baseline
+to Bazel's undeclared test outputs. Candidate baselines require review; never
+copy them over existing baselines merely to make CI green.
+
+The seven existing suites use isolated IIFE preludes. ListFormat's prelude
+loads generated locale data. `tools/test262/runner_test` exercises the real
+harness with passing, failing, and empty suites. The repository still has an
+old Test262 pin and exclusions in `test262.BUILD`; those need separate review.

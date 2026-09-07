@@ -1,9 +1,9 @@
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
+load("//tools/test262:defs.bzl", "test262_test")
 
 # tsconfig with #packages/* path alias for tsc resolution
 TSCONFIG = BASE_TSCONFIG | {
@@ -133,6 +133,7 @@ rolldown_bundle(
         ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
+    format = "iife",
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
@@ -140,27 +141,14 @@ rolldown_bundle(
     ],
 )
 
-test262_harness_bin.test262_harness_test(
+test262_test(
     name = "test262",
-    args = [
-        "--reporter-keys",
-        "file,attrs,result",
-        "--errorForFailures",
-        "--timeout",
-        "30000",
-        "--prelude",
-        "$(rootpath test262-polyfill.js)",
-        "--test262Dir",
-        "../+http_archive+com_github_tc39_test262",
-        "../+http_archive+com_github_tc39_test262/test/intl402/Segmenter/**/*.js",
-    ],
     data = [
-        "test262-polyfill.js",
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-segmenter-copy",
     ],
-    # TODO: fix
-    tags = ["manual"],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/Segmenter",
 )
 
 rolldown_bundle(

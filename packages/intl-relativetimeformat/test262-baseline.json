@@ -1,0 +1,25 @@
+{
+  "total": 132,
+  "failures": {
+    "intl402/RelativeTimeFormat/prototype/format/en-us-numeric-always.js (default)": "Expected SameValue(\u00ab+1,000 s\u00bb, \u00abin 1,000 seconds\u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/format/en-us-numeric-always.js (strict mode)": "Expected SameValue(\u00ab+1,000 s\u00bb, \u00abin 1,000 seconds\u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/format/en-us-numeric-auto.js (default)": "Expected SameValue(\u00ab+1,000 s\u00bb, \u00abin 1,000 seconds\u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/format/en-us-numeric-auto.js (strict mode)": "Expected SameValue(\u00ab+1,000 s\u00bb, \u00abin 1,000 seconds\u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/format/en-us-style-short.js (default)": "Expected SameValue(\u00ab+1,000 s\u00bb, \u00abin 1,000 sec.\u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/format/en-us-style-short.js (strict mode)": "Expected SameValue(\u00ab+1,000 s\u00bb, \u00abin 1,000 sec.\u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/format/value-tonumber.js (default)": "Expected no error, got TypeError: Cannot read properties of undefined (reading 'indexOf')",
+    "intl402/RelativeTimeFormat/prototype/format/value-tonumber.js (strict mode)": "Expected no error, got TypeError: Cannot read properties of undefined (reading 'indexOf')",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/en-us-numeric-always.js (default)": "formatToParts(1000, second): parts[0].value Expected SameValue(\u00ab+\u00bb, \u00abin \u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/en-us-numeric-always.js (strict mode)": "formatToParts(1000, second): parts[0].value Expected SameValue(\u00ab+\u00bb, \u00abin \u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/en-us-numeric-auto.js (default)": "formatToParts(1000, second): parts[0].value Expected SameValue(\u00ab+\u00bb, \u00abin \u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/en-us-numeric-auto.js (strict mode)": "formatToParts(1000, second): parts[0].value Expected SameValue(\u00ab+\u00bb, \u00abin \u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/en-us-style-short.js (default)": "formatToParts(1000, second): parts[0].value Expected SameValue(\u00ab+\u00bb, \u00abin \u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/en-us-style-short.js (strict mode)": "formatToParts(1000, second): parts[0].value Expected SameValue(\u00ab+\u00bb, \u00abin \u00bb) to be true",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/result-type.js (default)": "descriptor value should be in ",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/result-type.js (strict mode)": "descriptor value should be in ",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/value-tonumber.js (default)": "Expected no error, got TypeError: Cannot read properties of undefined (reading 'indexOf')",
+    "intl402/RelativeTimeFormat/prototype/formatToParts/value-tonumber.js (strict mode)": "Expected no error, got TypeError: Cannot read properties of undefined (reading 'indexOf')",
+    "intl402/RelativeTimeFormat/prototype/resolvedOptions/type.js (default)": "descriptor value should be en-US",
+    "intl402/RelativeTimeFormat/prototype/resolvedOptions/type.js (strict mode)": "descriptor value should be en-US"
+  }
+}
