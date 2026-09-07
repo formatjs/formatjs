@@ -2,8 +2,6 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@editor_vrt_npm//:defs.bzl", "npm_link_all_packages")
-load("@editor_vrt_npm//packages/editor/vrt:@playwright/test/package_json.bzl", playwright = "bin")
-load("@editor_vrt_npm//packages/editor/vrt:vite/package_json.bzl", vite = "bin")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
 
 npm_link_all_packages(name = "node_modules")
@@ -12,10 +10,6 @@ npm_link_package(
     name = "node_modules/@rules-web-e2e/vrt",
     src = "@rules_web_e2e//runtime:package",
 )
-
-playwright.playwright_binary(name = "playwright")
-
-vite.vite_binary(name = "vite")
 
 VRT_DEPS = [
     ":node_modules/@formatjs/icu-messageformat-parser",
@@ -50,9 +44,9 @@ component_visual_test(
         "//packages/editor:vrt_sources",
     ],
     playwright_core = ":node_modules/playwright-core/dir",
-    runner = ":playwright",
-    server = ":vite",
+    playwright_test = ":node_modules/@playwright/test/dir",
     server_config = "vite.config.ts",
+    vite = ":node_modules/vite/dir",
     deps = VRT_DEPS,
 )
 
