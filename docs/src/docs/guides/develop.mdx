@@ -117,3 +117,8 @@ diagnostics, missing executions, and unexpected passes. A green baseline check
 is not a full-conformance claim. Child realms receive the polyfill too;
 both modes use the same stable host settings. Missing Temporal support remains
 an explicit failure. Combined-polyfill installation coverage remains separate work.
+
+Test262 strict/native targets use the rules_js generated harness test rule.
+Baseline targets validate JSON and exit-code outputs from a separate generated
+harness action. Realm preludes are generated inputs; changing a baseline reruns
+validation without rerunning an unchanged harness action.

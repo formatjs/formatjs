@@ -1,21 +1,93 @@
-load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary", "js_test")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 
 # gazelle:ignore
-exports_files(["runner.ts"])
+js_binary(
+    name = "prelude",
+    data = ["//:node_modules/minimist"],
+    entry_point = "prelude.ts",
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "validate",
+    srcs = ["validate.ts"],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "validation_sources",
+    srcs = ["results.ts"],
+    visibility = ["//visibility:public"],
+)
+
+[
+    test262_harness_bin.test262_harness(
+        name = "fixture-" + fixture,
+        srcs = glob(["fixtures/**"]),
+        args = [
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result",
+            "--errorForFailures",
+            "--test262Dir",
+            "tools/test262/fixtures",
+            "tools/test262/fixtures/test/" + fixture + ".js",
+        ],
+        exit_code_out = "fixture-" + fixture + ".status",
+        stdout = "fixture-" + fixture + ".json",
+    )
+    for fixture in [
+        "pass",
+        "fail",
+        "empty",
+    ]
+]
 
 js_test(
     name = "runner_test",
     data = [
-        "runner.ts",
+        ":fixture-empty",
+        ":fixture-fail",
+        ":fixture-pass",
+        ":validate",
+        ":validation_sources",
         "//:node_modules/minimist",
-        "//:node_modules/test262-harness",
     ],
-    entry_point = "runner.test.ts",
+    entry_point = "results.test.ts",
 )
 
-copy_to_bin(
-    name = "runner",
-    srcs = ["runner.ts"],
-    visibility = ["//visibility:public"],
+js_run_binary(
+    name = "fixture-realm-prelude",
+    srcs = ["fixtures/prelude.js"],
+    outs = ["fixture-realm-prelude.js"],
+    args = [
+        "--input",
+        "$(rootpath fixtures/prelude.js)",
+        "--out",
+        "$(rootpath fixture-realm-prelude.js)",
+    ],
+    tool = ":prelude",
 )
+
+[
+    test262_harness_bin.test262_harness_test(
+        name = "harness_" + fixture + "_test",
+        args = [
+            "--errorForFailures",
+            "--prelude",
+            "$(rootpath fixture-realm-prelude.js)",
+            "--test262Dir",
+            "tools/test262/fixtures",
+            "tools/test262/fixtures/test/" + fixture + ".js",
+        ],
+        data = glob(["fixtures/**"]) + ["fixture-realm-prelude.js"],
+        expected_exit_code = 1 if fixture == "fail" else 0,
+    )
+    for fixture in [
+        "fail",
+        "realm",
+    ]
+]

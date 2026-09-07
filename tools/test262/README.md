@@ -1,7 +1,9 @@
 # Test262 result accounting
 
-The wrapper invokes the upstream harness with `--errorForFailures` and checks
-its JSON results against its process status. Empty/malformed results, duplicate
+Generated rules_js targets invoke the upstream harness with `--errorForFailures`.
+For baseline gates, `test262_harness_bin.test262_harness` captures JSON, stderr,
+and the real exit code as declared build outputs. A separate validation test
+checks the report against that exit code and the reviewed baseline. Empty/malformed results, duplicate
 executions, and baseline drift fail the gate. Tracked failures are executed and
 reported as failures, never skipped or renamed passes.
 
@@ -11,7 +13,9 @@ reviewing why it passes. A changed pin or suite selection requires reviewing
 both the counts and the failure list. Reports retain full diagnostics in
 `results.json`; baseline messages omit environment-dependent stack frames.
 
-Use `:test262-strict` to require zero failures. Normal `:test262` targets guard
+The `:test262-strict` and `:test262-native` targets use the generated
+`test262_harness_bin.test262_harness_test` rule directly. Use `:test262-strict`
+to fail on any harness-reported failure. Normal `:test262` targets guard
 against regressions while the baseline is reduced. Do not interpret green
 baseline checks as complete ECMA-402 conformance.
 
@@ -29,7 +33,22 @@ fails on any native failure. It is a manual diagnostic control, not an excuse
 to suppress a polyfill failure. Both modes use the pinned Node host without
 experimental flags. Node 24's experimental Temporal implementation crashes in
 calendar tests; unavailable Temporal features remain explicit failures. Host
-crashes and empty diagnostics are runner errors, never baseline entries.
+crashes and empty diagnostics are validation errors, never baseline entries.
 
 Baselines cover individual polyfill installations. Combined-polyfill coverage
 remains a follow-up; dependencies may use native Intl in individual suites.
+
+## Bazel execution
+
+The realm prelude is generated before execution. The validator does not resolve
+the harness entry point, spawn Node, or create temporary preludes. Bazel owns
+execution, caching, and output capture. Both build and test execution explicitly
+use `TZ=UTC`. Baseline changes rerun validation without
+rerunning the unchanged harness action.
+
+Raw reports are declared outputs of `:test262-report`; use
+`bazel cquery --output=files //packages/intl-numberformat:test262-report` to locate
+them. Baseline tests also publish JSON reports and candidate baselines through
+Bazel undeclared test outputs. Empty/malformed results and exit-status mismatches
+fail validation. Real generated-rule fixtures cover passing/failing executions,
+empty selections, and installation in child and grandchild realms.

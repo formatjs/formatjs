@@ -29,7 +29,11 @@ spec and test's feature metadata.
 
 - Baseline gates execute all tests and fail on changed counts, new failures,
   changed diagnostics, or unexpected passes.
-- Strict targets require zero failures. Native controls install no polyfills.
+- Strict/native targets directly use the rules_js generated harness test rule
+  with `--errorForFailures`. Native controls install no polyfills.
+- Baseline execution uses the generated harness build rule. Its JSON and real
+  exit code are declared inputs to a separate validation test; no custom process
+  launcher is involved. Realm preludes are generated build inputs.
 - IIFE preludes avoid collisions with test variables. Polyfills are installed
   recursively into Test262 child realms.
 - Both modes use stable Node settings. Its experimental Temporal implementation

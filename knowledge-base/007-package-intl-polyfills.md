@@ -107,3 +107,8 @@ The prelude also installs polyfills in nested Test262 realms. Run
 `:test262-native` for the corresponding native-only control. Both modes use
 the same stable host settings; missing Temporal support remains visible. See
 [the full baseline and runtime comparison](./014-test262-conformance.md).
+
+Test262 execution uses rules_js generated harness rules. Strict/native modes
+are direct harness tests; baseline mode captures a report and exit code through
+the generated build rule, then validates them in a separate test. Realm
+installation scripts are generated before harness execution.
