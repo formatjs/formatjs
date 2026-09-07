@@ -104,6 +104,6 @@ harness with passing, failing, and empty suites. Baselines require review when t
 All twelve package suites now select every upstream test at revision
 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`; `test262.BUILD` has no file exclusions.
 The prelude also installs polyfills in nested Test262 realms. Run
-`:test262-native` for the corresponding native-only control. DateTimeFormat
-uses `--harmony-temporal` in both modes. See
+`:test262-native` for the corresponding native-only control. Both modes use
+the same stable host settings; missing Temporal support remains visible. See
 [the full baseline and runtime comparison](./014-test262-conformance.md).

@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures |
 | ------------------- | -------: | ----------------: | --------------: |
 | collator            |      130 |                34 |               6 |
-| datetimeformat      |      488 |               262 |              92 |
+| datetimeformat      |      488 |               276 |             154 |
 | displaynames        |      114 |                 6 |               0 |
 | durationformat      |      220 |                84 |              22 |
 | getcanonicallocales |       76 |                32 |               2 |
@@ -20,8 +20,8 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                10 |               8 |
 
-Total: 2,498 executions, 1,864 polyfill passes, 634 polyfill failures. The native
-control fails 176 executions; 128 failing cases overlap. Overlap does not prove
+Total: 2,498 executions, 1,850 polyfill passes, 648 polyfill failures. The native
+control fails 238 executions; 200 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
@@ -32,8 +32,9 @@ spec and test's feature metadata.
 - Strict targets require zero failures. Native controls install no polyfills.
 - IIFE preludes avoid collisions with test variables. Polyfills are installed
   recursively into Test262 child realms.
-- DateTimeFormat enables Node's Temporal implementation with
-  `--harmony-temporal`; the native control uses the same flag.
+- Both modes use stable Node settings. Its experimental Temporal implementation
+  crashes in calendar tests, so missing Temporal support remains an explicit
+  failure (124 DateTimeFormat executions lack Temporal in both modes). Host crashes and empty diagnostics cannot become baseline entries.
 - Full JSON reports and candidate baselines are written to undeclared Bazel
   test outputs. Updating a candidate baseline requires review.
 

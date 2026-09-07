@@ -137,3 +137,23 @@ test('normalizes only the wall clock in the upstream range truncation test', () 
     'formatRange(-0.9) Expected SameValue(«<time> – <time>», «<time> – <time>») to be true'
   )
 })
+
+test('host crashes cannot become tracked assertion failures', () => {
+  assert.throws(() => failureDiagnostic('\n'), /host crashed/)
+  assert.throws(
+    () =>
+      failureDiagnostic(
+        'Expected no error, got 46: 0x189d644e4 start [/usr/lib/dyld]'
+      ),
+    /host crashed/
+  )
+})
+
+test('keeps uncaught primitive values after leading blank lines', () => {
+  assert.equal(
+    failureDiagnostic(
+      '\nevalmachine.<anonymous>:246\nthrow 42;\n      ^\n42\n(Use node --trace-uncaught)\nNode.js v24.14.0'
+    ),
+    'Uncaught 42'
+  )
+})

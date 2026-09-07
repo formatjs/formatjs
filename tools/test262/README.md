@@ -26,9 +26,10 @@ recursively in realms created through `$262.createRealm`.
 
 `:test262-native` runs the same selection without installing the polyfill and
 fails on any native failure. It is a manual diagnostic control, not an excuse
-to suppress a polyfill failure. DateTimeFormat runs with the pinned Node
-runtime's `--harmony-temporal` flag in both modes because upstream includes
-Temporal integration tests. Native Temporal support is still incomplete.
+to suppress a polyfill failure. Both modes use the pinned Node host without
+experimental flags. Node 24's experimental Temporal implementation crashes in
+calendar tests; unavailable Temporal features remain explicit failures. Host
+crashes and empty diagnostics are runner errors, never baseline entries.
 
 Baselines cover individual polyfill installations. Combined-polyfill coverage
 remains a follow-up; dependencies may use native Intl in individual suites.

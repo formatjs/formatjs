@@ -30,6 +30,15 @@ export interface Baseline {
 }
 
 export function failureDiagnostic(message: string, file = ''): string {
+  message = message.trimStart()
+  if (
+    !message.trim() ||
+    /(?:^|\n).*?(?:\d+: 0x[0-9a-f]+ |FATAL ERROR:|# Fatal error)/i.test(message)
+  ) {
+    throw new Error(
+      `Test262 host crashed or returned an empty diagnostic: ${message}`
+    )
+  }
   // This upstream test uses Date.now() as the other range endpoint. Keep its
   // assertion and fractional input stable without snapshotting the wall clock.
   if (
@@ -40,7 +49,13 @@ export function failureDiagnostic(message: string, file = ''): string {
   if (!message.startsWith('evalmachine.')) return message.split('\n')[0]
   const lines = message.split('\n')
   const start = lines.findIndex(line => /^\w*Error(?::| \{)/.test(line))
-  if (start < 0) throw new Error(`Unrecognized Test262 diagnostic: ${message}`)
+  if (start < 0) {
+    // Node prints uncaught primitive values after the source caret, without an Error name.
+    const caret = lines.findIndex(line => /^\s*\^+\s*$/.test(line))
+    const value = caret >= 0 ? lines[caret + 1]?.trim() : ''
+    if (value) return `Uncaught ${value}`
+    throw new Error(`Unrecognized Test262 diagnostic: ${message}`)
+  }
   return lines
     .slice(start)
     .filter(line => !/^\s+at /.test(line) && !line.startsWith('Node.js v'))
@@ -146,9 +161,6 @@ export function main(args: Args): number {
       process.execPath,
       [
         cli,
-        ...(args.suite === 'intl402/DateTimeFormat'
-          ? ['--hostArgs=--harmony-temporal']
-          : []),
         '--reporter',
         'json',
         '--reporter-keys',
