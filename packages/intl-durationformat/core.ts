@@ -13,7 +13,7 @@ import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/GetDurationUnitOptions.js'
 import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
-import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
+import {ToTemporalDurationRecord} from '#packages/intl-durationformat/abstract/ToTemporalDurationRecord.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
 import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
@@ -310,12 +310,12 @@ export class DurationFormat implements DurationFormatType {
     }
     return ro as any
   }
-  formatToParts(duration: DurationInput): DurationFormatPart[] {
+  formatToParts(duration: DurationInput | string): DurationFormatPart[] {
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
       throw new TypeError('Error uninitialized locale')
     }
-    const record = ToDurationRecord(duration)
+    const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     const result = []
     for (const {type, unit, value} of parts) {
@@ -327,12 +327,12 @@ export class DurationFormat implements DurationFormatType {
     }
     return result
   }
-  format(duration: DurationInput): string {
+  format(duration: DurationInput | string): string {
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
       throw new TypeError('Error uninitialized locale')
     }
-    const record = ToDurationRecord(duration)
+    const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     let result = ''
     for (const {value} of parts) {
