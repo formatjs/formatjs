@@ -210,3 +210,7 @@ when no explicit value was set.
 A negative duration has one minus sign, on its first displayed unit. This includes
 a leading zero: digital formatting of `{seconds: -1}` produces `"-0:00:01"` in English.
 Later units omit their signs in both `format()` and `formatToParts()`.
+
+Numeric duration fields omit grouping separators, even for large values.
+Textual styles retain locale grouping. Fractional arithmetic preserves each
+input Number's exact integer value, including values beyond the safe-integer range.

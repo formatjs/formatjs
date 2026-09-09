@@ -356,3 +356,28 @@ test('input negative zero does not create a negative duration sign', () => {
       .some(part => part.type === 'minusSign')
   ).toBe(false)
 })
+
+test('digital duration omits grouping without losing fractional precision', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  expect(
+    formatter.format({hours: 1234, minutes: 1234567, seconds: 12345678})
+  ).toBe('1234:1234567:12345678')
+  const duration = {seconds: 10000000, nanoseconds: 1}
+  expect(formatter.format(duration)).toBe('0:00:10000000.000000001')
+  expect(
+    formatter.formatToParts(duration).some(part => part.type === 'group')
+  ).toBe(false)
+  expect(new DurationFormat('en', {style: 'long'}).format({hours: 1234})).toBe(
+    '1,234 hours'
+  )
+})
+
+test('duration fractions use exact integer Number values beyond the safe range', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  expect(
+    formatter.format({
+      milliseconds: Number(4503599627370497024n),
+      microseconds: Number(4503599627370494951424n),
+    })
+  ).toBe('0:00:9007199254740991.975424')
+})
