@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -10,7 +11,6 @@ import {
   type DisplayNamesLocaleData,
 } from '#packages/ecma402-abstract/types/displaynames.js'
 import {
-  getLocaleDataAlias,
   getInternalSlot,
   getMultiInternalSlots,
   invariant,
@@ -163,14 +163,14 @@ export class DisplayNames {
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      const minimizedLocale = getLocaleDataAlias(locale)
-      DisplayNames.localeData[locale] = DisplayNames.localeData[
-        minimizedLocale
-      ] = d
-      DisplayNames.availableLocales.add(minimizedLocale)
-      DisplayNames.availableLocales.add(locale)
+      registerLocaleData(
+        locale,
+        d,
+        DisplayNames.localeData,
+        DisplayNames.availableLocales
+      )
       if (!DisplayNames.__defaultLocale) {
-        DisplayNames.__defaultLocale = minimizedLocale
+        DisplayNames.__defaultLocale = locale
       }
     }
   }

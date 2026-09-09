@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
@@ -287,8 +288,12 @@ export class PluralRules {
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      PluralRules.localeData[locale] = d
-      PluralRules.availableLocales.add(locale)
+      registerLocaleData(
+        locale,
+        d,
+        PluralRules.localeData,
+        PluralRules.availableLocales
+      )
       if (!PluralRules.__defaultLocale) {
         PluralRules.__defaultLocale = locale
       }

@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
@@ -9,7 +10,6 @@ import {
   type ListPatternLocaleData,
 } from '#packages/ecma402-abstract/types/list.js'
 import {
-  getLocaleDataAlias,
   type LiteralPart,
   getInternalSlot,
   invariant,
@@ -325,12 +325,14 @@ export default class ListFormat {
 
   public static __addLocaleData(...data: ListPatternLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      const minimizedLocale = getLocaleDataAlias(locale)
-      ListFormat.localeData[locale] = ListFormat.localeData[minimizedLocale] = d
-      ListFormat.availableLocales.add(minimizedLocale)
-      ListFormat.availableLocales.add(locale)
+      registerLocaleData(
+        locale,
+        d,
+        ListFormat.localeData,
+        ListFormat.availableLocales
+      )
       if (!ListFormat.__defaultLocale) {
-        ListFormat.__defaultLocale = minimizedLocale
+        ListFormat.__defaultLocale = locale
       }
     }
   }

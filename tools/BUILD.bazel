@@ -163,3 +163,14 @@ ts_binary(
     entry_point = "generate-package-json.ts",
     visibility = ["//visibility:public"],
 )
+
+ts_binary(
+    name = "generate-default-content",
+    data = [
+        "//:node_modules/cldr-core",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "generate-default-content.ts",
+    visibility = ["//visibility:public"],
+)

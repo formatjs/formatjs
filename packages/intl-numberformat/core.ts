@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
@@ -12,7 +13,6 @@ import {
   type RawNumberLocaleData,
 } from '#packages/ecma402-abstract/types/number.js'
 import {
-  getLocaleDataAlias,
   createMemoizedPluralRules,
   defineProperty,
   invariant,
@@ -270,13 +270,14 @@ NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
   for (const {data: d, locale} of data) {
-    const minimizedLocale = getLocaleDataAlias(locale)
-    NumberFormat.localeData[locale] = NumberFormat.localeData[minimizedLocale] =
-      d
-    NumberFormat.availableLocales.add(minimizedLocale)
-    NumberFormat.availableLocales.add(locale)
+    registerLocaleData(
+      locale,
+      d,
+      NumberFormat.localeData,
+      NumberFormat.availableLocales
+    )
     if (!NumberFormat.__defaultLocale) {
-      NumberFormat.__defaultLocale = minimizedLocale
+      NumberFormat.__defaultLocale = locale
     }
   }
 }

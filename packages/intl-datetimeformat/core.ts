@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -12,7 +13,6 @@ import {
   type UnpackedZoneData,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
-  getLocaleDataAlias,
   defineProperty,
   createDataProperty,
   invariant,
@@ -450,14 +450,14 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/common/bcp47/calendar.xml#L27
     processedData.formats.iso8601 = processedData.formats.gregory
 
-    const minimizedLocale = getLocaleDataAlias(locale)
-    DateTimeFormat.localeData[locale] = DateTimeFormat.localeData[
-      minimizedLocale
-    ] = processedData
-    DateTimeFormat.availableLocales.add(locale)
-    DateTimeFormat.availableLocales.add(minimizedLocale)
+    registerLocaleData(
+      locale,
+      processedData,
+      DateTimeFormat.localeData,
+      DateTimeFormat.availableLocales
+    )
     if (!DateTimeFormat.__defaultLocale) {
-      DateTimeFormat.__defaultLocale = minimizedLocale
+      DateTimeFormat.__defaultLocale = locale
     }
   }
 }

@@ -21,6 +21,7 @@ formatjs_library(
         "SupportedLocales.ts",
         "ToIntlMathematicalValue.ts",
         "constants.ts",
+        "registerLocaleData.ts",
         "utils.ts",
     ],
     visibility = ["//visibility:public"],
@@ -28,6 +29,7 @@ formatjs_library(
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//packages/ecma262-abstract",
     ],
 )

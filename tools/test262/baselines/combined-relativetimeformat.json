@@ -4,8 +4,6 @@
     "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.RelativeTimeFormat must be called with 'new'",
     "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.RelativeTimeFormat must be called with 'new'",
     "intl402/RelativeTimeFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
-    "intl402/RelativeTimeFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
-    "intl402/RelativeTimeFormat/prototype/resolvedOptions/type.js (default)": "locale descriptor value should be en-US; locale value should be en-US",
-    "intl402/RelativeTimeFormat/prototype/resolvedOptions/type.js (strict mode)": "locale descriptor value should be en-US; locale value should be en-US"
+    "intl402/RelativeTimeFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true"
   }
 }
