@@ -21,6 +21,24 @@ describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
   })
+  it('rejects values one millisecond beyond the exact TimeClip bounds', () => {
+    const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const limit = 8_640_000_000_000_000
+    for (const sign of [-1, 1]) {
+      const boundary = sign * limit
+      const outside = sign * (limit + 1)
+      expect(() => dtf.format(outside)).toThrow(RangeError)
+      expect(() => dtf.formatToParts(outside)).toThrow(RangeError)
+      expect(() => dtf.formatRange(outside, outside)).toThrow(RangeError)
+      expect(() => dtf.formatRangeToParts(outside, outside)).toThrow(RangeError)
+      expect(typeof dtf.format(boundary)).toBe('string')
+      const offset = new DateTimeFormat('en', {
+        timeZone: sign < 0 ? '-23:59' : '+23:59',
+      })
+      expect(typeof offset.format(boundary)).toBe('string')
+    }
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {

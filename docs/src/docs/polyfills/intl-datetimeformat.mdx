@@ -281,3 +281,8 @@ The same rule applies to both range endpoints.
 DateTimeFormat methods cannot be constructed with `new` and have no own
 `prototype` property. The constructor's `length` is `0`; `supportedLocalesOf.length`
 is `1`, matching their required argument counts.
+
+Dates outside the exact ±8,640,000,000,000,000 millisecond TimeClip bounds
+throw `RangeError`, including values one millisecond beyond either endpoint.
+Year calculations use Gregorian arithmetic so valid endpoints also format
+when their local timezone offsets cross the native Date range.
