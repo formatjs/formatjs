@@ -758,3 +758,17 @@ describe('NumberFormat receiver branding', () => {
     )
   })
 })
+
+test.each(['auto', 'morePrecision', 'lessPrecision'] as const)(
+  'resolvedOptions preserves rounding property order for %s',
+  roundingPriority => {
+    const options = new NumberFormat('en', {roundingPriority}).resolvedOptions()
+    expect(Object.keys(options).slice(-4)).toEqual([
+      'roundingIncrement',
+      'roundingMode',
+      'roundingPriority',
+      'trailingZeroDisplay',
+    ])
+    expect(options.roundingPriority).toBe(roundingPriority)
+  }
+)

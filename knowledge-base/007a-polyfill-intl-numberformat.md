@@ -120,3 +120,6 @@ increments also throw `RangeError`.
 
 `microsecond` and `nanosecond` are supported units, including in compound units
 and the `Intl.supportedValuesOf("unit")` list.
+
+`resolvedOptions()` returns properties in specification order, including
+`roundingPriority` before `trailingZeroDisplay`.

@@ -396,3 +396,6 @@ Formatting methods require an initialized NumberFormat receiver. Plain objects,
 objects inheriting NumberFormat.prototype, and proxies around instances throw
 `TypeError` before argument conversion. Changing a real instance's prototype does
 not remove its internal brand.
+
+`resolvedOptions()` returns properties in specification order, including
+`roundingPriority` before `trailingZeroDisplay`.
