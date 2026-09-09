@@ -15,6 +15,15 @@
       "matchPackageNames": ["napi", "napi-derive"]
     },
     {
+      "description": "Keep Ruff parser, AST, and text ranges on the same revision",
+      "groupName": "Ruff",
+      "matchPackageNames": [
+        "ruff_python_ast",
+        "ruff_python_parser",
+        "ruff_text_size"
+      ]
+    },
+    {
       "description": "Group OXC updates",
       "groupName": "OXC",
       "matchPackageNames": [
