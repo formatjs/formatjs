@@ -1,5 +1,6 @@
 import {
   extensionAlias,
+  subdivisionAlias,
   languageAlias,
   scriptAlias,
   territoryAlias,
@@ -43,7 +44,16 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
     if (seen.has(key)) continue
     seen.add(key)
     const value = rawValue?.toLowerCase() || ''
-    const canonical = extensionAlias[extension]?.[key]?.[value] || value
+    let canonical = extensionAlias[extension]?.[key]?.[value] || value
+    // ECMA-402 §6.2.2, step 1 applies UTS #35 Processing LocaleIds, step 3:
+    // rg/sd use subdivision aliases, including territory replacements with zzzz.
+    // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
+    // https://unicode.org/reports/tr35/#processing-localeids
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4263-L4267
+    if (extension === 'u' && (key === 'rg' || key === 'sd')) {
+      canonical = subdivisionAlias[canonical] || canonical
+    }
     result.push(
       !canonical || (extension === 'u' && canonical === 'true')
         ? [key]
