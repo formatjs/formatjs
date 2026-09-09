@@ -204,3 +204,9 @@ Subsecond contributions participate in the bound comparison exactly.
 Instances identify as `[object Intl.DurationFormat]` through `Symbol.toStringTag`.
 `resolvedOptions()` returns properties in spec order and omits `fractionalDigits`
 when no explicit value was set.
+
+## Negative durations
+
+A negative duration has one minus sign, on its first displayed unit. This includes
+a leading zero: digital formatting of `{seconds: -1}` produces `"-0:00:01"` in English.
+Later units omit their signs in both `format()` and `formatToParts()`.

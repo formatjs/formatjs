@@ -317,3 +317,42 @@ test('resolvedOptions preserves table order and omits undefined fractionalDigits
   expect(explicit.fractionalDigits).toBe(2)
   expect(Object.keys(explicit).at(-1)).toBe('fractionalDigits')
 })
+
+test('negative duration has one sign across textual and digital units', () => {
+  for (const style of ['long', 'short', 'narrow', 'digital'] as const) {
+    const formatter = new DurationFormat('en', {style})
+    const parts = formatter.formatToParts({
+      days: -1,
+      hours: -2,
+      minutes: -3,
+      seconds: -4,
+    })
+    expect(parts.filter(part => part.type === 'minusSign')).toHaveLength(1)
+    expect(parts[0].type).toBe('minusSign')
+    expect(parts.map(part => part.value).join('')).toBe(
+      formatter.format({days: -1, hours: -2, minutes: -3, seconds: -4})
+    )
+  }
+})
+
+test('negative duration puts the sign on its first displayed zero', () => {
+  expect(
+    new DurationFormat('en', {style: 'digital'}).format({seconds: -1})
+  ).toBe('-0:00:01')
+  for (const style of ['long', 'short', 'narrow'] as const) {
+    const formatter = new DurationFormat('en', {style, hoursDisplay: 'always'})
+    const parts = formatter.formatToParts({seconds: -1})
+    expect(parts[0]).toMatchObject({type: 'minusSign', unit: 'hour'})
+    expect(parts.filter(part => part.type === 'minusSign')).toHaveLength(1)
+  }
+})
+
+test('input negative zero does not create a negative duration sign', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  expect(formatter.format({seconds: -0})).toBe(formatter.format({seconds: 0}))
+  expect(
+    formatter
+      .formatToParts({seconds: -0})
+      .some(part => part.type === 'minusSign')
+  ).toBe(false)
+})

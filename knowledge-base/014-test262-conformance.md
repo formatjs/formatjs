@@ -10,7 +10,7 @@ excluded because it fails.
 | collator            |      130 |                18 |               0 |
 | datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
-| durationformat      |      220 |                70 |               4 |
+| durationformat      |      220 |                28 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                46 |              22 |
@@ -20,8 +20,8 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               6 |
 
-Total: 2,498 executions, 2,018 polyfill passes, 480 polyfill failures. The native
-control fails 86 executions; 72 failing cases overlap. Overlap does not prove
+Total: 2,498 executions, 2,060 polyfill passes, 438 polyfill failures. The native
+control fails 86 executions; 70 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
@@ -105,3 +105,6 @@ unknown empty diagnostics and crashes still fail validation.
 
 DurationFormat exposes the required constructor/method lengths and toStringTag.
 Its resolvedOptions result follows table order and omits unset fractionalDigits.
+
+DurationFormat emits the duration sign only on its first displayed unit and
+preserves negative zero across the BigDecimal-to-NumberFormat boundary.
