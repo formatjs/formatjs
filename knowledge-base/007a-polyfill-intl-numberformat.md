@@ -133,3 +133,7 @@ numbers remain ungrouped; `"always"` still requests grouping.
 Range formatting preserves complete CLDR separators, including surrounding spaces.
 Only matching affixes collapse; retained affixes have `source: "shared"`.
 Different signs and scientific or compact notation remain separate.
+
+Approximate ranges place the approximately sign in the locale's minus-sign position
+for unsigned values, or before an existing plus/minus sign. Currency prefixes,
+suffix signs, bidi literals, and unit wrappers use the same number pattern.

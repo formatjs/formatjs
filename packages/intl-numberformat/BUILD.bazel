@@ -45,6 +45,9 @@ TEST_LOCALES = [
     "zh-Hans",
     "zh-Hant",
     "zh",
+    "de-CH",
+    "es-CL",
+    "fy",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -476,12 +479,15 @@ formatjs_test(
         ":tests-locale-data-da",  # keep: generated locale data imported by tests
         ":tests-locale-data-de",  # keep: generated locale data imported by tests
         ":tests-locale-data-de-AT",  # keep: generated locale data imported by tests
+        ":tests-locale-data-de-CH",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-BS",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-GB",  # keep: generated locale data imported by tests
         ":tests-locale-data-es",  # keep: generated locale data imported by tests
+        ":tests-locale-data-es-CL",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr-CH",  # keep: generated locale data imported by tests
+        ":tests-locale-data-fy",  # keep: generated locale data imported by tests
         ":tests-locale-data-hi",  # keep: generated locale data imported by tests
         ":tests-locale-data-id",  # keep: generated locale data imported by tests
         ":tests-locale-data-it",  # keep: generated locale data imported by tests

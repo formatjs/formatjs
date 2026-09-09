@@ -14,18 +14,18 @@ excluded because it fails.
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 2 |               0 |                 2 |
 | locale              |      336 |                 4 |              22 |                 4 |
-| numberformat        |      498 |                18 |               0 |                18 |
+| numberformat        |      498 |                14 |               0 |                14 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 6 |               0 |                 4 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 4 |
 
-Total: 2,498 executions, 2,294 polyfill passes, 204 polyfill failures. The native
+Total: 2,498 executions, 2,298 polyfill passes, 200 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,292 passes, 206 failures.
+Combined: 2,498 executions, 2,296 passes, 202 failures.
 
 Combined installation adds 6 failing executions; 4 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
