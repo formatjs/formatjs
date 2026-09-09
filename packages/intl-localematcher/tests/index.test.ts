@@ -1,4 +1,7 @@
-import {match} from '#packages/intl-localematcher/index.js'
+import {
+  match,
+  LookupSupportedLocales,
+} from '#packages/intl-localematcher/index.js'
 import {expect, test} from 'vitest'
 test('zh-HK', function () {
   // zh-HK matches zh-HANT (returns original supported locale string as-is)
@@ -244,4 +247,13 @@ test('extension', function () {
 
 test('GH #4267', function () {
   expect(match(['fr'], ['br', 'fr'], 'en')).toEqual('fr')
+})
+
+test('supported locale filtering preserves requested tags and order', () => {
+  expect(
+    LookupSupportedLocales(
+      ['sr', 'de', 'zh'],
+      ['sr-Thai-RS', 'en', 'de-u-co-phonebk', 'zh-CN']
+    )
+  ).toEqual(['sr-Thai-RS', 'de-u-co-phonebk', 'zh-CN'])
 })

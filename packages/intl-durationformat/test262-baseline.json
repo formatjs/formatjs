@@ -12,8 +12,6 @@
     "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (default)": "Expected no error, got RangeError: Invalid duration format",
     "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (strict mode)": "Expected no error, got RangeError: Invalid duration format",
     "intl402/DurationFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
-    "intl402/DurationFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
-    "intl402/DurationFormat/supportedLocalesOf/locales-specific.js (default)": "Actual [sr, de, zh] and expected [sr-Thai-RS, de, zh-CN] should have the same contents. ",
-    "intl402/DurationFormat/supportedLocalesOf/locales-specific.js (strict mode)": "Actual [sr, de, zh] and expected [sr-Thai-RS, de, zh-CN] should have the same contents. "
+    "intl402/DurationFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true"
   }
 }

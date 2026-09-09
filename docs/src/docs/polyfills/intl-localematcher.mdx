@@ -50,3 +50,13 @@ match(['fr-XX', 'en'], ['fr', 'en'], 'en') // 'fr'
 
 match(['zh'], ['fr', 'en'], 'en') // 'en'
 ```
+
+### Supported locale filtering
+
+`LookupSupportedLocales(availableLocales, requestedLocales)` returns supported
+requested tags in their original order, preserving region subtags and Unicode
+extensions even when matching falls back to a parent locale.
+
+```tsx
+LookupSupportedLocales(['de'], ['de-AT-u-co-phonebk']) // ['de-AT-u-co-phonebk']
+```

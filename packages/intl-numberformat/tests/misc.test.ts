@@ -91,7 +91,7 @@ it('should lookup locale correctly', function () {
 it('supportedLocalesOf should return correct result based on data loaded', function () {
   expect(NumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])).toEqual([
     'zh',
-    'en',
+    'en-US',
   ])
   expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([])
 })
