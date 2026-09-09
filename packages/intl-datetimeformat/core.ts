@@ -67,14 +67,6 @@ const formatDescriptor = {
   enumerable: false,
   configurable: true,
   get(this: IDateTimeFormat) {
-    if (
-      typeof this !== 'object' ||
-      !OrdinaryHasInstance(DateTimeFormat, this)
-    ) {
-      throw TypeError(
-        'Intl.DateTimeFormat format property accessor called on incompatible receiver'
-      )
-    }
     const internalSlots = getInternalSlots(this)
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const dtf = this
@@ -170,7 +162,7 @@ export const DateTimeFormat = function (
     relevantExtensionKeys: DateTimeFormat.relevantExtensionKeys,
     getDefaultLocale: DateTimeFormat.getDefaultLocale,
     getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-    getInternalSlots,
+    getInternalSlots: dtf => getInternalSlots(dtf, true),
     localeData: DateTimeFormat.localeData,
   })
 
@@ -216,14 +208,6 @@ Object.defineProperty(supportedLocalesOf, 'length', {
 
 const {resolvedOptions} = {
   resolvedOptions(this: IDateTimeFormat) {
-    if (
-      typeof this !== 'object' ||
-      !OrdinaryHasInstance(DateTimeFormat, this)
-    ) {
-      throw TypeError(
-        'Method Intl.DateTimeFormat.prototype.resolvedOptions called on incompatible receiver'
-      )
-    }
     const internalSlots = getInternalSlots(this)
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
@@ -262,6 +246,7 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
 
 const {formatToParts} = {
   formatToParts(this: Intl.DateTimeFormat, date?: number | Date) {
+    getInternalSlots(this)
     let x: Decimal
     if (date === undefined) {
       x = new Decimal(Date.now())
@@ -289,7 +274,10 @@ const {formatRangeToParts} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
+    // ECMA-402 §11.3.5, step 2: validate before reading arguments.
+    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1072-L1077
+    getInternalSlots(dtf)
     invariant(
       startDate !== undefined && endDate !== undefined,
       'startDate/endDate cannot be undefined',
@@ -322,7 +310,10 @@ const {formatRange} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    invariant(typeof dtf === 'object', 'receiver is not an object', TypeError)
+    // ECMA-402 §11.3.4, step 2: validate before reading arguments.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1057-L1062
+    getInternalSlots(dtf)
     invariant(
       startDate !== undefined && endDate !== undefined,
       'startDate/endDate cannot be undefined',
