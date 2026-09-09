@@ -315,3 +315,9 @@ Minute/second-only formats keep their requested fields.
 
 Range formatting compares endpoints at the displayed precision and keeps shared
 locale fallback patterns unchanged across formatter instances.
+
+The `dayPeriod` option uses localized CLDR day periods, including noon and
+variable periods such as “in the evening”. Names follow the requested width.
+
+AM/PM spacing follows the locale's default CLDR patterns, including narrow
+non-breaking spaces where specified.

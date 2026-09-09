@@ -341,7 +341,7 @@ describe('Intl.DateTimeFormat', function () {
       fractionalSecondDigits: 3,
     })
     expect(dtf.format(new Date(Date.UTC(2020, 0, 1, 10, 1, 2, 345)))).toBe(
-      '10:01:02.345 AM'
+      '10:01:02.345 in the morning'
     )
   })
   it('accepts hyphenated Unicode calendar type identifiers', function () {
@@ -402,7 +402,7 @@ describe('Intl.DateTimeFormat', function () {
         minute: 'numeric',
         timeZone: 'Asia/Shanghai',
       }).format(new Date(0))
-    ).toBe('8:00 AM')
+    ).toBe('8:00\u202fAM')
   })
   it('setDefaultTimeZone should work', function () {
     DateTimeFormat.__setDefaultTimeZone('Asia/Shanghai')
@@ -411,7 +411,7 @@ describe('Intl.DateTimeFormat', function () {
         hour: 'numeric',
         minute: 'numeric',
       }).format(new Date(0))
-    ).toBe('8:00 AM')
+    ).toBe('8:00\u202fAM')
   })
 
   it('America/Indiana/Indianapolis, GH #4254', function () {
@@ -421,7 +421,7 @@ describe('Intl.DateTimeFormat', function () {
         hour: 'numeric',
         minute: 'numeric',
       }).format(new Date(0))
-    ).toBe('7:00 PM')
+    ).toBe('7:00\u202fPM')
   })
   it('diff tz should yield different result', function () {
     const {TZ} = process.env
@@ -499,7 +499,7 @@ describe('Intl.DateTimeFormat', function () {
         minute: 'numeric',
         second: 'numeric',
       }).format(Date.UTC(2020, 0, 1, 12, 0, 0))
-    ).toBe('1/1/2020, 2:00:00 PM')
+    ).toBe('1/1/2020, 2:00:00\u202fPM')
   })
   it('respects numberingSystem with locales that default to non-latn digits, GH #6767', function () {
     for (const locale of ['my-MM', 'bn-BD', 'ne-NP']) {
@@ -834,7 +834,7 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'America/New_York',
     })
     expect(dtf.formatRange(date1, date2)).toBe(
-      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+      '5/19/2021, 5:00\u202fAM – 6/19/2021, 1:00\u202fPM'
     )
   })
   it('GH issue #2909', function () {
@@ -865,7 +865,7 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'America/New_York',
     })
     expect(dtf.formatRange(date1, date2)).toBe(
-      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+      '5/19/2021, 5:00\u202fAM – 6/19/2021, 1:00\u202fPM'
     )
   })
   it('toLocaleString returns "Invalid Date", GH #3508', function () {

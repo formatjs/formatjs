@@ -39,6 +39,7 @@ function matchSkeletonPattern(
     | 'year'
     | 'month'
     | 'day'
+    | 'dayPeriod'
     | 'hour'
     | 'minute'
     | 'second'
@@ -119,9 +120,14 @@ function matchSkeletonPattern(
     // Period
     case 'a': // AM, PM
     case 'b': // am, pm, noon, midnight
-    case 'B': // flexible day periods
       result.hour12 = true
       return '{ampm}'
+    // LDML Date Field Symbol Table: B widths select flexible day periods.
+    // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L2235-L2240
+    case 'B':
+      result.dayPeriod = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short'
+      return '{dayPeriod}'
     // Hour
     case 'h':
       result.hour = ['numeric', '2-digit'][len - 1] as 'numeric'
@@ -204,8 +210,9 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
     // Period
     case 'a': // AM, PM
     case 'b': // am, pm, noon, midnight
-    case 'B': // flexible day periods
       return 'ampm'
+    case 'B': // flexible day periods
+      return 'dayPeriod'
     // Hour
     case 'h':
     case 'H':
@@ -236,6 +243,7 @@ export function processDateTimePattern(
     | 'year'
     | 'month'
     | 'day'
+    | 'dayPeriod'
     | 'hour'
     | 'minute'
     | 'second'

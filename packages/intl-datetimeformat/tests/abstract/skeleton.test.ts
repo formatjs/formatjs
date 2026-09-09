@@ -145,11 +145,18 @@ test('parseDateTimeSkeleton', function () {
 
 test('processDateTimePattern', function () {
   expect(processDateTimePattern('Bh:mm:ss')).toEqual([
-    '{hour}:{minute}:{second}',
-    '{ampm}{hour}:{minute}:{second}',
+    '{dayPeriod}{hour}:{minute}:{second}',
+    '{dayPeriod}{hour}:{minute}:{second}',
   ])
   expect(processDateTimePattern('y年M月d日 Bh:mm:ss')).toEqual([
-    '{year}年{month}月{day}日 {hour}:{minute}:{second}',
-    '{year}年{month}月{day}日 {ampm}{hour}:{minute}:{second}',
+    '{year}年{month}月{day}日 {dayPeriod}{hour}:{minute}:{second}',
+    '{year}年{month}月{day}日 {dayPeriod}{hour}:{minute}:{second}',
   ])
+})
+
+test('flexible day-period intervals retain their own field', () => {
+  const format = parseDateTimeSkeleton('Bhm', 'h:mm B', {B: 'h:mm B – h:mm B'})
+  expect(format.rangePatterns12.dayPeriod).toBeDefined()
+  expect(format.rangePatterns12.ampm).toBeUndefined()
+  expect(format.dayPeriod).toBe('short')
 })
