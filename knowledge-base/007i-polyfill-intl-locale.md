@@ -80,3 +80,6 @@ accepted; primitive values other than strings are rejected.
 
 The `variants` constructor option replaces existing variant subtags while
 preserving extensions. Empty, malformed, and duplicate variants throw `RangeError`.
+
+Locale tags are canonicalized before constructor overrides are applied, so
+alias resolution uses the original language and script context.

@@ -77,6 +77,12 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
     'malformed language tag',
     RangeError
   )
+  // ECMA-402 §15.1.1, steps 13–14: canonicalize before applying overrides.
+  // https://tc39.es/ecma402/#sec-Intl.Locale
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L34-L36
+  tag = ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+    tag
+  )[0]
   const language = GetOption(
     options,
     'language',
