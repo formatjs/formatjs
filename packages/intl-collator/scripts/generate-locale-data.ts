@@ -1,3 +1,4 @@
+import {canonicalCollation} from './canonical-collation.js'
 import {basename} from 'node:path'
 import minimist from 'minimist'
 import {readdirSync, readFileSync, statSync} from 'node:fs'
@@ -105,11 +106,11 @@ for (const path of resolvedPaths) {
       collation.type !== 'search' &&
       collation.type !== defaultType
     ) {
-      collationTypes.add(collation.type)
+      collationTypes.add(canonicalCollation(collation.type))
     }
   }
   if (defaultType !== 'standard' && defaultType !== 'search') {
-    collationTypes.add(defaultType)
+    collationTypes.add(canonicalCollation(defaultType))
   }
   // ECMA-402 §10.1.1, steps 21–22: use the locale punctuation default.
   // LDML alternate=shifted ignores variable punctuation at these strengths.
@@ -123,7 +124,7 @@ for (const path of resolvedPaths) {
     co: [...collationTypes].sort(),
     kn: ['false', 'true'],
     kf: ['false', 'upper', 'lower'],
-    defaultCollation: defaultType,
+    defaultCollation: canonicalCollation(defaultType),
     sensitivity: 'variant',
     ignorePunctuation:
       alternate?.type === 'alternate' && alternate.value === 'shifted',
