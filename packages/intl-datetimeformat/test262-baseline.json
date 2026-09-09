@@ -31,8 +31,6 @@
     "intl402/DateTimeFormat/prototype/format/fractionalSecondDigits.js (strict mode)": "no fractionalSecondDigits Expected SameValue(«\"1:02:03 AM\"», «\"02:03\"») to be true",
     "intl402/DateTimeFormat/prototype/format/numbering-system.js (default)": "en-US: display one numeric-styled unit Expected SameValue(«false», «true») to be true",
     "intl402/DateTimeFormat/prototype/format/numbering-system.js (strict mode)": "en-US: display one numeric-styled unit Expected SameValue(«false», «true») to be true",
-    "intl402/DateTimeFormat/prototype/format/proleptic-gregorian-calendar.js (default)": "Test262Error {\n  message: \"Formatted year doesn't contain expected era – expected /BC/, got 1 AD.\"\n}",
-    "intl402/DateTimeFormat/prototype/format/proleptic-gregorian-calendar.js (strict mode)": "Test262Error {\n  message: \"Formatted year doesn't contain expected era – expected /BC/, got 1 AD.\"\n}",
     "intl402/DateTimeFormat/prototype/format/related-year-zh.js (default)": "Expected no error, got RangeError: Calendar \"chinese\" is not supported. Try setting \"calendar\" to 1 of the following: gregory",
     "intl402/DateTimeFormat/prototype/format/related-year-zh.js (strict mode)": "Expected no error, got RangeError: Calendar \"chinese\" is not supported. Try setting \"calendar\" to 1 of the following: gregory",
     "intl402/DateTimeFormat/prototype/format/taint-Object-prototype.js (default)": "Client code can adversely affect behavior: setter for day.",

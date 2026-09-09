@@ -158,3 +158,5 @@ arguments. Inheriting its prototype does not create a DateTimeFormat instance.
 
 Resolved options follow specification property order: `hour12` follows
 `hourCycle`, and style properties follow component properties.
+
+Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.

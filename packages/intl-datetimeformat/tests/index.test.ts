@@ -102,6 +102,25 @@ describe('Intl.DateTimeFormat', function () {
     expect(keys.indexOf('hour')).toBeGreaterThan(keys.indexOf('hour12'))
   })
 
+  it('formats astronomical year zero as 1 BC', () => {
+    const dtf = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      era: 'short',
+    })
+    for (const [year, expectedYear, era] of [
+      [-1, '2', 'BC'],
+      [0, '1', 'BC'],
+      [1, '1', 'AD'],
+    ] as const) {
+      const date = new Date(0)
+      date.setUTCFullYear(year, 0, 1)
+      const parts = dtf.formatToParts(date)
+      expect(parts.find(part => part.type === 'era')?.value).toBe(era)
+      expect(parts.find(part => part.type === 'year')?.value).toBe(expectedYear)
+    }
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
