@@ -1,11 +1,11 @@
-A spec-compliant polyfill for Intl.RelativeTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A polyfill for Intl.RelativeTimeFormat tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-relativetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-relativetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-relativetimeformat)
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.RelativeTimeFormat`. All features from the finalized proposal are implemented.
+This package implements `Intl.RelativeTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### Specification Details
 
@@ -231,7 +231,7 @@ async function polyfill(locale: string) {
 
 ## Tests
 
-This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/RelativeTimeFormat)-compliant.
+The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-relativetimeformat:test262-strict` to require zero failures.
 
 Loading `und` locale data preserves existing English data. Root patterns remain
 separate from language-specific patterns, regardless of registration order.

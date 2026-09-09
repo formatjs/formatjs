@@ -1,11 +1,11 @@
-A spec-compliant polyfill for Intl.ListFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A polyfill for Intl.ListFormat tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-listformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-listformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-listformat)
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.ListFormat` and is **test262-compliant**.
+This package implements `Intl.ListFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### ✅ Implemented Features
 
@@ -164,7 +164,7 @@ async function polyfill(locale: string) {
 
 ## Tests
 
-This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/ListFormat)-compliant.
+The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-listformat:test262-strict` to require zero failures.
 
 ## Iterable inputs
 

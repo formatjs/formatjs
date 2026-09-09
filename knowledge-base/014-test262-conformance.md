@@ -27,14 +27,12 @@ spec and test's feature metadata.
 
 Combined: 2,498 executions, 2,312 passes, 186 failures.
 
-Combined installation adds 2 failing executions; 2 isolated failures now pass.
-Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
-Two RelativeTimeFormat cases pass because combined enumeration omits numbering
-systems that the NumberFormat polyfill does not support; this is not broader
-numbering-system conformance.
-Compact PluralRules now passes independently of NumberFormat locale data.
-The extra failures concern NumberFormat dependencies and optional collation data. Full raw reports accompany Bazel
-test outputs; the checked-in baselines preserve every remaining diagnostic.
+Combined installation adds two Locale collation-data expectation failures while
+fixing two native Locale-branding failures. RelativeTimeFormat has the same two
+foreign-realm failures in both modes; its numbering-system coverage no longer
+depends on suppressing unsupported systems. Compact PluralRules also passes
+independently of NumberFormat locale data. Raw reports and checked-in baselines
+preserve every remaining diagnostic.
 
 ## Harness guarantees
 
@@ -62,18 +60,12 @@ not need a directory-wide Gazelle ignore.
 
 ## Work remaining
 
-1. Fix runtime errors by spec algorithm, removing baseline entries as they pass.
-   NumberFormat range validation, branding, and option key order
-   are distinct reviewable clusters.
-2. Repair locale data and locale selection in ListFormat and RelativeTimeFormat.
-3. Implement missing Locale variants/region overrides and PluralRules notation
-   behavior. Check proposal feature metadata against the targeted ECMA-402 draft.
-4. Classify DateTimeFormat/DurationFormat Temporal cases with native controls.
-   Native failures must not be mistaken for proof that upstream tests are wrong.
-5. Fix failures from combined installation coverage, where all 12 polyfills
-   replace native Intl dependencies in every realm.
-6. Reduce all baselines to zero where implementable. Document any remaining
-   runtime limitation per test and spec requirement, never as a blanket skip.
+The [2026-09-09 tracking report](./015-test262-progress-2026-09-09.md) classifies
+all 186 remaining failures per mode, with exact testcase inventory, spec
+references, deferred tradeoffs, and performance measurements. Temporal input
+integration and non-Gregorian calendars remain substantial implementation gaps.
+Foreign-realm/native-brand limitations, optional legacy construction, and
+specific data/proposal expectations stay visible in the raw counts.
 
 ## Commands
 
@@ -158,19 +150,19 @@ Packages load only entries with standalone CLDR data files; aliases remain a
 locale-registration concern.
 
 Shared locale fixtures remove four Indian grouping failures in each mode and
-two combined French compact-plural failures. Portuguese range and Polish
-grouping diagnostics now reflect loaded locale data; those bugs remain tracked.
+two combined French compact-plural failures. Subsequent NumberFormat range and
+numbering-system fixes also resolve the Portuguese range and Polish grouping cases.
 
 ASCII locale parsing removes four combined RegExp-statics failures in Collator
 and NumberFormat. Isolated getCanonicalLocales remains at zero failures.
 
 Minute/second-only matching removes four fractional-second formatting failures in
-each mode. Range equality and flexible day periods remain failing; their
-diagnostics now reflect the newly selected patterns.
+each mode. Subsequent fixes resolve range equality at displayed precision and
+flexible day periods using CLDR rules.
 
 Calendar negotiation supports Gregorian and ISO 8601 and falls back for other
 requests. Six DateTimeFormat failures per mode are fixed; Chinese-calendar and
-Era-monthcode proposal failures remain tracked.
+Stage 4 Era/Month Code integration failures remain tracked.
 
 Standalone PluralRules now uses its own compact exponent tables for the nine
 CLDR locales with c/e operands. Two isolated failures are fixed; combined

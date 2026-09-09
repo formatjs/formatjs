@@ -1,6 +1,6 @@
 # @formatjs/intl-segmenter
 
-**ECMA-402 Section 18** — `Intl.Segmenter`
+**ECMA-402 Section 19** — `Intl.Segmenter`
 
 ## Purpose
 

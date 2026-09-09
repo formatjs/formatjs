@@ -1,4 +1,4 @@
-A spec-compliant polyfill/ponyfill for `Intl.Collator`.
+A polyfill/ponyfill for `Intl.Collator`.
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-collator.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-collator)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-collator)
@@ -89,6 +89,11 @@ data and LDML collation XML so applications do not parse XML at runtime.
 
 This package is tested against FormatJS unit tests, parser tests, and
 conformance data generated from ICU4J and native `Intl.Collator`.
+
+The Bazel `:test262` target checks the upstream suite against a reviewed failure
+baseline. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md)
+for known limitations; `bazel test //packages/intl-collator:test262-strict`
+requires zero failures.
 
 ## Input validation
 
