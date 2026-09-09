@@ -106,15 +106,16 @@ export const Collator = function (
   // ECMA-402 Collator has relevant extension keys "co", "kn", and "kf";
   // ResolveLocale negotiates them against generated locale collation data.
   // https://tc39.es/ecma402/#sec-intl.collator-internal-slots
+  const localeData = usage === 'search' ? searchLocaleData : Collator.localeData
   const r = ResolveLocale(
     Collator.availableLocales,
     requestedLocales,
     opt,
     Collator.relevantExtensionKeys,
-    Collator.localeData,
+    localeData,
     Collator.getDefaultLocale
   )
-  const resolvedLocaleData = Collator.localeData[r.dataLocale]
+  const resolvedLocaleData = localeData[r.dataLocale]
   invariant(!!resolvedLocaleData, `Missing locale data for ${r.dataLocale}`)
 
   // "sort" defaults sensitivity to "variant"; "search" takes its locale data
@@ -223,6 +224,14 @@ Collator.localeData = collationLocaleData as unknown as Record<
   string,
   CollatorLocaleData | undefined
 >
+// ECMA-402 §10.1.1, steps 9–11: search uses distinct locale data.
+// Its collation is selected by usage, not a sort-specific co keyword.
+// https://tc39.es/ecma402/#sec-intl.collator
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L29-L33
+const searchLocaleData: Record<string, CollatorLocaleData> = Object.create(null)
+for (const locale of Collator.availableLocales) {
+  searchLocaleData[locale] = {...Collator.localeData[locale]!, co: ['default']}
+}
 Collator.polyfilled = true
 
 // ECMA-402 §10.2.1: the constructor's prototype property is non-writable.

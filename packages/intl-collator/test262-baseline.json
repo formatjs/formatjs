@@ -2,8 +2,6 @@
   "total": 130,
   "failures": {
     "intl402/Collator/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true",
-    "intl402/Collator/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true",
-    "intl402/Collator/usage-de.js (default)": "Actual [Ä, AE] and expected [AE, Ä] should have the same contents. search",
-    "intl402/Collator/usage-de.js (strict mode)": "Actual [Ä, AE] and expected [AE, Ä] should have the same contents. search"
+    "intl402/Collator/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true"
   }
 }
