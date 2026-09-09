@@ -1,12 +1,6 @@
 {
   "total": 160,
   "failures": {
-    "intl402/RelativeTimeFormat/constructor/constructor/options-proto.js (default)": "Should not call getter on Object.prototype: localeMatcher",
-    "intl402/RelativeTimeFormat/constructor/constructor/options-proto.js (strict mode)": "Should not call getter on Object.prototype: localeMatcher",
-    "intl402/RelativeTimeFormat/constructor/constructor/options-toobject-prototype.js (default)": "Expected no error, got RangeError: Value short out of range for Intl.NumberFormat options property style",
-    "intl402/RelativeTimeFormat/constructor/constructor/options-toobject-prototype.js (strict mode)": "Expected no error, got RangeError: Value short out of range for Intl.NumberFormat options property style",
-    "intl402/RelativeTimeFormat/constructor/constructor/options-undefined.js (default)": "Expected no error, got Error: Should not call style getter",
-    "intl402/RelativeTimeFormat/constructor/constructor/options-undefined.js (strict mode)": "Expected no error, got Error: Should not call style getter",
     "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.RelativeTimeFormat must be called with 'new'",
     "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.RelativeTimeFormat must be called with 'new'",
     "intl402/RelativeTimeFormat/prototype/format/en-us-numbering-systems.js (default)": "locale: en-US-u-nu-arab Expected SameValue(«false», «true») to be true",

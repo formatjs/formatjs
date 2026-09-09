@@ -230,3 +230,6 @@ This library is fully [test262](https://github.com/tc39/test262/tree/master/test
 
 Loading `und` locale data preserves existing English data. Root patterns remain
 separate from language-specific patterns, regardless of registration order.
+
+Internal number and plural formatters use the resolved locale. Internal number
+options have no prototype, so unrelated inherited options cannot affect them.
