@@ -772,3 +772,27 @@ test.each(['auto', 'morePrecision', 'lessPrecision'] as const)(
     expect(options.roundingPriority).toBe(roundingPriority)
   }
 )
+
+describe('internal PluralRules options', () => {
+  it('does not observe inherited option getters', () => {
+    const previous = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'localeMatcher'
+    )
+    let formatted: string
+    Object.defineProperty(Object.prototype, 'localeMatcher', {
+      configurable: true,
+      get() {
+        throw new Error('Inherited localeMatcher read')
+      },
+    })
+    try {
+      formatted = new NumberFormat('en', Object.create(null)).format(123)
+    } finally {
+      if (previous)
+        Object.defineProperty(Object.prototype, 'localeMatcher', previous)
+      else delete (Object.prototype as {localeMatcher?: unknown}).localeMatcher
+    }
+    expect(formatted!).toBe('123')
+  })
+})

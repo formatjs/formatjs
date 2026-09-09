@@ -123,3 +123,6 @@ and the `Intl.supportedValuesOf("unit")` list.
 
 `resolvedOptions()` returns properties in specification order, including
 `roundingPriority` before `trailingZeroDisplay`.
+
+Internal plural selection uses options with a null prototype, preventing inherited
+option getters from affecting NumberFormat or its RelativeTimeFormat consumers.
