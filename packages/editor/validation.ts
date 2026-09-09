@@ -60,10 +60,10 @@ function compatibleElement(
         .join(',')
     if (exactKeys(source) !== exactKeys(target)) return false
     // New locale categories inherit the source's fallback contract.
-    return Object.entries(target.options).every(([key, option]) =>
+    return Object.keys(target.options).every(key =>
       compatible(
         (source.options[key] ?? source.options.other).value,
-        option.value
+        target.options[key].value
       )
     )
   }
