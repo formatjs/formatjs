@@ -92,3 +92,6 @@ apply the most specific rule first, including language-independent variants.
 
 Canonicalization creates list elements directly without calling an overridden
 `Array.prototype.push`, including while parsing and emitting extensions.
+
+Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
+Extension singleton matching is case-insensitive, including duplicate detection.
