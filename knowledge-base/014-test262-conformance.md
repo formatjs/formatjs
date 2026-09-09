@@ -18,9 +18,9 @@ excluded because it fails.
 | pluralrules         |      106 |                 4 |               0 |
 | relativetimeformat  |      160 |                14 |               0 |
 | segmenter           |      158 |                10 |               0 |
-| supportedvaluesof   |       50 |                 8 |               6 |
+| supportedvaluesof   |       50 |                 6 |               6 |
 
-Total: 2,498 executions, 2,076 polyfill passes, 422 polyfill failures. The native
+Total: 2,498 executions, 2,078 polyfill passes, 420 polyfill failures. The native
 control fails 86 executions; 68 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.

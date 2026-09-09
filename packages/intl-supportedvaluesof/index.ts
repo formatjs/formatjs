@@ -66,26 +66,32 @@ export type SupportedValuesOf =
  * @param key - The category of values to return
  * @returns A sorted array of unique string values
  */
-export function supportedValuesOf(key: SupportedValuesOf): string[] {
-  // ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
-  // Coerce the key before dispatch: https://tc39.es/ecma402/#sec-intl.supportedvaluesof
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
-  key = ToString(key) as SupportedValuesOf
-  switch (key) {
-    case 'calendar':
-      return getSupportedCalendars()
-    case 'collation':
-      return getSupportedCollations()
-    case 'currency':
-      return getSupportedCurrencies()
-    case 'numberingSystem':
-      return getSupportedNumberingSystems()
-    case 'timeZone':
-      return getSupportedTimeZones()
-    case 'unit':
-      return getSupportedUnits()
-    default:
-      // ECMA-402 Spec: Throw RangeError for invalid keys
-      throw RangeError('Invalid key: ' + key)
-  }
-}
+// ECMA-262 §17, built-in function objects: non-constructors lack [[Construct]]
+// and an own prototype property (these requirements are not algorithm steps).
+// https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
+// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30376
+export const supportedValuesOf: (key: SupportedValuesOf) => string[] = {
+  supportedValuesOf(key: SupportedValuesOf): string[] {
+    // ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
+    // Coerce the key before dispatch: https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
+    key = ToString(key) as SupportedValuesOf
+    switch (key) {
+      case 'calendar':
+        return getSupportedCalendars()
+      case 'collation':
+        return getSupportedCollations()
+      case 'currency':
+        return getSupportedCurrencies()
+      case 'numberingSystem':
+        return getSupportedNumberingSystems()
+      case 'timeZone':
+        return getSupportedTimeZones()
+      case 'unit':
+        return getSupportedUnits()
+      default:
+        // ECMA-402 Spec: Throw RangeError for invalid keys
+        throw RangeError('Invalid key: ' + key)
+    }
+  },
+}.supportedValuesOf
