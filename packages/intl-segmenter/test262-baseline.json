@@ -1,15 +1,9 @@
 {
   "total": 158,
   "failures": {
-    "intl402/Segmenter/constructor/constructor/locales-valid.js (default)": "Single-element array: expected one of sr, found en",
-    "intl402/Segmenter/constructor/constructor/locales-valid.js (strict mode)": "Single-element array: expected one of sr, found en",
     "intl402/Segmenter/constructor/constructor/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Object]», «[object Intl.Segmenter]») to be true",
     "intl402/Segmenter/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Object]», «[object Intl.Segmenter]») to be true",
-    "intl402/Segmenter/constructor/supportedLocalesOf/locales-specific.js (default)": "Actual [] and expected [sr] should have the same contents. ",
-    "intl402/Segmenter/constructor/supportedLocalesOf/locales-specific.js (strict mode)": "Actual [] and expected [sr] should have the same contents. ",
     "intl402/Segmenter/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Object]», «[object Intl.Segmenter]») to be true",
-    "intl402/Segmenter/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Object]», «[object Intl.Segmenter]») to be true",
-    "intl402/Segmenter/prototype/resolvedOptions/type-without-lbs.js (default)": "locale descriptor value should be en-US; locale value should be en-US",
-    "intl402/Segmenter/prototype/resolvedOptions/type-without-lbs.js (strict mode)": "locale descriptor value should be en-US; locale value should be en-US"
+    "intl402/Segmenter/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Object]», «[object Intl.Segmenter]») to be true"
   }
 }

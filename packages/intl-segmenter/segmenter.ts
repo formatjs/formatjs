@@ -1,3 +1,4 @@
+import {availableLocales as cldrLocales} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
@@ -170,10 +171,16 @@ export class Segmenter {
     //root rules based on granularity
     this.mergedSegmentationTypeValue = {...SegmentationRules.root[granularity]}
 
-    //merge root rules with locale ones if locale is specified
+    // ECMA-402 §19.8.1 steps 5.a and 7 use locale-sensitive boundaries.
+    // Regional locales inherit their language's CLDR tailoring.
+    // https://tc39.es/ecma402/#sec-findboundary
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L398-L406
     if (r.locale.length) {
       const localeOverrides =
-        SegmentationRules[r.locale as keyof typeof SegmentationRules]
+        SegmentationRules[r.locale as keyof typeof SegmentationRules] ||
+        SegmentationRules[
+          r.locale.split('-')[0] as keyof typeof SegmentationRules
+        ]
       if (localeOverrides && granularity in localeOverrides) {
         const localeSegmentationTypeValue: SegmentationTypeTypeRaw =
           localeOverrides[granularity as keyof typeof localeOverrides]
@@ -284,10 +291,10 @@ export class Segmenter {
     }
   }
 
-  static availableLocales: Set<string> = new Set([
-    'en',
-    ...Object.keys(SegmentationRules).filter(key => key !== 'root'),
-  ])
+  // ECMA-402 §19.2.3 allows locale coverage backed by root segmentation rules.
+  // https://tc39.es/ecma402/#sec-intl.segmenter-internal-slots
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L64-L66
+  static availableLocales: Set<string> = new Set(cldrLocales)
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<SegmenterOptions, 'localeMatcher'>

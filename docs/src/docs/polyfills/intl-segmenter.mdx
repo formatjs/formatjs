@@ -208,3 +208,6 @@ The fallback locale is `en`, backed by the root segmentation rules.
 `containing(index)` coerces its index to a number and truncates toward zero.
 BigInt values throw `TypeError`, including boxed BigInts and objects that
 coerce to BigInt. Errors thrown during coercion propagate unchanged.
+
+Locales without dedicated CLDR tailoring use root Unicode segmentation rules.
+Regional locales retain their language's tailoring, including sentence suppressions.

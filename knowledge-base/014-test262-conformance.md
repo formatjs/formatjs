@@ -17,15 +17,15 @@ excluded because it fails.
 | numberformat        |      498 |                18 |               0 |                18 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 6 |               0 |                 4 |
-| segmenter           |      158 |                10 |               0 |                10 |
+| segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 4 |
 
-Total: 2,498 executions, 2,288 polyfill passes, 210 polyfill failures. The native
+Total: 2,498 executions, 2,294 polyfill passes, 204 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,286 passes, 212 failures.
+Combined: 2,498 executions, 2,292 passes, 206 failures.
 
 Combined installation adds 6 failing executions; 4 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
