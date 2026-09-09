@@ -283,3 +283,37 @@ test('enforces exact duration magnitude limits', () => {
     ).toThrow(RangeError)
   }
 })
+
+test('DurationFormat built-in metadata', () => {
+  expect(DurationFormat.length).toBe(0)
+  expect(DurationFormat.supportedLocalesOf.length).toBe(1)
+  expect(
+    Object.getOwnPropertyDescriptor(
+      DurationFormat.prototype,
+      Symbol.toStringTag
+    )
+  ).toEqual({
+    value: 'Intl.DurationFormat',
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  })
+  expect(Object.prototype.toString.call(new DurationFormat('en'))).toBe(
+    '[object Intl.DurationFormat]'
+  )
+})
+
+test('resolvedOptions preserves table order and omits undefined fractionalDigits', () => {
+  const defaults = new DurationFormat('en').resolvedOptions()
+  expect(Object.keys(defaults).slice(0, 3)).toEqual([
+    'locale',
+    'numberingSystem',
+    'style',
+  ])
+  expect(Object.hasOwn(defaults, 'fractionalDigits')).toBe(false)
+  const explicit = new DurationFormat('en', {
+    fractionalDigits: 2,
+  }).resolvedOptions()
+  expect(explicit.fractionalDigits).toBe(2)
+  expect(Object.keys(explicit).at(-1)).toBe('fractionalDigits')
+})

@@ -197,3 +197,10 @@ finite integers of a common sign. Invalid numeric fields throw `RangeError`;
 an empty record throws `TypeError`. Absolute years, months, and weeks must be
 less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
 Subsecond contributions participate in the bound comparison exactly.
+
+## Built-in metadata
+
+`DurationFormat.length` is `0`; `DurationFormat.supportedLocalesOf.length` is `1`.
+Instances identify as `[object Intl.DurationFormat]` through `Symbol.toStringTag`.
+`resolvedOptions()` returns properties in spec order and omits `fractionalDigits`
+when no explicit value was set.
