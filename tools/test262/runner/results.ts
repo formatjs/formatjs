@@ -71,7 +71,7 @@ export function summarize(results: Result[]): Baseline {
     ) {
       throw new Error('Invalid Test262 result')
     }
-    const file = test.file.replaceAll('\\', '/').split('/test/').at(-1)!
+    const file = test.file.replaceAll('\\', '/').split('/test/').pop()!
     const key = `${file} (${test.scenario})`
     if (seen.has(key)) throw new Error(`Duplicate Test262 result: ${key}`)
     seen.add(key)

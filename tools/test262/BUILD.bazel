@@ -56,11 +56,10 @@ alias(
     visibility = ["//visibility:public"],
 )
 
-# gazelle:ignore
 js_binary(
     name = "prelude",
-    data = ["//:node_modules/minimist"],
-    entry_point = "prelude.ts",
+    data = ["//tools/test262/runner:lib"],  # keep: generated directory entrypoints need library runfiles
+    entry_point = "//tools/test262/runner:prelude",
     visibility = ["//visibility:public"],
 )
 
@@ -68,11 +67,8 @@ exports_files(["run.sh"])
 
 js_binary(
     name = "validator",
-    data = [
-        "results.ts",
-        "//:node_modules/minimist",
-    ],
-    entry_point = "validate.ts",
+    data = ["//tools/test262/runner:lib"],  # keep: generated directory entrypoints need library runfiles
+    entry_point = "//tools/test262/runner:validate",
     visibility = ["//visibility:public"],
 )
 
@@ -95,12 +91,8 @@ js_binary(
 js_binary(
     name = "results_tests",
     testonly = True,
-    data = [
-        "results.ts",
-        "validate.ts",
-        "//:node_modules/minimist",
-    ],
-    entry_point = "results.test.ts",
+    data = ["//tools/test262/runner:lib"],  # keep: generated directory entrypoints need library runfiles
+    entry_point = "//tools/test262/runner:results-checks",
 )
 
 sh_test(
