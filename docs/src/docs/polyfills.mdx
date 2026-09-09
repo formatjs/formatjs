@@ -44,3 +44,6 @@ zero-failure check. Counts and remaining failures are tracked in
 Combined suites use four harness workers with matching CPU reservations. This
 keeps full-suite execution within CI time limits while preserving per-test
 process isolation and the complete test selection.
+
+Test262 preludes load shared locale fixtures for the upstream locale metadata,
+including dependencies used when all polyfills are installed together.

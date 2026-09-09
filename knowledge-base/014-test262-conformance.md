@@ -14,24 +14,26 @@ excluded because it fails.
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 4 |               0 |                 4 |
 | locale              |      336 |                 4 |              22 |                 4 |
-| numberformat        |      498 |                22 |               0 |                24 |
-| pluralrules         |      106 |                 4 |               0 |                 4 |
+| numberformat        |      498 |                18 |               0 |                20 |
+| pluralrules         |      106 |                 4 |               0 |                 2 |
 | relativetimeformat  |      160 |                 8 |               0 |                20 |
 | segmenter           |      158 |                10 |               0 |                10 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 6 |
 
-Total: 2,498 executions, 2,244 polyfill passes, 254 polyfill failures. The native
+Total: 2,498 executions, 2,248 polyfill passes, 250 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,222 passes, 276 failures.
+Combined: 2,498 executions, 2,228 passes, 270 failures.
 
-Combined installation adds 26 failing executions; 4 isolated failures now pass.
+Combined installation adds 26 failing executions; 6 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
 Two RelativeTimeFormat cases pass because combined enumeration omits numbering
 systems that the NumberFormat polyfill does not support; this is not broader
 numbering-system conformance.
+Two PluralRules compact-notation cases pass only when the NumberFormat French
+locale data is present; the isolated dependency remains unresolved.
 The extra failures concern RegExp statics, NumberFormat dependencies, calendar
 display-name keys, and optional collation data. Full raw reports accompany Bazel
 test outputs; the checked-in baselines preserve every remaining diagnostic.
@@ -145,3 +147,13 @@ Use `//tools/test262:combined-<polyfill>-strict` for a direct zero-failure check
 Combined suites use four harness workers with matching CPU reservations. This
 keeps full-suite execution within CI time limits while preserving per-test
 process isolation and the complete test selection.
+
+Dynamic Test262 preludes share `tools/test262/locales.bzl`, covering upstream
+locale metadata and parent locales. This includes Indian English grouping and
+Polish NumberFormat data used by RelativeTimeFormat in combined installation.
+Packages load only entries with standalone CLDR data files; aliases remain a
+locale-registration concern.
+
+Shared locale fixtures remove four Indian grouping failures in each mode and
+two combined French compact-plural failures. Portuguese range and Polish
+grouping diagnostics now reflect loaded locale data; those bugs remain tracked.
