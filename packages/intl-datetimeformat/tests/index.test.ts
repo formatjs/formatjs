@@ -39,6 +39,36 @@ describe('Intl.DateTimeFormat', function () {
     }
   })
 
+  it('requires internal slots before argument coercion', () => {
+    const forged = Object.create(DateTimeFormat.prototype)
+    const value = {
+      valueOf() {
+        throw new Error('coerced')
+      },
+    }
+    expect(() => forged.format).toThrow(TypeError)
+    expect(() => forged.resolvedOptions()).toThrow(TypeError)
+    for (const method of [
+      'formatToParts',
+      'formatRange',
+      'formatRangeToParts',
+    ] as const) {
+      expect(() =>
+        Reflect.apply(DateTimeFormat.prototype[method], forged, [value, value])
+      ).toThrow(TypeError)
+    }
+    const real = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const format = Object.getOwnPropertyDescriptor(
+      DateTimeFormat.prototype,
+      'format'
+    )!.get!
+    Object.setPrototypeOf(real, null)
+    expect(() => format.call(real)(0)).not.toThrow()
+    expect(DateTimeFormat.prototype.resolvedOptions.call(real).locale).toBe(
+      'en'
+    )
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {

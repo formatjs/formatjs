@@ -286,3 +286,6 @@ Dates outside the exact ±8,640,000,000,000,000 millisecond TimeClip bounds
 throw `RangeError`, including values one millisecond beyond either endpoint.
 Year calculations use Gregorian arithmetic so valid endpoints also format
 when their local timezone offsets cross the native Date range.
+
+DateTimeFormat methods require an initialized receiver before coercing date
+arguments. Inheriting its prototype does not create a DateTimeFormat instance.
