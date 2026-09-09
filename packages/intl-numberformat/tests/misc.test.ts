@@ -576,3 +576,44 @@ describe.each(['formatRange', 'formatRangeToParts'] as const)(
     })
   }
 )
+
+describe('Symbol coercion', () => {
+  const symbol = Symbol('number')
+  const values = [
+    symbol,
+    Object(symbol),
+    {valueOf: () => symbol},
+    {[Symbol.toPrimitive]: () => symbol},
+  ]
+  it.each(values)('rejects a Symbol primitive from %s', value => {
+    const nf = new NumberFormat('en')
+    expect(() => nf.format(value as any)).toThrow(TypeError)
+    expect(() => nf.formatToParts(value as any)).toThrow(TypeError)
+    for (const method of ['formatRange', 'formatRangeToParts'] as const) {
+      expect(() => nf[method](value as any, 1)).toThrow(TypeError)
+      expect(() => nf[method](1, value as any)).toThrow(TypeError)
+    }
+  })
+  it('stops before converting the second endpoint when the first throws', () => {
+    const nf = new NumberFormat('en')
+    const calls: string[] = []
+    const start = {
+      [Symbol.toPrimitive](hint: string) {
+        calls.push(hint)
+        return symbol
+      },
+    }
+    const end = {
+      valueOf() {
+        calls.push('end')
+        return 1
+      },
+    }
+    expect(() => nf.formatRange(start as any, end as any)).toThrow(TypeError)
+    expect(calls).toEqual(['number'])
+  })
+  it('preserves invalid numeric string fallback', () => {
+    const nf = new NumberFormat('en')
+    expect(nf.format('invalid' as any)).toBe(nf.format(NaN))
+  })
+})

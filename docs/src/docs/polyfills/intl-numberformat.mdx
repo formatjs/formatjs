@@ -363,3 +363,6 @@ With `signDisplay: "exceptZero"`, NaN has no sign (`"NaN"` in English).
 `formatRange(start, end)` and `formatRangeToParts(start, end)` require both
 endpoints. Missing or `undefined` endpoints throw `TypeError` before either value
 is converted. NaN endpoints throw `RangeError`.
+
+Formatting methods throw `TypeError` for Symbol values, including objects that
+convert to a Symbol. Invalid numeric strings still format as NaN.

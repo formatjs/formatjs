@@ -14,13 +14,13 @@ excluded because it fails.
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                16 |               0 |
 | locale              |      336 |                60 |              26 |
-| numberformat        |      498 |                58 |               2 |
-| pluralrules         |      106 |                 6 |              16 |
+| numberformat        |      498 |                50 |               2 |
+| pluralrules         |      106 |                 4 |              16 |
 | relativetimeformat  |      160 |                32 |               2 |
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                10 |               8 |
 
-Total: 2,498 executions, 1,874 polyfill passes, 624 polyfill failures. The native
+Total: 2,498 executions, 1,884 polyfill passes, 614 polyfill failures. The native
 control fails 238 executions; 200 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -70,7 +70,10 @@ A green baseline gate means no regression from the reviewed failure list. It
 does not mean full conformance. A strict target is the zero-failure check.
 
 The NaN exceptZero sign fix removes 20 failures across format and formatToParts
-in five locales. NumberFormat now has 440 passing executions and 58 failures.
+in five locales. NumberFormat now has 448 passing executions and 50 failures.
 
 Range endpoint validation removes four failures: both range methods now reject
 undefined endpoints before coercion.
+
+Symbol coercion removes eight NumberFormat failures and two PluralRules failures.
+Symbols now throw TypeError instead of becoming NaN in ToIntlMathematicalValue.
