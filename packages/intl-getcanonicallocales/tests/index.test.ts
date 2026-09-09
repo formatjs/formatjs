@@ -64,6 +64,20 @@ describe('Intl.getCanonicalLocales', () => {
       'en-u-rg-uszzzz',
     ])
   })
+  it('replaces matched alias subtags and keeps unrelated variants', () => {
+    expect(
+      getCanonicalLocales([
+        'art-lojban',
+        'jbo-lojban',
+        'hy-arevela',
+        'hy-arevmda',
+        'hye-arevmda',
+        'ja-Latn-fonipa-hepburn-heploc',
+        'en-aaland',
+        'en-GB-aaland',
+      ])
+    ).toEqual(['jbo', 'hy', 'hyw', 'ja-Latn-alalc97-fonipa', 'en-AX', 'en-GB'])
+  })
   it('regular', function () {
     expect(
       getCanonicalLocales('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')
