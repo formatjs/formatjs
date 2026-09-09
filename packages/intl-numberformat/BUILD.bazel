@@ -35,6 +35,7 @@ TEST_LOCALES = [
     "nl",
     "pl",
     "pt",
+    "pt-PT",
     "ru",
     "sv",
     "sw",
@@ -491,6 +492,7 @@ formatjs_test(
         ":tests-locale-data-nl",  # keep: generated locale data imported by tests
         ":tests-locale-data-pl",  # keep: generated locale data imported by tests
         ":tests-locale-data-pt",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pt-PT",  # keep: generated locale data imported by tests
         ":tests-locale-data-ru",  # keep: generated locale data imported by tests
         ":tests-locale-data-sv",  # keep: generated locale data imported by tests
         ":tests-locale-data-sw",  # keep: generated locale data imported by tests

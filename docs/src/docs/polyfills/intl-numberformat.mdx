@@ -408,3 +408,6 @@ numbers remain ungrouped; `"always"` still requests grouping.
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+Number ranges preserve locale-specific separators. Shared affixes are labeled
+`shared` by `formatRangeToParts`; distinct endpoint signs remain separate.

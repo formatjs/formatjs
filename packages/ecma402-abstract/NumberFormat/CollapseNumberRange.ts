@@ -4,71 +4,90 @@ import {
   type NumberFormatPartTypes,
 } from '#packages/ecma402-abstract/types/number.js'
 
-const PART_TYPES_TO_COLLAPSE = new Set<NumberFormatPartTypes>([
+const AFFIX_TYPES = new Set<NumberFormatPartTypes>([
   'unit',
-  'exponentMinusSign',
   'minusSign',
   'plusSign',
   'percentSign',
-  'exponentSeparator',
-  'percent',
-  'percentSign',
   'currency',
   'literal',
-] as const)
+])
+const DIGIT_TYPES = new Set<NumberFormatPartTypes>([
+  'integer',
+  'fraction',
+  'exponentInteger',
+])
 
-/**
- * https://tc39.es/ecma402/#sec-collapsenumberrange
- * LDML: https://unicode-org.github.io/cldr/ldml/tr35-numbers.html#collapsing-number-ranges
- */
+function affixLength(parts: NumberFormatPart[], fromEnd: boolean): number {
+  let length = 0
+  while (length < parts.length) {
+    const part = parts[fromEnd ? parts.length - length - 1 : length]
+    if (!AFFIX_TYPES.has(part.type)) break
+    length++
+  }
+  return length
+}
+
+function canCollapse(a: NumberFormatPart[], b: NumberFormatPart[]): boolean {
+  return (
+    a.length === b.length &&
+    a.some(part => part.type !== 'literal') &&
+    a.every(
+      (part, i) => part.type === b[i].type && part.value === b[i].value
+    ) &&
+    Array.from(a.map(part => part.value).join('')).length > 1
+  )
+}
+
+// ECMA-402 §16.5.21 forbids collapsing ranges into ambiguous results.
+// Only identical affixes collapse; scientific and compact notation remain intact.
+// https://tc39.es/ecma402/#sec-collapsenumberrange
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1874-L1878
+// LDML collapsing steps 1–3 and range-spacing heuristics:
+// https://unicode.org/reports/tr35/tr35-numbers.html#Collapsing_Number_Ranges
+// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1886-L1921
 export function CollapseNumberRange(
-  numberFormat: Intl.NumberFormat,
+  _numberFormat: Intl.NumberFormat,
   result: NumberFormatPart[],
-  {
-    getInternalSlots,
-  }: {
+  _options: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
 ): NumberFormatPart[] {
-  const internalSlots = getInternalSlots(numberFormat)
-  const symbols =
-    internalSlots.dataLocaleData.numbers.symbols[internalSlots.numberingSystem]
-  const rangeSignRegex = new RegExp(`s?[${symbols.rangeSign}]s?`)
-  const rangeSignIndex = result.findIndex(
-    r => r.type === 'literal' && rangeSignRegex.test(r.value)
-  )
+  const separatorIndex = result.findIndex(part => part.source === 'shared')
+  if (separatorIndex < 0) return result
+  const start = result.slice(0, separatorIndex)
+  const end = result.slice(separatorIndex + 1)
+  const separator = {...result[separatorIndex]}
+  const prefix: NumberFormatPart[] = []
+  const suffix: NumberFormatPart[] = []
 
-  let prefixSignParts = []
-  for (let i = rangeSignIndex - 1; i >= 0; i--) {
-    if (!PART_TYPES_TO_COLLAPSE.has(result[i].type)) {
-      break
-    }
-    prefixSignParts.unshift(result[i])
+  const startPrefix = start.slice(0, affixLength(start, false))
+  const endPrefix = end.slice(0, affixLength(end, false))
+  if (canCollapse(startPrefix, endPrefix)) {
+    prefix.push(...start.splice(0, startPrefix.length))
+    end.splice(0, endPrefix.length)
   }
+  const startSuffixLength = affixLength(start, true)
+  const endSuffixLength = affixLength(end, true)
+  const startSuffix = start.slice(start.length - startSuffixLength)
+  const endSuffix = end.slice(end.length - endSuffixLength)
+  if (canCollapse(startSuffix, endSuffix)) {
+    start.splice(start.length - startSuffixLength)
+    suffix.push(...end.splice(end.length - endSuffixLength))
+  }
+  for (const part of [...prefix, ...suffix]) part.source = 'shared'
 
-  // Don't collapse if it's a single code point
-  if (Array.from(prefixSignParts.map(p => p.value).join('')).length > 1) {
-    const newResult = Array.from(result)
-    newResult.splice(
-      rangeSignIndex - prefixSignParts.length,
-      prefixSignParts.length
-    )
-    return newResult
+  if (
+    start.length &&
+    end.length &&
+    (!DIGIT_TYPES.has(start[start.length - 1].type) ||
+      !DIGIT_TYPES.has(end[0].type))
+  ) {
+    // Use ordinary spaces for the optional spacing around uncollapsed affixes.
+    if (!separator.value || separator.value.charAt(0).trim())
+      separator.value = ` ${separator.value}`
+    if (separator.value.charAt(separator.value.length - 1).trim())
+      separator.value += ' '
   }
-
-  let suffixSignParts = []
-  for (let i = rangeSignIndex + 1; i < result.length; i++) {
-    if (!PART_TYPES_TO_COLLAPSE.has(result[i].type)) {
-      break
-    }
-    suffixSignParts.push(result[i])
-  }
-
-  // Don't collapse if it's a single code point
-  if (Array.from(suffixSignParts.map(p => p.value).join('')).length > 1) {
-    const newResult = Array.from(result)
-    newResult.splice(rangeSignIndex + 1, suffixSignParts.length)
-    return newResult
-  }
-  return result
+  return [...prefix, ...start, separator, ...end, ...suffix]
 }
