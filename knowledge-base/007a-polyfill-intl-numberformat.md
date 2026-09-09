@@ -28,8 +28,10 @@ and same-locale plural fallback; unconfirmed/provisional entries are excluded,
 matching the CLDR JSON threshold. Identical systems share Latin data through
 registration-time aliases without mutating the caller's data.
 
-`number-data.ts` handles LDML lookup; `numbering-system-data.ts` projects number
-patterns. Currency names and units still come from CLDR JSON. Northern Sami
+`scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
+resolver, numbering-system projection, shared plural helpers, and resolver tests.
+Generator entrypoints in `scripts/` depend on this library. `number-data.ts`
+handles LDML lookup; `numbering-system-data.ts` projects number patterns. Currency names and units still come from CLDR JSON. Northern Sami
 (`se-FI`) compact 1000 uses its local `other` pattern before the parent's `one`
 pattern, following LDML lateral inheritance.
 
