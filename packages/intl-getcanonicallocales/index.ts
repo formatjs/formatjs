@@ -1,3 +1,4 @@
+import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeUnicodeLocaleId} from '#packages/intl-getcanonicallocales/canonicalizer.js'
 import {emitUnicodeLocaleId} from '#packages/intl-getcanonicallocales/emitter.js'
@@ -76,7 +77,7 @@ function CanonicalizeLocaleList(
     const canonicalizedTag = emitUnicodeLocaleId(
       CanonicalizeUnicodeLocaleId(parseUnicodeLocaleId(tag))
     )
-    if (seen.indexOf(canonicalizedTag) < 0) seen.push(canonicalizedTag)
+    if (seen.indexOf(canonicalizedTag) < 0) appendToList(seen, canonicalizedTag)
   }
   return seen
 }

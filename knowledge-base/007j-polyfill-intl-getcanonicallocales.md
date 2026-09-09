@@ -85,3 +85,6 @@ replacements receive the required `zzzz` suffix; multiple replacements use the f
 
 CLDR compound aliases remove matched subtags, preserve unrelated fields, and
 apply the most specific rule first, including language-independent variants.
+
+Canonicalization creates list elements directly without calling an overridden
+`Array.prototype.push`, including while parsing and emitting extensions.

@@ -1,7 +1,4 @@
 {
   "total": 76,
-  "failures": {
-    "intl402/Intl/getCanonicalLocales/overriden-push.js (default)": "Uncaught 42",
-    "intl402/Intl/getCanonicalLocales/overriden-push.js (strict mode)": "Uncaught 42"
-  }
+  "failures": {}
 }

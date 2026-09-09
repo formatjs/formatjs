@@ -1,3 +1,4 @@
+import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   extensionAlias,
   subdivisionAlias,
@@ -54,7 +55,8 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
     if (extension === 'u' && (key === 'rg' || key === 'sd')) {
       canonical = subdivisionAlias[canonical] || canonical
     }
-    result.push(
+    appendToList(
+      result,
       !canonical || (extension === 'u' && canonical === 'true')
         ? [key]
         : [key, canonical]
@@ -75,7 +77,7 @@ function mergeVariants(v1: string[], v2: string[]): string[] {
   const result = [...v1]
   for (const v of v2) {
     if (v1.indexOf(v) < 0) {
-      result.push(v)
+      appendToList(result, v)
     }
   }
   return result
@@ -125,12 +127,12 @@ const languageAliasRules = Object.keys(languageAlias)
     const replacement = parseUnicodeLanguageId(target)
     if (target.length)
       throw new Error(`Invalid language alias replacement: ${to}`)
-    rules.push({type, replacement})
+    appendToList(rules, {type, replacement})
     return rules
   }, [])
   .sort(compareLanguageAliasRules)
   .reduce((groups: Record<string, LanguageAliasRule[]>, rule) => {
-    ;(groups[rule.type.lang] ||= []).push(rule)
+    appendToList((groups[rule.type.lang] ||= []), rule)
     return groups
   }, Object.create(null))
 
