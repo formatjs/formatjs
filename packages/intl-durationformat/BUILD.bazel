@@ -18,6 +18,7 @@ formatjs_library(
     package_name = "@formatjs/intl-durationformat",
     srcs = [
         "abstract/PartitionDurationFormatPattern.ts",
+        "abstract/ToTemporalDurationRecord.ts",
         "constants.ts",
         "core.ts",
         "get_internal_slots.ts",

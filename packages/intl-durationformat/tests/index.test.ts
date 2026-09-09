@@ -463,3 +463,15 @@ test('numbering system support refreshes when NumberFormat is replaced', () => {
     Intl.NumberFormat = NativeNumberFormat
   }
 })
+
+test('duration strings use Temporal when the runtime provides it', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  if ('Temporal' in globalThis) {
+    expect(formatter.format('PT1H')).toBe(formatter.format({hours: 1}))
+    expect(formatter.formatToParts('PT1H')).toEqual(
+      formatter.formatToParts({hours: 1})
+    )
+  } else {
+    expect(() => formatter.format('PT1H')).toThrow(RangeError)
+  }
+})

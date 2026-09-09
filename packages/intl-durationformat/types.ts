@@ -58,8 +58,8 @@ export interface DurationFormatLocaleInternalData {
 
 export interface DurationFormat {
   resolvedOptions(): ResolvedDurationFormatOptions
-  formatToParts(duration: DurationInput): DurationFormatPart[]
-  format(duration: DurationInput): string
+  formatToParts(duration: DurationInput | string): DurationFormatPart[]
+  format(duration: DurationInput | string): string
 }
 
 export interface IntlDurationFormatInternal {

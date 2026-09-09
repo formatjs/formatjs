@@ -1,13 +1,4 @@
 {
   "total": 220,
-  "failures": {
-    "intl402/DurationFormat/prototype/format/taint-temporal-duration-prototype.js (default)": "Test262Error { message: '' }",
-    "intl402/DurationFormat/prototype/format/taint-temporal-duration-prototype.js (strict mode)": "Test262Error { message: '' }",
-    "intl402/DurationFormat/prototype/format/temporal-duration-string-arg.js (default)": "Expected no error, got RangeError: Invalid duration format",
-    "intl402/DurationFormat/prototype/format/temporal-duration-string-arg.js (strict mode)": "Expected no error, got RangeError: Invalid duration format",
-    "intl402/DurationFormat/prototype/formatToParts/taint-temporal-duration-prototype.js (default)": "Test262Error { message: '' }",
-    "intl402/DurationFormat/prototype/formatToParts/taint-temporal-duration-prototype.js (strict mode)": "Test262Error { message: '' }",
-    "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (default)": "Expected no error, got RangeError: Invalid duration format",
-    "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (strict mode)": "Expected no error, got RangeError: Invalid duration format"
-  }
+  "failures": {}
 }
