@@ -10,7 +10,7 @@ excluded because it fails.
 | collator            |      130 |                18 |               0 |
 | datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
-| durationformat      |      220 |                14 |               4 |
+| durationformat      |      220 |                12 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                46 |              22 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               6 |
 
-Total: 2,498 executions, 2,074 polyfill passes, 424 polyfill failures. The native
+Total: 2,498 executions, 2,076 polyfill passes, 422 polyfill failures. The native
 control fails 86 executions; 68 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
