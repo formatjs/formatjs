@@ -1,195 +1,87 @@
-import React, {useEffect, useState} from 'react'
-import {
-  useMediaQuery,
-  createMuiTheme,
-  ThemeProvider,
-  CssBaseline,
-  Grid,
-  TextField,
-  AppBar,
-  Toolbar,
-  Box,
-  Typography,
-  ButtonGroup,
-  Button,
-  Tabs,
-  Tab,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-} from '@material-ui/core'
-import {Menu, AddAlert, NotificationsOff} from '@material-ui/icons'
-import Header from '#packages/editor/header.js'
-import {IntlProvider, useIntl} from 'react-intl'
-import {type TranslatedMessage} from '#packages/editor/types.js'
-import Messages from '#packages/editor/messages.js'
+import {useMemo, useState, type ReactNode} from 'react'
+import {parseMessage, type ParsedMessage} from './message.js'
+import type {TranslatedMessage} from './types.js'
 
-const MESSAGES_COUNT = 50
-async function fetchData(): Promise<TranslatedMessage[]> {
-  const en = await (await fetch('/fixtures/en.json')).json()
-  const ru = await (await fetch('/fixtures/ru.json')).json()
-  return Object.keys(en)
-    .slice(MESSAGES_COUNT)
-    .map(id => ({
-      id,
-      defaultMessage: (en as any)[id],
-      translatedMessage: (ru as any)[id],
-    }))
+export {Message, parseMessage} from './message.js'
+export type {MessageProps, ParsedMessage} from './message.js'
+export type {TranslatedMessage} from './types.js'
+
+export interface EditorOptions {
+  messages: readonly TranslatedMessage[]
+  /** Apply the edit to consumer state; persistence stays with the consumer. */
+  onMessageChange: (message: TranslatedMessage) => void
+  defaultSelectedId?: string
 }
 
-export function CoreApp() {
-  const intl = useIntl()
-  const [messages, setMessages] = useState<TranslatedMessage[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  useEffect(function () {
-    ;(async function () {
-      setMessages(await fetchData())
-      setIsLoading(false)
-    })()
-  }, [])
-  return (
-    <>
-      <CssBaseline />
-      <Box height="100vh">
-        <AppBar position="static">
-          <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Menu />
-            </IconButton>
-            <Drawer anchor="left">
-              <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map(text => (
-                  <ListItem button key={text}>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                ))}
-              </List>
-            </Drawer>
-            <Header />
-            <AddAlert />
-            <NotificationsOff />
-          </Toolbar>
-        </AppBar>
+export interface EditorState {
+  messages: readonly TranslatedMessage[]
+  selectedMessage: TranslatedMessage | undefined
+  selectMessage: (id: string) => void
+  query: string
+  setQuery: (query: string) => void
+  source: ParsedMessage | undefined
+  translation: ParsedMessage | undefined
+  setTranslation: (value: string) => void
+  copySource: () => void
+  clearTranslation: () => void
+}
 
-        <Grid container spacing={0}>
-          <Grid xs={3}>
-            <form noValidate autoComplete="off">
-              <TextField
-                type="search"
-                fullWidth
-                margin="none"
-                size="small"
-                variant="filled"
-                label={intl.formatMessage({
-                  id: 'search-bar-label',
-                  defaultMessage: 'Search message',
-                  description: 'label in search bar',
-                })}
-              />
-            </form>
-            <Box borderRight={1} overflow="auto" height="calc(100vh - 108px)">
-              <Messages
-                messages={messages}
-                isLoading={isLoading}
-                count={MESSAGES_COUNT}
-              />
-            </Box>
-          </Grid>
-          <Grid xs={6}>
-            <Box borderRight={1} overflow="auto" height="calc(100vh - 48px)">
-              <Box p={2}>
-                <Typography variant="h6" component="h6">
-                  English message
-                </Typography>
-                <Typography variant="body2" component="span">
-                  Description{' '}
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="span"
-                  >
-                    This is a description
-                  </Typography>
-                </Typography>
-              </Box>
-              <TextField
-                multiline
-                fullWidth
-                margin="dense"
-                size="small"
-                variant="filled"
-                rows={4}
-                label={intl.formatMessage({
-                  id: 'translated-box-label',
-                  defaultMessage: 'Translate',
-                  description: 'translated box label',
-                })}
-              />
-              <Box
-                px={2}
-                py={1}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography variant="body2" component="span">
-                  71 / 101
-                </Typography>
-                <Box>
-                  <ButtonGroup
-                    variant="text"
-                    color="primary"
-                    aria-label="text primary button group"
-                  >
-                    <Button>Copy</Button>
-                    <Button>Clear</Button>
-                  </ButtonGroup>
-                  <Button variant="contained" color="primary">
-                    Translate
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid xs={3}>
-            <Tabs
-              indicatorColor="primary"
-              textColor="primary"
-              centered
-              aria-label="disabled tabs example"
-              value={0}
-              variant="fullWidth"
-            >
-              <Tab label="Active" />
-
-              <Tab label="Active" />
-            </Tabs>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+/** Controlled message data with no DOM, styling, providers, or network access. */
+export function useMessageEditor({
+  messages,
+  onMessageChange,
+  defaultSelectedId,
+}: EditorOptions): EditorState {
+  const [selectedId, selectMessage] = useState(defaultSelectedId)
+  const [query, setQuery] = useState('')
+  const selectedMessage =
+    messages.find(message => message.id === selectedId) ?? messages[0]
+  const visibleMessages = useMemo(() => {
+    const search = query.trim().toLowerCase()
+    return messages.filter(message =>
+      [
+        message.id,
+        message.defaultMessage,
+        message.translatedMessage,
+        message.description ?? '',
+      ].some(value => value.toLowerCase().includes(search))
+    )
+  }, [messages, query])
+  const sourceText = selectedMessage?.defaultMessage
+  const translationText = selectedMessage?.translatedMessage
+  const source = useMemo(
+    () => (sourceText === undefined ? undefined : parseMessage(sourceText)),
+    [sourceText]
   )
-}
-
-export default function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-
-  const theme = React.useMemo(
+  const translation = useMemo(
     () =>
-      createMuiTheme({
-        palette: {
-          type: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode]
+      translationText === undefined ? undefined : parseMessage(translationText),
+    [translationText]
   )
-  return (
-    <IntlProvider locale="en" messages={{}}>
-      <ThemeProvider theme={theme}>
-        <CoreApp />
-      </ThemeProvider>
-    </IntlProvider>
-  )
+  function setTranslation(value: string): void {
+    if (selectedMessage)
+      onMessageChange({...selectedMessage, translatedMessage: value})
+  }
+  return {
+    messages: visibleMessages,
+    selectedMessage,
+    selectMessage,
+    query,
+    setQuery,
+    source,
+    translation,
+    setTranslation,
+    copySource: () => {
+      if (selectedMessage) setTranslation(selectedMessage.defaultMessage)
+    },
+    clearTranslation: () => setTranslation(''),
+  }
+}
+
+export interface EditorProps extends EditorOptions {
+  children: (editor: EditorState) => ReactNode
+}
+
+export function Editor({children, ...options}: EditorProps): ReactNode {
+  return children(useMessageEditor(options))
 }

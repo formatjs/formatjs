@@ -15,7 +15,7 @@ use_repo(cc_configure, "local_config_cc")
 
 ######### JS & Node.js rules #########
 
-bazel_dep(name = "aspect_rules_js", version = "3.1.1")
+bazel_dep(name = "aspect_rules_js", version = "3.4.1")
 
 ####### Node.js version #########
 # By default you get the node version from DEFAULT_NODE_VERSION in @rules_nodejs//nodejs:repositories.bzl
@@ -115,7 +115,7 @@ use_repo(rules_ts_ext, "npm_typescript")
 
 ######### Bazel lib rules #########
 
-bazel_dep(name = "bazel_lib", version = "3.7.1")
+bazel_dep(name = "bazel_lib", version = "3.7.2")
 
 ######### Multirun rules #########
 
@@ -425,4 +425,12 @@ http_file(
     downloaded_file_path = "icu4j-78.1.jar",
     sha256 = "bbb70d3be23110d7295823eee0c2e896ac3b619b3c0f26168f65eb972df51d2a",
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
+)
+
+# Component VRT testbed. Use a release once rules_web_e2e is published.
+bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
+git_override(
+    module_name = "rules_web_e2e",
+    commit = "2122296cd7a968d9e3a6aabdbc643b11d4956cc9",
+    remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
