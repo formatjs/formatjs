@@ -389,3 +389,10 @@ They have no own `prototype` property.
 `roundingPriority` compares rounding precision before trailing-zero removal.
 With `minimumSignificantDigits: 2` and `minimumFractionDigits: 2`, formatting `1`
 yields `"1.0"` for `"morePrecision"` and `"1.00"` for `"lessPrecision"`.
+
+### Receiver validation
+
+Formatting methods require an initialized NumberFormat receiver. Plain objects,
+objects inheriting NumberFormat.prototype, and proxies around instances throw
+`TypeError` before argument conversion. Changing a real instance's prototype does
+not remove its internal brand.
