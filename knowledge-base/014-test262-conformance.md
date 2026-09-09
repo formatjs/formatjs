@@ -10,7 +10,7 @@ excluded because it fails.
 | collator            |      130 |                18 |               0 |
 | datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
-| durationformat      |      220 |                22 |               4 |
+| durationformat      |      220 |                18 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                46 |              22 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               6 |
 
-Total: 2,498 executions, 2,066 polyfill passes, 432 polyfill failures. The native
+Total: 2,498 executions, 2,070 polyfill passes, 428 polyfill failures. The native
 control fails 86 executions; 68 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -112,3 +112,7 @@ preserves negative zero across the BigDecimal-to-NumberFormat boundary.
 Numeric DurationFormat fields disable grouping. Duration integers enter BigDecimal
 through BigInt so large Number values retain their exact mathematical integer
 instead of their shortest rounded decimal representation.
+
+GetDurationUnitOptions propagates numeric/fractional styles before reading display
+options and validates fractional units after normalization. Default minutes and
+seconds stay displayed when following a numeric time unit.

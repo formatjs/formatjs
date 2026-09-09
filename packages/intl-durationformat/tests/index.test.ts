@@ -381,3 +381,27 @@ test('duration fractions use exact integer Number values beyond the safe range',
     })
   ).toBe('0:00:9007199254740991.975424')
 })
+
+test('numeric duration styles propagate through fractional units', () => {
+  const formatter = new DurationFormat('en', {hours: 'numeric'})
+  expect(formatter.resolvedOptions()).toMatchObject({
+    minutes: '2-digit',
+    minutesDisplay: 'always',
+    seconds: '2-digit',
+    secondsDisplay: 'always',
+    milliseconds: 'numeric',
+    microseconds: 'numeric',
+    nanoseconds: 'numeric',
+  })
+  expect(formatter.format({hours: 1, nanoseconds: 1})).toBe('1:00:00.000000001')
+  expect(
+    () => new DurationFormat('en', {hours: 'numeric', microseconds: 'long'})
+  ).toThrow(RangeError)
+  expect(
+    () =>
+      new DurationFormat('en', {
+        milliseconds: 'numeric',
+        millisecondsDisplay: 'always',
+      })
+  ).toThrow(RangeError)
+})

@@ -214,3 +214,7 @@ Later units omit their signs in both `format()` and `formatToParts()`.
 Numeric duration fields omit grouping separators, even for large values.
 Textual styles retain locale grouping. Fractional arithmetic preserves each
 input Number's exact integer value, including values beyond the safe-integer range.
+
+A numeric time style propagates through smaller units. Minutes and seconds
+remain displayed by default; smaller fractional units use `auto`. Fractional
+units cannot request `always` display or be followed by a textual unit style.
