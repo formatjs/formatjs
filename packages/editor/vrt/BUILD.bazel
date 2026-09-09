@@ -33,6 +33,8 @@ component_visual_test(
         "editor.visual.spec.ts",
         "index.html",
         "package.json",
+        "shell.tsx",
+        "vite.config.ts",
     ],
     baselines = glob(
         ["__screenshots__/*.png"],
@@ -45,8 +47,7 @@ component_visual_test(
     ],
     playwright_core = ":node_modules/playwright-core/dir",
     playwright_test = ":node_modules/@playwright/test/dir",
-    server_config = "vite.config.ts",
-    vite = ":node_modules/vite/dir",
+    server = ":server.js",
     deps = VRT_DEPS,
 )
 
@@ -70,4 +71,19 @@ filegroup(
     name = "typecheck",
     srcs = [":typecheck_project"],
     output_group = "transitive_typecheck",
+)
+
+ts_project(
+    name = "server_module",
+    srcs = ["server.ts"],
+    transpiler = "tsc",
+    tsconfig = {"compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "strict": True,
+        "skipLibCheck": True,
+        "types": ["node"],
+    }},
+    deps = VRT_DEPS + [":node_modules/@types/node"],
 )

@@ -27,3 +27,7 @@ network. It stages declared runfiles and gives compare/update the same allowlist
 environment. Vite dotenv loading is disabled; browser requests can reach only the
 fixture endpoint. Keep fonts and API responses in declared fixtures. Host plugins
 and tests remain trusted code outside Bazel’s filesystem sandbox.
+
+The `server` macro argument points to compiled `server.js`, a consumer-owned
+`ServerAdapter`. It returns the ready fixture URL and a shutdown callback.
+`shell.tsx` is browser-only and stays independent of the server adapter.
