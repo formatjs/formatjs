@@ -774,3 +774,36 @@ it('keeps date-context month grammar when the month is shared', () => {
     formatter.formatRange(start, end)
   )
 })
+
+it.each([
+  [
+    'same date',
+    Date.UTC(2024, 4, 3),
+    Date.UTC(2024, 4, 3, 0, 45),
+    ['24', '24'],
+  ],
+  [
+    'different dates',
+    Date.UTC(2024, 4, 3, 22),
+    Date.UTC(2024, 4, 4),
+    ['22', '24'],
+  ],
+  ['equal endpoints', Date.UTC(2024, 4, 3), Date.UTC(2024, 4, 3), ['24']],
+] as const)('uses h24 midnight for %s', (_name, start, end, hours) => {
+  const formatter = new DateTimeFormat('en-GB', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h24',
+  })
+  const parts = formatter.formatRangeToParts(start, end)
+  expect(
+    parts.filter(part => part.type === 'hour').map(part => part.value)
+  ).toEqual(hours)
+  expect(parts.map(part => part.value).join('')).toBe(
+    formatter.formatRange(start, end)
+  )
+})

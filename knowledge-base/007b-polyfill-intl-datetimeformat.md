@@ -199,3 +199,6 @@ uses default entries and excludes `-alt-*` keys before parsing skeletons.
 fields belong to their endpoint; punctuation between repeated fields stays with
 that endpoint. Shared month names retain the complete date pattern for
 grammatical context.
+
+An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
+and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
