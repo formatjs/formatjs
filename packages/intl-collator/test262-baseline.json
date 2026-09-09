@@ -13,8 +13,6 @@
     "intl402/Collator/subclassing.js (strict mode)": "Expected no error, got RangeError: Incorrect locale information provided",
     "intl402/Collator/supportedLocalesOf/taint-Object-prototype.js (default)": "Expected no error, got RangeError: Incorrect locale information provided",
     "intl402/Collator/supportedLocalesOf/taint-Object-prototype.js (strict mode)": "Expected no error, got RangeError: Incorrect locale information provided",
-    "intl402/Collator/taint-Object-prototype.js (default)": "Client code can adversely affect behavior: setter for kn.",
-    "intl402/Collator/taint-Object-prototype.js (strict mode)": "Client code can adversely affect behavior: setter for kn.",
     "intl402/Collator/unicode-ext-seq-in-private-tag.js (default)": "Expected no error, got RangeError: Incorrect locale information provided",
     "intl402/Collator/unicode-ext-seq-in-private-tag.js (strict mode)": "Expected no error, got RangeError: Incorrect locale information provided",
     "intl402/Collator/usage-de.js (default)": "Actual [Ä, AE] and expected [AE, Ä] should have the same contents. search",
