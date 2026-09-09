@@ -1,5 +1,6 @@
 # gazelle:ignore
-load("//tools:index.bzl", "ts_binary")
+load("//tools:index.bzl", "ts_binary", "ts_compile")
+load("//tools:test.bzl", "formatjs_test")
 
 exports_files(glob(["*.sh"]))
 
@@ -65,4 +66,22 @@ ts_binary(
     ],
     entry_point = "numbering-systems.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_compile(
+    name = "number-data",
+    srcs = ["number-data.ts"],
+    package_json = False,
+    deps = ["//:node_modules/fast-xml-parser"],
+)
+
+formatjs_test(
+    name = "number-data_test",
+    data = [
+        "number-data.test.ts",
+        ":number-data",
+        "//:node_modules/fast-xml-parser",
+        "//:node_modules/vitest",
+    ],
+    no_copy_to_bin = ["//:package.json"],
 )
