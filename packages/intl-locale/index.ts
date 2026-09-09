@@ -19,6 +19,7 @@ import {
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
   isUnicodeScriptSubtag,
+  isUnicodeVariantSubtag,
   likelySubtags,
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
@@ -42,6 +43,7 @@ export interface IntlLocaleOptions {
   language?: string
   script?: string
   region?: string
+  variants?: string
   calendar?: string
   collation?: string
   hourCycle?: 'h11' | 'h12' | 'h23' | 'h24'
@@ -105,7 +107,30 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
       RangeError
     )
   }
+  // ECMA-402 §15.1.2 UpdateLanguageId, steps 8–9 and 14.
+  // https://tc39.es/ecma402/#sec-updatelanguageid
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L101-L108
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L113
+  const variants = GetOption(
+    options,
+    'variants',
+    'string',
+    undefined,
+    undefined
+  )
   const languageId = parseUnicodeLanguageId(tag)
+  if (variants !== undefined) {
+    const subtags = variants
+      .replace(/[A-Z]/g, character => character.toLowerCase())
+      .split('-')
+    if (
+      subtags.some(variant => !isUnicodeVariantSubtag(variant)) ||
+      new Set(subtags).size !== subtags.length
+    ) {
+      throw new RangeError('Malformed unicode_variant_subtag')
+    }
+    languageId.variants = subtags
+  }
   if (language !== undefined) {
     languageId.lang = language
   }
