@@ -91,6 +91,7 @@ export interface FormatDateTimePatternImplDetails {
   // Used to avoid converting hour 0 to 24 in h24 format when it's midnight on a different date
   rangeFormatOptions?: {
     isDifferentDate?: boolean
+    patternParts?: IntlDateTimeFormatPart[]
   }
 }
 
@@ -148,8 +149,12 @@ export function FormatDateTimePattern(
   const result: Intl.DateTimeFormatPart[] = []
 
   // Check if month is stand-alone (no other date fields like day, year, weekday)
-  const hasMonth = patternParts.some(part => part.type === 'month')
-  const hasOtherDateFields = patternParts.some(
+  // Month grammar depends on the complete date pattern, including shared fields.
+  // ECMA-402 11.5.5, step 15.f.x: https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1419
+  const contextParts = rangeFormatOptions?.patternParts || patternParts
+  const hasMonth = contextParts.some(part => part.type === 'month')
+  const hasOtherDateFields = contextParts.some(
     part =>
       part.type === 'day' ||
       part.type === 'year' ||

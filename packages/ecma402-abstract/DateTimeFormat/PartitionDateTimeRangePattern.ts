@@ -138,6 +138,15 @@ export function PartitionDateTimeRangePattern(
   const datesDiffer =
     tm1.year !== tm2.year || tm1.month !== tm2.month || tm1.day !== tm2.day
   const result: IntlDateTimeFormatPart[] = []
+  const contextParts = PartitionPattern<IntlDateTimeFormatPartType>(
+    rangePattern.patternParts
+      .map(part =>
+        part.pattern === '{0}' || part.pattern === '{1}'
+          ? pattern
+          : part.pattern
+      )
+      .join('')
+  )
   for (const part of rangePattern.patternParts) {
     const {source} = part
     // Steps 19.a and 19.f use each pattern without changing locale data.
@@ -145,12 +154,22 @@ export function PartitionDateTimeRangePattern(
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
     const partPattern =
       part.pattern === '{0}' || part.pattern === '{1}' ? pattern : part.pattern
+    if (!partPattern.includes('{')) {
+      result.push({type: 'literal', value: partPattern, source})
+      continue
+    }
     const value = source === RangePatternType.endRange ? y : x
     const formatted = FormatDateTimePattern(
       dtf,
       PartitionPattern<IntlDateTimeFormatPartType>(partPattern),
       value,
-      {...implDetails, rangeFormatOptions: {isDifferentDate: datesDiffer}}
+      {
+        ...implDetails,
+        rangeFormatOptions: {
+          isDifferentDate: datesDiffer,
+          patternParts: contextParts,
+        },
+      }
     )
     for (const item of formatted) {
       item.source = source

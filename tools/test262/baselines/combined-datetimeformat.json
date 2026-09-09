@@ -85,8 +85,6 @@
     "intl402/DateTimeFormat/prototype/formatRangeToParts/chinese-calendar-dates.js (strict mode)": "relatedYear component of 2000-01-01T00:00Z formatted in chinese is missing Expected SameValue(«undefined», «undefined») to be false",
     "intl402/DateTimeFormat/prototype/formatRangeToParts/dangi-calendar-dates.js (default)": "relatedYear component of 2000-01-01T00:00Z formatted in dangi is missing Expected SameValue(«undefined», «undefined») to be false",
     "intl402/DateTimeFormat/prototype/formatRangeToParts/dangi-calendar-dates.js (strict mode)": "relatedYear component of 2000-01-01T00:00Z formatted in dangi is missing Expected SameValue(«undefined», «undefined») to be false",
-    "intl402/DateTimeFormat/prototype/formatRangeToParts/en-US.js (default)": "source for entry 5 Expected SameValue(«\"startRange\"», «\"shared\"») to be true",
-    "intl402/DateTimeFormat/prototype/formatRangeToParts/en-US.js (strict mode)": "source for entry 5 Expected SameValue(«\"startRange\"», «\"shared\"») to be true",
     "intl402/DateTimeFormat/prototype/formatRangeToParts/pattern-on-calendar.js (default)": "Expected SameValue(«false», «true») to be true",
     "intl402/DateTimeFormat/prototype/formatRangeToParts/pattern-on-calendar.js (strict mode)": "Expected SameValue(«false», «true») to be true",
     "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-format-with-era.js (default)": "Expected no error, got TypeError: Do not use Temporal.PlainDate.prototype.valueOf; use Temporal.PlainDate.prototype.compare for comparison.",

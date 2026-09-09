@@ -4,12 +4,13 @@ import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
 import allData from '@formatjs_generated/tz/all-tz.js'
 import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import ru from '#packages/intl-datetimeformat/tests/locale-data/ru.json' with {type: 'json'}
 import fa from '#packages/intl-datetimeformat/tests/locale-data/fa.json' with {type: 'json'}
 import nl from '#packages/intl-datetimeformat/tests/locale-data/nl.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, test} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl)
+DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl, ru)
 DateTimeFormat.__addTZData(allData)
 describe('DateTimeFormat range format', function () {
   it('basic', function () {
@@ -32,12 +33,12 @@ describe('DateTimeFormat range format', function () {
       }).formatRangeToParts(d1, d2)
     ).toEqual([
       {
-        source: 'startRange',
+        source: 'shared',
         type: 'month',
         value: 'Feb',
       },
       {
-        source: 'startRange',
+        source: 'shared',
         type: 'literal',
         value: ' ',
       },
@@ -47,7 +48,7 @@ describe('DateTimeFormat range format', function () {
         value: '1',
       },
       {
-        source: 'startRange',
+        source: 'shared',
         type: 'literal',
         value: ' – ',
       },
@@ -754,4 +755,22 @@ it('preserves both day periods across 11 AM and noon', () => {
   expect(
     parts.filter(part => part.type === 'dayPeriod').map(part => part.value)
   ).toEqual(['AM', 'PM'])
+})
+
+it('keeps date-context month grammar when the month is shared', () => {
+  const formatter = new DateTimeFormat('ru', {
+    timeZone: 'UTC',
+    month: 'short',
+    day: 'numeric',
+  })
+  const start = Date.UTC(2024, 4, 3)
+  const end = Date.UTC(2024, 4, 5)
+  const parts = formatter.formatRangeToParts(start, end)
+  expect(parts).toContainEqual({type: 'month', value: 'мая', source: 'shared'})
+  expect(
+    parts.filter(part => part.type === 'day').map(part => part.source)
+  ).toEqual(['startRange', 'endRange'])
+  expect(parts.map(part => part.value).join('')).toBe(
+    formatter.formatRange(start, end)
+  )
 })

@@ -194,3 +194,8 @@ API provides no context to distinguish the start from the end of a day.
 
 CLDR alternate-key suffixes are metadata, not skeleton fields. The extractor
 uses default entries and excludes `-alt-*` keys before parsing skeletons.
+
+`formatRangeToParts` marks unique fields and separators as `shared`. Repeated
+fields belong to their endpoint; punctuation between repeated fields stays with
+that endpoint. Shared month names retain the complete date pattern for
+grammatical context.
