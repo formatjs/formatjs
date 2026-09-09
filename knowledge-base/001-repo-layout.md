@@ -20,6 +20,8 @@ formatjs/
 static HTML for GitHub Pages while the browser uses History API navigation. See
 `knowledge-base/012-documentation-site.md` for its architecture and build flow.
 
+`@formatjs/cli-lib` requires Node.js 22.12 or newer, matching Commander 15.
+
 ## Package Management: pnpm
 
 **Version:** pnpm 10.4.1 (pinned in MODULE.bazel), 11.8.0 (root package.json)

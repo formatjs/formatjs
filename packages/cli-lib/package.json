@@ -35,7 +35,7 @@
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/fs-extra": "11",
     "@types/node": "22 || 24",
-    "commander": "14",
+    "commander": "15",
     "fast-glob": "3",
     "fs-extra": "11",
     "json-stable-stringify": "1",
@@ -83,6 +83,6 @@
     "@formatjs/cli-native-win32-x64": "workspace:*"
   },
   "engines": {
-    "node": ">= 20.12.0"
+    "node": ">= 22.12.0"
   }
 }

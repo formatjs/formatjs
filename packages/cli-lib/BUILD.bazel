@@ -80,7 +80,7 @@ formatjs_library(
     bugs = "https://github.com/formatjs/formatjs/issues",
     description = "Lib for CLI for formatjs.",
     engines = {
-        "node": ">= 20.12.0",
+        "node": ">= 22.12.0",
     },
     homepage = "https://github.com/formatjs/formatjs",
     keywords = [
