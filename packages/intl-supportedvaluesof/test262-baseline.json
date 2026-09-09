@@ -8,8 +8,6 @@
     "intl402/Intl/supportedValuesOf/collations-accepted-by-Collator.js (default)": "compat supported but not returned by supportedValuesOf",
     "intl402/Intl/supportedValuesOf/collations-accepted-by-Collator.js (strict mode)": "compat supported but not returned by supportedValuesOf",
     "intl402/Intl/supportedValuesOf/timeZones-include-non-continental.js (default)": "non-continental timezone Etc/GMT+1 is not supported",
-    "intl402/Intl/supportedValuesOf/timeZones-include-non-continental.js (strict mode)": "non-continental timezone Etc/GMT+1 is not supported",
-    "intl402/Intl/supportedValuesOf/units-accepted-by-NumberFormat.js (default)": "microsecond supported but not returned by supportedValuesOf",
-    "intl402/Intl/supportedValuesOf/units-accepted-by-NumberFormat.js (strict mode)": "microsecond supported but not returned by supportedValuesOf"
+    "intl402/Intl/supportedValuesOf/timeZones-include-non-continental.js (strict mode)": "non-continental timezone Etc/GMT+1 is not supported"
   }
 }

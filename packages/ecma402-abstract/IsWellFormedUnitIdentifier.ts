@@ -1,19 +1,13 @@
 import {IsSanctionedSimpleUnitIdentifier} from '#packages/ecma402-abstract/IsSanctionedSimpleUnitIdentifier.js'
 
 /**
- * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
- * @param str string to convert
- */
-function toLowerCase(str: string): string {
-  return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase())
-}
-
-/**
  * https://tc39.es/ecma402/#sec-iswellformedunitidentifier
  * @param unit
  */
 export function IsWellFormedUnitIdentifier(unit: string): boolean {
-  unit = toLowerCase(unit)
+  // ECMA-402 §6.6.1, steps 1–5: match sanctioned identifiers without case folding.
+  // https://tc39.es/ecma402/#sec-iswellformedunitidentifier
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L399-L404
   if (IsSanctionedSimpleUnitIdentifier(unit)) {
     return true
   }

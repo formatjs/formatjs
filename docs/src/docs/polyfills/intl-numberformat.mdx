@@ -366,3 +366,12 @@ is converted. NaN endpoints throw `RangeError`.
 
 Formatting methods throw `TypeError` for Symbol values, including objects that
 convert to a Symbol. Invalid numeric strings still format as NaN.
+
+### Option validation
+
+Unit identifiers are case-sensitive: `mile` is valid, `MILE` throws `RangeError`,
+even when the selected style does not display units. Unsupported rounding
+increments also throw `RangeError`.
+
+`microsecond` and `nanosecond` are supported units, including in compound units
+and the `Intl.supportedValuesOf("unit")` list.
