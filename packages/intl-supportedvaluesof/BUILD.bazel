@@ -63,6 +63,7 @@ formatjs_library(
     },
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//packages/ecma262-abstract",
@@ -163,6 +164,9 @@ rolldown_bundle(
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//packages/ecma402-abstract",
     ],
 )
@@ -175,6 +179,7 @@ rolldown_bundle(
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//packages/ecma402-abstract",

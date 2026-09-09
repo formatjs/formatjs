@@ -205,3 +205,7 @@ serialized tag. For example, calendar option `islamicc` resolves to `islamic-civ
 
 `maximize()` preserves supplied components and leaves unmatched tags unchanged.
 It only searches likely-subtag candidates for the requested language.
+
+`getCollations()` filters global candidates through the requested locale. An
+explicit `co` extension returns that value; an unmatched locale returns
+`emoji` and `eor`.

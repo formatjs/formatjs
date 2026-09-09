@@ -369,8 +369,27 @@ function collationsOfLocale(loc: Locale): Array<string> {
 
   const restricted = locInternalSlots.collation
 
+  if (restricted !== undefined) return [restricted]
+
+  // ECMA-402 §15.5.10 CollationsOfLocale, steps 2–4: use the matched
+  // locale's sort collations, or emoji/eor when lookup finds no locale.
+  // https://tc39.es/ecma402/#sec-collationsoflocale
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L665-L673
+  const locale = locInternalSlots.locale
+  if (
+    !Intl.Collator.supportedLocalesOf([locale], {localeMatcher: 'lookup'})
+      .length
+  ) {
+    return ['emoji', 'eor']
+  }
   const supportedCollations = supportedValuesOf('collation').filter(
-    (co: string) => co !== 'standard' && co !== 'search'
+    (co: string) =>
+      co !== 'standard' &&
+      co !== 'search' &&
+      new Intl.Collator(locale, {
+        collation: co as Intl.CollatorOptions['collation'],
+        localeMatcher: 'lookup',
+      }).resolvedOptions().collation === co
   )
   supportedCollations.sort()
 

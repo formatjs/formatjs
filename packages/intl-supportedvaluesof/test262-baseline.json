@@ -2,8 +2,6 @@
   "total": 50,
   "failures": {
     "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js (default)": "Actual [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic, islamic-civil, islamic-rgsa, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] and expected [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic-civil, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] should have the same contents. only the required calendars are supported",
-    "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js (strict mode)": "Actual [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic, islamic-civil, islamic-rgsa, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] and expected [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic-civil, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] should have the same contents. only the required calendars are supported",
-    "intl402/Intl/supportedValuesOf/collations-accepted-by-Collator.js (default)": "compat supported but not returned by supportedValuesOf",
-    "intl402/Intl/supportedValuesOf/collations-accepted-by-Collator.js (strict mode)": "compat supported but not returned by supportedValuesOf"
+    "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js (strict mode)": "Actual [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic, islamic-civil, islamic-rgsa, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] and expected [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic-civil, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] should have the same contents. only the required calendars are supported"
   }
 }
