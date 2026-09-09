@@ -1,6 +1,4 @@
-load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-
-# gazelle:ts_enabled false
+# gazelle:ts_test_name unit_test
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:test.bzl", "formatjs_test")
@@ -53,9 +51,12 @@ generate_package_json(
 formatjs_library(
     name = "editor",
     srcs = [
+        "core.tsx",
         "index.tsx",
         "message.tsx",
         "types.ts",
+        "validation.ts",
+        "workflow.ts",
     ],
     entry_points = ["index.tsx"],
     visibility = ["//visibility:public"],
@@ -66,26 +67,19 @@ formatjs_library(
     ],
 )
 
-copy_to_bin(
-    name = "vrt_sources",
-    srcs = [
-        "demo.tsx",
-        "design-system/components.tsx",
-        "design-system/tokens.stylex.ts",
-    ],
-    visibility = ["//visibility:public"],
-)
-
 formatjs_test(
     name = "unit_test",
-    srcs = ["editor.test.tsx"],
+    srcs = [
+        "editor.test.tsx",
+        "workflow.test.tsx",
+    ],
     data = [
-        ":unit_test_types",
-        "//:package.json",
+        ":unit_test_types",  # keep
+        "//:package.json",  # keep
     ],
     dom = True,
     deps = [
-        ":lib",
+        ":editor",
         "//:node_modules/@testing-library/react",
         "//:node_modules/@types/react",
         "//:node_modules/react",

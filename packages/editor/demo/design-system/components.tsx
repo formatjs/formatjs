@@ -143,3 +143,9 @@ export function Badge({
 export function Panel({children}: {children: ReactNode}): ReactElement {
   return <section {...stylex.props(styles.panel)}>{children}</section>
 }
+
+export function Select(
+  props: Omit<ComponentProps<'select'>, 'className' | 'style'>
+): ReactElement {
+  return <select {...props} {...stylex.props(styles.field)} />
+}

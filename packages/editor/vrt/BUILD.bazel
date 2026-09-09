@@ -1,28 +1,19 @@
-# gazelle:ts_enabled false
+# Gazelle maintains raw Vite/Playwright source graphs; the visual harness runs them.
+# gazelle:map_kind ts_library vrt_library //packages/editor/vrt:defs.bzl
+# gazelle:map_kind ts_test vrt_test //packages/editor/vrt:defs.bzl
+# gazelle:ts_test_name visual_sources
+# gazelle:resolve ts @rules-web-e2e/vrt/server :node_modules/@rules-web-e2e/vrt
+# gazelle:resolve ts @rules-web-e2e/vrt :node_modules/@rules-web-e2e/vrt
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG", "packages_tsconfig")
+load(":defs.bzl", "vrt_library", "vrt_test")
 
 npm_link_package(
     name = "node_modules/@rules-web-e2e/vrt",
     src = "@rules_web_e2e//runtime:package",
 )
-
-VRT_DEPS = [
-    "//:node_modules/@stylexjs/stylex",
-    "//:node_modules/@stylexjs/unplugin",
-    "//:node_modules/lucide-react",
-    "//:node_modules/react-intl",
-    "//packages/editor:editor",
-    ":node_modules/@rules-web-e2e/vrt",
-    "//:node_modules/@vitejs/plugin-react",
-    "//:node_modules/@playwright/test",
-    "//:node_modules/playwright",
-    "//:node_modules/react",
-    "//:node_modules/react-dom",
-    "//:node_modules/vite",
-]
 
 # Playwright loads .ts configs as ESM when this generated marker is present.
 genrule(
@@ -51,35 +42,24 @@ component_visual_test(
         ":typecheck",
         "//:root_package_json",
         "//packages/editor:srcs",
-        "//packages/editor:vrt_sources",
+        "//packages/editor/demo:srcs",
     ],
     playwright_core = "//:node_modules/playwright-core/dir",
     playwright_test = "//:node_modules/@playwright/test/dir",
     server = ":server.js",
-    deps = VRT_DEPS,
-)
-
-ts_project(
-    name = "typecheck_project",
-    srcs = glob([
-        "*.ts",
-        "*.tsx",
-    ]) + ["//packages/editor:vrt_sources"],
-    declaration = True,
-    no_emit = True,
-    resolve_json_module = True,
-    root_dir = "..",
-    tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
-    deps = VRT_DEPS + [
-        "//:node_modules/@types/node",
-        "//:node_modules/@types/react",
-        "//:node_modules/@types/react-dom",
+    deps = [
+        ":visual_sources",
+        ":vrt",
     ],
 )
 
 filegroup(
     name = "typecheck",
-    srcs = [":typecheck_project"],
+    srcs = [
+        ":visual_sources_typecheck",
+        ":vrt_typecheck",
+        "//packages/editor/demo:typecheck",
+    ],
     output_group = "transitive_typecheck",
 )
 
@@ -90,5 +70,44 @@ ts_project(
     resolve_json_module = True,
     transpiler = "tsc",
     tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
-    deps = VRT_DEPS + ["//:node_modules/@types/node"],
+    deps = [":vrt"],
+)
+
+vrt_library(
+    name = "vrt",
+    srcs = [
+        "app.tsx",
+        "playwright.config.ts",
+        "server.ts",
+        "shell.tsx",
+        "vite.config.ts",
+    ],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":node_modules/@rules-web-e2e/vrt",
+        "//:node_modules/@playwright/test",
+        "//:node_modules/@stylexjs/unplugin",
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/react",
+        "//:node_modules/@types/react-dom",
+        "//:node_modules/@vitejs/plugin-react",
+        "//:node_modules/react",
+        "//:node_modules/react-dom",
+        "//:node_modules/react-intl",
+        "//:node_modules/vite",
+        "//packages/editor",
+        "//packages/editor/demo",
+    ],
+)
+
+vrt_test(
+    name = "visual_sources",
+    srcs = ["editor.visual.spec.ts"],
+    tsconfig_types = ["node"],
+    deps = [
+        ":vrt",
+        "//:node_modules/@playwright/test",
+        "//:node_modules/@types/node",
+    ],
 )

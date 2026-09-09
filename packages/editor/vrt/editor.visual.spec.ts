@@ -1,3 +1,4 @@
+import process from 'node:process'
 import {expect, test} from '@playwright/test'
 
 for (const scenario of ['loaded', 'editing']) {
@@ -82,5 +83,46 @@ test('narrow RTL layout fits without horizontal scrolling', async ({page}) => {
   ).toBeLessThanOrEqual(390)
   await expect(page.locator('#editor-root')).toHaveScreenshot(
     'editor-mobile-rtl.png'
+  )
+})
+
+test('workflow saves, filters catalogs, and retains locale drafts', async ({
+  page,
+}) => {
+  await page.goto(`${process.env.VRT_APP_URL!}?workflow=1`)
+  const translation = page.getByRole('textbox', {
+    name: 'Translation',
+    exact: true,
+  })
+  await translation.fill('Bonjour, {name}')
+  await page.getByRole('combobox', {name: 'Target locale'}).selectOption('ru')
+  await translation.fill('Привет, {name}')
+  await page.getByRole('combobox', {name: 'Target locale'}).selectOption('fr')
+  await expect(translation).toHaveValue('Bonjour, {name}')
+  await page
+    .getByRole('button', {name: 'Save translation', exact: true})
+    .click()
+  await expect(page.getByRole('status')).toHaveText('Translation saved.')
+  await page
+    .getByRole('combobox', {name: 'Status', exact: true})
+    .selectOption('translated')
+  await expect(page.getByRole('navigation').getByRole('button')).toHaveCount(1)
+  await page.getByRole('heading', {name: 'Source message'}).click()
+  await expect(page.locator('#editor-root')).toHaveScreenshot(
+    'editor-workflow.png'
+  )
+})
+
+test('workflow controls fit a narrow RTL viewport', async ({page}) => {
+  await page.setViewportSize({width: 390, height: 844})
+  await page.goto(`${process.env.VRT_APP_URL!}?workflow=1&rtl=1`)
+  await expect(
+    page.getByRole('combobox', {name: 'Catalog', exact: true})
+  ).toBeVisible()
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(390)
+  await expect(page.locator('#editor-root')).toHaveScreenshot(
+    'editor-workflow-mobile-rtl.png'
   )
 })

@@ -14,7 +14,7 @@ flowchart LR
   Core --> Parser[ICU parser]
 ```
 
-`demo.tsx` is a separate StyleX consumer with localized, labeled native controls.
+`demo/demo.tsx` is a separate StyleX consumer with localized, labeled native controls.
 `design-system/` owns theme tokens and reusable controls. Vite compiles StyleX
 through `@stylexjs/unplugin` before the React plugin. Visual tests cover editing,
 invalid ICU with keyboard focus, and a narrow RTL layout.
@@ -40,3 +40,25 @@ comparison. See `packages/editor/vrt/README.md` for exact commands.
 VRT TypeScript settings come from `tools/tsconfig.bzl`; Bazel declares the source
 inputs. Bazel generates a runtime-only `package.json` containing `{"type":"module"}`
 so Playwright loads the `.ts` config as ESM. It declares no dependencies.
+
+`useTranslationEditor` composes `useMessageEditor` for multi-locale workflows.
+Draft state and in-flight save guards use `[message ID, locale]` keys. Completion
+updates the submitted key and baseline, preserving newer edits and other selections.
+Controlled catalog updates refresh clean drafts without overwriting dirty text.
+Locale fallback and clamped pagination handle asynchronously changing inputs.
+`validation.ts` compares recursive ICU contracts per branch; additional plural
+categories inherit `other`, rather than multiplying a global placeholder count.
+
+`core.tsx` owns the original headless API; `index.tsx` exports it alongside the
+workflow and validation APIs. `demo/demo.tsx` shares an optional StyleX `EditorView`
+with `demo/workflow-demo.tsx`. Workflow state has no dependency on either UI module.
+VRT's `?workflow=1` fixture exercises controlled persistence, filters, saved-state
+feedback, and desktop/narrow RTL screenshots. Existing demo baselines remain in
+place to catch regressions in the shared view.
+
+Gazelle maintains source and dependency lists in the headless, demo, and VRT
+Bazel packages. The demo is a separate internal library. VRT maps generated
+library and test rules to local `vrt_library` / `vrt_test` wrappers that preserve
+raw sources and typecheck them. Vite and Playwright own execution; the harness
+also checks the demo library and builds its server adapter.
+No editor package disables Gazelle.
