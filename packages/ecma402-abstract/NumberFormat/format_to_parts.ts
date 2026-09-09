@@ -205,6 +205,7 @@ export default function formatToParts(
             // If compact number pattern exists, do not insert group separators.
             !compactNumberPattern && (options.useGrouping ?? true),
             decimalNumberPattern,
+            data.numbers.minimumGroupingDigits ?? 1,
             style,
             options.roundingIncrement,
             GetUnsignedRoundingMode(options.roundingMode, sign === -1)
@@ -386,6 +387,7 @@ function partitionNumberIntoParts(
    * Some locales like Hindi has secondary group size of 2 (e.g. "#,##,##0.00").
    */
   decimalNumberPattern: string,
+  minimumGroupingDigits: number,
   style: NumberFormatOptionsStyle,
   roundingIncrement: number,
   unsignedRoundingMode: UnsignedRoundingModeType
@@ -418,45 +420,34 @@ function partitionNumberIntoParts(
 
   // #region Grouping integer digits
 
-  // The weird compact and x >= 10000 check is to ensure consistency with Node.js and Chrome.
-  // Note that `de` does not have compact form for thousands, but Node.js does not insert grouping separator
-  // unless the rounded number is greater than 10000:
-  //   NumberFormat('de', {notation: 'compact', compactDisplay: 'short'}).format(1234) //=> "1234"
-  //   NumberFormat('de').format(1234) //=> "1.234"
-  let shouldUseGrouping = false
-  if (useGrouping === 'always') {
-    shouldUseGrouping = true
-  } else if (useGrouping === 'min2') {
-    shouldUseGrouping = x.greaterThanOrEqualTo(10000)
-  } else if (useGrouping === 'auto' || useGrouping) {
-    shouldUseGrouping = notation !== 'compact' || x.greaterThanOrEqualTo(10000)
-  }
+  // ECMA-402 §16.4 [[UseGrouping]] lets auto follow locale preferences
+  // (internal-slot requirement, no numbered steps).
+  // https://tc39.es/ecma402/#sec-intl.numberformat-internal-slots
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L528
+  // LDML Number Patterns adds minimumGroupingDigits to the primary group size.
+  // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L736-L737
+  const integerNumberPattern = decimalNumberPattern.split('.')[0]
+  const patternGroups = integerNumberPattern.split(',')
+  const primaryGroupingSize =
+    patternGroups.length > 1
+      ? patternGroups[patternGroups.length - 1].length
+      : 3
+  const secondaryGroupingSize =
+    patternGroups.length > 2
+      ? patternGroups[patternGroups.length - 2].length
+      : primaryGroupingSize
+  const minimum = useGrouping === 'min2' ? 2 : minimumGroupingDigits
+  const shouldUseGrouping =
+    Boolean(useGrouping) &&
+    (useGrouping === 'always' ||
+      Array.from(integer).length >= primaryGroupingSize + minimum)
   if (shouldUseGrouping) {
-    // a. Let groupSepSymbol be the implementation-, locale-, and numbering system-dependent (ILND) String representing the grouping separator.
-    // For currency we should use `currencyGroup` instead of generic `group`
     const groupSepSymbol =
       style === 'currency' && symbols.currencyGroup != null
         ? symbols.currencyGroup
         : symbols.group
     const groups: string[] = []
-
-    // > There may be two different grouping sizes: The primary grouping size used for the least
-    // > significant integer group, and the secondary grouping size used for more significant groups.
-    // > If a pattern contains multiple grouping separators, the interval between the last one and the
-    // > end of the integer defines the primary grouping size, and the interval between the last two
-    // > defines the secondary grouping size. All others are ignored.
-    const integerNumberPattern = decimalNumberPattern.split('.')[0]
-    const patternGroups = integerNumberPattern.split(',')
-
-    let primaryGroupingSize = 3
-    let secondaryGroupingSize = 3
-
-    if (patternGroups.length > 1) {
-      primaryGroupingSize = patternGroups[patternGroups.length - 1].length
-    }
-    if (patternGroups.length > 2) {
-      secondaryGroupingSize = patternGroups[patternGroups.length - 2].length
-    }
 
     let i = integer.length - primaryGroupingSize
     if (i > 0) {
