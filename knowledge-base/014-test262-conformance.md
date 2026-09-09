@@ -10,7 +10,7 @@ excluded because it fails.
 | collator            |      130 |                18 |               0 |
 | datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
-| durationformat      |      220 |                80 |               4 |
+| durationformat      |      220 |                70 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                46 |              22 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               6 |
 
-Total: 2,498 executions, 2,008 polyfill passes, 490 polyfill failures. The native
+Total: 2,498 executions, 2,018 polyfill passes, 480 polyfill failures. The native
 control fails 86 executions; 72 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -102,3 +102,6 @@ The Node 26 harness refresh removes 18 missing-Temporal failures (14 DateTimeFor
 failures instead of missing-global errors. These are runtime coverage gains, not
 implementation fixes. Raw host stderr preserves bare Test262Error assertions;
 unknown empty diagnostics and crashes still fail validation.
+
+DurationFormat exposes the required constructor/method lengths and toStringTag.
+Its resolvedOptions result follows table order and omits unset fractionalDigits.

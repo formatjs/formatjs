@@ -31,6 +31,7 @@ const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDurationFormatInternal, 'pattern' | 'boundFormat'>
 > = [
   'locale',
+  'numberingSystem',
   'style',
   'years',
   'yearsDisplay',
@@ -52,7 +53,6 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'microsecondsDisplay',
   'nanoseconds',
   'nanosecondsDisplay',
-  'numberingSystem',
   'fractionalDigits',
 ]
 
@@ -265,12 +265,14 @@ export class DurationFormat implements DurationFormatType {
     }
     const internalSlots = getInternalSlots(this)
     const ro: Record<string, unknown> = {}
+    // ECMA-402 §13.3.2, step 4: emit defined values in table order.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.resolvedOptions
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L205-L208
     for (const key of RESOLVED_OPTIONS_KEYS) {
       let v = internalSlots[key]
       if (key === 'fractionalDigits') {
-        if (v !== undefined) {
-          v = Number(v)
-        }
+        if (v === undefined) continue
+        v = Number(v)
       } else if (v === 'fractional') {
         v = 'numeric'
       } else {
@@ -358,3 +360,20 @@ export class DurationFormat implements DurationFormatType {
   }
   static polyfilled = true
 }
+
+// ECMA-402 §13.1.1 and §13.2.2: lengths count required parameters.
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L16
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L141
+Object.defineProperty(DurationFormat, 'length', {value: 0, configurable: true})
+Object.defineProperty(DurationFormat.supportedLocalesOf, 'length', {
+  value: 1,
+  configurable: true,
+})
+// ECMA-402 §13.3.5: the prototype exposes the specified toStringTag descriptor.
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype-%symbol.tostringtag%
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L351-L354
+Object.defineProperty(DurationFormat.prototype, Symbol.toStringTag, {
+  value: 'Intl.DurationFormat',
+  configurable: true,
+})
