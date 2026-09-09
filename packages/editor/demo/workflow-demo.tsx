@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex'
 import {FormattedMessage} from 'react-intl'
 import {useId, type ReactElement} from 'react'
-import {useTranslationEditor, type TranslationEditorOptions} from './index.js'
+import {useTranslationEditor, type TranslationEditorOptions} from '../index.js'
 import {EditorView} from './demo.js'
 import {Button, Select} from './design-system/components.js'
 import {tokens} from './design-system/tokens.stylex.js'

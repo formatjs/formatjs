@@ -2,7 +2,7 @@
 
 The React 19 editor exposes behavior without DOM, styles, a design system, an
 IntlProvider, or network requests. Consumers own catalogs, persistence, loading
-states, labels, layout, and providers. The StyleX view in `demo.tsx` is an
+states, labels, layout, and providers. The StyleX view in `demo/demo.tsx` is an
 example consumer, not part of the headless entry point.
 
 The optional `design-system/` layer provides tokens and native button, input,
@@ -109,7 +109,7 @@ categories inherit the source `other` branch's argument contract. Repeated
 placeholders do not change that contract. Validation is structural, not a check
 of translation quality.
 
-The optional `TranslationEditorDemo` in `workflow-demo.tsx` reuses the StyleX
+The optional `TranslationEditorDemo` in `demo/workflow-demo.tsx` reuses the StyleX
 `EditorView`, tokens, and controls. It includes locale/catalog/status filters,
 pagination, source locations, localized validation, reset, and save feedback.
 Supply an `IntlProvider` and the same StyleX Vite integration used by the demo.

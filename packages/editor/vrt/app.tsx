@@ -1,8 +1,8 @@
 import {useState, type ReactElement} from 'react'
-import {TranslationEditorDemo} from '../workflow-demo.js'
+import {TranslationEditorDemo} from '../demo/workflow-demo.js'
 import type {EditorMessage} from '../index.js'
 import {createRoot} from 'react-dom/client'
-import {EditorDemo} from '../demo.js'
+import {EditorDemo} from '../demo/demo.js'
 import {EditorTestShell} from './shell.js'
 
 createRoot(document.getElementById('editor-root')!).render(
