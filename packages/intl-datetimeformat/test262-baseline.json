@@ -197,8 +197,6 @@
     "intl402/DateTimeFormat/prototype/resolvedOptions/hourCycle-timeStyle.js (strict mode)": "Expected SameValue(«\"h23\"», «\"h11\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/hourCycle.js (default)": "Expected SameValue(«\"h23\"», «\"h11\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/hourCycle.js (strict mode)": "Expected SameValue(«\"h23\"», «\"h11\"») to be true",
-    "intl402/DateTimeFormat/prototype/resolvedOptions/offset-timezone-change.js (default)": "-00 Expected SameValue(«\"-00:00\"», «\"+00:00\"») to be true",
-    "intl402/DateTimeFormat/prototype/resolvedOptions/offset-timezone-change.js (strict mode)": "-00 Expected SameValue(«\"-00:00\"», «\"+00:00\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/resolved-calendar-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-ca-iso8601 with calendar=invalid Expected SameValue(«\"en\"», «\"en-u-ca-iso8601\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/resolved-calendar-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-ca-iso8601 with calendar=invalid Expected SameValue(«\"en\"», «\"en-u-ca-iso8601\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/resolved-hour-cycle-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-hc-h23 with hourCycle=h11 Expected SameValue(«\"en-u-hc-h23\"», «\"en\"») to be true",
@@ -213,8 +211,6 @@
     "intl402/DateTimeFormat/taint-Object-prototype-date-time-components.js (strict mode)": "Client code can adversely affect behavior: setter for year.",
     "intl402/DateTimeFormat/timezone-case-insensitive.js (default)": "Time zone created from string \"America/Yellowknife\" Expected SameValue(«\"America/Edmonton\"», «\"America/Yellowknife\"») to be true",
     "intl402/DateTimeFormat/timezone-case-insensitive.js (strict mode)": "Time zone created from string \"America/Yellowknife\" Expected SameValue(«\"America/Edmonton\"», «\"America/Yellowknife\"») to be true",
-    "intl402/DateTimeFormat/timezone-invalid.js (default)": "Invalid time zone name asıa/baku was not rejected. Expected a RangeError to be thrown but no exception was thrown at all",
-    "intl402/DateTimeFormat/timezone-invalid.js (strict mode)": "Invalid time zone name asıa/baku was not rejected. Expected a RangeError to be thrown but no exception was thrown at all",
     "intl402/DateTimeFormat/timezone-not-canonicalized.js (default)": "Expected SameValue(«\"Asia/Kolkata\"», «\"Asia/Calcutta\"») to be true",
     "intl402/DateTimeFormat/timezone-not-canonicalized.js (strict mode)": "Expected SameValue(«\"Asia/Kolkata\"», «\"Asia/Calcutta\"») to be true"
   }
