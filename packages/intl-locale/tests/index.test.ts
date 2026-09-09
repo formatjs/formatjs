@@ -399,3 +399,17 @@ it.each([
   expect(locale.getCalendars()).toEqual(expected.getCalendars())
   expect(locale.getHourCycles()).toEqual(expected.getHourCycles())
 })
+
+it('stores canonical Unicode option values in locale getters', () => {
+  const locale = new Locale('en', {
+    calendar: 'ISLAMICC',
+    collation: 'DICT',
+    numberingSystem: 'LATN',
+    numeric: true,
+  })
+  expect(locale.calendar).toBe('islamic-civil')
+  expect(locale.collation).toBe('dict')
+  expect(locale.numberingSystem).toBe('latn')
+  expect(locale.numeric).toBe(true)
+  expect(locale.toString()).toBe('en-u-ca-islamic-civil-co-dict-kn-nu-latn')
+})

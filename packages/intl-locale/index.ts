@@ -209,6 +209,20 @@ function applyUnicodeExtensionToTag(
   result.locale = (
     (Intl as any).getCanonicalLocales as typeof getCanonicalLocales
   )(emitUnicodeLocaleId(ast))[0]
+  // ECMA-402 §15.1.3 MakeLocaleRecord, steps 4.e.i and 4.f: store canonical
+  // option values, matching the canonical Unicode extension in the final tag.
+  // https://tc39.es/ecma402/#sec-makelocalerecord
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L151-L156
+  const canonicalExtension = parseUnicodeLocaleId(
+    result.locale
+  ).extensions.find(extension => extension.type === 'u') as
+    | UnicodeExtension
+    | undefined
+  for (const key of relevantExtensionKeys) {
+    result[key] = canonicalExtension?.keywords.find(
+      keyword => keyword[0] === key
+    )?.[1]
+  }
   return result
 }
 

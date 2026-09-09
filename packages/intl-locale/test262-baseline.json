@@ -5,13 +5,9 @@
     "intl402/Locale/canonicalize-locale-list-take-locale.js (strict mode)": "Expected SameValue(«0», «1») to be true",
     "intl402/Locale/constructor-non-iana-canon.js (default)": "new Intl.Locale(\"posix\").maximize().toString() returns \"posix\" Expected SameValue(«\"en-Latn-US\"», «\"posix\"») to be true",
     "intl402/Locale/constructor-non-iana-canon.js (strict mode)": "new Intl.Locale(\"posix\").maximize().toString() returns \"posix\" Expected SameValue(«\"en-Latn-US\"», «\"posix\"») to be true",
-    "intl402/Locale/constructor-options-canonicalized.js (default)": "new Intl.Locale(\"en\", { calendar: \"islamicc\" }).calendar returns islamic-civil Expected SameValue(«\"islamicc\"», «\"islamic-civil\"») to be true",
-    "intl402/Locale/constructor-options-canonicalized.js (strict mode)": "new Intl.Locale(\"en\", { calendar: \"islamicc\" }).calendar returns islamic-civil Expected SameValue(«\"islamicc\"», «\"islamic-civil\"») to be true",
     "intl402/Locale/likely-subtags-grandfathered.js (default)": "maximized once Expected SameValue(«\"en-Latn-US\"», «\"xtg\"») to be true",
     "intl402/Locale/likely-subtags-grandfathered.js (strict mode)": "maximized once Expected SameValue(«\"en-Latn-US\"», «\"xtg\"») to be true",
     "intl402/Locale/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
-    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
-    "intl402/Locale/prototype/calendar/canonicalize.js (default)": "Test262Error {\n  message: `'islamicc' should be canonicalized to 'islamic-civil' Expected SameValue(«\"islamicc\"», «\"islamic-civil\"») to be true`\n}",
-    "intl402/Locale/prototype/calendar/canonicalize.js (strict mode)": "Test262Error {\n  message: `'islamicc' should be canonicalized to 'islamic-civil' Expected SameValue(«\"islamicc\"», «\"islamic-civil\"») to be true`\n}"
+    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'"
   }
 }
