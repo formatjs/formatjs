@@ -2,6 +2,59 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
+config_setting(
+    name = "darwin_arm64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "darwin_amd64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "linux_arm64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "linux_amd64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "windows_amd64",
+    constraint_values = [
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+# Select the target runtime explicitly; host aliases are wrong for remote execution.
+alias(
+    name = "node-runtime",
+    actual = select({
+        ":darwin_arm64": "@test262_nodejs_darwin_arm64//:toolchain",
+        ":darwin_amd64": "@test262_nodejs_darwin_amd64//:toolchain",
+        ":linux_arm64": "@test262_nodejs_linux_arm64//:toolchain",
+        ":linux_amd64": "@test262_nodejs_linux_amd64//:toolchain",
+        ":windows_amd64": "@test262_nodejs_windows_amd64//:toolchain",
+    }),
+    visibility = ["//visibility:public"],
+)
+
 # gazelle:ignore
 js_binary(
     name = "prelude",
@@ -27,11 +80,13 @@ js_binary(
         name = "fixture-" + fixture,
         testonly = True,
         data = glob(["fixtures/**"]),
+        node_toolchain = ":node-runtime",
         tags = ["manual"],
     )
     for fixture in [
         "pass",
         "fail",
+        "bare",
         "empty",
     ]
 ]
@@ -53,9 +108,11 @@ sh_test(
     args = ["$(rootpath :results_tests)"] + ["$(rootpath :fixture-" + fixture + ")" for fixture in [
         "pass",
         "fail",
+        "bare",
         "empty",
     ]],
     data = [
+        ":fixture-bare",
         ":fixture-empty",
         ":fixture-fail",
         ":fixture-pass",
@@ -89,6 +146,7 @@ js_run_binary(
         ],
         data = glob(["fixtures/**"]) + ["fixture-realm-prelude.js"],
         expected_exit_code = 1 if fixture == "fail" else 0,
+        node_toolchain = ":node-runtime",
     )
     for fixture in [
         "fail",

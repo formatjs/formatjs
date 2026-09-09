@@ -115,8 +115,8 @@ Each Intl polyfill has three Bazel targets:
 Baseline checks report failures separately and reject new failures, changed
 diagnostics, missing executions, and unexpected passes. A green baseline check
 is not a full-conformance claim. Child realms receive the polyfill too;
-both modes use the same stable host settings. Missing Temporal support remains
-an explicit failure. Combined-polyfill installation coverage remains separate work.
+all harness modes use pinned Node 26.8.1 with stable Temporal support. Build tools
+retain Node 24.14.0. Combined-polyfill installation coverage remains separate work.
 
 Test262 strict/native targets use the rules_js generated harness test rule.
 Baseline tests invoke the generated harness binary and validate its JSON and

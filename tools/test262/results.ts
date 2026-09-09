@@ -2,6 +2,7 @@ interface Result {
   file: string
   scenario: string
   result: {pass: boolean; message?: string}
+  rawResult?: {stderr?: string; error?: {name?: string}}
 }
 export interface Baseline {
   total: number
@@ -75,10 +76,16 @@ export function summarize(results: Result[]): Baseline {
     if (seen.has(key)) throw new Error(`Duplicate Test262 result: ${key}`)
     seen.add(key)
     if (!test.result.pass) {
-      if (!test.result.message)
-        throw new Error(`Missing failure detail: ${key}`)
+      // The upstream validator drops the error name for bare Test262Error().
+      // Recover the actual stderr only when the host identified that assertion.
+      const message =
+        test.result.message ||
+        (test.rawResult?.error?.name === 'Test262Error'
+          ? test.rawResult.stderr
+          : undefined)
+      if (!message) throw new Error(`Missing failure detail: ${key}`)
       // Preserve assertion details, excluding sandbox stack frames and engine version.
-      failures[key] = failureDiagnostic(test.result.message, file)
+      failures[key] = failureDiagnostic(message, file)
     }
   }
   return {

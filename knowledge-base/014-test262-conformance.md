@@ -1,27 +1,27 @@
 # Test262 conformance baseline
 
-Measured 2026-09-07 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
-using the pinned Node 24.14.0 host. Counts include strict/default executions.
+Measured 2026-09-09 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
+using the pinned Node 26.8.1 Test262 host. Counts include strict/default executions.
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
 
 | Polyfill            | Executed | Polyfill failures | Native failures |
 | ------------------- | -------: | ----------------: | --------------: |
-| collator            |      130 |                18 |               6 |
-| datetimeformat      |      488 |               256 |             154 |
+| collator            |      130 |                18 |               0 |
+| datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
-| durationformat      |      220 |                84 |              22 |
+| durationformat      |      220 |                80 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
-| locale              |      336 |                46 |              26 |
-| numberformat        |      498 |                26 |               2 |
-| pluralrules         |      106 |                 4 |              16 |
-| relativetimeformat  |      160 |                14 |               2 |
+| locale              |      336 |                46 |              22 |
+| numberformat        |      498 |                26 |               0 |
+| pluralrules         |      106 |                 4 |               0 |
+| relativetimeformat  |      160 |                14 |               0 |
 | segmenter           |      158 |                10 |               0 |
-| supportedvaluesof   |       50 |                 8 |               8 |
+| supportedvaluesof   |       50 |                 8 |               6 |
 
-Total: 2,498 executions, 1,990 polyfill passes, 508 polyfill failures. The native
-control fails 238 executions; 200 failing cases overlap. Overlap does not prove
+Total: 2,498 executions, 2,008 polyfill passes, 490 polyfill failures. The native
+control fails 86 executions; 72 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
@@ -37,9 +37,10 @@ spec and test's feature metadata.
   deterministic generated build inputs.
 - IIFE preludes avoid collisions with test variables. Polyfills are installed
   recursively into Test262 child realms.
-- Both modes use stable Node settings. Its experimental Temporal implementation
-  crashes in calendar tests, so missing Temporal support remains an explicit
-  failure (124 DateTimeFormat executions lack Temporal in both modes). Host crashes and empty diagnostics cannot become baseline entries.
+- All harness modes use Node 26.8.1 with stable Temporal support. The separate
+  toolchain is selected by target platform and checksum-pinned; normal build
+  tools retain Node 24.14.0. Fixtures verify Temporal in nested realms.
+  Host crashes and empty diagnostics cannot become baseline entries.
 - Full JSON reports and candidate baselines are written to undeclared Bazel
   test outputs. Updating a candidate baseline requires review.
 
@@ -95,3 +96,9 @@ calendar conversion to place negative fractions in the preceding second.
 
 DateTimeFormat methods use concise definitions for built-in non-constructibility.
 Constructor and supportedLocalesOf lengths reflect their required parameters.
+
+The Node 26 harness refresh removes 18 missing-Temporal failures (14 DateTimeFormat,
+4 DurationFormat). Another 120 diagnostics now expose actual Temporal integration
+failures instead of missing-global errors. These are runtime coverage gains, not
+implementation fixes. Raw host stderr preserves bare Test262Error assertions;
+unknown empty diagnostics and crashes still fail validation.

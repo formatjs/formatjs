@@ -89,7 +89,7 @@ test('keeps uncaught primitive values after leading blank lines', () => {
   )
 })
 
-for (const fixture of ['pass', 'fail', 'empty']) {
+for (const fixture of ['pass', 'fail', 'bare', 'empty']) {
   test(`generated harness ${fixture} report`, () => {
     const report = readFileSync(
       `${process.env.TEST262_REPORT_DIR}/fixture-${fixture}.json`,
@@ -110,18 +110,49 @@ for (const fixture of ['pass', 'fail', 'empty']) {
     }
     const actual = summarize(JSON.parse(report))
     assert.equal(actual.total, 2)
-    assert.equal(status, fixture === 'fail' ? 1 : 0)
+    assert.equal(status, fixture === 'fail' || fixture === 'bare' ? 1 : 0)
     if (fixture === 'fail')
       assert.ok(
         Object.values(actual.failures).every(message =>
           message.includes('intentional')
         )
       )
+    if (fixture === 'bare')
+      assert.ok(
+        Object.values(actual.failures).every(message =>
+          message.includes('Test262Error')
+        )
+      )
     assert.deepEqual(validateReport(report, status, actual), [])
     assert.throws(() => validateReport(report, 1 - status, actual), /disagrees/)
     assert.equal(
       validateReport(report, status, {total: 2, failures: {}}).length,
-      fixture === 'fail' ? 2 : 0
+      fixture === 'fail' || fixture === 'bare' ? 2 : 0
     )
   })
 }
+
+test('bare assertions require real non-crashing host diagnostics', () => {
+  const bare = {...fail, result: {pass: false, message: ''}}
+  assert.throws(() => summarize([bare]), /Missing failure detail/)
+  assert.throws(
+    () =>
+      summarize([
+        {...bare, rawResult: {error: {name: 'Test262Error'}, stderr: ''}},
+      ]),
+    /Missing failure detail/
+  )
+  assert.throws(
+    () =>
+      summarize([
+        {
+          ...bare,
+          rawResult: {
+            error: {name: 'Test262Error'},
+            stderr: '# Fatal error: host crashed',
+          },
+        },
+      ]),
+    /host crashed/
+  )
+})
