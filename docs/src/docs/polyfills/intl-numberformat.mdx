@@ -347,3 +347,10 @@ reads those properties without calling the function.
 const options = Object.assign(() => {}, {maximumFractionDigits: 2})
 new Intl.NumberFormat('en', options).format(1.234) // '1.23'
 ```
+
+## Conformance testing
+
+The repository's `:test262` target executes upstream tests and checks an explicit
+known-failure baseline. A green baseline check does not mean every test passed.
+Run `bazel test //packages/intl-numberformat:test262-strict` to require zero
+failures. Both modes report passing and failing execution counts separately.

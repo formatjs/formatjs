@@ -1,0 +1,19 @@
+{
+  "total": 154,
+  "failures": {
+    "intl402/ListFormat/prototype/format/en-us-default.js (default)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo and bar\u00bb) to be true",
+    "intl402/ListFormat/prototype/format/en-us-default.js (strict mode)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo and bar\u00bb) to be true",
+    "intl402/ListFormat/prototype/format/en-us-narrow.js (default)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo bar\u00bb) to be true",
+    "intl402/ListFormat/prototype/format/en-us-narrow.js (strict mode)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo bar\u00bb) to be true",
+    "intl402/ListFormat/prototype/format/en-us-short.js (default)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo & bar\u00bb) to be true",
+    "intl402/ListFormat/prototype/format/en-us-short.js (strict mode)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo & bar\u00bb) to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-default.js (default)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab and \u00bb) to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-default.js (strict mode)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab and \u00bb) to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-narrow.js (default)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab \u00bb) to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-narrow.js (strict mode)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab \u00bb) to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-short.js (default)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab & \u00bb) to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-short.js (strict mode)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab & \u00bb) to be true",
+    "intl402/ListFormat/prototype/resolvedOptions/type.js (default)": "descriptor value should be en-US",
+    "intl402/ListFormat/prototype/resolvedOptions/type.js (strict mode)": "descriptor value should be en-US"
+  }
+}

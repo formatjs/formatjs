@@ -1,0 +1,21 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+# gazelle:ignore
+exports_files(["runner.ts"])
+
+js_test(
+    name = "runner_test",
+    data = [
+        "runner.ts",
+        "//:node_modules/minimist",
+        "//:node_modules/test262-harness",
+    ],
+    entry_point = "runner.test.ts",
+)
+
+copy_to_bin(
+    name = "runner",
+    srcs = ["runner.ts"],
+    visibility = ["//visibility:public"],
+)
