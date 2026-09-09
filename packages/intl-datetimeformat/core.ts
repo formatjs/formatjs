@@ -46,8 +46,6 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'locale',
   'calendar',
   'numberingSystem',
-  'dateStyle',
-  'timeStyle',
   'timeZone',
   'hourCycle',
   'weekday',
@@ -61,6 +59,8 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'second',
   'fractionalSecondDigits',
   'timeZoneName',
+  'dateStyle',
+  'timeStyle',
 ]
 
 const formatDescriptor = {
@@ -181,6 +181,11 @@ export const DateTimeFormat = function (
 // ECMA-402 §7 applies ECMA-262 §18: methods are non-constructible built-ins.
 // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
 // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
+// ECMA-402 §11.2.1 specifies a non-writable prototype property (no steps).
+// https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L193-L194
+Object.defineProperty(DateTimeFormat, 'prototype', {writable: false})
+
 // Static properties
 const {supportedLocalesOf} = {
   supportedLocalesOf(
@@ -212,17 +217,6 @@ const {resolvedOptions} = {
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
       let value = internalSlots[key]
-      if (key === 'hourCycle') {
-        const hour12 =
-          value === 'h11' || value === 'h12'
-            ? true
-            : value === 'h23' || value === 'h24'
-              ? false
-              : undefined
-        if (hour12 !== undefined) {
-          ro.hour12 = hour12
-        }
-      }
       if (DATE_TIME_PROPS.indexOf(key as TABLE_6) > -1) {
         if (
           internalSlots.dateStyle !== undefined ||
@@ -234,6 +228,21 @@ const {resolvedOptions} = {
 
       if (value !== undefined) {
         ro[key] = value
+        // ECMA-402 §11.3.2, step 5: create properties in table order.
+        // hourCycle precedes hour12; style properties follow components.
+        // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L887-L905
+        if (key === 'hourCycle') {
+          const hour12 =
+            value === 'h11' || value === 'h12'
+              ? true
+              : value === 'h23' || value === 'h24'
+                ? false
+                : undefined
+          if (hour12 !== undefined) {
+            ro.hour12 = hour12
+          }
+        }
       }
     }
     return ro as any
