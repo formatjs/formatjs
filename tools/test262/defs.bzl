@@ -3,27 +3,23 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test")
 
 def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json"):
-    """Run every selected test, failing on baseline drift or any harness error."""
-    for strict in [False, True]:
+    """Run complete suites, with separate strict and native control targets."""
+    for mode in ["baseline", "strict", "native"]:
+        args = ["--suite", suite, "--root", "../+http_archive+com_github_tc39_test262"]
+        inputs = data + ["//:node_modules/minimist", "//:node_modules/test262-harness"]
+        if mode != "native":
+            args += ["--prelude", "$(rootpath %s)" % prelude]
+            inputs += [prelude]
+        if mode == "baseline":
+            args += ["--baseline", "$(rootpath %s)" % baseline]
+            inputs += [baseline]
+        else:
+            args += ["--" + mode]
         js_test(
-            name = name + ("-strict" if strict else ""),
+            name = name + ("" if mode == "baseline" else "-" + mode),
             entry_point = "//tools/test262:runner",
-            args = [
-                "--suite",
-                suite,
-                "--root",
-                "../+http_archive+com_github_tc39_test262",
-                "--prelude",
-                "$(rootpath %s)" % prelude,
-                "--baseline",
-                "$(rootpath %s)" % baseline,
-            ] + (["--strict"] if strict else []),
-            data = data + [
-                prelude,
-                baseline,
-                "//:node_modules/minimist",
-                "//:node_modules/test262-harness",
-            ],
+            args = args,
+            data = inputs,
             size = "large",
-            tags = ["manual"] if strict else [],
+            tags = [] if mode == "baseline" else ["manual"],
         )

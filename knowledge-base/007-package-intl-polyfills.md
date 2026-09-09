@@ -97,7 +97,13 @@ separate pass/failure counts and write `results.json` plus a candidate baseline
 to Bazel's undeclared test outputs. Candidate baselines require review; never
 copy them over existing baselines merely to make CI green.
 
-The seven existing suites use isolated IIFE preludes. ListFormat's prelude
+The suites use isolated IIFE preludes. ListFormat's prelude
 loads generated locale data. `tools/test262/runner_test` exercises the real
-harness with passing, failing, and empty suites. The repository still has an
-old Test262 pin and exclusions in `test262.BUILD`; those need separate review.
+harness with passing, failing, and empty suites. Baselines require review when the pinned upstream selection changes.
+
+All twelve package suites now select every upstream test at revision
+`419d3e0a2273ba01a3bfcbec423f2801425b8e93`; `test262.BUILD` has no file exclusions.
+The prelude also installs polyfills in nested Test262 realms. Run
+`:test262-native` for the corresponding native-only control. Both modes use
+the same stable host settings; missing Temporal support remains visible. See
+[the full baseline and runtime comparison](./014-test262-conformance.md).

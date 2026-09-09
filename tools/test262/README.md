@@ -16,3 +16,20 @@ against regressions while the baseline is reduced. Do not interpret green
 baseline checks as complete ECMA-402 conformance.
 
 Upstream runner contract: https://github.com/tc39/test262/blob/main/INTERPRETING.md
+
+## Complete selection and host controls
+
+All twelve polyfill suites include every test under their upstream directory.
+There are no glob exclusions in `test262.BUILD`. The upstream revision is pinned
+in `MODULE.bazel`. The prelude installs each polyfill in the initial realm and
+recursively in realms created through `$262.createRealm`.
+
+`:test262-native` runs the same selection without installing the polyfill and
+fails on any native failure. It is a manual diagnostic control, not an excuse
+to suppress a polyfill failure. Both modes use the pinned Node host without
+experimental flags. Node 24's experimental Temporal implementation crashes in
+calendar tests; unavailable Temporal features remain explicit failures. Host
+crashes and empty diagnostics are runner errors, never baseline entries.
+
+Baselines cover individual polyfill installations. Combined-polyfill coverage
+remains a follow-up; dependencies may use native Intl in individual suites.

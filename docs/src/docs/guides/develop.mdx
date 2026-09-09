@@ -103,3 +103,17 @@ intl.formatMessage({
   defaultMessage: '{count, plural, one {# item} few {# items} other {# items}}',
 })
 ```
+
+## Test262 polyfill coverage
+
+Each Intl polyfill has three Bazel targets:
+
+- `:test262` executes the complete pinned suite against a reviewed failure baseline.
+- `:test262-strict` requires every execution to pass.
+- `:test262-native` runs the same suite against the pinned Node runtime without the polyfill.
+
+Baseline checks report failures separately and reject new failures, changed
+diagnostics, missing executions, and unexpected passes. A green baseline check
+is not a full-conformance claim. Child realms receive the polyfill too;
+both modes use the same stable host settings. Missing Temporal support remains
+an explicit failure. Combined-polyfill installation coverage remains separate work.

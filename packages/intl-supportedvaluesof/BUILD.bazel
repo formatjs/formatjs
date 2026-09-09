@@ -4,6 +4,7 @@ load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_fi
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
 
 PACKAGE_NAME = "intl-supportedvaluesof"
 
@@ -153,4 +154,28 @@ rolldown_bundle(
         "//:node_modules/@formatjs/fast-memoize",
         "//packages/ecma402-abstract",
     ],
+)
+
+rolldown_bundle(
+    name = "test262-polyfill",
+    srcs = [":srcs"],
+    entry_point = "polyfill-force.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma402-abstract",
+    ],
+)
+
+test262_test(
+    name = "test262",
+    data = [
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-supportedvaluesof-copy",
+    ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/Intl/supportedValuesOf",
 )

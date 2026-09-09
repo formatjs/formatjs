@@ -1,19 +1,21 @@
 {
-  "total": 154,
+  "total": 162,
   "failures": {
-    "intl402/ListFormat/prototype/format/en-us-default.js (default)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo and bar\u00bb) to be true",
-    "intl402/ListFormat/prototype/format/en-us-default.js (strict mode)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo and bar\u00bb) to be true",
-    "intl402/ListFormat/prototype/format/en-us-narrow.js (default)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo bar\u00bb) to be true",
-    "intl402/ListFormat/prototype/format/en-us-narrow.js (strict mode)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo bar\u00bb) to be true",
-    "intl402/ListFormat/prototype/format/en-us-short.js (default)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo & bar\u00bb) to be true",
-    "intl402/ListFormat/prototype/format/en-us-short.js (strict mode)": "Expected SameValue(\u00abfoo, bar\u00bb, \u00abfoo & bar\u00bb) to be true",
-    "intl402/ListFormat/prototype/formatToParts/en-us-default.js (default)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab and \u00bb) to be true",
-    "intl402/ListFormat/prototype/formatToParts/en-us-default.js (strict mode)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab and \u00bb) to be true",
-    "intl402/ListFormat/prototype/formatToParts/en-us-narrow.js (default)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab \u00bb) to be true",
-    "intl402/ListFormat/prototype/formatToParts/en-us-narrow.js (strict mode)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab \u00bb) to be true",
-    "intl402/ListFormat/prototype/formatToParts/en-us-short.js (default)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab & \u00bb) to be true",
-    "intl402/ListFormat/prototype/formatToParts/en-us-short.js (strict mode)": "undefined: parts[1].value Expected SameValue(\u00ab, \u00bb, \u00ab & \u00bb) to be true",
-    "intl402/ListFormat/prototype/resolvedOptions/type.js (default)": "descriptor value should be en-US",
-    "intl402/ListFormat/prototype/resolvedOptions/type.js (strict mode)": "descriptor value should be en-US"
+    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'",
+    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'",
+    "intl402/ListFormat/prototype/format/en-us-default.js (default)": "Expected SameValue(«\"foo, bar\"», «\"foo and bar\"») to be true",
+    "intl402/ListFormat/prototype/format/en-us-default.js (strict mode)": "Expected SameValue(«\"foo, bar\"», «\"foo and bar\"») to be true",
+    "intl402/ListFormat/prototype/format/en-us-narrow.js (default)": "Expected SameValue(«\"foo, bar\"», «\"foo bar\"») to be true",
+    "intl402/ListFormat/prototype/format/en-us-narrow.js (strict mode)": "Expected SameValue(«\"foo, bar\"», «\"foo bar\"») to be true",
+    "intl402/ListFormat/prototype/format/en-us-short.js (default)": "Expected SameValue(«\"foo, bar\"», «\"foo & bar\"») to be true",
+    "intl402/ListFormat/prototype/format/en-us-short.js (strict mode)": "Expected SameValue(«\"foo, bar\"», «\"foo & bar\"») to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-default.js (default)": "undefined: parts[1].value Expected SameValue(«\", \"», «\" and \"») to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-default.js (strict mode)": "undefined: parts[1].value Expected SameValue(«\", \"», «\" and \"») to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-narrow.js (default)": "undefined: parts[1].value Expected SameValue(«\", \"», «\" \"») to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-narrow.js (strict mode)": "undefined: parts[1].value Expected SameValue(«\", \"», «\" \"») to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-short.js (default)": "undefined: parts[1].value Expected SameValue(«\", \"», «\" & \"») to be true",
+    "intl402/ListFormat/prototype/formatToParts/en-us-short.js (strict mode)": "undefined: parts[1].value Expected SameValue(«\", \"», «\" & \"») to be true",
+    "intl402/ListFormat/prototype/resolvedOptions/type.js (default)": "locale descriptor value should be en-US; locale value should be en-US",
+    "intl402/ListFormat/prototype/resolvedOptions/type.js (strict mode)": "locale descriptor value should be en-US; locale value should be en-US"
   }
 }
