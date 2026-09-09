@@ -261,12 +261,12 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 
 IANA_TZ_VERSION = "2026c"
 
-CLDR_COMMON_VERSION = "48.1"
+CLDR_COMMON_VERSION = "48.2"
 
 http_archive(
     name = "cldr_common",
     build_file = "@//packages/intl-collator:cldr-common.BUILD.bazel",
-    sha256 = "c691e94f217486fed259871429ae71cc4855e8a7f22b1586eb6eb52262c9c307",
+    sha256 = "d2844f9dbf6124d11a7b047f5381a467902d82a673be3d658f4c0791ffa0b83b",
     urls = ["https://www.unicode.org/Public/cldr/%s/cldr-common-%s.zip" % (CLDR_COMMON_VERSION, CLDR_COMMON_VERSION)],
 )
 
