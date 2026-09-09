@@ -285,6 +285,4 @@ export interface NumberFormatPart {
   source?: string
 }
 
-export interface NumberRangeToParts extends NumberFormatPart {
-  result: string
-}
+export type NumberRangeToParts = NumberFormatPart

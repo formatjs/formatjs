@@ -129,3 +129,7 @@ option getters from affecting NumberFormat or its RelativeTimeFormat consumers.
 
 `useGrouping: "auto"` respects CLDR minimum grouping digits. Polish four-digit
 numbers remain ungrouped; `"always"` still requests grouping.
+
+Range formatting preserves complete CLDR separators, including surrounding spaces.
+Only matching affixes collapse; retained affixes have `source: "shared"`.
+Different signs and scientific or compact notation remain separate.

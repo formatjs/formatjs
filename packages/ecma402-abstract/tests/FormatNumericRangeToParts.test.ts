@@ -15,10 +15,10 @@ describe('FormatNumericRangeToParts', () => {
       }
     )
 
-    expect(result).toMatchObject([
-      {result: '0', source: 'startRange', type: 'integer', value: '3'},
-      {result: '1', source: 'shared', type: 'literal', value: '-'},
-      {result: '2', source: 'endRange', type: 'integer', value: '10'},
+    expect(result).toEqual([
+      {source: 'startRange', type: 'integer', value: '3'},
+      {source: 'shared', type: 'literal', value: '-'},
+      {source: 'endRange', type: 'integer', value: '10'},
     ])
   })
 
@@ -32,11 +32,11 @@ describe('FormatNumericRangeToParts', () => {
       }
     )
 
-    expect(result).toMatchObject([
-      {result: '0', source: 'startRange', type: 'minusSign', value: '-'},
-      {result: '1', source: 'startRange', type: 'integer', value: '3'},
-      {result: '2', source: 'shared', type: 'literal', value: '-'},
-      {result: '3', source: 'endRange', type: 'integer', value: '10'},
+    expect(result).toEqual([
+      {source: 'startRange', type: 'minusSign', value: '-'},
+      {source: 'startRange', type: 'integer', value: '3'},
+      {source: 'shared', type: 'literal', value: '-'},
+      {source: 'endRange', type: 'integer', value: '10'},
     ])
   })
 
@@ -50,12 +50,12 @@ describe('FormatNumericRangeToParts', () => {
       }
     )
 
-    expect(result).toMatchObject([
-      {result: '0', source: 'startRange', type: 'minusSign', value: '-'},
-      {result: '1', source: 'startRange', type: 'integer', value: '10'},
-      {result: '2', source: 'shared', type: 'literal', value: '-'},
-      {result: '3', source: 'endRange', type: 'minusSign', value: '-'},
-      {result: '4', source: 'endRange', type: 'integer', value: '3'},
+    expect(result).toEqual([
+      {source: 'startRange', type: 'minusSign', value: '-'},
+      {source: 'startRange', type: 'integer', value: '10'},
+      {source: 'shared', type: 'literal', value: ' - '},
+      {source: 'endRange', type: 'minusSign', value: '-'},
+      {source: 'endRange', type: 'integer', value: '3'},
     ])
   })
 })

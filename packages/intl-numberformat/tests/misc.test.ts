@@ -41,6 +41,7 @@ const LOCALES = [
   'nl',
   'pl',
   'pt',
+  'pt-PT',
   'ru',
   'sv',
   'th',
@@ -810,4 +811,32 @@ describe('locale minimum grouping digits', () => {
       '1000'
     )
   })
+})
+
+it('preserves range separators and only collapses matching affixes', () => {
+  const portuguese = new NumberFormat('pt-PT', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  })
+  expect(portuguese.formatRange(3, 5)).toBe('3 - 5 €')
+  expect(
+    portuguese.formatRangeToParts(3, 5).filter(part => part.type === 'currency')
+  ).toEqual([{type: 'currency', value: '€', source: 'shared'}])
+  const currency = {style: 'currency', currency: 'USD'} as const
+  expect(
+    new NumberFormat('en', {...currency, maximumFractionDigits: 0}).formatRange(
+      3,
+      5
+    )
+  ).toBe('$3 – $5')
+  const signed = new NumberFormat('en', {...currency, signDisplay: 'always'})
+  expect(signed.formatRange(2.9, 3.1)).toBe('+$2.90–3.10')
+  expect(signed.formatRange(-2.9, 3.1)).toBe('-$2.90 – +$3.10')
+  expect(signed.formatRangeToParts(2.9, 3.1).slice(0, 2)).toEqual([
+    {type: 'plusSign', value: '+', source: 'shared'},
+    {type: 'currency', value: '$', source: 'shared'},
+  ])
+  const scientific = new NumberFormat('en', {notation: 'scientific'})
+  expect(scientific.formatRange(3000, 5000)).toBe('3E3–5E3')
 })

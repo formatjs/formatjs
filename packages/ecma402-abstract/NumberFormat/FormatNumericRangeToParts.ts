@@ -22,10 +22,12 @@ export function FormatNumericRangeToParts(
     getInternalSlots,
   })
 
-  return parts.map((part, index) => ({
+  // ECMA-402 §16.5.23 steps 4.b–4.d create only type, value, and source.
+  // https://tc39.es/ecma402/#sec-formatnumericrangetoparts
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1920-L1922
+  return parts.map(part => ({
     type: part.type,
     value: part.value,
     source: part.source,
-    result: index.toString(),
   }))
 }
