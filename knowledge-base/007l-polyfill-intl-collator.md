@@ -143,3 +143,15 @@ such as `phonebk`, `trad`, and `dict`, rather than legacy LDML names.
 `usage: "search"` selects CLDR search tailoring independently of sort collation
 keywords. Its resolved collation is `default`; search comparisons are intended
 for matching, not a stable sort order.
+
+## Startup and comparison benchmarks
+
+Root trie, element, and prefix tables are emitted as JSON strings decoded once
+per module evaluation. Their exported values and types stay unchanged; this
+avoids compiling large numeric JavaScript literals in each Test262 process.
+
+Run `bazel run //packages/intl-collator/benchmark:run` for Latin, accent, numeric,
+normalization, Swedish tailoring, and CJK comparisons with native controls.
+Each timed task batches 32 comparisons. Construction and module initialization
+are outside the timed region. The benchmark package is Gazelle-managed; its
+private module manifest prevents package self-reference during execution.
