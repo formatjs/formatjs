@@ -202,3 +202,6 @@ without data falls back to the ordinary preferred region.
 
 Locale option getters expose canonical Unicode values, consistent with the
 serialized tag. For example, calendar option `islamicc` resolves to `islamic-civil`.
+
+`maximize()` preserves supplied components and leaves unmatched tags unchanged.
+It only searches likely-subtag candidates for the requested language.
