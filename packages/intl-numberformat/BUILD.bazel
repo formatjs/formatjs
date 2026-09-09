@@ -8,6 +8,7 @@ load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
 load("//tools/test262:defs.bzl", "test262_test")
+load("//tools/test262:locales.bzl", "TEST262_LOCALES")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -302,18 +303,6 @@ ts_run_binary(
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-TEST262_LOCALES = [
-    "ar",
-    "de",
-    "en",
-    "ja",
-    "ko",
-    "th",
-    "zh",
-    "zh-Hant",
-    "zh-Hans",
-]
-
 ts_run_binary(
     name = "test262-main-gen",
     srcs = [
@@ -328,6 +317,7 @@ ts_run_binary(
             f,
         )
         for f in TEST262_LOCALES
+        if f in ALL_LOCALES
     ] + [
         "--out",
         "$(rootpath test262-main.ts)",

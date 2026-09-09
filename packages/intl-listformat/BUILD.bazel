@@ -5,6 +5,7 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools/test262:defs.bzl", "test262_test")
+load("//tools/test262:locales.bzl", "TEST262_LOCALES")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 PACKAGE_NAME = "intl-listformat"
@@ -169,7 +170,8 @@ ts_run_binary(
             package_name(),
             f,
         )
-        for f in ALL_LOCALES
+        for f in TEST262_LOCALES
+        if f in ALL_LOCALES
     ] + [
         "--out",
         "$(rootpath test262-main.ts)",
