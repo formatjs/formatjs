@@ -130,7 +130,14 @@ for (const path of resolvedPaths) {
   }
 }
 
-const availableLocales = Object.keys(localeData).sort()
+// ECMA-402 §9 Available Locales List: every entry must be a well-formed,
+// canonical language tag. CLDR "root" is data inheritance, not a language tag.
+// This is a list constraint, not an algorithm step.
+// https://tc39.es/ecma402/#available-locales-list
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L6
+const availableLocales = Object.keys(localeData)
+  .filter(locale => locale !== 'root')
+  .sort()
 
 outputFileSync(
   argv.out,

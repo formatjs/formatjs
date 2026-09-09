@@ -71,6 +71,17 @@ describe('Intl.Collator', () => {
     }
   })
 
+  it('keeps CLDR root out of locale negotiation', () => {
+    expect(Collator.availableLocales.has('root')).toBe(false)
+    for (const locale of Collator.availableLocales) {
+      expect(() => new Intl.Locale(locale)).not.toThrow()
+    }
+    expect(new Collator(['tlh', 'id', 'en']).resolvedOptions().locale).toBe(
+      'id'
+    )
+    expect(Collator.supportedLocalesOf(['tlh', 'id'])).toEqual(['id'])
+  })
+
   it('supports locale filtering', () => {
     expect(Collator.supportedLocalesOf(['en', 'fr', 'sv', 'zz'])).toEqual([
       'en',

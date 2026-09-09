@@ -104,3 +104,6 @@ is non-writable; the compare getter and bound function expose the standard names
 
 The default `ignorePunctuation` value follows the locale’s CLDR collation
 settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
+
+CLDR `root` data remains available for collation inheritance, but is excluded
+from available locale identifiers used during negotiation.
