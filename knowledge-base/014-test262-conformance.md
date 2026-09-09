@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures |
 | ------------------- | -------: | ----------------: | --------------: |
 | collator            |      130 |                18 |               6 |
-| datetimeformat      |      488 |               276 |             154 |
+| datetimeformat      |      488 |               268 |             154 |
 | displaynames        |      114 |                 6 |               0 |
 | durationformat      |      220 |                84 |              22 |
 | getcanonicallocales |       76 |                32 |               2 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               8 |
 
-Total: 2,498 executions, 1,970 polyfill passes, 528 polyfill failures. The native
+Total: 2,498 executions, 1,978 polyfill passes, 520 polyfill failures. The native
 control fails 238 executions; 200 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -88,3 +88,7 @@ for lessPrecision when both digit constraints were present.
 
 NumberFormat internal-slot reads no longer allocate records. Only constructor
 initialization can create a brand; formatting methods validate it before coercion.
+
+TimeClip truncates finite timestamps toward zero, including negative fractions.
+The previous finite-number branch returned the fraction unchanged, causing local
+calendar conversion to place negative fractions in the preceding second.

@@ -907,3 +907,30 @@ it('accepts minute offsets but rejects second and fractional offsets', () => {
     ).toBe(canonical)
   }
 })
+
+describe('timestamp truncation', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
+  })
+
+  it.each([-1000.9, -1.9, -0.9, 0.9, 1.9, 1000.9])(
+    'truncates %s before formatting',
+    value => {
+      const integer = Math.trunc(value)
+      expect(formatter.format(value)).toBe(formatter.format(integer))
+      expect(formatter.formatToParts(value)).toEqual(
+        formatter.formatToParts(integer)
+      )
+      expect(formatter.formatRange(value, 10000)).toBe(
+        formatter.formatRange(integer, 10000)
+      )
+      expect(formatter.formatRangeToParts(value, 10000)).toEqual(
+        formatter.formatRangeToParts(integer, 10000)
+      )
+    }
+  )
+})
