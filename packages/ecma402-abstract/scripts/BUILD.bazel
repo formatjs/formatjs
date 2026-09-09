@@ -6,6 +6,7 @@ ts_binary(
     data = [
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
+        "//:node_modules/cldr-core",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -49,6 +50,7 @@ formatjs_library(
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/@types/regenerate",
+        "//:node_modules/cldr-core",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
