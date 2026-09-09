@@ -4,7 +4,7 @@ import type {ServerAdapter} from '@rules-web-e2e/vrt/server'
 
 const start: ServerAdapter = async ({root, inputs, cache, host}) => {
   const server = await createServer({
-    configFile: path.join(root, 'vite.config.ts'),
+    configFile: path.join(root, 'vite.config.mts'),
     envDir: false,
     cacheDir: cache,
     css: {postcss: {}},

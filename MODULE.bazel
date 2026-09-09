@@ -434,10 +434,3 @@ git_override(
     commit = "2122296cd7a968d9e3a6aabdbc643b11d4956cc9",
     remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
-
-editor_vrt_npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
-editor_vrt_npm.npm_translate_lock(
-    name = "editor_vrt_npm",
-    pnpm_lock = "//packages/editor/vrt:pnpm-lock.yaml",
-)
-use_repo(editor_vrt_npm, "editor_vrt_npm")

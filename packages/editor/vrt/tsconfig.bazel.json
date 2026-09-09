@@ -9,18 +9,16 @@
     "noEmit": true,
     "types": ["node", "react", "react-dom"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "paths": {
-      "#packages/editor/*": ["../*"],
-      "react": ["./node_modules/@types/react"],
-      "react-dom": ["./node_modules/@types/react-dom"],
-      "react/jsx-runtime": ["./node_modules/@types/react/jsx-runtime"],
-      "@material-ui/*": ["./node_modules/@material-ui/*"],
-      "react-intl": ["./node_modules/react-intl"],
-      "@formatjs/icu-messageformat-parser": [
-        "./node_modules/@formatjs/icu-messageformat-parser"
-      ]
-    }
+    "paths": {"#packages/*": ["../../*"]}
   },
-  "include": ["*.ts", "*.tsx", "../*.ts", "../*.tsx"],
+  "include": [
+    "*.ts",
+    "*.mts",
+    "*.tsx",
+    "../demo.tsx",
+    "../index.tsx",
+    "../message.tsx",
+    "../types.ts"
+  ],
   "exclude": []
 }

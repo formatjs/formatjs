@@ -1,110 +1,31 @@
-import * as React from 'react'
-import {Chip, Avatar} from '@material-ui/core'
-import type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {
   parse,
-  isLiteralElement,
-  isNumberElement,
-  isDateElement,
-  isTimeElement,
-  isTagElement,
-  isArgumentElement,
-  isPoundElement,
+  type MessageFormatElement,
 } from '@formatjs/icu-messageformat-parser'
-import {CallSplit, Event, Schedule} from '@material-ui/icons'
+import {useMemo, type ReactNode} from 'react'
 
-interface Props {
-  message: string
-}
+export type ParsedMessage =
+  | {ast: MessageFormatElement[]; error: null}
+  | {ast: null; error: Error}
 
-function formatAst(ast: MessageFormatElement[]): React.ReactNode[] {
-  const els: React.ReactNode[] = []
-  for (const el of ast) {
-    if (isLiteralElement(el)) {
-      els.push(el.value)
-    } else if (isArgumentElement(el)) {
-      els.push(
-        <Chip variant="outlined" size="small" label={el.value} disabled />
-      )
-    } else if (isPoundElement(el)) {
-      els.push(<Chip variant="outlined" size="small" label="#" disabled />)
-    } else if (isNumberElement(el)) {
-      els.push(
-        <Chip
-          variant="outlined"
-          size="small"
-          label={el.value}
-          avatar={<Avatar>N</Avatar>}
-          disabled
-        />
-      )
-    } else if (isDateElement(el)) {
-      els.push(
-        <Chip
-          variant="outlined"
-          size="small"
-          label={el.value}
-          avatar={
-            <Avatar>
-              <Event fontSize="small" />
-            </Avatar>
-          }
-          disabled
-        />
-      )
-    } else if (isTimeElement(el)) {
-      els.push(
-        <Chip
-          variant="outlined"
-          size="small"
-          label={el.value}
-          avatar={
-            <Avatar>
-              <Schedule fontSize="small" />
-            </Avatar>
-          }
-          disabled
-        />
-      )
-    } else if (isTagElement(el)) {
-      els.push(
-        <Chip
-          variant="outlined"
-          size="small"
-          label={`<${el.value}>`}
-          disabled
-        />,
-        ...formatAst(el.children),
-        <Chip
-          variant="outlined"
-          size="small"
-          label={`</${el.value}>`}
-          disabled
-        />
-      )
-    } else {
-      els.push(
-        <Chip
-          variant="outlined"
-          size="small"
-          label={el.value}
-          avatar={
-            <Avatar>
-              <CallSplit fontSize="small" />
-            </Avatar>
-          }
-          disabled
-        />,
-        ...formatAst(el.options.other.value)
-      )
+/** Retains every ICU branch and skeleton; incomplete edits are valid input. */
+export function parseMessage(message: string): ParsedMessage {
+  try {
+    return {ast: parse(message), error: null}
+  } catch (error) {
+    return {
+      ast: null,
+      error: error instanceof Error ? error : new Error(String(error)),
     }
   }
-  return els
 }
 
-const Message: React.FC<Props> = ({message}) => {
-  const ast = parse(message)
-  return <>{formatAst(ast)}</>
+export interface MessageProps {
+  message: string
+  children: (parsed: ParsedMessage) => ReactNode
 }
 
-export default Message
+export function Message({message, children}: MessageProps): ReactNode {
+  const parsed = useMemo(() => parseMessage(message), [message])
+  return children(parsed)
+}

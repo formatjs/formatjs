@@ -14,6 +14,7 @@
     "packages/ecma376/index.ts",
     "packages/editor/index.tsx",
     "packages/editor/main.tsx",
+    "packages/editor/vrt/app.tsx",
     "packages/eslint-plugin-formatjs/index.ts",
     "packages/eslint-plugin-formatjs/util.ts",
     "packages/fast-memoize/index.ts",
@@ -111,6 +112,7 @@
   ],
   "testFilePatterns": [
     "**/*.test.*",
+    "**/*.visual.spec.ts",
     "**/benchmark/**/*",
     "**/conformance-tests/**/*",
     "**/integration-tests/**/*",

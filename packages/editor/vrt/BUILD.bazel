@@ -1,10 +1,7 @@
 # gazelle:ts_enabled false
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
-load("@editor_vrt_npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
-
-npm_link_all_packages(name = "node_modules")
 
 npm_link_package(
     name = "node_modules/@rules-web-e2e/vrt",
@@ -12,18 +9,15 @@ npm_link_package(
 )
 
 VRT_DEPS = [
-    ":node_modules/@formatjs/icu-messageformat-parser",
-    ":node_modules/@material-ui/core",
-    ":node_modules/@material-ui/icons",
-    ":node_modules/@material-ui/lab",
+    "//:node_modules/react-intl",
+    "//packages/editor:editor",
     ":node_modules/@rules-web-e2e/vrt",
-    ":node_modules/@vitejs/plugin-react",
-    ":node_modules/@playwright/test",
-    ":node_modules/playwright",
-    ":node_modules/react",
-    ":node_modules/react-dom",
-    ":node_modules/react-intl",
-    ":node_modules/vite",
+    "//:node_modules/@vitejs/plugin-react",
+    "//:node_modules/@playwright/test",
+    "//:node_modules/playwright",
+    "//:node_modules/react",
+    "//:node_modules/react-dom",
+    "//:node_modules/vite",
 ]
 
 component_visual_test(
@@ -32,22 +26,23 @@ component_visual_test(
         "app.tsx",
         "editor.visual.spec.ts",
         "index.html",
-        "package.json",
         "shell.tsx",
-        "vite.config.ts",
+        "vite.config.mts",
     ],
     baselines = glob(
         ["__screenshots__/*.png"],
         allow_empty = True,
     ),
-    config = "playwright.config.ts",
+    config = "playwright.config.mts",
     data = [
         ":typecheck",
+        "//:root_package_json",
+        "//packages/editor:srcs",
         "//packages/editor:vrt_sources",
     ],
-    playwright_core = ":node_modules/playwright-core/dir",
-    playwright_test = ":node_modules/@playwright/test/dir",
-    server = ":server.js",
+    playwright_core = "//:node_modules/playwright-core/dir",
+    playwright_test = "//:node_modules/@playwright/test/dir",
+    server = ":server.mjs",
     deps = VRT_DEPS,
 )
 
@@ -55,16 +50,17 @@ ts_project(
     name = "typecheck_project",
     srcs = glob([
         "*.ts",
+        "*.mts",
         "*.tsx",
     ]) + ["//packages/editor:vrt_sources"],
     no_emit = True,
     root_dir = "..",
     tsconfig = "tsconfig.bazel.json",
     deps = VRT_DEPS + [
-        ":node_modules/@types/node",
-        ":node_modules/@types/react",
-        ":node_modules/@types/react-dom",
-    ] + ["//packages/editor:vrt_sources"],
+        "//:node_modules/@types/node",
+        "//:node_modules/@types/react",
+        "//:node_modules/@types/react-dom",
+    ],
 )
 
 filegroup(
@@ -75,7 +71,7 @@ filegroup(
 
 ts_project(
     name = "server_module",
-    srcs = ["server.ts"],
+    srcs = ["server.mts"],
     transpiler = "tsc",
     tsconfig = {"compilerOptions": {
         "target": "ES2022",
@@ -85,5 +81,5 @@ ts_project(
         "skipLibCheck": True,
         "types": ["node"],
     }},
-    deps = VRT_DEPS + [":node_modules/@types/node"],
+    deps = VRT_DEPS + ["//:node_modules/@types/node"],
 )

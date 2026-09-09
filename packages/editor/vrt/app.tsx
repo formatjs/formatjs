@@ -1,11 +1,27 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from '../index'
-import {EditorTestShell} from './shell'
+import {createRoot} from 'react-dom/client'
+import {EditorDemo} from '../demo.js'
+import {EditorTestShell} from './shell.js'
 
-ReactDOM.render(
+createRoot(document.getElementById('editor-root')!).render(
   <EditorTestShell>
-    <App />
-  </EditorTestShell>,
-  document.getElementById('editor-root')
+    <EditorDemo
+      initialMessages={[
+        {
+          id: 'welcome',
+          defaultMessage: 'Welcome, {name}',
+          translatedMessage: '',
+        },
+        {
+          id: 'messages',
+          defaultMessage: 'You have {count, number} messages',
+          translatedMessage: '',
+        },
+        {
+          id: 'updated',
+          defaultMessage: 'Updated {date, date, short}',
+          translatedMessage: '',
+        },
+      ]}
+    />
+  </EditorTestShell>
 )

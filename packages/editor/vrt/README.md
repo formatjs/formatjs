@@ -1,54 +1,27 @@
 # Editor visual tests
 
-This Bazel target exercises the real editor in Chromium through `rules_web_e2e`.
-It captures the loaded UI and a populated translation field. A local Vite
-middleware serves deterministic message fixtures; no external service is needed.
+The native HTML example exercises the headless editor using the monorepo's React
+19, current React Intl sources, and shared root npm lockfile. No separate VRT
+package manifest or dependency workspace is needed.
 
 ```sh
+bazel test //packages/editor:unit_test
 bazel build //packages/editor/vrt:typecheck
 bazel test //packages/editor/vrt:visual_test --test_output=errors
 bazel run //packages/editor/vrt:visual_test.update
 ```
 
-A local Docker daemon must be reachable by Testcontainers. Baselines use the rule’s pinned
-Linux image; initial validation is Linux amd64. Review `__screenshots__/*.png`
-after an explicit update. Compare mode never modifies source baselines. Test
-failures retain JUnit and screenshot diffs in Bazel’s undeclared test outputs.
+The manual browser target requires a local Docker daemon. `rules_web_e2e` uses
+Testcontainers and a pinned Linux amd64 Playwright image. It stages declared
+inputs, disables dotenv loading, uses an allowlisted environment, and restricts
+browser traffic to the fixture server. Compare mode never changes baselines.
+Review PNG changes after explicitly running the update target.
 
-The editor still uses Material UI 4 and React 17. This directory owns an isolated
-npm lockfile to preserve that runtime without changing the monorepo’s React
-version. Parser and react-intl dependencies are pinned public releases; these
-visual tests exercise editor sources, not unreleased formatter changes.
+`server.mts` owns the Vite server adapter. `shell.tsx` supplies consumer-owned
+IntlProvider and document settings. `app.tsx` supplies deterministic message
+data. The tests cover loaded/editing screenshots plus selection, search,
+copy/clear, and recovery from invalid ICU input. Core state and custom renderer
+coverage also runs in the normal Bazel unit-test lane without Docker.
 
-The repository’s `rules_web_e2e` dependency is a development pin until a BCR
-release exists. The pinned repository is public and can be fetched without GitHub credentials.
-To iterate locally, override it with:
-
-```sh
-bazel test //packages/editor/vrt:visual_test \
-  --override_module=rules_web_e2e=/absolute/path/to/rules_web_e2e
-```
-
-The VRT target is manual and requires Docker/network access; invoke it explicitly
-in a browser-test CI job. It does not run in the default `bazel test //...` lane.
-
-The TypeScript config, browser test, and editor sources are strictly typechecked
-as a required input to the visual test. The runtime package supplies generated
-TypeScript declarations.
-
-The runtime serves the editor fixture through Vite. Playwright Test navigates
-to the dynamically assigned `VRT_APP_URL` and compares locator screenshots with
-`toHaveScreenshot`. The runner owns browser contexts, server readiness, traces,
-and teardown. No experimental component-testing harness is required.
-
-The runtime uses Testcontainers with pinned Linux amd64 images. It stages only
-declared runfiles, disables Vite dotenv loading, and uses the same allowlisted
-environment for comparison and updates. Browser traffic is restricted to the
-fixture server. A local Docker daemon is required; external API/font requests
-should be replaced with declared fixture responses.
-
-`server.ts` implements the typed custom-server interface and is compiled by
-`:server_module`. It preserves the Vite isolation settings and serves the
-existing fixture middleware. `shell.tsx` owns test document settings and wraps
-the editor independently of server startup. The root build retains its patched
-TypeScript rules; the editor retains React 17 for Material UI compatibility.
+The public rules repository is pinned by commit until a BCR release exists.
+Failures retain JUnit results and screenshot diffs in undeclared test outputs.

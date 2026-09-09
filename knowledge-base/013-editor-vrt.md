@@ -1,33 +1,35 @@
-# Editor visual regression testing
+# Headless editor and visual tests
 
-`//packages/editor/vrt:visual_test` uses the external `rules_web_e2e`
-`component_visual_test` macro. Its `.update` target writes reviewed PNG
-baselines; comparison only reads declared baseline inputs.
+`packages/editor/index.tsx` exposes `useMessageEditor` and a render-prop `Editor`.
+The core owns selection/search and ICU parse results. Message data is controlled;
+consumers apply `onMessageChange` and own persistence, providers, markup, and styles.
+`Message` exposes the full AST or parse error through a render function.
 
-The editor is a legacy Material UI 4 / React 17 application. Keep its isolated
-`packages/editor/vrt/pnpm-lock.yaml` and `editor_vrt_npm` module extension separate
-from root frontend dependencies. `//packages/editor:vrt_sources` supplies the
-actual editor source files through Bazel. The Vite config owns source aliases,
-React dependency resolution, and deterministic fixture HTTP responses.
+```mermaid
+flowchart LR
+  Catalog[Consumer catalog] --> Core[Headless editor]
+  Core --> View[Consumer design system]
+  View --> Change[onMessageChange]
+  Change --> Catalog
+  Core --> Parser[ICU parser]
+```
 
-Run the target explicitly with a local Docker daemon. It is tagged manual,
-local, and uncached by the upstream macro. See
-[the consumer guide](../packages/editor/vrt/README.md) for commands and supported
-runtime details. The strict `:typecheck` target checks editor sources, the browser test, and
-`playwright.config.ts` and `vite.config.ts`. It is a required VRT input, and can also be built separately.
-Formatter-library tests remain separate.
+`demo.tsx` is a separate native HTML consumer with localized, labeled controls.
+The core imports neither this view nor React Intl. Material UI and React 17 are
+removed. `//packages/editor:unit_test` checks controlled updates, navigation,
+invalid ICU, empty catalogs, and custom rendering without providers.
 
-The rules runtime serves the editor fixture through Vite, navigates to the
-dynamically assigned `VRT_APP_URL`, and compares locator screenshots with
-`toHaveScreenshot`. The runner owns browser contexts, server readiness, traces,
-and teardown. No experimental component-testing harness is required.
+`//packages/editor/vrt:visual_test` exercises the example on React 19 with root
+npm dependencies and current workspace React Intl/parser sources. There is no
+separate npm workspace or lockfile. The root lock pins Playwright to match the
+browser image. Bazel workspace npm links supply current package builds; no published formatter
+versions are duplicated in the VRT setup.
 
-The runtime uses Testcontainers with a pinned Linux amd64 browser and an isolated
-network. It stages declared runfiles and gives compare/update the same allowlisted
-environment. Vite dotenv loading is disabled; browser requests can reach only the
-fixture endpoint. Keep fonts and API responses in declared fixtures. Host plugins
-and tests remain trusted code outside Bazel’s filesystem sandbox.
+The browser target is manual, local, and uncached. It requires Docker and uses
+`rules_web_e2e` with a pinned Linux amd64 image. The custom `server.mts` adapter
+owns startup/cleanup; `shell.tsx` owns the IntlProvider. Inputs, environment, and
+browser networking are isolated by the rules runtime. Host plugins/tests remain
+trusted code outside full Bazel filesystem sandboxing.
 
-The `server` macro argument points to compiled `server.js`, a consumer-owned
-`ServerAdapter`. It returns the ready fixture URL and a shutdown callback.
-`shell.tsx` is browser-only and stays independent of the server adapter.
+Run `.update` only for intentional visual changes, review the PNGs, then run
+comparison. See `packages/editor/vrt/README.md` for exact commands.

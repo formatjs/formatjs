@@ -1,10 +1,17 @@
-import React from 'react'
+import {IntlProvider} from 'react-intl'
+import type {ReactNode, ReactElement} from 'react'
 
-/** Test-owned document settings; the editor supplies its theme/i18n providers. */
-export function EditorTestShell({children}: {children: React.ReactNode}) {
+/** The consumer owns document settings, providers, and design-system styles. */
+export function EditorTestShell({
+  children,
+}: {
+  children: ReactNode
+}): ReactElement {
   return (
-    <div lang="en" dir="ltr">
-      {children}
-    </div>
+    <IntlProvider locale="en">
+      <div lang="en" dir="ltr">
+        {children}
+      </div>
+    </IntlProvider>
   )
 }
