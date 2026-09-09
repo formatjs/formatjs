@@ -709,3 +709,45 @@ test('GH issue #4535 - same day midnight should show 00:00 not 24:00', function 
   )
   expect(result).toBe('Sun, 3 May 2026, 00:00\u201300:45')
 })
+
+it('compares ranges at displayed precision without changing shared patterns', () => {
+  const start = Date.UTC(2020, 0, 2, 1, 2, 3, 234)
+  const end = Date.UTC(2020, 0, 2, 1, 2, 3, 567)
+  const options = {
+    timeZone: 'UTC',
+    minute: 'numeric',
+    second: 'numeric',
+  } as const
+  const seconds = new DateTimeFormat('en', options)
+  expect(seconds.formatRange(start, end)).toBe('02:03')
+  expect(
+    seconds
+      .formatRangeToParts(start, end)
+      .every(part => part.source === 'shared')
+  ).toBe(true)
+  for (const fractionalSecondDigits of [1, 3, 2, 1] as const) {
+    const formatter = new DateTimeFormat('en', {
+      ...options,
+      fractionalSecondDigits,
+    })
+    expect(formatter.formatRange(start, end)).toBe(
+      `${formatter.format(start)}\u2009–\u2009${formatter.format(end)}`
+    )
+  }
+  expect(seconds.formatRange(start, end)).toBe('02:03')
+})
+
+it('preserves both day periods across 11 AM and noon', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    hour12: true,
+  })
+  const parts = formatter.formatRangeToParts(
+    Date.UTC(2020, 0, 2, 11),
+    Date.UTC(2020, 0, 2, 12)
+  )
+  expect(
+    parts.filter(part => part.type === 'dayPeriod').map(part => part.value)
+  ).toEqual(['AM', 'PM'])
+})
