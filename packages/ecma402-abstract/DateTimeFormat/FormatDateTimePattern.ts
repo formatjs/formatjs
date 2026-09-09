@@ -87,11 +87,40 @@ export interface FormatDateTimePatternImplDetails {
   ): IntlDateTimeFormatInternal
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   getDefaultTimeZone(): string
-  // GH #4535: Track if we're formatting a range where dates differ
   // Preserve the complete pattern when formatting one range record.
   rangeFormatOptions?: {
     patternParts?: IntlDateTimeFormatPart[]
+    localTime?: ReturnType<typeof ToLocalTime>
+    numberFormatters?: ReturnType<typeof createNumberFormatters>
   }
+}
+
+function createNumberFormatters(internalSlots: IntlDateTimeFormatInternal): {
+  nf: Intl.NumberFormat
+  nf2: Intl.NumberFormat
+  nf3: Intl.NumberFormat | undefined
+} {
+  const locale = internalSlots.locale
+  const nfOptions = Object.create(null)
+  nfOptions.numberingSystem = internalSlots.numberingSystem
+  nfOptions.useGrouping = false
+
+  const nf = createMemoizedNumberFormat(locale, nfOptions)
+  const nf2Options = Object.create(null)
+  nf2Options.minimumIntegerDigits = 2
+  nf2Options.numberingSystem = internalSlots.numberingSystem
+  nf2Options.useGrouping = false
+  const nf2 = createMemoizedNumberFormat(locale, nf2Options)
+  const fractionalSecondDigits = internalSlots.fractionalSecondDigits
+  let nf3: Intl.NumberFormat | undefined
+  if (fractionalSecondDigits !== undefined) {
+    const nf3Options = Object.create(null)
+    nf3Options.minimumIntegerDigits = fractionalSecondDigits
+    nf3Options.numberingSystem = internalSlots.numberingSystem
+    nf3Options.useGrouping = false
+    nf3 = createMemoizedNumberFormat(locale, nf3Options)
+  }
+  return {nf, nf2, nf3}
 }
 
 /**
@@ -118,33 +147,31 @@ export function FormatDateTimePattern(
   const dataLocaleData = localeData[dataLocale]
   /** IMPL END */
 
-  const locale = internalSlots.locale
-  const nfOptions = Object.create(null)
-  nfOptions.numberingSystem = internalSlots.numberingSystem
-  nfOptions.useGrouping = false
-
-  const nf = createMemoizedNumberFormat(locale, nfOptions)
-  const nf2Options = Object.create(null)
-  nf2Options.minimumIntegerDigits = 2
-  nf2Options.numberingSystem = internalSlots.numberingSystem
-  nf2Options.useGrouping = false
-  const nf2 = createMemoizedNumberFormat(locale, nf2Options)
+  // ECMA-402 11.5.5, steps 1-11 use identical NumberFormat options for
+  // every record in this range. Resolve the existing memoized formatters once.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1356-L1372
+  const numberFormatters =
+    rangeFormatOptions?.numberFormatters ||
+    createNumberFormatters(internalSlots)
+  if (rangeFormatOptions) rangeFormatOptions.numberFormatters = numberFormatters
+  const {nf, nf2, nf3} = numberFormatters
   const fractionalSecondDigits = internalSlots.fractionalSecondDigits
-  let nf3: Intl.NumberFormat
-  if (fractionalSecondDigits !== undefined) {
-    const nf3Options = Object.create(null)
-    nf3Options.minimumIntegerDigits = fractionalSecondDigits
-    nf3Options.numberingSystem = internalSlots.numberingSystem
-    nf3Options.useGrouping = false
-    nf3 = createMemoizedNumberFormat(locale, nf3Options)
-  }
-  const tm = ToLocalTime(
-    x,
-    // @ts-ignore
-    internalSlots.calendar,
-    internalSlots.timeZone,
-    {tzData}
-  )
+  // ECMA-402 11.5.5, step 12: reuse the identical endpoint conversion from
+  // PartitionDateTimeRangePattern (11.5.9, steps 7-8) within this call.
+  // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1373
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1529-L1530
+  const tm =
+    rangeFormatOptions?.localTime ??
+    ToLocalTime(
+      x,
+      // @ts-ignore
+      internalSlots.calendar,
+      internalSlots.timeZone,
+      {tzData}
+    )
   const result: Intl.DateTimeFormatPart[] = []
 
   // Check if month is stand-alone (no other date fields like day, year, weekday)

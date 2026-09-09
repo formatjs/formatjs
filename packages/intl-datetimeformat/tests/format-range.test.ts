@@ -807,3 +807,33 @@ it.each([
     formatter.formatRange(start, end)
   )
 })
+
+it.each([
+  [
+    'spring forward',
+    Date.UTC(2024, 2, 10, 6, 30),
+    Date.UTC(2024, 2, 10, 7, 30),
+    ['01', '03'],
+  ],
+  [
+    'fall back',
+    Date.UTC(2024, 10, 3, 4, 30),
+    Date.UTC(2024, 10, 3, 7, 30),
+    ['00', '02'],
+  ],
+] as const)('uses each endpoint time across %s', (_name, start, end, hours) => {
+  const formatter = new DateTimeFormat('en-GB', {
+    timeZone: 'America/New_York',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+  const parts = formatter.formatRangeToParts(start, end)
+  expect(parts.filter(part => part.type === 'hour')).toEqual([
+    {type: 'hour', value: hours[0], source: 'startRange'},
+    {type: 'hour', value: hours[1], source: 'endRange'},
+  ])
+  expect(parts.map(part => part.value).join('')).toBe(
+    formatter.formatRange(start, end)
+  )
+})

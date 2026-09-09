@@ -130,7 +130,10 @@ export function PartitionDateTimeRangePattern(
     }
   }
   if (rangePattern === undefined) {
-    const result = FormatDateTimePattern(dtf, parts, x, implDetails)
+    const result = FormatDateTimePattern(dtf, parts, x, {
+      ...implDetails,
+      rangeFormatOptions: {localTime: tm1},
+    })
     for (const part of result) part.source = RangePatternType.shared
     return result
   }
@@ -145,6 +148,10 @@ export function PartitionDateTimeRangePattern(
       )
       .join('')
   )
+  const rangeFormatOptions: NonNullable<
+    FormatDateTimePatternImplDetails['rangeFormatOptions']
+  > = {patternParts: contextParts}
+  const rangeImplDetails = {...implDetails, rangeFormatOptions}
   for (const part of rangePattern.patternParts) {
     const {source} = part
     // Steps 19.a and 19.f use each pattern without changing locale data.
@@ -157,16 +164,13 @@ export function PartitionDateTimeRangePattern(
       continue
     }
     const value = source === RangePatternType.endRange ? y : x
+    rangeFormatOptions.localTime =
+      source === RangePatternType.endRange ? tm2 : tm1
     const formatted = FormatDateTimePattern(
       dtf,
       PartitionPattern<IntlDateTimeFormatPartType>(partPattern),
       value,
-      {
-        ...implDetails,
-        rangeFormatOptions: {
-          patternParts: contextParts,
-        },
-      }
+      rangeImplDetails
     )
     for (const item of formatted) {
       item.source = source
