@@ -418,6 +418,9 @@ function partitionNumberIntoParts(
     return [{type: 'infinity', value: n}]
   }
 
+  const asciiDecimalSepIndex = n.indexOf('.')
+  const integerDigitCount =
+    asciiDecimalSepIndex < 0 ? n.length : asciiDecimalSepIndex
   const digitReplacementTable = digitMapping[numberingSystem as 'arab']
   if (digitReplacementTable) {
     n = n.replace(/\d/g, digit => digitReplacementTable[+digit] || digit)
@@ -457,7 +460,7 @@ function partitionNumberIntoParts(
   const shouldUseGrouping =
     Boolean(useGrouping) &&
     (useGrouping === 'always' ||
-      Array.from(integer).length >= primaryGroupingSize + minimum)
+      integerDigitCount >= primaryGroupingSize + minimum)
   if (shouldUseGrouping) {
     const groupSepSymbol =
       style === 'currency' && symbols.currencyGroup != null
@@ -465,18 +468,27 @@ function partitionNumberIntoParts(
         : symbols.group
     const groups: string[] = []
 
-    let i = integer.length - primaryGroupingSize
-    if (i > 0) {
-      // Slice the least significant integer group
-      groups.push(integer.slice(i, i + primaryGroupingSize))
-      // Then iteratively push the more signicant groups
-      // TODO: handle surrogate pairs in some numbering system digits
-      for (i -= secondaryGroupingSize; i > 0; i -= secondaryGroupingSize) {
-        groups.push(integer.slice(i, i + secondaryGroupingSize))
-      }
-      groups.push(integer.slice(0, i + secondaryGroupingSize))
-    } else {
-      groups.push(integer)
+    // ECMA-402 §16.5.5 steps 4.c.iii.1.a and 4.c.iii.7.b group mapped
+    // digit code points, never halves of a supplementary-plane digit.
+    // https://tc39.es/ecma402/#sec-partitionnotationsubpattern
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L844-L878
+    // LDML grouping sizes count digits, not UTF-16 code units.
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L724
+    // ASCII input gives the digit count; BMP digits can keep string slicing.
+    const codePoints =
+      integer.length === integerDigitCount ? undefined : Array.from(integer)
+    let end = integerDigitCount
+    let groupSize = primaryGroupingSize
+    while (end > 0) {
+      const start = Math.max(0, end - groupSize)
+      groups.push(
+        codePoints
+          ? codePoints.slice(start, end).join('')
+          : integer.slice(start, end)
+      )
+      end = start
+      groupSize = secondaryGroupingSize
     }
 
     while (groups.length > 0) {

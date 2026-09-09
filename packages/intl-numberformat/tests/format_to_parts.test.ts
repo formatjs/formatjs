@@ -565,3 +565,90 @@ it('can format numbers with primary and secondary grouping sizes', () => {
     {type: 'fraction', value: '456'},
   ])
 })
+
+it('groups supplementary-plane digits without splitting surrogate pairs', () => {
+  const data = require('./locale-data/en.json').data
+  const pl = new Intl.PluralRules('en')
+  const number = {
+    ...baseNumberResult,
+    formattedString: '12345.67',
+    roundedNumber: new Decimal('12345.67'),
+  }
+  const options = {
+    ...defaultOptions,
+    numberingSystem: 'adlm',
+    useGrouping: 'always',
+  } as const
+  expect(_formatToParts(number, data, pl, options)).toEqual([
+    {type: 'integer', value: '𞥑𞥒'},
+    {type: 'group', value: ','},
+    {type: 'integer', value: '𞥓𞥔𞥕'},
+    {type: 'decimal', value: '.'},
+    {type: 'fraction', value: '𞥖𞥗'},
+  ])
+  expect(
+    format(
+      {...number, formattedString: '1234', roundedNumber: new Decimal(1234)},
+      data,
+      pl,
+      {
+        ...options,
+        useGrouping: 'min2',
+      }
+    )
+  ).toBe('𞥑𞥒𞥓𞥔')
+  expect(
+    format(
+      {...number, formattedString: '12345', roundedNumber: new Decimal(12345)},
+      data,
+      pl,
+      {
+        ...options,
+        useGrouping: 'min2',
+      }
+    )
+  ).toBe('𞥑𞥒,𞥓𞥔𞥕')
+  expect(format(number, data, pl, {...options, useGrouping: false})).toBe(
+    '𞥑𞥒𞥓𞥔𞥕.𞥖𞥗'
+  )
+})
+
+it('preserves primary and secondary grouping sizes for mapped digits', () => {
+  const data = require('./locale-data/bn.json').data
+  const pl = new Intl.PluralRules('bn')
+  const number = {
+    ...baseNumberResult,
+    formattedString: '12345678',
+    roundedNumber: new Decimal(12345678),
+  }
+  expect(
+    format(number, data, pl, {
+      ...defaultOptions,
+      numberingSystem: 'adlm',
+      useGrouping: 'always',
+    })
+  ).toBe('𞥑,𞥒𞥓,𞥔𞥕,𞥖𞥗𞥘')
+  expect(
+    format(number, data, pl, {
+      ...defaultOptions,
+      numberingSystem: 'hanidec',
+      useGrouping: 'always',
+    })
+  ).toBe('一,二三,四五,六七八')
+  expect(
+    format(
+      {
+        ...number,
+        formattedString: '123',
+        roundedNumber: new Decimal(123),
+      },
+      data,
+      pl,
+      {
+        ...defaultOptions,
+        numberingSystem: 'adlm',
+        useGrouping: 'always',
+      }
+    )
+  ).toBe('𞥑𞥒𞥓')
+})
