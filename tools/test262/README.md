@@ -1,9 +1,9 @@
 # Test262 result accounting
 
 Generated rules_js targets invoke the upstream harness with `--errorForFailures`.
-For baseline gates, `test262_harness_bin.test262_harness` captures JSON, stderr,
-and the real exit code as declared build outputs. A separate validation test
-checks the report against that exit code and the reviewed baseline. Empty/malformed results, duplicate
+For baseline gates, a shell test invokes the rules_js generated harness binary,
+captures JSON, stderr, and the real exit code, then invokes the separate validator.
+Reports are test outputs, never cached build outputs. Empty/malformed results, duplicate
 executions, and baseline drift fail the gate. Tracked failures are executed and
 reported as failures, never skipped or renamed passes.
 
@@ -40,15 +40,13 @@ remains a follow-up; dependencies may use native Intl in individual suites.
 
 ## Bazel execution
 
-The realm prelude is generated before execution. The validator does not resolve
-the harness entry point, spawn Node, or create temporary preludes. Bazel owns
-execution, caching, and output capture. Both build and test execution explicitly
-use `TZ=UTC`. Baseline changes rerun validation without
-rerunning the unchanged harness action.
+Realm preludes are deterministic generated inputs. Harness execution and report
+capture happen at test time through the rules_js generated binary; the validator
+runs afterward. Both paths use `TZ=UTC`. Ordinary Bazel test caching still applies,
+but `--nocache_test_results` reruns the harness, including after a transient failure.
 
-Raw reports are declared outputs of `:test262-report`; use
-`bazel cquery --output=files //packages/intl-numberformat:test262-report` to locate
-them. Baseline tests also publish JSON reports and candidate baselines through
-Bazel undeclared test outputs. Empty/malformed results and exit-status mismatches
-fail validation. Real generated-rule fixtures cover passing/failing executions,
-empty selections, and installation in child and grandchild realms.
+Raw reports, stderr, exit codes, and candidate baselines are available in Bazel's
+undeclared test outputs. There is no `:test262-report` build action. Wall-clock
+values remain available in raw diagnostics; baseline comparison normalizes only
+the known shared clock-dependent endpoint. Empty/malformed results and exit-status
+mismatches fail validation. Generated-rule fixtures execute at test time too.

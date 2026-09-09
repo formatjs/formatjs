@@ -109,6 +109,6 @@ the same stable host settings; missing Temporal support remains visible. See
 [the full baseline and runtime comparison](./014-test262-conformance.md).
 
 Test262 execution uses rules_js generated harness rules. Strict/native modes
-are direct harness tests; baseline mode captures a report and exit code through
-the generated build rule, then validates them in a separate test. Realm
-installation scripts are generated before harness execution.
+are direct harness tests; baseline mode invokes the generated harness binary
+and separate validator within one test. Reports are test outputs, so disabling
+test caching reruns the harness. Realm installation scripts are generated inputs.

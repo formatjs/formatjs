@@ -1,6 +1,6 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary", "js_test")
-load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 # gazelle:ignore
 js_binary(
@@ -10,34 +10,24 @@ js_binary(
     visibility = ["//visibility:public"],
 )
 
-copy_to_bin(
-    name = "validate",
-    srcs = ["validate.ts"],
-    visibility = ["//visibility:public"],
-)
+exports_files(["run.sh"])
 
-copy_to_bin(
-    name = "validation_sources",
-    srcs = ["results.ts"],
+js_binary(
+    name = "validator",
+    data = [
+        "results.ts",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "validate.ts",
     visibility = ["//visibility:public"],
 )
 
 [
-    test262_harness_bin.test262_harness(
+    test262_harness_bin.test262_harness_binary(
         name = "fixture-" + fixture,
-        srcs = glob(["fixtures/**"]),
-        args = [
-            "--reporter",
-            "json",
-            "--reporter-keys",
-            "file,scenario,result",
-            "--errorForFailures",
-            "--test262Dir",
-            "tools/test262/fixtures",
-            "tools/test262/fixtures/test/" + fixture + ".js",
-        ],
-        exit_code_out = "fixture-" + fixture + ".status",
-        stdout = "fixture-" + fixture + ".json",
+        testonly = True,
+        data = glob(["fixtures/**"]),
+        tags = ["manual"],
     )
     for fixture in [
         "pass",
@@ -46,17 +36,31 @@ copy_to_bin(
     ]
 ]
 
-js_test(
+js_binary(
+    name = "results_tests",
+    testonly = True,
+    data = [
+        "results.ts",
+        "validate.ts",
+        "//:node_modules/minimist",
+    ],
+    entry_point = "results.test.ts",
+)
+
+sh_test(
     name = "runner_test",
+    srcs = ["fixtures_test.sh"],
+    args = ["$(rootpath :results_tests)"] + ["$(rootpath :fixture-" + fixture + ")" for fixture in [
+        "pass",
+        "fail",
+        "empty",
+    ]],
     data = [
         ":fixture-empty",
         ":fixture-fail",
         ":fixture-pass",
-        ":validate",
-        ":validation_sources",
-        "//:node_modules/minimist",
+        ":results_tests",
     ],
-    entry_point = "results.test.ts",
 )
 
 js_run_binary(

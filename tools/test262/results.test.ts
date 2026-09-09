@@ -91,9 +91,15 @@ test('keeps uncaught primitive values after leading blank lines', () => {
 
 for (const fixture of ['pass', 'fail', 'empty']) {
   test(`generated harness ${fixture} report`, () => {
-    const report = readFileSync(`tools/test262/fixture-${fixture}.json`, 'utf8')
+    const report = readFileSync(
+      `${process.env.TEST262_REPORT_DIR}/fixture-${fixture}.json`,
+      'utf8'
+    )
     const status = Number(
-      readFileSync(`tools/test262/fixture-${fixture}.status`, 'utf8').trim()
+      readFileSync(
+        `${process.env.TEST262_REPORT_DIR}/fixture-${fixture}.status`,
+        'utf8'
+      ).trim()
     )
     if (fixture === 'empty') {
       assert.throws(

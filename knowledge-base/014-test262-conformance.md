@@ -31,9 +31,10 @@ spec and test's feature metadata.
   changed diagnostics, or unexpected passes.
 - Strict/native targets directly use the rules_js generated harness test rule
   with `--errorForFailures`. Native controls install no polyfills.
-- Baseline execution uses the generated harness build rule. Its JSON and real
-  exit code are declared inputs to a separate validation test; no custom process
-  launcher is involved. Realm preludes are generated build inputs.
+- Baseline tests invoke the generated harness binary, capture its real exit code
+  and JSON, then invoke a separate validator. Reports are test outputs, not build
+  artifacts. `--nocache_test_results` reruns the harness. Realm preludes remain
+  deterministic generated build inputs.
 - IIFE preludes avoid collisions with test variables. Polyfills are installed
   recursively into Test262 child realms.
 - Both modes use stable Node settings. Its experimental Temporal implementation
