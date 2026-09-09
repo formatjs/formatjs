@@ -405,6 +405,9 @@ fn hash_content(default_message: Option<&str>, description: &Option<Value>) -> V
         content.extend_from_slice(msg.as_bytes());
     }
     if let Some(desc) = description {
+        if desc.as_str() == Some("") {
+            return content;
+        }
         content.push(b'#');
         // Extract string value for string types to match TypeScript CLI behavior.
         // TypeScript uses: typeof description === 'string' ? description : stringify(description)
@@ -608,6 +611,24 @@ mod tests {
         assert_eq!(id1, "ePueQ5h1ce");
         assert_eq!(id2, "fTO7rwuRCr");
         assert_ne!(id1, id2, "Different messages should produce different IDs");
+    }
+
+    #[test]
+    fn test_generate_id_empty_description_matches_missing_description() {
+        for description in [None, Some(Value::String(String::new()))] {
+            let id = generate_id(
+                "[sha512:contenthash:base64:6]",
+                Some("My message with empty description"),
+                &description,
+                None,
+            )
+            .unwrap();
+            assert_eq!(id, "L91vdv");
+        }
+        assert_eq!(
+            hash_content(Some("Hello"), &Some(Value::String(" ".into()))),
+            b"Hello# "
+        );
     }
 
     #[test]
