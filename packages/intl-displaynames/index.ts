@@ -253,13 +253,11 @@ function isValidCodeForDisplayNames(
 ): boolean {
   switch (type) {
     case 'language':
-      // subset of unicode_language_id
-      // languageCode ["-" scriptCode] ["-" regionCode] *("-" variant)
-      // where:
-      // - languageCode is either a two letters ISO 639-1 language code or a three letters ISO 639-2 language code.
-      // - scriptCode is should be an ISO-15924 four letters script code
-      // - regionCode is either an ISO-3166 two letters region code, or a three digits UN M49 Geographic Regions.
-      return /^[a-z]{2,3}(-[a-z]{4})?(-([a-z]{2}|\d{3}))?(-([a-z\d]{5,8}|\d[a-z\d]{3}))*$/i.test(
+      // ECMA-402 §12.5.1 CanonicalCodeForDisplayNames, step 1.a:
+      // unicode_language_subtag allows 2–3 or 5–8 ASCII letters.
+      // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L235-L238
+      return /^(?:[a-z]{2,3}|[a-z]{5,8})(-[a-z]{4})?(-([a-z]{2}|\d{3}))?(-([a-z\d]{5,8}|\d[a-z\d]{3}))*$/i.test(
         code
       )
     case 'region':
