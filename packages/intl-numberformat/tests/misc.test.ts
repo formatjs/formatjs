@@ -518,3 +518,31 @@ test('accepts callable options and reads their properties', () => {
   )
   expect(new NumberFormat('en', options).format(1234.567)).toBe('1234.57')
 })
+
+describe('NaN sign display', () => {
+  for (const signDisplay of [
+    'auto',
+    'always',
+    'never',
+    'exceptZero',
+    'negative',
+  ] as const) {
+    it(signDisplay, () => {
+      const formatter = new NumberFormat('en', {signDisplay})
+      const sign = signDisplay === 'always' ? '+' : ''
+      expect(formatter.format(NaN)).toBe(`${sign}NaN`)
+      expect(formatter.formatToParts(NaN)).toEqual([
+        ...(sign ? [{type: 'plusSign', value: '+'}] : []),
+        {type: 'nan', value: 'NaN'},
+      ])
+    })
+  }
+
+  it('preserves exceptZero signs for zeros and infinities', () => {
+    const formatter = new NumberFormat('en', {signDisplay: 'exceptZero'})
+    expect(formatter.format(0)).toBe('0')
+    expect(formatter.format(-0)).toBe('0')
+    expect(formatter.format(Infinity)).toBe('+∞')
+    expect(formatter.format(-Infinity)).toBe('-∞')
+  })
+})

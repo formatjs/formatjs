@@ -14,13 +14,13 @@ excluded because it fails.
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                16 |               0 |
 | locale              |      336 |                60 |              26 |
-| numberformat        |      498 |                82 |               2 |
+| numberformat        |      498 |                62 |               2 |
 | pluralrules         |      106 |                 6 |              16 |
 | relativetimeformat  |      160 |                32 |               2 |
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                10 |               8 |
 
-Total: 2,498 executions, 1,850 polyfill passes, 648 polyfill failures. The native
+Total: 2,498 executions, 1,870 polyfill passes, 628 polyfill failures. The native
 control fails 238 executions; 200 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -41,7 +41,7 @@ spec and test's feature metadata.
 ## Work remaining
 
 1. Fix runtime errors by spec algorithm, removing baseline entries as they pass.
-   NumberFormat sign display, range validation, branding, and option key order
+   NumberFormat range validation, branding, and option key order
    are distinct reviewable clusters.
 2. Repair locale data and locale selection in ListFormat and RelativeTimeFormat.
 3. Implement missing Locale variants/region overrides and PluralRules notation
@@ -63,3 +63,6 @@ bazel test //packages/intl-numberformat:test262-native
 
 A green baseline gate means no regression from the reviewed failure list. It
 does not mean full conformance. A strict target is the zero-failure check.
+
+The NaN exceptZero sign fix removes 20 failures across format and formatToParts
+in five locales. NumberFormat now has 436 passing executions and 62 failures.

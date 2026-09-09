@@ -354,3 +354,6 @@ The repository's `:test262` target executes upstream tests and checks an explici
 known-failure baseline. A green baseline check does not mean every test passed.
 Run `bazel test //packages/intl-numberformat:test262-strict` to require zero
 failures. Both modes report passing and failing execution counts separately.
+
+With `signDisplay: "exceptZero"`, NaN has no sign (`"NaN"` in English).
+`signDisplay: "always"` still includes the plus sign (`"+NaN"`).
