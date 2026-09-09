@@ -39,7 +39,12 @@ export function PartitionDurationFormatPattern(
     // exact. Float arithmetic like `1 + 473/1e3` lands on
     // `1.4729999999999998650`, which `roundingMode: 'trunc'` truncates to
     // `1.472999999` instead of `1.473` (#6462).
-    let value = new BigDecimal(duration[row.valueField])
+    // Duration fields are mathematical integers (ToIntegerIfIntegral, step 3).
+    // BigInt preserves the exact Number value beyond the safe-integer range;
+    // Number.toString() may instead produce a shorter, rounded decimal.
+    // https://tc39.es/ecma402/#sec-tointegerifintegral
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L475
+    let value = new BigDecimal(BigInt(duration[row.valueField]))
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
     const {unit, numberFormatUnit} = row
@@ -61,15 +66,19 @@ export function PartitionDurationFormatPattern(
       if (nextStyle === 'numeric' || nextStyle === 'fractional') {
         if (unit === 'seconds') {
           value = value
-            .plus(new BigDecimal(duration.milliseconds).div(1000))
-            .plus(new BigDecimal(duration.microseconds).div(1_000_000))
-            .plus(new BigDecimal(duration.nanoseconds).div(1_000_000_000))
+            .plus(new BigDecimal(BigInt(duration.milliseconds)).div(1000))
+            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1_000_000))
+            .plus(
+              new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000_000)
+            )
         } else if (unit === 'milliseconds') {
           value = value
-            .plus(new BigDecimal(duration.microseconds).div(1000))
-            .plus(new BigDecimal(duration.nanoseconds).div(1_000_000))
+            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1000))
+            .plus(new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000))
         } else {
-          value = value.plus(new BigDecimal(duration.nanoseconds).div(1000))
+          value = value.plus(
+            new BigDecimal(BigInt(duration.nanoseconds)).div(1000)
+          )
         }
         if (internalSlots.fractionalDigits === undefined) {
           nfOpts.maximumFractionDigits = 9
@@ -95,6 +104,11 @@ export function PartitionDurationFormatPattern(
         nfOpts.signDisplay = 'never'
       }
       nfOpts.numberingSystem = internalSlots.numberingSystem
+      // ECMA-402 §13.5.9 step 9 and §13.5.10–11 step 10 disable grouping.
+      // https://tc39.es/ecma402/#sec-formatnumerichours
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L737
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L811
+      if (style === 'numeric' || style === '2-digit') nfOpts.useGrouping = false
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
       }
