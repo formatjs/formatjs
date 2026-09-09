@@ -81,13 +81,20 @@ export const NumberFormat = function (
     `Cannot load locale-dependent data for ${dataLocale}.`
   )
 
-  internalSlots.pl = createMemoizedPluralRules(dataLocale, {
-    minimumFractionDigits: internalSlots.minimumFractionDigits,
-    maximumFractionDigits: internalSlots.maximumFractionDigits,
-    minimumIntegerDigits: internalSlots.minimumIntegerDigits,
-    minimumSignificantDigits: internalSlots.minimumSignificantDigits,
-    maximumSignificantDigits: internalSlots.maximumSignificantDigits,
-  })
+  // ECMA-402 §16.1.1, steps 3–4 read localeMatcher from the caller's
+  // options. Internal plural selection must not add inherited option reads.
+  // https://tc39.es/ecma402/#sec-intl.numberformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L23-L24
+  internalSlots.pl = createMemoizedPluralRules(
+    dataLocale,
+    Object.assign(Object.create(null), {
+      minimumFractionDigits: internalSlots.minimumFractionDigits,
+      maximumFractionDigits: internalSlots.maximumFractionDigits,
+      minimumIntegerDigits: internalSlots.minimumIntegerDigits,
+      minimumSignificantDigits: internalSlots.minimumSignificantDigits,
+      maximumSignificantDigits: internalSlots.maximumSignificantDigits,
+    })
+  )
   return this
 } as NumberFormatConstructor
 

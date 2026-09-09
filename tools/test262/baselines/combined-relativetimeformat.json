@@ -1,8 +1,6 @@
 {
   "total": 160,
   "failures": {
-    "intl402/RelativeTimeFormat/constructor/constructor/options-proto.js (default)": "Should not call getter on Object.prototype: localeMatcher",
-    "intl402/RelativeTimeFormat/constructor/constructor/options-proto.js (strict mode)": "Should not call getter on Object.prototype: localeMatcher",
     "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.RelativeTimeFormat must be called with 'new'",
     "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.RelativeTimeFormat must be called with 'new'",
     "intl402/RelativeTimeFormat/prototype/format/pl-pl-style-long.js (default)": "Expected SameValue(«\"za 1 000 sekund\"», «\"za 1000 sekund\"») to be true",
