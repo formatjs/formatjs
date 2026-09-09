@@ -159,6 +159,8 @@ export interface SymbolsData {
 }
 
 export interface RawNumberData {
+  /** Numbering systems sharing the complete data of another system. */
+  aliases?: Record<string, string>
   minimumGroupingDigits?: number
   nu: string[]
   // numberingSystem -> pattern
