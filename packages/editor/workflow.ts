@@ -101,22 +101,20 @@ export function useTranslationEditor({
   const [drafts, setDrafts] = useState<Record<string, Draft>>({})
   const pending = useRef(new Set<string>())
   const remoteValues = useRef(new Map<string, string>())
-  remoteValues.current = new Map(
-    messages.flatMap(message =>
-      locales.map(
-        value =>
-          [
-            draftKey(message.id, value),
-            message.translations[value] ?? '',
-          ] as const
-      )
-    )
-  )
-  const catalogs = useMemo(
-    () =>
-      [...new Set(messages.flatMap(message => message.catalogs ?? []))].sort(),
-    [messages]
-  )
+  const values = new Map<string, string>()
+  for (const message of messages) {
+    for (const value of locales) {
+      values.set(draftKey(message.id, value), message.translations[value] ?? '')
+    }
+  }
+  remoteValues.current = values
+  const catalogs = useMemo(() => {
+    const values = new Set<string>()
+    for (const message of messages) {
+      for (const catalog of message.catalogs ?? []) values.add(catalog)
+    }
+    return [...values].sort()
+  }, [messages])
   const catalog = catalogs.includes(requestedCatalog) ? requestedCatalog : ''
   const getDraft = (id: string): Draft =>
     reconcile(
