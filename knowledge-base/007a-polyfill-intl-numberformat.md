@@ -105,3 +105,9 @@ See [ECMA-402 §16.5.11](https://tc39.es/ecma402/#sec-getnumberformatpattern).
 `TypeError` before coercing either argument. NaN endpoints still throw `RangeError`.
 See [ECMA-402 §16.3.4, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange)
 and [§16.3.5, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts).
+
+## Symbol arguments
+
+Formatting methods reject Symbol primitives with `TypeError`, including Symbols
+returned by object coercion. ToIntlMathematicalValue step 4.a propagates ToNumber
+errors; only invalid numeric strings use the NaN fallback.
