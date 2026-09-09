@@ -107,3 +107,10 @@ describe('likely-subtags', function () {
     expect(() => new Locale('x-private')).toThrowError(RangeError)
   })
 })
+
+it.each(['posix', 'xtg', 'zz-Latn', 'zz-Latn-GB'])(
+  'maximize preserves unmatched or already complete tag %s',
+  tag => {
+    expect(new Locale(tag).maximize().toString()).toBe(tag)
+  }
+)

@@ -251,66 +251,34 @@ function mergeUnicodeLanguageId(
 
 function addLikelySubtags(tag: string): string {
   const ast = parseUnicodeLocaleId(tag)
-  const unicodeLangId = ast.lang
-  const {lang, script, region, variants} = unicodeLangId
-  if (script && region) {
-    const match =
-      likelySubtags[
-        emitUnicodeLanguageId({lang, script, region, variants: []}) as 'aa'
-      ]
-    if (match) {
-      const parts = parseUnicodeLanguageId(match)
-      ast.lang = mergeUnicodeLanguageId(
-        undefined,
-        undefined,
-        undefined,
-        variants,
-        parts
-      )
-      return emitUnicodeLocaleId(ast)
-    }
+  const {lang, variants} = ast.lang
+  const script = ast.lang.script === 'Zzzz' ? undefined : ast.lang.script
+  const region = ast.lang.region === 'ZZ' ? undefined : ast.lang.region
+  // ECMA-402 §15.3.9, step 3; UTS 35 §4.3 Add Likely Subtags,
+  // steps 1.2–1.4, 2, and 3: preserve supplied components and report no match.
+  // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.maximize
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L284
+  // https://www.unicode.org/reports/tr35/tr35-78/tr35.html#Likely_Subtags
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2542-L2556
+  if (lang !== 'und' && script && region) return tag
+  for (const candidate of [
+    {lang, script, region, variants: []},
+    {lang, script, variants: []},
+    {lang, region, variants: []},
+    {lang, variants: []},
+  ]) {
+    const match = likelySubtags[emitUnicodeLanguageId(candidate) as 'aa']
+    if (!match) continue
+    ast.lang = mergeUnicodeLanguageId(
+      lang,
+      script,
+      region,
+      variants,
+      parseUnicodeLanguageId(match)
+    )
+    return emitUnicodeLocaleId(ast)
   }
-  if (script) {
-    const match =
-      likelySubtags[emitUnicodeLanguageId({lang, script, variants: []}) as 'aa']
-    if (match) {
-      const parts = parseUnicodeLanguageId(match)
-      ast.lang = mergeUnicodeLanguageId(
-        undefined,
-        undefined,
-        region,
-        variants,
-        parts
-      )
-      return emitUnicodeLocaleId(ast)
-    }
-  }
-  if (region) {
-    const match =
-      likelySubtags[emitUnicodeLanguageId({lang, region, variants: []}) as 'aa']
-    if (match) {
-      const parts = parseUnicodeLanguageId(match)
-      ast.lang = mergeUnicodeLanguageId(
-        undefined,
-        script,
-        undefined,
-        variants,
-        parts
-      )
-      return emitUnicodeLocaleId(ast)
-    }
-  }
-  const match =
-    likelySubtags[lang as 'aa'] ||
-    likelySubtags[
-      emitUnicodeLanguageId({lang: 'und', script, variants: []}) as 'aa'
-    ]
-  if (!match) {
-    throw new Error(`No match for addLikelySubtags`)
-  }
-  const parts = parseUnicodeLanguageId(match)
-  ast.lang = mergeUnicodeLanguageId(undefined, script, region, variants, parts)
-  return emitUnicodeLocaleId(ast)
+  return tag
 }
 
 /**
