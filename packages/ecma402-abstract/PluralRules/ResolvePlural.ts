@@ -1,12 +1,11 @@
 import {Type} from '#packages/ecma262-abstract/Type.js'
-import {ComputeExponentForMagnitude} from '#packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.js'
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {
   type LDMLPluralRule,
   type PluralRulesInternal,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import Decimal from '@formatjs/bigdecimal'
+import type Decimal from '@formatjs/bigdecimal'
 import {
   GetOperands,
   type OperandsRecord,
@@ -73,30 +72,31 @@ export function ResolvePluralInternal(
   const res = FormatNumericToString(internalSlots, n)
   const s = res.formattedString
 
-  // Extension: Calculate compact exponent if using compact notation
-  // This enables CLDR c/e operands for proper plural selection with compact numbers
+  // ECMA-402 §17.5.2, step 10 selects from the rounded decimal string.
+  // Own CLDR data keeps compact selection independent of NumberFormat.
+  // https://tc39.es/ecma402/#sec-resolveplural
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L316-L321
   let exponent = 0
-  if (notation === 'compact' && !n.isZero()) {
-    // Implementation: Only calculate exponent if NumberFormat locale data is available (soft dependency)
-    if (internalSlots.dataLocaleData?.numbers) {
-      try {
-        // Calculate magnitude (floor of log10 of absolute value)
-        const magnitudeNum = Math.floor(Math.log10(Math.abs(n.toNumber())))
-        const magnitude = new Decimal(magnitudeNum)
-        // Use ComputeExponentForMagnitude from ecma402-abstract
-        // This determines which compact notation pattern to use (K, M, B, etc.)
-        // Cast to any since it expects NumberFormatInternal
-        exponent = ComputeExponentForMagnitude(internalSlots as any, magnitude)
-      } catch {
-        // Gracefully fall back to 0 if exponent calculation fails
-        exponent = 0
+  if (notation === 'compact') {
+    const patterns =
+      internalSlots.compactExponents?.[internalSlots.compactDisplay || 'short']
+    const unsigned = s[0] === '-' ? s.slice(1) : s
+    const integer = unsigned.split('.')[0]
+    let first = 0
+    while (first < integer.length && integer[first] === '0') first++
+    const magnitude = integer.length - first - 1
+    let selectedMagnitude = -1
+    if (patterns) {
+      for (const key in patterns) {
+        const threshold = Number(key)
+        if (threshold <= magnitude && threshold > selectedMagnitude) {
+          selectedMagnitude = threshold
+          exponent = patterns[threshold]
+        }
       }
     }
-    // Otherwise, exponent remains 0 (standard behavior without NumberFormat data)
   }
 
-  // ECMA-402 Spec: Extract CLDR operands from the formatted string
-  // Extension: Pass exponent for c/e operands
   const operands = GetOperands(s, exponent)
 
   // ECMA-402 Spec: Select the appropriate plural category using the locale's plural rules

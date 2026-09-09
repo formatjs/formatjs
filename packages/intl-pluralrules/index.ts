@@ -3,6 +3,7 @@ import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
 import {
+  type CompactExponentData,
   type LDMLPluralRule,
   type PluralRulesData,
   type PluralRulesLocaleData,
@@ -56,7 +57,7 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   type: 'cardinal' | 'ordinal'
   notation: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'
-  dataLocaleData?: any // NumberFormatLocaleInternalData
+  compactExponents?: CompactExponentData
 }
 
 /**

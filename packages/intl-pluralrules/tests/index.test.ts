@@ -6,7 +6,15 @@ import {describe, expect, it} from 'vitest'
 // @ts-ignore
 import en from '#packages/intl-pluralrules/tests/locale-data/en.js'
 import fr from '#packages/intl-pluralrules/tests/locale-data/fr.js'
-PluralRules.__addLocaleData(en, fr)
+import ca from '#packages/intl-pluralrules/tests/locale-data/ca.js'
+import es from '#packages/intl-pluralrules/tests/locale-data/es.js'
+import itData from '#packages/intl-pluralrules/tests/locale-data/it.js'
+import lld from '#packages/intl-pluralrules/tests/locale-data/lld.js'
+import pt from '#packages/intl-pluralrules/tests/locale-data/pt.js'
+import ptPT from '#packages/intl-pluralrules/tests/locale-data/pt-PT.js'
+import scn from '#packages/intl-pluralrules/tests/locale-data/scn.js'
+import vec from '#packages/intl-pluralrules/tests/locale-data/vec.js'
+PluralRules.__addLocaleData(en, fr, ca, es, itData, lld, pt, ptPT, scn, vec)
 
 describe('PluralRules', function () {
   it('default locale', function () {
@@ -226,45 +234,56 @@ describe('PluralRules', function () {
   })
 
   describe('compact notation with c/e operand', function () {
-    // Tests for compact decimal notation plural rules
-    // Based on: https://docs.google.com/document/d/1Wx9Drhpl9p2ZqVZMGQ7KUF4pUfPtuJupv8oQ_Gf6sEE
-    // Note: c and e are synonyms - both represent the exponent
-    // The c/e operand is calculated from compact notation formatting
-
-    it('should handle French million with compact notation', function () {
-      const pr = new PluralRules('fr', {notation: 'compact'})
-
-      // French rule: e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5
-      // Note: Without NumberFormat locale data, falls back to standard behavior (e=0)
-      // With NumberFormat data: For millions (exponent=6), e != 0..5 applies → many
-      // Without NumberFormat data: Falls back to standard rules
-      expect(pr.select(1000000)).toBe('many') // 1M divisible by 1M, v=0 → many (standard)
-      expect(pr.select(1200000)).toBe('other') // 1.2M not divisible by 1M → other (fallback)
-      expect(pr.select(234500000)).toBe('other') // 234.5M not divisible by 1M → other (fallback)
+    it('selects French compact categories without NumberFormat locale data', () => {
+      const previous = Object.getOwnPropertyDescriptor(
+        Intl.NumberFormat,
+        'localeData'
+      )
+      const results: string[] = []
+      Object.defineProperty(Intl.NumberFormat, 'localeData', {
+        configurable: true,
+        get() {
+          throw new Error('Ambient NumberFormat data read')
+        },
+      })
+      try {
+        for (const compactDisplay of ['short', 'long'] as const) {
+          const pr = new PluralRules('fr', {
+            notation: 'compact',
+            compactDisplay,
+          })
+          for (const value of [1500000, -1500000, 234500000, 1.2e30]) {
+            results.push(pr.select(value))
+          }
+        }
+      } finally {
+        if (previous)
+          Object.defineProperty(Intl.NumberFormat, 'localeData', previous)
+        else
+          delete (
+            Intl.NumberFormat as typeof Intl.NumberFormat & {
+              localeData?: unknown
+            }
+          ).localeData
+      }
+      expect(results).toEqual(Array(8).fill('many'))
+      expect(new PluralRules('fr').select(1500000)).toBe('other')
     })
 
-    it('should distinguish compact vs non-compact for French', function () {
-      // Standard notation: no compact exponent (c/e=0)
-      const prStandard = new PluralRules('fr')
-      // 1,000,000 is divisible by 1M with v=0 → many (first part of rule)
-      expect(prStandard.select(1000000)).toBe('many')
-      // 1,200,000 is NOT divisible by 1M → other
-      expect(prStandard.select(1200000)).toBe('other')
-
-      // Compact notation: with compact exponent (c/e=6 for millions)
-      // Note: These tests would pass only if NumberFormat locale data is loaded
-      const prCompact = new PluralRules('fr', {notation: 'compact'})
-      // Without NumberFormat data, falls back to standard behavior (exponent=0)
-      expect(prCompact.select(1200000)).toBe('other') // fallback to standard
-    })
-
-    it('should handle French thousand with compact notation', function () {
-      const pr = new PluralRules('fr', {notation: 'compact'})
-
-      // French rule: e != 0..5 means e must be >= 6 for "many"
-      // Note: Without NumberFormat data, falls back to e=0 (standard behavior)
-      expect(pr.select(1000)).toBe('other') // Not divisible by 1M → other
-      expect(pr.select(1200)).toBe('other') // Not divisible by 1M → other
+    it('uses the rounded decimal magnitude for compact selection', () => {
+      const pr = new PluralRules('fr', {
+        notation: 'compact',
+        maximumSignificantDigits: 2,
+      })
+      expect(pr.select(999999)).toBe('many')
+      expect(pr.select(1000)).toBe('other')
+      expect(pr.select(1200)).toBe('other')
+      expect(
+        new PluralRules('fr', {
+          notation: 'compact',
+          minimumIntegerDigits: 12,
+        }).select(1200)
+      ).toBe('other')
     })
 
     it('should handle exact millions without compact notation', function () {
@@ -295,7 +314,8 @@ describe('PluralRules', function () {
 
       for (const locale of locales) {
         const pr = new PluralRules(locale, {notation: 'compact'})
-        // Basic smoke test - should not throw (will fall back to standard if no NumberFormat data)
+        expect(pr.resolvedOptions().locale).toBe(locale)
+        // Exercise each locale's generated compact data.
         expect(() => pr.select(1000000)).not.toThrow()
         expect(() => pr.select(1200)).not.toThrow()
         // Should return valid plural categories
@@ -329,7 +349,7 @@ describe('PluralRules', function () {
         compactDisplay: 'long',
       })
 
-      // Both should work (falls back to standard without NumberFormat data)
+      // Both widths use their own generated compact data.
       expect(() => prShort.select(1000000)).not.toThrow()
       expect(() => prLong.select(1000000)).not.toThrow()
       // Both should return valid plural categories

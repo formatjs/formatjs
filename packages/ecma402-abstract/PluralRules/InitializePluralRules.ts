@@ -80,17 +80,7 @@ export function InitializePluralRules(
   )
   if (notation === 'compact') {
     internalSlots.compactDisplay = compactDisplay
-    // Implementation: Load NumberFormat locale data if available (soft dependency)
-    // This is needed to calculate compact exponents using ComputeExponentForMagnitude
-    if (
-      typeof Intl !== 'undefined' &&
-      Intl.NumberFormat &&
-      (Intl.NumberFormat as any).localeData
-    ) {
-      internalSlots.dataLocaleData = (Intl.NumberFormat as any).localeData[
-        r.locale
-      ]
-    }
+    internalSlots.compactExponents = localeData[r.dataLocale]?.compactExponents
   }
 
   SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, notation)

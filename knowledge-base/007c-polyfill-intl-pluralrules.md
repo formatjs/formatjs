@@ -14,11 +14,12 @@ Polyfill for `Intl.PluralRules` — evaluates CLDR plural rules to select plural
 
 ### Sources
 
-| CLDR File                                  | Data Used                                    |
-| ------------------------------------------ | -------------------------------------------- |
-| `cldr-core/supplemental/plurals.json`      | Cardinal plural rules per locale             |
-| `cldr-core/supplemental/ordinals.json`     | Ordinal plural rules per locale              |
-| `cldr-core/supplemental/pluralRanges.json` | Plural range mappings (start_end → category) |
+| CLDR File                                  | Data Used                                              |
+| ------------------------------------------ | ------------------------------------------------------ |
+| `cldr-core/supplemental/plurals.json`      | Cardinal plural rules per locale                       |
+| `cldr-core/supplemental/ordinals.json`     | Ordinal plural rules per locale                        |
+| `cldr-core/supplemental/pluralRanges.json` | Plural range mappings (start_end → category)           |
+| `cldr-numbers-full/main/*/numbers.json`    | Compact exponent tables for locales using c/e operands |
 
 ### Compilation: PluralRulesCompiler (`scripts/plural-rules-compiler.ts`)
 
@@ -65,7 +66,7 @@ function(num, isOrdinal, exponent = 0) {
 
 ```
 Stage 1: cldr-raw (cldr-raw.ts + PluralRulesCompiler)
-  Input: plurals.json + ordinals.json + pluralRanges.json
+  Input: plurals.json + ordinals.json + pluralRanges.json + compact number patterns
   Process: Compile CLDR rules → JS functions via eval()
   Output: cldr-raw/{locale}.js (227 files with serialized function objects)
 
@@ -119,7 +120,7 @@ When `selectRange(start, end)` is called:
 - **No make-plural dependency**: Custom compiler replaced previous make-plural dependency
 - **BigInt support**: `ToIntlMathematicalValue()` handles BigInt per ECMA-402
 - **String-based integer digits**: Stored as string for numbers > 2^53 to prevent precision loss
-- **Notation options**: The current ECMA-402 draft includes notation and compactDisplay; compact exponents use available NumberFormat locale data
+- **Notation options**: The current ECMA-402 draft includes notation and compactDisplay; compact exponents use generated locale data
 
 ## Examples by Locale Complexity
 
@@ -136,3 +137,6 @@ Compact notation uses the shared compact digit defaults. `resolvedOptions()`
 returns an ordinary object, reports notation and rounding settings, and lists
 plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
 `selectRange()` accepts infinite endpoints; NaN still throws `RangeError`.
+
+Compact plural selection uses generated CLDR exponent tables for locales whose
+rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
