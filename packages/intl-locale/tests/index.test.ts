@@ -381,3 +381,9 @@ test.each(['', 'abcd', '1996-1996', 'POSIX-posix', '1996-', '1996-u-nu-latn'])(
     expect(() => new Locale('en', {variants})).toThrow(RangeError)
   }
 )
+
+test('canonicalizes the original locale before applying language overrides', () => {
+  expect(new Locale('und-Armn-SU', {language: 'ru'}).toString()).toBe(
+    'ru-Armn-AM'
+  )
+})
