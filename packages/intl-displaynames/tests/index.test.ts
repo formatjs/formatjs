@@ -300,3 +300,19 @@ it('returns canonical codes when display names are missing', () => {
     new DisplayNames('en', {type: 'currency', fallback: 'none'}).of('zzz')
   ).toBeUndefined()
 })
+
+it.each(['abcde', 'abcdefgh', 'abcde-Latn-US-1996'])(
+  'accepts well-formed extended language subtag %s',
+  code => {
+    expect(new DisplayNames('en', {type: 'language'}).of(code)).toBe(code)
+  }
+)
+
+it.each(['abcd', 'abcdefghi', 'en-u-ca-gregory'])(
+  'rejects code outside unicode_language_id: %s',
+  code => {
+    expect(() => new DisplayNames('en', {type: 'language'}).of(code)).toThrow(
+      RangeError
+    )
+  }
+)

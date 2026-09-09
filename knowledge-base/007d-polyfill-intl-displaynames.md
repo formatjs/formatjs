@@ -55,3 +55,6 @@ Stage 3: supported-locales.generated.ts
 Calendar codes use hyphen-separated Unicode type identifiers; underscore forms
 throw `RangeError`. When `fallback: 'code'` applies, `of` returns the canonical
 code, such as `ZZZ` for an unknown currency supplied as `zzz`.
+
+Language display-name codes accept Unicode language subtags of two, three, or
+five to eight ASCII letters, with optional script, region, and variant subtags.
