@@ -701,3 +701,60 @@ describe('rounding priority precision', () => {
     }
   )
 })
+
+describe('NumberFormat receiver branding', () => {
+  const format = Object.getOwnPropertyDescriptor(
+    NumberFormat.prototype,
+    'format'
+  )!.get!
+  it('rejects inherited and proxied receivers without coercing arguments', () => {
+    const value = {
+      valueOf() {
+        throw new Error('must not coerce')
+      },
+    }
+    const receivers = [
+      undefined,
+      null,
+      1,
+      Symbol(),
+      {},
+      Object.create(NumberFormat.prototype),
+      new Proxy(new NumberFormat('en'), {}),
+    ]
+    for (const receiver of receivers) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        expect(() => format.call(receiver)).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.resolvedOptions.call(receiver)
+        ).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.formatToParts.call(receiver, value as any)
+        ).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.formatRange.call(
+            receiver,
+            value as any,
+            value as any
+          )
+        ).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.formatRangeToParts.call(
+            receiver,
+            value as any,
+            value as any
+          )
+        ).toThrow(TypeError)
+      }
+    }
+  })
+
+  it('accepts a branded receiver after its prototype changes', () => {
+    const formatter = new NumberFormat('en')
+    Object.setPrototypeOf(formatter, null)
+    expect(format.call(formatter)(123)).toBe('123')
+    expect(NumberFormat.prototype.resolvedOptions.call(formatter).locale).toBe(
+      'en'
+    )
+  })
+})

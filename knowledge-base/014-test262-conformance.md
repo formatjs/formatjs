@@ -14,13 +14,13 @@ excluded because it fails.
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                46 |              26 |
-| numberformat        |      498 |                30 |               2 |
+| numberformat        |      498 |                26 |               2 |
 | pluralrules         |      106 |                 4 |              16 |
 | relativetimeformat  |      160 |                14 |               2 |
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               8 |
 
-Total: 2,498 executions, 1,966 polyfill passes, 532 polyfill failures. The native
+Total: 2,498 executions, 1,970 polyfill passes, 528 polyfill failures. The native
 control fails 238 executions; 200 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -85,3 +85,6 @@ and supportedLocalesOf.
 ToRawPrecision reports `e - p + 1` as its rounding magnitude. Reporting only
 `e` incorrectly favored fraction digits for morePrecision and significant digits
 for lessPrecision when both digit constraints were present.
+
+NumberFormat internal-slot reads no longer allocate records. Only constructor
+initialization can create a brand; formatting methods validate it before coercion.

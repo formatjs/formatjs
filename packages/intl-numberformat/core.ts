@@ -66,7 +66,7 @@ export const NumberFormat = function (
   }
 
   InitializeNumberFormat(this as any, locales, options, {
-    getInternalSlots,
+    getInternalSlots: nf => getInternalSlots(nf, true),
     localeData: NumberFormat.localeData,
     availableLocales: NumberFormat.availableLocales,
     getDefaultLocale: NumberFormat.getDefaultLocale,
@@ -98,6 +98,10 @@ export const NumberFormat = function (
 // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
 const {formatToParts, formatRange, formatRangeToParts} = {
   formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
+    // ECMA-402 §16.3.6 step 2 precedes argument conversion in step 3.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formattoparts
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L492-L493
+    getInternalSlots(this)
     return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
       getInternalSlots,
     })
@@ -108,6 +112,7 @@ const {formatToParts, formatRange, formatRangeToParts} = {
     start: number | bigint | Decimal,
     end: number | bigint | Decimal
   ) {
+    getInternalSlots(this)
     // ECMA-402 §16.3.4, step 3: reject missing endpoints before coercion.
     // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L463-L465
@@ -129,6 +134,7 @@ const {formatToParts, formatRange, formatRangeToParts} = {
     start: number | bigint | Decimal,
     end: number | bigint | Decimal
   ) {
+    getInternalSlots(this)
     // ECMA-402 §16.3.5, step 3: reject missing endpoints before coercion.
     // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L478-L480
@@ -160,11 +166,6 @@ defineProperty(NumberFormat.prototype, 'formatRangeToParts', {
 
 const {resolvedOptions} = {
   resolvedOptions() {
-    if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
-      throw TypeError(
-        'Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver'
-      )
-    }
     const internalSlots = getInternalSlots(this as any)
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
@@ -192,11 +193,6 @@ const formatDescriptor = {
   enumerable: false,
   configurable: true,
   get(this: NumberFormat) {
-    if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
-      throw TypeError(
-        'Intl.NumberFormat format property accessor called on incompatible receiver'
-      )
-    }
     const internalSlots = getInternalSlots(this as any)
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
