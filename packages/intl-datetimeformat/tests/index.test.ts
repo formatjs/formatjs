@@ -274,6 +274,26 @@ describe('Intl.DateTimeFormat', function () {
     }
   })
 
+  it('supports ISO 8601 without advertising unimplemented calendars', () => {
+    const date = Date.UTC(2020, 0, 2)
+    const options = {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    } as const
+    const iso = new DateTimeFormat('en-u-ca-iso8601', options)
+    const gregory = new DateTimeFormat('en', {...options, calendar: 'gregory'})
+    expect(iso.resolvedOptions().calendar).toBe('iso8601')
+    expect(iso.format(date)).toBe(gregory.format(date))
+    const unsupported = new DateTimeFormat('en', {
+      ...options,
+      calendar: 'buddhist',
+    })
+    expect(unsupported.resolvedOptions().calendar).toBe('gregory')
+    expect(unsupported.format(date)).toBe(gregory.format(date))
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
@@ -453,18 +473,18 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date('2020-09-16T11:55:32.491+02:00'))
     ).toBe('۲۶ شهریور ۹۹')
   })
-  it('test #2145', function () {
-    expect(() =>
-      new DateTimeFormat('fa', {
-        month: 'long',
-        year: '2-digit',
-        day: '2-digit',
-      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
-    ).toThrowError(
-      new RangeError(
-        'Calendar "persian" is not supported. Try setting "calendar" to 1 of the following: gregory'
-      )
-    )
+  it('falls back to Gregorian for locales with an unsupported default calendar', () => {
+    const options = {
+      month: 'long',
+      year: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    } as const
+    const formatter = new DateTimeFormat('fa', options)
+    const gregory = new DateTimeFormat('fa', {...options, calendar: 'gregory'})
+    const date = new Date('2020-09-16T11:55:32.491+02:00')
+    expect(formatter.resolvedOptions().calendar).toBe('gregory')
+    expect(formatter.format(date)).toBe(gregory.format(date))
   })
   it('test #2192', function () {
     expect(

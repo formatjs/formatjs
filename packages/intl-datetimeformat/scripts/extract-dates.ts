@@ -19,7 +19,6 @@ import {
   type TimeZoneNameData,
 } from '../types.ts'
 import rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
-import rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json' with {type: 'json'}
 import TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
 import metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
 import IntlLocale from '@formatjs/intl-locale'
@@ -106,8 +105,6 @@ function filterKeys<T>(
 function hasAltVariant(k: string): boolean {
   return !k.endsWith('alt-variant')
 }
-
-const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental
 
 /**
  * Extract timezone-to-metazone mappings from CLDR data.
@@ -491,22 +488,11 @@ async function loadDatesFields(
     hourCycle12,
     hourCycle24,
     nu,
-    ca: (
-      calendarPreferenceData[region as keyof typeof calendarPreferenceData] ||
-      calendarPreferenceData['001']
-    ).map(c => {
-      //Resolve aliases per https://github.com/unicode-org/cldr/blob/master/common/bcp47/calendar.xml
-      if (c === 'gregorian') {
-        return 'gregory'
-      }
-      if (c === 'islamic-civil') {
-        return 'islamicc'
-      }
-      if (c === 'ethiopic-amete-alem') {
-        return 'ethioaa'
-      }
-      return c
-    }),
+    // ECMA-402 §6.9.1 AvailableCalendars requires iso8601 and limits
+    // advertised calendars to implemented functionality (no numbered steps).
+    // https://tc39.es/ecma402/#sec-availablecalendars
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L523-L527
+    ca: ['gregory', 'iso8601'],
     // ECMA-402 §11.2.3 requires null followed by all four cycles. The
     // null sentinel lets hour12 override an hc extension during resolution.
     // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots

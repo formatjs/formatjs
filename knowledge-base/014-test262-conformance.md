@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |               188 |              52 |               188 |
+| datetimeformat      |      488 |               182 |              52 |               182 |
 | displaynames        |      114 |                 4 |               0 |                 4 |
 | durationformat      |      220 |                 0 |               4 |                 2 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
@@ -20,12 +20,12 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |                10 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 4 |
 
-Total: 2,498 executions, 2,254 polyfill passes, 244 polyfill failures. The native
+Total: 2,498 executions, 2,260 polyfill passes, 238 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,254 passes, 244 failures.
+Combined: 2,498 executions, 2,260 passes, 238 failures.
 
 Combined installation adds 6 failing executions; 6 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
@@ -164,3 +164,7 @@ and NumberFormat. Isolated getCanonicalLocales remains at zero failures.
 Minute/second-only matching removes four fractional-second formatting failures in
 each mode. Range equality and flexible day periods remain failing; their
 diagnostics now reflect the newly selected patterns.
+
+Calendar negotiation supports Gregorian and ISO 8601 and falls back for other
+requests. Six DateTimeFormat failures per mode are fixed; Chinese-calendar and
+Era-monthcode proposal failures remain tracked.
