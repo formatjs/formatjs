@@ -6,6 +6,19 @@ import {
   type TABLE_2,
 } from '#packages/ecma402-abstract/types/date-time.js'
 
+const patternFields = new WeakMap<Formats, Intl.DateTimeFormatOptions>()
+
+export function getDateTimePatternFields(
+  format: Formats
+): Intl.DateTimeFormatOptions {
+  const cached = patternFields.get(format)
+  if (cached) return cached
+  const fields: Intl.DateTimeFormatOptions = Object.create(null)
+  processDateTimePattern(format.rawPattern, fields)
+  patternFields.set(format, fields)
+  return fields
+}
+
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
  * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js
@@ -317,7 +330,9 @@ export function parseDateTimeSkeleton(
 
   // Process skeleton
   skeleton.replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result))
-  const [pattern, pattern12] = processDateTimePattern(rawPattern)
+  const fields: Intl.DateTimeFormatOptions = Object.create(null)
+  const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
+  patternFields.set(result, fields)
   result.pattern = pattern
   result.pattern12 = pattern12
   return result
