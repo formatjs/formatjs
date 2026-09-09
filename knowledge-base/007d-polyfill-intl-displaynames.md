@@ -58,3 +58,6 @@ code, such as `ZZZ` for an unknown currency supplied as `zzz`.
 
 Language display-name codes accept Unicode language subtags of two, three, or
 five to eight ASCII letters, with optional script, region, and variant subtags.
+
+Calendar display-name data uses BCP 47 identifiers, including `gregory` and
+`ethioaa`, rather than CLDR legacy keys.
