@@ -329,3 +329,8 @@ non-breaking spaces where specified.
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+`formatRangeToParts` marks unique fields and separators as `shared`. Repeated
+fields belong to their endpoint; punctuation between repeated fields stays with
+that endpoint. Shared month names retain the complete date pattern for
+grammatical context.

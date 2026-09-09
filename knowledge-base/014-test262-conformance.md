@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |               160 |              52 |               160 |
+| datetimeformat      |      488 |               158 |              52 |               158 |
 | displaynames        |      114 |                 2 |               0 |                 2 |
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
@@ -20,12 +20,12 @@ excluded because it fails.
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 2 |
 
-Total: 2,498 executions, 2,310 polyfill passes, 188 polyfill failures. The native
+Total: 2,498 executions, 2,312 polyfill passes, 186 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,310 passes, 188 failures.
+Combined: 2,498 executions, 2,312 passes, 186 failures.
 
 Combined installation adds 2 failing executions; 2 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
