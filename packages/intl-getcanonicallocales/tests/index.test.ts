@@ -103,6 +103,29 @@ describe('Intl.getCanonicalLocales', () => {
       'en-a-foo-x-private',
     ])
   })
+  it('preserves legacy RegExp statics during canonicalization', () => {
+    ;/sent(inel)/.exec('sentinel')
+    const match = RegExp.lastMatch
+    const group = RegExp.$1
+    const actual = getCanonicalLocales([
+      'en-u-co-phonebk',
+      'JA-latn-hepburn-heploc',
+      'en-t-en-m0-names',
+      'en-A-FOO',
+    ])
+    const afterMatch = RegExp.lastMatch
+    const afterGroup = RegExp.$1
+    expect(actual).toEqual([
+      'en-u-co-phonebk',
+      'ja-Latn-alalc97',
+      'en-t-en-m0-prprname',
+      'en-a-foo',
+    ])
+    expect(afterMatch).toBe(match)
+    expect(afterGroup).toBe(group)
+    expect(() => getCanonicalLocales('en-a-foo-A-bar')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en\n')).toThrow(RangeError)
+  })
   it('regular', function () {
     expect(
       getCanonicalLocales('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')

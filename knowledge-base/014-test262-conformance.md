@@ -7,14 +7,14 @@ excluded because it fails.
 
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
-| collator            |      130 |                 2 |               0 |                 4 |
+| collator            |      130 |                 2 |               0 |                 2 |
 | datetimeformat      |      488 |               194 |              52 |               194 |
 | displaynames        |      114 |                 4 |               0 |                 4 |
 | durationformat      |      220 |                 0 |               4 |                 2 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 4 |               0 |                 4 |
 | locale              |      336 |                 4 |              22 |                 4 |
-| numberformat        |      498 |                18 |               0 |                20 |
+| numberformat        |      498 |                18 |               0 |                18 |
 | pluralrules         |      106 |                 4 |               0 |                 2 |
 | relativetimeformat  |      160 |                 8 |               0 |                20 |
 | segmenter           |      158 |                10 |               0 |                10 |
@@ -25,16 +25,16 @@ control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,228 passes, 270 failures.
+Combined: 2,498 executions, 2,232 passes, 266 failures.
 
-Combined installation adds 26 failing executions; 6 isolated failures now pass.
+Combined installation adds 22 failing executions; 6 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
 Two RelativeTimeFormat cases pass because combined enumeration omits numbering
 systems that the NumberFormat polyfill does not support; this is not broader
 numbering-system conformance.
 Two PluralRules compact-notation cases pass only when the NumberFormat French
 locale data is present; the isolated dependency remains unresolved.
-The extra failures concern RegExp statics, NumberFormat dependencies, calendar
+The extra failures concern NumberFormat dependencies, calendar
 display-name keys, and optional collation data. Full raw reports accompany Bazel
 test outputs; the checked-in baselines preserve every remaining diagnostic.
 
@@ -157,3 +157,6 @@ locale-registration concern.
 Shared locale fixtures remove four Indian grouping failures in each mode and
 two combined French compact-plural failures. Portuguese range and Polish
 grouping diagnostics now reflect loaded locale data; those bugs remain tracked.
+
+ASCII locale parsing removes four combined RegExp-statics failures in Collator
+and NumberFormat. Isolated getCanonicalLocales remains at zero failures.
