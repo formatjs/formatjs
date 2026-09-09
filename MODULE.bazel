@@ -187,6 +187,14 @@ crate.from_cargo(
         "x86_64-unknown-linux-musl",
     ],
 )
+
+# Ruff 0.16.5 uses an unstable assertion macro in debug builds.
+crate.annotation(
+    crate = "ruff_python_parser",
+    patch_args = ["-p1"],
+    patches = ["//:patches/ruff-0.16.5-stable-debug-assert.patch"],
+    repositories = ["crates"],
+)
 crate.annotation(
     build_script_data = ["@@//tools/python:pyo3_abi3_config.txt"],
     build_script_env = {"PYO3_CONFIG_FILE": "$(execpath @@//tools/python:pyo3_abi3_config.txt)"},
