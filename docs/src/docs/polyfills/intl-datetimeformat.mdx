@@ -269,3 +269,9 @@ an explicit zero-second component.
 
 Loading `und` locale data preserves existing English data. Root patterns remain
 separate from language-specific patterns, regardless of registration order.
+
+## Fractional timestamps
+
+Formatting truncates fractional millisecond timestamps toward zero before
+calendar conversion. For example, `-0.9` formats as the Unix epoch, matching `0`.
+The same rule applies to both range endpoints.
