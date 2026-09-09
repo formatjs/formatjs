@@ -43,7 +43,10 @@ async function main(args: Args) {
     result.localeData[locale] = {
       nu: numberingSystems,
     }
-    const localeData = numberingSystems.reduce<Record<string, string>>(
+    const symbolSystems = Object.keys(numbersData)
+      .filter(key => key.startsWith('symbols-numberSystem-'))
+      .map(key => key.slice('symbols-numberSystem-'.length))
+    const localeData = symbolSystems.reduce<Record<string, string>>(
       (all, numberingSystem) => {
         const separator =
           numbersData[

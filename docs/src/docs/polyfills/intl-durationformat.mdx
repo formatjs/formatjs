@@ -221,3 +221,8 @@ units cannot request `always` display or be followed by a textual unit style.
 
 Zero minutes remain between displayed numeric hours and seconds, even with
 `minutesDisplay: "auto"`. For example, `{hours: 1, seconds: 1}` formats as `"1:00:01"`.
+
+Numbering-system resolution includes systems supported by the active
+`Intl.NumberFormat` dependency, keeping the locale default first. Support is
+checked lazily and refreshed when that constructor is replaced. Time-separator
+data includes every numbering-system symbol record supplied by CLDR.

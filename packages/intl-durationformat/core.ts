@@ -1,3 +1,4 @@
+import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
@@ -24,6 +25,33 @@ import type {
   ResolvedDurationFormatOptions,
 } from '#packages/intl-durationformat/types.js'
 import {type DurationFormatOptions} from '#packages/intl-durationformat/types.js'
+
+// NumberFormat is a runtime dependency and may be replaced by its polyfill.
+const numberingSystemsByConstructor = new WeakMap<
+  typeof Intl.NumberFormat,
+  string[]
+>()
+function supportedNumberingSystems(): string[] {
+  const NumberFormat = Intl.NumberFormat
+  let systems = numberingSystemsByConstructor.get(NumberFormat)
+  if (!systems) {
+    systems = numberingSystemNames.filter(numberingSystem => {
+      const options = Object.create(null)
+      options.numberingSystem = numberingSystem
+      try {
+        return (
+          new NumberFormat('en', options).resolvedOptions().numberingSystem ===
+          numberingSystem
+        )
+      } catch {
+        return false
+      }
+    })
+    // Missing NumberFormat locale data may be loaded before the next call.
+    if (systems.length) numberingSystemsByConstructor.set(NumberFormat, systems)
+  }
+  return systems
+}
 
 // Keys that should be included in resolvedOptions() output
 // These represent all the configurable options for duration formatting
@@ -336,16 +364,15 @@ export class DurationFormat implements DurationFormatType {
   ).reduce<Record<string, DurationFormatLocaleInternalData | undefined>>(
     (all, locale) => {
       DurationFormat.availableLocales.add(locale)
-      const nu = [...TIME_SEPARATORS.localeData[locale].nu]
-      // ECMA-402 DurationFormat resolves `numberingSystem` through the
-      // locale-data [[nu]] list. Keep the locale default first, but allow the
-      // spec-visible `latn` override even when CLDR only needs the default
-      // numbering system for time-separator data.
-      if (!nu.includes('latn')) {
-        nu.push('latn')
-      }
       all[locale] = {
-        nu,
+        // ECMA-402 §13.2.3 [[LocaleData]] constraints (not algorithm steps):
+        // expose numbering systems supported by the NumberFormat dependency.
+        // https://tc39.es/ecma402/#sec-Intl.DurationFormat-internal-slots
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L162-L169
+        get nu() {
+          const defaults = TIME_SEPARATORS.localeData[locale].nu
+          return [...new Set([...defaults, ...supportedNumberingSystems()])]
+        },
         digitalFormat: {
           default: TIME_SEPARATORS.default,
           ...TIME_SEPARATORS.localeData[locale as 'da'].separator,

@@ -74,3 +74,8 @@ finite integers of a common sign. Invalid numeric fields throw `RangeError`;
 an empty record throws `TypeError`. Absolute years, months, and weeks must be
 less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
 Subsecond contributions participate in the bound comparison exactly.
+
+Numbering-system resolution includes systems supported by the active
+`Intl.NumberFormat` dependency, keeping the locale default first. Support is
+checked lazily and refreshed when that constructor is replaced. Time-separator
+data includes every numbering-system symbol record supplied by CLDR.

@@ -6,10 +6,14 @@ export type {DurationInput, DurationRecord}
 
 // Public --------------------------------------------------------------------------------------------------------------
 
-export type DurationFormatOptions = Partial<ResolvedDurationFormatOptions>
+export type DurationFormatOptions = Partial<
+  Omit<ResolvedDurationFormatOptions, 'locale'>
+> & {
+  localeMatcher?: 'best fit' | 'lookup'
+}
 
 export interface ResolvedDurationFormatOptions {
-  localeMatcher: 'best fit' | 'lookup'
+  locale: string
   style: 'long' | 'short' | 'narrow' | 'digital'
   years: 'long' | 'short' | 'narrow'
   yearsDisplay: 'always' | 'auto'
@@ -33,7 +37,6 @@ export interface ResolvedDurationFormatOptions {
   nanosecondsDisplay: 'always' | 'auto'
   fractionalDigits?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
   numberingSystem: string
-  round: boolean
 }
 
 export interface DurationFormatPart {
