@@ -121,6 +121,21 @@ describe('Intl.DateTimeFormat', function () {
     }
   })
 
+  it('normalizes zero offsets and rejects non-ASCII timezone lookalikes', () => {
+    for (const timeZone of ['-00', '-0000', '-00:00', '+00']) {
+      expect(
+        new DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone
+      ).toBe('+00:00')
+    }
+    expect(
+      new DateTimeFormat('en', {timeZone: 'asia/baku'}).resolvedOptions()
+        .timeZone
+    ).toBe('Asia/Baku')
+    expect(() => new DateTimeFormat('en', {timeZone: 'asıa/baku'})).toThrow(
+      RangeError
+    )
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {

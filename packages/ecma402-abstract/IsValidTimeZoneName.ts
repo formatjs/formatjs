@@ -72,6 +72,13 @@ export function IsValidTimeZoneName(
   // 2. Let timeZones be AvailableNamedTimeZoneIdentifiers()
   // 3. If timeZones contains an element equal to timeZone, return true
   // NOTE: Implementation uses case-insensitive comparison per spec note
+  // ECMA-402 §6.5.2 GetAvailableNamedTimeZoneIdentifier, step 1.a:
+  // only ASCII case folding is allowed; Unicode lookalikes cannot match IANA names.
+  // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L318
+  for (let i = 0; i < tz.length; i++) {
+    if (tz.charCodeAt(i) > 0x7f) return false
+  }
   const uppercasedTz = tz.toUpperCase()
   const zoneNames = new Set()
   const linkNames = new Set()
