@@ -97,7 +97,12 @@ export function BestFitFormatMatcher(
   }
 
   const skeletonFormat = {...bestFormat}
-  const patternFormat = {rawPattern: bestFormat.rawPattern} as Formats
+  // ECMA-402 §11.5.3 returns an internal Record, not an inheriting object.
+  // This implementation-defined operation has no numbered steps.
+  // https://tc39.es/ecma402/#sec-bestfitformatmatcher
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1310-L1315
+  const patternFormat = Object.create(null) as Formats
+  patternFormat.rawPattern = bestFormat.rawPattern
   processDateTimePattern(bestFormat.rawPattern, patternFormat)
 
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
