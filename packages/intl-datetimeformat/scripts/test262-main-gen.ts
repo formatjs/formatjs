@@ -20,7 +20,6 @@ function main(args: Args) {
 // @ts-nocheck
 import '#packages/intl-datetimeformat/polyfill-force.js'
 import allData from '@formatjs_generated/tz/all-tz.js'
-defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat})
 Intl.DateTimeFormat.__addLocaleData(${allData.join(',\n')})
 Intl.DateTimeFormat.__addTZData(allData)`
   )

@@ -82,3 +82,33 @@ All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localem
 Shared option helpers accept callable objects without invoking them. Property
 getters run normally and their errors propagate. `GetOptionsObject` rejects
 `null` and other primitives, while omitted options create a fresh empty object.
+
+## Test262 gates
+
+`bazel test //packages/intl-<package>:test262` runs the selected upstream tests,
+including tracked failures. Each package's `test262-baseline.json` records the
+execution count and exact failing test/scenario diagnostics. Changed counts,
+new failures, changed diagnostics, and unexpected passes fail CI. A green gate
+means the baseline is unchanged, not full conformance.
+
+`bazel test //packages/intl-<package>:test262-strict` requires zero failures.
+Strict targets are manual; baseline gates run in normal CI. Reports include
+separate pass/failure counts and write `results.json` plus a candidate baseline
+to Bazel's undeclared test outputs. Candidate baselines require review; never
+copy them over existing baselines merely to make CI green.
+
+The suites use isolated IIFE preludes. ListFormat's prelude
+loads generated locale data. `tools/test262/runner_test` exercises the real
+harness with passing, failing, and empty suites. Baselines require review when the pinned upstream selection changes.
+
+All twelve package suites now select every upstream test at revision
+`419d3e0a2273ba01a3bfcbec423f2801425b8e93`; `test262.BUILD` has no file exclusions.
+The prelude also installs polyfills in nested Test262 realms. Run
+`:test262-native` for the corresponding native-only control. Both modes use
+the same stable host settings; missing Temporal support remains visible. See
+[the full baseline and runtime comparison](./014-test262-conformance.md).
+
+Test262 execution uses rules_js generated harness rules. Strict/native modes
+are direct harness tests; baseline mode invokes the generated harness binary
+and separate validator within one test. Reports are test outputs, so disabling
+test caching reruns the harness. Realm installation scripts are generated inputs.

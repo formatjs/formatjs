@@ -1,4 +1,3 @@
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
@@ -8,6 +7,7 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
+load("//tools/test262:defs.bzl", "test262_test")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -421,12 +421,14 @@ rolldown_bundle(
         ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
+    format = "iife",
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.number",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
@@ -434,24 +436,14 @@ rolldown_bundle(
     ],
 )
 
-test262_harness_bin.test262_harness_test(
+test262_test(
     name = "test262",
-    args = [
-        "--reporter-keys",
-        "file,attrs,result",
-        "--timeout",
-        "30000",
-        "--prelude",
-        "$(rootpath test262-polyfill.js)",
-        "--test262Dir",
-        "../+http_archive+com_github_tc39_test262",
-        "../+http_archive+com_github_tc39_test262/test/intl402/NumberFormat/**/*.js",
-    ],
     data = [
-        "test262-polyfill.js",
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-numberformat-copy",
     ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/NumberFormat",
 )
 
 rolldown_bundle(

@@ -1,8 +1,8 @@
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
+load("//tools/test262:defs.bzl", "test262_test")
 
 PACKAGE_NAME = "intl-locale"
 
@@ -83,10 +83,12 @@ rolldown_bundle(
     name = "test262-polyfill",
     srcs = [":srcs"],
     entry_point = "polyfill-force.ts",
+    format = "iife",
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@formatjs_generated/cldr.locale",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
         "//packages/ecma262-abstract",
@@ -94,27 +96,14 @@ rolldown_bundle(
     ],
 )
 
-test262_harness_bin.test262_harness_test(
+test262_test(
     name = "test262",
-    args = [
-        "--reporter-keys",
-        "file,attrs,result",
-        "--errorForFailures",
-        "--timeout",
-        "30000",
-        "--prelude",
-        "$(rootpath test262-polyfill.js)",
-        "--test262Dir",
-        "../+http_archive+com_github_tc39_test262",
-        "../+http_archive+com_github_tc39_test262/test/intl402/Locale/**/*.js",
-    ],
     data = [
-        "test262-polyfill.js",
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-locale-copy",
     ],
-    # TODO: fix
-    tags = ["manual"],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/Locale",
 )
 
 rolldown_bundle(

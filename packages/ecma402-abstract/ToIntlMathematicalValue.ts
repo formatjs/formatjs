@@ -14,6 +14,14 @@ export function ToIntlMathematicalValue(input: unknown): Decimal {
 
   let primValue = ToPrimitive(input, 'number')
 
+  // ECMA-402 §16.5.16, step 4.a: ToNumber rejects Symbol primitives.
+  // Keep this error outside the invalid numeric string fallback below.
+  // https://tc39.es/ecma402/#sec-tointlmathematicalvalue
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1652-L1657
+  if (typeof primValue === 'symbol') {
+    throw new TypeError('Cannot convert a Symbol value to a number')
+  }
+
   // Handle other primitive types
   if (primValue === undefined) {
     return new Decimal(NaN)

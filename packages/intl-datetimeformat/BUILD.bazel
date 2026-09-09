@@ -6,6 +6,7 @@ load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_tz_data")
 load(":locales.generated.bzl", "ALL_LOCALES")
@@ -407,4 +408,34 @@ js_binary(
         "--experimental-transform-types",
     ],
     tags = ["manual"],
+)
+
+rolldown_bundle(
+    name = "test262-polyfill",
+    srcs = [
+        ":srcs",
+        ":test262-main-gen",
+    ],
+    entry_point = "test262-main.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+test262_test(
+    name = "test262",
+    data = [
+        "@com_github_tc39_test262//:test262-datetimeformat-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/DateTimeFormat",
 )
