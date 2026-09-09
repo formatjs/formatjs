@@ -18,16 +18,16 @@ excluded because it fails.
 | pluralrules         |      106 |                 4 |               0 |                 2 |
 | relativetimeformat  |      160 |                 8 |               0 |                20 |
 | segmenter           |      158 |                10 |               0 |                10 |
-| supportedvaluesof   |       50 |                 2 |               6 |                 6 |
+| supportedvaluesof   |       50 |                 2 |               6 |                 4 |
 
 Total: 2,498 executions, 2,248 polyfill passes, 250 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,232 passes, 266 failures.
+Combined: 2,498 executions, 2,234 passes, 264 failures.
 
-Combined installation adds 22 failing executions; 6 isolated failures now pass.
+Combined installation adds 20 failing executions; 6 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
 Two RelativeTimeFormat cases pass because combined enumeration omits numbering
 systems that the NumberFormat polyfill does not support; this is not broader

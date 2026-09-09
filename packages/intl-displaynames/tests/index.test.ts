@@ -102,6 +102,13 @@ describe('.of()', () => {
 
   // https://github.com/formatjs/formatjs/issues/3387
   describe('GH #3387: calendar type support', () => {
+    it('uses BCP 47 calendar identifiers with fallback disabled', () => {
+      const dn = new DisplayNames('en', {type: 'calendar', fallback: 'none'})
+      expect(dn.of('gregory')).toBe('Gregorian Calendar')
+      expect(dn.of('ethioaa')).toBe('Ethiopic Amete Alem Calendar')
+      expect(dn.of('ethiopic-amete-alem')).toBeUndefined()
+    })
+
     it('finds the calendar correctly with long style', () => {
       expect(new DisplayNames('en', {type: 'calendar'}).of('roc')).toBe(
         'Minguo Calendar'
@@ -141,7 +148,7 @@ describe('.of()', () => {
       expect(dn.of('islamic-civil')).toBe(
         'Hijri Calendar (tabular, civil epoch)'
       )
-      expect(dn.of('ethiopic-amete-alem')).toBe('Ethiopic Amete Alem Calendar')
+      expect(dn.of('ethiopic-amete-alem')).toBe('ethiopic-amete-alem')
     })
 
     it('handles calendar codes case-insensitively (canonicalizes to lowercase)', () => {
