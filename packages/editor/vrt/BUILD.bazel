@@ -86,6 +86,7 @@ vrt_library(
     visibility = ["//visibility:public"],
     deps = [
         ":node_modules/@rules-web-e2e/vrt",
+        "//:node_modules/@formatjs/editor",
         "//:node_modules/@playwright/test",
         "//:node_modules/@stylexjs/unplugin",
         "//:node_modules/@types/node",
@@ -96,7 +97,6 @@ vrt_library(
         "//:node_modules/react-dom",
         "//:node_modules/react-intl",
         "//:node_modules/vite",
-        "//packages/editor",
         "//packages/editor/demo",
     ],
 )

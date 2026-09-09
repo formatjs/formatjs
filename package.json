@@ -37,6 +37,7 @@
     "@formatjs/cli-native-linux-x64-musl": "workspace:*",
     "@formatjs/cli-native-win32-x64": "workspace:*",
     "@formatjs/ecma376": "workspace:*",
+    "@formatjs/editor": "workspace:*",
     "@formatjs/fast-memoize": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/icu-skeleton-parser": "workspace:*",

@@ -1,18 +1,21 @@
 # Headless message editor
 
+Install `@formatjs/editor` alongside React 19. The published package exports
+headless APIs and TypeScript declarations; demo UI remains repository-only.
+
 The React 19 editor exposes behavior without DOM, styles, a design system, an
 IntlProvider, or network requests. Consumers own catalogs, persistence, loading
 states, labels, layout, and providers. The StyleX view in `demo/demo.tsx` is an
 example consumer, not part of the headless entry point.
 
-The optional `design-system/` layer provides tokens and native button, input,
+The optional `demo/design-system/` layer provides tokens and native button, input,
 textarea, badge, and panel components. Customize `tokens.stylex.ts` or supply a
 StyleX theme. The demo adds responsive layout, keyboard focus, validation states,
 and logical spacing for RTL. Its Vite setup uses `@stylexjs/unplugin`; consumers
 using another design system need neither StyleX nor these components.
 
 ```tsx
-import {useMessageEditor} from './index.js'
+import {useMessageEditor} from '@formatjs/editor'
 
 function TranslationEditor({messages, onMessageChange}) {
   const editor = useMessageEditor({messages, onMessageChange})

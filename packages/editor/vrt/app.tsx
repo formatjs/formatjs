@@ -1,6 +1,6 @@
 import {useState, type ReactElement} from 'react'
 import {TranslationEditorDemo} from '../demo/workflow-demo.js'
-import type {EditorMessage} from '../index.js'
+import type {EditorMessage} from '@formatjs/editor'
 import {createRoot} from 'react-dom/client'
 import {EditorDemo} from '../demo/demo.js'
 import {EditorTestShell} from './shell.js'
