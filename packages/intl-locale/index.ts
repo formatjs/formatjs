@@ -372,12 +372,13 @@ function calendarsOfLocale(loc: Locale): Array<string> {
   const restricted = locInternalSlots.calendar
   const locale = locInternalSlots.locale
 
-  let region: string | undefined
-  if (locale !== 'root') {
-    region = loc.maximize().region
-  }
+  const {region, regionOverride} = regionPreference(loc)
 
-  const preferredCalendars = getCalendarPreferenceDataForRegion(region)
+  const preferredCalendars = getCalendarPreferenceDataForRegion(
+    region,
+    regionOverride,
+    parseUnicodeLanguageId(locale).lang
+  )
   return createArrayFromListOrRestricted(preferredCalendars, restricted)
 }
 
@@ -400,14 +401,12 @@ function hourCyclesOfLocale(loc: Locale): Array<string> {
   const restricted = locInternalSlots.hourCycle
   const locale = locInternalSlots.locale
 
-  let region: string | undefined
-  if (locale !== 'root') {
-    region = loc.maximize().region
-  }
+  const {region, regionOverride} = regionPreference(loc)
 
   const preferredHourCycles = getHourCyclesPreferenceDataForLocaleOrRegion(
-    locale,
-    region
+    parseUnicodeLanguageId(locale).lang,
+    region,
+    regionOverride
   )
   return createArrayFromListOrRestricted(preferredHourCycles, restricted)
 }
@@ -462,7 +461,10 @@ function characterDirectionOfLocale(loc: Locale): string {
   return translateCharacterOrder(characterOrders[locale])
 }
 
-function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
+function regionPreference(loc: Locale): {
+  region: string
+  regionOverride: string | undefined
+} {
   const locInternalSlots = getInternalSlots(loc)
 
   const locale = locInternalSlots.locale
@@ -481,8 +483,16 @@ function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
     return match ? new Locale(`und-${match[1]}`).region : undefined
   }
   const region =
-    ast.lang.region || subdivisionRegion('sd') || loc.maximize().region
-  return getWeekDataForRegion(region, subdivisionRegion('rg'))
+    ast.lang.region ||
+    subdivisionRegion('sd') ||
+    parseUnicodeLanguageId(addLikelySubtags(locale)).region ||
+    '001'
+  return {region, regionOverride: subdivisionRegion('rg')}
+}
+
+function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
+  const {region, regionOverride} = regionPreference(loc)
+  return getWeekDataForRegion(region, regionOverride)
 }
 
 const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
