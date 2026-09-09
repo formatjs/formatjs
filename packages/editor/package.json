@@ -1,0 +1,46 @@
+{
+  "name": "@formatjs/editor",
+  "version": "3.0.28",
+  "private": false,
+  "description": "Headless ICU MessageFormat editor for React",
+  "keywords": [
+    "cli",
+    "format",
+    "formatjs",
+    "formatting",
+    "globalization",
+    "i18n",
+    "internationalization",
+    "intl",
+    "locale",
+    "localization",
+    "react",
+    "react-intl",
+    "reactjs",
+    "translate",
+    "translation"
+  ],
+  "homepage": "https://github.com/formatjs/formatjs",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "license": "MIT",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@formatjs/icu-messageformat-parser": "workspace:*"
+  },
+  "peerDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
+  }
+}

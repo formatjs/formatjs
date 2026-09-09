@@ -6,7 +6,7 @@ import {
   useMessageEditor,
   type EditorState,
   type TranslatedMessage,
-} from '../index.js'
+} from '@formatjs/editor'
 import {
   Badge,
   Button,

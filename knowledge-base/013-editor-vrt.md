@@ -1,6 +1,6 @@
 # Headless editor and visual tests
 
-`packages/editor/index.tsx` exposes `useMessageEditor` and a render-prop `Editor`.
+`packages/editor/index.ts` exposes `useMessageEditor` and a render-prop `Editor`.
 The core owns selection/search and ICU parse results. Message data is controlled;
 consumers apply `onMessageChange` and own persistence, providers, markup, and styles.
 `Message` exposes the full AST or parse error through a render function.
@@ -62,3 +62,8 @@ library and test rules to local `vrt_library` / `vrt_test` wrappers that preserv
 raw sources and typecheck them. Vite and Playwright own execution; the harness
 also checks the demo library and builds its server adapter.
 No editor package disables Gazelle.
+
+`@formatjs/editor` participates in the pnpm workspace, Bazel distribution
+registry, and Release Please npm publishing. Its public `index.ts` bundles
+headless APIs and declarations; React 19 is a peer dependency. Demo and VRT
+packages are development-only and are excluded from the npm artifact.

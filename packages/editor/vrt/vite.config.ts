@@ -25,7 +25,7 @@ const config: UserConfig = defineConfig({
       'react',
       'react-dom',
       'react-intl',
-      '@formatjs/icu-messageformat-parser',
+      '@formatjs/editor',
     ].map(name => ({find: name, replacement: path.join(nodeModules, name)})),
     dedupe: ['react', 'react-dom'],
   },
@@ -36,7 +36,7 @@ const config: UserConfig = defineConfig({
       'react-dom/client',
       'react/jsx-runtime',
       'react-intl',
-      '@formatjs/icu-messageformat-parser',
+      '@formatjs/editor',
     ],
   },
 })
