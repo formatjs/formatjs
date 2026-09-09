@@ -10,7 +10,7 @@ excluded because it fails.
 | collator            |      130 |                18 |               0 |
 | datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
-| durationformat      |      220 |                18 |               4 |
+| durationformat      |      220 |                14 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                46 |              22 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               6 |
 
-Total: 2,498 executions, 2,070 polyfill passes, 428 polyfill failures. The native
+Total: 2,498 executions, 2,074 polyfill passes, 424 polyfill failures. The native
 control fails 86 executions; 68 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -116,3 +116,6 @@ instead of their shortest rounded decimal representation.
 GetDurationUnitOptions propagates numeric/fractional styles before reading display
 options and validates fractional units after normalization. Default minutes and
 seconds stay displayed when following a numeric time unit.
+
+Numeric duration formatting retains zero minutes between displayed hours and
+seconds, considering sub-second values before rounding when deciding visibility.
