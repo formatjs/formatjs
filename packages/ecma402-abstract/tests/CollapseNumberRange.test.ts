@@ -48,7 +48,7 @@ describe('CollapseNumberRange', () => {
   test('collapses matching currency suffixes with valid endpoint sources', () => {
     const parts = collapse(negativeMillions('1'), negativeMillions('2'))
     expect(parts.map(part => part.value).join('')).toBe(
-      '-1.000.000,00 - -2.000.000,00 €'
+      '-1.000.000,00-2.000.000,00 €'
     )
     expect(parts[parts.length - 1]).toEqual({
       type: 'currency',

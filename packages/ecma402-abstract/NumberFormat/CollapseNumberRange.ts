@@ -28,14 +28,21 @@ function affixLength(parts: NumberFormatPart[], fromEnd: boolean): number {
   return length
 }
 
-function canCollapse(a: NumberFormatPart[], b: NumberFormatPart[]): boolean {
+function canCollapse(
+  a: NumberFormatPart[],
+  b: NumberFormatPart[],
+  sharedSuffix = false
+): boolean {
   return (
     a.length === b.length &&
     a.some(part => part.type !== 'literal') &&
     a.every(
       (part, i) => part.type === b[i].type && part.value === b[i].value
     ) &&
-    Array.from(a.map(part => part.value).join('')).length > 1
+    (Array.from(a.map(part => part.value).join('')).length > 1 ||
+      (sharedSuffix &&
+        a.length === 1 &&
+        (a[0].type === 'plusSign' || a[0].type === 'minusSign')))
   )
 }
 
@@ -63,15 +70,27 @@ export function CollapseNumberRange(
 
   const startPrefix = start.slice(0, affixLength(start, false))
   const endPrefix = end.slice(0, affixLength(end, false))
-  if (canCollapse(startPrefix, endPrefix)) {
-    prefix.push(...start.splice(0, startPrefix.length))
-    end.splice(0, endPrefix.length)
-  }
   const startSuffixLength = affixLength(start, true)
   const endSuffixLength = affixLength(end, true)
   const startSuffix = start.slice(start.length - startSuffixLength)
   const endSuffix = end.slice(end.length - endSuffixLength)
-  if (canCollapse(startSuffix, endSuffix)) {
+  const collapseSuffix = canCollapse(startSuffix, endSuffix)
+  // A shared currency/unit suffix also permits sharing identical sign prefixes.
+  // The complete shared affix is more than one code point; mixed signs stay distinct.
+  // ECMA-402 §16.5.21, ambiguity constraint, and LDML collapsing steps 1–3 above.
+  const sharedUnit =
+    collapseSuffix &&
+    startSuffix.some(
+      part =>
+        part.type === 'currency' ||
+        part.type === 'unit' ||
+        part.type === 'percentSign'
+    )
+  if (canCollapse(startPrefix, endPrefix, sharedUnit)) {
+    prefix.push(...start.splice(0, startPrefix.length))
+    end.splice(0, endPrefix.length)
+  }
+  if (collapseSuffix) {
     start.splice(start.length - startSuffixLength)
     suffix.push(...end.splice(end.length - endSuffixLength))
   }

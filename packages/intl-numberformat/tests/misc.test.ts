@@ -895,3 +895,26 @@ it('formats approximate ranges with signs, accounting, and compact notation', ()
     }).formatRange(2.9, 3.1)
   ).toBe('~3 meters')
 })
+
+it('shares matching signs with a shared currency suffix', () => {
+  const nf = new NumberFormat('pt-PT', {
+    style: 'currency',
+    currency: 'EUR',
+    signDisplay: 'always',
+  })
+  expect(nf.formatRange(2.9, 3.1)).toBe('+2,90 - 3,10 €')
+  expect(
+    nf.formatRangeToParts(2.9, 3.1).filter(part => part.type === 'plusSign')
+  ).toEqual([{type: 'plusSign', value: '+', source: 'shared'}])
+  expect(nf.formatRange(-3.1, -2.9)).toBe('-3,10 - 2,90 €')
+  expect(nf.formatRange(-2.9, 3.1)).toBe('-2,90 - +3,10 €')
+  expect(
+    nf
+      .formatRangeToParts(-2.9, 3.1)
+      .filter(part => part.type === 'minusSign' || part.type === 'plusSign')
+      .map(part => part.source)
+  ).toEqual(['startRange', 'endRange'])
+  expect(
+    new NumberFormat('en', {signDisplay: 'always'}).formatRange(3, 5)
+  ).toBe('+3 – +5')
+})
