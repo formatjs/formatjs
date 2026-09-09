@@ -546,3 +546,33 @@ describe('NaN sign display', () => {
     expect(formatter.format(-Infinity)).toBe('-∞')
   })
 })
+
+describe.each(['formatRange', 'formatRangeToParts'] as const)(
+  '%s endpoints',
+  method => {
+    it('rejects missing endpoints before coercing either argument', () => {
+      const nf = new NumberFormat('en')
+      const endpoint = {
+        valueOf() {
+          throw new Error('must not coerce')
+        },
+      }
+      for (const args of [
+        [],
+        [1],
+        [undefined, 1],
+        [1, undefined],
+        [undefined, undefined],
+        [endpoint, undefined],
+        [undefined, endpoint],
+      ]) {
+        expect(() => (nf[method] as Function)(...args)).toThrow(TypeError)
+      }
+    })
+    it('keeps NaN endpoints as RangeError', () => {
+      const nf = new NumberFormat('en')
+      expect(() => nf[method](NaN, 1)).toThrow(RangeError)
+      expect(() => nf[method](1, NaN)).toThrow(RangeError)
+    })
+  }
+)

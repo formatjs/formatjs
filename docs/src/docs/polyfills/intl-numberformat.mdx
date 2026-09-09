@@ -357,3 +357,9 @@ failures. Both modes report passing and failing execution counts separately.
 
 With `signDisplay: "exceptZero"`, NaN has no sign (`"NaN"` in English).
 `signDisplay: "always"` still includes the plus sign (`"+NaN"`).
+
+### Range arguments
+
+`formatRange(start, end)` and `formatRangeToParts(start, end)` require both
+endpoints. Missing or `undefined` endpoints throw `TypeError` before either value
+is converted. NaN endpoints throw `RangeError`.
