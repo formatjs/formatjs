@@ -1,6 +1,8 @@
-# gazelle:ignore
 load("//tools:index.bzl", "ts_binary", "ts_compile")
 load("//tools:test.bzl", "formatjs_test")
+
+# gazelle:ignore
+load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "packages_tsconfig")
 
 exports_files(glob(["*.sh"]))
 
@@ -84,4 +86,22 @@ formatjs_test(
         "//:node_modules/vitest",
     ],
     no_copy_to_bin = ["//:package.json"],
+)
+
+ts_compile(
+    name = "numbering-system-data",
+    srcs = [
+        "numbering-system-data.ts",
+        "utils.ts",
+    ],
+    package_json = False,
+    tsconfig = packages_tsconfig(BASE_NODE_TSCONFIG),
+    deps = [
+        ":number-data",
+        "//:node_modules/@types/lodash-es",
+        "//:node_modules/@types/node",
+        "//:node_modules/cldr-core",
+        "//:node_modules/lodash-es",
+        "//packages/ecma402-abstract/types",
+    ],
 )

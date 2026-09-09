@@ -918,3 +918,30 @@ it('shares matching signs with a shared currency suffix', () => {
     new NumberFormat('en', {signDisplay: 'always'}).formatRange(3, 5)
   ).toBe('+3 – +5')
 })
+
+it('hydrates numbering-system aliases without mutating supplied data', () => {
+  const source = JSON.parse(JSON.stringify(require('./locale-data/en.json')))
+  source.data.numbers.aliases = {adlm: 'latn'}
+  source.data.nu.push('adlm')
+  source.data.numbers.nu.push('adlm')
+  for (const field of [
+    'symbols',
+    'decimal',
+    'percent',
+    'currency',
+    'aliases',
+  ]) {
+    Object.freeze(source.data.numbers[field])
+  }
+  Object.freeze(source.data.numbers)
+  Object.freeze(source.data)
+  Object.freeze(source)
+  NumberFormat.__addLocaleData(source)
+  expect(source.data.numbers.symbols.adlm).toBeUndefined()
+  expect(NumberFormat.localeData.en!.numbers.symbols.adlm).toBe(
+    NumberFormat.localeData.en!.numbers.symbols.latn
+  )
+  expect(new NumberFormat('en', {numberingSystem: 'adlm'}).format(123)).toBe(
+    '𞥑𞥒𞥓'
+  )
+})

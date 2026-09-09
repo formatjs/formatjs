@@ -269,7 +269,27 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {value: supportedLocalesOf})
 NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
-  for (const {data: d, locale} of data) {
+  for (const {data: source, locale} of data) {
+    const d = source.numbers.aliases
+      ? {
+          ...source,
+          numbers: {
+            ...source.numbers,
+            symbols: {...source.numbers.symbols},
+            decimal: {...source.numbers.decimal},
+            percent: {...source.numbers.percent},
+            currency: {...source.numbers.currency},
+          },
+        }
+      : source
+    // Resolve generated aliases without changing the caller's locale data.
+    for (const system of Object.keys(source.numbers.aliases || {})) {
+      const target = source.numbers.aliases![system]
+      d.numbers.symbols[system] = d.numbers.symbols[target]
+      d.numbers.decimal[system] = d.numbers.decimal[target]
+      d.numbers.percent[system] = d.numbers.percent[target]
+      d.numbers.currency[system] = d.numbers.currency[target]
+    }
     registerLocaleData(
       locale,
       d,
