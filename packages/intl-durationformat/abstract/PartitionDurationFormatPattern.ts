@@ -20,6 +20,8 @@ export function PartitionDurationFormatPattern(
   const result: DurationFormatPart[][] = []
   let done = false
   let separated = false
+  let signDisplayed = true
+  const negative = TABLE_2.some(row => duration[row.valueField] < 0)
   const internalSlots = getInternalSlots(df)
   let dataLocale = internalSlots.dataLocale
   const dataLocaleData = DurationFormat.localeData[dataLocale]
@@ -81,6 +83,17 @@ export function PartitionDurationFormatPattern(
       }
     }
     if (!value.isZero() || display !== 'auto') {
+      // ECMA-402 §13.5.15 step 4.h.iii.2 and §13.5.12 steps 16–18:
+      // display the duration sign once, including on a leading zero unit.
+      // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L987-L991
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L868-L882
+      if (signDisplayed) {
+        if (value.isZero() && negative) value = new BigDecimal('-0')
+        signDisplayed = false
+      } else {
+        nfOpts.signDisplay = 'never'
+      }
       nfOpts.numberingSystem = internalSlots.numberingSystem
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
@@ -112,7 +125,10 @@ export function PartitionDurationFormatPattern(
       // as an exact Mathematical Value via ToPrimitive → BigDecimal.toString,
       // which sidesteps the IEEE 754 round-trip that breaks
       // `roundingMode: 'trunc'` on values like `1 + 473/1e3` (#6462).
-      let parts = nf.formatToParts(value)
+      // BigDecimal.toString() normalizes -0, so preserve that sign at the boundary.
+      let parts = nf.formatToParts(
+        value.isZero() && value.isNegative() ? -0 : value
+      )
       parts.forEach(({type, value}) => {
         list.push({
           type,
