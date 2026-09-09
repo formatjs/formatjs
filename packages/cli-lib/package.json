@@ -83,6 +83,6 @@
     "@formatjs/cli-native-win32-x64": "workspace:*"
   },
   "engines": {
-    "node": ">= 20.12.0"
+    "node": ">= 22.12.0"
   }
 }
