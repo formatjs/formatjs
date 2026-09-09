@@ -1,8 +1,6 @@
 {
   "total": 220,
   "failures": {
-    "intl402/DurationFormat/constructor-options-numberingSystem-valid.js (default)": "adlm is supported by DurationFormat Expected SameValue(«\"latn\"», «\"adlm\"») to be true",
-    "intl402/DurationFormat/constructor-options-numberingSystem-valid.js (strict mode)": "adlm is supported by DurationFormat Expected SameValue(«\"latn\"», «\"adlm\"») to be true",
     "intl402/DurationFormat/prototype/format/taint-temporal-duration-prototype.js (default)": "Test262Error { message: '' }",
     "intl402/DurationFormat/prototype/format/taint-temporal-duration-prototype.js (strict mode)": "Test262Error { message: '' }",
     "intl402/DurationFormat/prototype/format/temporal-duration-string-arg.js (default)": "Expected no error, got RangeError: Invalid duration format",
@@ -10,8 +8,6 @@
     "intl402/DurationFormat/prototype/formatToParts/taint-temporal-duration-prototype.js (default)": "Test262Error { message: '' }",
     "intl402/DurationFormat/prototype/formatToParts/taint-temporal-duration-prototype.js (strict mode)": "Test262Error { message: '' }",
     "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (default)": "Expected no error, got RangeError: Invalid duration format",
-    "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (strict mode)": "Expected no error, got RangeError: Invalid duration format",
-    "intl402/DurationFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
-    "intl402/DurationFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true"
+    "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js (strict mode)": "Expected no error, got RangeError: Invalid duration format"
   }
 }

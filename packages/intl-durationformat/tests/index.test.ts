@@ -428,3 +428,38 @@ test('zero minutes remain between displayed numeric hours and seconds', () => {
     })
   ).toBe('01')
 })
+
+test('DurationFormat resolves numbering systems supported by NumberFormat', () => {
+  const formatter = new DurationFormat('en-u-nu-arab', {
+    numberingSystem: 'foobar',
+    style: 'digital',
+  })
+  expect(formatter.resolvedOptions().locale).toBe('en-u-nu-arab')
+  expect(formatter.resolvedOptions().numberingSystem).toBe('arab')
+  expect(formatter.format({hours: 1, minutes: 2, seconds: 3})).toBe('١:٠٢:٠٣')
+  expect(
+    new DurationFormat('en', {numberingSystem: 'deva'}).resolvedOptions()
+      .numberingSystem
+  ).toBe('deva')
+})
+
+test('numbering system support refreshes when NumberFormat is replaced', () => {
+  const NativeNumberFormat = Intl.NumberFormat
+  try {
+    new DurationFormat('en', {numberingSystem: 'arab'})
+    Intl.NumberFormat = class extends NativeNumberFormat {
+      constructor(
+        locales?: Intl.LocalesArgument,
+        options?: Intl.NumberFormatOptions
+      ) {
+        super(locales, {...options, numberingSystem: 'latn'})
+      }
+    } as typeof Intl.NumberFormat
+    expect(
+      new DurationFormat('en', {numberingSystem: 'arab'}).resolvedOptions()
+        .numberingSystem
+    ).toBe('latn')
+  } finally {
+    Intl.NumberFormat = NativeNumberFormat
+  }
+})
