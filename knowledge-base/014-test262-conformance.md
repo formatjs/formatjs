@@ -38,6 +38,11 @@ test outputs; the checked-in baselines preserve every remaining diagnostic.
 
 ## Harness guarantees
 
+`tools/test262/runner` owns the TypeScript prelude generator, report validator,
+and Node test runner. Gazelle maintains their sources and dependencies. The
+parent package owns executable wiring and generated harness fixtures; it does
+not need a directory-wide Gazelle ignore.
+
 - Baseline gates execute all tests and fail on changed counts, new failures,
   changed diagnostics, or unexpected passes.
 - Strict/native targets directly use the rules_js generated harness test rule

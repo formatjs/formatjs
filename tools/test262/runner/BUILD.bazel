@@ -1,0 +1,41 @@
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@bazel_lib//lib:directory_path.bzl", "directory_path")
+load("//tools:compile.bzl", "formatjs_library")
+
+copy_to_directory(
+    name = "runtime",
+    srcs = [":runner"],
+    include_srcs_patterns = ["**/*.js"],
+    root_paths = ["tools/test262/runner"],
+)
+
+[
+    directory_path(
+        name = entry,
+        directory = ":runtime",
+        path = entry + ".js",
+        visibility = ["//tools/test262:__pkg__"],
+    )
+    for entry in [
+        "prelude",
+        "validate",
+        "results-checks",
+    ]
+]
+
+formatjs_library(
+    name = "runner",
+    srcs = [
+        "prelude.ts",
+        "results.ts",
+        "results-checks.ts",
+        "validate.ts",
+    ],
+    tsconfig_types = ["node"],
+    visibility = ["//tools/test262:__pkg__"],
+    deps = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+)
