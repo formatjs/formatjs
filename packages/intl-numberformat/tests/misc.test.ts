@@ -242,10 +242,11 @@ it('chose compact pattern with rounded number', () => {
 })
 
 describe('For wrong options NumberFormat correctly throws exception', () => {
-  it('uses an invalid value for rounding incremenet', () => {
+  it('uses an invalid value for rounding increment', () => {
     const createInstance = () =>
       new NumberFormat('en', {roundingIncrement: 3 as any})
 
+    expect(createInstance).toThrow(RangeError)
     expect(createInstance).toThrow(
       `Invalid rounding increment value: 3.
 Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000.`
@@ -260,6 +261,7 @@ Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 
         maximumFractionDigits: 2,
       })
 
+    expect(createInstance).toThrow(RangeError)
     expect(createInstance).toThrow(
       'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
     )
@@ -617,3 +619,39 @@ describe('Symbol coercion', () => {
     expect(nf.format('invalid' as any)).toBe(nf.format(NaN))
   })
 })
+
+describe('unit option case sensitivity', () => {
+  it.each([
+    'MILE',
+    'Mile',
+    'meter-per-SECOND',
+    'METER-per-second',
+    'meter-PER-second',
+  ])('rejects %s regardless of style', unit => {
+    for (const style of ['decimal', 'percent', 'currency', 'unit'] as const) {
+      expect(
+        () => new NumberFormat('en', {style, currency: 'USD', unit})
+      ).toThrow(RangeError)
+    }
+  })
+  it.each([
+    'mile',
+    'meter-per-second',
+    'microsecond',
+    'nanosecond',
+    'microsecond-per-nanosecond',
+  ])('accepts %s', unit => {
+    expect(() => new NumberFormat('en', {style: 'unit', unit})).not.toThrow()
+  })
+})
+
+it.each(['microsecond', 'nanosecond'])(
+  'formats %s using generated locale data',
+  unit => {
+    expect(
+      new NumberFormat('en', {style: 'unit', unit, unitDisplay: 'long'}).format(
+        2
+      )
+    ).toBe(`2 ${unit}s`)
+  }
+)

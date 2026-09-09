@@ -111,3 +111,12 @@ and [§16.3.5, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.
 Formatting methods reject Symbol primitives with `TypeError`, including Symbols
 returned by object coercion. ToIntlMathematicalValue step 4.a propagates ToNumber
 errors; only invalid numeric strings use the NaN fallback.
+
+### Option validation
+
+Unit identifiers are case-sensitive: `mile` is valid, `MILE` throws `RangeError`,
+even when the selected style does not display units. Unsupported rounding
+increments also throw `RangeError`.
+
+`microsecond` and `nanosecond` are supported units, including in compound units
+and the `Intl.supportedValuesOf("unit")` list.
