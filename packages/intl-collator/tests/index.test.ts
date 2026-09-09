@@ -55,6 +55,22 @@ describe('Intl.Collator', () => {
     expect(collator.compare('a\u2014b', 'ab')).toBe(0)
   })
 
+  it('uses the CLDR punctuation default unless explicitly overridden', () => {
+    for (const locale of ['th', 'th-TH']) {
+      const collator = new Collator(locale)
+      expect(collator.resolvedOptions().ignorePunctuation).toBe(true)
+      expect(collator.compare('a-b', 'ab')).toBe(0)
+      const explicit = new Collator(locale, {ignorePunctuation: false})
+      expect(explicit.resolvedOptions().ignorePunctuation).toBe(false)
+      expect(explicit.compare('a-b', 'ab')).not.toBe(0)
+    }
+    for (const locale of ['en', 'ja']) {
+      expect(new Collator(locale).resolvedOptions().ignorePunctuation).toBe(
+        false
+      )
+    }
+  })
+
   it('supports locale filtering', () => {
     expect(Collator.supportedLocalesOf(['en', 'fr', 'sv', 'zz'])).toEqual([
       'en',

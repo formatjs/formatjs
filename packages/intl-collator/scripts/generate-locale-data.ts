@@ -10,7 +10,7 @@ type GeneratedLocaleData = {
   readonly kf: readonly ['false', 'upper', 'lower']
   readonly defaultCollation: string
   readonly sensitivity: 'variant'
-  readonly ignorePunctuation: false
+  readonly ignorePunctuation: boolean
 }
 
 const DEFAULT_COLLATION_RE =
@@ -111,13 +111,22 @@ for (const path of resolvedPaths) {
   if (defaultType !== 'standard' && defaultType !== 'search') {
     collationTypes.add(defaultType)
   }
+  // ECMA-402 §10.1.1, steps 21–22: use the locale punctuation default.
+  // LDML alternate=shifted ignores variable punctuation at these strengths.
+  // https://tc39.es/ecma402/#sec-intl.collator
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L42-L43
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
+  const alternate = collations
+    .find(collation => collation.type === defaultType)
+    ?.rules.findLast(rule => rule.type === 'alternate')
   localeData[locale] = {
     co: [...collationTypes].sort(),
     kn: ['false', 'true'],
     kf: ['false', 'upper', 'lower'],
     defaultCollation: defaultType,
     sensitivity: 'variant',
-    ignorePunctuation: false,
+    ignorePunctuation:
+      alternate?.type === 'alternate' && alternate.value === 'shifted',
   }
 }
 

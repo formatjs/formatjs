@@ -129,3 +129,6 @@ left-to-right order and rejects Symbols with `TypeError`.
 `resolvedOptions` and `supportedLocalesOf` are writable, configurable methods,
 but cannot be constructed with `new`. The constructor's `prototype` property
 is non-writable; the compare getter and bound function expose the standard names.
+
+The default `ignorePunctuation` value follows the locale’s CLDR collation
+settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
