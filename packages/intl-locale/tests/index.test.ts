@@ -413,3 +413,10 @@ it('stores canonical Unicode option values in locale getters', () => {
   expect(locale.numeric).toBe(true)
   expect(locale.toString()).toBe('en-u-ca-islamic-civil-co-dict-kn-nu-latn')
 })
+
+it('filters global collation candidates for the requested locale', () => {
+  expect(new Locale('de').getCollations()).toContain('phonebk')
+  expect(new Locale('pt-BR').getCollations()).not.toContain('phonebk')
+  expect(new Locale('und').getCollations()).toEqual(['emoji', 'eor'])
+  expect(new Locale('pt-BR-u-co-phonebk').getCollations()).toEqual(['phonebk'])
+})
