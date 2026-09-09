@@ -2,7 +2,7 @@ import {expect, it} from 'vitest'
 import {
   NumberDataResolver,
   type NumberPathPart,
-} from '#packages/intl-numberformat/scripts/number-data.js'
+} from '#packages/intl-numberformat/scripts/number-data/number-data.js'
 
 const part = (
   name: string,

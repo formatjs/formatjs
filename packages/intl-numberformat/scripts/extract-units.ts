@@ -14,7 +14,10 @@ import {
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import UnitsData from 'cldr-units-full/main/en/units.json' with {type: 'json'}
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
+import {
+  collapseSingleValuePluralRule,
+  PLURAL_RULES,
+} from './number-data/utils.ts'
 
 export type Units = (typeof UnitsData)['main']['en']['units']
 

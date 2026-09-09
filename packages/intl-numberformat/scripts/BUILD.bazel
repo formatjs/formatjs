@@ -1,7 +1,5 @@
 # gazelle:ignore
-load("//tools:index.bzl", "ts_binary", "ts_compile")
-load("//tools:test.bzl", "formatjs_test")
-load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "packages_tsconfig")
+load("//tools:index.bzl", "ts_binary")
 
 exports_files(glob(["*.sh"]))
 
@@ -22,12 +20,10 @@ ts_binary(
         "extract-currencies.ts",
         "extract-numbers.ts",
         "extract-units.ts",
-        "numbering-system-data.ts",
-        "utils.ts",
-        ":number-data",
         "//:node_modules/cldr-core",
         "//:node_modules/fast-xml-parser",
         "//:root_package_json",
+        "//packages/intl-numberformat/scripts/number-data",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -55,8 +51,8 @@ ts_binary(
     name = "currency-digits",
     data = [
         "extract-currencies.ts",
-        "utils.ts",
         "//:root_package_json",
+        "//packages/intl-numberformat/scripts/number-data",
     ],
     entry_point = "currency-digits.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
@@ -66,45 +62,9 @@ ts_binary(
     name = "numbering-systems",
     data = [
         "extract-numbers.ts",
-        "utils.ts",
         "//:root_package_json",
+        "//packages/intl-numberformat/scripts/number-data",
     ],
     entry_point = "numbering-systems.ts",
     visibility = ["//packages/intl-numberformat:__pkg__"],
-)
-
-ts_compile(
-    name = "number-data",
-    srcs = ["number-data.ts"],
-    package_json = False,
-    deps = ["//:node_modules/fast-xml-parser"],
-)
-
-formatjs_test(
-    name = "number-data_test",
-    data = [
-        "number-data.test.ts",
-        ":number-data",
-        "//:node_modules/fast-xml-parser",
-        "//:node_modules/vitest",
-    ],
-    no_copy_to_bin = ["//:package.json"],
-)
-
-ts_compile(
-    name = "numbering-system-data",
-    srcs = [
-        "numbering-system-data.ts",
-        "utils.ts",
-    ],
-    package_json = False,
-    tsconfig = packages_tsconfig(BASE_NODE_TSCONFIG),
-    deps = [
-        ":number-data",
-        "//:node_modules/@types/lodash-es",
-        "//:node_modules/@types/node",
-        "//:node_modules/cldr-core",
-        "//:node_modules/lodash-es",
-        "//packages/ecma402-abstract/types",
-    ],
 )

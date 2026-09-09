@@ -14,7 +14,10 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
+import {
+  collapseSingleValuePluralRule,
+  PLURAL_RULES,
+} from './number-data/utils.ts'
 
 export type Numbers = (typeof NumbersData)['main']['ar']['numbers']
 

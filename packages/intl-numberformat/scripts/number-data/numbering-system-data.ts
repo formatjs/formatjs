@@ -14,7 +14,7 @@ import {
 import {
   NumberDataResolver,
   type NumberPathPart,
-} from '#packages/intl-numberformat/scripts/number-data.js'
+} from '#packages/intl-numberformat/scripts/number-data/number-data.js'
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
 
 const part = (

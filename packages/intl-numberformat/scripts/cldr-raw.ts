@@ -1,7 +1,7 @@
 import {
   loadNumberResolver,
   expandNumberingSystems,
-} from './numbering-system-data.ts'
+} from './number-data/numbering-system-data.ts'
 import {generateDataForLocales as extractCurrencies} from './extract-currencies.ts'
 import {generateDataForLocales as extractUnits} from './extract-units.ts'
 import {generateDataForLocales as extractNumbers} from './extract-numbers.ts'
