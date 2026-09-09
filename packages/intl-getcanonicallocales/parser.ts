@@ -145,10 +145,12 @@ function parseKeyword(chunks: string[]): KV | undefined {
 
 function parseTransformedExtension(chunks: string[]): TransformedExtension {
   let lang: UnicodeLanguageId | undefined
-  try {
+  // ECMA-402 §6.2.1, step 2: transformed extensions allow a language,
+  // fields, or both. Do not consume a field key as a failed language parse.
+  // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
+  if (chunks.length && isUnicodeLanguageSubtag(chunks[0])) {
     lang = parseUnicodeLanguageId(chunks)
-  } catch {
-    // Try just parsing tfield
   }
   const fields: KV[] = []
   while (chunks.length && TKEY_REGEX.test(chunks[0])) {
@@ -162,7 +164,7 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
     }
     fields.push([key, value.join(SEPARATOR)])
   }
-  if (fields.length) {
+  if (lang || fields.length) {
     return {
       type: 't',
       fields,
@@ -192,7 +194,10 @@ function parseOtherExtensionValue(chunks: string[]): string {
   if (exts.length) {
     return exts.join(SEPARATOR)
   }
-  return ''
+  // ECMA-402 §6.2.1, step 2: every extension singleton needs a value.
+  // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
+  throw new RangeError('Missing extension value')
 }
 function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   if (!chunks.length) {

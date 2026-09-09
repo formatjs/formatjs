@@ -1,3 +1,4 @@
+import {readFileSync, readdirSync} from 'node:fs'
 import {outputFileSync} from 'fs-extra/esm'
 import aliases from 'cldr-core/supplemental/aliases.json' with {type: 'json'}
 import minimist from 'minimist'
@@ -6,8 +7,52 @@ import stringify from 'json-stable-stringify'
 const {languageAlias, territoryAlias, scriptAlias, variantAlias} =
   aliases.supplemental.metadata.alias
 
-function main({out}: minimist.ParsedArgs) {
+const UNICODE_TYPE = /^[a-z0-9]{3,8}(?:-[a-z0-9]{3,8})*$/
+
+interface Args extends minimist.ParsedArgs {
+  out: string
+}
+
+interface TypeData {
+  _alias?: string
+  _preferred?: string
+}
+
+function main(args: Args) {
+  const {out} = args
+  const extensionAlias: Record<
+    string,
+    Record<string, Record<string, string>>
+  > = {}
+  const directory = new URL(
+    './bcp47/',
+    import.meta.resolve('cldr-bcp47/package.json')
+  )
+  for (const file of readdirSync(directory).sort()) {
+    if (!file.endsWith('.json')) continue
+    const {keyword} = JSON.parse(
+      readFileSync(new URL(file, directory), 'utf8')
+    ) as {
+      keyword: Record<string, Record<string, Record<string, TypeData | string>>>
+    }
+    for (const [extension, keys] of Object.entries(keyword)) {
+      for (const [key, types] of Object.entries(keys)) {
+        for (const [type, metadata] of Object.entries(types)) {
+          if (typeof metadata !== 'object') continue
+          const canonical = metadata._preferred || type
+          for (const alias of [type, ...(metadata._alias || '').split(' ')]) {
+            const normalized = alias.toLowerCase()
+            if (normalized === canonical || !UNICODE_TYPE.test(normalized))
+              continue
+            ;((extensionAlias[extension] ||= {})[key] ||= {})[normalized] =
+              canonical
+          }
+        }
+      }
+    }
+  }
   const data = {
+    extensionAlias,
     languageAlias: Object.keys(languageAlias).reduce(
       (all: Record<string, string>, locale) => {
         all[locale] = languageAlias[locale as 'zh-cmn']._replacement
@@ -42,6 +87,7 @@ function main({out}: minimist.ParsedArgs) {
     out,
     `/* @generated */	
 // prettier-ignore  
+export const extensionAlias: Record<string, Record<string, Record<string, string>>> = ${stringify(data.extensionAlias, {space: 2})};
 export const languageAlias: Record<string, string> = ${stringify(
       data.languageAlias,
       {space: 2}
@@ -63,5 +109,5 @@ export const variantAlias: Record<string, string> = ${stringify(
 }
 
 if (import.meta.filename === process.argv[1]) {
-  main(minimist(process.argv))
+  main(minimist<Args>(process.argv.slice(2)))
 }

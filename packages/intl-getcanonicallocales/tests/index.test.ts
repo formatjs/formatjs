@@ -1,6 +1,50 @@
 import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
 import {describe, expect, it} from 'vitest'
 describe('Intl.getCanonicalLocales', () => {
+  it('normalizes case before alias lookup', () => {
+    expect(
+      getCanonicalLocales([
+        'DE-de',
+        'de-DE',
+        'CMN-hANS',
+        'SGN-gr',
+        'SL-ROZAJ-BISKE',
+      ])
+    ).toEqual(['de-DE', 'zh-Hans', 'gss', 'sl-biske-rozaj'])
+  })
+  it('accepts language-only and field-only transformed extensions', () => {
+    expect(
+      getCanonicalLocales([
+        'en-t-EN-Latn-CA',
+        'en-t-d0-ascii',
+        'en-t-en-i0-handwrit',
+      ])
+    ).toEqual(['en-t-en-latn-ca', 'en-t-d0-ascii', 'en-t-en-i0-handwrit'])
+    expect(() => getCanonicalLocales('en-t')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en-t-d0')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en-t-en-0')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en-a')).toThrow(RangeError)
+  })
+  it('canonicalizes extension aliases while preserving transformed true', () => {
+    expect(
+      getCanonicalLocales([
+        'en-t-m0-true',
+        'und-Latn-t-und-hani-m0-names',
+        'en-u-ca-islamicc',
+        'en-u-ms-imperial',
+        'en-u-kn-yes',
+        'en-u-KN-TRUE-kn-false',
+        'en-u-ks-primary',
+      ])
+    ).toEqual([
+      'en-t-m0-true',
+      'und-Latn-t-und-hani-m0-prprname',
+      'en-u-ca-islamic-civil',
+      'en-u-ms-uksystem',
+      'en-u-kn',
+      'en-u-ks-level1',
+    ])
+  })
   it('regular', function () {
     expect(
       getCanonicalLocales('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')

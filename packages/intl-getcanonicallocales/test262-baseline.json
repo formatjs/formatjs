@@ -1,12 +1,8 @@
 {
   "total": 76,
   "failures": {
-    "intl402/Intl/getCanonicalLocales/canonicalized-tags.js (default)": "Expected SameValue(«\"DE-DE\"», «\"de-DE\"») to be true",
-    "intl402/Intl/getCanonicalLocales/canonicalized-tags.js (strict mode)": "Expected SameValue(«\"DE-DE\"», «\"de-DE\"») to be true",
     "intl402/Intl/getCanonicalLocales/grandfathered.js (default)": "Expected SameValue(«\"jbo-lojban\"», «\"jbo\"») to be true",
     "intl402/Intl/getCanonicalLocales/grandfathered.js (strict mode)": "Expected SameValue(«\"jbo-lojban\"», «\"jbo\"») to be true",
-    "intl402/Intl/getCanonicalLocales/main.js (default)": "Actual [ab-CD, FF] and expected [ab-CD, ff] should have the same contents. ab-CD,ff",
-    "intl402/Intl/getCanonicalLocales/main.js (strict mode)": "Actual [ab-CD, FF] and expected [ab-CD, ff] should have the same contents. ab-CD,ff",
     "intl402/Intl/getCanonicalLocales/non-iana-canon.js (default)": "The value of Intl.getCanonicalLocales(tag)[0] equals the value of `canonical` Expected SameValue(«\"hy-arevela\"», «\"hy\"») to be true",
     "intl402/Intl/getCanonicalLocales/non-iana-canon.js (strict mode)": "The value of Intl.getCanonicalLocales(tag)[0] equals the value of `canonical` Expected SameValue(«\"hy-arevela\"», «\"hy\"») to be true",
     "intl402/Intl/getCanonicalLocales/overriden-push.js (default)": "Uncaught 42",
@@ -15,23 +11,9 @@
     "intl402/Intl/getCanonicalLocales/preferred-grandfathered.js (strict mode)": "Expected SameValue(«\"jbo-lojban\"», «\"jbo\"») to be true",
     "intl402/Intl/getCanonicalLocales/preferred-variant.js (default)": "Expected SameValue(«\"ja-Latn-alalc97-hepburn\"», «\"ja-Latn-alalc97\"») to be true",
     "intl402/Intl/getCanonicalLocales/preferred-variant.js (strict mode)": "Expected SameValue(«\"ja-Latn-alalc97-hepburn\"», «\"ja-Latn-alalc97\"») to be true",
-    "intl402/Intl/getCanonicalLocales/transformed-ext-canonical.js (default)": "Expected no error, got RangeError: Malformed transformed_extension",
-    "intl402/Intl/getCanonicalLocales/transformed-ext-canonical.js (strict mode)": "Expected no error, got RangeError: Malformed transformed_extension",
-    "intl402/Intl/getCanonicalLocales/transformed-ext-valid.js (default)": "Expected no error, got RangeError: Malformed transformed_extension",
-    "intl402/Intl/getCanonicalLocales/transformed-ext-valid.js (strict mode)": "Expected no error, got RangeError: Malformed transformed_extension",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-calendar.js (default)": "Expected SameValue(«\"und-u-ca-ethiopic-amete-alem\"», «\"und-u-ca-ethioaa\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-calendar.js (strict mode)": "Expected SameValue(«\"und-u-ca-ethiopic-amete-alem\"», «\"und-u-ca-ethioaa\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-col-strength.js (default)": "Expected SameValue(«\"und-u-ks-primary\"», «\"und-u-ks-level1\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-col-strength.js (strict mode)": "Expected SameValue(«\"und-u-ks-primary\"», «\"und-u-ks-level1\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-measurement-system.js (default)": "Expected SameValue(«\"und-u-ms-imperial\"», «\"und-u-ms-uksystem\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-measurement-system.js (strict mode)": "Expected SameValue(«\"und-u-ms-imperial\"», «\"und-u-ms-uksystem\"») to be true",
     "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-region.js (default)": "Expected SameValue(«\"und-u-rg-no23\"», «\"und-u-rg-no50\"») to be true",
     "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-region.js (strict mode)": "Expected SameValue(«\"und-u-rg-no23\"», «\"und-u-rg-no50\"») to be true",
     "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-subdivision.js (default)": "Expected SameValue(«\"und-NO-u-sd-no23\"», «\"und-NO-u-sd-no50\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-subdivision.js (strict mode)": "Expected SameValue(«\"und-NO-u-sd-no23\"», «\"und-NO-u-sd-no50\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-timezone.js (default)": "Expected SameValue(«\"und-u-tz-cnckg\"», «\"und-u-tz-cnsha\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-timezone.js (strict mode)": "Expected SameValue(«\"und-u-tz-cnckg\"», «\"und-u-tz-cnsha\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-yes-to-true.js (default)": "Expected SameValue(«\"und-u-kb-yes\"», «\"und-u-kb\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-yes-to-true.js (strict mode)": "Expected SameValue(«\"und-u-kb-yes\"», «\"und-u-kb\"») to be true"
+    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-subdivision.js (strict mode)": "Expected SameValue(«\"und-NO-u-sd-no23\"», «\"und-NO-u-sd-no50\"») to be true"
   }
 }
