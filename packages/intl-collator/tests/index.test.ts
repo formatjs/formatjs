@@ -114,3 +114,38 @@ it('compare uses ToString and preserves coercion order', () => {
   expect(compare(value('left') as any, value('right') as any)).toBe(0)
   expect(calls).toEqual(['left:string', 'right:string'])
 })
+
+describe('built-in descriptors', () => {
+  it.each([
+    ['supportedLocalesOf', Collator, 1],
+    ['resolvedOptions', Collator.prototype, 0],
+  ] as const)(
+    '%s is a writable non-constructor method',
+    (name, owner, length) => {
+      const descriptor = Object.getOwnPropertyDescriptor(owner, name)!
+      expect(descriptor).toMatchObject({
+        writable: true,
+        enumerable: false,
+        configurable: true,
+      })
+      expect(descriptor.value.name).toBe(name)
+      expect(descriptor.value.length).toBe(length)
+      expect(Object.hasOwn(descriptor.value, 'prototype')).toBe(false)
+      expect(() => Reflect.construct(descriptor.value, [])).toThrow(TypeError)
+    }
+  )
+  it('uses the required getter and bound compare names', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(Collator.prototype, 'compare')!.get!.name
+    ).toBe('get compare')
+    const collator = new Collator('en')
+    expect(collator.compare.name).toBe('')
+    expect(collator.compare).toBe(collator.compare)
+    expect(collator.compare('a', 'b')).toBeLessThan(0)
+  })
+  it('does not allow replacing the constructor prototype', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(Collator, 'prototype')
+    ).toMatchObject({writable: false, enumerable: false, configurable: false})
+  })
+})
