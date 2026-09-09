@@ -280,6 +280,11 @@ export class PluralRulesCompiler {
   /**
    * Detects which operands are used in the plural rules
    */
+  usesCompactExponent(): boolean {
+    const operands = this.detectUsedOperands()
+    return operands.has('c') || operands.has('e')
+  }
+
   private detectUsedOperands(): Set<string> {
     const used = new Set<string>()
 

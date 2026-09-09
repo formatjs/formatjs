@@ -10,9 +10,17 @@ load(":locales.generated.bzl", "ALL_LOCALES")
 PACKAGE_NAME = "intl-pluralrules"
 
 TEST_LOCALES = [
+    "ca",
     "en",
-    "zh",
+    "es",
     "fr",
+    "it",
+    "lld",
+    "pt",
+    "pt-PT",
+    "scn",
+    "vec",
+    "zh",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.ts" % locale for locale in TEST_LOCALES]
@@ -81,8 +89,16 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
+        ":tests-locale-data-ca",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
+        ":tests-locale-data-es",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr",  # keep: generated locale data imported by tests
+        ":tests-locale-data-it",  # keep: generated locale data imported by tests
+        ":tests-locale-data-lld",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pt",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pt-PT",  # keep: generated locale data imported by tests
+        ":tests-locale-data-scn",  # keep: generated locale data imported by tests
+        ":tests-locale-data-vec",  # keep: generated locale data imported by tests
         ":tests-locale-data-zh",  # keep: generated locale data imported by tests
     ],
     no_copy_to_bin = ["//:package.json"],
@@ -117,6 +133,7 @@ ts_run_binary(
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/@typescript/typescript6",
         "//:node_modules/cldr-core",
+        "//:node_modules/cldr-numbers-full",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",

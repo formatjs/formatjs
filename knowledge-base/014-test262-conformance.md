@@ -15,27 +15,25 @@ excluded because it fails.
 | listformat          |      162 |                 4 |               0 |                 4 |
 | locale              |      336 |                 4 |              22 |                 4 |
 | numberformat        |      498 |                18 |               0 |                18 |
-| pluralrules         |      106 |                 4 |               0 |                 2 |
+| pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 8 |               0 |                 6 |
 | segmenter           |      158 |                10 |               0 |                10 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 4 |
 
-Total: 2,498 executions, 2,260 polyfill passes, 238 polyfill failures. The native
+Total: 2,498 executions, 2,262 polyfill passes, 236 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
 Combined: 2,498 executions, 2,260 passes, 238 failures.
 
-Combined installation adds 6 failing executions; 6 isolated failures now pass.
+Combined installation adds 6 failing executions; 4 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
 Two RelativeTimeFormat cases pass because combined enumeration omits numbering
 systems that the NumberFormat polyfill does not support; this is not broader
 numbering-system conformance.
-Two PluralRules compact-notation cases pass only when the NumberFormat French
-locale data is present; the isolated dependency remains unresolved.
-The extra failures concern NumberFormat dependencies, calendar
-display-name keys, and optional collation data. Full raw reports accompany Bazel
+Compact PluralRules now passes independently of NumberFormat locale data.
+The extra failures concern NumberFormat dependencies and optional collation data. Full raw reports accompany Bazel
 test outputs; the checked-in baselines preserve every remaining diagnostic.
 
 ## Harness guarantees
@@ -168,3 +166,7 @@ diagnostics now reflect the newly selected patterns.
 Calendar negotiation supports Gregorian and ISO 8601 and falls back for other
 requests. Six DateTimeFormat failures per mode are fixed; Chinese-calendar and
 Era-monthcode proposal failures remain tracked.
+
+Standalone PluralRules now uses its own compact exponent tables for the nine
+CLDR locales with c/e operands. Two isolated failures are fixed; combined
+selection no longer depends on NumberFormat locale data.
