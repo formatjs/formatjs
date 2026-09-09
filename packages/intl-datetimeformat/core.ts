@@ -186,9 +186,12 @@ export const DateTimeFormat = function (
   /** IMPL END */
 } as DateTimeFormatConstructor
 
+// ECMA-402 §7 applies ECMA-262 §18: methods are non-constructible built-ins.
+// https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
+// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
 // Static properties
-defineProperty(DateTimeFormat, 'supportedLocalesOf', {
-  value: function supportedLocalesOf(
+const {supportedLocalesOf} = {
+  supportedLocalesOf(
     locales: string | string[],
     options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
   ) {
@@ -198,10 +201,21 @@ defineProperty(DateTimeFormat, 'supportedLocalesOf', {
       options as any
     )
   },
+}
+
+defineProperty(DateTimeFormat, 'supportedLocalesOf', {
+  value: supportedLocalesOf,
+})
+// ECMA-402 §11.2.2 has one required parameter.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat.supportedlocalesof
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L198
+Object.defineProperty(supportedLocalesOf, 'length', {
+  value: 1,
+  configurable: true,
 })
 
-defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
-  value: function resolvedOptions(this: IDateTimeFormat) {
+const {resolvedOptions} = {
+  resolvedOptions(this: IDateTimeFormat) {
     if (
       typeof this !== 'object' ||
       !OrdinaryHasInstance(DateTimeFormat, this)
@@ -240,10 +254,14 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
     }
     return ro as any
   },
+}
+
+defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
+  value: resolvedOptions,
 })
 
-defineProperty(DateTimeFormat.prototype, 'formatToParts', {
-  value: function formatToParts(date?: number | Date) {
+const {formatToParts} = {
+  formatToParts(this: Intl.DateTimeFormat, date?: number | Date) {
     let x: Decimal
     if (date === undefined) {
       x = new Decimal(Date.now())
@@ -257,10 +275,15 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
       getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
     })
   },
+}
+
+defineProperty(DateTimeFormat.prototype, 'formatToParts', {
+  value: formatToParts,
 })
 
-defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
-  value: function formatRangeToParts(
+const {formatRangeToParts} = {
+  formatRangeToParts(
+    this: Intl.DateTimeFormat,
     startDate: number | Date,
     endDate: number | Date
   ) {
@@ -285,10 +308,15 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
       }
     )
   },
+}
+
+defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
+  value: formatRangeToParts,
 })
 
-defineProperty(DateTimeFormat.prototype, 'formatRange', {
-  value: function formatRange(
+const {formatRange} = {
+  formatRange(
+    this: Intl.DateTimeFormat,
     startDate: number | Date,
     endDate: number | Date
   ) {
@@ -307,7 +335,9 @@ defineProperty(DateTimeFormat.prototype, 'formatRange', {
       getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
     })
   },
-})
+}
+
+defineProperty(DateTimeFormat.prototype, 'formatRange', {value: formatRange})
 
 const DEFAULT_TIMEZONE = 'UTC'
 
@@ -447,8 +477,11 @@ try {
     })
   }
 
+  // ECMA-402 §11.1.1 has no required parameters.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L16
   Object.defineProperty(DateTimeFormat.prototype.constructor, 'length', {
-    value: 1,
+    value: 0,
     writable: false,
     enumerable: false,
     configurable: true,

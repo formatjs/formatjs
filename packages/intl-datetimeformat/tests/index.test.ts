@@ -934,3 +934,22 @@ describe('timestamp truncation', () => {
     }
   )
 })
+
+describe('DateTimeFormat built-in methods', () => {
+  it.each([
+    ['formatToParts', DateTimeFormat.prototype, 1],
+    ['formatRange', DateTimeFormat.prototype, 2],
+    ['formatRangeToParts', DateTimeFormat.prototype, 2],
+    ['resolvedOptions', DateTimeFormat.prototype, 0],
+    ['supportedLocalesOf', DateTimeFormat, 1],
+  ] as const)('%s has built-in function behavior', (name, owner, length) => {
+    const method = (owner as any)[name]
+    expect(method.name).toBe(name)
+    expect(method.length).toBe(length)
+    expect(Object.hasOwn(method, 'prototype')).toBe(false)
+    expect(() => Reflect.construct(method, [])).toThrow(TypeError)
+  })
+  it('has zero required constructor arguments', () => {
+    expect(DateTimeFormat.length).toBe(0)
+  })
+})

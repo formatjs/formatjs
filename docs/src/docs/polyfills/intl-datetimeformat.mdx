@@ -275,3 +275,9 @@ separate from language-specific patterns, regardless of registration order.
 Formatting truncates fractional millisecond timestamps toward zero before
 calendar conversion. For example, `-0.9` formats as the Unix epoch, matching `0`.
 The same rule applies to both range endpoints.
+
+## Built-in methods
+
+DateTimeFormat methods cannot be constructed with `new` and have no own
+`prototype` property. The constructor's `length` is `0`; `supportedLocalesOf.length`
+is `1`, matching their required argument counts.

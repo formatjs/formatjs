@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures |
 | ------------------- | -------: | ----------------: | --------------: |
 | collator            |      130 |                18 |               6 |
-| datetimeformat      |      488 |               268 |             154 |
+| datetimeformat      |      488 |               256 |             154 |
 | displaynames        |      114 |                 6 |               0 |
 | durationformat      |      220 |                84 |              22 |
 | getcanonicallocales |       76 |                32 |               2 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 8 |               8 |
 
-Total: 2,498 executions, 1,978 polyfill passes, 520 polyfill failures. The native
+Total: 2,498 executions, 1,990 polyfill passes, 508 polyfill failures. The native
 control fails 238 executions; 200 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -92,3 +92,6 @@ initialization can create a brand; formatting methods validate it before coercio
 TimeClip truncates finite timestamps toward zero, including negative fractions.
 The previous finite-number branch returned the fraction unchanged, causing local
 calendar conversion to place negative fractions in the preceding second.
+
+DateTimeFormat methods use concise definitions for built-in non-constructibility.
+Constructor and supportedLocalesOf lengths reflect their required parameters.
