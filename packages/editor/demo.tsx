@@ -1,8 +1,12 @@
-import {useId, useState, type ReactElement} from 'react'
+import {useId, useState, type ReactElement, type ReactNode} from 'react'
 import {useIntl, FormattedMessage} from 'react-intl'
 import * as stylex from '@stylexjs/stylex'
 import {Braces, Check, Copy, FileText, Languages, Search} from 'lucide-react'
-import {Editor, type TranslatedMessage} from './index.js'
+import {
+  useMessageEditor,
+  type EditorState,
+  type TranslatedMessage,
+} from './index.js'
 import {
   Badge,
   Button,
@@ -230,245 +234,267 @@ export function EditorDemo({
 }: {
   initialMessages: TranslatedMessage[]
 }): ReactElement {
-  const intl = useIntl()
   const [messages, setMessages] = useState(initialMessages)
+  const editor = useMessageEditor({
+    messages,
+    onMessageChange: updated =>
+      setMessages(current =>
+        current.map(message => (message.id === updated.id ? updated : message))
+      ),
+  })
+  return <EditorView editor={editor} messageCount={messages.length} />
+}
+
+export interface EditorViewProps {
+  editor: EditorState
+  messageCount: number
+  filters?: ReactNode
+  pagination?: ReactNode
+  context?: ReactNode
+  actions?: ReactNode
+  notice?: ReactNode
+  validation?: ReactNode
+}
+
+/** Shared optional StyleX view for immediate edits and persisted workflows. */
+export function EditorView({
+  editor,
+  messageCount,
+  filters,
+  pagination,
+  context,
+  actions,
+  notice,
+  validation,
+}: EditorViewProps): ReactElement {
+  const intl = useIntl()
   const errorId = useId()
   const inputId = useId()
   const hintId = useId()
   const searchId = useId()
   return (
-    <Editor
-      messages={messages}
-      onMessageChange={updated =>
-        setMessages(current =>
-          current.map(message =>
-            message.id === updated.id ? updated : message
-          )
-        )
-      }
-    >
-      {editor => (
-        <main {...stylex.props(styles.page)}>
-          <div {...stylex.props(styles.container)}>
-            <header {...stylex.props(styles.masthead)}>
-              <div {...stylex.props(styles.brand)}>
-                <span {...stylex.props(styles.logo)}>
-                  <Braces size={23} aria-hidden="true" />
-                </span>
-                <FormattedMessage
-                  id="editor.brand"
-                  defaultMessage="FormatJS"
-                  description="FormatJS product name"
-                />
-              </div>
-              <span {...stylex.props(styles.mastheadNote)}>
-                <FormattedMessage
-                  id="editor.workspace"
-                  defaultMessage="Translation workspace"
-                  description="Name of the editor workspace"
-                />
-              </span>
-            </header>
-            <div {...stylex.props(styles.titleRow)}>
-              <div>
-                <div {...stylex.props(styles.eyebrow)}>
-                  <FormattedMessage
-                    id="editor.eyebrow"
-                    defaultMessage="Words, in context"
-                    description="Short introduction above the editor heading"
-                  />
-                </div>
-                <h1 {...stylex.props(styles.title)}>
-                  <FormattedMessage
-                    id="editor.heading"
-                    defaultMessage="Message editor"
-                    description="Heading for the translation editor example"
-                  />
-                </h1>
-                <p {...stylex.props(styles.subtitle)}>
-                  <FormattedMessage
-                    id="editor.subtitle"
-                    defaultMessage="Thoughtful translations start with the right context."
-                    description="Description of the translation workspace"
-                  />
-                </p>
-              </div>
-              <Badge>
-                <Languages size={14} aria-hidden="true" />
-                <FormattedMessage
-                  id="editor.message-count"
-                  defaultMessage="{count, plural, one {# message} other {# messages}}"
-                  description="Number of messages in the catalog"
-                  values={{count: messages.length}}
-                />
-              </Badge>
+    <main {...stylex.props(styles.page)}>
+      <div {...stylex.props(styles.container)}>
+        <header {...stylex.props(styles.masthead)}>
+          <div {...stylex.props(styles.brand)}>
+            <span {...stylex.props(styles.logo)}>
+              <Braces size={23} aria-hidden="true" />
+            </span>
+            <FormattedMessage
+              id="editor.brand"
+              defaultMessage="FormatJS"
+              description="FormatJS product name"
+            />
+          </div>
+          <span {...stylex.props(styles.mastheadNote)}>
+            <FormattedMessage
+              id="editor.workspace"
+              defaultMessage="Translation workspace"
+              description="Name of the editor workspace"
+            />
+          </span>
+        </header>
+        <div {...stylex.props(styles.titleRow)}>
+          <div>
+            <div {...stylex.props(styles.eyebrow)}>
+              <FormattedMessage
+                id="editor.eyebrow"
+                defaultMessage="Words, in context"
+                description="Short introduction above the editor heading"
+              />
             </div>
-            <div {...stylex.props(styles.grid)}>
-              <Panel>
-                <div {...stylex.props(styles.sidebarHead)}>
-                  <label htmlFor={searchId} {...stylex.props(styles.label)}>
-                    <Search size={14} aria-hidden="true" />
-                    <FormattedMessage
-                      id="editor.search"
-                      defaultMessage="Search messages"
-                      description="Search field label in the translation editor"
-                    />
-                  </label>
-                  <TextInput
-                    id={searchId}
-                    type="search"
-                    value={editor.query}
-                    onChange={event => editor.setQuery(event.target.value)}
-                  />
-                </div>
-                <nav
-                  aria-label={intl.formatMessage({
-                    id: 'editor.messages',
-                    defaultMessage: 'Messages',
-                    description:
-                      'Accessible label for the message selection list',
-                  })}
-                >
-                  <ul {...stylex.props(styles.list)}>
-                    {editor.messages.map(message => (
-                      <li key={message.id}>
-                        <button
-                          type="button"
-                          aria-label={message.defaultMessage}
-                          aria-current={
-                            message.id === editor.selectedMessage?.id
-                              ? 'true'
-                              : undefined
-                          }
-                          onClick={() => editor.selectMessage(message.id)}
-                          {...stylex.props(
-                            styles.message,
-                            message.id === editor.selectedMessage?.id &&
-                              styles.selected
-                          )}
-                        >
-                          <FileText
-                            size={17}
-                            aria-hidden="true"
-                            {...stylex.props(styles.messageIcon)}
-                          />
-                          <span {...stylex.props(styles.messageBody)}>
-                            <span {...stylex.props(styles.messageId)}>
-                              {message.id}
-                            </span>
-                            <span {...stylex.props(styles.messageText)}>
-                              {message.defaultMessage}
-                            </span>
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-                {editor.messages.length === 0 && (
-                  <output {...stylex.props(styles.empty)}>
-                    <FormattedMessage
-                      id="editor.no-matches"
-                      defaultMessage="No matching messages"
-                      description="Empty search results in the editor"
-                    />
-                  </output>
-                )}
-              </Panel>
-              <Panel>
-                {editor.selectedMessage ? (
-                  <div {...stylex.props(styles.content)}>
-                    <div {...stylex.props(styles.sourceHeader)}>
-                      <h2 {...stylex.props(styles.heading)}>
-                        <FileText size={17} aria-hidden="true" />
-                        <FormattedMessage
-                          id="editor.source"
-                          defaultMessage="Source message"
-                          description="Heading above the original ICU message"
-                        />
-                      </h2>
-                      <Badge>{editor.selectedMessage.id}</Badge>
-                    </div>
-                    <p {...stylex.props(styles.source)}>
-                      {editor.selectedMessage.defaultMessage}
-                    </p>
-                    {editor.selectedMessage.description && (
-                      <p {...stylex.props(styles.description)}>
-                        {editor.selectedMessage.description}
-                      </p>
-                    )}
-                    <div {...stylex.props(styles.divider)} />
-                    <label
-                      htmlFor={inputId}
-                      {...stylex.props(styles.translationLabel)}
+            <h1 {...stylex.props(styles.title)}>
+              <FormattedMessage
+                id="editor.heading"
+                defaultMessage="Message editor"
+                description="Heading for the translation editor example"
+              />
+            </h1>
+            <p {...stylex.props(styles.subtitle)}>
+              <FormattedMessage
+                id="editor.subtitle"
+                defaultMessage="Thoughtful translations start with the right context."
+                description="Description of the translation workspace"
+              />
+            </p>
+          </div>
+          <Badge>
+            <Languages size={14} aria-hidden="true" />
+            <FormattedMessage
+              id="editor.message-count"
+              defaultMessage="{count, plural, one {# message} other {# messages}}"
+              description="Number of messages in the catalog"
+              values={{count: messageCount}}
+            />
+          </Badge>
+        </div>
+        {filters}
+        <div {...stylex.props(styles.grid)}>
+          <Panel>
+            <div {...stylex.props(styles.sidebarHead)}>
+              <label htmlFor={searchId} {...stylex.props(styles.label)}>
+                <Search size={14} aria-hidden="true" />
+                <FormattedMessage
+                  id="editor.search"
+                  defaultMessage="Search messages"
+                  description="Search field label in the translation editor"
+                />
+              </label>
+              <TextInput
+                id={searchId}
+                type="search"
+                value={editor.query}
+                onChange={event => editor.setQuery(event.target.value)}
+              />
+            </div>
+            <nav
+              aria-label={intl.formatMessage({
+                id: 'editor.messages',
+                defaultMessage: 'Messages',
+                description: 'Accessible label for the message selection list',
+              })}
+            >
+              <ul {...stylex.props(styles.list)}>
+                {editor.messages.map(message => (
+                  <li key={message.id}>
+                    <button
+                      type="button"
+                      aria-label={message.defaultMessage}
+                      aria-current={
+                        message.id === editor.selectedMessage?.id
+                          ? 'true'
+                          : undefined
+                      }
+                      onClick={() => editor.selectMessage(message.id)}
+                      {...stylex.props(
+                        styles.message,
+                        message.id === editor.selectedMessage?.id &&
+                          styles.selected
+                      )}
                     >
-                      <FormattedMessage
-                        id="editor.translation"
-                        defaultMessage="Translation"
-                        description="Translation input label"
+                      <FileText
+                        size={17}
+                        aria-hidden="true"
+                        {...stylex.props(styles.messageIcon)}
                       />
-                    </label>
-                    <TextArea
-                      id={inputId}
-                      rows={6}
-                      value={editor.selectedMessage.translatedMessage}
-                      onChange={event =>
-                        editor.setTranslation(event.target.value)
-                      }
-                      aria-invalid={!!editor.translation?.error}
-                      aria-describedby={
-                        editor.translation?.error ? errorId : hintId
-                      }
+                      <span {...stylex.props(styles.messageBody)}>
+                        <span {...stylex.props(styles.messageId)}>
+                          {message.id}
+                        </span>
+                        <span {...stylex.props(styles.messageText)}>
+                          {message.defaultMessage}
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            {pagination}
+            {editor.messages.length === 0 && (
+              <output {...stylex.props(styles.empty)}>
+                <FormattedMessage
+                  id="editor.no-matches"
+                  defaultMessage="No matching messages"
+                  description="Empty search results in the editor"
+                />
+              </output>
+            )}
+          </Panel>
+          <Panel>
+            {editor.selectedMessage ? (
+              <div {...stylex.props(styles.content)}>
+                <div {...stylex.props(styles.sourceHeader)}>
+                  <h2 {...stylex.props(styles.heading)}>
+                    <FileText size={17} aria-hidden="true" />
+                    <FormattedMessage
+                      id="editor.source"
+                      defaultMessage="Source message"
+                      description="Heading above the original ICU message"
                     />
-                    {editor.translation?.error ? (
-                      <p
-                        id={errorId}
-                        role="alert"
-                        {...stylex.props(styles.error)}
-                      >
-                        <FormattedMessage
-                          id="editor.invalid-message"
-                          defaultMessage="Invalid ICU message: {error}"
-                          description="ICU syntax error while editing a translation; error is the parser diagnostic"
-                          values={{error: editor.translation.error.message}}
-                        />
-                      </p>
-                    ) : (
-                      <p
-                        id={hintId}
-                        {...stylex.props(
-                          styles.help,
-                          !!editor.selectedMessage.translatedMessage &&
-                            styles.valid
-                        )}
-                      >
-                        {!!editor.selectedMessage.translatedMessage && (
-                          <Check size={14} aria-hidden="true" />
-                        )}
-                        {editor.selectedMessage.translatedMessage ? (
-                          <FormattedMessage
-                            id="editor.valid"
-                            defaultMessage="ICU syntax valid"
-                            description="Indicates valid ICU syntax, not translation correctness"
-                          />
-                        ) : (
-                          <FormattedMessage
-                            id="editor.placeholder-hint"
-                            defaultMessage="Keep placeholders and ICU syntax intact."
-                            description="Hint below the translation field"
-                          />
-                        )}
-                      </p>
+                  </h2>
+                  <Badge>{editor.selectedMessage.id}</Badge>
+                </div>
+                <p {...stylex.props(styles.source)}>
+                  {editor.selectedMessage.defaultMessage}
+                </p>
+                {editor.selectedMessage.description && (
+                  <p {...stylex.props(styles.description)}>
+                    {editor.selectedMessage.description}
+                  </p>
+                )}
+                {context}
+                <div {...stylex.props(styles.divider)} />
+                <label
+                  htmlFor={inputId}
+                  {...stylex.props(styles.translationLabel)}
+                >
+                  <FormattedMessage
+                    id="editor.translation"
+                    defaultMessage="Translation"
+                    description="Translation input label"
+                  />
+                </label>
+                <TextArea
+                  id={inputId}
+                  rows={6}
+                  value={editor.selectedMessage.translatedMessage}
+                  onChange={event => editor.setTranslation(event.target.value)}
+                  aria-invalid={!!validation || !!editor.translation?.error}
+                  aria-describedby={
+                    validation || editor.translation?.error ? errorId : hintId
+                  }
+                />
+                {validation || editor.translation?.error ? (
+                  <p id={errorId} role="alert" {...stylex.props(styles.error)}>
+                    {validation ?? (
+                      <FormattedMessage
+                        id="editor.invalid-message"
+                        defaultMessage="Invalid ICU message: {error}"
+                        description="ICU syntax error while editing a translation; error is the parser diagnostic"
+                        values={{error: editor.translation?.error?.message}}
+                      />
                     )}
-                    <div {...stylex.props(styles.footer)}>
-                      <p {...stylex.props(styles.note)}>
-                        <FormattedMessage
-                          id="editor.session-note"
-                          defaultMessage="Changes stay in this session."
-                          description="Clarifies that the demo does not persist changes"
-                        />
-                      </p>
-                      <div {...stylex.props(styles.actions)}>
+                  </p>
+                ) : (
+                  <p
+                    id={hintId}
+                    {...stylex.props(
+                      styles.help,
+                      !!editor.selectedMessage.translatedMessage && styles.valid
+                    )}
+                  >
+                    {!!editor.selectedMessage.translatedMessage && (
+                      <Check size={14} aria-hidden="true" />
+                    )}
+                    {editor.selectedMessage.translatedMessage ? (
+                      <FormattedMessage
+                        id="editor.valid"
+                        defaultMessage="ICU syntax valid"
+                        description="Indicates valid ICU syntax, not translation correctness"
+                      />
+                    ) : (
+                      <FormattedMessage
+                        id="editor.placeholder-hint"
+                        defaultMessage="Keep placeholders and ICU syntax intact."
+                        description="Hint below the translation field"
+                      />
+                    )}
+                  </p>
+                )}
+                <div {...stylex.props(styles.footer)}>
+                  <p {...stylex.props(styles.note)}>
+                    {notice ?? (
+                      <FormattedMessage
+                        id="editor.session-note"
+                        defaultMessage="Changes stay in this session."
+                        description="Clarifies that the demo does not persist changes"
+                      />
+                    )}
+                  </p>
+                  <div {...stylex.props(styles.actions)}>
+                    {actions ?? (
+                      <>
                         <Button
                           onClick={editor.clearTranslation}
                           disabled={!editor.selectedMessage.translatedMessage}
@@ -487,31 +513,31 @@ export function EditorDemo({
                             description="Button copying the source into the translation"
                           />
                         </Button>
-                      </div>
-                    </div>
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <output {...stylex.props(styles.empty)}>
-                    <FormattedMessage
-                      id="editor.empty"
-                      defaultMessage="No messages"
-                      description="Empty message catalog in the editor"
-                    />
-                  </output>
-                )}
-              </Panel>
-            </div>
-            <div {...stylex.props(styles.bottom)}>
-              <Braces size={14} aria-hidden="true" />
-              <FormattedMessage
-                id="editor.format-note"
-                defaultMessage="Built for ICU MessageFormat"
-                description="Caption describing the supported message syntax"
-              />
-            </div>
-          </div>
-        </main>
-      )}
-    </Editor>
+                </div>
+              </div>
+            ) : (
+              <output {...stylex.props(styles.empty)}>
+                <FormattedMessage
+                  id="editor.empty"
+                  defaultMessage="No messages"
+                  description="Empty message catalog in the editor"
+                />
+              </output>
+            )}
+          </Panel>
+        </div>
+        <div {...stylex.props(styles.bottom)}>
+          <Braces size={14} aria-hidden="true" />
+          <FormattedMessage
+            id="editor.format-note"
+            defaultMessage="Built for ICU MessageFormat"
+            description="Caption describing the supported message syntax"
+          />
+        </div>
+      </div>
+    </main>
   )
 }

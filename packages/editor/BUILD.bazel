@@ -53,9 +53,12 @@ generate_package_json(
 formatjs_library(
     name = "editor",
     srcs = [
+        "core.tsx",
         "index.tsx",
         "message.tsx",
         "types.ts",
+        "validation.ts",
+        "workflow.ts",
     ],
     entry_points = ["index.tsx"],
     visibility = ["//visibility:public"],
@@ -72,13 +75,17 @@ copy_to_bin(
         "demo.tsx",
         "design-system/components.tsx",
         "design-system/tokens.stylex.ts",
+        "workflow-demo.tsx",
     ],
     visibility = ["//visibility:public"],
 )
 
 formatjs_test(
     name = "unit_test",
-    srcs = ["editor.test.tsx"],
+    srcs = [
+        "editor.test.tsx",
+        "workflow.test.tsx",
+    ],
     data = [
         ":unit_test_types",
         "//:package.json",

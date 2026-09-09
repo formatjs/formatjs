@@ -40,3 +40,18 @@ comparison. See `packages/editor/vrt/README.md` for exact commands.
 VRT TypeScript settings come from `tools/tsconfig.bzl`; Bazel declares the source
 inputs. Bazel generates a runtime-only `package.json` containing `{"type":"module"}`
 so Playwright loads the `.ts` config as ESM. It declares no dependencies.
+
+`useTranslationEditor` composes `useMessageEditor` for multi-locale workflows.
+Draft state and in-flight save guards use `[message ID, locale]` keys. Completion
+updates the submitted key and baseline, preserving newer edits and other selections.
+Controlled catalog updates refresh clean drafts without overwriting dirty text.
+Locale fallback and clamped pagination handle asynchronously changing inputs.
+`validation.ts` compares recursive ICU contracts per branch; additional plural
+categories inherit `other`, rather than multiplying a global placeholder count.
+
+`core.tsx` owns the original headless API; `index.tsx` exports it alongside the
+workflow and validation APIs. `demo.tsx` shares an optional StyleX `EditorView`
+with `workflow-demo.tsx`. Workflow state has no dependency on either UI module.
+VRT's `?workflow=1` fixture exercises controlled persistence, filters, saved-state
+feedback, and desktop/narrow RTL screenshots. Existing demo baselines remain in
+place to catch regressions in the shared view.
