@@ -12,7 +12,7 @@ excluded because it fails.
 | displaynames        |      114 |                 6 |               0 |
 | durationformat      |      220 |                84 |              22 |
 | getcanonicallocales |       76 |                32 |               2 |
-| listformat          |      162 |                16 |               0 |
+| listformat          |      158 |                16 |               0 |
 | locale              |      336 |                60 |              26 |
 | numberformat        |      498 |                58 |               2 |
 | pluralrules         |      106 |                 6 |              16 |
