@@ -47,3 +47,9 @@ declared runfiles, disables Vite dotenv loading, and uses the same allowlisted
 environment for comparison and updates. Browser traffic is restricted to the
 fixture server. A local Docker daemon is required; external API/font requests
 should be replaced with declared fixture responses.
+
+`server.ts` implements the typed custom-server interface and is compiled by
+`:server_module`. It preserves the Vite isolation settings and serves the
+existing fixture middleware. `shell.tsx` owns test document settings and wraps
+the editor independently of server startup. The root build retains its patched
+TypeScript rules; the editor retains React 17 for Material UI compatibility.
