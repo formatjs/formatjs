@@ -41,6 +41,9 @@ across the monorepo.
 
 - Node.js is pinned to **24.14.0** with SHA256 hashes for darwin arm64/x64,
   linux arm64/x64, and windows x64.
+- Test262 harness targets explicitly select a separate **Node.js 26.8.1**
+  toolchain for stable Temporal support. SHA256 pins cover the same five
+  platforms; selection follows the target platform instead of repository host OS.
 - C/C++ builds use **hermetic LLVM 22.1.4** toolchains. Build actions that need
   native executables must keep them in the execution configuration.
 - A local LLVM patch wires pinned MSVC 14.50 and Windows SDK 10.0.26100 into

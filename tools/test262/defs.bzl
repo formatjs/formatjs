@@ -19,7 +19,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json")
         "--reporter",
         "json",
         "--reporter-keys",
-        "file,scenario,result",
+        "file,scenario,result,rawResult",
         "--errorForFailures",
         "--timeout",
         "30000",
@@ -29,6 +29,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json")
     ]
     polyfill_args = args + ["--prelude", "$(rootpath %s)" % realm_prelude]
     test262_harness_bin.test262_harness_binary(
+        node_toolchain = "//tools/test262:node-runtime",
         name = name + "-harness",
         data = data + [realm_prelude],
         tags = ["manual"],
@@ -47,6 +48,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json")
     )
     for mode in ["strict", "native"]:
         test262_harness_bin.test262_harness_test(
+            node_toolchain = "//tools/test262:node-runtime",
             name = name + "-" + mode,
             args = polyfill_args if mode == "strict" else args,
             data = data + ([realm_prelude] if mode == "strict" else []),

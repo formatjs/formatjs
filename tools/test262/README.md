@@ -8,7 +8,9 @@ executions, and baseline drift fail the gate. Tracked failures are executed and
 reported as failures, never skipped or renamed passes.
 
 Package `test262-baseline.json` files pin the execution count and failure
-messages by upstream path and execution scenario. Remove an entry only after
+messages by upstream path and execution scenario. Bare Test262Error assertions
+retain host stderr when the upstream validator omits their error name. Unknown
+empty failures and fatal host diagnostics remain validation errors. Remove an entry only after
 reviewing why it passes. A changed pin or suite selection requires reviewing
 both the counts and the failure list. Reports retain full diagnostics in
 `results.json`; baseline messages omit environment-dependent stack frames.
@@ -30,10 +32,12 @@ recursively in realms created through `$262.createRealm`.
 
 `:test262-native` runs the same selection without installing the polyfill and
 fails on any native failure. It is a manual diagnostic control, not an excuse
-to suppress a polyfill failure. Both modes use the pinned Node host without
-experimental flags. Node 24's experimental Temporal implementation crashes in
-calendar tests; unavailable Temporal features remain explicit failures. Host
-crashes and empty diagnostics are validation errors, never baseline entries.
+to suppress a polyfill failure. All harness modes use checksum-pinned Node
+26.8.1, with stable Temporal support and no experimental flags. An explicit
+platform selector supplies the generated rules_js binary's node_toolchain;
+repository host aliases are not used for remote execution. Normal build tools
+retain Node 24.14.0. Realm fixtures verify Temporal in child and grandchild realms.
+Host crashes and empty diagnostics are validation errors, never baseline entries.
 
 Baselines cover individual polyfill installations. Combined-polyfill coverage
 remains a follow-up; dependencies may use native Intl in individual suites.
