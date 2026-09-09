@@ -17,6 +17,7 @@ formatjs_library(
     name = "intl-getcanonicallocales",
     package_name = "@formatjs/intl-getcanonicallocales",
     srcs = [
+        "appendToList.ts",
         "canonicalizer.ts",
         "emitter.ts",
         "index.ts",

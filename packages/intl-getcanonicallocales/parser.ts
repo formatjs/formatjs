@@ -1,3 +1,4 @@
+import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   type UnicodeLocaleId,
   type UnicodeLanguageId,
@@ -94,10 +95,10 @@ export function parseUnicodeLanguageId(
 }
 
 function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
-  const keywords = []
+  const keywords: KV[] = []
   let keyword
   while (chunks.length && (keyword = parseKeyword(chunks))) {
-    keywords.push(keyword)
+    appendToList(keywords, keyword)
   }
   if (keywords.length) {
     return {
@@ -108,12 +109,12 @@ function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
   }
   // Mix of attributes & keywords
   // Check for attributes first
-  const attributes = []
+  const attributes: string[] = []
   while (chunks.length && ALPHANUM_3_8.test(chunks[0])) {
-    attributes.push(chunks.shift()!)
+    appendToList(attributes, chunks.shift()!)
   }
   while (chunks.length && (keyword = parseKeyword(chunks))) {
-    keywords.push(keyword)
+    appendToList(keywords, keyword)
   }
   if (keywords.length || attributes.length) {
     return {
@@ -132,9 +133,9 @@ function parseKeyword(chunks: string[]): KV | undefined {
   }
   key = chunks.shift()!
 
-  const type = []
+  const type: string[] = []
   while (chunks.length && TYPE_REGEX.test(chunks[0])) {
-    type.push(chunks.shift())
+    appendToList(type, chunks.shift()!)
   }
   let value: string = ''
   if (type.length) {
@@ -155,14 +156,14 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
   const fields: KV[] = []
   while (chunks.length && TKEY_REGEX.test(chunks[0])) {
     const key = chunks.shift()!
-    const value = []
+    const value: string[] = []
     while (chunks.length && ALPHANUM_3_8.test(chunks[0])) {
-      value.push(chunks.shift())
+      appendToList(value, chunks.shift()!)
     }
     if (!value.length) {
       throw new RangeError(`Missing tvalue for tkey "${key}"`)
     }
-    fields.push([key, value.join(SEPARATOR)])
+    appendToList(fields, [key, value.join(SEPARATOR)])
   }
   if (lang || fields.length) {
     return {
@@ -174,9 +175,9 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
   throw new RangeError('Malformed transformed_extension')
 }
 function parsePuExtension(chunks: string[]): PuExtension {
-  const exts = []
+  const exts: string[] = []
   while (chunks.length && ALPHANUM_1_8.test(chunks[0])) {
-    exts.push(chunks.shift())
+    appendToList(exts, chunks.shift()!)
   }
   if (exts.length) {
     return {
@@ -187,9 +188,9 @@ function parsePuExtension(chunks: string[]): PuExtension {
   throw new RangeError('Malformed private_use_extension')
 }
 function parseOtherExtensionValue(chunks: string[]): string {
-  const exts = []
+  const exts: string[] = []
   while (chunks.length && ALPHANUM_2_8.test(chunks[0])) {
-    exts.push(chunks.shift())
+    appendToList(exts, chunks.shift()!)
   }
   if (exts.length) {
     return exts.join(SEPARATOR)
@@ -217,7 +218,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new RangeError('There can only be 1 -u- extension')
         }
         unicodeExtension = parseUnicodeExtension(chunks)
-        extensions.push(unicodeExtension)
+        appendToList(extensions, unicodeExtension)
         break
       case 't':
       case 'T':
@@ -225,7 +226,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new RangeError('There can only be 1 -t- extension')
         }
         transformedExtension = parseTransformedExtension(chunks)
-        extensions.push(transformedExtension)
+        appendToList(extensions, transformedExtension)
         break
       case 'x':
       case 'X':
@@ -233,7 +234,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new RangeError('There can only be 1 -x- extension')
         }
         puExtension = parsePuExtension(chunks)
-        extensions.push(puExtension)
+        appendToList(extensions, puExtension)
         break
       default:
         if (!OTHER_EXTENSION_TYPE.test(type)) {
@@ -247,7 +248,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           value: parseOtherExtensionValue(chunks),
         }
         otherExtensionMap[extension.type] = extension
-        extensions.push(extension)
+        appendToList(extensions, extension)
         break
     }
   } while (chunks.length)

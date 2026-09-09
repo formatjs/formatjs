@@ -1,3 +1,4 @@
+import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   type UnicodeLanguageId,
   type UnicodeLocaleId,
@@ -18,22 +19,24 @@ export function emitUnicodeLocaleId({
 }: UnicodeLocaleId): string {
   const chunks = [emitUnicodeLanguageId(lang)]
   for (const ext of extensions) {
-    chunks.push(ext.type)
+    appendToList(chunks, ext.type)
     switch (ext.type) {
       case 'u':
-        chunks.push(
+        appendToList(
+          chunks,
           ...ext.attributes,
           ...ext.keywords.reduce((all: string[], kv) => all.concat(kv), [])
         )
         break
       case 't':
-        chunks.push(
+        appendToList(
+          chunks,
           emitUnicodeLanguageId(ext.lang).toLowerCase(),
           ...ext.fields.reduce((all: string[], kv) => all.concat(kv), [])
         )
         break
       default:
-        chunks.push(ext.value)
+        appendToList(chunks, ext.value)
         break
     }
   }

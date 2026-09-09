@@ -78,6 +78,31 @@ describe('Intl.getCanonicalLocales', () => {
       ])
     ).toEqual(['jbo', 'hy', 'hyw', 'ja-Latn-alalc97-fonipa', 'en-AX', 'en-GB'])
   })
+  it('does not call an overridden Array.prototype.push', () => {
+    const push = Array.prototype.push
+    let actual: string[]
+    try {
+      Array.prototype.push = () => {
+        throw new Error('observable push')
+      }
+      actual = getCanonicalLocales([
+        'en-US',
+        'SL-BISKE-ROZAJ',
+        'en-u-attr-kn-yes',
+        'en-t-en-m0-true',
+        'en-a-foo-x-private',
+      ])
+    } finally {
+      Array.prototype.push = push
+    }
+    expect(actual!).toEqual([
+      'en-US',
+      'sl-biske-rozaj',
+      'en-u-attr-kn',
+      'en-t-en-m0-true',
+      'en-a-foo-x-private',
+    ])
+  })
   it('regular', function () {
     expect(
       getCanonicalLocales('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')
