@@ -123,3 +123,9 @@ behavior.
 Malformed `collation` options throw `RangeError`; well-formed unsupported values
 fall back during locale negotiation. `compare` converts arguments to strings in
 left-to-right order and rejects Symbols with `TypeError`.
+
+### Built-in descriptors
+
+`resolvedOptions` and `supportedLocalesOf` are writable, configurable methods,
+but cannot be constructed with `new`. The constructor's `prototype` property
+is non-writable; the compare getter and bound function expose the standard names.
