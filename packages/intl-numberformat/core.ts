@@ -49,7 +49,6 @@ const RESOLVED_OPTIONS_KEYS = [
   'signDisplay',
   'roundingIncrement',
   'roundingMode',
-  'trailingZeroDisplay',
 ] as const
 
 /**
@@ -181,6 +180,11 @@ const {resolvedOptions} = {
     } else {
       ro.roundingPriority = 'auto'
     }
+    // ECMA-402 §16.3.2, step 5: create properties in table order.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.resolvedoptions
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L302-L309
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L418-L427
+    ro.trailingZeroDisplay = internalSlots.trailingZeroDisplay
     return ro as any
   },
 }
