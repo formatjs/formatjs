@@ -29,13 +29,8 @@ Using Bazel:
 bazel run //packages/intl-numberformat/benchmark:benchmark
 ```
 
-Or using tsx directly from the root:
-
-```bash
-cd packages/intl-numberformat/benchmark
-pnpm install
-pnpm exec tsx benchmark.ts
-```
+The Bazel targets include their generated ESM package manifest and local locale
+fixture. Run through Bazel so measurements use the workspace package build.
 
 ### CPU Profiling
 
