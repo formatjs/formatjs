@@ -199,6 +199,7 @@ rolldown_bundle(
     entry_point = "test262-main.ts",
     format = "iife",
     target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

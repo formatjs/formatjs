@@ -28,3 +28,19 @@ mathematical-value conversion.
 # polyfill-fastly.io Integration
 
 For basic use cases, we recommend using [polyfill-fastly.io](https://polyfill-fastly.io/) or [polyfill-library](https://github.com/Financial-Times/polyfill-library) to generate polyfill bundle since it automatically resolves the dependencies above for you.
+
+## Conformance testing
+
+The repository runs Test262 both with each polyfill installed individually and
+with all twelve installed together. Combined tests cover interactions that an
+isolated test can otherwise delegate to native Intl implementations.
+
+Run `bazel test //tools/test262:combined` for the combined regression gates.
+A reviewed failure baseline is not full conformance; use a package's
+`test262-strict` target or `//tools/test262:combined-<polyfill>-strict` for a
+zero-failure check. Counts and remaining failures are tracked in
+[`knowledge-base/014-test262-conformance.md`](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md).
+
+Combined suites use four harness workers with matching CPU reservations. This
+keeps full-suite execution within CI time limits while preserving per-test
+process isolation and the complete test selection.

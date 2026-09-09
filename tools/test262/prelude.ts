@@ -3,7 +3,7 @@ import {resolve} from 'node:path'
 import minimist from 'minimist'
 
 interface Args extends minimist.ParsedArgs {
-  input: string
+  input: string | string[]
   out: string
 }
 
@@ -24,7 +24,10 @@ export function realmPrelude(source: string): string {
 }
 
 export function main(args: Args): void {
-  writeFileSync(args.out, realmPrelude(readFileSync(args.input, 'utf8')))
+  const inputs = ([] as string[]).concat(args.input || [])
+  if (!inputs.length) throw new Error('At least one prelude input is required')
+  const source = inputs.map(input => readFileSync(input, 'utf8')).join('\n;\n')
+  writeFileSync(args.out, realmPrelude(source))
 }
 
 if (import.meta.filename === resolve(process.argv[1])) {

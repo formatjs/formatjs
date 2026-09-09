@@ -10,7 +10,7 @@ filegroup(
 copy_to_bin(
     name = "test262-collator-copy",
     srcs = [":test262-collator"],
-    visibility = ["@//packages/intl-collator:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-collator:__pkg__"],
 )
 
 filegroup(
@@ -21,7 +21,7 @@ filegroup(
 copy_to_bin(
     name = "test262-datetimeformat-copy",
     srcs = [":test262-datetimeformat"],
-    visibility = ["@//packages/intl-datetimeformat:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-datetimeformat:__pkg__"],
 )
 
 filegroup(
@@ -32,7 +32,7 @@ filegroup(
 copy_to_bin(
     name = "test262-displaynames-copy",
     srcs = [":test262-displaynames"],
-    visibility = ["@//packages/intl-displaynames:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-displaynames:__pkg__"],
 )
 
 filegroup(
@@ -43,7 +43,7 @@ filegroup(
 copy_to_bin(
     name = "test262-durationformat-copy",
     srcs = [":test262-durationformat"],
-    visibility = ["@//packages/intl-durationformat:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-durationformat:__pkg__"],
 )
 
 filegroup(
@@ -54,7 +54,7 @@ filegroup(
 copy_to_bin(
     name = "test262-getcanonicallocales-copy",
     srcs = [":test262-getcanonicallocales"],
-    visibility = ["@//packages/intl-getcanonicallocales:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-getcanonicallocales:__pkg__"],
 )
 
 filegroup(
@@ -65,7 +65,7 @@ filegroup(
 copy_to_bin(
     name = "test262-listformat-copy",
     srcs = [":test262-listformat"],
-    visibility = ["@//packages/intl-listformat:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-listformat:__pkg__"],
 )
 
 filegroup(
@@ -76,7 +76,7 @@ filegroup(
 copy_to_bin(
     name = "test262-locale-copy",
     srcs = [":test262-locale"],
-    visibility = ["@//packages/intl-locale:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-locale:__pkg__"],
 )
 
 filegroup(
@@ -87,7 +87,7 @@ filegroup(
 copy_to_bin(
     name = "test262-numberformat-copy",
     srcs = [":test262-numberformat"],
-    visibility = ["@//packages/intl-numberformat:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-numberformat:__pkg__"],
 )
 
 filegroup(
@@ -98,7 +98,7 @@ filegroup(
 copy_to_bin(
     name = "test262-pluralrules-copy",
     srcs = [":test262-pluralrules"],
-    visibility = ["@//packages/intl-pluralrules:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-pluralrules:__pkg__"],
 )
 
 filegroup(
@@ -109,7 +109,7 @@ filegroup(
 copy_to_bin(
     name = "test262-relativetimeformat-copy",
     srcs = [":test262-relativetimeformat"],
-    visibility = ["@//packages/intl-relativetimeformat:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-relativetimeformat:__pkg__"],
 )
 
 filegroup(
@@ -120,7 +120,7 @@ filegroup(
 copy_to_bin(
     name = "test262-segmenter-copy",
     srcs = [":test262-segmenter"],
-    visibility = ["@//packages/intl-segmenter:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-segmenter:__pkg__"],
 )
 
 filegroup(
@@ -131,7 +131,7 @@ filegroup(
 copy_to_bin(
     name = "test262-supportedvaluesof-copy",
     srcs = [":test262-supportedvaluesof"],
-    visibility = ["@//packages/intl-supportedvaluesof:__pkg__"],
+    visibility = ["@//tools/test262:__pkg__", "@//packages/intl-supportedvaluesof:__pkg__"],
 )
 
 filegroup(

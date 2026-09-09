@@ -1,0 +1,29 @@
+{
+  "total": 498,
+  "failures": {
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Receiver is not an initialized Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Receiver is not an initialized Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (default)": "value of legacy symbol property must be an Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (strict mode)": "value of legacy symbol property must be an Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol.js (default)": "Expected true but got false",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected true but got false",
+    "intl402/NumberFormat/legacy-regexp-statics-not-modified.js (default)": "RegExp has unexpected property $1 with value zu.",
+    "intl402/NumberFormat/legacy-regexp-statics-not-modified.js (strict mode)": "RegExp has unexpected property $1 with value zu.",
+    "intl402/NumberFormat/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
+    "intl402/NumberFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
+    "intl402/NumberFormat/prototype/format/numbering-systems.js (default)": "numberingSystem: adlm, digit: 0 Expected SameValue(«\"0\"», «\"𞥐\"») to be true",
+    "intl402/NumberFormat/prototype/format/numbering-systems.js (strict mode)": "numberingSystem: adlm, digit: 0 Expected SameValue(«\"0\"», «\"𞥐\"») to be true",
+    "intl402/NumberFormat/prototype/format/useGrouping-en-IN.js (default)": "(omitted) Expected SameValue(«\"100,000\"», «\"1,00,000\"») to be true",
+    "intl402/NumberFormat/prototype/format/useGrouping-en-IN.js (strict mode)": "(omitted) Expected SameValue(«\"100,000\"», «\"1,00,000\"») to be true",
+    "intl402/NumberFormat/prototype/format/useGrouping-extended-en-IN.js (default)": "\"always\" Expected SameValue(«\"100,000\"», «\"1,00,000\"») to be true",
+    "intl402/NumberFormat/prototype/format/useGrouping-extended-en-IN.js (strict mode)": "\"always\" Expected SameValue(«\"100,000\"», «\"1,00,000\"») to be true",
+    "intl402/NumberFormat/prototype/formatRange/en-US.js (default)": "Expected SameValue(«\"$3–$5\"», «\"$3 – $5\"») to be true",
+    "intl402/NumberFormat/prototype/formatRange/en-US.js (strict mode)": "Expected SameValue(«\"$3–$5\"», «\"$3 – $5\"») to be true",
+    "intl402/NumberFormat/prototype/formatRange/pt-PT.js (default)": "Expected SameValue(«\"‏3–‏5 €\"», «\"3 - 5 €\"») to be true",
+    "intl402/NumberFormat/prototype/formatRange/pt-PT.js (strict mode)": "Expected SameValue(«\"‏3–‏5 €\"», «\"3 - 5 €\"») to be true",
+    "intl402/NumberFormat/prototype/formatRangeToParts/en-US.js (default)": "value for entry 2 Expected SameValue(«\"–\"», «\" – \"») to be true",
+    "intl402/NumberFormat/prototype/formatRangeToParts/en-US.js (strict mode)": "value for entry 2 Expected SameValue(«\"–\"», «\" – \"») to be true",
+    "intl402/NumberFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
+    "intl402/NumberFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true"
+  }
+}
