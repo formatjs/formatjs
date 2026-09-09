@@ -8,7 +8,7 @@ describe('ToRawPrecision', () => {
       formattedString: '10',
       roundedNumber: new Decimal(10),
       integerDigitsCount: 2,
-      roundingMagnitude: 1,
+      roundingMagnitude: 0,
     })
   })
 
@@ -17,7 +17,7 @@ describe('ToRawPrecision', () => {
       formattedString: '10',
       roundedNumber: new Decimal(10),
       integerDigitsCount: 2,
-      roundingMagnitude: 1,
+      roundingMagnitude: 0,
     })
   })
 
@@ -26,7 +26,7 @@ describe('ToRawPrecision', () => {
       formattedString: '9.9',
       roundedNumber: new Decimal(9.9),
       integerDigitsCount: 1,
-      roundingMagnitude: 0,
+      roundingMagnitude: -1,
     })
   })
 
@@ -35,7 +35,7 @@ describe('ToRawPrecision', () => {
       formattedString: '100000000000000000000000000000000000000000',
       roundedNumber: new Decimal(1e41),
       integerDigitsCount: 42,
-      roundingMagnitude: 41,
+      roundingMagnitude: 21,
     })
   })
 
@@ -44,7 +44,7 @@ describe('ToRawPrecision', () => {
       formattedString: '0.0000000001',
       roundedNumber: new Decimal(1e-10),
       integerDigitsCount: 1,
-      roundingMagnitude: -10,
+      roundingMagnitude: -30,
     })
   })
 
@@ -53,7 +53,7 @@ describe('ToRawPrecision', () => {
       formattedString: '1000000000000000000000',
       roundedNumber: new Decimal(1e21),
       integerDigitsCount: 22,
-      roundingMagnitude: 21,
+      roundingMagnitude: 12,
     })
   })
 
@@ -63,7 +63,7 @@ describe('ToRawPrecision', () => {
         formattedString: '123.45',
         roundedNumber: new Decimal(123.45),
         integerDigitsCount: 3,
-        roundingMagnitude: 2,
+        roundingMagnitude: -2,
       }
     )
   })
@@ -73,7 +73,7 @@ describe('ToRawPrecision', () => {
       formattedString: '1.10',
       roundedNumber: new Decimal(1.1),
       integerDigitsCount: 1,
-      roundingMagnitude: 0,
+      roundingMagnitude: -4,
     })
   })
 
@@ -83,7 +83,7 @@ describe('ToRawPrecision', () => {
         formattedString: '0',
         roundedNumber: new Decimal(0),
         integerDigitsCount: 1,
-        roundingMagnitude: 0,
+        roundingMagnitude: -20,
       })
     })
 
@@ -92,7 +92,7 @@ describe('ToRawPrecision', () => {
         formattedString: '1',
         roundedNumber: new Decimal(1),
         integerDigitsCount: 1,
-        roundingMagnitude: 0,
+        roundingMagnitude: -1,
       })
     })
 
@@ -101,7 +101,7 @@ describe('ToRawPrecision', () => {
         formattedString: '9',
         roundedNumber: new Decimal(9),
         integerDigitsCount: 1,
-        roundingMagnitude: 0,
+        roundingMagnitude: -1,
       })
     })
 
@@ -110,7 +110,7 @@ describe('ToRawPrecision', () => {
         formattedString: '10',
         roundedNumber: new Decimal(10),
         integerDigitsCount: 2,
-        roundingMagnitude: 1,
+        roundingMagnitude: 0,
       })
     })
 
@@ -119,7 +119,7 @@ describe('ToRawPrecision', () => {
         formattedString: '59',
         roundedNumber: new Decimal(59),
         integerDigitsCount: 2,
-        roundingMagnitude: 1,
+        roundingMagnitude: 0,
       })
     })
 
@@ -128,7 +128,7 @@ describe('ToRawPrecision', () => {
         formattedString: '59',
         roundedNumber: new Decimal(59),
         integerDigitsCount: 2,
-        roundingMagnitude: 1,
+        roundingMagnitude: -2,
       })
     })
   })
@@ -139,7 +139,7 @@ describe('ToRawPrecision', () => {
         formattedString: '1.6',
         roundedNumber: new Decimal(1.6),
         integerDigitsCount: 1,
-        roundingMagnitude: 0,
+        roundingMagnitude: -1,
       })
     })
 
@@ -148,7 +148,7 @@ describe('ToRawPrecision', () => {
         formattedString: '2.5',
         roundedNumber: new Decimal(2.5),
         integerDigitsCount: 1,
-        roundingMagnitude: 0,
+        roundingMagnitude: -1,
       })
     })
 
@@ -187,7 +187,7 @@ describe('ToRawPrecision', () => {
           formattedString: '99.99',
           roundedNumber: new Decimal(99.99),
           integerDigitsCount: 2,
-          roundingMagnitude: 1,
+          roundingMagnitude: -2,
         }
       )
     })
@@ -199,7 +199,7 @@ describe('ToRawPrecision', () => {
         formattedString: '100',
         roundedNumber: new Decimal(100),
         integerDigitsCount: 3,
-        roundingMagnitude: 2,
+        roundingMagnitude: -1,
       })
     })
 
@@ -209,7 +209,7 @@ describe('ToRawPrecision', () => {
           formattedString: '0.001',
           roundedNumber: new Decimal(0.001),
           integerDigitsCount: 1,
-          roundingMagnitude: -3,
+          roundingMagnitude: -5,
         }
       )
     })
@@ -221,7 +221,7 @@ describe('ToRawPrecision', () => {
         formattedString: '0.00099',
         roundedNumber: new Decimal(0.00099),
         integerDigitsCount: 1,
-        roundingMagnitude: -4,
+        roundingMagnitude: -5,
       })
     })
 
@@ -230,7 +230,7 @@ describe('ToRawPrecision', () => {
         formattedString: '999',
         roundedNumber: new Decimal(999),
         integerDigitsCount: 3,
-        roundingMagnitude: 2,
+        roundingMagnitude: 0,
       })
     })
 
@@ -239,7 +239,7 @@ describe('ToRawPrecision', () => {
         formattedString: '1000',
         roundedNumber: new Decimal(1000),
         integerDigitsCount: 4,
-        roundingMagnitude: 3,
+        roundingMagnitude: 1,
       })
     })
   })
@@ -251,7 +251,7 @@ describe('ToRawPrecision', () => {
           formattedString: '12.34',
           roundedNumber: new Decimal(12.34),
           integerDigitsCount: 2,
-          roundingMagnitude: 1,
+          roundingMagnitude: -2,
         }
       )
     })
@@ -263,7 +263,7 @@ describe('ToRawPrecision', () => {
         formattedString: '12.3456',
         roundedNumber: new Decimal(12.3456),
         integerDigitsCount: 2,
-        roundingMagnitude: 1,
+        roundingMagnitude: -19,
       })
     })
 
@@ -274,7 +274,7 @@ describe('ToRawPrecision', () => {
         formattedString: '123.456',
         roundedNumber: new Decimal(123.456),
         integerDigitsCount: 3,
-        roundingMagnitude: 2,
+        roundingMagnitude: -4,
       })
     })
   })
