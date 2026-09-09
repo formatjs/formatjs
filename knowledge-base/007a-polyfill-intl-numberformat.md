@@ -137,3 +137,6 @@ Different signs and scientific or compact notation remain separate.
 Approximate ranges place the approximately sign in the locale's minus-sign position
 for unsigned values, or before an existing plus/minus sign. Currency prefixes,
 suffix signs, bidi literals, and unit wrappers use the same number pattern.
+
+Matching sign prefixes can be shared alongside a shared currency or unit suffix.
+Mixed signs remain attached to their endpoints.
