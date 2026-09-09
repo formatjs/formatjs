@@ -1,6 +1,9 @@
 import {CanonicalizeUnicodeLocaleId} from '#packages/intl-localematcher/abstract/CanonicalizeUnicodeLocaleId.js'
 import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
-import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
+import {
+  invariant,
+  splitUnicodeExtension,
+} from '#packages/intl-localematcher/abstract/utils.js'
 
 export function InsertUnicodeExtensionAndCanonicalize(
   locale: string,
@@ -8,7 +11,7 @@ export function InsertUnicodeExtensionAndCanonicalize(
   keywords: Array<Keyword>
 ): string {
   invariant(
-    locale.indexOf('-u-') === -1,
+    splitUnicodeExtension(locale).extension === undefined,
     'Expected locale to not have a Unicode locale extension'
   )
   let extension = '-u'

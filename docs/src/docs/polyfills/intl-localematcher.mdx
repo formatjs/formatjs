@@ -63,3 +63,7 @@ LookupSupportedLocales(['de'], ['de-AT-u-co-phonebk']) // ['de-AT-u-co-phonebk']
 
 Locale resolution uses an internal record isolated from inherited extension-key
 setters on `Object.prototype`.
+
+Locale matching extracts only the Unicode `u` extension. Private-use subtags
+remain intact, including text resembling `u-co-phonebk`; trailing extensions
+are preserved separately from Unicode keywords.

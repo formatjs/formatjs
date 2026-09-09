@@ -1,5 +1,5 @@
 import {BestAvailableLocale} from '#packages/intl-localematcher/abstract/BestAvailableLocale.js'
-import {UNICODE_EXTENSION_SEQUENCE_REGEX} from '#packages/intl-localematcher/abstract/utils.js'
+import {splitUnicodeExtension} from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-lookupsupportedlocales
@@ -12,10 +12,7 @@ export function LookupSupportedLocales(
 ): string[] {
   const subset: string[] = []
   for (const locale of requestedLocales) {
-    const noExtensionLocale = locale.replace(
-      UNICODE_EXTENSION_SEQUENCE_REGEX,
-      ''
-    )
+    const {locale: noExtensionLocale} = splitUnicodeExtension(locale)
     const availableLocale = BestAvailableLocale(
       availableLocales,
       noExtensionLocale

@@ -112,3 +112,17 @@ test('ResolveLocale records ignore inherited extension setters', () => {
   expect(result?.kn).toBe('true')
   expect(result?.locale).toBe('en-u-kn')
 })
+
+test('inserts supported keywords before private-use text', () => {
+  const locale = 'de-x-u-private'
+  expect(
+    ResolveLocale(
+      [locale],
+      ['de-u-co-phonebk-x-u-private'],
+      {localeMatcher: 'lookup'},
+      ['co'],
+      {[locale]: {co: ['default', 'phonebk']}},
+      () => locale
+    )
+  ).toMatchObject({locale: 'de-u-co-phonebk-x-u-private', co: 'phonebk'})
+})
