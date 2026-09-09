@@ -60,6 +60,7 @@ function extractNumbers(d: Numbers): RawNumberData {
       ? ['latn']
       : [d.defaultNumberingSystem, 'latn']
   return {
+    minimumGroupingDigits: Number(d.minimumGroupingDigits),
     nu,
     symbols: nu.reduce((all: Record<string, SymbolsData>, ns) => {
       const rangeSign = d[

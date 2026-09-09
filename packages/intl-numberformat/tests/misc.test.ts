@@ -796,3 +796,18 @@ describe('internal PluralRules options', () => {
     expect(formatted!).toBe('123')
   })
 })
+
+describe('locale minimum grouping digits', () => {
+  it('uses Polish grouping preferences for auto', () => {
+    const nf = new NumberFormat('pl')
+    expect(nf.format(1000)).toBe('1000')
+    expect(nf.format(-1000)).toBe('-1000')
+    expect(nf.format(10000)).toBe('10\u00a0000')
+    expect(new NumberFormat('pl', {useGrouping: 'always'}).format(1000)).toBe(
+      '1\u00a0000'
+    )
+    expect(new NumberFormat('en', {useGrouping: 'min2'}).format(1000)).toBe(
+      '1000'
+    )
+  })
+})

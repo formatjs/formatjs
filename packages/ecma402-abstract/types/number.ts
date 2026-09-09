@@ -159,6 +159,7 @@ export interface SymbolsData {
 }
 
 export interface RawNumberData {
+  minimumGroupingDigits?: number
   nu: string[]
   // numberingSystem -> pattern
   symbols: Record<NumberingSystem, SymbolsData>
