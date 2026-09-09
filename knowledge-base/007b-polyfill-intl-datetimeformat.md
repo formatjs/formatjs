@@ -181,3 +181,6 @@ Minute/second-only formats keep their requested fields.
 
 Calendar negotiation advertises Gregorian and ISO 8601 only. Both use the same
 Gregorian date fields and formatting patterns; week-date fields are not exposed.
+
+Range formatting compares endpoints at the displayed precision and keeps shared
+locale fallback patterns unchanged across formatter instances.
