@@ -102,6 +102,12 @@ function formatRange(
   start: number | bigint | Decimal,
   end: number | bigint | Decimal
 ) {
+  // ECMA-402 §16.3.4, step 3: reject missing endpoints before coercion.
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L463-L465
+  if (start === undefined || end === undefined) {
+    throw new TypeError('Range endpoints must not be undefined')
+  }
   return FormatNumericRange(
     this,
     ToIntlMathematicalValue(start),
@@ -117,6 +123,12 @@ function formatRangeToParts(
   start: number | bigint | Decimal,
   end: number | bigint | Decimal
 ) {
+  // ECMA-402 §16.3.5, step 3: reject missing endpoints before coercion.
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L478-L480
+  if (start === undefined || end === undefined) {
+    throw new TypeError('Range endpoints must not be undefined')
+  }
   return FormatNumericRangeToParts(
     this,
     ToIntlMathematicalValue(start),

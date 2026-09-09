@@ -98,3 +98,10 @@ supported numbering system. Only malformed Unicode type identifiers throw `Range
 GetNumberFormatPattern classifies NaN as positive-zero (step 11.a), then selects
 the zero pattern for exceptZero (step 18.a.i). `always` still emits a plus sign.
 See [ECMA-402 §16.5.11](https://tc39.es/ecma402/#sec-getnumberformatpattern).
+
+## Range endpoints
+
+`formatRange` and `formatRangeToParts` reject missing or undefined endpoints with
+`TypeError` before coercing either argument. NaN endpoints still throw `RangeError`.
+See [ECMA-402 §16.3.4, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange)
+and [§16.3.5, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts).
