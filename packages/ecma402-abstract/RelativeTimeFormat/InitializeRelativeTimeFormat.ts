@@ -85,10 +85,14 @@ export function InitializeRelativeTimeFormat(
   const fields = localeData[r.dataLocale]
   invariant(!!fields, `Missing locale data for ${r.dataLocale}`)
   internalSlots.fields = fields
-  internalSlots.numberFormat = createMemoizedNumberFormat(locales, {
-    numberingSystem: nu,
-  })
-  internalSlots.pluralRules = createMemoizedPluralRules(locales)
+  // ECMA-402 §18.1.1, steps 14–17: isolate NumberFormat options and use
+  // the resolved locale for both internal formatters.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L34-L37
+  const nfOptions = Object.create(null)
+  nfOptions.numberingSystem = nu
+  internalSlots.numberFormat = createMemoizedNumberFormat(locale, nfOptions)
+  internalSlots.pluralRules = createMemoizedPluralRules(locale)
   internalSlots.numberingSystem = nu
   return rtf
 }

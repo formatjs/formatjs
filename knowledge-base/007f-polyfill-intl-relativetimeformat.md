@@ -67,3 +67,6 @@ Stage 3: supported-locales.generated.ts
 
 - Dynamic per-locale via `RelativeTimeFormat.__addLocaleData()`
 - Buffered via global
+
+Internal number and plural formatters use the resolved locale. Internal number
+options have no prototype, so unrelated inherited options cannot affect them.
