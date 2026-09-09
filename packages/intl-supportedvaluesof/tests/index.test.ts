@@ -190,3 +190,12 @@ it('preserves key coercion errors', () => {
     } as any)
   ).toThrow(error)
 })
+
+it('supportedValuesOf is a non-constructible built-in function', () => {
+  expect(supportedValuesOf.name).toBe('supportedValuesOf')
+  expect(supportedValuesOf.length).toBe(1)
+  expect(Object.hasOwn(supportedValuesOf, 'prototype')).toBe(false)
+  expect(() => Reflect.construct(supportedValuesOf, ['unit'])).toThrow(
+    TypeError
+  )
+})

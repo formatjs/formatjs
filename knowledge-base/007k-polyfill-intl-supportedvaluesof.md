@@ -71,3 +71,5 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 
 `Intl.supportedValuesOf` converts its key to a string before validating the
 category. String wrapper objects are accepted; Symbols throw `TypeError`.
+
+`Intl.supportedValuesOf` is callable but cannot be used as a constructor.
