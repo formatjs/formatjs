@@ -24,7 +24,7 @@ describe('intl-locale', () => {
         'gregory',
         'coptic',
         'islamic',
-        'islamicc',
+        'islamic-civil',
         'islamic-tbla',
       ])
       // Runtime-dependent: 'compat' collation may not be supported on all platforms
@@ -42,7 +42,7 @@ describe('intl-locale', () => {
         'gregory',
         'coptic',
         'islamic',
-        'islamicc',
+        'islamic-civil',
         'islamic-tbla',
       ])
       // Runtime-dependent: 'compat' collation may not be supported on all platforms
@@ -386,4 +386,16 @@ test('canonicalizes the original locale before applying language overrides', () 
   expect(new Locale('und-Armn-SU', {language: 'ru'}).toString()).toBe(
     'ru-Armn-AM'
   )
+})
+
+it.each([
+  ['fa-JP-u-sd-inka-rg-thzzzz', 'fa-TH'],
+  ['fa-JP-u-sd-inka', 'fa-JP'],
+  ['fa-u-sd-inka', 'fa-IN'],
+  ['en-US-u-rg-zzzzzz', 'en-US'],
+])('calendar and hour-cycle preferences for %s follow %s', (tag, reference) => {
+  const locale = new Locale(tag)
+  const expected = new Locale(reference)
+  expect(locale.getCalendars()).toEqual(expected.getCalendars())
+  expect(locale.getHourCycles()).toEqual(expected.getHourCycles())
 })

@@ -86,3 +86,7 @@ alias resolution uses the original language and script context.
 
 `minimize()` tests reductions of the maximized locale, preserving variants and
 extensions. For example, `und-Thai` minimizes to `th` and `zh-Hant` to `zh-TW`.
+
+Calendar and hour-cycle preferences honor available `rg` override data, then the
+explicit region, `sd` subdivision, likely region, and world fallback. An override
+without data falls back to the ordinary preferred region.
