@@ -21,8 +21,7 @@ version. Parser and react-intl dependencies are pinned public releases; these
 visual tests exercise editor sources, not unreleased formatter changes.
 
 The repository’s `rules_web_e2e` dependency is a development pin until a BCR
-release exists. The pinned repository currently requires GitHub access; this
-integration must remain draft until that dependency is publicly fetchable.
+release exists. The pinned repository is public and can be fetched without GitHub credentials.
 To iterate locally, override it with:
 
 ```sh
