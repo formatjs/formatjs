@@ -153,3 +153,8 @@ entrypoint; root `#packages/*` imports do not cross the benchmark package bounda
 Grouping uses decimal digit counts and preserves supplementary-plane digits
 such as Adlam as complete code points. BMP digits retain the string-slicing path.
 Locale numbering-system availability remains a separate data concern.
+
+The shared digit mapping is generated from pinned CLDR `numberingSystems.json`
+numeric entries. It includes all 78 systems in the current ECMA-402 digit table;
+Latin digits use the unchanged ASCII path. Algorithmic numbering systems are not
+digit substitutions. Locale availability still comes from number locale data.

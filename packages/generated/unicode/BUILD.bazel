@@ -17,6 +17,7 @@ generate_package_file(
     name = "unicode_digit_mapping",
     src = "digit-mapping.ts",
     data = [
+        "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
     tool = "//packages/ecma402-abstract/scripts:digit-mapping",

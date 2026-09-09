@@ -652,3 +652,36 @@ it('preserves primary and secondary grouping sizes for mapped digits', () => {
     )
   ).toBe('𞥑𞥒𞥓')
 })
+
+it.each([
+  ['lepc', '\u1c40\u1c41\u1c42\u1c43\u1c44\u1c45\u1c46\u1c47\u1c48\u1c49'],
+  [
+    'gara',
+    '\u{10d40}\u{10d41}\u{10d42}\u{10d43}\u{10d44}\u{10d45}\u{10d46}\u{10d47}\u{10d48}\u{10d49}',
+  ],
+  [
+    'kawi',
+    '\u{11f50}\u{11f51}\u{11f52}\u{11f53}\u{11f54}\u{11f55}\u{11f56}\u{11f57}\u{11f58}\u{11f59}',
+  ],
+  [
+    'outlined',
+    '\u{1ccf0}\u{1ccf1}\u{1ccf2}\u{1ccf3}\u{1ccf4}\u{1ccf5}\u{1ccf6}\u{1ccf7}\u{1ccf8}\u{1ccf9}',
+  ],
+])('uses the specified %s decimal digits', (numberingSystem, expected) => {
+  const data = require('./locale-data/en.json').data
+  expect(
+    format(
+      {
+        ...baseNumberResult,
+        formattedString: '0123456789',
+        roundedNumber: new Decimal(123456789),
+      },
+      data,
+      new Intl.PluralRules('en'),
+      {
+        ...defaultOptions,
+        numberingSystem,
+      }
+    )
+  ).toBe(expected)
+})
