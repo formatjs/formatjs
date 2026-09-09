@@ -114,3 +114,15 @@ such as `phonebk`, `trad`, and `dict`, rather than legacy LDML names.
 `usage: "search"` selects CLDR search tailoring independently of sort collation
 keywords. Its resolved collation is `default`; search comparisons are intended
 for matching, not a stable sort order.
+
+## Benchmarks
+
+From a repository checkout:
+
+```sh
+bazel run //packages/intl-collator/benchmark:run
+```
+
+The benchmark compares Latin, accent, numeric, normalization, Swedish tailoring,
+and CJK cases with native `Intl.Collator`. Each timed task performs 32 comparisons;
+formatter construction and module initialization are excluded.

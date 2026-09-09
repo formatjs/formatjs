@@ -56,7 +56,8 @@ function countTrieNodes(node: PackedTrieNode): number {
 }
 
 function serialize(value: unknown): string {
-  return JSON.stringify(value)
+  // Keep large numeric tables out of the JavaScript parser during startup.
+  return `JSON.parse(${JSON.stringify(JSON.stringify(value))})`
 }
 
 const argv = minimist(process.argv.slice(2), {
