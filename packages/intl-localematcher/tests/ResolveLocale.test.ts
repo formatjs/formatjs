@@ -126,3 +126,19 @@ test('inserts supported keywords before private-use text', () => {
     )
   ).toMatchObject({locale: 'de-u-co-phonebk-x-u-private', co: 'phonebk'})
 })
+
+test('null defaults clear an overridden Unicode extension', () => {
+  const data = {en: {hc: [null, 'h11', 'h12', 'h23', 'h24']}}
+  const resolve = (requested: string, hc?: string | null) =>
+    ResolveLocale(
+      ['en'],
+      [requested],
+      {localeMatcher: 'lookup', hc},
+      ['hc'],
+      data,
+      () => 'en'
+    )
+  expect(resolve('en').hc).toBeNull()
+  expect(resolve('en-u-hc-h11').locale).toBe('en-u-hc-h11')
+  expect(resolve('en-u-hc-h11', null)).toMatchObject({locale: 'en', hc: null})
+})

@@ -205,15 +205,6 @@ async function loadDatesFields(
       processedTimeData[`${locale}-001`] ||
       processedTimeData['001']
     ).map(resolveDateTimeSymbolTable)
-    // Ensure all locales support at least one 24-hour and one 12-hour format
-    // This allows users to explicitly override via hourCycle option per ECMA-402 spec
-    // See: https://github.com/formatjs/formatjs/issues/6020
-    if (!hc.includes('h23') && !hc.includes('h24')) {
-      hc.push('h23')
-    }
-    if (!hc.includes('h12') && !hc.includes('h11')) {
-      hc.push('h12')
-    }
   } catch (e) {
     console.error(`Issue extracting hourCycle for ${locale}`)
     throw e
@@ -510,7 +501,11 @@ async function loadDatesFields(
       }
       return c
     }),
-    hc,
+    // ECMA-402 §11.2.3 requires null followed by all four cycles. The
+    // null sentinel lets hour12 override an hc extension during resolution.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L229
+    hc: [null, 'h11', 'h12', 'h23', 'h24'],
   }
 }
 

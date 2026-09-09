@@ -199,6 +199,31 @@ describe('Intl.DateTimeFormat', function () {
     }
   )
 
+  it('accepts every hour cycle through options and Unicode extensions', () => {
+    expect(
+      new DateTimeFormat('ar-u-hc-h11', {
+        hour: 'numeric',
+        hour12: true,
+        hourCycle: 'h24',
+      }).resolvedOptions().locale
+    ).toBe('ar')
+    for (const hourCycle of ['h11', 'h12', 'h23', 'h24'] as const) {
+      for (const locale of ['en', 'ar', 'ja']) {
+        const options = {timeZone: 'UTC', hour: 'numeric'} as const
+        expect(
+          new DateTimeFormat(locale, {...options, hourCycle}).resolvedOptions()
+            .hourCycle
+        ).toBe(hourCycle)
+        expect(
+          new DateTimeFormat(
+            `${locale}-u-hc-${hourCycle}`,
+            options
+          ).resolvedOptions().hourCycle
+        ).toBe(hourCycle)
+      }
+    }
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
