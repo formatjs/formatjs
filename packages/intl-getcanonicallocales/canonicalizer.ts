@@ -81,17 +81,62 @@ function mergeVariants(v1: string[], v2: string[]): string[] {
   return result
 }
 
+interface LanguageAliasRule {
+  type: UnicodeLanguageId
+  replacement: UnicodeLanguageId
+}
+
+function compareLanguageAliasRules(a: LanguageAliasRule, b: LanguageAliasRule) {
+  const fields = (id: UnicodeLanguageId) => [
+    Number(id.lang !== 'und'),
+    Number(!!id.script),
+    Number(!!id.region),
+    id.variants.length,
+  ]
+  const left = fields(a.type),
+    right = fields(b.type)
+  const difference =
+    right.reduce((a, b) => a + b, 0) - left.reduce((a, b) => a + b, 0)
+  if (difference) return difference
+  for (let i = 0; i < left.length; i++) {
+    if (!!left[i] !== !!right[i]) return right[i] ? 1 : -1
+  }
+  const leftTag = emitUnicodeLanguageId(a.type),
+    rightTag = emitUnicodeLanguageId(b.type)
+  return leftTag < rightTag ? -1 : leftTag > rightTag ? 1 : 0
+}
+
+// UTS #35 Alias Rules: discard invalid language IDs, then prefer more
+// specific matches. "und" represents an empty language field.
+// https://unicode.org/reports/tr35/#preprocessing
+// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4171-L4212
+const languageAliasRules = Object.keys(languageAlias)
+  .reduce<LanguageAliasRule[]>((rules, from) => {
+    const to = languageAlias[from]
+    let type: UnicodeLanguageId
+    const source = from.split(SEPARATOR)
+    try {
+      type = parseUnicodeLanguageId(source)
+    } catch {
+      return rules
+    }
+    if (source.length) return rules
+    const target = to.split(SEPARATOR)
+    const replacement = parseUnicodeLanguageId(target)
+    if (target.length)
+      throw new Error(`Invalid language alias replacement: ${to}`)
+    rules.push({type, replacement})
+    return rules
+  }, [])
+  .sort(compareLanguageAliasRules)
+  .reduce((groups: Record<string, LanguageAliasRule[]>, rule) => {
+    ;(groups[rule.type.lang] ||= []).push(rule)
+    return groups
+  }, Object.create(null))
+
 export function canonicalizeUnicodeLanguageId(
   unicodeLanguageId: UnicodeLanguageId
 ): UnicodeLanguageId {
-  /**
-   * If the language subtag matches the type attribute of a languageAlias element in Supplemental Data, replace the language subtag with the replacement value.
-   *  1. If there are additional subtags in the replacement value, add them to the result, but only if there is no corresponding subtag already in the tag.
-   *  2. Five special deprecated grandfathered codes (such as i-default) are in type attributes, and are also replaced.
-   */
-
-  // From https://github.com/unicode-org/icu/blob/master/icu4j/main/classes/core/src/com/ibm/icu/util/ULocale.java#L1246
-
   // ECMA-402 §6.2.2, step 1: canonicalize case before matching CLDR aliases.
   // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
@@ -108,104 +153,50 @@ export function canonicalizeUnicodeLanguageId(
     v.toLowerCase()
   )
 
-  // Try language _ variant
+  const original = emitUnicodeLanguageId(unicodeLanguageId)
   let finalLangAst = unicodeLanguageId
-  if (unicodeLanguageId.variants.length) {
-    let replacedLang: string = ''
-    for (const variant of unicodeLanguageId.variants) {
-      if (
-        (replacedLang =
-          languageAlias[
-            emitUnicodeLanguageId({
-              lang: unicodeLanguageId.lang,
-              variants: [variant],
-            })
-          ])
-      ) {
-        const replacedLangAst = parseUnicodeLanguageId(
-          replacedLang.split(SEPARATOR)
-        )
-        finalLangAst = {
-          lang: replacedLangAst.lang,
-          script: finalLangAst.script || replacedLangAst.script,
-          region: finalLangAst.region || replacedLangAst.region,
-          variants: mergeVariants(
-            finalLangAst.variants,
-            replacedLangAst.variants
-          ),
-        }
-        break
-      }
-    }
-  }
-
-  // language _ script _ country
-  // ug-Arab-CN -> ug-CN
-  if (finalLangAst.script && finalLangAst.region) {
-    const replacedLang =
-      languageAlias[
-        emitUnicodeLanguageId({
-          lang: finalLangAst.lang,
-          script: finalLangAst.script,
-          region: finalLangAst.region,
-          variants: [],
-        })
-      ]
-    if (replacedLang) {
-      const replacedLangAst = parseUnicodeLanguageId(
-        replacedLang.split(SEPARATOR)
-      )
-      finalLangAst = {
-        lang: replacedLangAst.lang,
-        script: replacedLangAst.script,
-        region: replacedLangAst.region,
-        variants: finalLangAst.variants,
-      }
-    }
-  }
-
-  // language _ country
-  // eg. az_AZ -> az_Latn_A
-  if (finalLangAst.region) {
-    const replacedLang =
-      languageAlias[
-        emitUnicodeLanguageId({
-          lang: finalLangAst.lang,
-          region: finalLangAst.region,
-          variants: [],
-        })
-      ]
-    if (replacedLang) {
-      const replacedLangAst = parseUnicodeLanguageId(
-        replacedLang.split(SEPARATOR)
-      )
-      finalLangAst = {
-        lang: replacedLangAst.lang,
-        script: finalLangAst.script || replacedLangAst.script,
-        region: replacedLangAst.region,
-        variants: finalLangAst.variants,
-      }
-    }
-  }
-  // only language
-  // e.g. twi -> ak
-  const replacedLang =
-    languageAlias[
-      emitUnicodeLanguageId({
-        lang: finalLangAst.lang,
-        variants: [],
-      })
-    ]
-  if (replacedLang) {
-    const replacedLangAst = parseUnicodeLanguageId(
-      replacedLang.split(SEPARATOR)
-    )
+  // ECMA-402 §6.2.2, step 1 applies UTS #35 matching and replacement.
+  // Remove matched subtags; retain fields that the rule does not replace.
+  // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
+  // https://unicode.org/reports/tr35/#4.-replacement
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4103-L4133
+  const matches = ({type}: LanguageAliasRule) =>
+    (!type.script || type.script === finalLangAst.script) &&
+    (!type.region || type.region === finalLangAst.region) &&
+    type.variants.every(variant => finalLangAst.variants.includes(variant))
+  const languageRule = languageAliasRules[finalLangAst.lang]?.find(matches)
+  const undRule =
+    finalLangAst.lang === 'und'
+      ? undefined
+      : languageAliasRules.und?.find(matches)
+  const matched = !languageRule
+    ? undRule
+    : !undRule
+      ? languageRule
+      : compareLanguageAliasRules(languageRule, undRule) <= 0
+        ? languageRule
+        : undRule
+  if (matched) {
+    const {type, replacement} = matched
     finalLangAst = {
-      lang: replacedLangAst.lang,
-      script: finalLangAst.script || replacedLangAst.script,
-      region: finalLangAst.region || replacedLangAst.region,
-      variants: finalLangAst.variants,
+      lang:
+        type.lang !== 'und' || finalLangAst.lang === 'und'
+          ? replacement.lang
+          : finalLangAst.lang,
+      script: type.script
+        ? replacement.script
+        : finalLangAst.script || replacement.script,
+      region: type.region
+        ? replacement.region
+        : finalLangAst.region || replacement.region,
+      variants: mergeVariants(
+        finalLangAst.variants.filter(v => !type.variants.includes(v)),
+        replacement.variants
+      ),
     }
+    // Restart with the most specific rule after each replacement.
+    return canonicalizeUnicodeLanguageId(finalLangAst)
   }
 
   if (finalLangAst.region) {
@@ -261,7 +252,9 @@ export function canonicalizeUnicodeLanguageId(
     }
     finalLangAst.variants.sort()
   }
-  return finalLangAst
+  return emitUnicodeLanguageId(finalLangAst) === original
+    ? finalLangAst
+    : canonicalizeUnicodeLanguageId(finalLangAst)
 }
 
 /**

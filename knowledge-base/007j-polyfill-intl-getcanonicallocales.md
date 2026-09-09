@@ -82,3 +82,6 @@ extensions accept a language, fields, or both, and retain `true` field values.
 
 The `rg` and `sd` Unicode keys resolve CLDR subdivision aliases. Territory
 replacements receive the required `zzzz` suffix; multiple replacements use the first.
+
+CLDR compound aliases remove matched subtags, preserve unrelated fields, and
+apply the most specific rule first, including language-independent variants.
