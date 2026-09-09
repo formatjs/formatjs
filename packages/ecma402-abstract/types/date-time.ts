@@ -157,6 +157,8 @@ export interface DateTimeFormatLocaleInternalData {
    */
   hourFormat: string
   hourCycle: string
+  hourCycle12?: string
+  hourCycle24?: string
   dateFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   timeFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   dateTimeFormat: {full: string; long: string; medium: string; short: string}

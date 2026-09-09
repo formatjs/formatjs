@@ -185,8 +185,6 @@
     "intl402/DateTimeFormat/prototype/formatToParts/temporal-plainyearmonth-formatting-timezonename.js (strict mode)": "Expected no error, got TypeError: Do not use Temporal.PlainYearMonth.prototype.valueOf; use Temporal.PlainYearMonth.prototype.compare for comparison.",
     "intl402/DateTimeFormat/prototype/resolvedOptions/calendar.js (default)": "Resolved calendar Expected SameValue(«\"gregory\"», «\"buddhist\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/calendar.js (strict mode)": "Resolved calendar Expected SameValue(«\"gregory\"», «\"buddhist\"») to be true",
-    "intl402/DateTimeFormat/prototype/resolvedOptions/hourCycle-default.js (default)": "Expected SameValue(«\"h24\"», «\"h23\"») to be true",
-    "intl402/DateTimeFormat/prototype/resolvedOptions/hourCycle-default.js (strict mode)": "Expected SameValue(«\"h24\"», «\"h23\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/resolved-calendar-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-ca-iso8601 with calendar=invalid Expected SameValue(«\"en\"», «\"en-u-ca-iso8601\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/resolved-calendar-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-ca-iso8601 with calendar=invalid Expected SameValue(«\"en\"», «\"en-u-ca-iso8601\"») to be true",
     "intl402/DateTimeFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
