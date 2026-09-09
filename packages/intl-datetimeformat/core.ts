@@ -11,7 +11,11 @@ import {
   type TABLE_6,
   type UnpackedZoneData,
 } from '#packages/ecma402-abstract/types/date-time.js'
-import {defineProperty, invariant} from '#packages/ecma402-abstract/utils.js'
+import {
+  getLocaleDataAlias,
+  defineProperty,
+  invariant,
+} from '#packages/ecma402-abstract/utils.js'
 import Decimal from '@formatjs/bigdecimal'
 import {FormatDateTime} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTime.js'
 import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRange.js'
@@ -407,9 +411,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       )
     }
 
-    const minimizedLocale = new (Intl as any).Locale(locale)
-      .minimize()
-      .toString()
+    const minimizedLocale = getLocaleDataAlias(locale)
     DateTimeFormat.localeData[locale] = DateTimeFormat.localeData[
       minimizedLocale
     ] = processedData

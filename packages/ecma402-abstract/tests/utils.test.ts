@@ -1,4 +1,8 @@
-import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+import {
+  defineProperty,
+  ensureIntl,
+  getLocaleDataAlias,
+} from '#packages/ecma402-abstract/utils.js'
 import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 
 describe('polyfill utilities', () => {
@@ -41,5 +45,17 @@ describe('polyfill utilities', () => {
       enumerable: false,
       configurable: true,
     })
+  })
+})
+
+describe('locale data aliases', () => {
+  it.each(['und', 'und-Arab', 'und-IN'])(
+    'keeps %s separate from a likely language',
+    locale => {
+      expect(getLocaleDataAlias(locale)).toBe(locale)
+    }
+  )
+  it('still minimizes explicit language aliases', () => {
+    expect(getLocaleDataAlias('en-Latn-US')).toBe('en')
   })
 })

@@ -227,3 +227,6 @@ async function polyfill(locale: string) {
 ## Tests
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/RelativeTimeFormat)-compliant.
+
+Loading `und` locale data preserves existing English data. Root patterns remain
+separate from language-specific patterns, regardless of registration order.

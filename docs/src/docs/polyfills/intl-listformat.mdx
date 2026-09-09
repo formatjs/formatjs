@@ -171,3 +171,6 @@ This library is fully [test262](https://github.com/tc39/test262/tree/master/test
 `format` and `formatToParts` accept iterables of strings, including a string's
 individual code points. `undefined` produces an empty list. Non-iterables and
 non-string elements throw `TypeError`; an invalid element also closes the iterator.
+
+Loading `und` locale data preserves existing English data. Root patterns remain
+separate from language-specific patterns, regardless of registration order.

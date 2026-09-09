@@ -112,3 +112,9 @@ Test262 execution uses rules_js generated harness rules. Strict/native modes
 are direct harness tests; baseline mode invokes the generated harness binary
 and separate validator within one test. Reports are test outputs, so disabling
 test caching reruns the harness. Realm installation scripts are generated inputs.
+
+## Root locale data
+
+Dynamic locale registration preserves `und` data under its own locale. Likely
+subtags can minimize `und` to `en`, but that does not make root formatting
+patterns English data. Explicit language aliases continue to be minimized.

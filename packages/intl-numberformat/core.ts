@@ -12,6 +12,7 @@ import {
   type RawNumberLocaleData,
 } from '#packages/ecma402-abstract/types/number.js'
 import {
+  getLocaleDataAlias,
   createMemoizedPluralRules,
   defineProperty,
   invariant,
@@ -262,9 +263,7 @@ NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
   for (const {data: d, locale} of data) {
-    const minimizedLocale = new (Intl as any).Locale(locale)
-      .minimize()
-      .toString()
+    const minimizedLocale = getLocaleDataAlias(locale)
     NumberFormat.localeData[locale] = NumberFormat.localeData[minimizedLocale] =
       d
     NumberFormat.availableLocales.add(minimizedLocale)
