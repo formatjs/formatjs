@@ -5,25 +5,36 @@ using the pinned Node 26.8.1 Test262 host. Counts include strict/default executi
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
 
-| Polyfill            | Executed | Polyfill failures | Native failures |
-| ------------------- | -------: | ----------------: | --------------: |
-| collator            |      130 |                 2 |               0 |
-| datetimeformat      |      488 |               194 |              52 |
-| displaynames        |      114 |                 4 |               0 |
-| durationformat      |      220 |                 0 |               4 |
-| getcanonicallocales |       76 |                 0 |               2 |
-| listformat          |      162 |                 4 |               0 |
-| locale              |      336 |                 4 |              22 |
-| numberformat        |      498 |                22 |               0 |
-| pluralrules         |      106 |                 4 |               0 |
-| relativetimeformat  |      160 |                 8 |               0 |
-| segmenter           |      158 |                10 |               0 |
-| supportedvaluesof   |       50 |                 2 |               6 |
+| Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
+| ------------------- | -------: | ----------------: | --------------: | ----------------: |
+| collator            |      130 |                 2 |               0 |                 4 |
+| datetimeformat      |      488 |               194 |              52 |               194 |
+| displaynames        |      114 |                 4 |               0 |                 4 |
+| durationformat      |      220 |                 0 |               4 |                 2 |
+| getcanonicallocales |       76 |                 0 |               2 |                 0 |
+| listformat          |      162 |                 4 |               0 |                 4 |
+| locale              |      336 |                 4 |              22 |                 4 |
+| numberformat        |      498 |                22 |               0 |                24 |
+| pluralrules         |      106 |                 4 |               0 |                 4 |
+| relativetimeformat  |      160 |                 8 |               0 |                20 |
+| segmenter           |      158 |                10 |               0 |                10 |
+| supportedvaluesof   |       50 |                 2 |               6 |                 6 |
 
 Total: 2,498 executions, 2,244 polyfill passes, 254 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
+
+Combined: 2,498 executions, 2,222 passes, 276 failures.
+
+Combined installation adds 26 failing executions; 4 isolated failures now pass.
+Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
+Two RelativeTimeFormat cases pass because combined enumeration omits numbering
+systems that the NumberFormat polyfill does not support; this is not broader
+numbering-system conformance.
+The extra failures concern RegExp statics, NumberFormat dependencies, calendar
+display-name keys, and optional collation data. Full raw reports accompany Bazel
+test outputs; the checked-in baselines preserve every remaining diagnostic.
 
 ## Harness guarantees
 
@@ -54,8 +65,8 @@ spec and test's feature metadata.
    behavior. Check proposal feature metadata against the targeted ECMA-402 draft.
 4. Classify DateTimeFormat/DurationFormat Temporal cases with native controls.
    Native failures must not be mistaken for proof that upstream tests are wrong.
-5. Add combined installation coverage so native dependencies cannot hide
-   interactions among polyfills.
+5. Fix failures from combined installation coverage, where all 12 polyfills
+   replace native Intl dependencies in every realm.
 6. Reduce all baselines to zero where implementable. Document any remaining
    runtime limitation per test and spec requirement, never as a blanket skip.
 
@@ -122,3 +133,15 @@ seconds, considering sub-second values before rounding when deciding visibility.
 
 Locale resolution uses an internal record isolated from inherited extension-key
 setters on `Object.prototype`.
+
+## Combined installation
+
+`bazel test //tools/test262:combined` runs each upstream suite after all twelve
+polyfills are installed in dependency order, including in nested realms.
+Each package keeps its isolated target. Combined failures have separate reviewed
+baselines under `tools/test262/baselines/`; neither denominator excludes failures.
+Use `//tools/test262:combined-<polyfill>-strict` for a direct zero-failure check.
+
+Combined suites use four harness workers with matching CPU reservations. This
+keeps full-suite execution within CI time limits while preserving per-test
+process isolation and the complete test selection.

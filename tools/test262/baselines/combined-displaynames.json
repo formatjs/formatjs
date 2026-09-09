@@ -1,0 +1,9 @@
+{
+  "total": 114,
+  "failures": {
+    "intl402/DisplayNames/proto-from-ctor-realm.js (default)": "Expected SameValue(«[object Object]», «[object Intl.DisplayNames]») to be true",
+    "intl402/DisplayNames/proto-from-ctor-realm.js (strict mode)": "Expected SameValue(«[object Object]», «[object Intl.DisplayNames]») to be true",
+    "intl402/DisplayNames/prototype/resolvedOptions/return-object.js (default)": "locale descriptor value should be en-US; locale value should be en-US",
+    "intl402/DisplayNames/prototype/resolvedOptions/return-object.js (strict mode)": "locale descriptor value should be en-US; locale value should be en-US"
+  }
+}

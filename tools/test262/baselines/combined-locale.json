@@ -1,0 +1,9 @@
+{
+  "total": 336,
+  "failures": {
+    "intl402/Locale/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
+    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
+    "intl402/Locale/prototype/getCollations/output-array-values.js (default)": "getCollations() for en has at least one element Expected SameValue(«0», «0») to be false",
+    "intl402/Locale/prototype/getCollations/output-array-values.js (strict mode)": "getCollations() for en has at least one element Expected SameValue(«0», «0») to be false"
+  }
+}

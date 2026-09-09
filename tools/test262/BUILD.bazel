@@ -1,6 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load(":defs.bzl", "test262_test")
 
 config_setting(
     name = "darwin_arm64",
@@ -122,11 +123,16 @@ sh_test(
 
 js_run_binary(
     name = "fixture-realm-prelude",
-    srcs = ["fixtures/prelude.js"],
+    srcs = [
+        "fixtures/prelude.js",
+        "fixtures/second-prelude.js",
+    ],
     outs = ["fixture-realm-prelude.js"],
     args = [
         "--input",
         "$(rootpath fixtures/prelude.js)",
+        "--input",
+        "$(rootpath fixtures/second-prelude.js)",
         "--out",
         "$(rootpath fixture-realm-prelude.js)",
     ],
@@ -153,3 +159,66 @@ js_run_binary(
         "realm",
     ]
 ]
+
+# Install dependencies first; each bundle owns its locale data.
+# The same ordered installation is replayed in every Test262 realm.
+COMBINED_PRELUDES = [
+    "//packages/intl-getcanonicallocales:test262-polyfill.js",
+    "//packages/intl-locale:test262-polyfill.js",
+    "//packages/intl-pluralrules:test262-polyfill.js",
+    "//packages/intl-numberformat:test262-polyfill.js",
+    "//packages/intl-datetimeformat:test262-polyfill.js",
+    "//packages/intl-listformat:test262-polyfill.js",
+    "//packages/intl-relativetimeformat:test262-polyfill.js",
+    "//packages/intl-displaynames:test262-polyfill.js",
+    "//packages/intl-segmenter:test262-polyfill.js",
+    "//packages/intl-collator:test262-polyfill.js",
+    "//packages/intl-durationformat:test262-polyfill.js",
+    "//packages/intl-supportedvaluesof:test262-polyfill.js",
+]
+
+[
+    test262_test(
+        name = "combined-" + name,
+        baseline = "baselines/combined-" + name + ".json",
+        data = [
+            "@com_github_tc39_test262//:test262-" + name + "-copy",
+            "@com_github_tc39_test262//:test262-harness-copy",
+        ],
+        prelude = COMBINED_PRELUDES,
+        suite = "intl402/" + suite,
+        threads = 4,
+    )
+    for name, suite in [
+        ("getcanonicallocales", "Intl/getCanonicalLocales"),
+        ("locale", "Locale"),
+        ("pluralrules", "PluralRules"),
+        ("numberformat", "NumberFormat"),
+        ("datetimeformat", "DateTimeFormat"),
+        ("listformat", "ListFormat"),
+        ("relativetimeformat", "RelativeTimeFormat"),
+        ("displaynames", "DisplayNames"),
+        ("segmenter", "Segmenter"),
+        ("collator", "Collator"),
+        ("durationformat", "DurationFormat"),
+        ("supportedvaluesof", "Intl/supportedValuesOf"),
+    ]
+]
+
+test_suite(
+    name = "combined",
+    tests = [":combined-" + name for name in [
+        "getcanonicallocales",
+        "locale",
+        "pluralrules",
+        "numberformat",
+        "datetimeformat",
+        "listformat",
+        "relativetimeformat",
+        "displaynames",
+        "segmenter",
+        "collator",
+        "durationformat",
+        "supportedvaluesof",
+    ]],
+)

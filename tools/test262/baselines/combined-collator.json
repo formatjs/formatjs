@@ -1,0 +1,9 @@
+{
+  "total": 130,
+  "failures": {
+    "intl402/Collator/legacy-regexp-statics-not-modified.js (default)": "RegExp has unexpected property $_ with value phonebk.",
+    "intl402/Collator/legacy-regexp-statics-not-modified.js (strict mode)": "RegExp has unexpected property $_ with value phonebk.",
+    "intl402/Collator/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true",
+    "intl402/Collator/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true"
+  }
+}
