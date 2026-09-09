@@ -138,3 +138,7 @@ from available locale identifiers used during negotiation.
 
 Collation metadata and tailoring keys use canonical BCP 47 types from CLDR,
 such as `phonebk`, `trad`, and `dict`, rather than legacy LDML names.
+
+`usage: "search"` selects CLDR search tailoring independently of sort collation
+keywords. Its resolved collation is `default`; search comparisons are intended
+for matching, not a stable sort order.

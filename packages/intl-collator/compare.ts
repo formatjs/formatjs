@@ -269,7 +269,13 @@ function importedTailorings(
   // The visited set prevents recursive imports from looping.
   // https://www.unicode.org/reports/tr35/tr35-collation.html#Special_Purpose_Commands
   const imported = IMPORT_COLLATION_RE.exec(rule[2])
-  return imported ? tailoringEntries(imported[1], imported[2], visited) : []
+  return imported
+    ? tailoringEntries(
+        imported[1] === 'und' ? 'root' : imported[1],
+        imported[2],
+        visited
+      )
+    : []
 }
 
 function addTailoredRelation(
@@ -350,7 +356,9 @@ function tailoringEntries(
   }
   visited.add(key)
 
-  const collationData = packedCollation(locale, collation)
+  const collationData =
+    packedCollation(locale, collation) ||
+    (collation === 'search' ? packedCollation('root', 'search') : undefined)
   const entries: TailoringEntry[] = []
   const rules = collationData?.rules || []
   let reset: PackedLDMLReset | undefined
@@ -470,7 +478,9 @@ function comparePreparedStrings(
   const locale = localeBase(slots.locale)
   const tailoring = tailoringEntries(
     locale,
-    collationForComparison(locale, slots.collation)
+    slots.usage === 'search'
+      ? 'search'
+      : collationForComparison(locale, slots.collation)
   )
   return compareCollationElements(
     collationElements(left, tailoring),

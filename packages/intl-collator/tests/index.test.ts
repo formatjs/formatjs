@@ -19,6 +19,22 @@ describe('Intl.Collator', () => {
     })
   })
 
+  it('uses search tailoring independently of sort collation options', () => {
+    expect(
+      ['AE', 'Ä'].sort(new Collator('de', {usage: 'sort'}).compare)
+    ).toEqual(['Ä', 'AE'])
+    const search = new Collator('de-u-co-phonebk', {
+      usage: 'search',
+      collation: 'phonebk',
+    })
+    expect(search.resolvedOptions()).toMatchObject({
+      locale: 'de',
+      collation: 'default',
+      usage: 'search',
+    })
+    expect(['AE', 'Ä'].sort(search.compare)).toEqual(['AE', 'Ä'])
+  })
+
   it('compares strings with base sensitivity', () => {
     const collator = new Collator('en', {sensitivity: 'base'})
     expect(collator.compare('resume', 'resume')).toBe(0)
