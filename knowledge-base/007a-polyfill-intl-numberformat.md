@@ -147,3 +147,9 @@ Run `bazel run //packages/intl-numberformat/benchmark:benchmark` for formatting
 benchmarks, or `:profile` in the same package for repeated formatting. These
 targets declare their generated ESM manifest and load `en.json` relative to the
 entrypoint; root `#packages/*` imports do not cross the benchmark package boundary.
+
+### Digit grouping
+
+Grouping uses decimal digit counts and preserves supplementary-plane digits
+such as Adlam as complete code points. BMP digits retain the string-slicing path.
+Locale numbering-system availability remains a separate data concern.
