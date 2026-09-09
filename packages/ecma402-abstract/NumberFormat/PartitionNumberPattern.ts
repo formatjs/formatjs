@@ -14,7 +14,8 @@ import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cach
  */
 export function PartitionNumberPattern(
   internalSlots: NumberFormatInternal,
-  _x: Decimal
+  _x: Decimal,
+  approximately = false
 ): NumberFormatPart[] {
   let x = _x
   // IMPL: We need to record the magnitude of the number
@@ -147,6 +148,7 @@ export function PartitionNumberPattern(
     },
     internalSlots.dataLocaleData,
     pl,
-    internalSlots
+    internalSlots,
+    approximately
   )
 }

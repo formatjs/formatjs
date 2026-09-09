@@ -51,6 +51,10 @@ const LOCALES = [
   'zh-Hans',
   'zh-Hant',
   'en-BS',
+  'de-CH',
+  'es-CL',
+  'fy',
+  'ar-SS',
 ]
 
 LOCALES.forEach(locale => {
@@ -839,4 +843,55 @@ it('preserves range separators and only collapses matching affixes', () => {
   ])
   const scientific = new NumberFormat('en', {notation: 'scientific'})
   expect(scientific.formatRange(3000, 5000)).toBe('3E3–5E3')
+})
+
+it.each(['en', 'de-CH', 'es-CL', 'fy', 'ar-SS'])(
+  'places unsigned approximate currency at the %s minus-sign position',
+  locale => {
+    const nf = new NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      numberingSystem: 'latn',
+      maximumFractionDigits: 0,
+    })
+    const expected = nf.formatToParts(-3).map(part => ({
+      ...part,
+      ...(part.type === 'minusSign'
+        ? {type: 'approximatelySign', value: locale === 'de-CH' ? '≈' : '~'}
+        : {}),
+      source: 'shared',
+    }))
+    expect(nf.formatRangeToParts(2.9, 3.1)).toEqual(expected)
+  }
+)
+
+it('formats approximate ranges with signs, accounting, and compact notation', () => {
+  const currency = {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  } as const
+  expect(new NumberFormat('en', currency).formatRange(2.9, 3.1)).toBe('~$3')
+  const signed = new NumberFormat('en', {...currency, signDisplay: 'always'})
+  expect(signed.formatRange(2.9, 3.1)).toBe('~+$3')
+  expect(signed.formatRange(-3.1, -2.9)).toBe('~-$3')
+  const accounting = new NumberFormat('en', {
+    ...currency,
+    currencySign: 'accounting',
+  })
+  expect(accounting.formatRange(-3.1, -2.9)).toBe('~($3)')
+  expect(
+    new NumberFormat('en', {
+      notation: 'compact',
+      maximumFractionDigits: 0,
+    }).formatRange(2900, 3100)
+  ).toBe('~3K')
+  expect(
+    new NumberFormat('en', {
+      style: 'unit',
+      unit: 'meter',
+      unitDisplay: 'long',
+      maximumFractionDigits: 0,
+    }).formatRange(2.9, 3.1)
+  ).toBe('~3 meters')
 })

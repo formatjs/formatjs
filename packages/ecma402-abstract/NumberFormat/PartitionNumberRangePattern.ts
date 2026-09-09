@@ -6,7 +6,6 @@ import {
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {CollapseNumberRange} from '#packages/ecma402-abstract/NumberFormat/CollapseNumberRange.js'
 import {FormatApproximately} from '#packages/ecma402-abstract/NumberFormat/FormatApproximately.js'
-import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
 import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.js'
 
 /**
@@ -32,8 +31,12 @@ export function PartitionNumberRangePattern(
   // 4. Let yResult be ? PartitionNumberPattern(numberFormat, y).
   const yResult = PartitionNumberPattern(internalSlots, y)
 
-  if (FormatNumeric(internalSlots, x) === FormatNumeric(internalSlots, y)) {
-    const appxResult = FormatApproximately(internalSlots, xResult)
+  // Reuse the already-partitioned endpoints for the FormatNumeric comparison.
+  if (
+    xResult.map(part => part.value).join('') ===
+    yResult.map(part => part.value).join('')
+  ) {
+    const appxResult = FormatApproximately(internalSlots, x)
     appxResult.forEach(el => {
       el.source = 'shared'
     })

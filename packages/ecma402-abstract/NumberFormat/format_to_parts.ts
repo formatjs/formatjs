@@ -63,11 +63,16 @@ export default function formatToParts(
     unitDisplay?: NumberFormatOptionsUnitDisplay
     roundingIncrement: number
     roundingMode: RoundingModeType
-  }
+  },
+  approximately = false
 ): NumberFormatPart[] {
   const {sign, exponent, magnitude} = numberResult
   const {notation, style, numberingSystem} = options
   const defaultNumberingSystem = data.numbers.nu[0]
+  const symbols =
+    data.numbers.symbols[numberingSystem] ||
+    data.numbers.symbols[defaultNumberingSystem]
+  approximately = approximately && !!symbols.approximatelySign
 
   // #region Part 1: partition and interpolate the CLDR number pattern.
   // ----------------------------------------------------------
@@ -120,7 +125,11 @@ export default function formatToParts(
       const decimalData =
         data.numbers.decimal[numberingSystem] ||
         data.numbers.decimal[defaultNumberingSystem]
-      numberPattern = getPatternForSign(decimalData.standard, sign)
+      numberPattern = getPatternForSign(
+        decimalData.standard,
+        sign,
+        approximately
+      )
     } else if (style === 'currency') {
       const currencyData =
         data.numbers.currency[numberingSystem] ||
@@ -129,17 +138,20 @@ export default function formatToParts(
       // We replace number pattern part with `0` for easier postprocessing.
       numberPattern = getPatternForSign(
         currencyData[options.currencySign!],
-        sign
+        sign,
+        approximately
       )
     } else {
       // percent
       const percentPattern =
         data.numbers.percent[numberingSystem] ||
         data.numbers.percent[defaultNumberingSystem]
-      numberPattern = getPatternForSign(percentPattern, sign)
+      numberPattern = getPatternForSign(percentPattern, sign, approximately)
     }
   } else {
-    numberPattern = compactNumberPattern
+    numberPattern = approximately
+      ? insertApproximatelySign(compactNumberPattern, sign)
+      : compactNumberPattern
   }
 
   // Extract the decimal number pattern string. It looks like "#,##0,00", which will later be
@@ -180,13 +192,11 @@ export default function formatToParts(
     }
   }
 
-  // The following tokens are special: `{0}`, `¤`, `%`, `-`, `+`, `{c:...}.
-  const numberPatternParts = numberPattern.split(/({c:[^}]+}|\{0\}|[¤%\-+])/g)
+  // Separate number, approximately sign, affix, and compact placeholders.
+  const numberPatternParts = numberPattern.split(
+    /({c:[^}]+}|\{approximatelySign\}|\{0\}|[¤%\-+])/g
+  )
   const numberParts: NumberFormatPart[] = []
-
-  const symbols =
-    data.numbers.symbols[numberingSystem] ||
-    data.numbers.symbols[defaultNumberingSystem]
 
   for (const part of numberPatternParts) {
     if (!part) {
@@ -213,6 +223,12 @@ export default function formatToParts(
         )
         break
       }
+      case '{approximatelySign}':
+        numberParts.push({
+          type: 'approximatelySign',
+          value: symbols.approximatelySign,
+        })
+        break
       case '-':
         numberParts.push({type: 'minusSign', value: symbols.minusSign})
         break
@@ -512,21 +528,37 @@ function partitionNumberIntoParts(
   return result
 }
 
-function getPatternForSign(pattern: string, sign: -1 | 0 | 1): string {
-  if (pattern.indexOf(';') < 0) {
-    pattern = `${pattern};-${pattern}`
-  }
+// LDML approximate formatting uses the minus-sign position for unsigned values,
+// and inserts the approximately sign before an existing plus/minus sign.
+// https://unicode.org/reports/tr35/tr35-numbers.html#Approximate_Number_Formatting
+// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1854-L1858
+function getPatternForSign(
+  pattern: string,
+  sign: -1 | 0 | 1,
+  approximately = false
+): string {
+  if (pattern.indexOf(';') < 0) pattern = `${pattern};-${pattern}`
   const [zeroPattern, negativePattern] = pattern.split(';')
-  switch (sign) {
-    case 0:
-      return zeroPattern
-    case -1:
-      return negativePattern
-    default:
-      return negativePattern.indexOf('-') >= 0
-        ? negativePattern.replace(/-/g, '+')
-        : `+${zeroPattern}`
+  if (sign === 0 && approximately && negativePattern.includes('-')) {
+    return negativePattern.replace('-', '{approximatelySign}')
   }
+  let signedPattern = zeroPattern
+  if (sign === -1) signedPattern = negativePattern
+  else if (sign === 1)
+    signedPattern = negativePattern.includes('-')
+      ? negativePattern.replace(/-/g, '+')
+      : `+${zeroPattern}`
+  return approximately
+    ? insertApproximatelySign(signedPattern, sign)
+    : signedPattern
+}
+
+function insertApproximatelySign(pattern: string, sign: -1 | 0 | 1): string {
+  const symbol = sign === 1 ? '+' : '-'
+  const index = sign === 0 ? -1 : pattern.indexOf(symbol)
+  return index < 0
+    ? `{approximatelySign}${pattern}`
+    : `${pattern.slice(0, index)}{approximatelySign}${pattern.slice(index)}`
 }
 
 // Find the CLDR pattern for compact notation based on the magnitude of data and style.

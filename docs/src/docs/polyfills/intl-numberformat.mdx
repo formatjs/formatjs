@@ -411,3 +411,6 @@ Loading regional data preserves explicitly loaded language data.
 
 Number ranges preserve locale-specific separators. Shared affixes are labeled
 `shared` by `formatRangeToParts`; distinct endpoint signs remain separate.
+
+Ranges whose endpoints format identically use a locale-aware approximately sign,
+for example `~$3` in English. Its position follows the locale's sign pattern.
