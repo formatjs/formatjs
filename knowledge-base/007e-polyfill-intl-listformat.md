@@ -1,6 +1,6 @@
 # @formatjs/intl-listformat
 
-**ECMA-402 Section 13** — `Intl.ListFormat`
+**ECMA-402 Section 14** — `Intl.ListFormat`
 
 ## Purpose
 

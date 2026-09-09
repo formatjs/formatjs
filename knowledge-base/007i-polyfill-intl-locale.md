@@ -1,6 +1,6 @@
 # @formatjs/intl-locale
 
-**ECMA-402 Section 14** — `Intl.Locale`
+**ECMA-402 Section 15** — `Intl.Locale`
 
 ## Purpose
 

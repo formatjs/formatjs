@@ -1,6 +1,6 @@
 # @formatjs/intl-pluralrules
 
-**ECMA-402 Section 16** — `Intl.PluralRules`
+**ECMA-402 Section 17** — `Intl.PluralRules`
 
 ## Purpose
 

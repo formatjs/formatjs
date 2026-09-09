@@ -1,4 +1,4 @@
-A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-datetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-datetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-datetimeformat)
@@ -15,7 +15,7 @@ A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official 
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.DateTimeFormat`, including all finalized proposals.
+This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### Implemented Features
 
@@ -264,7 +264,7 @@ if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
 
 ## Tests
 
-This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/DateTimeFormat)-compliant.
+The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-datetimeformat:test262-strict` to require zero failures.
 
 ## Offset time zones
 

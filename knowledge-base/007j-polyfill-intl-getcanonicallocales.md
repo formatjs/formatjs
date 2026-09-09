@@ -1,6 +1,6 @@
 # @formatjs/intl-getcanonicallocales
 
-**ECMA-402 Section 8.2.1** — `Intl.getCanonicalLocales`
+**ECMA-402 Section 8.3.1** — `Intl.getCanonicalLocales`
 
 ## Purpose
 

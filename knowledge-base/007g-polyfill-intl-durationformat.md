@@ -1,6 +1,6 @@
 # @formatjs/intl-durationformat
 
-**ECMA-402 Stage 3 Proposal** — `Intl.DurationFormat`
+**ECMA-402 Section 13** — `Intl.DurationFormat`
 
 ## Purpose
 
