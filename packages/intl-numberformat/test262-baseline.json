@@ -7,8 +7,6 @@
     "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (strict mode)": "value of legacy symbol property must be an Intl.NumberFormat",
     "intl402/NumberFormat/intl-legacy-constructed-symbol.js (default)": "Expected true but got false",
     "intl402/NumberFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected true but got false",
-    "intl402/NumberFormat/legacy-regexp-statics-not-modified.js (default)": "RegExp has unexpected property $_ with value de-DE-u-nu-latn.",
-    "intl402/NumberFormat/legacy-regexp-statics-not-modified.js (strict mode)": "RegExp has unexpected property $_ with value de-DE-u-nu-latn.",
     "intl402/NumberFormat/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
     "intl402/NumberFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
     "intl402/NumberFormat/prototype/format/numbering-systems.js (default)": "numberingSystem: adlm, digit: 0 Expected SameValue(«\"0\"», «\"𞥐\"») to be true",
