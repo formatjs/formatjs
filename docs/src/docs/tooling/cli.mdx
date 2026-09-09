@@ -322,6 +322,8 @@ The target file path where the plugin will output an aggregated `.json` file of 
 
 If certain message descriptors don't have id, this `pattern` will be used to automatically generate IDs for them. Default to `[sha512:contenthash:base64:6]`. See [nodejs crypto createHash](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm_options) for hash algorithms & [nodejs buffer docs](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings) for digest encodings.
 
+An empty string description generates the same ID as an omitted description. The extracted catalog still preserves `description: ""`.
+
 ### `--extract-source-location`
 
 Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. (default: `false`)

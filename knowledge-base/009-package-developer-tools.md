@@ -120,6 +120,8 @@ The native binding is required for extraction and compilation.
 
 The Rust CLI (`crates/formatjs_cli/`) is a 20.90x faster drop-in replacement in the checked-in extraction benchmark, with parallelized catalog parsing for large compile and structural verify workloads.
 
+Empty string descriptions do not contribute to generated message ID hashes, matching the TypeScript transformer. Keep `description: ""` in extracted catalogs. Regression coverage lives in the Rust ID generator and CLI/unplugin conformance tests.
+
 ## Utility Packages
 
 ### @formatjs/bigdecimal

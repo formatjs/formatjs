@@ -83,6 +83,19 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     expect(pluginIds).toEqual(cliIds)
   }
 
+  test('empty descriptions preserve generated IDs', async () => {
+    await assertConformance(
+      `import {FormattedMessage, defineMessage} from 'react-intl';
+       const messages = <>
+         <FormattedMessage defaultMessage="My message with empty description" description="" />
+         <FormattedMessage defaultMessage="My message" description="some description" />
+         <FormattedMessage defaultMessage="Missing description" />
+       </>;
+       defineMessage({defaultMessage: 'Empty object description', description: ''});`,
+      'empty-description.tsx'
+    )
+  })
+
   test.each([
     'formatMessage',
     '$formatMessage',
