@@ -7,7 +7,7 @@ excluded because it fails.
 
 | Polyfill            | Executed | Polyfill failures | Native failures |
 | ------------------- | -------: | ----------------: | --------------: |
-| collator            |      130 |                18 |               0 |
+| collator            |      130 |                16 |               0 |
 | datetimeformat      |      488 |               242 |              52 |
 | displaynames        |      114 |                 6 |               0 |
 | durationformat      |      220 |                12 |               4 |
@@ -20,7 +20,7 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 6 |               6 |
 
-Total: 2,498 executions, 2,086 polyfill passes, 412 polyfill failures. The native
+Total: 2,498 executions, 2,088 polyfill passes, 410 polyfill failures. The native
 control fails 86 executions; 68 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
@@ -119,3 +119,6 @@ seconds stay displayed when following a numeric time unit.
 
 Numeric duration formatting retains zero minutes between displayed hours and
 seconds, considering sub-second values before rounding when deciding visibility.
+
+Locale resolution uses an internal record isolated from inherited extension-key
+setters on `Object.prototype`.

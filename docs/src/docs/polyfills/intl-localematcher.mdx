@@ -60,3 +60,6 @@ extensions even when matching falls back to a parent locale.
 ```tsx
 LookupSupportedLocales(['de'], ['de-AT-u-co-phonebk']) // ['de-AT-u-co-phonebk']
 ```
+
+Locale resolution uses an internal record isolated from inherited extension-key
+setters on `Object.prototype`.

@@ -84,3 +84,31 @@ test('GH #4384', function () {
     locale: 'en-x-owo',
   })
 })
+
+test('ResolveLocale records ignore inherited extension setters', () => {
+  const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'kn')
+  let calls = 0
+  let result
+  try {
+    Object.defineProperty(Object.prototype, 'kn', {
+      configurable: true,
+      set() {
+        calls++
+      },
+    })
+    result = ResolveLocale(
+      ['en'],
+      ['en-u-kn'],
+      {localeMatcher: 'lookup'},
+      ['kn'],
+      {en: {kn: ['false', 'true']}},
+      () => 'en'
+    )
+  } finally {
+    if (previous) Object.defineProperty(Object.prototype, 'kn', previous)
+    else Reflect.deleteProperty(Object.prototype, 'kn')
+  }
+  expect(calls).toBe(0)
+  expect(result?.kn).toBe('true')
+  expect(result?.locale).toBe('en-u-kn')
+})
