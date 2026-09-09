@@ -218,3 +218,6 @@ input Number's exact integer value, including values beyond the safe-integer ran
 A numeric time style propagates through smaller units. Minutes and seconds
 remain displayed by default; smaller fractional units use `auto`. Fractional
 units cannot request `always` display or be followed by a textual unit style.
+
+Zero minutes remain between displayed numeric hours and seconds, even with
+`minutesDisplay: "auto"`. For example, `{hours: 1, seconds: 1}` formats as `"1:00:01"`.

@@ -91,7 +91,23 @@ export function PartitionDurationFormatPattern(
         done = true
       }
     }
-    if (!value.isZero() || display !== 'auto') {
+    // ECMA-402 §13.5.12, step 15.a: keep zero minutes between displayed
+    // numeric hours and seconds, even when minutesDisplay is auto.
+    // https://tc39.es/ecma402/#sec-formatnumericunits
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L863-L864
+    const minutesBetweenHoursAndSeconds =
+      unit === 'minutes' &&
+      separated &&
+      (internalSlots.secondsDisplay === 'always' ||
+        duration.seconds !== 0 ||
+        duration.milliseconds !== 0 ||
+        duration.microseconds !== 0 ||
+        duration.nanoseconds !== 0)
+    if (
+      !value.isZero() ||
+      display !== 'auto' ||
+      minutesBetweenHoursAndSeconds
+    ) {
       // ECMA-402 §13.5.15 step 4.h.iii.2 and §13.5.12 steps 16–18:
       // display the duration sign once, including on a leading zero unit.
       // https://tc39.es/ecma402/#sec-partitiondurationformatpattern

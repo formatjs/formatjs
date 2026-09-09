@@ -405,3 +405,26 @@ test('numeric duration styles propagate through fractional units', () => {
       })
   ).toThrow(RangeError)
 })
+
+test('zero minutes remain between displayed numeric hours and seconds', () => {
+  const options = {
+    hours: 'numeric',
+    minutesDisplay: 'auto',
+    secondsDisplay: 'auto',
+  } as const
+  const formatter = new DurationFormat('en', options)
+  expect(formatter.format({seconds: 1})).toBe('0:00:01')
+  expect(formatter.format({hours: 1, nanoseconds: 1})).toBe('1:00:00.000000001')
+  expect(
+    new DurationFormat('en', {...options, fractionalDigits: 0}).format({
+      hours: 1,
+      nanoseconds: 1,
+    })
+  ).toBe('1:00:00')
+  expect(formatter.format({hours: 1})).toBe('1')
+  expect(
+    new DurationFormat('en', {...options, hoursDisplay: 'auto'}).format({
+      seconds: 1,
+    })
+  ).toBe('01')
+})
