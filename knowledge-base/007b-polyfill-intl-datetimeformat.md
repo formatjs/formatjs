@@ -147,3 +147,8 @@ Stage 4: supported-locales.generated.ts
 The `timeZone` option accepts offsets in `±HH`, `±HHMM`, and `±HH:MM` form.
 Offsets containing seconds or fractional components throw `RangeError`, including
 an explicit zero-second component.
+
+Dates outside the exact ±8,640,000,000,000,000 millisecond TimeClip bounds
+throw `RangeError`, including values one millisecond beyond either endpoint.
+Year calculations use Gregorian arithmetic so valid endpoints also format
+when their local timezone offsets cross the native Date range.
