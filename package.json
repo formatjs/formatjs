@@ -70,6 +70,8 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@rspack/core": "^2.0.0",
+    "@stylexjs/stylex": "0.19.0",
+    "@stylexjs/unplugin": "0.19.0",
     "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.1",

@@ -10,6 +10,9 @@ npm_link_package(
 )
 
 VRT_DEPS = [
+    "//:node_modules/@stylexjs/stylex",
+    "//:node_modules/@stylexjs/unplugin",
+    "//:node_modules/lucide-react",
     "//:node_modules/react-intl",
     "//packages/editor:editor",
     ":node_modules/@rules-web-e2e/vrt",
@@ -34,6 +37,7 @@ component_visual_test(
         "app.tsx",
         "editor.visual.spec.ts",
         "index.html",
+        "reset.css",
         "shell.tsx",
         "vite.config.ts",
         ":esm_package_json",

@@ -3,7 +3,9 @@ import {EditorDemo} from '../demo.js'
 import {EditorTestShell} from './shell.js'
 
 createRoot(document.getElementById('editor-root')!).render(
-  <EditorTestShell>
+  <EditorTestShell
+    direction={new URLSearchParams(location.search).has('rtl') ? 'rtl' : 'ltr'}
+  >
     <EditorDemo
       initialMessages={[
         {

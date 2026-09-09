@@ -68,7 +68,11 @@ formatjs_library(
 
 copy_to_bin(
     name = "vrt_sources",
-    srcs = ["demo.tsx"],
+    srcs = [
+        "demo.tsx",
+        "design-system/components.tsx",
+        "design-system/tokens.stylex.ts",
+    ],
     visibility = ["//visibility:public"],
 )
 

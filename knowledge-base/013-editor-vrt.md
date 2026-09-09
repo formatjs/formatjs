@@ -14,7 +14,10 @@ flowchart LR
   Core --> Parser[ICU parser]
 ```
 
-`demo.tsx` is a separate native HTML consumer with localized, labeled controls.
+`demo.tsx` is a separate StyleX consumer with localized, labeled native controls.
+`design-system/` owns theme tokens and reusable controls. Vite compiles StyleX
+through `@stylexjs/unplugin` before the React plugin. Visual tests cover editing,
+invalid ICU with keyboard focus, and a narrow RTL layout.
 The core imports neither this view nor React Intl. Material UI and React 17 are
 removed. `//packages/editor:unit_test` checks controlled updates, navigation,
 invalid ICU, empty catalogs, and custom rendering without providers.

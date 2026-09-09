@@ -51,3 +51,36 @@ test('consumer edits, searches, switches messages, and recovers from invalid ICU
   await page.getByRole('button', {name: 'Welcome, {name}', exact: true}).click()
   await expect(translation).toHaveValue('Bonjour {name}')
 })
+
+test('keyboard focus and invalid translation remain visible', async ({
+  page,
+}) => {
+  await page.goto(process.env.VRT_APP_URL!)
+  await page.keyboard.press('Tab')
+  await expect(page.getByRole('searchbox')).toBeFocused()
+  const translation = page.getByRole('textbox', {
+    name: 'Translation',
+    exact: true,
+  })
+  await translation.fill('{name')
+  await expect(translation).toHaveAttribute('aria-invalid', 'true')
+  await expect(page.getByRole('alert')).toBeVisible()
+  await expect(page.locator('#editor-root')).toHaveScreenshot(
+    'editor-invalid.png'
+  )
+})
+
+test('narrow RTL layout fits without horizontal scrolling', async ({page}) => {
+  await page.setViewportSize({width: 390, height: 844})
+  await page.goto(`${process.env.VRT_APP_URL!}?rtl=1`)
+  await page
+    .getByRole('textbox', {name: 'Translation', exact: true})
+    .fill('مرحبًا، {name}')
+  await page.getByRole('heading', {name: 'Source message'}).click()
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(390)
+  await expect(page.locator('#editor-root')).toHaveScreenshot(
+    'editor-mobile-rtl.png'
+  )
+})
