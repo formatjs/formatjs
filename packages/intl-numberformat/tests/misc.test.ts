@@ -676,3 +676,28 @@ describe('built-in method functions', () => {
     })
   })
 })
+
+describe('rounding priority precision', () => {
+  it.each([
+    ['morePrecision', '1.0'],
+    ['lessPrecision', '1.00'],
+  ] as const)(
+    '%s compares rounding magnitudes',
+    (roundingPriority, expected) => {
+      const formatter = new NumberFormat('en', {
+        minimumSignificantDigits: 2,
+        minimumFractionDigits: 2,
+        roundingPriority,
+        useGrouping: false,
+      })
+      expect(formatter.format(1)).toBe(expected)
+      expect(formatter.format(-1)).toBe('-' + expected)
+      expect(
+        formatter
+          .formatToParts(1)
+          .map(part => part.value)
+          .join('')
+      ).toBe(expected)
+    }
+  )
+})

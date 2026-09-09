@@ -383,3 +383,9 @@ separate from language-specific patterns, regardless of registration order.
 
 NumberFormat methods are callable but cannot be constructed with `new`.
 They have no own `prototype` property.
+
+### Rounding priority
+
+`roundingPriority` compares rounding precision before trailing-zero removal.
+With `minimumSignificantDigits: 2` and `minimumFractionDigits: 2`, formatting `1`
+yields `"1.0"` for `"morePrecision"` and `"1.00"` for `"lessPrecision"`.
