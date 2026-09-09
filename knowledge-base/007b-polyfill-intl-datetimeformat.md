@@ -166,3 +166,6 @@ letter case only; non-ASCII lookalikes are rejected.
 
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.
+
+Every locale supports explicit `h11`, `h12`, `h23`, and `h24` hour cycles through
+options and Unicode extensions. Locale preferences still select the default.

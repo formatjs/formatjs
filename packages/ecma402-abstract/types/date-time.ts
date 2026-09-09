@@ -167,7 +167,7 @@ export interface DateTimeFormatLocaleInternalData {
   intervalFormatFallback: string
   formats: Record<string, Formats[]>
   nu: string[]
-  hc: string[]
+  hc: Array<string | null>
   ca: string[]
 }
 
