@@ -32,10 +32,16 @@ export function bestFitFormatMatcherScore(
   format: Formats
 ): number {
   let score = 0
-  if (options.hour12 && !format.hour12) {
-    score -= removalPenalty
-  } else if (!options.hour12 && format.hour12) {
-    score -= additionPenalty
+  // ECMA-402 §11.5.3 matches requested components (no numbered steps).
+  // An hour-cycle preference must not add an unrequested hour field.
+  // https://tc39.es/ecma402/#sec-bestfitformatmatcher
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1310-L1322
+  if (options.hour !== undefined) {
+    if (options.hour12 && !format.hour12) {
+      score -= removalPenalty
+    } else if (!options.hour12 && format.hour12) {
+      score -= additionPenalty
+    }
   }
   for (const prop of DATE_TIME_PROPS) {
     const optionsProp = options[prop as TABLE_6]

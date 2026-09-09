@@ -309,3 +309,6 @@ For example, English uses `h12` or `h23`; Japanese uses `h11` or `h23`.
 
 DateTimeFormat reuses pattern fields parsed during locale registration, preserving
 legacy RegExp statics during constructor format matching.
+
+Hour-cycle preferences affect matching only when an hour is requested.
+Minute/second-only formats keep their requested fields.
