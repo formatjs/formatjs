@@ -95,21 +95,22 @@ This separation allows both operations to run in parallel, dramatically improvin
 The repository uses `verbatimModuleSyntax: true` in `tsconfig.json`. This means:
 
 - **Type-only imports must use `import type`**:
+
   ```typescript
   // ✅ Correct
-  import type { MyType } from './types.js'
+  import type {MyType} from './types.js'
 
   // ❌ Wrong - will cause build errors
-  import { MyType } from './types.js'
+  import {MyType} from './types.js'
   ```
 
 - **Type-only exports must use `export type`**:
   ```typescript
   // ✅ Correct
-  export type { MyType } from './types.js'
+  export type {MyType} from './types.js'
 
   // ❌ Wrong - will cause runtime errors
-  export { MyType } from './types.js'
+  export {MyType} from './types.js'
   ```
 
 This ensures compatibility with fast transpilers that operate in isolated mode without full type information.
