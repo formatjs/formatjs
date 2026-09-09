@@ -308,11 +308,17 @@ function removeLikelySubtags(tag: string): string {
   if (!maxLocale) {
     return tag
   }
+  // ECMA-402 §15.3.10, step 3; UTS 35 §4.3 Remove Likely Subtags, steps 1–6.
+  // Trials use maximized components, retaining the original variants/extensions.
+  // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.minimize
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L295
+  // https://www.unicode.org/reports/tr35/tr35-78/tr35.html#Likely_Subtags
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2595-L2601
+  const ast = parseUnicodeLocaleId(maxLocale)
   maxLocale = emitUnicodeLanguageId({
     ...parseUnicodeLanguageId(maxLocale),
     variants: [],
   })
-  const ast = parseUnicodeLocaleId(tag)
   const {
     lang: {lang, script, region, variants},
   } = ast
@@ -345,7 +351,7 @@ function removeLikelySubtags(tag: string): string {
       })
     }
   }
-  return tag
+  return emitUnicodeLocaleId(ast)
 }
 
 function createArrayFromListOrRestricted(

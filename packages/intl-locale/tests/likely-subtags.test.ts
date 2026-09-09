@@ -54,7 +54,7 @@ const testDataMinimal: Record<string, string> = {
   'ru-Cyrl-RU': 'ru',
   'de-Latn-AT': 'de-AT',
   'bg-Cyrl-RO': 'bg-RO',
-  'und-Latn-AQ': 'und-AQ',
+  'und-Latn-AQ': 'en-AQ',
 }
 
 // Add variants, extensions, and privateuse subtags and ensure they don't

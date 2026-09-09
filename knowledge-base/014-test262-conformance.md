@@ -13,14 +13,14 @@ excluded because it fails.
 | durationformat      |      220 |                12 |               4 |
 | getcanonicallocales |       76 |                32 |               2 |
 | listformat          |      162 |                 4 |               0 |
-| locale              |      336 |                28 |              22 |
+| locale              |      336 |                24 |              22 |
 | numberformat        |      498 |                24 |               0 |
 | pluralrules         |      106 |                 4 |               0 |
 | relativetimeformat  |      160 |                 8 |               0 |
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 6 |               6 |
 
-Total: 2,498 executions, 2,106 polyfill passes, 392 polyfill failures. The native
+Total: 2,498 executions, 2,110 polyfill passes, 388 polyfill failures. The native
 control fails 86 executions; 56 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.

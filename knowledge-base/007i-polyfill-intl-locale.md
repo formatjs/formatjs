@@ -83,3 +83,6 @@ preserving extensions. Empty, malformed, and duplicate variants throw `RangeErro
 
 Locale tags are canonicalized before constructor overrides are applied, so
 alias resolution uses the original language and script context.
+
+`minimize()` tests reductions of the maximized locale, preserving variants and
+extensions. For example, `und-Thai` minimizes to `th` and `zh-Hant` to `zh-TW`.
