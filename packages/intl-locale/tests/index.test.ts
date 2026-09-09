@@ -286,3 +286,60 @@ test('Locale intrinsic supports canonicalization after polyfill installation', (
     Object.defineProperty(Intl, 'Locale', {value: NativeLocale})
   }
 })
+
+describe('Locale internal brand', () => {
+  const getters = [
+    'baseName',
+    'calendar',
+    'collation',
+    'caseFirst',
+    'numeric',
+    'numberingSystem',
+    'language',
+    'script',
+    'region',
+    'variants',
+    'firstDayOfWeek',
+    'hourCycle',
+  ] as const
+  const fake = Object.create(Locale.prototype)
+  const receivers = [
+    undefined,
+    null,
+    1,
+    'en',
+    Symbol('locale'),
+    {},
+    () => {},
+    fake,
+    new Proxy(new Locale('en'), {}),
+  ]
+  it.each(getters)(
+    '%s rejects receivers without Locale slots repeatedly',
+    name => {
+      const get = Object.getOwnPropertyDescriptor(Locale.prototype, name)!.get!
+      for (const receiver of receivers) {
+        expect(() => get.call(receiver)).toThrow(TypeError)
+        expect(() => get.call(receiver)).toThrow(TypeError)
+      }
+    }
+  )
+  it.each(['getCollations', 'getNumberingSystems'] as const)(
+    '%s rejects unbranded receivers',
+    method => {
+      for (const receiver of receivers) {
+        expect(() => Locale.prototype[method].call(receiver)).toThrow(TypeError)
+      }
+    }
+  )
+  it('copies genuine Locale slots without reading an own toString', () => {
+    const original = new Locale('en-u-ca-buddhist')
+    Object.defineProperty(original, 'toString', {
+      get() {
+        throw new Error('must not read')
+      },
+    })
+    expect(new Locale(original).calendar).toBe('buddhist')
+    expect(new Locale({toString: () => 'fr'} as any).language).toBe('fr')
+  })
+})

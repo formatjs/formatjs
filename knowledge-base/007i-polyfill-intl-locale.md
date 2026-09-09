@@ -67,3 +67,9 @@ ISO weekday numbers (Monday = 1, Sunday = 7) and a fresh weekend array per call.
 Consumers that calculate local week numbers must obtain that value separately.
 Week data honors available `rg` region overrides, `sd` subdivision preferences
 when no region is explicit, and recognized `fw` first-day overrides.
+
+### Receiver validation
+
+Locale getters and methods require a genuine initialized Locale instance.
+Objects inheriting from `Locale.prototype` and proxies around Locale instances
+throw `TypeError`. Failed calls do not give the receiver a Locale brand.

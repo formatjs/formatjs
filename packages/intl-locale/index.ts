@@ -23,7 +23,9 @@ import {
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
 import {characterOrders} from '@formatjs_generated/cldr.locale/character-orders.js'
-import getInternalSlots from '#packages/intl-locale/get_internal_slots.js'
+import getInternalSlots, {
+  getInternalSlotsIfPresent,
+} from '#packages/intl-locale/get_internal_slots.js'
 import {numberingSystems} from '@formatjs_generated/cldr.locale/numbering-systems.js'
 import {
   getCalendarPreferenceDataForRegion,
@@ -496,7 +498,7 @@ export class Locale {
     let tagInternalSlots
     if (
       typeof tag === 'object' &&
-      (tagInternalSlots = getInternalSlots(tag)) &&
+      (tagInternalSlots = getInternalSlotsIfPresent(tag)) &&
       HasOwnProperty(tagInternalSlots, 'initializedLocale')
     ) {
       tag = tagInternalSlots.locale
