@@ -98,6 +98,7 @@ export {
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
   isUnicodeScriptSubtag,
+  isUnicodeVariantSubtag,
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
 } from '#packages/intl-getcanonicallocales/parser.js'

@@ -186,3 +186,6 @@ throw `TypeError`. Failed calls do not give the receiver a Locale brand.
 Object locale tags use standard string coercion, including `Symbol.toPrimitive`
 with the string hint and the ordinary `valueOf` fallback. Callable objects are
 accepted; primitive values other than strings are rejected.
+
+The `variants` constructor option replaces existing variant subtags while
+preserving extensions. Empty, malformed, and duplicate variants throw `RangeError`.

@@ -367,3 +367,17 @@ test('locale tag coercion uses the string hint and ordinary fallback', () => {
   expect(new Locale(callable as unknown as string).toString()).toBe('fr')
   expect(() => new Locale(null as unknown as string)).toThrow(TypeError)
 })
+
+test('variants options replace existing variants and preserve extensions', () => {
+  const locale = new Locale('de-1901-u-nu-latn', {variants: '1996'})
+  expect(locale.toString()).toBe('de-1996-u-nu-latn')
+  expect(locale.variants).toBe('1996')
+  expect(new Locale('en', {variants: 'FONIPA'}).variants).toBe('fonipa')
+})
+
+test.each(['', 'abcd', '1996-1996', 'POSIX-posix', '1996-', '1996-u-nu-latn'])(
+  'rejects invalid variants option %s',
+  variants => {
+    expect(() => new Locale('en', {variants})).toThrow(RangeError)
+  }
+)
