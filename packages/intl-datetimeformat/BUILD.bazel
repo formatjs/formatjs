@@ -1,4 +1,3 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -121,7 +120,6 @@ formatjs_test(
     srcs = [
         "tests/abstract/BestFitFormatMatcher.test.ts",
         "tests/abstract/skeleton.test.ts",
-        "tests/benchmark.ts",
         "tests/format.test.ts",
         "tests/format-range.test.ts",
         "tests/ftp-main.test.ts",
@@ -152,7 +150,6 @@ formatjs_test(
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs_generated/tz",
-        "//:node_modules/tinybench",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
@@ -386,17 +383,16 @@ rolldown_bundle(
     ],
 )
 
+filegroup(
+    name = "benchmark_locale_data",
+    srcs = [":tests-locale-data-en"],
+    visibility = ["//packages/intl-datetimeformat/benchmark:__pkg__"],
+)
+
 # Use with `bazel run`.
-js_binary(
+alias(
     name = "benchmark",
-    data = [
-        "//:node_modules/@formatjs_generated/tz",
-        "//:node_modules/tinybench",
-    ],
-    entry_point = "tests/benchmark.ts",
-    node_options = [
-        "--experimental-transform-types",
-    ],
+    actual = "//packages/intl-datetimeformat/benchmark:run",
     tags = ["manual"],
 )
 

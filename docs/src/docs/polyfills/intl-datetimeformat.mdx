@@ -337,3 +337,11 @@ grammatical context.
 
 An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
 and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
+
+## Benchmarks
+
+Run `bazel run //packages/intl-datetimeformat:benchmark` from the repository.
+The benchmark uses fixed UTC inputs and native controls for `format`,
+`formatRange`, and `formatRangeToParts`, including same-date, cross-date, and
+collapsed ranges. Each timed task batches 16 calls; construction and locale-data
+registration are excluded.
