@@ -18,6 +18,8 @@ import {
   type RawDateTimeLocaleInternalData,
   type TimeZoneNameData,
 } from '../types.ts'
+import dayPeriodData from 'cldr-core/supplemental/dayPeriods.json' with {type: 'json'}
+import parentLocaleData from 'cldr-core/supplemental/parentLocales.json' with {type: 'json'}
 import rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
 import TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
 import metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
@@ -35,9 +37,41 @@ const processedTimeData = Object.keys(timeData).reduce(
   {}
 )
 
+function getDayPeriodRules(
+  locale: string
+): RawDateTimeLocaleInternalData['dayPeriodRules'] {
+  const rules: Record<
+    string,
+    Record<string, {_at?: string; _from?: string; _before?: string}>
+  > = dayPeriodData.supplemental.dayPeriodRuleSet
+  const parents: Record<string, string> =
+    parentLocaleData.supplemental.parentLocales.parentLocale
+  while (locale && !rules[locale]) {
+    locale = parents[locale] || locale.split('-').slice(0, -1).join('-')
+  }
+  const time = (value: string | undefined) => {
+    if (value === undefined) return undefined
+    const [hour, minute] = value.split(':').map(Number)
+    return (hour * 60 + minute) * 60000
+  }
+  // LDML Day Period Rules, Fixed periods: midnight is optional and ambiguous.
+  // Keep 00:00 in its variable period; there is no caller-provided midnight context.
+  // https://unicode.org/reports/tr35/tr35-dates.html#Day_Period_Rules
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L1341-L1375
+  return Object.entries(rules[locale] || {})
+    .filter(([name]) => name !== 'midnight')
+    .map(([name, rule]) => ({
+      name,
+      at: time(rule._at),
+      from: time(rule._from),
+      before: time(rule._before),
+    }))
+}
+
 function isDateFormatOnly(opts: Intl.DateTimeFormatOptions) {
   return !Object.keys(opts).find(
     k =>
+      k === 'dayPeriod' ||
       k === 'hour' ||
       k === 'minute' ||
       k === 'second' ||
@@ -102,8 +136,13 @@ function filterKeys<T>(
     }, {})
 }
 
-function hasAltVariant(k: string): boolean {
-  return !k.endsWith('alt-variant')
+function isDefaultDataKey(k: string): boolean {
+  // CLDR JSON encodes the alt attribute in the key, not in the skeleton.
+  // Alternate labels such as -alt-ascii must never become date fields.
+  // LDML Attribute alt (no numbered steps).
+  // https://unicode.org/reports/tr35/tr35.html#alt_attribute
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L3166-L3172
+  return !k.includes('-alt-')
 }
 
 /**
@@ -260,16 +299,16 @@ async function loadDatesFields(
   const {availableFormats} = gregorian.dateTimeFormats
   let rawIntervalFormats = gregorian.dateTimeFormats.intervalFormats
   const intervalFormats = Object.keys(rawIntervalFormats)
-    .filter(hasAltVariant)
+    .filter(isDefaultDataKey)
     .reduce((all: Record<string, string | Record<string, string>>, k) => {
       const v = rawIntervalFormats[k as 'Bhm']
-      all[k] = typeof v === 'string' ? v : filterKeys(v, hasAltVariant)
+      all[k] = typeof v === 'string' ? v : filterKeys(v, isDefaultDataKey)
       return all
     }, {})
   const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
     availableFormats
   )
-    .filter(hasAltVariant)
+    .filter(isDefaultDataKey)
     .map(skeleton => {
       const pattern = availableFormats[skeleton as 'Bh']
       const skeletonIntervalFormats = intervalFormats[skeleton]
@@ -314,6 +353,12 @@ async function loadDatesFields(
     {}
   )
   const allFormats: Record<string, string> = {
+    // LDML Date Field Symbol Table: standalone B uses the requested name width.
+    // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L2235-L2240
+    B: 'B',
+    BBBB: 'BBBB',
+    BBBBB: 'BBBBB',
     ...parsedAvailableFormats.reduce(
       (all: Record<string, string>, [skeleton, pattern]) => {
         all[skeleton] = pattern
@@ -427,6 +472,12 @@ async function loadDatesFields(
   return {
     am: gregorian.dayPeriods.format.abbreviated.am,
     pm: gregorian.dayPeriods.format.abbreviated.pm,
+    dayPeriods: {
+      narrow: gregorian.dayPeriods.format.narrow,
+      short: gregorian.dayPeriods.format.abbreviated,
+      long: gregorian.dayPeriods.format.wide,
+    },
+    dayPeriodRules: getDayPeriodRules(locale),
     weekday: {
       narrow: Object.values(gregorian.days.format.narrow),
       short: Object.values(gregorian.days.format.abbreviated),

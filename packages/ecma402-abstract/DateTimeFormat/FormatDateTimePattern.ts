@@ -14,6 +14,37 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
+export function getDayPeriodName(
+  data: DateTimeFormatLocaleInternalData,
+  time: {hour: number; minute: number; second: number; millisecond: number},
+  width: 'narrow' | 'short' | 'long' = 'short'
+): string {
+  const value =
+    ((time.hour * 60 + time.minute) * 60 + time.second) * 1000 +
+    time.millisecond
+  const rules = data.dayPeriodRules || []
+  // ECMA-402 §11.5.5, step 15.d.iii selects the localized day period and width.
+  // LDML variable-period rules 2-4, 8: inclusive start, exclusive end, wrap midnight.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1386-L1390
+  // https://unicode.org/reports/tr35/tr35-dates.html#Variable_periods
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L1360-L1375
+  const rule =
+    rules.find(rule => rule.at === value) ||
+    rules.find(
+      rule =>
+        rule.from !== undefined &&
+        rule.before !== undefined &&
+        (rule.from < rule.before
+          ? value >= rule.from && value < rule.before
+          : value >= rule.from || value < rule.before)
+    )
+  return (
+    (rule && data.dayPeriods?.[width][rule.name]) ||
+    (time.hour < 12 ? data.am : data.pm)
+  )
+}
+
 function pad(n: number): string {
   if (n < 10) {
     return `0${n}`
@@ -146,7 +177,7 @@ export function FormatDateTimePattern(
     } else if (p === 'dayPeriod') {
       result.push({
         type: p,
-        value: tm.hour < 12 ? dataLocaleData.am : dataLocaleData.pm,
+        value: getDayPeriodName(dataLocaleData, tm, internalSlots.dayPeriod),
       })
     } else if (p === 'timeZoneName') {
       const f = internalSlots.timeZoneName

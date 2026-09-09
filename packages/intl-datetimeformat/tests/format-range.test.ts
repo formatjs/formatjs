@@ -387,7 +387,7 @@ test('default formatRange pattern (short), #2474', function () {
   let date1 = new Date(Date.UTC(2021, 0, 10)) // "Jan 10, 2021"
   let date2 = new Date(Date.UTC(2021, 0, 20)) // "Jan 20, 2021"
   expect(dtf.formatRange(date1, date2)).toBe(
-    'Jan 10, 2021, 12:00 AM – Jan 20, 2021, 12:00 AM'
+    'Jan 10, 2021, 12:00\u202fAM – Jan 20, 2021, 12:00\u202fAM'
   )
 })
 
@@ -453,7 +453,7 @@ test('GH issue #4535 - same day range with hour12:true should not duplicate date
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-  expect(result).toBe('Sun, 22 Sept 2024, 2:00\u2009\u2013\u20094:00 pm')
+  expect(result).toBe('Sun, 22 Sept 2024, 2:00\u2009\u2013\u20094:00\u202fpm')
 })
 
 test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not duplicate date', function () {
@@ -471,7 +471,9 @@ test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not
     new Date('2026-02-18T07:00:00'),
     new Date('2026-02-18T16:00:00')
   )
-  expect(result).toBe('Wed, 18 Feb 2026, 7:00 am\u2009\u2013\u20094:00 pm')
+  expect(result).toBe(
+    'Wed, 18 Feb 2026, 7:00\u202fam\u2009\u2013\u20094:00\u202fpm'
+  )
 })
 
 test('GH issue #4535 - longer same day range should not duplicate date', function () {
@@ -526,7 +528,7 @@ test('GH issue #4535 - en locale with hour12:true should not duplicate date (num
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-  expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00 PM')
+  expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00\u202fPM')
 })
 
 test('GH issue #4535 - en locale with hour12:true should not duplicate date (2-digit)', function () {
@@ -561,7 +563,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-10-22T16:00:00')
     )
     expect(result).toBe(
-      'Sep 22, 2024, 2:00 PM\u2009\u2013\u2009Oct 22, 2024, 4:00 PM'
+      'Sep 22, 2024, 2:00\u202fPM\u2009\u2013\u2009Oct 22, 2024, 4:00\u202fPM'
     )
   })
 
@@ -577,7 +579,9 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-20T14:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sep 20, 2:00 PM\u2009\u2013\u2009Sep 22, 4:00 PM')
+    expect(result).toBe(
+      'Sep 20, 2:00\u202fPM\u2009\u2013\u2009Sep 22, 4:00\u202fPM'
+    )
   })
 
   it('same day, different hour (hour12)', function () {
@@ -592,7 +596,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20094:00 PM')
+    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20094:00\u202fPM')
   })
 
   it('same day, different hour (24h)', function () {
@@ -622,7 +626,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T07:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sep 22, 7:00 AM\u2009\u2013\u20094:00 PM')
+    expect(result).toBe('Sep 22, 7:00\u202fAM\u2009\u2013\u20094:00\u202fPM')
   })
 
   it('same hour, different minute', function () {
@@ -637,7 +641,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:00:00'),
       new Date('2024-09-22T14:30:00')
     )
-    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20092:30 PM')
+    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20092:30\u202fPM')
   })
 
   it('same minute, different second', function () {
@@ -651,7 +655,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:30:00'),
       new Date('2024-09-22T14:30:45')
     )
-    expect(result).toBe('2:30:00 PM\u2009\u2013\u20092:30:45 PM')
+    expect(result).toBe('2:30:00\u202fPM\u2009\u2013\u20092:30:45\u202fPM')
   })
 
   it('different year', function () {
@@ -668,7 +672,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2025-09-22T16:00:00')
     )
     expect(result).toBe(
-      'Sep 22, 2024, 2:00 PM\u2009\u2013\u2009Sep 22, 2025, 4:00 PM'
+      'Sep 22, 2024, 2:00\u202fPM\u2009\u2013\u2009Sep 22, 2025, 4:00\u202fPM'
     )
   })
 

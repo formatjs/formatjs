@@ -184,3 +184,12 @@ Gregorian date fields and formatting patterns; week-date fields are not exposed.
 
 Range formatting compares endpoints at the displayed precision and keeps shared
 locale fallback patterns unchanged across formatter instances.
+
+Flexible day periods use CLDR format names and supplemental day-period rules,
+resolved through locale parents. `B` widths map to narrow/short/long names;
+noon matches exactly, variable periods support midnight wrapping, and missing
+rules or names fall back to AM/PM. Midnight itself is not selected because the
+API provides no context to distinguish the start from the end of a day.
+
+CLDR alternate-key suffixes are metadata, not skeleton fields. The extractor
+uses default entries and excludes `-alt-*` keys before parsing skeletons.

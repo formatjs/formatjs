@@ -123,6 +123,17 @@ export interface EraData {
 export interface DateTimeFormatLocaleInternalData {
   am: string
   pm: string
+  dayPeriods?: {
+    narrow: Record<string, string>
+    short: Record<string, string>
+    long: Record<string, string>
+  }
+  dayPeriodRules?: Array<{
+    name: string
+    at?: number
+    from?: number
+    before?: number
+  }>
   weekday: {
     narrow: string[]
     long: string[]

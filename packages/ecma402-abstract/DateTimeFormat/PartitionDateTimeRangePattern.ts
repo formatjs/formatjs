@@ -11,6 +11,7 @@ import {
 import type Decimal from '@formatjs/bigdecimal'
 import {
   FormatDateTimePattern,
+  getDayPeriodName,
   type FormatDateTimePatternImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
 import {
@@ -100,8 +101,16 @@ export function PartitionDateTimeRangePattern(
       // Step 15.d.ii: noon starts at hour 12, including an 11 AM endpoint.
       equal = tm1.hour < 12 === tm2.hour < 12
     } else if (field === 'dayPeriod') {
-      const first = tm1.hour < 12 ? dataLocaleData.am : dataLocaleData.pm
-      const second = tm2.hour < 12 ? dataLocaleData.am : dataLocaleData.pm
+      const first = getDayPeriodName(
+        dataLocaleData,
+        tm1,
+        internalSlots.dayPeriod
+      )
+      const second = getDayPeriodName(
+        dataLocaleData,
+        tm2,
+        internalSlots.dayPeriod
+      )
       equal = first === second
     } else if (field === 'fractionalSecondDigits') {
       const digits = internalSlots.fractionalSecondDigits ?? 3
