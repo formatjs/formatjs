@@ -73,3 +73,7 @@ when no region is explicit, and recognized `fw` first-day overrides.
 Locale getters and methods require a genuine initialized Locale instance.
 Objects inheriting from `Locale.prototype` and proxies around Locale instances
 throw `TypeError`. Failed calls do not give the receiver a Locale brand.
+
+Object locale tags use standard string coercion, including `Symbol.toPrimitive`
+with the string hint and the ordinary `valueOf` fallback. Callable objects are
+accepted; primitive values other than strings are rejected.

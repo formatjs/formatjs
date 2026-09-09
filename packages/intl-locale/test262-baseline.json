@@ -17,8 +17,6 @@
     "intl402/Locale/constructor-options-variants-invalid.js (strict mode)": "new Intl.Locale(\"en\", {variants: \"\"}) throws RangeError Expected a RangeError to be thrown but no exception was thrown at all",
     "intl402/Locale/constructor-options-variants-valid.js (default)": "new Intl.Locale(\"en\", {variants: \"spanglis\"}).toString() returns \"en-spanglis\" Expected SameValue(«\"en\"», «\"en-spanglis\"») to be true",
     "intl402/Locale/constructor-options-variants-valid.js (strict mode)": "new Intl.Locale(\"en\", {variants: \"spanglis\"}).toString() returns \"en-spanglis\" Expected SameValue(«\"en\"», «\"en-spanglis\"») to be true",
-    "intl402/Locale/constructor-tag-tostring.js (default)": "Expected a CustomError but got a RangeError",
-    "intl402/Locale/constructor-tag-tostring.js (strict mode)": "Expected a CustomError but got a RangeError",
     "intl402/Locale/extensions-grandfathered.js (default)": "Expected SameValue(«\"fr-Cyrl-FR-gaulish-u-nu-latn\"», «\"fr-Cyrl-FR-u-nu-latn\"») to be true",
     "intl402/Locale/extensions-grandfathered.js (strict mode)": "Expected SameValue(«\"fr-Cyrl-FR-gaulish-u-nu-latn\"», «\"fr-Cyrl-FR-u-nu-latn\"») to be true",
     "intl402/Locale/getters-grandfathered.js (default)": "Expected SameValue(«\"cel\"», «\"xtg\"») to be true",

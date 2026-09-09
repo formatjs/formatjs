@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
@@ -491,7 +492,12 @@ export class Locale {
       )
     }
 
-    if (typeof tag !== 'string' && typeof tag !== 'object') {
+    if (
+      tag === null ||
+      (typeof tag !== 'string' &&
+        typeof tag !== 'object' &&
+        typeof tag !== 'function')
+    ) {
       throw new TypeError('tag must be a string or object')
     }
 
@@ -503,7 +509,11 @@ export class Locale {
     ) {
       tag = tagInternalSlots.locale
     } else {
-      tag = tag.toString() as string
+      // ECMA-402 §15.1.1, step 9.a: use ToString, including the string hint
+      // for @@toPrimitive and the ordinary valueOf fallback.
+      // https://tc39.es/ecma402/#sec-Intl.Locale
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L31
+      tag = ToString(tag)
     }
 
     let internalSlots = getInternalSlots(this, internalSlotsList)
