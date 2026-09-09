@@ -155,3 +155,6 @@ when their local timezone offsets cross the native Date range.
 
 DateTimeFormat methods require an initialized receiver before coercing date
 arguments. Inheriting its prototype does not create a DateTimeFormat instance.
+
+Resolved options follow specification property order: `hour12` follows
+`hourCycle`, and style properties follow component properties.

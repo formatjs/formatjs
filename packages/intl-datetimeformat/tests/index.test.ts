@@ -69,6 +69,39 @@ describe('Intl.DateTimeFormat', function () {
     )
   })
 
+  it('returns resolved option properties in specification order', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(DateTimeFormat, 'prototype')?.writable
+    ).toBe(false)
+    expect(
+      Object.keys(
+        new DateTimeFormat('en', {
+          timeZone: 'UTC',
+          timeStyle: 'short',
+          dateStyle: 'short',
+        }).resolvedOptions()
+      )
+    ).toEqual([
+      'locale',
+      'calendar',
+      'numberingSystem',
+      'timeZone',
+      'hourCycle',
+      'hour12',
+      'dateStyle',
+      'timeStyle',
+    ])
+    const keys = Object.keys(
+      new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+      }).resolvedOptions()
+    )
+    expect(keys.indexOf('hour12')).toBe(keys.indexOf('hourCycle') + 1)
+    expect(keys.indexOf('hour')).toBeGreaterThan(keys.indexOf('hour12'))
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
