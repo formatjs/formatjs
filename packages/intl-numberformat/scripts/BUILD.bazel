@@ -1,7 +1,6 @@
+# gazelle:ignore
 load("//tools:index.bzl", "ts_binary", "ts_compile")
 load("//tools:test.bzl", "formatjs_test")
-
-# gazelle:ignore
 load("//tools:tsconfig.bzl", "BASE_NODE_TSCONFIG", "packages_tsconfig")
 
 exports_files(glob(["*.sh"]))
@@ -23,7 +22,11 @@ ts_binary(
         "extract-currencies.ts",
         "extract-numbers.ts",
         "extract-units.ts",
+        "numbering-system-data.ts",
         "utils.ts",
+        ":number-data",
+        "//:node_modules/cldr-core",
+        "//:node_modules/fast-xml-parser",
         "//:root_package_json",
     ],
     entry_point = "cldr-raw.ts",

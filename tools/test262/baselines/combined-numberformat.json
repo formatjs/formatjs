@@ -8,10 +8,6 @@
     "intl402/NumberFormat/intl-legacy-constructed-symbol.js (default)": "Expected true but got false",
     "intl402/NumberFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected true but got false",
     "intl402/NumberFormat/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
-    "intl402/NumberFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
-    "intl402/NumberFormat/prototype/format/numbering-systems.js (default)": "numberingSystem: adlm, digit: 0 Expected SameValue(«\"٠\"», «\"𞥐\"») to be true",
-    "intl402/NumberFormat/prototype/format/numbering-systems.js (strict mode)": "numberingSystem: adlm, digit: 0 Expected SameValue(«\"٠\"», «\"𞥐\"») to be true",
-    "intl402/NumberFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (default)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true",
-    "intl402/NumberFormat/prototype/resolvedOptions/resolved-numbering-system-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=en-u-nu-arab with numberingSystem=invalid Expected SameValue(«\"en\"», «\"en-u-nu-arab\"») to be true"
+    "intl402/NumberFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true"
   }
 }

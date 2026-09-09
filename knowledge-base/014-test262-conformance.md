@@ -8,26 +8,26 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |               162 |              52 |               162 |
+| datetimeformat      |      488 |               160 |              52 |               160 |
 | displaynames        |      114 |                 2 |               0 |                 2 |
-| durationformat      |      220 |                 0 |               4 |                 2 |
+| durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 2 |               0 |                 2 |
 | locale              |      336 |                 4 |              22 |                 4 |
-| numberformat        |      498 |                12 |               0 |                12 |
+| numberformat        |      498 |                 8 |               0 |                 8 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
-| relativetimeformat  |      160 |                 6 |               0 |                 4 |
+| relativetimeformat  |      160 |                 2 |               0 |                 2 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
-| supportedvaluesof   |       50 |                 2 |               6 |                 4 |
+| supportedvaluesof   |       50 |                 2 |               6 |                 2 |
 
-Total: 2,498 executions, 2,300 polyfill passes, 198 polyfill failures. The native
+Total: 2,498 executions, 2,310 polyfill passes, 188 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,298 passes, 200 failures.
+Combined: 2,498 executions, 2,310 passes, 188 failures.
 
-Combined installation adds 6 failing executions; 4 isolated failures now pass.
+Combined installation adds 2 failing executions; 2 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
 Two RelativeTimeFormat cases pass because combined enumeration omits numbering
 systems that the NumberFormat polyfill does not support; this is not broader
@@ -170,3 +170,11 @@ Era-monthcode proposal failures remain tracked.
 Standalone PluralRules now uses its own compact exponent tables for the nine
 CLDR locales with c/e operands. Two isolated failures are fixed; combined
 selection no longer depends on NumberFormat locale data.
+
+The remaining DateTimeFormat `numbering-system.js` failures reach the Han decimal
+time pattern: Test262 expects ASCII space before `AM`, while CLDR 48.2 supplies
+U+202F. Digit substitution, decimal separators and two-digit fields pass. A unit
+test verifies the CLDR output and that joining `formatToParts()` reproduces it.
+These executions remain visible in the raw failure counts. ECMA-402 11.2.3 makes
+locale data implementation-defined ([source line 222](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L222))
+and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L854)).

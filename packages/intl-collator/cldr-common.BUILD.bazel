@@ -10,3 +10,8 @@ filegroup(
     name = "collation_xml",
     srcs = glob(["common/collation/*.xml"]),
 )
+
+filegroup(
+    name = "main_xml",
+    srcs = glob(["common/main/*.xml"]),
+)

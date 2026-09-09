@@ -1,6 +1,6 @@
 # @formatjs/intl-relativetimeformat
 
-**ECMA-402 Section 17** — `Intl.RelativeTimeFormat`
+**ECMA-402 Section 18** — `Intl.RelativeTimeFormat`
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Polyfill for `Intl.RelativeTimeFormat` — formats relative time expressions (e.
 | ------------------- | -------------------------------------------------- |
 | `cldr-dates-full`   | dateFields.json (relative time patterns per field) |
 | `cldr-numbers-full` | numbers.json (default numbering system per locale) |
-| `cldr-core`         | availableLocales.json                              |
+| `cldr-core`         | availableLocales.json, numeric numbering systems   |
 
 ### Extraction Script (`scripts/extract-relative.ts`)
 
@@ -27,7 +27,7 @@ Extracts date field patterns for 8 time units with style variants:
 - **Fields**: year, quarter, month, week, day, hour, minute, second
 - **Styles**: long (default), short, narrow
 - **Pattern types**: relative (-1, 0, +1 named forms) + relativeTime (future/past with plural variants)
-- **Numbering system**: Resolves default numbering system per locale
+- **Numbering system**: Keeps the locale default first, followed by every other CLDR numeric system. NumberFormat handles digit and separator formatting.
 
 ### Build Pipeline
 

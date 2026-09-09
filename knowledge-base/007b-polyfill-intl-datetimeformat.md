@@ -1,6 +1,6 @@
 # @formatjs/intl-datetimeformat
 
-**ECMA-402 Section 12** — `Intl.DateTimeFormat`
+**ECMA-402 Section 11** — `Intl.DateTimeFormat`
 
 ## Purpose
 
@@ -31,7 +31,8 @@ Processes ~680 locales in parallel:
 3. **Hour cycle resolution**: Determines h12/h23/h11/h24 preferences per locale using region maximization
 4. **Timezone names**: Maps IANA zones → metazones → localized names (long/short, standard/daylight)
 5. **Interval formats**: Synthesizes combined date+time interval formats from separate patterns
-6. **Calendar support**: Gregorian patterns shared with ISO 8601; unsupported calendars fall back to Gregorian
+6. **Numbering systems**: Keep the locale default first and expose all CLDR numeric systems. Internal NumberFormat supplies digits; two-digit fields truncate Unicode code points, preserving supplementary digits.
+7. **Calendar support**: Gregorian patterns shared with ISO 8601; unsupported calendars fall back to Gregorian
 
 ### Timezone Pipeline
 
