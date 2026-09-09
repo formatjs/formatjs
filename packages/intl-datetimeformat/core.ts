@@ -445,6 +445,11 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       )
     }
 
+    // ISO 8601 uses Gregorian year/month/day fields; week-date fields are
+    // not exposed by DateTimeFormat. Reuse patterns without duplicating data.
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/common/bcp47/calendar.xml#L27
+    processedData.formats.iso8601 = processedData.formats.gregory
+
     const minimizedLocale = getLocaleDataAlias(locale)
     DateTimeFormat.localeData[locale] = DateTimeFormat.localeData[
       minimizedLocale

@@ -153,8 +153,8 @@ export function ToLocalTime(
   timeZoneOffset: number
 } {
   invariant(
-    calendar === 'gregory',
-    'We only support Gregory calendar right now'
+    calendar === 'gregory' || calendar === 'iso8601',
+    'Unsupported calendar'
   )
   const [timeZoneOffset, inDST] = getApplicableZoneData(
     t.toNumber(),
