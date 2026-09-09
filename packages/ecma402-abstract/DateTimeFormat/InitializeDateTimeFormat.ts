@@ -15,7 +15,7 @@ import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {BasicFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.js'
 import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
 import {DateTimeStyleFormat} from '#packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.js'
-import {ToDateTimeOptions} from '#packages/ecma402-abstract/DateTimeFormat/ToDateTimeOptions.js'
+import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 function isTimeRelated(opt: Opt) {
@@ -107,7 +107,7 @@ export function InitializeDateTimeFormat(
 ): Intl.DateTimeFormat {
   // @ts-ignore
   const requestedLocales: string[] = CanonicalizeLocaleList(locales)
-  const options = ToDateTimeOptions(opts, 'any', 'date')
+  const options = CoerceOptionsToObject<Intl.DateTimeFormatOptions>(opts)
   let opt: Opt = Object.create(null)
   let matcher = GetOption(
     options,
@@ -249,6 +249,16 @@ export function InitializeDateTimeFormat(
     ['2-digit', 'numeric'],
     undefined
   )
+  // ECMA-402 §11.1.2, step 25: read components in table order.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L107-L116
+  opt.fractionalSecondDigits = GetNumberOption(
+    options,
+    'fractionalSecondDigits',
+    1,
+    3,
+    undefined
+  ) as 1
   opt.timeZoneName = GetOption(
     options,
     'timeZoneName',
@@ -263,13 +273,6 @@ export function InitializeDateTimeFormat(
     ],
     undefined
   )
-  opt.fractionalSecondDigits = GetNumberOption(
-    options,
-    'fractionalSecondDigits',
-    1,
-    3,
-    undefined
-  ) as 1
 
   const dataLocaleData = localeData[dataLocale]
   invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`)
@@ -308,6 +311,26 @@ export function InitializeDateTimeFormat(
 
   let bestFormat
   if (dateStyle === undefined && timeStyle === undefined) {
+    // ECMA-402 §11.1.2 CreateDateTimeFormat, step 32.a–d: compute
+    // defaults from the already-read fields, without touching options again.
+    // https://tc39.es/ecma402/#sec-createdatetimeformat
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L135-L146
+    const needDefaults = [
+      'weekday',
+      'year',
+      'month',
+      'day',
+      'dayPeriod',
+      'hour',
+      'minute',
+      'second',
+      'fractionalSecondDigits',
+    ].every(key => opt[key as keyof Opt] === undefined)
+    if (needDefaults) {
+      opt.year = 'numeric'
+      opt.month = 'numeric'
+      opt.day = 'numeric'
+    }
     if (formatMatcher === 'basic') {
       bestFormat = BasicFormatMatcher(opt, formats)
     } else {

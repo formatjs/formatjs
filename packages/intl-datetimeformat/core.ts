@@ -14,6 +14,7 @@ import {
 import {
   getLocaleDataAlias,
   defineProperty,
+  createDataProperty,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import Decimal from '@formatjs/bigdecimal'
@@ -227,7 +228,10 @@ const {resolvedOptions} = {
       }
 
       if (value !== undefined) {
-        ro[key] = value
+        // ECMA-402 §11.3.2, step 5.d.ii: define own data properties.
+        // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L905
+        createDataProperty(ro, key, value)
         // ECMA-402 §11.3.2, step 5: create properties in table order.
         // hourCycle precedes hour12; style properties follow components.
         // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
@@ -240,7 +244,7 @@ const {resolvedOptions} = {
                 ? false
                 : undefined
           if (hour12 !== undefined) {
-            ro.hour12 = hour12
+            createDataProperty(ro, 'hour12', hour12)
           }
         }
       }

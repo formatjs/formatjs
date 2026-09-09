@@ -136,6 +136,69 @@ describe('Intl.DateTimeFormat', function () {
     )
   })
 
+  it('reads each constructor option once in specification order', () => {
+    const reads: PropertyKey[] = []
+    const options = new Proxy(
+      {timeZone: 'UTC'},
+      {
+        get(target, key, receiver) {
+          reads.push(key)
+          return Reflect.get(target, key, receiver)
+        },
+      }
+    )
+    new DateTimeFormat('en', options)
+    expect(reads).toEqual([
+      'localeMatcher',
+      'calendar',
+      'numberingSystem',
+      'hour12',
+      'hourCycle',
+      'timeZone',
+      'weekday',
+      'era',
+      'year',
+      'month',
+      'day',
+      'dayPeriod',
+      'hour',
+      'minute',
+      'second',
+      'fractionalSecondDigits',
+      'timeZoneName',
+      'formatMatcher',
+      'dateStyle',
+      'timeStyle',
+    ])
+    const frozen = Object.freeze({timeZone: 'UTC'})
+    expect(new DateTimeFormat('en', frozen).format(0)).toBe('1/1/1970')
+  })
+
+  it.each(['day', 'timeZone'])(
+    'isolates internal records and resolved options from inherited %s setters',
+    property => {
+      const original = Object.getOwnPropertyDescriptor(
+        Object.prototype,
+        property
+      )
+      Object.defineProperty(Object.prototype, property, {
+        configurable: true,
+        set() {
+          throw new Error('inherited day setter')
+        },
+      })
+      try {
+        const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
+        expect(dtf.format(0)).toBe('1/1/1970')
+        expect(dtf.resolvedOptions().timeZone).toBe('UTC')
+      } finally {
+        if (original)
+          Object.defineProperty(Object.prototype, property, original)
+        else Reflect.deleteProperty(Object.prototype, property)
+      }
+    }
+  )
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
