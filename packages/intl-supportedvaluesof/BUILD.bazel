@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -94,10 +95,20 @@ generate_package_file(
     tool = "//packages/intl-supportedvaluesof/scripts:calendars",
 )
 
+copy_file(
+    name = "iana_etcetera",
+    src = "@iana_tzdata//:etcetera",
+    out = "iana-etcetera.txt",
+)
+
 generate_package_file(
     name = "cldr_sv_timezones",
     src = "timezones.ts",
-    args = ["--zone %s" % z for z in ZONES],
+    args = ["--zone %s" % z for z in ZONES] + [
+        "--source",
+        "$(rootpath :iana_etcetera)",
+    ],
+    data = [":iana_etcetera"],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:timezones",
 )
