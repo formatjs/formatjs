@@ -343,3 +343,27 @@ describe('Locale internal brand', () => {
     expect(new Locale({toString: () => 'fr'} as any).language).toBe('fr')
   })
 })
+
+test('locale tag coercion uses the string hint and ordinary fallback', () => {
+  const hints: string[] = []
+  const tag = {
+    [Symbol.toPrimitive](hint: string) {
+      hints.push(hint)
+      return 'en-US'
+    },
+    toString() {
+      throw new Error('must not call toString')
+    },
+  }
+  expect(new Locale(tag as unknown as string).toString()).toBe('en-US')
+  expect(hints).toEqual(['string'])
+  expect(
+    new Locale({
+      toString: undefined,
+      valueOf: () => 'de',
+    } as unknown as string).toString()
+  ).toBe('de')
+  const callable = Object.assign(() => {}, {toString: () => 'fr'})
+  expect(new Locale(callable as unknown as string).toString()).toBe('fr')
+  expect(() => new Locale(null as unknown as string)).toThrow(TypeError)
+})
