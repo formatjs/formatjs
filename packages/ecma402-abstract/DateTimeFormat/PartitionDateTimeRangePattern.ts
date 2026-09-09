@@ -135,8 +135,6 @@ export function PartitionDateTimeRangePattern(
     return result
   }
 
-  const datesDiffer =
-    tm1.year !== tm2.year || tm1.month !== tm2.month || tm1.day !== tm2.day
   const result: IntlDateTimeFormatPart[] = []
   const contextParts = PartitionPattern<IntlDateTimeFormatPartType>(
     rangePattern.patternParts
@@ -166,7 +164,6 @@ export function PartitionDateTimeRangePattern(
       {
         ...implDetails,
         rangeFormatOptions: {
-          isDifferentDate: datesDiffer,
           patternParts: contextParts,
         },
       }

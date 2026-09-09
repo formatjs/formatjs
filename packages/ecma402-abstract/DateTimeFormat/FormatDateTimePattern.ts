@@ -88,9 +88,8 @@ export interface FormatDateTimePatternImplDetails {
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   getDefaultTimeZone(): string
   // GH #4535: Track if we're formatting a range where dates differ
-  // Used to avoid converting hour 0 to 24 in h24 format when it's midnight on a different date
+  // Preserve the complete pattern when formatting one range record.
   rangeFormatOptions?: {
-    isDifferentDate?: boolean
     patternParts?: IntlDateTimeFormatPart[]
   }
 }
@@ -240,29 +239,11 @@ export function FormatDateTimePattern(
           v = 12
         }
       }
-      // GH #4535: In h24 format, midnight handling depends on context.
-      //
-      // LDML Spec (UTS #35): The 'k' symbol (1-24) means 24:00 represents the END of day.
-      // "Tuesday 24:00 = Wednesday 00:00" - they represent the same instant.
-      // See: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-      //
-      // However, in date ranges, showing 24:00 can be semantically confusing:
-      // - Different dates (May 3, 22:00 – May 4, 00:00): Show "00:00" on May 4
-      //   because "May 4, 24:00" would actually mean May 5, 00:00
-      // - Same date ranges (May 3, 00:00 – 00:45): Show "00:00" for clarity
-      //   because the times are at the START of the day, not the end
-      //
-      // Only convert 0→24 in non-range single-date formatting where 24:00
-      // conventionally means "end of day" (e.g., business closing time).
-      //
-      // Note: ICU4J's SimpleDateFormat always converts 0→24 for 'k' pattern.
-      // Our approach is more contextually appropriate for range formatting.
-      // See: https://github.com/unicode-org/icu/blob/main/icu4j/main/core/src/main/java/com/ibm/icu/text/SimpleDateFormat.java
-      if (p === 'hour' && hourCycle === 'h24') {
-        if (v === 0 && !rangeFormatOptions) {
-          // Only convert 0 to 24 when NOT formatting a range (rangeFormatOptions is undefined)
-          v = 24
-        }
+      // ECMA-402 11.5.5, step 15.f.vii.1 applies to single dates and ranges.
+      // https://tc39.es/ecma402/#sec-formatdatetimepattern
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1406-L1407
+      if (p === 'hour' && hourCycle === 'h24' && v === 0) {
+        v = 24
       }
       if (f === 'numeric') {
         fv = nf.format(v)
