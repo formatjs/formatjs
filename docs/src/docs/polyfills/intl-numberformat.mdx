@@ -378,3 +378,8 @@ and the `Intl.supportedValuesOf("unit")` list.
 
 Loading `und` locale data preserves existing English data. Root patterns remain
 separate from language-specific patterns, regardless of registration order.
+
+### Built-in methods
+
+NumberFormat methods are callable but cannot be constructed with `new`.
+They have no own `prototype` property.

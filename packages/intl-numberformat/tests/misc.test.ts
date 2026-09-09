@@ -655,3 +655,24 @@ it.each(['microsecond', 'nanosecond'])(
     ).toBe(`2 ${unit}s`)
   }
 )
+
+describe('built-in method functions', () => {
+  it.each([
+    ['formatToParts', NumberFormat.prototype, 1],
+    ['formatRange', NumberFormat.prototype, 2],
+    ['formatRangeToParts', NumberFormat.prototype, 2],
+    ['resolvedOptions', NumberFormat.prototype, 0],
+    ['supportedLocalesOf', NumberFormat, 1],
+  ] as const)('%s is non-constructible', (name, owner, length) => {
+    const method = (owner as any)[name]
+    expect(method.name).toBe(name)
+    expect(method.length).toBe(length)
+    expect(Object.hasOwn(method, 'prototype')).toBe(false)
+    expect(() => Reflect.construct(method, [])).toThrow(TypeError)
+    expect(Object.getOwnPropertyDescriptor(owner, name)).toMatchObject({
+      writable: true,
+      enumerable: false,
+      configurable: true,
+    })
+  })
+})

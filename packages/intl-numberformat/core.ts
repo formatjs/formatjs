@@ -92,64 +92,58 @@ export const NumberFormat = function (
   return this
 } as NumberFormatConstructor
 
-function formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
-  return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
-    getInternalSlots,
-  })
-}
-
-function formatRange(
-  this: Intl.NumberFormat,
-  start: number | bigint | Decimal,
-  end: number | bigint | Decimal
-) {
-  // ECMA-402 §16.3.4, step 3: reject missing endpoints before coercion.
-  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L463-L465
-  if (start === undefined || end === undefined) {
-    throw new TypeError('Range endpoints must not be undefined')
-  }
-  return FormatNumericRange(
-    this,
-    ToIntlMathematicalValue(start),
-    ToIntlMathematicalValue(end),
-    {
+// ECMA-402 §7 applies ECMA-262 §18 built-in function requirements: these
+// methods have no [[Construct]] or own prototype property.
+// https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
+// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
+const {formatToParts, formatRange, formatRangeToParts} = {
+  formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
+    return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
       getInternalSlots,
-    }
-  )
-}
+    })
+  },
 
-function formatRangeToParts(
-  this: Intl.NumberFormat,
-  start: number | bigint | Decimal,
-  end: number | bigint | Decimal
-) {
-  // ECMA-402 §16.3.5, step 3: reject missing endpoints before coercion.
-  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L478-L480
-  if (start === undefined || end === undefined) {
-    throw new TypeError('Range endpoints must not be undefined')
-  }
-  return FormatNumericRangeToParts(
-    this,
-    ToIntlMathematicalValue(start),
-    ToIntlMathematicalValue(end),
-    {
-      getInternalSlots,
+  formatRange(
+    this: Intl.NumberFormat,
+    start: number | bigint | Decimal,
+    end: number | bigint | Decimal
+  ) {
+    // ECMA-402 §16.3.4, step 3: reject missing endpoints before coercion.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L463-L465
+    if (start === undefined || end === undefined) {
+      throw new TypeError('Range endpoints must not be undefined')
     }
-  )
-}
+    return FormatNumericRange(
+      this,
+      ToIntlMathematicalValue(start),
+      ToIntlMathematicalValue(end),
+      {
+        getInternalSlots,
+      }
+    )
+  },
 
-try {
-  Object.defineProperty(formatToParts, 'name', {
-    value: 'formatToParts',
-    enumerable: false,
-    writable: false,
-    configurable: true,
-  })
-} catch {
-  // In older browser (e.g Chrome 36 like polyfill-fastly.io)
-  // TypeError: Cannot redefine property: name
+  formatRangeToParts(
+    this: Intl.NumberFormat,
+    start: number | bigint | Decimal,
+    end: number | bigint | Decimal
+  ) {
+    // ECMA-402 §16.3.5, step 3: reject missing endpoints before coercion.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L478-L480
+    if (start === undefined || end === undefined) {
+      throw new TypeError('Range endpoints must not be undefined')
+    }
+    return FormatNumericRangeToParts(
+      this,
+      ToIntlMathematicalValue(start),
+      ToIntlMathematicalValue(end),
+      {
+        getInternalSlots,
+      }
+    )
+  },
 }
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {
@@ -164,8 +158,8 @@ defineProperty(NumberFormat.prototype, 'formatRangeToParts', {
   value: formatRangeToParts,
 })
 
-defineProperty(NumberFormat.prototype, 'resolvedOptions', {
-  value: function resolvedOptions() {
+const {resolvedOptions} = {
+  resolvedOptions() {
     if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
       throw TypeError(
         'Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver'
@@ -188,6 +182,10 @@ defineProperty(NumberFormat.prototype, 'resolvedOptions', {
     }
     return ro as any
   },
+}
+
+defineProperty(NumberFormat.prototype, 'resolvedOptions', {
+  value: resolvedOptions,
 })
 
 const formatDescriptor = {
@@ -246,8 +244,8 @@ try {
 Object.defineProperty(NumberFormat.prototype, 'format', formatDescriptor)
 
 // Static properties
-defineProperty(NumberFormat, 'supportedLocalesOf', {
-  value: function supportedLocalesOf(
+const {supportedLocalesOf} = {
+  supportedLocalesOf(
     locales: string | string[],
     options?: Pick<NumberFormatOptions, 'localeMatcher'>
   ) {
@@ -257,7 +255,9 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
       options
     )
   },
-})
+}
+
+defineProperty(NumberFormat, 'supportedLocalesOf', {value: supportedLocalesOf})
 
 NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
