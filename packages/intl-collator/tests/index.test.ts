@@ -90,6 +90,24 @@ describe('Intl.Collator', () => {
     ])
   })
 
+  it('uses canonical collation types for negotiation and tailorings', () => {
+    expect(
+      new Collator('de-u-co-phonebk', {collation: 'pinyin'}).resolvedOptions()
+    ).toMatchObject({locale: 'de-u-co-phonebk', collation: 'phonebk'})
+    const phonebook = new Collator('de-u-co-phonebk')
+    expect(
+      ['A', 'b', 'Af', 'Ab', 'od', 'off', 'Ä', 'ö'].sort(phonebook.compare)
+    ).toEqual(['A', 'Ab', 'Ä', 'Af', 'b', 'od', 'ö', 'off'])
+    expect(new Collator('es-u-co-trad').resolvedOptions().collation).toBe(
+      'trad'
+    )
+    expect(new Collator('si-u-co-dict').resolvedOptions().collation).toBe(
+      'dict'
+    )
+    expect(new Collator('es-u-co-trad').compare('cz', 'ch')).toBeLessThan(0)
+    expect(new Collator('es').compare('cz', 'ch')).toBeGreaterThan(0)
+  })
+
   it('resolves generated collation metadata', () => {
     expect(new Collator('zh-u-co-pinyin').resolvedOptions()).toMatchObject({
       locale: 'zh-u-co-pinyin',

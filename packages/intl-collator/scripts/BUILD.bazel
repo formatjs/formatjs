@@ -3,6 +3,13 @@ load("//tools:index.bzl", "ts_binary", "ts_compile")
 load("//tools:test.bzl", "formatjs_test")
 
 ts_compile(
+    name = "canonical-collation",
+    srcs = ["canonical-collation.ts"],
+    package_json = False,
+    deps = ["//:node_modules/cldr-bcp47"],
+)
+
+ts_compile(
     name = "parsers",
     srcs = [
         "parse-ldml-collation.ts",
@@ -46,10 +53,12 @@ ts_binary(
 ts_binary(
     name = "generate-locale-data",
     data = [
+        ":canonical-collation",
         ":parsers",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/fast-xml-parser",
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
@@ -63,10 +72,12 @@ ts_binary(
 ts_binary(
     name = "generate-tailoring-data",
     data = [
+        ":canonical-collation",
         ":parsers",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/fast-xml-parser",
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",

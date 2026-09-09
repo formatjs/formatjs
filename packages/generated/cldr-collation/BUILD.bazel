@@ -38,6 +38,7 @@ generate_package_file(
     ],
     data = [
         ":collation_xml",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/fast-xml-parser",
     ],
     tool = "//packages/intl-collator/scripts:generate-locale-data",
@@ -52,6 +53,7 @@ generate_package_file(
     ],
     data = [
         ":collation_xml",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/fast-xml-parser",
     ],
     tool = "//packages/intl-collator/scripts:generate-tailoring-data",

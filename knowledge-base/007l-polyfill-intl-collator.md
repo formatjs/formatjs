@@ -135,3 +135,6 @@ settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
 
 CLDR `root` data remains available for collation inheritance, but is excluded
 from available locale identifiers used during negotiation.
+
+Collation metadata and tailoring keys use canonical BCP 47 types from CLDR,
+such as `phonebk`, `trad`, and `dict`, rather than legacy LDML names.
