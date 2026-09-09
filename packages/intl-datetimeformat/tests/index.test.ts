@@ -21,6 +21,13 @@ describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
   })
+  it('preserves legacy RegExp statics during construction', () => {
+    ;/sent(inel)/.exec('sentinel')
+    const before = [RegExp.lastMatch, RegExp.$1]
+    new DateTimeFormat('en', {year: 'numeric', month: 'long', timeZone: 'UTC'})
+    const after = [RegExp.lastMatch, RegExp.$1]
+    expect(after).toEqual(before)
+  })
   it('rejects values one millisecond beyond the exact TimeClip bounds', () => {
     const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
     const limit = 8_640_000_000_000_000

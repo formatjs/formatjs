@@ -13,8 +13,6 @@
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-property.js (strict mode)": "return value of Intl.DateTimeFormat constructor Expected SameValue(«[object Intl.DateTimeFormat]», «undefined») to be true",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol.js (default)": "Expected no error, got TypeError: Cannot convert undefined or null to object",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected no error, got TypeError: Cannot convert undefined or null to object",
-    "intl402/DateTimeFormat/legacy-regexp-statics-not-modified.js (default)": "RegExp has unexpected property $_ with value d.M.y.",
-    "intl402/DateTimeFormat/legacy-regexp-statics-not-modified.js (strict mode)": "RegExp has unexpected property $_ with value d.M.y.",
     "intl402/DateTimeFormat/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.DateTimeFormat]», «[object Intl.DateTimeFormat]») to be true",
     "intl402/DateTimeFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.DateTimeFormat]», «[object Intl.DateTimeFormat]») to be true",
     "intl402/DateTimeFormat/prototype/format/bound-to-datetimeformat-instance.js (default)": "Expected no error, got RangeError: Calendar \"japanese\" is not supported. Try setting \"calendar\" to 1 of the following: gregory",

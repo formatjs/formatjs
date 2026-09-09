@@ -172,3 +172,6 @@ options and Unicode extensions. Locale preferences still select the default.
 
 The `hour12` option selects the locale’s separate 12-hour or 24-hour preference.
 For example, English uses `h12` or `h23`; Japanese uses `h11` or `h23`.
+
+DateTimeFormat reuses pattern fields parsed during locale registration, preserving
+legacy RegExp statics during constructor format matching.
