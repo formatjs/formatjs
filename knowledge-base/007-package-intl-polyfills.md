@@ -118,3 +118,12 @@ test caching reruns the harness. Realm installation scripts are generated inputs
 Dynamic locale registration preserves `und` data under its own locale. Likely
 subtags can minimize `und` to `en`, but that does not make root formatting
 patterns English data. Explicit language aliases continue to be minimized.
+
+### Locale registration
+
+Dynamic polyfills register loaded data under its original locale and CLDR
+default-content children. Missing less-specific fallback tags are filled without
+overwriting explicitly loaded data. Likely-subtag minimization does not merge
+distinct locale records, so loading `ar-EG` cannot replace `ar`.
+The default locale remains the first loaded locale's actual tag, rather than a
+minimized tag that later data loading could overwrite.

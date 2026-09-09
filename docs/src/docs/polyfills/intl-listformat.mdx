@@ -174,3 +174,7 @@ non-string elements throw `TypeError`; an invalid element also closes the iterat
 
 Loading `und` locale data preserves existing English data. Root patterns remain
 separate from language-specific patterns, regardless of registration order.
+
+Loading a locale also registers its CLDR default-content variants. For example,
+English data supports `en-US`. Explicitly loaded regional data remains distinct
+from its language's data, regardless of load order.

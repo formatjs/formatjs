@@ -2,8 +2,6 @@
   "total": 162,
   "failures": {
     "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'",
-    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'",
-    "intl402/ListFormat/prototype/resolvedOptions/type.js (default)": "locale descriptor value should be en-US; locale value should be en-US",
-    "intl402/ListFormat/prototype/resolvedOptions/type.js (strict mode)": "locale descriptor value should be en-US; locale value should be en-US"
+    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'"
   }
 }
