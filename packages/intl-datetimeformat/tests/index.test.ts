@@ -1226,3 +1226,67 @@ describe('DateTimeFormat built-in methods', () => {
     expect(DateTimeFormat.length).toBe(0)
   })
 })
+
+it('keeps both supplementary digits in two-digit date fields', () => {
+  const formatter = new DateTimeFormat('en', {
+    numberingSystem: 'adlm',
+    timeZone: 'UTC',
+    year: '2-digit',
+    month: '2-digit',
+    day: '2-digit',
+  })
+  expect(formatter.resolvedOptions().numberingSystem).toBe('adlm')
+  expect(formatter.formatToParts(Date.UTC(2024, 0, 2))).toEqual([
+    {type: 'month', value: '𞥐𞥑'},
+    {type: 'literal', value: '/'},
+    {type: 'day', value: '𞥐𞥒'},
+    {type: 'literal', value: '/'},
+    {type: 'year', value: '𞥒𞥔'},
+  ])
+})
+
+it('retains a supported numbering-system extension when the option is unsupported', () => {
+  const formatter = new DateTimeFormat('en-u-nu-arab', {
+    numberingSystem: 'invalid',
+    timeZone: 'UTC',
+    year: 'numeric',
+  })
+  expect(formatter.resolvedOptions()).toMatchObject({
+    locale: 'en-u-nu-arab',
+    numberingSystem: 'arab',
+  })
+  expect(formatter.format(Date.UTC(2024, 0, 2))).toBe('٢٠٢٤')
+})
+
+it('uses the selected numbering system decimal separator for fractional seconds', () => {
+  const formatter = new DateTimeFormat('en-u-nu-arab', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    fractionalSecondDigits: 3,
+  })
+  const date = Date.UTC(2024, 0, 1, 2, 35, 6, 789)
+  expect(formatter.format(date)).toContain('٢:٣٥:٠٦٫٧٨٩')
+  expect(formatter.formatToParts(date)).toContainEqual({
+    type: 'literal',
+    value: '٫',
+  })
+})
+
+it('preserves the CLDR day-period separator with Han decimal digits', () => {
+  const formatter = new DateTimeFormat('en-u-nu-hanidec', {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+  const date = Date.UTC(2024, 0, 1, 2, 35, 6)
+  expect(formatter.format(date)).toBe('〇二:三五:〇六\u202fAM')
+  expect(
+    formatter
+      .formatToParts(date)
+      .map(part => part.value)
+      .join('')
+  ).toBe(formatter.format(date))
+})

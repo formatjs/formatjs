@@ -57,3 +57,32 @@ it('rejects BigInt values in both formatting methods', () => {
     )
   }
 })
+
+it('resolves numeric systems from options and locale extensions', () => {
+  const formatter = new RelativeTimeFormat('en', {
+    numberingSystem: 'arab',
+  } as Intl.RelativeTimeFormatOptions)
+  expect(formatter.resolvedOptions().numberingSystem).toBe('arab')
+  expect(formatter.format(1234.5, 'day')).toBe('in ١٬٢٣٤٫٥ days')
+  expect(
+    formatter
+      .formatToParts(1234.5, 'day')
+      .filter(part => part.type !== 'literal')
+      .map(part => part.value)
+      .join('')
+  ).toBe('١٬٢٣٤٫٥')
+  const extension = new RelativeTimeFormat('en-u-nu-arab', {
+    numberingSystem: 'invalid',
+  } as Intl.RelativeTimeFormatOptions)
+  expect(extension.resolvedOptions()).toMatchObject({
+    locale: 'en-u-nu-arab',
+    numberingSystem: 'arab',
+  })
+  const override = new RelativeTimeFormat('en-u-nu-arab', {
+    numberingSystem: 'latn',
+  } as Intl.RelativeTimeFormatOptions)
+  expect(override.resolvedOptions()).toMatchObject({
+    locale: 'en',
+    numberingSystem: 'latn',
+  })
+})

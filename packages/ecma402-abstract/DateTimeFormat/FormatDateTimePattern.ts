@@ -264,7 +264,10 @@ export function FormatDateTimePattern(
       } else if (f === '2-digit') {
         fv = nf2.format(v)
         if (fv.length > 2) {
-          fv = fv.slice(fv.length - 2, fv.length)
+          // ECMA-402 11.5.5, steps 15.f.ix.2–4: keep the last two code points.
+          // https://tc39.es/ecma402/#sec-formatdatetimepattern
+          // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1412-L1417
+          fv = Array.from(fv).slice(-2).join('')
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
         if (p === 'era') {

@@ -1,3 +1,7 @@
+import {
+  loadNumberResolver,
+  expandNumberingSystems,
+} from './numbering-system-data.ts'
 import {generateDataForLocales as extractCurrencies} from './extract-currencies.ts'
 import {generateDataForLocales as extractUnits} from './extract-units.ts'
 import {generateDataForLocales as extractNumbers} from './extract-numbers.ts'
@@ -29,8 +33,16 @@ function getAllLocales(): string[] {
     })
 }
 
-async function main(args: minimist.ParsedArgs) {
-  const {outDir} = args
+interface Args extends minimist.ParsedArgs {
+  outDir: string
+  cldrRoot: string
+}
+
+async function main(args: Args) {
+  const {outDir, cldrRoot} = args
+  if (!outDir || !cldrRoot)
+    throw new Error('--outDir and --cldrRoot are required')
+  const resolver = loadNumberResolver(cldrRoot)
   // Dist all locale files to locale-data
   const locales = getAllLocales()
   const [numbersData, currenciesData, unitsData] = await Promise.all([
@@ -40,11 +52,16 @@ async function main(args: minimist.ParsedArgs) {
   ])
 
   for (let locale of locales) {
+    const numbers = expandNumberingSystems(
+      locale,
+      numbersData[locale],
+      resolver
+    )
     const d = {
       units: unitsData[locale],
       currencies: currenciesData[locale],
-      numbers: numbersData[locale],
-      nu: numbersData[locale].nu,
+      numbers,
+      nu: numbers.nu,
     }
     outputFileSync(
       join(outDir, `${locale}.json`),
@@ -60,5 +77,5 @@ async function main(args: minimist.ParsedArgs) {
 }
 
 if (import.meta.filename === process.argv[1]) {
-  ;(async () => main(minimist(process.argv)))()
+  void main(minimist<Args>(process.argv.slice(2)))
 }

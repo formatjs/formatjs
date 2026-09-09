@@ -233,6 +233,15 @@ This package requires the following capabilities:
 
 Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402).
 
+Numeric numbering systems from CLDR are supported through the `numberingSystem`
+option or the locale's `nu` extension. Formatting uses each system's digits,
+symbols, and locale patterns, including supplementary-plane digits such as Adlam:
+
+```ts
+new Intl.NumberFormat('en', {numberingSystem: 'adlm'}).format(12345.67)
+// '𞥑𞥒,𞥓𞥔𞥕.𞥖𞥗'
+```
+
 ## Usage
 
 ### Via polyfill-fastly.io

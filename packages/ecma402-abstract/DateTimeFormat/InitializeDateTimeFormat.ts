@@ -10,7 +10,10 @@ import {
   type Formats,
   type IntlDateTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/date-time.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {
+  invariant,
+  createMemoizedNumberFormat,
+} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {BasicFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.js'
 import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
@@ -56,13 +59,33 @@ function resolveHourCycle(
   return hc == null ? data.hourCycle : hc
 }
 
-function applyExplicitTimePatternOptions(pattern: string, opt: Opt) {
+function applyExplicitTimePatternOptions(
+  pattern: string,
+  opt: Opt,
+  locale: string,
+  numberingSystem: string
+) {
   if (
     opt.fractionalSecondDigits !== undefined &&
     pattern.includes('{second}') &&
     !pattern.includes('{fractionalSecondDigits}')
   ) {
-    pattern = pattern.replace('{second}', '{second}.{fractionalSecondDigits}')
+    // LDML matching skeletons: append the locale's decimal separator before S.
+    // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L834
+    const numberOptions = Object.create(null)
+    numberOptions.numberingSystem = numberingSystem
+    const decimal = createMemoizedNumberFormat(locale, numberOptions)
+      .formatToParts(1.1)
+      .find(part => part.type === 'decimal')?.value
+    invariant(
+      decimal !== undefined,
+      'Missing decimal separator for fractional seconds'
+    )
+    pattern = pattern.replace(
+      '{second}',
+      `{second}${decimal}{fractionalSecondDigits}`
+    )
   }
   if (opt.dayPeriod !== undefined) {
     pattern = pattern.replace('{ampm}', '{dayPeriod}')
@@ -412,7 +435,12 @@ export function InitializeDateTimeFormat(
     pattern = bestFormat.pattern
     rangePatterns = bestFormat.rangePatterns
   }
-  pattern = applyExplicitTimePatternOptions(pattern, opt)
+  pattern = applyExplicitTimePatternOptions(
+    pattern,
+    opt,
+    internalSlots.locale,
+    internalSlots.numberingSystem
+  )
   internalSlots.pattern = pattern
   internalSlots.rangePatterns = rangePatterns
   return dtf as Intl.DateTimeFormat // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged

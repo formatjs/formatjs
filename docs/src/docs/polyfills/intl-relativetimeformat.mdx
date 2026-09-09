@@ -187,7 +187,12 @@ This package requires the following capabilities:
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale).
 - [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) or [polyfill](intl-pluralrules).
-- If you need `formatToParts` and have to support IE11- or Node 10-, you'd need to polyfill using [`@formatjs/intl-numberformat.js`](intl-numberformat).
+- `Intl.NumberFormat` with `formatToParts` and support for the selected numbering system, or the [NumberFormat polyfill](intl-numberformat).
+
+The `numberingSystem` option and the locale's `nu` extension support CLDR numeric
+systems. For example, English with `numberingSystem: 'arab'` formats 1234.5 days as
+`in ١٬٢٣٤٫٥ days`. Load the NumberFormat polyfill when the host lacks the requested
+numbering system.
 
 ## Usage
 

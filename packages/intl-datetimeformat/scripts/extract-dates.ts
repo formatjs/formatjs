@@ -14,6 +14,7 @@ import {createRequire} from 'node:module'
 
 const require = createRequire(import.meta.url)
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import numberingSystems from 'cldr-core/supplemental/numberingSystems.json' with {type: 'json'}
 import {
   type RawDateTimeLocaleInternalData,
   type TimeZoneNameData,
@@ -221,10 +222,20 @@ async function loadDatesFields(
   const timeZoneNames =
     tznImport.default.main[locale as 'en'].dates.timeZoneNames
   const numbers = numbersImport?.default.main[locale as 'en'].numbers
+  // ECMA-402 11.1.2, step 11: resolve [[NumberingSystem]] from [[nu]].
+  // Keep the locale default first; NumberFormat supplies digits for every system.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L76
   const nu = numbers
-    ? numbers.defaultNumberingSystem === 'latn'
-      ? ['latn']
-      : [numbers.defaultNumberingSystem, 'latn']
+    ? [
+        numbers.defaultNumberingSystem,
+        ...Object.keys(numberingSystems.supplemental.numberingSystems).filter(
+          name =>
+            name !== numbers.defaultNumberingSystem &&
+            numberingSystems.supplemental.numberingSystems[name as 'latn']
+              ._type === 'numeric'
+        ),
+      ]
     : []
 
   let hc: string[] = []

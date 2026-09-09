@@ -17,6 +17,7 @@ import {
   type LocaleFieldsData,
 } from '#packages/ecma402-abstract/types/relative-time.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import numberingSystems from 'cldr-core/supplemental/numberingSystems.json' with {type: 'json'}
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -81,14 +82,20 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
   const fields = dateFileds.main[locale as 'en'].dates.fields
   const defaultNumberingSystem =
     numbers?.main[locale as 'en'].numbers.defaultNumberingSystem
-  // RelativeTimeFormat resolves the `numberingSystem` option through the
-  // locale-data [[nu]] list. Keep the locale default first, but also expose
-  // `latn` so an explicit `numberingSystem: 'latn'` override is honored for
-  // locales whose default digits are non-latn.
+  // ECMA-402 18.1.1, steps 9 and 15–16: resolve nu and pass it to NumberFormat.
+  // Keep the locale default first; every CLDR numeric system is available.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L29-L36
   const nu = defaultNumberingSystem
-    ? defaultNumberingSystem === 'latn'
-      ? ['latn']
-      : [defaultNumberingSystem, 'latn']
+    ? [
+        defaultNumberingSystem,
+        ...Object.keys(numberingSystems.supplemental.numberingSystems).filter(
+          name =>
+            name !== defaultNumberingSystem &&
+            numberingSystems.supplemental.numberingSystems[name as 'latn']
+              ._type === 'numeric'
+        ),
+      ]
     : []
 
   // Reduce the date fields data down to allowlist of fields needed in the

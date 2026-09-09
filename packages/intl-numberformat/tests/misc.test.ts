@@ -919,11 +919,29 @@ it('shares matching signs with a shared currency suffix', () => {
   ).toBe('+3 – +5')
 })
 
+it('accepts complete numeric systems with locale-specific symbols', () => {
+  expect(
+    new NumberFormat('en', {numberingSystem: 'adlm'}).format(12345.67)
+  ).toBe('𞥑𞥒,𞥓𞥔𞥕.𞥖𞥗')
+  expect(new NumberFormat('en', {numberingSystem: 'lepc'}).format(123)).toBe(
+    '᱁᱂᱃'
+  )
+  expect(
+    new NumberFormat('en', {numberingSystem: 'arab'}).format(12345.67)
+  ).toBe('١٢٬٣٤٥٫٦٧')
+  expect(
+    new NumberFormat('en-u-nu-arab', {
+      numberingSystem: 'invalid',
+    }).resolvedOptions()
+  ).toMatchObject({
+    locale: 'en-u-nu-arab',
+    numberingSystem: 'arab',
+  })
+})
+
 it('hydrates numbering-system aliases without mutating supplied data', () => {
   const source = JSON.parse(JSON.stringify(require('./locale-data/en.json')))
-  source.data.numbers.aliases = {adlm: 'latn'}
-  source.data.nu.push('adlm')
-  source.data.numbers.nu.push('adlm')
+  expect(source.data.numbers.aliases.adlm).toBe('latn')
   for (const field of [
     'symbols',
     'decimal',

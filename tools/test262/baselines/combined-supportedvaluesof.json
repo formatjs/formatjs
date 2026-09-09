@@ -2,8 +2,6 @@
   "total": 50,
   "failures": {
     "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js (default)": "Actual [gregory, iso8601] and expected [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic-civil, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] should have the same contents. only the required calendars are supported",
-    "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js (strict mode)": "Actual [gregory, iso8601] and expected [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic-civil, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] should have the same contents. only the required calendars are supported",
-    "intl402/Intl/supportedValuesOf/numberingSystems-with-simple-digit-mappings.js (default)": "adlm with simple digit mappings is supported",
-    "intl402/Intl/supportedValuesOf/numberingSystems-with-simple-digit-mappings.js (strict mode)": "adlm with simple digit mappings is supported"
+    "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js (strict mode)": "Actual [gregory, iso8601] and expected [buddhist, chinese, coptic, dangi, ethioaa, ethiopic, gregory, hebrew, indian, islamic-civil, islamic-tbla, islamic-umalqura, iso8601, japanese, persian, roc] should have the same contents. only the required calendars are supported"
   }
 }
