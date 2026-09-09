@@ -11,7 +11,7 @@ excluded because it fails.
 | datetimeformat      |      488 |               194 |              52 |
 | displaynames        |      114 |                 4 |               0 |
 | durationformat      |      220 |                 0 |               4 |
-| getcanonicallocales |       76 |                32 |               2 |
+| getcanonicallocales |       76 |                14 |               2 |
 | listformat          |      162 |                 4 |               0 |
 | locale              |      336 |                 4 |              22 |
 | numberformat        |      498 |                22 |               0 |
@@ -20,8 +20,8 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |
 | supportedvaluesof   |       50 |                 2 |               6 |
 
-Total: 2,498 executions, 2,212 polyfill passes, 286 polyfill failures. The native
-control fails 86 executions; 46 failing cases overlap. Overlap does not prove
+Total: 2,498 executions, 2,230 polyfill passes, 268 polyfill failures. The native
+control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 

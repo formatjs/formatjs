@@ -1,4 +1,5 @@
 import {
+  extensionAlias,
   languageAlias,
   scriptAlias,
   territoryAlias,
@@ -28,19 +29,26 @@ function canonicalizeAttrs(strs: string[]): string[] {
   ).sort()
 }
 
-function canonicalizeKVs(arr: KV[]): KV[] {
-  const all: Record<string, any> = {}
+function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
+  const seen = new Set<string>()
   const result: KV[] = []
-  for (const kv of arr) {
-    if (kv[0] in all) {
-      continue
-    }
-    all[kv[0]] = 1
-    if (!kv[1] || kv[1] === 'true') {
-      result.push([kv[0].toLowerCase()])
-    } else {
-      result.push([kv[0].toLowerCase(), kv[1].toLowerCase()])
-    }
+  // ECMA-402 §6.2.2, step 1 applies UTS #35 Processing LocaleIds, step 2.
+  // Canonicalize aliases before removing Unicode "true" values; tvalues keep it.
+  // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
+  // https://unicode.org/reports/tr35/#processing-localeids
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4255-L4262
+  for (const [rawKey, rawValue] of arr) {
+    const key = rawKey.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    const value = rawValue?.toLowerCase() || ''
+    const canonical = extensionAlias[extension]?.[key]?.[value] || value
+    result.push(
+      !canonical || (extension === 'u' && canonical === 'true')
+        ? [key]
+        : [key, canonical]
+    )
   }
   return result.sort(compareKV)
 }
@@ -63,15 +71,6 @@ function mergeVariants(v1: string[], v2: string[]): string[] {
   return result
 }
 
-/**
- * CAVEAT: We don't do this section in the spec bc they have no JSON data
- * Use the bcp47 data to replace keys, types, tfields, and tvalues by their canonical forms. See Section 3.6.4 U Extension Data Files) and Section 3.7.1 T Extension Data Files. The aliases are in the alias attribute value, while the canonical is in the name attribute value. For example,
-Because of the following bcp47 data:
-<key name="ms"…>…<type name="uksystem" … alias="imperial" … />…</key>
-We get the following transformation:
-en-u-ms-imperial ⇒ en-u-ms-uksystem
- * @param lang 
- */
 export function canonicalizeUnicodeLanguageId(
   unicodeLanguageId: UnicodeLanguageId
 ): UnicodeLanguageId {
@@ -82,6 +81,22 @@ export function canonicalizeUnicodeLanguageId(
    */
 
   // From https://github.com/unicode-org/icu/blob/master/icu4j/main/classes/core/src/com/ibm/icu/util/ULocale.java#L1246
+
+  // ECMA-402 §6.2.2, step 1: canonicalize case before matching CLDR aliases.
+  // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
+  unicodeLanguageId.lang = unicodeLanguageId.lang.toLowerCase()
+  if (unicodeLanguageId.script) {
+    unicodeLanguageId.script =
+      unicodeLanguageId.script[0].toUpperCase() +
+      unicodeLanguageId.script.slice(1).toLowerCase()
+  }
+  if (unicodeLanguageId.region) {
+    unicodeLanguageId.region = unicodeLanguageId.region.toUpperCase()
+  }
+  unicodeLanguageId.variants = unicodeLanguageId.variants.map(v =>
+    v.toLowerCase()
+  )
 
   // Try language _ variant
   let finalLangAst = unicodeLanguageId
@@ -254,7 +269,7 @@ export function CanonicalizeUnicodeLocaleId(
     for (const extension of locale.extensions) {
       switch (extension.type) {
         case 'u':
-          extension.keywords = canonicalizeKVs(extension.keywords)
+          extension.keywords = canonicalizeKVs(extension.keywords, 'u')
           if (extension.attributes) {
             extension.attributes = canonicalizeAttrs(extension.attributes)
           }
@@ -263,7 +278,7 @@ export function CanonicalizeUnicodeLocaleId(
           if (extension.lang) {
             extension.lang = canonicalizeUnicodeLanguageId(extension.lang)
           }
-          extension.fields = canonicalizeKVs(extension.fields)
+          extension.fields = canonicalizeKVs(extension.fields, 't')
           break
         default:
           extension.value = extension.value.toLowerCase()

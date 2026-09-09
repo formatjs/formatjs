@@ -78,6 +78,7 @@ generate_package_file(
     name = "cldr_core_aliases",
     src = "aliases.ts",
     data = [
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
@@ -166,6 +167,11 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es6",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
 )
 
 rolldown_bundle(

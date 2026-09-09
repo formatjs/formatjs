@@ -28,7 +28,7 @@ export function emitUnicodeLocaleId({
         break
       case 't':
         chunks.push(
-          emitUnicodeLanguageId(ext.lang),
+          emitUnicodeLanguageId(ext.lang).toLowerCase(),
           ...ext.fields.reduce((all: string[], kv) => all.concat(kv), [])
         )
         break

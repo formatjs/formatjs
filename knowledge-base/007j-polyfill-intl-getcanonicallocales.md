@@ -73,3 +73,9 @@ export const likelySubtags: Record<string, string> = {
 and values from the installed Locale polyfill use their intrinsic locale tag,
 ignoring overridden instance properties. Objects that merely expose `language`
 and `baseName` are treated as ordinary array-like inputs.
+
+Locale identifier casing is normalized before CLDR alias lookup, including
+language, script, region, and variant subtags.
+
+Unicode and transformed extensions use CLDR BCP 47 aliases. Transformed
+extensions accept a language, fields, or both, and retain `true` field values.
