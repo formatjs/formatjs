@@ -192,6 +192,8 @@ async function loadDatesFields(
     : []
 
   let hc: string[] = []
+  let hourCycle12 = 'h12'
+  let hourCycle24 = 'h23'
   let region: string | undefined
   try {
     if (locale !== 'root') {
@@ -205,6 +207,8 @@ async function loadDatesFields(
       processedTimeData[`${locale}-001`] ||
       processedTimeData['001']
     ).map(resolveDateTimeSymbolTable)
+    hourCycle12 = hc.find(cycle => cycle === 'h11' || cycle === 'h12') || 'h12'
+    hourCycle24 = hc.find(cycle => cycle === 'h23' || cycle === 'h24') || 'h23'
   } catch (e) {
     console.error(`Issue extracting hourCycle for ${locale}`)
     throw e
@@ -484,6 +488,8 @@ async function loadDatesFields(
     // @ts-ignore
     intervalFormats,
     hourCycle: hc[0],
+    hourCycle12,
+    hourCycle24,
     nu,
     ca: (
       calendarPreferenceData[region as keyof typeof calendarPreferenceData] ||

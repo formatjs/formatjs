@@ -30,27 +30,30 @@ function isTimeRelated(opt: Opt) {
   return false
 }
 
-function resolveHourCycle(hc: string, hcDefault: string, hour12?: boolean) {
-  if (hc == null) {
-    hc = hcDefault
+function resolveHourCycle(
+  hc: string,
+  data: DateTimeFormatLocaleInternalData,
+  hour12?: boolean
+) {
+  // ECMA-402 §11.1.2, steps 13–15: hour12 selects an independent locale
+  // preference, rather than deriving h11/h24 from the default cycle.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L78-L87
+  if (hour12 === true) {
+    return (
+      data.hourCycle12 ||
+      data.hc.find(cycle => cycle === 'h11' || cycle === 'h12') ||
+      'h12'
+    )
   }
-  if (hour12 !== undefined) {
-    if (hour12) {
-      if (hcDefault === 'h11' || hcDefault === 'h23') {
-        hc = 'h11'
-      } else {
-        hc = 'h12'
-      }
-    } else {
-      invariant(!hour12, 'hour12 must not be set')
-      if (hcDefault === 'h11' || hcDefault === 'h23') {
-        hc = 'h23'
-      } else {
-        hc = 'h24'
-      }
-    }
+  if (hour12 === false) {
+    return (
+      data.hourCycle24 ||
+      data.hc.find(cycle => cycle === 'h23' || cycle === 'h24') ||
+      'h23'
+    )
   }
-  return hc
+  return hc == null ? data.hourCycle : hc
 }
 
 function applyExplicitTimePatternOptions(pattern: string, opt: Opt) {
@@ -338,7 +341,7 @@ export function InitializeDateTimeFormat(
       if (isTimeRelated(opt)) {
         const hc = resolveHourCycle(
           internalSlots.hourCycle,
-          dataLocaleData.hourCycle,
+          dataLocaleData,
           hour12
         )
         opt.hour12 = hc === 'h11' || hc === 'h12'
@@ -364,11 +367,7 @@ export function InitializeDateTimeFormat(
     // because our style data is represented as concrete 12/24 patterns.
     const hc =
       timeStyle !== undefined
-        ? resolveHourCycle(
-            internalSlots.hourCycle,
-            dataLocaleData.hourCycle,
-            hour12
-          )
+        ? resolveHourCycle(internalSlots.hourCycle, dataLocaleData, hour12)
         : undefined
     bestFormat = DateTimeStyleFormat(
       dateStyle,
@@ -397,11 +396,7 @@ export function InitializeDateTimeFormat(
   let pattern
   let rangePatterns
   if (internalSlots.hour !== undefined) {
-    const hc = resolveHourCycle(
-      internalSlots.hourCycle,
-      dataLocaleData.hourCycle,
-      hour12
-    )
+    const hc = resolveHourCycle(internalSlots.hourCycle, dataLocaleData, hour12)
     internalSlots.hourCycle = hc
 
     if (hc === 'h11' || hc === 'h12') {

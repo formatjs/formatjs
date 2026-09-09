@@ -224,6 +224,27 @@ describe('Intl.DateTimeFormat', function () {
     }
   })
 
+  it('uses independent locale preferences for hour12', () => {
+    for (const [locale, hourCycle12] of [
+      ['en', 'h12'],
+      ['fr', 'h12'],
+      ['ja', 'h11'],
+    ] as const) {
+      expect(
+        new DateTimeFormat(locale, {
+          hour: 'numeric',
+          hour12: true,
+        }).resolvedOptions().hourCycle
+      ).toBe(hourCycle12)
+      expect(
+        new DateTimeFormat(locale, {
+          hour: 'numeric',
+          hour12: false,
+        }).resolvedOptions().hourCycle
+      ).toBe('h23')
+    }
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
