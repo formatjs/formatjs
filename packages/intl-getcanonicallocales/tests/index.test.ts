@@ -45,6 +45,25 @@ describe('Intl.getCanonicalLocales', () => {
       'en-u-ks-level1',
     ])
   })
+  it('canonicalizes subdivision and region override aliases', () => {
+    expect(
+      getCanonicalLocales([
+        'und-u-rg-no23',
+        'und-NO-u-sd-no23',
+        'und-u-rg-lud',
+        'und-u-rg-fi01',
+        'und-AX-u-sd-fi01',
+        'en-u-rg-uszzzz',
+      ])
+    ).toEqual([
+      'und-u-rg-no50',
+      'und-NO-u-sd-no50',
+      'und-u-rg-lucl',
+      'und-u-rg-axzzzz',
+      'und-AX-u-sd-axzzzz',
+      'en-u-rg-uszzzz',
+    ])
+  })
   it('regular', function () {
     expect(
       getCanonicalLocales('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')

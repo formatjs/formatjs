@@ -4,8 +4,13 @@ import aliases from 'cldr-core/supplemental/aliases.json' with {type: 'json'}
 import minimist from 'minimist'
 import stringify from 'json-stable-stringify'
 
-const {languageAlias, territoryAlias, scriptAlias, variantAlias} =
-  aliases.supplemental.metadata.alias
+const {
+  languageAlias,
+  territoryAlias,
+  scriptAlias,
+  variantAlias,
+  subdivisionAlias,
+} = aliases.supplemental.metadata.alias
 
 const UNICODE_TYPE = /^[a-z0-9]{3,8}(?:-[a-z0-9]{3,8})*$/
 
@@ -52,6 +57,12 @@ function main(args: Args) {
     }
   }
   const data = {
+    subdivisionAlias: Object.fromEntries(
+      Object.entries(subdivisionAlias).map(([alias, value]) => {
+        const first = value._replacement.split(' ')[0].toLowerCase()
+        return [alias, first.length === 2 ? first + 'zzzz' : first]
+      })
+    ),
     extensionAlias,
     languageAlias: Object.keys(languageAlias).reduce(
       (all: Record<string, string>, locale) => {
@@ -87,6 +98,7 @@ function main(args: Args) {
     out,
     `/* @generated */	
 // prettier-ignore  
+export const subdivisionAlias: Record<string, string> = ${stringify(data.subdivisionAlias, {space: 2})};
 export const extensionAlias: Record<string, Record<string, Record<string, string>>> = ${stringify(data.extensionAlias, {space: 2})};
 export const languageAlias: Record<string, string> = ${stringify(
       data.languageAlias,

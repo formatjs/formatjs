@@ -10,10 +10,6 @@
     "intl402/Intl/getCanonicalLocales/preferred-grandfathered.js (default)": "Expected SameValue(«\"jbo-lojban\"», «\"jbo\"») to be true",
     "intl402/Intl/getCanonicalLocales/preferred-grandfathered.js (strict mode)": "Expected SameValue(«\"jbo-lojban\"», «\"jbo\"») to be true",
     "intl402/Intl/getCanonicalLocales/preferred-variant.js (default)": "Expected SameValue(«\"ja-Latn-alalc97-hepburn\"», «\"ja-Latn-alalc97\"») to be true",
-    "intl402/Intl/getCanonicalLocales/preferred-variant.js (strict mode)": "Expected SameValue(«\"ja-Latn-alalc97-hepburn\"», «\"ja-Latn-alalc97\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-region.js (default)": "Expected SameValue(«\"und-u-rg-no23\"», «\"und-u-rg-no50\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-region.js (strict mode)": "Expected SameValue(«\"und-u-rg-no23\"», «\"und-u-rg-no50\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-subdivision.js (default)": "Expected SameValue(«\"und-NO-u-sd-no23\"», «\"und-NO-u-sd-no50\"») to be true",
-    "intl402/Intl/getCanonicalLocales/unicode-ext-canonicalize-subdivision.js (strict mode)": "Expected SameValue(«\"und-NO-u-sd-no23\"», «\"und-NO-u-sd-no50\"») to be true"
+    "intl402/Intl/getCanonicalLocales/preferred-variant.js (strict mode)": "Expected SameValue(«\"ja-Latn-alalc97-hepburn\"», «\"ja-Latn-alalc97\"») to be true"
   }
 }
