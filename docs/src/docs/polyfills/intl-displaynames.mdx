@@ -211,3 +211,6 @@ async function polyfill(locale: string) {
 Calendar codes use hyphen-separated Unicode type identifiers; underscore forms
 throw `RangeError`. When `fallback: 'code'` applies, `of` returns the canonical
 code, such as `ZZZ` for an unknown currency supplied as `zzz`.
+
+Loading `und` locale data preserves existing English data. Root patterns remain
+separate from language-specific patterns, regardless of registration order.

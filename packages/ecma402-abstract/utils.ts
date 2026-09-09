@@ -1,6 +1,17 @@
 import type {BigDecimal} from '@formatjs/bigdecimal'
 import {memoize, strategies} from '@formatjs/fast-memoize'
 
+// ECMA-402 §9.2.7, steps 5–9: resolution selects the matched locale's data.
+// Likely-subtag minimization must not alias CLDR root data (und) to English.
+// https://tc39.es/ecma402/#sec-resolvelocale
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L239-L243
+export function getLocaleDataAlias(locale: string): string {
+  const parsed = new Intl.Locale(locale)
+  return parsed.baseName.split('-')[0] === 'und'
+    ? parsed.toString()
+    : parsed.minimize().toString()
+}
+
 export function repeat(s: string, times: number): string {
   if (typeof s.repeat === 'function') {
     return s.repeat(times)

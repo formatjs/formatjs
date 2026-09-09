@@ -10,6 +10,7 @@ import {
   type DisplayNamesLocaleData,
 } from '#packages/ecma402-abstract/types/displaynames.js'
 import {
+  getLocaleDataAlias,
   getInternalSlot,
   getMultiInternalSlots,
   invariant,
@@ -162,9 +163,7 @@ export class DisplayNames {
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      const minimizedLocale = new (Intl as any).Locale(locale)
-        .minimize()
-        .toString()
+      const minimizedLocale = getLocaleDataAlias(locale)
       DisplayNames.localeData[locale] = DisplayNames.localeData[
         minimizedLocale
       ] = d

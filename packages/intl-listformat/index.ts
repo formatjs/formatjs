@@ -9,6 +9,7 @@ import {
   type ListPatternLocaleData,
 } from '#packages/ecma402-abstract/types/list.js'
 import {
+  getLocaleDataAlias,
   type LiteralPart,
   getInternalSlot,
   invariant,
@@ -324,9 +325,7 @@ export default class ListFormat {
 
   public static __addLocaleData(...data: ListPatternLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      const minimizedLocale = new (Intl as any).Locale(locale)
-        .minimize()
-        .toString()
+      const minimizedLocale = getLocaleDataAlias(locale)
       ListFormat.localeData[locale] = ListFormat.localeData[minimizedLocale] = d
       ListFormat.availableLocales.add(minimizedLocale)
       ListFormat.availableLocales.add(locale)
