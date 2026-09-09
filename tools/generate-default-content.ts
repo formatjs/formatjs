@@ -1,5 +1,6 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
+import localeData from 'cldr-core/availableLocales.json' with {type: 'json'}
 import content from 'cldr-core/defaultContent.json' with {type: 'json'}
 
 interface Args extends minimist.ParsedArgs {
@@ -17,9 +18,25 @@ function main(args: Args) {
     const parent = locale.split('-').slice(0, -1).join('-')
     ;(children[parent] ||= []).push(locale)
   }
+  // ECMA-402 §9.1 also requires less-specific and scriptless fallback tags.
+  // https://tc39.es/ecma402/#sec-internal-slots
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L18-L22
+  const locales = new Set([
+    ...localeData.availableLocales.full,
+    ...content.defaultContent,
+  ])
+  for (const locale of locales) {
+    const parts = locale.split('-')
+    while (parts.length > 1) {
+      if (parts.length > 2 && parts[1].length === 4)
+        locales.add([parts[0], ...parts.slice(2)].join('-'))
+      parts.pop()
+      locales.add(parts.join('-'))
+    }
+  }
   outputFileSync(
     args.out,
-    `export const defaultContent: Record<string, string[]> = ${JSON.stringify(children)}\n`
+    `export const defaultContent: Record<string, string[]> = ${JSON.stringify(children)}\nexport const availableLocales: string[] = ${JSON.stringify([...locales].sort())}\n`
   )
 }
 
