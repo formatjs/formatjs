@@ -1,7 +1,8 @@
+import {readFileSync} from 'node:fs'
 import {NumberFormat} from '@formatjs/intl-numberformat'
-// @ts-ignore
-import en from '#packages/intl-numberformat/benchmark/en.json' with {type: 'json'}
-// @ts-ignore
+const en = JSON.parse(
+  readFileSync(new URL('./en.json', import.meta.url), 'utf8')
+)
 NumberFormat.__addLocaleData(en)
 
 // Test values matching the benchmark
