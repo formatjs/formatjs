@@ -21,6 +21,28 @@ describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
   })
+  it('does not add an hour to minute/second-only requests', () => {
+    const date = Date.UTC(2020, 0, 2, 1, 2, 3, 456)
+    for (const hourCycle of ['h11', 'h12', 'h23', 'h24'] as const) {
+      const formatter = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        minute: 'numeric',
+        second: 'numeric',
+        hourCycle,
+      })
+      expect(formatter.format(date)).toBe('02:03')
+      expect(formatter.resolvedOptions().hourCycle).toBeUndefined()
+    }
+    expect(
+      new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        minute: 'numeric',
+        second: 'numeric',
+        fractionalSecondDigits: 3,
+      }).format(date)
+    ).toBe('02:03.456')
+  })
+
   it('preserves legacy RegExp statics during construction', () => {
     ;/sent(inel)/.exec('sentinel')
     const before = [RegExp.lastMatch, RegExp.$1]

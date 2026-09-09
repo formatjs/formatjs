@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |               192 |              52 |               192 |
+| datetimeformat      |      488 |               188 |              52 |               188 |
 | displaynames        |      114 |                 4 |               0 |                 4 |
 | durationformat      |      220 |                 0 |               4 |                 2 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
@@ -20,12 +20,12 @@ excluded because it fails.
 | segmenter           |      158 |                10 |               0 |                10 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 4 |
 
-Total: 2,498 executions, 2,250 polyfill passes, 248 polyfill failures. The native
+Total: 2,498 executions, 2,254 polyfill passes, 244 polyfill failures. The native
 control fails 86 executions; 44 failing cases overlap. Overlap does not prove
 a polyfill is correct: each failure still needs comparison with the selected
 spec and test's feature metadata.
 
-Combined: 2,498 executions, 2,250 passes, 248 failures.
+Combined: 2,498 executions, 2,254 passes, 244 failures.
 
 Combined installation adds 6 failing executions; 6 isolated failures now pass.
 Two Locale branding cases pass with the installed getCanonicalLocales polyfill.
@@ -160,3 +160,7 @@ grouping diagnostics now reflect loaded locale data; those bugs remain tracked.
 
 ASCII locale parsing removes four combined RegExp-statics failures in Collator
 and NumberFormat. Isolated getCanonicalLocales remains at zero failures.
+
+Minute/second-only matching removes four fractional-second formatting failures in
+each mode. Range equality and flexible day periods remain failing; their
+diagnostics now reflect the newly selected patterns.
