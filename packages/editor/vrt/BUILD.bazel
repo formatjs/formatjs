@@ -2,6 +2,7 @@
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
+load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG", "packages_tsconfig")
 
 npm_link_package(
     name = "node_modules/@rules-web-e2e/vrt",
@@ -20,6 +21,13 @@ VRT_DEPS = [
     "//:node_modules/vite",
 ]
 
+# Playwright loads .ts configs as ESM when this generated marker is present.
+genrule(
+    name = "esm_package_json",
+    outs = ["package.json"],
+    cmd = "echo '{\"type\":\"module\"}' > $@",
+)
+
 component_visual_test(
     name = "visual_test",
     srcs = [
@@ -27,13 +35,14 @@ component_visual_test(
         "editor.visual.spec.ts",
         "index.html",
         "shell.tsx",
-        "vite.config.mts",
+        "vite.config.ts",
+        ":esm_package_json",
     ],
     baselines = glob(
         ["__screenshots__/*.png"],
         allow_empty = True,
     ),
-    config = "playwright.config.mts",
+    config = "playwright.config.ts",
     data = [
         ":typecheck",
         "//:root_package_json",
@@ -42,7 +51,7 @@ component_visual_test(
     ],
     playwright_core = "//:node_modules/playwright-core/dir",
     playwright_test = "//:node_modules/@playwright/test/dir",
-    server = ":server.mjs",
+    server = ":server.js",
     deps = VRT_DEPS,
 )
 
@@ -50,12 +59,13 @@ ts_project(
     name = "typecheck_project",
     srcs = glob([
         "*.ts",
-        "*.mts",
         "*.tsx",
     ]) + ["//packages/editor:vrt_sources"],
+    declaration = True,
     no_emit = True,
+    resolve_json_module = True,
     root_dir = "..",
-    tsconfig = "tsconfig.bazel.json",
+    tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     deps = VRT_DEPS + [
         "//:node_modules/@types/node",
         "//:node_modules/@types/react",
@@ -71,15 +81,10 @@ filegroup(
 
 ts_project(
     name = "server_module",
-    srcs = ["server.mts"],
+    srcs = ["server.ts"],
+    declaration = True,
+    resolve_json_module = True,
     transpiler = "tsc",
-    tsconfig = {"compilerOptions": {
-        "target": "ES2022",
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "strict": True,
-        "skipLibCheck": True,
-        "types": ["node"],
-    }},
+    tsconfig = packages_tsconfig(ESNEXT_SKIP_LIB_CHECK_TSCONFIG),
     deps = VRT_DEPS + ["//:node_modules/@types/node"],
 )

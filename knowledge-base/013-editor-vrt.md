@@ -26,10 +26,14 @@ browser image. Bazel workspace npm links supply current package builds; no publi
 versions are duplicated in the VRT setup.
 
 The browser target is manual, local, and uncached. It requires Docker and uses
-`rules_web_e2e` with a pinned Linux amd64 image. The custom `server.mts` adapter
+`rules_web_e2e` with a pinned Linux amd64 image. The custom `server.ts` adapter
 owns startup/cleanup; `shell.tsx` owns the IntlProvider. Inputs, environment, and
 browser networking are isolated by the rules runtime. Host plugins/tests remain
 trusted code outside full Bazel filesystem sandboxing.
 
 Run `.update` only for intentional visual changes, review the PNGs, then run
 comparison. See `packages/editor/vrt/README.md` for exact commands.
+
+VRT TypeScript settings come from `tools/tsconfig.bzl`; Bazel declares the source
+inputs. Bazel generates a runtime-only `package.json` containing `{"type":"module"}`
+so Playwright loads the `.ts` config as ESM. It declares no dependencies.

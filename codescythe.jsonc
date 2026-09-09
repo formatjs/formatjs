@@ -15,6 +15,8 @@
     "packages/editor/index.tsx",
     "packages/editor/main.tsx",
     "packages/editor/vrt/app.tsx",
+    "packages/editor/vrt/*.config.ts",
+    "packages/editor/vrt/server.ts",
     "packages/eslint-plugin-formatjs/index.ts",
     "packages/eslint-plugin-formatjs/util.ts",
     "packages/fast-memoize/index.ts",

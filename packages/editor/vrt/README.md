@@ -17,7 +17,7 @@ inputs, disables dotenv loading, uses an allowlisted environment, and restricts
 browser traffic to the fixture server. Compare mode never changes baselines.
 Review PNG changes after explicitly running the update target.
 
-`server.mts` owns the Vite server adapter. `shell.tsx` supplies consumer-owned
+`server.ts` owns the Vite server adapter. `shell.tsx` supplies consumer-owned
 IntlProvider and document settings. `app.tsx` supplies deterministic message
 data. The tests cover loaded/editing screenshots plus selection, search,
 copy/clear, and recovery from invalid ICU input. Core state and custom renderer
@@ -25,3 +25,7 @@ coverage also runs in the normal Bazel unit-test lane without Docker.
 
 The public rules repository is pinned by commit until a BCR release exists.
 Failures retain JUnit results and screenshot diffs in undeclared test outputs.
+
+VRT TypeScript settings come from `tools/tsconfig.bzl`; Bazel declares the source
+inputs. Bazel generates a runtime-only `package.json` containing `{"type":"module"}`
+so Playwright loads the `.ts` config as ESM. It declares no dependencies.
