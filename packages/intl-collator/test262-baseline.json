@@ -5,8 +5,6 @@
     "intl402/Collator/legacy-regexp-statics-not-modified.js (strict mode)": "RegExp has unexpected property $_ with value de-DE-u-co-phonebk.",
     "intl402/Collator/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true",
     "intl402/Collator/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true",
-    "intl402/Collator/prototype/resolvedOptions/ignorePunctuation-default.js (default)": "Thai default ignorePunctuation to true Expected SameValue(«false», «true») to be true",
-    "intl402/Collator/prototype/resolvedOptions/ignorePunctuation-default.js (strict mode)": "Thai default ignorePunctuation to true Expected SameValue(«false», «true») to be true",
     "intl402/Collator/prototype/resolvedOptions/resolved-collation-unicode-extensions-and-options.js (default)": "Resolved locale for locale=de-u-co-phonebk with collation=pinyin Expected SameValue(«\"de\"», «\"de-u-co-phonebk\"») to be true",
     "intl402/Collator/prototype/resolvedOptions/resolved-collation-unicode-extensions-and-options.js (strict mode)": "Resolved locale for locale=de-u-co-phonebk with collation=pinyin Expected SameValue(«\"de\"», «\"de-u-co-phonebk\"») to be true",
     "intl402/Collator/subclassing.js (default)": "Expected no error, got RangeError: Incorrect locale information provided",
