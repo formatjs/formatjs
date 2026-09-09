@@ -199,3 +199,18 @@ it('supportedValuesOf is a non-constructible built-in function', () => {
     TypeError
   )
 })
+
+it('enumerates non-continental primary time zones', () => {
+  const zones = supportedValuesOf('timeZone')
+  expect(zones).toEqual(
+    expect.arrayContaining([
+      'UTC',
+      'Etc/GMT+1',
+      'Etc/GMT+12',
+      'Etc/GMT-1',
+      'Etc/GMT-14',
+    ])
+  )
+  expect(zones).not.toContain('Etc/UTC')
+  expect(zones).not.toContain('Etc/GMT')
+})

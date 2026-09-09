@@ -73,3 +73,7 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 category. String wrapper objects are accepted; Symbols throw `TypeError`.
 
 `Intl.supportedValuesOf` is callable but cannot be used as a constructor.
+
+Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
+in addition to continental transition zones. Runtime filtering retains primary
+identifiers and omits aliases such as `Etc/UTC`.
