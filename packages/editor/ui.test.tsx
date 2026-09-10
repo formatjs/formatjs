@@ -11,6 +11,8 @@ import {afterEach, describe, expect, it, vi} from 'vitest'
 import {useTranslationEditor} from '#packages/editor/index.js'
 import {
   MessageList,
+  EditorDesignSystemProvider,
+  useEditorDesignSystem,
   TranslationEditorView,
   TranslationField,
   type EditorComponents,
@@ -148,14 +150,17 @@ describe('public editor view', () => {
           <button type="button" onClick={() => setVisible(value => !value)}>
             Toggle locale
           </button>
-          <TranslationEditorView
-            components={customComponents}
-            filters={<h1>Workspace</h1>}
-            messages={messages}
-            selectedMessage={messages[0]}
-            onSelect={() => {}}
-            translations={visible ? [{locale: 'fr', draft, onSave: save}] : []}
-          />
+          <EditorDesignSystemProvider components={customComponents}>
+            <TranslationEditorView
+              filters={<h1>Workspace</h1>}
+              messages={messages}
+              selectedMessage={messages[0]}
+              onSelect={() => {}}
+              translations={
+                visible ? [{locale: 'fr', draft, onSave: save}] : []
+              }
+            />
+          </EditorDesignSystemProvider>
         </>
       )
     }
@@ -178,6 +183,84 @@ describe('public editor view', () => {
     expect(
       (screen.getByRole('textbox', {name: 'fr'}) as HTMLTextAreaElement).value
     ).toBe(EDIT)
+  })
+
+  it('resolves components through context with nested overrides and isolated siblings', () => {
+    const pressed = vi.fn()
+    const changed = vi.fn()
+    const nested: Partial<EditorComponents> = {
+      Button: ({onPress, children, disabled}) => (
+        <button
+          type="button"
+          title="Nested action"
+          disabled={disabled}
+          onClick={() => onPress()}
+        >
+          {children}
+        </button>
+      ),
+    }
+    function Controls({name}: {name: string}) {
+      const {Button, TextArea} = useEditorDesignSystem()
+      const [value, setValue] = useState('')
+      return (
+        <section aria-label={name}>
+          <label htmlFor={name}>{name}</label>
+          <TextArea
+            id={name}
+            value={value}
+            rows={3}
+            onValueChange={next => {
+              setValue(next)
+              changed(next)
+            }}
+          />
+          <Button variant="primary" onPress={pressed}>
+            Apply
+          </Button>
+        </section>
+      )
+    }
+    function Example({override}: {override: Partial<EditorComponents>}) {
+      return (
+        <>
+          <EditorDesignSystemProvider components={customComponents}>
+            <Controls name="outer" />
+            <EditorDesignSystemProvider components={override}>
+              <Controls name="nested" />
+            </EditorDesignSystemProvider>
+          </EditorDesignSystemProvider>
+          <EditorDesignSystemProvider components={nested}>
+            <Controls name="sibling" />
+          </EditorDesignSystemProvider>
+          <Controls name="native" />
+        </>
+      )
+    }
+    const {rerender} = render(<Example override={nested} />)
+    const outer = within(screen.getByRole('region', {name: 'outer'}))
+    const inner = within(screen.getByRole('region', {name: 'nested'}))
+    const sibling = within(screen.getByRole('region', {name: 'sibling'}))
+    const native = within(screen.getByRole('region', {name: 'native'}))
+    expect(outer.getByRole('button').title).toBe('Custom action')
+    expect(inner.getByRole('button').title).toBe('Nested action')
+    expect(sibling.getByRole('button').title).toBe('Nested action')
+    expect(native.getByRole('button').title).toBe('')
+    const field = inner.getByRole('textbox') as HTMLTextAreaElement
+    expect(field.title).toBe('Custom field')
+    expect(sibling.getByRole('textbox').title).toBe('')
+    expect(field.getAttribute('rows')).toBe('3')
+    field.focus()
+    fireEvent.change(field, {target: {value: EDIT}})
+    expect(changed).toHaveBeenCalledExactlyOnceWith(EDIT)
+    fireEvent.click(inner.getByRole('button'))
+    expect(pressed).toHaveBeenCalledExactlyOnceWith()
+    rerender(<Example override={{}} />)
+    expect(inner.getByRole('button').title).toBe('Custom action')
+    expect(inner.getByRole('textbox')).toBe(field)
+    expect(field.value).toBe(EDIT)
+    expect(document.activeElement).toBe(field)
+    expect(sibling.getByRole('button').title).toBe('Nested action')
   })
 
   it('leaves search, selection, pagination, and off-page detail under caller control', () => {

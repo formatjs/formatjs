@@ -7,6 +7,7 @@ import {
 } from '@formatjs/editor'
 import {
   TranslationEditorView,
+  EditorDesignSystemProvider,
   type EditorLabelOverrides,
 } from '@formatjs/editor/ui'
 import {stylexEditorComponents} from './design-system/editor-components.js'
@@ -131,183 +132,184 @@ export function TranslationEditorDemo(
       ? workflow.getTranslation(workflow.selectedMessage.id, workflow.locale)
       : undefined
   return (
-    <TranslationEditorView
-      components={stylexEditorComponents}
-      labels={labels}
-      messages={workflow.pageMessages}
-      selectedMessage={workflow.selectedMessage}
-      onSelect={editor.selectMessage}
-      search={{value: editor.query, onValueChange: editor.setQuery}}
-      translations={
-        translation && workflow.locale
-          ? [
-              {
-                locale: workflow.locale,
-                label: intl.formatMessage({
-                  id: 'editor.translation',
-                  defaultMessage: 'Translation',
-                  description: 'Translation field label',
-                }),
-                draft: translation,
-                onSave: () => {
-                  void translation.save()
+    <EditorDesignSystemProvider components={stylexEditorComponents}>
+      <TranslationEditorView
+        labels={labels}
+        messages={workflow.pageMessages}
+        selectedMessage={workflow.selectedMessage}
+        onSelect={editor.selectMessage}
+        search={{value: editor.query, onValueChange: editor.setQuery}}
+        translations={
+          translation && workflow.locale
+            ? [
+                {
+                  locale: workflow.locale,
+                  label: intl.formatMessage({
+                    id: 'editor.translation',
+                    defaultMessage: 'Translation',
+                    description: 'Translation field label',
+                  }),
+                  draft: translation,
+                  onSave: () => {
+                    void translation.save()
+                  },
                 },
-              },
-            ]
-          : []
-      }
-      filters={
-        <div {...stylex.props(styles.filters)}>
-          <label
-            htmlFor={`${controlId}-locale`}
-            {...stylex.props(styles.label)}
-          >
-            <FormattedMessage
-              id="editor.locale"
-              defaultMessage="Target locale"
-              description="Target language selector label"
-            />
-            <Select
-              id={`${controlId}-locale`}
-              value={workflow.locale ?? ''}
-              disabled={!options.locales.length}
-              onChange={event => workflow.setLocale(event.target.value)}
+              ]
+            : []
+        }
+        filters={
+          <div {...stylex.props(styles.filters)}>
+            <label
+              htmlFor={`${controlId}-locale`}
+              {...stylex.props(styles.label)}
             >
-              {options.locales.map(locale => (
-                <option key={locale} value={locale}>
-                  {locale}
+              <FormattedMessage
+                id="editor.locale"
+                defaultMessage="Target locale"
+                description="Target language selector label"
+              />
+              <Select
+                id={`${controlId}-locale`}
+                value={workflow.locale ?? ''}
+                disabled={!options.locales.length}
+                onChange={event => workflow.setLocale(event.target.value)}
+              >
+                {options.locales.map(locale => (
+                  <option key={locale} value={locale}>
+                    {locale}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label
+              htmlFor={`${controlId}-catalog`}
+              {...stylex.props(styles.label)}
+            >
+              <FormattedMessage
+                id="editor.catalog"
+                defaultMessage="Catalog"
+                description="Message catalog filter label"
+              />
+              <Select
+                id={`${controlId}-catalog`}
+                value={workflow.catalog}
+                onChange={event => workflow.setCatalog(event.target.value)}
+              >
+                <option value="">
+                  <FormattedMessage
+                    id="editor.all-catalogs"
+                    defaultMessage="All catalogs"
+                    description="Option showing every message catalog"
+                  />
                 </option>
-              ))}
-            </Select>
-          </label>
-          <label
-            htmlFor={`${controlId}-catalog`}
-            {...stylex.props(styles.label)}
-          >
-            <FormattedMessage
-              id="editor.catalog"
-              defaultMessage="Catalog"
-              description="Message catalog filter label"
-            />
-            <Select
-              id={`${controlId}-catalog`}
-              value={workflow.catalog}
-              onChange={event => workflow.setCatalog(event.target.value)}
+                {workflow.catalogs.map(catalog => (
+                  <option key={catalog} value={catalog}>
+                    {catalog}
+                  </option>
+                ))}
+              </Select>
+            </label>
+            <label
+              htmlFor={`${controlId}-status`}
+              {...stylex.props(styles.label)}
             >
-              <option value="">
-                <FormattedMessage
-                  id="editor.all-catalogs"
-                  defaultMessage="All catalogs"
-                  description="Option showing every message catalog"
-                />
-              </option>
-              {workflow.catalogs.map(catalog => (
-                <option key={catalog} value={catalog}>
-                  {catalog}
+              <FormattedMessage
+                id="editor.status"
+                defaultMessage="Status"
+                description="Persisted translation status filter label"
+              />
+              <Select
+                id={`${controlId}-status`}
+                value={workflow.status}
+                onChange={event =>
+                  workflow.setStatus(
+                    event.target.value as 'all' | 'translated' | 'missing'
+                  )
+                }
+              >
+                <option value="all">
+                  <FormattedMessage
+                    id="editor.all-messages"
+                    defaultMessage="All messages"
+                    description="Option showing all translation statuses"
+                  />
                 </option>
-              ))}
-            </Select>
-          </label>
-          <label
-            htmlFor={`${controlId}-status`}
-            {...stylex.props(styles.label)}
-          >
-            <FormattedMessage
-              id="editor.status"
-              defaultMessage="Status"
-              description="Persisted translation status filter label"
-            />
-            <Select
-              id={`${controlId}-status`}
-              value={workflow.status}
-              onChange={event =>
-                workflow.setStatus(
-                  event.target.value as 'all' | 'translated' | 'missing'
-                )
-              }
-            >
-              <option value="all">
-                <FormattedMessage
-                  id="editor.all-messages"
-                  defaultMessage="All messages"
-                  description="Option showing all translation statuses"
-                />
-              </option>
-              <option value="translated">
-                <FormattedMessage
-                  id="editor.translated"
-                  defaultMessage="Translated"
-                  description="Option showing saved translations"
-                />
-              </option>
-              <option value="missing">
-                <FormattedMessage
-                  id="editor.missing"
-                  defaultMessage="Missing"
-                  description="Option showing messages without saved translations"
-                />
-              </option>
-            </Select>
-          </label>
-        </div>
-      }
-      pagination={
-        workflow.pageCount > 1 && (
-          <div {...stylex.props(styles.pagination)}>
-            <Button
-              disabled={workflow.page === 0}
-              onClick={() => workflow.setPage(workflow.page - 1)}
-            >
-              <FormattedMessage
-                id="editor.previous"
-                defaultMessage="Previous"
-                description="Previous page of messages"
-              />
-            </Button>
-            <span>
-              <FormattedMessage
-                id="editor.page"
-                defaultMessage="Page {page, number} of {pages, number}"
-                description="Current message page and total pages"
-                values={{page: workflow.page + 1, pages: workflow.pageCount}}
-              />
-            </span>
-            <Button
-              disabled={workflow.page + 1 >= workflow.pageCount}
-              onClick={() => workflow.setPage(workflow.page + 1)}
-            >
-              <FormattedMessage
-                id="editor.next"
-                defaultMessage="Next"
-                description="Next page of messages"
-              />
-            </Button>
+                <option value="translated">
+                  <FormattedMessage
+                    id="editor.translated"
+                    defaultMessage="Translated"
+                    description="Option showing saved translations"
+                  />
+                </option>
+                <option value="missing">
+                  <FormattedMessage
+                    id="editor.missing"
+                    defaultMessage="Missing"
+                    description="Option showing messages without saved translations"
+                  />
+                </option>
+              </Select>
+            </label>
           </div>
-        )
-      }
-      context={
-        workflow.selectedMessage && (
-          <div {...stylex.props(styles.context)}>
-            {!!workflow.selectedMessage.catalogs?.length && (
-              <p>{workflow.selectedMessage.catalogs.join(', ')}</p>
-            )}
-            <ul>
-              {workflow.selectedMessage.locations?.map((location, index) => (
-                <li key={`${location.file}:${location.start ?? ''}:${index}`}>
-                  <bdi>
-                    {location.file}
-                    {location.start === undefined ? '' : `:${location.start}`}
-                    {location.end === undefined ||
-                    location.end === location.start
-                      ? ''
-                      : `–${location.end}`}
-                  </bdi>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )
-      }
-    />
+        }
+        pagination={
+          workflow.pageCount > 1 && (
+            <div {...stylex.props(styles.pagination)}>
+              <Button
+                disabled={workflow.page === 0}
+                onClick={() => workflow.setPage(workflow.page - 1)}
+              >
+                <FormattedMessage
+                  id="editor.previous"
+                  defaultMessage="Previous"
+                  description="Previous page of messages"
+                />
+              </Button>
+              <span>
+                <FormattedMessage
+                  id="editor.page"
+                  defaultMessage="Page {page, number} of {pages, number}"
+                  description="Current message page and total pages"
+                  values={{page: workflow.page + 1, pages: workflow.pageCount}}
+                />
+              </span>
+              <Button
+                disabled={workflow.page + 1 >= workflow.pageCount}
+                onClick={() => workflow.setPage(workflow.page + 1)}
+              >
+                <FormattedMessage
+                  id="editor.next"
+                  defaultMessage="Next"
+                  description="Next page of messages"
+                />
+              </Button>
+            </div>
+          )
+        }
+        context={
+          workflow.selectedMessage && (
+            <div {...stylex.props(styles.context)}>
+              {!!workflow.selectedMessage.catalogs?.length && (
+                <p>{workflow.selectedMessage.catalogs.join(', ')}</p>
+              )}
+              <ul>
+                {workflow.selectedMessage.locations?.map((location, index) => (
+                  <li key={`${location.file}:${location.start ?? ''}:${index}`}>
+                    <bdi>
+                      {location.file}
+                      {location.start === undefined ? '' : `:${location.start}`}
+                      {location.end === undefined ||
+                      location.end === location.start
+                        ? ''
+                        : `–${location.end}`}
+                    </bdi>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      />
+    </EditorDesignSystemProvider>
   )
 }

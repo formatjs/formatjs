@@ -242,14 +242,18 @@ navigation busy and displays a status; it does not clear the controlled list.
 
 ### Component adapters
 
-`components` accepts partial overrides of `EditorComponents`: `Button`,
+`EditorDesignSystemProvider` accepts partial overrides of `EditorComponents`: `Button`,
 `TextInput`, `TextArea`, `MessageRow`, `Panel`, and `Layout`. Unspecified entries
-use `nativeEditorComponents`. Adapters map a design system's control API to
+inherit from the nearest provider, falling back to `nativeEditorComponents`. Adapters map a design system's control API to
 semantic `onPress`, `onSelect`, and `onValueChange` callbacks. Define adapters at
 module scope so React preserves focus and control state between edits:
 
 ```tsx
-import type {EditorComponents} from '@formatjs/editor/ui'
+import {
+  EditorDesignSystemProvider,
+  useEditorDesignSystem,
+  type EditorComponents,
+} from '@formatjs/editor/ui'
 import {Button, Textarea} from './controls'
 
 const components: Partial<EditorComponents> = {
@@ -262,7 +266,54 @@ const components: Partial<EditorComponents> = {
 }
 ```
 
-Pass `components={components}` to the composed view or any standalone piece.
+Configure the design system once around your application or editor subtree:
+
+```tsx
+function EditorWorkspace() {
+  return (
+    <EditorDesignSystemProvider components={components}>
+      <TranslationEditorView {...viewProps} />
+      <CustomToolbar />
+    </EditorDesignSystemProvider>
+  )
+}
+
+function CustomToolbar() {
+  const {Button} = useEditorDesignSystem()
+  return (
+    <Button variant="secondary" onPress={openReview}>
+      Review
+    </Button>
+  )
+}
+```
+
+All built-in views and downstream consumers use `useEditorDesignSystem()`;
+there is no component-registry prop on individual views. The hook returns the
+resolved, read-only `EditorComponents` contract. Providers are React-tree scoped,
+so sibling editors (and separate server-rendered trees) do not share mutable
+configuration. Nested providers override only specified components and inherit
+the rest. Changing the registry updates consumers; keeping each component type
+stable preserves field focus and local state. No provider is needed for native
+controls.
+
+Each component has an exported props contract:
+
+| Component                              | Inputs                                                                                     | Output callback                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------ |
+| `Button` / `EditorButtonProps`         | `children`, `variant`, optional `disabled`                                                 | `onPress(): void`                    |
+| `TextInput` / `EditorTextInputProps`   | `id`, `value`, `type` (`text` or `search`), optional disabled/error-description attributes | `onValueChange(value: string): void` |
+| `TextArea` / `EditorTextAreaProps`     | `id`, `value`, optional `rows` (default six), disabled/error-description attributes        | `onValueChange(value: string): void` |
+| `MessageRow` / `EditorMessageRowProps` | `children`, controlled `selected`                                                          | `onSelect(): void`                   |
+| `Panel` / `EditorPanelProps`           | `children`, accessible `label`, `kind` (`source` or `translation`)                         | None; layout only                    |
+| `Layout` / `EditorLayoutProps`         | `toolbar`, `navigation`, `content` nodes                                                   | None; layout only                    |
+
+`EditorInputProps` defines the shared input attributes explicitly: `id`, `value`,
+`onValueChange`, optional `disabled`, `aria-invalid`, and `aria-describedby`.
+Callbacks never receive DOM events. Inputs remain controlled; callbacks request
+a change and the caller supplies the next value. Disabled buttons must not invoke
+`onPress`. Panel and Layout do not invent interaction callbacks.
+
 The complete StyleX adapter lives in `demo/design-system/editor-components.tsx`;
 its layout, tokens, and native-control wrappers are not bundled into the package.
 

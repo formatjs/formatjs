@@ -1,4 +1,11 @@
-import {useId, type ComponentType, type ReactNode} from 'react'
+import {
+  createContext,
+  useContext,
+  useId,
+  useMemo,
+  type ComponentType,
+  type ReactNode,
+} from 'react'
 import type {
   EditorMessage,
   TranslationDraftState,
@@ -7,6 +14,7 @@ import type {TranslationValidationError} from '#packages/editor/validation.js'
 
 export interface EditorButtonProps {
   children: ReactNode
+  /** Called once per activation, without a DOM event; disabled controls must not call it. */
   onPress: () => void
   disabled?: boolean
   variant: 'primary' | 'secondary'
@@ -14,14 +22,23 @@ export interface EditorButtonProps {
 export interface EditorInputProps {
   id: string
   value: string
+  /** Reports the complete next string value; never a DOM event. */
   onValueChange: (value: string) => void
   disabled?: boolean
   'aria-invalid'?: boolean
   'aria-describedby'?: string
 }
+export interface EditorTextInputProps extends EditorInputProps {
+  type: 'text' | 'search'
+}
+export interface EditorTextAreaProps extends EditorInputProps {
+  /** Visible rows when supported by the control; defaults to six. */
+  rows?: number
+}
 export interface EditorMessageRowProps {
   children: ReactNode
   selected: boolean
+  /** Activates this row without changing controlled selection itself. */
   onSelect: () => void
 }
 export interface EditorPanelProps {
@@ -37,8 +54,8 @@ export interface EditorLayoutProps {
 /** Define adapters outside render so controls retain focus across edits. */
 export interface EditorComponents {
   Button: ComponentType<EditorButtonProps>
-  TextInput: ComponentType<EditorInputProps>
-  TextArea: ComponentType<EditorInputProps>
+  TextInput: ComponentType<EditorTextInputProps>
+  TextArea: ComponentType<EditorTextAreaProps>
   MessageRow: ComponentType<EditorMessageRowProps>
   Panel: ComponentType<EditorPanelProps>
   Layout: ComponentType<EditorLayoutProps>
@@ -99,16 +116,12 @@ export const nativeEditorComponents: EditorComponents = {
     </button>
   ),
   TextInput: ({onValueChange, ...props}) => (
-    <input
-      {...props}
-      type="search"
-      onChange={event => onValueChange(event.target.value)}
-    />
+    <input {...props} onChange={event => onValueChange(event.target.value)} />
   ),
-  TextArea: ({onValueChange, ...props}) => (
+  TextArea: ({onValueChange, rows = 6, ...props}) => (
     <textarea
       {...props}
-      rows={6}
+      rows={rows}
       onChange={event => onValueChange(event.target.value)}
     />
   ),
@@ -134,8 +147,36 @@ export const nativeEditorComponents: EditorComponents = {
     </div>
   ),
 }
+const EditorDesignSystemContext = createContext<Readonly<EditorComponents>>(
+  nativeEditorComponents
+)
+
+export interface EditorDesignSystemProviderProps {
+  /** Overrides inherit unspecified components from the nearest provider. */
+  components: Partial<EditorComponents>
+  children: ReactNode
+}
+/** Configure a tree once; sibling providers remain independent. */
+export function EditorDesignSystemProvider({
+  components,
+  children,
+}: EditorDesignSystemProviderProps): ReactNode {
+  const parent = useEditorDesignSystem()
+  const value = useMemo(
+    () => ({...parent, ...components}),
+    [parent, components]
+  )
+  return (
+    <EditorDesignSystemContext value={value}>
+      {children}
+    </EditorDesignSystemContext>
+  )
+}
+/** Read the resolved controls, including native defaults outside a provider. */
+export function useEditorDesignSystem(): Readonly<EditorComponents> {
+  return useContext(EditorDesignSystemContext)
+}
 interface ViewOptions {
-  components?: Partial<EditorComponents>
   labels?: EditorLabelOverrides
 }
 export type EditorViewMessage = Pick<
@@ -162,10 +203,9 @@ export function MessageList({
   search,
   loading = false,
   pagination,
-  components,
   labels,
 }: MessageListProps): ReactNode {
-  const {TextInput, MessageRow} = {...nativeEditorComponents, ...components}
+  const {TextInput, MessageRow} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   const searchId = useId()
   return (
@@ -175,6 +215,7 @@ export function MessageList({
           <label htmlFor={searchId}>{text.search}</label>
           <TextInput
             id={searchId}
+            type="search"
             value={search.value}
             onValueChange={search.onValueChange}
           />
@@ -215,10 +256,9 @@ export function SourceMessage({
   message,
   preview,
   context,
-  components,
   labels,
 }: SourceMessageProps): ReactNode {
-  const {Panel} = {...nativeEditorComponents, ...components}
+  const {Panel} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   return (
     <Panel kind="source" label={text.source}>
@@ -261,10 +301,9 @@ export function TranslationField({
   onSave,
   actions,
   preview,
-  components,
   labels,
 }: TranslationFieldProps): ReactNode {
-  const {Panel, TextArea, Button} = {...nativeEditorComponents, ...components}
+  const {Panel, TextArea, Button} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   const id = useId()
   const errorId = `${id}-error`
@@ -334,10 +373,7 @@ export function TranslationField({
     </Panel>
   )
 }
-export type EditorTranslation = Omit<
-  TranslationFieldProps,
-  'source' | 'components' | 'labels'
->
+export type EditorTranslation = Omit<TranslationFieldProps, 'source' | 'labels'>
 export interface TranslationEditorViewProps extends Omit<
   MessageListProps,
   'selectedId'
@@ -358,11 +394,10 @@ export function TranslationEditorView({
   context,
   sourcePreview,
   notice,
-  components,
   labels,
   ...list
 }: TranslationEditorViewProps): ReactNode {
-  const {Layout} = {...nativeEditorComponents, ...components}
+  const {Layout} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   return (
     <Layout
@@ -371,7 +406,6 @@ export function TranslationEditorView({
         <MessageList
           {...list}
           selectedId={selectedMessage?.id}
-          components={components}
           labels={labels}
         />
       }
@@ -384,7 +418,6 @@ export function TranslationEditorView({
                 message={selectedMessage}
                 preview={sourcePreview}
                 context={context}
-                components={components}
                 labels={labels}
               />
               {translations.map(translation => (
@@ -392,7 +425,6 @@ export function TranslationEditorView({
                   {...translation}
                   key={`${selectedMessage.id}:${translation.locale}`}
                   source={selectedMessage.defaultMessage}
-                  components={components}
                   labels={labels}
                 />
               ))}

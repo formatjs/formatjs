@@ -52,14 +52,13 @@ export const stylexEditorComponents: EditorComponents = {
   TextInput: ({onValueChange, ...props}) => (
     <TextInput
       {...props}
-      type="search"
       onChange={event => onValueChange(event.target.value)}
     />
   ),
-  TextArea: ({onValueChange, ...props}) => (
+  TextArea: ({onValueChange, rows = 6, ...props}) => (
     <TextArea
       {...props}
-      rows={6}
+      rows={rows}
       onChange={event => onValueChange(event.target.value)}
     />
   ),
