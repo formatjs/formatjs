@@ -4,6 +4,7 @@ import type {
   ComponentVisualModule,
   ComponentVisual,
 } from '@rules-web-e2e/vrt/visual'
+import {TranslationToolsDemo} from '../demo/tools-demo.js'
 import {EditorDemo} from '../demo/demo.js'
 import {TranslationEditorDemo} from '../demo/workflow-demo.js'
 import {EditorTestShell} from './shell.js'
@@ -136,6 +137,39 @@ const visualModule: ComponentVisualModule<ReactNode> = {
   renderShell: children => <div id="editor-root">{children}</div>,
   visuals: (
     [
+      {
+        visualId: 'tools',
+        name: 'Reusable tools',
+        render: () => <TranslationToolsDemo />,
+        beforeCapture: async () => {
+          document
+            .querySelector<HTMLButtonElement>('button[aria-expanded]')!
+            .click()
+          await frame()
+          await frame()
+        },
+        vrt: {screenshotName: 'editor-tools'},
+      },
+      {
+        visualId: 'tools-mobile-rtl',
+        name: 'Narrow RTL tools',
+        render: () => (
+          <div dir="rtl">
+            <TranslationToolsDemo />
+          </div>
+        ),
+        beforeCapture: async () => {
+          document
+            .querySelector<HTMLButtonElement>('button[aria-expanded]')!
+            .click()
+          await frame()
+          await frame()
+        },
+        vrt: {
+          screenshotName: 'editor-tools-mobile-rtl',
+          viewport: {width: 390, height: 844},
+        },
+      },
       {
         visualId: 'Editable',
         name: 'Editable',

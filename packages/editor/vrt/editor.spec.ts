@@ -52,3 +52,43 @@ test('workflow keeps translation drafts across locales and saves them', async ({
     .selectOption('translated')
   await expect(page.getByRole('navigation').getByRole('button')).toHaveCount(1)
 })
+
+test('reusable tools select locales, preview ICU, copy exact text, and recover from invalid input', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/?tools=1')
+  await page.getByRole('button', {name: 'Locales: fr', exact: true}).click()
+  const all = page.getByRole('checkbox', {name: 'Select all 5 locales'})
+  await expect(all).toHaveAttribute('aria-checked', 'mixed')
+  await page.getByRole('checkbox', {name: 'de', exact: true}).press('Space')
+  await expect(
+    page.getByRole('button', {name: 'Locales: 2 locales selected'})
+  ).toBeVisible()
+  await all.check()
+  for (const locale of ['ar', 'de', 'es', 'fr', 'ja'])
+    await expect(
+      page.getByRole('checkbox', {name: locale, exact: true})
+    ).toBeChecked()
+  await page.getByRole('button', {name: 'Clear', exact: true}).click()
+  await expect(all).not.toBeChecked()
+  const input = page.getByRole('textbox', {name: 'ICU message'})
+  const text = 'Hello\n  {name}'
+  await input.fill(text)
+  await page
+    .getByRole('button', {name: 'Copy ICU message', exact: true})
+    .click()
+  await expect(page.getByRole('status')).toHaveText('Copied ICU message')
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(text)
+  await input.fill('{broken')
+  await expect(page.getByRole('alert')).toBeVisible()
+  await input.fill('Hello {name}')
+  await expect(page.getByRole('alert')).toHaveCount(0)
+  await page.setViewportSize({width: 390, height: 844})
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBe(true)
+})

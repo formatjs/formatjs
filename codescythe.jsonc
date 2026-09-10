@@ -13,6 +13,7 @@
     "packages/cli-lib/formatters/transifex.ts",
     "packages/ecma376/index.ts",
     "packages/editor/index.ts",
+    "packages/editor/ui.tsx",
     "packages/editor/demo/main.tsx",
     "packages/editor/vrt/app.tsx",
     "packages/editor/vrt/gallery.tsx",

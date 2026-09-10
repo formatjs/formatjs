@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
 import type {EditorComponents} from '@formatjs/editor/ui'
-import {Button, TextArea, TextInput} from './components.js'
+import {Badge, Button, TextArea, TextInput} from './components.js'
 import {tokens} from './tokens.stylex.js'
 
 const styles = stylex.create({
@@ -17,6 +17,16 @@ const styles = stylex.create({
       default: '280px minmax(0, 1fr)',
       '@media (max-width: 800px)': '1fr',
     },
+  },
+  localeColumns: {
+    display: 'grid',
+    gap: 16,
+    gridTemplateColumns: {
+      default: '1fr 1fr',
+      '@media (max-width: 640px)': '1fr',
+    },
+    maxHeight: '60vh',
+    overflowY: 'auto',
   },
   content: {display: 'grid', gap: 20, minWidth: 0},
   panel: {
@@ -46,6 +56,47 @@ const styles = stylex.create({
 
 /** The same public view can use another design system without these dependencies. */
 export const stylexEditorComponents: EditorComponents = {
+  LocalePickerLayout: ({
+    id,
+    title,
+    summary,
+    triggerLabel,
+    open,
+    onOpenChange,
+    controls,
+    columns,
+  }) => (
+    <div>
+      <Button
+        aria-label={triggerLabel}
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => onOpenChange(!open)}
+      >
+        {summary}
+      </Button>
+      <fieldset id={id} hidden={!open} {...stylex.props(styles.panel)}>
+        <legend>{title}</legend>
+        {controls}
+        <div {...stylex.props(styles.localeColumns)}>
+          {columns.map((column, index) => (
+            <div key={index}>{column}</div>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+  ),
+  PreviewToken: ({children}) => <Badge>{children}</Badge>,
+  CopyButton: ({label, disabled, onPress}) => (
+    <Button disabled={disabled} onClick={() => onPress()}>
+      {label}
+    </Button>
+  ),
+  Metadata: ({label, children}) => (
+    <aside aria-label={label} {...stylex.props(styles.panel)}>
+      {children}
+    </aside>
+  ),
   Button: ({onPress, ...props}) => (
     <Button {...props} onClick={() => onPress()} />
   ),

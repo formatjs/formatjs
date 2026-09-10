@@ -13,6 +13,7 @@ formatjs_library(
         "fixtures/en.json",  # keep
         "fixtures/ru.json",  # keep
         "main.tsx",
+        "tools-demo.tsx",
         "workflow-demo.tsx",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
