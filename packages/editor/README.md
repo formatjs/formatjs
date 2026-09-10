@@ -135,3 +135,17 @@ E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
 drafts, and saving. It requires Docker and runs manually, locally, and uncached.
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
+
+## Component browser tests
+
+`bazel test //packages/editor/vrt:component_test --test_output=errors` runs
+Playwright 1.63 native `mount()` specs for the real editor. The typed
+`editor.story.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
+mount/update/unmount. The tests check provider updates without losing a draft,
+clear, ICU validation, and isolation between mounts.
+
+`component_browser_test` shares the custom server, root npm dependencies, strict
+typechecks, and pinned Testcontainers browser with E2E and VRT.
+`componentBrowserConfig` discovers `*.browser.spec.ts` separately from the E2E
+`*.spec.ts` and VRT `*.visual.spec.ts` suites. CI should explicitly run all three
+manual browser targets. Screenshot baselines and updates remain in `visual_test`.

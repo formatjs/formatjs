@@ -9,6 +9,7 @@ def vrt_library(name, srcs, deps = [], data = [], tsconfig_types = [], visibilit
     js_library(
         name = name,
         srcs = srcs + data,
+        types = srcs,  # Specs import story types without a separate emitted bundle.
         deps = deps,
         visibility = visibility,
     )
