@@ -293,6 +293,142 @@ describe('public editor view', () => {
     expect(screen.getByText(SOURCE)).toBeTruthy()
   })
 
+  it('renders typed row metadata and independent actions without selecting or submitting', () => {
+    const onSelect = vi.fn()
+    const copy = vi.fn()
+    const submit = vi.fn(event => event.preventDefault())
+    const richMessages = messages.map(message => ({
+      ...message,
+      translatedCount: 2,
+    }))
+    const props = {
+      messages: richMessages,
+      selectedId: 'greeting',
+      onSelect,
+      listSummary: <output>One loaded result</output>,
+    }
+    const {rerender} = render(
+      <form onSubmit={submit}>
+        <MessageList
+          {...props}
+          renderMessage={(message, state) => (
+            <>
+              {message.defaultMessage} — {message.translatedCount} translations{' '}
+              {state.selected && '(selected)'}
+            </>
+          )}
+          renderMessageActions={(message, state) => (
+            <button
+              type="button"
+              aria-label={`Copy ${message.id}`}
+              onClick={() => copy(message.defaultMessage, state.selected)}
+            >
+              Copy
+            </button>
+          )}
+        />
+      </form>
+    )
+    const row = screen.getByRole('button', {name: /2 translations.*selected/})
+    const action = screen.getByRole('button', {name: 'Copy greeting'})
+    expect(row.contains(action)).toBe(false)
+    expect(action.parentElement).toBe(row.parentElement)
+    expect(screen.getByRole('status').textContent).toBe('One loaded result')
+    fireEvent.click(action)
+    expect(copy).toHaveBeenCalledExactlyOnceWith(SOURCE, true)
+    expect(onSelect).not.toHaveBeenCalled()
+    expect(submit).not.toHaveBeenCalled()
+    fireEvent.click(row)
+    expect(onSelect).toHaveBeenCalledExactlyOnceWith('greeting')
+    rerender(
+      <MessageList
+        {...props}
+        renderMessage={() => null}
+        renderMessageActions={() => null}
+      />
+    )
+    expect(screen.queryByText(SOURCE)).toBeNull()
+    expect(screen.queryByRole('button', {name: 'Copy greeting'})).toBeNull()
+  })
+
+  it('composes a locale grid and sidebar while retaining drafts and per-locale labels', () => {
+    const save = vi.fn()
+    function Workspace({showDetails}: {showDetails: boolean}) {
+      const workflow = useTranslationEditor({messages, locales, onSave: save})
+      return (
+        <TranslationEditorView
+          messages={messages}
+          selectedId="greeting"
+          selectedMessage={showDetails ? messages[0] : undefined}
+          onSelect={() => {}}
+          listSummary={<output>Loaded page</output>}
+          renderMessage={message => (
+            <>
+              {message.id}: {message.translations.fr}
+            </>
+          )}
+          renderMessageActions={message => (
+            <button type="button">Review {message.id}</button>
+          )}
+          sidebar={<aside aria-label="Source metadata">Context</aside>}
+          emptyState={<output>Loading detail</output>}
+          renderContent={content => <main aria-label="Details">{content}</main>}
+          renderTranslations={fields => (
+            <section aria-label="Locale comparison">{fields}</section>
+          )}
+          labels={{reset: 'Discard', validation: {structure: VALIDATION}}}
+          translations={locales.map(locale => ({
+            locale,
+            draft: workflow.getTranslation('greeting', locale)!,
+            onSave: () => {
+              void workflow.getTranslation('greeting', locale)!.save()
+            },
+            labels: {
+              save: `Save ${locale}`,
+              validation: {empty: `Empty ${locale}`},
+            },
+          }))}
+        />
+      )
+    }
+    const {rerender} = render(<Workspace showDetails={false} />)
+    expect(
+      screen
+        .getByRole('button', {name: `greeting: ${FRENCH}`})
+        .getAttribute('aria-current')
+    ).toBe('true')
+    expect(
+      within(screen.getByRole('main')).getByText('Loading detail')
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('complementary', {name: 'Source metadata'})
+    ).toBeTruthy()
+    expect(screen.getByRole('button', {name: 'Review greeting'})).toBeTruthy()
+    rerender(<Workspace showDetails />)
+    const comparison = within(
+      screen.getByRole('region', {name: 'Locale comparison'})
+    )
+    const field = comparison.getByRole('textbox', {
+      name: 'fr',
+    }) as HTMLTextAreaElement
+    field.focus()
+    fireEvent.change(field, {target: {value: INVALID}})
+    expect(comparison.getByRole('alert').textContent).toBe(VALIDATION)
+    expect(
+      (comparison.getByRole('button', {name: 'Save fr'}) as HTMLButtonElement)
+        .disabled
+    ).toBe(true)
+    fireEvent.change(field, {target: {value: EDIT}})
+    expect(comparison.getByRole('textbox', {name: 'fr'})).toBe(field)
+    expect(document.activeElement).toBe(field)
+    rerender(<Workspace showDetails={false} />)
+    rerender(<Workspace showDetails />)
+    expect(
+      (screen.getByRole('textbox', {name: 'fr'}) as HTMLTextAreaElement).value
+    ).toBe(EDIT)
+    expect(screen.getAllByRole('button', {name: 'Discard'})).toHaveLength(2)
+  })
+
   it('keeps action slots and errors accessible without submitting a surrounding form', () => {
     const submit = vi.fn(event => event.preventDefault())
     const reset = vi.fn()

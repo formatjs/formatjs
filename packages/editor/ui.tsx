@@ -50,6 +50,8 @@ export interface EditorLayoutProps {
   toolbar: ReactNode
   navigation: ReactNode
   content: ReactNode
+  /** Optional secondary content, arranged by the design-system layout. */
+  sidebar?: ReactNode
 }
 /** Define adapters outside render so controls retain focus across edits. */
 export interface EditorComponents {
@@ -137,12 +139,13 @@ export const nativeEditorComponents: EditorComponents = {
   Panel: ({children, label}) => (
     <section aria-label={label}>{children}</section>
   ),
-  Layout: ({toolbar, navigation, content}) => (
+  Layout: ({toolbar, navigation, content, sidebar}) => (
     <div>
       {toolbar}
       <div>
         {navigation}
         {content}
+        {sidebar}
       </div>
     </div>
   ),
@@ -187,24 +190,46 @@ export interface EditorSearch {
   value: string
   onValueChange: (value: string) => void
 }
-export interface MessageListProps extends ViewOptions {
-  messages: readonly EditorViewMessage[]
+export interface EditorMessageRenderState {
+  selected: boolean
+}
+export interface MessageListProps<
+  Message extends EditorViewMessage = EditorViewMessage,
+> extends ViewOptions {
+  messages: readonly Message[]
   selectedId?: string
   onSelect: (id: string) => void
   search?: EditorSearch
   loading?: boolean
   pagination?: ReactNode
+  /** Summary or controls between search and the loaded rows. */
+  listSummary?: ReactNode
+  /** Noninteractive content inside the design-system selection control. */
+  renderMessage?: (
+    message: Message,
+    state: EditorMessageRenderState
+  ) => ReactNode
+  /** Interactive actions rendered beside, never inside, the selection control. */
+  renderMessageActions?: (
+    message: Message,
+    state: EditorMessageRenderState
+  ) => ReactNode
 }
 /** Controlled list: it never filters, paginates, fetches, or changes selection itself. */
-export function MessageList({
+export function MessageList<
+  Message extends EditorViewMessage = EditorViewMessage,
+>({
   messages,
   selectedId,
   onSelect,
   search,
   loading = false,
   pagination,
+  listSummary,
+  renderMessage,
+  renderMessageActions,
   labels,
-}: MessageListProps): ReactNode {
+}: MessageListProps<Message>): ReactNode {
   const {TextInput, MessageRow} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   const searchId = useId()
@@ -221,22 +246,34 @@ export function MessageList({
           />
         </div>
       )}
+      {listSummary}
       {loading && (
         <p>
           <output>{text.loading}</output>
         </p>
       )}
       <ul>
-        {messages.map(message => (
-          <li key={message.id}>
-            <MessageRow
-              selected={message.id === selectedId}
-              onSelect={() => onSelect(message.id)}
-            >
-              <span>{message.defaultMessage}</span> <code>{message.id}</code>
-            </MessageRow>
-          </li>
-        ))}
+        {messages.map(message => {
+          const state = {selected: message.id === selectedId}
+          return (
+            <li key={message.id}>
+              <MessageRow
+                selected={state.selected}
+                onSelect={() => onSelect(message.id)}
+              >
+                {renderMessage ? (
+                  renderMessage(message, state)
+                ) : (
+                  <>
+                    <span>{message.defaultMessage}</span>{' '}
+                    <code>{message.id}</code>
+                  </>
+                )}
+              </MessageRow>
+              {renderMessageActions?.(message, state)}
+            </li>
+          )
+        })}
       </ul>
       {!loading && messages.length === 0 && (
         <p>
@@ -373,11 +410,10 @@ export function TranslationField({
     </Panel>
   )
 }
-export type EditorTranslation = Omit<TranslationFieldProps, 'source' | 'labels'>
-export interface TranslationEditorViewProps extends Omit<
-  MessageListProps,
-  'selectedId'
-> {
+export type EditorTranslation = Omit<TranslationFieldProps, 'source'>
+export interface TranslationEditorViewProps<
+  Message extends EditorViewMessage = EditorViewMessage,
+> extends MessageListProps<Message> {
   /** May be outside the loaded list, e.g. during a server-side page change. */
   selectedMessage?: EditorViewMessage
   translations: readonly EditorTranslation[]
@@ -385,57 +421,81 @@ export interface TranslationEditorViewProps extends Omit<
   context?: ReactNode
   sourcePreview?: ReactNode
   notice?: ReactNode
+  sidebar?: ReactNode
+  /** Replaces the no-selection status; null suppresses it. */
+  emptyState?: ReactNode
+  /** Wrap the generated locale fields without recreating their wiring. */
+  renderTranslations?: (fields: ReactNode) => ReactNode
+  /** Wrap the entire detail region, including notices and the empty state. */
+  renderContent?: (content: ReactNode) => ReactNode
 }
 /** A stateless composition over caller-owned navigation and locale drafts. */
-export function TranslationEditorView({
+export function TranslationEditorView<
+  Message extends EditorViewMessage = EditorViewMessage,
+>({
   selectedMessage,
+  selectedId = selectedMessage?.id,
   translations,
   filters,
   context,
   sourcePreview,
   notice,
+  sidebar,
+  emptyState,
+  renderTranslations,
+  renderContent,
   labels,
   ...list
-}: TranslationEditorViewProps): ReactNode {
+}: TranslationEditorViewProps<Message>): ReactNode {
   const {Layout} = useEditorDesignSystem()
   const text = resolveLabels(labels)
+  const fields = selectedMessage
+    ? translations.map(translation => (
+        <TranslationField
+          {...translation}
+          key={`${selectedMessage.id}:${translation.locale}`}
+          source={selectedMessage.defaultMessage}
+          labels={{
+            ...labels,
+            ...translation.labels,
+            validation: {
+              ...labels?.validation,
+              ...translation.labels?.validation,
+            },
+          }}
+        />
+      ))
+    : null
+  const content = (
+    <>
+      {notice}
+      {selectedMessage ? (
+        <>
+          <SourceMessage
+            message={selectedMessage}
+            preview={sourcePreview}
+            context={context}
+            labels={labels}
+          />
+          {renderTranslations ? renderTranslations(fields) : fields}
+        </>
+      ) : emptyState !== undefined ? (
+        emptyState
+      ) : (
+        <p>
+          <output>{text.noSelection}</output>
+        </p>
+      )}
+    </>
+  )
   return (
     <Layout
       toolbar={filters}
       navigation={
-        <MessageList
-          {...list}
-          selectedId={selectedMessage?.id}
-          labels={labels}
-        />
+        <MessageList {...list} selectedId={selectedId} labels={labels} />
       }
-      content={
-        <>
-          {notice}
-          {selectedMessage ? (
-            <>
-              <SourceMessage
-                message={selectedMessage}
-                preview={sourcePreview}
-                context={context}
-                labels={labels}
-              />
-              {translations.map(translation => (
-                <TranslationField
-                  {...translation}
-                  key={`${selectedMessage.id}:${translation.locale}`}
-                  source={selectedMessage.defaultMessage}
-                  labels={labels}
-                />
-              ))}
-            </>
-          ) : (
-            <p>
-              <output>{text.noSelection}</output>
-            </p>
-          )}
-        </>
-      }
+      content={renderContent ? renderContent(content) : content}
+      sidebar={sidebar}
     />
   )
 }
