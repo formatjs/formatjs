@@ -3,6 +3,7 @@ import {type MessageDescriptor} from '@formatjs/intl'
 export {
   createIntlCache,
   type IntlCache,
+  type FormatDurationOptions,
   type MessageDescriptor,
 } from '@formatjs/intl'
 export {createIntl} from '#packages/react-intl/components/createIntl.js'

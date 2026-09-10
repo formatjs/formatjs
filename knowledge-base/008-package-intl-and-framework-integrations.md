@@ -55,6 +55,11 @@ callers can still pass an existing values map.
 - `<FormattedMessage>` — Render ICU MessageFormat strings
 - `<FormattedNumber>`, `<FormattedDate>`, `<FormattedTime>`, `<FormattedList>`, `<FormattedDisplayName>`, `<FormattedPlural>`, `<FormattedRelativeTimeFormat>`
 
+`<FormattedDuration>` and `<FormattedDurationParts>` delegate to the core duration
+APIs and respect provider locale, named formats, and explicit options. The
+imperative methods are available through `useIntl()` and both `createIntl`
+entry points; `FormatDurationOptions` is exported from the client and server.
+
 **Hooks:**
 
 - `useIntl()` — Access intl object for imperative formatting

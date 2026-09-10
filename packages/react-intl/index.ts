@@ -8,6 +8,7 @@ import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.
 import {
   type CustomFormatConfig,
   type FormatDateOptions,
+  type FormatDurationOptions,
   type FormatTimeOptions,
   type MessageDescriptor,
 } from '@formatjs/intl'
@@ -33,6 +34,7 @@ export {
   type CustomFormatConfig,
   type CustomFormats,
   type FormatDateOptions,
+  type FormatDurationOptions,
   type FormatDisplayNameOptions,
   type FormatListOptions,
   type FormatNumberOptions,
@@ -100,6 +102,12 @@ export const FormattedNumber: React.FC<
       children?(formattedNumber: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatNumber')
+export const FormattedDuration: React.FC<
+  FormatDurationOptions & {
+    value: Parameters<IntlShape['formatDuration']>[0]
+    children?(formattedDuration: string): React.ReactElement | null
+  }
+> = createFormattedComponent('formatDuration')
 export const FormattedList: React.FC<
   Intl.ListFormatOptions & {
     value: Parameters<IntlShape['formatList']>[0]
@@ -126,6 +134,7 @@ export const FormattedTimeParts: React.FC<
 export type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 export type {PrimitiveType} from 'intl-messageformat'
 export {
+  FormattedDurationParts,
   FormattedListParts,
   FormattedNumberParts,
 } from '#packages/react-intl/components/createFormattedComponent.js'

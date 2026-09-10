@@ -82,6 +82,14 @@ interface IntlConfig {
 }
 
 interface IntlFormatters {
+  formatDuration(
+    value: Parameters<Intl.DurationFormat['format']>[0],
+    opts?: FormatDurationOptions
+  ): string
+  formatDurationToParts(
+    value: Parameters<Intl.DurationFormat['format']>[0],
+    opts?: FormatDurationOptions
+  ): ReturnType<Intl.DurationFormat['formatToParts']>
   formatDate(value: number | Date | string, opts?: FormatDateOptions): string
   formatTime(value: number | Date | string, opts?: FormatDateOptions): string
   formatDateToParts(
@@ -571,4 +579,34 @@ const msg = defineMessage({
   defaultMessage: 'single message',
   description: 'header',
 })
+```
+
+## formatDuration
+
+Formats a duration object in the provider's locale. Accepts
+`Intl.DurationFormatOptions` except `localeMatcher`, plus a `format` name from
+`formats.duration`. Explicit options override the named format.
+
+```tsx
+const intl = useIntl()
+intl.formatDuration({minutes: 3, seconds: 42}, {style: 'long'})
+// English: "3 minutes, 42 seconds"
+```
+
+Pass an object containing duration units, rather than a timestamp or total
+milliseconds. This API requires native `Intl.DurationFormat` support or the
+[`@formatjs/intl-durationformat` polyfill](/docs/polyfills/intl-durationformat).
+It is also available through `createIntl`, including from `react-intl/server`.
+If formatting fails, `onError` receives the error and the result is an empty string.
+
+## formatDurationToParts
+
+Accepts the same arguments as `formatDuration` and returns
+`Intl.DurationFormat.prototype.formatToParts()` output, including unit metadata
+for numeric parts. Use it to customize individual pieces of the formatted
+result. If formatting fails, `onError` receives the error and the result is an
+empty array.
+
+```tsx
+intl.formatDurationToParts({minutes: 3, seconds: 42}, {style: 'long'})
 ```

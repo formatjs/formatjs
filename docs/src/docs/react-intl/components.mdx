@@ -741,3 +741,42 @@ Since rich text formatting allows embedding `ReactElement`, in function as the c
 All the rich text gets translated together which yields higher quality output. This brings feature-parity with other translation libs as well, such as [fluent](https://projectfluent.org/) by Mozilla (using `overlays` concept).
 
 Extending this also allows users to potentially utilizing other rich text format, like [Markdown](https://daringfireball.net/projects/markdown/).
+
+## FormattedDuration
+
+Renders a duration using [`formatDuration`](./api#formatduration). Its `value`
+is an object containing duration units. Formatting options can be supplied as
+props or selected by `format` from the provider's `formats.duration`.
+
+```tsx
+<IntlProvider locale="en" formats={{duration: {clock: {style: 'digital'}}}}>
+  <FormattedDuration value={{hours: 1, minutes: 30}} format="clock" />
+  <FormattedDuration value={{minutes: 3, seconds: 42}} style="long">
+    {duration => <strong>{duration}</strong>}
+  </FormattedDuration>
+</IntlProvider>
+```
+
+Without a render function, the component uses the provider's `textComponent`
+(or a React fragment). It updates when the locale or formats change.
+Native `Intl.DurationFormat` support or the
+[`@formatjs/intl-durationformat` polyfill](/docs/polyfills/intl-durationformat)
+is required.
+
+## FormattedDurationParts
+
+Calls [`formatDurationToParts`](./api#formatdurationtoparts) with the same props
+as `FormattedDuration`. A function child is required and receives localized
+parts, including duration unit metadata for numeric parts.
+
+```tsx
+<FormattedDurationParts value={{minutes: 3, seconds: 42}} style="long">
+  {parts => (
+    <span>
+      {parts.map((part, index) =>
+        part.type === 'integer' ? <b key={index}>{part.value}</b> : part.value
+      )}
+    </span>
+  )}
+</FormattedDurationParts>
+```

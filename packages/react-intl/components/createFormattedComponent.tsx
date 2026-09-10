@@ -1,5 +1,6 @@
 import {
   type FormatDateOptions,
+  type FormatDurationOptions,
   type FormatDisplayNameOptions,
   type FormatListOptions,
   type FormatNumberOptions,
@@ -13,6 +14,7 @@ enum DisplayName {
   formatTime = 'FormattedTime',
   formatNumber = 'FormattedNumber',
   formatList = 'FormattedList',
+  formatDuration = 'FormattedDuration',
   // Note that this DisplayName is the locale display name, not to be confused with
   // the name of the enum, which is for React component display name in dev tools.
   formatDisplayName = 'FormattedDisplayName',
@@ -30,6 +32,7 @@ type Formatter = {
   formatTime: FormatDateOptions
   formatNumber: FormatNumberOptions
   formatList: FormatListOptions
+  formatDuration: FormatDurationOptions
   formatDisplayName: FormatDisplayNameOptions
 }
 
@@ -45,6 +48,20 @@ export const FormattedNumberParts: React.FC<
   return children(intl.formatNumberToParts(value, formatProps))
 }
 FormattedNumberParts.displayName = 'FormattedNumberParts'
+
+export const FormattedDurationParts: React.FC<
+  FormatDurationOptions & {
+    value: Parameters<IntlShape['formatDuration']>[0]
+    children(
+      val: ReturnType<IntlShape['formatDurationToParts']>
+    ): React.ReactElement | null
+  }
+> = props => {
+  const intl = useIntl()
+  const {value, children, ...formatProps} = props
+  return children(intl.formatDurationToParts(value, formatProps))
+}
+FormattedDurationParts.displayName = 'FormattedDurationParts'
 
 export const FormattedListParts: React.FC<
   Formatter['formatList'] & {
