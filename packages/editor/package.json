@@ -34,7 +34,11 @@
   "sideEffects": false,
   "types": "index.d.ts",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./ui": {
+      "types": "./ui.d.ts",
+      "default": "./ui.js"
+    }
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "workspace:*"

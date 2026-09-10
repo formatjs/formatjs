@@ -8,6 +8,7 @@ formatjs_library(
     srcs = [
         "demo.tsx",
         "design-system/components.tsx",
+        "design-system/editor-components.tsx",
         "design-system/tokens.stylex.ts",
         "fixtures/en.json",  # keep
         "fixtures/ru.json",  # keep
