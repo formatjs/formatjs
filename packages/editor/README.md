@@ -306,7 +306,7 @@ Each component has an exported props contract:
 | `TextArea` / `EditorTextAreaProps`     | `id`, `value`, optional `rows` (default six), disabled/error-description attributes        | `onValueChange(value: string): void` |
 | `MessageRow` / `EditorMessageRowProps` | `children`, controlled `selected`                                                          | `onSelect(): void`                   |
 | `Panel` / `EditorPanelProps`           | `children`, accessible `label`, `kind` (`source` or `translation`)                         | None; layout only                    |
-| `Layout` / `EditorLayoutProps`         | `toolbar`, `navigation`, `content` nodes                                                   | None; layout only                    |
+| `Layout` / `EditorLayoutProps`         | `toolbar`, `navigation`, `content`, optional `sidebar` nodes                               | None; layout only                    |
 
 `EditorInputProps` defines the shared input attributes explicitly: `id`, `value`,
 `onValueChange`, optional `disabled`, `aria-invalid`, and `aria-describedby`.
@@ -333,6 +333,77 @@ Adapter requirements:
 The reusable pieces retain semantic labels, headings, lists, alerts, and status
 nodes. Adapters control the interactive controls and outer presentation; use the
 standalone pieces when a different page composition is needed.
+
+### Custom message rows and composed layouts
+
+`MessageList` and `TranslationEditorView` infer your message type from `messages`,
+so row renderers retain application metadata without casts. `renderMessage` receives
+`(message, {selected})` and returns **noninteractive** content inside the existing
+selection control. `renderMessageActions` receives the same inputs and renders
+sibling controls in the list item; pressing an action does not select the row.
+Actions should have accessible names and use non-submitting buttons. The library
+continues to own row keys, selection callbacks, list semantics, and search wiring.
+Omit a renderer for the standard content; return `null` to suppress that slot.
+
+```tsx
+const messages = [
+  {id: 'greeting', defaultMessage: 'Hello {name}', translatedCount: 3},
+]
+
+function CatalogEditor() {
+  const {Button} = useEditorDesignSystem()
+  return (
+    <TranslationEditorView
+      messages={messages}
+      selectedId={selectedId}
+      selectedMessage={loadedDetail}
+      onSelect={selectMessage}
+      translations={translations}
+      listSummary={<output>{total} results</output>}
+      renderMessage={(message, {selected}) => (
+        <>
+          <span>{message.defaultMessage}</span>
+          <span>{message.translatedCount} translations</span>
+          {selected && <span>Selected</span>}
+        </>
+      )}
+      renderMessageActions={message => (
+        <Button variant="secondary" onPress={() => openReview(message.id)}>
+          Review {message.id}
+        </Button>
+      )}
+      renderTranslations={fields => <div className="locale-grid">{fields}</div>}
+      renderContent={content => (
+        <section aria-label="Translation details">
+          {content}
+          <p>Drafts remain available when you hide a locale.</p>
+        </section>
+      )}
+      sidebar={<SourceMetadata message={loadedDetail} />}
+      emptyState={<output>Loading message details…</output>}
+    />
+  )
+}
+```
+
+`selectedId` controls list highlighting independently of fetched detail; it defaults
+to `selectedMessage?.id`. `selectedMessage` can remain outside the loaded page.
+`listSummary` appears after search and before the rows/loading status. Lists remain
+caller-controlled: passing `loading` does not clear existing rows.
+
+`renderTranslations` wraps the generated locale fields (including an empty array)
+when a message is selected. `renderContent` wraps the whole detail region, including
+notices and the empty state. These are render functions, not component types;
+keep any component types they return stable so fields retain focus. The wrappers
+must render their provided children to retain the built-in editing UI. Draft
+lifetime still belongs to the caller's workflow.
+
+`sidebar` is passed separately to the context's `Layout` adapter, which chooses
+its placement and responsive behavior. Layout adapters must render this optional
+prop to support sidebars; existing adapters that do not use sidebars remain valid.
+`emptyState` replaces the default no-selection status (`null` suppresses it).
+Per-locale `translations[].labels` override shared labels, with validation labels
+merged individually, so locale-specific save labels do not drop shared errors.
 
 ### Application slots and localization
 

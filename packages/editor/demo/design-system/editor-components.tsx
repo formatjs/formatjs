@@ -77,12 +77,13 @@ export const stylexEditorComponents: EditorComponents = {
       {children}
     </section>
   ),
-  Layout: ({toolbar, navigation, content}) => (
+  Layout: ({toolbar, navigation, content, sidebar}) => (
     <div {...stylex.props(styles.page)}>
       {toolbar}
       <div {...stylex.props(styles.columns)}>
         {navigation}
         <div {...stylex.props(styles.content)}>{content}</div>
+        {sidebar}
       </div>
     </div>
   ),
