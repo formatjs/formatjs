@@ -144,6 +144,7 @@
     },
     "packages/editor": {
       "component": "@formatjs/editor",
+      "initial-version": "1.2.0",
       "extra-files": [
         "package.json",
         {

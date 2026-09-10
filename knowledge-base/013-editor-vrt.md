@@ -67,3 +67,10 @@ No editor package disables Gazelle.
 registry, and Release Please npm publishing. Its public `index.ts` bundles
 headless APIs and declarations; React 19 is a peer dependency. Demo and VRT
 packages are development-only and are excluded from the npm artifact.
+
+The headless editor's initial release is `1.2.0`, configured with
+`initial-version`. Until that release lands, its Release Please manifest entry
+is `0.0.0` (unreleased). The manifest records released versions, not the next
+target: setting it to `1.2.0` makes Release Please send the nonexistent
+`@formatjs/editor@1.2.0` tag to GitHub's release-notes API as `previous_tag`.
+Release Please updates the manifest after the release PR lands.
