@@ -140,7 +140,7 @@ JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
 `bazel test //packages/editor/vrt:component_test --test_output=errors` runs
 Playwright 1.63 native `mount()` specs for the real editor. The typed
-`editor.fixture.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
+`editor.visual.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
 mount/update/unmount. The tests check provider updates without losing a draft,
 clear, ICU validation, and isolation between mounts.
 

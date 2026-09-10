@@ -1,6 +1,6 @@
 import {flushSync} from 'react-dom'
 import {createRoot, type Root} from 'react-dom/client'
-import {Editable} from './editor.fixture.js'
+import {Editable} from './editor.visual.js'
 
 declare global {
   interface Window {

@@ -86,7 +86,7 @@ component_browser_test(
     name = "component_test",
     srcs = [
         "editor.browser.spec.ts",
-        "editor.fixture.tsx",
+        "editor.visual.tsx",
         "gallery.html",
         "gallery.tsx",
         "reset.css",
@@ -136,7 +136,7 @@ vrt_library(
         "app.tsx",
         "component.config.ts",
         "e2e.config.ts",
-        "editor.fixture.tsx",
+        "editor.visual.tsx",
         "gallery.tsx",
         "playwright.config.ts",
         "server.ts",
