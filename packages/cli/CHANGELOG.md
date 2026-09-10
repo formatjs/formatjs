@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.25 (2026-09-10)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* feat(@formatjs/editor): support shared locale drafts and typed save results by @longlho in https://github.com/formatjs/formatjs/pull/7325
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7327
+* feat(@formatjs/editor): add browser tests and shared visual modules by @longlho in https://github.com/formatjs/formatjs/pull/7323
+* feat(@formatjs/editor): add editor UI with design-system context by @longlho in https://github.com/formatjs/formatjs/pull/7329
+* chore: release main by @formatjsproject in https://github.com/formatjs/formatjs/pull/7331
+* feat(@formatjs/intl): add duration formatting APIs by @longlho in https://github.com/formatjs/formatjs/pull/7332
+* feat(react-intl): add duration components and bindings by @longlho in https://github.com/formatjs/formatjs/pull/7333
+* feat(@formatjs/editor): extend composed views with typed content slots by @longlho in https://github.com/formatjs/formatjs/pull/7336
+* feat(@formatjs/editor): add reusable translation tools by @longlho in https://github.com/formatjs/formatjs/pull/7340
+* feat(formatjs_intl): add checked FormattedMessage output by @longlho in https://github.com/formatjs/formatjs/pull/7343
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.24...@formatjs/cli@6.16.25
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.19
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.19
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.17
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.19
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.17
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.20
+
 ## 6.16.24 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
