@@ -1,11 +1,11 @@
-A spec-compliant polyfill for Intl.DurationFormat
+A polyfill for Intl.DurationFormat
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-durationformat.svg?style=flat-square)](https://www.npmjs.com/package/@formatjs/intl-durationformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-durationformat)
 
 ## ECMA-402 Spec Compliance
 
-This package implements the **Stage 4** `Intl.DurationFormat` specification, which is included in **ECMA-402 12th Edition (June 2025)**. The implementation is **fully spec-compliant** with all features.
+This package implements `Intl.DurationFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### Specification Details
 
@@ -197,3 +197,43 @@ finite integers of a common sign. Invalid numeric fields throw `RangeError`;
 an empty record throws `TypeError`. Absolute years, months, and weeks must be
 less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
 Subsecond contributions participate in the bound comparison exactly.
+
+## Built-in metadata
+
+`DurationFormat.length` is `0`; `DurationFormat.supportedLocalesOf.length` is `1`.
+Instances identify as `[object Intl.DurationFormat]` through `Symbol.toStringTag`.
+`resolvedOptions()` returns properties in spec order and omits `fractionalDigits`
+when no explicit value was set.
+
+## Negative durations
+
+A negative duration has one minus sign, on its first displayed unit. This includes
+a leading zero: digital formatting of `{seconds: -1}` produces `"-0:00:01"` in English.
+Later units omit their signs in both `format()` and `formatToParts()`.
+
+Numeric duration fields omit grouping separators, even for large values.
+Textual styles retain locale grouping. Fractional arithmetic preserves each
+input Number's exact integer value, including values beyond the safe-integer range.
+
+A numeric time style propagates through smaller units. Minutes and seconds
+remain displayed by default; smaller fractional units use `auto`. Fractional
+units cannot request `always` display or be followed by a textual unit style.
+
+Zero minutes remain between displayed numeric hours and seconds, even with
+`minutesDisplay: "auto"`. For example, `{hours: 1, seconds: 1}` formats as `"1:00:01"`.
+
+Numbering-system resolution includes systems supported by the active
+`Intl.NumberFormat` dependency, keeping the locale default first. Support is
+checked lazily and refreshed when that constructor is replaced. Time-separator
+data includes every numbering-system symbol record supplied by CLDR.
+
+### Temporal integration
+
+When a Temporal implementation is available before this package is loaded,
+`format` and `formatToParts` accept ISO duration strings through `Temporal.Duration.from`.
+Temporal durations are read with captured intrinsic getters, so later changes to
+`Temporal.Duration.prototype` do not affect formatting. Ordinary duration-like
+objects keep the ECMA-402 property-read order.
+
+Without Temporal, duration-like objects remain supported; duration strings throw
+`RangeError`. This integration follows the Temporal proposal's Intl changes.

@@ -30,3 +30,7 @@ Uses `@formatjs/fast-memoize` to cache distance calculation results. The CLDR di
 ## Dependencies
 
 `@formatjs/fast-memoize`
+
+Locale matching extracts only the Unicode `u` extension. Private-use subtags
+remain intact, including text resembling `u-co-phonebk`; trailing extensions
+are preserved separately from Unicode keywords.

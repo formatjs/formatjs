@@ -20,6 +20,8 @@ export function PartitionDurationFormatPattern(
   const result: DurationFormatPart[][] = []
   let done = false
   let separated = false
+  let signDisplayed = true
+  const negative = TABLE_2.some(row => duration[row.valueField] < 0)
   const internalSlots = getInternalSlots(df)
   let dataLocale = internalSlots.dataLocale
   const dataLocaleData = DurationFormat.localeData[dataLocale]
@@ -37,7 +39,12 @@ export function PartitionDurationFormatPattern(
     // exact. Float arithmetic like `1 + 473/1e3` lands on
     // `1.4729999999999998650`, which `roundingMode: 'trunc'` truncates to
     // `1.472999999` instead of `1.473` (#6462).
-    let value = new BigDecimal(duration[row.valueField])
+    // Duration fields are mathematical integers (ToIntegerIfIntegral, step 3).
+    // BigInt preserves the exact Number value beyond the safe-integer range;
+    // Number.toString() may instead produce a shorter, rounded decimal.
+    // https://tc39.es/ecma402/#sec-tointegerifintegral
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L475
+    let value = new BigDecimal(BigInt(duration[row.valueField]))
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
     const {unit, numberFormatUnit} = row
@@ -59,15 +66,19 @@ export function PartitionDurationFormatPattern(
       if (nextStyle === 'numeric' || nextStyle === 'fractional') {
         if (unit === 'seconds') {
           value = value
-            .plus(new BigDecimal(duration.milliseconds).div(1000))
-            .plus(new BigDecimal(duration.microseconds).div(1_000_000))
-            .plus(new BigDecimal(duration.nanoseconds).div(1_000_000_000))
+            .plus(new BigDecimal(BigInt(duration.milliseconds)).div(1000))
+            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1_000_000))
+            .plus(
+              new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000_000)
+            )
         } else if (unit === 'milliseconds') {
           value = value
-            .plus(new BigDecimal(duration.microseconds).div(1000))
-            .plus(new BigDecimal(duration.nanoseconds).div(1_000_000))
+            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1000))
+            .plus(new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000))
         } else {
-          value = value.plus(new BigDecimal(duration.nanoseconds).div(1000))
+          value = value.plus(
+            new BigDecimal(BigInt(duration.nanoseconds)).div(1000)
+          )
         }
         if (internalSlots.fractionalDigits === undefined) {
           nfOpts.maximumFractionDigits = 9
@@ -80,8 +91,40 @@ export function PartitionDurationFormatPattern(
         done = true
       }
     }
-    if (!value.isZero() || display !== 'auto') {
+    // ECMA-402 §13.5.12, step 15.a: keep zero minutes between displayed
+    // numeric hours and seconds, even when minutesDisplay is auto.
+    // https://tc39.es/ecma402/#sec-formatnumericunits
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L863-L864
+    const minutesBetweenHoursAndSeconds =
+      unit === 'minutes' &&
+      separated &&
+      (internalSlots.secondsDisplay === 'always' ||
+        duration.seconds !== 0 ||
+        duration.milliseconds !== 0 ||
+        duration.microseconds !== 0 ||
+        duration.nanoseconds !== 0)
+    if (
+      !value.isZero() ||
+      display !== 'auto' ||
+      minutesBetweenHoursAndSeconds
+    ) {
+      // ECMA-402 §13.5.15 step 4.h.iii.2 and §13.5.12 steps 16–18:
+      // display the duration sign once, including on a leading zero unit.
+      // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L987-L991
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L868-L882
+      if (signDisplayed) {
+        if (value.isZero() && negative) value = new BigDecimal('-0')
+        signDisplayed = false
+      } else {
+        nfOpts.signDisplay = 'never'
+      }
       nfOpts.numberingSystem = internalSlots.numberingSystem
+      // ECMA-402 §13.5.9 step 9 and §13.5.10–11 step 10 disable grouping.
+      // https://tc39.es/ecma402/#sec-formatnumerichours
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L737
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L811
+      if (style === 'numeric' || style === '2-digit') nfOpts.useGrouping = false
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
       }
@@ -112,7 +155,10 @@ export function PartitionDurationFormatPattern(
       // as an exact Mathematical Value via ToPrimitive → BigDecimal.toString,
       // which sidesteps the IEEE 754 round-trip that breaks
       // `roundingMode: 'trunc'` on values like `1 + 473/1e3` (#6462).
-      let parts = nf.formatToParts(value)
+      // BigDecimal.toString() normalizes -0, so preserve that sign at the boundary.
+      let parts = nf.formatToParts(
+        value.isZero() && value.isNegative() ? -0 : value
+      )
       parts.forEach(({type, value}) => {
         list.push({
           type,

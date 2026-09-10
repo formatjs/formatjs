@@ -54,6 +54,13 @@ generate_package_file(
     tool = "//tools:generate-supported-locales",
 )
 
+generate_package_file(
+    name = "default_content",
+    src = "default-content.ts",
+    data = ["//:node_modules/cldr-core"],
+    tool = "//tools:generate-default-content",
+)
+
 formatjs_generated_package(
     name = "pkg",
     package_name = "cldr.supported-locales",
@@ -64,5 +71,6 @@ formatjs_generated_package(
         ":cldr_sl_intl-pluralrules",
         ":cldr_sl_intl-relativetimeformat",
         ":cldr_sl_intl_datetimeformat",
+        ":default_content",
     ],
 )

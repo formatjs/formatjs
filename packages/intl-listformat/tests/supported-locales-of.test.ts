@@ -20,3 +20,16 @@ describe('supportedLocalesOf', function () {
     test
   )
 })
+
+it('resolves registered default-content variants with lookup matching', () => {
+  expect(
+    new ListFormat('en-US', {localeMatcher: 'lookup'}).resolvedOptions().locale
+  ).toBe('en-US')
+  expect(
+    new ListFormat('zh-Hans-CN', {localeMatcher: 'lookup'}).resolvedOptions()
+      .locale
+  ).toBe('zh-Hans-CN')
+  expect(
+    ListFormat.supportedLocalesOf(['zh-CN'], {localeMatcher: 'lookup'})
+  ).toEqual(['zh-CN'])
+})

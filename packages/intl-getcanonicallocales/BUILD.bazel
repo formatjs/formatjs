@@ -2,6 +2,7 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
+load("//tools/test262:defs.bzl", "test262_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
 
@@ -16,6 +17,7 @@ formatjs_library(
     name = "intl-getcanonicallocales",
     package_name = "@formatjs/intl-getcanonicallocales",
     srcs = [
+        "appendToList.ts",
         "canonicalizer.ts",
         "emitter.ts",
         "index.ts",
@@ -45,7 +47,7 @@ formatjs_library(
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
     type = "module",
-    version = "3.2.11",  # x-release-please-version
+    version = "3.2.12",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -77,6 +79,7 @@ generate_package_file(
     name = "cldr_core_aliases",
     src = "aliases.ts",
     data = [
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
         "//:node_modules/json-stable-stringify",
     ],
@@ -165,4 +168,33 @@ rolldown_bundle(
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
     target = "es6",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
+)
+
+rolldown_bundle(
+    name = "test262-polyfill",
+    srcs = [":srcs"],
+    entry_point = "polyfill-force.ts",
+    format = "iife",
+    target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
+)
+
+test262_test(
+    name = "test262",
+    data = [
+        "@com_github_tc39_test262//:test262-getcanonicallocales-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/Intl/getCanonicalLocales",
 )

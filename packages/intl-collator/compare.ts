@@ -269,18 +269,24 @@ function importedTailorings(
   // The visited set prevents recursive imports from looping.
   // https://www.unicode.org/reports/tr35/tr35-collation.html#Special_Purpose_Commands
   const imported = IMPORT_COLLATION_RE.exec(rule[2])
-  return imported ? tailoringEntries(imported[1], imported[2], visited) : []
+  return imported
+    ? tailoringEntries(
+        imported[1] === 'und' ? 'root' : imported[1],
+        imported[2],
+        visited
+      )
+    : []
 }
 
 function addTailoredRelation(
   entries: TailoringEntry[],
   rule: PackedLDMLRelation,
-  element: PackedCollationElement
+  elements: readonly PackedCollationElement[]
 ) {
   const value = normalizeTailoringValue(rule[2])
   entries.push({
     codePoints: stringToCodePoints(value),
-    elements: [element],
+    elements,
   })
 }
 
@@ -294,8 +300,10 @@ function addTailoredRelationGroup(
   // relations before the reset at the requested strength; otherwise each
   // relation is assigned weights after the reset anchor.
   // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
-  const anchor = rootElementsForString(normalizeTailoringValue(resetValue))[0]
-  if (!anchor) {
+  const anchorElements = rootElementsForString(
+    normalizeTailoringValue(resetValue)
+  )
+  if (!anchorElements.length) {
     return
   }
 
@@ -305,19 +313,32 @@ function addTailoredRelationGroup(
   }
 
   const seenByLevel = [0, 0, 0, 0]
-  let previousElement = anchor
+  let previousElements = anchorElements
   for (const relation of relations) {
     const level = relationLevel(relation)
     seenByLevel[level]++
-    const baseElement = level === 2 ? previousElement : anchor
+    // LDML Part 5 §3.4 Orderings: modify the last CE at the operator's
+    // strength or stronger, preserving preceding expansion elements.
+    // https://www.unicode.org/reports/tr35/tr35-collation.html#Orderings
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-collation.md#L765-L775
+    const source = level === 2 ? previousElements : anchorElements
+    let index = source.length - 1
+    while (
+      index >= 0 &&
+      !source[index].slice(0, level + 1).some(weight => weight !== 0)
+    )
+      index--
+    const prefix = source.slice(0, Math.max(0, index))
+    const baseElement: PackedCollationElement =
+      index < 0 ? [0, 0, 0, 0, 0] : source[index]
     const anchorWeight = baseElement[level]
     const offset =
       before === level + 1
         ? seenByLevel[level] - totalByLevel[level] - 1
         : seenByLevel[level]
     const element = cloneElement(baseElement, level, anchorWeight + offset)
-    previousElement = element
-    addTailoredRelation(entries, relation, element)
+    previousElements = [...prefix, element]
+    addTailoredRelation(entries, relation, previousElements)
   }
 }
 
@@ -335,7 +356,9 @@ function tailoringEntries(
   }
   visited.add(key)
 
-  const collationData = packedCollation(locale, collation)
+  const collationData =
+    packedCollation(locale, collation) ||
+    (collation === 'search' ? packedCollation('root', 'search') : undefined)
   const entries: TailoringEntry[] = []
   const rules = collationData?.rules || []
   let reset: PackedLDMLReset | undefined
@@ -455,7 +478,9 @@ function comparePreparedStrings(
   const locale = localeBase(slots.locale)
   const tailoring = tailoringEntries(
     locale,
-    collationForComparison(locale, slots.collation)
+    slots.usage === 'search'
+      ? 'search'
+      : collationForComparison(locale, slots.collation)
   )
   return compareCollationElements(
     collationElements(left, tailoring),

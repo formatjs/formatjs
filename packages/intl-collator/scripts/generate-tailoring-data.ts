@@ -1,3 +1,4 @@
+import {canonicalCollation} from './canonical-collation.js'
 import {basename} from 'node:path'
 import {readdirSync, readFileSync, statSync} from 'node:fs'
 import {outputFileSync} from 'fs-extra/esm'
@@ -127,7 +128,8 @@ for (const path of paths) {
       continue
     }
     const localeTailorings = (tailorings[locale] ||= {})
-    localeTailorings[collation.type] = packCollation(collation)
+    localeTailorings[canonicalCollation(collation.type)] =
+      packCollation(collation)
   }
 }
 

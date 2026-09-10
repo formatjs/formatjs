@@ -50,11 +50,14 @@ export function SetNumberFormatDigitOptions(
     1
   )
 
-  // 8. If roundingIncrement is not an element of the list {1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000}, throw a RangeError exception.
+  // ECMA-402 §16.1.2, step 8: invalid increments must throw RangeError.
+  // https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L104
   invariant(
     VALID_ROUNDING_INCREMENTS.has(roundingIncrement),
     `Invalid rounding increment value: ${roundingIncrement}.
-Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`
+Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
+    RangeError
   )
 
   // 9. Let roundingMode be ? GetOption(opts, "roundingMode", "string", « "ceil", "floor", "expand", "trunc", "halfCeil", "halfFloor", "halfExpand", "halfTrunc", "halfEven" », "halfExpand").

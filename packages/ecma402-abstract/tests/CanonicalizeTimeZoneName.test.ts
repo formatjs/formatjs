@@ -96,6 +96,6 @@ describe('CanonicalizeTimeZoneName', () => {
 
     // Minimum offset
     expect(CanonicalizeTimeZoneName('+00:00', testData)).toBe('+00:00')
-    expect(CanonicalizeTimeZoneName('-00:00', testData)).toBe('-00:00')
+    expect(CanonicalizeTimeZoneName('-00:00', testData)).toBe('+00:00')
   })
 })

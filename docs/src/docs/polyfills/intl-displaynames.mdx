@@ -5,7 +5,7 @@ A polyfill for [`Intl.DisplayNames`](https://tc39.es/proposal-intl-displaynames)
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.DisplayNames`.
+This package implements `Intl.DisplayNames`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### Specification Details
 
@@ -211,3 +211,15 @@ async function polyfill(locale: string) {
 Calendar codes use hyphen-separated Unicode type identifiers; underscore forms
 throw `RangeError`. When `fallback: 'code'` applies, `of` returns the canonical
 code, such as `ZZZ` for an unknown currency supplied as `zzz`.
+
+Loading `und` locale data preserves existing English data. Root patterns remain
+separate from language-specific patterns, regardless of registration order.
+
+Language display-name codes accept Unicode language subtags of two, three, or
+five to eight ASCII letters, with optional script, region, and variant subtags.
+
+Calendar display-name data uses BCP 47 identifiers, including `gregory` and
+`ethioaa`, rather than CLDR legacy keys.
+
+Locale data registers CLDR default-content variants, such as `en-US` for English.
+Loading regional data preserves explicitly loaded language data.

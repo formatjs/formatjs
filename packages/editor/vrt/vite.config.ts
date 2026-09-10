@@ -1,68 +1,44 @@
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {defineConfig} from 'vite'
+import {defineConfig, type UserConfig} from 'vite'
 import react from '@vitejs/plugin-react'
-const root = path.dirname(fileURLToPath(import.meta.url))
-const nodeModules = path.join(root, 'node_modules')
+import stylex from '@stylexjs/unplugin'
 
-export default defineConfig({
+const root = path.dirname(fileURLToPath(import.meta.url))
+const workspace = path.resolve(root, '../../..')
+const nodeModules = path.join(workspace, 'node_modules')
+
+const config: UserConfig = defineConfig({
   root,
   cacheDir: process.env.VRT_CACHE,
   plugins: [
+    stylex.vite({
+      useCSSLayers: true,
+      dev: true,
+      unstable_moduleResolution: {type: 'commonJS', rootDir: workspace},
+    }),
     react(),
-    {
-      name: 'editor-source-imports',
-      configureServer(server) {
-        server.middlewares.use('/fixtures', (req, res, next) => {
-          if (!['/en.json', '/ru.json'].includes(req.url ?? '')) return next()
-          const messages = Object.fromEntries(
-            Array.from({length: 53}, (_, index) => [
-              `message-${index}`,
-              [
-                'Welcome, {name}',
-                'You have {count, number} messages',
-                'Updated {date, date, short}',
-              ][index % 3],
-            ])
-          )
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify(messages))
-        })
-      },
-      resolveId(id) {
-        if (id.startsWith('#packages/editor/')) {
-          return path.join(
-            root,
-            '..',
-            id.slice('#packages/editor/'.length).replace(/\.js$/, '.tsx')
-          )
-        }
-      },
-    },
   ],
   resolve: {
     alias: [
+      '@stylexjs/stylex',
       'react',
       'react-dom',
       'react-intl',
-      '@material-ui/core',
-      '@material-ui/icons',
-      '@material-ui/lab',
-      '@formatjs/icu-messageformat-parser',
+      '@formatjs/editor',
     ].map(name => ({find: name, replacement: path.join(nodeModules, name)})),
     dedupe: ['react', 'react-dom'],
   },
-  server: {fs: {allow: [path.resolve(root, '..'), nodeModules]}},
+  server: {fs: {allow: [workspace]}},
   optimizeDeps: {
     include: [
       'react',
-      'react-dom',
+      'react-dom/client',
       'react/jsx-runtime',
-      '@material-ui/core',
-      '@material-ui/icons',
-      '@material-ui/lab',
       'react-intl',
-      '@formatjs/icu-messageformat-parser',
+      '@formatjs/editor',
     ],
   },
 })
+
+export default config

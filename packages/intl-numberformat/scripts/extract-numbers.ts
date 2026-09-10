@@ -14,7 +14,10 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
+import {
+  collapseSingleValuePluralRule,
+  PLURAL_RULES,
+} from './number-data/utils.ts'
 
 export type Numbers = (typeof NumbersData)['main']['ar']['numbers']
 
@@ -60,13 +63,20 @@ function extractNumbers(d: Numbers): RawNumberData {
       ? ['latn']
       : [d.defaultNumberingSystem, 'latn']
   return {
+    minimumGroupingDigits: Number(d.minimumGroupingDigits),
     nu,
     symbols: nu.reduce((all: Record<string, SymbolsData>, ns) => {
-      const rangeSign = d[
-        `miscPatterns-numberSystem-${ns}` as 'miscPatterns-numberSystem-latn'
-      ].range
-        .match(/[^{}01]/)!
-        .at(0) as string
+      const rangePattern =
+        d[`miscPatterns-numberSystem-${ns}` as 'miscPatterns-numberSystem-latn']
+          .range
+      // ECMA-402 §16.5.19 steps 7–8 preserve the complete separator.
+      // https://tc39.es/ecma402/#sec-partitionnumberrangepattern
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1838-L1839
+      invariant(
+        rangePattern.startsWith('{0}') && rangePattern.endsWith('{1}'),
+        `Unsupported number range pattern: ${rangePattern}`
+      )
+      const rangeSign = rangePattern.slice(3, -3)
 
       all[ns] = {
         ...d[`symbols-numberSystem-${ns}` as 'symbols-numberSystem-latn'],

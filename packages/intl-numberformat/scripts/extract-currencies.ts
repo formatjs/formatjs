@@ -17,7 +17,10 @@ import {
   type LDMLPluralRuleMap,
 } from '#packages/ecma402-abstract/types/number.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
-import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils.ts'
+import {
+  collapseSingleValuePluralRule,
+  PLURAL_RULES,
+} from './number-data/utils.ts'
 
 export type Currencies =
   (typeof CurrenciesData)['main']['en']['numbers']['currencies']

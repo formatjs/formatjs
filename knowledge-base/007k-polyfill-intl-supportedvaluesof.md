@@ -71,3 +71,13 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 
 `Intl.supportedValuesOf` converts its key to a string before validating the
 category. String wrapper objects are accepted; Symbols throw `TypeError`.
+
+`Intl.supportedValuesOf` is callable but cannot be used as a constructor.
+
+Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
+in addition to continental transition zones. Runtime filtering retains primary
+identifiers and omits aliases such as `Etc/UTC`.
+
+Collation enumeration probes CLDR-derived candidate locales for each type,
+including locale-specific collations such as German `phonebk` and Spanish `trad`.
+Only collations accepted by the installed Collator are returned.

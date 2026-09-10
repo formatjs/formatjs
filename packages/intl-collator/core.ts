@@ -5,7 +5,7 @@ import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {defineProperty, invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {
   availableCollationLocales,
@@ -106,15 +106,16 @@ export const Collator = function (
   // ECMA-402 Collator has relevant extension keys "co", "kn", and "kf";
   // ResolveLocale negotiates them against generated locale collation data.
   // https://tc39.es/ecma402/#sec-intl.collator-internal-slots
+  const localeData = usage === 'search' ? searchLocaleData : Collator.localeData
   const r = ResolveLocale(
     Collator.availableLocales,
     requestedLocales,
     opt,
     Collator.relevantExtensionKeys,
-    Collator.localeData,
+    localeData,
     Collator.getDefaultLocale
   )
-  const resolvedLocaleData = Collator.localeData[r.dataLocale]
+  const resolvedLocaleData = localeData[r.dataLocale]
   invariant(!!resolvedLocaleData, `Missing locale data for ${r.dataLocale}`)
 
   // "sort" defaults sensitivity to "variant"; "search" takes its locale data
@@ -146,8 +147,12 @@ export const Collator = function (
   internalSlots.ignorePunctuation = ignorePunctuation
 } as CollatorConstructor
 
-Object.defineProperty(Collator, 'supportedLocalesOf', {
-  value: function supportedLocalesOf(
+// ECMA-402 §7 applies the standard built-in rules: methods are not constructors.
+// https://tc39.es/ecma402/#requirements
+// https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
+// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
+const {supportedLocalesOf} = {
+  supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<CollatorOptions, 'localeMatcher'>
   ) {
@@ -160,7 +165,8 @@ Object.defineProperty(Collator, 'supportedLocalesOf', {
       options
     )
   },
-})
+}
+defineProperty(Collator, 'supportedLocalesOf', {value: supportedLocalesOf})
 
 Object.defineProperty(Collator.prototype, 'compare', {
   configurable: true,
@@ -181,14 +187,15 @@ Object.defineProperty(Collator.prototype, 'compare', {
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L222-L223
       boundCompare = (x: string, y: string) =>
         compareCollatorStrings(internalSlots, ToString(x), ToString(y))
+      Object.defineProperty(boundCompare, 'name', {value: ''})
       internalSlots.boundCompare = boundCompare
     }
     return boundCompare
   },
 })
 
-Object.defineProperty(Collator.prototype, 'resolvedOptions', {
-  value: function resolvedOptions(this: CollatorType): ResolvedCollatorOptions {
+const {resolvedOptions} = {
+  resolvedOptions(this: CollatorType): ResolvedCollatorOptions {
     if (typeof this !== 'object' || !OrdinaryHasInstance(Collator, this)) {
       throw TypeError(
         'Method Intl.Collator.prototype.resolvedOptions called on incompatible receiver'
@@ -204,7 +211,8 @@ Object.defineProperty(Collator.prototype, 'resolvedOptions', {
     }
     return result as unknown as ResolvedCollatorOptions
   },
-})
+}
+defineProperty(Collator.prototype, 'resolvedOptions', {value: resolvedOptions})
 
 Collator.availableLocales = new Set(availableCollationLocales)
 // ECMA-402 defines these as the Collator relevant extension keys: collation
@@ -216,7 +224,26 @@ Collator.localeData = collationLocaleData as unknown as Record<
   string,
   CollatorLocaleData | undefined
 >
+// ECMA-402 §10.1.1, steps 9–11: search uses distinct locale data.
+// Its collation is selected by usage, not a sort-specific co keyword.
+// https://tc39.es/ecma402/#sec-intl.collator
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L29-L33
+const searchLocaleData: Record<string, CollatorLocaleData> = Object.create(null)
+for (const locale of Collator.availableLocales) {
+  searchLocaleData[locale] = {...Collator.localeData[locale]!, co: ['default']}
+}
 Collator.polyfilled = true
+
+// ECMA-402 §10.2.1: the constructor's prototype property is non-writable.
+// https://tc39.es/ecma402/#sec-intl.collator.prototype
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L63-L67
+Object.defineProperty(Collator, 'prototype', {writable: false})
+Object.defineProperty(Collator.supportedLocalesOf, 'length', {value: 1})
+Object.defineProperty(
+  Object.getOwnPropertyDescriptor(Collator.prototype, 'compare')!.get!,
+  'name',
+  {value: 'get compare'}
+)
 
 try {
   if (typeof Symbol !== 'undefined') {

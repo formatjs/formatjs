@@ -54,7 +54,7 @@ const testDataMinimal: Record<string, string> = {
   'ru-Cyrl-RU': 'ru',
   'de-Latn-AT': 'de-AT',
   'bg-Cyrl-RO': 'bg-RO',
-  'und-Latn-AQ': 'und-AQ',
+  'und-Latn-AQ': 'en-AQ',
 }
 
 // Add variants, extensions, and privateuse subtags and ensure they don't
@@ -107,3 +107,10 @@ describe('likely-subtags', function () {
     expect(() => new Locale('x-private')).toThrowError(RangeError)
   })
 })
+
+it.each(['posix', 'xtg', 'zz-Latn', 'zz-Latn-GB'])(
+  'maximize preserves unmatched or already complete tag %s',
+  tag => {
+    expect(new Locale(tag).maximize().toString()).toBe(tag)
+  }
+)

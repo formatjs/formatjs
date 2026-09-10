@@ -1,0 +1,13 @@
+{
+  "total": 498,
+  "failures": {
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Receiver is not an initialized Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Receiver is not an initialized Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (default)": "value of legacy symbol property must be an Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (strict mode)": "value of legacy symbol property must be an Intl.NumberFormat",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol.js (default)": "Expected true but got false",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected true but got false",
+    "intl402/NumberFormat/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true",
+    "intl402/NumberFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.NumberFormat]», «[object Intl.NumberFormat]») to be true"
+  }
+}

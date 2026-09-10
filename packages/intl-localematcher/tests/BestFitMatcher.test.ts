@@ -78,3 +78,16 @@ test('bestFitMatcher testing $americas: es-KY', function () {
     }
   )
 })
+
+test('respects Unicode extension boundaries', () => {
+  for (const [tag, extension] of [
+    ['de-x-u-co-phonebk', undefined],
+    ['de-u-co-phonebk-x-private', '-u-co-phonebk'],
+    ['de-t-en-u-co-phonebk-x-u-kn', '-u-co-phonebk'],
+  ]) {
+    expect(BestFitMatcher(['de'], [tag!], () => 'en')).toEqual({
+      locale: 'de',
+      ...(extension ? {extension} : {}),
+    })
+  }
+})

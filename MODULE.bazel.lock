@@ -363,7 +363,7 @@
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
-          "FILE:@@//package.json bff927e18dad9fdf60555aa7dbf3a641b8026ce380183ec13e5a73504413f262"
+          "FILE:@@//package.json ccede1e6b7d484b667c387f6b95a941c56a57ccbaa27a530baeae703f2b8b115"
         ],
         "generatedRepoSpecs": {
           "npm_typescript": {
@@ -401,7 +401,7 @@
                 "rules_rs": "0.0.73",
                 "aspect_tools_telemetry": "0.5.1"
               },
-              "last_notice": 0
+              "last_notice": 2
             }
           }
         },
@@ -484,7 +484,7 @@
     "@@rules_nodejs+//nodejs:extensions.bzl%node": {
       "general": {
         "bzlTransitiveDigest": "oZFClfRhTTwsYzpxVPkOpOt/r0+OzEfEV37au0jFZ0s=",
-        "usagesDigest": "OyVGp+V7boDF5UT3haf4V8/N2qZLl5oD2ZEI2K8nBE4=",
+        "usagesDigest": "ZW9ekEV41fYf3wSBzXnbP1dzXAUrWmHB4OAwPBqfDQQ=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
           "nodejs_linux_amd64": {
@@ -815,6 +815,336 @@
             "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_toolchains_repo.bzl%nodejs_toolchains_repo",
             "attributes": {
               "user_node_repository_name": "nodejs"
+            }
+          },
+          "test262_nodejs_linux_amd64": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "linux_amd64"
+            }
+          },
+          "test262_nodejs_linux_arm64": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "linux_arm64"
+            }
+          },
+          "test262_nodejs_linux_s390x": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "linux_s390x"
+            }
+          },
+          "test262_nodejs_linux_ppc64le": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "linux_ppc64le"
+            }
+          },
+          "test262_nodejs_darwin_amd64": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "darwin_amd64"
+            }
+          },
+          "test262_nodejs_darwin_arm64": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "darwin_arm64"
+            }
+          },
+          "test262_nodejs_windows_amd64": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "windows_amd64"
+            }
+          },
+          "test262_nodejs_windows_arm64": {
+            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+            "attributes": {
+              "node_download_auth": {},
+              "node_repositories": {
+                "26.8.1-darwin_arm64": [
+                  "node-v26.8.1-darwin-arm64.tar.gz",
+                  "node-v26.8.1-darwin-arm64",
+                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
+                ],
+                "26.8.1-darwin_amd64": [
+                  "node-v26.8.1-darwin-x64.tar.gz",
+                  "node-v26.8.1-darwin-x64",
+                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
+                ],
+                "26.8.1-linux_arm64": [
+                  "node-v26.8.1-linux-arm64.tar.xz",
+                  "node-v26.8.1-linux-arm64",
+                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
+                ],
+                "26.8.1-linux_amd64": [
+                  "node-v26.8.1-linux-x64.tar.xz",
+                  "node-v26.8.1-linux-x64",
+                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
+                ],
+                "26.8.1-windows_amd64": [
+                  "node-v26.8.1-win-x64.zip",
+                  "node-v26.8.1-win-x64",
+                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
+                ]
+              },
+              "node_urls": [
+                "https://nodejs.org/dist/v{version}/{filename}"
+              ],
+              "node_version": "26.8.1",
+              "include_headers": false,
+              "platform": "windows_arm64"
+            }
+          },
+          "test262_nodejs": {
+            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_repo_host_os_alias.bzl%nodejs_repo_host_os_alias",
+            "attributes": {
+              "user_node_repository_name": "test262_nodejs"
+            }
+          },
+          "test262_nodejs_host": {
+            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_repo_host_os_alias.bzl%nodejs_repo_host_os_alias",
+            "attributes": {
+              "user_node_repository_name": "test262_nodejs"
+            }
+          },
+          "test262_nodejs_toolchains": {
+            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_toolchains_repo.bzl%nodejs_toolchains_repo",
+            "attributes": {
+              "user_node_repository_name": "test262_nodejs"
             }
           }
         }
@@ -1985,7 +2315,7 @@
       "env_logger_0.11.10": "{\"dependencies\":[{\"default_features\":false,\"features\":[\"wincon\"],\"name\":\"anstream\",\"optional\":true,\"req\":\"^1.0.0\"},{\"name\":\"anstyle\",\"optional\":true,\"req\":\"^1.0.13\"},{\"default_features\":false,\"name\":\"env_filter\",\"req\":\"^1.0.0\"},{\"default_features\":false,\"features\":[\"std\"],\"name\":\"jiff\",\"optional\":true,\"req\":\"^0.2.22\"},{\"features\":[\"std\"],\"name\":\"log\",\"req\":\"^0.4.29\"}],\"features\":{\"auto-color\":[\"color\",\"anstream/auto\"],\"color\":[\"dep:anstream\",\"dep:anstyle\"],\"default\":[\"auto-color\",\"humantime\",\"regex\"],\"humantime\":[\"dep:jiff\"],\"kv\":[\"log/kv\"],\"regex\":[\"env_filter/regex\"],\"unstable-kv\":[\"kv\"]}}",
       "equivalent_1.0.2": "{\"dependencies\":[],\"features\":{}}",
       "errno_0.3.14": "{\"dependencies\":[{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2\",\"target\":\"cfg(target_os=\\\"hermit\\\")\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2\",\"target\":\"cfg(target_os=\\\"wasi\\\")\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2\",\"target\":\"cfg(unix)\"},{\"features\":[\"Win32_Foundation\",\"Win32_System_Diagnostics_Debug\"],\"name\":\"windows-sys\",\"req\":\">=0.52, <0.62\",\"target\":\"cfg(windows)\"}],\"features\":{\"default\":[\"std\"],\"std\":[\"libc/std\"]}}",
-      "fast-glob_1.1.0": "{\"dependencies\":[{\"name\":\"arrayvec\",\"req\":\"^0.7.6\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"criterion2\",\"req\":\"^3.0.2\"},{\"kind\":\"dev\",\"name\":\"glob\",\"req\":\"^0.3.3\"},{\"kind\":\"dev\",\"name\":\"glob-match\",\"req\":\"^0.2.1\"},{\"kind\":\"dev\",\"name\":\"globset\",\"req\":\"^0.4.16\"},{\"kind\":\"dev\",\"name\":\"wax\",\"req\":\"^0.6.0\"}],\"features\":{\"codspeed\":[\"criterion2/codspeed\"],\"default\":[]}}",
+      "fast-glob_1.1.1": "{\"dependencies\":[{\"name\":\"arrayvec\",\"req\":\"^0.7.6\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"criterion2\",\"req\":\"^3.0.2\"},{\"kind\":\"dev\",\"name\":\"glob\",\"req\":\"^0.3.3\"},{\"kind\":\"dev\",\"name\":\"glob-match\",\"req\":\"^0.2.1\"},{\"kind\":\"dev\",\"name\":\"globset\",\"req\":\"^0.4.16\"},{\"kind\":\"dev\",\"name\":\"wax\",\"req\":\"^0.6.0\"}],\"features\":{\"codspeed\":[\"criterion2/codspeed\"],\"default\":[]}}",
       "fastrand_2.3.0": "{\"dependencies\":[{\"features\":[\"js\"],\"name\":\"getrandom\",\"optional\":true,\"req\":\"^0.2\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"getrandom\",\"req\":\"^0.2\"},{\"features\":[\"js\"],\"kind\":\"dev\",\"name\":\"getrandom\",\"req\":\"^0.2\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.8\"},{\"kind\":\"dev\",\"name\":\"wasm-bindgen-test\",\"req\":\"^0.3\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"wyhash\",\"req\":\"^0.5\"}],\"features\":{\"alloc\":[],\"default\":[\"std\"],\"js\":[\"std\",\"getrandom\"],\"std\":[\"alloc\"]}}",
       "fastrand_2.4.1": "{\"dependencies\":[{\"features\":[\"wasm_js\"],\"name\":\"getrandom\",\"optional\":true,\"req\":\"^0.3.4\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"getrandom\",\"req\":\"^0.3.4\"},{\"features\":[\"wasm_js\"],\"kind\":\"dev\",\"name\":\"getrandom\",\"req\":\"^0.3.4\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.9\"},{\"kind\":\"dev\",\"name\":\"wasm-bindgen-test\",\"req\":\"^0.3\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"wyhash\",\"req\":\"^0.6\"}],\"features\":{\"alloc\":[],\"default\":[\"std\"],\"js\":[\"std\",\"getrandom\"],\"std\":[\"alloc\"]}}",
       "fastrand_2.5.0": "{\"dependencies\":[{\"features\":[\"wasm_js\"],\"name\":\"getrandom\",\"optional\":true,\"req\":\"^0.4\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"getrandom\",\"req\":\"^0.4\"},{\"features\":[\"wasm_js\"],\"kind\":\"dev\",\"name\":\"getrandom\",\"req\":\"^0.4\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.10\"},{\"kind\":\"dev\",\"name\":\"wasm-bindgen-test\",\"req\":\"^0.3\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"wyhash\",\"req\":\"^0.6\"}],\"features\":{\"alloc\":[],\"default\":[\"std\"],\"js\":[\"std\",\"getrandom\"],\"std\":[\"alloc\"]}}",
@@ -2014,11 +2344,11 @@
       "getrandom_0.2.17": "{\"dependencies\":[{\"name\":\"cfg-if\",\"req\":\"^1\"},{\"name\":\"compiler_builtins\",\"optional\":true,\"req\":\"^0.1\"},{\"name\":\"core\",\"optional\":true,\"package\":\"rustc-std-workspace-core\",\"req\":\"^1.0\"},{\"name\":\"js-sys\",\"optional\":true,\"req\":\"^0.3\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(unix)\"},{\"default_features\":false,\"name\":\"wasi\",\"req\":\"^0.11\",\"target\":\"cfg(target_os = \\\"wasi\\\")\"},{\"default_features\":false,\"name\":\"wasm-bindgen\",\"optional\":true,\"req\":\"^0.2.62\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"},{\"kind\":\"dev\",\"name\":\"wasm-bindgen-test\",\"req\":\"^0.3.18\",\"target\":\"cfg(all(any(target_arch = \\\"wasm32\\\", target_arch = \\\"wasm64\\\"), target_os = \\\"unknown\\\"))\"}],\"features\":{\"custom\":[],\"js\":[\"wasm-bindgen\",\"js-sys\"],\"linux_disable_fallback\":[],\"rdrand\":[],\"rustc-dep-of-std\":[\"compiler_builtins\",\"core\",\"libc/rustc-dep-of-std\",\"wasi/rustc-dep-of-std\"],\"std\":[],\"test-in-browser\":[]}}",
       "getrandom_0.4.2": "{\"dependencies\":[{\"name\":\"cfg-if\",\"req\":\"^1\"},{\"default_features\":false,\"name\":\"js-sys\",\"optional\":true,\"req\":\"^0.3.77\",\"target\":\"cfg(all(target_arch = \\\"wasm32\\\", any(target_os = \\\"unknown\\\", target_os = \\\"none\\\"), target_feature = \\\"atomics\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(all(any(target_os = \\\"linux\\\", target_os = \\\"android\\\"), not(any(all(target_os = \\\"linux\\\", target_env = \\\"\\\"), getrandom_backend = \\\"custom\\\", getrandom_backend = \\\"linux_raw\\\", getrandom_backend = \\\"rdrand\\\", getrandom_backend = \\\"rndr\\\"))))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"dragonfly\\\", target_os = \\\"freebsd\\\", target_os = \\\"hurd\\\", target_os = \\\"illumos\\\", target_os = \\\"cygwin\\\", all(target_os = \\\"horizon\\\", target_arch = \\\"arm\\\")))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"haiku\\\", target_os = \\\"redox\\\", target_os = \\\"nto\\\", target_os = \\\"aix\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"ios\\\", target_os = \\\"visionos\\\", target_os = \\\"watchos\\\", target_os = \\\"tvos\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"macos\\\", target_os = \\\"openbsd\\\", target_os = \\\"vita\\\", target_os = \\\"emscripten\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(target_os = \\\"netbsd\\\")\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(target_os = \\\"solaris\\\")\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(target_os = \\\"vxworks\\\")\"},{\"default_features\":false,\"name\":\"r-efi\",\"req\":\"^6\",\"target\":\"cfg(all(target_os = \\\"uefi\\\", getrandom_backend = \\\"efi_rng\\\"))\"},{\"name\":\"rand_core\",\"optional\":true,\"req\":\"^0.10.0\"},{\"default_features\":false,\"name\":\"wasip2\",\"req\":\"^1\",\"target\":\"cfg(all(target_arch = \\\"wasm32\\\", target_os = \\\"wasi\\\", target_env = \\\"p2\\\"))\"},{\"name\":\"wasip3\",\"req\":\"^0.4\",\"target\":\"cfg(all(target_arch = \\\"wasm32\\\", target_os = \\\"wasi\\\", target_env = \\\"p3\\\"))\"},{\"default_features\":false,\"name\":\"wasm-bindgen\",\"optional\":true,\"req\":\"^0.2.98\",\"target\":\"cfg(all(target_arch = \\\"wasm32\\\", any(target_os = \\\"unknown\\\", target_os = \\\"none\\\")))\"},{\"kind\":\"dev\",\"name\":\"wasm-bindgen-test\",\"req\":\"^0.3\",\"target\":\"cfg(all(target_arch = \\\"wasm32\\\", any(target_os = \\\"unknown\\\", target_os = \\\"none\\\")))\"}],\"features\":{\"std\":[],\"sys_rng\":[\"dep:rand_core\"],\"wasm_js\":[\"dep:wasm-bindgen\",\"dep:js-sys\"]}}",
       "getrandom_0.4.3": "{\"dependencies\":[{\"name\":\"cfg-if\",\"req\":\"^1\"},{\"default_features\":false,\"name\":\"js-sys\",\"optional\":true,\"req\":\"^0.3.77\",\"target\":\"cfg(all(target_family = \\\"wasm\\\", any(target_os = \\\"unknown\\\", target_os = \\\"none\\\"), target_feature = \\\"atomics\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(all(any(target_os = \\\"linux\\\", target_os = \\\"android\\\"), not(any(all(target_os = \\\"linux\\\", target_env = \\\"\\\"), getrandom_backend = \\\"custom\\\", getrandom_backend = \\\"linux_raw\\\", getrandom_backend = \\\"rdrand\\\", getrandom_backend = \\\"rndr\\\"))))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"dragonfly\\\", target_os = \\\"freebsd\\\", target_os = \\\"hurd\\\", target_os = \\\"illumos\\\", target_os = \\\"cygwin\\\", all(target_os = \\\"horizon\\\", target_arch = \\\"arm\\\")))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"haiku\\\", target_os = \\\"redox\\\", target_os = \\\"nto\\\", target_os = \\\"aix\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"ios\\\", target_os = \\\"visionos\\\", target_os = \\\"watchos\\\", target_os = \\\"tvos\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(any(target_os = \\\"macos\\\", target_os = \\\"openbsd\\\", target_os = \\\"vita\\\", target_os = \\\"emscripten\\\"))\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(target_os = \\\"netbsd\\\")\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(target_os = \\\"solaris\\\")\"},{\"default_features\":false,\"name\":\"libc\",\"req\":\"^0.2.154\",\"target\":\"cfg(target_os = \\\"vxworks\\\")\"},{\"default_features\":false,\"name\":\"r-efi\",\"req\":\"^6\",\"target\":\"cfg(all(target_os = \\\"uefi\\\", getrandom_backend = \\\"efi_rng\\\"))\"},{\"name\":\"rand_core\",\"optional\":true,\"req\":\"^0.10.0\"},{\"default_features\":false,\"name\":\"wasm-bindgen\",\"optional\":true,\"req\":\"^0.2.98\",\"target\":\"cfg(all(target_family = \\\"wasm\\\", any(target_os = \\\"unknown\\\", target_os = \\\"none\\\")))\"},{\"kind\":\"dev\",\"name\":\"wasm-bindgen-test\",\"req\":\"^0.3\",\"target\":\"cfg(all(target_family = \\\"wasm\\\", any(target_os = \\\"unknown\\\", target_os = \\\"none\\\")))\"}],\"features\":{\"std\":[],\"sys_rng\":[\"dep:rand_core\"],\"wasm_js\":[\"dep:wasm-bindgen\",\"dep:js-sys\"]}}",
-      "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77_ruff_python_ast": "{\"dependencies\":[{\"default_features\":true,\"features\":[],\"name\":\"aho-corasick\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"arrayvec\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"bitflags\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"char_str\",\"optional\":false},{\"name\":\"compact_str\"},{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\"],\"name\":\"get-size2\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"is-macro\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"memchr\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_cache\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"ruff_macros\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"ruff_python_trivia\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_source_file\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"rustc-hash\",\"optional\":false},{\"default_features\":false,\"features\":[\"compact_str\",\"macros\",\"salsa_unstable\",\"inventory\"],\"name\":\"salsa\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"schemars\",\"optional\":true},{\"default_features\":true,\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"serde_json\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"thin-vec\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"thiserror\",\"optional\":false}],\"features\":{\"cache\":[\"dep:ruff_cache\",\"dep:ruff_macros\"],\"get-size\":[\"dep:get-size2\",\"char_str/get-size\",\"ruff_text_size/get-size\"],\"salsa\":[\"dep:salsa\"],\"schemars\":[\"dep:schemars\",\"dep:serde_json\"],\"serde\":[\"dep:serde\",\"ruff_text_size/serde\",\"dep:ruff_cache\",\"char_str/serde\",\"compact_str/serde\",\"thin-vec/serde\"]},\"strip_prefix\":\"crates/ruff_python_ast\"}",
-      "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77_ruff_python_parser": "{\"dependencies\":[{\"default_features\":true,\"features\":[],\"name\":\"bitflags\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"bstr\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"drop_bomb\",\"optional\":false},{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\",\"default\"],\"name\":\"get-size2\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"memchr\",\"optional\":false},{\"default_features\":true,\"features\":[\"get-size\"],\"name\":\"ruff_python_ast\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_python_trivia\",\"optional\":false},{\"default_features\":true,\"features\":[\"get-size\"],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"rustc-hash\",\"optional\":false},{\"name\":\"stacker\"},{\"name\":\"static_assertions\"},{\"default_features\":true,\"features\":[],\"name\":\"thin-vec\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode-ident\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode-normalization\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode_names2\",\"optional\":false}],\"features\":{},\"strip_prefix\":\"crates/ruff_python_parser\"}",
-      "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77_ruff_python_trivia": "{\"dependencies\":[{\"default_features\":true,\"features\":[],\"name\":\"itertools\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_source_file\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"rustc-hash\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode-ident\",\"optional\":false}],\"features\":{},\"strip_prefix\":\"crates/ruff_python_trivia\"}",
-      "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77_ruff_source_file": "{\"dependencies\":[{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\",\"default\",\"default\"],\"name\":\"get-size2\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"memchr\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[\"derive\",\"default\"],\"name\":\"serde\",\"optional\":true}],\"features\":{\"get-size\":[\"dep:get-size2\",\"ruff_text_size/get-size\"],\"serde\":[\"dep:serde\",\"ruff_text_size/serde\"]},\"strip_prefix\":\"crates/ruff_source_file\"}",
-      "git+https://github.com/astral-sh/ruff.git?tag=0.16.4#11c76bf48fdac06b2f240cba502eda96da4dce77_ruff_text_size": "{\"dependencies\":[{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\",\"default\",\"default\",\"default\"],\"name\":\"get-size2\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"schemars\",\"optional\":true},{\"default_features\":true,\"features\":[\"derive\",\"default\",\"default\"],\"name\":\"serde\",\"optional\":true}],\"features\":{\"get-size\":[\"dep:get-size2\"],\"serde\":[\"dep:serde\"]},\"strip_prefix\":\"crates/ruff_text_size\"}",
+      "git+https://github.com/astral-sh/ruff.git?tag=0.16.5#9e4938c4a60bed3e87a11ee1e1db1bd23f4d964a_ruff_python_ast": "{\"dependencies\":[{\"default_features\":true,\"features\":[],\"name\":\"aho-corasick\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"arrayvec\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"bitflags\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"char_str\",\"optional\":false},{\"name\":\"compact_str\"},{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\"],\"name\":\"get-size2\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"is-macro\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"memchr\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_cache\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"ruff_macros\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"ruff_python_trivia\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_source_file\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"rustc-hash\",\"optional\":false},{\"default_features\":false,\"features\":[\"compact_str\",\"macros\",\"salsa_unstable\",\"inventory\"],\"name\":\"salsa\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"schemars\",\"optional\":true},{\"default_features\":true,\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"serde_json\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"thin-vec\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"thiserror\",\"optional\":false}],\"features\":{\"cache\":[\"dep:ruff_cache\",\"dep:ruff_macros\"],\"get-size\":[\"dep:get-size2\",\"char_str/get-size\",\"ruff_text_size/get-size\"],\"salsa\":[\"dep:salsa\"],\"schemars\":[\"dep:schemars\",\"dep:serde_json\"],\"serde\":[\"dep:serde\",\"ruff_text_size/serde\",\"dep:ruff_cache\",\"char_str/serde\",\"compact_str/serde\",\"thin-vec/serde\"]},\"strip_prefix\":\"crates/ruff_python_ast\"}",
+      "git+https://github.com/astral-sh/ruff.git?tag=0.16.5#9e4938c4a60bed3e87a11ee1e1db1bd23f4d964a_ruff_python_parser": "{\"dependencies\":[{\"default_features\":true,\"features\":[],\"name\":\"bitflags\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"bstr\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"drop_bomb\",\"optional\":false},{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\"],\"name\":\"get-size2\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"memchr\",\"optional\":false},{\"default_features\":true,\"features\":[\"get-size\"],\"name\":\"ruff_python_ast\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_python_trivia\",\"optional\":false},{\"default_features\":true,\"features\":[\"get-size\"],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"rustc-hash\",\"optional\":false},{\"name\":\"stacker\"},{\"name\":\"static_assertions\"},{\"default_features\":true,\"features\":[],\"name\":\"thin-vec\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode-ident\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode-normalization\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode_names2\",\"optional\":false}],\"features\":{},\"strip_prefix\":\"crates/ruff_python_parser\"}",
+      "git+https://github.com/astral-sh/ruff.git?tag=0.16.5#9e4938c4a60bed3e87a11ee1e1db1bd23f4d964a_ruff_python_trivia": "{\"dependencies\":[{\"default_features\":true,\"features\":[],\"name\":\"itertools\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_source_file\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"rustc-hash\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"unicode-ident\",\"optional\":false}],\"features\":{},\"strip_prefix\":\"crates/ruff_python_trivia\"}",
+      "git+https://github.com/astral-sh/ruff.git?tag=0.16.5#9e4938c4a60bed3e87a11ee1e1db1bd23f4d964a_ruff_source_file": "{\"dependencies\":[{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\",\"default\"],\"name\":\"get-size2\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"memchr\",\"optional\":false},{\"default_features\":true,\"features\":[],\"name\":\"ruff_text_size\",\"optional\":false},{\"default_features\":true,\"features\":[\"derive\",\"default\"],\"name\":\"serde\",\"optional\":true}],\"features\":{\"get-size\":[\"dep:get-size2\",\"ruff_text_size/get-size\"],\"serde\":[\"dep:serde\",\"ruff_text_size/serde\"]},\"strip_prefix\":\"crates/ruff_source_file\"}",
+      "git+https://github.com/astral-sh/ruff.git?tag=0.16.5#9e4938c4a60bed3e87a11ee1e1db1bd23f4d964a_ruff_text_size": "{\"dependencies\":[{\"default_features\":true,\"features\":[\"derive\",\"smallvec\",\"hashbrown\",\"compact-str\",\"ordermap\",\"thin-vec\",\"default\",\"default\"],\"name\":\"get-size2\",\"optional\":true},{\"default_features\":true,\"features\":[],\"name\":\"schemars\",\"optional\":true},{\"default_features\":true,\"features\":[\"derive\",\"default\",\"default\"],\"name\":\"serde\",\"optional\":true}],\"features\":{\"get-size\":[\"dep:get-size2\"],\"serde\":[\"dep:serde\"]},\"strip_prefix\":\"crates/ruff_text_size\"}",
       "h2_0.4.13": "{\"dependencies\":[{\"name\":\"atomic-waker\",\"req\":\"^1.0.0\"},{\"name\":\"bytes\",\"req\":\"^1\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"env_logger\",\"req\":\"^0.10\"},{\"name\":\"fnv\",\"req\":\"^1.0.5\"},{\"default_features\":false,\"name\":\"futures-core\",\"req\":\"^0.3\"},{\"default_features\":false,\"name\":\"futures-sink\",\"req\":\"^0.3\"},{\"kind\":\"dev\",\"name\":\"hex\",\"req\":\"^0.4.3\"},{\"name\":\"http\",\"req\":\"^1\"},{\"features\":[\"std\"],\"name\":\"indexmap\",\"req\":\"^2\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"quickcheck\",\"req\":\"^1.0.3\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.8.4\"},{\"kind\":\"dev\",\"name\":\"serde\",\"req\":\"^1.0.0\"},{\"kind\":\"dev\",\"name\":\"serde_json\",\"req\":\"^1.0.0\"},{\"name\":\"slab\",\"req\":\"^0.4.2\"},{\"features\":[\"io-util\"],\"name\":\"tokio\",\"req\":\"^1\"},{\"features\":[\"rt-multi-thread\",\"macros\",\"sync\",\"net\"],\"kind\":\"dev\",\"name\":\"tokio\",\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"tokio-rustls\",\"req\":\"^0.26\"},{\"features\":[\"codec\",\"io\"],\"name\":\"tokio-util\",\"req\":\"^0.7.1\"},{\"default_features\":false,\"features\":[\"std\"],\"name\":\"tracing\",\"req\":\"^0.1.35\"},{\"kind\":\"dev\",\"name\":\"walkdir\",\"req\":\"^2.3.2\"},{\"kind\":\"dev\",\"name\":\"webpki-roots\",\"req\":\"^1\"}],\"features\":{\"stream\":[],\"unstable\":[]}}",
       "half_2.7.1": "{\"dependencies\":[{\"features\":[\"derive\"],\"name\":\"arbitrary\",\"optional\":true,\"req\":\"^1.4.1\"},{\"default_features\":false,\"features\":[\"derive\"],\"name\":\"bytemuck\",\"optional\":true,\"req\":\"^1.4.1\"},{\"name\":\"cfg-if\",\"req\":\"^1.0.0\"},{\"kind\":\"dev\",\"name\":\"criterion\",\"req\":\"^0.5\"},{\"name\":\"crunchy\",\"req\":\"^0.2.2\",\"target\":\"cfg(target_arch = \\\"spirv\\\")\"},{\"kind\":\"dev\",\"name\":\"crunchy\",\"req\":\"^0.2.2\"},{\"default_features\":false,\"features\":[\"libm\"],\"name\":\"num-traits\",\"optional\":true,\"req\":\"^0.2.16\"},{\"kind\":\"dev\",\"name\":\"quickcheck\",\"req\":\"^1.0\"},{\"kind\":\"dev\",\"name\":\"quickcheck_macros\",\"req\":\"^1.0\"},{\"default_features\":false,\"features\":[\"thread_rng\"],\"name\":\"rand\",\"optional\":true,\"req\":\"^0.9.0\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.9.0\"},{\"default_features\":false,\"name\":\"rand_distr\",\"optional\":true,\"req\":\"^0.5.0\"},{\"name\":\"rkyv\",\"optional\":true,\"req\":\"^0.8.0\"},{\"default_features\":false,\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true,\"req\":\"^1.0\"},{\"default_features\":false,\"features\":[\"derive\",\"simd\"],\"name\":\"zerocopy\",\"req\":\"^0.8.26\"}],\"features\":{\"alloc\":[],\"default\":[\"std\"],\"nightly\":[],\"rand_distr\":[\"dep:rand\",\"dep:rand_distr\"],\"std\":[\"alloc\"],\"use-intrinsics\":[],\"zerocopy\":[]}}",
       "hashbrown_0.15.5": "{\"dependencies\":[{\"name\":\"alloc\",\"optional\":true,\"package\":\"rustc-std-workspace-alloc\",\"req\":\"^1.0.0\"},{\"default_features\":false,\"features\":[\"alloc\"],\"name\":\"allocator-api2\",\"optional\":true,\"req\":\"^0.2.9\"},{\"features\":[\"allocator-api2\"],\"kind\":\"dev\",\"name\":\"bumpalo\",\"req\":\"^3.13.0\"},{\"name\":\"core\",\"optional\":true,\"package\":\"rustc-std-workspace-core\",\"req\":\"^1.0.0\"},{\"kind\":\"dev\",\"name\":\"doc-comment\",\"req\":\"^0.3.1\"},{\"default_features\":false,\"name\":\"equivalent\",\"optional\":true,\"req\":\"^1.0\"},{\"kind\":\"dev\",\"name\":\"fnv\",\"req\":\"^1.0.7\"},{\"default_features\":false,\"name\":\"foldhash\",\"optional\":true,\"req\":\"^0.1.2\"},{\"kind\":\"dev\",\"name\":\"lazy_static\",\"req\":\"^1.4\"},{\"features\":[\"small_rng\"],\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.9.0\"},{\"name\":\"rayon\",\"optional\":true,\"req\":\"^1.2\"},{\"kind\":\"dev\",\"name\":\"rayon\",\"req\":\"^1.2\"},{\"default_features\":false,\"name\":\"serde\",\"optional\":true,\"req\":\"^1.0.25\"},{\"kind\":\"dev\",\"name\":\"serde_test\",\"req\":\"^1.0\"}],\"features\":{\"default\":[\"default-hasher\",\"inline-more\",\"allocator-api2\",\"equivalent\",\"raw-entry\"],\"default-hasher\":[\"dep:foldhash\"],\"inline-more\":[],\"nightly\":[\"bumpalo/allocator_api\"],\"raw-entry\":[],\"rustc-dep-of-std\":[\"nightly\",\"core\",\"alloc\",\"rustc-internal-api\"],\"rustc-internal-api\":[]}}",
@@ -2123,40 +2453,39 @@
       "oorandom_11.1.5": "{\"dependencies\":[{\"kind\":\"dev\",\"name\":\"rand_core\",\"req\":\"^0.5\"},{\"kind\":\"dev\",\"name\":\"rand_pcg\",\"req\":\"^0.2\"},{\"kind\":\"dev\",\"name\":\"random-fast-rng\",\"req\":\"^0.1\"},{\"kind\":\"dev\",\"name\":\"randomize\",\"req\":\"^3.0.0\"}],\"features\":{}}",
       "ordermap_1.2.0": "{\"dependencies\":[{\"default_features\":false,\"name\":\"arbitrary\",\"optional\":true,\"req\":\"^1.0\"},{\"default_features\":false,\"name\":\"borsh\",\"optional\":true,\"req\":\"^1.5.6\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"fastrand\",\"req\":\"^2\"},{\"kind\":\"dev\",\"name\":\"fnv\",\"req\":\"^1.0\"},{\"default_features\":false,\"name\":\"indexmap\",\"req\":\"^2.14.0\"},{\"kind\":\"dev\",\"name\":\"itertools\",\"req\":\"^0.14\"},{\"default_features\":false,\"name\":\"quickcheck\",\"optional\":true,\"req\":\"^1.0\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"quickcheck\",\"req\":\"~1.0\"},{\"name\":\"rayon\",\"optional\":true,\"req\":\"^1.9\"},{\"default_features\":false,\"name\":\"serde\",\"optional\":true,\"req\":\"^1.0.220\",\"target\":\"cfg(any())\"},{\"default_features\":false,\"features\":[\"derive\"],\"kind\":\"dev\",\"name\":\"serde\",\"req\":\"^1.0\"},{\"default_features\":false,\"name\":\"serde_core\",\"optional\":true,\"req\":\"^1.0.220\"},{\"default_features\":false,\"name\":\"sval\",\"optional\":true,\"req\":\"^2\"}],\"features\":{\"arbitrary\":[\"dep:arbitrary\",\"indexmap/arbitrary\"],\"borsh\":[\"dep:borsh\",\"borsh/indexmap\"],\"default\":[\"std\"],\"quickcheck\":[\"dep:quickcheck\",\"indexmap/quickcheck\"],\"rayon\":[\"dep:rayon\",\"indexmap/rayon\"],\"serde\":[\"dep:serde_core\",\"dep:serde\",\"indexmap/serde\"],\"std\":[\"indexmap/std\"],\"sval\":[\"dep:sval\",\"indexmap/sval\"]}}",
       "owo-colors_4.3.0": "{\"dependencies\":[{\"name\":\"supports-color\",\"optional\":true,\"req\":\"^3.0.0\"},{\"name\":\"supports-color-2\",\"optional\":true,\"package\":\"supports-color\",\"req\":\"^2.0\"}],\"features\":{\"alloc\":[],\"supports-colors\":[\"dep:supports-color-2\",\"supports-color\"]}}",
-      "owo-colors_4.4.0": "{\"dependencies\":[{\"name\":\"supports-color\",\"optional\":true,\"req\":\"^3.0.0\"},{\"name\":\"supports-color-2\",\"optional\":true,\"package\":\"supports-color\",\"req\":\"^2.0\"}],\"features\":{\"alloc\":[],\"supports-colors\":[\"dep:supports-color-2\",\"supports-color\"]}}",
       "oxc-miette-derive_2.7.1": "{\"dependencies\":[{\"name\":\"proc-macro2\",\"req\":\"^1\"},{\"name\":\"quote\",\"req\":\"^1\"},{\"name\":\"syn\",\"req\":\"^2\"}],\"features\":{}}",
       "oxc-miette_2.7.1": "{\"dependencies\":[{\"name\":\"backtrace\",\"optional\":true,\"req\":\"^0.3.74\"},{\"name\":\"backtrace-ext\",\"optional\":true,\"req\":\"^0.2.1\"},{\"name\":\"cfg-if\",\"req\":\"^1\"},{\"default_features\":false,\"kind\":\"dev\",\"name\":\"futures\",\"req\":\"^0.3\"},{\"kind\":\"dev\",\"name\":\"indenter\",\"req\":\"^0.3.3\"},{\"kind\":\"dev\",\"name\":\"insta\",\"req\":\"^1.46.1\"},{\"kind\":\"dev\",\"name\":\"lazy_static\",\"req\":\"^1.5\"},{\"name\":\"owo-colors\",\"optional\":true,\"req\":\"^4\"},{\"name\":\"oxc-miette-derive\",\"optional\":true,\"req\":\"=2.7.1\"},{\"kind\":\"dev\",\"name\":\"regex\",\"req\":\"^1.11\"},{\"kind\":\"dev\",\"name\":\"rustversion\",\"req\":\"^1.0\"},{\"kind\":\"dev\",\"name\":\"semver\",\"req\":\"^1.0.26\"},{\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde_json\",\"req\":\"^1.0.140\"},{\"name\":\"supports-color\",\"optional\":true,\"req\":\"^3.0.2\"},{\"name\":\"supports-hyperlinks\",\"optional\":true,\"req\":\"^3.1.0\"},{\"name\":\"supports-unicode\",\"optional\":true,\"req\":\"^3.0.0\"},{\"name\":\"terminal_size\",\"optional\":true,\"req\":\"^0.4.2\"},{\"name\":\"textwrap\",\"optional\":true,\"req\":\"^0.16.2\"},{\"name\":\"thiserror\",\"req\":\"^2\"},{\"features\":[\"diff\"],\"kind\":\"dev\",\"name\":\"trybuild\",\"req\":\"^1.0.104\"},{\"name\":\"unicode-segmentation\",\"req\":\"^1.12.0\"},{\"name\":\"unicode-width\",\"req\":\"^0.2.0\"}],\"features\":{\"default\":[\"derive\"],\"derive\":[\"oxc-miette-derive\"],\"fancy\":[\"fancy-no-backtrace\",\"backtrace\",\"backtrace-ext\"],\"fancy-base\":[\"owo-colors\",\"textwrap\"],\"fancy-no-backtrace\":[\"fancy-base\",\"terminal_size\",\"supports-hyperlinks\",\"supports-color\",\"supports-unicode\"],\"fancy-no-syscall\":[\"fancy-base\"],\"no-format-args-capture\":[]}}",
       "oxc_0.127.0": "{\"dependencies\":[{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast_visit\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_cfg\",\"optional\":true,\"req\":\"^0.127.0\"},{\"default_features\":false,\"name\":\"oxc_codegen\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_isolated_declarations\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_mangler\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_minifier\",\"optional\":true,\"req\":\"^0.127.0\"},{\"features\":[\"regular_expression\"],\"name\":\"oxc_parser\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_semantic\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_transformer\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_transformer_plugins\",\"optional\":true,\"req\":\"^0.127.0\"}],\"features\":{\"ast_visit\":[\"oxc_ast_visit\"],\"cfg\":[\"oxc_cfg\",\"oxc_semantic/cfg\"],\"codegen\":[\"oxc_codegen\",\"oxc_codegen/sourcemap\"],\"conformance\":[\"oxc_ast_visit/conformance\"],\"default\":[\"regular_expression\"],\"full\":[\"codegen\",\"mangler\",\"minifier\",\"semantic\",\"transformer\",\"isolated_declarations\",\"ast_visit\",\"regular_expression\"],\"isolated_declarations\":[\"oxc_isolated_declarations\"],\"mangler\":[\"oxc_mangler\"],\"minifier\":[\"oxc_mangler\",\"oxc_minifier\"],\"regular_expression\":[\"oxc_regular_expression\",\"oxc_parser/regular_expression\"],\"semantic\":[\"oxc_semantic\"],\"serialize\":[\"oxc_allocator/from_raw_parts\",\"oxc_ast/serialize\",\"oxc_ast_visit/serialize\",\"oxc_semantic?/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\"],\"transformer\":[\"oxc_transformer\",\"oxc_transformer_plugins\"]}}",
-      "oxc_0.147.0": "{\"dependencies\":[{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast_visit\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_cfg\",\"optional\":true,\"req\":\"^0.147.0\"},{\"default_features\":false,\"name\":\"oxc_codegen\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_isolated_declarations\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_mangler\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_minifier\",\"optional\":true,\"req\":\"^0.147.0\"},{\"features\":[\"regular_expression\"],\"name\":\"oxc_parser\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_semantic\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_transformer\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_transformer_plugins\",\"optional\":true,\"req\":\"^0.147.0\"}],\"features\":{\"ast_visit\":[\"oxc_ast_visit\"],\"cfg\":[\"oxc_cfg\",\"oxc_semantic/cfg\"],\"codegen\":[\"oxc_codegen\",\"oxc_codegen/sourcemap\"],\"conformance\":[\"oxc_ast_visit/conformance\"],\"default\":[\"regular_expression\"],\"full\":[\"codegen\",\"mangler\",\"minifier\",\"semantic\",\"transformer\",\"isolated_declarations\",\"ast_visit\",\"regular_expression\"],\"isolated_declarations\":[\"oxc_isolated_declarations\"],\"mangler\":[\"oxc_mangler\"],\"minifier\":[\"oxc_mangler\",\"oxc_minifier\"],\"regular_expression\":[\"oxc_regular_expression\",\"oxc_parser/regular_expression\"],\"semantic\":[\"oxc_semantic\"],\"serialize\":[\"oxc_allocator/from_raw_parts\",\"oxc_ast/serialize\",\"oxc_ast_visit/serialize\",\"oxc_semantic?/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\"],\"transformer\":[\"oxc_transformer\",\"oxc_transformer_plugins\"]}}",
+      "oxc_0.148.0": "{\"dependencies\":[{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast_visit\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_cfg\",\"optional\":true,\"req\":\"^0.148.0\"},{\"default_features\":false,\"name\":\"oxc_codegen\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_isolated_declarations\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_mangler\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_minifier\",\"optional\":true,\"req\":\"^0.148.0\"},{\"features\":[\"regular_expression\"],\"name\":\"oxc_parser\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_semantic\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_transformer\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_transformer_plugins\",\"optional\":true,\"req\":\"^0.148.0\"}],\"features\":{\"ast_visit\":[\"oxc_ast_visit\"],\"cfg\":[\"oxc_cfg\",\"oxc_semantic/cfg\"],\"codegen\":[\"oxc_codegen\",\"oxc_codegen/sourcemap\"],\"conformance\":[\"oxc_ast_visit/conformance\"],\"default\":[\"regular_expression\"],\"full\":[\"codegen\",\"mangler\",\"minifier\",\"semantic\",\"transformer\",\"isolated_declarations\",\"ast_visit\",\"regular_expression\"],\"isolated_declarations\":[\"oxc_isolated_declarations\"],\"mangler\":[\"oxc_mangler\"],\"minifier\":[\"oxc_mangler\",\"oxc_minifier\"],\"regular_expression\":[\"oxc_regular_expression\",\"oxc_parser/regular_expression\"],\"semantic\":[\"oxc_semantic\"],\"serialize\":[\"oxc_allocator/from_raw_parts\",\"oxc_ast/serialize\",\"oxc_ast_visit/serialize\",\"oxc_semantic?/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\"],\"transformer\":[\"oxc_transformer\",\"oxc_transformer_plugins\"]}}",
       "oxc_allocator_0.127.0": "{\"dependencies\":[{\"name\":\"allocator-api2\",\"req\":\"=0.2.21\"},{\"default_features\":false,\"features\":[\"inline-more\",\"allocator-api2\"],\"name\":\"hashbrown\",\"req\":\"^0.17.0\"},{\"name\":\"oxc_ast_macros\",\"optional\":true,\"req\":\"^0.127.0\"},{\"features\":[\"assert_unchecked\",\"stack\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_estree\",\"optional\":true,\"req\":\"^0.127.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_estree\",\"req\":\"^0.127.0\"},{\"kind\":\"dev\",\"name\":\"quickcheck\",\"req\":\"^1.1.0\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.10.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde\",\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde_json\",\"req\":\"^1\"}],\"features\":{\"bitset\":[],\"disable_track_allocations\":[],\"fixed_size\":[\"from_raw_parts\",\"pool\",\"dep:oxc_ast_macros\"],\"from_raw_parts\":[],\"pool\":[],\"serialize\":[\"dep:serde\",\"oxc_estree/serialize\"],\"testing\":[],\"track_allocations\":[]}}",
-      "oxc_allocator_0.147.0": "{\"dependencies\":[{\"name\":\"allocator-api2\",\"req\":\"=0.2.21\"},{\"default_features\":false,\"features\":[\"inline-more\",\"allocator-api2\"],\"name\":\"hashbrown\",\"req\":\"^0.17.1\"},{\"name\":\"oxc_ast_macros\",\"optional\":true,\"req\":\"^0.147.0\"},{\"features\":[\"assert_unchecked\",\"stack\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.147.0\"},{\"features\":[\"types\"],\"kind\":\"dev\",\"name\":\"oxc_data_structures\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_estree\",\"optional\":true,\"req\":\"^0.147.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_estree\",\"req\":\"^0.147.0\"},{\"kind\":\"dev\",\"name\":\"quickcheck\",\"req\":\"^1.1.0\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.10.2\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde\",\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde_json\",\"req\":\"^1\"},{\"features\":[\"Win32_System_Memory\"],\"name\":\"windows-sys\",\"optional\":true,\"req\":\"^0.61.2\",\"target\":\"cfg(target_os = \\\"windows\\\")\"}],\"features\":{\"bitset\":[],\"disable_track_allocations\":[],\"fixed_size\":[\"from_raw_parts\",\"pool\",\"dep:oxc_ast_macros\",\"dep:windows-sys\"],\"from_raw_parts\":[],\"pool\":[],\"serialize\":[\"dep:serde\",\"oxc_estree/serialize\"],\"testing\":[],\"track_allocations\":[]}}",
+      "oxc_allocator_0.148.0": "{\"dependencies\":[{\"name\":\"allocator-api2\",\"req\":\"=0.2.21\"},{\"default_features\":false,\"features\":[\"inline-more\",\"allocator-api2\"],\"name\":\"hashbrown\",\"req\":\"^0.17.1\"},{\"name\":\"oxc_ast_macros\",\"optional\":true,\"req\":\"^0.148.0\"},{\"features\":[\"assert_unchecked\",\"stack\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.148.0\"},{\"features\":[\"types\"],\"kind\":\"dev\",\"name\":\"oxc_data_structures\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_estree\",\"optional\":true,\"req\":\"^0.148.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_estree\",\"req\":\"^0.148.0\"},{\"kind\":\"dev\",\"name\":\"quickcheck\",\"req\":\"^1.1.0\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.10.2\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde\",\"req\":\"^1\"},{\"kind\":\"dev\",\"name\":\"serde_json\",\"req\":\"^1\"},{\"features\":[\"Win32_System_Memory\"],\"name\":\"windows-sys\",\"optional\":true,\"req\":\"^0.61.2\",\"target\":\"cfg(target_os = \\\"windows\\\")\"}],\"features\":{\"bitset\":[],\"disable_track_allocations\":[],\"fixed_size\":[\"from_raw_parts\",\"pool\",\"dep:oxc_ast_macros\",\"dep:windows-sys\"],\"from_raw_parts\":[],\"pool\":[],\"serialize\":[\"dep:serde\",\"oxc_estree/serialize\"],\"testing\":[],\"track_allocations\":[]}}",
       "oxc_ast_0.127.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.10.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.127.0\"},{\"features\":[\"inline_string\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_regular_expression\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.127.0\"}],\"features\":{\"default\":[],\"serialize\":[\"oxc_allocator/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\",\"oxc_estree/serialize\"]}}",
-      "oxc_ast_0.147.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.147.0\"},{\"features\":[\"inline_string\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_regular_expression\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.147.0\"}],\"features\":{\"default\":[],\"serialize\":[\"oxc_allocator/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\",\"oxc_estree/serialize\"]}}",
+      "oxc_ast_0.148.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.148.0\"},{\"features\":[\"inline_string\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_regular_expression\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.148.0\"}],\"features\":{\"default\":[],\"serialize\":[\"oxc_allocator/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\",\"oxc_estree/serialize\"]}}",
       "oxc_ast_macros_0.127.0": "{\"dependencies\":[{\"name\":\"phf\",\"req\":\"^0.13.1\"},{\"name\":\"proc-macro2\",\"req\":\"^1\"},{\"name\":\"quote\",\"req\":\"^1\"},{\"default_features\":false,\"features\":[\"full\",\"parsing\",\"printing\",\"proc-macro\",\"clone-impls\"],\"name\":\"syn\",\"req\":\"^2\"}],\"features\":{}}",
-      "oxc_ast_macros_0.147.0": "{\"dependencies\":[{\"name\":\"phf\",\"req\":\"^0.14.0\"},{\"name\":\"proc-macro2\",\"req\":\"^1\"},{\"name\":\"quote\",\"req\":\"^1\"},{\"default_features\":false,\"features\":[\"full\",\"parsing\",\"printing\",\"proc-macro\",\"clone-impls\"],\"name\":\"syn\",\"req\":\"^3\"}],\"features\":{}}",
+      "oxc_ast_macros_0.148.0": "{\"dependencies\":[{\"name\":\"phf\",\"req\":\"^0.14.0\"},{\"name\":\"proc-macro2\",\"req\":\"^1\"},{\"name\":\"quote\",\"req\":\"^1\"},{\"default_features\":false,\"features\":[\"full\",\"parsing\",\"printing\",\"proc-macro\",\"clone-impls\"],\"name\":\"syn\",\"req\":\"^3\"}],\"features\":{}}",
       "oxc_ast_visit_0.127.0": "{\"dependencies\":[{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.127.0\"}],\"features\":{\"conformance\":[],\"default\":[],\"serialize\":[\"oxc_allocator/serialize\",\"oxc_ast/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\"]}}",
-      "oxc_ast_visit_0.147.0": "{\"dependencies\":[{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.147.0\"}],\"features\":{\"conformance\":[],\"default\":[],\"serialize\":[\"oxc_allocator/serialize\",\"oxc_ast/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\"]}}",
+      "oxc_ast_visit_0.148.0": "{\"dependencies\":[{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.148.0\"}],\"features\":{\"conformance\":[],\"default\":[],\"serialize\":[\"oxc_allocator/serialize\",\"oxc_ast/serialize\",\"oxc_span/serialize\",\"oxc_syntax/serialize\"]}}",
       "oxc_data_structures_0.127.0": "{\"dependencies\":[{\"name\":\"ropey\",\"optional\":true,\"req\":\"^1.6.1\"}],\"features\":{\"all\":[\"assert_unchecked\",\"box_macros\",\"code_buffer\",\"fieldless_enum\",\"inline_string\",\"non_null\",\"rope\",\"slice_iter\",\"stack\"],\"assert_unchecked\":[],\"box_macros\":[],\"code_buffer\":[\"assert_unchecked\"],\"default\":[],\"fieldless_enum\":[],\"inline_string\":[\"assert_unchecked\"],\"non_null\":[],\"rope\":[\"dep:ropey\"],\"slice_iter\":[\"assert_unchecked\"],\"stack\":[]}}",
-      "oxc_data_structures_0.147.0": "{\"dependencies\":[{\"name\":\"ropey\",\"optional\":true,\"req\":\"^1.6.1\"}],\"features\":{\"all\":[\"assert_unchecked\",\"box_macros\",\"branch_hints\",\"code_buffer\",\"fieldless_enum\",\"inline_string\",\"non_null\",\"rope\",\"slice_iter\",\"stack\",\"str\",\"string_ext\",\"types\"],\"assert_unchecked\":[],\"box_macros\":[],\"branch_hints\":[],\"code_buffer\":[\"assert_unchecked\"],\"default\":[],\"fieldless_enum\":[],\"inline_string\":[\"assert_unchecked\"],\"non_null\":[],\"rope\":[\"dep:ropey\"],\"slice_iter\":[\"assert_unchecked\"],\"stack\":[],\"str\":[],\"string_ext\":[\"assert_unchecked\"],\"types\":[]}}",
+      "oxc_data_structures_0.148.0": "{\"dependencies\":[{\"name\":\"ropey\",\"optional\":true,\"req\":\"^1.6.1\"}],\"features\":{\"all\":[\"assert_unchecked\",\"box_macros\",\"branch_hints\",\"code_buffer\",\"fieldless_enum\",\"inline_string\",\"non_null\",\"rope\",\"slice_iter\",\"stack\",\"str\",\"string_ext\",\"types\"],\"assert_unchecked\":[],\"box_macros\":[],\"branch_hints\":[],\"code_buffer\":[\"assert_unchecked\"],\"default\":[],\"fieldless_enum\":[],\"inline_string\":[\"assert_unchecked\"],\"non_null\":[],\"rope\":[\"dep:ropey\"],\"slice_iter\":[\"assert_unchecked\"],\"stack\":[],\"str\":[],\"string_ext\":[\"assert_unchecked\"],\"types\":[]}}",
       "oxc_diagnostics_0.127.0": "{\"dependencies\":[{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"features\":[\"fancy-no-syscall\"],\"name\":\"miette\",\"package\":\"oxc-miette\",\"req\":\"^2.7.1\"},{\"name\":\"percent-encoding\",\"req\":\"^2.3.2\"}],\"features\":{}}",
-      "oxc_diagnostics_0.147.0": "{\"dependencies\":[{\"name\":\"bytecount\",\"req\":\"^0.6.9\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"itoa\",\"req\":\"^1.0.18\"},{\"name\":\"memchr\",\"req\":\"^2.8.2\"},{\"name\":\"owo-colors\",\"req\":\"^4.3.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"percent-encoding\",\"req\":\"^2.3.2\"},{\"features\":[\"union\",\"serde\"],\"name\":\"smallvec\",\"req\":\"^1.15.2\"},{\"name\":\"textwrap\",\"req\":\"^0.16.2\"},{\"name\":\"unicode-segmentation\",\"req\":\"^1.13.3\"},{\"name\":\"unicode-width\",\"req\":\"^0.2\"}],\"features\":{}}",
+      "oxc_diagnostics_0.148.0": "{\"dependencies\":[{\"name\":\"bytecount\",\"req\":\"^0.6.9\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"itoa\",\"req\":\"^1.0.18\"},{\"name\":\"memchr\",\"req\":\"^2.8.2\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"percent-encoding\",\"req\":\"^2.3.2\"},{\"features\":[\"union\",\"serde\"],\"name\":\"smallvec\",\"req\":\"^1.15.2\"},{\"name\":\"textwrap\",\"req\":\"^0.16.2\"},{\"name\":\"unicode-segmentation\",\"req\":\"^1.13.3\"},{\"name\":\"unicode-width\",\"req\":\"^0.2\"}],\"features\":{}}",
       "oxc_ecmascript_0.127.0": "{\"dependencies\":[{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"num-bigint\",\"req\":\"^0.4.6\"},{\"name\":\"num-traits\",\"req\":\"^0.2.19\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_regular_expression\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"features\":[\"to_js_string\"],\"name\":\"oxc_syntax\",\"req\":\"^0.127.0\"}],\"features\":{}}",
-      "oxc_ecmascript_0.147.0": "{\"dependencies\":[{\"name\":\"cow-utils\",\"optional\":true,\"req\":\"^0.1.3\"},{\"name\":\"dragonbox_ecma\",\"req\":\"^0.1.12\"},{\"name\":\"itoa\",\"req\":\"^1.0.18\"},{\"name\":\"num-bigint\",\"req\":\"^0.5.0\"},{\"name\":\"num-traits\",\"req\":\"^0.2.19\"},{\"name\":\"oxc_allocator\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_compat\",\"optional\":true,\"req\":\"^0.147.0\"},{\"features\":[\"inline_string\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"features\":[\"to_js_string\"],\"name\":\"oxc_syntax\",\"req\":\"^0.147.0\"},{\"features\":[\"union\",\"serde\"],\"name\":\"smallvec\",\"optional\":true,\"req\":\"^1.15.2\"}],\"features\":{\"constant_evaluation\":[\"side_effects\",\"dep:cow-utils\",\"dep:smallvec\"],\"side_effects\":[\"dep:oxc_allocator\",\"dep:oxc_compat\",\"dep:oxc_regular_expression\"]}}",
+      "oxc_ecmascript_0.148.0": "{\"dependencies\":[{\"name\":\"cow-utils\",\"optional\":true,\"req\":\"^0.1.3\"},{\"name\":\"dragonbox_ecma\",\"req\":\"^0.1.12\"},{\"name\":\"itoa\",\"req\":\"^1.0.18\"},{\"name\":\"num-bigint\",\"req\":\"^0.5.0\"},{\"name\":\"num-traits\",\"req\":\"^0.2.19\"},{\"name\":\"oxc_allocator\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_compat\",\"optional\":true,\"req\":\"^0.148.0\"},{\"features\":[\"inline_string\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"features\":[\"to_js_string\"],\"name\":\"oxc_syntax\",\"req\":\"^0.148.0\"},{\"features\":[\"union\",\"serde\"],\"name\":\"smallvec\",\"optional\":true,\"req\":\"^1.15.2\"}],\"features\":{\"constant_evaluation\":[\"side_effects\",\"dep:cow-utils\",\"dep:smallvec\"],\"side_effects\":[\"dep:oxc_allocator\",\"dep:oxc_compat\",\"dep:oxc_regular_expression\"]}}",
       "oxc_estree_0.127.0": "{\"dependencies\":[{\"name\":\"dragonbox_ecma\",\"optional\":true,\"req\":\"^0.1.0\"},{\"name\":\"itoa\",\"optional\":true,\"req\":\"^1.0.17\"},{\"features\":[\"code_buffer\",\"slice_iter\",\"stack\"],\"name\":\"oxc_data_structures\",\"optional\":true,\"req\":\"^0.127.0\"}],\"features\":{\"default\":[],\"serialize\":[\"dep:oxc_data_structures\",\"dep:itoa\",\"dep:dragonbox_ecma\"]}}",
-      "oxc_estree_0.147.0": "{\"dependencies\":[{\"name\":\"dragonbox_ecma\",\"optional\":true,\"req\":\"^0.1.12\"},{\"name\":\"itoa\",\"optional\":true,\"req\":\"^1.0.18\"},{\"features\":[\"code_buffer\",\"slice_iter\",\"stack\"],\"name\":\"oxc_data_structures\",\"optional\":true,\"req\":\"^0.147.0\"}],\"features\":{\"default\":[],\"serialize\":[\"dep:oxc_data_structures\",\"dep:itoa\",\"dep:dragonbox_ecma\"]}}",
+      "oxc_estree_0.148.0": "{\"dependencies\":[{\"name\":\"dragonbox_ecma\",\"optional\":true,\"req\":\"^0.1.12\"},{\"name\":\"itoa\",\"optional\":true,\"req\":\"^1.0.18\"},{\"features\":[\"code_buffer\",\"slice_iter\",\"stack\"],\"name\":\"oxc_data_structures\",\"optional\":true,\"req\":\"^0.148.0\"}],\"features\":{\"default\":[],\"serialize\":[\"dep:oxc_data_structures\",\"dep:itoa\",\"dep:dragonbox_ecma\"]}}",
       "oxc_index_4.1.0": "{\"dependencies\":[{\"name\":\"nonmax\",\"optional\":true,\"req\":\"^0.5\"},{\"name\":\"rayon\",\"optional\":true,\"req\":\"^1\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"nonmax\":[\"dep:nonmax\"],\"rayon\":[\"dep:rayon\"],\"serde\":[\"dep:serde\"]}}",
       "oxc_index_5.0.0": "{\"dependencies\":[{\"name\":\"nonmax\",\"optional\":true,\"req\":\"^0.5\"},{\"name\":\"rayon\",\"optional\":true,\"req\":\"^1\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"nonmax\":[\"dep:nonmax\"],\"rayon\":[\"dep:rayon\"],\"serde\":[\"dep:serde\"]}}",
       "oxc_parser_0.127.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.10.0\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"memchr\",\"req\":\"^2.7.6\"},{\"name\":\"num-bigint\",\"req\":\"^0.4.6\"},{\"name\":\"num-traits\",\"req\":\"^0.2.19\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.127.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_ast\",\"req\":\"^0.127.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_ast_visit\",\"req\":\"^0.127.0\"},{\"features\":[\"assert_unchecked\",\"fieldless_enum\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ecmascript\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.127.0\"},{\"kind\":\"dev\",\"name\":\"pico-args\",\"req\":\"^0.5.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"seq-macro\",\"req\":\"^0.3.6\"}],\"features\":{\"benchmarking\":[],\"default\":[\"regular_expression\"],\"mutate_tokens\":[],\"regular_expression\":[\"dep:oxc_regular_expression\"]}}",
-      "oxc_parser_0.147.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"memchr\",\"req\":\"^2.8.2\"},{\"name\":\"num-bigint\",\"req\":\"^0.5.0\"},{\"name\":\"num-traits\",\"req\":\"^0.2.19\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.147.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_ast\",\"req\":\"^0.147.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_ast_visit\",\"req\":\"^0.147.0\"},{\"features\":[\"assert_unchecked\",\"branch_hints\",\"fieldless_enum\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ecmascript\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.147.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.147.0\"},{\"kind\":\"dev\",\"name\":\"pico-args\",\"req\":\"^0.5.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"seq-macro\",\"req\":\"^0.3.6\"}],\"features\":{\"benchmarking\":[],\"default\":[\"regular_expression\"],\"mutate_tokens\":[],\"regular_expression\":[\"dep:oxc_regular_expression\"]}}",
+      "oxc_parser_0.148.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"memchr\",\"req\":\"^2.8.2\"},{\"name\":\"num-bigint\",\"req\":\"^0.5.0\"},{\"name\":\"num-traits\",\"req\":\"^0.2.19\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.148.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_ast\",\"req\":\"^0.148.0\"},{\"features\":[\"serialize\"],\"kind\":\"dev\",\"name\":\"oxc_ast_visit\",\"req\":\"^0.148.0\"},{\"features\":[\"assert_unchecked\",\"branch_hints\",\"fieldless_enum\"],\"name\":\"oxc_data_structures\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ecmascript\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_regular_expression\",\"optional\":true,\"req\":\"^0.148.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_syntax\",\"req\":\"^0.148.0\"},{\"kind\":\"dev\",\"name\":\"pico-args\",\"req\":\"^0.5.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"seq-macro\",\"req\":\"^0.3.6\"}],\"features\":{\"benchmarking\":[],\"default\":[\"regular_expression\"],\"mutate_tokens\":[],\"regular_expression\":[\"dep:oxc_regular_expression\"]}}",
       "oxc_regular_expression_0.127.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.10.0\"},{\"kind\":\"dev\",\"name\":\"insta\",\"req\":\"^1.43.2\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.127.0\"},{\"features\":[\"macros\"],\"name\":\"phf\",\"req\":\"^0.13.1\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"unicode-id-start\",\"req\":\"^1\"}],\"features\":{}}",
-      "oxc_regular_expression_0.147.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"kind\":\"dev\",\"name\":\"insta\",\"req\":\"^1.48.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.147.0\"},{\"features\":[\"macros\"],\"name\":\"phf\",\"req\":\"^0.14.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"unicode-id-start\",\"req\":\"^1\"}],\"features\":{}}",
+      "oxc_regular_expression_0.148.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"kind\":\"dev\",\"name\":\"insta\",\"req\":\"^1.48.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.148.0\"},{\"features\":[\"macros\"],\"name\":\"phf\",\"req\":\"^0.14.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"unicode-id-start\",\"req\":\"^1\"}],\"features\":{}}",
       "oxc_semantic_0.127.0": "{\"dependencies\":[{\"features\":[\"glob\"],\"kind\":\"dev\",\"name\":\"insta\",\"req\":\"^1.43.2\"},{\"name\":\"itertools\",\"req\":\"^0.14.0\"},{\"name\":\"memchr\",\"req\":\"^2.7.6\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast_visit\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_cfg\",\"optional\":true,\"req\":\"^0.127.0\"},{\"name\":\"oxc_diagnostics\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ecmascript\",\"req\":\"^0.127.0\"},{\"features\":[\"nonmax\",\"serde\"],\"name\":\"oxc_index\",\"req\":\"^4.1.0\"},{\"name\":\"oxc_jsdoc\",\"optional\":true,\"req\":\"^0.127.0\"},{\"features\":[\"regular_expression\"],\"kind\":\"dev\",\"name\":\"oxc_parser\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.127.0\"},{\"features\":[\"to_js_string\"],\"name\":\"oxc_syntax\",\"req\":\"^0.127.0\"},{\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"kind\":\"dev\",\"name\":\"rustc-hash\",\"req\":\"^2\"},{\"name\":\"self_cell\",\"req\":\"^1.2.2\"},{\"kind\":\"dev\",\"name\":\"serde_json\",\"req\":\"^1\"}],\"features\":{\"cfg\":[\"dep:oxc_cfg\"],\"default\":[],\"jsdoc\":[\"dep:oxc_jsdoc\"],\"linter\":[\"jsdoc\"],\"serialize\":[\"oxc_span/serialize\",\"oxc_syntax/serialize\"]}}",
       "oxc_span_0.127.0": "{\"dependencies\":[{\"name\":\"compact_str\",\"req\":\"^0.9.0\"},{\"features\":[\"fancy-no-syscall\"],\"name\":\"miette\",\"package\":\"oxc-miette\",\"req\":\"^2.7.1\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.127.0\"},{\"name\":\"schemars\",\"optional\":true,\"package\":\"oxc-schemars\",\"req\":\"^0.8.27\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"default\":[],\"schemars\":[\"dep:schemars\",\"oxc_str/schemars\"],\"serialize\":[\"compact_str/serde\",\"dep:serde\",\"oxc_estree/serialize\",\"oxc_str/serialize\"]}}",
-      "oxc_span_0.147.0": "{\"dependencies\":[{\"name\":\"compact_str\",\"req\":\"^0.10.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.147.0\"},{\"name\":\"schemars\",\"optional\":true,\"package\":\"oxc-schemars\",\"req\":\"^0.9.1\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"default\":[],\"schemars\":[\"dep:schemars\",\"oxc_str/schemars\"],\"serialize\":[\"compact_str/serde\",\"dep:serde\",\"oxc_estree/serialize\",\"oxc_str/serialize\"]}}",
+      "oxc_span_0.148.0": "{\"dependencies\":[{\"name\":\"compact_str\",\"req\":\"^0.10.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.148.0\"},{\"name\":\"schemars\",\"optional\":true,\"package\":\"oxc-schemars\",\"req\":\"^0.9.1\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"default\":[],\"schemars\":[\"dep:schemars\",\"oxc_str/schemars\"],\"serialize\":[\"compact_str/serde\",\"dep:serde\",\"oxc_estree/serialize\",\"oxc_str/serialize\"]}}",
       "oxc_str_0.127.0": "{\"dependencies\":[{\"name\":\"compact_str\",\"req\":\"^0.9.0\"},{\"default_features\":false,\"name\":\"hashbrown\",\"req\":\"^0.17.0\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.127.0\"},{\"name\":\"schemars\",\"optional\":true,\"package\":\"oxc-schemars\",\"req\":\"^0.8.27\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"default\":[],\"schemars\":[\"dep:schemars\"],\"serialize\":[\"compact_str/serde\",\"dep:serde\",\"oxc_estree/serialize\"]}}",
-      "oxc_str_0.147.0": "{\"dependencies\":[{\"name\":\"compact_str\",\"req\":\"^0.10.0\"},{\"default_features\":false,\"features\":[\"inline-more\"],\"name\":\"hashbrown\",\"req\":\"^0.17.1\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"features\":[\"types\"],\"kind\":\"dev\",\"name\":\"oxc_data_structures\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.147.0\"},{\"name\":\"schemars\",\"optional\":true,\"package\":\"oxc-schemars\",\"req\":\"^0.9.1\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"default\":[],\"schemars\":[\"dep:schemars\"],\"serialize\":[\"compact_str/serde\",\"dep:serde\",\"oxc_estree/serialize\"]}}",
+      "oxc_str_0.148.0": "{\"dependencies\":[{\"name\":\"compact_str\",\"req\":\"^0.10.0\"},{\"default_features\":false,\"features\":[\"inline-more\"],\"name\":\"hashbrown\",\"req\":\"^0.17.1\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"features\":[\"types\"],\"kind\":\"dev\",\"name\":\"oxc_data_structures\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.148.0\"},{\"name\":\"schemars\",\"optional\":true,\"package\":\"oxc-schemars\",\"req\":\"^0.9.1\"},{\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"}],\"features\":{\"default\":[],\"schemars\":[\"dep:schemars\"],\"serialize\":[\"compact_str/serde\",\"dep:serde\",\"oxc_estree/serialize\"]}}",
       "oxc_syntax_0.127.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.10.0\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"dragonbox_ecma\",\"optional\":true,\"req\":\"^0.1.0\"},{\"name\":\"nonmax\",\"req\":\"^0.5.5\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.127.0\"},{\"features\":[\"nonmax\",\"serde\"],\"name\":\"oxc_index\",\"req\":\"^4.1.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.127.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.127.0\"},{\"features\":[\"macros\"],\"name\":\"phf\",\"req\":\"^0.13.1\"},{\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"name\":\"unicode-id-start\",\"req\":\"^1\"}],\"features\":{\"default\":[],\"serialize\":[\"bitflags/serde\",\"dep:serde\",\"oxc_estree/serialize\"],\"to_js_string\":[\"dep:dragonbox_ecma\"]}}",
-      "oxc_syntax_0.147.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"dragonbox_ecma\",\"optional\":true,\"req\":\"^0.1.12\"},{\"name\":\"nonmax\",\"req\":\"^0.5.5\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.147.0\"},{\"features\":[\"nonmax\",\"serde\"],\"name\":\"oxc_index\",\"req\":\"^5.0.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.147.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.147.0\"},{\"features\":[\"macros\"],\"name\":\"phf\",\"req\":\"^0.14.0\"},{\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"name\":\"unicode-id-start\",\"req\":\"^1\"}],\"features\":{\"default\":[],\"serialize\":[\"bitflags/serde\",\"dep:serde\",\"oxc_estree/serialize\"],\"to_js_string\":[\"dep:dragonbox_ecma\"]}}",
+      "oxc_syntax_0.148.0": "{\"dependencies\":[{\"name\":\"bitflags\",\"req\":\"^2.13.0\"},{\"name\":\"cow-utils\",\"req\":\"^0.1.3\"},{\"name\":\"dragonbox_ecma\",\"optional\":true,\"req\":\"^0.1.12\"},{\"name\":\"nonmax\",\"req\":\"^0.5.5\"},{\"name\":\"oxc_allocator\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_ast_macros\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_estree\",\"req\":\"^0.148.0\"},{\"features\":[\"nonmax\",\"serde\"],\"name\":\"oxc_index\",\"req\":\"^5.0.0\"},{\"name\":\"oxc_span\",\"req\":\"^0.148.0\"},{\"name\":\"oxc_str\",\"req\":\"^0.148.0\"},{\"features\":[\"macros\"],\"name\":\"phf\",\"req\":\"^0.14.0\"},{\"features\":[\"derive\"],\"name\":\"serde\",\"optional\":true,\"req\":\"^1\"},{\"name\":\"unicode-id-start\",\"req\":\"^1\"}],\"features\":{\"default\":[],\"serialize\":[\"bitflags/serde\",\"dep:serde\",\"oxc_estree/serialize\"],\"to_js_string\":[\"dep:dragonbox_ecma\"]}}",
       "page_size_0.6.0": "{\"dependencies\":[{\"name\":\"libc\",\"req\":\"^0.2\",\"target\":\"cfg(unix)\"},{\"name\":\"spin\",\"optional\":true,\"req\":\"^0.9.8\"},{\"features\":[\"sysinfoapi\"],\"name\":\"winapi\",\"req\":\"^0.3.9\",\"target\":\"cfg(windows)\"}],\"features\":{\"no_std\":[\"spin\"]}}",
       "parking_lot_0.12.5": "{\"dependencies\":[{\"kind\":\"dev\",\"name\":\"bincode\",\"req\":\"^1.3.3\"},{\"name\":\"lock_api\",\"req\":\"^0.4.14\"},{\"name\":\"parking_lot_core\",\"req\":\"^0.9.12\"},{\"kind\":\"dev\",\"name\":\"rand\",\"req\":\"^0.8.3\"}],\"features\":{\"arc_lock\":[\"lock_api/arc_lock\"],\"deadlock_detection\":[\"parking_lot_core/deadlock_detection\"],\"default\":[],\"hardware-lock-elision\":[],\"nightly\":[\"parking_lot_core/nightly\",\"lock_api/nightly\"],\"owning_ref\":[\"lock_api/owning_ref\"],\"send_guard\":[],\"serde\":[\"lock_api/serde\"]}}",
       "parking_lot_core_0.9.12": "{\"dependencies\":[{\"name\":\"backtrace\",\"optional\":true,\"req\":\"^0.3.60\"},{\"name\":\"cfg-if\",\"req\":\"^1.0.0\"},{\"name\":\"libc\",\"req\":\"^0.2.95\",\"target\":\"cfg(unix)\"},{\"name\":\"petgraph\",\"optional\":true,\"req\":\"^0.6.0\"},{\"name\":\"redox_syscall\",\"req\":\"^0.5\",\"target\":\"cfg(target_os = \\\"redox\\\")\"},{\"name\":\"smallvec\",\"req\":\"^1.6.1\"},{\"name\":\"windows-link\",\"req\":\"^0.2.0\",\"target\":\"cfg(windows)\"}],\"features\":{\"deadlock_detection\":[\"petgraph\",\"backtrace\"],\"nightly\":[]}}",

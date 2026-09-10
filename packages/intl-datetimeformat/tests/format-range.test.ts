@@ -4,12 +4,13 @@ import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
 import allData from '@formatjs_generated/tz/all-tz.js'
 import enGB from '#packages/intl-datetimeformat/tests/locale-data/en-GB.json' with {type: 'json'}
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import ru from '#packages/intl-datetimeformat/tests/locale-data/ru.json' with {type: 'json'}
 import fa from '#packages/intl-datetimeformat/tests/locale-data/fa.json' with {type: 'json'}
 import nl from '#packages/intl-datetimeformat/tests/locale-data/nl.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, test} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl)
+DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl, ru)
 DateTimeFormat.__addTZData(allData)
 describe('DateTimeFormat range format', function () {
   it('basic', function () {
@@ -32,12 +33,12 @@ describe('DateTimeFormat range format', function () {
       }).formatRangeToParts(d1, d2)
     ).toEqual([
       {
-        source: 'startRange',
+        source: 'shared',
         type: 'month',
         value: 'Feb',
       },
       {
-        source: 'startRange',
+        source: 'shared',
         type: 'literal',
         value: ' ',
       },
@@ -47,7 +48,7 @@ describe('DateTimeFormat range format', function () {
         value: '1',
       },
       {
-        source: 'startRange',
+        source: 'shared',
         type: 'literal',
         value: ' – ',
       },
@@ -387,7 +388,7 @@ test('default formatRange pattern (short), #2474', function () {
   let date1 = new Date(Date.UTC(2021, 0, 10)) // "Jan 10, 2021"
   let date2 = new Date(Date.UTC(2021, 0, 20)) // "Jan 20, 2021"
   expect(dtf.formatRange(date1, date2)).toBe(
-    'Jan 10, 2021, 12:00 AM – Jan 20, 2021, 12:00 AM'
+    'Jan 10, 2021, 12:00\u202fAM – Jan 20, 2021, 12:00\u202fAM'
   )
 })
 
@@ -453,7 +454,7 @@ test('GH issue #4535 - same day range with hour12:true should not duplicate date
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-  expect(result).toBe('Sun, 22 Sept 2024, 2:00\u2009\u2013\u20094:00 pm')
+  expect(result).toBe('Sun, 22 Sept 2024, 2:00\u2009\u2013\u20094:00\u202fpm')
 })
 
 test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not duplicate date', function () {
@@ -471,7 +472,9 @@ test('GH issue #4535 - same day range with hour12:true crossing AM/PM should not
     new Date('2026-02-18T07:00:00'),
     new Date('2026-02-18T16:00:00')
   )
-  expect(result).toBe('Wed, 18 Feb 2026, 7:00 am\u2009\u2013\u20094:00 pm')
+  expect(result).toBe(
+    'Wed, 18 Feb 2026, 7:00\u202fam\u2009\u2013\u20094:00\u202fpm'
+  )
 })
 
 test('GH issue #4535 - longer same day range should not duplicate date', function () {
@@ -526,7 +529,7 @@ test('GH issue #4535 - en locale with hour12:true should not duplicate date (num
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-  expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00 PM')
+  expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00\u202fPM')
 })
 
 test('GH issue #4535 - en locale with hour12:true should not duplicate date (2-digit)', function () {
@@ -561,7 +564,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-10-22T16:00:00')
     )
     expect(result).toBe(
-      'Sep 22, 2024, 2:00 PM\u2009\u2013\u2009Oct 22, 2024, 4:00 PM'
+      'Sep 22, 2024, 2:00\u202fPM\u2009\u2013\u2009Oct 22, 2024, 4:00\u202fPM'
     )
   })
 
@@ -577,7 +580,9 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-20T14:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sep 20, 2:00 PM\u2009\u2013\u2009Sep 22, 4:00 PM')
+    expect(result).toBe(
+      'Sep 20, 2:00\u202fPM\u2009\u2013\u2009Sep 22, 4:00\u202fPM'
+    )
   })
 
   it('same day, different hour (hour12)', function () {
@@ -592,7 +597,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20094:00 PM')
+    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20094:00\u202fPM')
   })
 
   it('same day, different hour (24h)', function () {
@@ -622,7 +627,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T07:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sep 22, 7:00 AM\u2009\u2013\u20094:00 PM')
+    expect(result).toBe('Sep 22, 7:00\u202fAM\u2009\u2013\u20094:00\u202fPM')
   })
 
   it('same hour, different minute', function () {
@@ -637,7 +642,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:00:00'),
       new Date('2024-09-22T14:30:00')
     )
-    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20092:30 PM')
+    expect(result).toBe('Sep 22, 2:00\u2009\u2013\u20092:30\u202fPM')
   })
 
   it('same minute, different second', function () {
@@ -651,7 +656,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:30:00'),
       new Date('2024-09-22T14:30:45')
     )
-    expect(result).toBe('2:30:00 PM\u2009\u2013\u20092:30:45 PM')
+    expect(result).toBe('2:30:00\u202fPM\u2009\u2013\u20092:30:45\u202fPM')
   })
 
   it('different year', function () {
@@ -668,7 +673,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2025-09-22T16:00:00')
     )
     expect(result).toBe(
-      'Sep 22, 2024, 2:00 PM\u2009\u2013\u2009Sep 22, 2025, 4:00 PM'
+      'Sep 22, 2024, 2:00\u202fPM\u2009\u2013\u2009Sep 22, 2025, 4:00\u202fPM'
     )
   })
 
@@ -708,4 +713,127 @@ test('GH issue #4535 - same day midnight should show 00:00 not 24:00', function 
     new Date('2026-05-03T00:45:00')
   )
   expect(result).toBe('Sun, 3 May 2026, 00:00\u201300:45')
+})
+
+it('compares ranges at displayed precision without changing shared patterns', () => {
+  const start = Date.UTC(2020, 0, 2, 1, 2, 3, 234)
+  const end = Date.UTC(2020, 0, 2, 1, 2, 3, 567)
+  const options = {
+    timeZone: 'UTC',
+    minute: 'numeric',
+    second: 'numeric',
+  } as const
+  const seconds = new DateTimeFormat('en', options)
+  expect(seconds.formatRange(start, end)).toBe('02:03')
+  expect(
+    seconds
+      .formatRangeToParts(start, end)
+      .every(part => part.source === 'shared')
+  ).toBe(true)
+  for (const fractionalSecondDigits of [1, 3, 2, 1] as const) {
+    const formatter = new DateTimeFormat('en', {
+      ...options,
+      fractionalSecondDigits,
+    })
+    expect(formatter.formatRange(start, end)).toBe(
+      `${formatter.format(start)}\u2009–\u2009${formatter.format(end)}`
+    )
+  }
+  expect(seconds.formatRange(start, end)).toBe('02:03')
+})
+
+it('preserves both day periods across 11 AM and noon', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    hour12: true,
+  })
+  const parts = formatter.formatRangeToParts(
+    Date.UTC(2020, 0, 2, 11),
+    Date.UTC(2020, 0, 2, 12)
+  )
+  expect(
+    parts.filter(part => part.type === 'dayPeriod').map(part => part.value)
+  ).toEqual(['AM', 'PM'])
+})
+
+it('keeps date-context month grammar when the month is shared', () => {
+  const formatter = new DateTimeFormat('ru', {
+    timeZone: 'UTC',
+    month: 'short',
+    day: 'numeric',
+  })
+  const start = Date.UTC(2024, 4, 3)
+  const end = Date.UTC(2024, 4, 5)
+  const parts = formatter.formatRangeToParts(start, end)
+  expect(parts).toContainEqual({type: 'month', value: 'мая', source: 'shared'})
+  expect(
+    parts.filter(part => part.type === 'day').map(part => part.source)
+  ).toEqual(['startRange', 'endRange'])
+  expect(parts.map(part => part.value).join('')).toBe(
+    formatter.formatRange(start, end)
+  )
+})
+
+it.each([
+  [
+    'same date',
+    Date.UTC(2024, 4, 3),
+    Date.UTC(2024, 4, 3, 0, 45),
+    ['24', '24'],
+  ],
+  [
+    'different dates',
+    Date.UTC(2024, 4, 3, 22),
+    Date.UTC(2024, 4, 4),
+    ['22', '24'],
+  ],
+  ['equal endpoints', Date.UTC(2024, 4, 3), Date.UTC(2024, 4, 3), ['24']],
+] as const)('uses h24 midnight for %s', (_name, start, end, hours) => {
+  const formatter = new DateTimeFormat('en-GB', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h24',
+  })
+  const parts = formatter.formatRangeToParts(start, end)
+  expect(
+    parts.filter(part => part.type === 'hour').map(part => part.value)
+  ).toEqual(hours)
+  expect(parts.map(part => part.value).join('')).toBe(
+    formatter.formatRange(start, end)
+  )
+})
+
+it.each([
+  [
+    'spring forward',
+    Date.UTC(2024, 2, 10, 6, 30),
+    Date.UTC(2024, 2, 10, 7, 30),
+    ['01', '03'],
+  ],
+  [
+    'fall back',
+    Date.UTC(2024, 10, 3, 4, 30),
+    Date.UTC(2024, 10, 3, 7, 30),
+    ['00', '02'],
+  ],
+] as const)('uses each endpoint time across %s', (_name, start, end, hours) => {
+  const formatter = new DateTimeFormat('en-GB', {
+    timeZone: 'America/New_York',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+  const parts = formatter.formatRangeToParts(start, end)
+  expect(parts.filter(part => part.type === 'hour')).toEqual([
+    {type: 'hour', value: hours[0], source: 'startRange'},
+    {type: 'hour', value: hours[1], source: 'endRange'},
+  ])
+  expect(parts.map(part => part.value).join('')).toBe(
+    formatter.formatRange(start, end)
+  )
 })

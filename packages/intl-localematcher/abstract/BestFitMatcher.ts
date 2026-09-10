@@ -1,6 +1,6 @@
 import type {LookupMatcherResult} from '#packages/intl-localematcher/abstract/types.js'
 import {
-  UNICODE_EXTENSION_SEQUENCE_REGEX,
+  splitUnicodeExtension,
   findBestMatch,
 } from '#packages/intl-localematcher/abstract/utils.js'
 
@@ -20,7 +20,7 @@ export function BestFitMatcher(
   const noExtensionLocales: string[] = []
   const noExtensionLocaleMap = requestedLocales.reduce<Record<string, string>>(
     (all, l) => {
-      const noExtensionLocale = l.replace(UNICODE_EXTENSION_SEQUENCE_REGEX, '')
+      const {locale: noExtensionLocale} = splitUnicodeExtension(l)
       noExtensionLocales.push(noExtensionLocale)
       all[noExtensionLocale] = l
       return all
@@ -31,10 +31,9 @@ export function BestFitMatcher(
   const result = findBestMatch(noExtensionLocales, availableLocales)
   if (result.matchedSupportedLocale && result.matchedDesiredLocale) {
     foundLocale = result.matchedSupportedLocale
-    extension =
-      noExtensionLocaleMap[result.matchedDesiredLocale].slice(
-        result.matchedDesiredLocale.length
-      ) || undefined
+    extension = splitUnicodeExtension(
+      noExtensionLocaleMap[result.matchedDesiredLocale]
+    ).extension
   }
 
   if (!foundLocale) {

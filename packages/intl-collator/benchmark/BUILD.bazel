@@ -1,0 +1,31 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "intl-collator-benchmark",
+    private = True,
+    type = "module",
+    version = "1.0.0",
+)
+
+js_binary(
+    name = "run",
+    data = [
+        ":generated_package_json",  # keep: isolate package self-reference during execution
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/tinybench",
+    ],
+    entry_point = "benchmark.ts",
+    tags = ["manual"],
+)
+
+formatjs_library(
+    name = "benchmark",
+    srcs = ["benchmark.ts"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/tinybench",
+    ],
+)

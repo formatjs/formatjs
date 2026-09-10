@@ -1,6 +1,6 @@
 # @formatjs/intl-datetimeformat
 
-**ECMA-402 Section 12** — `Intl.DateTimeFormat`
+**ECMA-402 Section 11** — `Intl.DateTimeFormat`
 
 ## Purpose
 
@@ -14,13 +14,13 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 
 ### Sources
 
-| Source               | Data Used                                                       |
-| -------------------- | --------------------------------------------------------------- |
-| `cldr-dates-full`    | Calendar formats (gregorian.json per locale), timezone names    |
-| `cldr-numbers-full`  | Number formatting for date components                           |
-| `cldr-core`          | Hour cycle preferences, calendar preferences, metazone mappings |
-| `cldr-bcp47`         | Locale validation                                               |
-| IANA tzdata (v2026c) | Timezone transitions, links/aliases                             |
+| Source               | Data Used                                                    |
+| -------------------- | ------------------------------------------------------------ |
+| `cldr-dates-full`    | Calendar formats (gregorian.json per locale), timezone names |
+| `cldr-numbers-full`  | Number formatting for date components                        |
+| `cldr-core`          | Hour cycle preferences and metazone mappings                 |
+| `cldr-bcp47`         | Locale validation                                            |
+| IANA tzdata (v2026c) | Timezone transitions, links/aliases                          |
 
 ### Date/Time Extraction (`scripts/extract-dates.ts`)
 
@@ -31,7 +31,8 @@ Processes ~680 locales in parallel:
 3. **Hour cycle resolution**: Determines h12/h23/h11/h24 preferences per locale using region maximization
 4. **Timezone names**: Maps IANA zones → metazones → localized names (long/short, standard/daylight)
 5. **Interval formats**: Synthesizes combined date+time interval formats from separate patterns
-6. **Calendar preferences**: Per-region calendar system preferences
+6. **Numbering systems**: Keep the locale default first and expose all CLDR numeric systems. Internal NumberFormat supplies digits; two-digit fields truncate Unicode code points, preserving supplementary digits.
+7. **Calendar support**: Gregorian patterns shared with ISO 8601; unsupported calendars fall back to Gregorian
 
 ### Timezone Pipeline
 
@@ -147,3 +148,65 @@ Stage 4: supported-locales.generated.ts
 The `timeZone` option accepts offsets in `±HH`, `±HHMM`, and `±HH:MM` form.
 Offsets containing seconds or fractional components throw `RangeError`, including
 an explicit zero-second component.
+
+Dates outside the exact ±8,640,000,000,000,000 millisecond TimeClip bounds
+throw `RangeError`, including values one millisecond beyond either endpoint.
+Year calculations use Gregorian arithmetic so valid endpoints also format
+when their local timezone offsets cross the native Date range.
+
+DateTimeFormat methods require an initialized receiver before coercing date
+arguments. Inheriting its prototype does not create a DateTimeFormat instance.
+
+Resolved options follow specification property order: `hour12` follows
+`hourCycle`, and style properties follow component properties.
+
+Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
+
+Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
+letter case only; non-ASCII lookalikes are rejected.
+
+Constructor options are read once in specification order. Default date fields
+are applied to internal records without writing to caller options.
+
+Every locale supports explicit `h11`, `h12`, `h23`, and `h24` hour cycles through
+options and Unicode extensions. Locale preferences still select the default.
+
+The `hour12` option selects the locale’s separate 12-hour or 24-hour preference.
+For example, English uses `h12` or `h23`; Japanese uses `h11` or `h23`.
+
+DateTimeFormat reuses pattern fields parsed during locale registration, preserving
+legacy RegExp statics during constructor format matching.
+
+Hour-cycle preferences affect matching only when an hour is requested.
+Minute/second-only formats keep their requested fields.
+
+Calendar negotiation advertises Gregorian and ISO 8601 only. Both use the same
+Gregorian date fields and formatting patterns; week-date fields are not exposed.
+
+Range formatting compares endpoints at the displayed precision and keeps shared
+locale fallback patterns unchanged across formatter instances.
+
+Flexible day periods use CLDR format names and supplemental day-period rules,
+resolved through locale parents. `B` widths map to narrow/short/long names;
+noon matches exactly, variable periods support midnight wrapping, and missing
+rules or names fall back to AM/PM. Midnight itself is not selected because the
+API provides no context to distinguish the start from the end of a day.
+
+CLDR alternate-key suffixes are metadata, not skeleton fields. The extractor
+uses default entries and excludes `-alt-*` keys before parsing skeletons.
+
+`formatRangeToParts` marks unique fields and separators as `shared`. Repeated
+fields belong to their endpoint; punctuation between repeated fields stays with
+that endpoint. Shared month names retain the complete date pattern for
+grammatical context.
+
+An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
+and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
+
+## Benchmarks
+
+Run `bazel run //packages/intl-datetimeformat:benchmark` from the repository.
+The benchmark uses fixed UTC inputs and native controls for `format`,
+`formatRange`, and `formatRangeToParts`, including same-date, cross-date, and
+collapsed ranges. Each timed task batches 16 calls; construction and locale-data
+registration are excluded.

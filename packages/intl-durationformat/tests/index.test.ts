@@ -283,3 +283,195 @@ test('enforces exact duration magnitude limits', () => {
     ).toThrow(RangeError)
   }
 })
+
+test('DurationFormat built-in metadata', () => {
+  expect(DurationFormat.length).toBe(0)
+  expect(DurationFormat.supportedLocalesOf.length).toBe(1)
+  expect(
+    Object.getOwnPropertyDescriptor(
+      DurationFormat.prototype,
+      Symbol.toStringTag
+    )
+  ).toEqual({
+    value: 'Intl.DurationFormat',
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  })
+  expect(Object.prototype.toString.call(new DurationFormat('en'))).toBe(
+    '[object Intl.DurationFormat]'
+  )
+})
+
+test('resolvedOptions preserves table order and omits undefined fractionalDigits', () => {
+  const defaults = new DurationFormat('en').resolvedOptions()
+  expect(Object.keys(defaults).slice(0, 3)).toEqual([
+    'locale',
+    'numberingSystem',
+    'style',
+  ])
+  expect(Object.hasOwn(defaults, 'fractionalDigits')).toBe(false)
+  const explicit = new DurationFormat('en', {
+    fractionalDigits: 2,
+  }).resolvedOptions()
+  expect(explicit.fractionalDigits).toBe(2)
+  expect(Object.keys(explicit).at(-1)).toBe('fractionalDigits')
+})
+
+test('negative duration has one sign across textual and digital units', () => {
+  for (const style of ['long', 'short', 'narrow', 'digital'] as const) {
+    const formatter = new DurationFormat('en', {style})
+    const parts = formatter.formatToParts({
+      days: -1,
+      hours: -2,
+      minutes: -3,
+      seconds: -4,
+    })
+    expect(parts.filter(part => part.type === 'minusSign')).toHaveLength(1)
+    expect(parts[0].type).toBe('minusSign')
+    expect(parts.map(part => part.value).join('')).toBe(
+      formatter.format({days: -1, hours: -2, minutes: -3, seconds: -4})
+    )
+  }
+})
+
+test('negative duration puts the sign on its first displayed zero', () => {
+  expect(
+    new DurationFormat('en', {style: 'digital'}).format({seconds: -1})
+  ).toBe('-0:00:01')
+  for (const style of ['long', 'short', 'narrow'] as const) {
+    const formatter = new DurationFormat('en', {style, hoursDisplay: 'always'})
+    const parts = formatter.formatToParts({seconds: -1})
+    expect(parts[0]).toMatchObject({type: 'minusSign', unit: 'hour'})
+    expect(parts.filter(part => part.type === 'minusSign')).toHaveLength(1)
+  }
+})
+
+test('input negative zero does not create a negative duration sign', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  expect(formatter.format({seconds: -0})).toBe(formatter.format({seconds: 0}))
+  expect(
+    formatter
+      .formatToParts({seconds: -0})
+      .some(part => part.type === 'minusSign')
+  ).toBe(false)
+})
+
+test('digital duration omits grouping without losing fractional precision', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  expect(
+    formatter.format({hours: 1234, minutes: 1234567, seconds: 12345678})
+  ).toBe('1234:1234567:12345678')
+  const duration = {seconds: 10000000, nanoseconds: 1}
+  expect(formatter.format(duration)).toBe('0:00:10000000.000000001')
+  expect(
+    formatter.formatToParts(duration).some(part => part.type === 'group')
+  ).toBe(false)
+  expect(new DurationFormat('en', {style: 'long'}).format({hours: 1234})).toBe(
+    '1,234 hours'
+  )
+})
+
+test('duration fractions use exact integer Number values beyond the safe range', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  expect(
+    formatter.format({
+      milliseconds: Number(4503599627370497024n),
+      microseconds: Number(4503599627370494951424n),
+    })
+  ).toBe('0:00:9007199254740991.975424')
+})
+
+test('numeric duration styles propagate through fractional units', () => {
+  const formatter = new DurationFormat('en', {hours: 'numeric'})
+  expect(formatter.resolvedOptions()).toMatchObject({
+    minutes: '2-digit',
+    minutesDisplay: 'always',
+    seconds: '2-digit',
+    secondsDisplay: 'always',
+    milliseconds: 'numeric',
+    microseconds: 'numeric',
+    nanoseconds: 'numeric',
+  })
+  expect(formatter.format({hours: 1, nanoseconds: 1})).toBe('1:00:00.000000001')
+  expect(
+    () => new DurationFormat('en', {hours: 'numeric', microseconds: 'long'})
+  ).toThrow(RangeError)
+  expect(
+    () =>
+      new DurationFormat('en', {
+        milliseconds: 'numeric',
+        millisecondsDisplay: 'always',
+      })
+  ).toThrow(RangeError)
+})
+
+test('zero minutes remain between displayed numeric hours and seconds', () => {
+  const options = {
+    hours: 'numeric',
+    minutesDisplay: 'auto',
+    secondsDisplay: 'auto',
+  } as const
+  const formatter = new DurationFormat('en', options)
+  expect(formatter.format({seconds: 1})).toBe('0:00:01')
+  expect(formatter.format({hours: 1, nanoseconds: 1})).toBe('1:00:00.000000001')
+  expect(
+    new DurationFormat('en', {...options, fractionalDigits: 0}).format({
+      hours: 1,
+      nanoseconds: 1,
+    })
+  ).toBe('1:00:00')
+  expect(formatter.format({hours: 1})).toBe('1')
+  expect(
+    new DurationFormat('en', {...options, hoursDisplay: 'auto'}).format({
+      seconds: 1,
+    })
+  ).toBe('01')
+})
+
+test('DurationFormat resolves numbering systems supported by NumberFormat', () => {
+  const formatter = new DurationFormat('en-u-nu-arab', {
+    numberingSystem: 'foobar',
+    style: 'digital',
+  })
+  expect(formatter.resolvedOptions().locale).toBe('en-u-nu-arab')
+  expect(formatter.resolvedOptions().numberingSystem).toBe('arab')
+  expect(formatter.format({hours: 1, minutes: 2, seconds: 3})).toBe('١:٠٢:٠٣')
+  expect(
+    new DurationFormat('en', {numberingSystem: 'deva'}).resolvedOptions()
+      .numberingSystem
+  ).toBe('deva')
+})
+
+test('numbering system support refreshes when NumberFormat is replaced', () => {
+  const NativeNumberFormat = Intl.NumberFormat
+  try {
+    new DurationFormat('en', {numberingSystem: 'arab'})
+    Intl.NumberFormat = class extends NativeNumberFormat {
+      constructor(
+        locales?: Intl.LocalesArgument,
+        options?: Intl.NumberFormatOptions
+      ) {
+        super(locales, {...options, numberingSystem: 'latn'})
+      }
+    } as typeof Intl.NumberFormat
+    expect(
+      new DurationFormat('en', {numberingSystem: 'arab'}).resolvedOptions()
+        .numberingSystem
+    ).toBe('latn')
+  } finally {
+    Intl.NumberFormat = NativeNumberFormat
+  }
+})
+
+test('duration strings use Temporal when the runtime provides it', () => {
+  const formatter = new DurationFormat('en', {style: 'digital'})
+  if ('Temporal' in globalThis) {
+    expect(formatter.format('PT1H')).toBe(formatter.format({hours: 1}))
+    expect(formatter.formatToParts('PT1H')).toEqual(
+      formatter.formatToParts({hours: 1})
+    )
+  } else {
+    expect(() => formatter.format('PT1H')).toThrow(RangeError)
+  }
+})

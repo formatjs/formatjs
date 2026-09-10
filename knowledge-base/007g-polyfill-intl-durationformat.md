@@ -1,6 +1,6 @@
 # @formatjs/intl-durationformat
 
-**ECMA-402 Stage 3 Proposal** — `Intl.DurationFormat`
+**ECMA-402 Section 13** — `Intl.DurationFormat`
 
 ## Purpose
 
@@ -74,3 +74,19 @@ finite integers of a common sign. Invalid numeric fields throw `RangeError`;
 an empty record throws `TypeError`. Absolute years, months, and weeks must be
 less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
 Subsecond contributions participate in the bound comparison exactly.
+
+Numbering-system resolution includes systems supported by the active
+`Intl.NumberFormat` dependency, keeping the locale default first. Support is
+checked lazily and refreshed when that constructor is replaced. Time-separator
+data includes every numbering-system symbol record supplied by CLDR.
+
+### Temporal integration
+
+When a Temporal implementation is available before this package is loaded,
+`format` and `formatToParts` accept ISO duration strings through `Temporal.Duration.from`.
+Temporal durations are read with captured intrinsic getters, so later changes to
+`Temporal.Duration.prototype` do not affect formatting. Ordinary duration-like
+objects keep the ECMA-402 property-read order.
+
+Without Temporal, duration-like objects remain supported; duration strings throw
+`RangeError`. This integration follows the Temporal proposal's Intl changes.

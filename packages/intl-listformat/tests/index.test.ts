@@ -94,3 +94,25 @@ describe('StringListFromIterable', () => {
     })
   }
 })
+
+it('keeps root patterns separate from English in either registration order', () => {
+  const root = {
+    ...en,
+    locale: 'und',
+    data: {
+      ...en.data,
+      conjunction: {
+        ...en.data.conjunction,
+        long: {...en.data.conjunction.long, pair: 'ROOT {0} + {1}'},
+      },
+    },
+  }
+  for (const data of [
+    [en, root],
+    [root, en],
+  ]) {
+    ListFormat.__addLocaleData(...data)
+    expect(new ListFormat('en').format(['a', 'b'])).toBe('a and b')
+    expect(new ListFormat('und').format(['a', 'b'])).toBe('ROOT a + b')
+  }
+})

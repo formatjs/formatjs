@@ -1,5 +1,6 @@
 import {type DisplayNamesData} from '#packages/ecma402-abstract/types/displaynames.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
+import calendarIdentifiers from 'cldr-bcp47/bcp47/calendar.json' with {type: 'json'}
 import glob from 'fast-glob'
 import {dirname, resolve} from 'path'
 import {createRequire} from 'node:module'
@@ -66,6 +67,31 @@ function extractStyleData(
     }
   }
   return {long: longData, short: shortData, narrow: narrowData}
+}
+
+// ECMA-402 §12.3.3, steps 4–6 look up the canonical calendar code.
+// https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L185-L187
+// CLDR defines gregory/ethioaa and their legacy aliases here:
+// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/common/bcp47/calendar.xml#L17-L19
+function extractCalendarStyleData(cldrData: CalendarRawData) {
+  const aliases: Record<string, string> = {}
+  for (const [code, value] of Object.entries(
+    calendarIdentifiers.keyword.u.ca
+  )) {
+    if (typeof value !== 'object') continue
+    const canonical = '_preferred' in value ? value._preferred : code
+    aliases[code] = canonical
+    if ('_alias' in value) {
+      for (const alias of value._alias.split(' ')) aliases[alias] = canonical
+    }
+  }
+  const data: Record<string, string> = {}
+  for (const [key, value] of Object.entries(cldrData)) {
+    const [code, style] = key.split('-alt-')
+    data[(aliases[code] || code) + (style ? '-alt-' + style : '')] = value
+  }
+  return extractStyleData(data)
 }
 
 // Currency code -> {Property -> Value}.
@@ -267,7 +293,7 @@ async function loadDisplayNames(
         region: extractStyleData(regionData),
         script: extractStyleData(scriptData),
         currency: extractCurrencyStyleData(locale, currencyData),
-        calendar: extractStyleData(calendarData),
+        calendar: extractCalendarStyleData(calendarData),
         dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
       },
       patterns: {

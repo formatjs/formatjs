@@ -63,11 +63,16 @@ export default function formatToParts(
     unitDisplay?: NumberFormatOptionsUnitDisplay
     roundingIncrement: number
     roundingMode: RoundingModeType
-  }
+  },
+  approximately = false
 ): NumberFormatPart[] {
   const {sign, exponent, magnitude} = numberResult
   const {notation, style, numberingSystem} = options
   const defaultNumberingSystem = data.numbers.nu[0]
+  const symbols =
+    data.numbers.symbols[numberingSystem] ||
+    data.numbers.symbols[defaultNumberingSystem]
+  approximately = approximately && !!symbols.approximatelySign
 
   // #region Part 1: partition and interpolate the CLDR number pattern.
   // ----------------------------------------------------------
@@ -120,7 +125,11 @@ export default function formatToParts(
       const decimalData =
         data.numbers.decimal[numberingSystem] ||
         data.numbers.decimal[defaultNumberingSystem]
-      numberPattern = getPatternForSign(decimalData.standard, sign)
+      numberPattern = getPatternForSign(
+        decimalData.standard,
+        sign,
+        approximately
+      )
     } else if (style === 'currency') {
       const currencyData =
         data.numbers.currency[numberingSystem] ||
@@ -129,17 +138,20 @@ export default function formatToParts(
       // We replace number pattern part with `0` for easier postprocessing.
       numberPattern = getPatternForSign(
         currencyData[options.currencySign!],
-        sign
+        sign,
+        approximately
       )
     } else {
       // percent
       const percentPattern =
         data.numbers.percent[numberingSystem] ||
         data.numbers.percent[defaultNumberingSystem]
-      numberPattern = getPatternForSign(percentPattern, sign)
+      numberPattern = getPatternForSign(percentPattern, sign, approximately)
     }
   } else {
-    numberPattern = compactNumberPattern
+    numberPattern = approximately
+      ? insertApproximatelySign(compactNumberPattern, sign)
+      : compactNumberPattern
   }
 
   // Extract the decimal number pattern string. It looks like "#,##0,00", which will later be
@@ -180,13 +192,11 @@ export default function formatToParts(
     }
   }
 
-  // The following tokens are special: `{0}`, `¤`, `%`, `-`, `+`, `{c:...}.
-  const numberPatternParts = numberPattern.split(/({c:[^}]+}|\{0\}|[¤%\-+])/g)
+  // Separate number, approximately sign, affix, and compact placeholders.
+  const numberPatternParts = numberPattern.split(
+    /({c:[^}]+}|\{approximatelySign\}|\{0\}|[¤%\-+])/g
+  )
   const numberParts: NumberFormatPart[] = []
-
-  const symbols =
-    data.numbers.symbols[numberingSystem] ||
-    data.numbers.symbols[defaultNumberingSystem]
 
   for (const part of numberPatternParts) {
     if (!part) {
@@ -205,6 +215,7 @@ export default function formatToParts(
             // If compact number pattern exists, do not insert group separators.
             !compactNumberPattern && (options.useGrouping ?? true),
             decimalNumberPattern,
+            data.numbers.minimumGroupingDigits ?? 1,
             style,
             options.roundingIncrement,
             GetUnsignedRoundingMode(options.roundingMode, sign === -1)
@@ -212,6 +223,12 @@ export default function formatToParts(
         )
         break
       }
+      case '{approximatelySign}':
+        numberParts.push({
+          type: 'approximatelySign',
+          value: symbols.approximatelySign,
+        })
+        break
       case '-':
         numberParts.push({type: 'minusSign', value: symbols.minusSign})
         break
@@ -386,6 +403,7 @@ function partitionNumberIntoParts(
    * Some locales like Hindi has secondary group size of 2 (e.g. "#,##,##0.00").
    */
   decimalNumberPattern: string,
+  minimumGroupingDigits: number,
   style: NumberFormatOptionsStyle,
   roundingIncrement: number,
   unsignedRoundingMode: UnsignedRoundingModeType
@@ -400,6 +418,9 @@ function partitionNumberIntoParts(
     return [{type: 'infinity', value: n}]
   }
 
+  const asciiDecimalSepIndex = n.indexOf('.')
+  const integerDigitCount =
+    asciiDecimalSepIndex < 0 ? n.length : asciiDecimalSepIndex
   const digitReplacementTable = digitMapping[numberingSystem as 'arab']
   if (digitReplacementTable) {
     n = n.replace(/\d/g, digit => digitReplacementTable[+digit] || digit)
@@ -418,58 +439,56 @@ function partitionNumberIntoParts(
 
   // #region Grouping integer digits
 
-  // The weird compact and x >= 10000 check is to ensure consistency with Node.js and Chrome.
-  // Note that `de` does not have compact form for thousands, but Node.js does not insert grouping separator
-  // unless the rounded number is greater than 10000:
-  //   NumberFormat('de', {notation: 'compact', compactDisplay: 'short'}).format(1234) //=> "1234"
-  //   NumberFormat('de').format(1234) //=> "1.234"
-  let shouldUseGrouping = false
-  if (useGrouping === 'always') {
-    shouldUseGrouping = true
-  } else if (useGrouping === 'min2') {
-    shouldUseGrouping = x.greaterThanOrEqualTo(10000)
-  } else if (useGrouping === 'auto' || useGrouping) {
-    shouldUseGrouping = notation !== 'compact' || x.greaterThanOrEqualTo(10000)
-  }
+  // ECMA-402 §16.4 [[UseGrouping]] lets auto follow locale preferences
+  // (internal-slot requirement, no numbered steps).
+  // https://tc39.es/ecma402/#sec-intl.numberformat-internal-slots
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L528
+  // LDML Number Patterns adds minimumGroupingDigits to the primary group size.
+  // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L736-L737
+  const integerNumberPattern = decimalNumberPattern.split('.')[0]
+  const patternGroups = integerNumberPattern.split(',')
+  const primaryGroupingSize =
+    patternGroups.length > 1
+      ? patternGroups[patternGroups.length - 1].length
+      : 3
+  const secondaryGroupingSize =
+    patternGroups.length > 2
+      ? patternGroups[patternGroups.length - 2].length
+      : primaryGroupingSize
+  const minimum = useGrouping === 'min2' ? 2 : minimumGroupingDigits
+  const shouldUseGrouping =
+    Boolean(useGrouping) &&
+    (useGrouping === 'always' ||
+      integerDigitCount >= primaryGroupingSize + minimum)
   if (shouldUseGrouping) {
-    // a. Let groupSepSymbol be the implementation-, locale-, and numbering system-dependent (ILND) String representing the grouping separator.
-    // For currency we should use `currencyGroup` instead of generic `group`
     const groupSepSymbol =
       style === 'currency' && symbols.currencyGroup != null
         ? symbols.currencyGroup
         : symbols.group
     const groups: string[] = []
 
-    // > There may be two different grouping sizes: The primary grouping size used for the least
-    // > significant integer group, and the secondary grouping size used for more significant groups.
-    // > If a pattern contains multiple grouping separators, the interval between the last one and the
-    // > end of the integer defines the primary grouping size, and the interval between the last two
-    // > defines the secondary grouping size. All others are ignored.
-    const integerNumberPattern = decimalNumberPattern.split('.')[0]
-    const patternGroups = integerNumberPattern.split(',')
-
-    let primaryGroupingSize = 3
-    let secondaryGroupingSize = 3
-
-    if (patternGroups.length > 1) {
-      primaryGroupingSize = patternGroups[patternGroups.length - 1].length
-    }
-    if (patternGroups.length > 2) {
-      secondaryGroupingSize = patternGroups[patternGroups.length - 2].length
-    }
-
-    let i = integer.length - primaryGroupingSize
-    if (i > 0) {
-      // Slice the least significant integer group
-      groups.push(integer.slice(i, i + primaryGroupingSize))
-      // Then iteratively push the more signicant groups
-      // TODO: handle surrogate pairs in some numbering system digits
-      for (i -= secondaryGroupingSize; i > 0; i -= secondaryGroupingSize) {
-        groups.push(integer.slice(i, i + secondaryGroupingSize))
-      }
-      groups.push(integer.slice(0, i + secondaryGroupingSize))
-    } else {
-      groups.push(integer)
+    // ECMA-402 §16.5.5 steps 4.c.iii.1.a and 4.c.iii.7.b group mapped
+    // digit code points, never halves of a supplementary-plane digit.
+    // https://tc39.es/ecma402/#sec-partitionnotationsubpattern
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L844-L878
+    // LDML grouping sizes count digits, not UTF-16 code units.
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L724
+    // ASCII input gives the digit count; BMP digits can keep string slicing.
+    const codePoints =
+      integer.length === integerDigitCount ? undefined : Array.from(integer)
+    let end = integerDigitCount
+    let groupSize = primaryGroupingSize
+    while (end > 0) {
+      const start = Math.max(0, end - groupSize)
+      groups.push(
+        codePoints
+          ? codePoints.slice(start, end).join('')
+          : integer.slice(start, end)
+      )
+      end = start
+      groupSize = secondaryGroupingSize
     }
 
     while (groups.length > 0) {
@@ -521,21 +540,37 @@ function partitionNumberIntoParts(
   return result
 }
 
-function getPatternForSign(pattern: string, sign: -1 | 0 | 1): string {
-  if (pattern.indexOf(';') < 0) {
-    pattern = `${pattern};-${pattern}`
-  }
+// LDML approximate formatting uses the minus-sign position for unsigned values,
+// and inserts the approximately sign before an existing plus/minus sign.
+// https://unicode.org/reports/tr35/tr35-numbers.html#Approximate_Number_Formatting
+// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1854-L1858
+function getPatternForSign(
+  pattern: string,
+  sign: -1 | 0 | 1,
+  approximately = false
+): string {
+  if (pattern.indexOf(';') < 0) pattern = `${pattern};-${pattern}`
   const [zeroPattern, negativePattern] = pattern.split(';')
-  switch (sign) {
-    case 0:
-      return zeroPattern
-    case -1:
-      return negativePattern
-    default:
-      return negativePattern.indexOf('-') >= 0
-        ? negativePattern.replace(/-/g, '+')
-        : `+${zeroPattern}`
+  if (sign === 0 && approximately && negativePattern.includes('-')) {
+    return negativePattern.replace('-', '{approximatelySign}')
   }
+  let signedPattern = zeroPattern
+  if (sign === -1) signedPattern = negativePattern
+  else if (sign === 1)
+    signedPattern = negativePattern.includes('-')
+      ? negativePattern.replace(/-/g, '+')
+      : `+${zeroPattern}`
+  return approximately
+    ? insertApproximatelySign(signedPattern, sign)
+    : signedPattern
+}
+
+function insertApproximatelySign(pattern: string, sign: -1 | 0 | 1): string {
+  const symbol = sign === 1 ? '+' : '-'
+  const index = sign === 0 ? -1 : pattern.indexOf(symbol)
+  return index < 0
+    ? `{approximatelySign}${pattern}`
+    : `${pattern.slice(0, index)}{approximatelySign}${pattern.slice(index)}`
 }
 
 // Find the CLDR pattern for compact notation based on the magnitude of data and style.

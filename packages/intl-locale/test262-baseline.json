@@ -1,0 +1,9 @@
+{
+  "total": 336,
+  "failures": {
+    "intl402/Locale/canonicalize-locale-list-take-locale.js (default)": "Expected SameValue(«0», «1») to be true",
+    "intl402/Locale/canonicalize-locale-list-take-locale.js (strict mode)": "Expected SameValue(«0», «1») to be true",
+    "intl402/Locale/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
+    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'"
+  }
+}

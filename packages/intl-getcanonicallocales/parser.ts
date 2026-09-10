@@ -1,3 +1,4 @@
+import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   type UnicodeLocaleId,
   type UnicodeLanguageId,
@@ -8,25 +9,59 @@ import {
   type KV,
 } from '#packages/intl-getcanonicallocales/types.js'
 
-const ALPHANUM_1_8 = /^[a-z0-9]{1,8}$/i
-const ALPHANUM_2_8 = /^[a-z0-9]{2,8}$/i
-const ALPHANUM_3_8 = /^[a-z0-9]{3,8}$/i
+// ECMA-402 §6.2.1, step 2 validates ASCII locale grammar without observable
+// RegExp execution, including changes to legacy RegExp constructor statics.
+// https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
+function isLetter(code: number): boolean {
+  return (code >= 65 && code <= 90) || (code >= 97 && code <= 122)
+}
 
-const KEY_REGEX = /^[a-z0-9][a-z]$/i
+function isDigit(code: number): boolean {
+  return code >= 48 && code <= 57
+}
 
-const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
-const ALPHA_4 = /^[a-z]{4}$/i
-// alphanum-[tTuUxX]
-const OTHER_EXTENSION_TYPE = /^[0-9a-svwyz]$/i
-const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
-const UNICODE_VARIANT_SUBTAG_REGEX = /^([a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/i
-const UNICODE_LANGUAGE_SUBTAG_REGEX = /^([a-z]{2,3}|[a-z]{5,8})$/i
-const TKEY_REGEX = /^[a-z][0-9]$/i
+function isSubtag(
+  value: string,
+  min: number,
+  max: number,
+  digits = false
+): boolean {
+  if (value.length < min || value.length > max) return false
+  for (let i = 0; i < value.length; i++) {
+    const code = value.charCodeAt(i)
+    if (!isLetter(code) && !(digits && isDigit(code))) return false
+  }
+  return true
+}
+
+function isUnicodeKey(value: string): boolean {
+  return (
+    value.length === 2 &&
+    isSubtag(value, 2, 2, true) &&
+    isLetter(value.charCodeAt(1))
+  )
+}
+
+function isTransformedKey(value: string): boolean {
+  return (
+    value.length === 2 &&
+    isLetter(value.charCodeAt(0)) &&
+    isDigit(value.charCodeAt(1))
+  )
+}
+
+function isOtherExtensionType(value: string): boolean {
+  const type = value.toLowerCase()
+  return (
+    isSubtag(type, 1, 1, true) && type !== 't' && type !== 'u' && type !== 'x'
+  )
+}
 
 export const SEPARATOR = '-'
 
 export function isUnicodeLanguageSubtag(lang: string): boolean {
-  return UNICODE_LANGUAGE_SUBTAG_REGEX.test(lang)
+  return lang.length !== 4 && isSubtag(lang, 2, 8)
 }
 
 export function isStructurallyValidLanguageTag(tag: string): boolean {
@@ -39,15 +74,24 @@ export function isStructurallyValidLanguageTag(tag: string): boolean {
 }
 
 export function isUnicodeRegionSubtag(region: string): boolean {
-  return UNICODE_REGION_SUBTAG_REGEX.test(region)
+  return (
+    isSubtag(region, 2, 2) ||
+    (region.length === 3 &&
+      isDigit(region.charCodeAt(0)) &&
+      isDigit(region.charCodeAt(1)) &&
+      isDigit(region.charCodeAt(2)))
+  )
 }
 
 export function isUnicodeScriptSubtag(script: string): boolean {
-  return ALPHA_4.test(script)
+  return isSubtag(script, 4, 4)
 }
 
 export function isUnicodeVariantSubtag(variant: string): boolean {
-  return UNICODE_VARIANT_SUBTAG_REGEX.test(variant)
+  return (
+    isSubtag(variant, 5, 8, true) ||
+    (isSubtag(variant, 4, 4, true) && isDigit(variant.charCodeAt(0)))
+  )
 }
 
 export function parseUnicodeLanguageId(
@@ -94,10 +138,10 @@ export function parseUnicodeLanguageId(
 }
 
 function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
-  const keywords = []
+  const keywords: KV[] = []
   let keyword
   while (chunks.length && (keyword = parseKeyword(chunks))) {
-    keywords.push(keyword)
+    appendToList(keywords, keyword)
   }
   if (keywords.length) {
     return {
@@ -108,12 +152,12 @@ function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
   }
   // Mix of attributes & keywords
   // Check for attributes first
-  const attributes = []
-  while (chunks.length && ALPHANUM_3_8.test(chunks[0])) {
-    attributes.push(chunks.shift()!)
+  const attributes: string[] = []
+  while (chunks.length && isSubtag(chunks[0], 3, 8, true)) {
+    appendToList(attributes, chunks.shift()!)
   }
   while (chunks.length && (keyword = parseKeyword(chunks))) {
-    keywords.push(keyword)
+    appendToList(keywords, keyword)
   }
   if (keywords.length || attributes.length) {
     return {
@@ -127,14 +171,14 @@ function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
 
 function parseKeyword(chunks: string[]): KV | undefined {
   let key
-  if (!KEY_REGEX.test(chunks[0])) {
+  if (!isUnicodeKey(chunks[0])) {
     return
   }
   key = chunks.shift()!
 
-  const type = []
-  while (chunks.length && TYPE_REGEX.test(chunks[0])) {
-    type.push(chunks.shift())
+  const type: string[] = []
+  while (chunks.length && isSubtag(chunks[0], 3, 8, true)) {
+    appendToList(type, chunks.shift()!)
   }
   let value: string = ''
   if (type.length) {
@@ -145,24 +189,26 @@ function parseKeyword(chunks: string[]): KV | undefined {
 
 function parseTransformedExtension(chunks: string[]): TransformedExtension {
   let lang: UnicodeLanguageId | undefined
-  try {
+  // ECMA-402 §6.2.1, step 2: transformed extensions allow a language,
+  // fields, or both. Do not consume a field key as a failed language parse.
+  // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
+  if (chunks.length && isUnicodeLanguageSubtag(chunks[0])) {
     lang = parseUnicodeLanguageId(chunks)
-  } catch {
-    // Try just parsing tfield
   }
   const fields: KV[] = []
-  while (chunks.length && TKEY_REGEX.test(chunks[0])) {
+  while (chunks.length && isTransformedKey(chunks[0])) {
     const key = chunks.shift()!
-    const value = []
-    while (chunks.length && ALPHANUM_3_8.test(chunks[0])) {
-      value.push(chunks.shift())
+    const value: string[] = []
+    while (chunks.length && isSubtag(chunks[0], 3, 8, true)) {
+      appendToList(value, chunks.shift()!)
     }
     if (!value.length) {
       throw new RangeError(`Missing tvalue for tkey "${key}"`)
     }
-    fields.push([key, value.join(SEPARATOR)])
+    appendToList(fields, [key, value.join(SEPARATOR)])
   }
-  if (fields.length) {
+  if (lang || fields.length) {
     return {
       type: 't',
       fields,
@@ -172,9 +218,9 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
   throw new RangeError('Malformed transformed_extension')
 }
 function parsePuExtension(chunks: string[]): PuExtension {
-  const exts = []
-  while (chunks.length && ALPHANUM_1_8.test(chunks[0])) {
-    exts.push(chunks.shift())
+  const exts: string[] = []
+  while (chunks.length && isSubtag(chunks[0], 1, 8, true)) {
+    appendToList(exts, chunks.shift()!)
   }
   if (exts.length) {
     return {
@@ -185,14 +231,17 @@ function parsePuExtension(chunks: string[]): PuExtension {
   throw new RangeError('Malformed private_use_extension')
 }
 function parseOtherExtensionValue(chunks: string[]): string {
-  const exts = []
-  while (chunks.length && ALPHANUM_2_8.test(chunks[0])) {
-    exts.push(chunks.shift())
+  const exts: string[] = []
+  while (chunks.length && isSubtag(chunks[0], 2, 8, true)) {
+    appendToList(exts, chunks.shift()!)
   }
   if (exts.length) {
     return exts.join(SEPARATOR)
   }
-  return ''
+  // ECMA-402 §6.2.1, step 2: every extension singleton needs a value.
+  // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
+  throw new RangeError('Missing extension value')
 }
 function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   if (!chunks.length) {
@@ -204,7 +253,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   let puExtension
   const otherExtensionMap: Record<string, OtherExtension> = {}
   do {
-    const type = chunks.shift()!
+    const type = chunks.shift()!.toLowerCase()
     switch (type) {
       case 'u':
       case 'U':
@@ -212,7 +261,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new RangeError('There can only be 1 -u- extension')
         }
         unicodeExtension = parseUnicodeExtension(chunks)
-        extensions.push(unicodeExtension)
+        appendToList(extensions, unicodeExtension)
         break
       case 't':
       case 'T':
@@ -220,7 +269,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new RangeError('There can only be 1 -t- extension')
         }
         transformedExtension = parseTransformedExtension(chunks)
-        extensions.push(transformedExtension)
+        appendToList(extensions, transformedExtension)
         break
       case 'x':
       case 'X':
@@ -228,10 +277,10 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new RangeError('There can only be 1 -x- extension')
         }
         puExtension = parsePuExtension(chunks)
-        extensions.push(puExtension)
+        appendToList(extensions, puExtension)
         break
       default:
-        if (!OTHER_EXTENSION_TYPE.test(type)) {
+        if (!isOtherExtensionType(type)) {
           throw new RangeError('Malformed extension type')
         }
         if (type in otherExtensionMap) {
@@ -242,7 +291,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           value: parseOtherExtensionValue(chunks),
         }
         otherExtensionMap[extension.type] = extension
-        extensions.push(extension)
+        appendToList(extensions, extension)
         break
     }
   } while (chunks.length)

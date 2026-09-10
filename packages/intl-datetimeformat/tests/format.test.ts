@@ -361,7 +361,7 @@ describe('toLocaleTimeString', function () {
   })
   it('en', function () {
     expect(toLocaleTimeString(new Date(TS), 'en', {timeZone: 'UTC'})).toBe(
-      '4:48:20 AM'
+      '4:48:20\u202fAM'
     )
   })
 })
@@ -429,4 +429,45 @@ describe('Bosnian month formatting (issue #4270)', function () {
     // Should produce correct format with "novembar" for November (not "M11")
     expect(result).toBe('petak, 15. novembar 2024., 14:30:45')
   })
+})
+
+it('formats flexible day periods at exact and wrapping boundaries', () => {
+  const date = (hour: number, minute = 0, second = 0, millisecond = 0) =>
+    Date.UTC(2020, 0, 2, hour, minute, second, millisecond)
+  for (const dayPeriod of ['narrow', 'short', 'long'] as const) {
+    const formatter = new DateTimeFormat('en', {timeZone: 'UTC', dayPeriod})
+    expect(formatter.format(date(0))).toBe('in the morning')
+    expect(formatter.format(date(11, 59, 59, 999))).toBe('in the morning')
+    expect(formatter.format(date(12))).toBe(
+      dayPeriod === 'narrow' ? 'n' : 'noon'
+    )
+    expect(formatter.format(date(12, 0, 0, 1))).toBe('in the afternoon')
+    expect(formatter.format(date(18))).toBe('in the evening')
+    expect(formatter.format(date(21))).toBe('at night')
+    expect(formatter.formatToParts(date(18))).toEqual([
+      {type: 'dayPeriod', value: 'in the evening'},
+    ])
+    expect(formatter.formatRange(date(1), date(2))).toBe('in the morning')
+  }
+  const russian = new DateTimeFormat('ru', {timeZone: 'UTC', dayPeriod: 'long'})
+  expect(russian.format(date(0))).toBe('ночи')
+  expect(russian.format(date(23))).toBe('ночи')
+})
+
+it('keeps requested seconds without interpreting alternate labels as skeletons', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  })
+  expect(formatter.format(Date.UTC(2020, 0, 2, 4, 48, 20))).toBe(
+    '4:48:20\u202fAM'
+  )
+  expect(formatter.resolvedOptions()).toMatchObject({
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+  expect(formatter.resolvedOptions().weekday).toBeUndefined()
 })

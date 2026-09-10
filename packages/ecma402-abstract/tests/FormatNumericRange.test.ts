@@ -35,6 +35,6 @@ describe('FormatNumericRange', () => {
       {getInternalSlots}
     )
 
-    expect(result).toBe('-10--3')
+    expect(result).toBe('-10 - -3')
   })
 })

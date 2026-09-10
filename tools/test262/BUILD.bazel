@@ -1,0 +1,216 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
+load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load(":defs.bzl", "test262_test")
+
+config_setting(
+    name = "darwin_arm64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "darwin_amd64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "linux_arm64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "linux_amd64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "windows_amd64",
+    constraint_values = [
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+# Select the target runtime explicitly; host aliases are wrong for remote execution.
+alias(
+    name = "node-runtime",
+    actual = select({
+        ":darwin_arm64": "@test262_nodejs_darwin_arm64//:toolchain",
+        ":darwin_amd64": "@test262_nodejs_darwin_amd64//:toolchain",
+        ":linux_arm64": "@test262_nodejs_linux_arm64//:toolchain",
+        ":linux_amd64": "@test262_nodejs_linux_amd64//:toolchain",
+        ":windows_amd64": "@test262_nodejs_windows_amd64//:toolchain",
+    }),
+    visibility = ["//visibility:public"],
+)
+
+js_binary(
+    name = "prelude",
+    data = ["//tools/test262/runner:lib"],  # keep: generated directory entrypoints need library runfiles
+    entry_point = "//tools/test262/runner:prelude",
+    visibility = ["//visibility:public"],
+)
+
+exports_files(["run.sh"])
+
+js_binary(
+    name = "validator",
+    data = ["//tools/test262/runner:lib"],  # keep: generated directory entrypoints need library runfiles
+    entry_point = "//tools/test262/runner:validate",
+    visibility = ["//visibility:public"],
+)
+
+[
+    test262_harness_bin.test262_harness_binary(
+        name = "fixture-" + fixture,
+        testonly = True,
+        data = glob(["fixtures/**"]),
+        node_toolchain = ":node-runtime",
+        tags = ["manual"],
+    )
+    for fixture in [
+        "pass",
+        "fail",
+        "bare",
+        "empty",
+    ]
+]
+
+js_binary(
+    name = "results_tests",
+    testonly = True,
+    data = ["//tools/test262/runner:lib"],  # keep: generated directory entrypoints need library runfiles
+    entry_point = "//tools/test262/runner:results-checks",
+)
+
+sh_test(
+    name = "runner_test",
+    srcs = ["fixtures_test.sh"],
+    args = ["$(rootpath :results_tests)"] + ["$(rootpath :fixture-" + fixture + ")" for fixture in [
+        "pass",
+        "fail",
+        "bare",
+        "empty",
+    ]],
+    data = [
+        ":fixture-bare",
+        ":fixture-empty",
+        ":fixture-fail",
+        ":fixture-pass",
+        ":results_tests",
+    ],
+)
+
+js_run_binary(
+    name = "fixture-realm-prelude",
+    srcs = [
+        "fixtures/prelude.js",
+        "fixtures/second-prelude.js",
+    ],
+    outs = ["fixture-realm-prelude.js"],
+    args = [
+        "--input",
+        "$(rootpath fixtures/prelude.js)",
+        "--input",
+        "$(rootpath fixtures/second-prelude.js)",
+        "--out",
+        "$(rootpath fixture-realm-prelude.js)",
+    ],
+    tool = ":prelude",
+)
+
+[
+    test262_harness_bin.test262_harness_test(
+        name = "harness_" + fixture + "_test",
+        args = [
+            "--errorForFailures",
+            "--prelude",
+            "$(rootpath fixture-realm-prelude.js)",
+            "--test262Dir",
+            "tools/test262/fixtures",
+            "tools/test262/fixtures/test/" + fixture + ".js",
+        ],
+        data = glob(["fixtures/**"]) + ["fixture-realm-prelude.js"],
+        expected_exit_code = 1 if fixture == "fail" else 0,
+        node_toolchain = ":node-runtime",
+    )
+    for fixture in [
+        "fail",
+        "realm",
+    ]
+]
+
+# Install dependencies first; each bundle owns its locale data.
+# The same ordered installation is replayed in every Test262 realm.
+COMBINED_PRELUDES = [
+    "//packages/intl-getcanonicallocales:test262-polyfill.js",
+    "//packages/intl-locale:test262-polyfill.js",
+    "//packages/intl-pluralrules:test262-polyfill.js",
+    "//packages/intl-numberformat:test262-polyfill.js",
+    "//packages/intl-datetimeformat:test262-polyfill.js",
+    "//packages/intl-listformat:test262-polyfill.js",
+    "//packages/intl-relativetimeformat:test262-polyfill.js",
+    "//packages/intl-displaynames:test262-polyfill.js",
+    "//packages/intl-segmenter:test262-polyfill.js",
+    "//packages/intl-collator:test262-polyfill.js",
+    "//packages/intl-durationformat:test262-polyfill.js",
+    "//packages/intl-supportedvaluesof:test262-polyfill.js",
+]
+
+[
+    test262_test(
+        name = "combined-" + name,
+        baseline = "baselines/combined-" + name + ".json",
+        data = [
+            "@com_github_tc39_test262//:test262-" + name + "-copy",
+            "@com_github_tc39_test262//:test262-harness-copy",
+        ],
+        prelude = COMBINED_PRELUDES,
+        suite = "intl402/" + suite,
+        threads = 4,
+    )
+    for name, suite in [
+        ("getcanonicallocales", "Intl/getCanonicalLocales"),
+        ("locale", "Locale"),
+        ("pluralrules", "PluralRules"),
+        ("numberformat", "NumberFormat"),
+        ("datetimeformat", "DateTimeFormat"),
+        ("listformat", "ListFormat"),
+        ("relativetimeformat", "RelativeTimeFormat"),
+        ("displaynames", "DisplayNames"),
+        ("segmenter", "Segmenter"),
+        ("collator", "Collator"),
+        ("durationformat", "DurationFormat"),
+        ("supportedvaluesof", "Intl/supportedValuesOf"),
+    ]
+]
+
+test_suite(
+    name = "combined",
+    tests = [":combined-" + name for name in [
+        "getcanonicallocales",
+        "locale",
+        "pluralrules",
+        "numberformat",
+        "datetimeformat",
+        "listformat",
+        "relativetimeformat",
+        "displaynames",
+        "segmenter",
+        "collator",
+        "durationformat",
+        "supportedvaluesof",
+    ]],
+)

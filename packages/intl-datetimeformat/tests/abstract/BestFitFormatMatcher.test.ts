@@ -709,3 +709,19 @@ test('test #2291', function () {
     year: 'numeric',
   })
 })
+
+test('hour minute second matching keeps all requested fields with flexible periods available', () => {
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true,
+  } as const
+  const formats = [
+    parseDateTimeSkeleton('EBhm', 'E h:mm B'),
+    parseDateTimeSkeleton('hms', 'h:mm:ss\u202fa'),
+  ]
+  expect(BestFitFormatMatcher(options, formats).pattern12).toBe(
+    '{hour}:{minute}:{second}\u202f{ampm}'
+  )
+})

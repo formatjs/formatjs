@@ -1,0 +1,7 @@
+{
+  "total": 130,
+  "failures": {
+    "intl402/Collator/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true",
+    "intl402/Collator/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Collator]», «[object Intl.Collator]») to be true"
+  }
+}

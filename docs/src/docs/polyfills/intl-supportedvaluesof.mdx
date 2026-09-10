@@ -1,4 +1,4 @@
-A spec-compliant polyfill/ponyfill for `Intl.supportedValuesOf`.
+A polyfill/ponyfill for `Intl.supportedValuesOf`.
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-supportedvaluesof.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-supportedvaluesof)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-supportedvaluesof)
@@ -65,9 +65,19 @@ async function polyfill() {
 
 ## Tests
 
-This library is [test262](https://github.com/tc39/test262/tree/master/test/intl402/Intl/supportedValuesOf)-compliant.
+The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-supportedvaluesof:test262-strict` to require zero failures.
 
 ## Key coercion
 
 `Intl.supportedValuesOf` converts its key to a string before validating the
 category. String wrapper objects are accepted; Symbols throw `TypeError`.
+
+`Intl.supportedValuesOf` is callable but cannot be used as a constructor.
+
+Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
+in addition to continental transition zones. Runtime filtering retains primary
+identifiers and omits aliases such as `Etc/UTC`.
+
+Collation enumeration probes CLDR-derived candidate locales for each type,
+including locale-specific collations such as German `phonebk` and Spanish `trad`.
+Only collations accepted by the installed Collator are returned.

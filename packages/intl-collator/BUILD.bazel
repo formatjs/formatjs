@@ -1,6 +1,8 @@
 load("//tools:compile.bzl", "formatjs_library")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
 
 ENTRY_POINTS = [
     "index.ts",
@@ -43,7 +45,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "0.2.7",  # x-release-please-version
+    version = "0.2.8",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -76,4 +78,29 @@ formatjs_test(
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
+)
+
+rolldown_bundle(
+    name = "test262-polyfill",
+    srcs = [":srcs"],
+    entry_point = "polyfill-force.ts",
+    format = "iife",
+    target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+    ],
+)
+
+test262_test(
+    name = "test262",
+    data = [
+        "@com_github_tc39_test262//:test262-collator-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/Collator",
 )

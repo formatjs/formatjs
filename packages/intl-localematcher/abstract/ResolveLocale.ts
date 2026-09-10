@@ -23,7 +23,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   requestedLocales: readonly string[],
   options: {
     localeMatcher: string
-    [k: string]: string
+    [k: string]: string | null | undefined
   },
   relevantExtensionKeys: K[],
   localeData: Record<string, D | undefined>,
@@ -57,7 +57,13 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   //   foundLocaleData !== undefined,
   //   `Missing locale data for ${foundLocale}`
   // )
-  const result: ResolveLocaleResult = {locale: 'en', dataLocale: foundLocale}
+  // ECMA-402 §9.2.7, step 8: this is an internal Record, not an object
+  // whose fields can invoke setters inherited from Object.prototype.
+  // https://tc39.es/ecma402/#sec-resolvelocale
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L242
+  const result: ResolveLocaleResult = Object.create(null)
+  result.locale = 'en'
+  result.dataLocale = foundLocale
   let components
   let keywords: Keyword[]
   if (r.extension) {
@@ -69,15 +75,18 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   let supportedKeywords: Keyword[] = []
   for (const key of relevantExtensionKeys) {
     // TODO: Shouldn't default to empty array, see TODO above
-    let keyLocaleData: string[] = foundLocaleData?.[key] ?? []
+    let keyLocaleData: Array<string | null> = foundLocaleData?.[key] ?? []
     invariant(
       Array.isArray(keyLocaleData),
       `keyLocaleData for ${key} must be an array`
     )
     let value = keyLocaleData[0]
+    // ECMA-402 §9.2.7 ResolveLocale, step 13.d: null is a valid default.
+    // https://tc39.es/ecma402/#sec-resolvelocale
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L254
     invariant(
-      value === undefined || typeof value === 'string',
-      `value must be a string or undefined`
+      value == null || typeof value === 'string',
+      `value must be a string, null, or undefined`
     )
     let supportedKeyword: Keyword | undefined
     let entry = keywords.find(k => k.key === key)
@@ -112,7 +121,11 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
         optionsValue = 'true'
       }
     }
-    if (optionsValue !== value && keyLocaleData.indexOf(optionsValue) > -1) {
+    if (
+      optionsValue !== undefined &&
+      optionsValue !== value &&
+      keyLocaleData.indexOf(optionsValue) > -1
+    ) {
       value = optionsValue
       supportedKeyword = undefined
     }

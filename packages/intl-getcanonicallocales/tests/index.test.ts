@@ -1,6 +1,131 @@
 import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
 import {describe, expect, it} from 'vitest'
 describe('Intl.getCanonicalLocales', () => {
+  it('normalizes case before alias lookup', () => {
+    expect(
+      getCanonicalLocales([
+        'DE-de',
+        'de-DE',
+        'CMN-hANS',
+        'SGN-gr',
+        'SL-ROZAJ-BISKE',
+      ])
+    ).toEqual(['de-DE', 'zh-Hans', 'gss', 'sl-biske-rozaj'])
+  })
+  it('accepts language-only and field-only transformed extensions', () => {
+    expect(
+      getCanonicalLocales([
+        'en-t-EN-Latn-CA',
+        'en-t-d0-ascii',
+        'en-t-en-i0-handwrit',
+      ])
+    ).toEqual(['en-t-en-latn-ca', 'en-t-d0-ascii', 'en-t-en-i0-handwrit'])
+    expect(() => getCanonicalLocales('en-t')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en-t-d0')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en-t-en-0')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en-a')).toThrow(RangeError)
+  })
+  it('canonicalizes extension aliases while preserving transformed true', () => {
+    expect(
+      getCanonicalLocales([
+        'en-t-m0-true',
+        'und-Latn-t-und-hani-m0-names',
+        'en-u-ca-islamicc',
+        'en-u-ms-imperial',
+        'en-u-kn-yes',
+        'en-u-KN-TRUE-kn-false',
+        'en-u-ks-primary',
+      ])
+    ).toEqual([
+      'en-t-m0-true',
+      'und-Latn-t-und-hani-m0-prprname',
+      'en-u-ca-islamic-civil',
+      'en-u-ms-uksystem',
+      'en-u-kn',
+      'en-u-ks-level1',
+    ])
+  })
+  it('canonicalizes subdivision and region override aliases', () => {
+    expect(
+      getCanonicalLocales([
+        'und-u-rg-no23',
+        'und-NO-u-sd-no23',
+        'und-u-rg-lud',
+        'und-u-rg-fi01',
+        'und-AX-u-sd-fi01',
+        'en-u-rg-uszzzz',
+      ])
+    ).toEqual([
+      'und-u-rg-no50',
+      'und-NO-u-sd-no50',
+      'und-u-rg-lucl',
+      'und-u-rg-axzzzz',
+      'und-AX-u-sd-axzzzz',
+      'en-u-rg-uszzzz',
+    ])
+  })
+  it('replaces matched alias subtags and keeps unrelated variants', () => {
+    expect(
+      getCanonicalLocales([
+        'art-lojban',
+        'jbo-lojban',
+        'hy-arevela',
+        'hy-arevmda',
+        'hye-arevmda',
+        'ja-Latn-fonipa-hepburn-heploc',
+        'en-aaland',
+        'en-GB-aaland',
+      ])
+    ).toEqual(['jbo', 'hy', 'hyw', 'ja-Latn-alalc97-fonipa', 'en-AX', 'en-GB'])
+  })
+  it('does not call an overridden Array.prototype.push', () => {
+    const push = Array.prototype.push
+    let actual: string[]
+    try {
+      Array.prototype.push = () => {
+        throw new Error('observable push')
+      }
+      actual = getCanonicalLocales([
+        'en-US',
+        'SL-BISKE-ROZAJ',
+        'en-u-attr-kn-yes',
+        'en-t-en-m0-true',
+        'en-a-foo-x-private',
+      ])
+    } finally {
+      Array.prototype.push = push
+    }
+    expect(actual!).toEqual([
+      'en-US',
+      'sl-biske-rozaj',
+      'en-u-attr-kn',
+      'en-t-en-m0-true',
+      'en-a-foo-x-private',
+    ])
+  })
+  it('preserves legacy RegExp statics during canonicalization', () => {
+    ;/sent(inel)/.exec('sentinel')
+    const match = RegExp.lastMatch
+    const group = RegExp.$1
+    const actual = getCanonicalLocales([
+      'en-u-co-phonebk',
+      'JA-latn-hepburn-heploc',
+      'en-t-en-m0-names',
+      'en-A-FOO',
+    ])
+    const afterMatch = RegExp.lastMatch
+    const afterGroup = RegExp.$1
+    expect(actual).toEqual([
+      'en-u-co-phonebk',
+      'ja-Latn-alalc97',
+      'en-t-en-m0-prprname',
+      'en-a-foo',
+    ])
+    expect(afterMatch).toBe(match)
+    expect(afterGroup).toBe(group)
+    expect(() => getCanonicalLocales('en-a-foo-A-bar')).toThrow(RangeError)
+    expect(() => getCanonicalLocales('en\n')).toThrow(RangeError)
+  })
   it('regular', function () {
     expect(
       getCanonicalLocales('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')

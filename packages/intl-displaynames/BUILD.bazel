@@ -1,10 +1,11 @@
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
+load("//tools/test262:locales.bzl", "TEST262_LOCALES")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 PACKAGE_NAME = "intl-displaynames"
@@ -53,7 +54,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "7.3.13",  # x-release-please-version
+    version = "7.3.14",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -110,6 +111,7 @@ CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-localenames-full",
@@ -157,18 +159,6 @@ ts_run_binary(
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-TEST262_LOCALES = [
-    "ar",
-    "de",
-    "en",
-    "ja",
-    "ko",
-    "th",
-    "zh",
-    "zh-Hant",
-    "zh-Hans",
-]
-
 ts_run_binary(
     name = "test262-main-gen",
     srcs = [
@@ -183,6 +173,7 @@ ts_run_binary(
             f,
         )
         for f in TEST262_LOCALES
+        if f in ALL_LOCALES
     ] + [
         "--out",
         "$(rootpath test262-main.ts)",
@@ -198,7 +189,9 @@ rolldown_bundle(
         ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
+    format = "iife",
     target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
         "//packages/ecma262-abstract",
@@ -208,27 +201,14 @@ rolldown_bundle(
     ],
 )
 
-test262_harness_bin.test262_harness_test(
+test262_test(
     name = "test262",
-    args = [
-        "--reporter-keys",
-        "file,attrs,result",
-        "--errorForFailures",
-        "--timeout",
-        "30000",
-        "--prelude",
-        "$(rootpath test262-polyfill.js)",
-        "--test262Dir",
-        "../+http_archive+com_github_tc39_test262",
-        "../+http_archive+com_github_tc39_test262/test/intl402/DisplayNames/**/*.js",
-    ],
     data = [
-        "test262-polyfill.js",
         "@com_github_tc39_test262//:test262-displaynames-copy",
         "@com_github_tc39_test262//:test262-harness-copy",
     ],
-    # TODO: fix
-    tags = ["manual"],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/DisplayNames",
 )
 
 rolldown_bundle(

@@ -123,6 +123,17 @@ export interface EraData {
 export interface DateTimeFormatLocaleInternalData {
   am: string
   pm: string
+  dayPeriods?: {
+    narrow: Record<string, string>
+    short: Record<string, string>
+    long: Record<string, string>
+  }
+  dayPeriodRules?: Array<{
+    name: string
+    at?: number
+    from?: number
+    before?: number
+  }>
   weekday: {
     narrow: string[]
     long: string[]
@@ -157,6 +168,8 @@ export interface DateTimeFormatLocaleInternalData {
    */
   hourFormat: string
   hourCycle: string
+  hourCycle12?: string
+  hourCycle24?: string
   dateFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   timeFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   dateTimeFormat: {full: string; long: string; medium: string; short: string}
@@ -167,7 +180,7 @@ export interface DateTimeFormatLocaleInternalData {
   intervalFormatFallback: string
   formats: Record<string, Formats[]>
   nu: string[]
-  hc: string[]
+  hc: Array<string | null>
   ca: string[]
 }
 

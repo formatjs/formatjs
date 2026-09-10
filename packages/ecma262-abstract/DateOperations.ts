@@ -13,17 +13,29 @@ export function WeekDay(t: number): number {
 }
 
 export function DayFromYear(y: number): number {
-  if (y < 100) {
-    const date = new Date(0)
-    date.setUTCFullYear(y, 0, 1)
-    date.setUTCHours(0, 0, 0, 0)
-    return date.getTime() / MS_PER_DAY
-  }
-  return Date.UTC(y, 0) / MS_PER_DAY
+  // ECMA-262 §21.4.1.5 DayFromYear, steps 2–6: count days arithmetically.
+  // The first day of the minimum representable year lies outside Date's range.
+  // https://tc39.es/ecma262/#sec-dayfromyear
+  // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34143-L34147
+  return (
+    365 * (y - 1970) +
+    Math.floor((y - 1969) / 4) -
+    Math.floor((y - 1901) / 100) +
+    Math.floor((y - 1601) / 400)
+  )
 }
 
 export function YearFromTime(t: number): number {
-  return new Date(t).getUTCFullYear()
+  // ECMA-262 §21.4.1.7 YearFromTime, step 1: locate the enclosing year.
+  // Local timezone adjustment may move an otherwise valid instant past Date's bounds.
+  // https://tc39.es/ecma262/#sec-yearfromtime
+  // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34177
+  if (!Number.isFinite(t)) return NaN
+  const day = Day(t)
+  let year = 1970 + Math.floor(day / 365.2425)
+  while (DayFromYear(year) > day) year--
+  while (DayFromYear(year + 1) <= day) year++
+  return year
 }
 
 export function DaysInYear(y: number): 365 | 366 {

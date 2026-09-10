@@ -1,0 +1,14 @@
+diff --git a/crates/ruff_python_parser/src/lexer.rs b/crates/ruff_python_parser/src/lexer.rs
+--- a/crates/ruff_python_parser/src/lexer.rs
++++ b/crates/ruff_python_parser/src/lexer.rs
+@@ -1049,6 +1049,8 @@
+     fn lex_number_radix(&mut self, radix: Radix) -> TokenKind {
+         #[cfg(debug_assertions)]
+         {
+-            use std::debug_assert_matches;
+-            debug_assert_matches!(self.cursor.previous().to_ascii_lowercase(), 'x' | 'o' | 'b');
++            debug_assert!(matches!(
++                self.cursor.previous().to_ascii_lowercase(),
++                'x' | 'o' | 'b'
++            ));
+         }

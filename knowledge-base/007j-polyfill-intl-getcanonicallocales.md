@@ -1,6 +1,6 @@
 # @formatjs/intl-getcanonicallocales
 
-**ECMA-402 Section 8.2.1** — `Intl.getCanonicalLocales`
+**ECMA-402 Section 8.3.1** — `Intl.getCanonicalLocales`
 
 ## Purpose
 
@@ -73,3 +73,21 @@ export const likelySubtags: Record<string, string> = {
 and values from the installed Locale polyfill use their intrinsic locale tag,
 ignoring overridden instance properties. Objects that merely expose `language`
 and `baseName` are treated as ordinary array-like inputs.
+
+Locale identifier casing is normalized before CLDR alias lookup, including
+language, script, region, and variant subtags.
+
+Unicode and transformed extensions use CLDR BCP 47 aliases. Transformed
+extensions accept a language, fields, or both, and retain `true` field values.
+
+The `rg` and `sd` Unicode keys resolve CLDR subdivision aliases. Territory
+replacements receive the required `zzzz` suffix; multiple replacements use the first.
+
+CLDR compound aliases remove matched subtags, preserve unrelated fields, and
+apply the most specific rule first, including language-independent variants.
+
+Canonicalization creates list elements directly without calling an overridden
+`Array.prototype.push`, including while parsing and emitting extensions.
+
+Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
+Extension singleton matching is case-insensitive, including duplicate detection.

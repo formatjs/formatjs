@@ -1,3 +1,4 @@
+import {numberingSystemNames} from '@formatjs_generated/cldr.number/numbering-systems.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
@@ -12,7 +13,7 @@ import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/GetDurationUnitOptions.js'
 import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
-import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
+import {ToTemporalDurationRecord} from '#packages/intl-durationformat/abstract/ToTemporalDurationRecord.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
 import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
@@ -25,12 +26,40 @@ import type {
 } from '#packages/intl-durationformat/types.js'
 import {type DurationFormatOptions} from '#packages/intl-durationformat/types.js'
 
+// NumberFormat is a runtime dependency and may be replaced by its polyfill.
+const numberingSystemsByConstructor = new WeakMap<
+  typeof Intl.NumberFormat,
+  string[]
+>()
+function supportedNumberingSystems(): string[] {
+  const NumberFormat = Intl.NumberFormat
+  let systems = numberingSystemsByConstructor.get(NumberFormat)
+  if (!systems) {
+    systems = numberingSystemNames.filter(numberingSystem => {
+      const options = Object.create(null)
+      options.numberingSystem = numberingSystem
+      try {
+        return (
+          new NumberFormat('en', options).resolvedOptions().numberingSystem ===
+          numberingSystem
+        )
+      } catch {
+        return false
+      }
+    })
+    // Missing NumberFormat locale data may be loaded before the next call.
+    if (systems.length) numberingSystemsByConstructor.set(NumberFormat, systems)
+  }
+  return systems
+}
+
 // Keys that should be included in resolvedOptions() output
 // These represent all the configurable options for duration formatting
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDurationFormatInternal, 'pattern' | 'boundFormat'>
 > = [
   'locale',
+  'numberingSystem',
   'style',
   'years',
   'yearsDisplay',
@@ -52,7 +81,6 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'microsecondsDisplay',
   'nanoseconds',
   'nanosecondsDisplay',
-  'numberingSystem',
   'fractionalDigits',
 ]
 
@@ -265,12 +293,14 @@ export class DurationFormat implements DurationFormatType {
     }
     const internalSlots = getInternalSlots(this)
     const ro: Record<string, unknown> = {}
+    // ECMA-402 §13.3.2, step 4: emit defined values in table order.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.resolvedOptions
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L205-L208
     for (const key of RESOLVED_OPTIONS_KEYS) {
       let v = internalSlots[key]
       if (key === 'fractionalDigits') {
-        if (v !== undefined) {
-          v = Number(v)
-        }
+        if (v === undefined) continue
+        v = Number(v)
       } else if (v === 'fractional') {
         v = 'numeric'
       } else {
@@ -280,12 +310,12 @@ export class DurationFormat implements DurationFormatType {
     }
     return ro as any
   }
-  formatToParts(duration: DurationInput): DurationFormatPart[] {
+  formatToParts(duration: DurationInput | string): DurationFormatPart[] {
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
       throw new TypeError('Error uninitialized locale')
     }
-    const record = ToDurationRecord(duration)
+    const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     const result = []
     for (const {type, unit, value} of parts) {
@@ -297,12 +327,12 @@ export class DurationFormat implements DurationFormatType {
     }
     return result
   }
-  format(duration: DurationInput): string {
+  format(duration: DurationInput | string): string {
     const locInternalSlots = getInternalSlots(this)
     if (locInternalSlots.initializedDurationFormat === undefined) {
       throw new TypeError('Error uninitialized locale')
     }
-    const record = ToDurationRecord(duration)
+    const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     let result = ''
     for (const {value} of parts) {
@@ -334,16 +364,15 @@ export class DurationFormat implements DurationFormatType {
   ).reduce<Record<string, DurationFormatLocaleInternalData | undefined>>(
     (all, locale) => {
       DurationFormat.availableLocales.add(locale)
-      const nu = [...TIME_SEPARATORS.localeData[locale].nu]
-      // ECMA-402 DurationFormat resolves `numberingSystem` through the
-      // locale-data [[nu]] list. Keep the locale default first, but allow the
-      // spec-visible `latn` override even when CLDR only needs the default
-      // numbering system for time-separator data.
-      if (!nu.includes('latn')) {
-        nu.push('latn')
-      }
       all[locale] = {
-        nu,
+        // ECMA-402 §13.2.3 [[LocaleData]] constraints (not algorithm steps):
+        // expose numbering systems supported by the NumberFormat dependency.
+        // https://tc39.es/ecma402/#sec-Intl.DurationFormat-internal-slots
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L162-L169
+        get nu() {
+          const defaults = TIME_SEPARATORS.localeData[locale].nu
+          return [...new Set([...defaults, ...supportedNumberingSystems()])]
+        },
         digitalFormat: {
           default: TIME_SEPARATORS.default,
           ...TIME_SEPARATORS.localeData[locale as 'da'].separator,
@@ -358,3 +387,20 @@ export class DurationFormat implements DurationFormatType {
   }
   static polyfilled = true
 }
+
+// ECMA-402 §13.1.1 and §13.2.2: lengths count required parameters.
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L16
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L141
+Object.defineProperty(DurationFormat, 'length', {value: 0, configurable: true})
+Object.defineProperty(DurationFormat.supportedLocalesOf, 'length', {
+  value: 1,
+  configurable: true,
+})
+// ECMA-402 §13.3.5: the prototype exposes the specified toStringTag descriptor.
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype-%symbol.tostringtag%
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L351-L354
+Object.defineProperty(DurationFormat.prototype, Symbol.toStringTag, {
+  value: 'Intl.DurationFormat',
+  configurable: true,
+})

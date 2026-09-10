@@ -8,7 +8,7 @@ A polyfill for ESNext [`Intl.NumberFormat`][numberformat] and [`Number.prototype
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.NumberFormat`, including all finalized proposals up through **Intl.NumberFormat v3**.
+This package implements `Intl.NumberFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### ✅ All Features Implemented
 
@@ -233,6 +233,15 @@ This package requires the following capabilities:
 
 Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402).
 
+Numeric numbering systems from CLDR are supported through the `numberingSystem`
+option or the locale's `nu` extension. Formatting uses each system's digits,
+symbols, and locale patterns, including supplementary-plane digits such as Adlam:
+
+```ts
+new Intl.NumberFormat('en', {numberingSystem: 'adlm'}).format(12345.67)
+// '𞥑𞥒,𞥓𞥔𞥕.𞥖𞥗'
+```
+
 ## Usage
 
 ### Via polyfill-fastly.io
@@ -337,3 +346,83 @@ The library will choose the best-fit localized pattern to format this compound u
 
 A well-formed but unsupported `numberingSystem` option falls back to the locale's
 supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.
+
+## Callable options
+
+Options can be function objects with formatting properties. The constructor
+reads those properties without calling the function.
+
+```tsx
+const options = Object.assign(() => {}, {maximumFractionDigits: 2})
+new Intl.NumberFormat('en', options).format(1.234) // '1.23'
+```
+
+## Conformance testing
+
+The repository's `:test262` target executes upstream tests and checks an explicit
+known-failure baseline. A green baseline check does not mean every test passed.
+Run `bazel test //packages/intl-numberformat:test262-strict` to require zero
+failures. Both modes report passing and failing execution counts separately.
+
+With `signDisplay: "exceptZero"`, NaN has no sign (`"NaN"` in English).
+`signDisplay: "always"` still includes the plus sign (`"+NaN"`).
+
+### Range arguments
+
+`formatRange(start, end)` and `formatRangeToParts(start, end)` require both
+endpoints. Missing or `undefined` endpoints throw `TypeError` before either value
+is converted. NaN endpoints throw `RangeError`.
+
+Formatting methods throw `TypeError` for Symbol values, including objects that
+convert to a Symbol. Invalid numeric strings still format as NaN.
+
+### Option validation
+
+Unit identifiers are case-sensitive: `mile` is valid, `MILE` throws `RangeError`,
+even when the selected style does not display units. Unsupported rounding
+increments also throw `RangeError`.
+
+`microsecond` and `nanosecond` are supported units, including in compound units
+and the `Intl.supportedValuesOf("unit")` list.
+
+Loading `und` locale data preserves existing English data. Root patterns remain
+separate from language-specific patterns, regardless of registration order.
+
+### Built-in methods
+
+NumberFormat methods are callable but cannot be constructed with `new`.
+They have no own `prototype` property.
+
+### Rounding priority
+
+`roundingPriority` compares rounding precision before trailing-zero removal.
+With `minimumSignificantDigits: 2` and `minimumFractionDigits: 2`, formatting `1`
+yields `"1.0"` for `"morePrecision"` and `"1.00"` for `"lessPrecision"`.
+
+### Receiver validation
+
+Formatting methods require an initialized NumberFormat receiver. Plain objects,
+objects inheriting NumberFormat.prototype, and proxies around instances throw
+`TypeError` before argument conversion. Changing a real instance's prototype does
+not remove its internal brand.
+
+`resolvedOptions()` returns properties in specification order, including
+`roundingPriority` before `trailingZeroDisplay`.
+
+Internal plural selection uses options with a null prototype, preventing inherited
+option getters from affecting NumberFormat or its RelativeTimeFormat consumers.
+
+`useGrouping: "auto"` respects CLDR minimum grouping digits. Polish four-digit
+numbers remain ungrouped; `"always"` still requests grouping.
+
+Locale data registers CLDR default-content variants, such as `en-US` for English.
+Loading regional data preserves explicitly loaded language data.
+
+Number ranges preserve locale-specific separators. Shared affixes are labeled
+`shared` by `formatRangeToParts`; distinct endpoint signs remain separate.
+
+Ranges whose endpoints format identically use a locale-aware approximately sign,
+for example `~$3` in English. Its position follows the locale's sign pattern.
+
+Matching signs can share a currency or unit affix across a range; mixed signs
+remain separate.

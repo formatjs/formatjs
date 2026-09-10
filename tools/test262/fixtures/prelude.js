@@ -1,0 +1,1 @@
+globalThis.polyfillMarker = 42

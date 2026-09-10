@@ -70,7 +70,7 @@ describe('SetNumberFormatDigitOptions', () => {
     }
     expect(() =>
       SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard')
-    ).toThrow(Error)
+    ).toThrow(RangeError)
   })
 
   it('should set roundingMode and trailingZeroDisplay', () => {

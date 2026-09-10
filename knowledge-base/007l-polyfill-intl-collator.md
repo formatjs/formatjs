@@ -48,7 +48,8 @@ The collator data pipeline uses CLDR common data rather than CLDR JSON packages:
 - `common/collation/*.xml` for locale collation metadata and LDML tailorings
 - generated CLDR collation package `@formatjs_generated/cldr.collation`
 
-CLDR common is provided to Bazel through the pinned `cldr_common` archive. Keep
+CLDR common 48.2 is provided to Bazel through the pinned `cldr_common` archive,
+aligned with the CLDR 48.2.0 JSON packages. Keep
 that archive aligned with the rest of the repo's CLDR version family when
 updating CLDR data.
 
@@ -123,3 +124,34 @@ behavior.
 Malformed `collation` options throw `RangeError`; well-formed unsupported values
 fall back during locale negotiation. `compare` converts arguments to strings in
 left-to-right order and rejects Symbols with `TypeError`.
+
+### Built-in descriptors
+
+`resolvedOptions` and `supportedLocalesOf` are writable, configurable methods,
+but cannot be constructed with `new`. The constructor's `prototype` property
+is non-writable; the compare getter and bound function expose the standard names.
+
+The default `ignorePunctuation` value follows the locale’s CLDR collation
+settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
+
+CLDR `root` data remains available for collation inheritance, but is excluded
+from available locale identifiers used during negotiation.
+
+Collation metadata and tailoring keys use canonical BCP 47 types from CLDR,
+such as `phonebk`, `trad`, and `dict`, rather than legacy LDML names.
+
+`usage: "search"` selects CLDR search tailoring independently of sort collation
+keywords. Its resolved collation is `default`; search comparisons are intended
+for matching, not a stable sort order.
+
+## Startup and comparison benchmarks
+
+Root trie, element, and prefix tables are emitted as JSON strings decoded once
+per module evaluation. Their exported values and types stay unchanged; this
+avoids compiling large numeric JavaScript literals in each Test262 process.
+
+Run `bazel run //packages/intl-collator/benchmark:run` for Latin, accent, numeric,
+normalization, Swedish tailoring, and CJK comparisons with native controls.
+Each timed task batches 32 comparisons. Construction and module initialization
+are outside the timed region. The benchmark package is Gazelle-managed; its
+private module manifest prevents package self-reference during execution.

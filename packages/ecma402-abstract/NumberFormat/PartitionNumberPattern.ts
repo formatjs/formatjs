@@ -14,7 +14,8 @@ import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cach
  */
 export function PartitionNumberPattern(
   internalSlots: NumberFormatInternal,
-  _x: Decimal
+  _x: Decimal,
+  approximately = false
 ): NumberFormatPart[] {
   let x = _x
   // IMPL: We need to record the magnitude of the number
@@ -107,8 +108,12 @@ export function PartitionNumberPattern(
       break
     case 'exceptZero':
       // 10.d. Else if internalSlots.[[signDisplay]] is "exceptZero", then
-      if (x.isZero()) {
-        // 10.d.i. If x is 0, let sign be 0.
+      // ECMA-402 §16.5.11 GetNumberFormatPattern, steps 11.a and 18.a.i:
+      // NaN has category positive-zero, so exceptZero uses the zero pattern.
+      // https://tc39.es/ecma402/#sec-getnumberformatpattern
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1448-L1449
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1473-L1475
+      if (x.isZero() || x.isNaN()) {
         sign = 0
       } else if (x.isNegative()) {
         // 10.d.ii. Else if x is negative, let sign be -1.
@@ -143,6 +148,7 @@ export function PartitionNumberPattern(
     },
     internalSlots.dataLocaleData,
     pl,
-    internalSlots
+    internalSlots,
+    approximately
   )
 }

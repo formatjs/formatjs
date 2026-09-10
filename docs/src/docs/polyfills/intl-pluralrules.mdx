@@ -1,11 +1,11 @@
-A spec-compliant polyfill for [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A polyfill for [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-pluralrules.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-pluralrules)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-pluralrules)
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.PluralRules` and is **test262-compliant**.
+This package implements `Intl.PluralRules`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### ✅ Implemented Features
 
@@ -156,3 +156,9 @@ Compact notation uses the shared compact digit defaults. `resolvedOptions()`
 returns an ordinary object, reports notation and rounding settings, and lists
 plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
 `selectRange()` accepts infinite endpoints; NaN still throws `RangeError`.
+
+Compact plural selection uses generated CLDR exponent tables for locales whose
+rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
+
+Locale data registers CLDR default-content variants, such as `en-US` for English.
+Loading regional data preserves explicitly loaded language data.

@@ -1,11 +1,11 @@
-A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-datetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-datetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-datetimeformat)
 
 <Admonition type="caution">
-  Right now we only support Gregorian calendar in this polyfill. Therefore we
-  recommend setting `calendar: 'gregory'` in your options to be safe.
+  This polyfill supports Gregorian and ISO 8601 calendars. Unsupported calendar
+  requests fall back to Gregorian.
 </Admonition>
 
 <Admonition type="caution">
@@ -15,7 +15,7 @@ A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official 
 
 ## ECMA-402 Spec Compliance
 
-This package is **fully compliant** with the ECMA-402 specification for `Intl.DateTimeFormat`, including all finalized proposals.
+This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### Implemented Features
 
@@ -127,7 +127,12 @@ This package requires the following capabilities:
 
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale).
-- [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) or [polyfill](intl-numberformat).
+- [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) with `formatToParts` and support for the selected numbering system, or the [NumberFormat polyfill](intl-numberformat).
+
+The `numberingSystem` option and the locale's `nu` extension support CLDR numeric
+systems, including supplementary digits such as Adlam. Two-digit fields retain
+two complete digits. Load the NumberFormat polyfill when the host lacks the
+requested numbering system.
 
 ## Usage
 
@@ -259,10 +264,84 @@ if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
 
 ## Tests
 
-This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/DateTimeFormat)-compliant.
+The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-datetimeformat:test262-strict` to require zero failures.
 
 ## Offset time zones
 
 The `timeZone` option accepts offsets in `±HH`, `±HHMM`, and `±HH:MM` form.
 Offsets containing seconds or fractional components throw `RangeError`, including
 an explicit zero-second component.
+
+Loading `und` locale data preserves existing English data. Root patterns remain
+separate from language-specific patterns, regardless of registration order.
+
+## Fractional timestamps
+
+Formatting truncates fractional millisecond timestamps toward zero before
+calendar conversion. For example, `-0.9` formats as the Unix epoch, matching `0`.
+The same rule applies to both range endpoints.
+
+## Built-in methods
+
+DateTimeFormat methods cannot be constructed with `new` and have no own
+`prototype` property. The constructor's `length` is `0`; `supportedLocalesOf.length`
+is `1`, matching their required argument counts.
+
+Dates outside the exact ±8,640,000,000,000,000 millisecond TimeClip bounds
+throw `RangeError`, including values one millisecond beyond either endpoint.
+Year calculations use Gregorian arithmetic so valid endpoints also format
+when their local timezone offsets cross the native Date range.
+
+DateTimeFormat methods require an initialized receiver before coercing date
+arguments. Inheriting its prototype does not create a DateTimeFormat instance.
+
+Resolved options follow specification property order: `hour12` follows
+`hourCycle`, and style properties follow component properties.
+
+Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
+
+Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
+letter case only; non-ASCII lookalikes are rejected.
+
+Constructor options are read once in specification order. Default date fields
+are applied to internal records without writing to caller options.
+
+Every locale supports explicit `h11`, `h12`, `h23`, and `h24` hour cycles through
+options and Unicode extensions. Locale preferences still select the default.
+
+The `hour12` option selects the locale’s separate 12-hour or 24-hour preference.
+For example, English uses `h12` or `h23`; Japanese uses `h11` or `h23`.
+
+DateTimeFormat reuses pattern fields parsed during locale registration, preserving
+legacy RegExp statics during constructor format matching.
+
+Hour-cycle preferences affect matching only when an hour is requested.
+Minute/second-only formats keep their requested fields.
+
+Range formatting compares endpoints at the displayed precision and keeps shared
+locale fallback patterns unchanged across formatter instances.
+
+The `dayPeriod` option uses localized CLDR day periods, including noon and
+variable periods such as “in the evening”. Names follow the requested width.
+
+AM/PM spacing follows the locale's default CLDR patterns, including narrow
+non-breaking spaces where specified.
+
+Locale data registers CLDR default-content variants, such as `en-US` for English.
+Loading regional data preserves explicitly loaded language data.
+
+`formatRangeToParts` marks unique fields and separators as `shared`. Repeated
+fields belong to their endpoint; punctuation between repeated fields stays with
+that endpoint. Shared month names retain the complete date pattern for
+grammatical context.
+
+An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
+and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
+
+## Benchmarks
+
+Run `bazel run //packages/intl-datetimeformat:benchmark` from the repository.
+The benchmark uses fixed UTC inputs and native controls for `format`,
+`formatRange`, and `formatRangeToParts`, including same-date, cross-date, and
+collapsed ranges. Each timed task batches 16 calls; construction and locale-data
+registration are excluded.

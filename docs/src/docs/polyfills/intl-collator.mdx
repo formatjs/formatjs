@@ -1,4 +1,4 @@
-A spec-compliant polyfill/ponyfill for `Intl.Collator`.
+A polyfill/ponyfill for `Intl.Collator`.
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-collator.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-collator)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-collator)
@@ -90,8 +90,44 @@ data and LDML collation XML so applications do not parse XML at runtime.
 This package is tested against FormatJS unit tests, parser tests, and
 conformance data generated from ICU4J and native `Intl.Collator`.
 
+The Bazel `:test262` target checks the upstream suite against a reviewed failure
+baseline. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md)
+for known limitations; `bazel test //packages/intl-collator:test262-strict`
+requires zero failures.
+
 ## Input validation
 
 Malformed `collation` options throw `RangeError`; well-formed unsupported values
 fall back during locale negotiation. `compare` converts arguments to strings in
 left-to-right order and rejects Symbols with `TypeError`.
+
+### Built-in descriptors
+
+`resolvedOptions` and `supportedLocalesOf` are writable, configurable methods,
+but cannot be constructed with `new`. The constructor's `prototype` property
+is non-writable; the compare getter and bound function expose the standard names.
+
+The default `ignorePunctuation` value follows the locale’s CLDR collation
+settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
+
+CLDR `root` data remains available for collation inheritance, but is excluded
+from available locale identifiers used during negotiation.
+
+Collation metadata and tailoring keys use canonical BCP 47 types from CLDR,
+such as `phonebk`, `trad`, and `dict`, rather than legacy LDML names.
+
+`usage: "search"` selects CLDR search tailoring independently of sort collation
+keywords. Its resolved collation is `default`; search comparisons are intended
+for matching, not a stable sort order.
+
+## Benchmarks
+
+From a repository checkout:
+
+```sh
+bazel run //packages/intl-collator/benchmark:run
+```
+
+The benchmark compares Latin, accent, numeric, normalization, Swedish tailoring,
+and CJK cases with native `Intl.Collator`. Each timed task performs 32 comparisons;
+formatter construction and module initialization are excluded.

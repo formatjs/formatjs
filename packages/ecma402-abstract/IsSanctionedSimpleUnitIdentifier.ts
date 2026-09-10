@@ -19,9 +19,14 @@ export const SANCTIONED_UNITS = [
   'digital-terabyte',
   'duration-day',
   'duration-hour',
+  // ECMA-402 §6.6.2, step 1: include both sub-millisecond units in the table.
+  // https://tc39.es/ecma402/#table-sanctioned-single-unit-identifiers
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L457-L465
+  'duration-microsecond',
   'duration-millisecond',
   'duration-minute',
   'duration-month',
+  'duration-nanosecond',
   'duration-second',
   'duration-week',
   'duration-year',

@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
@@ -48,7 +49,6 @@ const RESOLVED_OPTIONS_KEYS = [
   'signDisplay',
   'roundingIncrement',
   'roundingMode',
-  'trailingZeroDisplay',
 ] as const
 
 /**
@@ -65,7 +65,7 @@ export const NumberFormat = function (
   }
 
   InitializeNumberFormat(this as any, locales, options, {
-    getInternalSlots,
+    getInternalSlots: nf => getInternalSlots(nf, true),
     localeData: NumberFormat.localeData,
     availableLocales: NumberFormat.availableLocales,
     getDefaultLocale: NumberFormat.getDefaultLocale,
@@ -81,62 +81,81 @@ export const NumberFormat = function (
     `Cannot load locale-dependent data for ${dataLocale}.`
   )
 
-  internalSlots.pl = createMemoizedPluralRules(dataLocale, {
-    minimumFractionDigits: internalSlots.minimumFractionDigits,
-    maximumFractionDigits: internalSlots.maximumFractionDigits,
-    minimumIntegerDigits: internalSlots.minimumIntegerDigits,
-    minimumSignificantDigits: internalSlots.minimumSignificantDigits,
-    maximumSignificantDigits: internalSlots.maximumSignificantDigits,
-  })
+  // ECMA-402 §16.1.1, steps 3–4 read localeMatcher from the caller's
+  // options. Internal plural selection must not add inherited option reads.
+  // https://tc39.es/ecma402/#sec-intl.numberformat
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L23-L24
+  internalSlots.pl = createMemoizedPluralRules(
+    dataLocale,
+    Object.assign(Object.create(null), {
+      minimumFractionDigits: internalSlots.minimumFractionDigits,
+      maximumFractionDigits: internalSlots.maximumFractionDigits,
+      minimumIntegerDigits: internalSlots.minimumIntegerDigits,
+      minimumSignificantDigits: internalSlots.minimumSignificantDigits,
+      maximumSignificantDigits: internalSlots.maximumSignificantDigits,
+    })
+  )
   return this
 } as NumberFormatConstructor
 
-function formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
-  return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
-    getInternalSlots,
-  })
-}
-
-function formatRange(
-  this: Intl.NumberFormat,
-  start: number | bigint | Decimal,
-  end: number | bigint | Decimal
-) {
-  return FormatNumericRange(
-    this,
-    ToIntlMathematicalValue(start),
-    ToIntlMathematicalValue(end),
-    {
+// ECMA-402 §7 applies ECMA-262 §18 built-in function requirements: these
+// methods have no [[Construct]] or own prototype property.
+// https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
+// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
+const {formatToParts, formatRange, formatRangeToParts} = {
+  formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
+    // ECMA-402 §16.3.6 step 2 precedes argument conversion in step 3.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formattoparts
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L492-L493
+    getInternalSlots(this)
+    return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
       getInternalSlots,
-    }
-  )
-}
+    })
+  },
 
-function formatRangeToParts(
-  this: Intl.NumberFormat,
-  start: number | bigint | Decimal,
-  end: number | bigint | Decimal
-) {
-  return FormatNumericRangeToParts(
-    this,
-    ToIntlMathematicalValue(start),
-    ToIntlMathematicalValue(end),
-    {
-      getInternalSlots,
+  formatRange(
+    this: Intl.NumberFormat,
+    start: number | bigint | Decimal,
+    end: number | bigint | Decimal
+  ) {
+    getInternalSlots(this)
+    // ECMA-402 §16.3.4, step 3: reject missing endpoints before coercion.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L463-L465
+    if (start === undefined || end === undefined) {
+      throw new TypeError('Range endpoints must not be undefined')
     }
-  )
-}
+    return FormatNumericRange(
+      this,
+      ToIntlMathematicalValue(start),
+      ToIntlMathematicalValue(end),
+      {
+        getInternalSlots,
+      }
+    )
+  },
 
-try {
-  Object.defineProperty(formatToParts, 'name', {
-    value: 'formatToParts',
-    enumerable: false,
-    writable: false,
-    configurable: true,
-  })
-} catch {
-  // In older browser (e.g Chrome 36 like polyfill-fastly.io)
-  // TypeError: Cannot redefine property: name
+  formatRangeToParts(
+    this: Intl.NumberFormat,
+    start: number | bigint | Decimal,
+    end: number | bigint | Decimal
+  ) {
+    getInternalSlots(this)
+    // ECMA-402 §16.3.5, step 3: reject missing endpoints before coercion.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L478-L480
+    if (start === undefined || end === undefined) {
+      throw new TypeError('Range endpoints must not be undefined')
+    }
+    return FormatNumericRangeToParts(
+      this,
+      ToIntlMathematicalValue(start),
+      ToIntlMathematicalValue(end),
+      {
+        getInternalSlots,
+      }
+    )
+  },
 }
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {
@@ -151,13 +170,8 @@ defineProperty(NumberFormat.prototype, 'formatRangeToParts', {
   value: formatRangeToParts,
 })
 
-defineProperty(NumberFormat.prototype, 'resolvedOptions', {
-  value: function resolvedOptions() {
-    if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
-      throw TypeError(
-        'Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver'
-      )
-    }
+const {resolvedOptions} = {
+  resolvedOptions() {
     const internalSlots = getInternalSlots(this as any)
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
@@ -173,19 +187,23 @@ defineProperty(NumberFormat.prototype, 'resolvedOptions', {
     } else {
       ro.roundingPriority = 'auto'
     }
+    // ECMA-402 §16.3.2, step 5: create properties in table order.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.resolvedoptions
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L302-L309
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L418-L427
+    ro.trailingZeroDisplay = internalSlots.trailingZeroDisplay
     return ro as any
   },
+}
+
+defineProperty(NumberFormat.prototype, 'resolvedOptions', {
+  value: resolvedOptions,
 })
 
 const formatDescriptor = {
   enumerable: false,
   configurable: true,
   get(this: NumberFormat) {
-    if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
-      throw TypeError(
-        'Intl.NumberFormat format property accessor called on incompatible receiver'
-      )
-    }
     const internalSlots = getInternalSlots(this as any)
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
@@ -233,8 +251,8 @@ try {
 Object.defineProperty(NumberFormat.prototype, 'format', formatDescriptor)
 
 // Static properties
-defineProperty(NumberFormat, 'supportedLocalesOf', {
-  value: function supportedLocalesOf(
+const {supportedLocalesOf} = {
+  supportedLocalesOf(
     locales: string | string[],
     options?: Pick<NumberFormatOptions, 'localeMatcher'>
   ) {
@@ -244,21 +262,42 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
       options
     )
   },
-})
+}
+
+defineProperty(NumberFormat, 'supportedLocalesOf', {value: supportedLocalesOf})
 
 NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
-  for (const {data: d, locale} of data) {
-    const minimizedLocale = new (Intl as any).Locale(locale)
-      .minimize()
-      .toString()
-    NumberFormat.localeData[locale] = NumberFormat.localeData[minimizedLocale] =
-      d
-    NumberFormat.availableLocales.add(minimizedLocale)
-    NumberFormat.availableLocales.add(locale)
+  for (const {data: source, locale} of data) {
+    const d = source.numbers.aliases
+      ? {
+          ...source,
+          numbers: {
+            ...source.numbers,
+            symbols: {...source.numbers.symbols},
+            decimal: {...source.numbers.decimal},
+            percent: {...source.numbers.percent},
+            currency: {...source.numbers.currency},
+          },
+        }
+      : source
+    // Resolve generated aliases without changing the caller's locale data.
+    for (const system of Object.keys(source.numbers.aliases || {})) {
+      const target = source.numbers.aliases![system]
+      d.numbers.symbols[system] = d.numbers.symbols[target]
+      d.numbers.decimal[system] = d.numbers.decimal[target]
+      d.numbers.percent[system] = d.numbers.percent[target]
+      d.numbers.currency[system] = d.numbers.currency[target]
+    }
+    registerLocaleData(
+      locale,
+      d,
+      NumberFormat.localeData,
+      NumberFormat.availableLocales
+    )
     if (!NumberFormat.__defaultLocale) {
-      NumberFormat.__defaultLocale = minimizedLocale
+      NumberFormat.__defaultLocale = locale
     }
   }
 }

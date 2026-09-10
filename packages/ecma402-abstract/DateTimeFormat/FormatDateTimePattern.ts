@@ -14,6 +14,37 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
+export function getDayPeriodName(
+  data: DateTimeFormatLocaleInternalData,
+  time: {hour: number; minute: number; second: number; millisecond: number},
+  width: 'narrow' | 'short' | 'long' = 'short'
+): string {
+  const value =
+    ((time.hour * 60 + time.minute) * 60 + time.second) * 1000 +
+    time.millisecond
+  const rules = data.dayPeriodRules || []
+  // ECMA-402 §11.5.5, step 15.d.iii selects the localized day period and width.
+  // LDML variable-period rules 2-4, 8: inclusive start, exclusive end, wrap midnight.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1386-L1390
+  // https://unicode.org/reports/tr35/tr35-dates.html#Variable_periods
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L1360-L1375
+  const rule =
+    rules.find(rule => rule.at === value) ||
+    rules.find(
+      rule =>
+        rule.from !== undefined &&
+        rule.before !== undefined &&
+        (rule.from < rule.before
+          ? value >= rule.from && value < rule.before
+          : value >= rule.from || value < rule.before)
+    )
+  return (
+    (rule && data.dayPeriods?.[width][rule.name]) ||
+    (time.hour < 12 ? data.am : data.pm)
+  )
+}
+
 function pad(n: number): string {
   if (n < 10) {
     return `0${n}`
@@ -56,11 +87,40 @@ export interface FormatDateTimePatternImplDetails {
   ): IntlDateTimeFormatInternal
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   getDefaultTimeZone(): string
-  // GH #4535: Track if we're formatting a range where dates differ
-  // Used to avoid converting hour 0 to 24 in h24 format when it's midnight on a different date
+  // Preserve the complete pattern when formatting one range record.
   rangeFormatOptions?: {
-    isDifferentDate?: boolean
+    patternParts?: IntlDateTimeFormatPart[]
+    localTime?: ReturnType<typeof ToLocalTime>
+    numberFormatters?: ReturnType<typeof createNumberFormatters>
   }
+}
+
+function createNumberFormatters(internalSlots: IntlDateTimeFormatInternal): {
+  nf: Intl.NumberFormat
+  nf2: Intl.NumberFormat
+  nf3: Intl.NumberFormat | undefined
+} {
+  const locale = internalSlots.locale
+  const nfOptions = Object.create(null)
+  nfOptions.numberingSystem = internalSlots.numberingSystem
+  nfOptions.useGrouping = false
+
+  const nf = createMemoizedNumberFormat(locale, nfOptions)
+  const nf2Options = Object.create(null)
+  nf2Options.minimumIntegerDigits = 2
+  nf2Options.numberingSystem = internalSlots.numberingSystem
+  nf2Options.useGrouping = false
+  const nf2 = createMemoizedNumberFormat(locale, nf2Options)
+  const fractionalSecondDigits = internalSlots.fractionalSecondDigits
+  let nf3: Intl.NumberFormat | undefined
+  if (fractionalSecondDigits !== undefined) {
+    const nf3Options = Object.create(null)
+    nf3Options.minimumIntegerDigits = fractionalSecondDigits
+    nf3Options.numberingSystem = internalSlots.numberingSystem
+    nf3Options.useGrouping = false
+    nf3 = createMemoizedNumberFormat(locale, nf3Options)
+  }
+  return {nf, nf2, nf3}
 }
 
 /**
@@ -87,38 +147,40 @@ export function FormatDateTimePattern(
   const dataLocaleData = localeData[dataLocale]
   /** IMPL END */
 
-  const locale = internalSlots.locale
-  const nfOptions = Object.create(null)
-  nfOptions.numberingSystem = internalSlots.numberingSystem
-  nfOptions.useGrouping = false
-
-  const nf = createMemoizedNumberFormat(locale, nfOptions)
-  const nf2Options = Object.create(null)
-  nf2Options.minimumIntegerDigits = 2
-  nf2Options.numberingSystem = internalSlots.numberingSystem
-  nf2Options.useGrouping = false
-  const nf2 = createMemoizedNumberFormat(locale, nf2Options)
+  // ECMA-402 11.5.5, steps 1-11 use identical NumberFormat options for
+  // every record in this range. Resolve the existing memoized formatters once.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1356-L1372
+  const numberFormatters =
+    rangeFormatOptions?.numberFormatters ||
+    createNumberFormatters(internalSlots)
+  if (rangeFormatOptions) rangeFormatOptions.numberFormatters = numberFormatters
+  const {nf, nf2, nf3} = numberFormatters
   const fractionalSecondDigits = internalSlots.fractionalSecondDigits
-  let nf3: Intl.NumberFormat
-  if (fractionalSecondDigits !== undefined) {
-    const nf3Options = Object.create(null)
-    nf3Options.minimumIntegerDigits = fractionalSecondDigits
-    nf3Options.numberingSystem = internalSlots.numberingSystem
-    nf3Options.useGrouping = false
-    nf3 = createMemoizedNumberFormat(locale, nf3Options)
-  }
-  const tm = ToLocalTime(
-    x,
-    // @ts-ignore
-    internalSlots.calendar,
-    internalSlots.timeZone,
-    {tzData}
-  )
+  // ECMA-402 11.5.5, step 12: reuse the identical endpoint conversion from
+  // PartitionDateTimeRangePattern (11.5.9, steps 7-8) within this call.
+  // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1373
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1529-L1530
+  const tm =
+    rangeFormatOptions?.localTime ??
+    ToLocalTime(
+      x,
+      // @ts-ignore
+      internalSlots.calendar,
+      internalSlots.timeZone,
+      {tzData}
+    )
   const result: Intl.DateTimeFormatPart[] = []
 
   // Check if month is stand-alone (no other date fields like day, year, weekday)
-  const hasMonth = patternParts.some(part => part.type === 'month')
-  const hasOtherDateFields = patternParts.some(
+  // Month grammar depends on the complete date pattern, including shared fields.
+  // ECMA-402 11.5.5, step 15.f.x: https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1419
+  const contextParts = rangeFormatOptions?.patternParts || patternParts
+  const hasMonth = contextParts.some(part => part.type === 'month')
+  const hasOtherDateFields = contextParts.some(
     part =>
       part.type === 'day' ||
       part.type === 'year' ||
@@ -146,7 +208,7 @@ export function FormatDateTimePattern(
     } else if (p === 'dayPeriod') {
       result.push({
         type: p,
-        value: tm.hour < 12 ? dataLocaleData.am : dataLocaleData.pm,
+        value: getDayPeriodName(dataLocaleData, tm, internalSlots.dayPeriod),
       })
     } else if (p === 'timeZoneName') {
       const f = internalSlots.timeZoneName
@@ -204,36 +266,21 @@ export function FormatDateTimePattern(
           v = 12
         }
       }
-      // GH #4535: In h24 format, midnight handling depends on context.
-      //
-      // LDML Spec (UTS #35): The 'k' symbol (1-24) means 24:00 represents the END of day.
-      // "Tuesday 24:00 = Wednesday 00:00" - they represent the same instant.
-      // See: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-      //
-      // However, in date ranges, showing 24:00 can be semantically confusing:
-      // - Different dates (May 3, 22:00 – May 4, 00:00): Show "00:00" on May 4
-      //   because "May 4, 24:00" would actually mean May 5, 00:00
-      // - Same date ranges (May 3, 00:00 – 00:45): Show "00:00" for clarity
-      //   because the times are at the START of the day, not the end
-      //
-      // Only convert 0→24 in non-range single-date formatting where 24:00
-      // conventionally means "end of day" (e.g., business closing time).
-      //
-      // Note: ICU4J's SimpleDateFormat always converts 0→24 for 'k' pattern.
-      // Our approach is more contextually appropriate for range formatting.
-      // See: https://github.com/unicode-org/icu/blob/main/icu4j/main/core/src/main/java/com/ibm/icu/text/SimpleDateFormat.java
-      if (p === 'hour' && hourCycle === 'h24') {
-        if (v === 0 && !rangeFormatOptions) {
-          // Only convert 0 to 24 when NOT formatting a range (rangeFormatOptions is undefined)
-          v = 24
-        }
+      // ECMA-402 11.5.5, step 15.f.vii.1 applies to single dates and ranges.
+      // https://tc39.es/ecma402/#sec-formatdatetimepattern
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1406-L1407
+      if (p === 'hour' && hourCycle === 'h24' && v === 0) {
+        v = 24
       }
       if (f === 'numeric') {
         fv = nf.format(v)
       } else if (f === '2-digit') {
         fv = nf2.format(v)
         if (fv.length > 2) {
-          fv = fv.slice(fv.length - 2, fv.length)
+          // ECMA-402 11.5.5, steps 15.f.ix.2–4: keep the last two code points.
+          // https://tc39.es/ecma402/#sec-formatdatetimepattern
+          // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1412-L1417
+          fv = Array.from(fv).slice(-2).join('')
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
         if (p === 'era') {

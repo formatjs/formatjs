@@ -1,18 +1,26 @@
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 PACKAGE_NAME = "intl-pluralrules"
 
 TEST_LOCALES = [
+    "ca",
     "en",
-    "zh",
+    "es",
     "fr",
+    "it",
+    "lld",
+    "pt",
+    "pt-PT",
+    "scn",
+    "vec",
+    "zh",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.ts" % locale for locale in TEST_LOCALES]
@@ -56,7 +64,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "6.3.13",  # x-release-please-version
+    version = "6.3.14",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -81,8 +89,16 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
+        ":tests-locale-data-ca",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
+        ":tests-locale-data-es",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr",  # keep: generated locale data imported by tests
+        ":tests-locale-data-it",  # keep: generated locale data imported by tests
+        ":tests-locale-data-lld",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pt",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pt-PT",  # keep: generated locale data imported by tests
+        ":tests-locale-data-scn",  # keep: generated locale data imported by tests
+        ":tests-locale-data-vec",  # keep: generated locale data imported by tests
         ":tests-locale-data-zh",  # keep: generated locale data imported by tests
     ],
     no_copy_to_bin = ["//:package.json"],
@@ -117,6 +133,7 @@ ts_run_binary(
         "//:node_modules/@types/serialize-javascript",
         "//:node_modules/@typescript/typescript6",
         "//:node_modules/cldr-core",
+        "//:node_modules/cldr-numbers-full",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -197,7 +214,9 @@ rolldown_bundle(
         ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
+    format = "iife",
     target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
@@ -208,26 +227,14 @@ rolldown_bundle(
     ],
 )
 
-test262_harness_bin.test262_harness_test(
+test262_test(
     name = "test262",
-    size = "small",
-    args = [
-        "--reporter-keys",
-        "file,attrs,result",
-        "--errorForFailures",
-        "--timeout",
-        "30000",
-        "--prelude",
-        "$(rootpath test262-polyfill.js)",
-        "--test262Dir",
-        "../+http_archive+com_github_tc39_test262",
-        "../+http_archive+com_github_tc39_test262/test/intl402/PluralRules/**/*.js",
-    ],
     data = [
-        "test262-polyfill.js",
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-pluralrules-copy",
     ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/PluralRules",
 )
 
 rolldown_bundle(

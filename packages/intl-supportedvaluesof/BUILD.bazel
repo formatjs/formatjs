@@ -1,9 +1,11 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
 
 PACKAGE_NAME = "intl-supportedvaluesof"
 
@@ -51,7 +53,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "2.3.9",  # x-release-please-version
+    version = "2.3.10",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -61,6 +63,7 @@ formatjs_library(
     },
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.collation",
         "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//packages/ecma262-abstract",
@@ -93,10 +96,20 @@ generate_package_file(
     tool = "//packages/intl-supportedvaluesof/scripts:calendars",
 )
 
+copy_file(
+    name = "iana_etcetera",
+    src = "@iana_tzdata//:etcetera",
+    out = "iana-etcetera.txt",
+)
+
 generate_package_file(
     name = "cldr_sv_timezones",
     src = "timezones.ts",
-    args = ["--zone %s" % z for z in ZONES],
+    args = ["--zone %s" % z for z in ZONES] + [
+        "--source",
+        "$(rootpath :iana_etcetera)",
+    ],
+    data = [":iana_etcetera"],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:timezones",
 )
@@ -151,6 +164,35 @@ rolldown_bundle(
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
         "//packages/ecma402-abstract",
     ],
+)
+
+rolldown_bundle(
+    name = "test262-polyfill",
+    srcs = [":srcs"],
+    entry_point = "polyfill-force.ts",
+    format = "iife",
+    target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma402-abstract",
+    ],
+)
+
+test262_test(
+    name = "test262",
+    data = [
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-supportedvaluesof-copy",
+    ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/Intl/supportedValuesOf",
 )

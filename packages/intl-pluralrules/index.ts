@@ -1,8 +1,10 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
 import {
+  type CompactExponentData,
   type LDMLPluralRule,
   type PluralRulesData,
   type PluralRulesLocaleData,
@@ -56,7 +58,7 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   type: 'cardinal' | 'ordinal'
   notation: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'
-  dataLocaleData?: any // NumberFormatLocaleInternalData
+  compactExponents?: CompactExponentData
 }
 
 /**
@@ -286,8 +288,12 @@ export class PluralRules {
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      PluralRules.localeData[locale] = d
-      PluralRules.availableLocales.add(locale)
+      registerLocaleData(
+        locale,
+        d,
+        PluralRules.localeData,
+        PluralRules.availableLocales
+      )
       if (!PluralRules.__defaultLocale) {
         PluralRules.__defaultLocale = locale
       }

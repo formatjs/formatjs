@@ -1,6 +1,6 @@
 import {BestAvailableLocale} from '#packages/intl-localematcher/abstract/BestAvailableLocale.js'
 import type {LookupMatcherResult} from '#packages/intl-localematcher/abstract/types.js'
-import {UNICODE_EXTENSION_SEQUENCE_REGEX} from '#packages/intl-localematcher/abstract/utils.js'
+import {splitUnicodeExtension} from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
  * https://tc39.es/ecma402/#sec-lookupmatcher
@@ -15,19 +15,14 @@ export function LookupMatcher(
 ): LookupMatcherResult {
   const result: LookupMatcherResult = {locale: ''}
   for (const locale of requestedLocales) {
-    const noExtensionLocale = locale.replace(
-      UNICODE_EXTENSION_SEQUENCE_REGEX,
-      ''
-    )
+    const {locale: noExtensionLocale, extension} = splitUnicodeExtension(locale)
     const availableLocale = BestAvailableLocale(
       availableLocales,
       noExtensionLocale
     )
     if (availableLocale) {
       result.locale = availableLocale
-      if (locale !== noExtensionLocale) {
-        result.extension = locale.slice(noExtensionLocale.length, locale.length)
-      }
+      if (extension) result.extension = extension
       return result
     }
   }

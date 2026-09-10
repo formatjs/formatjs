@@ -21,6 +21,279 @@ describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
   })
+  it('does not add an hour to minute/second-only requests', () => {
+    const date = Date.UTC(2020, 0, 2, 1, 2, 3, 456)
+    for (const hourCycle of ['h11', 'h12', 'h23', 'h24'] as const) {
+      const formatter = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        minute: 'numeric',
+        second: 'numeric',
+        hourCycle,
+      })
+      expect(formatter.format(date)).toBe('02:03')
+      expect(formatter.resolvedOptions().hourCycle).toBeUndefined()
+    }
+    expect(
+      new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        minute: 'numeric',
+        second: 'numeric',
+        fractionalSecondDigits: 3,
+      }).format(date)
+    ).toBe('02:03.456')
+  })
+
+  it('preserves legacy RegExp statics during construction', () => {
+    ;/sent(inel)/.exec('sentinel')
+    const before = [RegExp.lastMatch, RegExp.$1]
+    new DateTimeFormat('en', {year: 'numeric', month: 'long', timeZone: 'UTC'})
+    const after = [RegExp.lastMatch, RegExp.$1]
+    expect(after).toEqual(before)
+  })
+  it('rejects values one millisecond beyond the exact TimeClip bounds', () => {
+    const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const limit = 8_640_000_000_000_000
+    for (const sign of [-1, 1]) {
+      const boundary = sign * limit
+      const outside = sign * (limit + 1)
+      expect(() => dtf.format(outside)).toThrow(RangeError)
+      expect(() => dtf.formatToParts(outside)).toThrow(RangeError)
+      expect(() => dtf.formatRange(outside, outside)).toThrow(RangeError)
+      expect(() => dtf.formatRangeToParts(outside, outside)).toThrow(RangeError)
+      expect(typeof dtf.format(boundary)).toBe('string')
+      const offset = new DateTimeFormat('en', {
+        timeZone: sign < 0 ? '-23:59' : '+23:59',
+      })
+      expect(typeof offset.format(boundary)).toBe('string')
+    }
+  })
+
+  it('requires internal slots before argument coercion', () => {
+    const forged = Object.create(DateTimeFormat.prototype)
+    const value = {
+      valueOf() {
+        throw new Error('coerced')
+      },
+    }
+    expect(() => forged.format).toThrow(TypeError)
+    expect(() => forged.resolvedOptions()).toThrow(TypeError)
+    for (const method of [
+      'formatToParts',
+      'formatRange',
+      'formatRangeToParts',
+    ] as const) {
+      expect(() =>
+        Reflect.apply(DateTimeFormat.prototype[method], forged, [value, value])
+      ).toThrow(TypeError)
+    }
+    const real = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const format = Object.getOwnPropertyDescriptor(
+      DateTimeFormat.prototype,
+      'format'
+    )!.get!
+    Object.setPrototypeOf(real, null)
+    expect(() => format.call(real)(0)).not.toThrow()
+    expect(DateTimeFormat.prototype.resolvedOptions.call(real).locale).toBe(
+      'en'
+    )
+  })
+
+  it('returns resolved option properties in specification order', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(DateTimeFormat, 'prototype')?.writable
+    ).toBe(false)
+    expect(
+      Object.keys(
+        new DateTimeFormat('en', {
+          timeZone: 'UTC',
+          timeStyle: 'short',
+          dateStyle: 'short',
+        }).resolvedOptions()
+      )
+    ).toEqual([
+      'locale',
+      'calendar',
+      'numberingSystem',
+      'timeZone',
+      'hourCycle',
+      'hour12',
+      'dateStyle',
+      'timeStyle',
+    ])
+    const keys = Object.keys(
+      new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+      }).resolvedOptions()
+    )
+    expect(keys.indexOf('hour12')).toBe(keys.indexOf('hourCycle') + 1)
+    expect(keys.indexOf('hour')).toBeGreaterThan(keys.indexOf('hour12'))
+  })
+
+  it('formats astronomical year zero as 1 BC', () => {
+    const dtf = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      era: 'short',
+    })
+    for (const [year, expectedYear, era] of [
+      [-1, '2', 'BC'],
+      [0, '1', 'BC'],
+      [1, '1', 'AD'],
+    ] as const) {
+      const date = new Date(0)
+      date.setUTCFullYear(year, 0, 1)
+      const parts = dtf.formatToParts(date)
+      expect(parts.find(part => part.type === 'era')?.value).toBe(era)
+      expect(parts.find(part => part.type === 'year')?.value).toBe(expectedYear)
+    }
+  })
+
+  it('normalizes zero offsets and rejects non-ASCII timezone lookalikes', () => {
+    for (const timeZone of ['-00', '-0000', '-00:00', '+00']) {
+      expect(
+        new DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone
+      ).toBe('+00:00')
+    }
+    expect(
+      new DateTimeFormat('en', {timeZone: 'asia/baku'}).resolvedOptions()
+        .timeZone
+    ).toBe('Asia/Baku')
+    expect(() => new DateTimeFormat('en', {timeZone: 'asıa/baku'})).toThrow(
+      RangeError
+    )
+  })
+
+  it('reads each constructor option once in specification order', () => {
+    const reads: PropertyKey[] = []
+    const options = new Proxy(
+      {timeZone: 'UTC'},
+      {
+        get(target, key, receiver) {
+          reads.push(key)
+          return Reflect.get(target, key, receiver)
+        },
+      }
+    )
+    new DateTimeFormat('en', options)
+    expect(reads).toEqual([
+      'localeMatcher',
+      'calendar',
+      'numberingSystem',
+      'hour12',
+      'hourCycle',
+      'timeZone',
+      'weekday',
+      'era',
+      'year',
+      'month',
+      'day',
+      'dayPeriod',
+      'hour',
+      'minute',
+      'second',
+      'fractionalSecondDigits',
+      'timeZoneName',
+      'formatMatcher',
+      'dateStyle',
+      'timeStyle',
+    ])
+    const frozen = Object.freeze({timeZone: 'UTC'})
+    expect(new DateTimeFormat('en', frozen).format(0)).toBe('1/1/1970')
+  })
+
+  it.each(['day', 'timeZone'])(
+    'isolates internal records and resolved options from inherited %s setters',
+    property => {
+      const original = Object.getOwnPropertyDescriptor(
+        Object.prototype,
+        property
+      )
+      Object.defineProperty(Object.prototype, property, {
+        configurable: true,
+        set() {
+          throw new Error('inherited day setter')
+        },
+      })
+      try {
+        const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
+        expect(dtf.format(0)).toBe('1/1/1970')
+        expect(dtf.resolvedOptions().timeZone).toBe('UTC')
+      } finally {
+        if (original)
+          Object.defineProperty(Object.prototype, property, original)
+        else Reflect.deleteProperty(Object.prototype, property)
+      }
+    }
+  )
+
+  it('accepts every hour cycle through options and Unicode extensions', () => {
+    expect(
+      new DateTimeFormat('ar-u-hc-h11', {
+        hour: 'numeric',
+        hour12: true,
+        hourCycle: 'h24',
+      }).resolvedOptions().locale
+    ).toBe('ar')
+    for (const hourCycle of ['h11', 'h12', 'h23', 'h24'] as const) {
+      for (const locale of ['en', 'ar', 'ja']) {
+        const options = {timeZone: 'UTC', hour: 'numeric'} as const
+        expect(
+          new DateTimeFormat(locale, {...options, hourCycle}).resolvedOptions()
+            .hourCycle
+        ).toBe(hourCycle)
+        expect(
+          new DateTimeFormat(
+            `${locale}-u-hc-${hourCycle}`,
+            options
+          ).resolvedOptions().hourCycle
+        ).toBe(hourCycle)
+      }
+    }
+  })
+
+  it('uses independent locale preferences for hour12', () => {
+    for (const [locale, hourCycle12] of [
+      ['en', 'h12'],
+      ['fr', 'h12'],
+      ['ja', 'h11'],
+    ] as const) {
+      expect(
+        new DateTimeFormat(locale, {
+          hour: 'numeric',
+          hour12: true,
+        }).resolvedOptions().hourCycle
+      ).toBe(hourCycle12)
+      expect(
+        new DateTimeFormat(locale, {
+          hour: 'numeric',
+          hour12: false,
+        }).resolvedOptions().hourCycle
+      ).toBe('h23')
+    }
+  })
+
+  it('supports ISO 8601 without advertising unimplemented calendars', () => {
+    const date = Date.UTC(2020, 0, 2)
+    const options = {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    } as const
+    const iso = new DateTimeFormat('en-u-ca-iso8601', options)
+    const gregory = new DateTimeFormat('en', {...options, calendar: 'gregory'})
+    expect(iso.resolvedOptions().calendar).toBe('iso8601')
+    expect(iso.format(date)).toBe(gregory.format(date))
+    const unsupported = new DateTimeFormat('en', {
+      ...options,
+      calendar: 'buddhist',
+    })
+    expect(unsupported.resolvedOptions().calendar).toBe('gregory')
+    expect(unsupported.format(date)).toBe(gregory.format(date))
+  })
+
   it('smoke test EST', function () {
     expect(
       new DateTimeFormat('en', {
@@ -68,7 +341,7 @@ describe('Intl.DateTimeFormat', function () {
       fractionalSecondDigits: 3,
     })
     expect(dtf.format(new Date(Date.UTC(2020, 0, 1, 10, 1, 2, 345)))).toBe(
-      '10:01:02.345 AM'
+      '10:01:02.345 in the morning'
     )
   })
   it('accepts hyphenated Unicode calendar type identifiers', function () {
@@ -129,7 +402,7 @@ describe('Intl.DateTimeFormat', function () {
         minute: 'numeric',
         timeZone: 'Asia/Shanghai',
       }).format(new Date(0))
-    ).toBe('8:00 AM')
+    ).toBe('8:00\u202fAM')
   })
   it('setDefaultTimeZone should work', function () {
     DateTimeFormat.__setDefaultTimeZone('Asia/Shanghai')
@@ -138,7 +411,7 @@ describe('Intl.DateTimeFormat', function () {
         hour: 'numeric',
         minute: 'numeric',
       }).format(new Date(0))
-    ).toBe('8:00 AM')
+    ).toBe('8:00\u202fAM')
   })
 
   it('America/Indiana/Indianapolis, GH #4254', function () {
@@ -148,7 +421,7 @@ describe('Intl.DateTimeFormat', function () {
         hour: 'numeric',
         minute: 'numeric',
       }).format(new Date(0))
-    ).toBe('7:00 PM')
+    ).toBe('7:00\u202fPM')
   })
   it('diff tz should yield different result', function () {
     const {TZ} = process.env
@@ -200,18 +473,18 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date('2020-09-16T11:55:32.491+02:00'))
     ).toBe('۲۶ شهریور ۹۹')
   })
-  it('test #2145', function () {
-    expect(() =>
-      new DateTimeFormat('fa', {
-        month: 'long',
-        year: '2-digit',
-        day: '2-digit',
-      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
-    ).toThrowError(
-      new RangeError(
-        'Calendar "persian" is not supported. Try setting "calendar" to 1 of the following: gregory'
-      )
-    )
+  it('falls back to Gregorian for locales with an unsupported default calendar', () => {
+    const options = {
+      month: 'long',
+      year: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    } as const
+    const formatter = new DateTimeFormat('fa', options)
+    const gregory = new DateTimeFormat('fa', {...options, calendar: 'gregory'})
+    const date = new Date('2020-09-16T11:55:32.491+02:00')
+    expect(formatter.resolvedOptions().calendar).toBe('gregory')
+    expect(formatter.format(date)).toBe(gregory.format(date))
   })
   it('test #2192', function () {
     expect(
@@ -226,7 +499,7 @@ describe('Intl.DateTimeFormat', function () {
         minute: 'numeric',
         second: 'numeric',
       }).format(Date.UTC(2020, 0, 1, 12, 0, 0))
-    ).toBe('1/1/2020, 2:00:00 PM')
+    ).toBe('1/1/2020, 2:00:00\u202fPM')
   })
   it('respects numberingSystem with locales that default to non-latn digits, GH #6767', function () {
     for (const locale of ['my-MM', 'bn-BD', 'ne-NP']) {
@@ -561,7 +834,7 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'America/New_York',
     })
     expect(dtf.formatRange(date1, date2)).toBe(
-      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+      '5/19/2021, 5:00\u202fAM – 6/19/2021, 1:00\u202fPM'
     )
   })
   it('GH issue #2909', function () {
@@ -592,7 +865,7 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'America/New_York',
     })
     expect(dtf.formatRange(date1, date2)).toBe(
-      '5/19/2021, 5:00 AM – 6/19/2021, 1:00 PM'
+      '5/19/2021, 5:00\u202fAM – 6/19/2021, 1:00\u202fPM'
     )
   })
   it('toLocaleString returns "Invalid Date", GH #3508', function () {
@@ -906,4 +1179,114 @@ it('accepts minute offsets but rejects second and fractional offsets', () => {
       new DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone
     ).toBe(canonical)
   }
+})
+
+describe('timestamp truncation', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
+  })
+
+  it.each([-1000.9, -1.9, -0.9, 0.9, 1.9, 1000.9])(
+    'truncates %s before formatting',
+    value => {
+      const integer = Math.trunc(value)
+      expect(formatter.format(value)).toBe(formatter.format(integer))
+      expect(formatter.formatToParts(value)).toEqual(
+        formatter.formatToParts(integer)
+      )
+      expect(formatter.formatRange(value, 10000)).toBe(
+        formatter.formatRange(integer, 10000)
+      )
+      expect(formatter.formatRangeToParts(value, 10000)).toEqual(
+        formatter.formatRangeToParts(integer, 10000)
+      )
+    }
+  )
+})
+
+describe('DateTimeFormat built-in methods', () => {
+  it.each([
+    ['formatToParts', DateTimeFormat.prototype, 1],
+    ['formatRange', DateTimeFormat.prototype, 2],
+    ['formatRangeToParts', DateTimeFormat.prototype, 2],
+    ['resolvedOptions', DateTimeFormat.prototype, 0],
+    ['supportedLocalesOf', DateTimeFormat, 1],
+  ] as const)('%s has built-in function behavior', (name, owner, length) => {
+    const method = (owner as any)[name]
+    expect(method.name).toBe(name)
+    expect(method.length).toBe(length)
+    expect(Object.hasOwn(method, 'prototype')).toBe(false)
+    expect(() => Reflect.construct(method, [])).toThrow(TypeError)
+  })
+  it('has zero required constructor arguments', () => {
+    expect(DateTimeFormat.length).toBe(0)
+  })
+})
+
+it('keeps both supplementary digits in two-digit date fields', () => {
+  const formatter = new DateTimeFormat('en', {
+    numberingSystem: 'adlm',
+    timeZone: 'UTC',
+    year: '2-digit',
+    month: '2-digit',
+    day: '2-digit',
+  })
+  expect(formatter.resolvedOptions().numberingSystem).toBe('adlm')
+  expect(formatter.formatToParts(Date.UTC(2024, 0, 2))).toEqual([
+    {type: 'month', value: '𞥐𞥑'},
+    {type: 'literal', value: '/'},
+    {type: 'day', value: '𞥐𞥒'},
+    {type: 'literal', value: '/'},
+    {type: 'year', value: '𞥒𞥔'},
+  ])
+})
+
+it('retains a supported numbering-system extension when the option is unsupported', () => {
+  const formatter = new DateTimeFormat('en-u-nu-arab', {
+    numberingSystem: 'invalid',
+    timeZone: 'UTC',
+    year: 'numeric',
+  })
+  expect(formatter.resolvedOptions()).toMatchObject({
+    locale: 'en-u-nu-arab',
+    numberingSystem: 'arab',
+  })
+  expect(formatter.format(Date.UTC(2024, 0, 2))).toBe('٢٠٢٤')
+})
+
+it('uses the selected numbering system decimal separator for fractional seconds', () => {
+  const formatter = new DateTimeFormat('en-u-nu-arab', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    fractionalSecondDigits: 3,
+  })
+  const date = Date.UTC(2024, 0, 1, 2, 35, 6, 789)
+  expect(formatter.format(date)).toContain('٢:٣٥:٠٦٫٧٨٩')
+  expect(formatter.formatToParts(date)).toContainEqual({
+    type: 'literal',
+    value: '٫',
+  })
+})
+
+it('preserves the CLDR day-period separator with Han decimal digits', () => {
+  const formatter = new DateTimeFormat('en-u-nu-hanidec', {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+  const date = Date.UTC(2024, 0, 1, 2, 35, 6)
+  expect(formatter.format(date)).toBe('〇二:三五:〇六\u202fAM')
+  expect(
+    formatter
+      .formatToParts(date)
+      .map(part => part.value)
+      .join('')
+  ).toBe(formatter.format(date))
 })

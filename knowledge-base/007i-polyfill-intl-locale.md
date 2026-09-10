@@ -1,6 +1,6 @@
 # @formatjs/intl-locale
 
-**ECMA-402 Section 14** — `Intl.Locale`
+**ECMA-402 Section 15** — `Intl.Locale`
 
 ## Purpose
 
@@ -67,3 +67,36 @@ ISO weekday numbers (Monday = 1, Sunday = 7) and a fresh weekend array per call.
 Consumers that calculate local week numbers must obtain that value separately.
 Week data honors available `rg` region overrides, `sd` subdivision preferences
 when no region is explicit, and recognized `fw` first-day overrides.
+
+### Receiver validation
+
+Locale getters and methods require a genuine initialized Locale instance.
+Objects inheriting from `Locale.prototype` and proxies around Locale instances
+throw `TypeError`. Failed calls do not give the receiver a Locale brand.
+
+Object locale tags use standard string coercion, including `Symbol.toPrimitive`
+with the string hint and the ordinary `valueOf` fallback. Callable objects are
+accepted; primitive values other than strings are rejected.
+
+The `variants` constructor option replaces existing variant subtags while
+preserving extensions. Empty, malformed, and duplicate variants throw `RangeError`.
+
+Locale tags are canonicalized before constructor overrides are applied, so
+alias resolution uses the original language and script context.
+
+`minimize()` tests reductions of the maximized locale, preserving variants and
+extensions. For example, `und-Thai` minimizes to `th` and `zh-Hant` to `zh-TW`.
+
+Calendar and hour-cycle preferences honor available `rg` override data, then the
+explicit region, `sd` subdivision, likely region, and world fallback. An override
+without data falls back to the ordinary preferred region.
+
+Locale option getters expose canonical Unicode values, consistent with the
+serialized tag. For example, calendar option `islamicc` resolves to `islamic-civil`.
+
+`maximize()` preserves supplied components and leaves unmatched tags unchanged.
+It only searches likely-subtag candidates for the requested language.
+
+`getCollations()` filters global candidates through the requested locale. An
+explicit `co` extension returns that value; an unmatched locale returns
+`emoji` and `eor`.

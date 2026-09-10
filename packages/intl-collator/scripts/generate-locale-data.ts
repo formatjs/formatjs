@@ -1,3 +1,4 @@
+import {canonicalCollation} from './canonical-collation.js'
 import {basename} from 'node:path'
 import minimist from 'minimist'
 import {readdirSync, readFileSync, statSync} from 'node:fs'
@@ -10,7 +11,7 @@ type GeneratedLocaleData = {
   readonly kf: readonly ['false', 'upper', 'lower']
   readonly defaultCollation: string
   readonly sensitivity: 'variant'
-  readonly ignorePunctuation: false
+  readonly ignorePunctuation: boolean
 }
 
 const DEFAULT_COLLATION_RE =
@@ -105,23 +106,60 @@ for (const path of resolvedPaths) {
       collation.type !== 'search' &&
       collation.type !== defaultType
     ) {
-      collationTypes.add(collation.type)
+      collationTypes.add(canonicalCollation(collation.type))
     }
   }
   if (defaultType !== 'standard' && defaultType !== 'search') {
-    collationTypes.add(defaultType)
+    collationTypes.add(canonicalCollation(defaultType))
   }
+  // ECMA-402 §10.1.1, steps 21–22: use the locale punctuation default.
+  // LDML alternate=shifted ignores variable punctuation at these strengths.
+  // https://tc39.es/ecma402/#sec-intl.collator
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L42-L43
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
+  const alternate = collations
+    .find(collation => collation.type === defaultType)
+    ?.rules.findLast(rule => rule.type === 'alternate')
   localeData[locale] = {
     co: [...collationTypes].sort(),
     kn: ['false', 'true'],
     kf: ['false', 'upper', 'lower'],
-    defaultCollation: defaultType,
+    defaultCollation: canonicalCollation(defaultType),
     sensitivity: 'variant',
-    ignorePunctuation: false,
+    ignorePunctuation:
+      alternate?.type === 'alternate' && alternate.value === 'shifted',
   }
 }
 
-const availableLocales = Object.keys(localeData).sort()
+// ECMA-402 §9 Available Locales List: every entry must be a well-formed,
+// canonical language tag. CLDR "root" is data inheritance, not a language tag.
+// This is a list constraint, not an algorithm step.
+// https://tc39.es/ecma402/#available-locales-list
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L6
+const availableLocales = Object.keys(localeData)
+  .filter(locale => locale !== 'root')
+  .sort()
+
+// Compact candidate locales let enumeration probe locale-specific collations
+// without shipping the collation rules or constructing every locale/type pair.
+const collationLocales: Record<string, string[]> = {}
+for (const locale of Object.keys(localeData)) {
+  // A script/region locale also exposes its parent's collation types.
+  for (
+    let parent = locale;
+    parent;
+    parent = parent.includes('-')
+      ? parent.slice(0, parent.lastIndexOf('-'))
+      : ''
+  ) {
+    for (const type of localeData[parent]?.co || []) {
+      if (type === 'default') continue
+      const locales = (collationLocales[type] ||= [])
+      const candidate = locale === 'root' ? 'en' : locale
+      if (!locales.includes(candidate)) locales.push(candidate)
+    }
+  }
+}
 
 outputFileSync(
   argv.out,
@@ -131,5 +169,7 @@ outputFileSync(
 export const availableCollationLocales = ${serialize(availableLocales)} as const
 
 export const collationLocaleData = ${serialize(localeData)} as const
+
+export const collationCandidateLocales = ${serialize(collationLocales)} as const
 `
 )

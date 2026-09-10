@@ -15,7 +15,13 @@ export function GetOption<T extends object, K extends keyof T, F>(
   values: readonly T[K][] | undefined,
   fallback: F
 ): Exclude<T[K], undefined> | F {
-  if (typeof opts !== 'object') {
+  // ECMA-402 §9.2.11 GetOption, step 1: Get accepts callable Objects too.
+  // https://tc39.es/ecma402/#sec-getoption
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L384
+  if (
+    opts === null ||
+    (typeof opts !== 'object' && typeof opts !== 'function')
+  ) {
     throw new TypeError('Options must be an object')
   }
   let value: any = opts[prop]

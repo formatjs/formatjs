@@ -19,6 +19,22 @@ describe('Intl.Collator', () => {
     })
   })
 
+  it('uses search tailoring independently of sort collation options', () => {
+    expect(
+      ['AE', 'Ä'].sort(new Collator('de', {usage: 'sort'}).compare)
+    ).toEqual(['Ä', 'AE'])
+    const search = new Collator('de-u-co-phonebk', {
+      usage: 'search',
+      collation: 'phonebk',
+    })
+    expect(search.resolvedOptions()).toMatchObject({
+      locale: 'de',
+      collation: 'default',
+      usage: 'search',
+    })
+    expect(['AE', 'Ä'].sort(search.compare)).toEqual(['AE', 'Ä'])
+  })
+
   it('compares strings with base sensitivity', () => {
     const collator = new Collator('en', {sensitivity: 'base'})
     expect(collator.compare('resume', 'resume')).toBe(0)
@@ -55,12 +71,57 @@ describe('Intl.Collator', () => {
     expect(collator.compare('a\u2014b', 'ab')).toBe(0)
   })
 
+  it('uses the CLDR punctuation default unless explicitly overridden', () => {
+    for (const locale of ['th', 'th-TH']) {
+      const collator = new Collator(locale)
+      expect(collator.resolvedOptions().ignorePunctuation).toBe(true)
+      expect(collator.compare('a-b', 'ab')).toBe(0)
+      const explicit = new Collator(locale, {ignorePunctuation: false})
+      expect(explicit.resolvedOptions().ignorePunctuation).toBe(false)
+      expect(explicit.compare('a-b', 'ab')).not.toBe(0)
+    }
+    for (const locale of ['en', 'ja']) {
+      expect(new Collator(locale).resolvedOptions().ignorePunctuation).toBe(
+        false
+      )
+    }
+  })
+
+  it('keeps CLDR root out of locale negotiation', () => {
+    expect(Collator.availableLocales.has('root')).toBe(false)
+    for (const locale of Collator.availableLocales) {
+      expect(() => new Intl.Locale(locale)).not.toThrow()
+    }
+    expect(new Collator(['tlh', 'id', 'en']).resolvedOptions().locale).toBe(
+      'id'
+    )
+    expect(Collator.supportedLocalesOf(['tlh', 'id'])).toEqual(['id'])
+  })
+
   it('supports locale filtering', () => {
     expect(Collator.supportedLocalesOf(['en', 'fr', 'sv', 'zz'])).toEqual([
       'en',
       'fr',
       'sv',
     ])
+  })
+
+  it('uses canonical collation types for negotiation and tailorings', () => {
+    expect(
+      new Collator('de-u-co-phonebk', {collation: 'pinyin'}).resolvedOptions()
+    ).toMatchObject({locale: 'de-u-co-phonebk', collation: 'phonebk'})
+    const phonebook = new Collator('de-u-co-phonebk')
+    expect(
+      ['A', 'b', 'Af', 'Ab', 'od', 'off', 'Ä', 'ö'].sort(phonebook.compare)
+    ).toEqual(['A', 'Ab', 'Ä', 'Af', 'b', 'od', 'ö', 'off'])
+    expect(new Collator('es-u-co-trad').resolvedOptions().collation).toBe(
+      'trad'
+    )
+    expect(new Collator('si-u-co-dict').resolvedOptions().collation).toBe(
+      'dict'
+    )
+    expect(new Collator('es-u-co-trad').compare('cz', 'ch')).toBeLessThan(0)
+    expect(new Collator('es').compare('cz', 'ch')).toBeGreaterThan(0)
   })
 
   it('resolves generated collation metadata', () => {
@@ -113,4 +174,39 @@ it('compare uses ToString and preserves coercion order', () => {
   })
   expect(compare(value('left') as any, value('right') as any)).toBe(0)
   expect(calls).toEqual(['left:string', 'right:string'])
+})
+
+describe('built-in descriptors', () => {
+  it.each([
+    ['supportedLocalesOf', Collator, 1],
+    ['resolvedOptions', Collator.prototype, 0],
+  ] as const)(
+    '%s is a writable non-constructor method',
+    (name, owner, length) => {
+      const descriptor = Object.getOwnPropertyDescriptor(owner, name)!
+      expect(descriptor).toMatchObject({
+        writable: true,
+        enumerable: false,
+        configurable: true,
+      })
+      expect(descriptor.value.name).toBe(name)
+      expect(descriptor.value.length).toBe(length)
+      expect(Object.hasOwn(descriptor.value, 'prototype')).toBe(false)
+      expect(() => Reflect.construct(descriptor.value, [])).toThrow(TypeError)
+    }
+  )
+  it('uses the required getter and bound compare names', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(Collator.prototype, 'compare')!.get!.name
+    ).toBe('get compare')
+    const collator = new Collator('en')
+    expect(collator.compare.name).toBe('')
+    expect(collator.compare).toBe(collator.compare)
+    expect(collator.compare('a', 'b')).toBeLessThan(0)
+  })
+  it('does not allow replacing the constructor prototype', () => {
+    expect(
+      Object.getOwnPropertyDescriptor(Collator, 'prototype')
+    ).toMatchObject({writable: false, enumerable: false, configurable: false})
+  })
 })

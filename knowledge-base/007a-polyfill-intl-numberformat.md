@@ -1,6 +1,6 @@
 # @formatjs/intl-numberformat
 
-**ECMA-402 Section 11** — `Intl.NumberFormat`
+**ECMA-402 Section 16** — `Intl.NumberFormat`
 
 ## Purpose
 
@@ -21,6 +21,19 @@ Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, uni
 | `cldr-numbers-full` | Number format patterns, symbols, compact notation, currency display |
 | `cldr-units-full`   | Unit format patterns (long/short/narrow with plural variants)       |
 | `cldr-core`         | Available locales, numbering systems, currency digit metadata       |
+
+CLDR common XML 48.2 supplies locale-specific symbols and patterns for all 78
+numeric numbering systems. The resolver applies parent locales, root aliases,
+and same-locale plural fallback; unconfirmed/provisional entries are excluded,
+matching the CLDR JSON threshold. Identical systems share Latin data through
+registration-time aliases without mutating the caller's data.
+
+`scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
+resolver, numbering-system projection, shared plural helpers, and resolver tests.
+Generator entrypoints in `scripts/` depend on this library. `number-data.ts`
+handles LDML lookup; `numbering-system-data.ts` projects number patterns. Currency names and units still come from CLDR JSON. Northern Sami
+(`se-FI`) compact 1000 uses its local `other` pattern before the parent's `one`
+pattern, following LDML lateral inheritance.
 
 ### Extraction Scripts (`scripts/`)
 
@@ -91,3 +104,70 @@ Stage 3: Metadata generation (generate_src_file)
 
 A well-formed but unsupported `numberingSystem` option falls back to the locale's
 supported numbering system. Only malformed Unicode type identifiers throw `RangeError`.
+
+## NaN sign display
+
+`signDisplay: "exceptZero"` uses the unsigned pattern for NaN.
+GetNumberFormatPattern classifies NaN as positive-zero (step 11.a), then selects
+the zero pattern for exceptZero (step 18.a.i). `always` still emits a plus sign.
+See [ECMA-402 §16.5.11](https://tc39.es/ecma402/#sec-getnumberformatpattern).
+
+## Range endpoints
+
+`formatRange` and `formatRangeToParts` reject missing or undefined endpoints with
+`TypeError` before coercing either argument. NaN endpoints still throw `RangeError`.
+See [ECMA-402 §16.3.4, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange)
+and [§16.3.5, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts).
+
+## Symbol arguments
+
+Formatting methods reject Symbol primitives with `TypeError`, including Symbols
+returned by object coercion. ToIntlMathematicalValue step 4.a propagates ToNumber
+errors; only invalid numeric strings use the NaN fallback.
+
+### Option validation
+
+Unit identifiers are case-sensitive: `mile` is valid, `MILE` throws `RangeError`,
+even when the selected style does not display units. Unsupported rounding
+increments also throw `RangeError`.
+
+`microsecond` and `nanosecond` are supported units, including in compound units
+and the `Intl.supportedValuesOf("unit")` list.
+
+`resolvedOptions()` returns properties in specification order, including
+`roundingPriority` before `trailingZeroDisplay`.
+
+Internal plural selection uses options with a null prototype, preventing inherited
+option getters from affecting NumberFormat or its RelativeTimeFormat consumers.
+
+`useGrouping: "auto"` respects CLDR minimum grouping digits. Polish four-digit
+numbers remain ungrouped; `"always"` still requests grouping.
+
+Range formatting preserves complete CLDR separators, including surrounding spaces.
+Only matching affixes collapse; retained affixes have `source: "shared"`.
+Different signs and scientific or compact notation remain separate.
+
+Approximate ranges place the approximately sign in the locale's minus-sign position
+for unsigned values, or before an existing plus/minus sign. Currency prefixes,
+suffix signs, bidi literals, and unit wrappers use the same number pattern.
+
+Matching sign prefixes can be shared alongside a shared currency or unit suffix.
+Mixed signs remain attached to their endpoints.
+
+## Benchmarks
+
+Run `bazel run //packages/intl-numberformat/benchmark:benchmark` for formatting
+benchmarks, or `:profile` in the same package for repeated formatting. These
+targets declare their generated ESM manifest and load `en.json` relative to the
+entrypoint; root `#packages/*` imports do not cross the benchmark package boundary.
+
+### Digit grouping
+
+Grouping uses decimal digit counts and preserves supplementary-plane digits
+such as Adlam as complete code points. BMP digits retain the string-slicing path.
+Locale numbering-system availability remains a separate data concern.
+
+The shared digit mapping is generated from pinned CLDR `numberingSystems.json`
+numeric entries. It includes all 78 systems in the current ECMA-402 digit table;
+Latin digits use the unchanged ASCII path. Algorithmic numbering systems are not
+digit substitutions. Locale availability still comes from number locale data.

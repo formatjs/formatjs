@@ -6,6 +6,19 @@ import {
   type TABLE_2,
 } from '#packages/ecma402-abstract/types/date-time.js'
 
+const patternFields = new WeakMap<Formats, Intl.DateTimeFormatOptions>()
+
+export function getDateTimePatternFields(
+  format: Formats
+): Intl.DateTimeFormatOptions {
+  const cached = patternFields.get(format)
+  if (cached) return cached
+  const fields: Intl.DateTimeFormatOptions = Object.create(null)
+  processDateTimePattern(format.rawPattern, fields)
+  patternFields.set(format, fields)
+  return fields
+}
+
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
  * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js
@@ -26,6 +39,7 @@ function matchSkeletonPattern(
     | 'year'
     | 'month'
     | 'day'
+    | 'dayPeriod'
     | 'hour'
     | 'minute'
     | 'second'
@@ -106,9 +120,14 @@ function matchSkeletonPattern(
     // Period
     case 'a': // AM, PM
     case 'b': // am, pm, noon, midnight
-    case 'B': // flexible day periods
       result.hour12 = true
       return '{ampm}'
+    // LDML Date Field Symbol Table: B widths select flexible day periods.
+    // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L2235-L2240
+    case 'B':
+      result.dayPeriod = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short'
+      return '{dayPeriod}'
     // Hour
     case 'h':
       result.hour = ['numeric', '2-digit'][len - 1] as 'numeric'
@@ -191,8 +210,9 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
     // Period
     case 'a': // AM, PM
     case 'b': // am, pm, noon, midnight
-    case 'B': // flexible day periods
       return 'ampm'
+    case 'B': // flexible day periods
+      return 'dayPeriod'
     // Hour
     case 'h':
     case 'H':
@@ -223,6 +243,7 @@ export function processDateTimePattern(
     | 'year'
     | 'month'
     | 'day'
+    | 'dayPeriod'
     | 'hour'
     | 'minute'
     | 'second'
@@ -317,7 +338,9 @@ export function parseDateTimeSkeleton(
 
   // Process skeleton
   skeleton.replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result))
-  const [pattern, pattern12] = processDateTimePattern(rawPattern)
+  const fields: Intl.DateTimeFormatOptions = Object.create(null)
+  const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
+  patternFields.set(result, fields)
   result.pattern = pattern
   result.pattern12 = pattern12
   return result
@@ -349,35 +372,43 @@ export function splitFallbackRangePattern(
 }
 
 export function splitRangePattern(pattern: string): Array<RangePatternPart> {
-  const PART_REGEX = /\{(.*?)\}/g
-  // Map of part and index within the string
-  const parts: Record<string, number> = {}
+  const fields = new Map<string, {start: number; end: number}>()
+  const part = /\{(.*?)\}/g
   let match
-  let splitIndex = 0
-  while ((match = PART_REGEX.exec(pattern))) {
-    if (!(match[0] in parts)) {
-      parts[match[0]] = match.index
+  let startBegin = pattern.length
+  let startEnd = 0
+  let endBegin = pattern.length
+  let endEnd = 0
+  while ((match = part.exec(pattern))) {
+    const first = fields.get(match[1])
+    const end = match.index + match[0].length
+    if (first) {
+      startBegin = Math.min(startBegin, first.start)
+      startEnd = Math.max(startEnd, first.end)
+      endBegin = Math.min(endBegin, match.index)
+      endEnd = Math.max(endEnd, end)
     } else {
-      splitIndex = match.index
-      break
+      fields.set(match[1], {start: match.index, end})
     }
   }
-  if (!splitIndex) {
-    return [
-      {
-        source: RangePatternType.startRange,
-        pattern,
-      },
-    ]
+  if (!startEnd) return [{source: RangePatternType.shared, pattern}]
+
+  // ECMA-402 11.5.9, step 19.f.i preserves each range record's source.
+  // Repeated fields bound each endpoint; outer text and the separator are shared.
+  // ICU derives the same spans from repeated field positions:
+  // https://github.com/unicode-org/icu/blob/030fa1a4791ee7c2f58505ebb61253c3032916ec/icu4c/source/i18n/formattedval_iterimpl.cpp#L86-L122
+  // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
+  // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L868-L882
+  const result: RangePatternPart[] = []
+  function append(begin: number, end: number, source: RangePatternType) {
+    if (begin < end) result.push({source, pattern: pattern.slice(begin, end)})
   }
-  return [
-    {
-      source: RangePatternType.startRange,
-      pattern: pattern.slice(0, splitIndex),
-    },
-    {
-      source: RangePatternType.endRange,
-      pattern: pattern.slice(splitIndex),
-    },
-  ]
+  append(0, startBegin, RangePatternType.shared)
+  append(startBegin, startEnd, RangePatternType.startRange)
+  append(startEnd, endBegin, RangePatternType.shared)
+  append(endBegin, endEnd, RangePatternType.endRange)
+  append(endEnd, pattern.length, RangePatternType.shared)
+  return result
 }

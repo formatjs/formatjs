@@ -153,8 +153,8 @@ export function ToLocalTime(
   timeZoneOffset: number
 } {
   invariant(
-    calendar === 'gregory',
-    'We only support Gregory calendar right now'
+    calendar === 'gregory' || calendar === 'iso8601',
+    'Unsupported calendar'
   )
   const [timeZoneOffset, inDST] = getApplicableZoneData(
     t.toNumber(),
@@ -166,7 +166,11 @@ export function ToLocalTime(
   const year = YearFromTime(tz)
   return {
     weekday: WeekDay(tz),
-    era: year < 0 ? 'BC' : 'AD',
+    // ECMA-402 §11.5.13, ToLocalTime record table, [[Era]] row:
+    // astronomical year zero belongs to BC.
+    // https://tc39.es/ecma402/#table-datetimeformat-tolocaltime-record
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1683-L1686
+    era: year < 1 ? 'BC' : 'AD',
     year,
     relatedYear: undefined,
     yearName: undefined,

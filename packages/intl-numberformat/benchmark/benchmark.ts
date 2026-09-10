@@ -1,8 +1,9 @@
+import {readFileSync} from 'node:fs'
 import {Bench} from 'tinybench'
 import {NumberFormat} from '@formatjs/intl-numberformat'
-// @ts-ignore
-import en from '#packages/intl-numberformat/benchmark/en.json' with {type: 'json'}
-// @ts-ignore
+const en = JSON.parse(
+  readFileSync(new URL('./en.json', import.meta.url), 'utf8')
+)
 NumberFormat.__addLocaleData(en)
 
 // Test cases that match the issue description - repeated formatting with similar values

@@ -1,4 +1,3 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -6,6 +5,8 @@ load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load("//tools/test262:defs.bzl", "test262_test")
+load("//tools/test262:locales.bzl", "TEST262_LOCALES")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_tz_data")
 load(":locales.generated.bzl", "ALL_LOCALES")
@@ -90,7 +91,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "7.6.1",  # x-release-please-version
+    version = "7.6.2",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -119,7 +120,6 @@ formatjs_test(
     srcs = [
         "tests/abstract/BestFitFormatMatcher.test.ts",
         "tests/abstract/skeleton.test.ts",
-        "tests/benchmark.ts",
         "tests/format.test.ts",
         "tests/format-range.test.ts",
         "tests/ftp-main.test.ts",
@@ -150,7 +150,6 @@ formatjs_test(
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs_generated/tz",
-        "//:node_modules/tinybench",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
@@ -234,18 +233,6 @@ ts_run_binary(
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-TEST262_LOCALES = [
-    "ar",
-    "de",
-    "en",
-    "ja",
-    "ko",
-    "th",
-    "zh",
-    "zh-Hant",
-    "zh-Hans",
-]
-
 ts_run_binary(
     name = "test262-main-gen",
     srcs = [
@@ -260,6 +247,7 @@ ts_run_binary(
             f,
         )
         for f in TEST262_LOCALES
+        if f in ALL_LOCALES
     ] + [
         "--out",
         "$(rootpath test262-main.ts)",
@@ -395,16 +383,46 @@ rolldown_bundle(
     ],
 )
 
+filegroup(
+    name = "benchmark_locale_data",
+    srcs = [":tests-locale-data-en"],
+    visibility = ["//packages/intl-datetimeformat/benchmark:__pkg__"],
+)
+
 # Use with `bazel run`.
-js_binary(
+alias(
     name = "benchmark",
-    data = [
-        "//:node_modules/@formatjs_generated/tz",
-        "//:node_modules/tinybench",
-    ],
-    entry_point = "tests/benchmark.ts",
-    node_options = [
-        "--experimental-transform-types",
-    ],
+    actual = "//packages/intl-datetimeformat/benchmark:run",
     tags = ["manual"],
+)
+
+rolldown_bundle(
+    name = "test262-polyfill",
+    srcs = [
+        ":srcs",
+        ":test262-main-gen",
+    ],
+    entry_point = "test262-main.ts",
+    format = "iife",
+    target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+test262_test(
+    name = "test262",
+    data = [
+        "@com_github_tc39_test262//:test262-datetimeformat-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/DateTimeFormat",
 )

@@ -41,6 +41,7 @@ const LOCALES = [
   'nl',
   'pl',
   'pt',
+  'pt-PT',
   'ru',
   'sv',
   'th',
@@ -50,6 +51,10 @@ const LOCALES = [
   'zh-Hans',
   'zh-Hant',
   'en-BS',
+  'de-CH',
+  'es-CL',
+  'fy',
+  'ar-SS',
 ]
 
 LOCALES.forEach(locale => {
@@ -91,7 +96,7 @@ it('should lookup locale correctly', function () {
 it('supportedLocalesOf should return correct result based on data loaded', function () {
   expect(NumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])).toEqual([
     'zh',
-    'en',
+    'en-US',
   ])
   expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([])
 })
@@ -242,10 +247,11 @@ it('chose compact pattern with rounded number', () => {
 })
 
 describe('For wrong options NumberFormat correctly throws exception', () => {
-  it('uses an invalid value for rounding incremenet', () => {
+  it('uses an invalid value for rounding increment', () => {
     const createInstance = () =>
       new NumberFormat('en', {roundingIncrement: 3 as any})
 
+    expect(createInstance).toThrow(RangeError)
     expect(createInstance).toThrow(
       `Invalid rounding increment value: 3.
 Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000.`
@@ -260,6 +266,7 @@ Valid values are 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 
         maximumFractionDigits: 2,
       })
 
+    expect(createInstance).toThrow(RangeError)
     expect(createInstance).toThrow(
       'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.'
     )
@@ -504,4 +511,455 @@ it('negotiates well-formed numbering systems and rejects malformed ones', () => 
   for (const numberingSystem of ['', 'ab', 'abc_def', 'abcdefghi']) {
     expect(() => new NumberFormat('en', {numberingSystem})).toThrow(RangeError)
   }
+})
+
+test('accepts callable options and reads their properties', () => {
+  const options = Object.assign(
+    () => {
+      throw new Error('called')
+    },
+    {
+      maximumFractionDigits: 2,
+      useGrouping: false,
+    }
+  )
+  expect(new NumberFormat('en', options).format(1234.567)).toBe('1234.57')
+})
+
+describe('NaN sign display', () => {
+  for (const signDisplay of [
+    'auto',
+    'always',
+    'never',
+    'exceptZero',
+    'negative',
+  ] as const) {
+    it(signDisplay, () => {
+      const formatter = new NumberFormat('en', {signDisplay})
+      const sign = signDisplay === 'always' ? '+' : ''
+      expect(formatter.format(NaN)).toBe(`${sign}NaN`)
+      expect(formatter.formatToParts(NaN)).toEqual([
+        ...(sign ? [{type: 'plusSign', value: '+'}] : []),
+        {type: 'nan', value: 'NaN'},
+      ])
+    })
+  }
+
+  it('preserves exceptZero signs for zeros and infinities', () => {
+    const formatter = new NumberFormat('en', {signDisplay: 'exceptZero'})
+    expect(formatter.format(0)).toBe('0')
+    expect(formatter.format(-0)).toBe('0')
+    expect(formatter.format(Infinity)).toBe('+∞')
+    expect(formatter.format(-Infinity)).toBe('-∞')
+  })
+})
+
+describe.each(['formatRange', 'formatRangeToParts'] as const)(
+  '%s endpoints',
+  method => {
+    it('rejects missing endpoints before coercing either argument', () => {
+      const nf = new NumberFormat('en')
+      const endpoint = {
+        valueOf() {
+          throw new Error('must not coerce')
+        },
+      }
+      for (const args of [
+        [],
+        [1],
+        [undefined, 1],
+        [1, undefined],
+        [undefined, undefined],
+        [endpoint, undefined],
+        [undefined, endpoint],
+      ]) {
+        expect(() => (nf[method] as Function)(...args)).toThrow(TypeError)
+      }
+    })
+    it('keeps NaN endpoints as RangeError', () => {
+      const nf = new NumberFormat('en')
+      expect(() => nf[method](NaN, 1)).toThrow(RangeError)
+      expect(() => nf[method](1, NaN)).toThrow(RangeError)
+    })
+  }
+)
+
+describe('Symbol coercion', () => {
+  const symbol = Symbol('number')
+  const values = [
+    symbol,
+    Object(symbol),
+    {valueOf: () => symbol},
+    {[Symbol.toPrimitive]: () => symbol},
+  ]
+  it.each(values)('rejects a Symbol primitive from %s', value => {
+    const nf = new NumberFormat('en')
+    expect(() => nf.format(value as any)).toThrow(TypeError)
+    expect(() => nf.formatToParts(value as any)).toThrow(TypeError)
+    for (const method of ['formatRange', 'formatRangeToParts'] as const) {
+      expect(() => nf[method](value as any, 1)).toThrow(TypeError)
+      expect(() => nf[method](1, value as any)).toThrow(TypeError)
+    }
+  })
+  it('stops before converting the second endpoint when the first throws', () => {
+    const nf = new NumberFormat('en')
+    const calls: string[] = []
+    const start = {
+      [Symbol.toPrimitive](hint: string) {
+        calls.push(hint)
+        return symbol
+      },
+    }
+    const end = {
+      valueOf() {
+        calls.push('end')
+        return 1
+      },
+    }
+    expect(() => nf.formatRange(start as any, end as any)).toThrow(TypeError)
+    expect(calls).toEqual(['number'])
+  })
+  it('preserves invalid numeric string fallback', () => {
+    const nf = new NumberFormat('en')
+    expect(nf.format('invalid' as any)).toBe(nf.format(NaN))
+  })
+})
+
+describe('unit option case sensitivity', () => {
+  it.each([
+    'MILE',
+    'Mile',
+    'meter-per-SECOND',
+    'METER-per-second',
+    'meter-PER-second',
+  ])('rejects %s regardless of style', unit => {
+    for (const style of ['decimal', 'percent', 'currency', 'unit'] as const) {
+      expect(
+        () => new NumberFormat('en', {style, currency: 'USD', unit})
+      ).toThrow(RangeError)
+    }
+  })
+  it.each([
+    'mile',
+    'meter-per-second',
+    'microsecond',
+    'nanosecond',
+    'microsecond-per-nanosecond',
+  ])('accepts %s', unit => {
+    expect(() => new NumberFormat('en', {style: 'unit', unit})).not.toThrow()
+  })
+})
+
+it.each(['microsecond', 'nanosecond'])(
+  'formats %s using generated locale data',
+  unit => {
+    expect(
+      new NumberFormat('en', {style: 'unit', unit, unitDisplay: 'long'}).format(
+        2
+      )
+    ).toBe(`2 ${unit}s`)
+  }
+)
+
+describe('built-in method functions', () => {
+  it.each([
+    ['formatToParts', NumberFormat.prototype, 1],
+    ['formatRange', NumberFormat.prototype, 2],
+    ['formatRangeToParts', NumberFormat.prototype, 2],
+    ['resolvedOptions', NumberFormat.prototype, 0],
+    ['supportedLocalesOf', NumberFormat, 1],
+  ] as const)('%s is non-constructible', (name, owner, length) => {
+    const method = (owner as any)[name]
+    expect(method.name).toBe(name)
+    expect(method.length).toBe(length)
+    expect(Object.hasOwn(method, 'prototype')).toBe(false)
+    expect(() => Reflect.construct(method, [])).toThrow(TypeError)
+    expect(Object.getOwnPropertyDescriptor(owner, name)).toMatchObject({
+      writable: true,
+      enumerable: false,
+      configurable: true,
+    })
+  })
+})
+
+describe('rounding priority precision', () => {
+  it.each([
+    ['morePrecision', '1.0'],
+    ['lessPrecision', '1.00'],
+  ] as const)(
+    '%s compares rounding magnitudes',
+    (roundingPriority, expected) => {
+      const formatter = new NumberFormat('en', {
+        minimumSignificantDigits: 2,
+        minimumFractionDigits: 2,
+        roundingPriority,
+        useGrouping: false,
+      })
+      expect(formatter.format(1)).toBe(expected)
+      expect(formatter.format(-1)).toBe('-' + expected)
+      expect(
+        formatter
+          .formatToParts(1)
+          .map(part => part.value)
+          .join('')
+      ).toBe(expected)
+    }
+  )
+})
+
+describe('NumberFormat receiver branding', () => {
+  const format = Object.getOwnPropertyDescriptor(
+    NumberFormat.prototype,
+    'format'
+  )!.get!
+  it('rejects inherited and proxied receivers without coercing arguments', () => {
+    const value = {
+      valueOf() {
+        throw new Error('must not coerce')
+      },
+    }
+    const receivers = [
+      undefined,
+      null,
+      1,
+      Symbol(),
+      {},
+      Object.create(NumberFormat.prototype),
+      new Proxy(new NumberFormat('en'), {}),
+    ]
+    for (const receiver of receivers) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        expect(() => format.call(receiver)).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.resolvedOptions.call(receiver)
+        ).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.formatToParts.call(receiver, value as any)
+        ).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.formatRange.call(
+            receiver,
+            value as any,
+            value as any
+          )
+        ).toThrow(TypeError)
+        expect(() =>
+          NumberFormat.prototype.formatRangeToParts.call(
+            receiver,
+            value as any,
+            value as any
+          )
+        ).toThrow(TypeError)
+      }
+    }
+  })
+
+  it('accepts a branded receiver after its prototype changes', () => {
+    const formatter = new NumberFormat('en')
+    Object.setPrototypeOf(formatter, null)
+    expect(format.call(formatter)(123)).toBe('123')
+    expect(NumberFormat.prototype.resolvedOptions.call(formatter).locale).toBe(
+      'en'
+    )
+  })
+})
+
+test.each(['auto', 'morePrecision', 'lessPrecision'] as const)(
+  'resolvedOptions preserves rounding property order for %s',
+  roundingPriority => {
+    const options = new NumberFormat('en', {roundingPriority}).resolvedOptions()
+    expect(Object.keys(options).slice(-4)).toEqual([
+      'roundingIncrement',
+      'roundingMode',
+      'roundingPriority',
+      'trailingZeroDisplay',
+    ])
+    expect(options.roundingPriority).toBe(roundingPriority)
+  }
+)
+
+describe('internal PluralRules options', () => {
+  it('does not observe inherited option getters', () => {
+    const previous = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'localeMatcher'
+    )
+    let formatted: string
+    Object.defineProperty(Object.prototype, 'localeMatcher', {
+      configurable: true,
+      get() {
+        throw new Error('Inherited localeMatcher read')
+      },
+    })
+    try {
+      formatted = new NumberFormat('en', Object.create(null)).format(123)
+    } finally {
+      if (previous)
+        Object.defineProperty(Object.prototype, 'localeMatcher', previous)
+      else delete (Object.prototype as {localeMatcher?: unknown}).localeMatcher
+    }
+    expect(formatted!).toBe('123')
+  })
+})
+
+describe('locale minimum grouping digits', () => {
+  it('uses Polish grouping preferences for auto', () => {
+    const nf = new NumberFormat('pl')
+    expect(nf.format(1000)).toBe('1000')
+    expect(nf.format(-1000)).toBe('-1000')
+    expect(nf.format(10000)).toBe('10\u00a0000')
+    expect(new NumberFormat('pl', {useGrouping: 'always'}).format(1000)).toBe(
+      '1\u00a0000'
+    )
+    expect(new NumberFormat('en', {useGrouping: 'min2'}).format(1000)).toBe(
+      '1000'
+    )
+  })
+})
+
+it('preserves range separators and only collapses matching affixes', () => {
+  const portuguese = new NumberFormat('pt-PT', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  })
+  expect(portuguese.formatRange(3, 5)).toBe('3 - 5 €')
+  expect(
+    portuguese.formatRangeToParts(3, 5).filter(part => part.type === 'currency')
+  ).toEqual([{type: 'currency', value: '€', source: 'shared'}])
+  const currency = {style: 'currency', currency: 'USD'} as const
+  expect(
+    new NumberFormat('en', {...currency, maximumFractionDigits: 0}).formatRange(
+      3,
+      5
+    )
+  ).toBe('$3 – $5')
+  const signed = new NumberFormat('en', {...currency, signDisplay: 'always'})
+  expect(signed.formatRange(2.9, 3.1)).toBe('+$2.90–3.10')
+  expect(signed.formatRange(-2.9, 3.1)).toBe('-$2.90 – +$3.10')
+  expect(signed.formatRangeToParts(2.9, 3.1).slice(0, 2)).toEqual([
+    {type: 'plusSign', value: '+', source: 'shared'},
+    {type: 'currency', value: '$', source: 'shared'},
+  ])
+  const scientific = new NumberFormat('en', {notation: 'scientific'})
+  expect(scientific.formatRange(3000, 5000)).toBe('3E3–5E3')
+})
+
+it.each(['en', 'de-CH', 'es-CL', 'fy', 'ar-SS'])(
+  'places unsigned approximate currency at the %s minus-sign position',
+  locale => {
+    const nf = new NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      numberingSystem: 'latn',
+      maximumFractionDigits: 0,
+    })
+    const expected = nf.formatToParts(-3).map(part => ({
+      ...part,
+      ...(part.type === 'minusSign'
+        ? {type: 'approximatelySign', value: locale === 'de-CH' ? '≈' : '~'}
+        : {}),
+      source: 'shared',
+    }))
+    expect(nf.formatRangeToParts(2.9, 3.1)).toEqual(expected)
+  }
+)
+
+it('formats approximate ranges with signs, accounting, and compact notation', () => {
+  const currency = {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  } as const
+  expect(new NumberFormat('en', currency).formatRange(2.9, 3.1)).toBe('~$3')
+  const signed = new NumberFormat('en', {...currency, signDisplay: 'always'})
+  expect(signed.formatRange(2.9, 3.1)).toBe('~+$3')
+  expect(signed.formatRange(-3.1, -2.9)).toBe('~-$3')
+  const accounting = new NumberFormat('en', {
+    ...currency,
+    currencySign: 'accounting',
+  })
+  expect(accounting.formatRange(-3.1, -2.9)).toBe('~($3)')
+  expect(
+    new NumberFormat('en', {
+      notation: 'compact',
+      maximumFractionDigits: 0,
+    }).formatRange(2900, 3100)
+  ).toBe('~3K')
+  expect(
+    new NumberFormat('en', {
+      style: 'unit',
+      unit: 'meter',
+      unitDisplay: 'long',
+      maximumFractionDigits: 0,
+    }).formatRange(2.9, 3.1)
+  ).toBe('~3 meters')
+})
+
+it('shares matching signs with a shared currency suffix', () => {
+  const nf = new NumberFormat('pt-PT', {
+    style: 'currency',
+    currency: 'EUR',
+    signDisplay: 'always',
+  })
+  expect(nf.formatRange(2.9, 3.1)).toBe('+2,90 - 3,10 €')
+  expect(
+    nf.formatRangeToParts(2.9, 3.1).filter(part => part.type === 'plusSign')
+  ).toEqual([{type: 'plusSign', value: '+', source: 'shared'}])
+  expect(nf.formatRange(-3.1, -2.9)).toBe('-3,10 - 2,90 €')
+  expect(nf.formatRange(-2.9, 3.1)).toBe('-2,90 - +3,10 €')
+  expect(
+    nf
+      .formatRangeToParts(-2.9, 3.1)
+      .filter(part => part.type === 'minusSign' || part.type === 'plusSign')
+      .map(part => part.source)
+  ).toEqual(['startRange', 'endRange'])
+  expect(
+    new NumberFormat('en', {signDisplay: 'always'}).formatRange(3, 5)
+  ).toBe('+3 – +5')
+})
+
+it('accepts complete numeric systems with locale-specific symbols', () => {
+  expect(
+    new NumberFormat('en', {numberingSystem: 'adlm'}).format(12345.67)
+  ).toBe('𞥑𞥒,𞥓𞥔𞥕.𞥖𞥗')
+  expect(new NumberFormat('en', {numberingSystem: 'lepc'}).format(123)).toBe(
+    '᱁᱂᱃'
+  )
+  expect(
+    new NumberFormat('en', {numberingSystem: 'arab'}).format(12345.67)
+  ).toBe('١٢٬٣٤٥٫٦٧')
+  expect(
+    new NumberFormat('en-u-nu-arab', {
+      numberingSystem: 'invalid',
+    }).resolvedOptions()
+  ).toMatchObject({
+    locale: 'en-u-nu-arab',
+    numberingSystem: 'arab',
+  })
+})
+
+it('hydrates numbering-system aliases without mutating supplied data', () => {
+  const source = JSON.parse(JSON.stringify(require('./locale-data/en.json')))
+  expect(source.data.numbers.aliases.adlm).toBe('latn')
+  for (const field of [
+    'symbols',
+    'decimal',
+    'percent',
+    'currency',
+    'aliases',
+  ]) {
+    Object.freeze(source.data.numbers[field])
+  }
+  Object.freeze(source.data.numbers)
+  Object.freeze(source.data)
+  Object.freeze(source)
+  NumberFormat.__addLocaleData(source)
+  expect(source.data.numbers.symbols.adlm).toBeUndefined()
+  expect(NumberFormat.localeData.en!.numbers.symbols.adlm).toBe(
+    NumberFormat.localeData.en!.numbers.symbols.latn
+  )
+  expect(new NumberFormat('en', {numberingSystem: 'adlm'}).format(123)).toBe(
+    '𞥑𞥒𞥓'
+  )
 })

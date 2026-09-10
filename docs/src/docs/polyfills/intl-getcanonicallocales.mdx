@@ -1,4 +1,4 @@
-A spec-compliant polyfill/ponyfill for `Intl.getCanonicalLocales` tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A polyfill/ponyfill for `Intl.getCanonicalLocales` tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-getcanonicallocales.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-getcanonicallocales)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-getcanonicallocales)
@@ -68,7 +68,7 @@ async function polyfill() {
 
 ## Tests
 
-This library is [test262](https://github.com/tc39/test262/tree/master/test/intl402/Intl/getCanonicalLocales)-compliant.
+The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-getcanonicallocales:test262-strict` to require zero failures.
 
 ## Locale-list coercion
 
@@ -77,3 +77,21 @@ This library is [test262](https://github.com/tc39/test262/tree/master/test/intl4
 and values from the installed Locale polyfill use their intrinsic locale tag,
 ignoring overridden instance properties. Objects that merely expose `language`
 and `baseName` are treated as ordinary array-like inputs.
+
+Locale identifier casing is normalized before CLDR alias lookup, including
+language, script, region, and variant subtags.
+
+Unicode and transformed extensions use CLDR BCP 47 aliases. Transformed
+extensions accept a language, fields, or both, and retain `true` field values.
+
+The `rg` and `sd` Unicode keys resolve CLDR subdivision aliases. Territory
+replacements receive the required `zzzz` suffix; multiple replacements use the first.
+
+CLDR compound aliases remove matched subtags, preserve unrelated fields, and
+apply the most specific rule first, including language-independent variants.
+
+Canonicalization creates list elements directly without calling an overridden
+`Array.prototype.push`, including while parsing and emitting extensions.
+
+Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
+Extension singleton matching is case-insensitive, including duplicate detection.

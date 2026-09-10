@@ -1,30 +1,29 @@
 import type {Collation} from '@formatjs_generated/cldr.supported-values/collations.js'
 import {collations} from '@formatjs_generated/cldr.supported-values/collations.js'
+import {collationCandidateLocales} from '@formatjs_generated/cldr.collation/locale-data.js'
 
-/**
- * Implementation: Tests if a collation is supported by attempting to create
- * a Collator with that collation and verifying it was accepted.
- *
- * CLDR Data: Candidate values come from CLDR collation types
- */
 function isSupportedCollation(collation: Collation): boolean {
-  try {
-    // Always use 'en' for testing
-    return (
-      Intl.Collator(`en-u-co-${collation}`).resolvedOptions().collation ===
-      collation
-    )
-  } catch {}
-
+  // ECMA-402 §6.8.1 AvailableCanonicalCollations describes support across
+  // the implementation, including collations unavailable for English.
+  // This is an implementation-defined operation, with no numbered steps.
+  // https://tc39.es/ecma402/#sec-availablecanonicalcollations
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L509-L514
+  const candidates = (
+    collationCandidateLocales as Record<string, readonly string[]>
+  )[collation] || ['en']
+  for (const locale of candidates) {
+    try {
+      if (
+        new Intl.Collator(`${locale}-u-co-${collation}`).resolvedOptions()
+          .collation === collation
+      ) {
+        return true
+      }
+    } catch {}
+  }
   return false
 }
 
-/**
- * ECMA-402 Spec: Returns supported collation identifiers
- * ECMA-402 Spec: Results must be sorted lexicographically
- *
- * Implementation: Filters CLDR list against actual runtime support
- */
 export function getSupportedCollations(): Collation[] {
   return collations.filter(isSupportedCollation).sort()
 }

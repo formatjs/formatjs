@@ -236,7 +236,7 @@ oxfmt.oxfmt_binary(
     ],
     env = {"BAZEL_BINDIR": "."},
     fixed_args = [
-        "--config=\"$$JS_BINARY__RUNFILES\"/$(rlocationpath //:oxfmtrc)",
+        "--config=\"$${BUILD_WORKSPACE_DIRECTORY:-$$JS_BINARY__RUNFILES/_main}\"/.oxfmtrc.json",
     ],
     visibility = ["//visibility:public"],
 )

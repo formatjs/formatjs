@@ -18,3 +18,16 @@ test('LookupMatcher', function () {
     extension: '-u-ca-gregory',
   })
 })
+
+test('respects Unicode extension boundaries', () => {
+  for (const [tag, extension] of [
+    ['de-x-u-co-phonebk', undefined],
+    ['de-u-co-phonebk-x-private', '-u-co-phonebk'],
+    ['de-t-en-u-co-phonebk-x-u-kn', '-u-co-phonebk'],
+  ]) {
+    expect(LookupMatcher(['de'], [tag!], () => 'en')).toEqual({
+      locale: 'de',
+      ...(extension ? {extension} : {}),
+    })
+  }
+})

@@ -1,3 +1,4 @@
+import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
@@ -104,16 +105,14 @@ export default class RelativeTimeFormat {
 
   public static __addLocaleData(...data: RelativeTimeLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      const minimizedLocale = new (Intl as any).Locale(locale)
-        .minimize()
-        .toString()
-      RelativeTimeFormat.localeData[locale] = RelativeTimeFormat.localeData[
-        minimizedLocale
-      ] = d
-      RelativeTimeFormat.availableLocales.add(minimizedLocale)
-      RelativeTimeFormat.availableLocales.add(locale)
+      registerLocaleData(
+        locale,
+        d,
+        RelativeTimeFormat.localeData,
+        RelativeTimeFormat.availableLocales
+      )
       if (!RelativeTimeFormat.__defaultLocale) {
-        RelativeTimeFormat.__defaultLocale = minimizedLocale
+        RelativeTimeFormat.__defaultLocale = locale
       }
     }
   }

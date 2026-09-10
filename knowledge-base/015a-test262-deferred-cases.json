@@ -1,0 +1,148 @@
+{
+  "test262Revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93",
+  "scenarios": ["default", "strict mode"],
+  "categories": [
+    {
+      "reason": "CLDR spacing expectation",
+      "modes": ["combined", "isolated"],
+      "tests": ["intl402/DateTimeFormat/prototype/format/numbering-system.js"]
+    },
+    {
+      "reason": "Temporal input integration",
+      "modes": ["combined", "isolated"],
+      "tests": [
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-format-weekday-long.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-format-with-era.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-ignore-timezone.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-no-time-clip-non-latin-numerals.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-no-time-clip-weekday.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-no-time-clip.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-not-overlapping-options.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-objects-resolved-time-zone.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plaindate-formatting-datetime-style.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plaindate-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plaindatetime-formatting-datetime-style.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plaindatetime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plainmonthday-formatting-datetime-style.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plainmonthday-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plaintime-formatting-datetime-style.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plaintime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plainyearmonth-formatting-datetime-style.js",
+        "intl402/DateTimeFormat/prototype/format/temporal-plainyearmonth-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-format-with-era.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-ignore-timezone.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-no-time-clip-weekday.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-no-time-clip.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-not-overlapping-options.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-resolved-time-zone.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-throws-with-different-calendars.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-plaindate-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-plaindatetime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-plainmonthday-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-plaintime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRange/temporal-plainyearmonth-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRange/to-datetime-formattable-with-different-arg-kinds.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-format-with-era.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-ignore-timezone.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-no-time-clip-weekday.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-no-time-clip.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-not-overlapping-options.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-resolved-time-zone.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-throws-with-different-calendars.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plaindate-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plaindatetime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plainmonthday-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plaintime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plainyearmonth-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/to-datetime-formattable-with-different-arg-kinds.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-format-with-era.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-ignore-timezone.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-no-time-clip-weekday.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-no-time-clip.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-not-overlapping-options.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-resolved-time-zone.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-plaindate-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-plaindatetime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-plainmonthday-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-plaintime-formatting-timezonename.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/temporal-plainyearmonth-formatting-timezonename.js"
+      ]
+    },
+    {
+      "reason": "calendar enumeration/native interoperability",
+      "modes": ["combined", "isolated"],
+      "tests": [
+        "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js"
+      ]
+    },
+    {
+      "reason": "calendar implementation",
+      "modes": ["combined", "isolated"],
+      "tests": [
+        "intl402/DateTimeFormat/canonicalize-calendar.js",
+        "intl402/DateTimeFormat/prototype/format/related-year-zh.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/chinese-calendar-dates.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/dangi-calendar-dates.js",
+        "intl402/DateTimeFormat/prototype/formatRangeToParts/pattern-on-calendar.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/chinese-calendar-dates.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal-lunisolar.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/dangi-calendar-dates.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/era.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/lunisolar-leap-months.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/pattern-on-calendar.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/related-year-zh.js",
+        "intl402/DateTimeFormat/prototype/formatToParts/related-year.js",
+        "intl402/DateTimeFormat/prototype/resolvedOptions/calendar.js"
+      ]
+    },
+    {
+      "reason": "collation data expectation",
+      "modes": ["combined"],
+      "tests": ["intl402/Locale/prototype/getCollations/output-array-values.js"]
+    },
+    {
+      "reason": "foreign-realm intrinsic",
+      "modes": ["combined", "isolated"],
+      "tests": [
+        "intl402/Collator/proto-from-ctor-realm.js",
+        "intl402/DateTimeFormat/proto-from-ctor-realm.js",
+        "intl402/DisplayNames/proto-from-ctor-realm.js",
+        "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js",
+        "intl402/Locale/proto-from-ctor-realm.js",
+        "intl402/NumberFormat/proto-from-ctor-realm.js",
+        "intl402/PluralRules/proto-from-ctor-realm.js",
+        "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js",
+        "intl402/Segmenter/constructor/constructor/proto-from-ctor-realm.js",
+        "intl402/Segmenter/proto-from-ctor-realm.js"
+      ]
+    },
+    {
+      "reason": "native Locale brand interoperability",
+      "modes": ["isolated"],
+      "tests": ["intl402/Locale/canonicalize-locale-list-take-locale.js"]
+    },
+    {
+      "reason": "normative optional legacy construction",
+      "modes": ["combined", "isolated"],
+      "tests": [
+        "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js",
+        "intl402/DateTimeFormat/intl-legacy-constructed-symbol-property.js",
+        "intl402/DateTimeFormat/intl-legacy-constructed-symbol.js",
+        "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js",
+        "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js",
+        "intl402/NumberFormat/intl-legacy-constructed-symbol.js"
+      ]
+    },
+    {
+      "reason": "timezone identifier proposal mismatch",
+      "modes": ["combined", "isolated"],
+      "tests": [
+        "intl402/DateTimeFormat/canonicalize-timezone.js",
+        "intl402/DateTimeFormat/canonicalize-utc-timezone.js",
+        "intl402/DateTimeFormat/timezone-case-insensitive.js",
+        "intl402/DateTimeFormat/timezone-not-canonicalized.js"
+      ]
+    }
+  ]
+}

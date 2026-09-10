@@ -1,4 +1,4 @@
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
@@ -8,6 +8,8 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools:vitest.bzl", "vitest")
+load("//tools/test262:defs.bzl", "test262_test")
+load("//tools/test262:locales.bzl", "TEST262_LOCALES")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -34,6 +36,7 @@ TEST_LOCALES = [
     "nl",
     "pl",
     "pt",
+    "pt-PT",
     "ru",
     "sv",
     "sw",
@@ -43,6 +46,9 @@ TEST_LOCALES = [
     "zh-Hans",
     "zh-Hant",
     "zh",
+    "de-CH",
+    "es-CL",
+    "fy",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -106,7 +112,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "9.4.0",  # x-release-please-version
+    version = "9.4.1",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -244,16 +250,26 @@ cldr_locale_list(
     file_glob = "*/numbers.json",
 )
 
+copy_to_directory(
+    name = "numbering_system_xml",
+    srcs = ["@cldr_common//:main_xml"],
+    out = "numbering_system_xml",
+    include_external_repositories = ["+http_archive+cldr_common"],
+    root_paths = ["common/main"],
+)
+
 CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
+        ":numbering_system_xml",
         "//:node_modules/@types/lodash-es",
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/cldr-units-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/fast-xml-parser",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
@@ -265,6 +281,8 @@ ts_run_binary(
     ],
     outs = CLDR_RAW_FILES,
     args = [
+        "--cldrRoot",
+        "../../$(rootpath :numbering_system_xml)/root.xml",
         "--outDir",
         "cldr-raw",
     ],
@@ -302,18 +320,6 @@ ts_run_binary(
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-TEST262_LOCALES = [
-    "ar",
-    "de",
-    "en",
-    "ja",
-    "ko",
-    "th",
-    "zh",
-    "zh-Hant",
-    "zh-Hans",
-]
-
 ts_run_binary(
     name = "test262-main-gen",
     srcs = [
@@ -328,6 +334,7 @@ ts_run_binary(
             f,
         )
         for f in TEST262_LOCALES
+        if f in ALL_LOCALES
     ] + [
         "--out",
         "$(rootpath test262-main.ts)",
@@ -421,12 +428,15 @@ rolldown_bundle(
         ":test262-main-gen",
     ],
     entry_point = "test262-main.ts",
+    format = "iife",
     target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.number",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/NumberFormat",
@@ -434,24 +444,14 @@ rolldown_bundle(
     ],
 )
 
-test262_harness_bin.test262_harness_test(
+test262_test(
     name = "test262",
-    args = [
-        "--reporter-keys",
-        "file,attrs,result",
-        "--timeout",
-        "30000",
-        "--prelude",
-        "$(rootpath test262-polyfill.js)",
-        "--test262Dir",
-        "../+http_archive+com_github_tc39_test262",
-        "../+http_archive+com_github_tc39_test262/test/intl402/NumberFormat/**/*.js",
-    ],
     data = [
-        "test262-polyfill.js",
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-numberformat-copy",
     ],
+    prelude = "test262-polyfill.js",
+    suite = "intl402/NumberFormat",
 )
 
 rolldown_bundle(
@@ -492,12 +492,15 @@ formatjs_test(
         ":tests-locale-data-da",  # keep: generated locale data imported by tests
         ":tests-locale-data-de",  # keep: generated locale data imported by tests
         ":tests-locale-data-de-AT",  # keep: generated locale data imported by tests
+        ":tests-locale-data-de-CH",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-BS",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-GB",  # keep: generated locale data imported by tests
         ":tests-locale-data-es",  # keep: generated locale data imported by tests
+        ":tests-locale-data-es-CL",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr-CH",  # keep: generated locale data imported by tests
+        ":tests-locale-data-fy",  # keep: generated locale data imported by tests
         ":tests-locale-data-hi",  # keep: generated locale data imported by tests
         ":tests-locale-data-id",  # keep: generated locale data imported by tests
         ":tests-locale-data-it",  # keep: generated locale data imported by tests
@@ -508,6 +511,7 @@ formatjs_test(
         ":tests-locale-data-nl",  # keep: generated locale data imported by tests
         ":tests-locale-data-pl",  # keep: generated locale data imported by tests
         ":tests-locale-data-pt",  # keep: generated locale data imported by tests
+        ":tests-locale-data-pt-PT",  # keep: generated locale data imported by tests
         ":tests-locale-data-ru",  # keep: generated locale data imported by tests
         ":tests-locale-data-sv",  # keep: generated locale data imported by tests
         ":tests-locale-data-sw",  # keep: generated locale data imported by tests

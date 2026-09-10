@@ -64,15 +64,67 @@ All polyfills depend on `@formatjs/ecma402-abstract` and `@formatjs/intl-localem
 
 ## Individual Polyfill Docs
 
-- [007a — intl-numberformat](./007a-polyfill-intl-numberformat.md) — ECMA-402 §11
-- [007b — intl-datetimeformat](./007b-polyfill-intl-datetimeformat.md) — ECMA-402 §12 (+ IANA timezone pipeline)
-- [007c — intl-pluralrules](./007c-polyfill-intl-pluralrules.md) — ECMA-402 §16 (CLDR rule compiler)
+- [007a — intl-numberformat](./007a-polyfill-intl-numberformat.md) — ECMA-402 §16
+- [007b — intl-datetimeformat](./007b-polyfill-intl-datetimeformat.md) — ECMA-402 §11 (+ IANA timezone pipeline)
+- [007c — intl-pluralrules](./007c-polyfill-intl-pluralrules.md) — ECMA-402 §17 (CLDR rule compiler)
 - [007d — intl-displaynames](./007d-polyfill-intl-displaynames.md) — ECMA-402 §12
-- [007e — intl-listformat](./007e-polyfill-intl-listformat.md) — ECMA-402 §13
-- [007f — intl-relativetimeformat](./007f-polyfill-intl-relativetimeformat.md) — ECMA-402 §17
-- [007g — intl-durationformat](./007g-polyfill-intl-durationformat.md) — Stage 3 Proposal
-- [007h — intl-segmenter](./007h-polyfill-intl-segmenter.md) — ECMA-402 §18 (Unicode segmentation rules)
-- [007i — intl-locale](./007i-polyfill-intl-locale.md) — ECMA-402 §14 (6 CLDR data sources)
-- [007j — intl-getcanonicallocales](./007j-polyfill-intl-getcanonicallocales.md) — ECMA-402 §8.2.1
+- [007e — intl-listformat](./007e-polyfill-intl-listformat.md) — ECMA-402 §14
+- [007f — intl-relativetimeformat](./007f-polyfill-intl-relativetimeformat.md) — ECMA-402 §18
+- [007g — intl-durationformat](./007g-polyfill-intl-durationformat.md) — ECMA-402 §13
+- [007h — intl-segmenter](./007h-polyfill-intl-segmenter.md) — ECMA-402 §19 (Unicode segmentation rules)
+- [007i — intl-locale](./007i-polyfill-intl-locale.md) — ECMA-402 §15 (6 CLDR data sources)
+- [007j — intl-getcanonicallocales](./007j-polyfill-intl-getcanonicallocales.md) — ECMA-402 §8.3.1
 - [007k — intl-supportedvaluesof](./007k-polyfill-intl-supportedvaluesof.md) — ECMA-402 §8.3.2
 - [007l — intl-collator](./007l-polyfill-intl-collator.md) — ECMA-402 §10 (CLDR collation compiler)
+
+## Option objects
+
+Shared option helpers accept callable objects without invoking them. Property
+getters run normally and their errors propagate. `GetOptionsObject` rejects
+`null` and other primitives, while omitted options create a fresh empty object.
+
+## Test262 gates
+
+`bazel test //packages/intl-<package>:test262` runs the selected upstream tests,
+including tracked failures. Each package's `test262-baseline.json` records the
+execution count and exact failing test/scenario diagnostics. Changed counts,
+new failures, changed diagnostics, and unexpected passes fail CI. A green gate
+means the baseline is unchanged, not full conformance.
+
+`bazel test //packages/intl-<package>:test262-strict` requires zero failures.
+Strict targets are manual; baseline gates run in normal CI. Reports include
+separate pass/failure counts and write `results.json` plus a candidate baseline
+to Bazel's undeclared test outputs. Candidate baselines require review; never
+copy them over existing baselines merely to make CI green.
+
+The suites use isolated IIFE preludes. ListFormat's prelude
+loads generated locale data. `tools/test262/runner_test` exercises the real
+harness with passing, failing, and empty suites. Baselines require review when the pinned upstream selection changes.
+
+All twelve package suites now select every upstream test at revision
+`419d3e0a2273ba01a3bfcbec423f2801425b8e93`; `test262.BUILD` has no file exclusions.
+The prelude also installs polyfills in nested Test262 realms. Run
+`:test262-native` for the corresponding native-only control. Both modes use
+the same pinned Node 26.8.1 host; fixtures verify Temporal in nested realms. See
+[the full baseline and runtime comparison](./014-test262-conformance.md) and
+[the remaining gaps and performance report](./015-test262-progress-2026-09-09.md).
+
+Test262 execution uses rules_js generated harness rules. Strict/native modes
+are direct harness tests; baseline mode invokes the generated harness binary
+and separate validator within one test. Reports are test outputs, so disabling
+test caching reruns the harness. Realm installation scripts are generated inputs.
+
+## Root locale data
+
+Dynamic locale registration preserves `und` data under its own locale. Likely
+subtags can minimize `und` to `en`, but that does not make root formatting
+patterns English data. Explicit language aliases continue to be minimized.
+
+### Locale registration
+
+Dynamic polyfills register loaded data under its original locale and CLDR
+default-content children. Missing less-specific fallback tags are filled without
+overwriting explicitly loaded data. Likely-subtag minimization does not merge
+distinct locale records, so loading `ar-EG` cannot replace `ar`.
+The default locale remains the first loaded locale's actual tag, rather than a
+minimized tag that later data loading could overwrite.

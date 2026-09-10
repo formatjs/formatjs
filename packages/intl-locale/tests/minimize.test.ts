@@ -3,11 +3,11 @@ import {Locale} from '#packages/intl-locale/index.js'
 import {describe, expect, it} from 'vitest'
 const testDataMinimal: Record<string, string> = {
   // Undefined primary language.
-  // und: 'en',
-  // 'und-Thai': 'th',
-  // 'und-419': 'es-419',
-  // 'und-150': 'ru-150',
-  // 'und-AT': 'de-AT',
+  und: 'en',
+  'und-Thai': 'th',
+  'und-419': 'es-419',
+  'und-150': 'en-150',
+  'und-AT': 'de-AT',
 
   // https://unicode-org.atlassian.net/browse/ICU-13786
   'aae-Latn-IT': 'aae',
@@ -15,9 +15,9 @@ const testDataMinimal: Record<string, string> = {
 
   // https://unicode-org.atlassian.net/browse/ICU-10220
   // https://unicode-org.atlassian.net/browse/ICU-12345
-  // 'und-CW': 'pap-CW',
-  // 'und-US': 'en',
-  // 'zh-Hant': 'zh-TW',
+  'und-CW': 'pap',
+  'und-US': 'en',
+  'zh-Hant': 'zh-TW',
   'zh-Hani': 'zh-Hani',
 }
 
@@ -33,4 +33,10 @@ describe('minimize', function () {
       expect(new Locale(tag).minimize().toString()).toBe(minimal)
     })
   }
+})
+
+it('minimize preserves variants and extensions after maximizing', () => {
+  expect(new Locale('und-fonipa-u-nu-arab').minimize().toString()).toBe(
+    'en-fonipa-u-nu-arab'
+  )
 })

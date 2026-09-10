@@ -1,19 +1,27 @@
-# Editor demo app — not published. Auto-generated formatjs_library defaults
-# to index.ts as entry point, but the entry here is index.tsx; opt out of
-# gazelle-driven rule generation entirely for this dir.
-# gazelle:ts_enabled false
+# gazelle:ts_test_name unit_test
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
-load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("//tools:index.bzl", "generate_ide_tsconfig_json")
-load("//tools:package_json.bzl", "generate_package_json")
+package(default_visibility = ["//packages/editor:__subpackages__"])
 
-generate_package_json(
+formatjs_library(
+    name = "editor",
     package_name = "@formatjs/editor",
+    srcs = [
+        "core.tsx",
+        "index.ts",
+        "message.tsx",
+        "types.ts",
+        "validation.ts",
+        "workflow.ts",
+    ],
     author = "Long Ho <holevietlong@gmail.com>",
     bugs = {
         "url": "https://github.com/formatjs/formatjs/issues",
     },
-    description = "A ICU MessageFormat Editor UI",
+    description = "Headless ICU MessageFormat editor for React",
+    entry_points = ["index.ts"],
     homepage = "https://github.com/formatjs/formatjs",
     keywords = [
         "intl",
@@ -33,13 +41,25 @@ generate_package_json(
         "cli",
     ],
     license = "MIT",
+    package_dependency_version_overrides = {
+        "react": "^19.0.0",
+        "@types/react": "^19.0.0",
+    },
+    package_peer_deps = [
+        "//:node_modules/react",
+        "//:node_modules/@types/react",
+    ],
+    package_types = "index.d.ts",
+    private = False,
     repository = {
         "type": "git",
         "url": "git+ssh://git@github.com/formatjs/formatjs.git",
     },
+    side_effects = False,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     type = "module",
-    types = "index.d.ts",
-    version = "3.0.28",
+    version = "1.2.0",  # x-release-please-version
+    visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
     },
@@ -47,78 +67,32 @@ generate_package_json(
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@types/react",
         "//:node_modules/react",
-        "//:node_modules/react-intl",
     ],
 )
 
-generate_ide_tsconfig_json()
+formatjs_test(
+    name = "unit_test",
+    srcs = [
+        "editor.test.tsx",
+        "workflow.test.tsx",
+    ],
+    data = [
+        ":unit_test_types",  # keep
+        "//:package.json",  # keep
+    ],
+    dom = True,
+    deps = [
+        ":editor",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/vitest",
+    ],
+)
 
-# load("@aspect_rules_js//npm:defs.bzl", "npm_package")
-# load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-
-# load("@npm//:http-server/package_json.bzl", "http_server")
-
-# exports_files(["package.json", "tsconfig.json"])
-
-# PACKAGE_NAME = "editor"
-
-# npm_package(
-#     name ="pkg",
-#     package = "@formatjs/%s" % PACKAGE_NAME,
-#     srcs = [
-#         "LICENSE.md",
-#         "README.md",
-#         ":editor",
-#         ":dist-esm",
-#     ],
-# )
-
-# SRCS = glob(["*.ts*"])
-
-# SRC_DEPS = [
-#     "//:node_modules/@material-ui/core",
-#     "//:node_modules/@material-ui/icons",
-#     "//:node_modules/@material-ui/lab",
-#     "//:node_modules/react",
-#     "//:node_modules/@types/react",
-#     "//:node_modules/react-dom",
-#     "//:node_modules/@types/react-dom",
-#     "//:node_modules/react-intl",
-#     "//:node_modules/@formatjs/icu-messageformat-parser",
-# ]
-
-# ts_compile(
-#     name = "dist",
-#     srcs = [":srcs"],
-#     deps = SRC_DEPS,
-# )
-
-# copy_to_bin(
-#     name = "index",
-#     srcs = ["index.html"],
-# )
-
-# http_server(
-#     name = "server",
-#     data = [
-#         ":index",
-#         ":app",
-#     ] + glob(["fixtures/*.json"]),
-#     args = [
-#         "packages/editor",
-#     ],
-# )
-
-# # package_json_test(
-# #     name="package_json_test",
-# #     deps=SRC_DEPS
-# # )
-
-js_library(
-    name = "vrt_sources",
-    srcs = glob([
-        "*.tsx",
-        "*.ts",
-    ]),
-    visibility = ["//packages/editor/vrt:__pkg__"],
+filegroup(
+    name = "unit_test_types",
+    testonly = True,
+    srcs = [":unit_test_typecheck"],
+    output_group = "transitive_typecheck",
 )

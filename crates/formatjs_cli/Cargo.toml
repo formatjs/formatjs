@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_cli"
-version = "1.6.1"
+version = "1.6.2"
 publish = false
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
@@ -27,12 +27,12 @@ fast-glob = "1.0"
 walkdir = "2"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "0.3.0" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.2" }
-oxc = { version = "0.147", features = ["ast_visit"] }
-oxc_allocator = "0.147"
-oxc_ast = "0.147"
-oxc_data_structures = { version = "0.147", features = ["rope"] }
-oxc_parser = "0.147"
-oxc_span = "0.147"
+oxc = { version = "0.148", features = ["ast_visit"] }
+oxc_allocator = "0.148"
+oxc_ast = "0.148"
+oxc_data_structures = { version = "0.148", features = ["rope"] }
+oxc_parser = "0.148"
+oxc_span = "0.148"
 sha2 = "0.11"
 sha1 = "0.11"
 md-5 = "0.11"
@@ -41,9 +41,9 @@ hex = "0.4"
 rayon = "1.12"
 proc-macro2 = { version = "1.0", features = ["span-locations"] }
 syn = { version = "3.0", features = ["full", "parsing", "visit"] }
-ruff_python_ast = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.4" }
-ruff_python_parser = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.4" }
-ruff_text_size = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.4" }
+ruff_python_ast = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.5" }
+ruff_python_parser = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.5" }
+ruff_text_size = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.5" }
 
 [dev-dependencies]
 tempfile = "3.0"

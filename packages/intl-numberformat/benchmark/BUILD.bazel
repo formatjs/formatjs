@@ -5,6 +5,7 @@ load("//tools:package_json.bzl", "generate_package_json")
 generate_package_json(
     package_name = "intl-numberformat-benchmark",
     private = True,
+    type = "module",
     version = "1.0.0",
 )
 
@@ -12,6 +13,7 @@ ts_binary(
     name = "benchmark",
     data = [
         "en.json",
+        ":generated_package_json",
         "//:node_modules/@formatjs/intl-numberformat",
         "//:node_modules/tinybench",
     ],
@@ -22,6 +24,7 @@ ts_binary(
     name = "profile",
     data = [
         "en.json",
+        ":generated_package_json",
         "//:node_modules/@formatjs/intl-numberformat",
     ],
     entry_point = "profile.ts",
@@ -31,6 +34,7 @@ ts_binary(
     name = "profile_cpu",
     data = [
         "en.json",
+        ":generated_package_json",
         "//:node_modules/@formatjs/intl-numberformat",
     ],
     entry_point = "profile.ts",
@@ -44,6 +48,7 @@ ts_binary(
 ts_binary(
     name = "analyze_profile",
     data = [
+        ":generated_package_json",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
         "//:node_modules/minimist",

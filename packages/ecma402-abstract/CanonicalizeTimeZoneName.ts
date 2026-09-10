@@ -38,11 +38,17 @@ function ParseTimeZoneOffsetString(offsetString: string): string {
   }
 
   // 3. Extract components from parseResult
-  const sign = match[1]
   const hours = match[2]
   const minutes = match[3] ? match[3] : '00'
   const seconds = match[4]
   const fractional = match[5]
+  // ECMA-402 §11.1.3 FormatOffsetTimeZoneIdentifier, step 1: zero uses +.
+  // https://tc39.es/ecma402/#sec-formatoffsettimezoneidentifier
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L172
+  const sign =
+    Number(hours) || Number(minutes) || Number(seconds) || Number(fractional)
+      ? match[1]
+      : '+'
 
   // 4. Build canonical format: ±HH:MM
   let canonical = `${sign}${hours}:${minutes}`

@@ -1,6 +1,6 @@
 # @formatjs/intl-segmenter
 
-**ECMA-402 Section 18** — `Intl.Segmenter`
+**ECMA-402 Section 19** — `Intl.Segmenter`
 
 ## Purpose
 
@@ -75,3 +75,11 @@ export const CLDR_SEGMENTATION_RULES: Record<Granularity, Record<Locale, RuleSet
 from `Symbol.iterator` and resumes from its current position. `next()` belongs
 to the iterator, not the iterable returned by `segment()`.
 The fallback locale is `en`, backed by the root segmentation rules.
+
+`containing(index)` coerces its index to a number and truncates toward zero.
+BigInt values throw `TypeError`, including boxed BigInts and objects that
+coerce to BigInt. Errors thrown during coercion propagate unchanged.
+
+Available locales come from pinned CLDR locale metadata, including default-content
+variants and required fallback tags. Locales without tailoring use root UAX rules;
+regional locales retain their language's tailoring and sentence suppressions.

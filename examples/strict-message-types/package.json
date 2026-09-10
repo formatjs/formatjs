@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-intl": "10.1.24"
+    "react-intl": "10.1.25"
   },
   "devDependencies": {
     "@types/react": "19.2.18",
@@ -24,5 +24,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "packageManager": "pnpm@11.25.0"
+  "packageManager": "pnpm@12.3.1"
 }

@@ -7,7 +7,13 @@ export interface PluralRangesData {
   ordinal?: Record<string, LDMLPluralRule>
 }
 
+export type CompactExponentData = Record<
+  'short' | 'long',
+  Record<number, number>
+>
+
 export interface PluralRulesData {
+  compactExponents?: CompactExponentData
   categories: {
     cardinal: string[]
     ordinal: string[]
@@ -30,5 +36,5 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   type: 'cardinal' | 'ordinal'
   notation: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'
-  dataLocaleData?: any // NumberFormatLocaleInternalData from number.ts
+  compactExponents?: CompactExponentData
 }

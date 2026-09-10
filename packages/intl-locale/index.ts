@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
@@ -18,12 +19,15 @@ import {
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
   isUnicodeScriptSubtag,
+  isUnicodeVariantSubtag,
   likelySubtags,
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
 import {characterOrders} from '@formatjs_generated/cldr.locale/character-orders.js'
-import getInternalSlots from '#packages/intl-locale/get_internal_slots.js'
+import getInternalSlots, {
+  getInternalSlotsIfPresent,
+} from '#packages/intl-locale/get_internal_slots.js'
 import {numberingSystems} from '@formatjs_generated/cldr.locale/numbering-systems.js'
 import {
   getCalendarPreferenceDataForRegion,
@@ -39,6 +43,7 @@ export interface IntlLocaleOptions {
   language?: string
   script?: string
   region?: string
+  variants?: string
   calendar?: string
   collation?: string
   hourCycle?: 'h11' | 'h12' | 'h23' | 'h24'
@@ -72,6 +77,12 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
     'malformed language tag',
     RangeError
   )
+  // ECMA-402 §15.1.1, steps 13–14: canonicalize before applying overrides.
+  // https://tc39.es/ecma402/#sec-Intl.Locale
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L34-L36
+  tag = ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+    tag
+  )[0]
   const language = GetOption(
     options,
     'language',
@@ -102,7 +113,30 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
       RangeError
     )
   }
+  // ECMA-402 §15.1.2 UpdateLanguageId, steps 8–9 and 14.
+  // https://tc39.es/ecma402/#sec-updatelanguageid
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L101-L108
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L113
+  const variants = GetOption(
+    options,
+    'variants',
+    'string',
+    undefined,
+    undefined
+  )
   const languageId = parseUnicodeLanguageId(tag)
+  if (variants !== undefined) {
+    const subtags = variants
+      .replace(/[A-Z]/g, character => character.toLowerCase())
+      .split('-')
+    if (
+      subtags.some(variant => !isUnicodeVariantSubtag(variant)) ||
+      new Set(subtags).size !== subtags.length
+    ) {
+      throw new RangeError('Malformed unicode_variant_subtag')
+    }
+    languageId.variants = subtags
+  }
   if (language !== undefined) {
     languageId.lang = language
   }
@@ -175,6 +209,20 @@ function applyUnicodeExtensionToTag(
   result.locale = (
     (Intl as any).getCanonicalLocales as typeof getCanonicalLocales
   )(emitUnicodeLocaleId(ast))[0]
+  // ECMA-402 §15.1.3 MakeLocaleRecord, steps 4.e.i and 4.f: store canonical
+  // option values, matching the canonical Unicode extension in the final tag.
+  // https://tc39.es/ecma402/#sec-makelocalerecord
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L151-L156
+  const canonicalExtension = parseUnicodeLocaleId(
+    result.locale
+  ).extensions.find(extension => extension.type === 'u') as
+    | UnicodeExtension
+    | undefined
+  for (const key of relevantExtensionKeys) {
+    result[key] = canonicalExtension?.keywords.find(
+      keyword => keyword[0] === key
+    )?.[1]
+  }
   return result
 }
 
@@ -203,66 +251,34 @@ function mergeUnicodeLanguageId(
 
 function addLikelySubtags(tag: string): string {
   const ast = parseUnicodeLocaleId(tag)
-  const unicodeLangId = ast.lang
-  const {lang, script, region, variants} = unicodeLangId
-  if (script && region) {
-    const match =
-      likelySubtags[
-        emitUnicodeLanguageId({lang, script, region, variants: []}) as 'aa'
-      ]
-    if (match) {
-      const parts = parseUnicodeLanguageId(match)
-      ast.lang = mergeUnicodeLanguageId(
-        undefined,
-        undefined,
-        undefined,
-        variants,
-        parts
-      )
-      return emitUnicodeLocaleId(ast)
-    }
+  const {lang, variants} = ast.lang
+  const script = ast.lang.script === 'Zzzz' ? undefined : ast.lang.script
+  const region = ast.lang.region === 'ZZ' ? undefined : ast.lang.region
+  // ECMA-402 §15.3.9, step 3; UTS 35 §4.3 Add Likely Subtags,
+  // steps 1.2–1.4, 2, and 3: preserve supplied components and report no match.
+  // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.maximize
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L284
+  // https://www.unicode.org/reports/tr35/tr35-78/tr35.html#Likely_Subtags
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2542-L2556
+  if (lang !== 'und' && script && region) return tag
+  for (const candidate of [
+    {lang, script, region, variants: []},
+    {lang, script, variants: []},
+    {lang, region, variants: []},
+    {lang, variants: []},
+  ]) {
+    const match = likelySubtags[emitUnicodeLanguageId(candidate) as 'aa']
+    if (!match) continue
+    ast.lang = mergeUnicodeLanguageId(
+      lang,
+      script,
+      region,
+      variants,
+      parseUnicodeLanguageId(match)
+    )
+    return emitUnicodeLocaleId(ast)
   }
-  if (script) {
-    const match =
-      likelySubtags[emitUnicodeLanguageId({lang, script, variants: []}) as 'aa']
-    if (match) {
-      const parts = parseUnicodeLanguageId(match)
-      ast.lang = mergeUnicodeLanguageId(
-        undefined,
-        undefined,
-        region,
-        variants,
-        parts
-      )
-      return emitUnicodeLocaleId(ast)
-    }
-  }
-  if (region) {
-    const match =
-      likelySubtags[emitUnicodeLanguageId({lang, region, variants: []}) as 'aa']
-    if (match) {
-      const parts = parseUnicodeLanguageId(match)
-      ast.lang = mergeUnicodeLanguageId(
-        undefined,
-        script,
-        undefined,
-        variants,
-        parts
-      )
-      return emitUnicodeLocaleId(ast)
-    }
-  }
-  const match =
-    likelySubtags[lang as 'aa'] ||
-    likelySubtags[
-      emitUnicodeLanguageId({lang: 'und', script, variants: []}) as 'aa'
-    ]
-  if (!match) {
-    throw new Error(`No match for addLikelySubtags`)
-  }
-  const parts = parseUnicodeLanguageId(match)
-  ast.lang = mergeUnicodeLanguageId(undefined, script, region, variants, parts)
-  return emitUnicodeLocaleId(ast)
+  return tag
 }
 
 /**
@@ -274,11 +290,17 @@ function removeLikelySubtags(tag: string): string {
   if (!maxLocale) {
     return tag
   }
+  // ECMA-402 §15.3.10, step 3; UTS 35 §4.3 Remove Likely Subtags, steps 1–6.
+  // Trials use maximized components, retaining the original variants/extensions.
+  // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.minimize
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L295
+  // https://www.unicode.org/reports/tr35/tr35-78/tr35.html#Likely_Subtags
+  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2595-L2601
+  const ast = parseUnicodeLocaleId(maxLocale)
   maxLocale = emitUnicodeLanguageId({
     ...parseUnicodeLanguageId(maxLocale),
     variants: [],
   })
-  const ast = parseUnicodeLocaleId(tag)
   const {
     lang: {lang, script, region, variants},
   } = ast
@@ -311,7 +333,7 @@ function removeLikelySubtags(tag: string): string {
       })
     }
   }
-  return tag
+  return emitUnicodeLocaleId(ast)
 }
 
 function createArrayFromListOrRestricted(
@@ -332,12 +354,13 @@ function calendarsOfLocale(loc: Locale): Array<string> {
   const restricted = locInternalSlots.calendar
   const locale = locInternalSlots.locale
 
-  let region: string | undefined
-  if (locale !== 'root') {
-    region = loc.maximize().region
-  }
+  const {region, regionOverride} = regionPreference(loc)
 
-  const preferredCalendars = getCalendarPreferenceDataForRegion(region)
+  const preferredCalendars = getCalendarPreferenceDataForRegion(
+    region,
+    regionOverride,
+    parseUnicodeLanguageId(locale).lang
+  )
   return createArrayFromListOrRestricted(preferredCalendars, restricted)
 }
 
@@ -346,8 +369,27 @@ function collationsOfLocale(loc: Locale): Array<string> {
 
   const restricted = locInternalSlots.collation
 
+  if (restricted !== undefined) return [restricted]
+
+  // ECMA-402 §15.5.10 CollationsOfLocale, steps 2–4: use the matched
+  // locale's sort collations, or emoji/eor when lookup finds no locale.
+  // https://tc39.es/ecma402/#sec-collationsoflocale
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L665-L673
+  const locale = locInternalSlots.locale
+  if (
+    !Intl.Collator.supportedLocalesOf([locale], {localeMatcher: 'lookup'})
+      .length
+  ) {
+    return ['emoji', 'eor']
+  }
   const supportedCollations = supportedValuesOf('collation').filter(
-    (co: string) => co !== 'standard' && co !== 'search'
+    (co: string) =>
+      co !== 'standard' &&
+      co !== 'search' &&
+      new Intl.Collator(locale, {
+        collation: co as Intl.CollatorOptions['collation'],
+        localeMatcher: 'lookup',
+      }).resolvedOptions().collation === co
   )
   supportedCollations.sort()
 
@@ -360,14 +402,12 @@ function hourCyclesOfLocale(loc: Locale): Array<string> {
   const restricted = locInternalSlots.hourCycle
   const locale = locInternalSlots.locale
 
-  let region: string | undefined
-  if (locale !== 'root') {
-    region = loc.maximize().region
-  }
+  const {region, regionOverride} = regionPreference(loc)
 
   const preferredHourCycles = getHourCyclesPreferenceDataForLocaleOrRegion(
-    locale,
-    region
+    parseUnicodeLanguageId(locale).lang,
+    region,
+    regionOverride
   )
   return createArrayFromListOrRestricted(preferredHourCycles, restricted)
 }
@@ -422,7 +462,10 @@ function characterDirectionOfLocale(loc: Locale): string {
   return translateCharacterOrder(characterOrders[locale])
 }
 
-function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
+function regionPreference(loc: Locale): {
+  region: string
+  regionOverride: string | undefined
+} {
   const locInternalSlots = getInternalSlots(loc)
 
   const locale = locInternalSlots.locale
@@ -441,8 +484,16 @@ function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
     return match ? new Locale(`und-${match[1]}`).region : undefined
   }
   const region =
-    ast.lang.region || subdivisionRegion('sd') || loc.maximize().region
-  return getWeekDataForRegion(region, subdivisionRegion('rg'))
+    ast.lang.region ||
+    subdivisionRegion('sd') ||
+    parseUnicodeLanguageId(addLikelySubtags(locale)).region ||
+    '001'
+  return {region, regionOverride: subdivisionRegion('rg')}
+}
+
+function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
+  const {region, regionOverride} = regionPreference(loc)
+  return getWeekDataForRegion(region, regionOverride)
 }
 
 const TABLE_1 = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
@@ -489,19 +540,28 @@ export class Locale {
       )
     }
 
-    if (typeof tag !== 'string' && typeof tag !== 'object') {
+    if (
+      tag === null ||
+      (typeof tag !== 'string' &&
+        typeof tag !== 'object' &&
+        typeof tag !== 'function')
+    ) {
       throw new TypeError('tag must be a string or object')
     }
 
     let tagInternalSlots
     if (
       typeof tag === 'object' &&
-      (tagInternalSlots = getInternalSlots(tag)) &&
+      (tagInternalSlots = getInternalSlotsIfPresent(tag)) &&
       HasOwnProperty(tagInternalSlots, 'initializedLocale')
     ) {
       tag = tagInternalSlots.locale
     } else {
-      tag = tag.toString() as string
+      // ECMA-402 §15.1.1, step 9.a: use ToString, including the string hint
+      // for @@toPrimitive and the ordinary valueOf fallback.
+      // https://tc39.es/ecma402/#sec-Intl.Locale
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L31
+      tag = ToString(tag)
     }
 
     let internalSlots = getInternalSlots(this, internalSlotsList)

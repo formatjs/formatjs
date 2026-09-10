@@ -103,3 +103,23 @@ intl.formatMessage({
   defaultMessage: '{count, plural, one {# item} few {# items} other {# items}}',
 })
 ```
+
+## Test262 polyfill coverage
+
+Each Intl polyfill has three Bazel targets:
+
+- `:test262` executes the complete pinned suite against a reviewed failure baseline.
+- `:test262-strict` requires every execution to pass.
+- `:test262-native` runs the same suite against the pinned Node runtime without the polyfill.
+
+Baseline checks report failures separately and reject new failures, changed
+diagnostics, missing executions, and unexpected passes. A green baseline check
+is not a full-conformance claim. Child realms receive the polyfill too;
+all harness modes use pinned Node 26.8.1 with stable Temporal support. Build tools
+retain Node 24.14.0. Combined-polyfill installation coverage remains separate work.
+
+Test262 strict/native targets use the rules_js generated harness test rule.
+Baseline tests invoke the generated harness binary and validate its JSON and
+exit code within the same test. Reports are test outputs; use
+`--nocache_test_results` to rerun harness execution. Realm preludes remain
+generated inputs.

@@ -1,46 +1,54 @@
 import {expect, test} from '@playwright/test'
 
-test('loads messages and lets the user edit a translation', async ({page}) => {
-  await page.goto('/')
-  await expect(page.getByText('Welcome,', {exact: false})).toBeVisible()
-  const translation = page.getByRole('textbox', {
-    name: 'Translate',
-    exact: true,
-  })
-  await translation.click()
-  await translation.fill('Bonjour, {name}')
-  await page.getByRole('heading', {name: 'English message'}).click()
-  await expect(translation).toHaveValue('Bonjour, {name}')
-  await translation.click()
-  await translation.press('ControlOrMeta+A')
-  await translation.press('Backspace')
-  await expect(translation).toBeEmpty()
-})
-
-test('renders messages supplied by a test-owned API fixture', async ({
+test('consumer edits, searches, switches messages, and recovers from invalid ICU', async ({
   page,
 }) => {
-  const messages = Object.fromEntries(
-    Array.from({length: 51}, (_, index) => [
-      `message-${index}`,
-      index === 50 ? 'A message supplied by the E2E test' : 'Earlier message',
-    ])
-  )
-  await page.route('**/fixtures/*.json', route =>
-    route.fulfill({json: messages})
-  )
   await page.goto('/')
-  const message = page.getByText('A message supplied by the E2E test', {
+  const translation = page.getByRole('textbox', {
+    name: 'Translation',
     exact: true,
   })
-  await expect(message).toBeVisible()
-  await expect(
-    page.getByRole('list').filter({has: message}).getByRole('listitem')
-  ).toHaveCount(1)
-  const search = page.getByRole('searchbox', {name: 'Search message'})
-  await search.click()
-  await search.fill('supplied')
-  await expect(search).toHaveValue('supplied')
-  // Search filtering is not implemented by this legacy editor yet.
-  await expect(message).toBeVisible()
+  await translation.fill('{name')
+  await expect(page.getByRole('alert')).toContainText('Invalid ICU message')
+  await translation.fill('Bonjour {name}')
+  await expect(page.getByRole('alert')).toHaveCount(0)
+  await page
+    .getByRole('button', {
+      name: 'You have {count, number} messages',
+      exact: true,
+    })
+    .click()
+  await page.getByRole('button', {name: 'Copy source', exact: true}).click()
+  await expect(translation).toHaveValue('You have {count, number} messages')
+  await page
+    .getByRole('button', {name: 'Clear translation', exact: true})
+    .click()
+  await expect(translation).toHaveValue('')
+  await page.getByRole('searchbox').fill('welcome')
+  await expect(page.getByRole('navigation').getByRole('button')).toHaveCount(1)
+  await page.getByRole('button', {name: 'Welcome, {name}', exact: true}).click()
+  await expect(translation).toHaveValue('Bonjour {name}')
+})
+
+test('workflow keeps translation drafts across locales and saves them', async ({
+  page,
+}) => {
+  await page.goto('/?workflow=1')
+  const translation = page.getByRole('textbox', {
+    name: 'Translation',
+    exact: true,
+  })
+  await translation.fill('Bonjour, {name}')
+  await page.getByRole('combobox', {name: 'Target locale'}).selectOption('ru')
+  await translation.fill('Привет, {name}')
+  await page.getByRole('combobox', {name: 'Target locale'}).selectOption('fr')
+  await expect(translation).toHaveValue('Bonjour, {name}')
+  await page
+    .getByRole('button', {name: 'Save translation', exact: true})
+    .click()
+  await expect(page.getByRole('status')).toHaveText('Translation saved.')
+  await page
+    .getByRole('combobox', {name: 'Status', exact: true})
+    .selectOption('translated')
+  await expect(page.getByRole('navigation').getByRole('button')).toHaveCount(1)
 })

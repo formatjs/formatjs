@@ -101,6 +101,27 @@ describe('Intl.supportedValuesOf', () => {
   })
 
   describe('collation', () => {
+    it('includes collations supported outside English', () => {
+      const result = supportedValuesOf('collation')
+      for (const [locale, collation] of [
+        ['de', 'phonebk'],
+        ['es', 'trad'],
+        ['si', 'dict'],
+      ] as const) {
+        expect(
+          new Intl.Collator(locale, {collation}).resolvedOptions().collation
+        ).toBe(collation)
+        expect(result).toContain(collation)
+      }
+      if (
+        new Intl.Collator('zh-Hant', {collation: 'pinyin'}).resolvedOptions()
+          .collation === 'pinyin'
+      ) {
+        expect(result).toContain('pinyin')
+      }
+      expect(result).not.toContain('standard')
+      expect(result).not.toContain('search')
+    })
     it('should return an array of supported collations', () => {
       const result = supportedValuesOf('collation')
       expect(result).toEqual(expect.any(Array))
@@ -189,4 +210,28 @@ it('preserves key coercion errors', () => {
       },
     } as any)
   ).toThrow(error)
+})
+
+it('supportedValuesOf is a non-constructible built-in function', () => {
+  expect(supportedValuesOf.name).toBe('supportedValuesOf')
+  expect(supportedValuesOf.length).toBe(1)
+  expect(Object.hasOwn(supportedValuesOf, 'prototype')).toBe(false)
+  expect(() => Reflect.construct(supportedValuesOf, ['unit'])).toThrow(
+    TypeError
+  )
+})
+
+it('enumerates non-continental primary time zones', () => {
+  const zones = supportedValuesOf('timeZone')
+  expect(zones).toEqual(
+    expect.arrayContaining([
+      'UTC',
+      'Etc/GMT+1',
+      'Etc/GMT+12',
+      'Etc/GMT-1',
+      'Etc/GMT-14',
+    ])
+  )
+  expect(zones).not.toContain('Etc/UTC')
+  expect(zones).not.toContain('Etc/GMT')
 })

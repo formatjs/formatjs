@@ -1,0 +1,38 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "intl-datetimeformat-benchmark",
+    private = True,
+    type = "module",
+    version = "1.0.0",
+)
+
+js_binary(
+    name = "run",
+    data = [
+        ":generated_package_json",  # keep: isolate package self-reference during execution
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/tinybench",
+        "//packages/intl-datetimeformat:benchmark_locale_data",  # keep: loaded through import.meta.url
+    ],
+    entry_point = "benchmark.ts",
+    tags = ["manual"],
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+formatjs_library(
+    name = "benchmark",
+    srcs = ["benchmark.ts"],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/tinybench",
+    ],
+)

@@ -159,6 +159,9 @@ export interface SymbolsData {
 }
 
 export interface RawNumberData {
+  /** Numbering systems sharing the complete data of another system. */
+  aliases?: Record<string, string>
+  minimumGroupingDigits?: number
   nu: string[]
   // numberingSystem -> pattern
   symbols: Record<NumberingSystem, SymbolsData>
@@ -284,6 +287,4 @@ export interface NumberFormatPart {
   source?: string
 }
 
-export interface NumberRangeToParts extends NumberFormatPart {
-  result: string
-}
+export type NumberRangeToParts = NumberFormatPart
