@@ -248,7 +248,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 12.3.0
+          version: 12.3.1
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
