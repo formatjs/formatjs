@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.5",
+    "@types/react-dom": "19.2.6",
     "babel-plugin-react-require": "4.0.3",
     "eslint": "10.9.1",
     "typescript": "7.0.2"
