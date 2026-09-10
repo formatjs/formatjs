@@ -1,3 +1,10 @@
+// Keep public duration types usable without native Intl.DurationFormat declarations.
+import type {
+  DurationFormat,
+  DurationFormatOptions,
+  DurationFormatPart,
+  DurationInput,
+} from '#packages/ecma402-abstract/types/duration.js'
 import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
@@ -78,6 +85,7 @@ export interface ResolvedIntlConfig<T = string> {
 }
 
 export interface CustomFormats extends Partial<Formats> {
+  duration?: Record<string, DurationFormatOptions>
   relative?: Record<string, Intl.RelativeTimeFormatOptions>
   dateTimeRange?: Record<string, Intl.DateTimeFormatOptions>
 }
@@ -117,6 +125,12 @@ export type FormatPluralOptions = Omit<
 > &
   CustomFormatConfig
 
+export type FormatDurationOptions = Omit<
+  DurationFormatOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig<'duration'>
+
 export type FormatListOptions = Omit<Intl.ListFormatOptions, 'localeMatcher'>
 
 export type FormatDisplayNameOptions = Omit<
@@ -155,6 +169,16 @@ export interface IntlFormatters<TBase = unknown> {
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
+  formatDuration(
+    this: void,
+    value: DurationInput,
+    opts?: FormatDurationOptions
+  ): string
+  formatDurationToParts(
+    this: void,
+    value: DurationInput,
+    opts?: FormatDurationOptions
+  ): DurationFormatPart[]
   formatRelativeTime(
     this: void,
     value: Parameters<Intl.RelativeTimeFormat['format']>[0],
@@ -236,6 +260,11 @@ export interface Formatters {
     this: void,
     ...args: ConstructorParameters<typeof IntlMessageFormat>
   ): IntlMessageFormat
+  getDurationFormat(
+    this: void,
+    locales?: string | string[],
+    opts?: DurationFormatOptions
+  ): DurationFormat
   getRelativeTimeFormat(
     this: void,
     ...args: ConstructorParameters<typeof Intl.RelativeTimeFormat>
@@ -263,6 +292,7 @@ export interface IntlCache {
   dateTime: Record<string, Intl.DateTimeFormat>
   number: Record<string, Intl.NumberFormat>
   message: Record<string, IntlMessageFormat>
+  duration: Record<string, DurationFormat>
   relativeTime: Record<string, Intl.RelativeTimeFormat>
   pluralRules: Record<string, Intl.PluralRules>
   list: Record<string, Intl.ListFormat>

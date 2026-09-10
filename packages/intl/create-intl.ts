@@ -1,4 +1,3 @@
-import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 import {
   formatDate,
   formatDateTimeRange,
@@ -7,6 +6,7 @@ import {
   formatTimeToParts,
 } from '#packages/intl/dateTime.js'
 import {formatDisplayName} from '#packages/intl/displayName.js'
+import {formatDuration, formatDurationToParts} from '#packages/intl/duration.js'
 import {InvalidConfigError, MissingDataError} from '#packages/intl/error.js'
 import {formatList, formatListToParts} from '#packages/intl/list.js'
 import {formatMessage} from '#packages/intl/message.js'
@@ -20,6 +20,7 @@ import {
   type ResolvedIntlConfig,
 } from '#packages/intl/types.js'
 import {createFormatters, DEFAULT_INTL_CONFIG} from '#packages/intl/utils.js'
+import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 export interface CreateIntlFn<
   T = string,
@@ -109,6 +110,16 @@ export function createIntl<T = string>(
       null,
       resolvedConfig,
       formatters.getNumberFormat
+    ),
+    formatDuration: formatDuration.bind(
+      null,
+      resolvedConfig,
+      formatters.getDurationFormat
+    ),
+    formatDurationToParts: formatDurationToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getDurationFormat
     ),
     formatRelativeTime: formatRelativeTime.bind(
       null,

@@ -1,4 +1,5 @@
-import {expectType} from 'tsd'
+import {expectError, expectType} from 'tsd'
+import {createIntl} from '..'
 import type {IntlFormatters, MessageDescriptor, ResolvedIntlConfig} from '..'
 
 // Example type overrides
@@ -13,6 +14,7 @@ declare global {
     interface Formats {
       date: 'short' | 'long'
       time: 'medium' | 'full'
+      duration: 'elapsed'
     }
   }
 }
@@ -32,3 +34,10 @@ expectType<'medium' | 'full'>(
     NonNullable<Parameters<IntlFormatters['formatTime']>[1]>['format']
   >
 )
+
+const intl = createIntl({locale: 'en-US'})
+expectType<string>(intl.formatDuration({minutes: 3}, {format: 'elapsed'}))
+expectType<string>(intl.formatDurationToParts({seconds: 42})[0].value)
+expectError(intl.formatDuration(42))
+expectError(intl.formatDuration({seconds: 42}, {format: 'missing'}))
+expectError(intl.formatDuration({seconds: 42}, {localeMatcher: 'lookup'}))
