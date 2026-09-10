@@ -77,8 +77,10 @@ callers can still pass an existing values map.
 
 ## @formatjs/editor
 
-**Purpose:** ICU MessageFormat editor UI component (React-based).
+**Purpose:** Headless ICU MessageFormat editing and translation workflows for React 19.
 
-- Interactive editor for authoring ICU messages
-- Depends on `react-intl` and `icu-messageformat-parser`
-- Work-in-progress status
+- `useMessageEditor`, `Editor`, and `Message` expose editing and parsing without DOM or styling.
+- `useTranslationEditor` adds validation, navigation, and shared drafts keyed by message and locale. `getTranslation(id, locale)` lets independently mounted views use one workflow's state.
+- `save(context?)` returns a typed saved, failed, invalid, or skipped outcome. `onSave(update, snapshot)` receives source/baseline metadata and opaque caller context, and may return a typed persistence receipt.
+- The published entry point depends on React and `icu-messageformat-parser`; consumers own persistence, design systems, and localization providers. The StyleX/React Intl demo is repository-only.
+- See `packages/editor/README.md` for state lifetime, submission snapshots, and examples.

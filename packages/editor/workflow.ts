@@ -24,14 +24,41 @@ export interface TranslationUpdate {
   translation: string
 }
 export type MessageStatus = 'all' | 'translated' | 'missing'
-export interface TranslationEditorOptions {
+/** Render-snapshot metadata plus consumer-owned context supplied to save. */
+export interface TranslationSaveSnapshot<TContext = void> {
+  readonly source: string
+  readonly baselineTranslation: string
+  readonly context: TContext | undefined
+}
+export type TranslationSaveResult<TResult = void> =
+  | {status: 'saved'; value: TResult}
+  | {status: 'failed'; error: Error}
+  | {status: 'invalid'; validationError: TranslationValidationError}
+  | {status: 'skipped'; reason: 'unavailable' | 'unchanged' | 'pending'}
+export interface TranslationEditorOptions<TContext = void, TResult = void> {
   messages: readonly EditorMessage[]
   locales: readonly string[]
-  onSave: (update: TranslationUpdate) => void | Promise<void>
+  onSave: (
+    update: TranslationUpdate,
+    snapshot: TranslationSaveSnapshot<TContext>
+  ) => TResult | Promise<TResult>
   defaultLocale?: string
   pageSize?: number
 }
-export interface TranslationEditorState {
+/** A render snapshot and actions for one message/locale pair. */
+export interface TranslationDraftState<TContext = void, TResult = void> {
+  readonly value: string
+  readonly baseline: string
+  readonly validationError: TranslationValidationError | null
+  readonly changed: boolean
+  readonly isSaving: boolean
+  readonly saveError: Error | null
+  readonly saved: boolean
+  setTranslation: (value: string) => void
+  reset: () => void
+  save: (context?: TContext) => Promise<TranslationSaveResult<TResult>>
+}
+export interface TranslationEditorState<TContext = void, TResult = void> {
   editor: EditorState
   selectedMessage: EditorMessage | undefined
   locale: string | undefined
@@ -50,8 +77,12 @@ export interface TranslationEditorState {
   isSaving: boolean
   saveError: Error | null
   saved: boolean
-  save: () => Promise<void>
+  save: (context?: TContext) => Promise<TranslationSaveResult<TResult>>
   reset: () => void
+  getTranslation: (
+    id: string,
+    locale: string
+  ) => TranslationDraftState<TContext, TResult> | undefined
 }
 interface Draft {
   value: string
@@ -83,13 +114,16 @@ function reconcile(draft: Draft | undefined, remote: string): Draft {
 }
 
 /** Per-message, per-locale drafts layered on the existing headless editor. */
-export function useTranslationEditor({
+export function useTranslationEditor<TContext = void, TResult = void>({
   messages,
   locales,
   onSave,
   defaultLocale,
   pageSize = 100,
-}: TranslationEditorOptions): TranslationEditorState {
+}: TranslationEditorOptions<TContext, TResult>): TranslationEditorState<
+  TContext,
+  TResult
+> {
   const [requestedLocale, requestLocale] = useState(defaultLocale)
   const locale =
     requestedLocale && locales.includes(requestedLocale)
@@ -116,16 +150,19 @@ export function useTranslationEditor({
     return [...values].sort()
   }, [messages])
   const catalog = catalogs.includes(requestedCatalog) ? requestedCatalog : ''
-  const getDraft = (id: string): Draft =>
+  const getDraft = (id: string, targetLocale = locale ?? ''): Draft =>
     reconcile(
-      drafts[draftKey(id, locale ?? '')],
-      remoteValues.current.get(draftKey(id, locale ?? '')) ?? ''
+      drafts[draftKey(id, targetLocale)],
+      remoteValues.current.get(draftKey(id, targetLocale)) ?? ''
     )
   function update(key: string, change: (draft: Draft) => Draft): void {
     setDrafts(current => ({
       ...current,
       [key]: change(
-        reconcile(current[key], remoteValues.current.get(key) ?? '')
+        reconcile(
+          current[key],
+          remoteValues.current.get(key) ?? current[key]?.remote ?? ''
+        )
       ),
     }))
   }
@@ -161,10 +198,6 @@ export function useTranslationEditor({
   const selectedMessage = messages.find(
     message => message.id === editor.selectedMessage?.id
   )
-  const selected =
-    selectedMessage && locale !== undefined
-      ? getDraft(selectedMessage.id)
-      : undefined
   const size =
     Number.isFinite(pageSize) && pageSize > 0
       ? Math.max(1, Math.floor(pageSize))
@@ -174,42 +207,85 @@ export function useTranslationEditor({
   useEffect(() => {
     requestPage(current => Math.min(current, pageCount - 1))
   }, [pageCount])
-  const validationError =
-    selectedMessage && selected
-      ? validateTranslation(selectedMessage.defaultMessage, selected.value)
-      : null
-  const changed = selected !== undefined && selected.value !== selected.baseline
-  async function save(): Promise<void> {
-    if (
-      !selectedMessage ||
-      !selected ||
-      locale === undefined ||
-      !changed ||
-      validationError
-    )
-      return
-    const key = draftKey(selectedMessage.id, locale)
-    if (pending.current.has(key)) return
-    const submitted = selected.value
-    pending.current.add(key)
-    update(key, draft => ({...draft, saving: true, error: null, saved: false}))
-    try {
-      await onSave({id: selectedMessage.id, locale, translation: submitted})
-      update(key, draft => ({
-        ...draft,
-        baseline: submitted,
-        saved: true,
-      }))
-    } catch (error) {
-      update(key, draft => ({
-        ...draft,
-        error: error instanceof Error ? error : new Error(String(error)),
-      }))
-    } finally {
-      pending.current.delete(key)
-      update(key, draft => ({...draft, saving: false}))
+  function getTranslation(
+    id: string,
+    targetLocale: string
+  ): TranslationDraftState<TContext, TResult> | undefined {
+    const message = messages.find(value => value.id === id)
+    if (!message || !locales.includes(targetLocale)) return undefined
+    const key = draftKey(id, targetLocale)
+    const draft = getDraft(id, targetLocale)
+    const source = message.defaultMessage
+    const validationError = validateTranslation(source, draft.value)
+    const changed = draft.value !== draft.baseline
+    return {
+      value: draft.value,
+      baseline: draft.baseline,
+      validationError,
+      changed,
+      isSaving: draft.saving,
+      saveError: draft.error,
+      saved: draft.saved && !changed,
+      setTranslation: value => {
+        if (!remoteValues.current.has(key)) return
+        update(key, current => ({...current, value, error: null, saved: false}))
+      },
+      reset: () => {
+        if (!remoteValues.current.has(key)) return
+        update(key, current => ({
+          ...current,
+          value: current.baseline,
+          error: null,
+          saved: false,
+        }))
+      },
+      save: async context => {
+        if (!remoteValues.current.has(key))
+          return {status: 'skipped', reason: 'unavailable'}
+        if (pending.current.has(key))
+          return {status: 'skipped', reason: 'pending'}
+        if (!changed) return {status: 'skipped', reason: 'unchanged'}
+        if (validationError) return {status: 'invalid', validationError}
+        const submitted = draft.value
+        const snapshot: TranslationSaveSnapshot<TContext> = Object.freeze({
+          source,
+          baselineTranslation: draft.baseline,
+          context,
+        })
+        pending.current.add(key)
+        update(key, current => ({
+          ...current,
+          saving: true,
+          error: null,
+          saved: false,
+        }))
+        try {
+          const value = await onSave(
+            {id, locale: targetLocale, translation: submitted},
+            snapshot
+          )
+          update(key, current => ({
+            ...current,
+            baseline: submitted,
+            saved: true,
+          }))
+          return {status: 'saved', value}
+        } catch (error) {
+          const saveError =
+            error instanceof Error ? error : new Error(String(error))
+          update(key, current => ({...current, error: saveError}))
+          return {status: 'failed', error: saveError}
+        } finally {
+          pending.current.delete(key)
+          update(key, current => ({...current, saving: false}))
+        }
+      },
     }
   }
+  const selectedTranslation =
+    selectedMessage && locale !== undefined
+      ? getTranslation(selectedMessage.id, locale)
+      : undefined
   return {
     editor: {
       ...editor,
@@ -244,20 +320,16 @@ export function useTranslationEditor({
           : 0
       ),
     pageMessages: editor.messages.slice(page * size, (page + 1) * size),
-    validationError,
-    changed,
-    isSaving: selected?.saving ?? false,
-    saveError: selected?.error ?? null,
-    saved: !!selected?.saved && !changed,
-    save,
-    reset: () => {
-      if (selectedMessage && locale !== undefined)
-        update(draftKey(selectedMessage.id, locale), draft => ({
-          ...draft,
-          value: draft.baseline,
-          error: null,
-          saved: false,
-        }))
-    },
+    validationError: selectedTranslation?.validationError ?? null,
+    changed: selectedTranslation?.changed ?? false,
+    isSaving: selectedTranslation?.isSaving ?? false,
+    saveError: selectedTranslation?.saveError ?? null,
+    saved: selectedTranslation?.saved ?? false,
+    save: async context =>
+      selectedTranslation
+        ? selectedTranslation.save(context)
+        : {status: 'skipped', reason: 'unavailable'},
+    reset: () => selectedTranslation?.reset(),
+    getTranslation,
   }
 }

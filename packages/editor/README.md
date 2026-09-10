@@ -104,6 +104,76 @@ Clean drafts adopt external changes; dirty drafts retain their text. `reset()`
 restores the latest saved baseline. Remount when switching unrelated catalogs
 that reuse message IDs, or when intentionally discarding all drafts.
 
+### Multiple locale views
+
+Mount one workflow above your locale views. `getTranslation(id, locale)` exposes
+the value, baseline, validation, save feedback, and actions for that pair, sharing
+the same draft store as the selected-message API:
+
+```tsx
+const draft = workflow.getTranslation(messageId, locale)
+if (!draft) return null
+return (
+  <YourTextArea
+    value={draft.value}
+    onValueChange={draft.setTranslation}
+    invalid={!!draft.validationError}
+  />
+)
+```
+
+Each view can call `draft.reset()` and `draft.save()` independently. Hiding or
+unmounting a view preserves its draft while the owning workflow remains mounted.
+Keep available locales in the workflow's `locales` option; choose which views
+to display in your UI. The getter returns `undefined` for IDs or locales absent
+from the current options. Drafts survive their temporary removal, including saves
+that complete while a message is outside a loaded page.
+
+### Save results and context
+
+`save(context?)` resolves to a discriminated result. Successful persistence returns
+`{status: 'saved', value}` with the value returned by `onSave`. Failures return
+`{status: 'failed', error}` and also populate `saveError`. Validation failures return
+`{status: 'invalid', validationError}`. Saves that do not call persistence return
+`{status: 'skipped', reason}`, where the reason is `unavailable`, `unchanged`, or
+`pending`. The pending guard is scoped to a message/locale pair, so different pairs
+can save concurrently.
+
+The optional caller context and persistence result are generic types:
+
+```tsx
+type SaveContext = {intent: 'save' | 'review'}
+type Receipt = {revision: string}
+
+const workflow = useTranslationEditor<SaveContext, Receipt>({
+  messages,
+  locales,
+  onSave: async (update, snapshot) => {
+    return persist(update, {
+      intent: snapshot.context?.intent ?? 'save',
+      previousTranslation: snapshot.baselineTranslation,
+      source: snapshot.source,
+    })
+  },
+})
+
+const result = await workflow.save({intent: 'review'})
+if (result.status === 'saved') showReceipt(result.value.revision)
+```
+
+`onSave` receives the submitted translation and a frozen metadata object containing
+the source, baseline translation, and context. Draft state and its `save` action
+are render snapshots: retaining an action for a confirmation dialog retains that
+translation, source, and baseline even if selection or edits subsequently change.
+Context is passed by reference, not cloned; pass immutable context values.
+Persistence policy, confirmation UI, and receipt presentation remain with the
+consumer.
+
+Existing one-argument `onSave` callbacks and callers that await or ignore `save()`
+continue to work. Callers that explicitly annotate `save()` as `Promise<void>`
+must change that annotation to `Promise<TranslationSaveResult>` (with their result
+type parameter, if needed).
+
 `validateTranslation(source, translation)` returns `null` or a localizable error
 code: `empty`, `invalid-source`, `invalid-translation`, or `structure`. It checks
 arguments, tag nesting, formatting styles, select branches, plural type/offset,

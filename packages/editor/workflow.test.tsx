@@ -5,6 +5,7 @@ import {
   validateTranslation,
   type EditorMessage,
   type TranslationEditorOptions,
+  type TranslationSaveResult,
 } from './index.js'
 
 afterEach(cleanup)
@@ -48,7 +49,7 @@ describe('translation workflow', () => {
     const onSave = vi.fn(() => request.promise)
     const {result} = renderHook(() => useTranslationEditor(options({onSave})))
     act(() => result.current.editor.setTranslation('Saved {name}'))
-    let save!: Promise<void>
+    let save!: Promise<TranslationSaveResult>
     act(() => {
       save = result.current.save()
     })
@@ -68,11 +69,14 @@ describe('translation workflow', () => {
     expect(result.current.editor.selectedMessage?.translatedMessage).toBe(
       'Saved {name}'
     )
-    expect(onSave).toHaveBeenCalledExactlyOnceWith({
-      id: 'a',
-      locale: 'fr',
-      translation: 'Saved {name}',
-    })
+    expect(onSave).toHaveBeenCalledExactlyOnceWith(
+      {id: 'a', locale: 'fr', translation: 'Saved {name}'},
+      {
+        source: 'First {name}',
+        baselineTranslation: 'Premier {name}',
+        context: undefined,
+      }
+    )
   })
 
   it('preserves edits typed while persistence updates controlled messages', async () => {
@@ -83,7 +87,7 @@ describe('translation workflow', () => {
       {initialProps: initial}
     )
     act(() => result.current.editor.setTranslation('Submitted {name}'))
-    let save!: Promise<void>
+    let save!: Promise<TranslationSaveResult>
     act(() => {
       save = result.current.save()
     })
@@ -144,11 +148,14 @@ describe('translation workflow', () => {
     await act(async () => {
       await result.current.save()
     })
-    expect(onSave).toHaveBeenCalledWith({
-      id: 'a',
-      locale: 'fr',
-      translation: 'Bonjour {name}',
-    })
+    expect(onSave).toHaveBeenCalledWith(
+      {id: 'a', locale: 'fr', translation: 'Bonjour {name}'},
+      {
+        source: 'First {name}',
+        baselineTranslation: 'Premier {name}',
+        context: undefined,
+      }
+    )
     rerender({...initial, locales: ['ru']})
     expect(result.current.locale).toBe('ru')
     expect(result.current.editor.selectedMessage?.translatedMessage).toBe('')
@@ -174,7 +181,7 @@ describe('translation workflow', () => {
     const onSave = vi.fn(() => request.promise)
     const {result} = renderHook(() => useTranslationEditor(options({onSave})))
     act(() => result.current.editor.setTranslation('Changed {name}'))
-    let save!: Promise<void>
+    let save!: Promise<TranslationSaveResult>
     act(() => {
       save = result.current.save()
       void result.current.save()
