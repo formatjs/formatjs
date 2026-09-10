@@ -194,8 +194,7 @@ It is separate from the headless entry point; consumers can use any design syste
 Import `TranslationEditorView`, `MessageList`, `SourceMessage`, and
 `TranslationField` from `@formatjs/editor/ui`. This separate entry point owns
 message-row selection wiring, field labels and error descriptions, draft status,
-and copy/reset/save controls. It ships unstyled native controls and requires only
-React. The headless root does not import the UI, StyleX, icons, or React Intl.
+and copy/reset/save controls. It ships native controls and uses React plus the package's existing ICU parser. The headless root does not import the UI, StyleX, icons, or React Intl.
 
 Mount one workflow above the views and pass its existing drafts:
 
@@ -243,7 +242,8 @@ navigation busy and displays a status; it does not clear the controlled list.
 ### Component adapters
 
 `EditorDesignSystemProvider` accepts partial overrides of `EditorComponents`: `Button`,
-`TextInput`, `TextArea`, `MessageRow`, `Panel`, and `Layout`. Unspecified entries
+`TextInput`, `TextArea`, `MessageRow`, `Panel`, and `Layout`, plus the optional tool
+adapters described below. Unspecified or explicitly `undefined` entries
 inherit from the nearest provider, falling back to `nativeEditorComponents`. Adapters map a design system's control API to
 semantic `onPress`, `onSelect`, and `onValueChange` callbacks. Define adapters at
 module scope so React preserves focus and control state between edits:
@@ -290,7 +290,7 @@ function CustomToolbar() {
 
 All built-in views and downstream consumers use `useEditorDesignSystem()`;
 there is no component-registry prop on individual views. The hook returns the
-resolved, read-only `EditorComponents` contract. Providers are React-tree scoped,
+resolved, read-only `ResolvedEditorComponents` contract, including native defaults for every optional tool adapter. Providers are React-tree scoped,
 so sibling editors (and separate server-rendered trees) do not share mutable
 configuration. Nested providers override only specified components and inherit
 the rest. Changing the registry updates consumers; keeping each component type
@@ -333,6 +333,90 @@ Adapter requirements:
 The reusable pieces retain semantic labels, headings, lists, alerts, and status
 nodes. Adapters control the interactive controls and outer presentation; use the
 standalone pieces when a different page composition is needed.
+
+### Reusable translation tools
+
+`LocalePicker`, `MessagePreview`, `CopyTextButton`, and `MessageContext` are also
+exported from `@formatjs/editor/ui`. They use the same `EditorDesignSystemProvider`
+and work independently or inside the composed view's slots:
+
+```tsx
+import {
+  CopyTextButton,
+  LocalePicker,
+  MessageContext,
+  MessagePreview,
+} from '@formatjs/editor/ui'
+
+function TranslationTools() {
+  return (
+    <>
+      <LocalePicker
+        locales={availableLocales}
+        selectedLocales={selectedLocales}
+        onChange={setSelectedLocales}
+        getLocaleLabel={locale => displayNames.of(locale) ?? locale}
+      />
+
+      <MessagePreview message={draft.value} />
+      <CopyTextButton value={draft.value} label="translation" />
+      <MessageContext message={selectedMessage} />
+    </>
+  )
+}
+```
+
+- **LocalePicker** reports unique available locale codes in input order through
+  `onChange(locales: string[])`. Selection is controlled; duplicate and unavailable
+  selections do not distort select-all or mixed state. A selection change drops
+  unavailable codes. The picker uses unique label/control IDs and balanced,
+  contiguous columns that collapse without changing reading order. Empty lists
+  disable select-all. `getLocaleLabel` defaults to the code so display language
+  stays explicit. `labels` overrides `title`, `empty`, `clear`, and the formatter
+  callbacks `selectAll(count)`, `selected(count)`, and `trigger(summary)`.
+- **MessagePreview** shows ICU structure, not a formatted sample result: all plural
+  and select branches, ordinal types, plural offsets, rich-text tags, and exact
+  number/date/time format tokens (including skeletons). Literals retain whitespace;
+  tags are displayed as text, never executed as HTML. Incomplete syntax produces
+  an alert; `formatError(error)` can localize its contents. No argument values are
+  required, and empty text is valid.
+- **CopyTextButton** copies `value` verbatim through the browser Clipboard API.
+  `writeText(value): Promise<void>` can supply a different clipboard implementation,
+  including a host-specific fallback. Unsupported access and rejected writes show
+  failure feedback, never success. Pending writes disable the control. Changing
+  the value or writer, or unmounting, invalidates old results and callbacks.
+  `onCopy(value)` and `onError(error, value)` report completed current requests.
+  Feedback expires after `feedbackDurationMs` (default 1500); `labels` provides
+  `copy`, `copying`, `copied`, and `failed` formatters receiving the supplied label.
+  Native clipboard access happens only when the user presses the button.
+- **MessageContext** renders an ID, optional description, catalogs, and source
+  locations from the existing `EditorMessage` metadata contract. Locations render
+  as plain text with optional start/end ranges; `renderLocation(location)` can
+  customize them. `copyId` defaults to true and `copyOptions` passes clipboard
+  callbacks, labels, writer, and timing to the ID's copy control. `labels` overrides
+  `title`, `id`, `description`, `catalogs`, and `locations`. A missing message clears
+  the content; absent metadata sections are omitted.
+
+Tool adapters are optional in `EditorComponents`, so existing complete registries
+remain valid. The hook resolves all of them to native defaults. Override them in
+one provider to use the same design system across fields and standalone tools:
+
+| Adapter / props                                        | Inputs                                                                                  | Output callback                     |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------- | ----------------------------------- |
+| `Checkbox` / `EditorCheckboxProps`                     | `id`, `checked` (boolean or `indeterminate`), optional `disabled`                       | `onCheckedChange(checked: boolean)` |
+| `LocalePickerLayout` / `EditorLocalePickerLayoutProps` | `id`, `title`, `summary`, `triggerLabel`, `open`, `controls`, ordered `columns`         | `onOpenChange(open: boolean)`       |
+| `PreviewToken` / `EditorPreviewTokenProps`             | `children`, `kind` (argument, number, date, time, tag, selector, plural, pound, syntax) | None                                |
+| `CopyButton` / `EditorCopyButtonProps`                 | `label`, `status` (idle, copying, copied, error), `disabled`                            | `onPress()`                         |
+| `Metadata` / `EditorMetadataProps`                     | Accessible `label`, `children`                                                          | None                                |
+
+Checkbox adapters forward IDs, expose mixed state, honor disabled state, and report
+booleans without DOM events. Locale-picker layouts can use a popover, disclosure,
+or dialog: they own open-state interaction, focus handling, and responsive layout,
+while preserving column order and rendering every control. Copy-button adapters
+can map status to icons, but must retain the accessible label and must not submit
+forms. Preview-token adapters render children as text/content, never raw HTML.
+The tools demo (`demo/tools-demo.tsx`, browser fixture `/?tools=1`) combines these
+components with the StyleX registry.
 
 ### Custom message rows and composed layouts
 

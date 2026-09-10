@@ -9,9 +9,14 @@ formatjs_library(
     name = "editor",
     package_name = "@formatjs/editor",
     srcs = [
+        "copy-text-button.tsx",
         "core.tsx",
+        "design-system.tsx",
         "index.ts",
+        "locale-picker.tsx",
         "message.tsx",
+        "message-context.tsx",
+        "message-preview.tsx",
         "types.ts",
         "ui.tsx",
         "validation.ts",
@@ -83,6 +88,7 @@ formatjs_test(
     srcs = [
         "editor.test.tsx",
         "multi-locale.test.tsx",
+        "tools.test.tsx",
         "ui.test.tsx",
         "workflow.test.tsx",
     ],
