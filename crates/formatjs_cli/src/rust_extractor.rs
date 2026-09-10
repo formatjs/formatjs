@@ -127,8 +127,10 @@ impl RustMessageExtractor<'_> {
 impl<'ast> Visit<'ast> for RustMessageExtractor<'_> {
     fn visit_macro(&mut self, node: &'ast Macro) {
         let name = node.path.segments.last().map(|segment| &segment.ident);
-        if name.is_some_and(|name| name == "message_descriptor" || name == "format_message") {
-            let arguments = if name.is_some_and(|name| name == "format_message") {
+        let is_format =
+            name.is_some_and(|name| name == "format_message" || name == "formatted_message");
+        if is_format || name.is_some_and(|name| name == "message_descriptor") {
+            let arguments = if is_format {
                 syn::parse2::<FormatMessageArgs>(node.tokens.clone()).map(|args| args.message)
             } else {
                 syn::parse2::<MessageArgs>(node.tokens.clone())
@@ -296,8 +298,8 @@ mod tests {
 
     #[test]
     fn extracts_format_message_macros() {
-        let messages = extract_messages_from_rust_source(
-            r#"fn render(intl: &Intl, values: &Values<String>) {
+        for macro_name in ["format_message", "formatted_message"] {
+            let source = r#"fn render(intl: &Intl, values: &Values<String>) {
                 format_message!(
                     &intl,
                     default_message: "Hello, {name}!",
@@ -314,22 +316,26 @@ mod tests {
                     id: "approval.title",
                     default_message: "Approve to continue",
                 );
-            }"#,
-            Path::new("src/main.rs"),
-            false,
-            false,
-            false,
-            true,
-        )
-        .unwrap();
+            }"#
+            .replace("format_message!", &format!("{macro_name}!"));
+            let messages = extract_messages_from_rust_source(
+                &source,
+                Path::new("src/main.rs"),
+                false,
+                false,
+                false,
+                true,
+            )
+            .unwrap();
 
-        assert_eq!(messages.len(), 3);
-        assert_eq!(messages[0].id.as_deref(), Some("EG1xJTTqQy"));
-        assert_eq!(
-            messages[1].default_message.as_deref(),
-            Some("{count, plural, one {# task} other {{name} has # tasks}}")
-        );
-        assert_eq!(messages[2].id.as_deref(), Some("approval.title"));
+            assert_eq!(messages.len(), 3);
+            assert_eq!(messages[0].id.as_deref(), Some("EG1xJTTqQy"));
+            assert_eq!(
+                messages[1].default_message.as_deref(),
+                Some("{count, plural, one {# task} other {{name} has # tasks}}")
+            );
+            assert_eq!(messages[2].id.as_deref(), Some("approval.title"));
+        }
     }
 
     #[test]

@@ -177,6 +177,10 @@ the crate is not published to crates.io.
 
 - Defines `message_descriptor!` through a re-exported procedural macro.
 - Defines extractable `format_message!` for infallible inline string formatting.
+- Defines `formatted_message!` for opaque `FormattedMessage` output with checked
+  interpolation through `MessageValues`; raw strings require explicit
+  `FormattedMessage::verbatim`. It shares extraction, IDs, and runtime fallback
+  with the string interface.
 - Accepts checked inline `values: { name: expression }`; its procedural macro
   parses the default ICU message and rejects missing, unused, or duplicate names.
 - Keeps `values: &values` for dynamically assembled or reused maps.

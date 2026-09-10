@@ -82,6 +82,43 @@ let intl = intl.with_on_error(|error: &FormatMessageError| {
 # }
 ```
 
+## Typed presentation text
+
+Use `formatted_message!` when an interface should accept formatted text rather
+than arbitrary strings. It returns `formatjs_intl::FormattedMessage` and uses
+the same extraction, IDs, locale negotiation, fallback, and `with_on_error`
+reporting as `format_message!`.
+
+```rust
+# use formatjs_intl::{Intl, FormattedMessage, formatted_message};
+# fn render(intl: &Intl, path: &str) -> FormattedMessage {
+formatted_message!(
+    intl,
+    default_message: "Open {path}?",
+    description: "Confirmation before opening a selected file",
+    values: { path: FormattedMessage::verbatim(path) },
+)
+# }
+```
+
+Replacements accept `FormattedMessage` (including borrowed messages), numbers,
+booleans, and `formatjs_icu_messageformat::DateTimeValue`. Raw `String`/`&str`
+values do not compile. Use `FormattedMessage::verbatim(...)` to explicitly
+accept content that should not be translated, such as a filename. Applications
+remain responsible for which content may be displayed.
+
+For reusable replacement maps, use `MessageValues` and pass `values: &values`.
+For static descriptors, `Intl::format_message_typed` returns
+`Result<FormattedMessage>` and `format_message_typed_or_default` also recovers
+infrastructure failures with the descriptor default. Read the result with
+`as_str()` or consume it with `into_string()` at the final presentation step.
+
+The type records an explicit formatting/verbatim path; it does not guarantee
+translation coverage, successful interpolation, HTML escaping, or sanitized
+content. It is separate from the existing low-level
+`formatjs_icu_messageformat::FormattedMessage<T>` rich-text result. Existing
+string and rich-text formatting interfaces remain unchanged.
+
 Precompile catalogs with the FormatJS CLI to skip runtime message parsing:
 
 ```sh
