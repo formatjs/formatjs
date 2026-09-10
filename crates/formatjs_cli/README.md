@@ -191,7 +191,7 @@ formatjs extract "src/**/*.tsx" --out-file messages.json
 ```
 
 Rust extraction reads `formatjs_intl::message_descriptor!` descriptors and
-inline `formatjs_intl::format_message!` calls. Missing IDs use
+inline `formatjs_intl::format_message!` or `formatjs_intl::formatted_message!` calls. Missing IDs use
 `[sha512:contenthash:base64:10]`:
 
 ```rust

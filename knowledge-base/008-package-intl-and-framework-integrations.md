@@ -45,6 +45,18 @@ cache infrastructure fails. Inline `values: { name: expression }` are converted
 to runtime values and checked against the default ICU message at compile time;
 callers can still pass an existing values map.
 
+`formatted_message!` is the opt-in checked-text interface. It returns the opaque
+`formatjs_intl::FormattedMessage` and accepts only formatted/explicitly verbatim
+text, numbers, booleans, and dates through sealed `MessageArgument` conversions.
+`MessageValues` provides checked reusable maps. `FormattedMessage::verbatim`
+marks intentionally untranslated content; ordinary strings cannot convert
+implicitly. Static-descriptor callers use `Intl::format_message_typed` or
+`format_message_typed_or_default`. All paths reuse the existing formatter and
+fallback chain. The CLI extracts both inline macros with identical ID rules.
+The type does not promise translation coverage, escaping, or successful
+interpolation, and is distinct from the low-level rich-text result of the same
+name. Locale selection and domain error presentation remain application-owned.
+
 ## react-intl
 
 **Purpose:** React components and hooks for i18n. The most widely used FormatJS package.

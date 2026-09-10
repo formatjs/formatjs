@@ -1,18 +1,23 @@
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_doc_test")
 
 exports_files(
     [
         "Cargo.toml",
         "README.md",
         "lib.rs",
+        "formatted_message.rs",
     ],
     visibility = ["//visibility:public"],
 )
 
 rust_library(
     name = "formatjs_intl",
-    srcs = ["lib.rs"],
+    srcs = [
+        "formatted_message.rs",
+        "lib.rs",
+    ],
     crate_name = "formatjs_intl",
     visibility = ["//visibility:public"],
     deps = [
@@ -27,4 +32,10 @@ rust_test(
     size = "small",
     crate = ":formatjs_intl",
     deps = ["@crates//:serde_json"],
+)
+
+rust_doc_test(
+    name = "formatjs_intl_doc_test",
+    size = "small",
+    crate = ":formatjs_intl",
 )

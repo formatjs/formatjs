@@ -1,5 +1,5 @@
 use formatjs_icu_messageformat::{
-    FormattedMessage, IcuMessageFormat, MessageFormatElement, Part, Values,
+    FormattedMessage as RichFormattedMessage, IcuMessageFormat, MessageFormatElement, Part, Values,
 };
 use icu_locale::{Locale, fallback::LocaleFallbacker};
 use std::collections::HashMap;
@@ -11,6 +11,10 @@ use std::sync::{Arc, RwLock};
 pub use formatjs_icu_messageformat::{Value as __Value, Values as __Values};
 #[doc(hidden)]
 pub use formatjs_intl_macros::{__message_descriptor, __validate_message_values};
+
+mod formatted_message;
+
+pub use formatted_message::{FormattedMessage, MessageArgument, MessageValues};
 
 pub type Messages = HashMap<String, String>;
 pub type PrecompiledMessages = HashMap<String, Vec<MessageFormatElement>>;
@@ -427,7 +431,7 @@ impl Intl {
         &self,
         descriptor: MessageDescriptor,
         values: &Values<T>,
-    ) -> Result<FormattedMessage<T>> {
+    ) -> Result<RichFormattedMessage<T>> {
         self.format_message_ref(descriptor.as_ref(), values)
     }
 
@@ -435,11 +439,11 @@ impl Intl {
         &self,
         descriptor: MessageDescriptorRef<'_>,
         values: &Values<T>,
-    ) -> Result<FormattedMessage<T>> {
+    ) -> Result<RichFormattedMessage<T>> {
         self.format_with_fallback(
             descriptor,
             |message, locale| message.format(locale, values),
-            FormattedMessage::Literal,
+            RichFormattedMessage::Literal,
         )
     }
 
@@ -1048,7 +1052,7 @@ mod tests {
         );
         assert_eq!(
             intl.format_message(INVALID_DEFAULT, &values).unwrap(),
-            FormattedMessage::Literal("{translated".to_owned())
+            RichFormattedMessage::Literal("{translated".to_owned())
         );
         assert_eq!(
             intl
