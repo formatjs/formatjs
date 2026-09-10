@@ -124,8 +124,8 @@ importers:
         specifier: 13.0.3
         version: 13.0.3
       eslint-plugin-formatjs:
-        specifier: 6.6.1
-        version: 6.6.1(eslint@10.9.1(jiti@1.21.7)(supports-color@8.1.1))
+        specifier: 6.6.2
+        version: 6.6.2(eslint@10.9.1(jiti@1.21.7)(supports-color@8.1.1))
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -1745,8 +1745,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@unicode/unicode-17.0.0@1.6.16':
-    resolution: {integrity: sha512-advq5p36zZ+PDRUpDkWcHHR++R19kx0LYB5iG3bj0KB8mYVKg0ywS996e2bXeXxDb8XdOF7KTivcx7VkYie1pg==}
+  '@unicode/unicode-17.0.0@2.0.5':
+    resolution: {integrity: sha512-0HRektHJOrEIjq+rLYM/kAhZBB85esIB9BKTEOpRmCSNYS7UP+sQMD10t6vJSFyLxlYk9I66gQAAZ7OvQP3DYA==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -2941,8 +2941,8 @@ packages:
       '@babel/plugin-transform-react-jsx': ^7.14.9
       eslint: ^8.1.0
 
-  eslint-plugin-formatjs@6.6.1:
-    resolution: {integrity: sha512-mHX9WR7uXwiCtX4NeU7HdNKxIAxCjIB7WtmIduTzMXkxcEpw8dQClBTDXswBockk+gIJ29ttxnUPiB3l5fkTxw==}
+  eslint-plugin-formatjs@6.6.2:
+    resolution: {integrity: sha512-wDdCQvbs/NB2N4i2PkJGRIHZFZDDpVKkGaW8pMwzhtq2u2GXlVmBuMk5dcZ/dP7RN/N0rDKntK96xTJDCg+Evw==}
     peerDependencies:
       eslint: 9 || 10
 
@@ -8346,7 +8346,7 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@unicode/unicode-17.0.0@1.6.16': {}
+  '@unicode/unicode-17.0.0@2.0.5': {}
 
   '@webassemblyjs/ast@1.14.1':
     dependencies:
@@ -9714,13 +9714,13 @@ snapshots:
       lodash: 4.18.1
       string-natural-compare: 3.0.1
 
-  eslint-plugin-formatjs@6.6.1(eslint@10.9.1(jiti@1.21.7)(supports-color@8.1.1)):
+  eslint-plugin-formatjs@6.6.2(eslint@10.9.1(jiti@1.21.7)(supports-color@8.1.1)):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.17
       '@formatjs/ts-transformer': 4.4.19
       '@types/estree-jsx': 1.0.5
       '@types/picomatch': 4.0.3
-      '@unicode/unicode-17.0.0': 1.6.16
+      '@unicode/unicode-17.0.0': 2.0.5
       eslint: 10.9.1(jiti@1.21.7)(supports-color@8.1.1)
       magic-string: 1.2.2
       picomatch: 4.0.4
