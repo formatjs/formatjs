@@ -26,6 +26,16 @@ def vrt_library(name, srcs, deps = [], data = [], tsconfig_types = [], visibilit
         tsconfig = config,
     )
 
+    ts_project(
+        name = name + "_compiled",
+        srcs = srcs,
+        deps = deps,
+        declaration = True,
+        transpiler = "tsc",
+        resolve_json_module = True,
+        tsconfig = config,
+    )
+
 def vrt_test(name, srcs, deps = [], data = [], tsconfig_types = [], visibility = None):
     """Typecheck Playwright tests; the visual harness owns execution."""
     vrt_library(name, srcs, deps, data, tsconfig_types, visibility)

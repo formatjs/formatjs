@@ -1,69 +1,56 @@
-# Editor visual tests
+# Editor browser tests
 
-The native HTML example exercises the headless editor using the monorepo's React
-19, current React Intl sources, and shared root npm lockfile. No separate VRT
-package manifest or dependency workspace is needed.
+The editor uses the monorepo's React 19, workspace React Intl/parser packages,
+and root npm lockfile. Its Bazel build typechecks and compiles specs, then
+builds the gallery with Vite/StyleX before any browser test starts.
 
 ```sh
-bazel test //packages/editor:unit_test
-bazel build //packages/editor/vrt:typecheck
-bazel test //packages/editor/vrt:visual_test --test_output=errors
+bazel build //packages/editor/vrt:bundle //packages/editor/vrt:typecheck
+bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test //packages/editor/vrt:visual_test --test_output=errors
 bazel run //packages/editor/vrt:visual_test.update
 ```
 
-The manual browser target requires a local Docker daemon. `rules_web_e2e` uses
-Testcontainers and a pinned Linux amd64 Playwright image. It stages declared
-inputs, disables dotenv loading, uses an allowlisted environment, and restricts
-browser traffic to the fixture server. Compare mode never changes baselines.
-Review PNG changes after explicitly running the update target.
+All three tests require a local Docker daemon. They are manual, local, and
+uncached. CI must select them explicitly. The browser runs through Testcontainers
+in a pinned Linux amd64 image; failure reports, traces, and image diffs remain
+in Bazel's undeclared outputs.
 
-`server.ts` owns the Vite server adapter. `shell.tsx` supplies consumer-owned
-IntlProvider and document settings. `app.tsx` supplies deterministic message
-data. The tests cover loaded/editing screenshots plus selection, search,
-copy/clear, and recovery from invalid ICU input. Core state and custom renderer
-coverage also runs in the normal Bazel unit-test lane without Docker.
+## Built inputs
 
-The public rules repository is pinned by commit until a BCR release exists.
-Failures retain JUnit results and screenshot diffs in undeclared test outputs.
+| Target                         | Inputs and behavior                                                                 |
+| ------------------------------ | ----------------------------------------------------------------------------------- |
+| `bundle`                       | Builds checked application, providers, visual registry, HTML and CSS into `assets/` |
+| `editor_shell`                 | Selects the built `gallery.html` entry point                                        |
+| `editor_server`                | Compiled custom server adapter serving the built app for E2E                        |
+| `e2e_specs`, `component_specs` | Compiled native Playwright specs and dependencies                                   |
+| `playwright`                   | Reusable matching Playwright packages and pinned browser image                      |
+| `vrt_matching`                 | Compiled comparison policy with a zero-pixel mismatch budget                        |
 
-VRT TypeScript settings come from `tools/tsconfig.bzl`; Bazel declares the source
-inputs. Bazel generates a runtime-only `package.json` containing `{"type":"module"}`
-so Playwright loads the `.ts` config as ESM. It declares no dependencies.
+`e2e_test` brings its own server; component and VRT targets bring their built
+shell. No bundler, raw source list, or npm runner directories appear on test
+call sites. `server.ts` composes the rules' `serveDirectory` helper; it does not
+start Vite. `shell.tsx` retains the application's IntlProvider and document
+settings. The ESM marker belongs to the compiled module graph.
 
-## Browser interaction tests
+## Specs and visual cases
 
-Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
-`e2eConfig` helper supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets share the consumer-owned
-server, shell, declared inputs, and pinned Testcontainers browser.
+Write `*.spec.ts` for navigation, editing, search, validation, and saving.
+Write `*.browser.spec.tsx` for native `mount()` and component updates. Bazel
+compiles both before execution. Filter behavior tests with, for example:
 
 ```sh
-bazel test //packages/editor/vrt:e2e_test --test_output=errors
 bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
 ```
 
-E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It requires Docker and runs manually, locally, and uncached.
-CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
-JUnit, screenshots, and Playwright traces in undeclared test outputs.
+`editor.visual.tsx` declares shared renderable cases, browser-side readiness
+hooks, and VRT options. `gallery.tsx` installs the registry and supplies renderer
+mount/update/unmount behavior. The runtime generates all six screenshot cases;
+there are no separate handwritten screenshot specs. Existing PNG names stay
+explicit in the visual declarations.
 
-## Component browser tests
+`matching.ts` controls pixel comparison independently of render settings.
+Comparison never changes source baselines. Run `.update` only for intentional
+visual changes and review the resulting PNG diff before committing.
 
-`bazel test //packages/editor/vrt:component_test --test_output=errors` runs
-Playwright 1.63 native `mount()` specs for the real editor. The typed
-`editor.visual.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
-mount/update/unmount. The tests check provider updates without losing a draft,
-clear, ICU validation, and isolation between mounts.
-
-`component_browser_test` shares the custom server, root npm dependencies, strict
-typechecks, and pinned Testcontainers browser with E2E and VRT.
-`componentBrowserConfig` discovers `*.browser.spec.ts` separately from the E2E
-`*.spec.ts` and generated VRT capture cases. CI should explicitly run all three
-manual browser targets. Screenshot baselines and updates remain in `visual_test`.
-
-The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
-renderable cases, browser-side capture hooks, and VRT options. The gallery registers
-that module with `installVisualGallery`. The shared runtime generates all six
-screenshot tests; no `editor.visual.spec.ts` is maintained. Interaction tests stay
-in `editor.browser.spec.tsx`, and the existing PNG names remain explicit in the
-visual declarations.
+The rules dependency is pinned to the public implementation commit providing
+the built-input API; this API is newer than the 1.0.0 release.

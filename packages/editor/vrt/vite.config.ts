@@ -1,16 +1,25 @@
 import path from 'node:path'
-import {fileURLToPath} from 'node:url'
+import fs from 'node:fs'
 import {defineConfig, type UserConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import stylex from '@stylexjs/unplugin'
 
-const root = path.dirname(fileURLToPath(import.meta.url))
+// Bazel runs the build in this package inside its output tree.
+const root = process.cwd()
 const workspace = path.resolve(root, '../../..')
 const nodeModules = path.join(workspace, 'node_modules')
 
 const config: UserConfig = defineConfig({
   root,
-  cacheDir: process.env.VRT_CACHE,
+  envDir: false,
+  css: {postcss: {}},
+  build: {
+    outDir: 'assets',
+    minify: false,
+    rolldownOptions: {
+      input: [path.join(root, 'index.html'), path.join(root, 'gallery.html')],
+    },
+  },
   plugins: [
     stylex.vite({
       useCSSLayers: true,
@@ -20,25 +29,27 @@ const config: UserConfig = defineConfig({
     react(),
   ],
   resolve: {
+    preserveSymlinks: true,
     alias: [
-      '@stylexjs/stylex',
-      'react',
-      'react-dom',
-      'react-intl',
-      '@formatjs/editor',
-    ].map(name => ({find: name, replacement: path.join(nodeModules, name)})),
+      ...[
+        '@stylexjs/stylex',
+        'react',
+        'react-dom',
+        'react-intl',
+        'intl-messageformat',
+        '@formatjs/editor',
+      ].map(name => ({
+        find: name,
+        replacement: fs.realpathSync(path.join(nodeModules, name)),
+      })),
+      {
+        find: /^@formatjs\//,
+        replacement: path.join(nodeModules, '@formatjs') + '/',
+      },
+    ],
     dedupe: ['react', 'react-dom'],
   },
-  server: {fs: {allow: [workspace]}},
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom/client',
-      'react/jsx-runtime',
-      'react-intl',
-      '@formatjs/editor',
-    ],
-  },
+
 })
 
 export default config

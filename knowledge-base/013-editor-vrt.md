@@ -30,7 +30,7 @@ versions are duplicated in the VRT setup.
 
 The browser target is manual, local, and uncached. It requires Docker and uses
 `rules_web_e2e` with a pinned Linux amd64 image. The custom `server.ts` adapter
-owns startup/cleanup; `shell.tsx` owns the IntlProvider. Inputs, environment, and
+serves built assets and owns startup/cleanup; `shell.tsx` owns the IntlProvider. Inputs, environment, and
 browser networking are isolated by the rules runtime. Host plugins/tests remain
 trusted code outside full Bazel filesystem sandboxing.
 
@@ -39,7 +39,7 @@ comparison. See `packages/editor/vrt/README.md` for exact commands.
 
 VRT TypeScript settings come from `tools/tsconfig.bzl`; Bazel declares the source
 inputs. Bazel generates a runtime-only `package.json` containing `{"type":"module"}`
-so Playwright loads the `.ts` config as ESM. It declares no dependencies.
+so Node loads compiled specs, server code, and matching policy as ESM. It declares no dependencies.
 
 `useTranslationEditor` composes `useMessageEditor` for multi-locale workflows.
 Draft state and in-flight save guards use `[message ID, locale]` keys. Completion
@@ -59,8 +59,9 @@ place to catch regressions in the shared view.
 Gazelle maintains source and dependency lists in the headless, demo, and VRT
 Bazel packages. The demo is a separate internal library. VRT maps generated
 library and test rules to local `vrt_library` / `vrt_test` wrappers that preserve
-raw sources and typecheck them. Vite and Playwright own execution; the harness
-also checks the demo library and builds its server adapter.
+raw sources for the bundle build, typecheck them, and emit JavaScript for the
+server, matching policy, and specs. Vite runs only in the sandboxed `:bundle`
+action; browser tests consume its static output.
 No editor package disables Gazelle.
 
 `@formatjs/editor` participates in the pnpm workspace, Bazel distribution
@@ -78,9 +79,8 @@ Release Please updates the manifest after the release PR lands.
 ## Browser interaction tests
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
-`e2eConfig` helper supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets share the consumer-owned
-server, shell, declared inputs, and pinned Testcontainers browser.
+runner supplies `baseURL`, so specs can use `page.goto('/')`,
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application and pinned Testcontainers browser.
 
 ```sh
 bazel test //packages/editor/vrt:e2e_test --test_output=errors
@@ -100,10 +100,10 @@ Playwright 1.63 native `mount()` specs for the real editor. The typed
 mount/update/unmount. The tests check provider updates without losing a draft,
 clear, ICU validation, and isolation between mounts.
 
-`component_browser_test` shares the custom server, root npm dependencies, strict
-typechecks, and pinned Testcontainers browser with E2E and VRT.
-`componentBrowserConfig` discovers `*.browser.spec.ts` separately from the E2E
-`*.spec.ts` and generated VRT capture cases. CI should explicitly run all three
+`component_browser_test` consumes the built gallery and compiled component specs.
+E2E uses a compiled custom server adapter serving the same built app. The runtime
+selects compiled `*.browser.spec.js` separately from E2E `*.spec.js` and generated
+VRT captures. CI should explicitly run all three
 manual browser targets. Screenshot baselines and updates remain in `visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
@@ -112,3 +112,16 @@ that module with `installVisualGallery`. The shared runtime generates all six
 screenshot tests; no `editor.visual.spec.ts` is maintained. Interaction tests stay
 in `editor.browser.spec.tsx`, and the existing PNG names remain explicit in the
 visual declarations.
+
+## Built browser input interface
+
+The rules' `browser_shell` describes `:bundle` plus `gallery.html`.
+`component_test` and `visual_test` consume that shell. `e2e_test` consumes
+`:editor_server`, whose compiled adapter serves the built assets. The shared
+`:playwright` target groups client packages and browser pin. `:vrt_matching`
+sets screenshot comparison independently from the visual modules' render options.
+
+The build action owns Vite and StyleX configuration, uses declared workspace
+package links, disables dotenv discovery, and depends on strict typechecks.
+The browser runtime never transpiles source or starts a bundler. See
+`packages/editor/vrt/README.md` for commands and migration details.
