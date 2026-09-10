@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.3.0 (2026-09-10)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* feat(@formatjs/editor): support shared locale drafts and typed save results by @longlho in https://github.com/formatjs/formatjs/pull/7325
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.2.0...@formatjs/editor@1.3.0
+
 ## 1.2.0 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
