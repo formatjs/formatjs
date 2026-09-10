@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.5.0 (2026-09-10)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* feat(@formatjs/intl): add duration formatting APIs by @longlho in https://github.com/formatjs/formatjs/pull/7332
+* feat(react-intl): add duration components and bindings by @longlho in https://github.com/formatjs/formatjs/pull/7333
+* feat(@formatjs/editor): extend composed views with typed content slots by @longlho in https://github.com/formatjs/formatjs/pull/7336
+* feat(@formatjs/editor): add reusable translation tools by @longlho in https://github.com/formatjs/formatjs/pull/7340
+* feat(formatjs_intl): add checked FormattedMessage output by @longlho in https://github.com/formatjs/formatjs/pull/7343
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.4.0...@formatjs/editor@1.5.0
+
 ## 1.4.0 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-durationformat",
-  "version": "0.10.19",
+  "version": "0.11.0",
   "description": "Intl.DurationFormat polyfill",
   "keywords": [
     "duration",
