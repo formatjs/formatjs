@@ -28,11 +28,9 @@ jobs:
           fetch-depth: 2
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
+        uses: ./.github/actions/setup-bazel
         with:
-          bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
-          repository-cache: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v7

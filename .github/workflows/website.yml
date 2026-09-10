@@ -14,14 +14,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - uses: bazel-contrib/setup-bazel@0.19.0
+      - uses: ./.github/actions/setup-bazel
         with:
-          # Avoid downloading Bazel every time.
-          bazelisk-cache: true
-          # Store build cache per workflow.
           disk-cache: ${{ github.workflow }}
-          # Share repository cache between workflows.
-          repository-cache: true
 
       # Build the docs site
       - name: Build Docs Site

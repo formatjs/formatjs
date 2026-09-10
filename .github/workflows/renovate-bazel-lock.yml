@@ -30,11 +30,9 @@ jobs:
           persist-credentials: false
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
+        uses: ./.github/actions/setup-bazel
         with:
-          bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
-          repository-cache: true
 
       - name: Update Bazel Lockfile
         id: lockfile

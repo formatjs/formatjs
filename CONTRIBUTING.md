@@ -48,6 +48,12 @@ bazel run //:generate_package_tsconfigs
 
 This repository uses a highly optimized TypeScript build pipeline with Bazel:
 
+CI restores Bazel caches for pull requests but does not save them. Pushes to
+the default branch refresh job-specific action caches; only the main test job
+saves the shared repository download cache. A cache miss still runs the full
+build and tests. Keep new workflows on `.github/actions/setup-bazel` so parallel
+jobs do not repeatedly compress and upload the same downloads.
+
 #### Fast Parallel Type Checking with TypeScript 7
 
 Type checking is performed using the native [`tsc` from TypeScript 7](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/). `rules_ts` reads the root `typescript` version from `package.json`, and `ts_project` uses that compiler by default:

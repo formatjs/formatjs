@@ -76,6 +76,26 @@ across the monorepo.
 
 ## TypeScript Build Pipeline
 
+### GitHub Actions cache ownership
+
+`.github/actions/setup-bazel` keeps cache restoration separate from writes.
+Pull requests, merge groups, manual runs, and tag builds restore caches only.
+Default-branch pushes save each job's disk cache. Only `test.yml`'s `test` job
+sets `save-repository-cache: true`, so it alone saves the shared repository
+download archive after a successful default-branch push.
+
+Repository cache keys include the OS, architecture, module files, module locks,
+and pnpm locks; prefix fallback reuses older downloads after dependency changes.
+The repository cache remains content-addressed by Bazel. Cache misses download
+dependencies normally. The new cache namespace starts cold until a main test
+run populates it. This policy does not change BuildBuddy RBE or remote action
+caching.
+
+This avoids expensive duplicate archive work: main run `34421727498` spent
+329 seconds in cache cleanup, including 289 seconds compressing/reserving a
+repository cache that another job was already creating. `cache-save: false`
+skips that post-job work while preserving restoration.
+
 ### Published Packages
 
 The package directories in `PACKAGES_TO_DIST` are assembled through

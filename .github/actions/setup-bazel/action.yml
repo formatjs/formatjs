@@ -1,0 +1,42 @@
+name: Setup Bazel
+description: Restore shared downloads and keep cache writes off pull requests.
+
+inputs:
+  disk-cache:
+    description: Job-specific action cache name.
+    required: true
+  save-repository-cache:
+    description: Allow the main test job to populate the shared download cache.
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Restore repository cache
+      if: ${{ !(inputs.save-repository-cache == 'true' && github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
+      uses: actions/cache/restore@v5
+      with:
+        path: ${{ runner.temp }}/bazel-repo
+        key: formatjs-bazel-repository-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/MODULE.bazel', '**/MODULE.bazel.lock', '**/pnpm-lock.yaml') }}
+        restore-keys: |
+          formatjs-bazel-repository-v1-${{ runner.os }}-${{ runner.arch }}-
+
+    # Only one job saves this large archive; sibling jobs must not compress it
+    # just to lose the cache reservation race at the end of their builds.
+    - name: Restore and save repository cache
+      if: ${{ inputs.save-repository-cache == 'true' && github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+      uses: actions/cache@v5
+      with:
+        path: ${{ runner.temp }}/bazel-repo
+        key: formatjs-bazel-repository-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/MODULE.bazel', '**/MODULE.bazel.lock', '**/pnpm-lock.yaml') }}
+        restore-keys: |
+          formatjs-bazel-repository-v1-${{ runner.os }}-${{ runner.arch }}-
+
+    - name: Setup Bazel and action cache
+      uses: bazel-contrib/setup-bazel@0.19.0
+      with:
+        bazelisk-cache: true
+        disk-cache: ${{ inputs.disk-cache }}
+        repository-cache: false
+        cache-save: ${{ github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+        bazelrc: common --repository_cache=${{ runner.temp }}/bazel-repo
