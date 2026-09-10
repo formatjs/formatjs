@@ -1,7 +1,8 @@
 # Headless message editor
 
 Install `@formatjs/editor` alongside React 19. The published package exports
-headless APIs and TypeScript declarations; demo UI remains repository-only.
+headless APIs and TypeScript declarations at the root, plus optional reusable UI
+at `@formatjs/editor/ui`. The styled demos remain repository-only.
 
 The React 19 editor exposes behavior without DOM, styles, a design system, an
 IntlProvider, or network requests. Consumers own catalogs, persistence, loading
@@ -182,11 +183,126 @@ categories inherit the source `other` branch's argument contract. Repeated
 placeholders do not change that contract. Validation is structural, not a check
 of translation quality.
 
-The optional `TranslationEditorDemo` in `demo/workflow-demo.tsx` reuses the StyleX
-`EditorView`, tokens, and controls. It includes locale/catalog/status filters,
+The optional `TranslationEditorDemo` in `demo/workflow-demo.tsx` uses the public
+`TranslationEditorView` with a StyleX component adapter and localized labels. It includes locale/catalog/status filters,
 pagination, source locations, localized validation, reset, and save feedback.
 Supply an `IntlProvider` and the same StyleX Vite integration used by the demo.
 It is separate from the headless entry point; consumers can use any design system.
+
+## Reusable UI with your design system
+
+Import `TranslationEditorView`, `MessageList`, `SourceMessage`, and
+`TranslationField` from `@formatjs/editor/ui`. This separate entry point owns
+message-row selection wiring, field labels and error descriptions, draft status,
+and copy/reset/save controls. It ships unstyled native controls and requires only
+React. The headless root does not import the UI, StyleX, icons, or React Intl.
+
+Mount one workflow above the views and pass its existing drafts:
+
+```tsx
+import {useTranslationEditor} from '@formatjs/editor'
+import {TranslationEditorView} from '@formatjs/editor/ui'
+
+const workflow = useTranslationEditor({messages, locales, onSave: persist})
+const selected = workflow.selectedMessage
+return (
+  <TranslationEditorView
+    messages={workflow.pageMessages}
+    selectedMessage={selected}
+    onSelect={workflow.editor.selectMessage}
+    search={{
+      value: workflow.editor.query,
+      onValueChange: workflow.editor.setQuery,
+    }}
+    translations={
+      selected
+        ? visibleLocales.map(locale => {
+            const draft = workflow.getTranslation(selected.id, locale)!
+            return {
+              locale,
+              draft,
+              onSave: () => {
+                void draft.save()
+              },
+            }
+          })
+        : []
+    }
+  />
+)
+```
+
+`visibleLocales` must be a subset of the workflow's available `locales`. Hiding a
+view does not remove its draft. The view does not create a workflow or own
+selection, fetching, filtering, pagination, locale visibility, or persistence.
+For server-side search, pass the loaded page directly as `messages`, your search
+value/callback as `search`, and your externally selected detail as
+`selectedMessage`. Selection can remain outside the loaded page. `loading` marks
+navigation busy and displays a status; it does not clear the controlled list.
+
+### Component adapters
+
+`components` accepts partial overrides of `EditorComponents`: `Button`,
+`TextInput`, `TextArea`, `MessageRow`, `Panel`, and `Layout`. Unspecified entries
+use `nativeEditorComponents`. Adapters map a design system's control API to
+semantic `onPress`, `onSelect`, and `onValueChange` callbacks. Define adapters at
+module scope so React preserves focus and control state between edits:
+
+```tsx
+import type {EditorComponents} from '@formatjs/editor/ui'
+import {Button, Textarea} from './controls'
+
+const components: Partial<EditorComponents> = {
+  Button: ({onPress, ...props}) => (
+    <Button {...props} onClick={() => onPress()} />
+  ),
+  TextArea: ({onValueChange, ...props}) => (
+    <Textarea {...props} onValueChange={onValueChange} />
+  ),
+}
+```
+
+Pass `components={components}` to the composed view or any standalone piece.
+The complete StyleX adapter lives in `demo/design-system/editor-components.tsx`;
+its layout, tokens, and native-control wrappers are not bundled into the package.
+
+Adapter requirements:
+
+- Inputs forward `id`, `value`, `disabled`, `aria-invalid`, and
+  `aria-describedby` to their focusable control. They report strings through
+  `onValueChange` and stay associated with the view's visible label.
+- Buttons honor `disabled`, support keyboard activation, and do not submit a
+  surrounding form. `onPress` and `onSelect` take no event argument.
+- Message rows expose selection (the native adapter uses `aria-current`) and
+  preserve keyboard activation. Icons and selection styling belong in the adapter.
+- Panels retain their accessible label and render their children. Layout receives
+  `toolbar`, `navigation`, and `content` nodes, which it can arrange responsively.
+  Preserve a meaningful reading and keyboard order.
+
+The reusable pieces retain semantic labels, headings, lists, alerts, and status
+nodes. Adapters control the interactive controls and outer presentation; use the
+standalone pieces when a different page composition is needed.
+
+### Application slots and localization
+
+`filters`, `pagination`, `context`, and `notice` accept React nodes. Supply your
+own locale picker or filter controls in `filters`; no native-select API is
+imposed on applications with multi-select or asynchronous selectors.
+`sourcePreview` and each translation's `preview` can render a custom preview.
+Each translation also accepts a readable `label` and an `actions` slot (`null`
+suppresses default actions).
+
+A translation's `onSave` is a command callback. It can open a confirmation dialog
+that retains the supplied draft's `save` action, then supply typed context and
+handle the returned result. The view never calls persistence itself or interprets
+application receipts. Without `onSave`, default actions include copy and reset
+but no save button. Validation and pending state disable the default save button;
+custom action slots own their own disabled/confirmation behavior.
+
+All built-in strings can be overridden through `labels`, including individual
+`labels.validation` entries. Supply already-localized strings from your preferred
+library. The workflow demo demonstrates a React Intl consumer without making
+`IntlProvider` a requirement for the public UI.
 
 ## Browser interaction tests
 

@@ -13,6 +13,7 @@ formatjs_library(
         "index.ts",
         "message.tsx",
         "types.ts",
+        "ui.tsx",
         "validation.ts",
         "workflow.ts",
     ],
@@ -21,7 +22,10 @@ formatjs_library(
         "url": "https://github.com/formatjs/formatjs/issues",
     },
     description = "Headless ICU MessageFormat editor for React",
-    entry_points = ["index.ts"],
+    entry_points = [
+        "index.ts",
+        "ui.tsx",
+    ],
     homepage = "https://github.com/formatjs/formatjs",
     keywords = [
         "intl",
@@ -62,6 +66,10 @@ formatjs_library(
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
+        "./ui": {
+            "types": "./ui.d.ts",
+            "default": "./ui.js",
+        },
     },
     deps = [
         "//:node_modules/@formatjs/icu-messageformat-parser",
@@ -75,6 +83,7 @@ formatjs_test(
     srcs = [
         "editor.test.tsx",
         "multi-locale.test.tsx",
+        "ui.test.tsx",
         "workflow.test.tsx",
     ],
     data = [

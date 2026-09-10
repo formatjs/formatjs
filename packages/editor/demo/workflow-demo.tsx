@@ -1,11 +1,15 @@
 import * as stylex from '@stylexjs/stylex'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import {useId, type ReactElement} from 'react'
 import {
   useTranslationEditor,
   type TranslationEditorOptions,
 } from '@formatjs/editor'
-import {EditorView} from './demo.js'
+import {
+  TranslationEditorView,
+  type EditorLabelOverrides,
+} from '@formatjs/editor/ui'
+import {stylexEditorComponents} from './design-system/editor-components.js'
 import {Button, Select} from './design-system/components.js'
 import {tokens} from './design-system/tokens.stylex.js'
 
@@ -31,10 +35,127 @@ export function TranslationEditorDemo(
   const workflow = useTranslationEditor(options)
   const {editor} = workflow
   const controlId = useId()
+  const intl = useIntl()
+  const labels: EditorLabelOverrides = {
+    search: intl.formatMessage({
+      id: 'editor.search',
+      defaultMessage: 'Search messages',
+      description: 'Search field label',
+    }),
+    messages: intl.formatMessage({
+      id: 'editor.messages',
+      defaultMessage: 'Messages',
+      description: 'Message navigation label',
+    }),
+    source: intl.formatMessage({
+      id: 'editor.source',
+      defaultMessage: 'Source message',
+      description: 'Source panel heading',
+    }),
+    noMessages: intl.formatMessage({
+      id: 'editor.no-matches',
+      defaultMessage: 'No matching messages',
+      description: 'Empty message list',
+    }),
+    noSelection: intl.formatMessage({
+      id: 'editor.no-selection',
+      defaultMessage: 'Select a message',
+      description: 'Empty message selection',
+    }),
+    loading: intl.formatMessage({
+      id: 'editor.loading',
+      defaultMessage: 'Loading messages…',
+      description: 'Message loading status',
+    }),
+    copySource: intl.formatMessage({
+      id: 'editor.copy-source',
+      defaultMessage: 'Copy source',
+      description: 'Copy source action',
+    }),
+    reset: intl.formatMessage({
+      id: 'editor.reset',
+      defaultMessage: 'Reset',
+      description: 'Reset translation action',
+    }),
+    save: intl.formatMessage({
+      id: 'editor.save-label',
+      defaultMessage: 'Save translation',
+      description: 'Save translation action',
+    }),
+    saving: intl.formatMessage({
+      id: 'editor.saving',
+      defaultMessage: 'Saving…',
+      description: 'Pending save status',
+    }),
+    saved: intl.formatMessage({
+      id: 'editor.saved',
+      defaultMessage: 'Translation saved.',
+      description: 'Successful save status',
+    }),
+    unsaved: intl.formatMessage({
+      id: 'editor.dirty',
+      defaultMessage: 'Unsaved changes',
+      description: 'Dirty translation status',
+    }),
+    unchanged: intl.formatMessage({
+      id: 'editor.clean',
+      defaultMessage: 'No unsaved changes',
+      description: 'Clean translation status',
+    }),
+    validation: {
+      empty: intl.formatMessage({
+        id: 'editor.validation-empty',
+        defaultMessage: 'Enter a translation before saving.',
+        description: 'Empty translation validation',
+      }),
+      'invalid-source': intl.formatMessage({
+        id: 'editor.validation-source',
+        defaultMessage: 'The source contains invalid ICU syntax.',
+        description: 'Invalid source validation',
+      }),
+      'invalid-translation': intl.formatMessage({
+        id: 'editor.validation-translation',
+        defaultMessage: 'The translation contains invalid ICU syntax.',
+        description: 'Invalid translation validation',
+      }),
+      structure: intl.formatMessage({
+        id: 'editor.validation-structure',
+        defaultMessage:
+          'Preserve ICU arguments, tags, formatting styles, and selector branches.',
+        description: 'ICU structure validation',
+      }),
+    },
+  }
+  const translation =
+    workflow.selectedMessage && workflow.locale
+      ? workflow.getTranslation(workflow.selectedMessage.id, workflow.locale)
+      : undefined
   return (
-    <EditorView
-      editor={{...editor, messages: workflow.pageMessages}}
-      messageCount={editor.messages.length}
+    <TranslationEditorView
+      components={stylexEditorComponents}
+      labels={labels}
+      messages={workflow.pageMessages}
+      selectedMessage={workflow.selectedMessage}
+      onSelect={editor.selectMessage}
+      search={{value: editor.query, onValueChange: editor.setQuery}}
+      translations={
+        translation && workflow.locale
+          ? [
+              {
+                locale: workflow.locale,
+                label: intl.formatMessage({
+                  id: 'editor.translation',
+                  defaultMessage: 'Translation',
+                  description: 'Translation field label',
+                }),
+                draft: translation,
+                onSave: () => {
+                  void translation.save()
+                },
+              },
+            ]
+          : []
+      }
       filters={
         <div {...stylex.props(styles.filters)}>
           <label
@@ -186,83 +307,6 @@ export function TranslationEditorDemo(
             </ul>
           </div>
         )
-      }
-      validation={
-        workflow.changed &&
-        workflow.validationError && (
-          <FormattedMessage
-            id="editor.validation"
-            defaultMessage="{reason, select, empty {Enter a translation before saving.} invalid-source {The source contains invalid ICU syntax.} invalid-translation {The translation contains invalid ICU syntax.} other {Preserve ICU arguments, tags, formatting styles, and selector branches.}}"
-            description="Reason a translation cannot be saved"
-            values={{reason: workflow.validationError}}
-          />
-        )
-      }
-      notice={
-        workflow.saveError ? (
-          <span role="alert">
-            <FormattedMessage
-              id="editor.save-error"
-              defaultMessage="Save failed: {error}"
-              description="Translation persistence failed; error is the consumer diagnostic"
-              values={{error: workflow.saveError.message}}
-            />
-          </span>
-        ) : workflow.saved ? (
-          <output>
-            <FormattedMessage
-              id="editor.saved"
-              defaultMessage="Translation saved."
-              description="Successful translation persistence confirmation"
-            />
-          </output>
-        ) : (
-          <FormattedMessage
-            id="editor.unsaved"
-            defaultMessage="{changed, select, yes {Unsaved changes} other {No unsaved changes}}"
-            description="Whether the selected translation has unpersisted edits"
-            values={{changed: workflow.changed ? 'yes' : 'no'}}
-          />
-        )
-      }
-      actions={
-        <>
-          <Button onClick={editor.copySource}>
-            <FormattedMessage
-              id="editor.copy-source"
-              defaultMessage="Copy source"
-              description="Button copying the source into the translation"
-            />
-          </Button>
-          <Button
-            onClick={workflow.reset}
-            disabled={!workflow.changed || workflow.isSaving}
-          >
-            <FormattedMessage
-              id="editor.reset"
-              defaultMessage="Reset"
-              description="Restore the selected translation to its saved value"
-            />
-          </Button>
-          <Button
-            variant="primary"
-            disabled={
-              !workflow.changed ||
-              !!workflow.validationError ||
-              workflow.isSaving
-            }
-            onClick={() => {
-              void workflow.save()
-            }}
-          >
-            <FormattedMessage
-              id="editor.save"
-              defaultMessage="{saving, select, yes {Saving…} other {Save translation}}"
-              description="Button persisting the selected translation"
-              values={{saving: workflow.isSaving ? 'yes' : 'no'}}
-            />
-          </Button>
-        </>
       }
     />
   )
