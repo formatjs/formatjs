@@ -1,5 +1,5 @@
 import {expect, test} from '@playwright/test'
-import type {Editable} from './editor.story.js'
+import type {Editable} from './editor.fixture.js'
 
 test('mounted editor retains translation while its provider direction changes', async ({
   mount,
