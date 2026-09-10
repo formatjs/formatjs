@@ -34,8 +34,7 @@ so Playwright loads the `.ts` config as ESM. It declares no dependencies.
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 `e2eConfig` helper supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. `*.visual.spec.ts` files
-remain in the separate screenshot target. Both targets share the consumer-owned
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets share the consumer-owned
 server, shell, declared inputs, and pinned Testcontainers browser.
 
 ```sh
@@ -59,5 +58,12 @@ clear, ICU validation, and isolation between mounts.
 `component_browser_test` shares the custom server, root npm dependencies, strict
 typechecks, and pinned Testcontainers browser with E2E and VRT.
 `componentBrowserConfig` discovers `*.browser.spec.ts` separately from the E2E
-`*.spec.ts` and VRT `*.visual.spec.ts` suites. CI should explicitly run all three
+`*.spec.ts` and generated VRT capture cases. CI should explicitly run all three
 manual browser targets. Screenshot baselines and updates remain in `visual_test`.
+
+The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
+renderable cases, browser-side capture hooks, and VRT options. The gallery registers
+that module with `installVisualGallery`. The shared runtime generates all six
+screenshot tests; no `editor.visual.spec.ts` is maintained. Interaction tests stay
+in `editor.browser.spec.tsx`, and the existing PNG names remain explicit in the
+visual declarations.

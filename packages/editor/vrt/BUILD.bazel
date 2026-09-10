@@ -28,7 +28,9 @@ component_visual_test(
     name = "visual_test",
     srcs = [
         "app.tsx",
-        "editor.visual.spec.ts",
+        "editor.visual.tsx",
+        "gallery.html",
+        "gallery.tsx",
         "index.html",
         "reset.css",
         "shell.tsx",
@@ -85,7 +87,7 @@ web_e2e_test(
 component_browser_test(
     name = "component_test",
     srcs = [
-        "editor.browser.spec.ts",
+        "editor.browser.spec.tsx",
         "editor.visual.tsx",
         "gallery.html",
         "gallery.tsx",
@@ -165,14 +167,11 @@ vrt_library(
 vrt_test(
     name = "visual_sources",
     srcs = [
-        "editor.browser.spec.ts",
+        "editor.browser.spec.tsx",
         "editor.spec.ts",
-        "editor.visual.spec.ts",
     ],
-    tsconfig_types = ["node"],
     deps = [
         ":vrt",
         "//:node_modules/@playwright/test",
-        "//:node_modules/@types/node",
     ],
 )

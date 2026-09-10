@@ -41,3 +41,37 @@ test('fresh mounts isolate drafts and validate ICU in the real editor', async ({
   ).toHaveValue('')
   await expect(fresh.getByRole('alert')).toHaveCount(0)
 })
+
+test('keyboard focus and invalid input remain accessible', async ({
+  mount,
+  page,
+}) => {
+  const component = await mount('Editor/Editable')
+  await page.keyboard.press('Tab')
+  await expect(component.getByRole('searchbox')).toBeFocused()
+  const translation = component.getByRole('textbox', {
+    name: 'Translation',
+    exact: true,
+  })
+  await translation.fill('{name')
+  await expect(translation).toHaveAttribute('aria-invalid', 'true')
+  await expect(component.getByRole('alert')).toBeVisible()
+})
+
+test('editor and workflow controls fit a narrow RTL viewport', async ({
+  mount,
+  page,
+}) => {
+  await page.setViewportSize({width: 390, height: 844})
+  await mount('Editor/Editable', {direction: 'rtl'})
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(390)
+  const workflow = await mount('Editor/workflow-mobile-rtl')
+  await expect(
+    workflow.getByRole('combobox', {name: 'Catalog', exact: true})
+  ).toBeVisible()
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(390)
+})
