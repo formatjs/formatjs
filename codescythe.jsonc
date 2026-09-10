@@ -15,6 +15,7 @@
     "packages/editor/index.ts",
     "packages/editor/demo/main.tsx",
     "packages/editor/vrt/app.tsx",
+    "packages/editor/vrt/gallery.tsx",
     "packages/editor/vrt/*.config.ts",
     "packages/editor/vrt/server.ts",
     "packages/eslint-plugin-formatjs/index.ts",
@@ -114,7 +115,7 @@
   ],
   "testFilePatterns": [
     "**/*.test.*",
-    "**/*.visual.spec.ts",
+    "**/*.spec.*",
     "**/benchmark/**/*",
     "**/conformance-tests/**/*",
     "**/integration-tests/**/*",
