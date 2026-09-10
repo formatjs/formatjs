@@ -6,6 +6,8 @@
 # gazelle:resolve ts @rules-web-e2e/vrt :node_modules/@rules-web-e2e/vrt
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@rules_web_e2e//component:defs.bzl", "component_browser_test")
+load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
 load("//tools:tsconfig.bzl", "ESNEXT_SKIP_LIB_CHECK_TSCONFIG", "packages_tsconfig")
 load(":defs.bzl", "vrt_library", "vrt_test")
@@ -26,7 +28,9 @@ component_visual_test(
     name = "visual_test",
     srcs = [
         "app.tsx",
-        "editor.visual.spec.ts",
+        "editor.visual.tsx",
+        "gallery.html",
+        "gallery.tsx",
         "index.html",
         "reset.css",
         "shell.tsx",
@@ -38,6 +42,61 @@ component_visual_test(
         allow_empty = True,
     ),
     config = "playwright.config.ts",
+    data = [
+        ":typecheck",
+        "//:root_package_json",
+        "//packages/editor:srcs",
+        "//packages/editor/demo:srcs",
+    ],
+    playwright_core = "//:node_modules/playwright-core/dir",
+    playwright_test = "//:node_modules/@playwright/test/dir",
+    server = ":server.js",
+    deps = [
+        ":visual_sources",
+        ":vrt",
+    ],
+)
+
+web_e2e_test(
+    name = "e2e_test",
+    srcs = [
+        "app.tsx",
+        "editor.spec.ts",
+        "index.html",
+        "reset.css",
+        "shell.tsx",
+        "vite.config.ts",
+        ":esm_package_json",
+    ],
+    config = "e2e.config.ts",
+    data = [
+        ":typecheck",
+        "//:root_package_json",
+        "//packages/editor:srcs",
+        "//packages/editor/demo:srcs",
+    ],
+    playwright_core = "//:node_modules/playwright-core/dir",
+    playwright_test = "//:node_modules/@playwright/test/dir",
+    server = ":server.js",
+    deps = [
+        ":visual_sources",
+        ":vrt",
+    ],
+)
+
+component_browser_test(
+    name = "component_test",
+    srcs = [
+        "editor.browser.spec.tsx",
+        "editor.visual.tsx",
+        "gallery.html",
+        "gallery.tsx",
+        "reset.css",
+        "shell.tsx",
+        "vite.config.ts",
+        ":esm_package_json",
+    ],
+    config = "component.config.ts",
     data = [
         ":typecheck",
         "//:root_package_json",
@@ -77,6 +136,10 @@ vrt_library(
     name = "vrt",
     srcs = [
         "app.tsx",
+        "component.config.ts",
+        "e2e.config.ts",
+        "editor.visual.tsx",
+        "gallery.tsx",
         "playwright.config.ts",
         "server.ts",
         "shell.tsx",
@@ -103,11 +166,12 @@ vrt_library(
 
 vrt_test(
     name = "visual_sources",
-    srcs = ["editor.visual.spec.ts"],
-    tsconfig_types = ["node"],
+    srcs = [
+        "editor.browser.spec.tsx",
+        "editor.spec.ts",
+    ],
     deps = [
         ":vrt",
         "//:node_modules/@playwright/test",
-        "//:node_modules/@types/node",
     ],
 )

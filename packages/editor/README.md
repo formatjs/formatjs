@@ -187,3 +187,41 @@ The optional `TranslationEditorDemo` in `demo/workflow-demo.tsx` reuses the Styl
 pagination, source locations, localized validation, reset, and save feedback.
 Supply an `IntlProvider` and the same StyleX Vite integration used by the demo.
 It is separate from the headless entry point; consumers can use any design system.
+
+## Browser interaction tests
+
+Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
+`e2eConfig` helper supplies `baseURL`, so specs can use `page.goto('/')`,
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets share the consumer-owned
+server, shell, declared inputs, and pinned Testcontainers browser.
+
+```sh
+bazel test //packages/editor/vrt:e2e_test --test_output=errors
+bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
+```
+
+E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
+drafts, and saving. It requires Docker and runs manually, locally, and uncached.
+CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
+JUnit, screenshots, and Playwright traces in undeclared test outputs.
+
+## Component browser tests
+
+`bazel test //packages/editor/vrt:component_test --test_output=errors` runs
+Playwright 1.63 native `mount()` specs for the real editor. The typed
+`editor.visual.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
+mount/update/unmount. The tests check provider updates without losing a draft,
+clear, ICU validation, and isolation between mounts.
+
+`component_browser_test` shares the custom server, root npm dependencies, strict
+typechecks, and pinned Testcontainers browser with E2E and VRT.
+`componentBrowserConfig` discovers `*.browser.spec.ts` separately from the E2E
+`*.spec.ts` and generated VRT capture cases. CI should explicitly run all three
+manual browser targets. Screenshot baselines and updates remain in `visual_test`.
+
+The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
+renderable cases, browser-side capture hooks, and VRT options. The gallery registers
+that module with `installVisualGallery`. The shared runtime generates all six
+screenshot tests; no `editor.visual.spec.ts` is maintained. Interaction tests stay
+in `editor.browser.spec.tsx`, and the existing PNG names remain explicit in the
+visual declarations.

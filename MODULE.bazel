@@ -431,6 +431,6 @@ http_file(
 bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
 git_override(
     module_name = "rules_web_e2e",
-    commit = "2122296cd7a968d9e3a6aabdbc643b11d4956cc9",
+    commit = "892eda37aee0fb53254fb3f76a5c574ea1277e14",
     remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
