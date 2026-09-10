@@ -1,3 +1,4 @@
+import type {DurationFormatOptions} from '#packages/ecma402-abstract/types/duration.js'
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {type Cache, memoize, strategies} from '@formatjs/fast-memoize'
 import {IntlMessageFormat} from 'intl-messageformat'
@@ -83,6 +84,7 @@ export function createIntlCache(): IntlCache {
     dateTime: {},
     number: {},
     message: {},
+    duration: {},
     relativeTime: {},
     pluralRules: {},
     list: {},
@@ -150,6 +152,10 @@ export function createFormatters(
         strategy: strategies.variadic,
       }
     ),
+    getDurationFormat: memoize((...args) => new Intl.DurationFormat(...args), {
+      cache: createFastMemoizeCache(cache.duration),
+      strategy: strategies.variadic,
+    }),
     getRelativeTimeFormat: memoize(
       (...args) => new RelativeTimeFormat(...args),
       {
@@ -178,6 +184,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   | NumberFormatOptions
   | Intl.DateTimeFormatOptions
   | Intl.RelativeTimeFormatOptions
+  | DurationFormatOptions
   | undefined {
   const formatType = formats && formats[type]
   let format

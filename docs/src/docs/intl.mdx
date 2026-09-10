@@ -83,6 +83,14 @@ interface IntlConfig {
 }
 
 interface IntlFormatters {
+  formatDuration(
+    value: Parameters<Intl.DurationFormat['format']>[0],
+    opts?: FormatDurationOptions
+  ): string
+  formatDurationToParts(
+    value: Parameters<Intl.DurationFormat['format']>[0],
+    opts?: FormatDurationOptions
+  ): ReturnType<Intl.DurationFormat['formatToParts']>
   formatDate(value: number | Date | string, opts?: FormatDateOptions): string
   formatTime(value: number | Date | string, opts?: FormatDateOptions): string
   formatDateToParts(
@@ -555,4 +563,44 @@ const msg = defineMessage({
   defaultMessage: 'single message',
   description: 'header',
 })
+```
+
+## formatDuration
+
+Formats a duration object using the configured locale and `Intl.DurationFormat`.
+Values are objects with units such as `{hours: 1, minutes: 30}`, not timestamps
+or a total number of milliseconds.
+
+```tsx
+const intl = createIntl({
+  locale: 'en',
+  formats: {duration: {clock: {style: 'digital'}}},
+})
+
+intl.formatDuration({hours: 1, minutes: 30}, {style: 'long'})
+// "1 hour, 30 minutes"
+intl.formatDuration({hours: 1, minutes: 30}, {format: 'clock'})
+// "1:30:00"
+```
+
+`FormatDurationOptions` accepts `Intl.DurationFormatOptions` except
+`localeMatcher`, plus `format` to select a named entry from `formats.duration`.
+Explicit options override the named format. Formatter instances are cached by
+locale and options, including across intl instances sharing `createIntlCache()`.
+
+This API requires native `Intl.DurationFormat` support or the
+[`@formatjs/intl-durationformat` polyfill](/docs/polyfills/intl-durationformat).
+The polyfill is not loaded automatically. Other formatting APIs do not require it.
+If formatting fails, `onError` receives the error and the result is an empty string.
+
+## formatDurationToParts
+
+Accepts the same duration and options as `formatDuration`, and returns
+`Intl.DurationFormat.prototype.formatToParts()` output for custom rendering.
+Each numeric part includes its duration unit; literal parts preserve localized
+separators. If formatting fails, `onError` receives the error and the result is
+an empty array.
+
+```tsx
+intl.formatDurationToParts({minutes: 3, seconds: 42}, {style: 'long'})
 ```

@@ -29,6 +29,7 @@ export {
   formatTime,
   formatTimeToParts,
 } from '#packages/intl/dateTime.js'
+export {formatDuration, formatDurationToParts} from '#packages/intl/duration.js'
 export {formatDisplayName} from '#packages/intl/displayName.js'
 export {formatList} from '#packages/intl/list.js'
 export {formatPlural} from '#packages/intl/plural.js'

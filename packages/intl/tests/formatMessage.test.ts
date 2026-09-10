@@ -86,6 +86,9 @@ describe('format API', () => {
         .mockImplementation(
           (msg, ...args) => new IntlMessageFormat(msg, ...args)
         ),
+      getDurationFormat: vi
+        .fn()
+        .mockImplementation((...args) => new Intl.DurationFormat(...args)),
       getRelativeTimeFormat: vi
         .fn()
         .mockImplementation((...args) => new Intl.RelativeTimeFormat(...args)),

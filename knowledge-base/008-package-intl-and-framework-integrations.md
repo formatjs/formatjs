@@ -22,9 +22,16 @@ are parsed without a locale, then formatted with a request locale.
 
 - `createIntl(config)` — Create an intl instance (framework-agnostic)
 - `defineMessage(s)` — Message descriptor helpers (for extraction tooling)
-- `formatMessage`, `formatDate`, `formatNumber`, `formatDisplayName`, `formatList`, `formatPlural`, `formatRelativeTime`
+- `formatMessage`, `formatDate`, `formatNumber`, `formatDisplayName`, `formatList`, `formatPlural`, `formatRelativeTime`, `formatDuration`, `formatDurationToParts`
 
 **Design:** Framework-agnostic core that `react-intl`, `vue-intl`, and `svelte-intl` all build upon. The framework packages add reactive bindings and components but delegate all formatting to `@formatjs/intl`.
+
+`formatDuration` and `formatDurationToParts` use optional native
+`Intl.DurationFormat` (or a consumer-loaded polyfill), the shared duration
+formatter cache, and `formats.duration` named options. Failures go through
+`onError` and return an empty string or parts array. Public duration declarations
+reuse structural types shared with the duration polyfill in `ecma402-abstract/types/duration.ts`, so
+consumers do not need TypeScript's native `Intl.DurationFormat` declarations.
 
 The Rust mirror lives at `crates/formatjs_intl` as `formatjs_intl`. It keeps
 `Intl` request-scoped, while `MessageCatalog` and `IntlCache` can be shared by
