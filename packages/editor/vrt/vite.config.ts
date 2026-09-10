@@ -49,7 +49,6 @@ const config: UserConfig = defineConfig({
     ],
     dedupe: ['react', 'react-dom'],
   },
-
 })
 
 export default config
