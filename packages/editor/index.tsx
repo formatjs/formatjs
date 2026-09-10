@@ -77,6 +77,7 @@ export function CoreApp() {
           <Grid xs={3}>
             <form noValidate autoComplete="off">
               <TextField
+                id="message-search"
                 type="search"
                 fullWidth
                 margin="none"
@@ -115,6 +116,7 @@ export function CoreApp() {
                 </Typography>
               </Box>
               <TextField
+                id="message-translation"
                 multiline
                 fullWidth
                 margin="dense"

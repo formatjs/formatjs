@@ -31,3 +31,22 @@ and tests remain trusted code outside Bazel’s filesystem sandbox.
 The `server` macro argument points to compiled `server.js`, a consumer-owned
 `ServerAdapter`. It returns the ready fixture URL and a shutdown callback.
 `shell.tsx` is browser-only and stays independent of the server adapter.
+
+## End-to-end interaction specs
+
+`//packages/editor/vrt:e2e_test` runs `editor.spec.ts` with native Playwright.
+`e2e.config.ts` sets the managed server as `baseURL`, so specs can navigate with
+`page.goto('/')`, click controls, edit fields, and use retrying assertions.
+The tests cover translation editing/clearing and rendering a test-owned API
+response through `page.route`. They do not claim unimplemented search filtering,
+message selection, or persistence behavior.
+
+```sh
+bazel test //packages/editor/vrt:e2e_test --test_output=errors
+bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
+```
+
+E2E shares the custom server, UI shell, fixture inputs, and required typechecks
+with VRT. It requires no PNG baselines and has no update target. Failure screenshots,
+traces, and JUnit are retained in Bazel test outputs. Both browser targets are
+manual and should be invoked explicitly in a Docker-enabled CI lane.
