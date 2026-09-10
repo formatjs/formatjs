@@ -74,6 +74,7 @@ formatjs_test(
     name = "unit_test",
     srcs = [
         "editor.test.tsx",
+        "multi-locale.test.tsx",
         "workflow.test.tsx",
     ],
     data = [

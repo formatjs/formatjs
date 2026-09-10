@@ -13,6 +13,9 @@ export type {
   MessageStatus,
   SourceLocation,
   TranslationUpdate,
+  TranslationDraftState,
+  TranslationSaveResult,
+  TranslationSaveSnapshot,
   TranslationEditorOptions,
   TranslationEditorState,
 } from '#packages/editor/workflow.js'
