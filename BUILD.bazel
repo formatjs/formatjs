@@ -177,6 +177,7 @@ ts_run_binary(
         for release_dep in pkg.get("release_deps", [])
     ],
     tool = "//tools:generate-release-please-npm-workspace-graph",
+    visibility = ["//tools:__pkg__"],
 )
 
 test_suite(

@@ -22,6 +22,9 @@ const {
 } = require('release-please/build/src/versioning-strategy')
 const {Changelog} = require('release-please/build/src/updaters/changelog')
 const {
+  ReleasePleaseManifest,
+} = require('release-please/build/src/updaters/release-please-manifest')
+const {
   CompositeUpdater,
 } = require('release-please/build/src/updaters/composite')
 const {
@@ -119,6 +122,35 @@ export class BazelNpmWorkspace extends WorkspacePlugin {
 
   async run(candidates) {
     this.candidatePaths = new Set(candidates.map(candidate => candidate.path))
+    if (
+      candidates.length &&
+      !candidates.some(candidate => this.inScope(candidate))
+    ) {
+      // The upstream plugin exits before inspecting the graph without an npm
+      // candidate. Seed native packages so Rust-only releases propagate too.
+      const {allPackages} = await this.buildAllPackages([])
+      const graph = await this.buildGraph(allPackages)
+      const names = packageNamesWithReleaseDependencies(
+        graph,
+        this.candidatePaths
+      )
+      const seeds = []
+      const versionsMap = new Map()
+      for (const name of names) {
+        const pkg = graph.get(name).value
+        const version = this.bumpVersion(pkg)
+        seeds.push(await this.newCandidate(pkg, new Map([[name, version]])))
+        versionsMap.set(pkg.path, version)
+      }
+      if (seeds.length) {
+        seeds[0].pullRequest.updates.push({
+          path: this.manifestPath,
+          createIfMissing: false,
+          updater: new ReleasePleaseManifest({versionsMap}),
+        })
+        candidates = [...candidates, ...seeds]
+      }
+    }
     return super.run(candidates)
   }
 

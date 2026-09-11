@@ -174,3 +174,26 @@ ts_binary(
     entry_point = "generate-default-content.ts",
     visibility = ["//visibility:public"],
 )
+
+# Uses the same pinned release-please installation as the release workflow.
+js_test(
+    name = "release_please_npm_plugin_test",
+    size = "small",
+    args = [
+        "$(rootpath //:release_please_npm_workspace_graph)",
+        "$(rootpath //:release_please_config)",
+    ],
+    data = [
+        "release-please/npm-workspace-graph.ts",
+        "release-please/npm-workspace-plugin.ts",
+        "//:release_please_config",
+        "//:release_please_npm_workspace_graph",
+    ],
+    entry_point = "release-please/npm-workspace-plugin.test.ts",
+    env_inherit = ["NODE_PATH"],
+    node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],
+    tags = [
+        "external",
+        "manual",
+    ],
+)
