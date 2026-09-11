@@ -132,38 +132,60 @@ If cache infrastructure prevents formatting, it reports the error through
 Use `formatted_message!` when an interface should accept formatted text rather
 than arbitrary strings. It returns `formatjs_intl::FormattedMessage` and uses
 the same extraction, IDs, locale negotiation, fallback, and `with_on_error`
-reporting as `format_message!`.
+reporting as `format_message!`. There is no raw-string constructor.
+
+Untranslated content must come from an application-owned type implementing
+`VerbatimSource`. Implement that trait beside the domain type's controlled
+constructors, not on a generic string wrapper or diagnostic error.
 
 ```rust
-use formatjs_intl::{Intl, FormattedMessage, formatted_message};
+use formatjs_intl::{Intl, FormattedMessage, Verbatim, VerbatimSource, formatted_message};
 
-fn render(intl: &Intl, path: &str) -> FormattedMessage {
+struct SelectedFile {
+    name: String,
+}
+
+impl VerbatimSource for SelectedFile {
+    fn as_verbatim(&self) -> &str {
+        &self.name
+    }
+}
+
+fn render(intl: &Intl, file: &SelectedFile) -> FormattedMessage {
     formatted_message!(
         intl,
         default_message: "Open {path}?",
         description: "Confirmation before opening a selected file",
-        values: { path: FormattedMessage::verbatim(path) },
+        values: { path: Verbatim::new(file) },
     )
 }
 ```
 
-Replacements accept `FormattedMessage` (including borrowed messages), numbers,
-booleans, and `formatjs_icu_messageformat::DateTimeValue`. Raw `String`/`&str`
-values do not compile. Use `FormattedMessage::verbatim(...)` to explicitly
-accept content that should not be translated, such as a filename. Applications
-remain responsible for which content may be displayed.
+`Verbatim` is interpolation-only: it cannot convert directly to
+`FormattedMessage`. Strings, paths, and arbitrary `Display` values do not
+implement `VerbatimSource`, so `Verbatim::new(&error.to_string())` does not
+compile. Applications remain responsible for reviewing their domain types and
+trait implementations; this is a type-level guard, not a security sandbox.
 
+Other replacements accept nested `FormattedMessage` values (including borrowed
+messages), numbers, booleans, and `formatjs_icu_messageformat::DateTimeValue`.
 For reusable replacement maps, use `MessageValues` and pass `values: &values`.
 For static descriptors, `Intl::format_message_typed` returns
 `Result<FormattedMessage>` and `format_message_typed_or_default` also recovers
 infrastructure failures with the descriptor default. Read the result with
 `as_str()` or consume it with `into_string()` at the final presentation step.
 
-The type records an explicit formatting/verbatim path; it does not guarantee
-translation coverage, successful interpolation, HTML escaping, or sanitized
-content. It is separate from the existing low-level
-`formatjs_icu_messageformat::FormattedMessage<T>` rich-text result. Existing
-string and rich-text formatting interfaces remain unchanged.
+Migration: `FormattedMessage::verbatim(...)` has been removed. Move permitted
+untranslated sources behind domain-owned `VerbatimSource` implementations and
+interpolate them with `Verbatim::new(&source)` in an authored message. Do not
+replace the old constructor with a catch-all string wrapper or a `"{detail}"`
+message that forwards diagnostics.
+
+The type records a formatting path; it does not guarantee translation coverage,
+successful interpolation, HTML escaping, or sanitized content. It is separate
+from the existing low-level `formatjs_icu_messageformat::FormattedMessage<T>`
+rich-text result. Existing string and rich-text formatting interfaces remain
+unchanged.
 
 ## Shared cache
 

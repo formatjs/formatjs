@@ -46,11 +46,14 @@ to runtime values and checked against the default ICU message at compile time;
 callers can still pass an existing values map.
 
 `formatted_message!` is the opt-in checked-text interface. It returns the opaque
-`formatjs_intl::FormattedMessage` and accepts only formatted/explicitly verbatim
-text, numbers, booleans, and dates through sealed `MessageArgument` conversions.
-`MessageValues` provides checked reusable maps. `FormattedMessage::verbatim`
-marks intentionally untranslated content; ordinary strings cannot convert
-implicitly. Static-descriptor callers use `Intl::format_message_typed` or
+`formatjs_intl::FormattedMessage` and accepts only formatted messages,
+domain-owned verbatim arguments, numbers, booleans, and dates through sealed
+`MessageArgument` conversions. `MessageValues` provides checked reusable maps.
+There is no raw-string constructor. Applications implement `VerbatimSource` on
+domain types with controlled constructors; `Verbatim::new(&source)` borrows them
+for interpolation only. Strings, paths, and arbitrary `Display` values have no
+built-in implementation, and `Verbatim` cannot convert to `FormattedMessage`.
+Reviewing domain trait implementations remains an application responsibility. Static-descriptor callers use `Intl::format_message_typed` or
 `format_message_typed_or_default`. All paths reuse the existing formatter and
 fallback chain. The CLI extracts both inline macros with identical ID rules.
 The type does not promise translation coverage, escaping, or successful

@@ -4,7 +4,7 @@ use formatjs_icu_messageformat::{DateTimeValue, Values};
 
 use crate::{Intl, MessageDescriptor, Result};
 
-/// Text produced by checked formatting or explicitly accepted as verbatim content.
+/// Text produced by checked formatting.
 ///
 /// This records the formatting path, not translation coverage, successful interpolation,
 /// HTML escaping, or permission to display sensitive content. Normal catalog and
@@ -20,16 +20,17 @@ use crate::{Intl, MessageDescriptor, Result};
 /// ```compile_fail
 /// let _: formatjs_intl::FormattedMessage = "request failed".into();
 /// ```
+///
+/// There is no unchecked string constructor:
+///
+/// ```compile_fail
+/// let error = std::io::Error::other("request failed");
+/// let _ = formatjs_intl::FormattedMessage::verbatim(error.to_string());
+/// ```
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct FormattedMessage(String);
 
 impl FormattedMessage {
-    /// Explicitly accepts content that should not be translated, such as a name or path.
-    /// Applications decide which sources are appropriate; this performs no sanitization.
-    pub fn verbatim(text: impl Into<String>) -> Self {
-        Self(text.into())
-    }
-
     pub fn as_str(&self) -> &str {
         &self.0
     }
@@ -51,7 +52,62 @@ impl AsRef<str> for FormattedMessage {
     }
 }
 
-/// Checked replacements: formatted/verbatim messages, numbers, booleans, and dates.
+/// Application-owned content that may be interpolated without translation.
+///
+/// Implement this on domain types whose constructors control the text's origin,
+/// such as a selected file or a product identity. Implementations are the application's
+/// trust decision: do not implement this on generic text wrappers or diagnostic errors.
+/// There are deliberately no implementations for strings, paths, or `Display` values.
+/// Downstream crates cannot implement this foreign trait for standard-library types.
+pub trait VerbatimSource {
+    fn as_verbatim(&self) -> &str;
+}
+
+/// An interpolation-only borrow of application-approved content.
+///
+/// Raw diagnostic strings cannot be disguised as a one-placeholder message:
+///
+/// ```compile_fail
+/// # fn render(intl: &formatjs_intl::Intl) {
+/// use formatjs_intl::{Verbatim, formatted_message};
+/// let error = std::io::Error::other("request failed");
+/// formatted_message!(intl, default_message: "{detail}",
+///     values: { detail: Verbatim::new(&error.to_string()) });
+/// # }
+/// ```
+///
+/// ```compile_fail
+/// let _ = formatjs_intl::Verbatim::new("request failed");
+/// ```
+///
+/// Even an approved source cannot directly become a formatted message:
+///
+/// ```compile_fail
+/// use formatjs_intl::{FormattedMessage, Verbatim, VerbatimSource};
+/// struct Product;
+/// impl VerbatimSource for Product {
+///     fn as_verbatim(&self) -> &str { "Example" }
+/// }
+/// let _: FormattedMessage = Verbatim::new(&Product).into();
+/// ```
+#[derive(Clone, Copy)]
+pub struct Verbatim<'a>(&'a dyn VerbatimSource);
+
+impl<'a> Verbatim<'a> {
+    pub fn new(source: &'a dyn VerbatimSource) -> Self {
+        Self(source)
+    }
+}
+
+impl private::Sealed for Verbatim<'_> {}
+
+impl MessageArgument for Verbatim<'_> {
+    fn insert_into(self, values: &mut MessageValues, name: String) {
+        values.0.insert(name, self.0.as_verbatim().into());
+    }
+}
+
+/// Checked replacements: formatted messages, domain-owned verbatim arguments, numbers, booleans, and dates.
 ///
 /// ```compile_fail
 /// let mut values = formatjs_intl::MessageValues::new();
@@ -164,12 +220,16 @@ impl Intl {
 /// [`crate::format_message!`]. Inline replacement names are checked at compile time.
 ///
 /// ```
-/// # use formatjs_intl::{Intl, FormattedMessage, formatted_message};
-/// # fn render(intl: &Intl, path: &str) -> FormattedMessage {
+/// # use formatjs_intl::{Intl, FormattedMessage, Verbatim, VerbatimSource, formatted_message};
+/// struct SelectedFile { name: String }
+/// impl VerbatimSource for SelectedFile {
+///     fn as_verbatim(&self) -> &str { &self.name }
+/// }
+/// # fn render(intl: &Intl, file: &SelectedFile) -> FormattedMessage {
 /// formatted_message!(
 ///     intl,
 ///     default_message: "Open {path}?",
-///     values: { path: FormattedMessage::verbatim(path) },
+///     values: { path: Verbatim::new(file) },
 /// )
 /// # }
 /// ```
@@ -295,11 +355,24 @@ mod tests {
         .unwrap()
     }
 
+    struct SelectedFile {
+        path: String,
+    }
+
+    impl VerbatimSource for SelectedFile {
+        fn as_verbatim(&self) -> &str {
+            &self.path
+        }
+    }
+
     #[test]
     fn typed_messages_preserve_locale_pluralization_and_nested_content() {
         let intl = intl();
         let nested = formatted_message!(&intl, id: "done", default_message: "Done");
-        let path = FormattedMessage::verbatim("/tmp/{report}.txt");
+        let file = SelectedFile {
+            path: "/tmp/{report}.txt".into(),
+        };
+        let path = Verbatim::new(&file);
         for (count, expected) in [
             (0, "0 élément : Terminé (/tmp/{report}.txt)"),
             (2, "2 éléments : Terminé (/tmp/{report}.txt)"),

@@ -14,7 +14,9 @@ pub use formatjs_intl_macros::{__message_descriptor, __validate_message_values};
 
 mod formatted_message;
 
-pub use formatted_message::{FormattedMessage, MessageArgument, MessageValues};
+pub use formatted_message::{
+    FormattedMessage, MessageArgument, MessageValues, Verbatim, VerbatimSource,
+};
 
 pub type Messages = HashMap<String, String>;
 pub type PrecompiledMessages = HashMap<String, Vec<MessageFormatElement>>;
