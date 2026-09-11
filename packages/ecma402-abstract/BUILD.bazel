@@ -1,6 +1,8 @@
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 
+# gazelle:exclude tests/CalendarDateFromTime.test.ts
+
 formatjs_library(
     name = "ecma402-abstract",
     srcs = [
@@ -65,5 +67,15 @@ formatjs_test(
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
+    ],
+)
+
+formatjs_test(
+    name = "calendar_test",
+    srcs = ["tests/CalendarDateFromTime.test.ts"],
+    node_toolchain = "//tools/test262:node-runtime",
+    deps = [
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
     ],
 )

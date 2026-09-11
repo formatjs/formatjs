@@ -387,6 +387,39 @@ importers:
       cldr-bcp47:
         specifier: 48.2.0
         version: 48.2.0
+      cldr-cal-buddhist-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-chinese-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-coptic-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-dangi-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-ethiopic-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-hebrew-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-indian-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-islamic-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-japanese-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-persian-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+      cldr-cal-roc-full:
+        specifier: 48.2.0
+        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
       cldr-core:
         specifier: 48.2.0
         version: 48.2.0
@@ -558,6 +591,9 @@ importers:
       tailwindcss:
         specifier: ^4.1.18
         version: 4.3.3
+      temporal-polyfill:
+        specifier: 1.0.4
+        version: 1.0.4
       test262-harness:
         specifier: ^10.0.0
         version: 10.0.0(supports-color@8.1.1)
@@ -4438,6 +4474,61 @@ packages:
   cldr-bcp47@48.2.0:
     resolution: {integrity: sha512-ks3zN+Wbg1zMqvJNeDai1zA0JBGHbAnxv2Ko4rjVohvXscDGmTa7VNy1T+QRlQw3QVPzQcCm2EOiEtAfOU4d+g==}
 
+  cldr-cal-buddhist-full@48.2.0:
+    resolution: {integrity: sha512-bdc08W3e/uGGypQYUCNIrM2TldixnIQpW0Ybr2ynxQkojmqgkPk9f6FpOR370eblCMTO57SEgSx59ZXYaBE/og==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-chinese-full@48.2.0:
+    resolution: {integrity: sha512-sGKamCWxdYLx8o215sSfYkX/Nwq56nU5osVI2eLafpZlNGA0rferEGmlTg6Y2Dn+G5BSTsP6SXEIB84ktVhYhQ==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-coptic-full@48.2.0:
+    resolution: {integrity: sha512-7M5D01WMan8VyISCdZmqMDpjUmaYM/7W7Vry4M5SNejZn5F3RfTxSx67XFtHT8gqPgy6t2TUIypCcKFEsJsm2Q==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-dangi-full@48.2.0:
+    resolution: {integrity: sha512-4UDwj+PEE9Ki1ydwoz+e9rT98LlVXwLNBzbLI1Rbi6Qn1QIUpbGBZINfbBJ5MFVocVF4/5i7Mceko2XsEt77mw==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-ethiopic-full@48.2.0:
+    resolution: {integrity: sha512-u/zKRom3PAk2LIk3o/iS30dgg8EHsYhVlbYY6uWq3JtWz6y8tGBO6gR3CVjPmVneoS7PRrB9GE5HIk+x8yM1Lw==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-hebrew-full@48.2.0:
+    resolution: {integrity: sha512-9Aubz8V76RsZwNFKsFCN6wIubV9gLJ0EGKIvROdfPgt7ip50KuhVz3AYlDiZZKbac8pV3L/AcA3zFP6h4IrNPA==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-indian-full@48.2.0:
+    resolution: {integrity: sha512-nNDa0YRmDQQLDpnNp2mKTUBhQkmovOWiZIb1i1DpOlZ0IovJ0ZR6gFrc7VkF9CYyWqgEEZlE4jkjiGyaai/2Dw==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-islamic-full@48.2.0:
+    resolution: {integrity: sha512-iMu/LMaU/hN8u7RiD9toZD7UkhaeeqCwWta56RJRENpvS10VWEzYXvOOfcqrJUPzs2PsN4KqYX/9plouOrsVqA==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-japanese-full@48.2.0:
+    resolution: {integrity: sha512-9qmtZGuiulBpFO7TZsujRZcgswEmeaxLuzEZwH5G2mlc7AOga6ra0TkjLrYBH4TWxaPKlymT9FJsTOYxAz99Zg==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-persian-full@48.2.0:
+    resolution: {integrity: sha512-U3p2xvA1aDgcinhWgM+P3aQtsAV4S2nb1fjcutcS71FID1IjhqfVet54QNjAw6HrSjy+y0QP60KCiwUA7u9EnQ==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
+  cldr-cal-roc-full@48.2.0:
+    resolution: {integrity: sha512-olySft80D0auJfNSn+qVYqh3Oq4FVO2Fe+1uRQkcz2TXEzfRyqIPf9M1paGsQARkrB6t2pclRoOHtXHFBZFgtg==}
+    peerDependencies:
+      cldr-dates-full: 48.2.0
+
   cldr-core@48.2.0:
     resolution: {integrity: sha512-zfmLothncSwfv2jlevoSrgI2VGgH8SDGHXst6jUEotHA8nq9Igeg9jzdJDFtBso9pgJuG89DK16TzrmZDdo2Bg==}
 
@@ -5133,7 +5224,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+    deprecated: Glob versions prior to v9 are no longer supported
 
   global-directory@5.0.0:
     resolution: {integrity: sha512-1pgFdhK3J2LeM+dVf2Pd424yHx2ou338lC0ErNP2hPx4j8eW1Sp0XqSjNxtk6Tc4Kr5wlWtSvz8cn2yb7/SG/w==}
@@ -7027,6 +7118,15 @@ packages:
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
+
+  temporal-polyfill@1.0.4:
+    resolution: {integrity: sha512-MLEU0qOD2uXlz24oINNtdLZQl8RgmMxSnRtKEGZGGetTJjlRwQJjk+VsJ4EREaUoiaTb8NJOcUiKtoAiWn9EBg==}
+
+  temporal-spec@1.0.1:
+    resolution: {integrity: sha512-wxVoanmDeavXie1vu2JaQ3WIc3JZnWAOYFBsJyATaVsXsycKYUflGsyBmrRSnoCpZJpwPyr38VpgSUlQ8CbFxg==}
+
+  temporal-utils@1.0.2:
+    resolution: {integrity: sha512-1B8Dl4KzrOvsNUlpoWGno2VLQlxroLjDgc5NBjVC9ax9ymdo+ezfyvhyjEMx+IVfhINr6CIG2gcnlP95iRrybQ==}
 
   terser@5.51.2:
     resolution: {integrity: sha512-bWnjSNscmuI+GJze6ZupnHP8G/cTcsJF+bXCeQknk2SHQsgbNJnLrqiH9jZ2W4STPVXH2mDKKRX3iwPhc9Cn/Q==}
@@ -10902,6 +11002,50 @@ snapshots:
 
   cldr-bcp47@48.2.0: {}
 
+  cldr-cal-buddhist-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-chinese-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-coptic-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-dangi-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-ethiopic-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-hebrew-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-indian-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-islamic-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-japanese-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-persian-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
+  cldr-cal-roc-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+    dependencies:
+      cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
+
   cldr-core@48.2.0: {}
 
   cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)):
@@ -14141,6 +14285,15 @@ snapshots:
   tailwindcss@4.3.3: {}
 
   tapable@2.3.3: {}
+
+  temporal-polyfill@1.0.4:
+    dependencies:
+      temporal-spec: 1.0.1
+      temporal-utils: 1.0.2
+
+  temporal-spec@1.0.1: {}
+
+  temporal-utils@1.0.2: {}
 
   terser@5.51.2:
     dependencies:

@@ -143,7 +143,9 @@ export function FormatDateTimePattern(
   /** IMPL START */
   const internalSlots = getInternalSlots(dtf)
   const dataLocale = internalSlots.dataLocale
-  const dataLocaleData = localeData[dataLocale]
+  const rootLocaleData = localeData[dataLocale]
+  const dataLocaleData =
+    rootLocaleData.calendarData?.[internalSlots.calendar!] ?? rootLocaleData
   /** IMPL END */
 
   // ECMA-402 11.5.5, steps 1-11 use identical NumberFormat options for
@@ -183,6 +185,8 @@ export function FormatDateTimePattern(
     part =>
       part.type === 'day' ||
       part.type === 'year' ||
+      part.type === 'relatedYear' ||
+      part.type === 'yearName' ||
       part.type === 'weekday' ||
       part.type === 'era'
   )
@@ -244,7 +248,7 @@ export function FormatDateTimePattern(
       result.push({type: p, value: fv})
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
       let fv = ''
-      const f = internalSlots[p as 'year'] as
+      let f = internalSlots[p as 'year'] as
         | 'numeric'
         | '2-digit'
         | 'narrow'
@@ -252,11 +256,23 @@ export function FormatDateTimePattern(
         | 'short'
       // @ts-ignore
       let v = tm[p]
-      if (p === 'year' && v <= 0) {
+      if (
+        p === 'year' &&
+        v <= 0 &&
+        (internalSlots.calendar === 'gregory' ||
+          internalSlots.calendar === 'iso8601')
+      ) {
         v = 1 - v
       }
       if (p === 'month') {
-        v++
+        v = (tm.monthNumber ?? v) + 1
+        if (
+          internalSlots.calendar === 'hebrew' &&
+          hasOtherDateFields &&
+          (f === 'numeric' || f === '2-digit')
+        ) {
+          f = 'short'
+        }
       }
       const hourCycle = internalSlots.hourCycle
       if (p === 'hour' && (hourCycle === 'h11' || hourCycle === 'h12')) {
@@ -290,10 +306,18 @@ export function FormatDateTimePattern(
             isMonthStandalone && dataLocaleData.monthStandalone
               ? dataLocaleData.monthStandalone
               : dataLocaleData.month
-          fv = monthData[f][v - 1]
+          fv = monthData[f][tm.monthNameIndex ?? v - 1]
         } else {
           fv = dataLocaleData[p as 'weekday'][f][v]
         }
+      }
+      if (p === 'month' && tm.leapMonth && dataLocaleData.leapMonthPatterns) {
+        const patterns = dataLocaleData.leapMonthPatterns
+        const leapPattern =
+          f === 'numeric' || f === '2-digit'
+            ? patterns.numeric
+            : (isMonthStandalone ? patterns.standalone : patterns.format)[f]
+        fv = leapPattern.replace('{0}', fv)
       }
       result.push({
         type: p as Intl.DateTimeFormatPartTypes,
@@ -323,7 +347,7 @@ export function FormatDateTimePattern(
     } else if (p === 'yearName') {
       const v = tm.yearName
       // @ts-ignore
-      const fv = nf.format(v)
+      const fv = dataLocaleData.yearNames![v!]
       result.push({
         // @ts-ignore TODO: Fix TS type
         type: 'yearName',

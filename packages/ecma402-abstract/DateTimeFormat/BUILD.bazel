@@ -5,6 +5,7 @@ formatjs_library(
     srcs = [
         "BasicFormatMatcher.ts",
         "BestFitFormatMatcher.ts",
+        "CalendarDateFromTime.ts",
         "DateTimeStyleFormat.ts",
         "FormatDateTime.ts",
         "FormatDateTimePattern.ts",
@@ -13,6 +14,7 @@ formatjs_library(
         "FormatDateTimeToParts.ts",
         "HandleDateTimeValue.ts",
         "InitializeDateTimeFormat.ts",
+        "LunisolarDateFromTime.ts",
         "PartitionDateTimePattern.ts",
         "PartitionDateTimeRangePattern.ts",
         "TemporalDateTime.ts",
@@ -25,6 +27,8 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/icu.calendar",
+        "//:node_modules/temporal-polyfill",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/types",

@@ -1,7 +1,15 @@
 # gazelle:ignore
 load("//tools:index.bzl", "ts_binary")
+load("//tools:test.bzl", "formatjs_test")
 
 exports_files(["packer.ts"])
+
+formatjs_test(
+    name = "locale_data_test",
+    srcs = ["locale-data.test.ts"],
+    data = ["//packages/intl-datetimeformat:serialization_test_data"],
+    deps = ["//:node_modules/vitest"],
+)
 
 ts_binary(
     name = "cldr-raw",

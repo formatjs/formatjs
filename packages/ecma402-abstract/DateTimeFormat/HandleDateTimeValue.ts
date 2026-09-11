@@ -5,6 +5,12 @@ import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFor
 
 export type DateTimeFormattable = Decimal | TemporalDateTimeValue
 
+export function isTemporalDateTimeValue(
+  value: DateTimeFormattable
+): value is TemporalDateTimeValue {
+  return Object.prototype.hasOwnProperty.call(value, 'kind')
+}
+
 /** https://tc39.es/proposal-temporal/#sec-temporal-value-format-records */
 export interface ValueFormatRecord {
   format: IntlDateTimeFormatInternal
@@ -17,7 +23,7 @@ export function HandleDateTimeValue(
   slots: IntlDateTimeFormatInternal,
   value: DateTimeFormattable
 ): ValueFormatRecord {
-  if (!('kind' in value)) {
+  if (!isTemporalDateTimeValue(value)) {
     // HandleDateTimeOthers clips Number inputs before creating the record.
     const clipped = TimeClip(value)
     if (clipped.isNaN()) throw new RangeError('Invalid time')

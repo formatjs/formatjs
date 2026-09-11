@@ -4,11 +4,15 @@ import {outputJSONSync} from 'fs-extra/esm'
 
 import minimist from 'minimist'
 
-async function main(args: minimist.ParsedArgs) {
+interface Args extends minimist.ParsedArgs {
+  outDir: string
+}
+
+async function main(args: Args) {
   const {outDir} = args
-  const locales = getAllLocales()
-  const data = await extractDatesFields(locales)
-  getAllLocales().forEach(locale =>
+  // Release each locale's expanded patterns before generating the next locale.
+  for (const locale of getAllLocales()) {
+    const data = await extractDatesFields([locale])
     outputJSONSync(
       join(outDir, `${locale}.json`),
       {
@@ -17,8 +21,8 @@ async function main(args: minimist.ParsedArgs) {
       },
       {spaces: 2}
     )
-  )
+  }
 }
 if (import.meta.filename === process.argv[1]) {
-  ;(async () => main(minimist(process.argv)))()
+  await main(minimist<Args>(process.argv.slice(2)))
 }

@@ -9,7 +9,7 @@
     },
     {
       "reason": "calendar enumeration/native interoperability",
-      "modes": ["combined", "isolated"],
+      "modes": ["isolated"],
       "tests": [
         "intl402/Intl/supportedValuesOf/calendars-required-by-intl-era-monthcode.js"
       ]

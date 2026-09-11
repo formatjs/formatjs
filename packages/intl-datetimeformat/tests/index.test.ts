@@ -43,6 +43,32 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('02:03.456')
   })
 
+  it('does not mistake inherited properties for Temporal records', () => {
+    const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const format = () => [
+      formatter.format(0),
+      formatter.formatToParts(0),
+      formatter.formatRange(0, 86400000),
+      formatter.formatRangeToParts(0, 86400000),
+    ]
+    const expected = format()
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'kind')
+    let actual
+    try {
+      Object.defineProperty(Object.prototype, 'kind', {
+        configurable: true,
+        get() {
+          throw new Error('inherited kind read')
+        },
+      })
+      actual = format()
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, 'kind', previous)
+      else Reflect.deleteProperty(Object.prototype, 'kind')
+    }
+    expect(actual).toEqual(expected)
+  })
+
   it('preserves legacy RegExp statics during construction', () => {
     ;/sent(inel)/.exec('sentinel')
     const before = [RegExp.lastMatch, RegExp.$1]
@@ -288,7 +314,7 @@ describe('Intl.DateTimeFormat', function () {
     expect(iso.format(date)).toBe(gregory.format(date))
     const unsupported = new DateTimeFormat('en', {
       ...options,
-      calendar: 'buddhist',
+      calendar: 'unknown',
     })
     expect(unsupported.resolvedOptions().calendar).toBe('gregory')
     expect(unsupported.format(date)).toBe(gregory.format(date))
@@ -350,7 +376,7 @@ describe('Intl.DateTimeFormat', function () {
         calendar: 'islamic-civil',
         timeZone: 'UTC',
       }).resolvedOptions().calendar
-    ).toBe('gregory')
+    ).toBe('islamic-civil')
   })
   it('smoke test CST', function () {
     expect(

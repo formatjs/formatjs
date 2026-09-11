@@ -32,7 +32,7 @@ Processes ~680 locales in parallel:
 4. **Timezone names**: Maps IANA zones → metazones → localized names (long/short, standard/daylight)
 5. **Interval formats**: Synthesizes combined date+time interval formats from separate patterns
 6. **Numbering systems**: Keep the locale default first and expose all CLDR numeric systems. Internal NumberFormat supplies digits; two-digit fields truncate Unicode code points, preserving supplementary digits.
-7. **Calendar support**: Gregorian patterns shared with ISO 8601; unsupported calendars fall back to Gregorian
+7. **Calendar support**: Gregorian patterns shared with ISO 8601; calendar-specific CLDR names, styles, and intervals support Buddhist, Coptic, Ethiopian, Amete Alem, ROC, Indian, tabular Islamic, Persian, Japanese, and Hebrew calendars
 
 ### Timezone Pipeline
 
@@ -180,8 +180,28 @@ legacy RegExp statics during constructor format matching.
 Hour-cycle preferences affect matching only when an hour is requested.
 Minute/second-only formats keep their requested fields.
 
-Calendar negotiation advertises Gregorian and ISO 8601 only. Both use the same
-Gregorian date fields and formatting patterns; week-date fields are not exposed.
+Calendar negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
+`ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
+`japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share patterns;
+other calendars use CLDR calendar packages. Arithmetic conversion uses the public
+`temporal-polyfill/fns` APIs.
+Umm al-Qura uses `@formatjs_generated/icu.calendar` month lengths generated from
+pinned ICU4X, with its documented civil-calendar fallback outside the official
+AH 1300–1600 table. Runtime conversion does not call native Intl.
+Chinese and Dangi use separate ICU4X month tables covering the full Date range,
+including timezone shifts. Each table encodes month lengths and leap-month
+positions, with a year-start checkpoint every 64 years. Outside ICU's official
+1900–2100 data, conversion follows its proleptic calendar calculation. CLDR
+provides cyclic year names, related-year patterns, and leap-month markers.
+The CLDR generator writes one locale at a time so expanded calendar patterns do
+not accumulate across all locales in memory.
+Published locale scripts and the Test262 prelude decode compact JSON strings
+instead of compiling large object literals. Locale scripts include the payload
+once and preserve both direct registration and pre-install queueing.
+Calendar-specific locale records share timezone and numbering metadata at runtime.
+Non-Gregorian patterns and styles are parsed once on first use. Hebrew month names
+use CLDR month codes, including distinct names for Adar I and leap-year Adar II.
+Date styles receive matching CLDR interval patterns, including wider month names.
 
 Range formatting compares endpoints at the displayed precision and keeps shared
 locale fallback patterns unchanged across formatter instances.
@@ -227,10 +247,13 @@ exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip
 Partitioning and pattern formatting consume that record without a Temporal bypass
 flag. `ToLocalTime` floors to milliseconds after adding the timezone offset.
 Range conversion processes both arguments before checking their Temporal types.
-Gregorian and ISO 8601 are still the only implemented calendars.
+Calendar conversion uses the same implementation for Temporal and Date inputs.
 
 Run `//packages/intl-datetimeformat:temporal_test` for dedicated regressions on the
 pinned Test262 Node runtime, plus the ordinary package test for Node 24 behavior.
+`//packages/intl-datetimeformat:temporal_polyfill_test` checks the npm
+`temporal-polyfill/full/global` integration on Node 24. Run each test's
+`_typecheck_typecheck_test` target to execute its compiler validation action.
 Legacy and grandfathered behavior is outside the conformance improvement target;
 those upstream tests remain executed and visible in raw baseline totals.
 

@@ -59,10 +59,14 @@ function matchSkeletonPattern(
     case 'y':
     case 'Y':
     case 'u':
-    case 'U':
-    case 'r':
       result.year = len === 2 ? '2-digit' : 'numeric'
       return '{year}'
+    case 'U':
+      result.year = 'numeric'
+      return '{yearName}'
+    case 'r':
+      result.year = 'numeric'
+      return '{relatedYear}'
 
     // Quarter
     case 'q':
@@ -343,6 +347,25 @@ export function parseDateTimeSkeleton(
   patternFields.set(result, fields)
   result.pattern = pattern
   result.pattern12 = pattern12
+  // Interval data must preserve the selected calendar's year field types.
+  const yearFields = ['{relatedYear}', '{yearName}'].filter(field =>
+    pattern.includes(field)
+  )
+  if (yearFields.length) {
+    for (const patterns of [result.rangePatterns, result.rangePatterns12]) {
+      for (const field of Object.keys(patterns) as Array<
+        keyof typeof patterns
+      >) {
+        if (field === 'default') continue
+        const range = patterns[field]!.patternParts.map(
+          part => part.pattern
+        ).join('')
+        if (yearFields.some(yearField => !range.includes(yearField))) {
+          delete patterns[field]
+        }
+      }
+    }
+  }
   return result
 }
 

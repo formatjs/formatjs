@@ -9,6 +9,7 @@ import {
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
   HandleDateTimeValue,
+  isTemporalDateTimeValue,
   type DateTimeFormattable,
 } from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
 import {
@@ -40,9 +41,11 @@ export function PartitionDateTimeRangePattern(
   y: DateTimeFormattable,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
+  const firstTemporal = isTemporalDateTimeValue(x)
+  const secondTemporal = isTemporalDateTimeValue(y)
   if (
-    ('kind' in x || 'kind' in y) &&
-    (!('kind' in x) || !('kind' in y) || x.kind !== y.kind)
+    firstTemporal !== secondTemporal ||
+    (firstTemporal && secondTemporal && x.kind !== y.kind)
   ) {
     throw new TypeError('Range endpoints must have the same Temporal type')
   }
@@ -53,7 +56,9 @@ export function PartitionDateTimeRangePattern(
   implDetails = {...implDetails, getInternalSlots: () => internalSlots}
   const {tzData, localeData} = implDetails
   const dataLocale = internalSlots.dataLocale
-  const dataLocaleData = localeData[dataLocale]
+  const rootLocaleData = localeData[dataLocale]
+  const dataLocaleData =
+    rootLocaleData.calendarData?.[internalSlots.calendar!] ?? rootLocaleData
   /** IMPL END */
   const tm1 = ToLocalTime(
     first.epochNanoseconds,
@@ -73,7 +78,12 @@ export function PartitionDateTimeRangePattern(
   const parts = PartitionPattern<IntlDateTimeFormatPartType>(pattern)
   let lastField = -1
   for (const part of parts) {
-    const field = part.type === 'weekday' ? 'day' : part.type
+    const field =
+      part.type === 'weekday'
+        ? 'day'
+        : part.type === 'relatedYear' || part.type === 'yearName'
+          ? 'year'
+          : part.type
     lastField = Math.max(lastField, TABLE_2_FIELDS.indexOf(field as TABLE_2))
   }
 

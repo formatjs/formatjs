@@ -34,8 +34,28 @@ export type RawDateTimeLocaleData = LocaleData<RawDateTimeLocaleInternalData>
 
 export type RawDateTimeLocaleInternalData = Omit<
   DateTimeFormatLocaleInternalData,
-  'dateFormat' | 'timeFormat' | 'dateTimeFormat' | 'formats' | 'intervalFormats'
+  | 'dateFormat'
+  | 'timeFormat'
+  | 'dateTimeFormat'
+  | 'formats'
+  | 'intervalFormats'
+  | 'calendarData'
 > & {
+  calendarData?: Record<
+    string,
+    Pick<
+      RawDateTimeLocaleInternalData,
+      | 'era'
+      | 'month'
+      | 'monthStandalone'
+      | 'yearNames'
+      | 'leapMonthPatterns'
+      | 'dateFormat'
+      | 'timeFormat'
+      | 'dateTimeFormat'
+      | 'intervalFormats'
+    >
+  >
   formats: Record<string, Record<string, string>>
   dateFormat: {full: string; long: string; medium: string; short: string}
   timeFormat: {full: string; long: string; medium: string; short: string}

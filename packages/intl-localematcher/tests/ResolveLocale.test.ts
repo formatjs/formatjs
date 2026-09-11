@@ -142,3 +142,16 @@ test('null defaults clear an overridden Unicode extension', () => {
   expect(resolve('en-u-hc-h11').locale).toBe('en-u-hc-h11')
   expect(resolve('en-u-hc-h11', null)).toMatchObject({locale: 'en', hc: null})
 })
+
+test('canonicalizes calendar aliases before matching supported values', () => {
+  expect(
+    ResolveLocale(
+      ['en'],
+      ['en-u-ca-gregory'],
+      {localeMatcher: 'lookup', ca: 'ISLAMICC'},
+      ['ca'],
+      {en: {ca: ['gregory', 'islamic-civil']}},
+      () => 'en'
+    )
+  ).toMatchObject({locale: 'en', ca: 'islamic-civil'})
+})
