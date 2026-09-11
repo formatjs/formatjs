@@ -18,6 +18,8 @@
     "packages/editor/vrt/gallery.tsx",
     "packages/editor/vrt/*.config.ts",
     "packages/editor/vrt/server.ts",
+    // Loaded by the Bazel visual test runner.
+    "packages/editor/vrt/matching.ts",
     "packages/eslint-plugin-formatjs/index.ts",
     "packages/eslint-plugin-formatjs/util.ts",
     "packages/fast-memoize/index.ts",
