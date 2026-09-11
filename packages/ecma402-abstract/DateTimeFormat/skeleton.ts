@@ -24,11 +24,6 @@ export function getDateTimePatternFields(
  * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js
  * with some tweaks
  */
-const DATE_TIME_REGEX =
-  /(?:[Eec]{1,6}|G{1,5}|[Qq]{1,5}|(?:[yYur]+|U{1,5})|[ML]{1,5}|d{1,2}|D{1,3}|F{1}|[abB]{1,5}|[hkHK]{1,2}|w{1,2}|W{1}|m{1,2}|s{1,2}|[zZOvVxX]{1,4})(?=([^']*'[^']*')*[^']*$)/g
-
-// trim patterns after transformations
-const expPatternTrimmer = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g
 
 function matchSkeletonPattern(
   match: string,
@@ -238,83 +233,96 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
   }
 }
 
-export function processDateTimePattern(
+function replaceDateTimeTokens(
   pattern: string,
-  result?: Pick<
-    Intl.DateTimeFormatOptions,
-    | 'weekday'
-    | 'era'
-    | 'year'
-    | 'month'
-    | 'day'
-    | 'dayPeriod'
-    | 'hour'
-    | 'minute'
-    | 'second'
-    | 'timeZoneName'
-  > & {
-    hour12?: boolean
+  result: Intl.DateTimeFormatOptions
+): string {
+  let output = ''
+  let quoted = false
+  for (let i = 0; i < pattern.length;) {
+    const c = pattern[i]
+    if (c === "'") {
+      if (pattern[i + 1] === "'") {
+        output += "'"
+        i += 2
+      } else {
+        quoted = !quoted
+        i++
+      }
+      continue
+    }
+    const maximum = 'Eec'.includes(c)
+      ? 6
+      : 'GQqUMLabB'.includes(c)
+        ? 5
+        : 'zZOvVxX'.includes(c)
+          ? 4
+          : c === 'D'
+            ? 3
+            : 'dhkHKwms'.includes(c)
+              ? 2
+              : 'FW'.includes(c)
+                ? 1
+                : 'yYur'.includes(c)
+                  ? Infinity
+                  : 0
+    if (quoted || !maximum) {
+      output += c
+      i++
+      continue
+    }
+    let end = i + 1
+    while (end < pattern.length && end - i < maximum && pattern[end] === c)
+      end++
+    output += matchSkeletonPattern(pattern.slice(i, end), result)
+    i = end
   }
-): [string, string] {
-  const literals: string[] = []
-
-  // Use skeleton to populate result, but use mapped pattern to populate pattern
-  let pattern12 = pattern
-    // Double apostrophe
-    .replace(/'{2}/g, '{apostrophe}')
-    // Apostrophe-escaped
-    .replace(/'(.*?)'/g, (_, literal) => {
-      literals.push(literal)
-      return `$$${literals.length - 1}$$`
-    })
-    .replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result || {}))
-
-  //Restore literals
-  if (literals.length) {
-    pattern12 = pattern12
-      .replace(/\$\$(\d+)\$\$/g, (_, i) => {
-        return literals[+i]
-      })
-      .replace(/\{apostrophe\}/g, "'")
-  }
-  // Handle apostrophe-escaped things
-  return [
-    pattern12
-      .replace(/([\s\uFEFF\xA0])\{ampm\}([\s\uFEFF\xA0])/, '$1')
-      .replace('{ampm}', '')
-      .replace(expPatternTrimmer, ''),
-    pattern12,
-  ]
+  return output
 }
 
-/**
- * Parse Date time skeleton into Intl.DateTimeFormatOptions
- * Ref: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
- * @public
- * @param skeleton skeleton string
- */
+export function processDateTimePattern(
+  pattern: string,
+  result: Intl.DateTimeFormatOptions = Object.create(null)
+): [string, string] {
+  const pattern12 = replaceDateTimeTokens(pattern, result)
+  const period = pattern12.indexOf('{ampm}')
+  let withoutPeriod = pattern12
+  if (period >= 0) {
+    const after = period + '{ampm}'.length
+    const surroundingSpace =
+      period > 0 &&
+      after < pattern12.length &&
+      !pattern12[period - 1].trim() &&
+      !pattern12[after].trim()
+    withoutPeriod =
+      pattern12.slice(0, period) +
+      pattern12.slice(after + (surroundingSpace ? 1 : 0))
+  }
+  return [withoutPeriod.trim(), pattern12]
+}
+
 export function parseDateTimeSkeleton(
   skeleton: string,
   rawPattern: string = skeleton,
   rangePatterns?: Record<string, string>,
   intervalFormatFallback?: string
 ): Formats {
-  const result: Formats = {
+  const result: Formats = Object.assign(Object.create(null), {
     pattern: '',
     pattern12: '',
     skeleton,
     rawPattern,
-    rangePatterns: {} as Formats['rangePatterns'],
-    rangePatterns12: {} as Formats['rangePatterns12'],
-  }
+    rangePatterns: Object.create(null) as Formats['rangePatterns'],
+    rangePatterns12: Object.create(null) as Formats['rangePatterns12'],
+  })
 
   if (rangePatterns) {
     for (const k in rangePatterns) {
       const key = skeletonTokenToTable2(k)
       const rawPattern = rangePatterns[k]
-      const intervalResult: RangePatterns = {
+      const intervalResult: RangePatterns = Object.assign(Object.create(null), {
         patternParts: [],
-      }
+      })
       const [pattern, pattern12] = processDateTimePattern(
         rawPattern,
         intervalResult
@@ -341,7 +349,7 @@ export function parseDateTimeSkeleton(
   }
 
   // Process skeleton
-  skeleton.replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result))
+  replaceDateTimeTokens(skeleton, result)
   const fields: Intl.DateTimeFormatOptions = Object.create(null)
   const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
   patternFields.set(result, fields)
@@ -372,47 +380,58 @@ export function parseDateTimeSkeleton(
 export function splitFallbackRangePattern(
   pattern: string
 ): Array<RangePatternPart> {
-  const parts = pattern.split(/(\{[0|1]\})/g).filter(Boolean)
-  return parts.map(pattern => {
-    switch (pattern) {
-      case '{0}':
-        return {
-          source: RangePatternType.startRange,
-          pattern,
-        }
-      case '{1}':
-        return {
-          source: RangePatternType.endRange,
-          pattern,
-        }
-      default:
-        return {
-          source: RangePatternType.shared,
-          pattern,
-        }
-    }
-  })
+  let parts: RangePatternPart[] = []
+  let start = 0
+  for (let i = 0; i < pattern.length; i++) {
+    const token = pattern.slice(i, i + 3)
+    if (token !== '{0}' && token !== '{1}') continue
+    if (i > start)
+      parts = [
+        ...parts,
+        {source: RangePatternType.shared, pattern: pattern.slice(start, i)},
+      ]
+    parts = [
+      ...parts,
+      {
+        source:
+          token === '{0}'
+            ? RangePatternType.startRange
+            : RangePatternType.endRange,
+        pattern: token,
+      },
+    ]
+    start = i + 3
+    i += 2
+  }
+  if (start < pattern.length)
+    parts = [
+      ...parts,
+      {source: RangePatternType.shared, pattern: pattern.slice(start)},
+    ]
+  return parts
 }
 
 export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   const fields = new Map<string, {start: number; end: number}>()
-  const part = /\{(.*?)\}/g
-  let match
   let startBegin = pattern.length
   let startEnd = 0
   let endBegin = pattern.length
   let endEnd = 0
-  while ((match = part.exec(pattern))) {
-    const first = fields.get(match[1])
-    const end = match.index + match[0].length
+  for (let index = pattern.indexOf('{'); index >= 0;) {
+    const close = pattern.indexOf('}', index + 1)
+    if (close < 0) break
+    const key = pattern.slice(index + 1, close)
+    const first = fields.get(key)
+    const end = close + 1
     if (first) {
       startBegin = Math.min(startBegin, first.start)
       startEnd = Math.max(startEnd, first.end)
-      endBegin = Math.min(endBegin, match.index)
+      endBegin = Math.min(endBegin, index)
       endEnd = Math.max(endEnd, end)
     } else {
-      fields.set(match[1], {start: match.index, end})
+      fields.set(key, {start: index, end})
     }
+    index = pattern.indexOf('{', end)
   }
   if (!startEnd) return [{source: RangePatternType.shared, pattern}]
 
@@ -424,9 +443,10 @@ export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
   // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L868-L882
-  const result: RangePatternPart[] = []
+  let result: RangePatternPart[] = []
   function append(begin: number, end: number, source: RangePatternType) {
-    if (begin < end) result.push({source, pattern: pattern.slice(begin, end)})
+    if (begin < end)
+      result = [...result, {source, pattern: pattern.slice(begin, end)}]
   }
   append(0, startBegin, RangePatternType.shared)
   append(startBegin, startEnd, RangePatternType.startRange)

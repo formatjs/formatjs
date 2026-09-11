@@ -91,7 +91,49 @@ describe('Intl.DateTimeFormat', function () {
     expect(actual).toEqual(expected)
   })
 
+  it.each(['gregory', 'chinese'])(
+    'parses cold %s formats without inherited setters',
+    calendar => {
+      const original = DateTimeFormat.localeData.en
+      DateTimeFormat.__addLocaleData(en as any)
+      const keys = ['hour', 'dayPeriod', '1']
+      const descriptors = keys.map(key =>
+        Object.getOwnPropertyDescriptor(Object.prototype, key)
+      )
+      let failure: unknown
+      let value: unknown
+      try {
+        for (const key of keys)
+          Object.defineProperty(Object.prototype, key, {
+            configurable: true,
+            set() {
+              throw new Error(`inherited setter: ${key}`)
+            },
+          })
+        value = new DateTimeFormat('en', {
+          calendar,
+          timeZone: 'UTC',
+          hour: 'numeric',
+          dayPeriod: 'long',
+        })
+      } catch (error) {
+        failure = error
+      } finally {
+        for (let i = 0; i < keys.length; i++) {
+          const descriptor = descriptors[i]
+          if (descriptor)
+            Object.defineProperty(Object.prototype, keys[i], descriptor)
+          else Reflect.deleteProperty(Object.prototype, keys[i])
+        }
+        DateTimeFormat.localeData.en = original
+      }
+      expect(failure).toBeUndefined()
+      expect(value).toBeInstanceOf(DateTimeFormat)
+    }
+  )
+
   it('preserves legacy RegExp statics during construction', () => {
+    DateTimeFormat.__addLocaleData(en as any)
     ;/sent(inel)/.exec('sentinel')
     const before = [RegExp.lastMatch, RegExp.$1]
     new DateTimeFormat('en', {year: 'numeric', month: 'long', timeZone: 'UTC'})

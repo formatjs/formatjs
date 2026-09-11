@@ -388,10 +388,17 @@ function findIntervalFormat(
   if (commaIdx !== -1) {
     const datePart = skeleton.slice(0, commaIdx)
     const timePart = skeleton.slice(commaIdx + 2)
-    const canonical = timePart
-      .replace(/[^a-zA-Z]/g, '')
-      .replace(/[abB]/g, '')
-      .replace(/(.)\1+/g, '$1')
+    let canonical = ''
+    for (const c of timePart) {
+      if (
+        ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) &&
+        c !== 'a' &&
+        c !== 'b' &&
+        c !== 'B' &&
+        canonical[canonical.length - 1] !== c
+      )
+        canonical += c
+    }
     const matched = intervalFormats[`${datePart}, ${canonical}`]
     if (matched) return matched
   }
