@@ -198,6 +198,8 @@ not accumulate across all locales in memory.
 Published locale scripts and the Test262 prelude decode compact JSON strings
 instead of compiling large object literals. Locale scripts include the payload
 once and preserve both direct registration and pre-install queueing.
+Calendar patterns parse on first use, including the ISO alias of Gregorian
+formats, so registering unused locale calendars avoids their parsing cost.
 Calendar-specific locale records share timezone and numbering metadata at runtime.
 Non-Gregorian patterns and styles are parsed once on first use. Hebrew month names
 use CLDR month codes, including distinct names for Adar I and leap-year Adar II.

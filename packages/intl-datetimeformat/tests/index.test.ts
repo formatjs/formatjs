@@ -43,6 +43,28 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('02:03.456')
   })
 
+  it('shares Gregorian formats with explicitly supplied ISO locale data', () => {
+    const original = DateTimeFormat.localeData.en
+    try {
+      DateTimeFormat.__addLocaleData({
+        ...en,
+        data: {
+          ...en.data,
+          formats: {...en.data.formats, iso8601: en.data.formats.gregory},
+        },
+      } as any)
+      const gregorian = new DateTimeFormat('en', {timeZone: 'UTC'})
+      const iso = new DateTimeFormat('en', {
+        calendar: 'iso8601',
+        timeZone: 'UTC',
+      })
+      expect(iso.resolvedOptions().calendar).toBe('iso8601')
+      expect(iso.formatToParts(0)).toEqual(gregorian.formatToParts(0))
+    } finally {
+      DateTimeFormat.localeData.en = original
+    }
+  })
+
   it('does not mistake inherited properties for Temporal records', () => {
     const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
     const format = () => [
