@@ -38,11 +38,11 @@ export function PartitionDateTimeRangePattern(
   y: Decimal,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
-  x = TimeClip(x)
+  if (!implDetails.temporal) x = TimeClip(x)
   if (x.isNaN()) {
     throw new RangeError('Invalid start time')
   }
-  y = TimeClip(y)
+  if (!implDetails.temporal) y = TimeClip(y)
   if (y.isNaN()) {
     throw new RangeError('Invalid end time')
   }

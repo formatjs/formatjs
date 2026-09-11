@@ -82,6 +82,7 @@ function offsetToGmtString(
 }
 
 export interface FormatDateTimePatternImplDetails {
+  temporal?: boolean
   getInternalSlots(
     dtf: Intl.DateTimeFormat | DateTimeFormat
   ): IntlDateTimeFormatInternal
@@ -138,9 +139,10 @@ export function FormatDateTimePattern(
     getDefaultTimeZone,
     tzData,
     rangeFormatOptions,
+    temporal,
   }: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
-  x = TimeClip(x)
+  if (!temporal) x = TimeClip(x)
   /** IMPL START */
   const internalSlots = getInternalSlots(dtf)
   const dataLocale = internalSlots.dataLocale

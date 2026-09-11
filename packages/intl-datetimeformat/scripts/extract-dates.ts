@@ -28,6 +28,10 @@ import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
+const NON_SKELETON_LETTERS = /[^a-zA-Z]/g
+const DAY_PERIOD_LETTERS = /[abB]/g
+const REPEATED_SKELETON_LETTERS = /(.)\1+/g
+
 const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
@@ -425,7 +429,12 @@ async function loadDatesFields(
       // interval patterns. This produces output like "Sun, 22 Sept 2024, 14:00 – 16:00"
       // instead of "Sun, 22 Sept 2024, 14:00 – Sun, 22 Sept 2024, 16:00"
       const combinedIntervalFormats = intervalFormats[skeleton]
-      let timeIntervalFormats = intervalFormats[timeSkeleton]
+      const canonicalTimeSkeleton = timeSkeleton
+        .replace(NON_SKELETON_LETTERS, '')
+        .replace(DAY_PERIOD_LETTERS, '')
+        .replace(REPEATED_SKELETON_LETTERS, '$1')
+      let timeIntervalFormats =
+        intervalFormats[timeSkeleton] || intervalFormats[canonicalTimeSkeleton]
 
       // GH #4535: If interval formats for the time skeleton don't exist, try the 24-hour variant.
       // This handles cases where CLDR provides formats for 'Hm' but not 'hm', or vice versa.
@@ -442,30 +451,62 @@ async function loadDatesFields(
         Object.keys(timeIntervalFormats).length === 0
       ) {
         // Convert between 12-hour (h/K) and 24-hour (H/k) hour symbols
-        const alt24HourSkeleton = timeSkeleton
+        const alt24HourSkeleton = canonicalTimeSkeleton
           .replace(/h/g, 'H')
           .replace(/K/g, 'k')
-        const alt12HourSkeleton = timeSkeleton
+        const alt12HourSkeleton = canonicalTimeSkeleton
           .replace(/H/g, 'h')
           .replace(/k/g, 'K')
 
-        if (alt24HourSkeleton !== timeSkeleton) {
+        if (alt24HourSkeleton !== canonicalTimeSkeleton) {
           timeIntervalFormats = intervalFormats[alt24HourSkeleton]
-        } else if (alt12HourSkeleton !== timeSkeleton) {
+        } else if (alt12HourSkeleton !== canonicalTimeSkeleton) {
           timeIntervalFormats = intervalFormats[alt12HourSkeleton]
         }
       }
 
-      if (
-        !combinedIntervalFormats &&
-        timeIntervalFormats &&
-        typeof timeIntervalFormats === 'object'
-      ) {
-        // Synthesize interval formats for each time field difference
+      if (!combinedIntervalFormats) {
+        const timeRanges =
+          typeof timeIntervalFormats === 'object'
+            ? {...timeIntervalFormats}
+            : {}
+        const fallback = intervalFormats.intervalFormatFallback
+        if (typeof fallback === 'string') {
+          // Combine a time-only fallback interval with the shared date.
+          // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
+          const timeFields = parseDateTimeSkeleton(timeSkeleton, timePattern)
+          const fallbackTimeRange = fallback
+            .replace('{0}', timePattern)
+            .replace('{1}', timePattern)
+          for (const [field, property] of [
+            ['a', 'hour'],
+            ['h', 'hour'],
+            ['m', 'minute'],
+            ['s', 'second'],
+            ['S', 'fractionalSecondDigits'],
+            ['B', 'dayPeriod'],
+          ] as const) {
+            if (
+              field === 'a' &&
+              (!timeFields.hour12 || timeRanges.b !== undefined)
+            )
+              continue
+            if (
+              field === 'h' &&
+              ['h', 'H', 'K', 'k'].some(key => timeRanges[key] !== undefined)
+            )
+              continue
+            if (
+              timeFields[property] !== undefined &&
+              timeRanges[field] === undefined
+            ) {
+              timeRanges[field] = fallbackTimeRange
+            }
+          }
+        }
+        // Synthesize interval formats for each time field difference.
         const synthesizedFormats: Record<string, string> = {}
-        for (const [field, timeIntervalPattern] of Object.entries(
-          timeIntervalFormats
-        )) {
+        for (const [field, timeIntervalPattern] of Object.entries(timeRanges)) {
           if (typeof timeIntervalPattern === 'string') {
             // Combine date pattern with time interval pattern using dateTimeFormat
             const synthesizedPattern = rawPattern

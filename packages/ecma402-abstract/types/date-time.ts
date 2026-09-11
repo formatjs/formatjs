@@ -1,3 +1,12 @@
+export type TemporalDateTimeKind =
+  | 'PlainDate'
+  | 'PlainYearMonth'
+  | 'PlainMonthDay'
+  | 'PlainTime'
+  | 'PlainDateTime'
+  | 'Instant'
+  | 'ZonedDateTime'
+
 export type Formats = Pick<
   Intl.DateTimeFormatOptions,
   | 'weekday'
@@ -50,6 +59,7 @@ export interface IntlDateTimeFormatInternal {
   pattern: string
   format: Formats
   rangePatterns: Record<TABLE_2 | 'default', RangePatterns>
+  getTemporalFormat?: (kind: TemporalDateTimeKind) => IntlDateTimeFormatInternal
   boundFormat?: Intl.DateTimeFormat['format']
 }
 
@@ -188,16 +198,30 @@ export type IntervalFormatsData = {
   intervalFormatFallback: string
 } & Record<string, Record<string, string>>
 
+export interface TemporalDateTimeInput {
+  readonly [Symbol.toStringTag]: `Temporal.${Exclude<TemporalDateTimeKind, 'ZonedDateTime'>}`
+}
+
 export interface DateTimeFormat extends Omit<
   Intl.DateTimeFormat,
-  'resolvedOptions' | 'formatRange' | 'formatRangeToParts' | 'formatToParts'
+  | 'resolvedOptions'
+  | 'format'
+  | 'formatRange'
+  | 'formatRangeToParts'
+  | 'formatToParts'
 > {
   resolvedOptions(): ResolvedDateTimeFormatOptions
-  formatToParts(date?: Date | number): IntlDateTimeFormatPart[]
-  formatRange(startDate: number | Date, endDate: number | Date): string
+  format(date?: Date | number | TemporalDateTimeInput): string
+  formatToParts(
+    date?: Date | number | TemporalDateTimeInput
+  ): IntlDateTimeFormatPart[]
+  formatRange(
+    startDate: number | Date | TemporalDateTimeInput,
+    endDate: number | Date | TemporalDateTimeInput
+  ): string
   formatRangeToParts(
-    startDate: number | Date,
-    endDate: number | Date
+    startDate: number | Date | TemporalDateTimeInput,
+    endDate: number | Date | TemporalDateTimeInput
   ): IntlDateTimeFormatPart[]
 }
 

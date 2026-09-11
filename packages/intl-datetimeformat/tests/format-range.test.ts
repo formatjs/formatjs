@@ -419,7 +419,7 @@ test('GH issue #4168', function () {
       new Date('2023-10-16T10:00:00'),
       new Date('2023-10-16T14:00:00')
     )
-  ).toBe('16 okt 2023, 10:00:00 – 16 okt 2023, 14:00:00')
+  ).toBe('16 okt 2023, 10:00:00 – 14:00:00')
 })
 
 test('GH issue #4535 - same day range should not duplicate date', function () {

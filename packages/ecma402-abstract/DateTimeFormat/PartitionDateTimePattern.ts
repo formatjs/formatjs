@@ -23,7 +23,7 @@ export function PartitionDateTimePattern(
   x: Decimal,
   implDetails: ToLocalTimeImplDetails & FormatDateTimePatternImplDetails
 ): IntlDateTimeFormatPart[] {
-  x = TimeClip(x)
+  if (!implDetails.temporal) x = TimeClip(x)
   invariant(!x.isNaN(), 'Invalid time', RangeError)
 
   /** IMPL START */
