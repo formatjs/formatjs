@@ -68,50 +68,12 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'timeStyle',
 ]
 
-function prepareDateTime(
-  dtf: IDateTimeFormat | Intl.DateTimeFormat,
-  value: Decimal | TemporalDateTimeValue,
-  other?: Decimal | TemporalDateTimeValue
-) {
-  let slots = getInternalSlots(dtf)
-  const temporal = 'kind' in value
-  if (
-    other !== undefined &&
-    (temporal !== 'kind' in other ||
-      (temporal && 'kind' in other && value.kind !== other.kind))
-  ) {
-    throw new TypeError('Range endpoints must have the same Temporal type')
-  }
-  const validate = (input: TemporalDateTimeValue) => {
-    if (input.kind === 'ZonedDateTime')
-      throw new TypeError(
-        'Temporal.ZonedDateTime is not supported by DateTimeFormat'
-      )
-    if (
-      input.calendar !== undefined &&
-      input.calendar !== slots.calendar &&
-      (input.calendar !== 'iso8601' ||
-        input.kind === 'PlainYearMonth' ||
-        input.kind === 'PlainMonthDay')
-    ) {
-      throw new RangeError('Temporal calendar does not match DateTimeFormat')
-    }
-  }
-  if (temporal) {
-    validate(value)
-    slots = slots.getTemporalFormat!(value.kind)
-    if (other !== undefined && 'kind' in other) validate(other)
-  }
+function getDateTimeImplementationDetails() {
   return {
-    x: temporal ? value.milliseconds : value,
-    y: other && ('kind' in other ? other.milliseconds : other),
-    details: {
-      getInternalSlots: () => slots,
-      localeData: DateTimeFormat.localeData,
-      tzData: DateTimeFormat.tzData,
-      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-      temporal,
-    },
+    getInternalSlots,
+    localeData: DateTimeFormat.localeData,
+    tzData: DateTimeFormat.tzData,
+    getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
   }
 }
 
@@ -132,11 +94,10 @@ const formatDescriptor = {
         } else {
           x = ToDateTimeFormattable(date)
         }
-        const prepared = prepareDateTime(dtf, x)
         return FormatDateTime(
           dtf as Intl.DateTimeFormat,
-          prepared.x,
-          prepared.details
+          x,
+          getDateTimeImplementationDetails()
         )
       }
       try {
@@ -320,8 +281,7 @@ const {formatToParts} = {
     } else {
       x = ToDateTimeFormattable(date)
     }
-    const prepared = prepareDateTime(this, x)
-    return FormatDateTimeToParts(this, prepared.x, prepared.details)
+    return FormatDateTimeToParts(this, x, getDateTimeImplementationDetails())
   },
 }
 
@@ -349,12 +309,11 @@ const {formatRangeToParts} = {
 
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
-    const prepared = prepareDateTime(dtf, x, y)
     return FormatDateTimeRangeToParts(
       dtf,
-      prepared.x,
-      prepared.y!,
-      prepared.details
+      x,
+      y,
+      getDateTimeImplementationDetails()
     )
   },
 }
@@ -382,8 +341,7 @@ const {formatRange} = {
     )
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
-    const prepared = prepareDateTime(dtf, x, y)
-    return FormatDateTimeRange(dtf, prepared.x, prepared.y!, prepared.details)
+    return FormatDateTimeRange(dtf, x, y, getDateTimeImplementationDetails())
   },
 }
 

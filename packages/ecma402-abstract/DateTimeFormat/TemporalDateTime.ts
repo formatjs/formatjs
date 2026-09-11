@@ -1,4 +1,4 @@
-import Decimal from '@formatjs/bigdecimal'
+import type Decimal from '@formatjs/bigdecimal'
 import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {
   DayFromYear,
@@ -10,7 +10,7 @@ import type {TemporalDateTimeKind} from '#packages/ecma402-abstract/types/date-t
 export interface TemporalDateTimeValue {
   kind: TemporalDateTimeKind
   calendar?: string
-  milliseconds: Decimal
+  epochNanoseconds: bigint
 }
 
 // Intrinsic calls check internal slots across realms without reading user properties.
@@ -76,7 +76,7 @@ export function ToDateTimeFormattable(
       if (kind === 'Instant' || kind === 'ZonedDateTime') {
         return {
           kind,
-          milliseconds: new Decimal(String(result)).div(1000000).floor(),
+          epochNanoseconds: BigInt(result),
         }
       }
       // calendarName=always includes the ISO reference date for YearMonth/MonthDay.
@@ -85,7 +85,7 @@ export function ToDateTimeFormattable(
       const calendar = CALENDAR_ANNOTATION.exec(text)?.[1]
       const date = ISO_DATE.exec(text)
       const time = ISO_TIME.exec(text)
-      let milliseconds = 0
+      let epochNanoseconds = BigInt(0)
       if (date) {
         const year = Number(date[1])
         const month = Number(date[2])
@@ -95,18 +95,19 @@ export function ToDateTimeFormattable(
           Number(date[3]) -
           1 +
           (month > 2 && DaysInYear(year) === 366 ? 1 : 0)
-        milliseconds = days * 86400000
+        epochNanoseconds = BigInt(days) * BigInt(86400000000000)
       }
       if (time) {
-        milliseconds +=
-          Number(time[1]) * 3600000 +
-          Number(time[2]) * 60000 +
-          Number(time[3]) * 1000 +
-          Number(((time[4] || '') + '000').slice(0, 3))
+        epochNanoseconds +=
+          BigInt(
+            Number(time[1]) * 3600 + Number(time[2]) * 60 + Number(time[3])
+          ) *
+            BigInt(1000000000) +
+          BigInt(((time[4] || '') + '000000000').slice(0, 9))
       } else {
-        milliseconds += 43200000
+        epochNanoseconds += BigInt(43200000000000)
       }
-      return {kind, calendar, milliseconds: new Decimal(milliseconds)}
+      return {kind, calendar, epochNanoseconds}
     }
   }
   return ToNumber(value)

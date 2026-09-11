@@ -11,6 +11,7 @@ formatjs_library(
         "FormatDateTimeRange.ts",
         "FormatDateTimeRangeToParts.ts",
         "FormatDateTimeToParts.ts",
+        "HandleDateTimeValue.ts",
         "InitializeDateTimeFormat.ts",
         "PartitionDateTimePattern.ts",
         "PartitionDateTimeRangePattern.ts",

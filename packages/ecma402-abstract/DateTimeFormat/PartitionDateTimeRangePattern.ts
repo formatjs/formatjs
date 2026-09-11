@@ -1,5 +1,4 @@
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
-import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
   type IntlDateTimeFormatPart,
@@ -8,7 +7,10 @@ import {
   type RangePatterns,
   type TABLE_2,
 } from '#packages/ecma402-abstract/types/date-time.js'
-import type Decimal from '@formatjs/bigdecimal'
+import {
+  HandleDateTimeValue,
+  type DateTimeFormattable,
+} from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
 import {
   FormatDateTimePattern,
   getDayPeriodName,
@@ -34,36 +36,37 @@ const TABLE_2_FIELDS: Array<TABLE_2> = [
 
 export function PartitionDateTimeRangePattern(
   dtf: Intl.DateTimeFormat,
-  x: Decimal,
-  y: Decimal,
+  x: DateTimeFormattable,
+  y: DateTimeFormattable,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
-  if (!implDetails.temporal) x = TimeClip(x)
-  if (x.isNaN()) {
-    throw new RangeError('Invalid start time')
+  if (
+    ('kind' in x || 'kind' in y) &&
+    (!('kind' in x) || !('kind' in y) || x.kind !== y.kind)
+  ) {
+    throw new TypeError('Range endpoints must have the same Temporal type')
   }
-  if (!implDetails.temporal) y = TimeClip(y)
-  if (y.isNaN()) {
-    throw new RangeError('Invalid end time')
-  }
-  /** IMPL START */
-  const {getInternalSlots, tzData, localeData} = implDetails
-  const internalSlots = getInternalSlots(dtf)
+  const slots = implDetails.getInternalSlots(dtf)
+  const first = HandleDateTimeValue(slots, x)
+  const second = HandleDateTimeValue(slots, y)
+  const internalSlots = first.format
+  implDetails = {...implDetails, getInternalSlots: () => internalSlots}
+  const {tzData, localeData} = implDetails
   const dataLocale = internalSlots.dataLocale
   const dataLocaleData = localeData[dataLocale]
   /** IMPL END */
   const tm1 = ToLocalTime(
-    x,
+    first.epochNanoseconds,
     // @ts-ignore
     internalSlots.calendar,
-    internalSlots.timeZone,
+    first.isPlain ? '+00:00' : internalSlots.timeZone,
     {tzData}
   )
   const tm2 = ToLocalTime(
-    y,
+    second.epochNanoseconds,
     // @ts-ignore
     internalSlots.calendar,
-    internalSlots.timeZone,
+    first.isPlain ? '+00:00' : internalSlots.timeZone,
     {tzData}
   )
   const {pattern, rangePatterns} = internalSlots
@@ -130,10 +133,16 @@ export function PartitionDateTimeRangePattern(
     }
   }
   if (rangePattern === undefined) {
-    const result = FormatDateTimePattern(dtf, parts, x, {
-      ...implDetails,
-      rangeFormatOptions: {localTime: tm1},
-    })
+    const result = FormatDateTimePattern(
+      dtf,
+      parts,
+      first.epochNanoseconds,
+      first.isPlain,
+      {
+        ...implDetails,
+        rangeFormatOptions: {localTime: tm1},
+      }
+    )
     for (const part of result) part.source = RangePatternType.shared
     return result
   }
@@ -163,13 +172,17 @@ export function PartitionDateTimeRangePattern(
       result.push({type: 'literal', value: partPattern, source})
       continue
     }
-    const value = source === RangePatternType.endRange ? y : x
+    const value =
+      source === RangePatternType.endRange
+        ? second.epochNanoseconds
+        : first.epochNanoseconds
     rangeFormatOptions.localTime =
       source === RangePatternType.endRange ? tm2 : tm1
     const formatted = FormatDateTimePattern(
       dtf,
       PartitionPattern<IntlDateTimeFormatPartType>(partPattern),
       value,
+      first.isPlain,
       rangeImplDetails
     )
     for (const item of formatted) {

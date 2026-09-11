@@ -170,3 +170,38 @@ test('same-day datetime ranges share the date even without a CLDR time interval'
     '8/4/2021, 12:30:45\u202fAM\u2009–\u200911:30:45\u202fPM'
   )
 })
+
+test('nanosecond endpoints retain the preceding millisecond at Date limits', () => {
+  const dtf = formatter({
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3,
+    hourCycle: 'h23',
+  })
+  for (const nanoseconds of [
+    -1n,
+    1n,
+    8640000000000000000000n - 1n,
+    -8640000000000000000000n + 1n,
+  ]) {
+    const instant = new Temporal.Instant(nanoseconds)
+    const milliseconds = Number(
+      nanoseconds / 1000000n -
+        (nanoseconds < 0n && nanoseconds % 1000000n !== 0n ? 1n : 0n)
+    )
+    expect(dtf.format(instant)).toBe(dtf.format(milliseconds))
+    expect(dtf.formatToParts(instant)).toEqual(dtf.formatToParts(milliseconds))
+    expect(dtf.formatRange(instant, instant)).toBe(
+      dtf.formatRange(milliseconds, milliseconds)
+    )
+    expect(dtf.formatRangeToParts(instant, instant)).toEqual(
+      dtf.formatRangeToParts(milliseconds, milliseconds)
+    )
+  }
+  expect(dtf.format(-0.9)).toBe(dtf.format(0))
+  expect(dtf.format(new Temporal.Instant(-1n))).not.toBe(dtf.format(-0.9))
+})

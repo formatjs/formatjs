@@ -564,7 +564,6 @@ export function InitializeDateTimeFormat(
       ? selected.rangePatterns12
       : selected.rangePatterns
     slots.format = selected
-    if (kind !== 'Instant') slots.timeZone = '+00:00'
     temporalFormats.set(kind, slots)
     return slots
   }

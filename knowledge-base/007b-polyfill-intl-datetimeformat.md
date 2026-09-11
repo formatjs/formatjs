@@ -221,8 +221,11 @@ Load any Temporal polyfill before importing DateTimeFormat.
 
 `InitializeDateTimeFormat` retains the already-read component options and caches
 formats by Temporal type. Plain values format in `+00:00` without changing the
-formatter's resolved timezone. Instants use its configured timezone. Only validated
-Temporal inputs bypass TimeClip; numeric and Date inputs retain their existing path.
+formatter's resolved timezone. Instants use its configured timezone.
+`HandleDateTimeValue` produces the proposal's value-format record: selected format,
+exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip.
+Partitioning and pattern formatting consume that record without a Temporal bypass
+flag. `ToLocalTime` floors to milliseconds after adding the timezone offset.
 Range conversion processes both arguments before checking their Temporal types.
 Gregorian and ISO 8601 are still the only implemented calendars.
 
