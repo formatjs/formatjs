@@ -513,9 +513,8 @@ library. The workflow demo demonstrates a React Intl consumer without making
 ## Browser interaction tests
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
-`e2eConfig` helper supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets share the consumer-owned
-server, shell, declared inputs, and pinned Testcontainers browser.
+runner supplies `baseURL`, so specs can use `page.goto('/')`,
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application and pinned Testcontainers browser.
 
 ```sh
 bazel test //packages/editor/vrt:e2e_test --test_output=errors
@@ -535,10 +534,10 @@ Playwright 1.63 native `mount()` specs for the real editor. The typed
 mount/update/unmount. The tests check provider updates without losing a draft,
 clear, ICU validation, and isolation between mounts.
 
-`component_browser_test` shares the custom server, root npm dependencies, strict
-typechecks, and pinned Testcontainers browser with E2E and VRT.
-`componentBrowserConfig` discovers `*.browser.spec.ts` separately from the E2E
-`*.spec.ts` and generated VRT capture cases. CI should explicitly run all three
+`component_browser_test` consumes the built gallery and compiled component specs.
+E2E uses a compiled custom server adapter serving the same built app. The runtime
+selects compiled `*.browser.spec.js` separately from E2E `*.spec.js` and generated
+VRT captures. CI should explicitly run all three
 manual browser targets. Screenshot baselines and updates remain in `visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares

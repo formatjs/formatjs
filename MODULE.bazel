@@ -427,10 +427,10 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
-# Component VRT testbed. Use a release once rules_web_e2e is published.
+# Built browser inputs API; use a release containing this interface when available.
 bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
 git_override(
     module_name = "rules_web_e2e",
-    commit = "892eda37aee0fb53254fb3f76a5c574ea1277e14",
+    commit = "c8e8d2df567dbc95d36a111967f868ea00ba87f3",
     remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
