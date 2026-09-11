@@ -65,6 +65,11 @@ jobs:
             --prefix "$RUNNER_TEMP/release-please" \
             release-please@17.6.0
 
+      - name: Verify release dependency propagation
+        run: >-
+          bazel test //tools:release_please_npm_plugin_test
+          --test_env=NODE_PATH="$RUNNER_TEMP/release-please/node_modules"
+
       - name: Verify Release Please package manifest updates
         env:
           NODE_PATH: ${{ runner.temp }}/release-please/node_modules

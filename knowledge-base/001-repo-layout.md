@@ -138,7 +138,11 @@ When Release Please creates or updates release PRs,
 `//:release_please_npm_workspace_graph` from the package manifests and runs the
 local `tools/release-please/run.ts` wrapper. That wrapper registers the
 `formatjs-bazel-workspace` plugin so dependent npm packages are patch-bumped
-from the Bazel-generated dependency graph. When Release Please creates npm
+from the Bazel-generated dependency graph. Rust-only release candidates seed their
+native npm dependents before the workspace plugin runs, so propagation does
+not depend on an unrelated npm release. The release workflow tests the real
+plugin against the generated graph, including optional dependencies, manifest
+updates, and unrelated-package isolation. When Release Please creates npm
 package releases, it passes those released package paths to `release.yml`. The
 npm publish workflow builds the Bazel `:dist` output and uses npm Trusted
 Publishing, then publishes only the package paths Release Please released. Rust

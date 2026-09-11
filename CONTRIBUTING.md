@@ -130,7 +130,10 @@ Releases are automated via GitHub Actions:
 
 1. The **Release Please** workflow runs on `main` and maintains release PRs for
    npm packages and Rust crates. Release notes use GitHub-generated changelogs
-   so entries include PR titles, PR links, and contributors.
+   so entries include PR titles, PR links, and contributors. Dependency releases
+   propagate through the Bazel-generated npm graph, including optional native
+   packages. Rust-only CLI releases also bump their native npm packages and
+   dependent CLI wrappers without requiring another npm release.
 
 2. Merge the release PR when it is ready. Release Please creates the package
    tags and GitHub releases from the merged release PR, then calls the
