@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.20 (2026-09-11)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* refactor(@formatjs/editor): consume built browser test inputs by @longlho in https://github.com/formatjs/formatjs/pull/7335
+* fix(formatjs_intl): restrict verbatim text to domain sources by @longlho in https://github.com/formatjs/formatjs/pull/7349
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64@1.1.19...@formatjs/cli-native-linux-x64@1.1.20
+
 ## 1.1.19 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

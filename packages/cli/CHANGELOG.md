@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.16.26 (2026-09-11)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+* refactor(@formatjs/editor): consume built browser test inputs by @longlho in https://github.com/formatjs/formatjs/pull/7335
+* fix(formatjs_intl): restrict verbatim text to domain sources by @longlho in https://github.com/formatjs/formatjs/pull/7349
+
+
+**Full Changelog**: https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.16.25...@formatjs/cli@6.16.26
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.20
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.20
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.18
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.20
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.18
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.21
+
 ## 6.16.25 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
