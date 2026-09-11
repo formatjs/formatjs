@@ -61,7 +61,11 @@ test('intrinsic branding ignores user getters, subclasses, and foreign realms', 
   expect(
     formatter().format(runInNewContext('new Temporal.PlainDate(2020, 2, 3)'))
   ).toBe('2/3/2020')
-  class Subclass extends Temporal.PlainDate {}
+  class Subclass extends Temporal.PlainDate {
+    constructor(year: number, month: number, day: number) {
+      super(year, month, day)
+    }
+  }
   expect(formatter().format(new Subclass(2020, 2, 3))).toBe('2/3/2020')
   const impostor = {
     [Symbol.toStringTag]: 'Temporal.PlainDate',
