@@ -10,6 +10,11 @@
   ],
   "packageRules": [
     {
+      "description": "Keep Ruff parser and AST types on the same revision",
+      "groupName": "Ruff",
+      "matchPackageNames": ["ruff_python_ast", "ruff_python_parser", "ruff_text_size"]
+    },
+    {
       "description": "Group NAPI-RS updates",
       "groupName": "NAPI-RS",
       "matchPackageNames": ["napi", "napi-derive"]
