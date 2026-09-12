@@ -27,7 +27,7 @@ const logger = {
 let checked = 0
 
 assert.equal(VERSION, '17.6.0')
-assert.equal(config['changelog-type'], 'github')
+assert.equal(config['changelog-type'], 'default')
 assert.deepEqual(releaseNotesConfig.changelog.exclude.authors, [
   'renovate[bot]',
 ])

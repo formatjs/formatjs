@@ -120,9 +120,11 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint                          |
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
-GitHub-generated changelog notes include PR titles, PR links, and contributors.
-`.github/release.yml` excludes Renovate-authored PRs from those notes so
-dependency maintenance does not hide user-facing changes.
+package-scoped changelogs use the default Conventional Commits generator.
+The GitHub generator ignores package-filtered commits and includes unrelated
+repository PRs between package tags, so it must not be used for package releases.
+Workspace dependency bumps are listed separately by the workspace plugins.
+`.github/release.yml` only controls manually requested GitHub-generated notes.
 For npm packages, Release Please advances versions in both package-local Bazel
 `BUILD.bazel` `x-release-please-version` markers and checked-in `package.json`
 files; `package_json_sync` keeps the rest of each generated manifest in sync.
