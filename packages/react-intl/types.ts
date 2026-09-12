@@ -7,7 +7,11 @@ import {
   type ResolvedIntlConfig as CoreResolvedIntlConfig,
   type Formatters,
   type IntlFormatters,
-  type MessageDescriptor,
+  type UntypedMessageDescriptor,
+  type TypedMessageDescriptor,
+  type TypedMessageArguments,
+  type MessageValues,
+  type MessageValuesOf,
 } from '@formatjs/intl'
 import {
   type FormatXMLElementFn,
@@ -29,15 +33,29 @@ export interface ResolvedIntlConfig extends CoreResolvedIntlConfig<React.ReactNo
 
 export interface IntlShape
   extends ResolvedIntlConfig, IntlFormatters<React.ReactNode> {
+  formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<
+      MessageValuesOf<NoInfer<D>>,
+      string,
+      React.ReactNode
+    >
+  ): string
+  formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, React.ReactNode>
+  ): React.ReactNode
   formatMessage(
     this: void,
-    descriptor: MessageDescriptor,
+    descriptor: UntypedMessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
   formatMessage(
     this: void,
-    descriptor: MessageDescriptor,
+    descriptor: UntypedMessageDescriptor,
     values?: Record<
       string,
       | React.ReactNode

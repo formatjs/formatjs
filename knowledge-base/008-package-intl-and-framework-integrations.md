@@ -115,3 +115,15 @@ entry points; `FormatDurationOptions` is exported from the client and server.
 - `LocalePicker`, `MessagePreview`, `CopyTextButton`, and `MessageContext` share the public design-system context. Optional typed tool adapters resolve to native defaults, preserving existing registries. Locale selection stays controlled; preview preserves ICU branches/skeletons without executing tags; clipboard feedback ignores obsolete writes; metadata uses the existing message/source-location types. See `demo/tools-demo.tsx` and browser `/?tools=1`.
 - Views accept loaded lists, search callbacks, selected detail, and per-locale drafts; fetching, pagination controls, confirmation, and persistence remain caller-owned.
 - See `packages/editor/README.md` for state lifetime, submission snapshots, adapter contracts, and examples.
+
+### Opt-in typed message descriptors
+
+`defineMessage<Values>(descriptor, {typed: true})` and
+`defineMessages<Contracts>(catalog, {typed: true})` attach phantom contracts for
+`formatMessage` and `$t`. Existing one-argument overloads retain their behavior.
+`MessageValue` represents plain arguments; `MessageTag` is resolved to the
+formatter's callback type. Generated annotations come from the opt-in
+`enforce-message-types` ESLint rule, not a recursive TypeScript string parser.
+Checks require retaining `TypedMessageDescriptor`; widening to
+`MessageDescriptor` intentionally loses the contract. JSX and ID-only catalog
+inference are outside this API.

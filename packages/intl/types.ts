@@ -1,3 +1,10 @@
+import type {
+  MessageValues,
+  MessageValuesOf,
+  TypedMessageDescriptor,
+  TypedMessageArguments,
+  UntypedMessageDescriptor,
+} from '#packages/intl/typed-message.js'
 // Keep public duration types usable without native Intl.DurationFormat declarations.
 import type {
   DurationFormat,
@@ -200,27 +207,47 @@ export interface IntlFormatters<TBase = unknown> {
     value: Parameters<Intl.PluralRules['select']>[0],
     opts?: FormatPluralOptions
   ): ReturnType<Intl.PluralRules['select']>
+  formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, string, TBase>
+  ): string
+  formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, TBase>
+  ): string | TBase | Array<string | TBase>
   formatMessage(
     this: void,
-    descriptor: MessageDescriptor,
+    descriptor: UntypedMessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
   formatMessage<T extends TBase, TValue extends T | FormatXMLElementFn<T>>(
     this: void,
-    descriptor: MessageDescriptor,
+    descriptor: UntypedMessageDescriptor,
     values?: Record<string, PrimitiveType | TValue>,
     opts?: IntlMessageFormatOptions
   ): string | T | Array<string | T>
+  $t<D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, string, TBase>
+  ): string
+  $t<D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, TBase>
+  ): string | TBase | Array<string | TBase>
   $t(
     this: void,
-    descriptor: MessageDescriptor,
+    descriptor: UntypedMessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
   $t<T extends TBase>(
     this: void,
-    descriptor: MessageDescriptor,
+    descriptor: UntypedMessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
     opts?: IntlMessageFormatOptions
   ): string | T | (T | string)[]
