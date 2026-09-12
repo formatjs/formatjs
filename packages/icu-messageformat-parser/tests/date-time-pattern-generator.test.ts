@@ -153,3 +153,15 @@ it.each(['fr-CA', 'zh-TW', 'en-GB', 'fr-CA-u-hc-h12', 'en-GB-u-hc-h12'])(
     expect(formatter.format(midnight)).toBe(native.format(midnight))
   }
 )
+
+it.each([
+  ['fr-CA', 'H'],
+  ['zh-TW', 'ha'],
+])('uses locale-specific CLDR fallback for %s', (tag, expected) => {
+  const locale = new Intl.Locale(tag)
+  Object.defineProperties(locale, {
+    getHourCycles: {value: undefined},
+    hourCycles: {value: undefined},
+  })
+  expect(getBestPattern('j', locale)).toBe(expected)
+})

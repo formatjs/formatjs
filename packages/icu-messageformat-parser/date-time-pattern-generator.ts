@@ -87,9 +87,10 @@ function getDefaultHourSymbolFromLocale(locale: Intl.Locale): string {
     regionTag = locale.maximize().region
   }
   const hourCycles =
+    timeData[`${languageTag}-${regionTag}`] ||
     timeData[regionTag || ''] ||
     timeData[languageTag || ''] ||
     timeData[`${languageTag}-001`] ||
     timeData['001']
-  return hourCycles[0]
+  return hourCycles[0].charAt(0)
 }
