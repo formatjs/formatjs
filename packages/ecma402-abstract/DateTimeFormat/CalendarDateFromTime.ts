@@ -57,7 +57,16 @@ const eras: Record<string, string> = {
   ap: '0',
 }
 
-/** Calendar fields for an already timezone-adjusted millisecond value. */
+/**
+ * FormatJS helper, not a named ECMA-402 abstract operation. Converts an already
+ * timezone-adjusted millisecond value into calendar fields for ToLocalTime.
+ * ECMA-402 leaves non-Gregorian calculations to the best available calendar data:
+ * https://tc39.es/ecma402/#sec-tolocaltime
+ *
+ * Calendar arithmetic uses temporal-polyfill/fns and generated ICU4X tables;
+ * era and month name indices address CLDR data:
+ * https://unicode.org/reports/tr35/tr35-dates.html#Calendar_Elements
+ */
 export function CalendarDateFromTime(
   t: number,
   calendar: string

@@ -27,7 +27,17 @@ function yearLength(packed: number): number {
   return days
 }
 
-/** Decode pinned ICU calendar data without consulting native Intl. */
+/**
+ * FormatJS table decoder, not a named ECMA-402 abstract operation. Supplies
+ * Chinese/Dangi calendar fields for the calendar-specific branch of ToLocalTime:
+ * https://tc39.es/ecma402/#sec-tolocaltime
+ *
+ * Tables come from pinned ICU4X calculations in
+ * packages/intl-datetimeformat/scripts/calendar-data/lunisolar.rs.
+ * Checkpoints, dictionary packing, and lookup are our storage format.
+ * Leap-month patterns and cyclic year names follow LDML:
+ * https://unicode.org/reports/tr35/tr35-dates.html#monthPatterns_cyclicNameSets
+ */
 export function LunisolarDateFromTime(
   t: number,
   data: CalendarData
