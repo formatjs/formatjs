@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "9.4.1",
+  "version": "9.4.2",
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "keywords": [
     "Intl.NumberFormat",

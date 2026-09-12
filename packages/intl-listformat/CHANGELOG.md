@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.3.14...@formatjs/intl-listformat@8.3.15) (2026-09-12)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.9.0
+
 ## 8.3.14 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

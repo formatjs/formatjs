@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.8.14...@formatjs/intl-localematcher@0.9.0) (2026-09-12)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** support optional CLDR calendars ([#7356](https://github.com/formatjs/formatjs/issues/7356)) ([abdfe7e](https://github.com/formatjs/formatjs/commit/abdfe7e7a0563290224092410ab5953d6b18f57d))
+
 ## 0.8.14 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

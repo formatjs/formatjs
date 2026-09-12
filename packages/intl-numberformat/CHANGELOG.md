@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.4.1...@formatjs/intl-numberformat@9.4.2) (2026-09-12)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.9.0
+
 ## 9.4.1 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

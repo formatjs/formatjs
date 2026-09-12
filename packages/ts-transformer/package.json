@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ts-transformer",
-  "version": "4.4.19",
+  "version": "4.4.20",
   "description": "TS Compiler transformer for formatjs",
   "keywords": [
     "i18n",

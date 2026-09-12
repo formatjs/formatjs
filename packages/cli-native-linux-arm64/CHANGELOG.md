@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.2.21](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-arm64@1.2.20...@formatjs/cli-native-linux-arm64@1.2.21) (2026-09-12)
+
 ## 1.2.20 (2026-09-11)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
