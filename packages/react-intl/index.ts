@@ -10,7 +10,6 @@ import {
   type FormatDateOptions,
   type FormatDurationOptions,
   type FormatTimeOptions,
-  type MessageDescriptor,
 } from '@formatjs/intl'
 import * as React from 'react'
 import {
@@ -69,17 +68,13 @@ export {
   useIntl,
 }
 
-export function defineMessages<
-  K extends keyof any,
-  T = MessageDescriptor,
-  U extends Record<K, T> = Record<K, T>,
->(msgs: U): U {
-  return msgs
-}
-
-export function defineMessage<T extends MessageDescriptor>(msg: T): T {
-  return msg
-}
+export {
+  defineMessage,
+  defineMessages,
+  type MessageValue,
+  type MessageTag,
+  type TypedMessageDescriptor,
+} from '@formatjs/intl'
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
 export const FormattedDate: React.FC<
   Intl.DateTimeFormatOptions &

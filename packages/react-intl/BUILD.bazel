@@ -195,6 +195,7 @@ formatjs_test(
         "tests/unit/react-19-key-warning.test.tsx",
         "tests/unit/react-intl.test.tsx",
         "tests/unit/testUtils.tsx",
+        "tests/unit/typed-message.test.tsx",
         "tests/unit/types.test.tsx",
     ],
     config = "vitest.config.mjs",

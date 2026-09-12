@@ -1001,3 +1001,62 @@ I won the {ranking}{
 
 1. More concise message.
 2. Ensures that the count are correctly formatted as numbers.
+
+## enforce-message-types
+
+Opt-in ICU argument contracts for TypeScript `defineMessage` and `defineMessages`
+calls imported from `@formatjs/intl`, `react-intl`, or `react-intl/server`.
+This rule is not enabled in the recommended or strict presets.
+
+```js
+{
+  'formatjs/enforce-message-types': ['error', {generateTypes: true}]
+}
+```
+
+`generateTypes` defaults to `false`. Enable it to annotate previously untyped
+static declarations with `eslint --fix`. Even when false, the rule checks and
+refreshes existing generated contracts. Use a TypeScript-capable ESLint parser.
+JavaScript files and untyped dynamic messages are left unchanged.
+
+```ts
+const message = defineMessage</* @formatjs-generated */ {
+  count: number | bigint
+}>(
+  {
+    id: 'items',
+    defaultMessage: '{count, plural, one {# item} other {# items}}',
+  },
+  {typed: true}
+)
+
+intl.formatMessage(message, {count: 2}) // OK
+intl.formatMessage(message, {count: 'two'}) // TypeScript error
+intl.formatMessage(message) // TypeScript error: missing count
+```
+
+The existing ICU parser handles apostrophe escaping, tags, skeletons, offsets,
+and nested branches. Contracts include arguments from every branch. Numbers and
+plurals use `number | bigint`; dates and times use `number | Date`; selectors
+use `string` because `other` accepts arbitrary selectors. Plain arguments use
+`MessageValue`, and tags use `MessageTag`, resolved to callbacks by the formatter.
+The helper's import module supplies these types through inline type imports.
+Incompatible uses of one argument produce a diagnostic without a fix.
+
+Generated contracts carry the `@formatjs-generated` comment so later fixes can
+refresh them. Handwritten generics are never overwritten. Typed declarations
+with unsupported or dynamic source expressions receive a diagnostic instead of
+a guessed contract. Spreads and computed properties are not generated.
+
+The `{typed: true}` overload attaches only type-level metadata. Existing helper
+calls and untyped formatting behavior stay unchanged. Both `formatMessage` and
+`$t` enforce contracts. React Intl also supports rich-text callbacks returning
+React nodes. This does not add typed JSX `FormattedMessage` props or infer
+contracts from ID-only calls. A dynamically selected typed descriptor requires
+values for every possible message.
+
+Keep this rule in CI: TypeScript checks the generated contract, not whether it
+still matches the ICU source. Catalog translations still need structural
+validation. Explicitly widening a typed descriptor to `MessageDescriptor` erases
+its checks, as does using `any`. Generated helper results retain the standard
+`MessageDescriptor` shape rather than the original descriptor's literal ID type.
