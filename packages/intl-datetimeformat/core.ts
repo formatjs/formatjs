@@ -1,6 +1,9 @@
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
-import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
+import {
+  ToDateTimeFormattable,
+  type TemporalDateTimeValue,
+} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
 import {IsValidTimeZoneName} from '#packages/ecma402-abstract/IsValidTimeZoneName.js'
@@ -10,6 +13,7 @@ import {
   type DateTimeFormat as IDateTimeFormat,
   type IntlDateTimeFormatInternal,
   type TABLE_6,
+  type TemporalDateTimeInput,
   type UnpackedZoneData,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
@@ -64,6 +68,15 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'timeStyle',
 ]
 
+function getDateTimeImplementationDetails() {
+  return {
+    getInternalSlots,
+    localeData: DateTimeFormat.localeData,
+    tzData: DateTimeFormat.tzData,
+    getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+  }
+}
+
 const formatDescriptor = {
   enumerable: false,
   configurable: true,
@@ -74,19 +87,18 @@ const formatDescriptor = {
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
-      boundFormat = (date?: Date | number) => {
-        let x: Decimal
+      boundFormat = (date?: Date | number | TemporalDateTimeInput) => {
+        let x: Decimal | TemporalDateTimeValue
         if (date === undefined) {
           x = new Decimal(Date.now())
         } else {
-          x = ToNumber(date)
+          x = ToDateTimeFormattable(date)
         }
-        return FormatDateTime(dtf as Intl.DateTimeFormat, x, {
-          getInternalSlots,
-          localeData: DateTimeFormat.localeData,
-          tzData: DateTimeFormat.tzData,
-          getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-        })
+        return FormatDateTime(
+          dtf as Intl.DateTimeFormat,
+          x,
+          getDateTimeImplementationDetails()
+        )
       }
       try {
         // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
@@ -258,20 +270,18 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
 })
 
 const {formatToParts} = {
-  formatToParts(this: Intl.DateTimeFormat, date?: number | Date) {
+  formatToParts(
+    this: Intl.DateTimeFormat,
+    date?: number | Date | TemporalDateTimeInput
+  ) {
     getInternalSlots(this)
-    let x: Decimal
+    let x: Decimal | TemporalDateTimeValue
     if (date === undefined) {
       x = new Decimal(Date.now())
     } else {
-      x = ToNumber(date)
+      x = ToDateTimeFormattable(date)
     }
-    return FormatDateTimeToParts(this, x, {
-      getInternalSlots,
-      localeData: DateTimeFormat.localeData,
-      tzData: DateTimeFormat.tzData,
-      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-    })
+    return FormatDateTimeToParts(this, x, getDateTimeImplementationDetails())
   },
 }
 
@@ -282,8 +292,8 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
 const {formatRangeToParts} = {
   formatRangeToParts(
     this: Intl.DateTimeFormat,
-    startDate: number | Date,
-    endDate: number | Date
+    startDate: number | Date | TemporalDateTimeInput,
+    endDate: number | Date | TemporalDateTimeInput
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
@@ -297,16 +307,13 @@ const {formatRangeToParts} = {
       TypeError
     )
 
+    const x = ToDateTimeFormattable(startDate)
+    const y = ToDateTimeFormattable(endDate)
     return FormatDateTimeRangeToParts(
       dtf,
-      ToNumber(startDate),
-      ToNumber(endDate),
-      {
-        getInternalSlots,
-        localeData: DateTimeFormat.localeData,
-        tzData: DateTimeFormat.tzData,
-        getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-      }
+      x,
+      y,
+      getDateTimeImplementationDetails()
     )
   },
 }
@@ -318,8 +325,8 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
 const {formatRange} = {
   formatRange(
     this: Intl.DateTimeFormat,
-    startDate: number | Date,
-    endDate: number | Date
+    startDate: number | Date | TemporalDateTimeInput,
+    endDate: number | Date | TemporalDateTimeInput
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
@@ -332,12 +339,9 @@ const {formatRange} = {
       'startDate/endDate cannot be undefined',
       TypeError
     )
-    return FormatDateTimeRange(dtf, ToNumber(startDate), ToNumber(endDate), {
-      getInternalSlots,
-      localeData: DateTimeFormat.localeData,
-      tzData: DateTimeFormat.tzData,
-      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-    })
+    const x = ToDateTimeFormattable(startDate)
+    const y = ToDateTimeFormattable(endDate)
+    return FormatDateTimeRange(dtf, x, y, getDateTimeImplementationDetails())
   },
 }
 

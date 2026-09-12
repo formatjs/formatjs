@@ -1,5 +1,5 @@
 import {type DateTimeFormat} from '#packages/ecma402-abstract/types/date-time.js'
-import type Decimal from '@formatjs/bigdecimal'
+import type {DateTimeFormattable} from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
 import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimePattern.js'
 
 /**
@@ -9,7 +9,7 @@ import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeForma
  */
 export function FormatDateTime(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
-  x: Decimal,
+  x: DateTimeFormattable,
   implDetails: Parameters<typeof PartitionDateTimePattern>[2]
 ): string {
   const parts = PartitionDateTimePattern(dtf, x, implDetails)

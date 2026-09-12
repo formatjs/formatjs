@@ -8,6 +8,7 @@ import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
   type Formats,
+  type TemporalDateTimeKind,
   type IntlDateTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
@@ -335,6 +336,12 @@ export function InitializeDateTimeFormat(
   )
   internalSlots.timeStyle = timeStyle
 
+  const temporalOptions = {...opt}
+  const temporalHourCycle = resolveHourCycle(
+    internalSlots.hourCycle,
+    dataLocaleData,
+    hour12
+  )
   let bestFormat
   if (dateStyle === undefined && timeStyle === undefined) {
     // ECMA-402 §11.1.2 CreateDateTimeFormat, step 32.a–d: compute
@@ -443,5 +450,122 @@ export function InitializeDateTimeFormat(
   )
   internalSlots.pattern = pattern
   internalSlots.rangePatterns = rangePatterns
+  // Temporal GetDateTimeFormat and AdjustDateTimeStyleFormat use the original
+  // component record. Cache variants without rereading the caller's options.
+  // https://tc39.es/proposal-temporal/#sec-getdatetimeformat
+  // https://tc39.es/proposal-temporal/#sec-adjustdatetimestyleformat
+  const temporalFormats = new Map<
+    TemporalDateTimeKind,
+    IntlDateTimeFormatInternal
+  >()
+  internalSlots.getTemporalFormat = kind => {
+    const cached = temporalFormats.get(kind)
+    if (cached) return cached
+    const dateFields = ['weekday', 'year', 'month', 'day'] as const
+    const timeFields = [
+      'dayPeriod',
+      'hour',
+      'minute',
+      'second',
+      'fractionalSecondDigits',
+    ] as const
+    const allFields = [...dateFields, ...timeFields]
+    const required =
+      kind === 'PlainDate'
+        ? [...dateFields]
+        : kind === 'PlainYearMonth'
+          ? (['year', 'month'] as const)
+          : kind === 'PlainMonthDay'
+            ? (['month', 'day'] as const)
+            : kind === 'PlainTime'
+              ? [...timeFields]
+              : allFields
+    const defaults =
+      kind === 'PlainDate'
+        ? (['year', 'month', 'day'] as const)
+        : kind === 'PlainTime'
+          ? (['hour', 'minute', 'second'] as const)
+          : kind === 'PlainYearMonth' || kind === 'PlainMonthDay'
+            ? required
+            : (['year', 'month', 'day', 'hour', 'minute', 'second'] as const)
+    const allowed: Array<keyof Opt> = [...required]
+    if (kind !== 'PlainTime' && kind !== 'PlainMonthDay') allowed.push('era')
+    if (kind === 'Instant') allowed.push('timeZoneName')
+    const selectedOptions: Opt = Object.create(null)
+    let selected: Formats
+    if (dateStyle !== undefined || timeStyle !== undefined) {
+      if (
+        (kind === 'PlainTime' && timeStyle === undefined) ||
+        ((kind === 'PlainDate' ||
+          kind === 'PlainYearMonth' ||
+          kind === 'PlainMonthDay') &&
+          dateStyle === undefined)
+      ) {
+        throw new TypeError(
+          'DateTimeFormat styles do not overlap the Temporal type'
+        )
+      }
+      for (const key of allowed) {
+        Object.assign(selectedOptions, {
+          [key]: bestFormat[key as keyof Formats],
+        })
+      }
+      const conflicting = DATE_TIME_PROPS.some(
+        key => bestFormat[key] !== undefined && !allowed.includes(key)
+      )
+      selectedOptions.hour12 =
+        temporalHourCycle === 'h11' || temporalHourCycle === 'h12'
+      selected = !conflicting
+        ? bestFormat
+        : formatMatcher === 'basic'
+          ? BasicFormatMatcher(selectedOptions, formats)
+          : BestFitFormatMatcher(selectedOptions, formats)
+    } else {
+      for (const key of allowed)
+        Object.assign(selectedOptions, {[key]: temporalOptions[key]})
+      if (required.every(key => temporalOptions[key] === undefined)) {
+        if (
+          kind !== 'Instant' &&
+          allFields.some(key => temporalOptions[key] !== undefined)
+        ) {
+          throw new TypeError(
+            'DateTimeFormat options do not overlap the Temporal type'
+          )
+        }
+        for (const key of defaults)
+          Object.assign(selectedOptions, {[key]: 'numeric'})
+      }
+      selectedOptions.hour12 =
+        temporalHourCycle === 'h11' || temporalHourCycle === 'h12'
+      selected =
+        formatMatcher === 'basic'
+          ? BasicFormatMatcher(selectedOptions, formats)
+          : BestFitFormatMatcher(selectedOptions, formats)
+    }
+    const slots = {...internalSlots}
+    for (const key of DATE_TIME_PROPS) {
+      Object.assign(slots, {[key]: selected[key]})
+    }
+    if (selectedOptions.dayPeriod !== undefined)
+      slots.dayPeriod = selectedOptions.dayPeriod
+    if (selectedOptions.fractionalSecondDigits !== undefined)
+      slots.fractionalSecondDigits = selectedOptions.fractionalSecondDigits
+    slots.hourCycle = temporalHourCycle
+    const use12 =
+      selected.hour !== undefined &&
+      (temporalHourCycle === 'h11' || temporalHourCycle === 'h12')
+    slots.pattern = applyExplicitTimePatternOptions(
+      use12 ? selected.pattern12 : selected.pattern,
+      selectedOptions,
+      slots.locale,
+      slots.numberingSystem
+    )
+    slots.rangePatterns = use12
+      ? selected.rangePatterns12
+      : selected.rangePatterns
+    slots.format = selected
+    temporalFormats.set(kind, slots)
+    return slots
+  }
   return dtf as Intl.DateTimeFormat // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
 }

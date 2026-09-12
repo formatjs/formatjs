@@ -210,3 +210,31 @@ The benchmark uses fixed UTC inputs and native controls for `format`,
 `formatRange`, and `formatRangeToParts`, including same-date, cross-date, and
 collapsed ranges. Each timed task batches 16 calls; construction and locale-data
 registration are excluded.
+
+## Temporal input handling
+
+`TemporalDateTime.ts` captures the available Temporal intrinsic methods when the
+module loads. Brand-checking calls recognize foreign-realm values without reading
+instance properties. Intrinsic ISO serialization preserves the reference date of
+`PlainYearMonth` and `PlainMonthDay`; arithmetic conversion avoids Date's TimeClip.
+Load any Temporal polyfill before importing DateTimeFormat.
+
+`InitializeDateTimeFormat` retains the already-read component options and caches
+formats by Temporal type. Plain values format in `+00:00` without changing the
+formatter's resolved timezone. Instants use its configured timezone.
+`HandleDateTimeValue` produces the proposal's value-format record: selected format,
+exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip.
+Partitioning and pattern formatting consume that record without a Temporal bypass
+flag. `ToLocalTime` floors to milliseconds after adding the timezone offset.
+Range conversion processes both arguments before checking their Temporal types.
+Gregorian and ISO 8601 are still the only implemented calendars.
+
+Run `//packages/intl-datetimeformat:temporal_test` for dedicated regressions on the
+pinned Test262 Node runtime, plus the ordinary package test for Node 24 behavior.
+Legacy and grandfathered behavior is outside the conformance improvement target;
+those upstream tests remain executed and visible in raw baseline totals.
+
+The date generator synthesizes missing time interval patterns before combining
+with the date pattern. This keeps same-day datetime ranges from repeating the
+date when CLDR has no interval for the requested time precision. Existing hour
+cycle interval patterns retain precedence over the synthesized fallback.

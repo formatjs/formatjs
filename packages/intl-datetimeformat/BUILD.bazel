@@ -1,3 +1,4 @@
+# gazelle:exclude tests/temporal.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -425,4 +426,14 @@ test262_test(
     ],
     prelude = "test262-polyfill.js",
     suite = "intl402/DateTimeFormat",
+)
+
+formatjs_test(
+    name = "temporal_test",
+    srcs = [
+        "tests/temporal.test.ts",
+        ":tests-locale-data-en",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+    deps = TEST_DEPS,
 )

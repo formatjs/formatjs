@@ -1,4 +1,3 @@
-import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
 import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
@@ -131,7 +130,8 @@ function createNumberFormatters(internalSlots: IntlDateTimeFormatInternal): {
 export function FormatDateTimePattern(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
   patternParts: IntlDateTimeFormatPart[],
-  x: Decimal,
+  epochNanoseconds: bigint,
+  isPlain: boolean,
   {
     getInternalSlots,
     localeData,
@@ -140,7 +140,6 @@ export function FormatDateTimePattern(
     rangeFormatOptions,
   }: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
-  x = TimeClip(x)
   /** IMPL START */
   const internalSlots = getInternalSlots(dtf)
   const dataLocale = internalSlots.dataLocale
@@ -166,10 +165,10 @@ export function FormatDateTimePattern(
   const tm =
     rangeFormatOptions?.localTime ??
     ToLocalTime(
-      x,
+      epochNanoseconds,
       // @ts-ignore
       internalSlots.calendar,
-      internalSlots.timeZone,
+      isPlain ? '+00:00' : internalSlots.timeZone,
       {tzData}
     )
   const result: Intl.DateTimeFormatPart[] = []

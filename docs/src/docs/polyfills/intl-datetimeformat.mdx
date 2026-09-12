@@ -27,6 +27,19 @@ This package implements `Intl.DateTimeFormat`. See the [conformance report](http
 - **`formatRangeToParts(startDate, endDate)`** - Format a date range and return parts array with source attribution
 - **`resolvedOptions()`** - Return resolved formatting options
 
+#### Temporal inputs
+
+When `globalThis.Temporal` is available before importing this polyfill, all four
+formatting methods accept `Temporal.PlainDate`, `PlainDateTime`, `PlainTime`,
+`PlainYearMonth`, `PlainMonthDay`, and `Instant` values. Plain values use their
+wall-clock fields; `Instant` uses the formatter's timezone. Range endpoints must
+have the same Temporal type. `ZonedDateTime` is rejected, as required by the spec.
+
+Options select only fields relevant to the input type. Non-overlapping options
+throw `TypeError`; incompatible calendars throw `RangeError`. Gregorian and
+ISO 8601 remain the supported calendars. `PlainYearMonth` and `PlainMonthDay`
+require the formatter's calendar to match exactly, including `iso8601`.
+
 #### ✅ dateStyle & timeStyle Options
 
 - **Proposal**: [Intl.DateTimeFormat dateStyle & timeStyle](https://github.com/tc39/proposal-intl-datetime-style)

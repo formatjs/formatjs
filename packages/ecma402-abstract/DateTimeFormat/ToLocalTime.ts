@@ -10,7 +10,7 @@ import {
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import type Decimal from '@formatjs/bigdecimal'
+import Decimal from '@formatjs/bigdecimal'
 
 // Cached regex patterns for performance
 const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
@@ -133,7 +133,7 @@ export interface ToLocalTimeImplDetails {
  * @param timeZone
  */
 export function ToLocalTime(
-  t: Decimal,
+  epochNanoseconds: bigint,
   calendar: string,
   timeZone: string,
   {tzData}: ToLocalTimeImplDetails
@@ -156,13 +156,14 @@ export function ToLocalTime(
     calendar === 'gregory' || calendar === 'iso8601',
     'Unsupported calendar'
   )
+  const milliseconds = new Decimal(String(epochNanoseconds)).div(1000000)
   const [timeZoneOffset, inDST] = getApplicableZoneData(
-    t.toNumber(),
+    milliseconds.floor().toNumber(),
     timeZone,
     tzData
   )
 
-  const tz = t.plus(timeZoneOffset).toNumber()
+  const tz = milliseconds.plus(timeZoneOffset).floor().toNumber()
   const year = YearFromTime(tz)
   return {
     weekday: WeekDay(tz),

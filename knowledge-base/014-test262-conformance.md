@@ -1,6 +1,6 @@
 # Test262 conformance baseline
 
-Measured 2026-09-09 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
+Measured 2026-09-11 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
 using the pinned Node 26.8.1 Test262 host. Counts include strict/default executions.
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |               158 |              52 |               158 |
+| datetimeformat      |      488 |                48 |              52 |                48 |
 | displaynames        |      114 |                 2 |               0 |                 2 |
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
@@ -20,12 +20,11 @@ excluded because it fails.
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 2 |               6 |                 2 |
 
-Total: 2,498 executions, 2,312 polyfill passes, 186 polyfill failures. The native
-control fails 86 executions; 44 failing cases overlap. Overlap does not prove
-a polyfill is correct: each failure still needs comparison with the selected
-spec and test's feature metadata.
+Total: 2,498 executions, 2,422 polyfill passes, 76 polyfill failures. The native
+control column retains the 2026-09-09 measurement (86 failures); it was not rerun.
+Native failures do not establish polyfill correctness.
 
-Combined: 2,498 executions, 2,312 passes, 186 failures.
+Combined: 2,498 executions, 2,422 passes, 76 failures.
 
 Combined installation adds two Locale collation-data expectation failures while
 fixing two native Locale-branding failures. RelativeTimeFormat has the same two
@@ -60,10 +59,9 @@ not need a directory-wide Gazelle ignore.
 
 ## Work remaining
 
-The [2026-09-09 tracking report](./015-test262-progress-2026-09-09.md) classifies
-all 186 remaining failures per mode, with exact testcase inventory, spec
-references, deferred tradeoffs, and performance measurements. Temporal input
-integration and non-Gregorian calendars remain substantial implementation gaps.
+The [2026-09-11 tracking report](./015b-test262-progress-2026-09-11.md) records
+the 110 Temporal fixes and 76 remaining failures per mode. Non-Gregorian
+calendars remain the main implementation gap.
 Foreign-realm/native-brand limitations, optional legacy construction, and
 specific data/proposal expectations stay visible in the raw counts.
 

@@ -1,12 +1,13 @@
-import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
   type DateTimeFormat,
   type IntlDateTimeFormatPart,
   type IntlDateTimeFormatPartType,
 } from '#packages/ecma402-abstract/types/date-time.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
-import type Decimal from '@formatjs/bigdecimal'
+import {
+  HandleDateTimeValue,
+  type DateTimeFormattable,
+} from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
 import {
   FormatDateTimePattern,
   type FormatDateTimePatternImplDetails,
@@ -20,22 +21,18 @@ import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFo
  */
 export function PartitionDateTimePattern(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
-  x: Decimal,
+  x: DateTimeFormattable,
   implDetails: ToLocalTimeImplDetails & FormatDateTimePatternImplDetails
 ): IntlDateTimeFormatPart[] {
-  x = TimeClip(x)
-  invariant(!x.isNaN(), 'Invalid time', RangeError)
-
-  /** IMPL START */
-  const {getInternalSlots} = implDetails
-  const internalSlots = getInternalSlots(dtf)
-  /** IMPL END */
+  const record = HandleDateTimeValue(implDetails.getInternalSlots(dtf), x)
+  const internalSlots = record.format
 
   const {pattern} = internalSlots
   return FormatDateTimePattern(
     dtf,
     PartitionPattern<IntlDateTimeFormatPartType>(pattern),
-    x,
-    implDetails
+    record.epochNanoseconds,
+    record.isPlain,
+    {...implDetails, getInternalSlots: () => internalSlots}
   )
 }
