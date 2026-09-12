@@ -57,6 +57,8 @@ ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35
 | s      | Second                        |
 | z      | Time Zone                     |
 
+With a `locale` parse option, `j` uses the locale’s preferred hour cycle. Explicit `hourCycle` options and `u-hc` extensions take precedence. The parser supports both `Intl.Locale.getHourCycles()` and the legacy `hourCycles` property.
+
 ## Benchmarks
 
 ```
