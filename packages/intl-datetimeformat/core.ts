@@ -1,3 +1,7 @@
+import type {
+  CalendarData,
+  CalendarRegistry,
+} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {
@@ -34,6 +38,7 @@ import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.j
 import {unpack} from '#packages/intl-datetimeformat/unpack.js'
 import {
   type PackedData,
+  type RawCalendarLocaleData,
   type RawDateTimeLocaleData,
 } from '#packages/intl-datetimeformat/types.js'
 
@@ -73,6 +78,7 @@ function getDateTimeImplementationDetails() {
     getInternalSlots,
     localeData: DateTimeFormat.localeData,
     tzData: DateTimeFormat.tzData,
+    calendarData: DateTimeFormat.calendarData,
     getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
   }
 }
@@ -141,6 +147,9 @@ export interface DateTimeFormatConstructor {
   ): IDateTimeFormat
 
   __addLocaleData(...data: RawDateTimeLocaleData[]): void
+  __addCalendarData(...data: CalendarData[]): void
+  __addCalendarLocaleData(...data: RawCalendarLocaleData[]): void
+  calendarData: CalendarRegistry
   supportedLocalesOf(
     locales: string | string[],
     options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
@@ -385,75 +394,224 @@ function findIntervalFormat(
   intervalFormats: Record<string, any>
 ): Record<string, string> | undefined {
   const commaIdx = skeleton.indexOf(', ')
-  if (commaIdx === -1) return undefined
-  const datePart = skeleton.slice(0, commaIdx)
-  const timePart = skeleton.slice(commaIdx + 2)
-  // Canonicalize the time part: strip non-skeleton chars (colons, spaces),
-  // remove AM/PM markers (a/b/B are implied by h/K hour symbols),
-  // and collapse repeated field chars (hh→h, mm→m, ss→s)
-  const canonical = timePart
-    .replace(/[^a-zA-Z]/g, '')
-    .replace(/[abB]/g, '')
-    .replace(/(.)\1+/g, '$1')
-  if (canonical === timePart) return undefined
-  const canonicalKey = `${datePart}, ${canonical}`
-  return intervalFormats[canonicalKey]
+  if (commaIdx !== -1) {
+    const datePart = skeleton.slice(0, commaIdx)
+    const timePart = skeleton.slice(commaIdx + 2)
+    let canonical = ''
+    for (const c of timePart) {
+      if (
+        ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) &&
+        c !== 'a' &&
+        c !== 'b' &&
+        c !== 'B' &&
+        canonical[canonical.length - 1] !== c
+      )
+        canonical += c
+    }
+    const matched = intervalFormats[`${datePart}, ${canonical}`]
+    if (matched) return matched
+  }
+  // CLDR date styles can use a wider month name than the interval skeleton.
+  // Match the same fields; formatting retains the requested field widths.
+  const target = parseDateTimeSkeleton(skeleton)
+  if (
+    target.hour ||
+    target.minute ||
+    target.second ||
+    target.dayPeriod ||
+    target.timeZoneName
+  )
+    return undefined
+  for (const key of Object.keys(intervalFormats)) {
+    if (typeof intervalFormats[key] !== 'object') continue
+    const candidate = parseDateTimeSkeleton(key)
+    const numericMonth = (month: unknown) =>
+      month === 'numeric' || month === '2-digit'
+    if (numericMonth(target.month) !== numericMonth(candidate.month)) continue
+    if (
+      DATE_TIME_PROPS.every(
+        field =>
+          (target[field] !== undefined) === (candidate[field] !== undefined)
+      )
+    ) {
+      return intervalFormats[key]
+    }
+  }
+  return undefined
+}
+
+function parseDateTimeStyles({
+  dateFormat,
+  timeFormat,
+  dateTimeFormat,
+  intervalFormats,
+}: Pick<
+  RawDateTimeLocaleData['data'],
+  'dateFormat' | 'timeFormat' | 'dateTimeFormat' | 'intervalFormats'
+>) {
+  const parseStyle = (pattern: string) =>
+    parseDateTimeSkeleton(
+      pattern,
+      pattern,
+      findIntervalFormat(pattern, intervalFormats),
+      intervalFormats.intervalFormatFallback
+    )
+  return {
+    dateFormat: {
+      full: parseStyle(dateFormat.full),
+      long: parseStyle(dateFormat.long),
+      medium: parseStyle(dateFormat.medium),
+      short: parseStyle(dateFormat.short),
+    },
+    timeFormat: {
+      full: parseStyle(timeFormat.full),
+      long: parseStyle(timeFormat.long),
+      medium: parseStyle(timeFormat.medium),
+      short: parseStyle(timeFormat.short),
+    },
+    dateTimeFormat: {
+      full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
+      long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
+      medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
+      short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
+    },
+  }
+}
+
+// Calendar arithmetic and locale patterns may arrive in either order. Retain
+// raw records so adding a calendar does not discard previously loaded calendars.
+const rawLocaleData = new Map<string, RawDateTimeLocaleData>()
+const calendarLocaleData = new Map<string, Map<string, RawCalendarLocaleData>>()
+const processedLocales = new Map<string, DateTimeFormatLocaleInternalData>()
+const calendarPreferences = new WeakMap<
+  DateTimeFormatLocaleInternalData,
+  string[]
+>()
+
+function updateAvailableCalendars(data: DateTimeFormatLocaleInternalData) {
+  // ResolveLocale must only select calendars with both arithmetic and patterns.
+  // Preserve CLDR preference order; Gregorian remains available without add-ons.
+  // https://tc39.es/ecma402/#sec-resolvelocale
+  data.ca = calendarPreferences
+    .get(data)!
+    .filter(
+      calendar =>
+        Object.prototype.hasOwnProperty.call(data.formats, calendar) &&
+        (calendar === 'gregory' ||
+          calendar === 'iso8601' ||
+          Object.prototype.hasOwnProperty.call(
+            DateTimeFormat.calendarData,
+            calendar
+          ))
+    )
 }
 
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
-  for (const {data: d, locale} of data) {
+  for (const entry of data) {
+    const {locale} = entry
+    rawLocaleData.set(locale, entry)
+    const d = {
+      ...entry.data,
+      ca: [...entry.data.ca],
+      formats: {...entry.data.formats},
+      calendarData: {...entry.data.calendarData},
+    }
+    for (const patch of calendarLocaleData.get(locale)?.values() ?? []) {
+      if (d.ca.indexOf(patch.calendar) < 0) d.ca.push(patch.calendar)
+      d.formats[patch.calendar] = patch.formats
+      d.calendarData[patch.calendar] = patch.data
+    }
     const {
       dateFormat,
       timeFormat,
       dateTimeFormat,
       formats,
       intervalFormats,
+      calendarData,
       ...rawData
     } = d
     const processedData: DateTimeFormatLocaleInternalData = {
       ...rawData,
-      dateFormat: {
-        full: parseDateTimeSkeleton(dateFormat.full),
-        long: parseDateTimeSkeleton(dateFormat.long),
-        medium: parseDateTimeSkeleton(dateFormat.medium),
-        short: parseDateTimeSkeleton(dateFormat.short),
-      },
-      timeFormat: {
-        full: parseDateTimeSkeleton(timeFormat.full),
-        long: parseDateTimeSkeleton(timeFormat.long),
-        medium: parseDateTimeSkeleton(timeFormat.medium),
-        short: parseDateTimeSkeleton(timeFormat.short),
-      },
-      dateTimeFormat: {
-        full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
-        long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
-        medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
-        short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
-      },
+      ...parseDateTimeStyles({
+        dateFormat,
+        timeFormat,
+        dateTimeFormat,
+        intervalFormats,
+      }),
       intervalFormatFallback: intervalFormats.intervalFormatFallback,
       formats: {},
     }
 
     for (const calendar in formats) {
-      processedData.formats[calendar] = Object.keys(formats[calendar]).map(
-        skeleton =>
-          parseDateTimeSkeleton(
-            skeleton,
-            formats[calendar][skeleton],
-            intervalFormats[skeleton] ||
-              findIntervalFormat(skeleton, intervalFormats),
-            intervalFormats.intervalFormatFallback
-          )
-      )
+      if (calendar === 'iso8601') continue
+      const calendarIntervals =
+        calendarData?.[calendar]?.intervalFormats ?? intervalFormats
+      let parsed:
+        | DateTimeFormatLocaleInternalData['formats'][string]
+        | undefined
+      Object.defineProperty(processedData.formats, calendar, {
+        enumerable: true,
+        get() {
+          return (parsed ??= Object.keys(formats[calendar]).map(skeleton =>
+            parseDateTimeSkeleton(
+              skeleton,
+              formats[calendar][skeleton],
+              calendarIntervals[skeleton] ||
+                findIntervalFormat(skeleton, calendarIntervals),
+              calendarIntervals.intervalFormatFallback
+            )
+          ))
+        },
+      })
     }
 
     // ISO 8601 uses Gregorian year/month/day fields; week-date fields are
     // not exposed by DateTimeFormat. Reuse patterns without duplicating data.
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/common/bcp47/calendar.xml#L27
-    processedData.formats.iso8601 = processedData.formats.gregory
+    Object.defineProperty(processedData.formats, 'iso8601', {
+      enumerable: true,
+      get: () => processedData.formats.gregory,
+    })
 
+    if (calendarData) {
+      processedData.calendarData = {}
+      for (const calendar of Object.keys(calendarData)) {
+        const fields = calendarData[calendar]
+        const {intervalFormats: calendarIntervals, ...calendarFields} = fields
+        let parsed: DateTimeFormatLocaleInternalData | undefined
+        Object.defineProperty(processedData.calendarData, calendar, {
+          enumerable: true,
+          get() {
+            return (parsed ??= {
+              ...processedData,
+              ...calendarFields,
+              // Keep parsed formats even if a caller supplies a wider locale record.
+              formats: processedData.formats,
+              ...parseDateTimeStyles({
+                ...calendarFields,
+                intervalFormats: calendarIntervals,
+              }),
+              intervalFormatFallback: calendarIntervals.intervalFormatFallback,
+              calendarData: undefined,
+            })
+          },
+        })
+      }
+    }
+
+    calendarPreferences.set(processedData, [...d.ca])
+    updateAvailableCalendars(processedData)
+    const previous = processedLocales.get(locale)
+    if (previous) {
+      for (const tag of Object.keys(DateTimeFormat.localeData)) {
+        if (DateTimeFormat.localeData[tag] === previous) {
+          DateTimeFormat.localeData[tag] = processedData
+        }
+      }
+    }
+    processedLocales.set(locale, processedData)
     registerLocaleData(
       locale,
       processedData,
@@ -475,6 +633,35 @@ DateTimeFormat.getDefaultLocale = () => {
   return DateTimeFormat.__defaultLocale
 }
 DateTimeFormat.polyfilled = true
+DateTimeFormat.calendarData = Object.create(null)
+// Registration is a FormatJS extension. Custom providers supply their own
+// ToLocalTime calendar arithmetic; loading one never changes existing selections.
+DateTimeFormat.__addCalendarData = function (...data: CalendarData[]) {
+  for (const {calendar, dateFromTime} of data) {
+    createDataProperty(DateTimeFormat.calendarData, calendar, dateFromTime)
+  }
+  for (const locale of new Set(
+    Object.keys(DateTimeFormat.localeData).map(
+      locale => DateTimeFormat.localeData[locale]
+    )
+  )) {
+    updateAvailableCalendars(locale)
+  }
+}
+DateTimeFormat.__addCalendarLocaleData = function (
+  ...data: RawCalendarLocaleData[]
+) {
+  for (const patch of data) {
+    let calendars = calendarLocaleData.get(patch.locale)
+    if (!calendars) {
+      calendars = new Map()
+      calendarLocaleData.set(patch.locale, calendars)
+    }
+    calendars.set(patch.calendar, patch)
+    const raw = rawLocaleData.get(patch.locale)
+    if (raw) DateTimeFormat.__addLocaleData(raw)
+  }
+}
 DateTimeFormat.tzData = {}
 DateTimeFormat.__addTZData = function (d: PackedData) {
   DateTimeFormat.tzData = unpack(d)

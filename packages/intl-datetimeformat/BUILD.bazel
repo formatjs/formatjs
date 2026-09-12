@@ -1,4 +1,5 @@
 # gazelle:exclude tests/temporal.test.ts
+# gazelle:exclude tests/temporal-polyfill.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -38,6 +39,7 @@ TEST_DEPS = [
     "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/DateTimeFormat",
+    "//packages/ecma402-abstract/DateTimeFormat/calendars",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
@@ -46,17 +48,51 @@ TEST_DEPS = [
     "//:node_modules/@types/node",
 ]
 
+CALENDARS = [
+    "buddhist",
+    "coptic",
+    "ethiopic",
+    "ethioaa",
+    "roc",
+    "japanese",
+    "indian",
+    "islamic-civil",
+    "islamic-tbla",
+    "persian",
+    "hebrew",
+    "islamic-umalqura",
+    "chinese",
+    "dangi",
+]
+
 ENTRY_POINTS = [
     "index.ts",
     "polyfill.ts",
     "polyfill-force.ts",
     "should-polyfill.ts",
-]
+    "add-all-calendars.ts",
+] + ["calendar-data/%s.ts" % calendar for calendar in CALENDARS]
 
 formatjs_library(
     name = "intl-datetimeformat",
     package_name = "@formatjs/intl-datetimeformat",
     srcs = [
+        "add-all-calendars.ts",
+        "calendar-data/buddhist.ts",
+        "calendar-data/chinese.ts",
+        "calendar-data/coptic.ts",
+        "calendar-data/dangi.ts",
+        "calendar-data/ethioaa.ts",
+        "calendar-data/ethiopic.ts",
+        "calendar-data/hebrew.ts",
+        "calendar-data/indian.ts",
+        "calendar-data/islamic-civil.ts",
+        "calendar-data/islamic-tbla.ts",
+        "calendar-data/islamic-umalqura.ts",
+        "calendar-data/japanese.ts",
+        "calendar-data/persian.ts",
+        "calendar-data/register.ts",
+        "calendar-data/roc.ts",
         "core.ts",
         "get_internal_slots.ts",
         "index.ts",
@@ -99,6 +135,8 @@ formatjs_library(
         "./polyfill.js": "./polyfill.js",
         "./polyfill-force.js": "./polyfill-force.js",
         "./should-polyfill.js": "./should-polyfill.js",
+        "./add-all-calendars.js": "./add-all-calendars.js",
+        "./calendar-data/*": "./calendar-data/*",
         "./add-all-tz.js": "./add-all-tz.js",
         "./add-golden-tz.js": "./add-golden-tz.js",
         "./locale-data/*": "./locale-data/*",
@@ -112,6 +150,7 @@ formatjs_library(
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/DateTimeFormat/calendars",
         "//packages/ecma402-abstract/types",
     ],
 )
@@ -121,6 +160,7 @@ formatjs_test(
     srcs = [
         "tests/abstract/BestFitFormatMatcher.test.ts",
         "tests/abstract/skeleton.test.ts",
+        "tests/calendar-loading.test.ts",
         "tests/format.test.ts",
         "tests/format-range.test.ts",
         "tests/ftp-main.test.ts",
@@ -153,6 +193,7 @@ formatjs_test(
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/DateTimeFormat/calendars",
         "//packages/ecma402-abstract/types",
     ],
 )
@@ -185,6 +226,17 @@ ts_run_binary(
         "types.ts",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-bcp47",
+        "//:node_modules/cldr-cal-buddhist-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-chinese-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-coptic-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-dangi-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-ethiopic-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-hebrew-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-indian-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-islamic-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-japanese-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-persian-full",  # keep: dynamic calendar JSON imports
+        "//:node_modules/cldr-cal-roc-full",  # keep: dynamic calendar JSON imports
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
         "//:node_modules/cldr-numbers-full",
@@ -214,7 +266,15 @@ ts_run_binary(
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
-    outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
+    outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES] + [
+        "calendar-data/%s/%s.%s" % (calendar, locale, extension)
+        for calendar in CALENDARS
+        for locale in ALL_LOCALES
+        for extension in [
+            "js",
+            "d.ts",
+        ]
+    ],
     args = [
         "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
@@ -390,6 +450,16 @@ filegroup(
     visibility = ["//packages/intl-datetimeformat/benchmark:__pkg__"],
 )
 
+filegroup(
+    name = "serialization_test_data",
+    srcs = [
+        ":calendar-data/hebrew/en.js",
+        ":cldr-raw/en.json",
+        ":locale-data/en.js",
+    ],
+    visibility = ["//packages/intl-datetimeformat/scripts:__pkg__"],
+)
+
 # Use with `bazel run`.
 alias(
     name = "benchmark",
@@ -414,18 +484,21 @@ rolldown_bundle(
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/DateTimeFormat/calendars",  # keep: generated prelude loads optional calendars
         "//packages/ecma402-abstract/types",
     ],
 )
 
 test262_test(
     name = "test262",
+    timeout = "eternal",
     data = [
         "@com_github_tc39_test262//:test262-datetimeformat-copy",
         "@com_github_tc39_test262//:test262-harness-copy",
     ],
     prelude = "test262-polyfill.js",
     suite = "intl402/DateTimeFormat",
+    threads = 4,
 )
 
 formatjs_test(
@@ -436,4 +509,15 @@ formatjs_test(
     ],
     node_toolchain = "//tools/test262:node-runtime",
     deps = TEST_DEPS,
+)
+
+formatjs_test(
+    name = "temporal_polyfill_test",
+    srcs = [
+        "tests/temporal-polyfill.test.ts",
+        ":tests-locale-data-en",
+        ":tests-locale-data-ko",  # keep: generated locale data imported by tests
+        ":tests-locale-data-zh-Hans",  # keep: generated locale data imported by tests
+    ],
+    deps = TEST_DEPS + ["//:node_modules/temporal-polyfill"],
 )

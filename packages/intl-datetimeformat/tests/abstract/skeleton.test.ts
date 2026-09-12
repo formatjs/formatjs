@@ -160,3 +160,14 @@ test('flexible day-period intervals retain their own field', () => {
   expect(format.rangePatterns12.ampm).toBeUndefined()
   expect(format.dayPeriod).toBe('short')
 })
+
+test('pattern parsing preserves quoted fields and doubled apostrophes', () => {
+  expect(processDateTimePattern("h 'o''clock' a")).toEqual([
+    "{hour} o'clock",
+    "{hour} o'clock {ampm}",
+  ])
+  expect(processDateTimePattern("''yyyy 'year' MM")).toEqual([
+    "'{year} year {month}",
+    "'{year} year {month}",
+  ])
+})

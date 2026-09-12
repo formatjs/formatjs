@@ -1,0 +1,46 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
+
+rust_binary(
+    name = "umm_al_qura",
+    srcs = ["umm_al_qura.rs"],
+    deps = ["@crates//:icu"],
+)
+
+rust_binary(
+    name = "lunisolar",
+    srcs = ["lunisolar.rs"],
+    deps = ["@crates//:icu"],
+)
+
+[
+    generate_package_file(
+        name = calendar + "_data",
+        src = calendar + ".ts",
+        args = [
+            "--calendar",
+            calendar,
+        ],
+        tool = ":lunisolar",
+    )
+    for calendar in [
+        "chinese",
+        "dangi",
+    ]
+]
+
+generate_package_file(
+    name = "umm_al_qura_data",
+    src = "umm-al-qura.ts",
+    tool = ":umm_al_qura",
+)
+
+formatjs_generated_package(
+    name = "pkg",
+    package_name = "icu.calendar",
+    srcs = [
+        ":chinese_data",
+        ":dangi_data",
+        ":umm_al_qura_data",
+    ],
+)

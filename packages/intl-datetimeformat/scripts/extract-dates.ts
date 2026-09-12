@@ -28,6 +28,35 @@ import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
+const CALENDAR_FILES: Record<string, [string, string]> = {
+  chinese: ['chinese', 'chinese'],
+  dangi: ['dangi', 'dangi'],
+  hebrew: ['hebrew', 'hebrew'],
+  buddhist: ['buddhist', 'buddhist'],
+  coptic: ['coptic', 'coptic'],
+  ethiopic: ['ethiopic', 'ethiopic'],
+  ethioaa: ['ethiopic', 'ethiopic-amete-alem'],
+  roc: ['roc', 'roc'],
+  japanese: ['japanese', 'japanese'],
+  indian: ['indian', 'indian'],
+  'islamic-civil': ['islamic', 'islamic-civil'],
+  'islamic-umalqura': ['islamic', 'islamic-umalqura'],
+  'islamic-tbla': ['islamic', 'islamic-tbla'],
+  persian: ['persian', 'persian'],
+}
+const ERA_KEY = /^\d+$/
+
+function extractEras(eras: Record<string, string>, calendar: string) {
+  return Object.fromEntries(
+    Object.entries(eras)
+      .filter(([key]) => ERA_KEY.test(key))
+      .map(([key, value]) => [
+        calendar === 'gregory' ? (key === '0' ? 'BC' : 'AD') : key,
+        value,
+      ])
+  )
+}
+
 const NON_SKELETON_LETTERS = /[^a-zA-Z]/g
 const DAY_PERIOD_LETTERS = /[abB]/g
 const REPEATED_SKELETON_LETTERS = /(.)\1+/g
@@ -206,12 +235,20 @@ function extractTimezoneToMetazoneMap(): Record<string, string> {
 const tzToMetaZoneMap = extractTimezoneToMetazoneMap()
 
 async function loadDatesFields(
-  locale: string
+  locale: string,
+  calendar = 'gregory'
 ): Promise<RawDateTimeLocaleInternalData> {
+  const calendarFile = CALENDAR_FILES[calendar]
+  const calendarName = calendarFile?.[1] ?? 'gregorian'
   const [caGregorianImport, tznImport, numbersImport] = await Promise.all([
-    import(`cldr-dates-full/main/${locale}/ca-gregorian.json`, {
-      with: {type: 'json'},
-    }) as Promise<{default: typeof DateFields}>,
+    import(
+      calendarFile
+        ? `cldr-cal-${calendarFile[0]}-full/main/${locale}/ca-${calendarName}.json`
+        : `cldr-dates-full/main/${locale}/ca-gregorian.json`,
+      {
+        with: {type: 'json'},
+      }
+    ) as Promise<{default: typeof DateFields}>,
     import(`cldr-dates-full/main/${locale}/timeZoneNames.json`, {
       with: {type: 'json'},
     }) as Promise<{default: typeof TimeZoneNames}>,
@@ -221,8 +258,18 @@ async function loadDatesFields(
       {default: typeof NumberFields} | undefined
     >,
   ])
-  const gregorian =
-    caGregorianImport.default.main[locale as 'en'].dates.calendars.gregorian
+  const calendarFields =
+    caGregorianImport.default.main[locale as 'en'].dates.calendars[
+      calendarName as 'gregorian'
+    ]
+  const gregorianEras =
+    calendar === 'japanese'
+      ? (
+          await import(`cldr-dates-full/main/${locale}/ca-gregorian.json`, {
+            with: {type: 'json'},
+          })
+        ).default.main[locale].dates.calendars.gregorian.eras
+      : undefined
   const timeZoneNames =
     tznImport.default.main[locale as 'en'].dates.timeZoneNames
   const numbers = numbersImport?.default.main[locale as 'en'].numbers
@@ -309,10 +356,10 @@ async function loadDatesFields(
     throw e
   }
 
-  const {short, full, medium, long} = gregorian.dateTimeFormats
+  const {short, full, medium, long} = calendarFields.dateTimeFormats
 
-  const {availableFormats} = gregorian.dateTimeFormats
-  let rawIntervalFormats = gregorian.dateTimeFormats.intervalFormats
+  const {availableFormats} = calendarFields.dateTimeFormats
+  let rawIntervalFormats = calendarFields.dateTimeFormats.intervalFormats
   const intervalFormats = Object.keys(rawIntervalFormats)
     .filter(isDefaultDataKey)
     .reduce((all: Record<string, string | Record<string, string>>, k) => {
@@ -324,6 +371,10 @@ async function loadDatesFields(
     availableFormats
   )
     .filter(isDefaultDataKey)
+    // Numeric year options prefer ordinary year skeletons over cyclic names.
+    .sort(
+      (left, right) => Number(left.includes('U')) - Number(right.includes('U'))
+    )
     .map(skeleton => {
       const pattern = availableFormats[skeleton as 'Bh']
       const skeletonIntervalFormats = intervalFormats[skeleton]
@@ -351,15 +402,16 @@ async function loadDatesFields(
       }
     })
     .filter((f): f is [string, string, Formats] => !!f)
-  const dateFormats = Object.values(gregorian.dateFormats).reduce(
+  const dateFormats = Object.values(calendarFields.dateFormats).reduce(
     (all: Record<string, string>, v) => {
       // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
-      all[v] = typeof v === 'object' ? (v as {_value: string})._value : v
+      const pattern = typeof v === 'object' ? (v as {_value: string})._value : v
+      all[pattern] = pattern
       return all
     },
     {}
   )
-  const timeFormats = Object.values(gregorian.timeFormats).reduce(
+  const timeFormats = Object.values(calendarFields.timeFormats).reduce(
     (all: Record<string, string>, v) => {
       // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
       all[v] = v
@@ -521,69 +573,99 @@ async function loadDatesFields(
       }
     }
   }
+  const extractMonths = (names: Record<string, string>) => {
+    if (calendar !== 'hebrew') return Object.values(names)
+    return [
+      ...Array.from({length: 13}, (_, index) => names[String(index + 1)]),
+      names['7-yeartype-leap'],
+    ]
+  }
+  const lunar = calendarFields as typeof calendarFields & {
+    cyclicNameSets?: {years: {format: {abbreviated: Record<string, string>}}}
+    monthPatterns?: Record<string, Record<string, {leap: string}>>
+  }
+  const leapWidths = (patterns: Record<string, {leap: string}>) => ({
+    narrow: patterns.narrow.leap,
+    short: patterns.abbreviated.leap,
+    long: patterns.wide.leap,
+  })
   return {
-    am: gregorian.dayPeriods.format.abbreviated.am,
-    pm: gregorian.dayPeriods.format.abbreviated.pm,
+    yearNames:
+      lunar.cyclicNameSets &&
+      Object.values(lunar.cyclicNameSets.years.format.abbreviated),
+    leapMonthPatterns: lunar.monthPatterns && {
+      numeric: lunar.monthPatterns.numeric.all.leap,
+      format: leapWidths(lunar.monthPatterns.format),
+      standalone: leapWidths(lunar.monthPatterns['stand-alone']),
+    },
+    am: calendarFields.dayPeriods.format.abbreviated.am,
+    pm: calendarFields.dayPeriods.format.abbreviated.pm,
     dayPeriods: {
-      narrow: gregorian.dayPeriods.format.narrow,
-      short: gregorian.dayPeriods.format.abbreviated,
-      long: gregorian.dayPeriods.format.wide,
+      narrow: calendarFields.dayPeriods.format.narrow,
+      short: calendarFields.dayPeriods.format.abbreviated,
+      long: calendarFields.dayPeriods.format.wide,
     },
     dayPeriodRules: getDayPeriodRules(locale),
     weekday: {
-      narrow: Object.values(gregorian.days.format.narrow),
-      short: Object.values(gregorian.days.format.abbreviated),
-      long: Object.values(gregorian.days.format.wide),
+      narrow: Object.values(calendarFields.days.format.narrow),
+      short: Object.values(calendarFields.days.format.abbreviated),
+      long: Object.values(calendarFields.days.format.wide),
     },
     era: {
       narrow: {
-        BC: gregorian.eras.eraNarrow[0],
-        AD: gregorian.eras.eraNarrow[1],
+        ...extractEras(calendarFields.eras?.eraNarrow ?? {}, calendar),
+        ...(gregorianEras
+          ? extractEras(gregorianEras.eraNarrow, 'gregory')
+          : {}),
       },
       short: {
-        BC: gregorian.eras.eraAbbr[0],
-        AD: gregorian.eras.eraAbbr[1],
+        ...extractEras(calendarFields.eras?.eraAbbr ?? {}, calendar),
+        ...(gregorianEras ? extractEras(gregorianEras.eraAbbr, 'gregory') : {}),
       },
       long: {
-        BC: gregorian.eras.eraNames[0],
-        AD: gregorian.eras.eraNames[1],
+        ...extractEras(calendarFields.eras?.eraNames ?? {}, calendar),
+        ...(gregorianEras
+          ? extractEras(gregorianEras.eraNames, 'gregory')
+          : {}),
       },
     },
     month: {
-      narrow: Object.values(gregorian.months.format.narrow),
-      short: Object.values(gregorian.months.format.abbreviated),
-      long: Object.values(gregorian.months.format.wide),
+      narrow: extractMonths(calendarFields.months.format.narrow),
+      short: extractMonths(calendarFields.months.format.abbreviated),
+      long: extractMonths(calendarFields.months.format.wide),
     },
     // Include stand-alone month forms if they differ from format forms
-    ...(gregorian.months['stand-alone'] &&
+    ...(calendarFields.months['stand-alone'] &&
     (!isEqual(
-      gregorian.months['stand-alone'].narrow,
-      gregorian.months.format.narrow
+      calendarFields.months['stand-alone'].narrow,
+      calendarFields.months.format.narrow
     ) ||
       !isEqual(
-        gregorian.months['stand-alone'].abbreviated,
-        gregorian.months.format.abbreviated
+        calendarFields.months['stand-alone'].abbreviated,
+        calendarFields.months.format.abbreviated
       ) ||
       !isEqual(
-        gregorian.months['stand-alone'].wide,
-        gregorian.months.format.wide
+        calendarFields.months['stand-alone'].wide,
+        calendarFields.months.format.wide
       ))
       ? {
           monthStandalone: {
-            narrow: Object.values(gregorian.months['stand-alone'].narrow),
-            short: Object.values(gregorian.months['stand-alone'].abbreviated),
-            long: Object.values(gregorian.months['stand-alone'].wide),
+            narrow: extractMonths(calendarFields.months['stand-alone'].narrow),
+            short: extractMonths(
+              calendarFields.months['stand-alone'].abbreviated
+            ),
+            long: extractMonths(calendarFields.months['stand-alone'].wide),
           },
         }
       : {}),
     timeZoneName,
     gmtFormat: timeZoneNames.gmtFormat,
     hourFormat: timeZoneNames.hourFormat,
-    dateFormat: extractStyleFormatFields(gregorian.dateFormats),
-    timeFormat: extractStyleFormatFields(gregorian.timeFormats),
-    dateTimeFormat: extractStyleFormatFields(gregorian.dateTimeFormats),
+    dateFormat: extractStyleFormatFields(calendarFields.dateFormats),
+    timeFormat: extractStyleFormatFields(calendarFields.timeFormats),
+    dateTimeFormat: extractStyleFormatFields(calendarFields.dateTimeFormats),
     formats: {
-      gregory: allFormats,
+      [calendar]: allFormats,
     },
     // @ts-ignore
     intervalFormats,
@@ -607,7 +689,45 @@ async function loadDatesFields(
 export async function extractDatesFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Promise<Record<string, RawDateTimeLocaleInternalData>> {
-  const data = await Promise.all(locales.map(loadDatesFields))
+  const data = await Promise.all(
+    locales.map(async locale => {
+      const data = await loadDatesFields(locale)
+      data.calendarData = {}
+      const calendars = await Promise.all(
+        Object.keys(CALENDAR_FILES).map(
+          async calendar =>
+            [calendar, await loadDatesFields(locale, calendar)] as const
+        )
+      )
+      for (const [calendar, fields] of calendars) {
+        const {
+          era,
+          month,
+          monthStandalone,
+          yearNames,
+          leapMonthPatterns,
+          dateFormat,
+          timeFormat,
+          dateTimeFormat,
+          intervalFormats,
+        } = fields
+        data.calendarData[calendar] = {
+          era,
+          month,
+          monthStandalone,
+          yearNames,
+          leapMonthPatterns,
+          dateFormat,
+          timeFormat,
+          dateTimeFormat,
+          intervalFormats,
+        }
+        data.formats[calendar] = fields.formats[calendar]
+        data.ca.push(calendar)
+      }
+      return data
+    })
+  )
   return locales.reduce(
     (all: Record<string, RawDateTimeLocaleInternalData>, locale, i) => {
       all[locale] = data[i]
@@ -622,15 +742,18 @@ export async function extractDatesFields(
  * would increase the size of the saved payload if not ommitted.
  * @param formatObject
  */
-function extractStyleFormatFields<
-  T extends {full: string; long: string; medium: string; short: string},
->(
-  formatObject: T
+function extractStyleFormatFields(
+  formatObject: Record<
+    'full' | 'long' | 'medium' | 'short',
+    string | {_value: string}
+  >
 ): {full: string; long: string; medium: string; short: string} {
+  const pattern = (value: string | {_value: string}) =>
+    typeof value === 'string' ? value : value._value
   return {
-    full: formatObject.full,
-    long: formatObject.long,
-    medium: formatObject.medium,
-    short: formatObject.short,
+    full: pattern(formatObject.full),
+    long: pattern(formatObject.long),
+    medium: pattern(formatObject.medium),
+    short: pattern(formatObject.short),
   }
 }

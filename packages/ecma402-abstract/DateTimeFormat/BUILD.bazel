@@ -5,6 +5,7 @@ formatjs_library(
     srcs = [
         "BasicFormatMatcher.ts",
         "BestFitFormatMatcher.ts",
+        "CalendarDateFromTime.ts",
         "DateTimeStyleFormat.ts",
         "FormatDateTime.ts",
         "FormatDateTimePattern.ts",
@@ -13,6 +14,7 @@ formatjs_library(
         "FormatDateTimeToParts.ts",
         "HandleDateTimeValue.ts",
         "InitializeDateTimeFormat.ts",
+        "LunisolarDateFromTime.ts",
         "PartitionDateTimePattern.ts",
         "PartitionDateTimeRangePattern.ts",
         "TemporalDateTime.ts",

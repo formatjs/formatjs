@@ -39,8 +39,9 @@ repository host aliases are not used for remote execution. Normal build tools
 retain Node 24.14.0. Realm fixtures verify Temporal in child and grandchild realms.
 Host crashes and empty diagnostics are validation errors, never baseline entries.
 
-Baselines cover individual polyfill installations. Combined-polyfill coverage
-remains a follow-up; dependencies may use native Intl in individual suites.
+Baselines cover both individual and combined polyfill installations. Run
+`//tools/test262:combined` for all twelve combined suites. Dependencies may use
+native Intl in individual suites; combined suites install all twelve polyfills.
 
 ## Bazel execution
 
@@ -54,3 +55,8 @@ undeclared test outputs. There is no `:test262-report` build action. Wall-clock
 values remain available in raw diagnostics; baseline comparison normalizes only
 the known shared clock-dependent endpoint. Empty/malformed results and exit-status
 mismatches fail validation. Generated-rule fixtures execute at test time too.
+
+DateTimeFormat and combined suites allow one hour for the complete suite because
+calendar data increases per-process startup cost. Individual upstream cases still
+have the same 30-second harness timeout; longer suite budgets do not suppress
+case failures or change the selected tests.

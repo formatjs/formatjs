@@ -172,6 +172,7 @@ COMBINED_PRELUDES = [
 [
     test262_test(
         name = "combined-" + name,
+        timeout = "eternal",
         baseline = "baselines/combined-" + name + ".json",
         data = [
             "@com_github_tc39_test262//:test262-" + name + "-copy",

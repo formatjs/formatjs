@@ -126,11 +126,17 @@ export type TimeZoneNameData = Record<
 >
 
 export interface EraData {
-  BC: string
-  AD: string
+  [era: string]: string
 }
 
 export interface DateTimeFormatLocaleInternalData {
+  yearNames?: string[]
+  leapMonthPatterns?: {
+    numeric: string
+    format: {narrow: string; short: string; long: string}
+    standalone: {narrow: string; short: string; long: string}
+  }
+  calendarData?: Record<string, DateTimeFormatLocaleInternalData>
   am: string
   pm: string
   dayPeriods?: {

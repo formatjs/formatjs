@@ -4,8 +4,9 @@ A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformanc
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-datetimeformat)
 
 <Admonition type="caution">
-  This polyfill supports Gregorian and ISO 8601 calendars. Unsupported calendar
-  requests fall back to Gregorian.
+  Gregorian and ISO 8601 are built in. Other calendars require optional modules
+  and locale patterns; unloaded calendar requests fall back to a loaded
+  calendar.
 </Admonition>
 
 <Admonition type="caution">
@@ -35,10 +36,20 @@ formatting methods accept `Temporal.PlainDate`, `PlainDateTime`, `PlainTime`,
 wall-clock fields; `Instant` uses the formatter's timezone. Range endpoints must
 have the same Temporal type. `ZonedDateTime` is rejected, as required by the spec.
 
+For runtimes without native Temporal, install `temporal-polyfill` and load it first:
+
+```js
+import 'temporal-polyfill/full/global'
+import '@formatjs/intl-datetimeformat/polyfill-force'
+import '@formatjs/intl-datetimeformat/locale-data/en'
+```
+
 Options select only fields relevant to the input type. Non-overlapping options
-throw `TypeError`; incompatible calendars throw `RangeError`. Gregorian and
-ISO 8601 remain the supported calendars. `PlainYearMonth` and `PlainMonthDay`
+throw `TypeError`; incompatible calendars throw `RangeError`. Supported calendars are `gregory`, `iso8601`, `buddhist`, `coptic`,
+`ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
+`japanese`, `hebrew`, `chinese`, and `dangi`. `PlainYearMonth` and `PlainMonthDay`
 require the formatter's calendar to match exactly, including `iso8601`.
+Calendar aliases are canonicalized; `calendar: 'islamicc'` selects `islamic-civil`.
 
 #### ✅ dateStyle & timeStyle Options
 
@@ -169,6 +180,53 @@ import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 The polyfill also replaces `Date.prototype.toLocaleString`,
 `toLocaleDateString`, and `toLocaleTimeString` with their ECMA-402 behavior,
 including the standard date and time defaults when only `timeZone` is set.
+
+### Optional calendars
+
+The base polyfill and `locale-data/<locale>.js` include Gregorian and ISO 8601.
+Other calendars require both their arithmetic module and their localized names
+and patterns. Load them before constructing a formatter:
+
+```js
+await import('@formatjs/intl-datetimeformat/polyfill-force.js')
+await Promise.all([
+  import('@formatjs/intl-datetimeformat/locale-data/en.js'),
+  import('@formatjs/intl-datetimeformat/calendar-data/hebrew.js'),
+  import('@formatjs/intl-datetimeformat/calendar-data/hebrew/en.js'),
+])
+
+new Intl.DateTimeFormat('en', {calendar: 'hebrew'}).format(new Date())
+```
+
+Calendar modules register automatically and can also queue before polyfill
+installation. Arithmetic and locale patterns can arrive in either order.
+Only calendars with both loaded participate in calendar negotiation; unloaded
+calendar requests fall back to a loaded calendar. Existing formatters retain
+the calendar selected when they were constructed.
+
+Use `calendar-data/<calendar>.js` and
+`calendar-data/<calendar>/<locale>.js` for each calendar and locale you need.
+`add-all-calendars.js` explicitly loads all calendar arithmetic and tables;
+localized calendar patterns still load separately. None of these optional
+modules installs `globalThis.Temporal`.
+
+Custom providers can use the same registration APIs. `__addCalendarData` accepts
+`{calendar, dateFromTime}`; the callback receives timezone-adjusted milliseconds
+and returns `{era, year, month, day}` (zero-based month, one-based day, year within
+the era). `__addCalendarLocaleData` accepts `{locale, calendar, data, formats}`
+with that calendar's CLDR-style names and patterns. Both records must be loaded
+before the calendar can be selected. This provider API is a FormatJS extension.
+
+The arithmetic modules also export their registration record for ponyfill use:
+
+```js
+import {DateTimeFormat} from '@formatjs/intl-datetimeformat'
+import hebrew from '@formatjs/intl-datetimeformat/calendar-data/hebrew.js'
+
+DateTimeFormat.__addCalendarData(hebrew)
+// Register base locale data with __addLocaleData and calendar-specific
+// locale records with __addCalendarLocaleData when using the ponyfill directly.
+```
 
 ### Dynamic import + capability detection
 

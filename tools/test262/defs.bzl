@@ -4,7 +4,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
-def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1):
+def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long"):
     """Keep direct strict/native tests and validate captured baseline reports."""
     if threads < 1:
         fail("Test262 threads must be positive")
@@ -57,6 +57,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
         exec_properties = execution_resources,
         tags = resource_tags,
         size = "large",
+        timeout = timeout,
     )
     for mode in ["strict", "native"]:
         test262_harness_bin.test262_harness_test(
@@ -67,5 +68,6 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
             env = {"TZ": "UTC"},
             exec_properties = execution_resources,
             size = "large",
+            timeout = timeout,
             tags = ["manual"] + resource_tags,
         )

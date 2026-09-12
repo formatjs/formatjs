@@ -34,3 +34,9 @@ Uses `@formatjs/fast-memoize` to cache distance calculation results. The CLDR di
 Locale matching extracts only the Unicode `u` extension. Private-use subtags
 remain intact, including text resembling `u-co-phonebk`; trailing extensions
 are preserved separately from Unicode keywords.
+
+`CanonicalizeUValue` applies ASCII case normalization and generated CLDR Unicode
+keyword/subdivision aliases before `ResolveLocale` matches option values. For
+example, `calendar: "islamicc"` resolves to `islamic-civil`. Unknown values remain
+available for normal unsupported-value fallback; inherited object properties
+are never treated as aliases.

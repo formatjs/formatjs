@@ -1,3 +1,4 @@
+import calendars from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
@@ -13,6 +14,7 @@ import my from '#packages/intl-datetimeformat/tests/locale-data/my.json' with {t
 import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
+DateTimeFormat.__addCalendarData(...calendars)
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
 DateTimeFormat.__addTZData(allData)
@@ -43,7 +45,97 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('02:03.456')
   })
 
+  it('shares Gregorian formats with explicitly supplied ISO locale data', () => {
+    const original = DateTimeFormat.localeData.en
+    try {
+      DateTimeFormat.__addLocaleData({
+        ...en,
+        data: {
+          ...en.data,
+          formats: {...en.data.formats, iso8601: en.data.formats.gregory},
+        },
+      } as any)
+      const gregorian = new DateTimeFormat('en', {timeZone: 'UTC'})
+      const iso = new DateTimeFormat('en', {
+        calendar: 'iso8601',
+        timeZone: 'UTC',
+      })
+      expect(iso.resolvedOptions().calendar).toBe('iso8601')
+      expect(iso.formatToParts(0)).toEqual(gregorian.formatToParts(0))
+    } finally {
+      DateTimeFormat.localeData.en = original
+    }
+  })
+
+  it('does not mistake inherited properties for Temporal records', () => {
+    const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const format = () => [
+      formatter.format(0),
+      formatter.formatToParts(0),
+      formatter.formatRange(0, 86400000),
+      formatter.formatRangeToParts(0, 86400000),
+    ]
+    const expected = format()
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'kind')
+    let actual
+    try {
+      Object.defineProperty(Object.prototype, 'kind', {
+        configurable: true,
+        get() {
+          throw new Error('inherited kind read')
+        },
+      })
+      actual = format()
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, 'kind', previous)
+      else Reflect.deleteProperty(Object.prototype, 'kind')
+    }
+    expect(actual).toEqual(expected)
+  })
+
+  it.each(['gregory', 'chinese'])(
+    'parses cold %s formats without inherited setters',
+    calendar => {
+      const original = DateTimeFormat.localeData.en
+      DateTimeFormat.__addLocaleData(en as any)
+      const keys = ['hour', 'dayPeriod', '1']
+      const descriptors = keys.map(key =>
+        Object.getOwnPropertyDescriptor(Object.prototype, key)
+      )
+      let failure: unknown
+      let value: unknown
+      try {
+        for (const key of keys)
+          Object.defineProperty(Object.prototype, key, {
+            configurable: true,
+            set() {
+              throw new Error(`inherited setter: ${key}`)
+            },
+          })
+        value = new DateTimeFormat('en', {
+          calendar,
+          timeZone: 'UTC',
+          hour: 'numeric',
+          dayPeriod: 'long',
+        })
+      } catch (error) {
+        failure = error
+      } finally {
+        for (let i = 0; i < keys.length; i++) {
+          const descriptor = descriptors[i]
+          if (descriptor)
+            Object.defineProperty(Object.prototype, keys[i], descriptor)
+          else Reflect.deleteProperty(Object.prototype, keys[i])
+        }
+        DateTimeFormat.localeData.en = original
+      }
+      expect(failure).toBeUndefined()
+      expect(value).toBeInstanceOf(DateTimeFormat)
+    }
+  )
+
   it('preserves legacy RegExp statics during construction', () => {
+    DateTimeFormat.__addLocaleData(en as any)
     ;/sent(inel)/.exec('sentinel')
     const before = [RegExp.lastMatch, RegExp.$1]
     new DateTimeFormat('en', {year: 'numeric', month: 'long', timeZone: 'UTC'})
@@ -288,7 +380,7 @@ describe('Intl.DateTimeFormat', function () {
     expect(iso.format(date)).toBe(gregory.format(date))
     const unsupported = new DateTimeFormat('en', {
       ...options,
-      calendar: 'buddhist',
+      calendar: 'unknown',
     })
     expect(unsupported.resolvedOptions().calendar).toBe('gregory')
     expect(unsupported.format(date)).toBe(gregory.format(date))
@@ -350,7 +442,7 @@ describe('Intl.DateTimeFormat', function () {
         calendar: 'islamic-civil',
         timeZone: 'UTC',
       }).resolvedOptions().calendar
-    ).toBe('gregory')
+    ).toBe('islamic-civil')
   })
   it('smoke test CST', function () {
     expect(

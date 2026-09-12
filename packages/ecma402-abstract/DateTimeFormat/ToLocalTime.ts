@@ -1,15 +1,15 @@
 import {
-  DateFromTime,
   HourFromTime,
   MinFromTime,
-  MonthFromTime,
   SecFromTime,
   WeekDay,
-  YearFromTime,
   msFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {
+  CalendarDateFromTime,
+  type CalendarRegistry,
+} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import Decimal from '@formatjs/bigdecimal'
 
 // Cached regex patterns for performance
@@ -123,6 +123,7 @@ function getApplicableZoneData(
 }
 
 export interface ToLocalTimeImplDetails {
+  calendarData?: CalendarRegistry
   tzData: Record<string, UnpackedZoneData[]>
 }
 
@@ -136,14 +137,17 @@ export function ToLocalTime(
   epochNanoseconds: bigint,
   calendar: string,
   timeZone: string,
-  {tzData}: ToLocalTimeImplDetails
+  {tzData, calendarData}: ToLocalTimeImplDetails
 ): {
   weekday: number
   era: string
   year: number
-  relatedYear: undefined
-  yearName: undefined
+  relatedYear?: number
+  yearName?: number
   month: number
+  monthNameIndex?: number
+  monthNumber?: number
+  leapMonth?: boolean
   day: number
   hour: number
   minute: number
@@ -152,10 +156,6 @@ export function ToLocalTime(
   inDST: boolean
   timeZoneOffset: number
 } {
-  invariant(
-    calendar === 'gregory' || calendar === 'iso8601',
-    'Unsupported calendar'
-  )
   const milliseconds = new Decimal(String(epochNanoseconds)).div(1000000)
   const [timeZoneOffset, inDST] = getApplicableZoneData(
     milliseconds.floor().toNumber(),
@@ -164,19 +164,9 @@ export function ToLocalTime(
   )
 
   const tz = milliseconds.plus(timeZoneOffset).floor().toNumber()
-  const year = YearFromTime(tz)
   return {
+    ...CalendarDateFromTime(tz, calendar, calendarData),
     weekday: WeekDay(tz),
-    // ECMA-402 §11.5.13, ToLocalTime record table, [[Era]] row:
-    // astronomical year zero belongs to BC.
-    // https://tc39.es/ecma402/#table-datetimeformat-tolocaltime-record
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1683-L1686
-    era: year < 1 ? 'BC' : 'AD',
-    year,
-    relatedYear: undefined,
-    yearName: undefined,
-    month: MonthFromTime(tz),
-    day: DateFromTime(tz),
     hour: HourFromTime(tz),
     minute: MinFromTime(tz),
     second: SecFromTime(tz),

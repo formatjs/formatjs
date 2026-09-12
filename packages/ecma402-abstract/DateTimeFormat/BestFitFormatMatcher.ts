@@ -126,6 +126,16 @@ export function BestFitFormatMatcher(
     if (!requestedValue) {
       continue
     }
+    // Some calendars use month names even for numeric skeletons. Changing
+    // numeric to 2-digit must preserve that locale-specific representation.
+    if (
+      prop === 'month' &&
+      isNumericType(skeletonValue as 'numeric') &&
+      isNumericType(requestedValue as 'numeric') &&
+      !isNumericType(patternValue as 'short')
+    ) {
+      continue
+    }
     // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
     // Looks like we should not convert numeric to alphabetic but the other way
     // around is ok

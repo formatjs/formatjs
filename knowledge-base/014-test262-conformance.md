@@ -8,7 +8,7 @@ excluded because it fails.
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |                48 |              52 |                48 |
+| datetimeformat      |      488 |                18 |              52 |                18 |
 | displaynames        |      114 |                 2 |               0 |                 2 |
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
@@ -18,13 +18,13 @@ excluded because it fails.
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 2 |               0 |                 2 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
-| supportedvaluesof   |       50 |                 2 |               6 |                 2 |
+| supportedvaluesof   |       50 |                 2 |               6 |                 0 |
 
-Total: 2,498 executions, 2,422 polyfill passes, 76 polyfill failures. The native
+Total: 2,498 executions, 2,452 polyfill passes, 46 polyfill failures. The native
 control column retains the 2026-09-09 measurement (86 failures); it was not rerun.
 Native failures do not establish polyfill correctness.
 
-Combined: 2,498 executions, 2,422 passes, 76 failures.
+Combined: 2,498 executions, 2,454 passes, 44 failures.
 
 Combined installation adds two Locale collation-data expectation failures while
 fixing two native Locale-branding failures. RelativeTimeFormat has the same two
@@ -60,8 +60,9 @@ not need a directory-wide Gazelle ignore.
 ## Work remaining
 
 The [2026-09-11 tracking report](./015b-test262-progress-2026-09-11.md) records
-the 110 Temporal fixes and 76 remaining failures per mode. Non-Gregorian
-calendars remain the main implementation gap.
+140 DateTimeFormat fixes, plus two combined calendar-enumeration fixes.
+The remaining 46 isolated and 44 combined failures have explicit runtime,
+legacy, specification, or locale-data explanations.
 Foreign-realm/native-brand limitations, optional legacy construction, and
 specific data/proposal expectations stay visible in the raw counts.
 
@@ -158,9 +159,10 @@ Minute/second-only matching removes four fractional-second formatting failures i
 each mode. Subsequent fixes resolve range equality at displayed precision and
 flexible day periods using CLDR rules.
 
-Calendar negotiation supports Gregorian and ISO 8601 and falls back for other
-requests. Six DateTimeFormat failures per mode are fixed; Chinese-calendar and
-Stage 4 Era/Month Code integration failures remain tracked.
+Calendar negotiation and conversion support all 16 Intl Era/Month Code calendars.
+Calendar-specific CLDR patterns preserve leap months, related years, cyclic years,
+and eras. All 30 previously tracked calendar executions now pass in each mode;
+combined calendar enumeration also passes.
 
 Standalone PluralRules now uses its own compact exponent tables for the nine
 CLDR locales with c/e operands. Two isolated failures are fixed; combined

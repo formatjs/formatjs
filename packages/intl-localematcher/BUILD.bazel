@@ -53,6 +53,7 @@ formatjs_test(
     name = "intl-localematcher_test",
     srcs = [
         "tests/BestFitMatcher.test.ts",
+        "tests/CanonicalizeUValue.test.ts",
         "tests/LookupMatcher.test.ts",
         "tests/ResolveLocale.test.ts",
         "tests/benchmark.test.ts",

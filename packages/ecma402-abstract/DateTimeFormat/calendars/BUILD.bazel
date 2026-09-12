@@ -1,0 +1,30 @@
+load("//tools:compile.bzl", "formatjs_library")
+
+formatjs_library(
+    name = "calendars",
+    srcs = [
+        "all.ts",
+        "buddhist.ts",
+        "chinese.ts",
+        "coptic.ts",
+        "dangi.ts",
+        "ethioaa.ts",
+        "ethiopic.ts",
+        "hebrew.ts",
+        "indian.ts",
+        "islamic-civil.ts",
+        "islamic-tbla.ts",
+        "islamic-umalqura.ts",
+        "japanese.ts",
+        "persian.ts",
+        "roc.ts",
+        "temporal.ts",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs_generated/icu.calendar",
+        "//:node_modules/temporal-polyfill",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+    ],
+)

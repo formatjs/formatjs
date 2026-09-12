@@ -301,8 +301,10 @@ export function InitializeDateTimeFormat(
     undefined
   )
 
-  const dataLocaleData = localeData[dataLocale]
-  invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`)
+  const rootLocaleData = localeData[dataLocale]
+  invariant(!!rootLocaleData, `Missing locale data for ${dataLocale}`)
+  const dataLocaleData =
+    rootLocaleData.calendarData?.[calendar as string] ?? rootLocaleData
   const formats = dataLocaleData.formats[calendar as string]
   // UNSPECCED: IMPLEMENTATION DETAILS
   if (!formats) {

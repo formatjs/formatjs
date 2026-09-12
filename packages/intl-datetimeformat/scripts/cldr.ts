@@ -4,29 +4,62 @@ import minimist from 'minimist'
 import {readFileSync} from 'fs'
 
 interface Args extends minimist.ParsedArgs {
-  cldrFile: string[]
+  cldrFile: string | string[]
+  outDir: string
 }
 function main(args: Args) {
-  const {cldrFile: cldrFiles, outDir} = args
+  const {outDir} = args
+  const cldrFiles = ([] as string[]).concat(args.cldrFile || [])
   cldrFiles.sort()
   cldrFiles.forEach(cldrFile => {
     const locale = basename(cldrFile, '.json')
-    // Dist all locale files to locale-data (JS)
-    const data = readFileSync(cldrFile, 'utf8')
-    outputFileSync(
-      join(outDir, locale + '.js'),
-      `/* @generated */	
-// prettier-ignore
-if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.__addLocaleData === 'function') {
-  Intl.DateTimeFormat.__addLocaleData(${data})
-} else {
-  (globalThis.__FORMATJS_DATETIMEFORMAT_DATA__ = globalThis.__FORMATJS_DATETIMEFORMAT_DATA__ || []).push(${data})
-}
+    const raw = JSON.parse(readFileSync(cldrFile, 'utf8'))
+    function emit(path: string, data: unknown, method: string, queue: string) {
+      const json = JSON.stringify(data)
+      outputFileSync(
+        join(outDir, path + '.js'),
+        `/* @generated */
+(function (data) {
+  if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.${method} === 'function') {
+    Intl.DateTimeFormat.${method}(data)
+  } else {
+    (globalThis.${queue} = globalThis.${queue} || []).push(data)
+  }
+})(JSON.parse(${JSON.stringify(json)}));
 `
+      )
+      outputFileSync(join(outDir, path + '.d.ts'), 'export {}')
+    }
+    for (const [calendar, data] of Object.entries(
+      raw.data.calendarData || {}
+    )) {
+      emit(
+        `../calendar-data/${calendar}/${locale}`,
+        {
+          locale,
+          calendar,
+          data,
+          formats: raw.data.formats[calendar],
+        },
+        '__addCalendarLocaleData',
+        '__FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__'
+      )
+    }
+    const {calendarData: _calendars, formats, ...data} = raw.data
+    emit(
+      locale,
+      {
+        ...raw,
+        data: {
+          ...data,
+          formats: {gregory: formats.gregory, iso8601: formats.iso8601},
+        },
+      },
+      '__addLocaleData',
+      '__FORMATJS_DATETIMEFORMAT_DATA__'
     )
-    outputFileSync(join(outDir, locale + '.d.ts'), 'export {}')
   })
 }
 if (import.meta.filename === process.argv[1]) {
-  main(minimist<Args>(process.argv))
+  main(minimist<Args>(process.argv.slice(2)))
 }

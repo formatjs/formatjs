@@ -1,7 +1,15 @@
 # gazelle:ignore
 load("//tools:index.bzl", "ts_binary")
+load("//tools:test.bzl", "formatjs_test")
 
 exports_files(["packer.ts"])
+
+formatjs_test(
+    name = "locale_data_test",
+    srcs = ["locale-data.test.ts"],
+    data = ["//packages/intl-datetimeformat:serialization_test_data"],
+    deps = ["//:node_modules/vitest"],
+)
 
 ts_binary(
     name = "cldr-raw",
@@ -37,4 +45,16 @@ ts_binary(
     ],
     entry_point = "process-zdump.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+formatjs_test(
+    name = "calendar_bundle_test",
+    srcs = ["calendar-bundle.test.ts"],
+    data = ["//packages/intl-datetimeformat:pkg"],
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
 )
