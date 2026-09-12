@@ -128,11 +128,22 @@ For npm packages, Release Please advances versions in both package-local Bazel
 files; `package_json_sync` keeps the rest of each generated manifest in sync.
 Python packages use the Python release strategy while generic extra-file
 updaters advance their Bazel wheel versions in `BUILD.bazel`.
-The workflow also derives npm publish paths from the release manifest diff so
-a retry still publishes packages whose GitHub releases were created before a
-partial failure. npm publishing skips versions already present in the registry,
-prepares only requested package manifests, and builds native CLI artifacts only
-when their package paths are released.
+After Release Please runs, the workflow checks every public npm package version
+in the current release manifest against the public npm registry. Missing versions
+are dispatched even when their manifest entry did not change in the latest commit.
+Registry metadata is revalidated with `?write=true`; a missing version or package
+404 means unpublished. Network errors and other HTTP failures stop reconciliation. Checked-in package versions must match the release manifest.
+The npm publish workflow skips existing versions, orders selected packages by
+workspace dependencies, and checks internal runtime, optional, and peer dependency
+versions before each dependent publication. Independent uploads proceed without
+waiting for each other's registry visibility. The workflow verifies the whole batch
+before completion, allowing up to three minutes for registry propagation per
+version. A failed dependency cannot leave a newly published dependent uninstallable.
+Native CLI artifacts are built only when their package paths are
+selected. `:release_manifests` supplies all workspace manifests, while selected
+`:pkg` targets supply package contents; unrelated native binaries are not built
+for a JavaScript-only backfill. A manual backfill uses the same checks in
+`release.yml`.
 When Release Please creates or updates release PRs,
 `.github/workflows/release-please.yml` first builds
 `//:release_please_npm_workspace_graph` from the package manifests and runs the

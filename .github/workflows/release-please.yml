@@ -77,8 +77,7 @@ jobs:
           node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON
           tools/release-please/config.test.ts
 
-      # Release Please owns version/changelog PRs, GitHub release notes, and
-      # the release-created signal used for npm publication below.
+      # Release Please owns version/changelog PRs and GitHub release notes.
       - name: Run Release Please
         id: release
         env:
@@ -91,36 +90,20 @@ jobs:
 
       - name: Collect npm release paths
         id: npm-release-paths
-        env:
-          PATHS_RELEASED: ${{ steps.release.outputs.paths_released || '[]' }}
         run: |
-          previous_manifest="$RUNNER_TEMP/release-please-manifest.previous.json"
-          if ! git show HEAD^:.release-please-manifest.json > "$previous_manifest"; then
-            echo '{}' > "$previous_manifest"
-          fi
-
-          CURRENT_MANIFEST=.release-please-manifest.json \
-          PREVIOUS_MANIFEST="$previous_manifest" \
-          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-transform-types --input-type=module <<'JS'
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --input-type=module <<'JS'
           import fs from 'node:fs'
+          import {collectNpmReleasePaths} from './tools/release-please/npm-release-paths.ts'
 
-          const {collectNpmReleasePaths} = await import(
-            './tools/release-please/npm-release-paths.ts'
-          )
           const currentManifest = JSON.parse(
-            fs.readFileSync(process.env.CURRENT_MANIFEST, 'utf8')
+            fs.readFileSync('.release-please-manifest.json', 'utf8')
           )
-          const previousManifest = JSON.parse(
-            fs.readFileSync(process.env.PREVIOUS_MANIFEST, 'utf8')
+          const packages = Object.fromEntries(
+            Object.keys(currentManifest)
+              .filter(path => path.startsWith('packages/'))
+              .map(path => [path, JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf8'))])
           )
-          const pathsReleased = JSON.parse(
-            process.env.PATHS_RELEASED || '[]'
-          )
-          const npmPaths = collectNpmReleasePaths(
-            previousManifest,
-            currentManifest,
-            pathsReleased
-          )
+          const npmPaths = await collectNpmReleasePaths(currentManifest, packages)
           fs.appendFileSync(
             process.env.GITHUB_OUTPUT,
             `npm_paths=${JSON.stringify(npmPaths)}\n`

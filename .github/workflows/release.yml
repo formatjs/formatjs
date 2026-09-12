@@ -256,16 +256,29 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Build Distribution
+      - name: Build Release Packages
+        env:
+          NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
         run: |
+          mapfile -t package_paths < <(
+            node -e 'JSON.parse(process.env.NPM_RELEASE_PATHS).forEach(path => console.log(path))'
+          )
+          package_targets=()
+          for package_path in "${package_paths[@]}"; do
+            package_targets+=("//$package_path:pkg")
+          done
           bazel build \
             --config=ci \
             --compilation_mode=opt \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-            :dist
-          DIST_PATH=$(bazel cquery --config=ci --compilation_mode=opt --output=files :dist)
-          echo "Distribution path: $DIST_PATH"
-          cp -rf "$DIST_PATH" release/
+            :release_manifests "${package_targets[@]}"
+          manifest_path=$(bazel cquery --config=ci --compilation_mode=opt --output=files :release_manifests)
+          cp -R "$manifest_path" release/
+          chmod -R +w release/
+          for package_path in "${package_paths[@]}"; do
+            package_dir=$(bazel cquery --config=ci --compilation_mode=opt --output=files "//$package_path:pkg")
+            cp -R "$package_dir"/. "release/$package_path/"
+          done
           chmod -R +w release/
 
       - name: Download Windows Native Package
@@ -390,39 +403,30 @@ jobs:
         env:
           NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
         run: |
-          mapfile -t package_paths < <(
-            node -e 'JSON.parse(process.env.NPM_RELEASE_PATHS || "[]").forEach(path => console.log(path))'
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --input-type=module <<'JS'
+          import fs from 'node:fs'
+          import {execFileSync} from 'node:child_process'
+          import {pathToFileURL} from 'node:url'
+
+          const {publishNpmPackages} = await import(pathToFileURL(
+            `${process.env.GITHUB_WORKSPACE}/tools/release-please/npm-release-paths.ts`
+          ).href)
+          const packages = Object.fromEntries(
+            fs.readdirSync('packages', {withFileTypes: true})
+              .filter(entry => entry.isDirectory())
+              .map(entry => `packages/${entry.name}`)
+              .filter(path => fs.existsSync(`${path}/package.json`))
+              .map(path => [path, JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf8'))])
           )
-
-          if [ "${#package_paths[@]}" -eq 0 ]; then
-            echo "No npm package releases to publish."
-            exit 0
-          fi
-
-          for package_path in "${package_paths[@]}"; do
-            if [ ! -d "$package_path" ]; then
-              echo "::error::Release package path does not exist in Bazel distribution: $package_path"
-              exit 1
-            fi
-
-            package_spec="$(
-              node -e 'const pkg = require(`./${process.argv[1]}/package.json`); process.stdout.write(`${pkg.name}@${pkg.version}`)' "$package_path"
-            )"
-            if npm view "$package_spec" version --json >/dev/null 2>&1; then
-              echo "Skipping already published $package_spec"
-              continue
-            fi
-
-            echo "Publishing $package_spec"
-            if (cd "$package_path" && pnpm publish --access public --no-git-checks); then
-              continue
-            fi
-
-            # A concurrent or partially completed run may have published it.
-            if npm view "$package_spec" version --json >/dev/null 2>&1; then
-              echo "Skipping concurrently published $package_spec"
-              continue
-            fi
-
-            exit 1
-          done
+          await publishNpmPackages(
+            JSON.parse(process.env.NPM_RELEASE_PATHS || '[]'),
+            packages,
+            async path => {
+              console.log(`Publishing ${packages[path].name}@${packages[path].version}`)
+              execFileSync('pnpm', ['publish', '--access', 'public', '--no-git-checks'], {
+                cwd: path,
+                stdio: 'inherit',
+              })
+            }
+          )
+          JS
