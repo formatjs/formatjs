@@ -1,3 +1,4 @@
+import calendars from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
 import 'temporal-polyfill/full/global'
 import {Temporal} from 'temporal-polyfill/full'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
@@ -6,6 +7,7 @@ import ko from '#packages/intl-datetimeformat/tests/locale-data/ko.json' with {t
 import zh from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {expect, test} from 'vitest'
 
+DateTimeFormat.__addCalendarData(...calendars)
 DateTimeFormat.__addLocaleData(en as any, ko as any, zh as any)
 
 test('npm Temporal values work with all four formatting methods', () => {

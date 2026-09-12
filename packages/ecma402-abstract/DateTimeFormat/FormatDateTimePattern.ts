@@ -137,6 +137,7 @@ export function FormatDateTimePattern(
     localeData,
     getDefaultTimeZone,
     tzData,
+    calendarData,
     rangeFormatOptions,
   }: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
@@ -171,7 +172,7 @@ export function FormatDateTimePattern(
       // @ts-ignore
       internalSlots.calendar,
       isPlain ? '+00:00' : internalSlots.timeZone,
-      {tzData}
+      {tzData, calendarData}
     )
   const result: Intl.DateTimeFormatPart[] = []
 

@@ -77,5 +77,6 @@ formatjs_test(
     deps = [
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/DateTimeFormat/calendars",
     ],
 )

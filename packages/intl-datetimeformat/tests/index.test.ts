@@ -1,3 +1,4 @@
+import calendars from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
@@ -13,6 +14,7 @@ import my from '#packages/intl-datetimeformat/tests/locale-data/my.json' with {t
 import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
+DateTimeFormat.__addCalendarData(...calendars)
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
 DateTimeFormat.__addTZData(allData)

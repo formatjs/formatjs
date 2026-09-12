@@ -54,7 +54,7 @@ export function PartitionDateTimeRangePattern(
   const second = HandleDateTimeValue(slots, y)
   const internalSlots = first.format
   implDetails = {...implDetails, getInternalSlots: () => internalSlots}
-  const {tzData, localeData} = implDetails
+  const {tzData, calendarData, localeData} = implDetails
   const dataLocale = internalSlots.dataLocale
   const rootLocaleData = localeData[dataLocale]
   const dataLocaleData =
@@ -65,14 +65,14 @@ export function PartitionDateTimeRangePattern(
     // @ts-ignore
     internalSlots.calendar,
     first.isPlain ? '+00:00' : internalSlots.timeZone,
-    {tzData}
+    {tzData, calendarData}
   )
   const tm2 = ToLocalTime(
     second.epochNanoseconds,
     // @ts-ignore
     internalSlots.calendar,
     first.isPlain ? '+00:00' : internalSlots.timeZone,
-    {tzData}
+    {tzData, calendarData}
   )
   const {pattern, rangePatterns} = internalSlots
   const parts = PartitionPattern<IntlDateTimeFormatPartType>(pattern)

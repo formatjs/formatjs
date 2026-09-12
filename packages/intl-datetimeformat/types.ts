@@ -75,3 +75,11 @@ export type TimeZoneNameData = Record<
     short?: [string, string]
   }
 >
+
+/** Locale-specific names and patterns for one optional calendar. */
+export interface RawCalendarLocaleData {
+  locale: string
+  calendar: string
+  data: NonNullable<RawDateTimeLocaleInternalData['calendarData']>[string]
+  formats: Record<string, string>
+}

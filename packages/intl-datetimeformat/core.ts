@@ -1,3 +1,7 @@
+import type {
+  CalendarData,
+  CalendarRegistry,
+} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {
@@ -34,6 +38,7 @@ import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.j
 import {unpack} from '#packages/intl-datetimeformat/unpack.js'
 import {
   type PackedData,
+  type RawCalendarLocaleData,
   type RawDateTimeLocaleData,
 } from '#packages/intl-datetimeformat/types.js'
 
@@ -73,6 +78,7 @@ function getDateTimeImplementationDetails() {
     getInternalSlots,
     localeData: DateTimeFormat.localeData,
     tzData: DateTimeFormat.tzData,
+    calendarData: DateTimeFormat.calendarData,
     getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
   }
 }
@@ -141,6 +147,9 @@ export interface DateTimeFormatConstructor {
   ): IDateTimeFormat
 
   __addLocaleData(...data: RawDateTimeLocaleData[]): void
+  __addCalendarData(...data: CalendarData[]): void
+  __addCalendarLocaleData(...data: RawCalendarLocaleData[]): void
+  calendarData: CalendarRegistry
   supportedLocalesOf(
     locales: string | string[],
     options?: Pick<Intl.DateTimeFormatOptions, 'localeMatcher'>
@@ -469,10 +478,51 @@ function parseDateTimeStyles({
   }
 }
 
+// Calendar arithmetic and locale patterns may arrive in either order. Retain
+// raw records so adding a calendar does not discard previously loaded calendars.
+const rawLocaleData = new Map<string, RawDateTimeLocaleData>()
+const calendarLocaleData = new Map<string, Map<string, RawCalendarLocaleData>>()
+const processedLocales = new Map<string, DateTimeFormatLocaleInternalData>()
+const calendarPreferences = new WeakMap<
+  DateTimeFormatLocaleInternalData,
+  string[]
+>()
+
+function updateAvailableCalendars(data: DateTimeFormatLocaleInternalData) {
+  // ResolveLocale must only select calendars with both arithmetic and patterns.
+  // Preserve CLDR preference order; Gregorian remains available without add-ons.
+  // https://tc39.es/ecma402/#sec-resolvelocale
+  data.ca = calendarPreferences
+    .get(data)!
+    .filter(
+      calendar =>
+        Object.prototype.hasOwnProperty.call(data.formats, calendar) &&
+        (calendar === 'gregory' ||
+          calendar === 'iso8601' ||
+          Object.prototype.hasOwnProperty.call(
+            DateTimeFormat.calendarData,
+            calendar
+          ))
+    )
+}
+
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
-  for (const {data: d, locale} of data) {
+  for (const entry of data) {
+    const {locale} = entry
+    rawLocaleData.set(locale, entry)
+    const d = {
+      ...entry.data,
+      ca: [...entry.data.ca],
+      formats: {...entry.data.formats},
+      calendarData: {...entry.data.calendarData},
+    }
+    for (const patch of calendarLocaleData.get(locale)?.values() ?? []) {
+      if (d.ca.indexOf(patch.calendar) < 0) d.ca.push(patch.calendar)
+      d.formats[patch.calendar] = patch.formats
+      d.calendarData[patch.calendar] = patch.data
+    }
     const {
       dateFormat,
       timeFormat,
@@ -537,6 +587,8 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
             return (parsed ??= {
               ...processedData,
               ...calendarFields,
+              // Keep parsed formats even if a caller supplies a wider locale record.
+              formats: processedData.formats,
               ...parseDateTimeStyles({
                 ...calendarFields,
                 intervalFormats: calendarIntervals,
@@ -549,6 +601,17 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       }
     }
 
+    calendarPreferences.set(processedData, [...d.ca])
+    updateAvailableCalendars(processedData)
+    const previous = processedLocales.get(locale)
+    if (previous) {
+      for (const tag of Object.keys(DateTimeFormat.localeData)) {
+        if (DateTimeFormat.localeData[tag] === previous) {
+          DateTimeFormat.localeData[tag] = processedData
+        }
+      }
+    }
+    processedLocales.set(locale, processedData)
     registerLocaleData(
       locale,
       processedData,
@@ -570,6 +633,35 @@ DateTimeFormat.getDefaultLocale = () => {
   return DateTimeFormat.__defaultLocale
 }
 DateTimeFormat.polyfilled = true
+DateTimeFormat.calendarData = Object.create(null)
+// Registration is a FormatJS extension. Custom providers supply their own
+// ToLocalTime calendar arithmetic; loading one never changes existing selections.
+DateTimeFormat.__addCalendarData = function (...data: CalendarData[]) {
+  for (const {calendar, dateFromTime} of data) {
+    createDataProperty(DateTimeFormat.calendarData, calendar, dateFromTime)
+  }
+  for (const locale of new Set(
+    Object.keys(DateTimeFormat.localeData).map(
+      locale => DateTimeFormat.localeData[locale]
+    )
+  )) {
+    updateAvailableCalendars(locale)
+  }
+}
+DateTimeFormat.__addCalendarLocaleData = function (
+  ...data: RawCalendarLocaleData[]
+) {
+  for (const patch of data) {
+    let calendars = calendarLocaleData.get(patch.locale)
+    if (!calendars) {
+      calendars = new Map()
+      calendarLocaleData.set(patch.locale, calendars)
+    }
+    calendars.set(patch.calendar, patch)
+    const raw = rawLocaleData.get(patch.locale)
+    if (raw) DateTimeFormat.__addLocaleData(raw)
+  }
+}
 DateTimeFormat.tzData = {}
 DateTimeFormat.__addTZData = function (d: PackedData) {
   DateTimeFormat.tzData = unpack(d)

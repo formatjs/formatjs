@@ -46,3 +46,15 @@ ts_binary(
     entry_point = "process-zdump.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )
+
+formatjs_test(
+    name = "calendar_bundle_test",
+    srcs = ["calendar-bundle.test.ts"],
+    data = ["//packages/intl-datetimeformat:pkg"],
+    deps = [
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)

@@ -18,8 +18,10 @@
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
+    "./add-all-calendars.js": "./add-all-calendars.js",
     "./add-all-tz.js": "./add-all-tz.js",
     "./add-golden-tz.js": "./add-golden-tz.js",
+    "./calendar-data/*": "./calendar-data/*",
     "./locale-data": "./locale-data",
     "./locale-data/*": "./locale-data/*",
     "./polyfill-force.js": "./polyfill-force.js",

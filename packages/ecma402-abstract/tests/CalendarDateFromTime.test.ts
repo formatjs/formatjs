@@ -1,5 +1,12 @@
-import {CalendarDateFromTime} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
+import data from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
+import {CalendarDateFromTime as convert} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import {describe, expect, test} from 'vitest'
+
+const registry = Object.fromEntries(
+  data.map(({calendar, dateFromTime}) => [calendar, dateFromTime])
+)
+const CalendarDateFromTime = (t: number, calendar: string) =>
+  convert(t, calendar, registry)
 
 const calendars = [
   'gregory',

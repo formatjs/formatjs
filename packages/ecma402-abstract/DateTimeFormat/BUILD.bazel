@@ -27,8 +27,6 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/icu.calendar",
-        "//:node_modules/temporal-polyfill",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/types",

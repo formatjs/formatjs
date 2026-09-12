@@ -9,6 +9,7 @@ interface CalendarData {
 const alphabet =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
 
+// Each year stores two base-64 digits selecting a shared month-pattern entry.
 function yearPattern(data: CalendarData, index: number): number {
   const offset = index * 2
   const key =
@@ -17,6 +18,8 @@ function yearPattern(data: CalendarData, index: number): number {
   return data.dictionary[key]
 }
 
+// Low 13 bits mark 30-day months (otherwise 29); upper bits identify the
+// repeated month, or zero for a 12-month year. This packing is FormatJS-specific.
 function yearLength(packed: number): number {
   let months = packed & 8191
   let days = (packed >>> 13 ? 13 : 12) * 29
@@ -64,6 +67,7 @@ export function LunisolarDateFromTime(
     if (checkpoints[middle] <= epochDay) low = middle
     else high = middle
   }
+  // Checkpoints bound the scan to at most 64 years.
   let index = low * 64
   let day = epochDay - checkpoints[low]
   let packed = yearPattern(data, index)
@@ -83,6 +87,7 @@ export function LunisolarDateFromTime(
     era: '',
     year,
     relatedYear: year,
+    // CLDR cyclic names start with jia-zi; Gregorian year 4 anchors that cycle.
     yearName: (((year - 4) % 60) + 60) % 60,
     month,
     monthNumber,

@@ -6,7 +6,10 @@ import {
   msFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
-import {CalendarDateFromTime} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
+import {
+  CalendarDateFromTime,
+  type CalendarRegistry,
+} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import Decimal from '@formatjs/bigdecimal'
 
 // Cached regex patterns for performance
@@ -120,6 +123,7 @@ function getApplicableZoneData(
 }
 
 export interface ToLocalTimeImplDetails {
+  calendarData?: CalendarRegistry
   tzData: Record<string, UnpackedZoneData[]>
 }
 
@@ -133,7 +137,7 @@ export function ToLocalTime(
   epochNanoseconds: bigint,
   calendar: string,
   timeZone: string,
-  {tzData}: ToLocalTimeImplDetails
+  {tzData, calendarData}: ToLocalTimeImplDetails
 ): {
   weekday: number
   era: string
@@ -161,7 +165,7 @@ export function ToLocalTime(
 
   const tz = milliseconds.plus(timeZoneOffset).floor().toNumber()
   return {
-    ...CalendarDateFromTime(tz, calendar),
+    ...CalendarDateFromTime(tz, calendar, calendarData),
     weekday: WeekDay(tz),
     hour: HourFromTime(tz),
     minute: MinFromTime(tz),

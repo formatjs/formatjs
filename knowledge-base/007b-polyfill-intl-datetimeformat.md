@@ -180,7 +180,7 @@ legacy RegExp statics during constructor format matching.
 Hour-cycle preferences affect matching only when an hour is requested.
 Minute/second-only formats keep their requested fields.
 
-Calendar negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
+With all calendar modules and locale patterns loaded, negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
 `ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
 `japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share patterns;
 other calendars use CLDR calendar packages. Arithmetic conversion uses the public
@@ -265,3 +265,32 @@ The date generator synthesizes missing time interval patterns before combining
 with the date pattern. This keeps same-day datetime ranges from repeating the
 date when CLDR has no interval for the requested time precision. Existing hour
 cycle interval patterns retain precedence over the synthesized fallback.
+
+## Optional calendar loading
+
+The core bundle includes Gregorian/ISO conversion only. Other arithmetic lives in
+`ecma402-abstract/DateTimeFormat/calendars/` and is bundled into independent public
+`calendar-data/<calendar>.js` entries. `add-all-calendars.js` is an explicit opt-in
+to all arithmetic/tables. Core must not import either these modules or generated
+ICU calendar tables. Calendar implementations receive timezone-adjusted values
+through the existing ToLocalTime implementation-details path.
+
+`locale-data/<locale>.js` carries Gregorian patterns only. The distribution
+script extracts each other calendar into `calendar-data/<calendar>/<locale>.js`.
+The CLDR intermediate JSON retains all calendars for generation and full-suite
+tests; it is not the default published locale payload.
+
+`__addCalendarData` registers conversion functions; `__addCalendarLocaleData`
+merges names and patterns without discarding previously registered calendars.
+Both can queue before installation, and calendar locale data can arrive before
+its base locale. Negotiation preserves the locale's calendar preference order
+but advertises only calendars with both arithmetic and patterns loaded. Tests
+that exercise all calendars explicitly register the optional implementations.
+
+Custom calendar providers use the same APIs. Their callbacks receive
+timezone-adjusted milliseconds and return calendar fields (zero-based month,
+one-based day). Custom locale records append their identifier to the locale's
+calendar preferences once registered; arithmetic and patterns are both required.
+`tests/calendar-loading.test.ts` covers custom single-date/range conversion and
+isolation. `scripts/calendar-bundle.test.ts` exercises the published npm entries
+in fresh processes, pre-install queues, and source-map payload boundaries.
