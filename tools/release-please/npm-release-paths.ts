@@ -21,8 +21,9 @@ export async function isNpmVersionPublished(
   version: string,
   fetchRegistry: typeof fetch = fetch
 ): Promise<boolean> {
+  // npm revalidates metadata for write=true; version endpoints can cache a 404.
   const response = await fetchRegistry(
-    `https://registry.npmjs.org/${encodeURIComponent(name)}/${encodeURIComponent(version)}`,
+    `https://registry.npmjs.org/${encodeURIComponent(name)}?write=true`,
     {signal: AbortSignal.timeout(30_000), cache: 'no-store'}
   )
   if (response.status === 404) {
@@ -34,7 +35,14 @@ export async function isNpmVersionPublished(
     )
   }
   const manifest = await response.json()
-  if (manifest.name !== name || manifest.version !== version) {
+  if (manifest.name !== name || !manifest.versions) {
+    throw new Error(`Unexpected npm registry response for ${name}@${version}`)
+  }
+  const published = manifest.versions[version]
+  if (!published) {
+    return false
+  }
+  if (published.name !== name || published.version !== version) {
     throw new Error(`Unexpected npm registry response for ${name}@${version}`)
   }
   return true

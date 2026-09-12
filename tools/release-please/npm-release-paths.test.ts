@@ -60,11 +60,13 @@ assert.equal(
   false
 )
 assert.equal(
-  await isNpmVersionPublished(
-    'pkg',
-    '1.0.0',
-    response(200, {name: 'pkg', version: '1.0.0'})
-  ),
+  await isNpmVersionPublished('pkg', '1.0.0', async url => {
+    assert.equal(String(url), 'https://registry.npmjs.org/pkg?write=true')
+    return response(200, {
+      name: 'pkg',
+      versions: {'1.0.0': {name: 'pkg', version: '1.0.0'}},
+    })(url)
+  }),
   true
 )
 for (const status of [401, 403, 429, 500]) {
@@ -77,7 +79,10 @@ await assert.rejects(
   isNpmVersionPublished(
     'pkg',
     '1.0.0',
-    response(200, {name: 'pkg', version: '0.9.0'})
+    response(200, {
+      name: 'pkg',
+      versions: {'1.0.0': {name: 'pkg', version: '0.9.0'}},
+    })
   ),
   /Unexpected npm registry response/
 )
@@ -211,4 +216,13 @@ assert.equal(waits, 2)
 
 console.log(
   'Verified npm release reconciliation and dependency-safe publication'
+)
+
+assert.equal(
+  await isNpmVersionPublished(
+    'pkg',
+    '1.0.0',
+    response(200, {name: 'pkg', versions: {}})
+  ),
+  false
 )

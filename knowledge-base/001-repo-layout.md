@@ -131,8 +131,8 @@ updaters advance their Bazel wheel versions in `BUILD.bazel`.
 After Release Please runs, the workflow checks every public npm package version
 in the current release manifest against the public npm registry. Missing versions
 are dispatched even when their manifest entry did not change in the latest commit.
-Only a registry 404 means missing; network errors and other HTTP failures stop
-reconciliation. Checked-in package versions must match the release manifest.
+Registry metadata is revalidated with `?write=true`; a missing version or package
+404 means unpublished. Network errors and other HTTP failures stop reconciliation. Checked-in package versions must match the release manifest.
 The npm publish workflow skips existing versions, orders selected packages by
 workspace dependencies, and checks internal runtime, optional, and peer dependency
 versions before each publication. It verifies each uploaded version in the registry

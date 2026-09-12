@@ -128,8 +128,8 @@ generated inputs.
 
 Release Please reconciles every current public package version against npm after
 it runs. Missing versions from earlier failed releases are included even when the
-latest commit did not change them. Registry errors stop recovery; only a 404 marks
-a version as missing.
+latest commit did not change them. Recovery revalidates registry metadata; absent versions are retried, while
+registry errors stop recovery.
 
 The release workflow builds only selected package artifacts, publishes workspace
 dependencies first, and verifies their
