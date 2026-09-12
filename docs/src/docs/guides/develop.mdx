@@ -131,7 +131,8 @@ it runs. Missing versions from earlier failed releases are included even when th
 latest commit did not change them. Registry errors stop recovery; only a 404 marks
 a version as missing.
 
-The release workflow publishes workspace dependencies first and verifies their
+The release workflow builds only selected package artifacts, publishes workspace
+dependencies first, and verifies their
 versions on npm before publishing dependents. Existing versions are skipped, so
 maintainers can retry `release.yml` with the affected `npm_paths` after resolving a
 publication failure.

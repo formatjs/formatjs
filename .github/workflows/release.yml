@@ -256,16 +256,29 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Build Distribution
+      - name: Build Release Packages
+        env:
+          NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
         run: |
+          mapfile -t package_paths < <(
+            node -e 'JSON.parse(process.env.NPM_RELEASE_PATHS).forEach(path => console.log(path))'
+          )
+          package_targets=()
+          for package_path in "${package_paths[@]}"; do
+            package_targets+=("//$package_path:pkg")
+          done
           bazel build \
             --config=ci \
             --compilation_mode=opt \
             --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-            :dist
-          DIST_PATH=$(bazel cquery --config=ci --compilation_mode=opt --output=files :dist)
-          echo "Distribution path: $DIST_PATH"
-          cp -rf "$DIST_PATH" release/
+            :release_manifests "${package_targets[@]}"
+          manifest_path=$(bazel cquery --config=ci --compilation_mode=opt --output=files :release_manifests)
+          cp -R "$manifest_path" release/
+          chmod -R +w release/
+          for package_path in "${package_paths[@]}"; do
+            package_dir=$(bazel cquery --config=ci --compilation_mode=opt --output=files "//$package_path:pkg")
+            cp -R "$package_dir"/. "release/$package_path/"
+          done
           chmod -R +w release/
 
       - name: Download Windows Native Package

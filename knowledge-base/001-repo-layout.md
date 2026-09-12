@@ -138,7 +138,10 @@ workspace dependencies, and checks internal runtime, optional, and peer dependen
 versions before each publication. It verifies each uploaded version in the registry
 before continuing, so a failed dependency cannot leave a newly published dependent
 uninstallable. Native CLI artifacts are built only when their package paths are
-selected. A manual backfill uses the same checks in `release.yml`.
+selected. `:release_manifests` supplies all workspace manifests, while selected
+`:pkg` targets supply package contents; unrelated native binaries are not built
+for a JavaScript-only backfill. A manual backfill uses the same checks in
+`release.yml`.
 When Release Please creates or updates release PRs,
 `.github/workflows/release-please.yml` first builds
 `//:release_please_npm_workspace_graph` from the package manifests and runs the

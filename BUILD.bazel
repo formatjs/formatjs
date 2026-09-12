@@ -133,6 +133,17 @@ copy_to_directory(
     ) for pkg in DIST_PACKAGES]},
 )
 
+# Keep all workspace versions available without building unrelated native packages.
+copy_to_directory(
+    name = "release_manifests",
+    srcs = [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+    ] + [pkg["package_json"] for pkg in DIST_PACKAGES] + glob(["patches/*"]),
+    out = "formatjs_release_manifests",
+)
+
 js_test(
     name = "dist_package_json_test",
     size = "small",
@@ -148,6 +159,28 @@ js_test(
     ],
     data = [
         ":dist",
+        "//:node_modules/minimist",
+        "//:node_modules/semver",
+    ] + [pkg["package_json"] for pkg in DIST_PACKAGES],
+    entry_point = "//tools:check_dist_package_json",
+    node_options = ["--experimental-transform-types"],
+)
+
+js_test(
+    name = "release_manifests_test",
+    size = "small",
+    args = [
+        "--dist",
+        "$(rootpath :release_manifests)",
+    ] + [
+        "--package=%s=$(rootpath %s)" % (
+            pkg["dirname"],
+            pkg["package_json"],
+        )
+        for pkg in DIST_PACKAGES
+    ],
+    data = [
+        ":release_manifests",
         "//:node_modules/minimist",
         "//:node_modules/semver",
     ] + [pkg["package_json"] for pkg in DIST_PACKAGES],
