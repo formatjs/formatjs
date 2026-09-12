@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.20](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.19...@formatjs/ts-transformer@4.4.20) (2026-09-12)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.18
+
 ## 4.4.19 (2026-08-07)
 
 ## What's Changed

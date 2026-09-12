@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.6.2...@formatjs/intl-datetimeformat@7.7.0) (2026-09-12)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** support optional CLDR calendars ([#7356](https://github.com/formatjs/formatjs/issues/7356)) ([abdfe7e](https://github.com/formatjs/formatjs/commit/abdfe7e7a0563290224092410ab5953d6b18f57d))
+* **@formatjs/intl-datetimeformat:** support Temporal inputs ([#7355](https://github.com/formatjs/formatjs/issues/7355)) ([669d2d7](https://github.com/formatjs/formatjs/commit/669d2d7c68ad1eafea2c78748c99a95e44746201))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.9.0
+
 ## 7.6.2 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

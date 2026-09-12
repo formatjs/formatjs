@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v0.3.0...formatjs_icu_messageformat_parser_v0.3.1) (2026-09-12)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** preserve locale hour preferences ([#7366](https://github.com/formatjs/formatjs/issues/7366)) ([f70bbea](https://github.com/formatjs/formatjs/commit/f70bbea1a8db615672a7d86b43519418656c8921))
+
 ## 0.3.0 (2026-08-07)
 
 ## What's Changed

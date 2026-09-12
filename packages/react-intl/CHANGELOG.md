@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.2](https://github.com/formatjs/formatjs/compare/react-intl@10.2.1...react-intl@10.2.2) (2026-09-12)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.18
+    * @formatjs/intl bumped to 4.2.1
+    * intl-messageformat bumped to 11.2.15
+
 ## 10.2.1 (2026-09-11)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
