@@ -53,4 +53,4 @@ syntax; the Rust fast path applies when location capture is disabled.
 ## Test Strategy
 
 - Vitest unit tests with real-world message samples
-- Integration tests comparing TypeScript and Rust parser output
+- Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
