@@ -390,39 +390,30 @@ jobs:
         env:
           NPM_RELEASE_PATHS: ${{ inputs.npm_paths }}
         run: |
-          mapfile -t package_paths < <(
-            node -e 'JSON.parse(process.env.NPM_RELEASE_PATHS || "[]").forEach(path => console.log(path))'
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --input-type=module <<'JS'
+          import fs from 'node:fs'
+          import {execFileSync} from 'node:child_process'
+          import {pathToFileURL} from 'node:url'
+
+          const {publishNpmPackages} = await import(pathToFileURL(
+            `${process.env.GITHUB_WORKSPACE}/tools/release-please/npm-release-paths.ts`
+          ).href)
+          const packages = Object.fromEntries(
+            fs.readdirSync('packages', {withFileTypes: true})
+              .filter(entry => entry.isDirectory())
+              .map(entry => `packages/${entry.name}`)
+              .filter(path => fs.existsSync(`${path}/package.json`))
+              .map(path => [path, JSON.parse(fs.readFileSync(`${path}/package.json`, 'utf8'))])
           )
-
-          if [ "${#package_paths[@]}" -eq 0 ]; then
-            echo "No npm package releases to publish."
-            exit 0
-          fi
-
-          for package_path in "${package_paths[@]}"; do
-            if [ ! -d "$package_path" ]; then
-              echo "::error::Release package path does not exist in Bazel distribution: $package_path"
-              exit 1
-            fi
-
-            package_spec="$(
-              node -e 'const pkg = require(`./${process.argv[1]}/package.json`); process.stdout.write(`${pkg.name}@${pkg.version}`)' "$package_path"
-            )"
-            if npm view "$package_spec" version --json >/dev/null 2>&1; then
-              echo "Skipping already published $package_spec"
-              continue
-            fi
-
-            echo "Publishing $package_spec"
-            if (cd "$package_path" && pnpm publish --access public --no-git-checks); then
-              continue
-            fi
-
-            # A concurrent or partially completed run may have published it.
-            if npm view "$package_spec" version --json >/dev/null 2>&1; then
-              echo "Skipping concurrently published $package_spec"
-              continue
-            fi
-
-            exit 1
-          done
+          await publishNpmPackages(
+            JSON.parse(process.env.NPM_RELEASE_PATHS || '[]'),
+            packages,
+            async path => {
+              console.log(`Publishing ${packages[path].name}@${packages[path].version}`)
+              execFileSync('pnpm', ['publish', '--access', 'public', '--no-git-checks'], {
+                cwd: path,
+                stdio: 'inherit',
+              })
+            }
+          )
+          JS

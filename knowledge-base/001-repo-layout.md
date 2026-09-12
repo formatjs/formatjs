@@ -128,11 +128,17 @@ For npm packages, Release Please advances versions in both package-local Bazel
 files; `package_json_sync` keeps the rest of each generated manifest in sync.
 Python packages use the Python release strategy while generic extra-file
 updaters advance their Bazel wheel versions in `BUILD.bazel`.
-The workflow also derives npm publish paths from the release manifest diff so
-a retry still publishes packages whose GitHub releases were created before a
-partial failure. npm publishing skips versions already present in the registry,
-prepares only requested package manifests, and builds native CLI artifacts only
-when their package paths are released.
+After Release Please runs, the workflow checks every public npm package version
+in the current release manifest against the public npm registry. Missing versions
+are dispatched even when their manifest entry did not change in the latest commit.
+Only a registry 404 means missing; network errors and other HTTP failures stop
+reconciliation. Checked-in package versions must match the release manifest.
+The npm publish workflow skips existing versions, orders selected packages by
+workspace dependencies, and checks internal runtime, optional, and peer dependency
+versions before each publication. It verifies each uploaded version in the registry
+before continuing, so a failed dependency cannot leave a newly published dependent
+uninstallable. Native CLI artifacts are built only when their package paths are
+selected. A manual backfill uses the same checks in `release.yml`.
 When Release Please creates or updates release PRs,
 `.github/workflows/release-please.yml` first builds
 `//:release_please_npm_workspace_graph` from the package manifests and runs the
