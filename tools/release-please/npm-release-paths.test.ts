@@ -226,3 +226,25 @@ assert.equal(
   ),
   false
 )
+
+// Independent uploads can proceed while registry visibility catches up.
+const independent = {
+  'packages/first': {name: 'first', version: '1.0.0'},
+  'packages/second': {name: 'second', version: '1.0.0'},
+}
+const independentUploads: string[] = []
+await publishNpmPackages(
+  Object.keys(independent),
+  independent,
+  async path => {
+    independentUploads.push(path)
+  },
+  async () => independentUploads.length === 2,
+  async () => {
+    assert.fail('Independent uploads must not wait on each other')
+  }
+)
+assert.deepEqual(independentUploads, Object.keys(independent))
+console.log(
+  'Verified npm release reconciliation and dependency-safe publication'
+)

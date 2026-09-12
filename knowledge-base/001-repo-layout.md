@@ -135,9 +135,11 @@ Registry metadata is revalidated with `?write=true`; a missing version or packag
 404 means unpublished. Network errors and other HTTP failures stop reconciliation. Checked-in package versions must match the release manifest.
 The npm publish workflow skips existing versions, orders selected packages by
 workspace dependencies, and checks internal runtime, optional, and peer dependency
-versions before each publication. It verifies each uploaded version in the registry
-before continuing, allowing up to three minutes for registry propagation, so a failed dependency cannot leave a newly published dependent
-uninstallable. Native CLI artifacts are built only when their package paths are
+versions before each dependent publication. Independent uploads proceed without
+waiting for each other's registry visibility. The workflow verifies the whole batch
+before completion, allowing up to three minutes for registry propagation per
+version. A failed dependency cannot leave a newly published dependent uninstallable.
+Native CLI artifacts are built only when their package paths are
 selected. `:release_manifests` supplies all workspace manifests, while selected
 `:pkg` targets supply package contents; unrelated native binaries are not built
 for a JavaScript-only backfill. A manual backfill uses the same checks in

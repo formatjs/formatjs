@@ -125,6 +125,25 @@ export async function publishNpmPackages(
     new Promise(resolve => setTimeout(resolve, milliseconds))
 ): Promise<void> {
   const names = new Set(Object.values(packages).map(pkg => pkg.name))
+  const pending = new Map<string, string>()
+  async function verifyPublication(
+    name: string,
+    version: string,
+    publishError?: unknown
+  ) {
+    for (let attempt = 0; attempt < 36; attempt++) {
+      if (await isPublished(name, version)) {
+        return
+      }
+      if (attempt === 35) {
+        throw (
+          publishError ||
+          new Error(`npm publication not visible: ${name}@${version}`)
+        )
+      }
+      await wait(5_000)
+    }
+  }
   for (const path of orderNpmReleasePaths(paths, packages)) {
     const pkg = packages[path]
     if (await isPublished(pkg.name, pkg.version)) {
@@ -133,30 +152,25 @@ export async function publishNpmPackages(
     for (const field of dependencyFields) {
       for (const [name, version] of Object.entries(pkg[field] || {})) {
         if (names.has(name) && !(await isPublished(name, version))) {
-          throw new Error(
-            `Cannot publish ${pkg.name}@${pkg.version}: missing ${name}@${version}`
-          )
+          if (pending.get(name) === version) {
+            await verifyPublication(name, version)
+          } else {
+            throw new Error(
+              `Cannot publish ${pkg.name}@${pkg.version}: missing ${name}@${version}`
+            )
+          }
         }
       }
     }
-    let publishError: unknown
     try {
       await publish(path)
     } catch (error) {
       // Another release may have published this version concurrently.
-      publishError = error
+      await verifyPublication(pkg.name, pkg.version, error)
     }
-    for (let attempt = 0; attempt < 36; attempt++) {
-      if (await isPublished(pkg.name, pkg.version)) {
-        break
-      }
-      if (attempt === 35) {
-        throw (
-          publishError ||
-          new Error(`npm publication not visible: ${pkg.name}@${pkg.version}`)
-        )
-      }
-      await wait(5_000)
-    }
+    pending.set(pkg.name, pkg.version)
+  }
+  for (const [name, version] of pending) {
+    await verifyPublication(name, version)
   }
 }
