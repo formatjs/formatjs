@@ -129,7 +129,8 @@ for (const fail of [true, false]) {
         attempted.push(path)
         if (fail) throw new Error('publish failed')
       },
-      isPublished
+      isPublished,
+      async () => {}
     ),
     fail ? /publish failed/ : /publication not visible/
   )
@@ -188,6 +189,26 @@ assert.throws(
     }),
   /Circular npm release dependency/
 )
+console.log(
+  'Verified npm release reconciliation and dependency-safe publication'
+)
+
+// Registry propagation can lag behind a successful upload.
+published.clear()
+let polls = 0
+let waits = 0
+await publishNpmPackages(
+  ['packages/matcher'],
+  packages,
+  async () => {},
+  async () => ++polls >= 4,
+  async milliseconds => {
+    assert.equal(milliseconds, 5_000)
+    waits++
+  }
+)
+assert.equal(waits, 2)
+
 console.log(
   'Verified npm release reconciliation and dependency-safe publication'
 )

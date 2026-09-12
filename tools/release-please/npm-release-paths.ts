@@ -23,7 +23,7 @@ export async function isNpmVersionPublished(
 ): Promise<boolean> {
   const response = await fetchRegistry(
     `https://registry.npmjs.org/${encodeURIComponent(name)}/${encodeURIComponent(version)}`,
-    {signal: AbortSignal.timeout(30_000)}
+    {signal: AbortSignal.timeout(30_000), cache: 'no-store'}
   )
   if (response.status === 404) {
     return false
@@ -112,7 +112,9 @@ export async function publishNpmPackages(
   paths: string[],
   packages: Record<string, NpmPackage>,
   publish: (path: string) => Promise<void>,
-  isPublished: VersionPublished = isNpmVersionPublished
+  isPublished: VersionPublished = isNpmVersionPublished,
+  wait: (milliseconds: number) => Promise<void> = milliseconds =>
+    new Promise(resolve => setTimeout(resolve, milliseconds))
 ): Promise<void> {
   const names = new Set(Object.values(packages).map(pkg => pkg.name))
   for (const path of orderNpmReleasePaths(paths, packages)) {
@@ -129,16 +131,24 @@ export async function publishNpmPackages(
         }
       }
     }
+    let publishError: unknown
     try {
       await publish(path)
     } catch (error) {
       // Another release may have published this version concurrently.
-      if (!(await isPublished(pkg.name, pkg.version))) {
-        throw error
-      }
+      publishError = error
     }
-    if (!(await isPublished(pkg.name, pkg.version))) {
-      throw new Error(`npm publication not visible: ${pkg.name}@${pkg.version}`)
+    for (let attempt = 0; attempt < 36; attempt++) {
+      if (await isPublished(pkg.name, pkg.version)) {
+        break
+      }
+      if (attempt === 35) {
+        throw (
+          publishError ||
+          new Error(`npm publication not visible: ${pkg.name}@${pkg.version}`)
+        )
+      }
+      await wait(5_000)
     }
   }
 }

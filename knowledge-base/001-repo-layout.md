@@ -136,7 +136,7 @@ reconciliation. Checked-in package versions must match the release manifest.
 The npm publish workflow skips existing versions, orders selected packages by
 workspace dependencies, and checks internal runtime, optional, and peer dependency
 versions before each publication. It verifies each uploaded version in the registry
-before continuing, so a failed dependency cannot leave a newly published dependent
+before continuing, allowing up to three minutes for registry propagation, so a failed dependency cannot leave a newly published dependent
 uninstallable. Native CLI artifacts are built only when their package paths are
 selected. `:release_manifests` supplies all workspace manifests, while selected
 `:pkg` targets supply package contents; unrelated native binaries are not built
