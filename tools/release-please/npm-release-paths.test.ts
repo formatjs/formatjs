@@ -62,10 +62,12 @@ assert.equal(
 assert.equal(
   await isNpmVersionPublished('pkg', '1.0.0', async url => {
     assert.equal(String(url), 'https://registry.npmjs.org/pkg?write=true')
-    return response(200, {
-      name: 'pkg',
-      versions: {'1.0.0': {name: 'pkg', version: '1.0.0'}},
-    })(url)
+    return new Response(
+      JSON.stringify({
+        name: 'pkg',
+        versions: {'1.0.0': {name: 'pkg', version: '1.0.0'}},
+      })
+    )
   }),
   true
 )
