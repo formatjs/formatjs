@@ -10,6 +10,9 @@ const {VERSION} = require('release-please')
 const {Bazel} = require('release-please/build/src/strategies/bazel')
 const {Version} = require('release-please/build/src/version')
 const {
+  buildChangelogNotes,
+} = require('release-please/build/src/factories/changelog-notes-factory')
+const {
   PatchVersionUpdate,
 } = require('release-please/build/src/versioning-strategy')
 
@@ -26,6 +29,46 @@ const repositoryConfig = Object.fromEntries(
 const logger = {debug() {}, info() {}, warn() {}, error() {}}
 const github = {
   repository: {owner: 'formatjs', repo: 'formatjs', defaultBranch: 'main'},
+}
+
+// GitHub-generated notes ignore the package-filtered commit list.
+const notes = await buildChangelogNotes({
+  type: rawConfig['changelog-type'],
+  github: {
+    ...github,
+    generateReleaseNotes: async () =>
+      '* feat(@formatjs/editor): unrelated editor change',
+  },
+}).buildNotes(
+  [
+    {
+      sha: '1234567890abcdef1234567890abcdef12345678',
+      message:
+        'fix(@formatjs/intl-datetimeformat): preserve locale hour preferences',
+      bareMessage: 'preserve locale hour preferences',
+      type: 'fix',
+      scope: '@formatjs/intl-datetimeformat',
+      notes: [],
+      references: [],
+    },
+  ],
+  {
+    owner: 'formatjs',
+    repository: 'formatjs',
+    version: '1.0.1',
+    previousTag: '@formatjs/intl-datetimeformat@1.0.0',
+    currentTag: '@formatjs/intl-datetimeformat@1.0.1',
+    targetBranch: 'main',
+  }
+)
+assert.match(notes, /preserve locale hour preferences/)
+assert(!notes.includes('@formatjs/editor'))
+for (const [path, packageConfig] of Object.entries(rawConfig.packages)) {
+  assert.equal(
+    packageConfig['changelog-type'] ?? rawConfig['changelog-type'],
+    'default',
+    `${path} must use package-scoped changelog notes`
+  )
 }
 
 async function run(paths: string[]) {
