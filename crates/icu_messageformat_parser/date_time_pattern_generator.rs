@@ -97,7 +97,9 @@ fn get_hour_symbol_from_time_data(locale: &Locale) -> char {
 
     // Try different lookup strategies
     let hour_cycles = if let Some(region) = region_tag {
-        TIME_DATA.get(region)
+        TIME_DATA
+            .get(format!("{language_tag}-{region}").as_str())
+            .or_else(|| TIME_DATA.get(region))
     } else {
         None
     }
@@ -119,6 +121,20 @@ fn get_hour_symbol_from_time_data(locale: &Locale) -> char {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_locale_hour_cycle_preferences() {
+        for (tag, expected) in [
+            ("fr-CA", "H"),
+            ("zh-TW", "ha"),
+            ("en-GB", "H"),
+            ("fr-CA-u-hc-h12", "ha"),
+            ("en-GB-u-hc-h12", "ha"),
+        ] {
+            let locale: Locale = tag.parse().unwrap();
+            assert_eq!(get_best_pattern("j", &locale), expected, "{tag}");
+        }
+    }
 
     #[test]
     fn test_get_best_pattern_simple() {

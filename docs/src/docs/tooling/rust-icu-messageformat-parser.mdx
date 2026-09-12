@@ -138,6 +138,8 @@ if let MessageFormatElement::Plural(plural) = &ast[1] {
 
 ### Parsing with Skeletons
 
+Locale-dependent `j` skeletons honor `u-hc` overrides and language-region hour preferences, such as the 24-hour clock in `fr-CA`.
+
 ```rust
 use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
 

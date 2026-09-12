@@ -53,17 +53,16 @@ export function getBestPattern(skeleton: string, locale: Intl.Locale): string {
  * @param locale
  */
 function getDefaultHourSymbolFromLocale(locale: Intl.Locale): string {
-  let hourCycle = locale.hourCycle
+  let hourCycle: string | undefined = locale.hourCycle
 
-  if (
-    hourCycle === undefined &&
-    // @ts-ignore hourCycle(s) is not identified yet
-    locale.hourCycles &&
-    // @ts-ignore
-    locale.hourCycles.length
-  ) {
-    // @ts-ignore
-    hourCycle = locale.hourCycles[0]
+  if (hourCycle === undefined) {
+    const localeWithHourCycles = locale as Intl.Locale & {
+      getHourCycles?: () => string[]
+      hourCycles?: string[]
+    }
+    hourCycle =
+      localeWithHourCycles.getHourCycles?.()[0] ??
+      localeWithHourCycles.hourCycles?.[0]
   }
 
   if (hourCycle) {
@@ -88,9 +87,10 @@ function getDefaultHourSymbolFromLocale(locale: Intl.Locale): string {
     regionTag = locale.maximize().region
   }
   const hourCycles =
+    timeData[`${languageTag}-${regionTag}`] ||
     timeData[regionTag || ''] ||
     timeData[languageTag || ''] ||
     timeData[`${languageTag}-001`] ||
     timeData['001']
-  return hourCycles[0]
+  return hourCycles[0].charAt(0)
 }

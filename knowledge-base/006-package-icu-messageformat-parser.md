@@ -32,6 +32,8 @@ Chosen for performance — 6-10x faster than the previous PEG-based `intl-messag
 
 Delegates number/datetime skeleton parsing to `@formatjs/icu-skeleton-parser`. Skeletons are the `::` syntax in ICU MessageFormat (e.g., `{amount, number, ::currency/USD}`).
 
+Date skeleton `j` resolution prefers an explicit locale `hourCycle`, then `getHourCycles()`, then the legacy `hourCycles` property. Generated CLDR time data remains the fallback when neither API supplies a cycle. Both parsers prefer language-region entries over region defaults and use only the hour symbol from CLDR patterns.
+
 ### Rust Mirror + WASM
 
 A parallel Rust implementation exists in `crates/icu_messageformat_parser/`
@@ -51,4 +53,4 @@ syntax; the Rust fast path applies when location capture is disabled.
 ## Test Strategy
 
 - Vitest unit tests with real-world message samples
-- Integration tests comparing TypeScript and Rust parser output
+- Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
