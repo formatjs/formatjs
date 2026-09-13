@@ -1006,7 +1006,9 @@ I won the {ranking}{
 
 Opt-in ICU argument contracts for TypeScript `defineMessage` and `defineMessages`
 calls imported from `@formatjs/intl`, `react-intl`, or `react-intl/server`, plus
-`new IntlMessageFormat` imported from `intl-messageformat`.
+`new IntlMessageFormat` imported from `intl-messageformat`. Inline
+`formatMessage({...}, values)` calls and the existing `$t` / `$formatMessage`
+names are supported too.
 This rule is not enabled in the recommended or strict presets.
 
 ```js
@@ -1043,6 +1045,34 @@ use `string` because `other` accepts arbitrary selectors. Plain arguments use
 `MessageValue`, and tags use `MessageTag`, resolved to callbacks by the formatter.
 The helper's import module supplies these types through inline type imports.
 Incompatible uses of one argument produce a diagnostic without a fix.
+
+Inline descriptors get a type-only annotation; values and formatting options
+stay in place:
+
+```ts
+intl.formatMessage(
+  {
+    defaultMessage: '{count, number}',
+  } satisfies import('react-intl').MessageDescriptor /* @formatjs-generated */ as import('react-intl').TypedMessageDescriptor<{
+    count: number | bigint
+  }>,
+  {count: 2}
+)
+```
+
+The `satisfies` check retains descriptor validation. The assertion adds the
+phantom argument contract without a runtime wrapper or import. Message extraction
+continues to see the inline descriptor. Missing or wrongly typed values become
+TypeScript errors, and later fixes refresh the generated annotation.
+
+For inline calls, `moduleSource` can be `@formatjs/intl`, `react-intl`, or
+`react-intl/server`. By default the rule reuses the generated annotation's module,
+then the first matching import in the file, then `@formatjs/intl`. Set
+`moduleSource: 'react-intl'` when an application wrapper supplies the formatter
+without a direct FormatJS import. The selected package must be available to the
+TypeScript project. If `@typescript-eslint/consistent-type-imports` is enabled,
+allow inline type imports with `disallowTypeAnnotations: false`. Handwritten formatter generics and descriptor assertions
+are left unchanged. ID-only descriptors cannot supply an argument contract.
 
 Direct formatter construction receives the generic without an extra runtime option:
 

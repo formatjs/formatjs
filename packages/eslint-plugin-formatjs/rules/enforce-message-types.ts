@@ -8,6 +8,7 @@ import type {
 } from 'estree-jsx'
 import {
   extractMessages,
+  isIntlFormatMessageCall,
   getSettings,
 } from '#packages/eslint-plugin-formatjs/util.js'
 import {messageTypes} from '#packages/eslint-plugin-formatjs/message-types.js'
@@ -142,6 +143,8 @@ function staticString(node: Node | undefined): string | undefined {
 interface TypeNode {
   type: string
   params?: TypeNode[]
+  typeArguments?: TypeNode
+  typeParameters?: TypeNode
   members?: TypeNode[]
   types?: TypeNode[]
   key?: {type: string; name?: string; value?: unknown}
@@ -201,6 +204,152 @@ function renderType(node: TypeNode | undefined): string | undefined {
   }
 }
 
+const descriptorModules = new Set([
+  '@formatjs/intl',
+  'react-intl',
+  'react-intl/server',
+])
+
+function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
+  const settings = getSettings(context)
+  if (node.callee.type === 'MemberExpression' && node.callee.computed) return
+  if (
+    !isIntlFormatMessageCall(
+      {...node, arguments: [{type: 'ObjectExpression', properties: []}]},
+      settings.additionalFunctionNames
+    )
+  )
+    return
+  const source = context.sourceCode
+  const call = node as CallExpression & {
+    typeArguments?: Node
+    typeParameters?: Node
+  }
+  // Existing formatter generics can describe rich output types.
+  if (call.typeArguments || call.typeParameters) return
+  const original = node.arguments[0]
+  const asserted = original as unknown as {
+    type: string
+    expression?: Node
+    typeAnnotation?: TypeNode & {range: [number, number]}
+  }
+  const annotation = asserted.typeAnnotation
+  const generated =
+    asserted.type === 'TSAsExpression' &&
+    asserted.expression?.range &&
+    annotation?.range &&
+    /^\s*as\s*\/\* @formatjs-generated \*\/\s*$/.test(
+      source.text.slice(asserted.expression.range[1], annotation.range[0])
+    )
+  if (!generated && !context.options[0]?.generateTypes) return
+  // Handwritten descriptor assertions and satisfies expressions belong to the caller.
+  if (!generated && !staticObject(original)) return
+  const satisfies = asserted.expression as unknown as
+    | {type: string; expression?: Node; typeAnnotation?: TypeNode}
+    | undefined
+  const descriptor = generated
+    ? satisfies?.type === 'TSSatisfiesExpression'
+      ? satisfies.expression
+      : asserted.expression
+    : original
+  if (!staticObject(descriptor)) {
+    if (generated) context.report({node, messageId: 'dynamic'})
+    return
+  }
+  const previousModule =
+    annotation?.source?.value ??
+    annotation?.argument?.literal?.value ??
+    annotation?.argument?.value
+  const existingModule = source.ast.body.find(
+    statement =>
+      statement.type === 'ImportDeclaration' &&
+      typeof statement.source.value === 'string' &&
+      descriptorModules.has(statement.source.value)
+  )
+  const module =
+    context.options[0]?.moduleSource ??
+    (typeof previousModule === 'string' && descriptorModules.has(previousModule)
+      ? previousModule
+      : existingModule?.type === 'ImportDeclaration'
+        ? String(existingModule.source.value)
+        : '@formatjs/intl')
+  let ignoreTag = settings.ignoreTag
+  const options = node.arguments[2]
+  if (options && !staticObject(options)) {
+    if (generated) context.report({node, messageId: 'dynamic'})
+    return
+  }
+  if (staticObject(options)) {
+    for (const property of options.properties) {
+      if (property.type !== 'Property') continue
+      const key =
+        property.key.type === 'Identifier'
+          ? property.key.name
+          : property.key.type === 'Literal'
+            ? property.key.value
+            : undefined
+      if (key !== 'ignoreTag') continue
+      if (
+        property.value.type !== 'Literal' ||
+        typeof property.value.value !== 'boolean'
+      ) {
+        if (generated) context.report({node, messageId: 'dynamic'})
+        return
+      }
+      ignoreTag = property.value.value
+    }
+  }
+  const messages = extractMessages(node, settings)
+  const message = messages[0]?.[0]
+  if (
+    messages.length !== 1 ||
+    !message ||
+    typeof message.message.defaultMessage !== 'string' ||
+    !staticMessage(message.messageNode ?? undefined)
+  ) {
+    if (generated) context.report({node, messageId: 'dynamic'})
+    return
+  }
+  let contract: string
+  try {
+    contract = messageTypes(
+      parse(message.message.defaultMessage, {ignoreTag}),
+      module
+    )
+  } catch (error) {
+    context.report({
+      node,
+      messageId: 'invalid',
+      data: {error: error instanceof Error ? error.message : String(error)},
+    })
+    return
+  }
+  const parameters = (annotation?.typeArguments ?? annotation?.typeParameters)
+    ?.params
+  const descriptorType = `import(${JSON.stringify(module)}).MessageDescriptor`
+  if (
+    generated &&
+    annotation?.type === 'TSImportType' &&
+    annotation.qualifier?.name === 'TypedMessageDescriptor' &&
+    previousModule === module &&
+    parameters?.length === 1 &&
+    renderType(parameters[0]) === contract &&
+    satisfies?.type === 'TSSatisfiesExpression' &&
+    renderType(satisfies.typeAnnotation) === descriptorType
+  )
+    return
+  context.report({
+    node: original,
+    messageId: 'contract',
+    fix(fixer) {
+      return fixer.replaceText(
+        original,
+        `${source.getText(descriptor)} satisfies ${descriptorType} as ${marker} import(${JSON.stringify(module)}).TypedMessageDescriptor<${contract}>`
+      )
+    },
+  })
+}
+
 export const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
@@ -212,7 +361,10 @@ export const rule: Rule.RuleModule = {
     schema: [
       {
         type: 'object',
-        properties: {generateTypes: {type: 'boolean'}},
+        properties: {
+          generateTypes: {type: 'boolean'},
+          moduleSource: {type: 'string', enum: [...descriptorModules]},
+        },
         additionalProperties: false,
       },
     ],
@@ -314,7 +466,10 @@ export const rule: Rule.RuleModule = {
         )
           return
         const imported = importedHelper(context, node)
-        if (!imported) return
+        if (!imported) {
+          checkInlineMessage(context, node)
+          return
+        }
         const source = context.sourceCode
         const call = node as CallExpression & {
           typeArguments?: Node

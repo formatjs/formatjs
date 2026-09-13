@@ -171,3 +171,12 @@ runtime arguments, and read static `ignoreTag` from constructor options.
 The formatter package owns shared contracts; ESLint only derives them from the
 parser AST. Validate all four package `:all` targets, including explicit
 TypeScript test checks, when changing this boundary.
+
+Inline formatter calls use a generated `satisfies MessageDescriptor as
+TypedMessageDescriptor<Values>` annotation. This preserves descriptor validation
+and the existing extractor's wrapper-unwrapping path without adding runtime code.
+`moduleSource` selects the public type import for wrapper-based call sites;
+otherwise an existing generated annotation or FormatJS import supplies it, with
+`@formatjs/intl` as fallback. Existing formatter generics and handwritten
+assertions remain caller-owned. Tests compile and run representative generated
+inline syntax against the public Intl and React Intl entrypoints.
