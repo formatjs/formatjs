@@ -316,9 +316,11 @@ message.format({count: 'two'}) // TypeScript error
 message.formatToParts() // TypeScript error: missing count
 ```
 
-The contract works with both message strings and parsed ASTs. TypeScript does
-not verify that a handwritten contract matches the message. Keep the contract
-in sync with the ICU source.
+The contract works with both message strings and parsed ASTs. The opt-in
+[`formatjs/enforce-message-types`](/docs/tooling/linter#enforce-message-types)
+rule generates and refreshes the generic for static strings using the ICU
+parser. TypeScript itself does not verify that a handwritten contract matches
+the message.
 
 `MessageValue` describes an unformatted argument. `MessageTag` describes a
 rich-text callback. For rich objects, supply the output type to `format<T>` or

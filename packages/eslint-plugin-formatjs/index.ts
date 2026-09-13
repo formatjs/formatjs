@@ -1,3 +1,7 @@
+import {
+  name as enforceMessageTypesName,
+  rule as enforceMessageTypes,
+} from '#packages/eslint-plugin-formatjs/rules/enforce-message-types.js'
 import type {Linter} from 'eslint'
 import type {ESLint} from 'eslint'
 import {
@@ -93,6 +97,7 @@ const {name, version} = packageJson
 
 // All rules
 const rules: ESLint.Plugin['rules'] = {
+  [enforceMessageTypesName]: enforceMessageTypes,
   [blocklistElementRuleName]: blocklistElements,
   [enforceDefaultMessageName]: enforceDefaultMessage,
   [enforceDescriptionName]: enforceDescription,

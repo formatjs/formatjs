@@ -143,3 +143,40 @@ Collection of i18n utility functions: `canonicalizeCountryCode`, `defaultCurrenc
 ### @formatjs/ecma376
 
 ECMA-376 (Office Open XML) number format generation. Used for spreadsheet number formatting compatibility.
+
+## Parser-backed message contracts
+
+`enforce-message-types` is an opt-in ESLint rule. Its `generateTypes` option
+(default false) annotates static `defineMessage(s)` calls imported from the core
+or React Intl client/server entry points. Existing generated contracts are
+checked even when generation for untyped calls is disabled. Neither preset
+changes. Import aliases and namespace imports are resolved through lexical scope.
+
+`message-types.ts` derives contracts from the ICU AST. It visits every branch,
+merges repeated arguments, and reports incompatible formatted uses. Generated
+comments distinguish tool-owned generics from handwritten annotations. The
+`{typed: true}` helper overload carries a required phantom symbol contract;
+legacy formatter overloads exclude that symbol so invalid typed calls cannot
+fall back to permissive checking. Runtime descriptors remain plain objects.
+React Intl client/server helpers share the core implementation.
+
+Run focused ESLint, core Intl, and React Intl tests and their separate
+`_typecheck` targets. Public behavior and limitations are documented in the
+linter guide. Source contracts do not prove translation coverage or runtime
+formatting success.
+
+The same rule handles default, named, aliased, and namespace imports of
+`IntlMessageFormat`. Constructor fixes annotate the class generic, preserve
+runtime arguments, and read static `ignoreTag` from constructor options.
+The formatter package owns shared contracts; ESLint only derives them from the
+parser AST. Validate all four package `:all` targets, including explicit
+TypeScript test checks, when changing this boundary.
+
+Inline formatter calls receive the generated ICU contract as their first generic.
+The formatter signature validates both descriptors and values without assertions
+or runtime wrappers. Refreshes replace only the first generic and preserve the
+optional second rich-output generic. Handwritten contracts are checked without
+autofix; handwritten descriptor assertions remain caller-owned.
+The moduleSource option selects the public type import for wrapper-based call
+sites; otherwise the first FormatJS import supplies it, with @formatjs/intl as
+fallback. Tests compile and run generated inline syntax against public entrypoints.
