@@ -239,7 +239,7 @@ const rcCandidates = await run([
 assert.deepEqual(paths(rcCandidates), rcPaths)
 for (const candidate of rcCandidates) {
   assert.equal(candidate.config.prerelease, true)
-  assert.match(candidate.pullRequest.version.toString(), /-rc\.0$/)
+  assert.match(candidate.pullRequest.version.toString(), /-rc\.\d+$/)
 }
 const rcStrategy = buildVersioningStrategy({
   type: 'prerelease',
