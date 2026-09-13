@@ -162,3 +162,7 @@ defaults to ReactNode in React Intl or createIntl<T>'s base type in core Intl
 
 The opt-in `enforce-message-types` ESLint rule generates and refreshes these
 contracts from the ICU parser for static helper calls and formatter constructors.
+
+Optional contract properties stay optional after resolving scalar and tag types.
+The values argument can be omitted when every property is optional. This supports
+the ESLint ignoreList option without weakening required properties.

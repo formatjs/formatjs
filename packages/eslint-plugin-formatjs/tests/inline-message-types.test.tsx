@@ -29,6 +29,19 @@ test('generated inline generics keep formatting and rich callbacks intact', () =
 })
 
 function checkTypes() {
+  type Ignored = {
+    b?: import('react-intl').MessageTag
+    count?: number | bigint
+    extra?: import('react-intl').MessageValue
+  }
+  intl.$t<Ignored>({defaultMessage: '<b>{count, number}</b>'})
+  intl.$t<Ignored>(
+    {defaultMessage: '<b>{count, number}</b>'},
+    {b: chunks => <b>{chunks}</b>, extra: 'allowed'}
+  )
+  // @ts-expect-error Optional numeric values still have numeric types.
+  intl.$t<Ignored>({defaultMessage: '<b>{count, number}</b>'}, {count: 'two'})
+
   // @ts-expect-error Inline contracts require values.
   core.formatMessage<{n: number}>({defaultMessage: '{n}'})
   // @ts-expect-error Inline values retain their numeric constraint.

@@ -229,7 +229,7 @@ ruleTester.run('enforce-message-types inline', rule, {
   valid: [
     {
       filename: 'test.ts',
-      code: "formatMessage({defaultMessage: '{n, number}'})",
+      code: "formatMessage({defaultMessage: '{n, number}'}, {n: 2})",
     },
     {
       filename: 'test.js',
@@ -238,7 +238,7 @@ ruleTester.run('enforce-message-types inline', rule, {
           generateTypes: true,
         },
       ],
-      code: "formatMessage({defaultMessage: '{n, number}'})",
+      code: "formatMessage({defaultMessage: '{n, number}'}, {n: 2})",
     },
     {
       filename: 'test.ts',
@@ -268,7 +268,7 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: "formatMessage({...descriptor, defaultMessage: '{n}'})",
+      code: "formatMessage({...descriptor, defaultMessage: '{n}'}, {n: 2})",
       options: [
         {
           generateTypes: true,
@@ -489,6 +489,91 @@ ruleTester.run('enforce-message-types inline', rule, {
       options: [
         {
           generateTypes: true,
+        },
+      ],
+    },
+  ],
+})
+
+ruleTester.run('enforce-message-types ignoreList', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      code: 'intl.$t</* @formatjs-generated */ { "b"?: import("@formatjs/intl").MessageTag; "count"?: number | bigint; "extra"?: import("@formatjs/intl").MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'})',
+      options: [
+        {
+          ignoreList: ['b', 'count', 'extra'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'import {defineMessage} from \'react-intl\'; defineMessage</* @formatjs-generated */ { "b"?: import("react-intl").MessageTag; "count"?: number | bigint; "extra"?: import("react-intl").MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'}, {typed: true})',
+      options: [
+        {
+          ignoreList: ['b', 'count', 'extra'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'import IntlMessageFormat from \'intl-messageformat\'; new IntlMessageFormat</* @formatjs-generated */ { "b"?: import("intl-messageformat").MessageTag; "count"?: number | bigint; "extra"?: import("intl-messageformat").MessageValue }>(\'<b>{count, number}</b>\')',
+      options: [
+        {
+          ignoreList: ['b', 'count', 'extra'],
+        },
+      ],
+    },
+  ],
+  invalid: [
+    {
+      code: "intl.$t({defaultMessage: '<b>{count, number}</b>'})",
+      output:
+        'intl.$t</* @formatjs-generated */ { "b"?: import("@formatjs/intl").MessageTag; "count"?: number | bigint; "extra"?: import("@formatjs/intl").MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'})',
+      filename: 'test.ts',
+      options: [
+        {
+          generateTypes: true,
+          ignoreList: ['b', 'count', 'extra'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'contract',
+        },
+      ],
+    },
+    {
+      code: "import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '<b>{count, number}</b>'})",
+      output:
+        'import {defineMessage} from \'react-intl\'; defineMessage</* @formatjs-generated */ { "b"?: import("react-intl").MessageTag; "count"?: number | bigint; "extra"?: import("react-intl").MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'}, {typed: true})',
+      filename: 'test.ts',
+      options: [
+        {
+          generateTypes: true,
+          ignoreList: ['b', 'count', 'extra'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'contract',
+        },
+      ],
+    },
+    {
+      code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat('<b>{count, number}</b>')",
+      output:
+        'import IntlMessageFormat from \'intl-messageformat\'; new IntlMessageFormat</* @formatjs-generated */ { "b"?: import("intl-messageformat").MessageTag; "count"?: number | bigint; "extra"?: import("intl-messageformat").MessageValue }>(\'<b>{count, number}</b>\')',
+      filename: 'test.ts',
+      options: [
+        {
+          generateTypes: true,
+          ignoreList: ['b', 'count', 'extra'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'contract',
         },
       ],
     },

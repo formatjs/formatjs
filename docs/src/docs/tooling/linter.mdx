@@ -312,6 +312,11 @@ Setting `literal` forces `defaultMessage` to always be a string literal instead 
 
 ### `enforce-placeholders`
 
+Keep this rule for JavaScript or projects that only need inline placeholder
+checks. It shares missing/unused-value checks, `ignoreList`, and parser settings
+with [`enforce-message-types`](#enforce-message-types). Neither rule is deprecated.
+Choose one rule per file to avoid duplicate diagnostics.
+
 Makes sure all values are passed in if message has placeholders (number/date/time/plural/select/selectordinal). This requires values to be passed in as literal object (not a variable).
 
 ```tsx
@@ -1004,7 +1009,17 @@ I won the {ranking}{
 
 ## enforce-message-types
 
-Opt-in ICU argument contracts for TypeScript `defineMessage` and `defineMessages`
+Checks missing and unused inline values in JavaScript, JSX, Vue templates, and
+untyped TypeScript calls, using the same checks as `enforce-placeholders`.
+For typed TypeScript calls, the generated contract lets TypeScript check values
+instead, including variables and value types. Type generation remains opt-in.
+
+Both rules accept `ignoreList: ['name']`. Inline checks ignore those names.
+Generated contracts make listed names optional and allow listed extra keys;
+present numeric/date values and tag callbacks retain their types. This supports
+values supplied by application wrappers, but does not provide runtime values.
+
+Generate ICU argument contracts for TypeScript `defineMessage` and `defineMessages`
 calls imported from `@formatjs/intl`, `react-intl`, or `react-intl/server`, plus
 `new IntlMessageFormat` imported from `intl-messageformat`. Inline
 `formatMessage({...}, values)` calls and the existing `$t` / `$formatMessage`
@@ -1020,7 +1035,8 @@ This rule is not enabled in the recommended or strict presets.
 `generateTypes` defaults to `false`. Enable it to annotate previously untyped
 static declarations with `eslint --fix`. Even when false, the rule checks and
 refreshes existing generated contracts. Use a TypeScript-capable ESLint parser.
-JavaScript files and untyped dynamic messages are left unchanged.
+JavaScript files receive inline-value checks but no generated types. Dynamic
+message strings cannot supply a contract.
 
 ```ts
 const message = defineMessage</* @formatjs-generated */ {

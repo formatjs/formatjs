@@ -1,136 +1,7 @@
-import {
-  type MessageFormatElement,
-  TYPE,
-  parse,
-} from '@formatjs/icu-messageformat-parser'
-import type {Literal, Node, Property, SpreadElement} from 'estree-jsx'
+import type {Node} from 'estree-jsx'
 import type {Rule} from 'eslint'
-import {
-  extractMessages,
-  getSettings,
-} from '#packages/eslint-plugin-formatjs/util.js'
+import {checkPlaceholders} from '#packages/eslint-plugin-formatjs/placeholder-checks.js'
 import {CORE_MESSAGES} from '#packages/eslint-plugin-formatjs/messages.js'
-
-function collectPlaceholderNames(ast: MessageFormatElement[]): Set<string> {
-  const placeholderNames = new Set<string>()
-  _traverse(ast)
-  return placeholderNames
-
-  function _traverse(ast: MessageFormatElement[]) {
-    for (const element of ast) {
-      switch (element.type) {
-        case TYPE.literal:
-        case TYPE.pound:
-          break
-        case TYPE.tag:
-          placeholderNames.add(element.value)
-          _traverse(element.children)
-          break
-        case TYPE.plural:
-        case TYPE.select:
-          placeholderNames.add(element.value)
-          for (const {value} of Object.values(element.options)) {
-            _traverse(value)
-          }
-          break
-        default:
-          placeholderNames.add(element.value)
-          break
-      }
-    }
-  }
-}
-
-function checkNode(context: Rule.RuleContext, node: Node) {
-  const settings = getSettings(context)
-  const msgs = extractMessages(node, {
-    excludeMessageDeclCalls: true,
-    ...settings,
-  })
-  const {
-    options: [opt],
-  } = context
-  const ignoreList = new Set<string>(opt?.ignoreList || [])
-  for (const [
-    {
-      message: {defaultMessage},
-      messageNode,
-    },
-    values,
-  ] of msgs) {
-    if (!defaultMessage || !messageNode) {
-      continue
-    }
-
-    if (values && values.type !== 'ObjectExpression') {
-      // cannot evaluate this
-      continue
-    }
-
-    if (values?.properties.find(prop => prop.type === 'SpreadElement')) {
-      // cannot evaluate the spread element
-      continue
-    }
-
-    const literalElementByLiteralKey = new Map<
-      string,
-      Property | SpreadElement
-    >()
-
-    if (values) {
-      for (const prop of values.properties) {
-        if (prop.type === 'Property' && !prop.computed) {
-          const name =
-            prop.key.type === 'Identifier'
-              ? prop.key.name
-              : String((prop.key as Literal).value)
-          literalElementByLiteralKey.set(name, prop)
-        }
-      }
-    }
-
-    let ast: MessageFormatElement[]
-
-    try {
-      ast = parse(defaultMessage, {ignoreTag: settings.ignoreTag})
-    } catch (e) {
-      context.report({
-        node: messageNode,
-        messageId: 'parseError',
-        data: {error: e instanceof Error ? e.message : String(e)},
-      })
-      continue
-    }
-
-    const placeholderNames = collectPlaceholderNames(ast)
-
-    const missingPlaceholders: string[] = []
-    placeholderNames.forEach(name => {
-      if (!ignoreList.has(name) && !literalElementByLiteralKey.has(name)) {
-        missingPlaceholders.push(name)
-      }
-    })
-
-    if (missingPlaceholders.length > 0) {
-      context.report({
-        node: messageNode,
-        messageId: 'missingValue',
-        data: {
-          list: missingPlaceholders.join(', '),
-        },
-      })
-    }
-
-    literalElementByLiteralKey.forEach((element, key) => {
-      if (!ignoreList.has(key) && !placeholderNames.has(key)) {
-        context.report({
-          node: element,
-          messageId: 'unusedValue',
-        })
-      }
-    })
-  }
-}
 
 export const name = 'enforce-placeholders'
 
@@ -164,7 +35,8 @@ export const rule: Rule.RuleModule = {
     },
   },
   create(context) {
-    const callExpressionVisitor = (node: Node) => checkNode(context, node)
+    const callExpressionVisitor = (node: Node) =>
+      checkPlaceholders(context, node)
 
     const parserServices = context.sourceCode.parserServices
     if (parserServices?.defineTemplateBodyVisitor) {
@@ -178,7 +50,7 @@ export const rule: Rule.RuleModule = {
       )
     }
     return {
-      JSXOpeningElement: (node: Node) => checkNode(context, node),
+      JSXOpeningElement: (node: Node) => checkPlaceholders(context, node),
       CallExpression: callExpressionVisitor,
     }
   },

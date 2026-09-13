@@ -180,3 +180,12 @@ autofix; handwritten descriptor assertions remain caller-owned.
 The moduleSource option selects the public type import for wrapper-based call
 sites; otherwise the first FormatJS import supplies it, with @formatjs/intl as
 fallback. Tests compile and run generated inline syntax against public entrypoints.
+
+The two placeholder rules share placeholder-checks.ts and the parser AST
+collector. enforce-placeholders remains supported for JS and existing presets.
+enforce-message-types falls back to the same inline checks for JS, JSX, Vue, and
+untyped calls; verified/generated contracts delegate value checking to TypeScript.
+Both accept ignoreList. Generated ignored fields are optional, including explicitly
+listed extra names; their supplied values still have the derived types.
+Use one rule per file to avoid duplicate diagnostics. Run the original placeholder
+suite against both rules, plus generation and public type tests.

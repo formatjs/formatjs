@@ -1,3 +1,8 @@
+import {
+  checkPlaceholders,
+  messageIgnoreTag,
+} from '#packages/eslint-plugin-formatjs/placeholder-checks.js'
+import {rule as placeholderRule} from '#packages/eslint-plugin-formatjs/rules/enforce-placeholders.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import type {Rule} from 'eslint'
 import type {
@@ -189,7 +194,6 @@ function renderType(node: TypeNode | undefined): string | undefined {
     for (const member of node.members) {
       if (
         member.type !== 'TSPropertySignature' ||
-        member.optional ||
         member.readonly ||
         member.computed
       )
@@ -198,7 +202,9 @@ function renderType(node: TypeNode | undefined): string | undefined {
         member.key?.type === 'Identifier' ? member.key.name : member.key?.value
       const type = renderType(member.typeAnnotation?.typeAnnotation)
       if (key === undefined || type === undefined) return
-      fields.push(`${JSON.stringify(String(key))}: ${type}`)
+      fields.push(
+        `${JSON.stringify(String(key))}${member.optional ? '?' : ''}: ${type}`
+      )
     }
     return fields.length ? `{ ${fields.join('; ')} }` : '{}'
   }
@@ -247,31 +253,10 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     (existingModule?.type === 'ImportDeclaration'
       ? String(existingModule.source.value)
       : '@formatjs/intl')
-  let ignoreTag = settings.ignoreTag
-  const options = node.arguments[2]
-  if (options && !staticObject(options)) {
+  const ignoreTag = messageIgnoreTag(context, node)
+  if (ignoreTag === undefined) {
     if (generated) context.report({node, messageId: 'dynamic'})
-    return
-  }
-  if (staticObject(options)) {
-    for (const property of options.properties) {
-      if (property.type !== 'Property') continue
-      const key =
-        property.key.type === 'Identifier'
-          ? property.key.name
-          : property.key.type === 'Literal'
-            ? property.key.value
-            : undefined
-      if (key !== 'ignoreTag') continue
-      if (
-        property.value.type !== 'Literal' ||
-        typeof property.value.value !== 'boolean'
-      ) {
-        if (generated) context.report({node, messageId: 'dynamic'})
-        return
-      }
-      ignoreTag = property.value.value
-    }
+    return generated
   }
   const messages = extractMessages(node, settings)
   const message = messages[0]?.[0]
@@ -288,7 +273,8 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
   try {
     contract = messageTypes(
       parse(message.message.defaultMessage, {ignoreTag}),
-      module
+      module,
+      context.options[0]?.ignoreList
     )
   } catch (error) {
     context.report({
@@ -296,7 +282,7 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
       messageId: 'invalid',
       data: {error: error instanceof Error ? error.message : String(error)},
     })
-    return
+    return true
   }
   const parameters = (generic as unknown as TypeNode | undefined)?.params
   if (
@@ -305,10 +291,10 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     parameters.length <= 2 &&
     renderType(parameters[0]) === contract
   )
-    return
+    return true
   if (generic && (!generated || !parameters || parameters.length > 2)) {
     context.report({node: generic, messageId: 'manual'})
-    return
+    return true
   }
   context.report({
     node,
@@ -322,6 +308,7 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
           )
     },
   })
+  return true
 }
 
 export const rule: Rule.RuleModule = {
@@ -329,7 +316,7 @@ export const rule: Rule.RuleModule = {
     type: 'problem',
     docs: {
       description:
-        'Check and optionally generate ICU argument contracts for typed message declarations',
+        'Check ICU placeholders and optionally generate TypeScript argument contracts',
     },
     fixable: 'code',
     schema: [
@@ -337,12 +324,14 @@ export const rule: Rule.RuleModule = {
         type: 'object',
         properties: {
           generateTypes: {type: 'boolean'},
+          ignoreList: {type: 'array', items: {type: 'string'}},
           moduleSource: {type: 'string', enum: [...descriptorModules]},
         },
         additionalProperties: false,
       },
     ],
     messages: {
+      ...placeholderRule.meta!.messages,
       contract: 'Generate or refresh the ICU argument contract.',
       invalid: 'Cannot generate message types: {{error}}.',
       manual:
@@ -352,7 +341,10 @@ export const rule: Rule.RuleModule = {
     },
   },
   create(context) {
-    return {
+    const listeners: Rule.RuleListener = {
+      JSXOpeningElement(node: Node) {
+        checkPlaceholders(context, node)
+      },
       NewExpression(node: Node) {
         if (
           node.type !== 'NewExpression' ||
@@ -404,7 +396,11 @@ export const rule: Rule.RuleModule = {
         }
         let contract: string
         try {
-          contract = messageTypes(parse(message, {ignoreTag}), imported.module)
+          contract = messageTypes(
+            parse(message, {ignoreTag}),
+            imported.module,
+            context.options[0]?.ignoreList
+          )
         } catch (error) {
           context.report({
             node,
@@ -434,14 +430,15 @@ export const rule: Rule.RuleModule = {
         })
       },
       CallExpression(node: Node) {
-        if (
-          node.type !== 'CallExpression' ||
-          !/\.[cm]?tsx?$/.test(context.filename)
-        )
+        if (node.type !== 'CallExpression') return
+        if (!/\.[cm]?tsx?$/.test(context.filename)) {
+          checkPlaceholders(context, node)
           return
+        }
         const imported = importedHelper(context, node)
         if (!imported) {
-          checkInlineMessage(context, node)
+          if (!checkInlineMessage(context, node))
+            checkPlaceholders(context, node)
           return
         }
         const source = context.sourceCode
@@ -511,7 +508,8 @@ export const rule: Rule.RuleModule = {
               parse(message.message.defaultMessage!, {
                 ignoreTag: getSettings(context).ignoreTag,
               }),
-              imported.module
+              imported.module,
+              context.options[0]?.ignoreList
             )
           )
           contract =
@@ -585,5 +583,13 @@ export const rule: Rule.RuleModule = {
         })
       },
     }
+    const parserServices = context.sourceCode.parserServices
+    if (parserServices?.defineTemplateBodyVisitor) {
+      return parserServices.defineTemplateBodyVisitor(
+        {CallExpression: listeners.CallExpression},
+        {CallExpression: listeners.CallExpression}
+      )
+    }
+    return listeners
   },
 }

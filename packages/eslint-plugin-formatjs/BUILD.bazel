@@ -34,6 +34,7 @@ formatjs_library(
         "index.ts",
         "message-types.ts",
         "messages.ts",
+        "placeholder-checks.ts",
         "rules/blocklist-elements.ts",
         "rules/enforce-default-message.ts",
         "rules/enforce-description.ts",
