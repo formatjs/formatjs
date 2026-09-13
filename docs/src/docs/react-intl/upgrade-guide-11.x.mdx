@@ -21,5 +21,17 @@ intl.$t<{name: MessageValue}, React.ReactNode>(descriptor, values)
 ```
 
 Import `MessageValue` from `react-intl` for unformatted placeholders and
-`MessageTag` for tag callbacks. Calls without explicit generics keep their
-runtime behavior; typed helper descriptors infer their argument contracts.
+`MessageTag` for tag callbacks.
+
+Calls without generics need no migration. With a plain descriptor, both
+`intl.$t(descriptor, values)` and `intl.formatMessage(descriptor, values)`
+remain permissive: required argument names and types are not inferred from
+message literals. A descriptor from a typed helper still enforces its contract
+without call-site generics. Runtime formatting and error handling are unchanged.
+
+Rich output defaults to `React.ReactNode` in React Intl. In `@formatjs/intl`,
+it uses the type supplied to `createIntl<T>()` (`string` by default); untyped
+rich calls use that base type rather than inferring a narrower output type.
+
+See [React Intl argument types](/docs/react-intl/api#typed-message-arguments)
+and [core Intl argument types](/docs/intl#typed-message-arguments) for examples.

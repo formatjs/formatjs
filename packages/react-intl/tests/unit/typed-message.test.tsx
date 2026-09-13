@@ -48,6 +48,14 @@ type OriginalDefineMessages = <
 ) => U
 
 function checkTypes() {
+  // Plain descriptors do not infer ICU arguments without a generic.
+  intl.$t({defaultMessage: '{count, number}'})
+  intl.$t({defaultMessage: '{count, number}'}, {count: 'two'})
+  intl.formatMessage({defaultMessage: '{count, number}'}, {other: true})
+  // Typed helper descriptors retain their contract without a generic.
+  // @ts-expect-error The carried contract requires count.
+  intl.$t(message)
+
   const inline = intl.formatMessage<{b: MessageTag}, React.ReactNode>(
     {defaultMessage: '<b>Hello</b>'},
     {b: chunks => <b>{chunks}</b>}

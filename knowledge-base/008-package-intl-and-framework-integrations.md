@@ -153,3 +153,9 @@ replaces the previous rich-output position; the second defaults to the
 formatter's rich-value type. Inline overloads default the contract to `never`
 and block inference from values, so calls without generics stay on untyped
 signatures. Typed helper descriptors retain their inferred contract overloads.
+
+No-generic plain descriptors do not infer ICU arguments from literals; normal
+descriptor/value validation and runtime error handling still apply. Typed helper
+descriptors enforce their carried contract without call-site generics. Rich output
+defaults to ReactNode in React Intl or createIntl<T>'s base type in core Intl
+(string by default). Untyped rich calls use that base output type.
