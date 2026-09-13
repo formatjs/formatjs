@@ -428,3 +428,11 @@ http_file(
 )
 
 bazel_dep(name = "rules_web_e2e", version = "3.0.0", dev_dependency = True)
+
+# Some BCR mirrors still return 404 for this release.
+archive_override(
+    module_name = "rules_web_e2e",
+    integrity = "sha256-jYYI70wLinptY9BtiDh+O9r+DI5Aw1eTBeRlCtv4kzA=",
+    strip_prefix = "rules_web_e2e-3.0.0",
+    urls = ["https://github.com/perplexityai/rules_web_e2e/releases/download/v3.0.0/rules_web_e2e-v3.0.0.tar.gz"],
+)
