@@ -146,3 +146,10 @@ the ICU string. The original helper overload stays last to preserve
 Checks require retaining `TypedMessageDescriptor`; widening to
 `MessageDescriptor` intentionally loses the contract. JSX and ID-only catalog
 inference are outside this API.
+
+Inline `formatMessage<Values, RichOutput>` and `$t<Values, RichOutput>` use an
+explicit ICU contract without branding the descriptor. The first generic
+replaces the previous rich-output position; the second defaults to the
+formatter's rich-value type. Inline overloads default the contract to `never`
+and block inference from values, so calls without generics stay on untyped
+signatures. Typed helper descriptors retain their inferred contract overloads.

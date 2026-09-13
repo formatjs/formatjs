@@ -48,6 +48,32 @@ type OriginalDefineMessages = <
 ) => U
 
 function checkTypes() {
+  const inline = intl.formatMessage<{b: MessageTag}, React.ReactNode>(
+    {defaultMessage: '<b>Hello</b>'},
+    {b: chunks => <b>{chunks}</b>}
+  )
+  expectTypeOf(inline).toMatchTypeOf<React.ReactNode>()
+  intl.formatMessage<{b: MessageTag}>(
+    {defaultMessage: '<b>Hello</b>'},
+    {b: chunks => <b>{chunks}</b>}
+  )
+  intl.$t<{b: MessageTag}, React.ReactNode>(
+    {defaultMessage: '<b>Hello</b>'},
+    {b: chunks => <b>{chunks}</b>}
+  )
+  expectTypeOf(
+    intl.formatMessage<{n: number}>({defaultMessage: '{n}'}, {n: 1})
+  ).toEqualTypeOf<string>()
+  // @ts-expect-error First generic is the ICU argument contract.
+  intl.$t<React.ReactNode>({defaultMessage: 'Hello'})
+  intl.formatMessage<{n: number}, React.ReactNode>(
+    {defaultMessage: '{n}'},
+    // @ts-expect-error Rich output type cannot weaken numeric inputs.
+    {n: 'one'}
+  )
+  // @ts-expect-error Explicit inline contracts require values.
+  intl.formatMessage<{n: number}>({defaultMessage: '{n}'})
+
   expectTypeOf<Parameters<typeof defineMessage>>().toEqualTypeOf<
     Parameters<OriginalDefineMessage>
   >()

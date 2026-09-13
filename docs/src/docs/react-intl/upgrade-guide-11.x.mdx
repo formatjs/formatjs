@@ -5,3 +5,21 @@
 Update TypeScript to 5.4 or newer. The declarations now use `NoInfer` for
 opt-in typed message contracts. This compiler requirement also applies to
 projects that use untyped messages; JavaScript runtime behavior is unchanged.
+
+### Message formatter generic arguments changed
+
+`formatMessage<Values, RichOutput>` and `$t<Values, RichOutput>` now take the ICU
+argument contract first. Rich output moves to the optional second generic,
+which defaults to `React.ReactNode` in React Intl.
+
+```tsx
+// Before: first generic described rich output.
+intl.$t<React.ReactNode>(descriptor, values)
+
+// After: first generic describes ICU arguments.
+intl.$t<{name: MessageValue}, React.ReactNode>(descriptor, values)
+```
+
+Import `MessageValue` from `react-intl` for unformatted placeholders and
+`MessageTag` for tag callbacks. Calls without explicit generics keep their
+runtime behavior; typed helper descriptors infer their argument contracts.

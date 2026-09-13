@@ -614,3 +614,21 @@ JavaScript usage is unchanged.
 Use `defineMessage<Values>(descriptor, {typed: true})` or
 `defineMessages<Contracts>(catalog, {typed: true})` to enable argument checks in
 `formatMessage` and `$t`. One-argument helper calls retain their existing types.
+
+Inline descriptors can provide the contract directly:
+
+```ts
+intl.formatMessage<{count: number | bigint}>(
+  {defaultMessage: '{count, number}'},
+  {count: 2}
+)
+```
+
+`formatMessage<Values, RichOutput>` and `$t<Values, RichOutput>` reserve the
+first generic for ICU arguments and the optional second generic for rich output.
+The second defaults to the formatter's rich-value type. Calls without generics
+remain permissive; typed helper descriptors still infer their contracts.
+
+This replaces the previous rich-output generic positions. Move the output type
+to the second argument and supply an ICU contract first. Core rich-output types
+must still fit the type supplied to `createIntl<RichOutput>()`.
