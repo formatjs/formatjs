@@ -159,3 +159,6 @@ descriptor/value validation and runtime error handling still apply. Typed helper
 descriptors enforce their carried contract without call-site generics. Rich output
 defaults to ReactNode in React Intl or createIntl<T>'s base type in core Intl
 (string by default). Untyped rich calls use that base output type.
+
+The opt-in `enforce-message-types` ESLint rule generates and refreshes these
+contracts from the ICU parser for static helper calls and formatter constructors.
