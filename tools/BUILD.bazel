@@ -186,6 +186,7 @@ js_test(
     data = [
         "release-please/npm-workspace-graph.ts",
         "release-please/npm-workspace-plugin.ts",
+        "release-please/prerelease-versioning.ts",
         "//:release_please_config",
         "//:release_please_npm_workspace_graph",
     ],

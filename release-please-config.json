@@ -8,7 +8,10 @@
   "changelog-type": "default",
   "bootstrap-sha": "482c8e224b2582b554e3f4b0718fe2332c4b5cff",
   "sequential-calls": true,
-  "exclude-paths": ["**/tests/**", "**/*.md"],
+  "exclude-paths": [
+    "**/tests/**",
+    "**/*.md"
+  ],
   "packages": {
     "packages/babel-plugin-formatjs": {
       "component": "babel-plugin-formatjs",
@@ -165,7 +168,10 @@
         }
       ],
       "package-name": "eslint-plugin-formatjs",
-      "version-file": "BUILD.bazel"
+      "version-file": "BUILD.bazel",
+      "versioning": "prerelease",
+      "prerelease-type": "rc.0",
+      "prerelease": true
     },
     "packages/fast-memoize": {
       "component": "@formatjs/fast-memoize",
@@ -321,7 +327,10 @@
         }
       ],
       "package-name": "intl-messageformat",
-      "version-file": "BUILD.bazel"
+      "version-file": "BUILD.bazel",
+      "versioning": "prerelease",
+      "prerelease-type": "rc.0",
+      "prerelease": true
     },
     "packages/intl-numberformat": {
       "component": "@formatjs/intl-numberformat",
@@ -381,7 +390,10 @@
         }
       ],
       "package-name": "@formatjs/intl",
-      "version-file": "BUILD.bazel"
+      "version-file": "BUILD.bazel",
+      "versioning": "prerelease",
+      "prerelease-type": "rc.0",
+      "prerelease": true
     },
     "packages/react-intl": {
       "component": "react-intl",
@@ -393,7 +405,10 @@
         }
       ],
       "package-name": "react-intl",
-      "version-file": "BUILD.bazel"
+      "version-file": "BUILD.bazel",
+      "versioning": "prerelease",
+      "prerelease-type": "rc.0",
+      "prerelease": true
     },
     "packages/svelte-intl": {
       "component": "@formatjs/svelte-intl",
@@ -405,7 +420,10 @@
         }
       ],
       "package-name": "@formatjs/svelte-intl",
-      "version-file": "BUILD.bazel"
+      "version-file": "BUILD.bazel",
+      "versioning": "prerelease",
+      "prerelease-type": "rc.0",
+      "prerelease": true
     },
     "packages/ts-transformer": {
       "component": "@formatjs/ts-transformer",
@@ -453,7 +471,10 @@
         }
       ],
       "package-name": "vue-intl",
-      "version-file": "BUILD.bazel"
+      "version-file": "BUILD.bazel",
+      "versioning": "prerelease",
+      "prerelease-type": "rc.0",
+      "prerelease": true
     },
     "crates/icu_skeleton_parser": {
       "release-type": "rust",

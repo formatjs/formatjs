@@ -141,6 +141,19 @@ versions before each dependent publication. Independent uploads proceed without
 waiting for each other's registry visibility. The workflow verifies the whole batch
 before completion, allowing up to three minutes for registry propagation per
 version. A failed dependency cannot leave a newly published dependent uninstallable.
+Messaging RCs are configured per package with `versioning: prerelease`,
+`prerelease: true`, and `prerelease-type: rc.0`. The group contains
+intl-messageformat, @formatjs/intl, react-intl, eslint-plugin-formatjs, svelte-intl,
+and vue-intl; the wrappers must remain prereleases while consuming RC dependencies.
+The runner registers a prerelease versioning fix for release-please 17.6, which
+otherwise drops the suffix when a prerelease changes bump level. Disabling
+`prerelease` preserves the normal stable-promotion behavior.
+`publishNpmPackages` derives a dist-tag from each version and passes it to the
+publisher: RCs use `rc`, other prereleases use `next`, and stable versions use
+`latest`. The workflow always passes that tag explicitly. Merge this release
+configuration before the feature stack; set the whole group's `prerelease` to
+false when ready for stable releases, retaining the versioning strategy for
+promotion. See CONTRIBUTING.md for the maintainer steps.
 Native CLI artifacts are built only when their package paths are
 selected. `:release_manifests` supplies all workspace manifests, while selected
 `:pkg` targets supply package contents; unrelated native binaries are not built

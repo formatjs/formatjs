@@ -1,3 +1,4 @@
+import {registerPrereleaseVersioning} from './prerelease-versioning.ts'
 import assert from 'node:assert/strict'
 import {readFileSync} from 'node:fs'
 import {createRequire} from 'node:module'
@@ -7,6 +8,10 @@ import {readGraph} from './npm-workspace-graph.ts'
 
 const require = createRequire(import.meta.url)
 const {VERSION} = require('release-please')
+const {
+  buildVersioningStrategy,
+} = require('release-please/build/src/factories/versioning-strategy-factory')
+registerPrereleaseVersioning()
 const {Bazel} = require('release-please/build/src/strategies/bazel')
 const {Version} = require('release-please/build/src/version')
 const {
@@ -23,7 +28,10 @@ const rawConfig = JSON.parse(readFileSync(process.argv[3], 'utf8'))
 const repositoryConfig = Object.fromEntries(
   Object.entries(rawConfig.packages).map(([path, config]) => [
     path,
-    {releaseType: config['release-type'] || rawConfig['release-type']},
+    {
+      releaseType: config['release-type'] || rawConfig['release-type'],
+      prerelease: config.prerelease,
+    },
   ])
 )
 const logger = {debug() {}, info() {}, warn() {}, error() {}}
@@ -83,6 +91,11 @@ async function run(paths: string[]) {
       new Bazel({
         github,
         targetBranch: 'main',
+        versioningStrategy: buildVersioningStrategy({
+          type: rawConfig.packages[pkg.path].versioning,
+          prerelease: rawConfig.packages[pkg.path].prerelease,
+          prereleaseType: rawConfig.packages[pkg.path]['prerelease-type'],
+        }),
         path: pkg.path,
         component: pkg.name,
         packageName: pkg.name,
@@ -98,7 +111,10 @@ async function run(paths: string[]) {
     paths.map(async path => {
       const pkg = packages.find(pkg => pkg.path === path)
       const version = pkg
-        ? new PatchVersionUpdate().bump(Version.parse(pkg.version))
+        ? strategies[path].versioningStrategy.bump(
+            Version.parse(pkg.version),
+            []
+          )
         : Version.parse('99.0.0')
       return {
         path,
@@ -196,3 +212,71 @@ assert.deepEqual(await run([]), [])
 console.log(
   'Verified native-only, npm dependency, optional dependency, and unrelated releases'
 )
+
+const rcPaths = [
+  'packages/eslint-plugin-formatjs',
+  'packages/intl',
+  'packages/intl-messageformat',
+  'packages/react-intl',
+  'packages/svelte-intl',
+  'packages/vue-intl',
+].sort()
+assert.deepEqual(
+  Object.entries(rawConfig.packages)
+    .filter(([, config]) => config.prerelease)
+    .map(([path]) => path)
+    .sort(),
+  rcPaths
+)
+for (const path of rcPaths) {
+  assert.equal(rawConfig.packages[path].versioning, 'prerelease')
+  assert.equal(rawConfig.packages[path]['prerelease-type'], 'rc.0')
+}
+const rcCandidates = await run([
+  'packages/intl-messageformat',
+  'packages/eslint-plugin-formatjs',
+])
+assert.deepEqual(paths(rcCandidates), rcPaths)
+for (const candidate of rcCandidates) {
+  assert.equal(candidate.config.prerelease, true)
+  assert.match(candidate.pullRequest.version.toString(), /-rc\.0$/)
+}
+const rcStrategy = buildVersioningStrategy({
+  type: 'prerelease',
+  prerelease: true,
+  prereleaseType: 'rc.0',
+})
+const fix = [{type: 'fix', breaking: false, notes: []}]
+const feat = [{type: 'feat', breaking: false, notes: []}]
+const breaking = [{type: 'feat', breaking: true, notes: []}]
+assert.equal(
+  rcStrategy.bump(Version.parse('10.2.2'), breaking).toString(),
+  '11.0.0-rc.0'
+)
+assert.equal(
+  rcStrategy.bump(Version.parse('11.0.0-rc.0'), fix).toString(),
+  '11.0.0-rc.1'
+)
+assert.equal(
+  rcStrategy.bump(Version.parse('11.0.0-rc.1'), breaking).toString(),
+  '11.0.0-rc.2'
+)
+// Changing the bump level must never accidentally create a stable release.
+assert.equal(
+  rcStrategy.bump(Version.parse('10.2.3-rc.0'), breaking).toString(),
+  '11.0.0-rc.0'
+)
+assert.equal(
+  rcStrategy.bump(Version.parse('10.2.3-rc.0'), feat).toString(),
+  '10.3.0-rc.0'
+)
+const stableStrategy = buildVersioningStrategy({
+  type: 'prerelease',
+  prerelease: false,
+  prereleaseType: 'rc.0',
+})
+assert.equal(
+  stableStrategy.bump(Version.parse('11.0.0-rc.2'), fix).toString(),
+  '11.0.0'
+)
+console.log('Verified RC versions, dependent releases, and stable promotion')

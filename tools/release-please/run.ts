@@ -1,3 +1,4 @@
+import {registerPrereleaseVersioning} from './prerelease-versioning.ts'
 import {appendFileSync} from 'node:fs'
 import {createRequire} from 'node:module'
 
@@ -121,6 +122,7 @@ async function loadManifest(github, targetBranch: string) {
 async function main() {
   console.log(`Running release-please version: ${VERSION}`)
   registerFormatjsPlugin()
+  registerPrereleaseVersioning()
 
   const [owner, repo] = requiredEnv('GITHUB_REPOSITORY').split('/')
   const token = process.env.GH_RELEASE_TOKEN || process.env.GITHUB_TOKEN || ''
