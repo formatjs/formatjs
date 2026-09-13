@@ -10,10 +10,38 @@ bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test /
 bazel run //packages/editor/vrt:visual_test.update
 ```
 
-All three tests require a local Docker daemon. They are manual, local, and
-uncached. CI must select them explicitly. The browser runs through Testcontainers
-in a pinned Linux amd64 image; failure reports, traces, and image diffs remain
-in Bazel's undeclared outputs.
+All three tests are manual, local, and uncached. CI must select them explicitly.
+E2E and component tests use host Chromium matching the locked Playwright version.
+Provision it before testing:
+
+```sh
+pnpm install --frozen-lockfile
+export PLAYWRIGHT_BROWSERS_PATH="$HOME/.cache/formatjs-playwright"
+pnpm exec playwright install chromium
+```
+
+Linux hosts also need Playwright's system libraries; use
+`playwright install --with-deps chromium` when provisioning the host.
+
+Only VRT requires Docker. Preload the shared runtime's default pinned images into
+the same daemon used for tests and updates; v3 never pulls images during execution:
+
+```sh
+bazel build @rules_web_e2e//runtime:images
+manifest="$(bazel cquery --output=files @rules_web_e2e//runtime:images)"
+jq -r '.images[] | [.image, (.platform // "")] | @tsv' "$manifest" |
+while IFS="$(printf '\t')" read -r image platform; do
+  if [ -n "$platform" ]; then
+    docker pull --platform "$platform" "$image"
+  else
+    docker pull "$image"
+  fi
+done
+```
+
+Containerized callers must set an explicit TCP/HTTP(S) `DOCKER_HOST`.
+VRT runs in a pinned Linux amd64 image. Failure reports, traces, and image diffs
+remain in Bazel's undeclared outputs.
 
 ## Built inputs
 
@@ -52,5 +80,4 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency is pinned to the public implementation commit providing
-the built-input API; this API is newer than the 1.0.0 release.
+The rules dependency uses the Bazel Central Registry's `rules_web_e2e` 3.0.0 release.

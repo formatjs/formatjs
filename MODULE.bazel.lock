@@ -319,6 +319,8 @@
     "https://bcr.bazel.build/modules/rules_swift/2.1.1/MODULE.bazel": "494900a80f944fc7aa61500c2073d9729dff0b764f0e89b824eb746959bc1046",
     "https://bcr.bazel.build/modules/rules_swift/2.4.0/MODULE.bazel": "1639617eb1ede28d774d967a738b4a68b0accb40650beadb57c21846beab5efd",
     "https://bcr.bazel.build/modules/rules_swift/3.1.2/MODULE.bazel": "72c8f5cf9d26427cee6c76c8e3853eb46ce6b0412a081b2b6db6e8ad56267400",
+    "https://bcr.bazel.build/modules/rules_web_e2e/3.0.0/MODULE.bazel": "5142831de192bcad1124f3788619eea428a4d46d5db95acef5745ac458ef0cdb",
+    "https://bcr.bazel.build/modules/rules_web_e2e/3.0.0/source.json": "b84c67f490f660850ef38bae583bf9971527f4a86a4593ce2b55879aa341187a",
     "https://bcr.bazel.build/modules/stardoc/0.5.1/MODULE.bazel": "1a05d92974d0c122f5ccf09291442580317cdd859f07a8655f1db9a60374f9f8",
     "https://bcr.bazel.build/modules/stardoc/0.5.3/MODULE.bazel": "c7f6948dae6999bf0db32c1858ae345f112cacf98f174c7a8bb707e41b974f1c",
     "https://bcr.bazel.build/modules/stardoc/0.5.4/MODULE.bazel": "6569966df04610b8520957cb8e97cf2e9faac2c0309657c537ab51c16c18a2a4",
@@ -359,7 +361,7 @@
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
         "bzlTransitiveDigest": "hXtEHRCo+sJ9wykzFnxEouXsYGOjBgrALTlW/s5ohuI=",
-        "usagesDigest": "6sFSnWAcSfHuyric1feLvCo+1UgYOF95lFSFQhzJgxU=",
+        "usagesDigest": "WGRAUCHfvJE6UDqF9NVo0VdaDSG7MkzsKKd7yFzCBug=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
