@@ -80,5 +80,4 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency pins the official `rules_web_e2e` 3.0.0 release archive
-with its published integrity hash while registry mirrors catch up.
+The rules dependency uses the Bazel Central Registry's `rules_web_e2e` 3.0.0 release.
