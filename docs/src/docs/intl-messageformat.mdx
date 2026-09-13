@@ -345,3 +345,7 @@ Unlike the framework methods, this class takes `Values` on
 [core Intl](/docs/intl#typed-message-arguments) and
 [React Intl](/docs/react-intl/api#typed-message-arguments) guides for
 `formatMessage<Values, RichOutput>` and `$t<Values, RichOutput>`.
+
+Contract properties can be optional, for example `{count?: number}` or
+`{b?: MessageTag}`. Their types are checked when supplied. If every property is
+optional, the values argument can be omitted; runtime ICU requirements still apply.

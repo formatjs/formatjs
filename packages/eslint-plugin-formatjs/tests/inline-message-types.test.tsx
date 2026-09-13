@@ -1,23 +1,22 @@
-/* oxlint-disable typescript/consistent-type-imports -- Compile the rule's generated inline type imports verbatim. */
 import * as React from 'react'
 import {expect, expectTypeOf, test} from 'vitest'
 import {createIntl as createCoreIntl} from '@formatjs/intl'
-import {createIntl} from 'react-intl'
+import {createIntl, type MessageTag, type MessageValue} from 'react-intl'
 
 const core = createCoreIntl({locale: 'en'})
 const intl = createIntl({locale: 'en'})
 
 test('generated inline generics keep formatting and rich callbacks intact', () => {
   expect(
-    core.formatMessage</* @formatjs-generated */ {count: number | bigint}>(
+    core.formatMessage<{count: number | bigint}>(
       {id: 'count', defaultMessage: '{count, number}'},
       {count: 2}
     )
   ).toBe('2')
   const rich = intl.formatMessage<
-    /* @formatjs-generated */ {
-      b: import('react-intl').MessageTag
-      name: import('react-intl').MessageValue
+    {
+      b: MessageTag
+      name: MessageValue
     },
     React.ReactNode
   >(
@@ -29,6 +28,19 @@ test('generated inline generics keep formatting and rich callbacks intact', () =
 })
 
 function checkTypes() {
+  type Ignored = {
+    b?: MessageTag
+    count?: number | bigint
+    extra?: MessageValue
+  }
+  intl.$t<Ignored>({defaultMessage: '<b>{count, number}</b>'})
+  intl.$t<Ignored>(
+    {defaultMessage: '<b>{count, number}</b>'},
+    {b: chunks => <b>{chunks}</b>, extra: 'allowed'}
+  )
+  // @ts-expect-error Optional numeric values still have numeric types.
+  intl.$t<Ignored>({defaultMessage: '<b>{count, number}</b>'}, {count: 'two'})
+
   // @ts-expect-error Inline contracts require values.
   core.formatMessage<{n: number}>({defaultMessage: '{n}'})
   // @ts-expect-error Inline values retain their numeric constraint.

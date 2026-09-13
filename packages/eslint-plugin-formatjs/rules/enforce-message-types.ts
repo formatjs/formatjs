@@ -1,3 +1,8 @@
+import {
+  checkPlaceholders,
+  messageIgnoreTag,
+} from '#packages/eslint-plugin-formatjs/placeholder-checks.js'
+import {rule as placeholderRule} from '#packages/eslint-plugin-formatjs/rules/enforce-placeholders.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import type {Rule} from 'eslint'
 import type {
@@ -14,7 +19,6 @@ import {
 import {messageTypes} from '#packages/eslint-plugin-formatjs/message-types.js'
 
 export const name = 'enforce-message-types'
-const marker = '/* @formatjs-generated */'
 const modules = new Set([
   '@formatjs/intl',
   'react-intl',
@@ -160,8 +164,7 @@ interface TypeNode {
   computed?: boolean
 }
 
-// Render only the type syntax we generate. Unsupported handwritten types are
-// reported without being rewritten; property names retain their exact values.
+// Render generated type syntax for stable comparisons before applying autofix.
 function renderType(node: TypeNode | undefined): string | undefined {
   if (!node) return
   const keywords: Record<string, string> = {
@@ -170,8 +173,8 @@ function renderType(node: TypeNode | undefined): string | undefined {
     TSStringKeyword: 'string',
   }
   if (keywords[node.type]) return keywords[node.type]
-  if (node.type === 'TSTypeReference' && node.typeName?.name === 'Date')
-    return 'Date'
+  if (node.type === 'TSTypeReference' && node.typeName?.type === 'Identifier')
+    return node.typeName.name
   if (node.type === 'TSUnionType') {
     const types = node.types?.map(renderType)
     if (types?.every(type => type !== undefined)) return types.join(' | ')
@@ -189,7 +192,6 @@ function renderType(node: TypeNode | undefined): string | undefined {
     for (const member of node.members) {
       if (
         member.type !== 'TSPropertySignature' ||
-        member.optional ||
         member.readonly ||
         member.computed
       )
@@ -198,9 +200,95 @@ function renderType(node: TypeNode | undefined): string | undefined {
         member.key?.type === 'Identifier' ? member.key.name : member.key?.value
       const type = renderType(member.typeAnnotation?.typeAnnotation)
       if (key === undefined || type === undefined) return
-      fields.push(`${JSON.stringify(String(key))}: ${type}`)
+      fields.push(
+        `${JSON.stringify(String(key))}${member.optional ? '?' : ''}: ${type}`
+      )
     }
     return fields.length ? `{ ${fields.join('; ')} }` : '{}'
+  }
+}
+
+function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
+  const source = context.sourceCode
+  const imports = new Map<string, string[]>()
+  const occupied = new Set(
+    source.scopeManager?.scopes.flatMap(scope =>
+      scope.variables.map(variable => variable.name)
+    )
+  )
+  const resolved = new Map<string, string>()
+  const text = contract.replace(
+    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValue)/g,
+    (reference, quotedModule: string, imported: string) => {
+      if (resolved.has(reference)) return resolved.get(reference)!
+      const module = JSON.parse(quotedModule) as string
+      for (const declaration of source.ast.body) {
+        if (
+          declaration.type !== 'ImportDeclaration' ||
+          declaration.source.value !== module
+        )
+          continue
+        for (const specifier of declaration.specifiers) {
+          if (specifier.type !== 'ImportSpecifier') continue
+          const name =
+            specifier.imported.type === 'Identifier'
+              ? specifier.imported.name
+              : specifier.imported.value
+          if (name !== imported) continue
+          let scope: ReturnType<typeof source.getScope> | null =
+            source.getScope(node)
+          while (scope && !scope.set.has(specifier.local.name))
+            scope = scope.upper
+          if (
+            scope?.set
+              .get(specifier.local.name)
+              ?.defs.some(def => def.node === specifier)
+          ) {
+            resolved.set(reference, specifier.local.name)
+            return specifier.local.name
+          }
+        }
+      }
+      let local = imported
+      for (let suffix = 1; occupied.has(local); suffix++)
+        local = imported + suffix
+      occupied.add(local)
+      const specifiers = imports.get(quotedModule) ?? []
+      specifiers.push(imported + (local === imported ? '' : ' as ' + local))
+      imports.set(quotedModule, specifiers)
+      resolved.set(reference, local)
+      return local
+    }
+  )
+  return {
+    text,
+    fix(fixer: Rule.RuleFixer): Rule.Fix[] {
+      if (!imports.size) return []
+      const declarations = source.ast.body.filter(
+        statement => statement.type === 'ImportDeclaration'
+      )
+      let anchor: Node | undefined = declarations.at(-1)
+      if (!anchor) {
+        for (const statement of source.ast.body) {
+          if (
+            statement.type !== 'ExpressionStatement' ||
+            statement.expression.type !== 'Literal' ||
+            typeof statement.expression.value !== 'string'
+          )
+            break
+          anchor = statement
+        }
+      }
+      const block = [...imports]
+        .map(
+          ([module, specifiers]) =>
+            'import type {' + specifiers.join(', ') + '} from ' + module + ';'
+        )
+        .join('\n')
+      return anchor
+        ? [fixer.insertTextAfter(anchor, '\n' + block)]
+        : [fixer.insertTextBefore(source.ast.body[0], block + '\n')]
+    },
   }
 }
 
@@ -233,7 +321,7 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     /^<\s*\/\* @formatjs-generated \*\//.test(source.getText(generic))
   const descriptor = node.arguments[0]
   if (!staticObject(descriptor)) {
-    if (generated) context.report({node, messageId: 'dynamic'})
+    if (generic) context.report({node, messageId: 'dynamic'})
     return
   }
   const existingModule = source.ast.body.find(
@@ -247,31 +335,10 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     (existingModule?.type === 'ImportDeclaration'
       ? String(existingModule.source.value)
       : '@formatjs/intl')
-  let ignoreTag = settings.ignoreTag
-  const options = node.arguments[2]
-  if (options && !staticObject(options)) {
-    if (generated) context.report({node, messageId: 'dynamic'})
-    return
-  }
-  if (staticObject(options)) {
-    for (const property of options.properties) {
-      if (property.type !== 'Property') continue
-      const key =
-        property.key.type === 'Identifier'
-          ? property.key.name
-          : property.key.type === 'Literal'
-            ? property.key.value
-            : undefined
-      if (key !== 'ignoreTag') continue
-      if (
-        property.value.type !== 'Literal' ||
-        typeof property.value.value !== 'boolean'
-      ) {
-        if (generated) context.report({node, messageId: 'dynamic'})
-        return
-      }
-      ignoreTag = property.value.value
-    }
+  const ignoreTag = messageIgnoreTag(context, node)
+  if (ignoreTag === undefined) {
+    if (generic) context.report({node, messageId: 'dynamic'})
+    return !!generic
   }
   const messages = extractMessages(node, settings)
   const message = messages[0]?.[0]
@@ -281,14 +348,15 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     typeof message.message.defaultMessage !== 'string' ||
     !staticMessage(message.messageNode ?? undefined)
   ) {
-    if (generated) context.report({node, messageId: 'dynamic'})
+    if (generic) context.report({node, messageId: 'dynamic'})
     return
   }
   let contract: string
   try {
     contract = messageTypes(
       parse(message.message.defaultMessage, {ignoreTag}),
-      module
+      module,
+      context.options[0]?.ignoreList
     )
   } catch (error) {
     context.report({
@@ -296,32 +364,45 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
       messageId: 'invalid',
       data: {error: error instanceof Error ? error.message : String(error)},
     })
-    return
+    return true
   }
+  const imports = hoistTypes(context, node, contract)
+  contract = imports.text
   const parameters = (generic as unknown as TypeNode | undefined)?.params
   if (
     parameters &&
     parameters.length >= 1 &&
     parameters.length <= 2 &&
-    renderType(parameters[0]) === contract
+    renderType(parameters[0]) === contract &&
+    !generated
   )
-    return
-  if (generic && (!generated || !parameters || parameters.length > 2)) {
+    return true
+  if (generic && (!parameters || parameters.length > 2)) {
     context.report({node: generic, messageId: 'manual'})
-    return
+    return true
   }
   context.report({
     node,
     messageId: 'contract',
     fix(fixer) {
-      return generic && parameters?.[0]
-        ? fixer.replaceText(parameters[0] as unknown as Node, contract)
-        : fixer.insertTextAfter(
-            node.optional ? source.getTokenAfter(node.callee)! : node.callee,
-            '<' + marker + ' ' + contract + '>'
-          )
+      return [
+        ...imports.fix(fixer),
+        generic && parameters?.[0]
+          ? fixer.replaceTextRange(
+              [
+                generic.range![0] + 1,
+                (parameters[0] as unknown as Node).range![1],
+              ],
+              contract
+            )
+          : fixer.insertTextAfter(
+              node.optional ? source.getTokenAfter(node.callee)! : node.callee,
+              '<' + contract + '>'
+            ),
+      ]
     },
   })
+  return true
 }
 
 export const rule: Rule.RuleModule = {
@@ -329,7 +410,7 @@ export const rule: Rule.RuleModule = {
     type: 'problem',
     docs: {
       description:
-        'Check and optionally generate ICU argument contracts for typed message declarations',
+        'Check ICU placeholders and optionally generate TypeScript argument contracts',
     },
     fixable: 'code',
     schema: [
@@ -337,22 +418,27 @@ export const rule: Rule.RuleModule = {
         type: 'object',
         properties: {
           generateTypes: {type: 'boolean'},
+          ignoreList: {type: 'array', items: {type: 'string'}},
           moduleSource: {type: 'string', enum: [...descriptorModules]},
         },
         additionalProperties: false,
       },
     ],
     messages: {
+      ...placeholderRule.meta!.messages,
       contract: 'Generate or refresh the ICU argument contract.',
       invalid: 'Cannot generate message types: {{error}}.',
       manual:
-        'The handwritten contract differs from the parsed message; update it manually.',
+        'Unsupported number of generic arguments; update the call manually.',
       dynamic:
         'Typed messages require static message strings and parser options for contract verification.',
     },
   },
   create(context) {
-    return {
+    const listeners: Rule.RuleListener = {
+      JSXOpeningElement(node: Node) {
+        checkPlaceholders(context, node)
+      },
       NewExpression(node: Node) {
         if (
           node.type !== 'NewExpression' ||
@@ -404,7 +490,11 @@ export const rule: Rule.RuleModule = {
         }
         let contract: string
         try {
-          contract = messageTypes(parse(message, {ignoreTag}), imported.module)
+          contract = messageTypes(
+            parse(message, {ignoreTag}),
+            imported.module,
+            context.options[0]?.ignoreList
+          )
         } catch (error) {
           context.report({
             node,
@@ -415,10 +505,16 @@ export const rule: Rule.RuleModule = {
           })
           return
         }
+        const imports = hoistTypes(context, node, contract)
+        contract = imports.text
         const parameters = (generic as unknown as TypeNode | undefined)?.params
-        if (parameters?.length === 1 && renderType(parameters[0]) === contract)
+        if (
+          parameters?.length === 1 &&
+          renderType(parameters[0]) === contract &&
+          !generated
+        )
           return
-        if (generic && !generated) {
+        if (generic && parameters?.length !== 1) {
           context.report({node: generic, messageId: 'manual'})
           return
         }
@@ -426,22 +522,26 @@ export const rule: Rule.RuleModule = {
           node,
           messageId: 'contract',
           fix(fixer) {
-            const expected = `<${marker} ${contract}>`
-            return generic
-              ? fixer.replaceText(generic, expected)
-              : fixer.insertTextAfter(node.callee, expected)
+            const expected = `<${contract}>`
+            return [
+              ...imports.fix(fixer),
+              generic
+                ? fixer.replaceText(generic, expected)
+                : fixer.insertTextAfter(node.callee, expected),
+            ]
           },
         })
       },
       CallExpression(node: Node) {
-        if (
-          node.type !== 'CallExpression' ||
-          !/\.[cm]?tsx?$/.test(context.filename)
-        )
+        if (node.type !== 'CallExpression') return
+        if (!/\.[cm]?tsx?$/.test(context.filename)) {
+          checkPlaceholders(context, node)
           return
+        }
         const imported = importedHelper(context, node)
         if (!imported) {
-          checkInlineMessage(context, node)
+          if (!checkInlineMessage(context, node))
+            checkPlaceholders(context, node)
           return
         }
         const source = context.sourceCode
@@ -470,7 +570,13 @@ export const rule: Rule.RuleModule = {
           )
         if (!typed && !generated && !context.options[0]?.generateTypes) return
         // Existing annotations and unrelated second arguments belong to the caller.
-        if (!typed && generic && !generated) return
+        if (
+          !typed &&
+          generic &&
+          !generated &&
+          !context.options[0]?.generateTypes
+        )
+          return
         if (node.arguments.length > 2 || (options && !typed)) return
         const descriptor = node.arguments[0]
         if (!staticObject(descriptor)) {
@@ -511,7 +617,8 @@ export const rule: Rule.RuleModule = {
               parse(message.message.defaultMessage!, {
                 ignoreTag: getSettings(context).ignoreTag,
               }),
-              imported.module
+              imported.module,
+              context.options[0]?.ignoreList
             )
           )
           contract =
@@ -544,15 +651,18 @@ export const rule: Rule.RuleModule = {
           })
           return
         }
-        const expected = `<${marker} ${contract}>`
+        const imports = hoistTypes(context, node, contract)
+        contract = imports.text
+        const expected = `<${contract}>`
         const parameters = (generic as unknown as TypeNode | undefined)?.params
         if (
           parameters?.length === 1 &&
           renderType(parameters[0]) === contract &&
-          typed
+          typed &&
+          !generated
         )
           return
-        if (generic && !generated) {
+        if (generic && parameters?.length !== 1) {
           context.report({node: generic, messageId: 'manual'})
           return
         }
@@ -561,6 +671,7 @@ export const rule: Rule.RuleModule = {
           messageId: 'contract',
           fix(fixer) {
             const edits = [
+              ...imports.fix(fixer),
               generic
                 ? fixer.replaceText(generic, expected)
                 : fixer.insertTextAfter(
@@ -585,5 +696,13 @@ export const rule: Rule.RuleModule = {
         })
       },
     }
+    const parserServices = context.sourceCode.parserServices
+    if (parserServices?.defineTemplateBodyVisitor) {
+      return parserServices.defineTemplateBodyVisitor(
+        {CallExpression: listeners.CallExpression},
+        {CallExpression: listeners.CallExpression}
+      )
+    }
+    return listeners
   },
 }

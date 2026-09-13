@@ -30,11 +30,13 @@ export interface UntypedMessageContract {
 }
 
 type ResolveMessageValues<V extends MessageValues, T, TChunk> = {
-  [K in keyof V]: V[K] extends MessageTag
-    ? FormatXMLElementFn<string | TChunk, string | T | Array<string | T>>
-    : MessageValue extends V[K]
-      ? V[K] | T
-      : Extract<V[K], MessageValue>
+  [K in keyof V]: [V[K]] extends [undefined]
+    ? V[K]
+    : Exclude<V[K], undefined> extends MessageTag
+      ? FormatXMLElementFn<string | TChunk, string | T | Array<string | T>>
+      : MessageValue extends V[K]
+        ? V[K] | T
+        : Extract<V[K], MessageValue>
 }
 
 type MessageKeys<V> = V extends unknown ? keyof V : never
@@ -60,7 +62,9 @@ export type MessageFormatArguments<
 > =
   MessageKeys<V> extends never
     ? [values?: Record<string, never>, ...extra: Extra]
-    : [values: TypedMessageValues<V, T, TChunk>, ...extra: Extra]
+    : {} extends TypedMessageValues<V, T, TChunk>
+      ? [values?: TypedMessageValues<V, T, TChunk>, ...extra: Extra]
+      : [values: TypedMessageValues<V, T, TChunk>, ...extra: Extra]
 
 export type UntypedMessageFormat = <T = void>(
   values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>

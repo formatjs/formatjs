@@ -153,8 +153,10 @@ checked even when generation for untyped calls is disabled. Neither preset
 changes. Import aliases and namespace imports are resolved through lexical scope.
 
 `message-types.ts` derives contracts from the ICU AST. It visits every branch,
-merges repeated arguments, and reports incompatible formatted uses. Generated
-comments distinguish tool-owned generics from handwritten annotations. The
+merges repeated arguments, and reports incompatible formatted uses. Autofix
+replaces the first contract generic, including handwritten types, without a marker.
+It hoists MessageTag/MessageValue to normal type imports, reuses visible aliases,
+and avoids collisions with bindings in the file. The
 `{typed: true}` helper overload carries a required phantom symbol contract;
 legacy formatter overloads exclude that symbol so invalid typed calls cannot
 fall back to permissive checking. Runtime descriptors remain plain objects.
@@ -175,8 +177,17 @@ TypeScript test checks, when changing this boundary.
 Inline formatter calls receive the generated ICU contract as their first generic.
 The formatter signature validates both descriptors and values without assertions
 or runtime wrappers. Refreshes replace only the first generic and preserve the
-optional second rich-output generic. Handwritten contracts are checked without
-autofix; handwritten descriptor assertions remain caller-owned.
+optional second rich-output generic. Handwritten contracts are refreshed too;
+descriptor assertions remain caller-owned.
 The moduleSource option selects the public type import for wrapper-based call
 sites; otherwise the first FormatJS import supplies it, with @formatjs/intl as
 fallback. Tests compile and run generated inline syntax against public entrypoints.
+
+The two placeholder rules share placeholder-checks.ts and the parser AST
+collector. enforce-placeholders remains supported for JS and existing presets.
+enforce-message-types falls back to the same inline checks for JS, JSX, Vue, and
+untyped calls; verified/generated contracts delegate value checking to TypeScript.
+Both accept ignoreList. Generated ignored fields are optional, including explicitly
+listed extra names; their supplied values still have the derived types.
+Use one rule per file to avoid duplicate diagnostics. Run the original placeholder
+suite against both rules, plus generation and public type tests.

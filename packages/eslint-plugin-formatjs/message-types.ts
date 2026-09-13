@@ -3,11 +3,9 @@ import {
   type MessageFormatElement,
 } from '@formatjs/icu-messageformat-parser'
 
-/** Derive one contract from the runtime parser's AST, including every branch. */
-export function messageTypes(
-  ast: MessageFormatElement[],
-  module: string
-): string {
+export function collectMessageArguments(
+  ast: MessageFormatElement[]
+): Map<string, Set<string>> {
   const argumentsByName = new Map<string, Set<string>>()
   function visit(elements: MessageFormatElement[]) {
     for (const element of elements) {
@@ -39,6 +37,20 @@ export function messageTypes(
     }
   }
   visit(ast)
+  return argumentsByName
+}
+
+/** Derive one contract from the runtime parser's AST, including every branch. */
+export function messageTypes(
+  ast: MessageFormatElement[],
+  module: string,
+  ignoreList: string[] = []
+): string {
+  const argumentsByName = collectMessageArguments(ast)
+  const ignored = new Set(ignoreList)
+  for (const name of ignored) {
+    if (!argumentsByName.has(name)) argumentsByName.set(name, new Set())
+  }
   const fields = [...argumentsByName]
     .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
     .map(([name, types]) => {
@@ -52,7 +64,7 @@ export function messageTypes(
       else if (types.has('date')) type = 'number | Date'
       else if (types.has('select')) type = 'string'
       else type = `import(${JSON.stringify(module)}).MessageTag`
-      return `${JSON.stringify(name)}: ${type}`
+      return `${JSON.stringify(name)}${ignored.has(name) ? '?' : ''}: ${type}`
     })
   return fields.length ? `{ ${fields.join('; ')} }` : '{}'
 }

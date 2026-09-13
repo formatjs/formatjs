@@ -34,6 +34,25 @@ test('typed ICU strings and ASTs use the same formatter', () => {
 })
 
 function checkTypes() {
+  const optional = new IntlMessageFormat<{b?: MessageTag; count?: number}>(
+    '<b>{count}</b>'
+  )
+  optional.format()
+  optional.formatToParts()
+  optional.format({b: chunks => chunks.join(''), count: 2})
+  // @ts-expect-error Optional scalar arguments retain their type.
+  optional.format({count: 'two'})
+  // @ts-expect-error Optional tags still require callbacks.
+  optional.format({b: 'bold'})
+
+  const mixed = new IntlMessageFormat<{b?: MessageTag; count: number}>(
+    '<b>{count}</b>'
+  )
+  mixed.format({count: 2})
+  // @ts-expect-error Optional tags do not make required scalar values optional.
+  mixed.format()
+  // @ts-expect-error Required scalar values cannot be omitted from an object.
+  mixed.format({b: chunks => chunks.join('')})
   // @ts-expect-error Typed messages require their values.
   message.format()
   // @ts-expect-error Parts enforce the same contract.
