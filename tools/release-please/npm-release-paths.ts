@@ -116,10 +116,20 @@ export function orderNpmReleasePaths(
   return ordered
 }
 
+export function npmPublishTag(version: string): string {
+  const match =
+    /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-([0-9A-Za-z.-]+))?(?:\+[0-9A-Za-z.-]+)?$/.exec(
+      version
+    )
+  if (!match) throw new Error('Invalid npm release version: ' + version)
+  if (!match[1]) return 'latest'
+  return match[1].split('.')[0] === 'rc' ? 'rc' : 'next'
+}
+
 export async function publishNpmPackages(
   paths: string[],
   packages: Record<string, NpmPackage>,
-  publish: (path: string) => Promise<void>,
+  publish: (path: string, tag: string) => Promise<void>,
   isPublished: VersionPublished = isNpmVersionPublished,
   wait: (milliseconds: number) => Promise<void> = milliseconds =>
     new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -163,7 +173,7 @@ export async function publishNpmPackages(
       }
     }
     try {
-      await publish(path)
+      await publish(path, npmPublishTag(pkg.version))
     } catch (error) {
       // Another release may have published this version concurrently.
       await verifyPublication(pkg.name, pkg.version, error)

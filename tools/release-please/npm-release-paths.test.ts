@@ -5,6 +5,7 @@ import {
   isNpmVersionPublished,
   orderNpmReleasePaths,
   publishNpmPackages,
+  npmPublishTag,
   type NpmPackage,
 } from './npm-release-paths.ts'
 
@@ -250,3 +251,33 @@ assert.deepEqual(independentUploads, Object.keys(independent))
 console.log(
   'Verified npm release reconciliation and dependency-safe publication'
 )
+
+assert.equal(npmPublishTag('11.0.0-rc.0'), 'rc')
+assert.equal(npmPublishTag('11.0.0-rc.12+build.7'), 'rc')
+assert.equal(npmPublishTag('11.0.0-beta.1'), 'next')
+assert.equal(npmPublishTag('11.0.0'), 'latest')
+assert.equal(npmPublishTag('11.0.0+build.7'), 'latest')
+assert.throws(() => npmPublishTag('latest'), /Invalid npm release version/)
+
+const rcPackages = {
+  'packages/core': {name: 'core', version: '5.0.0-rc.0'},
+  'packages/react': {
+    name: 'react',
+    version: '11.0.0-rc.0',
+    dependencies: {core: '5.0.0-rc.0'},
+  },
+  'packages/stable': {name: 'stable', version: '1.0.0'},
+}
+const rcPublished = new Set<string>()
+const rcCalls: string[] = []
+await publishNpmPackages(
+  ['packages/react', 'packages/core', 'packages/stable'],
+  rcPackages,
+  async (path, tag) => {
+    const pkg = rcPackages[path]
+    rcCalls.push(pkg.name + ':' + tag)
+    rcPublished.add(pkg.name + '@' + pkg.version)
+  },
+  async (name, version) => rcPublished.has(name + '@' + version)
+)
+assert.deepEqual(rcCalls, ['core:rc', 'react:rc', 'stable:latest'])
