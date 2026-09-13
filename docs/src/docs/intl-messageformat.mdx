@@ -294,3 +294,43 @@ complex msg w/ formatters format x 11,649 ops/sec ±2.05% (78 runs sampled)
 complex preparsed msg w/ formatters format x 597,153 ops/sec ±1.46% (90 runs sampled)
 complex preparsed msg w/ new formatters format x 684,263 ops/sec ±1.37% (89 runs sampled)
 ```
+
+## Typed argument contracts
+
+Typed APIs require TypeScript 5.4 or newer.
+
+Pass an argument contract as the class generic to check `format` and
+`formatToParts`. Omitting the generic keeps the existing permissive API.
+
+```ts
+import IntlMessageFormat from 'intl-messageformat'
+
+const message = new IntlMessageFormat<{count: number | bigint}>(
+  '{count, plural, one {# item} other {# items}}',
+  'en'
+)
+message.format({count: 2}) // OK
+message.format({count: 'two'}) // TypeScript error
+message.formatToParts() // TypeScript error: missing count
+```
+
+The contract works with both message strings and parsed ASTs. TypeScript does
+not verify that a handwritten contract matches the message. Keep the contract
+in sync with the ICU source.
+
+`MessageValue` describes an unformatted argument. `MessageTag` describes a
+rich-text callback. For rich objects, supply the output type to `format<T>` or
+`formatToParts<T>`:
+
+```ts
+import IntlMessageFormat, {type MessageTag} from 'intl-messageformat'
+
+const rich = new IntlMessageFormat<{b: MessageTag}>('<b>Hello</b>', 'en')
+const result = rich.format<{children: unknown[]}>({
+  b: chunks => ({children: chunks}),
+})
+```
+
+These contracts also back `@formatjs/intl` and React Intl typed descriptors.
+Framework integrations supply their own rich-value types; the shared contract
+has no React or message-descriptor dependency.

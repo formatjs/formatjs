@@ -604,3 +604,13 @@ an empty array.
 ```tsx
 intl.formatDurationToParts({minutes: 3, seconds: 42}, {style: 'long'})
 ```
+
+## TypeScript requirements
+
+TypeScript 5.4 or newer is required. The formatter declarations use `NoInfer`
+to keep typed message contracts independent of the supplied values. Existing
+JavaScript usage is unchanged.
+
+Use `defineMessage<Values>(descriptor, {typed: true})` or
+`defineMessages<Contracts>(catalog, {typed: true})` to enable argument checks in
+`formatMessage` and `$t`. One-argument helper calls retain their existing types.

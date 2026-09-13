@@ -255,7 +255,9 @@ There are a few API layers that React Intl provides and is built on. When using 
 
 # TypeScript Usage
 
-`react-intl` is written in TypeScript, thus having 1st-class TS support.
+`react-intl` is written in TypeScript and requires TypeScript 5.4 or newer.
+Its declarations use the `NoInfer` intrinsic, including when typed messages are
+not enabled.
 
 In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `lib` config include `["esnext.intl", "es2017.intl", "es2018.intl"]`.
 

@@ -1,17 +1,6 @@
-import {type MessageDescriptor} from '#packages/intl/types.js'
 export * from '#packages/intl/types.js'
 
-export function defineMessages<
-  K extends keyof any,
-  T = MessageDescriptor,
-  U extends Record<K, T> = Record<K, T>,
->(msgs: U): U {
-  return msgs
-}
-
-export function defineMessage<T>(msg: T): T {
-  return msg
-}
+export * from '#packages/intl/typed-message.js'
 
 export {
   createIntlCache,

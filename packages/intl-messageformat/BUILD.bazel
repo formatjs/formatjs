@@ -18,6 +18,7 @@ formatjs_library(
         "error.ts",
         "formatters.ts",
         "index.ts",
+        "message-types.ts",
     ],
     author = "Eric Ferraiuolo <eferraiuolo@gmail.com>",
     bugs = "https://github.com/formatjs/formatjs/issues",
@@ -66,6 +67,7 @@ formatjs_test(
     srcs = [
         "tests/benchmark.ts",
         "tests/index.test.ts",
+        "tests/message-types.test.ts",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

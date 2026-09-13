@@ -115,3 +115,34 @@ entry points; `FormatDurationOptions` is exported from the client and server.
 - `LocalePicker`, `MessagePreview`, `CopyTextButton`, and `MessageContext` share the public design-system context. Optional typed tool adapters resolve to native defaults, preserving existing registries. Locale selection stays controlled; preview preserves ICU branches/skeletons without executing tags; clipboard feedback ignores obsolete writes; metadata uses the existing message/source-location types. See `demo/tools-demo.tsx` and browser `/?tools=1`.
 - Views accept loaded lists, search callbacks, selected detail, and per-locale drafts; fetching, pagination controls, confirmation, and persistence remain caller-owned.
 - See `packages/editor/README.md` for state lifetime, submission snapshots, adapter contracts, and examples.
+
+## Opt-in ICU argument contracts
+
+These APIs require TypeScript 5.4 or newer. Descriptor overloads use its
+`NoInfer` intrinsic to prevent value maps from weakening the message contract.
+
+`intl-messageformat/message-types.ts` owns `MessageContract`, `MessageValue`,
+`MessageTag`, value resolution, and required-argument tuples. The generic
+`IntlMessageFormat<Values>` checks both `format` and `formatToParts` for string
+and AST inputs. Omitting the generic preserves the original signatures.
+
+```mermaid
+flowchart TD
+  Contracts["intl-messageformat: ICU contracts"] --> Formatter["IntlMessageFormat format / formatToParts"]
+  Contracts --> Intl["@formatjs/intl: descriptor helpers"]
+  Intl --> React["react-intl: React values and callbacks"]
+```
+
+### Descriptor adapters
+
+`defineMessage<Values>(descriptor, {typed: true})` and
+`defineMessages<Contracts>(catalog, {typed: true})` attach phantom contracts for
+`formatMessage` and `$t`. Existing one-argument overloads retain their behavior.
+`MessageValue` represents plain arguments; `MessageTag` is resolved to the
+formatter's callback type. Contracts are explicit; TypeScript does not parse
+the ICU string. The original helper overload stays last to preserve
+`Parameters` and `ReturnType` for wrappers. React helpers retain their original
+`MessageDescriptor` constraint.
+Checks require retaining `TypedMessageDescriptor`; widening to
+`MessageDescriptor` intentionally loses the contract. JSX and ID-only catalog
+inference are outside this API.
