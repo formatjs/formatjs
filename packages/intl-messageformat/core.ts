@@ -21,6 +21,13 @@ import {
   type PrimitiveType,
 } from '#packages/intl-messageformat/formatters.js'
 
+import type {
+  MessageValues,
+  MessageFormatFunction,
+  MessageFormatToPartsFunction,
+  UntypedMessageFormatToParts,
+} from '#packages/intl-messageformat/message-types.js'
+
 // -- MessageFormat --------------------------------------------------------
 
 function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
@@ -101,7 +108,9 @@ function createDefaultFormatters(
   }
 }
 
-export class IntlMessageFormat {
+export class IntlMessageFormat<
+  V extends MessageValues | undefined = undefined,
+> {
   private readonly ast: MessageFormatElement[]
   private readonly locales: string | string[]
   private readonly resolvedLocale?: Intl.Locale
@@ -152,10 +161,10 @@ export class IntlMessageFormat {
       (opts && opts.formatters) || createDefaultFormatters(this.formatterCache)
   }
 
-  format = <T = void>(
+  format = (<T = void>(
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>
   ): string | T | (string | T)[] => {
-    const parts = this.formatToParts(values)
+    const parts = (this.formatToParts as UntypedMessageFormatToParts)<T>(values)
     // Hot path for straight simple msg translations
     if (parts.length === 1) {
       return parts[0].value
@@ -180,8 +189,8 @@ export class IntlMessageFormat {
       return result[0] || ''
     }
     return result
-  }
-  formatToParts = <T>(
+  }) as MessageFormatFunction<V>
+  formatToParts = (<T>(
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>
   ): MessageFormatPart<T>[] =>
     formatToParts(
@@ -192,7 +201,7 @@ export class IntlMessageFormat {
       values,
       undefined,
       this.message
-    )
+    )) as MessageFormatToPartsFunction<V>
   resolvedOptions = (): {
     locale: string
   } => ({

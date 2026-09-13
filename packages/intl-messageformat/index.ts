@@ -10,3 +10,16 @@ export * from '#packages/intl-messageformat/error.js'
 export * from '#packages/intl-messageformat/formatters.js'
 export {IntlMessageFormat}
 export default IntlMessageFormat
+
+export type {
+  MessageValue,
+  MessageTag,
+  MessageValues,
+  MessageContract,
+  MessageValuesOf,
+  UntypedMessageContract,
+  TypedMessageValues,
+  MessageFormatArguments,
+  MessageFormatFunction,
+  MessageFormatToPartsFunction,
+} from '#packages/intl-messageformat/message-types.js'

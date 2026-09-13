@@ -1,0 +1,102 @@
+import type {MessageDescriptor} from '@formatjs/intl'
+import * as React from 'react'
+import {expect, expectTypeOf, test} from 'vitest'
+import type {defineMessages} from '#packages/react-intl/index.js'
+import {
+  createIntl,
+  defineMessage,
+  type MessageTag,
+  type MessageValue,
+} from '#packages/react-intl/index.js'
+import {
+  defineMessage as serverMessage,
+  createIntl as serverIntl,
+} from '#packages/react-intl/server.js'
+
+const intl = createIntl({locale: 'en'})
+const message = defineMessage<{count: number | bigint}>(
+  {id: 'items', defaultMessage: '{count, number}'},
+  {typed: true}
+)
+
+test('typed helpers work through client and server entrypoints', () => {
+  expect(intl.formatMessage(message, {count: 2})).toBe('2')
+  const server = serverIntl({locale: 'en'})
+  const descriptor = serverMessage<{name: MessageValue}>(
+    {id: 'hello', defaultMessage: 'Hello {name}'},
+    {typed: true}
+  )
+  expect(server.formatMessage(descriptor, {name: 'Ada'})).toBe('Hello Ada')
+  const rich = defineMessage<{b: MessageTag}>(
+    {id: 'rich', defaultMessage: '<b>Hello</b>'},
+    {typed: true}
+  )
+  const result = intl.formatMessage(rich, {b: chunks => <b>{chunks}</b>})
+  expect(React.isValidElement(result)).toBe(true)
+  expect(
+    React.isValidElement(intl.$t(rich, {b: chunks => <b>{chunks}</b>}))
+  ).toBe(true)
+})
+
+type OriginalDefineMessage = <T extends MessageDescriptor>(message: T) => T
+type OriginalDefineMessages = <
+  K extends keyof any,
+  T = MessageDescriptor,
+  U extends Record<K, T> = Record<K, T>,
+>(
+  messages: U
+) => U
+
+function checkTypes() {
+  expectTypeOf<Parameters<typeof defineMessage>>().toEqualTypeOf<
+    Parameters<OriginalDefineMessage>
+  >()
+  expectTypeOf<ReturnType<typeof defineMessage>>().toEqualTypeOf<
+    ReturnType<OriginalDefineMessage>
+  >()
+  expectTypeOf<Parameters<typeof serverMessage>>().toEqualTypeOf<
+    Parameters<OriginalDefineMessage>
+  >()
+  expectTypeOf<ReturnType<typeof serverMessage>>().toEqualTypeOf<
+    ReturnType<OriginalDefineMessage>
+  >()
+  expectTypeOf<
+    Parameters<typeof defineMessages<'hello', MessageDescriptor>>
+  >().toEqualTypeOf<[messages: Record<'hello', MessageDescriptor>]>()
+  expectTypeOf<ReturnType<typeof defineMessages>>().toEqualTypeOf<
+    ReturnType<OriginalDefineMessages>
+  >()
+  const wrapped = (...args: Parameters<typeof defineMessage>) =>
+    defineMessage(...args)
+  wrapped({id: 'wrapped'})
+  // @ts-expect-error React helpers still require descriptors.
+  defineMessage('not a descriptor')
+  // @ts-expect-error Server helpers retain the same constraint.
+  serverMessage('not a descriptor')
+
+  expectTypeOf(intl.formatMessage(message, {count: 2})).toEqualTypeOf<string>()
+  // @ts-expect-error Missing values cannot fall through to the legacy React overload.
+  intl.formatMessage(message)
+  // @ts-expect-error Wrong argument type.
+  intl.formatMessage(message, {count: 'two'})
+  // @ts-expect-error Wrong alias argument type.
+  intl.$t(message, {count: 'two'})
+  const rich = defineMessage<{b: MessageTag; value: MessageValue}>(
+    {id: 'rich', defaultMessage: '<b>{value}</b>'},
+    {typed: true}
+  )
+  expectTypeOf(
+    intl.formatMessage(rich, {
+      b: chunks => <b>{chunks}</b>,
+      value: <i>Hello</i>,
+    })
+  ).toEqualTypeOf<React.ReactNode>()
+  // @ts-expect-error A tag is not a string placeholder.
+  intl.formatMessage(rich, {b: 'bold', value: 'hello'})
+  // @ts-expect-error All placeholders, including tags, are required.
+  intl.formatMessage(rich, {value: 'hello'})
+  const server = serverIntl({locale: 'en'})
+  // @ts-expect-error Server entrypoint enforces contracts too.
+  server.formatMessage(message, {})
+}
+void checkTypes
