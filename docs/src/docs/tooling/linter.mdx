@@ -1034,12 +1034,12 @@ This rule is not enabled in the recommended or strict presets.
 
 `generateTypes` defaults to `false`. Enable it to annotate previously untyped
 static declarations with `eslint --fix`. Even when false, the rule checks and
-refreshes existing generated contracts. Use a TypeScript-capable ESLint parser.
+refreshes existing formatter/constructor generics and typed helper contracts. Use a TypeScript-capable ESLint parser.
 JavaScript files receive inline-value checks but no generated types. Dynamic
 message strings cannot supply a contract.
 
 ```ts
-const message = defineMessage</* @formatjs-generated */ {
+const message = defineMessage<{
   count: number | bigint
 }>(
   {
@@ -1059,19 +1059,21 @@ and nested branches. Contracts include arguments from every branch. Numbers and
 plurals use `number | bigint`; dates and times use `number | Date`; selectors
 use `string` because `other` accepts arbitrary selectors. Plain arguments use
 `MessageValue`, and tags use `MessageTag`, resolved to callbacks by the formatter.
-The helper's import module supplies these types through inline type imports.
+Autofix adds normal `import type` declarations for these names, reusing existing
+imports and aliases when possible.
 Incompatible uses of one argument produce a diagnostic without a fix.
 
 Inline calls receive the ICU contract as their first generic:
 
 ```ts
-intl.formatMessage</* @formatjs-generated */ {
+intl.formatMessage<{
   count: number | bigint
 }>({defaultMessage: '{count, number}'}, {count: 2})
 ```
 
 The formatter signature validates the descriptor and values. No assertion or
-runtime wrapper is needed. Later fixes refresh only the generated first generic,
+runtime wrapper is needed. Autofix replaces the first generic, including a
+handwritten contract,
 preserving an optional second rich-output generic such as `React.ReactNode`.
 
 For inline calls, `moduleSource` can be `@formatjs/intl`, `react-intl`, or
@@ -1079,15 +1081,24 @@ For inline calls, `moduleSource` can be `@formatjs/intl`, `react-intl`, or
 the module, with `@formatjs/intl` as fallback. Set `moduleSource: 'react-intl'`
 when an application wrapper supplies the formatter without a direct FormatJS
 import. The selected package must be available to the TypeScript project.
-If `@typescript-eslint/consistent-type-imports` is enabled, allow inline type
-imports with `disallowTypeAnnotations: false`. Handwritten contracts are checked
-but never rewritten; descriptor assertions are left unchanged. ID-only
-descriptors cannot supply an argument contract.
+Descriptor assertions are left unchanged. ID-only descriptors cannot supply
+an argument contract.
+
+```ts
+import type {MessageTag, MessageValue} from '@formatjs/intl'
+
+intl.$t<{b?: MessageTag; count?: number | bigint; extra?: MessageValue}>({
+  defaultMessage: '<b>{count, number}</b>',
+})
+```
+
+This example uses `ignoreList: ['b', 'count', 'extra']`. Generated types need no
+marker comment; the ICU source is the authority for the first generic.
 
 Direct formatter construction receives the generic without an extra runtime option:
 
 ```ts
-const message = new IntlMessageFormat</* @formatjs-generated */ {
+const message = new IntlMessageFormat<{
   count: number | bigint
 }>('{count, number}', 'en')
 
@@ -1099,10 +1110,11 @@ Dynamic strings, parsed AST inputs, and dynamic parser options are not generated
 The argument contracts and tag/value types live in `intl-messageformat`;
 framework packages re-export them.
 
-Generated contracts carry the `@formatjs-generated` comment so later fixes can
-refresh them. Handwritten generics are never overwritten. Typed declarations
-with unsupported or dynamic source expressions receive a diagnostic instead of
-a guessed contract. Spreads and computed properties are not generated.
+Autofix refreshes the first generic from the message even when it was handwritten,
+and preserves a formatter's second rich-output generic. Legacy marker comments
+are removed when fixing. Typed declarations with unsupported or dynamic source
+expressions receive a diagnostic instead of a guessed contract. Spreads and
+computed properties are not generated.
 
 The `{typed: true}` overload attaches only type-level metadata. Existing helper
 calls and untyped formatting behavior stay unchanged. Both `formatMessage` and
