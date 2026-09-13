@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.0-rc.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@11.2.15...intl-messageformat@12.0.0-rc.0) (2026-09-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **intl-messageformat:** intl-messageformat, @formatjs/intl, and react-intl now require TypeScript 5.4 or newer, including projects that do not enable typed messages.
+
+### Features
+
+* **eslint-plugin-formatjs:** align placeholder checks and simplify generated types ([#7374](https://github.com/formatjs/formatjs/issues/7374)) ([f655fae](https://github.com/formatjs/formatjs/commit/f655fae3bc77c3fdaa662d5d579c4e1de0037647))
+* **intl-messageformat:** require TS 5.4 and add typed ICU contracts ([#7370](https://github.com/formatjs/formatjs/issues/7370)) ([e8620f8](https://github.com/formatjs/formatjs/commit/e8620f8e0465e817ba1a50a7ba856a1d37ca7a47))
+
 ## [11.2.15](https://github.com/formatjs/formatjs/compare/intl-messageformat@11.2.14...intl-messageformat@11.2.15) (2026-09-12)
 
 

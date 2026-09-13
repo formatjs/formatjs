@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.7.0-rc.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.6.3...eslint-plugin-formatjs@6.7.0-rc.0) (2026-09-13)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** align placeholder checks and simplify generated types ([#7374](https://github.com/formatjs/formatjs/issues/7374)) ([f655fae](https://github.com/formatjs/formatjs/commit/f655fae3bc77c3fdaa662d5d579c4e1de0037647))
+* **eslint-plugin-formatjs:** autofix ICU argument contracts ([#7369](https://github.com/formatjs/formatjs/issues/7369)) ([4bda2fa](https://github.com/formatjs/formatjs/commit/4bda2fa5974e4337ea6618370a2137cd89fdc35e))
+
 ## [6.6.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.6.2...eslint-plugin-formatjs@6.6.3) (2026-09-12)
 
 

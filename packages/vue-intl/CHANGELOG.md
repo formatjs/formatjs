@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.20-rc.0](https://github.com/formatjs/formatjs/compare/vue-intl@7.2.19...vue-intl@7.2.20-rc.0) (2026-09-13)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl bumped to 5.0.0-rc.0
+
 ## [7.2.19](https://github.com/formatjs/formatjs/compare/vue-intl@7.2.18...vue-intl@7.2.19) (2026-09-12)
 
 
