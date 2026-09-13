@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0-rc.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.2.1...@formatjs/intl@5.0.0-rc.0) (2026-09-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl:** @formatjs/intl and react-intl formatter generics now use <Values, RichOutput>. Migrate explicit rich-output calls to formatMessage<Values, RichOutput> or $t<Values, RichOutput>.
+* **intl-messageformat:** intl-messageformat, @formatjs/intl, and react-intl now require TypeScript 5.4 or newer, including projects that do not enable typed messages.
+
+### Features
+
+* **@formatjs/intl:** put ICU contracts before rich output types ([#7372](https://github.com/formatjs/formatjs/issues/7372)) ([c388333](https://github.com/formatjs/formatjs/commit/c388333bba034466e043c74f358500d3763df84a))
+* **intl-messageformat:** require TS 5.4 and add typed ICU contracts ([#7370](https://github.com/formatjs/formatjs/issues/7370)) ([e8620f8](https://github.com/formatjs/formatjs/commit/e8620f8e0465e817ba1a50a7ba856a1d37ca7a47))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * intl-messageformat bumped to 12.0.0-rc.0
+
 ## [4.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.2.0...@formatjs/intl@4.2.1) (2026-09-12)
 
 
