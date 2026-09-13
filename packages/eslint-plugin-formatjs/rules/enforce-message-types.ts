@@ -211,6 +211,7 @@ const descriptorModules = new Set([
 ])
 
 function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
+  if (node.type !== 'CallExpression') return
   const settings = getSettings(context)
   if (node.callee.type === 'MemberExpression' && node.callee.computed) return
   if (
@@ -225,41 +226,16 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     typeArguments?: Node
     typeParameters?: Node
   }
-  // Existing formatter generics can describe rich output types.
-  if (call.typeArguments || call.typeParameters) return
-  const original = node.arguments[0]
-  const asserted = original as unknown as {
-    type: string
-    expression?: Node
-    typeAnnotation?: TypeNode & {range: [number, number]}
-  }
-  const annotation = asserted.typeAnnotation
+  const generic = call.typeArguments ?? call.typeParameters
+  if (!generic && !context.options[0]?.generateTypes) return
   const generated =
-    asserted.type === 'TSAsExpression' &&
-    asserted.expression?.range &&
-    annotation?.range &&
-    /^\s*as\s*\/\* @formatjs-generated \*\/\s*$/.test(
-      source.text.slice(asserted.expression.range[1], annotation.range[0])
-    )
-  if (!generated && !context.options[0]?.generateTypes) return
-  // Handwritten descriptor assertions and satisfies expressions belong to the caller.
-  if (!generated && !staticObject(original)) return
-  const satisfies = asserted.expression as unknown as
-    | {type: string; expression?: Node; typeAnnotation?: TypeNode}
-    | undefined
-  const descriptor = generated
-    ? satisfies?.type === 'TSSatisfiesExpression'
-      ? satisfies.expression
-      : asserted.expression
-    : original
+    !!generic &&
+    /^<\s*\/\* @formatjs-generated \*\//.test(source.getText(generic))
+  const descriptor = node.arguments[0]
   if (!staticObject(descriptor)) {
     if (generated) context.report({node, messageId: 'dynamic'})
     return
   }
-  const previousModule =
-    annotation?.source?.value ??
-    annotation?.argument?.literal?.value ??
-    annotation?.argument?.value
   const existingModule = source.ast.body.find(
     statement =>
       statement.type === 'ImportDeclaration' &&
@@ -268,11 +244,9 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
   )
   const module =
     context.options[0]?.moduleSource ??
-    (typeof previousModule === 'string' && descriptorModules.has(previousModule)
-      ? previousModule
-      : existingModule?.type === 'ImportDeclaration'
-        ? String(existingModule.source.value)
-        : '@formatjs/intl')
+    (existingModule?.type === 'ImportDeclaration'
+      ? String(existingModule.source.value)
+      : '@formatjs/intl')
   let ignoreTag = settings.ignoreTag
   const options = node.arguments[2]
   if (options && !staticObject(options)) {
@@ -324,28 +298,28 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     })
     return
   }
-  const parameters = (annotation?.typeArguments ?? annotation?.typeParameters)
-    ?.params
-  const descriptorType = `import(${JSON.stringify(module)}).MessageDescriptor`
+  const parameters = (generic as unknown as TypeNode | undefined)?.params
   if (
-    generated &&
-    annotation?.type === 'TSImportType' &&
-    annotation.qualifier?.name === 'TypedMessageDescriptor' &&
-    previousModule === module &&
-    parameters?.length === 1 &&
-    renderType(parameters[0]) === contract &&
-    satisfies?.type === 'TSSatisfiesExpression' &&
-    renderType(satisfies.typeAnnotation) === descriptorType
+    parameters &&
+    parameters.length >= 1 &&
+    parameters.length <= 2 &&
+    renderType(parameters[0]) === contract
   )
     return
+  if (generic && (!generated || !parameters || parameters.length > 2)) {
+    context.report({node: generic, messageId: 'manual'})
+    return
+  }
   context.report({
-    node: original,
+    node,
     messageId: 'contract',
     fix(fixer) {
-      return fixer.replaceText(
-        original,
-        `${source.getText(descriptor)} satisfies ${descriptorType} as ${marker} import(${JSON.stringify(module)}).TypedMessageDescriptor<${contract}>`
-      )
+      return generic && parameters?.[0]
+        ? fixer.replaceText(parameters[0] as unknown as Node, contract)
+        : fixer.insertTextAfter(
+            node.optional ? source.getTokenAfter(node.callee)! : node.callee,
+            '<' + marker + ' ' + contract + '>'
+          )
     },
   })
 }

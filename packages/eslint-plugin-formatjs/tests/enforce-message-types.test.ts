@@ -242,83 +242,77 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: 'formatMessage({defaultMessage: \'{n, number}\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{ "n": number | bigint }>, {n: 2})',
+      code: "formatMessage</* @formatjs-generated */ {n: number | bigint}>({defaultMessage: '{n, number}'}, {n: 2})",
     },
     {
       filename: 'test.ts',
-      options: [
-        {
-          generateTypes: true,
-        },
-      ],
+      code: "formatMessage<{n: number | bigint}, React.ReactNode>({defaultMessage: '{n, number}'}, {n: 2})",
+    },
+    {
+      filename: 'test.ts',
       code: "formatMessage({id: 'only-id'})",
-    },
-    {
-      filename: 'test.ts',
       options: [
         {
           generateTypes: true,
         },
       ],
+    },
+    {
+      filename: 'test.ts',
       code: 'formatMessage({defaultMessage: dynamic})',
-    },
-    {
-      filename: 'test.ts',
       options: [
         {
           generateTypes: true,
         },
       ],
+    },
+    {
+      filename: 'test.ts',
       code: "formatMessage({...descriptor, defaultMessage: '{n}'})",
-    },
-    {
-      filename: 'test.ts',
       options: [
         {
           generateTypes: true,
         },
       ],
-      code: "formatMessage<Rich>({defaultMessage: '{n, number}'}, values)",
     },
     {
       filename: 'test.ts',
-      options: [
-        {
-          generateTypes: true,
-        },
-      ],
       code: "formatMessage({defaultMessage: '{n, number}'} satisfies MessageDescriptor, values)",
-    },
-    {
-      filename: 'test.ts',
       options: [
         {
           generateTypes: true,
         },
       ],
+    },
+    {
+      filename: 'test.ts',
       code: "formatMessage({defaultMessage: '{n, number}'} as MessageDescriptor, values)",
-    },
-    {
-      filename: 'test.ts',
       options: [
         {
           generateTypes: true,
         },
       ],
-      code: "formatMessage({defaultMessage: '{n, number}'}, values, options)",
     },
     {
       filename: 'test.ts',
-      code: 'formatMessage({defaultMessage: "\'{fake}\' <b>{name}</b>"} satisfies import("react-intl").MessageDescriptor as /* @formatjs-generated */ import("react-intl").TypedMessageDescriptor<{ "b": import("react-intl").MessageTag; "name": import("react-intl").MessageValue }>, values)',
+      code: "formatMessage({defaultMessage: '{n, number}'}, values, options)",
+      options: [
+        {
+          generateTypes: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'formatMessage</* @formatjs-generated */ { "b": import("react-intl").MessageTag; "name": import("react-intl").MessageValue }, React.ReactNode>({defaultMessage: "\'{fake}\' <b>{name}</b>"}, values)',
+      options: [
+        {
+          moduleSource: 'react-intl',
+        },
+      ],
     },
   ],
   invalid: [
-    {
-      filename: 'test.ts',
-      code: 'formatMessage(dynamic as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{}>)',
-      errors: [{messageId: 'dynamic'}],
-    },
-
     {
       filename: 'test.ts',
       code: "formatMessage({defaultMessage: '{n, number}'}, {n: 2})",
@@ -328,7 +322,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'formatMessage({defaultMessage: \'{n, number}\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{ "n": number | bigint }>, {n: 2})',
+        'formatMessage</* @formatjs-generated */ { "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
       options: [
         {
           generateTypes: true,
@@ -337,14 +331,14 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import {useIntl} from 'react-intl'; intl.formatMessage?.({defaultMessage: '{n, number}'}, {n: 2})",
+      code: "intl.$t({defaultMessage: '{n, number}'}, {n: 2})",
       errors: [
         {
           messageId: 'contract',
         },
       ],
       output:
-        'import {useIntl} from \'react-intl\'; intl.formatMessage?.({defaultMessage: \'{n, number}\'} satisfies import("react-intl").MessageDescriptor as /* @formatjs-generated */ import("react-intl").TypedMessageDescriptor<{ "n": number | bigint }>, {n: 2})',
+        'intl.$t</* @formatjs-generated */ { "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
       options: [
         {
           generateTypes: true,
@@ -353,14 +347,14 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: "intl.$t({defaultMessage: '{n, number}'}, values)",
+      code: "intl.formatMessage?.({defaultMessage: '{n, number}'}, {n: 2})",
       errors: [
         {
           messageId: 'contract',
         },
       ],
       output:
-        'intl.$t({defaultMessage: \'{n, number}\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{ "n": number | bigint }>, values)',
+        'intl.formatMessage?.</* @formatjs-generated */ { "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
       options: [
         {
           generateTypes: true,
@@ -369,14 +363,50 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: 'formatMessage({defaultMessage: \'{n, number}\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{}>, {n: 2})',
+      code: "formatMessage</* @formatjs-generated */ {}, React.ReactNode>({defaultMessage: '{n, number}'}, {n: 2})",
       errors: [
         {
           messageId: 'contract',
         },
       ],
       output:
-        'formatMessage({defaultMessage: \'{n, number}\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{ "n": number | bigint }>, {n: 2})',
+        'formatMessage</* @formatjs-generated */ { "n": number | bigint }, React.ReactNode>({defaultMessage: \'{n, number}\'}, {n: 2})',
+    },
+    {
+      filename: 'test.ts',
+      code: "formatMessage<Rich>({defaultMessage: '{n, number}'}, {n: 2})",
+      errors: [
+        {
+          messageId: 'manual',
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: "formatMessage<{n: string}>({defaultMessage: '{n, number}'}, {n: 2})",
+      errors: [
+        {
+          messageId: 'manual',
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'formatMessage</* @formatjs-generated */ {}>(dynamic)',
+      errors: [
+        {
+          messageId: 'dynamic',
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: 'formatMessage</* @formatjs-generated */ {}>({defaultMessage: dynamic})',
+      errors: [
+        {
+          messageId: 'dynamic',
+        },
+      ],
     },
     {
       filename: 'test.ts',
@@ -387,11 +417,27 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'formatMessage({defaultMessage: "\'{fake}\' <b>{name}</b>"} satisfies import("react-intl").MessageDescriptor as /* @formatjs-generated */ import("react-intl").TypedMessageDescriptor<{ "b": import("react-intl").MessageTag; "name": import("react-intl").MessageValue }>, values)',
+        'formatMessage</* @formatjs-generated */ { "b": import("react-intl").MessageTag; "name": import("react-intl").MessageValue }>({defaultMessage: "\'{fake}\' <b>{name}</b>"}, values)',
       options: [
         {
           generateTypes: true,
           moduleSource: 'react-intl',
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: "import {useIntl} from 'react-intl'; intl.formatMessage({defaultMessage: '<b>Hello</b>'}, values)",
+      errors: [
+        {
+          messageId: 'contract',
+        },
+      ],
+      output:
+        'import {useIntl} from \'react-intl\'; intl.formatMessage</* @formatjs-generated */ { "b": import("react-intl").MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
+      options: [
+        {
+          generateTypes: true,
         },
       ],
     },
@@ -404,7 +450,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'formatMessage({defaultMessage: \'<b>Hello</b>\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{}>, {}, {ignoreTag: true})',
+        "formatMessage</* @formatjs-generated */ {}>({defaultMessage: '<b>Hello</b>'}, {}, {ignoreTag: true})",
       options: [
         {
           generateTypes: true,
@@ -419,18 +465,18 @@ ruleTester.run('enforce-message-types inline', rule, {
           messageId: 'contract',
         },
       ],
-      settings: {
-        formatjs: {
-          additionalFunctionNames: ['translate'],
-        },
-      },
       output:
-        'translate({defaultMessage: \'{n, number}\'} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{ "n": number | bigint }>, values)',
+        'translate</* @formatjs-generated */ { "n": number | bigint }>({defaultMessage: \'{n, number}\'}, values)',
       options: [
         {
           generateTypes: true,
         },
       ],
+      settings: {
+        formatjs: {
+          additionalFunctionNames: ['translate'],
+        },
+      },
     },
     {
       filename: 'test.ts',
@@ -443,15 +489,6 @@ ruleTester.run('enforce-message-types inline', rule, {
       options: [
         {
           generateTypes: true,
-        },
-      ],
-    },
-    {
-      filename: 'test.ts',
-      code: 'formatMessage({defaultMessage: dynamic} satisfies import("@formatjs/intl").MessageDescriptor as /* @formatjs-generated */ import("@formatjs/intl").TypedMessageDescriptor<{}>)',
-      errors: [
-        {
-          messageId: 'dynamic',
         },
       ],
     },

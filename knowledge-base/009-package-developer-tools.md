@@ -172,11 +172,11 @@ The formatter package owns shared contracts; ESLint only derives them from the
 parser AST. Validate all four package `:all` targets, including explicit
 TypeScript test checks, when changing this boundary.
 
-Inline formatter calls use a generated `satisfies MessageDescriptor as
-TypedMessageDescriptor<Values>` annotation. This preserves descriptor validation
-and the existing extractor's wrapper-unwrapping path without adding runtime code.
-`moduleSource` selects the public type import for wrapper-based call sites;
-otherwise an existing generated annotation or FormatJS import supplies it, with
-`@formatjs/intl` as fallback. Existing formatter generics and handwritten
-assertions remain caller-owned. Tests compile and run representative generated
-inline syntax against the public Intl and React Intl entrypoints.
+Inline formatter calls receive the generated ICU contract as their first generic.
+The formatter signature validates both descriptors and values without assertions
+or runtime wrappers. Refreshes replace only the first generic and preserve the
+optional second rich-output generic. Handwritten contracts are checked without
+autofix; handwritten descriptor assertions remain caller-owned.
+The moduleSource option selects the public type import for wrapper-based call
+sites; otherwise the first FormatJS import supplies it, with @formatjs/intl as
+fallback. Tests compile and run generated inline syntax against public entrypoints.
