@@ -401,6 +401,8 @@ intl.formatDisplayName('UN', {type: 'region'})
 
 ## formatMessage
 
+For TypeScript argument checks and generic defaults, see [Typed message arguments](#typed-message-arguments).
+
 ### Message Syntax
 
 String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](https://unicode-org.github.io/icu/userguide/format_parse/messages) by using the [ICU Message Syntax](/docs/core-concepts/icu-syntax). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
@@ -611,6 +613,44 @@ TypeScript 5.4 or newer is required. The formatter declarations use `NoInfer`
 to keep typed message contracts independent of the supplied values. Existing
 JavaScript usage is unchanged.
 
-Use `defineMessage<Values>(descriptor, {typed: true})` or
-`defineMessages<Contracts>(catalog, {typed: true})` to enable argument checks in
-`formatMessage` and `$t`. One-argument helper calls retain their existing types.
+## Typed message arguments
+
+`formatMessage<Values, RichOutput>` and its alias `$t<Values, RichOutput>`
+accept an ICU argument contract first and an optional rich-output type second.
+`RichOutput` defaults to the type supplied to `createIntl<T>()` (`string` by
+default); an explicit output type must fit that type.
+
+With no generics, a plain descriptor keeps the permissive API: TypeScript checks
+the descriptor and supported value types, but does not infer required placeholder
+names or their types from the ICU string. Missing values can still fail at runtime.
+A typed helper descriptor carries its contract, so no call-site generic is needed.
+
+```ts
+import {defineMessage} from '@formatjs/intl'
+
+// Accepted by TypeScript; no ICU argument checks.
+intl.$t({defaultMessage: '{count, number}'})
+intl.$t({defaultMessage: '{count, number}'}, {count: 'two'})
+
+// Explicit contract: count is required and must be numeric.
+intl.$t<{count: number | bigint}>(
+  {defaultMessage: '{count, number}'},
+  {count: 2}
+)
+
+// The helper carries the contract into calls without generics.
+const count = defineMessage<{count: number | bigint}>(
+  {defaultMessage: '{count, number}'},
+  {typed: true}
+)
+intl.$t(count, {count: 2})
+intl.$t(count) // TypeScript error: missing count
+```
+
+`defineMessages<Contracts>(catalog, {typed: true})` works the same way for a
+message map. Ordinary one-argument helpers do not add ICU argument checks.
+TypeScript does not verify that a handwritten contract matches the message.
+These types do not change runtime formatting.
+
+For migration from the old rich-output generic positions, supply `Values`
+first and move the output type to the second generic.

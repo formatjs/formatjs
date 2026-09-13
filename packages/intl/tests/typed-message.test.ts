@@ -53,6 +53,28 @@ type OriginalDefineMessages = <
 ) => U
 
 function checkTypes() {
+  // Plain descriptors do not infer ICU arguments without a generic.
+  intl.$t({defaultMessage: '{count, number}'})
+  intl.$t({defaultMessage: '{count, number}'}, {count: 'two'})
+  intl.formatMessage({defaultMessage: '{count, number}'}, {other: true})
+  // Typed helper descriptors retain their contract without a generic.
+  // @ts-expect-error The carried contract requires count.
+  intl.$t(message)
+
+  intl.formatMessage<{n: number}>({defaultMessage: '{n}'}, {n: 1})
+  intl.$t<{n: number}>({defaultMessage: '{n}'}, {n: 1})
+  // @ts-expect-error Explicit contracts require values.
+  intl.formatMessage<{n: number}>({defaultMessage: '{n}'})
+  // @ts-expect-error Explicit contracts check value types.
+  intl.formatMessage<{n: number}>({defaultMessage: '{n}'}, {n: 'one'})
+  // @ts-expect-error Alias uses the same argument contract.
+  intl.$t<{n: number}>({defaultMessage: '{n}'}, {n: 'one'})
+  intl.formatMessage<{}>({defaultMessage: 'Hello'})
+  // @ts-expect-error Plain descriptors retain validation.
+  intl.formatMessage<{}>({defaultMessage: 1})
+  // @ts-expect-error First generic no longer describes rich output.
+  intl.$t<string>({defaultMessage: 'Hello'})
+
   expectTypeOf<Parameters<typeof defineMessage>>().toEqualTypeOf<
     Parameters<OriginalDefineMessage>
   >()

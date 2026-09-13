@@ -300,7 +300,9 @@ complex preparsed msg w/ new formatters format x 684,263 ops/sec ±1.37% (89 run
 Typed APIs require TypeScript 5.4 or newer.
 
 Pass an argument contract as the class generic to check `format` and
-`formatToParts`. Omitting the generic keeps the existing permissive API.
+`formatToParts`. Omitting the generic keeps the existing permissive API: TypeScript does not
+infer required arguments or their types from the message literal. Missing values
+can still cause a runtime formatting error.
 
 ```ts
 import IntlMessageFormat from 'intl-messageformat'
@@ -334,3 +336,10 @@ const result = rich.format<{children: unknown[]}>({
 These contracts also back `@formatjs/intl` and React Intl typed descriptors.
 Framework integrations supply their own rich-value types; the shared contract
 has no React or message-descriptor dependency.
+
+Unlike the framework methods, this class takes `Values` on
+`IntlMessageFormat<Values>` and rich output on `format<RichOutput>` or
+`formatToParts<RichOutput>`. See the
+[core Intl](/docs/intl#typed-message-arguments) and
+[React Intl](/docs/react-intl/api#typed-message-arguments) guides for
+`formatMessage<Values, RichOutput>` and `$t<Values, RichOutput>`.

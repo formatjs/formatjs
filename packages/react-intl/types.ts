@@ -33,6 +33,22 @@ export interface ResolvedIntlConfig extends CoreResolvedIntlConfig<React.ReactNo
 
 export interface IntlShape
   extends ResolvedIntlConfig, IntlFormatters<React.ReactNode> {
+  formatMessage<
+    V extends MessageValues = never,
+    T extends React.ReactNode = React.ReactNode,
+  >(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>, string, T>
+  ): string
+  formatMessage<
+    V extends MessageValues = never,
+    T extends React.ReactNode = React.ReactNode,
+  >(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>, T>
+  ): string | T | Array<string | T>
   formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
     descriptor: D,

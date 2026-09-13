@@ -207,6 +207,16 @@ export interface IntlFormatters<TBase = unknown> {
     value: Parameters<Intl.PluralRules['select']>[0],
     opts?: FormatPluralOptions
   ): ReturnType<Intl.PluralRules['select']>
+  formatMessage<V extends MessageValues = never, T extends TBase = TBase>(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>, string, T>
+  ): string
+  formatMessage<V extends MessageValues = never, T extends TBase = TBase>(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>, T>
+  ): string | T | Array<string | T>
   formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
     descriptor: D,
@@ -223,11 +233,21 @@ export interface IntlFormatters<TBase = unknown> {
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  formatMessage<T extends TBase, TValue extends T | FormatXMLElementFn<T>>(
+  formatMessage(
     this: void,
     descriptor: UntypedMessageDescriptor,
-    values?: Record<string, PrimitiveType | TValue>,
+    values?: Record<string, PrimitiveType | TBase | FormatXMLElementFn<TBase>>,
     opts?: IntlMessageFormatOptions
+  ): string | TBase | Array<string | TBase>
+  $t<V extends MessageValues = never, T extends TBase = TBase>(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>, string, T>
+  ): string
+  $t<V extends MessageValues = never, T extends TBase = TBase>(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>, T>
   ): string | T | Array<string | T>
   $t<D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
@@ -245,12 +265,12 @@ export interface IntlFormatters<TBase = unknown> {
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  $t<T extends TBase>(
+  $t(
     this: void,
     descriptor: UntypedMessageDescriptor,
-    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
+    values?: Record<string, PrimitiveType | TBase | FormatXMLElementFn<TBase>>,
     opts?: IntlMessageFormatOptions
-  ): string | T | (T | string)[]
+  ): string | TBase | (TBase | string)[]
   formatList(
     this: void,
     values: Iterable<string>,
