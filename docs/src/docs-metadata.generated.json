@@ -169,7 +169,7 @@
   },
   "react-intl/upgrade-guide-10.x": {
     "title": "Upgrade Guide 10.x",
-    "description": "The injectIntl higher-order component has been removed. Use the useIntl() hook instead."
+    "description": "Update TypeScript to 5.4 or newer. The declarations now use NoInfer for"
   },
   "react-intl/upgrade-guide-2.x": {
     "title": "Upgrade Guide 2.x",
