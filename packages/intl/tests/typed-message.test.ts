@@ -43,14 +43,14 @@ test('typed descriptors remain ordinary descriptors at runtime', () => {
 })
 
 // Compiled by the Bazel test typecheck, never executed.
-type OriginalDefineMessage = <T>(message: T) => T
+type OriginalDefineMessage = <T>(message: T) => Readonly<T>
 type OriginalDefineMessages = <
   K extends keyof any,
   T = MessageDescriptor,
   U extends Record<K, T> = Record<K, T>,
 >(
   messages: U
-) => U
+) => {readonly [P in keyof U]: Readonly<U[P]>}
 
 function checkTypes() {
   // Plain descriptors do not infer ICU arguments without a generic.
@@ -153,3 +153,25 @@ function checkTypes() {
   intl.formatMessage(legacy, {anything: 'still permissive'})
 }
 void checkTypes
+
+test('readonly helpers preserve runtime identity', () => {
+  const descriptor = {id: 'identity', defaultMessage: 'Hello'}
+  expect(defineMessage(descriptor)).toBe(descriptor)
+  const catalog = {hello: descriptor}
+  expect(defineMessages(catalog)).toBe(catalog)
+  expect(Object.isFrozen(descriptor)).toBe(false)
+})
+
+function checkReadonlyHelpers() {
+  const plain = defineMessage({id: 'plain'})
+  // @ts-expect-error Helper descriptor fields are readonly.
+  plain.id = 'changed'
+  // @ts-expect-error Typed descriptors are readonly too.
+  message.id = 'changed'
+  const catalog = defineMessages({plain: {id: 'plain'}})
+  // @ts-expect-error Catalog entries are readonly.
+  catalog.plain = {id: 'changed'}
+  // @ts-expect-error Catalog descriptors are readonly.
+  catalog.plain.id = 'changed'
+}
+void checkReadonlyHelpers

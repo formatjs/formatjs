@@ -166,3 +166,11 @@ contracts from the ICU parser for static helper calls and formatter constructors
 Optional contract properties stay optional after resolving scalar and tag types.
 The values argument can be omitted when every property is optional. This supports
 the ESLint ignoreList option without weakening required properties.
+
+### Readonly message helpers
+
+`defineMessage` returns a readonly descriptor. `defineMessages` returns a readonly
+catalog of readonly descriptors, including calls without typed options. Construct
+a new descriptor or catalog instead of mutating a helper result. This is a
+TypeScript breaking change; helpers preserve object identity and do not freeze
+objects or recursively transform rich values.
