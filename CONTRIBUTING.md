@@ -231,26 +231,14 @@ bazel build //docs:dist
 
 The documentation is automatically deployed to GitHub Pages when changes are pushed to the `main` branch via the GitHub Actions workflow.
 
-## Release candidates
+## Messaging releases
 
-Typed-message releases use the npm `rc` tag. Install them explicitly, for example:
+The messaging release group now uses `prerelease: false` with
+`versioning: prerelease` retained to promote existing RC versions. The group
+contains intl-messageformat, @formatjs/intl, react-intl, eslint-plugin-formatjs,
+@formatjs/svelte-intl, and vue-intl.
 
-```sh
-npm install react-intl@rc
-```
-
-Release Please uses `versioning: prerelease`, `prerelease: true`, and
-`prerelease-type: rc.0` for the messaging packages and their Svelte/Vue dependents.
-It produces versions such as `11.0.0-rc.0`, then `11.0.0-rc.1`, and marks
-GitHub releases as prereleases. Unrelated packages keep stable releases.
-
-Merge the RC configuration before the typed-message PR stack. Review and merge
-the generated release PRs to publish candidates; `latest` stays on stable.
-All RC dependency versions must be published before dependent packages, which
-the release workflow enforces.
-
-For the stable release, set `prerelease` to `false` for the whole RC group,
-keeping `versioning: prerelease` for the promotion. Review the resulting stable
-versions and dependency updates before merging the release PRs. The publishing
-workflow automatically uses `latest` for stable versions. Do not promote an RC
-to `latest` manually.
+Review the generated stable versions and dependency updates before merging the
+release PR. Stable packages publish under npm `latest`; prerelease versions
+still publish under `rc` or `next`. Do not retag RC artifacts as stable.
+The publish workflow verifies dependency availability before publishing dependents.

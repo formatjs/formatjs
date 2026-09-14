@@ -171,7 +171,7 @@
       "version-file": "BUILD.bazel",
       "versioning": "prerelease",
       "prerelease-type": "rc.0",
-      "prerelease": true
+      "prerelease": false
     },
     "packages/fast-memoize": {
       "component": "@formatjs/fast-memoize",
@@ -330,7 +330,7 @@
       "version-file": "BUILD.bazel",
       "versioning": "prerelease",
       "prerelease-type": "rc.0",
-      "prerelease": true
+      "prerelease": false
     },
     "packages/intl-numberformat": {
       "component": "@formatjs/intl-numberformat",
@@ -393,7 +393,7 @@
       "version-file": "BUILD.bazel",
       "versioning": "prerelease",
       "prerelease-type": "rc.0",
-      "prerelease": true
+      "prerelease": false
     },
     "packages/react-intl": {
       "component": "react-intl",
@@ -408,7 +408,7 @@
       "version-file": "BUILD.bazel",
       "versioning": "prerelease",
       "prerelease-type": "rc.0",
-      "prerelease": true
+      "prerelease": false
     },
     "packages/svelte-intl": {
       "component": "@formatjs/svelte-intl",
@@ -423,7 +423,7 @@
       "version-file": "BUILD.bazel",
       "versioning": "prerelease",
       "prerelease-type": "rc.0",
-      "prerelease": true
+      "prerelease": false
     },
     "packages/ts-transformer": {
       "component": "@formatjs/ts-transformer",
@@ -474,7 +474,7 @@
       "version-file": "BUILD.bazel",
       "versioning": "prerelease",
       "prerelease-type": "rc.0",
-      "prerelease": true
+      "prerelease": false
     },
     "crates/icu_skeleton_parser": {
       "release-type": "rust",

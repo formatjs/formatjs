@@ -213,7 +213,7 @@ console.log(
   'Verified native-only, npm dependency, optional dependency, and unrelated releases'
 )
 
-const rcPaths = [
+const messagingPaths = [
   'packages/eslint-plugin-formatjs',
   'packages/intl',
   'packages/intl-messageformat',
@@ -226,20 +226,21 @@ assert.deepEqual(
     .filter(([, config]) => config.prerelease)
     .map(([path]) => path)
     .sort(),
-  rcPaths
+  []
 )
-for (const path of rcPaths) {
+for (const path of messagingPaths) {
+  assert.equal(rawConfig.packages[path].prerelease, false)
   assert.equal(rawConfig.packages[path].versioning, 'prerelease')
   assert.equal(rawConfig.packages[path]['prerelease-type'], 'rc.0')
 }
-const rcCandidates = await run([
+const stableCandidates = await run([
   'packages/intl-messageformat',
   'packages/eslint-plugin-formatjs',
 ])
-assert.deepEqual(paths(rcCandidates), rcPaths)
-for (const candidate of rcCandidates) {
-  assert.equal(candidate.config.prerelease, true)
-  assert.match(candidate.pullRequest.version.toString(), /-rc\.\d+$/)
+assert.deepEqual(paths(stableCandidates), messagingPaths)
+for (const candidate of stableCandidates) {
+  assert.equal(candidate.config.prerelease, false)
+  assert.match(candidate.pullRequest.version.toString(), /^\d+\.\d+\.\d+$/)
 }
 const rcStrategy = buildVersioningStrategy({
   type: 'prerelease',
@@ -289,3 +290,13 @@ assert.equal(
   '11.0.0'
 )
 console.log('Verified RC versions, dependent releases, and stable promotion')
+
+// Wrappers must include their breaking changes when graduating from patch RCs.
+assert.equal(
+  stableStrategy.bump(Version.parse('1.1.20-rc.1'), breaking).toString(),
+  '2.0.0'
+)
+assert.equal(
+  stableStrategy.bump(Version.parse('7.2.20-rc.1'), breaking).toString(),
+  '8.0.0'
+)
