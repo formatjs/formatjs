@@ -184,3 +184,13 @@ descriptor generic: `defineMessage<Values, typeof descriptor>(descriptor, {typed
 or `defineMessages<Contracts, typeof catalog>(catalog, {typed: true})`.
 TypeScript cannot partially infer that second generic after an explicit first one.
 ESLint refreshes the ICU generic while preserving the metadata generic.
+
+### Typed FormattedMessage
+
+Spreading a typed descriptor into `FormattedMessage` now checks its `values`:
+`<FormattedMessage {...messages.count} values={{count: 2}} />`.
+Required ICU arguments require the values prop, and rich tags require callbacks
+returning React nodes. Argument-free descriptors can omit values. Ordinary
+untyped JSX remains permissive. Keep the descriptor's phantom contract when
+passing it through wrappers; widening to MessageDescriptor erases the check.
+Runtime rendering, memoization, and children callbacks are unchanged.

@@ -11,7 +11,12 @@ import type {
 } from 'intl-messageformat'
 import * as React from 'react'
 
-import {type MessageDescriptor} from '@formatjs/intl'
+import type {
+  UntypedMessageDescriptor,
+  TypedMessageDescriptor,
+  MessageValues,
+  TypedMessageArguments,
+} from '@formatjs/intl'
 import {shallowEqual} from '#packages/react-intl/utils.js'
 import useIntl from '#packages/react-intl/components/useIntl.js'
 
@@ -20,11 +25,27 @@ export interface Props<
     string,
     React.ReactNode | PrimitiveType | FormatXMLElementFn<React.ReactNode>
   >,
-> extends MessageDescriptor {
+>
+  extends UntypedMessageDescriptor, MessagePresentationProps {
   values?: V
+}
+
+interface MessagePresentationProps {
   tagName?: React.ElementType<any>
   children?(nodes: React.ReactNode[]): React.ReactNode | null
   ignoreTag?: IntlMessageFormatOptions['ignoreTag']
+}
+
+export type TypedProps<V extends MessageValues> = TypedMessageDescriptor<V> &
+  MessagePresentationProps &
+  ([] extends TypedMessageArguments<V, React.ReactNode>
+    ? {values?: TypedMessageArguments<NoInfer<V>, React.ReactNode>[0]}
+    : {values: TypedMessageArguments<NoInfer<V>, React.ReactNode>[0]})
+
+export interface FormattedMessageComponent {
+  <V extends MessageValues>(props: TypedProps<V>): React.ReactNode
+  (props: Props): React.ReactNode
+  displayName?: string
 }
 
 function areEqual(prevProps: Props, nextProps: Props): boolean {
@@ -65,10 +86,11 @@ function FormattedMessage(props: Props) {
 }
 FormattedMessage.displayName = 'FormattedMessage'
 
-const MemoizedFormattedMessage: React.ComponentType<Props> = React.memo<Props>(
+// React.memo preserves runtime behavior; expose both checked and legacy signatures.
+const MemoizedFormattedMessage: FormattedMessageComponent = React.memo<Props>(
   FormattedMessage,
   areEqual
-)
+) as FormattedMessageComponent
 MemoizedFormattedMessage.displayName = 'MemoizedFormattedMessage'
 
 export default MemoizedFormattedMessage
