@@ -19,13 +19,18 @@ installs those before testing.
 
 ## Visual tests on actiond
 
-VRT captures and compares in an isolated Linux amd64 action. `linux_browser_files`
-assembles the existing `rules_browsers` Chromium download and pinned Node toolchain
-with Ubuntu Noble package archives from a fixed snapshot. `MODULE.bazel.lock` pins
-package versions and checksums. DejaVu, an alternative dependency introduced by the
-package resolver, is excluded to preserve the established Liberation font policy.
-`fonts.conf` uses relative font paths. The runner relocates executable copies;
-no system runtime mappings or network downloads occur inside the action.
+VRT captures and compares in an isolated Linux amd64 action. `linux_browser`
+uses `linux_chromium_runtime` with the existing `rules_browsers` Chromium download
+and pinned Node toolchain. The rules' versioned Noble preset owns checksum-locked
+libraries, shell utilities, and the established Liberation font policy. The runner
+checks the actual Chromium version against the selected Playwright package.
+
+The host `playwright_browser_installation` helper reads Chromium/FFmpeg cache
+revisions from Playwright's `browsers.json`. Upgrades change the Chromium pin in
+`MODULE.bazel`, the compatible Playwright npm versions and `playwright_runtime`
+version, plus the FFmpeg archive if its revision changes. No cache-directory paths
+or APT configuration need editing. Re-run browser CI and review intentional pixel
+changes before updating baselines.
 
 With a compatible actiond worker:
 

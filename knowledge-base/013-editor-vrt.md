@@ -30,9 +30,10 @@ versions are duplicated in the VRT setup.
 
 Host E2E/component tests remain manual, local, and uncached. Their Chromium and
 FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
-VRT assembles Linux amd64 Chromium and Node with checksum-locked Ubuntu Noble
-packages through `browser_runtime_archive`, preserving relative font configuration
-and the existing Liberation font policy. No container image is needed. The browser CI workflow
+VRT uses `linux_chromium_runtime` with caller-pinned Chromium/Node and the rules'
+versioned Noble library/font preset. `playwright_browser_installation` derives host
+cache revisions from Playwright metadata; VRT checks the actual Chromium version.
+No consumer APT configuration or container image is needed. The browser CI workflow
 builds a pinned actiond worker with the memory-advice kernel patch and checks
 VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.

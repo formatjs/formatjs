@@ -431,7 +431,7 @@ http_file(
 bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
 git_override(
     module_name = "rules_web_e2e",
-    commit = "fc8d00ddb9e2e7fcfc7a0e939da17e74ed74399f",
+    commit = "532008f23d765821c0da6920bb813c751bd2b63b",
     remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
 
@@ -455,93 +455,21 @@ use_repo(
 # Playwright's video helper is independent of Chromium; retain its pinned revision.
 http_archive(
     name = "editor_ffmpeg_linux_x64",
-    add_prefix = "ffmpeg-1011",
-    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-1011/**"]), visibility = ["//visibility:public"])',
+    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-*"]), visibility = ["//visibility:public"])',
     integrity = "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
     urls = ["https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip"],
 )
 
 http_archive(
     name = "editor_ffmpeg_macos_arm64",
-    add_prefix = "ffmpeg-1011",
-    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-1011/**"]), visibility = ["//visibility:public"])',
+    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-*"]), visibility = ["//visibility:public"])',
     integrity = "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
     urls = ["https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"],
 )
 
 http_archive(
     name = "editor_ffmpeg_macos_x64",
-    add_prefix = "ffmpeg-1011",
-    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-1011/**"]), visibility = ["//visibility:public"])',
+    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-*"]), visibility = ["//visibility:public"])',
     integrity = "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
     urls = ["https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-mac.zip"],
 )
-
-# Linux VRT libraries and fonts; package versions/checksums live in MODULE.bazel.lock.
-bazel_dep(name = "rules_distroless", version = "0.9.4", dev_dependency = True)
-
-apt = use_extension("@rules_distroless//apt:extensions.bzl", "apt", dev_dependency = True)
-apt.sources_list(
-    architectures = ["amd64"],
-    components = [
-        "main",
-        "universe",
-    ],
-    suites = [
-        "noble",
-        "noble-updates",
-        "noble-security",
-    ],
-    types = ["deb"],
-    uris = ["https://snapshot.ubuntu.com/ubuntu/20260901T000000Z"],
-)
-apt.install(
-    dependency_set = "vrt_noble",
-    packages = [
-        "bash:amd64",
-        "ca-certificates:amd64",
-        "coreutils:amd64",
-        "fontconfig:amd64",
-        "fonts-freefont-ttf:amd64",
-        "fonts-ipafont-gothic:amd64",
-        "fonts-liberation:amd64",
-        "fonts-noto-color-emoji:amd64",
-        "fonts-tlwg-loma-otf:amd64",
-        "fonts-unifont:amd64",
-        "fonts-wqy-zenhei:amd64",
-        "libasound2t64:amd64",
-        "libatk-bridge2.0-0t64:amd64",
-        "libatk1.0-0t64:amd64",
-        "libatspi2.0-0t64:amd64",
-        "libcairo2:amd64",
-        "libcups2t64:amd64",
-        "libdbus-1-3:amd64",
-        "libdrm2:amd64",
-        "libfontconfig1:amd64",
-        "libfreetype6:amd64",
-        "libgbm1:amd64",
-        "libglib2.0-0t64:amd64",
-        "libnspr4:amd64",
-        "libnss3:amd64",
-        "libpango-1.0-0:amd64",
-        "libstdc++6:amd64",
-        "libudev1:amd64",
-        "libx11-6:amd64",
-        "libxcb1:amd64",
-        "libxcomposite1:amd64",
-        "libxdamage1:amd64",
-        "libxext6:amd64",
-        "libxfixes3:amd64",
-        "libxkbcommon0:amd64",
-        "libxrandr2:amd64",
-        "tzdata:amd64",
-        "xfonts-cyrillic:amd64",
-        "xfonts-scalable:amd64",
-    ],
-    suites = [
-        "noble",
-        "noble-updates",
-        "noble-security",
-    ],
-)
-use_repo(apt, "vrt_noble")
