@@ -12,6 +12,12 @@ checksum-locked libraries and fonts. No host browser cache or apt-installed
 libraries are needed. Fixture servers and browsers share action-local loopback
 networking; external services must be replaced with declared fixtures.
 
+E2E and component targets are native Bazel tests: failures return nonzero, reports
+use standard test outputs, and retries, `--runs_per_test`, and
+`--nocache_test_results` launch Chromium again. Bazel’s wrapper uses actiond’s
+pinned static Bash plus declared, checksum-pinned utilities. VRT comparison and
+capture remain artifact-producing build actions.
+
 Upgrades change the Chromium pin in `MODULE.bazel` and compatible Playwright npm
 packages plus `playwright_runtime.version`. The runner checks the actual browser
 version. Re-run CI and review intentional screenshot changes.
@@ -59,8 +65,8 @@ settings. The ESM marker belongs to the compiled module graph.
 Write `*.spec.ts` for navigation, editing, search, validation, and saving.
 Write `*.browser.spec.tsx` for native `mount()` and component updates. Bazel
 compiles both before execution. Declare subsets as separate Bazel targets or
-set target `args` (for example `["--grep=translation"]`); remote selection must
-be part of the action inputs.
+set target `args` (for example `["--grep=translation"]`). Ordinary tests also
+accept `--test_arg=--grep=translation`; Bazel includes selection in the test action.
 
 `editor.visual.tsx` declares shared renderable cases, browser-side readiness
 hooks, and VRT options. `gallery.tsx` installs the registry and supplies renderer

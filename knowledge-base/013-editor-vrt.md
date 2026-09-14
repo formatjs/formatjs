@@ -92,7 +92,7 @@ bash .github/scripts/actiond-vrt.sh
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It uses checksum-pinned Chromium and declared fixtures in a cacheable isolated Linux action. See [browser setup](../packages/editor/vrt/README.md).
+drafts, and saving. It uses checksum-pinned Chromium and declared fixtures in a native Bazel test action on isolated Linux. Bazel retries and repeated runs launch Chromium again. See [browser setup](../packages/editor/vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
