@@ -258,6 +258,24 @@ fn negotiate(
 #[pymodule]
 fn _native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<PyIntl>()?;
+    module.add_function(wrap_pyfunction!(_message_arguments, module)?)?;
     module.add_function(wrap_pyfunction!(negotiate, module)?)?;
     Ok(())
+}
+
+#[pyfunction]
+fn _message_arguments(message: String) -> PyResult<std::collections::BTreeMap<String, Vec<&'static str>>> {
+    use formatjs_icu_messageformat_parser::{ArgumentKind, Parser, ParserOptions, message_arguments};
+    let ast = Parser::new(message, ParserOptions::default()).parse()
+        .map_err(|error| PyValueError::new_err(error.to_string()))?;
+    Ok(message_arguments(&ast).into_iter().map(|(name, kinds)| {
+        let names = kinds.into_iter().map(|kind| match kind {
+            ArgumentKind::Value => "value",
+            ArgumentKind::Number => "number",
+            ArgumentKind::DateTime => "datetime",
+            ArgumentKind::Select => "select",
+            ArgumentKind::Tag => "tag",
+        }).collect();
+        (name, names)
+    }).collect())
 }

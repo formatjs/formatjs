@@ -11,6 +11,7 @@ crate-type = ["cdylib"]
 [dependencies]
 base64 = "0.23"
 formatjs_icu_messageformat = { path = "../icu_messageformat" }
+formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser" }
 formatjs_intl = { path = "../formatjs_intl" }
 icu_locale = "2.1"
 pyo3.workspace = true

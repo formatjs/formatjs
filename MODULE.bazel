@@ -260,6 +260,24 @@ register_toolchains(
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# Pyright's bundled CLI and typeshed exercise generated Python declarations.
+http_archive(
+    name = "pyright",
+    urls = ["https://registry.npmjs.org/pyright/-/pyright-1.1.414.tgz"],
+    integrity = "sha512-FPZZb51jepDX4eP7TEYDeNFtmE3WgwkkEcJpvH3/QmUSsj0EAy3LXu+xB4T/FWDejtsXlCfFr/rbWFjwuwuXww==",
+    strip_prefix = "package",
+    build_file_content = """
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+js_binary(
+    name = "pyright",
+    entry_point = "index.js",
+    data = glob(["dist/**"]),
+    visibility = ["//visibility:public"],
+)
+""",
+)
+
+
 IANA_TZ_VERSION = "2026c"
 
 CLDR_COMMON_VERSION = "48.2"
