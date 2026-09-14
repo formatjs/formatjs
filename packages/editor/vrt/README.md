@@ -79,3 +79,6 @@ Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
 The rules dependency pins [isolated ordinary browser tests](https://github.com/perplexityai/rules_web_e2e/pull/36).
+
+Bazel's native test-launcher utilities are built from pinned sources with hermetic
+LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.

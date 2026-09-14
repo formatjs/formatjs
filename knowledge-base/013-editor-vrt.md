@@ -128,3 +128,6 @@ The build action owns Vite and StyleX configuration, uses declared workspace
 package links, disables dotenv discovery, and depends on strict typechecks.
 The browser runtime never transpiles source or starts a bundler. See
 `packages/editor/vrt/README.md` for commands and migration details.
+
+Bazel's native test-launcher utilities are built from pinned sources with hermetic
+LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.
