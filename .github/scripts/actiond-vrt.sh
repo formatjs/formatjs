@@ -19,6 +19,7 @@ for attempt in $(seq 1 90); do
 done
 "$ready" || { cat "$work/vm.log"; exit 1; }
 
+status=0
 bazel test --config=vrt \
   --remote_executor=grpc://127.0.0.1:8980 \
   --remote_cache=grpc://127.0.0.1:8980 \
@@ -26,4 +27,13 @@ bazel test --config=vrt \
   //packages/editor/vrt:e2e_test \
   //packages/editor/vrt:component_test \
   //packages/editor/vrt:visual_test \
-  --test_output=errors
+  --test_output=errors || status=$?
+
+if ((status != 0)); then
+  bazel run --config=vrt \
+    --remote_executor=grpc://127.0.0.1:8980 \
+    --remote_cache=grpc://127.0.0.1:8980 \
+    --remote_default_exec_properties="actiond-worker-sha256=$worker_sha" \
+    //packages/editor/vrt:visual_test.update
+fi
+exit "$status"
