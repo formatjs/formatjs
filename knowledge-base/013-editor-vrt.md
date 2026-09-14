@@ -25,13 +25,14 @@ invalid ICU, empty catalogs, and custom rendering without providers.
 `//packages/editor/vrt:visual_test` exercises the example on React 19 with root
 npm dependencies and current workspace React Intl/parser sources. There is no
 separate npm workspace or lockfile. The root lock pins Playwright to match the
-browser image. Bazel workspace npm links supply current package builds; no published formatter
+Chromium archive. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
 Host E2E/component tests remain manual, local, and uncached. Their Chromium and
 FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
-VRT selects its Linux amd64 runtime from the pinned Playwright image through
-`browser_runtime_oci`, with relative font configuration. The browser CI workflow
+VRT assembles Linux amd64 Chromium and Node with checksum-locked Ubuntu Noble
+packages through `browser_runtime_archive`, preserving relative font configuration
+and the existing Liberation font policy. No container image is needed. The browser CI workflow
 builds a pinned actiond worker with the memory-advice kernel patch and checks
 VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.

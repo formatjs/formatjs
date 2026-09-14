@@ -10,7 +10,7 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("@rules_web_e2e//component:defs.bzl", "browser_shell", "component_browser_test")
 load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test")
-load("@rules_web_e2e//playwright:archive.bzl", "browser_runtime_oci")
+load("@rules_web_e2e//playwright:archive.bzl", "browser_runtime_archive")
 load("@rules_web_e2e//playwright:defs.bzl", "browser_runtime", "playwright_runtime")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
 load(":defs.bzl", "vrt_library", "vrt_test")
@@ -98,13 +98,32 @@ js_library(
     deps = [":vrt_compiled"],
 )
 
-browser_runtime_oci(
+browser_runtime_archive(
     name = "linux_browser_files",
-    files = {":fonts.conf": "etc/fonts/fonts.conf"},
-    image = "@editor_browser_image_linux_amd64",
+    archives = ["@vrt_noble//:packages"],
+    # Preserve the established Liberation font policy; DejaVu is an APT alternative.
+    exclude = [
+        "usr/share/fonts/truetype/dejavu",
+        "etc/fonts/conf.d/20-unhint-small-dejavu-lgc-sans-mono.conf",
+        "etc/fonts/conf.d/20-unhint-small-dejavu-lgc-sans.conf",
+        "etc/fonts/conf.d/20-unhint-small-dejavu-lgc-serif.conf",
+        "etc/fonts/conf.d/20-unhint-small-dejavu-sans-mono.conf",
+        "etc/fonts/conf.d/20-unhint-small-dejavu-sans.conf",
+        "etc/fonts/conf.d/20-unhint-small-dejavu-serif.conf",
+        "etc/fonts/conf.d/57-dejavu-sans-mono.conf",
+        "etc/fonts/conf.d/57-dejavu-sans.conf",
+        "etc/fonts/conf.d/57-dejavu-serif.conf",
+        "etc/fonts/conf.d/58-dejavu-lgc-sans-mono.conf",
+        "etc/fonts/conf.d/58-dejavu-lgc-sans.conf",
+        "etc/fonts/conf.d/58-dejavu-lgc-serif.conf",
+    ],
+    files = {
+        ":fonts.conf": "etc/fonts/fonts.conf",
+        "@nodejs_linux_amd64//:node_bin": "bin/node",
+        "//packages/editor/vrt/browsers:installation": "browsers",
+    },
     paths = {
         "etc/fonts/conf.d": "etc/fonts/conf.d",
-        "usr/bin/node": "bin/node",
         "usr/bin/bash": "bin/bash",
         "usr/bin/env": "bin/env",
         "usr/bin/dirname": "bin/dirname",
@@ -112,14 +131,13 @@ browser_runtime_oci(
         "usr/bin/readlink": "bin/readlink",
         "usr/lib/x86_64-linux-gnu": "lib",
         "usr/share/fonts": "fonts",
-        "ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64": "chromium",
     },
 )
 
 browser_runtime(
     name = "linux_browser",
     bash = "bin/bash",
-    executable = "chromium/chrome-headless-shell",
+    executable = "browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell",
     fontconfig = "etc/fonts",
     library_dirs = ["lib"],
     loader = "lib/ld-linux-x86-64.so.2",

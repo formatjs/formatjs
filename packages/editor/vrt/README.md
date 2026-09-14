@@ -20,8 +20,10 @@ installs those before testing.
 ## Visual tests on actiond
 
 VRT captures and compares in an isolated Linux amd64 action. `linux_browser_files`
-selects Chromium, Node, Bash, libraries, utilities and fonts from the digest-pinned
-Playwright OCI image. Bazel downloads and extracts that image without Docker.
+assembles the existing `rules_browsers` Chromium download and pinned Node toolchain
+with Ubuntu Noble package archives from a fixed snapshot. `MODULE.bazel.lock` pins
+package versions and checksums. DejaVu, an alternative dependency introduced by the
+package resolver, is excluded to preserve the established Liberation font policy.
 `fonts.conf` uses relative font paths. The runner relocates executable copies;
 no system runtime mappings or network downloads occur inside the action.
 
@@ -84,5 +86,4 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency pins upstream commit `c678432dfbe760c68bfebe984d56333da4fa4322`,
-including [runtime selection support](https://github.com/perplexityai/rules_web_e2e/pull/35).
+The rules dependency pins [package runtime assembly support](https://github.com/perplexityai/rules_web_e2e/pull/35).
