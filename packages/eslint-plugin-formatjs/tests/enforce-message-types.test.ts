@@ -826,3 +826,42 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
     },
   ],
 })
+
+ruleTester.run('catalog annotations', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      code: "import {defineMessages, type MessageDescriptor} from 'react-intl'; const messages: Record<string, MessageDescriptor> = defineMessages({count: {defaultMessage: '{n, number}'}})",
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages, type MessageDescriptor} from 'react-intl'; export const messages: Record<string, MessageDescriptor> = defineMessages({count: {defaultMessage: '{n, number}'}})",
+      output: `import {defineMessages, type MessageDescriptor} from 'react-intl';
+import type {TypedMessageDescriptor} from "react-intl"; export const messages: Record<string, MessageDescriptor> & { "count": TypedMessageDescriptor<{ "n": number | bigint }> } = defineMessages<{ "count": { "n": number | bigint } }>({count: {defaultMessage: '{n, number}'}}, {typed: true})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages as dm, type MessageDescriptor as MD, type TypedMessageDescriptor as TD} from '@formatjs/intl'; const messages: Readonly<Record<'count', MD>> = dm<{count: {n: number | bigint}}>({count: {defaultMessage: '{n, number}'}}, {typed: true})",
+      output: `import {defineMessages as dm, type MessageDescriptor as MD, type TypedMessageDescriptor as TD} from '@formatjs/intl'; const messages: Readonly<Record<'count', MD>> & { readonly "count": TD<{ "n": number | bigint }> } = dm<{ "count": { "n": number | bigint } }>({count: {defaultMessage: '{n, number}'}}, {typed: true})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const messages: {readonly count?: MessageDescriptor} & {readonly count: TypedMessageDescriptor<{n: string}>} = defineMessages<{count: {n: string}}>({count: {defaultMessage: '{n, number}'}}, {typed: true})",
+      output: `import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const messages: {readonly count?: MessageDescriptor} & { readonly "count": TypedMessageDescriptor<{ "n": number | bigint }> } = defineMessages<{ "count": { "n": number | bigint } }>({count: {defaultMessage: '{n, number}'}}, {typed: true})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages} from 'react-intl'; const messages: CustomCatalog = defineMessages({count: {defaultMessage: '{n, number}'}})",
+      errors: [{messageId: 'annotation'}],
+    },
+  ],
+})

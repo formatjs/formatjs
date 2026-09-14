@@ -1,7 +1,14 @@
 import * as React from 'react'
 import {expect, expectTypeOf, test} from 'vitest'
 import {createIntl as createCoreIntl} from '@formatjs/intl'
-import {createIntl, type MessageTag, type MessageValue} from 'react-intl'
+import {
+  createIntl,
+  defineMessages,
+  type MessageDescriptor,
+  type TypedMessageDescriptor,
+  type MessageTag,
+  type MessageValue,
+} from 'react-intl'
 
 const core = createCoreIntl({locale: 'en'})
 const intl = createIntl({locale: 'en'})
@@ -53,3 +60,30 @@ function checkTypes() {
   })
 }
 void checkTypes
+
+// Explicit declarations remain emit-safe with isolatedDeclarations enabled.
+export const catalog: Record<'count' | 'plain', MessageDescriptor> & {
+  count: TypedMessageDescriptor<{n: number | bigint}>
+  plain: TypedMessageDescriptor<{}>
+} = defineMessages<{count: {n: number | bigint}; plain: {}}>(
+  {
+    count: {id: 'catalog-count', defaultMessage: '{n, number}'},
+    plain: {id: 'catalog-plain', defaultMessage: 'Hello'},
+  },
+  {typed: true}
+)
+
+test('annotated catalogs preserve per-message argument checks', () => {
+  expect(intl.formatMessage(catalog.count, {n: 2})).toBe('2')
+  expect(intl.formatMessage(catalog.plain)).toBe('Hello')
+})
+
+function checkCatalogTypes() {
+  // @ts-expect-error Known catalog messages cannot omit required arguments.
+  intl.formatMessage(catalog.count)
+  // @ts-expect-error Broad descriptor annotations cannot hide incorrect values.
+  intl.formatMessage(catalog.count, {n: 'two'})
+  // @ts-expect-error Original finite catalog keys remain finite.
+  void catalog.missing
+}
+void checkCatalogTypes

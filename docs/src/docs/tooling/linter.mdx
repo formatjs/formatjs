@@ -1128,3 +1128,34 @@ still matches the ICU source. Catalog translations still need structural
 validation. Explicitly widening a typed descriptor to `MessageDescriptor` erases
 its checks, as does using `any`. Generated helper results retain the standard
 `MessageDescriptor` shape rather than the original descriptor's literal ID type.
+
+### Explicit catalog annotations
+
+For an annotated `defineMessages` variable, autofix preserves the original
+annotation and adds per-message `TypedMessageDescriptor` contracts:
+
+```tsx
+import {
+  defineMessages,
+  type MessageDescriptor,
+  type TypedMessageDescriptor,
+} from 'react-intl'
+
+export const messages: Record<'count', MessageDescriptor> & {
+  count: TypedMessageDescriptor<{n: number | bigint}>
+} = defineMessages<{count: {n: number | bigint}}>(
+  {count: {defaultMessage: '{n, number}'}},
+  {typed: true}
+)
+```
+
+This explicit type works with `isolatedDeclarations`. Subsequent fixes refresh
+both the call generic and the annotation when messages change. Original finite
+key constraints and readonly properties remain enforced.
+
+Supported annotations are `Record<K, MessageDescriptor>`, explicit property
+maps, and their `Readonly<...>` wrappers. Imported descriptor aliases work too.
+Other annotations produce a diagnostic instead of an unsafe rewrite. Keep
+contracts when passing these catalogs through other application types:
+`Record<string, MessageDescriptor>` still permits dynamic indexing, and widening
+a selected message later still erases its contract.
