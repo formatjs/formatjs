@@ -17,10 +17,11 @@ cleanup() {
   rm -rf "$source"
 }
 trap cleanup EXIT
-git init "$source"
-git -C "$source" remote add origin https://github.com/hermeticbuild/actiond.git
-git -C "$source" fetch --depth=1 origin 4b767e852e21c5affa72ea7ebbf4d8a6e5d58136
-git -C "$source" checkout --detach FETCH_HEAD
+# Bazel owns source acquisition and checksum verification as well as builds.
+"$bazel_bin" build @rules_web_e2e//tests/actiond:worker_source
+archive=$("$bazel_bin" cquery @rules_web_e2e//tests/actiond:worker_source --output=files)
+execution_root=$("$bazel_bin" info execution_root)
+tar -xf "$execution_root/$archive" --strip-components=1 -C "$source"
 (
   cd "$source"
   "$bazel_bin" --nosystem_rc --nohome_rc build --bes_backend= --remote_executor= --remote_cache= --spawn_strategy=local --jobs=2 \

@@ -29,10 +29,10 @@ Chromium archive. Bazel workspace npm links supply current package builds; no pu
 versions are duplicated in the VRT setup.
 
 E2E, component interactions, and VRT all use a declared `linux_chromium_runtime`
-and execute in actiond Linux amd64 actions. Chromium/Node and the complete Linux
-library/font preset are checksum-pinned Bazel inputs. No host browser cache,
+and execute in actiond Linux amd64 actions. Chromium/Node, the selected Linux library closure, and fonts are checksum-pinned
+Bazel inputs. The optional preset omits unrelated OS packages and GPU drivers. No host browser cache,
 FFmpeg download, apt setup, or container image is needed for these suites.
-The browser CI script builds upstream actiond at `4b767e8` from a fresh checkout
+The browser CI script builds upstream actiond at `4b767e8` from a checksum-pinned source archive downloaded by Bazel
 and includes its binary SHA256 in remote execution properties to separate cached
 results across worker/kernel changes. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.

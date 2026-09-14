@@ -27,7 +27,7 @@ version. Re-run CI and review intentional screenshot changes.
 bash .github/scripts/actiond-vrt.sh
 ```
 
-The script builds actiond at `4b767e8` from a fresh checkout, starts a 6 GiB VM,
+The script builds actiond at `4b767e8` from a checksum-pinned source archive downloaded by Bazel, starts a 6 GiB VM,
 runs all three suites, and validates a fresh capture without applying baselines.
 Its worker binary SHA256 is included in remote execution properties so worker or
 kernel changes invalidate cached results. Worker builds ignore home/system Bazel
