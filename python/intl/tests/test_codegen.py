@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from intl import Intl
+from intl import Intl, __file__ as intl_file
 from intl.codegen import generate
 
 PYRIGHT = Path(sys.argv.pop(1)).resolve()
@@ -31,11 +31,10 @@ class CodegenTest(unittest.TestCase):
             root = Path(directory)
             self.write_module(root)
             (root / "case.py").write_text(source)
-            import intl
 
             config = {
                 "include": ["case.py"],
-                "extraPaths": [str(Path(intl.__file__).parent.parent)],
+                "extraPaths": [str(Path(intl_file).parent.parent)],
                 "pythonVersion": "3.12",
                 "typeCheckingMode": "basic",
                 "reportMissingModuleSource": False,
