@@ -28,14 +28,13 @@ separate npm workspace or lockfile. The root lock pins Playwright to match the
 Chromium archive. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-Host E2E/component tests remain manual, local, and uncached. Their Chromium and
-FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
-VRT uses `linux_chromium_runtime` with caller-pinned Chromium/Node and the rules'
-versioned Noble library/font preset. `playwright_browser_installation` derives host
-cache revisions from Playwright metadata; host and VRT runs check the actual Chromium version.
-No consumer APT configuration or container image is needed. The browser CI workflow
-builds upstream actiond at `4b767e8` without local patches and checks
-VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
+E2E, component interactions, and VRT all use a declared `linux_chromium_runtime`
+and execute in actiond Linux amd64 actions. Chromium/Node and the complete Linux
+library/font preset are checksum-pinned Bazel inputs. No host browser cache,
+FFmpeg download, apt setup, or container image is needed for these suites.
+The browser CI script builds upstream actiond at `4b767e8` from a fresh checkout
+and includes its binary SHA256 in remote execution properties to separate cached
+results across worker/kernel changes. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
 CI compares the checked-in baselines with `matching.ts` and checks the complete
 capture set without applying it to source baselines.

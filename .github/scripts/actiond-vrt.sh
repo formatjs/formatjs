@@ -10,24 +10,28 @@ for device in /dev/kvm /dev/vhost-vsock; do
 done
 bazel_bin=$(command -v bazel) || { echo "Install Bazel before building the VRT worker"; exit 1; }
 mkdir -p "$work"
-if [[ ! -d "$work/source/.git" ]]; then
-  git init "$work/source"
-  git -C "$work/source" remote add origin https://github.com/hermeticbuild/actiond.git
-fi
-git -C "$work/source" fetch --depth=1 origin 4b767e852e21c5affa72ea7ebbf4d8a6e5d58136
-git -C "$work/source" checkout --detach FETCH_HEAD
+source=$(mktemp -d "$work/source.XXXXXX")
+worker_pid=
+cleanup() {
+  if [[ -n "$worker_pid" ]]; then kill "$worker_pid" 2>/dev/null || true; fi
+  rm -rf "$source"
+}
+trap cleanup EXIT
+git init "$source"
+git -C "$source" remote add origin https://github.com/hermeticbuild/actiond.git
+git -C "$source" fetch --depth=1 origin 4b767e852e21c5affa72ea7ebbf4d8a6e5d58136
+git -C "$source" checkout --detach FETCH_HEAD
 (
-  cd "$work/source"
-  "$bazel_bin" build --bes_backend= --remote_executor= --remote_cache= --spawn_strategy=local --jobs=2 \
+  cd "$source"
+  "$bazel_bin" --nosystem_rc --nohome_rc build --bes_backend= --remote_executor= --remote_cache= --spawn_strategy=local --jobs=2 \
     //cmd/linux-actiond:linux-actiond_linux_x86_64 > "$work/build.log" 2>&1 || { tail -n 100 "$work/build.log"; exit 1; }
-  worker=$("$bazel_bin" cquery --bes_backend= //cmd/linux-actiond:linux-actiond_linux_x86_64 \
+  worker=$("$bazel_bin" --nosystem_rc --nohome_rc cquery --bes_backend= //cmd/linux-actiond:linux-actiond_linux_x86_64 \
     --output=starlark '--starlark:expr=providers(target)["DefaultInfo"].files_to_run.executable.path')
   cp "$worker" "$work/actiond"
 )
 "$work/actiond" serve-vm --root="$work/vm" --listen=127.0.0.1:8980 \
   --memory-mib=6144 --cpus=2 --cas-image-size-mib=4096 > "$work/vm.log" 2>&1 &
 worker_pid=$!
-trap 'kill "$worker_pid" 2>/dev/null || true' EXIT
 ready=false
 for attempt in $(seq 1 90); do
   kill -0 "$worker_pid"
@@ -35,8 +39,9 @@ for attempt in $(seq 1 90); do
   sleep 1
 done
 "$ready" || { cat "$work/vm.log"; exit 1; }
-flags=(--config=vrt --remote_executor=grpc://127.0.0.1:8980 --remote_cache=grpc://127.0.0.1:8980)
-"$bazel_bin" test "${flags[@]}" //packages/editor/vrt:visual_test --test_output=errors
+worker_sha=$(sha256sum "$work/actiond" | cut -d ' ' -f 1)
+flags=(--remote_default_exec_properties="actiond-worker-sha256=$worker_sha" --config=vrt --remote_executor=grpc://127.0.0.1:8980 --remote_cache=grpc://127.0.0.1:8980)
+"$bazel_bin" test "${flags[@]}" //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test //packages/editor/vrt:visual_test --test_output=errors
 "$bazel_bin" build "${flags[@]}" //packages/editor/vrt:visual_test_capture
 capture=$("$bazel_bin" cquery "${flags[@]}" //packages/editor/vrt:visual_test_capture --output=files)
 # The action reports test failure in result.json, even when Bazel succeeds.

@@ -126,6 +126,7 @@ build:vrt --jobs=2
 build:vrt --spawn_strategy=sandboxed,local
 build:vrt --strategy=VrtCapture=remote
 build:vrt --strategy=VrtCompare=remote
+build:vrt --strategy=BrowserTest=remote
 build:vrt --remote_local_fallback=false
 build:vrt --remote_upload_local_results=false
 build:vrt --noremote_cache_compression

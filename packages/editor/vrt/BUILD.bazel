@@ -72,7 +72,6 @@ playwright_runtime(
     name = "playwright",
     core = "//:node_modules/playwright-core/dir",
     test = "//:node_modules/@playwright/test/dir",
-    visibility = ["//packages/editor/vrt/browsers:__pkg__"],
 )
 
 js_library(
@@ -120,19 +119,19 @@ component_visual_test(
 
 web_e2e_test(
     name = "e2e_test",
-    data = ["//packages/editor/vrt/browsers:installation"],
-    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath //packages/editor/vrt/browsers:installation)"},
+    browser = ":linux_browser",
     playwright = ":playwright",
     server = ":editor_server",
+    target_platform = "//platforms:linux_x86_64_gnu",
     tests = ":e2e_specs",
 )
 
 component_browser_test(
     name = "component_test",
-    data = ["//packages/editor/vrt/browsers:installation"],
-    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath //packages/editor/vrt/browsers:installation)"},
+    browser = ":linux_browser",
     playwright = ":playwright",
     shell = ":editor_shell",
+    target_platform = "//platforms:linux_x86_64_gnu",
     tests = ":component_specs",
 )
 
