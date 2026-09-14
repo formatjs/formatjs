@@ -14,15 +14,15 @@ const intl = createIntl({locale: 'en'})
 
 test('generated inline generics keep formatting and rich callbacks intact', () => {
   expect(
-    core.formatMessage<{count: number | bigint}>(
+    core.formatMessage<{readonly count: number | bigint}>(
       {id: 'count', defaultMessage: '{count, number}'},
       {count: 2}
     )
   ).toBe('2')
   const rich = intl.formatMessage<
     {
-      b: MessageTag
-      name: MessageValue
+      readonly b: MessageTag
+      readonly name: MessageValue
     },
     React.ReactNode
   >(
@@ -35,9 +35,9 @@ test('generated inline generics keep formatting and rich callbacks intact', () =
 
 function checkTypes() {
   type Ignored = {
-    b?: MessageTag
-    count?: number | bigint
-    extra?: MessageValue
+    readonly b?: MessageTag
+    readonly count?: number | bigint
+    readonly extra?: MessageValue
   }
   intl.$t<Ignored>({defaultMessage: '<b>{count, number}</b>'})
   intl.$t<Ignored>(
@@ -48,10 +48,10 @@ function checkTypes() {
   intl.$t<Ignored>({defaultMessage: '<b>{count, number}</b>'}, {count: 'two'})
 
   // @ts-expect-error Inline contracts require values.
-  core.formatMessage<{n: number}>({defaultMessage: '{n}'})
+  core.formatMessage<{readonly n: number}>({defaultMessage: '{n}'})
   // @ts-expect-error Inline values retain their numeric constraint.
-  core.formatMessage<{n: number}>({defaultMessage: '{n}'}, {n: 'two'})
-  core.formatMessage<{n: number}>({defaultMessage: '{n}'}, {n: 1})
+  core.formatMessage<{readonly n: number}>({defaultMessage: '{n}'}, {n: 'two'})
+  core.formatMessage<{readonly n: number}>({defaultMessage: '{n}'}, {n: 1})
   core.formatMessage<{}>({
     defaultMessage: 'Hello',
     // @ts-expect-error Formatter signatures validate descriptor properties.
@@ -62,9 +62,12 @@ void checkTypes
 
 // Explicit declarations remain emit-safe with isolatedDeclarations enabled.
 export const catalog: {
-  count: TypedMessageDescriptor<{n: number | bigint}>
-  plain: TypedMessageDescriptor<{}>
-} = defineMessages<{count: {n: number | bigint}; plain: {}}>(
+  readonly count: TypedMessageDescriptor<{readonly n: number | bigint}>
+  readonly plain: TypedMessageDescriptor<{}>
+} = defineMessages<{
+  readonly count: {readonly n: number | bigint}
+  readonly plain: {}
+}>(
   {
     count: {id: 'catalog-count', defaultMessage: '{n, number}'},
     plain: {id: 'catalog-plain', defaultMessage: 'Hello'},
@@ -84,6 +87,12 @@ function checkCatalogTypes() {
   intl.formatMessage(catalog.count, {n: 'two'})
   // @ts-expect-error Generated catalog keys reject unknown names.
   void catalog.missing
+  // @ts-expect-error Generated catalog entries cannot be reassigned.
+  catalog.count = {...catalog.count}
+  const values: {readonly n: number | bigint} = {n: 2}
+  // @ts-expect-error Generated argument properties cannot be reassigned.
+  values.n = 3
+  intl.formatMessage(catalog.count, values)
   const dynamicKey: string = 'count'
   // @ts-expect-error Generated catalogs no longer permit arbitrary string indexing.
   void catalog[dynamicKey]

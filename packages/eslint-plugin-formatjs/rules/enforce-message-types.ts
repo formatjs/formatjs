@@ -753,16 +753,8 @@ export const rule: Rule.RuleModule = {
                         : undefined
                   if (key === undefined)
                     throw new Error('Unsupported catalog key')
-                  const base = annotation.base
-                  const readonly =
-                    base.typeName?.name === 'Readonly' ||
-                    base.members?.some(
-                      member =>
-                        member.readonly &&
-                        (member.key?.name ?? String(member.key?.value)) === key
-                    )
                   return (
-                    (readonly ? 'readonly ' : '') +
+                    'readonly ' +
                     JSON.stringify(key) +
                     ': import(' +
                     JSON.stringify(imported.module) +
@@ -792,7 +784,7 @@ export const rule: Rule.RuleModule = {
                             : undefined
                       if (key === undefined)
                         throw new Error('Unsupported catalog key')
-                      return `${JSON.stringify(key)}: ${types[i]}`
+                      return `readonly ${JSON.stringify(key)}: ${types[i]}`
                     })
                     .join('; ')} }`
         } catch (error) {

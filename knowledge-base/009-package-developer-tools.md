@@ -194,8 +194,12 @@ suite against both rules, plus generation and public type tests.
 
 For explicitly annotated `defineMessages` variables, the rule replaces supported
 descriptor maps with per-key `TypedMessageDescriptor` types. It refreshes the
-annotation alongside the call generic, reusing hoisted imports. Keep readonly
-properties and explicit declarations for `isolatedDeclarations`. Keys come from
+annotation alongside the call generic, reusing hoisted imports. Generate readonly
+catalog and argument properties and explicit declarations for `isolatedDeclarations`. Keys come from
 actual messages, replacing broad index signatures, optional entries, and original
 key constraints. This is a breaking change for generated annotations. Unsupported
 annotations report a diagnostic without a fix.
+
+Message contracts use readonly properties consistently for defineMessage(s),
+inline formatMessage/$t calls, and IntlMessageFormat constructors, including
+optional ignored arguments. No runtime freezing is introduced.

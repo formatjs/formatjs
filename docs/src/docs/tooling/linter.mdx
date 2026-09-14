@@ -1040,7 +1040,7 @@ message strings cannot supply a contract.
 
 ```ts
 const message = defineMessage<{
-  count: number | bigint
+  readonly count: number | bigint
 }>(
   {
     id: 'items',
@@ -1067,7 +1067,7 @@ Inline calls receive the ICU contract as their first generic:
 
 ```ts
 intl.formatMessage<{
-  count: number | bigint
+  readonly count: number | bigint
 }>({defaultMessage: '{count, number}'}, {count: 2})
 ```
 
@@ -1087,7 +1087,11 @@ an argument contract.
 ```ts
 import type {MessageTag, MessageValue} from '@formatjs/intl'
 
-intl.$t<{b?: MessageTag; count?: number | bigint; extra?: MessageValue}>({
+intl.$t<{
+  readonly b?: MessageTag
+  readonly count?: number | bigint
+  readonly extra?: MessageValue
+}>({
   defaultMessage: '<b>{count, number}</b>',
 })
 ```
@@ -1099,7 +1103,7 @@ Direct formatter construction receives the generic without an extra runtime opti
 
 ```ts
 const message = new IntlMessageFormat<{
-  count: number | bigint
+  readonly count: number | bigint
 }>('{count, number}', 'en')
 
 message.format({count: 2})
@@ -1138,15 +1142,17 @@ annotation with per-message `TypedMessageDescriptor` contracts:
 import {defineMessages, type TypedMessageDescriptor} from 'react-intl'
 
 export const messages: {
-  count: TypedMessageDescriptor<{n: number | bigint}>
-} = defineMessages<{count: {n: number | bigint}}>(
+  readonly count: TypedMessageDescriptor<{readonly n: number | bigint}>
+} = defineMessages<{readonly count: {readonly n: number | bigint}}>(
   {count: {defaultMessage: '{n, number}'}},
   {typed: true}
 )
 ```
 
 This explicit type works with `isolatedDeclarations`. Subsequent fixes refresh
-both the call generic and the annotation when messages change. Keys come from the actual catalog; readonly properties remain readonly.
+both the call generic and the annotation when messages change. Keys come from the actual catalog. All generated catalog and argument properties
+are readonly, including optional ignored arguments. Autofix refreshes existing
+writable contracts. This affects TypeScript checking only; objects are not frozen.
 
 Supported annotations are `Record<K, MessageDescriptor>`, explicit property
 maps, and their `Readonly<...>` wrappers. Imported descriptor aliases work too.
