@@ -5,7 +5,20 @@ export type {
   EditorState,
 } from '#packages/editor/core.js'
 export {Message, parseMessage} from '#packages/editor/message.js'
+export {hasMeaningfulIcuStructure} from '#packages/editor/message.js'
 export type {MessageProps, ParsedMessage} from '#packages/editor/message.js'
+export {useTranslationLayout} from '#packages/editor/layout.js'
+export type {
+  EditorPreferenceStorage,
+  TranslationLayout,
+  TranslationLayoutOptions,
+  TranslationLayoutState,
+} from '#packages/editor/layout.js'
+export {
+  hasTranslationForEveryLocale,
+  matchesMessageStatus,
+} from '#packages/editor/message-status.js'
+export type {MessageTranslations} from '#packages/editor/message-status.js'
 export type {TranslatedMessage} from '#packages/editor/types.js'
 export {useTranslationEditor} from '#packages/editor/workflow.js'
 export type {

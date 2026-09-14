@@ -15,6 +15,8 @@ export interface EditorState {
   selectMessage: (id: string) => void
   query: string
   setQuery: (query: string) => void
+  descriptionQuery: string
+  setDescriptionQuery: (query: string) => void
   source: ParsedMessage | undefined
   translation: ParsedMessage | undefined
   setTranslation: (value: string) => void
@@ -30,19 +32,26 @@ export function useMessageEditor({
 }: EditorOptions): EditorState {
   const [selectedId, selectMessage] = useState(defaultSelectedId)
   const [query, setQuery] = useState('')
+  const [descriptionQuery, setDescriptionQuery] = useState('')
   const selectedMessage =
     messages.find(message => message.id === selectedId) ?? messages[0]
   const visibleMessages = useMemo(() => {
     const search = query.trim().toLowerCase()
-    return messages.filter(message =>
-      [
+    const descriptionSearch = descriptionQuery.trim().toLowerCase()
+    return messages.filter(message => {
+      const matchesSearch = [
         message.id,
         message.defaultMessage,
         message.translatedMessage,
         message.description ?? '',
       ].some(value => value.toLowerCase().includes(search))
-    )
-  }, [messages, query])
+      return (
+        matchesSearch &&
+        (!descriptionSearch ||
+          message.description?.toLowerCase().includes(descriptionSearch))
+      )
+    })
+  }, [descriptionQuery, messages, query])
   const sourceText = selectedMessage?.defaultMessage
   const translationText = selectedMessage?.translatedMessage
   const source = useMemo(
@@ -64,6 +73,8 @@ export function useMessageEditor({
     selectMessage,
     query,
     setQuery,
+    descriptionQuery,
+    setDescriptionQuery,
     source,
     translation,
     setTranslation,

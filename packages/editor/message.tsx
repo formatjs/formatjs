@@ -1,5 +1,6 @@
 import {
   parse,
+  TYPE,
   type MessageFormatElement,
 } from '@formatjs/icu-messageformat-parser'
 import {useMemo, type ReactNode} from 'react'
@@ -18,6 +19,12 @@ export function parseMessage(message: string): ParsedMessage {
       error: error instanceof Error ? error : new Error(String(error)),
     }
   }
+}
+
+/** True only for valid ICU messages containing non-literal syntax. */
+export function hasMeaningfulIcuStructure(message: string): boolean {
+  const parsed = parseMessage(message)
+  return parsed.ast?.some(element => element.type !== TYPE.literal) ?? false
 }
 
 export interface MessageProps {

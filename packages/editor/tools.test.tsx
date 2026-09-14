@@ -16,6 +16,7 @@ import {
   MessagePreview,
   type EditorComponents,
 } from '#packages/editor/ui.js'
+import {hasMeaningfulIcuStructure} from '#packages/editor/index.js'
 
 const RAW = 'Hello\n  {name}'
 const NEXT = 'Bonjour\n {name}'
@@ -133,6 +134,33 @@ describe('locale picker', () => {
       ).indeterminate
     ).toBe(false)
   })
+
+  it('renders rich locale labels without changing their accessible text', () => {
+    render(
+      <LocalePicker
+        locales={['et-EE', 'fr-FR']}
+        selectedLocales={['et-EE']}
+        onChange={() => {}}
+        getLocaleLabel={locale =>
+          locale === 'et-EE' ? 'et-EE Eesti' : 'fr-FR Français (France)'
+        }
+        renderLocaleLabel={(locale, label) => (
+          <>
+            <strong>{locale}</strong> {label.slice(locale.length + 1)}
+          </>
+        )}
+      />
+    )
+    expect(
+      screen.getByRole('button', {name: 'Locales: et-EE Eesti'}).textContent
+    ).toBe('et-EE Eesti')
+    fireEvent.click(screen.getByRole('button', {name: 'Locales: et-EE Eesti'}))
+    expect(
+      screen
+        .getByRole('checkbox', {name: 'fr-FR Français (France)'})
+        .parentElement?.querySelector('strong')?.textContent
+    ).toBe('fr-FR')
+  })
 })
 
 describe('clipboard control', () => {
@@ -219,6 +247,16 @@ describe('clipboard control', () => {
 })
 
 describe('preview and context', () => {
+  it('recognizes only valid, non-literal ICU structure', () => {
+    expect(hasMeaningfulIcuStructure('Hello {name}')).toBe(true)
+    expect(hasMeaningfulIcuStructure('{count, plural, other {# items}}')).toBe(
+      true
+    )
+    expect(hasMeaningfulIcuStructure('<b>Important</b>')).toBe(true)
+    expect(hasMeaningfulIcuStructure("This '{is}' literal text")).toBe(false)
+    expect(hasMeaningfulIcuStructure('{broken')).toBe(false)
+  })
+
   it('retains every ICU branch, offset, ordinal type, skeleton, and whitespace without executing tags', () => {
     const {container, rerender} = render(<MessagePreview message={COMPLEX} />)
     for (const text of [
@@ -276,6 +314,8 @@ describe('preview and context', () => {
         <MessageContext
           message={show ? message : null}
           copyOptions={{writeText}}
+          copyCatalogs
+          copyLocations
         />
       </EditorDesignSystemProvider>
     )
@@ -291,7 +331,21 @@ describe('preview and context', () => {
     await act(async () =>
       fireEvent.click(context.getByRole('button', {name: 'Copy Message ID'}))
     )
-    expect(writeText).toHaveBeenCalledExactlyOnceWith('example')
+    await act(async () =>
+      fireEvent.click(
+        context.getByRole('button', {name: 'Copy source catalog web'})
+      )
+    )
+    await act(async () =>
+      fireEvent.click(
+        context.getByRole('button', {
+          name: 'Copy source location Greeting.tsx:0–8',
+        })
+      )
+    )
+    expect(writeText).toHaveBeenNthCalledWith(1, 'example')
+    expect(writeText).toHaveBeenNthCalledWith(2, 'web')
+    expect(writeText).toHaveBeenNthCalledWith(3, 'Greeting.tsx:0–8')
     rerender(tree(false))
     expect(context.queryByText('example')).toBeNull()
     expect(context.queryByRole('button')).toBeNull()

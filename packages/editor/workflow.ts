@@ -4,6 +4,7 @@ import {
   validateTranslation,
   type TranslationValidationError,
 } from '#packages/editor/validation.js'
+import {matchesMessageStatus} from '#packages/editor/message-status.js'
 
 export interface SourceLocation {
   file: string
@@ -172,11 +173,17 @@ export function useTranslationEditor<TContext = void, TResult = void>({
         ? []
         : messages
             .filter(message => {
-              const translated = !!getDraft(message.id).baseline
+              const draft = getDraft(message.id)
+              const translations =
+                Object.prototype.hasOwnProperty.call(
+                  message.translations,
+                  locale
+                ) || draft.baseline
+                  ? {[locale]: draft.baseline}
+                  : {}
               return (
                 (!catalog || message.catalogs?.includes(catalog)) &&
-                (status === 'all' ||
-                  (status === 'translated' ? translated : !translated))
+                matchesMessageStatus(translations, [locale], status)
               )
             })
             .map(message => ({
@@ -291,6 +298,10 @@ export function useTranslationEditor<TContext = void, TResult = void>({
       ...editor,
       setQuery: query => {
         editor.setQuery(query)
+        requestPage(0)
+      },
+      setDescriptionQuery: query => {
+        editor.setDescriptionQuery(query)
         requestPage(0)
       },
     },

@@ -44,10 +44,12 @@ function deferred() {
 
 /** A second control API maps value callbacks and press actions at the adapter. */
 const customComponents: Partial<EditorComponents> = {
-  TextArea: ({onValueChange, ...props}) => (
+  TextArea: ({onValueChange, minRows, maxRows, ...props}) => (
     <textarea
       {...props}
       title="Custom field"
+      data-min-rows={minRows}
+      data-max-rows={maxRows}
       onChange={event => onValueChange(event.target.value)}
     />
   ),
@@ -166,6 +168,8 @@ describe('public editor view', () => {
     }
     render(<Example />)
     const field = screen.getByTitle('Custom field') as HTMLTextAreaElement
+    expect(field.dataset.minRows).toBe('1')
+    expect(field.dataset.maxRows).toBe('10')
     field.focus()
     fireEvent.change(field, {target: {value: EDIT}})
     expect(document.activeElement).toBe(field)
@@ -500,5 +504,27 @@ describe('public editor view', () => {
     )
     expect(screen.getByRole('status').textContent).toBe('Nothing here')
     expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  it('renders independent general and description searches', () => {
+    const general = vi.fn()
+    const description = vi.fn()
+    render(
+      <MessageList
+        messages={messages}
+        onSelect={() => {}}
+        search={{value: 'hello', onValueChange: general}}
+        descriptionSearch={{value: 'checkout', onValueChange: description}}
+      />
+    )
+    fireEvent.change(screen.getByRole('searchbox', {name: 'Search messages'}), {
+      target: {value: 'next'},
+    })
+    fireEvent.change(
+      screen.getByRole('searchbox', {name: 'Search descriptions'}),
+      {target: {value: 'context'}}
+    )
+    expect(general).toHaveBeenCalledExactlyOnceWith('next')
+    expect(description).toHaveBeenCalledExactlyOnceWith('context')
   })
 })

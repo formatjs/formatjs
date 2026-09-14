@@ -56,6 +56,19 @@ describe('headless editor', () => {
     expect(result.current.messages.map(message => message.id)).toEqual([
       'count',
     ])
+    act(() => result.current.setDescriptionQuery('total'))
+    expect(result.current.messages.map(message => message.id)).toEqual([
+      'count',
+    ])
+    act(() => result.current.setQuery('hello'))
+    expect(result.current.messages).toEqual([])
+    act(() => {
+      result.current.setQuery('')
+      result.current.setDescriptionQuery('TOTAL')
+    })
+    expect(result.current.messages.map(message => message.id)).toEqual([
+      'count',
+    ])
     act(() => result.current.selectMessage('greeting'))
     expect(result.current.selectedMessage?.translatedMessage).toBe(
       'Salut {name}'

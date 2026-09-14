@@ -106,10 +106,10 @@ export const stylexEditorComponents: EditorComponents = {
       onChange={event => onValueChange(event.target.value)}
     />
   ),
-  TextArea: ({onValueChange, rows = 6, ...props}) => (
+  TextArea: ({onValueChange, rows, minRows, maxRows: _maxRows, ...props}) => (
     <TextArea
       {...props}
-      rows={rows}
+      rows={minRows ?? rows ?? 1}
       onChange={event => onValueChange(event.target.value)}
     />
   ),

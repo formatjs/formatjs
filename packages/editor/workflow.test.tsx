@@ -1,6 +1,9 @@
 import {act, cleanup, renderHook} from '@testing-library/react'
 import {afterEach, describe, expect, it, vi} from 'vitest'
 import {
+  hasTranslationForEveryLocale,
+  matchesMessageStatus,
+  useTranslationLayout,
   useTranslationEditor,
   validateTranslation,
   type EditorMessage,
@@ -209,6 +212,10 @@ describe('translation workflow', () => {
     expect(result.current.editor.messages.map(message => message.id)).toEqual([
       'b',
     ])
+    act(() => result.current.editor.setDescriptionQuery('not present'))
+    expect(result.current.editor.messages).toEqual([])
+    expect(result.current.page).toBe(0)
+    act(() => result.current.editor.setDescriptionQuery(''))
     act(() => result.current.editor.setQuery(''))
     rerender({
       ...initial,
@@ -230,6 +237,58 @@ describe('translation workflow', () => {
     expect(result.current.editor.messages.map(message => message.id)).toEqual([
       'b',
     ])
+  })
+})
+
+describe('editor preferences and status', () => {
+  it('uses all-selected versus any-missing translation status semantics', () => {
+    const translations = {fr: '', de: 'Hallo'}
+    expect(hasTranslationForEveryLocale(translations, ['fr', 'de'])).toBe(true)
+    expect(hasTranslationForEveryLocale(translations, ['fr', 'ja'])).toBe(false)
+    expect(hasTranslationForEveryLocale(translations, [])).toBe(false)
+    expect(matchesMessageStatus(translations, ['fr', 'de'], 'translated')).toBe(
+      true
+    )
+    expect(matchesMessageStatus(translations, ['fr', 'ja'], 'missing')).toBe(
+      true
+    )
+  })
+
+  it('defaults to grid, restores a valid layout, and tolerates storage failures', () => {
+    const values = new Map<string, string>()
+    const storage = {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => values.set(key, value),
+    }
+    const {result, unmount} = renderHook(() =>
+      useTranslationLayout({storageKey: 'layout', storage})
+    )
+    expect(result.current.layout).toBe('grid')
+    act(() => result.current.setLayout('list'))
+    expect(result.current.layout).toBe('list')
+    expect(values.get('layout')).toBe('"list"')
+    unmount()
+    const restored = renderHook(() =>
+      useTranslationLayout({storageKey: 'layout', storage})
+    )
+    expect(restored.result.current.layout).toBe('list')
+
+    const unavailable = renderHook(() =>
+      useTranslationLayout({
+        storageKey: 'layout',
+        storage: {
+          getItem: () => {
+            throw new Error('unavailable')
+          },
+          setItem: () => {
+            throw new Error('unavailable')
+          },
+        },
+      })
+    )
+    expect(unavailable.result.current.layout).toBe('grid')
+    act(() => unavailable.result.current.setLayout('list'))
+    expect(unavailable.result.current.layout).toBe('list')
   })
 })
 

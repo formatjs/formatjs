@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   type ComponentType,
@@ -22,13 +23,19 @@ export interface EditorInputProps {
   disabled?: boolean
   'aria-invalid'?: boolean
   'aria-describedby'?: string
+  'aria-label'?: string
 }
 export interface EditorTextInputProps extends EditorInputProps {
   type: 'text' | 'search'
+  placeholder?: string
 }
 export interface EditorTextAreaProps extends EditorInputProps {
-  /** Visible rows when supported by the control; defaults to six. */
+  /** Initial visible rows retained for compatibility. Prefer minRows. */
   rows?: number
+  /** Minimum visible rows while the controlled field grows and shrinks. */
+  minRows?: number
+  /** Maximum visible rows before the controlled field scrolls. */
+  maxRows?: number
 }
 export interface EditorMessageRowProps {
   children: ReactNode
@@ -66,7 +73,7 @@ export interface EditorCheckboxProps {
 export interface EditorLocalePickerLayoutProps {
   id: string
   title: string
-  summary: string
+  summary: ReactNode
   triggerLabel: string
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -108,6 +115,55 @@ export interface EditorToolComponents {
 }
 export type ResolvedEditorComponents = Required<EditorComponents>
 /** Unstyled native controls; no CSS, icons, or localization provider is required. */
+function finiteRows(value: number | undefined, fallback: number): number {
+  return Number.isFinite(value) && value! > 0 ? Math.floor(value!) : fallback
+}
+
+function NativeTextArea({
+  onValueChange,
+  value,
+  rows,
+  minRows,
+  maxRows,
+  ...props
+}: EditorTextAreaProps): ReactNode {
+  const ref = useRef<HTMLTextAreaElement>(null)
+  const minimum = finiteRows(minRows ?? rows, 1)
+  const maximum = Math.max(minimum, finiteRows(maxRows, 10))
+  useLayoutEffect(() => {
+    const field = ref.current
+    if (!field) return
+    const computed = getComputedStyle(field)
+    const parsedLineHeight = Number.parseFloat(computed.lineHeight)
+    const fontSize = Number.parseFloat(computed.fontSize)
+    const lineHeight = Number.isFinite(parsedLineHeight)
+      ? parsedLineHeight
+      : fontSize * 1.2
+    if (!Number.isFinite(lineHeight)) return
+    const pixels = (value: string): number => Number.parseFloat(value) || 0
+    const chrome =
+      pixels(computed.paddingTop) +
+      pixels(computed.paddingBottom) +
+      pixels(computed.borderTopWidth) +
+      pixels(computed.borderBottomWidth)
+    const minimumHeight = minimum * lineHeight + chrome
+    const maximumHeight = maximum * lineHeight + chrome
+    field.style.height = 'auto'
+    field.style.height = `${Math.min(Math.max(field.scrollHeight, minimumHeight), maximumHeight)}px`
+    field.style.overflowY =
+      field.scrollHeight > maximumHeight ? 'auto' : 'hidden'
+  }, [maximum, minimum, value])
+  return (
+    <textarea
+      {...props}
+      ref={ref}
+      rows={minimum}
+      value={value}
+      onChange={event => onValueChange(event.target.value)}
+    />
+  )
+}
+
 export const nativeEditorComponents: ResolvedEditorComponents = {
   Checkbox: function NativeCheckbox({checked, onCheckedChange, ...props}) {
     const ref = useRef<HTMLInputElement>(null)
@@ -179,13 +235,7 @@ export const nativeEditorComponents: ResolvedEditorComponents = {
   TextInput: ({onValueChange, ...props}) => (
     <input {...props} onChange={event => onValueChange(event.target.value)} />
   ),
-  TextArea: ({onValueChange, rows = 6, ...props}) => (
-    <textarea
-      {...props}
-      rows={rows}
-      onChange={event => onValueChange(event.target.value)}
-    />
-  ),
+  TextArea: NativeTextArea,
   MessageRow: ({children, selected, onSelect}) => (
     <button
       type="button"
