@@ -880,3 +880,16 @@ ruleTester.run('refresh writable contracts', rule, {
     },
   ],
 })
+
+ruleTester.run('descriptor metadata generic', rule, {
+  valid: [],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessage} from 'react-intl'; defineMessage<{n: string}, Descriptor>({defaultMessage: '{n, number}'}, {typed: true})",
+      output: `import {defineMessage} from 'react-intl'; defineMessage<{ readonly "n": number | bigint }, Descriptor>({defaultMessage: '{n, number}'}, {typed: true})`,
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})

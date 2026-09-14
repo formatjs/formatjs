@@ -82,14 +82,24 @@ function checkTypes() {
     ReturnType<OriginalDefineMessage>
   >()
   expectTypeOf<
-    Parameters<typeof defineMessages<'hello', MessageDescriptor>>
+    Parameters<
+      typeof defineMessages<
+        'hello',
+        MessageDescriptor,
+        Record<'hello', MessageDescriptor>
+      >
+    >
   >().toEqualTypeOf<[messages: Record<'hello', MessageDescriptor>]>()
   expectTypeOf<ReturnType<typeof defineMessages>>().toEqualTypeOf<
     ReturnType<OriginalDefineMessages>
   >()
   const wrappedMessage = (...args: Parameters<typeof defineMessage>) =>
     defineMessage(...args)
-  const defineCatalog = defineMessages<'hello', MessageDescriptor>
+  const defineCatalog = defineMessages<
+    'hello',
+    MessageDescriptor,
+    Record<'hello', MessageDescriptor>
+  >
   const wrappedMessages = (...args: Parameters<typeof defineCatalog>) =>
     defineCatalog(...args)
   wrappedMessage({id: 'wrapped'})
@@ -175,3 +185,42 @@ function checkReadonlyHelpers() {
   catalog.plain.id = 'changed'
 }
 void checkReadonlyHelpers
+
+test('typed helpers retain required metadata', () => {
+  const both = defineMessage<{n: number}>(
+    {id: 'metadata', defaultMessage: '{n, number}'},
+    {typed: true}
+  )
+  const id: string = both.id
+  const text: string = both.defaultMessage
+  expect(id).toBe('metadata')
+  expect(text).toBe('{n, number}')
+  const idOnly = defineMessage<{}>({id: 'id-only'}, {typed: true})
+  expectTypeOf(idOnly.id).toMatchTypeOf<string>()
+  const textOnly = defineMessage<{}>({defaultMessage: 'Hello'}, {typed: true})
+  expectTypeOf(textOnly.defaultMessage).toMatchTypeOf<string>()
+  const catalog = defineMessages<{hello: {}}>(
+    {hello: {id: 'hello', defaultMessage: 'Hello'}},
+    {typed: true}
+  )
+  expectTypeOf(catalog.hello.id).toMatchTypeOf<string>()
+  expectTypeOf(catalog.hello.defaultMessage).toMatchTypeOf<string>()
+  const source = {
+    id: 'literal',
+    defaultMessage: 'Hello',
+    description: 'Context',
+  } as const
+  const exact = defineMessage<{}, typeof source>(source, {typed: true})
+  expectTypeOf(exact.id).toEqualTypeOf<'literal'>()
+  expectTypeOf(exact.description).toEqualTypeOf<'Context'>()
+  const mixed = {
+    withId: {id: 'one'},
+    withText: {defaultMessage: 'Two'},
+  } as const
+  const exactCatalog = defineMessages<{withId: {}; withText: {}}, typeof mixed>(
+    mixed,
+    {typed: true}
+  )
+  expectTypeOf(exactCatalog.withId.id).toEqualTypeOf<'one'>()
+  expectTypeOf(exactCatalog.withText.defaultMessage).toEqualTypeOf<'Two'>()
+})

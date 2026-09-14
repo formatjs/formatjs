@@ -25,6 +25,48 @@ export type TypedMessageArguments<
   TChunk = T,
 > = MessageFormatArguments<V, T, TChunk, [options?: Options]>
 
+export function defineMessage<
+  V extends MessageValues,
+  const D extends MessageDescriptor,
+>(
+  message: D,
+  options: {typed: true}
+): Readonly<D> & Omit<TypedMessageDescriptor<V>, keyof D>
+export function defineMessage<V extends MessageValues>(
+  message: MessageDescriptor & {
+    id: NonNullable<MessageDescriptor['id']>
+    defaultMessage: string
+  },
+  options: {typed: true}
+): TypedMessageDescriptor<V> &
+  Readonly<{id: NonNullable<MessageDescriptor['id']>; defaultMessage: string}>
+export function defineMessage<V extends MessageValues>(
+  message: MessageDescriptor & {
+    id: NonNullable<MessageDescriptor['id']>
+    defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>
+  },
+  options: {typed: true}
+): TypedMessageDescriptor<V> &
+  Readonly<{
+    id: NonNullable<MessageDescriptor['id']>
+    defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>
+  }>
+export function defineMessage<V extends MessageValues>(
+  message: MessageDescriptor & {defaultMessage: string},
+  options: {typed: true}
+): TypedMessageDescriptor<V> & Readonly<{defaultMessage: string}>
+export function defineMessage<V extends MessageValues>(
+  message: MessageDescriptor & {
+    defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>
+  },
+  options: {typed: true}
+): TypedMessageDescriptor<V> &
+  Readonly<{defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>}>
+export function defineMessage<V extends MessageValues>(
+  message: MessageDescriptor & {id: NonNullable<MessageDescriptor['id']>},
+  options: {typed: true}
+): TypedMessageDescriptor<V> &
+  Readonly<{id: NonNullable<MessageDescriptor['id']>}>
 export function defineMessage<V extends MessageValues>(
   message: MessageDescriptor,
   options: {typed: true}
@@ -37,6 +79,72 @@ export function defineMessage(
   return message
 }
 
+export function defineMessages<
+  V extends Record<string, MessageValues>,
+  const D extends {[K in keyof V]: MessageDescriptor},
+>(
+  messages: D,
+  options: {typed: true}
+): {
+  readonly [K in keyof V]: Readonly<D[K]> &
+    Omit<TypedMessageDescriptor<V[K]>, keyof D[K]>
+}
+export function defineMessages<V extends Record<string, MessageValues>>(
+  messages: {
+    [K in keyof V]: MessageDescriptor & {
+      id: NonNullable<MessageDescriptor['id']>
+      defaultMessage: string
+    }
+  },
+  options: {typed: true}
+): {
+  readonly [K in keyof V]: TypedMessageDescriptor<V[K]> &
+    Readonly<{id: NonNullable<MessageDescriptor['id']>; defaultMessage: string}>
+}
+export function defineMessages<V extends Record<string, MessageValues>>(
+  messages: {
+    [K in keyof V]: MessageDescriptor & {
+      id: NonNullable<MessageDescriptor['id']>
+      defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>
+    }
+  },
+  options: {typed: true}
+): {
+  readonly [K in keyof V]: TypedMessageDescriptor<V[K]> &
+    Readonly<{
+      id: NonNullable<MessageDescriptor['id']>
+      defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>
+    }>
+}
+export function defineMessages<V extends Record<string, MessageValues>>(
+  messages: {[K in keyof V]: MessageDescriptor & {defaultMessage: string}},
+  options: {typed: true}
+): {
+  readonly [K in keyof V]: TypedMessageDescriptor<V[K]> &
+    Readonly<{defaultMessage: string}>
+}
+export function defineMessages<V extends Record<string, MessageValues>>(
+  messages: {
+    [K in keyof V]: MessageDescriptor & {
+      defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>
+    }
+  },
+  options: {typed: true}
+): {
+  readonly [K in keyof V]: TypedMessageDescriptor<V[K]> &
+    Readonly<{defaultMessage: NonNullable<MessageDescriptor['defaultMessage']>}>
+}
+export function defineMessages<V extends Record<string, MessageValues>>(
+  messages: {
+    [K in keyof V]: MessageDescriptor & {
+      id: NonNullable<MessageDescriptor['id']>
+    }
+  },
+  options: {typed: true}
+): {
+  readonly [K in keyof V]: TypedMessageDescriptor<V[K]> &
+    Readonly<{id: NonNullable<MessageDescriptor['id']>}>
+}
 export function defineMessages<V extends Record<string, MessageValues>>(
   messages: {[K in keyof V]: MessageDescriptor},
   options: {typed: true}

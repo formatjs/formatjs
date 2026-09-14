@@ -97,7 +97,13 @@ function checkTypes() {
     ReturnType<OriginalDefineMessage>
   >()
   expectTypeOf<
-    Parameters<typeof defineMessages<'hello', MessageDescriptor>>
+    Parameters<
+      typeof defineMessages<
+        'hello',
+        MessageDescriptor,
+        Record<'hello', MessageDescriptor>
+      >
+    >
   >().toEqualTypeOf<[messages: Record<'hello', MessageDescriptor>]>()
   expectTypeOf<ReturnType<typeof defineMessages>>().toEqualTypeOf<
     ReturnType<OriginalDefineMessages>
@@ -136,3 +142,18 @@ function checkTypes() {
   server.formatMessage(message, {})
 }
 void checkTypes
+
+test('client and server helpers preserve required metadata', () => {
+  const client = defineMessage<{}>(
+    {id: 'client', defaultMessage: 'Hello'},
+    {typed: true}
+  )
+  const server = serverMessage<{}>(
+    {id: 'server', defaultMessage: 'Hello'},
+    {typed: true}
+  )
+  expectTypeOf(client.id).toMatchTypeOf<string>()
+  expectTypeOf(client.defaultMessage).toMatchTypeOf<string>()
+  expectTypeOf(server.id).toMatchTypeOf<string>()
+  expectTypeOf(server.defaultMessage).toMatchTypeOf<string>()
+})
