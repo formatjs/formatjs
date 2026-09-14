@@ -38,14 +38,16 @@ test('typed helpers work through client and server entrypoints', () => {
   ).toBe(true)
 })
 
-type OriginalDefineMessage = <T extends MessageDescriptor>(message: T) => T
+type OriginalDefineMessage = <T extends MessageDescriptor>(
+  message: T
+) => Readonly<T>
 type OriginalDefineMessages = <
   K extends keyof any,
   T = MessageDescriptor,
   U extends Record<K, T> = Record<K, T>,
 >(
   messages: U
-) => U
+) => {readonly [P in keyof U]: Readonly<U[P]>}
 
 function checkTypes() {
   // Plain descriptors do not infer ICU arguments without a generic.

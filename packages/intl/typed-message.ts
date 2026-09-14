@@ -15,7 +15,7 @@ export type {
 } from 'intl-messageformat'
 
 export type TypedMessageDescriptor<V extends MessageValues> =
-  MessageDescriptor & MessageContract<V>
+  Readonly<MessageDescriptor> & MessageContract<V>
 export type UntypedMessageDescriptor = MessageDescriptor &
   UntypedMessageContract
 
@@ -29,7 +29,7 @@ export function defineMessage<V extends MessageValues>(
   message: MessageDescriptor,
   options: {typed: true}
 ): TypedMessageDescriptor<V>
-export function defineMessage<T>(message: T): T
+export function defineMessage<T>(message: T): Readonly<T>
 export function defineMessage(
   message: unknown,
   _options?: {typed: true}
@@ -40,12 +40,12 @@ export function defineMessage(
 export function defineMessages<V extends Record<string, MessageValues>>(
   messages: {[K in keyof V]: MessageDescriptor},
   options: {typed: true}
-): {[K in keyof V]: TypedMessageDescriptor<V[K]>}
+): {readonly [K in keyof V]: TypedMessageDescriptor<V[K]>}
 export function defineMessages<
   K extends keyof any,
   T = MessageDescriptor,
   U extends Record<K, T> = Record<K, T>,
->(messages: U): U
+>(messages: U): {readonly [P in keyof U]: Readonly<U[P]>}
 export function defineMessages(
   messages: unknown,
   _options?: {typed: true}
