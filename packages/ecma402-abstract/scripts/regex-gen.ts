@@ -1,3 +1,4 @@
+import process from 'node:process'
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import regenerate from 'regenerate'
