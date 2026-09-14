@@ -1,9 +1,12 @@
 import type {MessageDescriptor} from '@formatjs/intl'
 import * as React from 'react'
+import {renderToStaticMarkup} from 'react-dom/server'
 import {expect, expectTypeOf, test} from 'vitest'
 import type {defineMessages} from '#packages/react-intl/index.js'
 import {
   createIntl,
+  FormattedMessage,
+  IntlProvider,
   defineMessage,
   type MessageTag,
   type MessageValue,
@@ -59,16 +62,16 @@ function checkTypes() {
   intl.$t(message)
 
   const inline = intl.formatMessage<{b: MessageTag}, React.ReactNode>(
-    {defaultMessage: '<b>Hello</b>'},
+    {id: 'rich-hello', defaultMessage: '<b>Hello</b>'},
     {b: chunks => <b>{chunks}</b>}
   )
   expectTypeOf(inline).toMatchTypeOf<React.ReactNode>()
   intl.formatMessage<{b: MessageTag}>(
-    {defaultMessage: '<b>Hello</b>'},
+    {id: 'rich-hello', defaultMessage: '<b>Hello</b>'},
     {b: chunks => <b>{chunks}</b>}
   )
   intl.$t<{b: MessageTag}, React.ReactNode>(
-    {defaultMessage: '<b>Hello</b>'},
+    {id: 'rich-hello', defaultMessage: '<b>Hello</b>'},
     {b: chunks => <b>{chunks}</b>}
   )
   expectTypeOf(
@@ -157,3 +160,50 @@ test('client and server helpers preserve required metadata', () => {
   expectTypeOf(server.id).toMatchTypeOf<string>()
   expectTypeOf(server.defaultMessage).toMatchTypeOf<string>()
 })
+
+test('FormattedMessage renders typed descriptors and rich callbacks', () => {
+  expect(
+    renderToStaticMarkup(
+      <IntlProvider locale="en">
+        <FormattedMessage {...message} values={{count: 2}} />
+      </IntlProvider>
+    )
+  ).toBe('2')
+  const rich = defineMessage<{b: MessageTag}>(
+    {id: 'rich-hello', defaultMessage: '<b>Hello</b>'},
+    {typed: true}
+  )
+  expect(
+    renderToStaticMarkup(
+      <IntlProvider locale="en">
+        <FormattedMessage
+          {...rich}
+          values={{b: chunks => <strong>{chunks}</strong>}}
+        />
+      </IntlProvider>
+    )
+  ).toBe('<strong>Hello</strong>')
+})
+
+function checkTypedJSX() {
+  const required = <FormattedMessage {...message} values={{count: 2}} />
+  // @ts-expect-error Typed descriptors require their values.
+  const missing = <FormattedMessage {...message} />
+  // @ts-expect-error Values cannot widen the inferred ICU contract.
+  const wrong = <FormattedMessage {...message} values={{count: 'two'}} />
+  const plain = defineMessage<{}>({defaultMessage: 'Hello'}, {typed: true})
+  const empty = <FormattedMessage {...plain} />
+  // @ts-expect-error Argument-free messages reject extra values.
+  const extra = <FormattedMessage {...plain} values={{extra: 1}} />
+  const rich = defineMessage<{b: MessageTag}>(
+    {id: 'rich-hello', defaultMessage: '<b>Hello</b>'},
+    {typed: true}
+  )
+  // @ts-expect-error A rich tag requires a callback.
+  const badTag = <FormattedMessage {...rich} values={{b: 'bold'}} />
+  const legacy = (
+    <FormattedMessage defaultMessage="{count}" values={{count: 'two'}} />
+  )
+  return [required, missing, wrong, empty, extra, badTag, legacy]
+}
+void checkTypedJSX

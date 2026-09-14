@@ -59,3 +59,13 @@ Legacy instantiation expressions using `defineMessages<Key, Descriptor>` should
 supply their existing third generic explicitly:
 `defineMessages<Key, Descriptor, Record<Key, Descriptor>>`.
 Calls without explicit generics are unaffected.
+
+### Typed FormattedMessage
+
+Spreading a typed descriptor into `FormattedMessage` now checks its `values`:
+`<FormattedMessage {...messages.count} values={{count: 2}} />`.
+Required ICU arguments require the values prop, and rich tags require callbacks
+returning React nodes. Argument-free descriptors can omit values. Ordinary
+untyped JSX remains permissive. Keep the descriptor's phantom contract when
+passing it through wrappers; widening to MessageDescriptor erases the check.
+Runtime rendering, memoization, and children callbacks are unchanged.
