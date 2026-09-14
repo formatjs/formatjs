@@ -1,0 +1,54 @@
+name: Editor browser tests
+
+on:
+  pull_request:
+    paths:
+      - 'packages/editor/**'
+      - 'packages/react-intl/**'
+      - 'packages/intl/**'
+      - 'tools/**'
+      - 'platforms/**'
+      - 'MODULE.bazel*'
+      - 'pnpm-lock.yaml'
+      - '.bazelrc'
+      - '.github/workflows/editor-browser.yml'
+      - '.github/scripts/actiond-vrt.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check VM prerequisites
+        run: |
+          test -c /dev/kvm
+          sudo modprobe vhost_vsock
+          test -c /dev/vhost-vsock
+          sudo chmod a+rw /dev/kvm /dev/vhost-vsock
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+          disk-cache: editor-browser
+      - name: Prepare host browser libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libnspr4 libatk1.0-0t64 libatk-bridge2.0-0t64 libcups2t64 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2t64 libatspi2.0-0t64
+      - name: Host interaction tests
+        run: bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
+      - name: VRT comparison and capture in Linux VM
+        run: bash .github/scripts/actiond-vrt.sh
+      - uses: actions/upload-artifact@v8
+        if: always()
+        with:
+          name: editor-browser-results
+          path: |
+            bazel-testlogs/packages/editor/vrt/
+            packages/editor/vrt/__screenshots__/
+            ${{ runner.temp }}/formatjs-actiond/build.log
+            ${{ runner.temp }}/formatjs-actiond/vm.log

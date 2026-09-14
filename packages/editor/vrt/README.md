@@ -10,44 +10,42 @@ builds the gallery with Vite/StyleX before any browser test starts.
 bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
 ```
 
-Angular's maintained `rules_browsers` downloads exact Chromium `153.0.8010.12`.
-Bazel's built-in `http_archive` downloads checksum-pinned FFmpeg `1011`.
-`//packages/editor/vrt/browsers:installation` assembles Playwright 1.63.0's expected directory layout.
-Both targets declare the browser files and their runfiles-relative
-`PLAYWRIGHT_BROWSERS_PATH`; no `pnpm exec playwright install` or host browser cache
-is required. Linux still needs the browser's OS libraries. Linux x64 is tested;
-the installation also declares macOS x64 and arm64 artifacts.
-When upgrading Playwright, update the Chromium version, browser revision directory,
-and FFmpeg revision/checksums together with the npm lockfile.
+Chromium headless shell and FFmpeg are checksum-pinned Bazel downloads in
+`rules_browsers` (Chromium) and checksum-pinned FFmpeg archives. Both targets declare the browser directory and pass its
+runfiles path through `PLAYWRIGHT_BROWSERS_PATH`; no manual browser installation
+or `rules_playwright` dependency is needed. Supported host platforms are Linux
+x64 and macOS x64/arm64. Linux needs Chromium's system libraries; the browser CI job
+installs those before testing.
 
-## VRT migration status
+## Visual tests on actiond
 
-The pinned `rules_web_e2e` commit replaces Testcontainers with actiond.
-`visual_test` now takes a declared Linux amd64 `browser_runtime`; capture and
-comparison run as remote build actions. Docker and image preloading are no longer
-test prerequisites.
+VRT captures and compares in an isolated Linux amd64 action. `linux_browser_files`
+selects Chromium, Node, Bash, libraries, utilities and fonts from the digest-pinned
+Playwright OCI image. Bazel downloads and extracts that image without Docker.
+`fonts.conf` uses relative font paths. The runner relocates executable copies;
+no system runtime mappings or network downloads occur inside the action.
 
-**VRT is blocked; this migration is not ready to merge.** The former Playwright
-image is downloaded through `rules_oci`, but `linux_browser_files` fails extraction
-with `Runtime contains a directory link cycle: usr/bin/X11`. A relocatable runtime
-producer is tracked in [rules_web_e2e#33](https://github.com/perplexityai/rules_web_e2e/issues/33).
-The declaration preserves the previous image pin as a reproducible migration
-input; it is not a validated runtime.
-
-Execution also needs a patched actiond worker; see
-[rules_web_e2e#34](https://github.com/perplexityai/rules_web_e2e/issues/34).
-The devbox has no KVM, and no FormatJS actiond endpoint is configured.
-Existing screenshot baselines have not been updated.
-
-Once those prerequisites are resolved, use the `vrt` config and explicitly supply
-the worker endpoint:
+With a compatible actiond worker:
 
 ```sh
 bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test
 bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test.update
 ```
 
-Local fallback remains disabled. Failed captures must not overwrite baselines.
+The `Editor browser tests` workflow builds actiond at commit `8a42c3d`, with the
+memory-advice kernel patch tracked by
+[actiond #33](https://github.com/hermeticbuild/actiond/pull/33). It checks KVM and
+vhost-vsock access first, starts a 6 GiB VM, runs comparison, then captures again
+and verifies that baselines did not change. The same path is available locally:
+
+```sh
+# Linux x64 with writable /dev/kvm and /dev/vhost-vsock:
+bash .github/scripts/actiond-vrt.sh
+```
+
+A machine without those devices can use an existing worker endpoint. VRT has no
+host fallback. `.update` applies only successful captures; review any intentional
+baseline changes. CI uploads browser results and worker logs.
 
 ## Built inputs
 
@@ -86,4 +84,5 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency pins upstream commit `748ef4d2155352b4cc295271c4e9f0303d7c50d7`.
+The rules dependency pins upstream commit `c678432dfbe760c68bfebe984d56333da4fa4322`,
+including [runtime selection support](https://github.com/perplexityai/rules_web_e2e/pull/35).

@@ -28,13 +28,14 @@ separate npm workspace or lockfile. The root lock pins Playwright to match the
 browser image. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-Host E2E/component tests remain manual, local, and uncached. Chromium comes from Angular's `rules_browsers`;
-FFmpeg uses checksum-pinned Bazel downloads; no manual browser installation is needed.
-VRT at upstream commit `748ef4d` requires a declared Linux amd64 runtime and
-patched actiond executor. Its previous image fails the new OCI extraction contract,
-and worker provisioning is unresolved; see [migration blockers](../packages/editor/vrt/README.md).
+Host E2E/component tests remain manual, local, and uncached. Their Chromium and
+FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
+VRT selects its Linux amd64 runtime from the pinned Playwright image through
+`browser_runtime_oci`, with relative font configuration. The browser CI workflow
+builds a pinned actiond worker with the memory-advice kernel patch and checks
+VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
-VRT migration has not been validated, and existing baselines remain unchanged.
+CI compares the checked-in baselines and verifies that a subsequent capture leaves them unchanged.
 
 Run `.update` only for intentional visual changes, review the PNGs, then run
 comparison. See `packages/editor/vrt/README.md` for exact commands.
@@ -82,7 +83,7 @@ Release Please updates the manifest after the release PR lands.
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 runner supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E and component tests use Bazel-provisioned host Chromium. VRT now requires a declared Linux runtime and actiond worker; migration blockers are documented in the browser setup guide.
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E and component tests use Bazel-provisioned host Chromium. VRT uses a declared Linux runtime and actiond worker; provisioning is documented in the browser setup guide.
 
 ```sh
 bazel test //packages/editor/vrt:e2e_test --test_output=errors
@@ -90,7 +91,7 @@ bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It uses Chromium provisioned by `rules_browsers` and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
+drafts, and saving. It uses checksum-pinned Chromium provisioned by Bazel and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
@@ -106,7 +107,7 @@ clear, ICU validation, and isolation between mounts.
 E2E uses a compiled custom server adapter serving the same built app. The runtime
 selects compiled `*.browser.spec.js` separately from E2E `*.spec.js` and generated
 VRT captures. CI should explicitly run all three
-browser targets once VRT's runtime and worker blockers are resolved. Screenshot baselines and updates remain in `visual_test`.
+browser targets through the `Editor browser tests` workflow. Screenshot baselines and updates remain in `visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
 renderable cases, browser-side capture hooks, and VRT options. The gallery registers

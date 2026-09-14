@@ -98,20 +98,31 @@ js_library(
     deps = [":vrt_compiled"],
 )
 
-# Migration blocked by https://github.com/perplexityai/rules_web_e2e/issues/33.
 browser_runtime_oci(
     name = "linux_browser_files",
+    files = {":fonts.conf": "etc/fonts/fonts.conf"},
     image = "@editor_browser_image_linux_amd64",
+    paths = {
+        "usr/bin/node": "bin/node",
+        "usr/bin/bash": "bin/bash",
+        "usr/bin/env": "bin/env",
+        "usr/bin/dirname": "bin/dirname",
+        "usr/bin/uname": "bin/uname",
+        "usr/bin/readlink": "bin/readlink",
+        "usr/lib/x86_64-linux-gnu": "lib",
+        "usr/share/fonts": "fonts",
+        "ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64": "chromium",
+    },
 )
 
 browser_runtime(
     name = "linux_browser",
-    bash = "usr/bin/bash",
-    executable = "ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell",
+    bash = "bin/bash",
+    executable = "chromium/chrome-headless-shell",
     fontconfig = "etc/fonts",
-    library_dirs = ["usr/lib/x86_64-linux-gnu"],
-    loader = "usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
-    node = "usr/bin/node",
+    library_dirs = ["lib"],
+    loader = "lib/ld-linux-x86-64.so.2",
+    node = "bin/node",
     root = ":linux_browser_files",
 )
 
