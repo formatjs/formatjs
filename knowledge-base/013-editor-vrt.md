@@ -85,22 +85,20 @@ Release Please updates the manifest after the release PR lands.
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 runner supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E and component tests use Bazel-provisioned host Chromium. VRT uses a declared Linux runtime and actiond worker; provisioning is documented in the browser setup guide.
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E, component tests, and VRT use the same declared Linux runtime in actiond; provisioning is documented in the browser setup guide.
 
 ```sh
-bazel test //packages/editor/vrt:e2e_test --test_output=errors
-bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
+bash .github/scripts/actiond-vrt.sh
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It uses checksum-pinned Chromium provisioned by Bazel and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
+drafts, and saving. It uses checksum-pinned Chromium and declared fixtures in a cacheable isolated Linux action. See [browser setup](../packages/editor/vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
 ## Component browser tests
 
-`bazel test //packages/editor/vrt:component_test --test_output=errors` runs
-Playwright 1.63 native `mount()` specs for the real editor. The typed
+`component_test` runs Playwright 1.63 native `mount()` specs for the real editor. The typed
 `editor.visual.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
 mount/update/unmount. The tests check provider updates without losing a draft,
 clear, ICU validation, and isolation between mounts.
