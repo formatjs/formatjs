@@ -23,6 +23,8 @@ const modules = new Set([
   '@formatjs/intl',
   'react-intl',
   'react-intl/server',
+  '@formatjs/svelte-intl',
+  'vue-intl',
   'intl-messageformat',
 ])
 
@@ -399,6 +401,8 @@ const descriptorModules = new Set([
   '@formatjs/intl',
   'react-intl',
   'react-intl/server',
+  '@formatjs/svelte-intl',
+  'vue-intl',
 ])
 
 function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
