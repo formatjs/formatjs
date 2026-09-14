@@ -28,17 +28,18 @@ separate npm workspace or lockfile. The root lock pins Playwright to match the
 Chromium archive. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-Host E2E/component tests remain manual, local, and uncached. Their Chromium and
-FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
-VRT uses `linux_chromium_runtime` with caller-pinned Chromium/Node and the rules'
-versioned Noble library/font preset. `playwright_browser_installation` derives host
-cache revisions from Playwright metadata; host and VRT runs check the actual Chromium version.
-No consumer APT configuration or container image is needed. The browser CI workflow
-builds upstream actiond at `4b767e8` without local patches and checks
-VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
+E2E, component interactions, and VRT all use a declared `linux_chromium_runtime`
+and execute in actiond Linux amd64 actions. Chromium/Node, the selected Linux library closure, and fonts are checksum-pinned
+Bazel inputs. The optional preset omits unrelated OS packages and GPU drivers. No host browser cache,
+FFmpeg download, apt setup, or container image is needed for these suites.
+The browser CI script starts the actiond v0.0.7 release (`4b767e8`), downloaded
+and checksum-verified by `//tools:actiond`,
+and includes its binary SHA256 in remote execution properties to separate cached
+results across worker/kernel changes. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
-CI compares the checked-in baselines with `matching.ts` and checks the complete
-capture set without applying it to source baselines.
+CI runs the standard VRT comparison with `matching.ts`; it captures screenshots
+without applying them to source baselines. A separate capture/update validation
+pass is not needed.
 
 Run `.update` only for intentional visual changes, review the PNGs, then run
 comparison. See `packages/editor/vrt/README.md` for exact commands.
@@ -86,22 +87,20 @@ Release Please updates the manifest after the release PR lands.
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 runner supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E and component tests use Bazel-provisioned host Chromium. VRT uses a declared Linux runtime and actiond worker; provisioning is documented in the browser setup guide.
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E, component tests, and VRT use the same declared Linux runtime in actiond; provisioning is documented in the browser setup guide.
 
 ```sh
-bazel test //packages/editor/vrt:e2e_test --test_output=errors
-bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
+bash .github/scripts/actiond-vrt.sh
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It uses checksum-pinned Chromium provisioned by Bazel and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
+drafts, and saving. It uses checksum-pinned Chromium and declared fixtures in a native Bazel test action on isolated Linux. Bazel retries and repeated runs launch Chromium again. See [browser setup](../packages/editor/vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
 ## Component browser tests
 
-`bazel test //packages/editor/vrt:component_test --test_output=errors` runs
-Playwright 1.63 native `mount()` specs for the real editor. The typed
+`component_test` runs Playwright 1.63 native `mount()` specs for the real editor. The typed
 `editor.visual.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
 mount/update/unmount. The tests check provider updates without losing a draft,
 clear, ICU validation, and isolation between mounts.
@@ -131,3 +130,6 @@ The build action owns Vite and StyleX configuration, uses declared workspace
 package links, disables dotenv discovery, and depends on strict typechecks.
 The browser runtime never transpiles source or starts a bundler. See
 `packages/editor/vrt/README.md` for commands and migration details.
+
+Bazel's native test-launcher utilities are built from pinned sources with hermetic
+LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.

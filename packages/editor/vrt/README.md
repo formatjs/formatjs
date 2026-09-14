@@ -4,55 +4,50 @@ The editor uses the monorepo's React 19, workspace React Intl/parser packages,
 and root npm lockfile. Its Bazel build typechecks and compiles specs, then
 builds the gallery with Vite/StyleX before any browser test starts.
 
-## Host interaction tests
+## Isolated browser tests
 
-```sh
-bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
-```
+E2E, component interactions, and VRT all run in actiond Linux amd64 actions using
+`:linux_browser`. The runtime combines caller-pinned Chromium/Node with the rules'
+checksum-locked libraries and fonts. No host browser cache or apt-installed
+libraries are needed. Fixture servers and browsers share action-local loopback
+networking; external services must be replaced with declared fixtures.
 
-Chromium headless shell and FFmpeg are checksum-pinned Bazel downloads in
-`rules_browsers` (Chromium) and checksum-pinned FFmpeg archives. Both targets declare the browser directory and pass its
-runfiles path through `PLAYWRIGHT_BROWSERS_PATH`; no manual browser installation
-or `rules_playwright` dependency is needed. Supported host platforms are Linux
-x64 and macOS x64/arm64. Linux needs Chromium's system libraries; the browser CI job
-installs those before testing.
+E2E and component targets are native Bazel tests: failures return nonzero, reports
+use standard test outputs, and retries, `--runs_per_test`, and
+`--nocache_test_results` launch Chromium again. Bazel’s wrapper uses actiond’s
+pinned static Bash plus declared, checksum-pinned utilities. VRT comparison and
+capture remain artifact-producing build actions.
 
-## Visual tests on actiond
-
-VRT captures and compares in an isolated Linux amd64 action. `linux_browser`
-uses `linux_chromium_runtime` with the existing `rules_browsers` Chromium download
-and pinned Node toolchain. The rules' versioned Noble preset owns checksum-locked
-libraries, shell utilities, and the resolved font packages. The runner
-checks the actual Chromium version against the selected Playwright package. Host
-tests also check each project's selected browser during setup.
-
-The host `playwright_browser_installation` helper reads Chromium/FFmpeg cache
-revisions from Playwright's `browsers.json`. Upgrades change the Chromium pin in
-`MODULE.bazel`, the compatible Playwright npm versions and `playwright_runtime`
-version, plus the FFmpeg archive if its revision changes. No cache-directory paths
-or APT configuration need editing. Re-run browser CI and review intentional pixel
-changes before updating baselines.
-
-With a compatible actiond worker:
-
-```sh
-bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test
-bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test.update
-```
-
-The `Editor browser tests` workflow builds actiond at commit `4b767e8`, which includes
-memory-advice syscalls upstream and needs no local kernel patch. It checks KVM and
-vhost-vsock access first, starts a 6 GiB VM, runs comparison with `matching.ts`, then captures again
-and verifies the complete capture set without changing source baselines. The same path is available locally:
+Upgrades change the Chromium pin in `MODULE.bazel` and compatible Playwright npm
+packages plus `playwright_runtime.version`. The runner checks the actual browser
+version. Re-run CI and review intentional screenshot changes.
 
 ```sh
 # Linux x64 with writable /dev/kvm and /dev/vhost-vsock:
 bash .github/scripts/actiond-vrt.sh
 ```
 
-A machine without those devices can use an existing worker endpoint. VRT has no
-host fallback. `.update` applies only successful captures; review any intentional
-baseline changes. CI uploads browser results and worker logs.
+The script starts a 6 GiB VM using the released actiond v0.0.7 worker downloaded
+and checksum-verified by Bazel, then runs the three test targets. `visual_test`
+already captures screenshots and compares them against the checked-in baselines;
+CI does not run a second capture/update pass. The worker binary SHA256 is included
+in remote execution properties so worker or kernel changes invalidate cached results.
+
+To run a persistent worker separately on Linux x64:
+
+```sh
+bazel run //tools:actiond -- serve-vm --root=/tmp/formatjs-actiond/vm --listen=127.0.0.1:8980 --memory-mib=6144 --cpus=2 --cas-image-size-mib=4096
+```
+
+For an existing worker, obtain its binary SHA256 and run:
+
+```sh
+bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 --remote_default_exec_properties=actiond-worker-sha256=WORKER_SHA256 //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test //packages/editor/vrt:visual_test
+bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 --remote_default_exec_properties=actiond-worker-sha256=WORKER_SHA256 //packages/editor/vrt:visual_test.update
+```
+
+These targets require a Linux worker even from macOS. There is no host fallback.
+`.update` applies only successful captures; review intentional pixel changes.
 
 ## Built inputs
 
@@ -75,15 +70,13 @@ settings. The ESM marker belongs to the compiled module graph.
 
 Write `*.spec.ts` for navigation, editing, search, validation, and saving.
 Write `*.browser.spec.tsx` for native `mount()` and component updates. Bazel
-compiles both before execution. Filter behavior tests with, for example:
-
-```sh
-bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
-```
+compiles both before execution. Declare subsets as separate Bazel targets or
+set target `args` (for example `["--grep=translation"]`). Ordinary tests also
+accept `--test_arg=--grep=translation`; Bazel includes selection in the test action.
 
 `editor.visual.tsx` declares shared renderable cases, browser-side readiness
 hooks, and VRT options. `gallery.tsx` installs the registry and supplies renderer
-mount/update/unmount behavior. The runtime generates all six screenshot cases;
+mount/update/unmount behavior. The runtime generates all eight screenshot cases;
 there are no separate handwritten screenshot specs. Existing PNG names stay
 explicit in the visual declarations.
 
@@ -91,4 +84,7 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency pins [package runtime assembly support](https://github.com/perplexityai/rules_web_e2e/pull/35).
+The rules dependency pins [isolated ordinary browser tests](https://github.com/perplexityai/rules_web_e2e/pull/36).
+
+Bazel's native test-launcher utilities are built from pinned sources with hermetic
+LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.

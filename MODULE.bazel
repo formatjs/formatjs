@@ -446,10 +446,19 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
+# Released worker for the exact actiond commit validated by the browser rules.
+http_file(
+    name = "actiond_linux_x86_64",
+    downloaded_file_path = "actiond",
+    executable = True,
+    sha256 = "c35a7d9edc1387e83e98ca42a1e309b3fce9b97aa9199e85bf40778d6456a056",
+    url = "https://github.com/hermeticbuild/actiond/releases/download/v0.0.7/linux-actiond_linux_x86_64",
+)
+
 bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
 git_override(
     module_name = "rules_web_e2e",
-    commit = "c1f3d2d6f9758c0e15dc1efc6ca20e90e921473c",
+    commit = "03a297fa72116158e7a8ccb7cd024e1fef028076",
     remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
 
@@ -466,28 +475,4 @@ browsers.chrome(version = "153.0.8010.12")
 use_repo(
     browsers,
     "rules_browsers_chrome_linux",
-    "rules_browsers_chrome_mac",
-    "rules_browsers_chrome_mac_arm",
-)
-
-# Playwright's video helper is independent of Chromium; retain its pinned revision.
-http_archive(
-    name = "editor_ffmpeg_linux_x64",
-    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-*"]), visibility = ["//visibility:public"])',
-    integrity = "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
-    urls = ["https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip"],
-)
-
-http_archive(
-    name = "editor_ffmpeg_macos_arm64",
-    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-*"]), visibility = ["//visibility:public"])',
-    integrity = "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
-    urls = ["https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"],
-)
-
-http_archive(
-    name = "editor_ffmpeg_macos_x64",
-    build_file_content = 'filegroup(name = "files", srcs = glob(["ffmpeg-*"]), visibility = ["//visibility:public"])',
-    integrity = "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-    urls = ["https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-mac.zip"],
 )
