@@ -4,44 +4,46 @@ The editor uses the monorepo's React 19, workspace React Intl/parser packages,
 and root npm lockfile. Its Bazel build typechecks and compiles specs, then
 builds the gallery with Vite/StyleX before any browser test starts.
 
-```sh
-bazel build //packages/editor/vrt:bundle //packages/editor/vrt:typecheck
-bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test //packages/editor/vrt:visual_test --test_output=errors
-bazel run //packages/editor/vrt:visual_test.update
-```
-
-All three tests are manual, local, and uncached. CI must select them explicitly.
-E2E and component tests use host Chromium matching the locked Playwright version.
-Provision it before testing:
+## Host interaction tests
 
 ```sh
-pnpm install --frozen-lockfile
-export PLAYWRIGHT_BROWSERS_PATH="$HOME/.cache/formatjs-playwright"
-pnpm exec playwright install chromium
+bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
 ```
 
-Linux hosts also need Playwright's system libraries; use
-`playwright install --with-deps chromium` when provisioning the host.
+`rules_playwright` downloads Chromium headless shell and FFmpeg through Bazel.
+Both targets declare the browser files and their runfiles-relative
+`PLAYWRIGHT_BROWSERS_PATH`; no `pnpm exec playwright install` or host browser cache
+is required. Linux still needs the browser's OS libraries. Linux x64 is tested;
+the download mapping also covers macOS arm64.
 
-Only VRT requires Docker. Preload the shared runtime's default pinned images into
-the same daemon used for tests and updates; v3 never pulls images during execution:
+## VRT migration status
+
+The pinned `rules_web_e2e` commit replaces Testcontainers with actiond.
+`visual_test` now takes a declared Linux amd64 `browser_runtime`; capture and
+comparison run as remote build actions. Docker and image preloading are no longer
+test prerequisites.
+
+**VRT is blocked; this migration is not ready to merge.** The former Playwright
+image is downloaded through `rules_oci`, but `linux_browser_files` fails extraction
+with `Runtime contains a directory link cycle: usr/bin/X11`. A relocatable runtime
+producer is tracked in [rules_web_e2e#33](https://github.com/perplexityai/rules_web_e2e/issues/33).
+The declaration preserves the previous image pin as a reproducible migration
+input; it is not a validated runtime.
+
+Execution also needs a patched actiond worker; see
+[rules_web_e2e#34](https://github.com/perplexityai/rules_web_e2e/issues/34).
+The devbox has no KVM, and no FormatJS actiond endpoint is configured.
+Existing screenshot baselines have not been updated.
+
+Once those prerequisites are resolved, use the `vrt` config and explicitly supply
+the worker endpoint:
 
 ```sh
-bazel build @rules_web_e2e//runtime:images
-manifest="$(bazel cquery --output=files @rules_web_e2e//runtime:images)"
-jq -r '.images[] | [.image, (.platform // "")] | @tsv' "$manifest" |
-while IFS="$(printf '\t')" read -r image platform; do
-  if [ -n "$platform" ]; then
-    docker pull --platform "$platform" "$image"
-  else
-    docker pull "$image"
-  fi
-done
+bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test
+bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test.update
 ```
 
-Containerized callers must set an explicit TCP/HTTP(S) `DOCKER_HOST`.
-VRT runs in a pinned Linux amd64 image. Failure reports, traces, and image diffs
-remain in Bazel's undeclared outputs.
+Local fallback remains disabled. Failed captures must not overwrite baselines.
 
 ## Built inputs
 
@@ -51,7 +53,7 @@ remain in Bazel's undeclared outputs.
 | `editor_shell`                 | Selects the built `gallery.html` entry point                                        |
 | `editor_server`                | Compiled custom server adapter serving the built app for E2E                        |
 | `e2e_specs`, `component_specs` | Compiled native Playwright specs and dependencies                                   |
-| `playwright`                   | Reusable matching Playwright packages and pinned browser image                      |
+| `playwright`                   | Reusable matching Playwright client packages                                        |
 | `vrt_matching`                 | Compiled comparison policy with a zero-pixel mismatch budget                        |
 
 `e2e_test` brings its own server; component and VRT targets bring their built
@@ -80,4 +82,4 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency uses the Bazel Central Registry's `rules_web_e2e` 3.0.0 release.
+The rules dependency pins upstream commit `748ef4d2155352b4cc295271c4e9f0303d7c50d7`.

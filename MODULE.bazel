@@ -427,4 +427,46 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
-bazel_dep(name = "rules_web_e2e", version = "3.0.0", dev_dependency = True)
+bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
+git_override(
+    module_name = "rules_web_e2e",
+    commit = "748ef4d2155352b4cc295271c4e9f0303d7c50d7",
+    remote = "https://github.com/perplexityai/rules_web_e2e.git",
+)
+
+bazel_dep(name = "rules_playwright", version = "0.5.3", dev_dependency = True)
+git_override(
+    module_name = "rules_playwright",
+    commit = "cd496609ff7ed9e7e643e57570e79930d9026281",
+    remote = "https://github.com/perplexityai/rules_playwright.git",
+)
+
+playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright", dev_dependency = True)
+playwright.repo(
+    name = "playwright",
+    browser_download_path_map = {
+        "builds/chromium/1243/chromium-headless-shell-linux.zip": "builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip",
+        "builds/chromium/1243/chromium-headless-shell-mac-arm64.zip": "builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip",
+    },
+    browser_download_url_map = {
+        "builds/chromium/1243/chromium-headless-shell-linux.zip": ["https://cdn.playwright.dev/{path}"],
+        "builds/chromium/1243/chromium-headless-shell-mac-arm64.zip": ["https://cdn.playwright.dev/{path}"],
+    },
+    integrity_path_map = {
+        "builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip": "sha256-qdoCiGGgz3if8lwv7UX18ar5ae2SR4NbanghpPevnR0=",
+        "builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip": "sha256-idgKbSbM0Mz9UeItnhKXKDhirysM2R3OB0WbNcoAWfI=",
+    },
+    playwright_version = "1.63.0",
+)
+use_repo(playwright, "playwright")
+
+bazel_dep(name = "rules_oci", version = "2.3.0", dev_dependency = True)
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci", dev_dependency = True)
+oci.pull(
+    name = "editor_browser_image",
+    digest = "sha256:bc6ab0d6d44ff4826e4cb8c1e6d801e185bfc42bb0753f8e2a30efc70db054c7",
+    image = "mcr.microsoft.com/playwright",
+    platforms = ["linux/amd64"],
+)
+use_repo(oci, "editor_browser_image", "editor_browser_image_linux_amd64")

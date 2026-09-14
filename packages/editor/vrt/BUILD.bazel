@@ -10,7 +10,8 @@ load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("@rules_web_e2e//component:defs.bzl", "browser_shell", "component_browser_test")
 load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test")
-load("@rules_web_e2e//playwright:defs.bzl", "playwright_runtime")
+load("@rules_web_e2e//playwright:archive.bzl", "browser_runtime_oci")
+load("@rules_web_e2e//playwright:defs.bzl", "browser_runtime", "playwright_runtime")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
 load(":defs.bzl", "vrt_library", "vrt_test")
 
@@ -97,19 +98,43 @@ js_library(
     deps = [":vrt_compiled"],
 )
 
+# Migration blocked by https://github.com/perplexityai/rules_web_e2e/issues/33.
+browser_runtime_oci(
+    name = "linux_browser_files",
+    image = "@editor_browser_image_linux_amd64",
+)
+
+browser_runtime(
+    name = "linux_browser",
+    bash = "usr/bin/bash",
+    executable = "ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell",
+    fontconfig = "etc/fonts",
+    library_dirs = ["usr/lib/x86_64-linux-gnu"],
+    loader = "usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    node = "usr/bin/node",
+    root = ":linux_browser_files",
+)
+
 component_visual_test(
     name = "visual_test",
     baselines = glob(
         ["__screenshots__/*.png"],
         allow_empty = True,
     ),
+    browser = ":linux_browser",
     matching = ":vrt_matching",
     playwright = ":playwright",
     shell = ":editor_shell",
+    target_platform = "//platforms:linux_x86_64_gnu",
 )
 
 web_e2e_test(
     name = "e2e_test",
+    data = [
+        "@playwright//:chromium-headless-shell",
+        "@playwright//:ffmpeg",
+    ],
+    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../"},
     playwright = ":playwright",
     server = ":editor_server",
     tests = ":e2e_specs",
@@ -117,6 +142,11 @@ web_e2e_test(
 
 component_browser_test(
     name = "component_test",
+    data = [
+        "@playwright//:chromium-headless-shell",
+        "@playwright//:ffmpeg",
+    ],
+    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../"},
     playwright = ":playwright",
     shell = ":editor_shell",
     tests = ":component_specs",
