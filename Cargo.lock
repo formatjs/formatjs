@@ -1317,6 +1317,7 @@ version = "0.4.0"
 dependencies = [
  "base64",
  "formatjs_icu_messageformat",
+ "formatjs_icu_messageformat_parser",
  "formatjs_intl",
  "icu_locale",
  "pyo3",

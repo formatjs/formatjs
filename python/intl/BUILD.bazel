@@ -4,7 +4,10 @@ load("//tools/python:wheel.bzl", "formatjs_python_wheel")
 
 py_library(
     name = "intl",
-    srcs = ["intl/__init__.py"],
+    srcs = [
+        "intl/__init__.py",
+        "intl/codegen.py",
+    ],
     data = [
         "intl/__init__.pyi",
         "intl/py.typed",
@@ -42,4 +45,26 @@ formatjs_python_wheel(
     ],
     summary = "High-level internationalization runtime backed by FormatJS Rust",
     version = "0.2.0",  # x-release-please-version
+)
+
+py_test(
+    name = "codegen_test",
+    size = "small",
+    srcs = ["tests/test_codegen.py"],
+    args = ["$(rootpath @pyright//:pyright)"],
+    data = [
+        ":native_for_test",
+        "@pyright",
+    ],
+    main = "tests/test_codegen.py",
+    deps = [":intl"],
+)
+
+py_test(
+    name = "wheel_test",
+    size = "small",
+    srcs = ["tests/test_wheel.py"],
+    args = ["$(rootpath :wheel)"],
+    data = [":wheel"],
+    main = "tests/test_wheel.py",
 )

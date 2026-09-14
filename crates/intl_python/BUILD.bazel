@@ -7,6 +7,7 @@ pyo3_extension(
     deps = [
         "//crates/formatjs_intl",
         "//crates/icu_messageformat",
+        "//crates/icu_messageformat_parser",
         "@crates//:base64",
         "@crates//:icu_locale",
         "@crates//:pyo3",
