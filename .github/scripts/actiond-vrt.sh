@@ -3,13 +3,13 @@
 set -euo pipefail
 repo=$(pwd)
 work=${RUNNER_TEMP:-/tmp}/formatjs-actiond
-bazel_bin=$(command -v bazel)
 [[ $(uname -sm) == 'Linux x86_64' ]] || { echo 'VRT worker requires Linux x86_64'; exit 1; }
 for device in /dev/kvm /dev/vhost-vsock; do
   [[ -c "$device" && -r "$device" && -w "$device" ]] || {
     echo "VRT worker requires read/write access to $device"; exit 1;
   }
 done
+bazel_bin=$(command -v bazel) || { echo "Install Bazel before building the VRT worker"; exit 1; }
 mkdir -p "$work"
 if [[ ! -d "$work/source/.git" ]]; then
   git init "$work/source"

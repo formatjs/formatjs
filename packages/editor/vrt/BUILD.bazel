@@ -103,6 +103,7 @@ browser_runtime_oci(
     files = {":fonts.conf": "etc/fonts/fonts.conf"},
     image = "@editor_browser_image_linux_amd64",
     paths = {
+        "etc/fonts/conf.d": "etc/fonts/conf.d",
         "usr/bin/node": "bin/node",
         "usr/bin/bash": "bin/bash",
         "usr/bin/env": "bin/env",
