@@ -133,10 +133,10 @@ test('typed helpers preserve contracts and readonly descriptors', () => {
   )
   expect(catalog.item).toBe(source)
   const plain = defineMessages({item: source})
+  expect(plain.item).toBe(source)
 
-  // Compile-time assertions must not mutate runtime descriptors.
-  // eslint-disable-next-line no-constant-condition -- compile-time assertions only
-  if (false) {
+  // TypeScript checks this function without executing invalid mutations.
+  function assertTypes() {
     // @ts-expect-error descriptors are readonly
     message.id = 'changed'
     // @ts-expect-error catalog entries are readonly
@@ -151,4 +151,5 @@ test('typed helpers preserve contracts and readonly descriptors', () => {
     // @ts-expect-error numeric arguments reject strings
     intl.formatMessage(catalog.item, {count: 'one'})
   }
+  expect(assertTypes).toBeTypeOf('function')
 })
