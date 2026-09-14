@@ -75,6 +75,10 @@ direct and namespaced declarations. Cross-tool regression tests live in
 receiver names, configured functions, descriptor keys, and wrapper combinations
 in `packages/unplugin/conformance-tests/cli-unplugin-conformance.test.ts`.
 
+Emoji detection imports Unicode data through its ESM `.mjs` entry points.
+Unicode 2.0.7 removed the old `.js` files. `:package_load_test` loads the
+assembled plugin through its public package import and runs `no-emoji` in ESLint.
+
 **Peer dep:** `eslint@9 || 10`
 
 ## @formatjs/cli-lib

@@ -364,7 +364,7 @@
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
-          "FILE:@@//package.json 4013e21ad9f7079f78d4d921f6b79730eaccd343d88d9fdad42acb2a66d1eda6"
+          "FILE:@@//package.json 9070105f122199ef6ee31e95f5df8946bc0c36ccdc995fcc9e52c352425d679b"
         ],
         "generatedRepoSpecs": {
           "npm_typescript": {
