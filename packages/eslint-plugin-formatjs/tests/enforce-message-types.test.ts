@@ -36,7 +36,7 @@ ruleTester.run('enforce-message-types', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{n: number | bigint}>('{n, number}')",
+      code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{readonly n: number | bigint}>('{n, number}')",
     },
     {
       filename: 'test.ts',
@@ -80,7 +80,7 @@ ruleTester.run('enforce-message-types', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{defaultMessage: string}>({defaultMessage: '{n}'})",
+      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{readonly defaultMessage: string}>({defaultMessage: '{n}'})",
     },
     {
       filename: 'test.ts',
@@ -111,11 +111,11 @@ ruleTester.run('enforce-message-types', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{n: number | bigint}>({defaultMessage: '{n, number}'}, {typed: true})",
+      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{readonly n: number | bigint}>({defaultMessage: '{n, number}'}, {typed: true})",
     },
     {
       filename: 'test.ts',
-      code: "import {defineMessage, defineMessages} from 'react-intl';\nimport type {MessageTag, MessageValue} from \"react-intl\";\ndefineMessage<{b: MessageTag; name: MessageValue}>({defaultMessage: '<b>{name}</b>'}, {typed: true})",
+      code: "import {defineMessage, defineMessages} from 'react-intl';\nimport type {MessageTag, MessageValue} from \"react-intl\";\ndefineMessage<{readonly b: MessageTag; readonly name: MessageValue}>({defaultMessage: '<b>{name}</b>'}, {typed: true})",
     },
   ],
   invalid: [
@@ -128,7 +128,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat('{n, number}', 'en')",
       output:
-        "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{ \"n\": number | bigint }>('{n, number}', 'en')",
+        "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{ readonly \"n\": number | bigint }>('{n, number}', 'en')",
       errors: [
         {
           messageId: 'contract',
@@ -144,7 +144,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import {IntlMessageFormat as Message} from 'intl-messageformat'; new Message(\"'{fake}' <b>{name}</b>\")",
       output:
-        'import {IntlMessageFormat as Message} from \'intl-messageformat\';\nimport type {MessageTag, MessageValue} from "intl-messageformat"; new Message<{ "b": MessageTag; "name": MessageValue }>("\'{fake}\' <b>{name}</b>")',
+        'import {IntlMessageFormat as Message} from \'intl-messageformat\';\nimport type {MessageTag, MessageValue} from "intl-messageformat"; new Message<{ readonly "b": MessageTag; readonly "name": MessageValue }>("\'{fake}\' <b>{name}</b>")',
       errors: [
         {
           messageId: 'contract',
@@ -171,7 +171,7 @@ ruleTester.run('enforce-message-types', rule, {
       filename: 'test.ts',
       code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat</* @formatjs-generated */ {}>('{n, number}')",
       output:
-        "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{ \"n\": number | bigint }>('{n, number}')",
+        "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{ readonly \"n\": number | bigint }>('{n, number}')",
       errors: [
         {
           messageId: 'contract',
@@ -180,14 +180,14 @@ ruleTester.run('enforce-message-types', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{n: string}>('{n, number}')",
+      code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{readonly n: string}>('{n, number}')",
       errors: [
         {
           messageId: 'contract',
         },
       ],
       output:
-        "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{ \"n\": number | bigint }>('{n, number}')",
+        "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat<{ readonly \"n\": number | bigint }>('{n, number}')",
     },
     {
       filename: 'test.ts',
@@ -223,7 +223,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage({defaultMessage: '{n, plural, offset:1 one {#} other {{n, number}}}'})",
       output:
-        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{ \"n\": number | bigint }>({defaultMessage: '{n, plural, offset:1 one {#} other {{n, number}}}'}, {typed: true})",
+        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{ readonly \"n\": number | bigint }>({defaultMessage: '{n, plural, offset:1 one {#} other {{n, number}}}'}, {typed: true})",
       errors: [
         {
           messageId: 'contract',
@@ -239,7 +239,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage({defaultMessage: \"'{fake}' <b>{name}</b> <br/>\"},)",
       output:
-        'import {defineMessage, defineMessages} from \'react-intl\';\nimport type {MessageTag, MessageValue} from "react-intl";\ndefineMessage<{ "b": MessageTag; "name": MessageValue }>({defaultMessage: "\'{fake}\' <b>{name}</b> <br/>"}, {typed: true})',
+        'import {defineMessage, defineMessages} from \'react-intl\';\nimport type {MessageTag, MessageValue} from "react-intl";\ndefineMessage<{ readonly "b": MessageTag; readonly "name": MessageValue }>({defaultMessage: "\'{fake}\' <b>{name}</b> <br/>"}, {typed: true})',
       errors: [
         {
           messageId: 'contract',
@@ -248,9 +248,9 @@ ruleTester.run('enforce-message-types', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage</* @formatjs-generated */ { \"n\": number | bigint }>({defaultMessage: '{date, date}'}, {typed: true})",
+      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage</* @formatjs-generated */ { readonly \"n\": number | bigint }>({defaultMessage: '{date, date}'}, {typed: true})",
       output:
-        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{ \"date\": number | Date }>({defaultMessage: '{date, date}'}, {typed: true})",
+        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{ readonly \"date\": number | Date }>({defaultMessage: '{date, date}'}, {typed: true})",
       errors: [
         {
           messageId: 'contract',
@@ -266,7 +266,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessages({'a b': {defaultMessage: 'Hello'}, nested: {defaultMessage: '{s, select, other {{n, selectordinal, one {#} other {#}}}}'}})",
       output:
-        'import {defineMessage, defineMessages} from \'react-intl\';\ndefineMessages<{ "a b": {}; "nested": { "n": number | bigint; "s": string } }>({\'a b\': {defaultMessage: \'Hello\'}, nested: {defaultMessage: \'{s, select, other {{n, selectordinal, one {#} other {#}}}}\'}}, {typed: true})',
+        'import {defineMessage, defineMessages} from \'react-intl\';\ndefineMessages<{ readonly "a b": {}; readonly "nested": { readonly "n": number | bigint; readonly "s": string } }>({\'a b\': {defaultMessage: \'Hello\'}, nested: {defaultMessage: \'{s, select, other {{n, selectordinal, one {#} other {#}}}}\'}}, {typed: true})',
       errors: [
         {
           messageId: 'contract',
@@ -298,7 +298,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import * as intl from 'react-intl/server'; intl.defineMessage({defaultMessage: '{n, number, ::currency/USD}'})",
       output:
-        "import * as intl from 'react-intl/server'; intl.defineMessage<{ \"n\": number | bigint }>({defaultMessage: '{n, number, ::currency/USD}'}, {typed: true})",
+        "import * as intl from 'react-intl/server'; intl.defineMessage<{ readonly \"n\": number | bigint }>({defaultMessage: '{n, number, ::currency/USD}'}, {typed: true})",
       errors: [
         {
           messageId: 'contract',
@@ -335,14 +335,14 @@ ruleTester.run('enforce-message-types', rule, {
     },
     {
       filename: 'test.ts',
-      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{n: string}>({defaultMessage: '{n, number}'}, {typed: true})",
+      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{readonly n: string}>({defaultMessage: '{n, number}'}, {typed: true})",
       errors: [
         {
           messageId: 'contract',
         },
       ],
       output:
-        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{ \"n\": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})",
+        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage<{ readonly \"n\": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})",
     },
     {
       filename: 'test.ts',
@@ -373,11 +373,11 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: "formatMessage<{n: number | bigint}>({defaultMessage: '{n, number}'}, {n: 2})",
+      code: "formatMessage<{readonly n: number | bigint}>({defaultMessage: '{n, number}'}, {n: 2})",
     },
     {
       filename: 'test.ts',
-      code: "formatMessage<{n: number | bigint}, React.ReactNode>({defaultMessage: '{n, number}'}, {n: 2})",
+      code: "formatMessage<{readonly n: number | bigint}, React.ReactNode>({defaultMessage: '{n, number}'}, {n: 2})",
     },
     {
       filename: 'test.ts',
@@ -435,7 +435,7 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: 'import type {MessageTag, MessageValue} from "react-intl";\nformatMessage<{ "b": MessageTag; "name": MessageValue }, React.ReactNode>({defaultMessage: "\'{fake}\' <b>{name}</b>"}, values)',
+      code: 'import type {MessageTag, MessageValue} from "react-intl";\nformatMessage<{ readonly "b": MessageTag; readonly "name": MessageValue }, React.ReactNode>({defaultMessage: "\'{fake}\' <b>{name}</b>"}, values)',
       options: [
         {
           moduleSource: 'react-intl',
@@ -453,7 +453,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'formatMessage<{ "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'formatMessage<{ readonly "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
       options: [
         {
           generateTypes: true,
@@ -469,7 +469,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'intl.$t<{ "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'intl.$t<{ readonly "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
       options: [
         {
           generateTypes: true,
@@ -485,7 +485,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'intl.formatMessage?.<{ "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'intl.formatMessage?.<{ readonly "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
       options: [
         {
           generateTypes: true,
@@ -501,7 +501,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'formatMessage<{ "n": number | bigint }, React.ReactNode>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'formatMessage<{ readonly "n": number | bigint }, React.ReactNode>({defaultMessage: \'{n, number}\'}, {n: 2})',
     },
     {
       filename: 'test.ts',
@@ -512,18 +512,18 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'formatMessage<{ "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'formatMessage<{ readonly "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
     },
     {
       filename: 'test.ts',
-      code: "formatMessage<{n: string}>({defaultMessage: '{n, number}'}, {n: 2})",
+      code: "formatMessage<{readonly n: string}>({defaultMessage: '{n, number}'}, {n: 2})",
       errors: [
         {
           messageId: 'contract',
         },
       ],
       output:
-        'formatMessage<{ "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'formatMessage<{ readonly "n": number | bigint }>({defaultMessage: \'{n, number}\'}, {n: 2})',
     },
     {
       filename: 'test.ts',
@@ -552,7 +552,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'import type {MessageTag, MessageValue} from "react-intl";\nformatMessage<{ "b": MessageTag; "name": MessageValue }>({defaultMessage: "\'{fake}\' <b>{name}</b>"}, values)',
+        'import type {MessageTag, MessageValue} from "react-intl";\nformatMessage<{ readonly "b": MessageTag; readonly "name": MessageValue }>({defaultMessage: "\'{fake}\' <b>{name}</b>"}, values)',
       options: [
         {
           generateTypes: true,
@@ -569,7 +569,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'import {useIntl} from \'react-intl\';\nimport type {MessageTag} from "react-intl"; intl.formatMessage<{ "b": MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
+        'import {useIntl} from \'react-intl\';\nimport type {MessageTag} from "react-intl"; intl.formatMessage<{ readonly "b": MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
       options: [
         {
           generateTypes: true,
@@ -601,7 +601,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        'translate<{ "n": number | bigint }>({defaultMessage: \'{n, number}\'}, values)',
+        'translate<{ readonly "n": number | bigint }>({defaultMessage: \'{n, number}\'}, values)',
       options: [
         {
           generateTypes: true,
@@ -629,9 +629,9 @@ ruleTester.run('enforce-message-types inline', rule, {
     },
     {
       filename: 'test.ts',
-      code: "intl.$t</* @formatjs-generated */ {n: number | bigint}, React.ReactNode>({defaultMessage: '{n, number}'}, {n: 2})",
+      code: "intl.$t</* @formatjs-generated */ {readonly n: number | bigint}, React.ReactNode>({defaultMessage: '{n, number}'}, {n: 2})",
       output:
-        'intl.$t<{ "n": number | bigint }, React.ReactNode>({defaultMessage: \'{n, number}\'}, {n: 2})',
+        'intl.$t<{ readonly "n": number | bigint }, React.ReactNode>({defaultMessage: \'{n, number}\'}, {n: 2})',
       errors: [
         {
           messageId: 'contract',
@@ -645,7 +645,7 @@ ruleTester.run('enforce-message-types ignoreList', rule, {
   valid: [
     {
       filename: 'test.ts',
-      code: 'import type {MessageTag, MessageValue} from "@formatjs/intl";\nintl.$t<{ "b"?: MessageTag; "count"?: number | bigint; "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'})',
+      code: 'import type {MessageTag, MessageValue} from "@formatjs/intl";\nintl.$t<{ readonly "b"?: MessageTag; readonly "count"?: number | bigint; readonly "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'})',
       options: [
         {
           ignoreList: ['b', 'count', 'extra'],
@@ -654,7 +654,7 @@ ruleTester.run('enforce-message-types ignoreList', rule, {
     },
     {
       filename: 'test.ts',
-      code: 'import {defineMessage} from \'react-intl\';\nimport type {MessageTag, MessageValue} from "react-intl"; defineMessage<{ "b"?: MessageTag; "count"?: number | bigint; "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'}, {typed: true})',
+      code: 'import {defineMessage} from \'react-intl\';\nimport type {MessageTag, MessageValue} from "react-intl"; defineMessage<{ readonly "b"?: MessageTag; readonly "count"?: number | bigint; readonly "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'}, {typed: true})',
       options: [
         {
           ignoreList: ['b', 'count', 'extra'],
@@ -663,7 +663,7 @@ ruleTester.run('enforce-message-types ignoreList', rule, {
     },
     {
       filename: 'test.ts',
-      code: 'import IntlMessageFormat from \'intl-messageformat\';\nimport type {MessageTag, MessageValue} from "intl-messageformat"; new IntlMessageFormat<{ "b"?: MessageTag; "count"?: number | bigint; "extra"?: MessageValue }>(\'<b>{count, number}</b>\')',
+      code: 'import IntlMessageFormat from \'intl-messageformat\';\nimport type {MessageTag, MessageValue} from "intl-messageformat"; new IntlMessageFormat<{ readonly "b"?: MessageTag; readonly "count"?: number | bigint; readonly "extra"?: MessageValue }>(\'<b>{count, number}</b>\')',
       options: [
         {
           ignoreList: ['b', 'count', 'extra'],
@@ -675,7 +675,7 @@ ruleTester.run('enforce-message-types ignoreList', rule, {
     {
       code: "intl.$t({defaultMessage: '<b>{count, number}</b>'})",
       output:
-        'import type {MessageTag, MessageValue} from "@formatjs/intl";\nintl.$t<{ "b"?: MessageTag; "count"?: number | bigint; "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'})',
+        'import type {MessageTag, MessageValue} from "@formatjs/intl";\nintl.$t<{ readonly "b"?: MessageTag; readonly "count"?: number | bigint; readonly "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'})',
       filename: 'test.ts',
       options: [
         {
@@ -692,7 +692,7 @@ ruleTester.run('enforce-message-types ignoreList', rule, {
     {
       code: "import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '<b>{count, number}</b>'})",
       output:
-        'import {defineMessage} from \'react-intl\';\nimport type {MessageTag, MessageValue} from "react-intl"; defineMessage<{ "b"?: MessageTag; "count"?: number | bigint; "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'}, {typed: true})',
+        'import {defineMessage} from \'react-intl\';\nimport type {MessageTag, MessageValue} from "react-intl"; defineMessage<{ readonly "b"?: MessageTag; readonly "count"?: number | bigint; readonly "extra"?: MessageValue }>({defaultMessage: \'<b>{count, number}</b>\'}, {typed: true})',
       filename: 'test.ts',
       options: [
         {
@@ -709,7 +709,7 @@ ruleTester.run('enforce-message-types ignoreList', rule, {
     {
       code: "import IntlMessageFormat from 'intl-messageformat'; new IntlMessageFormat('<b>{count, number}</b>')",
       output:
-        'import IntlMessageFormat from \'intl-messageformat\';\nimport type {MessageTag, MessageValue} from "intl-messageformat"; new IntlMessageFormat<{ "b"?: MessageTag; "count"?: number | bigint; "extra"?: MessageValue }>(\'<b>{count, number}</b>\')',
+        'import IntlMessageFormat from \'intl-messageformat\';\nimport type {MessageTag, MessageValue} from "intl-messageformat"; new IntlMessageFormat<{ readonly "b"?: MessageTag; readonly "count"?: number | bigint; readonly "extra"?: MessageValue }>(\'<b>{count, number}</b>\')',
       filename: 'test.ts',
       options: [
         {
@@ -729,34 +729,34 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
   valid: [
     {
       filename: 'test.ts',
-      code: "import type {MessageTag as Tag} from 'react-intl'; intl.$t<{ \"b\": Tag }, React.ReactNode>({defaultMessage: '<b>Hello</b>'}, values)",
+      code: "import type {MessageTag as Tag} from 'react-intl'; intl.$t<{ readonly \"b\": Tag }, React.ReactNode>({defaultMessage: '<b>Hello</b>'}, values)",
     },
     {
       filename: 'test.ts',
-      code: 'import type {MessageTag as MessageTag1} from "@formatjs/intl";\ntype MessageTag = string; intl.$t<{ "b": MessageTag1 }, RichOutput>({defaultMessage: \'<b>Hello</b>\'}, values)',
+      code: 'import type {MessageTag as MessageTag1} from "@formatjs/intl";\ntype MessageTag = string; intl.$t<{ readonly "b": MessageTag1 }, RichOutput>({defaultMessage: \'<b>Hello</b>\'}, values)',
     },
     {
       filename: 'test.ts',
-      code: 'import type {MessageTag} from \'react-intl\';\nimport type {MessageTag as MessageTag1} from "react-intl"; function f<MessageTag>() { return intl.$t<{ "b": MessageTag1 }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values) }',
+      code: 'import type {MessageTag} from \'react-intl\';\nimport type {MessageTag as MessageTag1} from "react-intl"; function f<MessageTag>() { return intl.$t<{ readonly "b": MessageTag1 }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values) }',
     },
     {
       filename: 'test.ts',
-      code: '\'use client\';\nimport type {MessageTag} from "@formatjs/intl"; intl.$t<{ "b": MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
+      code: '\'use client\';\nimport type {MessageTag} from "@formatjs/intl"; intl.$t<{ readonly "b": MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
     },
     {
       filename: 'test.ts',
-      code: 'import type {MessageTag} from "@formatjs/intl";\nintl.$t<{ "b": MessageTag }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values)',
+      code: 'import type {MessageTag} from "@formatjs/intl";\nintl.$t<{ readonly "b": MessageTag }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values)',
     },
     {
       filename: 'test.ts',
-      code: "import {defineMessage} from 'react-intl'; defineMessage<{ \"n\": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})",
+      code: "import {defineMessage} from 'react-intl'; defineMessage<{ readonly \"n\": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})",
     },
   ],
   invalid: [
     {
       code: "import type {MessageTag as Tag} from 'react-intl'; intl.$t<Old, React.ReactNode>({defaultMessage: '<b>Hello</b>'}, values)",
       output:
-        "import type {MessageTag as Tag} from 'react-intl'; intl.$t<{ \"b\": Tag }, React.ReactNode>({defaultMessage: '<b>Hello</b>'}, values)",
+        "import type {MessageTag as Tag} from 'react-intl'; intl.$t<{ readonly \"b\": Tag }, React.ReactNode>({defaultMessage: '<b>Hello</b>'}, values)",
       filename: 'test.ts',
       errors: [
         {
@@ -767,7 +767,7 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
     {
       code: "type MessageTag = string; intl.$t<Old, RichOutput>({defaultMessage: '<b>Hello</b>'}, values)",
       output:
-        'import type {MessageTag as MessageTag1} from "@formatjs/intl";\ntype MessageTag = string; intl.$t<{ "b": MessageTag1 }, RichOutput>({defaultMessage: \'<b>Hello</b>\'}, values)',
+        'import type {MessageTag as MessageTag1} from "@formatjs/intl";\ntype MessageTag = string; intl.$t<{ readonly "b": MessageTag1 }, RichOutput>({defaultMessage: \'<b>Hello</b>\'}, values)',
       filename: 'test.ts',
       errors: [
         {
@@ -778,7 +778,7 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
     {
       code: "import type {MessageTag} from 'react-intl'; function f<MessageTag>() { return intl.$t<Old, React.ReactNode>({defaultMessage: '<b>Hello</b>'}, values) }",
       output:
-        'import type {MessageTag} from \'react-intl\';\nimport type {MessageTag as MessageTag1} from "react-intl"; function f<MessageTag>() { return intl.$t<{ "b": MessageTag1 }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values) }',
+        'import type {MessageTag} from \'react-intl\';\nimport type {MessageTag as MessageTag1} from "react-intl"; function f<MessageTag>() { return intl.$t<{ readonly "b": MessageTag1 }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values) }',
       filename: 'test.ts',
       errors: [
         {
@@ -789,7 +789,7 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
     {
       code: "'use client'; intl.$t<Old>({defaultMessage: '<b>Hello</b>'}, values)",
       output:
-        '\'use client\';\nimport type {MessageTag} from "@formatjs/intl"; intl.$t<{ "b": MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
+        '\'use client\';\nimport type {MessageTag} from "@formatjs/intl"; intl.$t<{ readonly "b": MessageTag }>({defaultMessage: \'<b>Hello</b>\'}, values)',
       filename: 'test.ts',
       errors: [
         {
@@ -798,9 +798,9 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
       ],
     },
     {
-      code: 'intl.$t</* @formatjs-generated */ {b: import("@formatjs/intl").MessageTag}, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values)',
+      code: 'intl.$t</* @formatjs-generated */ {readonly b: import("@formatjs/intl").MessageTag}, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values)',
       output:
-        'import type {MessageTag} from "@formatjs/intl";\nintl.$t<{ "b": MessageTag }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values)',
+        'import type {MessageTag} from "@formatjs/intl";\nintl.$t<{ readonly "b": MessageTag }, React.ReactNode>({defaultMessage: \'<b>Hello</b>\'}, values)',
       filename: 'test.ts',
       errors: [
         {
@@ -809,9 +809,9 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
       ],
     },
     {
-      code: "import {defineMessage} from 'react-intl'; defineMessage<{old: string}>({defaultMessage: '{n, number}'})",
+      code: "import {defineMessage} from 'react-intl'; defineMessage<{readonly old: string}>({defaultMessage: '{n, number}'})",
       output:
-        "import {defineMessage} from 'react-intl'; defineMessage<{ \"n\": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})",
+        "import {defineMessage} from 'react-intl'; defineMessage<{ readonly \"n\": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})",
       options: [
         {
           generateTypes: true,
@@ -823,6 +823,60 @@ ruleTester.run('enforce-message-types hoisted imports', rule, {
           messageId: 'contract',
         },
       ],
+    },
+  ],
+})
+
+ruleTester.run('catalog annotations', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      code: "import {defineMessages, type MessageDescriptor} from 'react-intl'; const messages: Record<string, MessageDescriptor> = defineMessages({count: {defaultMessage: '{n, number}'}})",
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages, type MessageDescriptor} from 'react-intl'; export const messages: Record<string, MessageDescriptor> = defineMessages({count: {defaultMessage: '{n, number}'}})",
+      output:
+        'import {defineMessages, type MessageDescriptor} from \'react-intl\';\nimport type {TypedMessageDescriptor} from "react-intl"; export const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}}, {typed: true})',
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages as dm, type MessageDescriptor as MD, type TypedMessageDescriptor as TD} from '@formatjs/intl'; const messages: Readonly<Record<'count', MD>> = dm<{readonly count: {readonly n: number | bigint}}>({count: {defaultMessage: '{n, number}'}}, {typed: true})",
+      output:
+        'import {defineMessages as dm, type MessageDescriptor as MD, type TypedMessageDescriptor as TD} from \'@formatjs/intl\'; const messages: { readonly "count": TD<{ readonly "n": number | bigint }> } = dm<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}}, {typed: true})',
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const messages: {readonly count?: MessageDescriptor} & {readonly count: TypedMessageDescriptor<{readonly n: string}>} = defineMessages<{readonly count: {readonly n: string}}>({count: {defaultMessage: '{n, number}'}}, {typed: true})",
+      output:
+        'import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from \'react-intl\'; const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}}, {typed: true})',
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages} from 'react-intl'; const messages: CustomCatalog = defineMessages({count: {defaultMessage: '{n, number}'}})",
+      errors: [{messageId: 'annotation'}],
+    },
+  ],
+})
+
+ruleTester.run('refresh writable contracts', rule, {
+  valid: [],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "intl.formatMessage<{n: number | bigint}>({defaultMessage: '{n, number}'}, {n: 1})",
+      output: `intl.formatMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'}, {n: 1})`,
+      errors: [{messageId: 'contract'}],
     },
   ],
 })

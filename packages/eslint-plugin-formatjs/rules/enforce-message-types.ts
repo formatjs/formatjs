@@ -173,8 +173,14 @@ function renderType(node: TypeNode | undefined): string | undefined {
     TSStringKeyword: 'string',
   }
   if (keywords[node.type]) return keywords[node.type]
-  if (node.type === 'TSTypeReference' && node.typeName?.type === 'Identifier')
-    return node.typeName.name
+  if (node.type === 'TSTypeReference' && node.typeName?.type === 'Identifier') {
+    const parameters = (node.typeArguments ?? node.typeParameters)?.params
+    if (!parameters) return node.typeName.name
+    const types = parameters.map(renderType)
+    if (types.every(type => type !== undefined))
+      return node.typeName.name + '<' + types.join(', ') + '>'
+    return
+  }
   if (node.type === 'TSUnionType') {
     const types = node.types?.map(renderType)
     if (types?.every(type => type !== undefined)) return types.join(' | ')
@@ -190,18 +196,13 @@ function renderType(node: TypeNode | undefined): string | undefined {
   if (node.type === 'TSTypeLiteral' && node.members) {
     const fields: string[] = []
     for (const member of node.members) {
-      if (
-        member.type !== 'TSPropertySignature' ||
-        member.readonly ||
-        member.computed
-      )
-        return
+      if (member.type !== 'TSPropertySignature' || member.computed) return
       const key =
         member.key?.type === 'Identifier' ? member.key.name : member.key?.value
       const type = renderType(member.typeAnnotation?.typeAnnotation)
       if (key === undefined || type === undefined) return
       fields.push(
-        `${JSON.stringify(String(key))}${member.optional ? '?' : ''}: ${type}`
+        `${member.readonly ? 'readonly ' : ''}${JSON.stringify(String(key))}${member.optional ? '?' : ''}: ${type}`
       )
     }
     return fields.length ? `{ ${fields.join('; ')} }` : '{}'
@@ -218,7 +219,7 @@ function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
   )
   const resolved = new Map<string, string>()
   const text = contract.replace(
-    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValue)/g,
+    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValue|TypedMessageDescriptor)/g,
     (reference, quotedModule: string, imported: string) => {
       if (resolved.has(reference)) return resolved.get(reference)!
       const module = JSON.parse(quotedModule) as string
@@ -290,6 +291,108 @@ function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
         : [fixer.insertTextBefore(source.ast.body[0], block + '\n')]
     },
   }
+}
+
+// Replace broad catalog annotations with explicit per-message contracts.
+function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
+  const parent = (node as Node & {parent?: Node}).parent
+  if (parent?.type !== 'VariableDeclarator' || parent.init !== node) return
+  const annotation = (
+    parent.id as unknown as {
+      typeAnnotation?: {typeAnnotation: TypeNode}
+    }
+  ).typeAnnotation?.typeAnnotation
+  if (!annotation) return
+
+  function imported(type: TypeNode, name: string): boolean {
+    if (type.type !== 'TSTypeReference' || type.typeName?.type !== 'Identifier')
+      return false
+    let scope: ReturnType<typeof context.sourceCode.getScope> | null =
+      context.sourceCode.getScope(node)
+    while (scope) {
+      const binding = scope.set.get(type.typeName.name!)
+      if (binding) {
+        const definition = binding.defs[0]
+        return (
+          definition?.type === 'ImportBinding' &&
+          descriptorModules.has(String(definition.parent.source.value)) &&
+          definition.node.type === 'ImportSpecifier' &&
+          (definition.node.imported.type === 'Identifier'
+            ? definition.node.imported.name
+            : definition.node.imported.value) === name
+        )
+      }
+      scope = scope.upper
+    }
+    return false
+  }
+
+  function broad(type: TypeNode): boolean {
+    if (type.type === 'TSTypeLiteral')
+      return !!type.members?.every(
+        member =>
+          member.type === 'TSPropertySignature' &&
+          !!member.typeAnnotation &&
+          imported(member.typeAnnotation.typeAnnotation, 'MessageDescriptor')
+      )
+    let scope: ReturnType<typeof context.sourceCode.getScope> | null =
+      context.sourceCode.getScope(node)
+    while (scope) {
+      if (scope.set.get(type.typeName?.name ?? '')?.defs.length) return false
+      scope = scope.upper
+    }
+    const parameters = (type.typeArguments ?? type.typeParameters)?.params
+    if (type.typeName?.name === 'Readonly' && parameters?.length === 1)
+      return broad(parameters[0])
+    return (
+      type.typeName?.name === 'Record' &&
+      parameters?.length === 2 &&
+      imported(parameters[1], 'MessageDescriptor')
+    )
+  }
+
+  function typedMap(type: TypeNode): boolean {
+    return (
+      type.type === 'TSTypeLiteral' &&
+      !!type.members?.every(
+        member =>
+          member.type === 'TSPropertySignature' &&
+          !member.computed &&
+          !!member.typeAnnotation &&
+          imported(
+            member.typeAnnotation.typeAnnotation,
+            'TypedMessageDescriptor'
+          )
+      )
+    )
+  }
+
+  let base = annotation
+  let generated: TypeNode | undefined = typedMap(annotation)
+    ? annotation
+    : undefined
+  if (
+    annotation.type === 'TSIntersectionType' &&
+    annotation.types?.length === 2
+  ) {
+    const [left, right] = annotation.types
+    if (
+      right.type === 'TSTypeLiteral' &&
+      right.members?.every(
+        member =>
+          member.type === 'TSPropertySignature' &&
+          !!member.typeAnnotation &&
+          imported(
+            member.typeAnnotation.typeAnnotation,
+            'TypedMessageDescriptor'
+          )
+      )
+    ) {
+      base = left
+      generated = right
+    }
+  }
+  return {annotation, base, generated, supported: broad(base) || typedMap(base)}
 }
 
 const descriptorModules = new Set([
@@ -430,6 +533,8 @@ export const rule: Rule.RuleModule = {
       invalid: 'Cannot generate message types: {{error}}.',
       manual:
         'Unsupported number of generic arguments; update the call manually.',
+      annotation:
+        'Catalog annotation may erase ICU contracts; use per-message TypedMessageDescriptor types.',
       dynamic:
         'Typed messages require static message strings and parser options for contract verification.',
     },
@@ -610,7 +715,19 @@ export const rule: Rule.RuleModule = {
           if (typed || generated) context.report({node, messageId: 'dynamic'})
           return
         }
+        const annotation =
+          imported.helper === 'defineMessages'
+            ? catalogAnnotation(context, node)
+            : undefined
+        if (annotation && !annotation.supported) {
+          context.report({
+            node: annotation.annotation as unknown as Node,
+            messageId: 'annotation',
+          })
+          return
+        }
         let contract: string
+        let catalogType: string | undefined
         try {
           const types = messages.map(([message]) =>
             messageTypes(
@@ -621,6 +738,35 @@ export const rule: Rule.RuleModule = {
               context.options[0]?.ignoreList
             )
           )
+          if (annotation) {
+            catalogType =
+              '{ ' +
+              descriptor.properties
+                .map((property, index) => {
+                  if (property.type !== 'Property')
+                    throw new Error('Unexpected spread')
+                  const key =
+                    property.key.type === 'Identifier'
+                      ? property.key.name
+                      : property.key.type === 'Literal'
+                        ? String(property.key.value)
+                        : undefined
+                  if (key === undefined)
+                    throw new Error('Unsupported catalog key')
+                  return (
+                    'readonly ' +
+                    JSON.stringify(key) +
+                    ': import(' +
+                    JSON.stringify(imported.module) +
+                    ').TypedMessageDescriptor<' +
+                    types[index] +
+                    '>'
+                  )
+                })
+                .join('; ') +
+              ' }'
+            if (!descriptor.properties.length) catalogType = '{}'
+          }
           contract =
             imported.helper === 'defineMessage'
               ? types[0]
@@ -638,7 +784,7 @@ export const rule: Rule.RuleModule = {
                             : undefined
                       if (key === undefined)
                         throw new Error('Unsupported catalog key')
-                      return `${JSON.stringify(key)}: ${types[i]}`
+                      return `readonly ${JSON.stringify(key)}: ${types[i]}`
                     })
                     .join('; ')} }`
         } catch (error) {
@@ -651,15 +797,24 @@ export const rule: Rule.RuleModule = {
           })
           return
         }
-        const imports = hoistTypes(context, node, contract)
-        contract = imports.text
+        const imports = hoistTypes(
+          context,
+          node,
+          contract + (catalogType ? '\n' + catalogType : '')
+        )
+        ;[contract, catalogType] = imports.text.split('\n')
+        const annotationMatches =
+          !annotation ||
+          (annotation.annotation === annotation.generated &&
+            renderType(annotation.generated) === catalogType)
         const expected = `<${contract}>`
         const parameters = (generic as unknown as TypeNode | undefined)?.params
         if (
           parameters?.length === 1 &&
           renderType(parameters[0]) === contract &&
           typed &&
-          !generated
+          !generated &&
+          annotationMatches
         )
           return
         if (generic && parameters?.length !== 1) {
@@ -681,6 +836,14 @@ export const rule: Rule.RuleModule = {
                     expected
                   ),
             ]
+            if (annotation && !annotationMatches) {
+              edits.push(
+                fixer.replaceText(
+                  annotation.annotation as unknown as Node,
+                  catalogType!
+                )
+              )
+            }
             if (!typed) {
               const close = source.getLastToken(node)!
               const previous = source.getTokenBefore(close)!

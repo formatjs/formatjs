@@ -64,7 +64,7 @@ export function messageTypes(
       else if (types.has('date')) type = 'number | Date'
       else if (types.has('select')) type = 'string'
       else type = `import(${JSON.stringify(module)}).MessageTag`
-      return `${JSON.stringify(name)}${ignored.has(name) ? '?' : ''}: ${type}`
+      return `readonly ${JSON.stringify(name)}${ignored.has(name) ? '?' : ''}: ${type}`
     })
   return fields.length ? `{ ${fields.join('; ')} }` : '{}'
 }
