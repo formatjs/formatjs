@@ -20,7 +20,7 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 | `cldr-numbers-full`  | Number formatting for date components                        |
 | `cldr-core`          | Hour cycle preferences and metazone mappings                 |
 | `cldr-bcp47`         | Locale validation                                            |
-| IANA tzdata (v2026c) | Timezone transitions, links/aliases                          |
+| IANA tzdata (v2026d) | Timezone transitions, links/aliases                          |
 
 ### Date/Time Extraction (`scripts/extract-dates.ts`)
 

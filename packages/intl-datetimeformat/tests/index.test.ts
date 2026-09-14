@@ -655,6 +655,22 @@ describe('Intl.DateTimeFormat', function () {
 
     expect(formatter.format(new Date(date))).toBe(expected)
   })
+  it.each([
+    ['2026-11-01T07:59:59Z', '01:59:59'],
+    ['2026-11-01T08:00:00Z', '02:00:00'],
+    ['2027-01-15T12:00:00Z', '06:00:00'],
+    ['2027-07-15T12:00:00Z', '06:00:00'],
+  ])('keeps Inuvik on UTC-06 at %s, GH #7387', (date, expected) => {
+    const formatter = new DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23',
+      timeZone: 'America/Inuvik',
+    })
+
+    expect(formatter.format(new Date(date))).toBe(expected)
+  })
   it('test #2236', function () {
     const date = new Date('2020-09-16T11:55:32.491+02:00')
     const formatter = new DateTimeFormat('en-US', {
