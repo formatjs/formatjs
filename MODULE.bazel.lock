@@ -93,7 +93,8 @@
     "https://bcr.bazel.build/modules/bazel_skylib/1.8.1/MODULE.bazel": "88ade7293becda963e0e3ea33e7d54d3425127e0a326e0d17da085a5f1f03ff6",
     "https://bcr.bazel.build/modules/bazel_skylib/1.8.2/MODULE.bazel": "69ad6927098316848b34a9142bcc975e018ba27f08c4ff403f50c1b6e646ca67",
     "https://bcr.bazel.build/modules/bazel_skylib/1.9.0/MODULE.bazel": "72997b29dfd95c3fa0d0c48322d05590418edef451f8db8db5509c57875fb4b7",
-    "https://bcr.bazel.build/modules/bazel_skylib/1.9.0/source.json": "7ad77c1e8c1b84222d9b3f3cae016a76639435744c19330b0b37c0a3c9da7dc0",
+    "https://bcr.bazel.build/modules/bazel_skylib/1.9.2/MODULE.bazel": "8c51259b0f4481475586dbfede7591e57b75702e637f840f6138eec80c34b270",
+    "https://bcr.bazel.build/modules/bazel_skylib/1.9.2/source.json": "41cbde7546542dee2f26e3f10bf1c4ac57909943194b7ac48cc5238a01893aa8",
     "https://bcr.bazel.build/modules/bazel_worker_api/0.0.1/MODULE.bazel": "02a13b77321773b2042e70ee5e4c5e099c8ddee4cf2da9cd420442c36938d4bd",
     "https://bcr.bazel.build/modules/bazel_worker_api/0.0.10/MODULE.bazel": "a426df551b40c3997c351d05f00f0d1f86b618ddb646012f1e9c72efce8ed939",
     "https://bcr.bazel.build/modules/bazel_worker_api/0.0.10/source.json": "7f220d3edfeba5d1f61535fd8400338df74f8bdeb241ebe660534c6926a5a645",
@@ -275,8 +276,8 @@
     "https://bcr.bazel.build/modules/rules_multirun/0.13.0/source.json": "aaaa3d243694cc6d45b5acae54d01eee6298abf1d8f96f221a18f9df91426e93",
     "https://bcr.bazel.build/modules/rules_nodejs/6.2.0/MODULE.bazel": "ec27907f55eb34705adb4e8257952162a2d4c3ed0f0b3b4c3c1aad1fac7be35e",
     "https://bcr.bazel.build/modules/rules_nodejs/6.7.3/MODULE.bazel": "c22a48b2a0dbf05a9dc5f83837bbc24c226c1f6e618de3c3a610044c9f336056",
-    "https://bcr.bazel.build/modules/rules_nodejs/6.7.4/MODULE.bazel": "e6a241a55c82e999145553d2e00a08fc6ebadf62b63d108fb5e984696ffd0bd2",
-    "https://bcr.bazel.build/modules/rules_nodejs/6.7.4/source.json": "34e7a8a3b4c8d630ac0e0492b3fed9dba41fe008a0edf220b7d88fa38ac53698",
+    "https://bcr.bazel.build/modules/rules_nodejs/6.7.5/MODULE.bazel": "97e6794043821d23c013baa4a50fd1c599f2e6ae92b06e2c5f1cd7074fd83e7c",
+    "https://bcr.bazel.build/modules/rules_nodejs/6.7.5/source.json": "d60ee5a76258b1c8f99545ed24172b44d43ba64ca1a2dfc04371ef203df19fdf",
     "https://bcr.bazel.build/modules/rules_oci/2.3.0/MODULE.bazel": "49075197960c924c0a4d759b7c765c3d00a41d2fdd4a943b42823c1d016ab4ec",
     "https://bcr.bazel.build/modules/rules_oci/2.3.0/source.json": "47710c28446211b5e61a24015a4669c50c6862d5f91e6bdbc710de8d750cf613",
     "https://bcr.bazel.build/modules/rules_pkg/0.7.0/MODULE.bazel": "df99f03fc7934a4737122518bb87e667e62d780b610910f0447665a7e2be62dc",
@@ -364,7 +365,7 @@
     "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
       "general": {
         "bzlTransitiveDigest": "hXtEHRCo+sJ9wykzFnxEouXsYGOjBgrALTlW/s5ohuI=",
-        "usagesDigest": "6sFSnWAcSfHuyric1feLvCo+1UgYOF95lFSFQhzJgxU=",
+        "usagesDigest": "rFAu8EF3VpRnvRZX8EWk2vNWhONx6JBbfYUGYivE/zQ=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
           "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
@@ -379,6 +380,18 @@
               "validator_ts_integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
               "validator_ts_version": "6.0.3",
               "integrity": "",
+              "urls": [
+                "https://registry.npmjs.org/typescript/-/typescript-{}.tgz"
+              ]
+            }
+          },
+          "npm_rules_browsers_typescript": {
+            "repoRuleId": "@@aspect_rules_ts+//ts/private:npm_repositories.bzl%http_archive_version",
+            "attributes": {
+              "version": "6.0.3",
+              "validator_ts_integrity": "",
+              "validator_ts_version": "",
+              "integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
               "urls": [
                 "https://registry.npmjs.org/typescript/-/typescript-{}.tgz"
               ]
@@ -486,2069 +499,210 @@
         }
       }
     },
-    "@@rules_nodejs+//nodejs:extensions.bzl%node": {
+    "@@rules_browsers+//browsers:extensions.bzl%browsers": {
       "general": {
-        "bzlTransitiveDigest": "oZFClfRhTTwsYzpxVPkOpOt/r0+OzEfEV37au0jFZ0s=",
-        "usagesDigest": "X9oCnQMTEjGKze8KDaACVdp3Wzvn+/5bAwLMCyH8iT4=",
+        "bzlTransitiveDigest": "eNfcpVF2YJFb8xQfN64Y9PQgMrXYK0ju3uglArt8IO8=",
+        "usagesDigest": "FNoXtidee8K8mAkDfj2CFWNJhICLcUTFKDUcf6MGuLE=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
-          "nodejs_linux_amd64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chrome_linux": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
-              },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
+              "sha256": "a9da028861a0cf789ff25c2fed45f5f1aaf969ed9247835b6a7821a4f7af9d1d",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip"
               ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "linux_amd64"
-            }
-          },
-          "nodejs_linux_arm64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
-            "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-linux64/chrome-headless-shell"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
+              "exclude_patterns": [
+                "**/*.log"
               ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "linux_arm64"
+              "exports_files": [
+                "chrome-headless-shell-linux64/chrome-headless-shell"
+              ]
             }
           },
-          "nodejs_linux_s390x": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chrome_mac": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "sha256": "5c2eaa1aad62111bb5a70dd0889dd3093f3142277b8f78957a238257ee85f009",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.12/mac-x64/chrome-headless-shell-mac-x64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-mac-x64/chrome-headless-shell"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
+              "exclude_patterns": [
+                "**/*.log"
               ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "linux_s390x"
+              "exports_files": [
+                "chrome-headless-shell-mac-x64/chrome-headless-shell"
+              ]
             }
           },
-          "nodejs_linux_ppc64le": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chrome_mac_arm": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "sha256": "89d80a6d26ccd0ccfd51e22d9e1297283862af2b0cd91dce07459b35ca0059f2",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-mac-arm64/chrome-headless-shell"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
+              "exclude_patterns": [
+                "**/*.log"
               ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "linux_ppc64le"
+              "exports_files": [
+                "chrome-headless-shell-mac-arm64/chrome-headless-shell"
+              ]
             }
           },
-          "nodejs_darwin_amd64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chrome_win64": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "sha256": "7aec872f3090e639c4237467624ea863c20fe2878914c93a6556bdbb52aa6c4c",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/153.0.8010.12/win64/chrome-headless-shell-win64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-win64/chrome-headless-shell.exe"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
+              "exclude_patterns": [
+                "**/*.log"
               ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "darwin_amd64"
+              "exports_files": [
+                "chrome-headless-shell-win64/chrome-headless-shell.exe"
+              ]
             }
           },
-          "nodejs_darwin_arm64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chromedriver_linux": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "sha256": "f1db8caff52251dec46117a2f518a74cd1e4a2abadcbecc0d5bdd49e42175afa",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/155.0.8043.0/linux64/chromedriver-linux64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-linux64/chromedriver"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "darwin_arm64"
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-linux64/chromedriver"
+              ]
             }
           },
-          "nodejs_windows_amd64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chromedriver_mac": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "sha256": "5062675bc868f3f6a1e4850cab72b736a5c17f98f01d610736b8d0a6e009bf54",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/155.0.8043.0/mac-x64/chromedriver-mac-x64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-mac-x64/chromedriver"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "windows_amd64"
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-mac-x64/chromedriver"
+              ]
             }
           },
-          "nodejs_windows_arm64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_chromedriver_mac_arm": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "24.14.0-darwin_arm64": [
-                  "node-v24.14.0-darwin-arm64.tar.gz",
-                  "node-v24.14.0-darwin-arm64",
-                  "a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-                ],
-                "24.14.0-darwin_amd64": [
-                  "node-v24.14.0-darwin-x64.tar.gz",
-                  "node-v24.14.0-darwin-x64",
-                  "f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-                ],
-                "24.14.0-linux_arm64": [
-                  "node-v24.14.0-linux-arm64.tar.xz",
-                  "node-v24.14.0-linux-arm64",
-                  "e7adfca03d9173276114a6f2219df1a7d25e1bfd6bbd771d3f839118a2053094"
-                ],
-                "24.14.0-linux_amd64": [
-                  "node-v24.14.0-linux-x64.tar.xz",
-                  "node-v24.14.0-linux-x64",
-                  "41cd79bb7877c81605a9e68ec4c91547774f46a40c67a17e34d7179ef11729df"
-                ],
-                "24.14.0-windows_amd64": [
-                  "node-v24.14.0-win-x64.zip",
-                  "node-v24.14.0-win-x64",
-                  "313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-                ]
+              "sha256": "04f07a2a13e969f120dbea61eef291dc4e20617a6d424dec20e90f903da0263b",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/155.0.8043.0/mac-arm64/chromedriver-mac-arm64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-mac-arm64/chromedriver"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-mac-arm64/chromedriver"
+              ]
+            }
+          },
+          "rules_browsers_chromedriver_win64": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "7701074890112ed3b780af26104cb9f57ce68e229ca3076bfade6a1af93730d7",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/155.0.8043.0/win64/chromedriver-win64.zip"
               ],
-              "node_version": "24.14.0",
-              "include_headers": false,
-              "platform": "windows_arm64"
-            }
-          },
-          "nodejs": {
-            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_repo_host_os_alias.bzl%nodejs_repo_host_os_alias",
-            "attributes": {
-              "user_node_repository_name": "nodejs"
-            }
-          },
-          "nodejs_host": {
-            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_repo_host_os_alias.bzl%nodejs_repo_host_os_alias",
-            "attributes": {
-              "user_node_repository_name": "nodejs"
-            }
-          },
-          "nodejs_toolchains": {
-            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_toolchains_repo.bzl%nodejs_toolchains_repo",
-            "attributes": {
-              "user_node_repository_name": "nodejs"
-            }
-          },
-          "test262_nodejs_linux_amd64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
-            "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-win64/chromedriver.exe"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "linux_amd64"
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-win64/chromedriver.exe"
+              ]
             }
           },
-          "test262_nodejs_linux_arm64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_firefox_linux": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
+              "sha256": "fd9ec3f5f113d0825ca0bd1ab3c0756fbc40241034eefce6743be953bcca7473",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/155.0/linux-x86_64/en-US/firefox-155.0.tar.xz"
+              ],
+              "named_files": {
+                "FIREFOX": "firefox/firefox"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "linux_arm64"
+              "exclude_patterns": [],
+              "exports_files": [
+                "firefox/firefox"
+              ]
             }
           },
-          "test262_nodejs_linux_s390x": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_firefox_mac": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
+              "sha256": "3ae135f2023cf0c6cbce3bb757e06564ff8148b1266f682b8eccff0993a1a9f5",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/155.0/mac/en-US/Firefox%20155.0.dmg"
+              ],
+              "named_files": {
+                "FIREFOX": "Firefox.app/Contents/MacOS/firefox"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "linux_s390x"
+              "exclude_patterns": [],
+              "exports_files": [
+                "Firefox.app/Contents/MacOS/firefox"
+              ]
             }
           },
-          "test262_nodejs_linux_ppc64le": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_firefox_mac_arm": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
+              "sha256": "3ae135f2023cf0c6cbce3bb757e06564ff8148b1266f682b8eccff0993a1a9f5",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/155.0/mac/en-US/Firefox%20155.0.dmg"
+              ],
+              "named_files": {
+                "FIREFOX": "Firefox.app/Contents/MacOS/firefox"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "linux_ppc64le"
+              "exclude_patterns": [],
+              "exports_files": [
+                "Firefox.app/Contents/MacOS/firefox"
+              ]
             }
           },
-          "test262_nodejs_darwin_amd64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
+          "rules_browsers_firefox_win64": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
             "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
+              "sha256": "2718d4cc4b2cf089aa8ac370111652bc763838e1d2ed6d635d465fc17ab6327c",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/155.0/win64/en-US/Firefox%20Setup%20155.0.exe"
+              ],
+              "named_files": {
+                "FIREFOX": "core/firefox.exe"
               },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "darwin_amd64"
-            }
-          },
-          "test262_nodejs_darwin_arm64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
-            "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
-              },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "darwin_arm64"
-            }
-          },
-          "test262_nodejs_windows_amd64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
-            "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
-              },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "windows_amd64"
-            }
-          },
-          "test262_nodejs_windows_arm64": {
-            "repoRuleId": "@@rules_nodejs+//nodejs:repositories.bzl%_nodejs_repositories",
-            "attributes": {
-              "node_download_auth": {},
-              "node_repositories": {
-                "26.8.1-darwin_arm64": [
-                  "node-v26.8.1-darwin-arm64.tar.gz",
-                  "node-v26.8.1-darwin-arm64",
-                  "6e577fd0d9db776db82306629e441a9dace416702622aebdd171c9dfaa41f4d2"
-                ],
-                "26.8.1-darwin_amd64": [
-                  "node-v26.8.1-darwin-x64.tar.gz",
-                  "node-v26.8.1-darwin-x64",
-                  "fe9c6dbf9c8e1b4443803d75e2a20366e420dae650c747dbb116b22975751baf"
-                ],
-                "26.8.1-linux_arm64": [
-                  "node-v26.8.1-linux-arm64.tar.xz",
-                  "node-v26.8.1-linux-arm64",
-                  "23c1b4d19e2f12a7d06fe8aa3d6e0e4923cf77a47e13c5ccdf32fadaa33960f2"
-                ],
-                "26.8.1-linux_amd64": [
-                  "node-v26.8.1-linux-x64.tar.xz",
-                  "node-v26.8.1-linux-x64",
-                  "3e301118d7df53d563b7e96c1617545f26e2f76f9724be668d6cab65c15dda5d"
-                ],
-                "26.8.1-windows_amd64": [
-                  "node-v26.8.1-win-x64.zip",
-                  "node-v26.8.1-win-x64",
-                  "57693d8e93d1b04e7b7de46aca53ecd63e97564e73de36a68428d7ff08d83587"
-                ]
-              },
-              "node_urls": [
-                "https://nodejs.org/dist/v{version}/{filename}"
-              ],
-              "node_version": "26.8.1",
-              "include_headers": false,
-              "platform": "windows_arm64"
-            }
-          },
-          "test262_nodejs": {
-            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_repo_host_os_alias.bzl%nodejs_repo_host_os_alias",
-            "attributes": {
-              "user_node_repository_name": "test262_nodejs"
-            }
-          },
-          "test262_nodejs_host": {
-            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_repo_host_os_alias.bzl%nodejs_repo_host_os_alias",
-            "attributes": {
-              "user_node_repository_name": "test262_nodejs"
-            }
-          },
-          "test262_nodejs_toolchains": {
-            "repoRuleId": "@@rules_nodejs+//nodejs/private:nodejs_toolchains_repo.bzl%nodejs_toolchains_repo",
-            "attributes": {
-              "user_node_repository_name": "test262_nodejs"
-            }
-          }
-        }
-      }
-    },
-    "@@rules_playwright+//playwright:extensions.bzl%playwright": {
-      "general": {
-        "bzlTransitiveDigest": "Dm8anIwmfr2dNcSDeOOtfZSeQw1uod9BZ7w8iUHb2Ao=",
-        "usagesDigest": "WVsjyWvwgBVB4de5fP6U90nWhP49+S/V3MHqmQUNTwg=",
-        "recordedInputs": [
-          "REPO_MAPPING:rules_playwright+,bazel_tools bazel_tools",
-          "FILE:@@rules_playwright+//tools/release/artifacts/cli-x86_64-unknown-linux-musl c478e5f07bc0a2b513ff7e7d9f33e9420e8f3bac4ec058c3e3bf332bff8362a1",
-          "FILE:@@rules_playwright+//tools/release/artifacts/cli-arm64-apple-darwin 67731b424ce41adff3be0b4f612c60be0bddb53454eab0a5c415815d9c97f9cc",
-          "FILE:@@rules_playwright+//tools/release/artifacts/cli-x86_64-apple-darwin f65fdf29d7763b59011e39415a584b598b6ed9f69fdbbff8d7aa677c0f7ddeaf",
-          "FILE:@@rules_playwright+//tools/release/artifacts/cli-arm64-unknown-linux-musl deed0cd49328b6c47caa826b59ae4ad1eb4979ce016acdc467ac72e9e0b092d9"
-        ],
-        "generatedRepoSpecs": {
-          "playwright-android-debian11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
+              "exclude_patterns": [],
+              "exports_files": [
+                "core/firefox.exe"
               ]
-            }
-          },
-          "playwright-android-debian11-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-debian12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-debian12-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac10.13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac10.14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac10.15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac11": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac12": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac13-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac14-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-mac15-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-ubuntu20.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-ubuntu20.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-ubuntu22.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-ubuntu22.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-ubuntu24.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-android-ubuntu24.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-ieX7MC1xEehgOwtZHsyCXOWrW3QDz4B4hEKkWEWsix8=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-akamai.azureedge.net/builds/android/1001/android.zip",
-                "https://playwright-verizon.azureedge.net/builds/android/1001/android.zip"
-              ]
-            }
-          },
-          "playwright-chromium-debian11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-debian11-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux.zip"
-              ]
-            }
-          },
-          "playwright-chromium-debian12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-debian12-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-debian11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-debian11-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-qdoCiGGgz3if8lwv7UX18ar5ae2SR4NbanghpPevnR0=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-debian12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-debian12-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-qdoCiGGgz3if8lwv7UX18ar5ae2SR4NbanghpPevnR0=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac11": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-idgKbSbM0Mz9UeItnhKXKDhirysM2R3OB0WbNcoAWfI=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac12": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-idgKbSbM0Mz9UeItnhKXKDhirysM2R3OB0WbNcoAWfI=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac13-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-idgKbSbM0Mz9UeItnhKXKDhirysM2R3OB0WbNcoAWfI=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac14-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-idgKbSbM0Mz9UeItnhKXKDhirysM2R3OB0WbNcoAWfI=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-mac15-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-idgKbSbM0Mz9UeItnhKXKDhirysM2R3OB0WbNcoAWfI=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/mac-arm64/chrome-headless-shell-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-ubuntu20.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-ubuntu20.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-qdoCiGGgz3if8lwv7UX18ar5ae2SR4NbanghpPevnR0=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-ubuntu22.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-ubuntu22.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-qdoCiGGgz3if8lwv7UX18ar5ae2SR4NbanghpPevnR0=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-ubuntu24.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-headless-shell-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-headless-shell-ubuntu24.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-qdoCiGGgz3if8lwv7UX18ar5ae2SR4NbanghpPevnR0=",
-              "urls": [
-                "https://cdn.playwright.dev/builds/cft/153.0.8010.12/linux64/chrome-headless-shell-linux64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac10.13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac10.14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac10.15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac11": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac12": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac13-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac14-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac.zip"
-              ]
-            }
-          },
-          "playwright-chromium-mac15-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-ubuntu20.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-ubuntu20.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux.zip"
-              ]
-            }
-          },
-          "playwright-chromium-ubuntu22.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-ubuntu22.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux.zip"
-              ]
-            }
-          },
-          "playwright-chromium-ubuntu24.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-chromium-ubuntu24.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/chromium/1243/chromium-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/chromium/1243/chromium-linux.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-debian11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-JijAPwUxj/gSyMm6ryB96i3fU+gYwNyTZxSw++OvsAk=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-debian11-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-debian12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-JijAPwUxj/gSyMm6ryB96i3fU+gYwNyTZxSw++OvsAk=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-debian12-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac10.13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac10.14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac10.15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac11": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac12": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac13-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac14-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-F+0Vovpg08dBgb78sr33ybsojRmyo7mJO5S2PyziYOQ=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-mac15-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-fXfrDUS1msxAZfqiR2wN8aJCzJBMNG+CBiaBjJU8Unc=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-ubuntu20.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-JijAPwUxj/gSyMm6ryB96i3fU+gYwNyTZxSw++OvsAk=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-ubuntu20.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-ubuntu22.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-JijAPwUxj/gSyMm6ryB96i3fU+gYwNyTZxSw++OvsAk=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-ubuntu22.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-ubuntu24.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-JijAPwUxj/gSyMm6ryB96i3fU+gYwNyTZxSw++OvsAk=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux-arm64.zip"
-              ]
-            }
-          },
-          "playwright-ffmpeg-ubuntu24.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "integrity": "sha256-68dPxblIMBdqPCkUrpa9i8f2qR9PM4kCMPhKFy7mHMw=",
-              "urls": [
-                "https://playwright.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-akamai.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip",
-                "https://playwright-verizon.azureedge.net/builds/ffmpeg/1011/ffmpeg-linux.zip"
-              ]
-            }
-          },
-          "playwright-firefox-debian11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-debian-11-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-debian-11-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-debian-11-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-debian11-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-debian-11.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-debian-11.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-debian-11.zip"
-              ]
-            }
-          },
-          "playwright-firefox-debian12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-debian-12-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-debian-12-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-debian-12-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-debian12-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-debian-12.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-debian-12.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-debian-12.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac10.13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac10.14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac10.15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac11": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac12": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac13-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac14-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac.zip"
-              ]
-            }
-          },
-          "playwright-firefox-mac15-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-mac-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-ubuntu20.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-ubuntu-20.04-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-ubuntu-20.04-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-ubuntu-20.04-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-ubuntu20.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-ubuntu-20.04.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-ubuntu-20.04.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-ubuntu-20.04.zip"
-              ]
-            }
-          },
-          "playwright-firefox-ubuntu22.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-ubuntu-22.04-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-ubuntu-22.04-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-ubuntu-22.04-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-ubuntu22.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-ubuntu-22.04.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-ubuntu-22.04.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-ubuntu-22.04.zip"
-              ]
-            }
-          },
-          "playwright-firefox-ubuntu24.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-ubuntu-24.04-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-ubuntu-24.04-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-ubuntu-24.04-arm64.zip"
-              ]
-            }
-          },
-          "playwright-firefox-ubuntu24.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/firefox/1543/firefox-ubuntu-24.04.zip",
-                "https://playwright-akamai.azureedge.net/builds/firefox/1543/firefox-ubuntu-24.04.zip",
-                "https://playwright-verizon.azureedge.net/builds/firefox/1543/firefox-ubuntu-24.04.zip"
-              ]
-            }
-          },
-          "playwright-webkit-debian11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-debian-11-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-debian-11-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-debian-11-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-debian11-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-debian-11.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-debian-11.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-debian-11.zip"
-              ]
-            }
-          },
-          "playwright-webkit-debian12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-debian-12-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-debian-12-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-debian-12-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-debian12-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-debian-12.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-debian-12.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-debian-12.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac10.14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/deprecated-webkit-mac-10.14/2359/deprecated-webkit-mac-10.14.zip",
-                "https://playwright-akamai.azureedge.net/builds/deprecated-webkit-mac-10.14/2359/deprecated-webkit-mac-10.14.zip",
-                "https://playwright-verizon.azureedge.net/builds/deprecated-webkit-mac-10.14/2359/deprecated-webkit-mac-10.14.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac10.15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/deprecated-webkit-mac-10.15/2359/deprecated-webkit-mac-10.15.zip",
-                "https://playwright-akamai.azureedge.net/builds/deprecated-webkit-mac-10.15/2359/deprecated-webkit-mac-10.15.zip",
-                "https://playwright-verizon.azureedge.net/builds/deprecated-webkit-mac-10.15/2359/deprecated-webkit-mac-10.15.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac11": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-11.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-11.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-11.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac11-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-11-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-11-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-11-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac12": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-12.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-12.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-12.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac12-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-12-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-12-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-12-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac13": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-13.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-13.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-13.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac13-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-13-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-13-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-13-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac14": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2251/webkit-mac-14.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2251/webkit-mac-14.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2251/webkit-mac-14.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac14-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2251/webkit-mac-14-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2251/webkit-mac-14-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2251/webkit-mac-14-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac15": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-15.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-15.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-15.zip"
-              ]
-            }
-          },
-          "playwright-webkit-mac15-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-mac-15-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-mac-15-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-mac-15-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-ubuntu20.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-ubuntu-20.04-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-ubuntu-20.04-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-ubuntu-20.04-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-ubuntu20.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-ubuntu-20.04.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-ubuntu-20.04.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-ubuntu-20.04.zip"
-              ]
-            }
-          },
-          "playwright-webkit-ubuntu22.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-ubuntu-22.04-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-ubuntu-22.04-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-ubuntu-22.04-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-ubuntu22.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-ubuntu-22.04.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-ubuntu-22.04.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-ubuntu-22.04.zip"
-              ]
-            }
-          },
-          "playwright-webkit-ubuntu24.04-arm64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-ubuntu-24.04-arm64.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-ubuntu-24.04-arm64.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-ubuntu-24.04-arm64.zip"
-              ]
-            }
-          },
-          "playwright-webkit-ubuntu24.04-x64": {
-            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
-            "attributes": {
-              "urls": [
-                "https://playwright.azureedge.net/builds/webkit/2359/webkit-ubuntu-24.04.zip",
-                "https://playwright-akamai.azureedge.net/builds/webkit/2359/webkit-ubuntu-24.04.zip",
-                "https://playwright-verizon.azureedge.net/builds/webkit/2359/webkit-ubuntu-24.04.zip"
-              ]
-            }
-          },
-          "playwright": {
-            "repoRuleId": "@@rules_playwright+//playwright:repositories.bzl%playwright_repository",
-            "attributes": {
-              "playwright_version": "1.63.0",
-              "browsers_workspace_name_prefix": "playwright",
-              "rules_playwright_cannonical_name": "@rules_playwright+"
             }
           }
         }

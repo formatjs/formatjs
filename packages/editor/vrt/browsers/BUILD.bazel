@@ -1,0 +1,55 @@
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+
+package(default_visibility = ["//packages/editor/vrt:__pkg__"])
+
+config_setting(
+    name = "linux_x64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+config_setting(
+    name = "macos_arm64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "macos_x64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+# Match Playwright 1.63.0's registry layout without a host installation.
+copy_to_directory(
+    name = "installation",
+    srcs = select(
+        {
+            ":linux_x64": [
+                "@editor_ffmpeg_linux_x64//:files",
+                "@rules_browsers_chrome_linux//:info",
+            ],
+            ":macos_arm64": [
+                "@editor_ffmpeg_macos_arm64//:files",
+                "@rules_browsers_chrome_mac_arm//:info",
+            ],
+            ":macos_x64": [
+                "@editor_ffmpeg_macos_x64//:files",
+                "@rules_browsers_chrome_mac//:info",
+            ],
+        },
+        no_match_error = "Editor host browser tests support Linux x64 and macOS x64/arm64.",
+    ),
+    include_external_repositories = ["*"],
+    replace_prefixes = {
+        "chrome-headless-shell-linux64": "chromium_headless_shell-1243/chrome-headless-shell-linux64",
+        "chrome-headless-shell-mac-arm64": "chromium_headless_shell-1243/chrome-headless-shell-mac-arm64",
+        "chrome-headless-shell-mac-x64": "chromium_headless_shell-1243/chrome-headless-shell-mac-x64",
+    },
+)

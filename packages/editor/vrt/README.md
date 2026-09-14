@@ -10,11 +10,15 @@ builds the gallery with Vite/StyleX before any browser test starts.
 bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
 ```
 
-`rules_playwright` downloads Chromium headless shell and FFmpeg through Bazel.
+Angular's maintained `rules_browsers` downloads exact Chromium `153.0.8010.12`.
+Bazel's built-in `http_archive` downloads checksum-pinned FFmpeg `1011`.
+`//packages/editor/vrt/browsers:installation` assembles Playwright 1.63.0's expected directory layout.
 Both targets declare the browser files and their runfiles-relative
 `PLAYWRIGHT_BROWSERS_PATH`; no `pnpm exec playwright install` or host browser cache
 is required. Linux still needs the browser's OS libraries. Linux x64 is tested;
-the download mapping also covers macOS arm64.
+the installation also declares macOS x64 and arm64 artifacts.
+When upgrading Playwright, update the Chromium version, browser revision directory,
+and FFmpeg revision/checksums together with the npm lockfile.
 
 ## VRT migration status
 

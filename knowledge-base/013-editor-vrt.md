@@ -28,8 +28,8 @@ separate npm workspace or lockfile. The root lock pins Playwright to match the
 browser image. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-Host E2E/component tests remain manual, local, and uncached. Their Chromium and
-FFmpeg inputs come from `rules_playwright`; no manual browser installation is needed.
+Host E2E/component tests remain manual, local, and uncached. Chromium comes from Angular's `rules_browsers`;
+FFmpeg uses checksum-pinned Bazel downloads; no manual browser installation is needed.
 VRT at upstream commit `748ef4d` requires a declared Linux amd64 runtime and
 patched actiond executor. Its previous image fails the new OCI extraction contract,
 and worker provisioning is unresolved; see [migration blockers](../packages/editor/vrt/README.md).
@@ -90,7 +90,7 @@ bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It uses Chromium provisioned by `rules_playwright` and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
+drafts, and saving. It uses Chromium provisioned by `rules_browsers` and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 

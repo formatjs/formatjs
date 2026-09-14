@@ -130,11 +130,8 @@ component_visual_test(
 
 web_e2e_test(
     name = "e2e_test",
-    data = [
-        "@playwright//:chromium-headless-shell",
-        "@playwright//:ffmpeg",
-    ],
-    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../"},
+    data = ["//packages/editor/vrt/browsers:installation"],
+    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath //packages/editor/vrt/browsers:installation)"},
     playwright = ":playwright",
     server = ":editor_server",
     tests = ":e2e_specs",
@@ -142,11 +139,8 @@ web_e2e_test(
 
 component_browser_test(
     name = "component_test",
-    data = [
-        "@playwright//:chromium-headless-shell",
-        "@playwright//:ffmpeg",
-    ],
-    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../"},
+    data = ["//packages/editor/vrt/browsers:installation"],
+    env = {"PLAYWRIGHT_BROWSERS_PATH": "$(rootpath //packages/editor/vrt/browsers:installation)"},
     playwright = ":playwright",
     shell = ":editor_shell",
     tests = ":component_specs",

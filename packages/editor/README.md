@@ -522,7 +522,7 @@ bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It uses Chromium provisioned by `rules_playwright` and runs manually, locally, and uncached. See [browser setup](vrt/README.md).
+drafts, and saving. It uses Chromium provisioned by `rules_browsers` and runs manually, locally, and uncached. See [browser setup](vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
