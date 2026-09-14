@@ -8,6 +8,9 @@ import {
   type Formatters,
   type IntlFormatters,
   type UntypedMessageDescriptor,
+  type RegisteredMessageId,
+  type RegisteredMessageValues,
+  type UnregisteredMessageDescriptor,
   type TypedMessageDescriptor,
   type TypedMessageArguments,
   type MessageValues,
@@ -63,15 +66,42 @@ export interface IntlShape
     descriptor: D,
     ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, React.ReactNode>
   ): React.ReactNode
-  formatMessage(
+  formatMessage<const K extends RegisteredMessageId>(
     this: void,
-    descriptor: UntypedMessageDescriptor,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<
+      RegisteredMessageValues<NoInfer<K>>,
+      string,
+      React.ReactNode
+    >
+  ): string
+  formatMessage<const K extends RegisteredMessageId>(
+    this: void,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<
+      RegisteredMessageValues<NoInfer<K>>,
+      React.ReactNode
+    >
+  ): string | React.ReactNode | Array<string | React.ReactNode>
+  formatMessage<
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  formatMessage(
+  formatMessage<
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
     this: void,
-    descriptor: UntypedMessageDescriptor,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
     values?: Record<
       string,
       | React.ReactNode

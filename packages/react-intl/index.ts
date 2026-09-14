@@ -73,6 +73,7 @@ export {
   type MessageValue,
   type MessageTag,
   type TypedMessageDescriptor,
+  type MessageArgumentsFromCatalog,
 } from '@formatjs/intl'
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
 export const FormattedDate: React.FC<

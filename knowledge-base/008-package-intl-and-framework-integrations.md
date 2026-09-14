@@ -194,3 +194,53 @@ returning React nodes. Argument-free descriptors can omit values. Ordinary
 untyped JSX remains permissive. Keep the descriptor's phantom contract when
 passing it through wrappers; widening to MessageDescriptor erases the check.
 Runtime rendering, memoization, and children callbacks are unchanged.
+
+## Registered message arguments
+
+Applications can opt into ID-only checks by extending
+`FormatjsIntl.MessageArguments`. Both `formatMessage` and `$t` use the map
+in `@formatjs/intl` and React Intl:
+
+```tsx
+declare global {
+  namespace FormatjsIntl {
+    interface MessageArguments {
+      'cart.total': {readonly count: number | bigint}
+      'cart.empty': {}
+    }
+  }
+}
+
+intl.$t({id: 'cart.total'}, {count: 2})
+intl.$t({id: 'cart.empty'})
+// Type error: count is required.
+intl.$t({id: 'cart.total'})
+```
+
+Known literal IDs check required arguments, empty contracts, and rich callbacks.
+Union IDs require values valid for every possible registered message.
+Dynamic strings and unregistered IDs retain legacy behavior; this map does not
+replace the separate `FormatjsIntl.Message.ids` restriction.
+Explicit argument generics and typed descriptors keep their own contracts.
+No ICU parsing, registration, or freezing happens at runtime.
+
+For catalogs already carrying generated contracts, use
+`MessageArgumentsFromCatalog<typeof messages>` from either package:
+
+```ts
+import type {MessageArgumentsFromCatalog} from 'react-intl'
+import type {messages} from './messages'
+
+type AppMessageArguments = MessageArgumentsFromCatalog<typeof messages>
+
+declare global {
+  namespace FormatjsIntl {
+    interface MessageArguments extends AppMessageArguments {}
+  }
+}
+```
+
+Catalog entries must retain literal IDs. Use the helpers' explicit descriptor
+metadata generic when needed; widened `string` IDs are omitted. Keep IDs unique:
+duplicate catalog IDs combine their contracts. This API consumes existing typed
+catalogs or application declarations; it does not add a CLI declaration generator.

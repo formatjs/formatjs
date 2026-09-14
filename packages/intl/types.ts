@@ -4,6 +4,9 @@ import type {
   TypedMessageDescriptor,
   TypedMessageArguments,
   UntypedMessageDescriptor,
+  RegisteredMessageId,
+  RegisteredMessageValues,
+  UnregisteredMessageDescriptor,
 } from '#packages/intl/typed-message.js'
 // Keep public duration types usable without native Intl.DurationFormat declarations.
 import type {
@@ -42,6 +45,7 @@ export interface Part<T = string> {
 declare global {
   namespace FormatjsIntl {
     interface Message {}
+    interface MessageArguments {}
     interface IntlConfig {}
     interface Formats {}
   }
@@ -227,15 +231,39 @@ export interface IntlFormatters<TBase = unknown> {
     descriptor: D,
     ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, TBase>
   ): string | TBase | Array<string | TBase>
-  formatMessage(
+  formatMessage<const K extends RegisteredMessageId>(
     this: void,
-    descriptor: UntypedMessageDescriptor,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<
+      RegisteredMessageValues<NoInfer<K>>,
+      string,
+      TBase
+    >
+  ): string
+  formatMessage<const K extends RegisteredMessageId>(
+    this: void,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<RegisteredMessageValues<NoInfer<K>>, TBase>
+  ): string | TBase | Array<string | TBase>
+  formatMessage<
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  formatMessage(
+  formatMessage<
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
     this: void,
-    descriptor: UntypedMessageDescriptor,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
     values?: Record<string, PrimitiveType | TBase | FormatXMLElementFn<TBase>>,
     opts?: IntlMessageFormatOptions
   ): string | TBase | Array<string | TBase>
@@ -259,15 +287,39 @@ export interface IntlFormatters<TBase = unknown> {
     descriptor: D,
     ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, TBase>
   ): string | TBase | Array<string | TBase>
-  $t(
+  $t<const K extends RegisteredMessageId>(
     this: void,
-    descriptor: UntypedMessageDescriptor,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<
+      RegisteredMessageValues<NoInfer<K>>,
+      string,
+      TBase
+    >
+  ): string
+  $t<const K extends RegisteredMessageId>(
+    this: void,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<RegisteredMessageValues<NoInfer<K>>, TBase>
+  ): string | TBase | Array<string | TBase>
+  $t<
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
   ): string
-  $t(
+  $t<
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
     this: void,
-    descriptor: UntypedMessageDescriptor,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
     values?: Record<string, PrimitiveType | TBase | FormatXMLElementFn<TBase>>,
     opts?: IntlMessageFormatOptions
   ): string | TBase | (TBase | string)[]
