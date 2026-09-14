@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v0.3.1...formatjs_icu_messageformat_parser_v1.0.0) (2026-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **formatjs_intl:** formatjs_intl and formatjs_intl_macros require matching scalar types for inline values. Pass tag callbacks directly instead of Value::tag(...); pre-erased Value instances can use the dynamic map API.
+
+### Features
+
+* **formatjs_intl:** check inline ICU argument types ([#7392](https://github.com/formatjs/formatjs/issues/7392)) ([18fe6ec](https://github.com/formatjs/formatjs/commit/18fe6ec635d2325a25f20201390f732e043e22bb))
+
 ## [0.3.1](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v0.3.0...formatjs_icu_messageformat_parser_v0.3.1) (2026-09-12)
 
 

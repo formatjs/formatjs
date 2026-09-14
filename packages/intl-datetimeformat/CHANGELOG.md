@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.7.0...@formatjs/intl-datetimeformat@7.7.1) (2026-09-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** update IANA timezone database to 2026d ([#7395](https://github.com/formatjs/formatjs/issues/7395)) ([9ddf1cd](https://github.com/formatjs/formatjs/commit/9ddf1cdd92d3a1c8c558ce53391e269720d9ebdc))
+
 ## [7.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.6.2...@formatjs/intl-datetimeformat@7.7.0) (2026-09-12)
 
 
