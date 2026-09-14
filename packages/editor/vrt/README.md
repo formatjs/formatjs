@@ -58,15 +58,13 @@ settings. The ESM marker belongs to the compiled module graph.
 
 Write `*.spec.ts` for navigation, editing, search, validation, and saving.
 Write `*.browser.spec.tsx` for native `mount()` and component updates. Bazel
-compiles both before execution. Filter behavior tests with, for example:
-
-```sh
-bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
-```
+compiles both before execution. Declare subsets as separate Bazel targets or
+set target `args` (for example `["--grep=translation"]`); remote selection must
+be part of the action inputs.
 
 `editor.visual.tsx` declares shared renderable cases, browser-side readiness
 hooks, and VRT options. `gallery.tsx` installs the registry and supplies renderer
-mount/update/unmount behavior. The runtime generates all six screenshot cases;
+mount/update/unmount behavior. The runtime generates all eight screenshot cases;
 there are no separate handwritten screenshot specs. Existing PNG names stay
 explicit in the visual declarations.
 
@@ -74,4 +72,4 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency pins [package runtime assembly support](https://github.com/perplexityai/rules_web_e2e/pull/35).
+The rules dependency pins [isolated ordinary browser tests](https://github.com/perplexityai/rules_web_e2e/pull/36).
