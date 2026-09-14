@@ -9,6 +9,7 @@ exports_files(
         "date_time_pattern_generator.rs",
         "error.rs",
         "lib.rs",
+        "arguments.rs",
         "manipulator.rs",
         "parser.rs",
         "printer.rs",
@@ -34,6 +35,7 @@ generate_src_file(
 rust_library(
     name = "icu_messageformat_parser",
     srcs = [
+        "arguments.rs",
         "date_time_pattern_generator.rs",
         "error.rs",
         "lib.rs",

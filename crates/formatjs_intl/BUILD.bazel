@@ -8,6 +8,7 @@ exports_files(
         "README.md",
         "lib.rs",
         "formatted_message.rs",
+        "argument_types.rs",
     ],
     visibility = ["//visibility:public"],
 )
@@ -15,6 +16,7 @@ exports_files(
 rust_library(
     name = "formatjs_intl",
     srcs = [
+        "argument_types.rs",
         "formatted_message.rs",
         "lib.rs",
     ],

@@ -250,3 +250,21 @@ formatted strings directly.
 
 The CLI has no Python package. See [Python documentation](/docs/python) for
 public APIs.
+
+## ICU argument types
+
+Inline `format_message!` and `formatted_message!` values are checked against
+every ICU occurrence before conversion to runtime values. Number/plural arguments
+require numbers; date/time arguments accept timestamps or `DateTimeValue`;
+select arguments require selector-compatible values. Parsing handles quoting,
+rich tags, and nested branches.
+
+`format_message!` accepts rich tags as callbacks returning runtime parts:
+`values: {b: |parts| Ok(parts)}`. The localized-output `formatted_message!`
+interface retains its restriction against rich callbacks and unchecked strings.
+
+This is a breaking change for inline values already erased to `Value`, including
+`Value::tag(...)`. Pass the original scalar or callback instead. Explicit
+`values: &values` maps retain runtime validation. Reusable descriptors and ID-only
+calls do not yet carry argument contracts. Value ranges and translated catalog
+compatibility still require runtime checks.
