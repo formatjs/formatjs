@@ -68,11 +68,33 @@ across the monorepo.
 ## Remote Cache & RBE
 
 - **Remote cache:** `grpcs://formatjs.buildbuddy.io`
-- **Linux CI:** `--config=ci` expands to `--config=rbe`, enabling BuildBuddy RBE
-  and remote cache.
+- **Authenticated Linux builds:** `--config=ci` expands to `--config=rbe`,
+  enabling BuildBuddy RBE and remote cache. The GHA `test` job instead uses the
+  same local configuration on main and fork PRs so its disk cache is reusable.
 - **macOS CI:** `--config=ci-darwin` uses BuildBuddy BES and remote cache only.
 - **Remote platform:** `//platforms:buildbuddy_linux_x86_64_gnu` with
   `@toolchains_buildbuddy//toolchains/cc:ubuntu_gcc_x86_64`.
+
+### GitHub Actions test cache
+
+The `Test` workflow's `test` job runs on Ubuntu 24.04 with local Bazel execution
+on both main and PRs. BuildBuddy workflows still run RBE separately. Do not
+conditionally add `--config=ci` to this job: that changes its platforms and action
+keys, leaving forks unable to reuse main's outputs.
+
+`actions/cache/restore` restores the Bazel disk cache from a dedicated
+`gha-test-local-v1-ubuntu24` namespace, partitioned by architecture and Bazel
+version. Its fallback prefix cannot select an examples or release cache.
+Non-cancelled main push runs save a fresh snapshot keyed by commit, run, and attempt;
+PRs only restore. Completed actions remain useful even when a later test fails.
+This refreshes source-only changes too, unlike a key based only
+on BUILD files. Bazel still checks each action's inputs before reusing outputs.
+
+Fork PRs can read main's GHA cache without a BuildBuddy credential. The first
+main run must populate this namespace; cold runs still compile and
+test the full repository locally. Cache eviction, toolchain changes, and targets
+that disable caching can also require work. Restore logs and Bazel's process
+summary distinguish archive restores from actual action cache hits.
 
 ## TypeScript Build Pipeline
 
