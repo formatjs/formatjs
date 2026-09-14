@@ -4,7 +4,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
-def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long"):
+def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long", case_timeout_ms = 30000):
     """Keep direct strict/native tests and validate captured baseline reports."""
     if threads < 1:
         fail("Test262 threads must be positive")
@@ -13,6 +13,8 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
     # https://github.com/tc39/test262-harness#command-line-options
     resource_tags = ["cpu:%d" % threads]
     execution_resources = {"EstimatedCPU": str(threads), "EstimatedMemory": "2GB"} if threads > 1 else {}
+    if case_timeout_ms < 1:
+        fail("Test262 case timeout must be positive")
     preludes = prelude if type(prelude) == "list" else [prelude]
     root = "../+http_archive+com_github_tc39_test262"
     realm_prelude = name + "-realm-prelude.js"
@@ -32,7 +34,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
         "file,scenario,result,rawResult",
         "--errorForFailures",
         "--timeout",
-        "30000",
+        str(case_timeout_ms),
         "--test262Dir",
         root,
         root + "/test/" + suite + "/**/*.js",

@@ -118,6 +118,7 @@ def vitest(
         no_copy_to_bin = no_copy_to_bin + root_pkg_ncb,
         args = [
             "run",
+            "--update=none",
             "--config",
             "$(rootpath %s)" % actual_config,
         ] + (["--dom"] if dom else []) + (["--testTimeout ", test_timeout] if test_timeout else []),

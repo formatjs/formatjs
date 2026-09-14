@@ -493,3 +493,14 @@ generate_package_file()
 5. **Keep generated data in Bazel output.** New generated data should use
    `generate_package_file()` / `formatjs_generated_package()`, not checked-in
    generated `.ts` files.
+
+### Snapshot and conformance test execution
+
+Bazel Vitest tests pass `--update=none`: snapshot mismatches and missing entries
+fail without attempting to write read-only runfiles. Use the explicit snapshot
+update targets to change baselines.
+
+Test262 keeps a 30-second per-case deadline by default. Combined NumberFormat
+uses 120 seconds because `prototype/format/units.js` formats every sanctioned
+unit pair while the complete polyfill stack is installed. This is separate from
+Bazel's overall test timeout; expected-failure baselines stay unchanged.

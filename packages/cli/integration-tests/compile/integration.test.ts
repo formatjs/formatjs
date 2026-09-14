@@ -13,10 +13,11 @@ const RUST_BIN_PATH = resolveRustBinaryPath(import.meta.dirname)
 
 const ARTIFACT_PATH = resolve(import.meta.dirname, 'test_artifacts')
 
+// Keep the quoted suite names used by the checked-in snapshots.
 describe.each([
   {name: 'TypeScript', binPath: TS_BIN_PATH, isRust: false},
   {name: 'Rust', binPath: RUST_BIN_PATH, isRust: true},
-])('$name CLI', ({binPath, isRust}) => {
+])("'$name' CLI", ({binPath, isRust}) => {
   test('basic case: help', async () => {
     await expect(exec(`${binPath} compile --help`)).resolves.toMatchSnapshot()
   }, 20000)
