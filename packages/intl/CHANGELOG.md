@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0-rc.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@5.0.0-rc.0...@formatjs/intl@5.0.0-rc.1) (2026-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl:** @formatjs/intl and react-intl reserve the two-generic typed catalog form for contracts and descriptor metadata. Legacy defineMessages instantiation expressions must supply their third generic.
+* **@formatjs/intl:** @formatjs/intl and react-intl helper results are readonly. Copy descriptors or catalogs before changing them.
+
+### Features
+
+* **@formatjs/intl:** check registered message arguments by ID ([#7384](https://github.com/formatjs/formatjs/issues/7384)) ([95d719b](https://github.com/formatjs/formatjs/commit/95d719bd7cf4462131371a04fdce9631cca25628))
+* **@formatjs/intl:** retain typed descriptor metadata ([#7382](https://github.com/formatjs/formatjs/issues/7382)) ([c00e27f](https://github.com/formatjs/formatjs/commit/c00e27f677f3913139269c41181950d80d85c6d8))
+* **@formatjs/intl:** return readonly message descriptors ([#7381](https://github.com/formatjs/formatjs/issues/7381)) ([b59e7ec](https://github.com/formatjs/formatjs/commit/b59e7ec10d29de32b99cc73e2e0d9dff99ebf51f))
+
 ## [5.0.0-rc.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@4.2.1...@formatjs/intl@5.0.0-rc.0) (2026-09-13)
 
 

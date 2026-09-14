@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/formatjs/formatjs/compare/py_intl@0.2.0...py_intl@0.3.0) (2026-09-14)
+
+
+### Features
+
+* **intl_python:** generate readonly Python message contracts ([#7393](https://github.com/formatjs/formatjs/issues/7393)) ([8ebd235](https://github.com/formatjs/formatjs/commit/8ebd23581f0c3721fb7b480d9e7a039d94c0d304))
+
 ## [0.2.0](https://github.com/formatjs/formatjs/compare/py_intl@0.1.0...py_intl@0.2.0) (2026-08-31)
 
 

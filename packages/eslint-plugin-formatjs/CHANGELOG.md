@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0-rc.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.7.0-rc.0...eslint-plugin-formatjs@7.0.0-rc.0) (2026-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl:** @formatjs/intl and react-intl reserve the two-generic typed catalog form for contracts and descriptor metadata. Legacy defineMessages instantiation expressions must supply their third generic.
+* **eslint-plugin-formatjs:** eslint-plugin-formatjs generates actual catalog keys instead of preserving broad index signatures, optional entries, or separately declared key sets. Narrow dynamic keys to `keyof typeof messages`. All generated contract properties are now readonly, including optional ignored arguments; autofix refreshes existing writable contracts.
+
+### Features
+
+* **@formatjs/intl:** check registered message arguments by ID ([#7384](https://github.com/formatjs/formatjs/issues/7384)) ([95d719b](https://github.com/formatjs/formatjs/commit/95d719bd7cf4462131371a04fdce9631cca25628))
+* **@formatjs/intl:** retain typed descriptor metadata ([#7382](https://github.com/formatjs/formatjs/issues/7382)) ([c00e27f](https://github.com/formatjs/formatjs/commit/c00e27f677f3913139269c41181950d80d85c6d8))
+* **eslint-plugin-formatjs:** generate exact catalog annotations ([#7379](https://github.com/formatjs/formatjs/issues/7379)) ([3432055](https://github.com/formatjs/formatjs/commit/3432055d7df4849879b2d9a9717d1c932807e04f))
+
 ## [6.7.0-rc.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.6.3...eslint-plugin-formatjs@6.7.0-rc.0) (2026-09-13)
 
 
