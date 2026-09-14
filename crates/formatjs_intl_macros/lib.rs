@@ -1,5 +1,5 @@
 use base64::Engine;
-use formatjs_icu_messageformat_parser::{MessageFormatElement, Parser, ParserOptions};
+use formatjs_icu_messageformat_parser::{ArgumentKind, Parser, ParserOptions, message_arguments};
 use proc_macro::TokenStream;
 use quote::quote;
 use sha2::{Digest, Sha512};
@@ -71,8 +71,7 @@ fn validate_message_values(arguments: &ValidateMessageValuesArgs) -> syn::Result
             format!("invalid ICU message: {error}"),
         )
     })?;
-    let mut required = BTreeSet::new();
-    collect_message_values(&ast, &mut required);
+    let required = message_arguments(&ast).into_keys().collect::<BTreeSet<_>>();
 
     let mut supplied = BTreeMap::new();
     for value in &arguments.values {
@@ -101,41 +100,6 @@ fn validate_message_values(arguments: &ValidateMessageValuesArgs) -> syn::Result
     Ok(())
 }
 
-fn collect_message_values(ast: &[MessageFormatElement], values: &mut BTreeSet<String>) {
-    for element in ast {
-        match element {
-            MessageFormatElement::Argument(argument) => {
-                values.insert(argument.value.clone());
-            }
-            MessageFormatElement::Number(number) => {
-                values.insert(number.value.clone());
-            }
-            MessageFormatElement::Date(date) => {
-                values.insert(date.value.clone());
-            }
-            MessageFormatElement::Time(time) => {
-                values.insert(time.value.clone());
-            }
-            MessageFormatElement::Select(select) => {
-                values.insert(select.value.clone());
-                for option in select.options.values() {
-                    collect_message_values(&option.value, values);
-                }
-            }
-            MessageFormatElement::Plural(plural) => {
-                values.insert(plural.value.clone());
-                for option in plural.options.values() {
-                    collect_message_values(&option.value, values);
-                }
-            }
-            MessageFormatElement::Tag(tag) => {
-                values.insert(tag.value.clone());
-                collect_message_values(&tag.children, values);
-            }
-            MessageFormatElement::Literal(_) | MessageFormatElement::Pound(_) => {}
-        }
-    }
-}
 
 struct MessageDescriptorArgs {
     id: Option<LitStr>,
@@ -248,5 +212,64 @@ mod tests {
                 .to_string()
                 .contains("duplicate ICU value `name`")
         );
+    }
+}
+
+struct CheckMessageValueArgs {
+    runtime: syn::Path,
+    message: LitStr,
+    name: Ident,
+    value: syn::Expr,
+}
+
+impl Parse for CheckMessageValueArgs {
+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
+        let runtime = input.parse()?;
+        input.parse::<Token![;]>()?;
+        let message = input.parse()?;
+        input.parse::<Token![;]>()?;
+        let name = input.parse()?;
+        input.parse::<Token![;]>()?;
+        let value = input.parse()?;
+        Ok(Self {runtime, message, name, value})
+    }
+}
+
+/// Checks each ICU role before converting an expression to the runtime value enum.
+#[proc_macro]
+pub fn __check_message_value(input: TokenStream) -> TokenStream {
+    let CheckMessageValueArgs {runtime, message, name, value} =
+        parse_macro_input!(input as CheckMessageValueArgs);
+    let ast = match Parser::new(message.value(), ParserOptions::default()).parse() {
+        Ok(ast) => ast,
+        Err(error) => return syn::Error::new(message.span(), error.to_string()).into_compile_error().into(),
+    };
+    let requirements = message_arguments(&ast);
+    let Some(kinds) = requirements.get(&name.to_string()) else {
+        return syn::Error::new(name.span(), "unused ICU value").into_compile_error().into();
+    };
+    let mut checks = Vec::new();
+    for kind in kinds {
+        let check = match kind {
+            ArgumentKind::Number => quote!(#runtime::__argument_types::number(&value);),
+            ArgumentKind::DateTime => quote!(#runtime::__argument_types::datetime(&value);),
+            ArgumentKind::Select => quote!(#runtime::__argument_types::select(&value);),
+            ArgumentKind::Tag | ArgumentKind::Value => continue,
+        };
+        checks.push(check);
+    }
+    if kinds.contains(&ArgumentKind::Tag) {
+        // A callback gets its argument context from the helper's bound.
+        quote!({
+            let value = #runtime::__argument_types::tag(#value);
+            #(#checks)*
+            value
+        }).into()
+    } else {
+        quote!({
+            let value = #value;
+            #(#checks)*
+            value
+        }).into()
     }
 }

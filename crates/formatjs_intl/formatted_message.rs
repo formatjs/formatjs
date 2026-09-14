@@ -277,7 +277,7 @@ macro_rules! formatted_message {
             $default_message; $($name),+
         );
         let mut values = $crate::MessageValues::new();
-        $(values.insert(::core::stringify!($name), $value);)+
+        $(values.insert(::core::stringify!($name), $crate::__check_message_value!($crate; $default_message; $name; $value));)+
         $crate::formatted_message!(
             $intl,
             $(id: $id,)?

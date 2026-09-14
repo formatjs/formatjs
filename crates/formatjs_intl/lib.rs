@@ -10,7 +10,11 @@ use std::sync::{Arc, RwLock};
 #[doc(hidden)]
 pub use formatjs_icu_messageformat::{Value as __Value, Values as __Values};
 #[doc(hidden)]
-pub use formatjs_intl_macros::{__message_descriptor, __validate_message_values};
+pub use formatjs_intl_macros::{__message_descriptor, __validate_message_values, __check_message_value};
+
+#[doc(hidden)]
+#[path = "argument_types.rs"]
+pub mod __argument_types;
 
 mod formatted_message;
 
@@ -227,7 +231,7 @@ macro_rules! format_message {
             $(
                 (
                     ::std::string::String::from(::core::stringify!($name)),
-                    $crate::__Value::from($value),
+                    $crate::__Value::from($crate::__check_message_value!($crate; $default_message; $name; $value)),
                 ),
             )+
         ]);
