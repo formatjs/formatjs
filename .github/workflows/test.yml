@@ -32,7 +32,7 @@ jobs:
 
       - name: Restore Test Cache
         id: test-cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ runner.temp }}/formatjs-test-cache
           key: gha-test-rbe-v2-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -70,7 +70,7 @@ jobs:
           !cancelled() &&
           github.event_name == 'push' && github.ref == 'refs/heads/main' &&
           steps.test-cache.outcome == 'success'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ runner.temp }}/formatjs-test-cache
           key: ${{ steps.test-cache.outputs.cache-primary-key }}
