@@ -133,25 +133,38 @@ function NativeTextArea({
   useLayoutEffect(() => {
     const field = ref.current
     if (!field) return
-    const computed = getComputedStyle(field)
-    const parsedLineHeight = Number.parseFloat(computed.lineHeight)
-    const fontSize = Number.parseFloat(computed.fontSize)
-    const lineHeight = Number.isFinite(parsedLineHeight)
-      ? parsedLineHeight
-      : fontSize * 1.2
-    if (!Number.isFinite(lineHeight)) return
-    const pixels = (value: string): number => Number.parseFloat(value) || 0
-    const chrome =
-      pixels(computed.paddingTop) +
-      pixels(computed.paddingBottom) +
-      pixels(computed.borderTopWidth) +
-      pixels(computed.borderBottomWidth)
-    const minimumHeight = minimum * lineHeight + chrome
-    const maximumHeight = maximum * lineHeight + chrome
-    field.style.height = 'auto'
-    field.style.height = `${Math.min(Math.max(field.scrollHeight, minimumHeight), maximumHeight)}px`
-    field.style.overflowY =
-      field.scrollHeight > maximumHeight ? 'auto' : 'hidden'
+    const resize = (): void => {
+      const computed = getComputedStyle(field)
+      const parsedLineHeight = Number.parseFloat(computed.lineHeight)
+      const fontSize = Number.parseFloat(computed.fontSize)
+      const lineHeight = Number.isFinite(parsedLineHeight)
+        ? parsedLineHeight
+        : fontSize * 1.2
+      if (!Number.isFinite(lineHeight)) return
+      const pixels = (value: string): number => Number.parseFloat(value) || 0
+      const chrome =
+        pixels(computed.paddingTop) +
+        pixels(computed.paddingBottom) +
+        pixels(computed.borderTopWidth) +
+        pixels(computed.borderBottomWidth)
+      const minimumHeight = minimum * lineHeight + chrome
+      const maximumHeight = maximum * lineHeight + chrome
+      field.style.height = 'auto'
+      field.style.height = `${Math.min(Math.max(field.scrollHeight, minimumHeight), maximumHeight)}px`
+      field.style.overflowY =
+        field.scrollHeight > maximumHeight ? 'auto' : 'hidden'
+    }
+    resize()
+    if (typeof ResizeObserver === 'undefined') return
+    let width = field.getBoundingClientRect().width
+    const observer = new ResizeObserver(() => {
+      const nextWidth = field.getBoundingClientRect().width
+      if (nextWidth === width) return
+      width = nextWidth
+      resize()
+    })
+    observer.observe(field)
+    return () => observer.disconnect()
   }, [maximum, minimum, value])
   return (
     <textarea

@@ -241,8 +241,28 @@ describe('translation workflow', () => {
 })
 
 describe('editor preferences and status', () => {
+  it('keeps explicitly undefined translations in the missing filter', () => {
+    const {result} = renderHook(() =>
+      useTranslationEditor({
+        messages: [
+          {
+            id: 'missing',
+            defaultMessage: 'Hello',
+            translations: {fr: undefined},
+          },
+        ],
+        locales: ['fr'],
+        onSave: () => {},
+      })
+    )
+    act(() => result.current.setStatus('missing'))
+    expect(result.current.editor.messages.map(message => message.id)).toEqual([
+      'missing',
+    ])
+  })
+
   it('uses all-selected versus any-missing translation status semantics', () => {
-    const translations = {fr: '', de: 'Hallo'}
+    const translations = {fr: '', de: 'Hallo', ja: undefined}
     expect(hasTranslationForEveryLocale(translations, ['fr', 'de'])).toBe(true)
     expect(hasTranslationForEveryLocale(translations, ['fr', 'ja'])).toBe(false)
     expect(hasTranslationForEveryLocale(translations, [])).toBe(false)

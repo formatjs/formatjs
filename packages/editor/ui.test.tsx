@@ -10,6 +10,7 @@ import {
 import {afterEach, describe, expect, it, vi} from 'vitest'
 import {useTranslationEditor} from '#packages/editor/index.js'
 import {
+  nativeEditorComponents,
   MessageList,
   EditorDesignSystemProvider,
   useEditorDesignSystem,
@@ -526,5 +527,64 @@ describe('public editor view', () => {
     )
     expect(general).toHaveBeenCalledExactlyOnceWith('next')
     expect(description).toHaveBeenCalledExactlyOnceWith('context')
+  })
+})
+
+describe('native textarea sizing', () => {
+  it('grows and shrinks after width changes and disconnects on unmount', () => {
+    let notify = () => {}
+    const disconnect = vi.fn()
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: () => void) {
+          notify = callback
+        }
+        observe() {}
+        disconnect = disconnect
+      }
+    )
+    vi.spyOn(globalThis, 'getComputedStyle').mockReturnValue({
+      lineHeight: '20px',
+      fontSize: '16px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      borderTopWidth: '0px',
+      borderBottomWidth: '0px',
+    } as CSSStyleDeclaration)
+    let width = 400
+    let height = 40
+    vi.spyOn(
+      HTMLTextAreaElement.prototype,
+      'getBoundingClientRect'
+    ).mockImplementation(() => ({width}) as DOMRect)
+    vi.spyOn(
+      HTMLTextAreaElement.prototype,
+      'scrollHeight',
+      'get'
+    ).mockImplementation(() => height)
+    try {
+      const TextArea = nativeEditorComponents.TextArea
+      const {unmount} = render(
+        <TextArea id="resize" value="Unchanged text" onValueChange={() => {}} />
+      )
+      const field = screen.getByRole('textbox')
+      expect(field.style.height).toBe('40px')
+      width = 100
+      height = 240
+      act(() => notify())
+      expect(field.style.height).toBe('200px')
+      expect(field.style.overflowY).toBe('auto')
+      width = 400
+      height = 40
+      act(() => notify())
+      expect(field.style.height).toBe('40px')
+      expect(field.style.overflowY).toBe('hidden')
+      unmount()
+      expect(disconnect).toHaveBeenCalledOnce()
+    } finally {
+      vi.restoreAllMocks()
+      vi.unstubAllGlobals()
+    }
   })
 })

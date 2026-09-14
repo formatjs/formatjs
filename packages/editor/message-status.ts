@@ -9,8 +9,10 @@ export function hasTranslationForEveryLocale(
 ): boolean {
   return (
     locales.length > 0 &&
-    locales.every(locale =>
-      Object.prototype.hasOwnProperty.call(translations, locale)
+    locales.every(
+      locale =>
+        Object.prototype.hasOwnProperty.call(translations, locale) &&
+        translations[locale] !== undefined
     )
   )
 }

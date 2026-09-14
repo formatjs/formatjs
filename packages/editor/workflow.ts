@@ -175,10 +175,12 @@ export function useTranslationEditor<TContext = void, TResult = void>({
             .filter(message => {
               const draft = getDraft(message.id)
               const translations =
-                Object.prototype.hasOwnProperty.call(
+                (Object.prototype.hasOwnProperty.call(
                   message.translations,
                   locale
-                ) || draft.baseline
+                ) &&
+                  message.translations[locale] !== undefined) ||
+                draft.baseline
                   ? {[locale]: draft.baseline}
                   : {}
               return (

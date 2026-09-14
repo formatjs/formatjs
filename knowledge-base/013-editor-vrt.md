@@ -20,8 +20,8 @@ flowchart LR
 through `@stylexjs/unplugin` before the React plugin. Visual tests cover editing,
 invalid ICU with keyboard focus, and a narrow RTL layout.
 Reusable workflow behavior also includes guarded grid/list preference persistence,
-all-selected/any-missing status helpers, parser-backed structural-preview
-eligibility, autosizing textarea bounds, renderable locale labels, and opt-in exact
+all-selected/any-missing status helpers (undefined values remain missing), parser-backed structural-preview
+eligibility, width-aware autosizing textarea bounds, renderable locale labels, and opt-in exact
 copy controls for catalog and location metadata. Product design systems remain
 adapters at these seams; fetching, debounce/cancellation, locale naming policy, and
 storage/persistence backends remain consumer-owned.

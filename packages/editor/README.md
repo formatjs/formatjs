@@ -103,7 +103,8 @@ the same two-search interface without loading a full catalog into the hook.
 
 `hasTranslationForEveryLocale(translations, locales)` and
 `matchesMessageStatus(translations, locales, status)` expose the multi-locale
-status contract: translated means an entry exists for every selected locale,
+status contract: translated means a defined entry exists for every selected locale (including an
+empty string),
 while missing means at least one selected locale has no entry.
 
 `useTranslationLayout({storageKey})` supplies a grid-by-default `grid | list`
@@ -340,7 +341,8 @@ Adapter requirements:
   `aria-describedby` to their focusable control. They report strings through
   `onValueChange` and stay associated with the view's visible label. Textarea
   adapters honor `minRows` and `maxRows` by growing and shrinking with controlled
-  content, then scrolling above the maximum.
+  content, then scrolling above the maximum. The native adapter also resizes when its width
+  changes.
 - Buttons honor `disabled`, support keyboard activation, and do not submit a
   surrounding form. `onPress` and `onSelect` take no event argument.
 - Message rows expose selection (the native adapter uses `aria-current`) and
