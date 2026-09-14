@@ -1,10 +1,9 @@
 import {outputFileSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import regenerate from 'regenerate'
-import {createRequire} from 'node:module'
+import spaceSeparatorCodePoints from '@unicode/unicode-17.0.0/General_Category/Space_Separator/code-points.mjs'
+import patternWhiteSpaceCodePoints from '@unicode/unicode-17.0.0/Binary_Property/Pattern_White_Space/code-points.mjs'
 import './global.ts'
-
-const require = createRequire(import.meta.url)
 
 function generateTypeScript(
   spaceSeparator: regenerate,
@@ -37,12 +36,8 @@ pub static WHITE_SPACE_REGEX: Lazy<Regex> = Lazy::new(|| {
 }
 
 function main(args: minimist.ParsedArgs) {
-  const spaceSeparator = regenerate().add(
-    require('@unicode/unicode-17.0.0/General_Category/Space_Separator/code-points.js')
-  )
-  const ws = regenerate().add(
-    require('@unicode/unicode-17.0.0/Binary_Property/Pattern_White_Space/code-points.js')
-  )
+  const spaceSeparator = regenerate().add(spaceSeparatorCodePoints)
+  const ws = regenerate().add(patternWhiteSpaceCodePoints)
 
   const outFile = typeof args.out === 'string' ? args.out : args.out?.[0]
   if (!outFile) {

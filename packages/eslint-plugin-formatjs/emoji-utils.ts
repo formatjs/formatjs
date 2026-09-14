@@ -7,8 +7,8 @@ import {
   EMOJI_RANGES,
   type EmojiVersion,
 } from '@formatjs_generated/unicode/emoji-data.js'
-import * as emojiPresentationRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation/regex.js'
-import * as emojiPropertyRegex from '@unicode/unicode-17.0.0/Binary_Property/Emoji/regex.js'
+import emojiPresentationRegexCompiled from '@unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation/regex.mjs'
+import emojiPropertyRegexCompiled from '@unicode/unicode-17.0.0/Binary_Property/Emoji/regex.mjs'
 
 export type {EmojiVersion} from '@formatjs_generated/unicode/emoji-data.js'
 
@@ -17,23 +17,6 @@ export type {EmojiVersion} from '@formatjs_generated/unicode/emoji-data.js'
  * Reused across all extractEmojis calls for better performance
  */
 const graphemeSegmenter = new Intl.Segmenter('en', {granularity: 'grapheme'})
-
-/**
- * Regex for detecting emoji using Unicode 17.0.0 Emoji_Presentation data
- * Generated from @unicode/unicode-17.0.0/Binary_Property/Emoji_Presentation
- * This avoids false positives from #, *, digits, and text symbols like ©
- */
-const emojiPresentationRegexCompiled =
-  (emojiPresentationRegex as unknown as {default: RegExp}).default ??
-  emojiPresentationRegex
-
-/**
- * Regex for detecting emoji-capable characters using Unicode 17.0.0 Emoji property
- * This includes characters that can have emoji presentation (like ❤, ☀)
- */
-const emojiPropertyRegexCompiled =
-  (emojiPropertyRegex as unknown as {default: RegExp}).default ??
-  emojiPropertyRegex
 
 /**
  * Check if a string contains any emoji
