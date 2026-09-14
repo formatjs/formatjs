@@ -119,6 +119,14 @@ ruleTester.run('enforce-message-types', rule, {
     },
   ],
   invalid: [
+    ...['@formatjs/svelte-intl', 'vue-intl'].map(module => ({
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage} from '${module}';\ndefineMessage({defaultMessage: '{n, number}'})`,
+      output: `import {defineMessage} from '${module}';\ndefineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'}, {typed: true})`,
+      errors: [{messageId: 'contract'}],
+    })),
+
     {
       filename: 'test.ts',
       options: [

@@ -1,16 +1,21 @@
-import {
-  type IntlFormatters as CoreIntlFormatters,
-  type MessageDescriptor,
-} from '@formatjs/intl'
+import {type IntlFormatters as CoreIntlFormatters} from '@formatjs/intl'
 export * from '#packages/svelte-intl/provider.js'
 export {intlKey} from '#packages/svelte-intl/context-key.js'
 export {
+  defineMessage,
+  defineMessages,
+  type MessageDescriptor,
+  type TypedMessageDescriptor,
+  type MessageValues,
+  type MessageValuesOf,
+  type MessageValue,
+  type MessageTag,
+  type MessageArgumentsFromCatalog,
   type IntlShape,
   type IntlConfig,
   type ResolvedIntlConfig,
   createIntl,
   createIntlCache,
-  type MessageDescriptor,
   type IntlCache,
   type Formatters,
   type FormatDisplayNameOptions,
@@ -32,15 +37,4 @@ export {
 
 export type IntlFormatters = CoreIntlFormatters<string>
 
-export function defineMessages<
-  K extends keyof any,
-  T = MessageDescriptor,
-  U extends Record<K, T> = Record<K, T>,
->(msgs: U): U {
-  return msgs
-}
-
-export function defineMessage<T>(msg: T): T {
-  return msg
-}
 export type {MessageFormatElement} from '@formatjs/icu-messageformat-parser'

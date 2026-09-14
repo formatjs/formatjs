@@ -270,6 +270,15 @@ assert.equal(
   rcStrategy.bump(Version.parse('10.2.3-rc.0'), feat).toString(),
   '10.3.0-rc.0'
 )
+// Framework wrappers expose the breaking core signatures and readonly helpers.
+assert.equal(
+  rcStrategy.bump(Version.parse('1.1.20-rc.1'), breaking).toString(),
+  '2.0.0-rc.1'
+)
+assert.equal(
+  rcStrategy.bump(Version.parse('7.2.20-rc.1'), breaking).toString(),
+  '8.0.0-rc.1'
+)
 const stableStrategy = buildVersioningStrategy({
   type: 'prerelease',
   prerelease: false,

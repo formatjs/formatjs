@@ -219,3 +219,29 @@ The CLI extracts messages from:
 
 - `<script>` and `<script module>` blocks
 - Template expressions: `{intl.formatMessage(...)}`, attribute bindings, `{#if}`, `{#each}`, `{@const}`, etc.
+
+## Typed messages and migration
+
+Version 2 requires TypeScript 5.4 or newer. Message helpers now share the
+`@formatjs/intl` contracts. Returned descriptors and catalog entries are readonly;
+construct a new descriptor instead of mutating one.
+
+```ts
+import {defineMessage} from '@formatjs/svelte-intl'
+
+const message = defineMessage<{readonly count: number}>(
+  {id: 'items', defaultMessage: '{count, number} items'},
+  {typed: true}
+)
+// intl.formatMessage(message, {count: 3})
+```
+
+`defineMessages<Contracts>(catalog, {typed: true})` attaches a separate values
+contract to each catalog entry. Helpers return the original objects at runtime.
+The generic declares the contract; it does not parse ICU literals.
+
+For `formatMessage` and `$t`, the first generic is the values contract and the
+second is the rich output type. Move an existing output generic to the second
+position. Without generics, typed descriptors retain their checks; ordinary
+unregistered descriptors remain permissive. Vue uses its configured VNode output;
+Svelte uses strings.

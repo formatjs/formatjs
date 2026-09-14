@@ -244,3 +244,8 @@ Catalog entries must retain literal IDs. Use the helpers' explicit descriptor
 metadata generic when needed; widened `string` IDs are omitted. Keep IDs unique:
 duplicate catalog IDs combine their contracts. This API consumes existing typed
 catalogs or application declarations; it does not add a CLI declaration generator.
+
+Vue and Svelte re-export the core typed message helpers and contract types.
+Their descriptors and catalog entries share the readonly core return types.
+The changed helper and formatter generics require major wrapper releases;
+keep both wrappers on RCs until the messaging release group graduates together.
