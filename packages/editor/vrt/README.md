@@ -22,8 +22,9 @@ installs those before testing.
 VRT captures and compares in an isolated Linux amd64 action. `linux_browser`
 uses `linux_chromium_runtime` with the existing `rules_browsers` Chromium download
 and pinned Node toolchain. The rules' versioned Noble preset owns checksum-locked
-libraries, shell utilities, and the established Liberation font policy. The runner
-checks the actual Chromium version against the selected Playwright package.
+libraries, shell utilities, and the resolved font packages. The runner
+checks the actual Chromium version against the selected Playwright package. Host
+tests also check each project's selected browser during setup.
 
 The host `playwright_browser_installation` helper reads Chromium/FFmpeg cache
 revisions from Playwright's `browsers.json`. Upgrades change the Chromium pin in
@@ -39,9 +40,8 @@ bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc
 bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test.update
 ```
 
-The `Editor browser tests` workflow builds actiond at commit `8a42c3d`, with the
-memory-advice kernel patch tracked by
-[actiond #33](https://github.com/hermeticbuild/actiond/pull/33). It checks KVM and
+The `Editor browser tests` workflow builds actiond at commit `4b767e8`, which includes
+memory-advice syscalls upstream and needs no local kernel patch. It checks KVM and
 vhost-vsock access first, starts a 6 GiB VM, runs comparison with `matching.ts`, then captures again
 and verifies the complete capture set without changing source baselines. The same path is available locally:
 

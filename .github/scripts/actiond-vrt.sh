@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Build the pinned worker and run the editor's real remote capture/comparison.
 set -euo pipefail
-repo=$(pwd)
 work=${RUNNER_TEMP:-/tmp}/formatjs-actiond
 [[ $(uname -sm) == 'Linux x86_64' ]] || { echo 'VRT worker requires Linux x86_64'; exit 1; }
 for device in /dev/kvm /dev/vhost-vsock; do
@@ -15,13 +14,8 @@ if [[ ! -d "$work/source/.git" ]]; then
   git init "$work/source"
   git -C "$work/source" remote add origin https://github.com/hermeticbuild/actiond.git
 fi
-git -C "$work/source" fetch --depth=1 origin 8a42c3d481df3a1bf1b80e95a9bb991a207fc035
+git -C "$work/source" fetch --depth=1 origin 4b767e852e21c5affa72ea7ebbf4d8a6e5d58136
 git -C "$work/source" checkout --detach FETCH_HEAD
-if git -C "$work/source" apply --check "$repo/tools/browser/actiond-advice.patch"; then
-  git -C "$work/source" apply "$repo/tools/browser/actiond-advice.patch"
-else
-  git -C "$work/source" apply --reverse --check "$repo/tools/browser/actiond-advice.patch"
-fi
 (
   cd "$work/source"
   "$bazel_bin" build --bes_backend= --remote_executor= --remote_cache= --spawn_strategy=local --jobs=2 \

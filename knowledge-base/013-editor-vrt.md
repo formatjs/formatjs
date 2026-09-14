@@ -32,9 +32,9 @@ Host E2E/component tests remain manual, local, and uncached. Their Chromium and
 FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
 VRT uses `linux_chromium_runtime` with caller-pinned Chromium/Node and the rules'
 versioned Noble library/font preset. `playwright_browser_installation` derives host
-cache revisions from Playwright metadata; VRT checks the actual Chromium version.
+cache revisions from Playwright metadata; host and VRT runs check the actual Chromium version.
 No consumer APT configuration or container image is needed. The browser CI workflow
-builds a pinned actiond worker with the memory-advice kernel patch and checks
+builds upstream actiond at `4b767e8` without local patches and checks
 VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
 CI compares the checked-in baselines with `matching.ts` and checks the complete

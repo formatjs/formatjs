@@ -121,7 +121,7 @@ build --@aspect_rules_ts//ts:default_to_tsc_transpiler
 fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
 
-# VRT requires a patched actiond Linux amd64 executor; pass its endpoint separately.
+# VRT requires a pinned actiond Linux amd64 executor; pass its endpoint separately.
 build:vrt --jobs=2
 build:vrt --spawn_strategy=sandboxed,local
 build:vrt --strategy=VrtCapture=remote
