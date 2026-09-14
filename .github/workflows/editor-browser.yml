@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Check VM prerequisites
         run: |
           test -c /dev/kvm
@@ -43,7 +43,7 @@ jobs:
         run: bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
       - name: VRT comparison and capture in Linux VM
         run: bash .github/scripts/actiond-vrt.sh
-      - uses: actions/upload-artifact@v8
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: editor-browser-results
