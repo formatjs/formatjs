@@ -32,12 +32,14 @@ E2E, component interactions, and VRT all use a declared `linux_chromium_runtime`
 and execute in actiond Linux amd64 actions. Chromium/Node, the selected Linux library closure, and fonts are checksum-pinned
 Bazel inputs. The optional preset omits unrelated OS packages and GPU drivers. No host browser cache,
 FFmpeg download, apt setup, or container image is needed for these suites.
-The browser CI script builds upstream actiond at `4b767e8` from a checksum-pinned source archive downloaded by Bazel
+The browser CI script starts the actiond v0.0.7 release (`4b767e8`), downloaded
+and checksum-verified by `//tools:actiond`,
 and includes its binary SHA256 in remote execution properties to separate cached
 results across worker/kernel changes. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
-CI compares the checked-in baselines with `matching.ts` and checks the complete
-capture set without applying it to source baselines.
+CI runs the standard VRT comparison with `matching.ts`; it captures screenshots
+without applying them to source baselines. A separate capture/update validation
+pass is not needed.
 
 Run `.update` only for intentional visual changes, review the PNGs, then run
 comparison. See `packages/editor/vrt/README.md` for exact commands.

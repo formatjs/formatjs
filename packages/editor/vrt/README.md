@@ -27,11 +27,17 @@ version. Re-run CI and review intentional screenshot changes.
 bash .github/scripts/actiond-vrt.sh
 ```
 
-The script builds actiond at `4b767e8` from a checksum-pinned source archive downloaded by Bazel, starts a 6 GiB VM,
-runs all three suites, and validates a fresh capture without applying baselines.
-Its worker binary SHA256 is included in remote execution properties so worker or
-kernel changes invalidate cached results. Worker builds ignore home/system Bazel
-configuration. No local actiond patches are applied.
+The script starts a 6 GiB VM using the released actiond v0.0.7 worker downloaded
+and checksum-verified by Bazel, then runs the three test targets. `visual_test`
+already captures screenshots and compares them against the checked-in baselines;
+CI does not run a second capture/update pass. The worker binary SHA256 is included
+in remote execution properties so worker or kernel changes invalidate cached results.
+
+To run a persistent worker separately on Linux x64:
+
+```sh
+bazel run //tools:actiond -- serve-vm --root=/tmp/formatjs-actiond/vm --listen=127.0.0.1:8980 --memory-mib=6144 --cpus=2 --cas-image-size-mib=4096
+```
 
 For an existing worker, obtain its binary SHA256 and run:
 

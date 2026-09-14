@@ -428,6 +428,15 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
+# Released worker for the exact actiond commit validated by the browser rules.
+http_file(
+    name = "actiond_linux_x86_64",
+    downloaded_file_path = "actiond",
+    executable = True,
+    sha256 = "c35a7d9edc1387e83e98ca42a1e309b3fce9b97aa9199e85bf40778d6456a056",
+    url = "https://github.com/hermeticbuild/actiond/releases/download/v0.0.7/linux-actiond_linux_x86_64",
+)
+
 bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
 git_override(
     module_name = "rules_web_e2e",
