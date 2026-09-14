@@ -52,9 +52,9 @@ function checkTypes() {
   // @ts-expect-error Inline values retain their numeric constraint.
   core.formatMessage<{readonly n: number}>({defaultMessage: '{n}'}, {n: 'two'})
   core.formatMessage<{readonly n: number}>({defaultMessage: '{n}'}, {n: 1})
+  // @ts-expect-error Formatter signatures validate descriptor properties.
   core.formatMessage<{}>({
     defaultMessage: 'Hello',
-    // @ts-expect-error Formatter signatures validate descriptor properties.
     invalidProperty: true,
   })
 }

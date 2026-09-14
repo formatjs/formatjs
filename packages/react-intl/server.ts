@@ -16,6 +16,7 @@ export {
   type MessageValue,
   type MessageTag,
   type TypedMessageDescriptor,
+  type MessageArgumentsFromCatalog,
 } from '@formatjs/intl'
 
 export {defineMessage} from '#packages/react-intl/define-message.js'

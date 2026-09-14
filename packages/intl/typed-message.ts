@@ -1,5 +1,6 @@
 import type {
   MessageContract,
+  MessageValuesOf,
   MessageValues,
   MessageFormatArguments,
   UntypedMessageContract,
@@ -159,4 +160,34 @@ export function defineMessages(
   _options?: {typed: true}
 ): unknown {
   return messages
+}
+
+/** Argument contracts keyed by application message IDs. */
+export type RegisteredMessageId = keyof FormatjsIntl.MessageArguments & string
+
+export type RegisteredMessageValues<K extends RegisteredMessageId> =
+  FormatjsIntl.MessageArguments[K] extends MessageValues
+    ? FormatjsIntl.MessageArguments[K]
+    : never
+
+/** Keep known IDs out of the permissive overload without rejecting dynamic IDs. */
+export type UnregisteredMessageDescriptor<D extends UntypedMessageDescriptor> =
+  D &
+    (D extends {id: infer K}
+      ? Extract<K, RegisteredMessageId> extends never
+        ? unknown
+        : never
+      : unknown)
+
+/** Derive a registry from typed catalog entries with literal IDs. */
+export type MessageArgumentsFromCatalog<
+  C extends Record<string, TypedMessageDescriptor<MessageValues>>,
+> = {
+  readonly [
+    K in keyof C as C[K] extends {id: infer I extends string}
+      ? string extends I
+        ? never
+        : I
+      : never
+  ]: MessageValuesOf<C[K]>
 }

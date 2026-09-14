@@ -2,13 +2,15 @@ import type {MessageDescriptor} from '@formatjs/intl'
 import * as React from 'react'
 import {renderToStaticMarkup} from 'react-dom/server'
 import {expect, expectTypeOf, test} from 'vitest'
-import type {defineMessages} from '#packages/react-intl/index.js'
 import {
   createIntl,
   FormattedMessage,
   IntlProvider,
   defineMessage,
+  defineMessages,
   type MessageTag,
+  type MessageArgumentsFromCatalog,
+  type TypedMessageDescriptor,
   type MessageValue,
 } from '#packages/react-intl/index.js'
 import {
@@ -207,3 +209,97 @@ function checkTypedJSX() {
   return [required, missing, wrong, empty, extra, badTag, legacy]
 }
 void checkTypedJSX
+
+declare global {
+  namespace FormatjsIntl {
+    interface MessageArguments {
+      'registered-count': {readonly count: number | bigint}
+      'registered-empty': {}
+      'registered-rich': {readonly b: MessageTag}
+      'registered-optional': {readonly name?: string}
+    }
+  }
+}
+
+function checkRegisteredMessages() {
+  const text: string = intl.formatMessage({id: 'registered-count'}, {count: 2})
+  intl.$t({id: 'registered-count'}, {count: 2n})
+  // @ts-expect-error Registered arguments are required.
+  intl.formatMessage({id: 'registered-count'})
+  // @ts-expect-error Registered numeric arguments reject strings.
+  intl.formatMessage({id: 'registered-count'}, {count: 'two'})
+  // @ts-expect-error The alias checks registered IDs too.
+  intl.$t({id: 'registered-count'}, {count: 'two'})
+  // @ts-expect-error Known IDs cannot fall through the legacy overload.
+  intl.$t({id: 'registered-count'})
+  intl.formatMessage({id: 'registered-empty'})
+  // @ts-expect-error Empty contracts reject extra values.
+  intl.formatMessage({id: 'registered-empty'}, {extra: 2})
+  intl.formatMessage({id: 'registered-optional'})
+  intl.formatMessage({id: 'registered-rich'}, {b: chunks => chunks.join('')})
+  // @ts-expect-error Tags require callbacks.
+  intl.formatMessage({id: 'registered-rich'}, {b: 'strong'})
+  const known = {id: 'registered-count'} as const
+  // @ts-expect-error Descriptor variables retain known ID checking.
+  intl.formatMessage(known, {count: false})
+  const dynamic: string = 'registered-count'
+  intl.formatMessage({id: dynamic})
+  intl.formatMessage({id: 'unregistered'}, {anything: 'allowed'})
+  intl.formatMessage<{count: string}>(
+    {id: 'registered-count'},
+    {count: 'override'}
+  )
+  return text
+}
+void checkRegisteredMessages
+
+test('registered contracts preserve runtime formatting', () => {
+  const registered = createIntl({
+    locale: 'en',
+    messages: {'registered-count': '{count, number}'},
+  })
+  expect(registered.formatMessage({id: 'registered-count'}, {count: 3})).toBe(
+    '3'
+  )
+  expect(registered.$t({id: 'registered-count'}, {count: 4})).toBe('4')
+})
+
+const catalogSource = {
+  derived: {id: 'registered-derived', defaultMessage: '{count, number}'},
+} as const
+const derivedCatalog: {
+  readonly derived: TypedMessageDescriptor<{readonly count: number}> &
+    typeof catalogSource.derived
+} = defineMessages<
+  {readonly derived: {readonly count: number}},
+  typeof catalogSource
+>(catalogSource, {typed: true})
+type DerivedRegistry = MessageArgumentsFromCatalog<typeof derivedCatalog>
+
+declare global {
+  namespace FormatjsIntl {
+    interface MessageArguments extends DerivedRegistry {}
+  }
+}
+
+function checkDerivedRegistry(id: 'registered-count' | 'registered-rich') {
+  intl.$t({id: 'registered-derived'}, {count: 1})
+  // @ts-expect-error Catalog-derived contracts check values.
+  intl.$t({id: 'registered-derived'}, {count: 'one'})
+  // @ts-expect-error A union ID requires both possible contracts.
+  intl.$t({id}, {count: 1})
+  intl.$t({id}, {count: 1, b: chunks => chunks.join('')})
+  const optional: string = intl.formatMessage({id: 'registered-optional'})
+  const empty: string = intl.formatMessage({id: 'registered-empty'})
+  return [optional, empty]
+}
+void checkDerivedRegistry
+
+function checkRegisteredReactOutput() {
+  const output: React.ReactNode = intl.formatMessage(
+    {id: 'registered-rich'},
+    {b: chunks => <strong>{chunks}</strong>}
+  )
+  return output
+}
+void checkRegisteredReactOutput
