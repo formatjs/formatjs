@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout Repository
@@ -24,37 +24,44 @@ jobs:
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
           repository-cache: true
+          cache-save: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          bazelrc: |
+            build --disk_cache=${{ runner.temp }}/formatjs-test-cache
+
+      - name: Restore Test Cache
+        id: test-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/formatjs-test-cache
+          key: gha-test-local-v1-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            gha-test-local-v1-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-
 
       - name: Build Hermetic Timezone Data
         run: bazel build //packages/intl-datetimeformat:tz_data_generated
 
+      # Main and fork PRs must produce the same action keys. RBE runs separately
+      # in buildbuddy.yaml; switching platforms here makes main's disk cache useless to forks.
       - name: Run Tests
-        run: |
-          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            echo "Running with BuildBuddy ci config"
-            bazel test --config=ci --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} //...
-          else
-            echo "Running without BuildBuddy (no API key)"
-            bazel test //...
-          fi
+        run: bazel test //...
 
       - name: Rust CLI Smoke Test
         run: |
-          if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
-            bazel build \
-              --config=ci \
-              --compilation_mode=opt \
-              --remote_download_outputs=all \
-              --remote_header=x-buildbuddy-api-key=${{ secrets.BUILDBUDDY_ORG_API_KEY }} \
-              //crates/formatjs_cli
-          else
-            bazel build --compilation_mode=opt //crates/formatjs_cli
-          fi
+          bazel build --compilation_mode=opt //crates/formatjs_cli
           BINARY_PATH=bazel-bin/crates/formatjs_cli/formatjs_cli
           $BINARY_PATH --version
           $BINARY_PATH --help
+
+      - name: Save Main Test Cache
+        if: >-
+          !cancelled() &&
+          github.event_name == 'push' && github.ref == 'refs/heads/main' &&
+          steps.test-cache.outcome == 'success'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/formatjs-test-cache
+          key: ${{ steps.test-cache.outputs.cache-primary-key }}
 
   examples:
     name: Examples (${{ matrix.example }})
