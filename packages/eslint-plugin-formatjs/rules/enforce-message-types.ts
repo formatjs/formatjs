@@ -293,7 +293,7 @@ function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
   }
 }
 
-// Keep caller-owned key constraints while restoring contracts on known messages.
+// Replace broad catalog annotations with explicit per-message contracts.
 function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
   const parent = (node as Node & {parent?: Node}).parent
   if (parent?.type !== 'VariableDeclarator' || parent.init !== node) return
@@ -351,8 +351,26 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
     )
   }
 
+  function typedMap(type: TypeNode): boolean {
+    return (
+      type.type === 'TSTypeLiteral' &&
+      !!type.members?.every(
+        member =>
+          member.type === 'TSPropertySignature' &&
+          !member.computed &&
+          !!member.typeAnnotation &&
+          imported(
+            member.typeAnnotation.typeAnnotation,
+            'TypedMessageDescriptor'
+          )
+      )
+    )
+  }
+
   let base = annotation
-  let generated: TypeNode | undefined
+  let generated: TypeNode | undefined = typedMap(annotation)
+    ? annotation
+    : undefined
   if (
     annotation.type === 'TSIntersectionType' &&
     annotation.types?.length === 2
@@ -374,7 +392,7 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
       generated = right
     }
   }
-  return {annotation, base, generated, supported: broad(base)}
+  return {annotation, base, generated, supported: broad(base) || typedMap(base)}
 }
 
 const descriptorModules = new Set([
@@ -794,7 +812,9 @@ export const rule: Rule.RuleModule = {
         )
         ;[contract, catalogType] = imports.text.split('\n')
         const annotationMatches =
-          !annotation || renderType(annotation.generated) === catalogType
+          !annotation ||
+          (annotation.annotation === annotation.generated &&
+            renderType(annotation.generated) === catalogType)
         const expected = `<${contract}>`
         const parameters = (generic as unknown as TypeNode | undefined)?.params
         if (
@@ -828,9 +848,7 @@ export const rule: Rule.RuleModule = {
               edits.push(
                 fixer.replaceText(
                   annotation.annotation as unknown as Node,
-                  source.getText(annotation.base as unknown as Node) +
-                    ' & ' +
-                    catalogType
+                  catalogType!
                 )
               )
             }

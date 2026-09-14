@@ -192,10 +192,10 @@ listed extra names; their supplied values still have the derived types.
 Use one rule per file to avoid duplicate diagnostics. Run the original placeholder
 suite against both rules, plus generation and public type tests.
 
-For explicitly annotated `defineMessages` variables, the rule intersects supported
-descriptor maps with per-key `TypedMessageDescriptor` types. It refreshes that
-intersection alongside the call generic, reusing hoisted imports. Preserve the
-original annotation for finite key constraints and readonly semantics; do not
-replace it with inferred declarations because exported consumers may require
-`isolatedDeclarations`. Unsupported annotations report a diagnostic without a
-fix. Dynamic indexing through an existing broad record remains permissive.
+For explicitly annotated `defineMessages` variables, the rule replaces supported
+descriptor maps with per-key `TypedMessageDescriptor` types. It refreshes the
+annotation alongside the call generic, reusing hoisted imports. Keep readonly
+properties and explicit declarations for `isolatedDeclarations`. Keys come from
+actual messages, replacing broad index signatures, optional entries, and original
+key constraints. This is a breaking change for generated annotations. Unsupported
+annotations report a diagnostic without a fix.

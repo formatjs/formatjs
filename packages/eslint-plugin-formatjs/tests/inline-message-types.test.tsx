@@ -4,7 +4,6 @@ import {createIntl as createCoreIntl} from '@formatjs/intl'
 import {
   createIntl,
   defineMessages,
-  type MessageDescriptor,
   type TypedMessageDescriptor,
   type MessageTag,
   type MessageValue,
@@ -62,7 +61,7 @@ function checkTypes() {
 void checkTypes
 
 // Explicit declarations remain emit-safe with isolatedDeclarations enabled.
-export const catalog: Record<'count' | 'plain', MessageDescriptor> & {
+export const catalog: {
   count: TypedMessageDescriptor<{n: number | bigint}>
   plain: TypedMessageDescriptor<{}>
 } = defineMessages<{count: {n: number | bigint}; plain: {}}>(
@@ -83,7 +82,10 @@ function checkCatalogTypes() {
   intl.formatMessage(catalog.count)
   // @ts-expect-error Broad descriptor annotations cannot hide incorrect values.
   intl.formatMessage(catalog.count, {n: 'two'})
-  // @ts-expect-error Original finite catalog keys remain finite.
+  // @ts-expect-error Generated catalog keys reject unknown names.
   void catalog.missing
+  const dynamicKey: string = 'count'
+  // @ts-expect-error Generated catalogs no longer permit arbitrary string indexing.
+  void catalog[dynamicKey]
 }
 void checkCatalogTypes
