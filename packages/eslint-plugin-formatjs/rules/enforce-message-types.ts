@@ -810,14 +810,19 @@ export const rule: Rule.RuleModule = {
         const expected = `<${contract}>`
         const parameters = (generic as unknown as TypeNode | undefined)?.params
         if (
-          parameters?.length === 1 &&
+          parameters &&
+          parameters.length >= 1 &&
+          parameters.length <= 2 &&
           renderType(parameters[0]) === contract &&
           typed &&
           !generated &&
           annotationMatches
         )
           return
-        if (generic && parameters?.length !== 1) {
+        if (
+          generic &&
+          (!parameters || parameters.length < 1 || parameters.length > 2)
+        ) {
           context.report({node: generic, messageId: 'manual'})
           return
         }
@@ -827,8 +832,14 @@ export const rule: Rule.RuleModule = {
           fix(fixer) {
             const edits = [
               ...imports.fix(fixer),
-              generic
-                ? fixer.replaceText(generic, expected)
+              generic && parameters?.[0]
+                ? fixer.replaceTextRange(
+                    [
+                      generic.range![0] + 1,
+                      (parameters[0] as unknown as Node).range![1],
+                    ],
+                    contract
+                  )
                 : fixer.insertTextAfter(
                     node.optional
                       ? source.getTokenAfter(node.callee)!

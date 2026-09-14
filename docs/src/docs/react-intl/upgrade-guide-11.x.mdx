@@ -43,3 +43,19 @@ catalog of readonly descriptors, including calls without typed options. Construc
 a new descriptor or catalog instead of mutating a helper result. This is a
 TypeScript breaking change; helpers preserve object identity and do not freeze
 objects or recursively transform rich values.
+
+### Typed helper metadata
+
+Typed helpers retain required `id` and `defaultMessage` fields for common
+descriptor shapes. Catalog inference retains fields shared by every entry.
+For literal IDs, custom metadata, or heterogeneous catalogs, supply a second
+descriptor generic: `defineMessage<Values, typeof descriptor>(descriptor, {typed: true})`
+or `defineMessages<Contracts, typeof catalog>(catalog, {typed: true})`.
+TypeScript cannot partially infer that second generic after an explicit first one.
+ESLint refreshes the ICU generic while preserving the metadata generic.
+
+The two-generic typed catalog overload reserves `defineMessages<Contracts, Descriptors>`.
+Legacy instantiation expressions using `defineMessages<Key, Descriptor>` should
+supply their existing third generic explicitly:
+`defineMessages<Key, Descriptor, Record<Key, Descriptor>>`.
+Calls without explicit generics are unaffected.
