@@ -25,14 +25,20 @@ invalid ICU, empty catalogs, and custom rendering without providers.
 `//packages/editor/vrt:visual_test` exercises the example on React 19 with root
 npm dependencies and current workspace React Intl/parser sources. There is no
 separate npm workspace or lockfile. The root lock pins Playwright to match the
-browser image. Bazel workspace npm links supply current package builds; no published formatter
+Chromium archive. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-The browser target is manual, local, and uncached. It requires Docker and uses
-`rules_web_e2e` with a pinned Linux amd64 image. The custom `server.ts` adapter
-serves built assets and owns startup/cleanup; `shell.tsx` owns the IntlProvider. Inputs, environment, and
-browser networking are isolated by the rules runtime. Host plugins/tests remain
-trusted code outside full Bazel filesystem sandboxing.
+Host E2E/component tests remain manual, local, and uncached. Their Chromium and
+FFmpeg inputs are checksum-pinned Bazel downloads from `rules_browsers` (Chromium) and checksum-pinned FFmpeg archives.
+VRT uses `linux_chromium_runtime` with caller-pinned Chromium/Node and the rules'
+versioned Noble library/font preset. `playwright_browser_installation` derives host
+cache revisions from Playwright metadata; host and VRT runs check the actual Chromium version.
+No consumer APT configuration or container image is needed. The browser CI workflow
+builds upstream actiond at `4b767e8` without local patches and checks
+VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
+The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
+CI compares the checked-in baselines with `matching.ts` and checks the complete
+capture set without applying it to source baselines.
 
 Run `.update` only for intentional visual changes, review the PNGs, then run
 comparison. See `packages/editor/vrt/README.md` for exact commands.
@@ -80,7 +86,7 @@ Release Please updates the manifest after the release PR lands.
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 runner supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application and pinned Testcontainers browser.
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E and component tests use Bazel-provisioned host Chromium. VRT uses a declared Linux runtime and actiond worker; provisioning is documented in the browser setup guide.
 
 ```sh
 bazel test //packages/editor/vrt:e2e_test --test_output=errors
@@ -88,7 +94,7 @@ bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It requires Docker and runs manually, locally, and uncached.
+drafts, and saving. It uses checksum-pinned Chromium provisioned by Bazel and runs manually, locally, and uncached. See [browser setup](../packages/editor/vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
@@ -104,7 +110,7 @@ clear, ICU validation, and isolation between mounts.
 E2E uses a compiled custom server adapter serving the same built app. The runtime
 selects compiled `*.browser.spec.js` separately from E2E `*.spec.js` and generated
 VRT captures. CI should explicitly run all three
-manual browser targets. Screenshot baselines and updates remain in `visual_test`.
+browser targets through the `Editor browser tests` workflow. Screenshot baselines and updates remain in `visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
 renderable cases, browser-side capture hooks, and VRT options. The gallery registers

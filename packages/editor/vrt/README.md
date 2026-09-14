@@ -4,16 +4,55 @@ The editor uses the monorepo's React 19, workspace React Intl/parser packages,
 and root npm lockfile. Its Bazel build typechecks and compiles specs, then
 builds the gallery with Vite/StyleX before any browser test starts.
 
+## Host interaction tests
+
 ```sh
-bazel build //packages/editor/vrt:bundle //packages/editor/vrt:typecheck
-bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test //packages/editor/vrt:visual_test --test_output=errors
-bazel run //packages/editor/vrt:visual_test.update
+bazel test //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test --test_output=errors
 ```
 
-All three tests require a local Docker daemon. They are manual, local, and
-uncached. CI must select them explicitly. The browser runs through Testcontainers
-in a pinned Linux amd64 image; failure reports, traces, and image diffs remain
-in Bazel's undeclared outputs.
+Chromium headless shell and FFmpeg are checksum-pinned Bazel downloads in
+`rules_browsers` (Chromium) and checksum-pinned FFmpeg archives. Both targets declare the browser directory and pass its
+runfiles path through `PLAYWRIGHT_BROWSERS_PATH`; no manual browser installation
+or `rules_playwright` dependency is needed. Supported host platforms are Linux
+x64 and macOS x64/arm64. Linux needs Chromium's system libraries; the browser CI job
+installs those before testing.
+
+## Visual tests on actiond
+
+VRT captures and compares in an isolated Linux amd64 action. `linux_browser`
+uses `linux_chromium_runtime` with the existing `rules_browsers` Chromium download
+and pinned Node toolchain. The rules' versioned Noble preset owns checksum-locked
+libraries, shell utilities, and the resolved font packages. The runner
+checks the actual Chromium version against the selected Playwright package. Host
+tests also check each project's selected browser during setup.
+
+The host `playwright_browser_installation` helper reads Chromium/FFmpeg cache
+revisions from Playwright's `browsers.json`. Upgrades change the Chromium pin in
+`MODULE.bazel`, the compatible Playwright npm versions and `playwright_runtime`
+version, plus the FFmpeg archive if its revision changes. No cache-directory paths
+or APT configuration need editing. Re-run browser CI and review intentional pixel
+changes before updating baselines.
+
+With a compatible actiond worker:
+
+```sh
+bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test
+bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 //packages/editor/vrt:visual_test.update
+```
+
+The `Editor browser tests` workflow builds actiond at commit `4b767e8`, which includes
+memory-advice syscalls upstream and needs no local kernel patch. It checks KVM and
+vhost-vsock access first, starts a 6 GiB VM, runs comparison with `matching.ts`, then captures again
+and verifies the complete capture set without changing source baselines. The same path is available locally:
+
+```sh
+# Linux x64 with writable /dev/kvm and /dev/vhost-vsock:
+bash .github/scripts/actiond-vrt.sh
+```
+
+A machine without those devices can use an existing worker endpoint. VRT has no
+host fallback. `.update` applies only successful captures; review any intentional
+baseline changes. CI uploads browser results and worker logs.
 
 ## Built inputs
 
@@ -23,7 +62,7 @@ in Bazel's undeclared outputs.
 | `editor_shell`                 | Selects the built `gallery.html` entry point                                        |
 | `editor_server`                | Compiled custom server adapter serving the built app for E2E                        |
 | `e2e_specs`, `component_specs` | Compiled native Playwright specs and dependencies                                   |
-| `playwright`                   | Reusable matching Playwright packages and pinned browser image                      |
+| `playwright`                   | Reusable matching Playwright client packages                                        |
 | `vrt_matching`                 | Compiled comparison policy with a zero-pixel mismatch budget                        |
 
 `e2e_test` brings its own server; component and VRT targets bring their built
@@ -52,5 +91,4 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency is pinned to the public implementation commit providing
-the built-input API; this API is newer than the 1.0.0 release.
+The rules dependency pins [package runtime assembly support](https://github.com/perplexityai/rules_web_e2e/pull/35).

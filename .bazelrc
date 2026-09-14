@@ -121,6 +121,17 @@ build --@aspect_rules_ts//ts:default_to_tsc_transpiler
 fetch --@aspect_rules_ts//ts:default_to_tsc_transpiler
 query --@aspect_rules_ts//ts:default_to_tsc_transpiler
 
+# VRT requires a pinned actiond Linux amd64 executor; pass its endpoint separately.
+build:vrt --jobs=2
+build:vrt --spawn_strategy=sandboxed,local
+build:vrt --strategy=VrtCapture=remote
+build:vrt --strategy=VrtCompare=remote
+build:vrt --remote_local_fallback=false
+build:vrt --remote_upload_local_results=false
+build:vrt --noremote_cache_compression
+build:vrt --remote_download_outputs=all
+build:vrt --extra_execution_platforms=@platforms//host:host,@rules_web_e2e//internal:linux_amd64
+
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this

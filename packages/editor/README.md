@@ -514,7 +514,7 @@ library. The workflow demo demonstrates a React Intl consumer without making
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 runner supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application and pinned Testcontainers browser.
+accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E and component tests use Bazel-provisioned host Chromium. VRT uses a declared Linux runtime and actiond worker; provisioning is documented in the browser setup guide.
 
 ```sh
 bazel test //packages/editor/vrt:e2e_test --test_output=errors
@@ -522,7 +522,7 @@ bazel test //packages/editor/vrt:e2e_test --test_arg=--grep=translation
 ```
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
-drafts, and saving. It requires Docker and runs manually, locally, and uncached.
+drafts, and saving. It uses checksum-pinned Chromium provisioned by Bazel and runs manually, locally, and uncached. See [browser setup](vrt/README.md).
 CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
@@ -538,7 +538,7 @@ clear, ICU validation, and isolation between mounts.
 E2E uses a compiled custom server adapter serving the same built app. The runtime
 selects compiled `*.browser.spec.js` separately from E2E `*.spec.js` and generated
 VRT captures. CI should explicitly run all three
-manual browser targets. Screenshot baselines and updates remain in `visual_test`.
+browser targets through the `Editor browser tests` workflow. Screenshot baselines and updates remain in `visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
 renderable cases, browser-side capture hooks, and VRT options. The gallery registers
