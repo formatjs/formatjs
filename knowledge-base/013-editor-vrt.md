@@ -35,7 +35,8 @@ VRT selects its Linux amd64 runtime from the pinned Playwright image through
 builds a pinned actiond worker with the memory-advice kernel patch and checks
 VM prerequisites before building. See [browser setup](../packages/editor/vrt/README.md).
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
-CI compares the checked-in baselines and verifies that a subsequent capture leaves them unchanged.
+CI compares the checked-in baselines with `matching.ts` and checks the complete
+capture set without applying it to source baselines.
 
 Run `.update` only for intentional visual changes, review the PNGs, then run
 comparison. See `packages/editor/vrt/README.md` for exact commands.

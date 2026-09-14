@@ -35,8 +35,8 @@ bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc:
 The `Editor browser tests` workflow builds actiond at commit `8a42c3d`, with the
 memory-advice kernel patch tracked by
 [actiond #33](https://github.com/hermeticbuild/actiond/pull/33). It checks KVM and
-vhost-vsock access first, starts a 6 GiB VM, runs comparison, then captures again
-and verifies that baselines did not change. The same path is available locally:
+vhost-vsock access first, starts a 6 GiB VM, runs comparison with `matching.ts`, then captures again
+and verifies the complete capture set without changing source baselines. The same path is available locally:
 
 ```sh
 # Linux x64 with writable /dev/kvm and /dev/vhost-vsock:

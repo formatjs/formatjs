@@ -43,5 +43,22 @@ done
 "$ready" || { cat "$work/vm.log"; exit 1; }
 flags=(--config=vrt --remote_executor=grpc://127.0.0.1:8980 --remote_cache=grpc://127.0.0.1:8980)
 "$bazel_bin" test "${flags[@]}" //packages/editor/vrt:visual_test --test_output=errors
-"$bazel_bin" run "${flags[@]}" //packages/editor/vrt:visual_test.update
-git diff --exit-code -- packages/editor/vrt/__screenshots__
+"$bazel_bin" build "${flags[@]}" //packages/editor/vrt:visual_test_capture
+capture=$("$bazel_bin" cquery "${flags[@]}" //packages/editor/vrt:visual_test_capture --output=files)
+# The action reports test failure in result.json, even when Bazel succeeds.
+# Comparison above enforces matching.ts; PNG byte equality is stricter than it.
+python3 - "$capture" packages/editor/vrt/__screenshots__ <<'PYTHON'
+import json
+from pathlib import Path
+import sys
+
+capture, references = map(Path, sys.argv[1:])
+result = json.loads((capture / "result.json").read_text())
+if result["exitCode"] != 0:
+    raise SystemExit(f"Capture failed: {result}")
+actual = {p.name for p in (capture / "baselines").glob("*.png")}
+expected = {p.name for p in references.glob("*.png")}
+if not actual or actual != expected:
+    raise SystemExit(f"Capture set differs: expected {sorted(expected)}, got {sorted(actual)}")
+print(f"Captured all {len(actual)} baselines; source files are unchanged.")
+PYTHON
