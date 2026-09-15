@@ -1150,7 +1150,13 @@ validation. Explicitly widening a typed descriptor to `MessageDescriptor` erases
 its checks, as does using `any`. Generated helper results retain the standard
 `MessageDescriptor` shape rather than the original descriptor's literal ID type.
 
-### Explicit catalog annotations
+### Explicit descriptor and catalog annotations
+
+For an annotated `defineMessage` variable, autofix replaces `MessageDescriptor`
+(or a local alias or `Readonly` wrapper) with `TypedMessageDescriptor<Values>`.
+This preserves the generated ICU contract across exports and allows referenced
+catalog entries to use `MessageValuesOf<typeof message>`. Existing typed
+annotations are refreshed when the message changes.
 
 For an annotated `defineMessages` variable, autofix replaces the original
 annotation with per-message `TypedMessageDescriptor` contracts:

@@ -1083,3 +1083,36 @@ ruleTester.run('shared descriptor and mixed error catalogs', rule, {
     },
   ],
 })
+
+ruleTester.run('annotated standalone descriptors', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage, type TypedMessageDescriptor} from 'react-intl'; export const message: TypedMessageDescriptor<{ readonly n: number | bigint }> = defineMessage<{ readonly n: number | bigint }>({defaultMessage: '{n, number}'})`,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage, type MessageDescriptor} from 'react-intl'; export const message: MessageDescriptor = defineMessage({defaultMessage: '{n, number}'})`,
+      output: `import {defineMessage} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; export const message: TypedMessageDescriptor<{ readonly "n": number | bigint }> = defineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage, type MessageDescriptor, type TypedMessageDescriptor} from '@formatjs/intl'; type Descriptor = Readonly<MessageDescriptor>; export const message: Descriptor = defineMessage<{readonly n: string}>({defaultMessage: '{n, number}'})`,
+      output: `import {defineMessage, type TypedMessageDescriptor} from '@formatjs/intl';  export const message: TypedMessageDescriptor<{ readonly "n": number | bigint }> = defineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage, type TypedMessageDescriptor} from 'react-intl'; export const message: TypedMessageDescriptor<{readonly n: string}> = defineMessage<{readonly n: string}>({defaultMessage: '{n, number}'})`,
+      output: `import {defineMessage, type TypedMessageDescriptor} from 'react-intl'; export const message: TypedMessageDescriptor<{ readonly "n": number | bigint }> = defineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'})`,
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})

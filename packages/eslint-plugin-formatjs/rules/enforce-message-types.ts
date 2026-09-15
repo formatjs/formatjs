@@ -526,8 +526,12 @@ function obsoleteTypes(
   return edits
 }
 
-// Replace broad catalog annotations with explicit per-message contracts.
-function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
+// Replace broad descriptor and catalog annotations with explicit ICU contracts.
+function messageAnnotation(
+  context: Rule.RuleContext,
+  node: CallExpression,
+  catalog: boolean
+) {
   const parent = (node as Node & {parent?: Node}).parent
   if (parent?.type !== 'VariableDeclarator' || parent.init !== node) return
   const annotation = (
@@ -575,12 +579,16 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
   function broad(type: TypeNode, seen = new Set<TypeNode>()): boolean {
     if (seen.has(type)) return false
     seen.add(type)
+    if (!catalog && imported(type, 'MessageDescriptor')) return true
     if (type.type === 'TSTypeLiteral')
-      return !!type.members?.every(
-        member =>
-          member.type === 'TSPropertySignature' &&
-          !!member.typeAnnotation &&
-          descriptorType(member.typeAnnotation.typeAnnotation)
+      return (
+        catalog &&
+        !!type.members?.every(
+          member =>
+            member.type === 'TSPropertySignature' &&
+            !!member.typeAnnotation &&
+            descriptorType(member.typeAnnotation.typeAnnotation)
+        )
       )
     let scope: ReturnType<typeof context.sourceCode.getScope> | null =
       context.sourceCode.getScope(type as unknown as Node)
@@ -605,6 +613,7 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
     if (type.typeName?.name === 'Readonly' && parameters?.length === 1)
       return broad(parameters[0], seen)
     return (
+      catalog &&
       type.typeName?.name === 'Record' &&
       parameters?.length === 2 &&
       descriptorType(parameters[1])
@@ -612,6 +621,7 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
   }
 
   function typedMap(type: TypeNode): boolean {
+    if (!catalog) return imported(type, 'TypedMessageDescriptor')
     return (
       type.type === 'TSTypeLiteral' &&
       !!type.members?.every(
@@ -631,6 +641,7 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
     ? annotation
     : undefined
   if (
+    catalog &&
     annotation.type === 'TSIntersectionType' &&
     annotation.types?.length === 2
   ) {
@@ -806,7 +817,7 @@ export const rule: Rule.RuleModule = {
       manual:
         'Unsupported number of generic arguments; update the call manually.',
       annotation:
-        'Catalog annotation may erase ICU contracts; use per-message TypedMessageDescriptor types.',
+        'Message annotation may erase ICU contracts; use TypedMessageDescriptor types.',
       dynamic:
         'Typed messages require static message strings and parser options for contract verification.',
     },
@@ -1034,8 +1045,9 @@ export const rule: Rule.RuleModule = {
           return
         }
         const annotation =
-          imported.helper === 'defineMessages'
-            ? catalogAnnotation(context, node)
+          imported.helper === 'defineMessages' ||
+          imported.helper === 'defineMessage'
+            ? messageAnnotation(context, node, catalog)
             : undefined
         if (annotation && !annotation.supported) {
           context.report({
@@ -1048,22 +1060,28 @@ export const rule: Rule.RuleModule = {
         let catalogType: string | undefined
         try {
           if (annotation) {
-            catalogType = entries.length
-              ? '{ ' +
-                entries
-                  .map(
-                    (entry, index) =>
-                      'readonly ' +
-                      entry!.key +
-                      ': import(' +
-                      JSON.stringify(imported.module) +
-                      ').TypedMessageDescriptor<' +
-                      types[index] +
-                      '>'
-                  )
-                  .join('; ') +
-                ' }'
-              : '{}'
+            catalogType = !catalog
+              ? 'import(' +
+                JSON.stringify(imported.module) +
+                ').TypedMessageDescriptor<' +
+                types[0] +
+                '>'
+              : entries.length
+                ? '{ ' +
+                  entries
+                    .map(
+                      (entry, index) =>
+                        'readonly ' +
+                        entry!.key +
+                        ': import(' +
+                        JSON.stringify(imported.module) +
+                        ').TypedMessageDescriptor<' +
+                        types[index] +
+                        '>'
+                    )
+                    .join('; ') +
+                  ' }'
+                : '{}'
           }
           contract = !catalog
             ? types[0]
