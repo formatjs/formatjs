@@ -179,6 +179,19 @@ describe('translation workflow', () => {
     expect(result.current.pageMessages).toHaveLength(2)
   })
 
+  it('resets pagination when exactness or text scope changes', () => {
+    const {result} = renderHook(() =>
+      useTranslationEditor(options({pageSize: 1}))
+    )
+    act(() => result.current.setPage(1))
+    expect(result.current.page).toBe(1)
+    act(() => result.current.editor.setSearchMode('exact'))
+    expect(result.current.page).toBe(0)
+    act(() => result.current.setPage(1))
+    act(() => result.current.editor.setSearchScope('translation'))
+    expect(result.current.page).toBe(0)
+  })
+
   it('isolates failures and prevents duplicate saves without locking other messages', async () => {
     const request = deferred()
     const onSave = vi.fn(() => request.promise)

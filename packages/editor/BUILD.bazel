@@ -19,6 +19,7 @@ formatjs_library(
         "message-context.tsx",
         "message-preview.tsx",
         "message-status.ts",
+        "search.ts",
         "types.ts",
         "ui.tsx",
         "validation.ts",
@@ -90,6 +91,7 @@ formatjs_test(
     srcs = [
         "editor.test.tsx",
         "multi-locale.test.tsx",
+        "search.test.ts",
         "tools.test.tsx",
         "ui.test.tsx",
         "workflow.test.tsx",

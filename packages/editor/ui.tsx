@@ -1,5 +1,8 @@
 import {useId, type ReactNode} from 'react'
-import {useEditorDesignSystem} from '#packages/editor/design-system.js'
+import {
+  useEditorDesignSystem,
+  type EditorSearchControlsLabels,
+} from '#packages/editor/design-system.js'
 export {
   type EditorButtonProps,
   type EditorInputProps,
@@ -15,6 +18,8 @@ export {
   type EditorCopyStatus,
   type EditorCopyButtonProps,
   type EditorMetadataProps,
+  type EditorSearchControlsLabels,
+  type EditorSearchControlsProps,
   type EditorToolComponents,
   type ResolvedEditorComponents,
   nativeEditorComponents,
@@ -45,6 +50,14 @@ import type {
   EditorMessage,
   TranslationDraftState,
 } from '#packages/editor/workflow.js'
+import type {
+  MessageSearchMode,
+  MessageSearchScope,
+} from '#packages/editor/search.js'
+import {
+  CopyTextButton,
+  type CopyTextButtonProps,
+} from '#packages/editor/copy-text-button.js'
 import type {TranslationValidationError} from '#packages/editor/validation.js'
 
 export interface EditorLabels {
@@ -52,6 +65,7 @@ export interface EditorLabels {
   descriptionSearch: string
   messages: string
   source: string
+  description: string
   noMessages: string
   noSelection: string
   loading: string
@@ -63,12 +77,14 @@ export interface EditorLabels {
   unsaved: string
   unchanged: string
   validation: Record<TranslationValidationError, string>
+  searchOptions: EditorSearchControlsLabels
 }
 const defaultLabels: EditorLabels = {
   search: 'Search messages',
   descriptionSearch: 'Search descriptions',
   messages: 'Messages',
   source: 'Source message',
+  description: 'Description',
   noMessages: 'No matching messages',
   noSelection: 'Select a message',
   loading: 'Loading messages…',
@@ -86,15 +102,30 @@ const defaultLabels: EditorLabels = {
     structure:
       'Preserve ICU arguments, tags, formatting styles, and selector branches.',
   },
+  searchOptions: {
+    title: 'Search options',
+    scope: 'Search in',
+    source: 'Source',
+    translation: 'Translation',
+    both: 'Source and translation',
+    exact: 'Exact text',
+  },
 }
-export type EditorLabelOverrides = Partial<Omit<EditorLabels, 'validation'>> & {
+export type EditorLabelOverrides = Partial<
+  Omit<EditorLabels, 'validation' | 'searchOptions'>
+> & {
   validation?: Partial<EditorLabels['validation']>
+  searchOptions?: Partial<EditorLabels['searchOptions']>
 }
 function resolveLabels(labels?: EditorLabelOverrides): EditorLabels {
   return {
     ...defaultLabels,
     ...labels,
     validation: {...defaultLabels.validation, ...labels?.validation},
+    searchOptions: {
+      ...defaultLabels.searchOptions,
+      ...labels?.searchOptions,
+    },
   }
 }
 interface ViewOptions {
@@ -108,6 +139,12 @@ export interface EditorSearch {
   value: string
   onValueChange: (value: string) => void
 }
+export interface EditorSearchOptions {
+  mode: MessageSearchMode
+  scope: MessageSearchScope
+  onModeChange: (mode: MessageSearchMode) => void
+  onScopeChange: (scope: MessageSearchScope) => void
+}
 export interface EditorMessageRenderState {
   selected: boolean
 }
@@ -120,6 +157,8 @@ export interface MessageListProps<
   search?: EditorSearch
   /** Independent description-only search, conjunctive with general search. */
   descriptionSearch?: EditorSearch
+  /** Text-field scope and exactness; metadata lookup remains consumer-defined. */
+  searchOptions?: EditorSearchOptions
   loading?: boolean
   pagination?: ReactNode
   /** Summary or controls between search and the loaded rows. */
@@ -144,6 +183,7 @@ export function MessageList<
   onSelect,
   search,
   descriptionSearch,
+  searchOptions,
   loading = false,
   pagination,
   listSummary,
@@ -151,7 +191,7 @@ export function MessageList<
   renderMessageActions,
   labels,
 }: MessageListProps<Message>): ReactNode {
-  const {TextInput, MessageRow} = useEditorDesignSystem()
+  const {TextInput, MessageRow, SearchControls} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   const searchId = useId()
   const descriptionSearchId = useId()
@@ -182,6 +222,9 @@ export function MessageList<
             placeholder={text.descriptionSearch}
           />
         </div>
+      )}
+      {searchOptions && (
+        <SearchControls {...searchOptions} labels={text.searchOptions} />
       )}
       {listSummary}
       {loading && (
@@ -225,11 +268,20 @@ export interface SourceMessageProps extends ViewOptions {
   message: EditorViewMessage
   preview?: ReactNode
   context?: ReactNode
+  copySource?: boolean
+  copyDescription?: boolean
+  copyOptions?: Pick<
+    CopyTextButtonProps,
+    'writeText' | 'onCopy' | 'onError' | 'labels' | 'feedbackDurationMs'
+  >
 }
 export function SourceMessage({
   message,
   preview,
   context,
+  copySource = false,
+  copyDescription = false,
+  copyOptions,
   labels,
 }: SourceMessageProps): ReactNode {
   const {Panel} = useEditorDesignSystem()
@@ -238,8 +290,28 @@ export function SourceMessage({
     <Panel kind="source" label={text.source}>
       <h2>{text.source}</h2>
       <code>{message.id}</code>
-      {preview ?? <pre>{message.defaultMessage}</pre>}
-      {message.description && <p>{message.description}</p>}
+      <div>
+        {preview ?? <pre>{message.defaultMessage}</pre>}
+        {copySource && (
+          <CopyTextButton
+            {...copyOptions}
+            value={message.defaultMessage}
+            label={text.source}
+          />
+        )}
+      </div>
+      {message.description && (
+        <div>
+          <p>{message.description}</p>
+          {copyDescription && (
+            <CopyTextButton
+              {...copyOptions}
+              value={message.description}
+              label={text.description}
+            />
+          )}
+        </div>
+      )}
       {context}
     </Panel>
   )
@@ -362,6 +434,9 @@ export interface TranslationEditorViewProps<
   translations: readonly EditorTranslation[]
   filters?: ReactNode
   context?: ReactNode
+  copySource?: boolean
+  copyDescription?: boolean
+  copyOptions?: SourceMessageProps['copyOptions']
   sourcePreview?: ReactNode
   notice?: ReactNode
   sidebar?: ReactNode
@@ -381,6 +456,9 @@ export function TranslationEditorView<
   translations,
   filters,
   context,
+  copySource,
+  copyDescription,
+  copyOptions,
   sourcePreview,
   notice,
   sidebar,
@@ -418,6 +496,9 @@ export function TranslationEditorView<
             message={selectedMessage}
             preview={sourcePreview}
             context={context}
+            copySource={copySource}
+            copyDescription={copyDescription}
+            copyOptions={copyOptions}
             labels={labels}
           />
           {renderTranslations ? renderTranslations(fields) : fields}
