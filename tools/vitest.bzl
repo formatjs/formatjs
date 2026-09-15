@@ -155,6 +155,8 @@ def vitest(
             name = snapshot_target_name,
             srcs = srcs_no_snapshots + fixtures + deps + [item for item in data if item != "//:package.json"] + [actual_config, "//:root_package_json"],
             out_dirs = [snapshot_dir],
+            # Actions run under bazel-out/<config>/bin; execpaths preserve transitions.
+            env = {key: value.replace("$(rootpath ", "../../../$(execpath ") for key, value in kwargs.get("env", {}).items()},
             args = [
                 "run",
                 "--no-file-parallelism",
