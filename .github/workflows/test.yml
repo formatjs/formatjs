@@ -44,7 +44,7 @@ jobs:
 
       - name: Run Tests
         env:
-          BUILDBUDDY_API_KEY: ${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+          BUILDBUDDY_API_KEY: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.BUILDBUDDY_ORG_API_KEY || '' }}
         run: |
           bazel_args=()
           if [ -n "$BUILDBUDDY_API_KEY" ]; then
@@ -54,7 +54,7 @@ jobs:
 
       - name: Rust CLI Smoke Test
         env:
-          BUILDBUDDY_API_KEY: ${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+          BUILDBUDDY_API_KEY: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.BUILDBUDDY_ORG_API_KEY || '' }}
         run: |
           bazel_args=(--compilation_mode=opt)
           if [ -n "$BUILDBUDDY_API_KEY" ]; then

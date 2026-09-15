@@ -77,32 +77,25 @@ across the monorepo.
 
 ### GitHub Actions test cache
 
-The `Test` workflow's `test` job runs on Ubuntu 24.04 with local Bazel execution
-on both main and PRs. BuildBuddy workflows still run RBE separately. Do not
-conditionally add `--config=ci` to this job: that changes its platforms and action
-keys, leaving forks unable to reuse main's outputs.
+The `Test` workflow's `test` job uses Ubuntu 24.04 and `--config=rbe-platform`
+on both main and PRs. Execution platforms, target platforms, `EXECUTOR`, and
+Go linker flags must match so PRs can reuse main's action results.
 
-`actions/cache/restore` restores the Bazel disk cache from a dedicated
-`gha-test-local-v1-ubuntu24` namespace, partitioned by architecture and Bazel
-version. Its fallback prefix cannot select an examples or release cache.
-Non-cancelled main push runs save a fresh snapshot keyed by commit, run, and attempt;
-PRs only restore. Completed actions remain useful even when a later test fails.
-This refreshes source-only changes too, unlike a key based only
-on BUILD files. Bazel still checks each action's inputs before reusing outputs.
+Only main push jobs receive the BuildBuddy key and add
+`--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all`.
+Main executes on BuildBuddy and downloads outputs into its disk cache. PRs get
+no BuildBuddy key, restore the disk cache, and execute misses locally.
 
-Fork PRs can read main's GHA cache without a BuildBuddy credential. The first
-main run must populate this namespace; cold runs still compile and
-test the full repository locally. Cache eviction, toolchain changes, and targets
-that disable caching can also require work. Restore logs and Bazel's process
-summary distinguish archive restores from actual action cache hits.
+`actions/cache/restore` uses the dedicated `gha-test-rbe-v2-ubuntu24` namespace,
+partitioned by architecture and Bazel version. Non-cancelled main push runs save
+a fresh snapshot keyed by commit, run, and attempt; PRs only restore. Completed
+actions remain useful even when a later test fails. The namespace cannot match
+old local-platform, examples, or release caches.
 
-GitHub's test job uses `--config=rbe-platform` on main and forks so execution
-platforms, target platforms, and `EXECUTOR` match. Authenticated builds add
-`--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all` to execute on BuildBuddy and populate
-the disk cache. Forks use that disk cache without remote credentials and execute
-cache misses locally. Main saves `gha-test-rbe-v2-*` snapshots; PRs only restore.
-The namespace is separate from the old local-platform cache. Cross-run reuse
-must be verified on Linux with a fresh output base, including local cache misses.
+PR CI validates local execution. RBE population and GHA publication require a
+main run after merge, followed by a PR restore. Check Bazel's process summary
+for actual disk cache hits; an archive restore alone does not prove reuse.
+Cache eviction, toolchain changes, and uncacheable targets still require work.
 
 ## TypeScript Build Pipeline
 
