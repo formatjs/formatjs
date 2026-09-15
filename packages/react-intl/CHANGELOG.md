@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.1](https://github.com/formatjs/formatjs/compare/react-intl@11.0.0...react-intl@11.0.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* **react-intl:** align $t with formatMessage overloads ([#7416](https://github.com/formatjs/formatjs/issues/7416)) ([8554d5e](https://github.com/formatjs/formatjs/commit/8554d5e789acd95b2fd1b415413c7c40a5e922a8))
+
 ## [11.0.0](https://github.com/formatjs/formatjs/compare/react-intl@11.0.0-rc.1...react-intl@11.0.0) (2026-09-15)
 
 
