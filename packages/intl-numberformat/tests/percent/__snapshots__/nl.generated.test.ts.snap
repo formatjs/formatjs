@@ -1,0 +1,2673 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 miljoen - +2 miljoen"`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 mln. - +2 mln."`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 miljoen - 2 miljoen"`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 mln. - 2 mln."`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 miljoen - +2 miljoen"`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 mln. - +2 mln."`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 miljoen - 2 miljoen"`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "miljoen",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 mln. - 2 mln."`;
+
+exports[`Intl.NumberFormat nl > notation=compact, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "startRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "endRange",
+    "type": "compact",
+    "value": "mln.",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=always, compactDisplay=long 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=always, compactDisplay=short 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=auto, compactDisplay=long 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=auto, compactDisplay=short 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=never, compactDisplay=long 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=never, compactDisplay=short 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=engineering, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=always, compactDisplay=long 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=always, compactDisplay=short 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=auto, compactDisplay=long 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=auto, compactDisplay=short 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1E6% - +2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=never, compactDisplay=long 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=never, compactDisplay=short 2`] = `"1E6% - 2E6%"`;
+
+exports[`Intl.NumberFormat nl > notation=scientific, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "startRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentSeparator",
+    "value": "E",
+  },
+  {
+    "source": "endRange",
+    "type": "exponentInteger",
+    "value": "6",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=always, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=always, compactDisplay=long 2`] = `"+1.000.000% - +2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=always, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=always, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=always, compactDisplay=short 2`] = `"+1.000.000% - +2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=always, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=auto, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=auto, compactDisplay=long 2`] = `"1.000.000% - 2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=auto, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=auto, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=auto, compactDisplay=short 2`] = `"1.000.000% - 2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=auto, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=exceptZero, compactDisplay=long 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1.000.000% - +2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=exceptZero, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=exceptZero, compactDisplay=short 1`] = `
+[
+  {
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1.000.000% - +2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=exceptZero, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "plusSign",
+    "value": "+",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=never, compactDisplay=long 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=never, compactDisplay=long 2`] = `"1.000.000% - 2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=never, compactDisplay=long 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=never, compactDisplay=short 1`] = `
+[
+  {
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=never, compactDisplay=short 2`] = `"1.000.000% - 2.000.000%"`;
+
+exports[`Intl.NumberFormat nl > notation=standard, signDisplay=never, compactDisplay=short 3`] = `
+[
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "1",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "startRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " - ",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "2",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "group",
+    "value": ".",
+  },
+  {
+    "source": "endRange",
+    "type": "integer",
+    "value": "000",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+]
+`;

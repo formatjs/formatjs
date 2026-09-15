@@ -113,7 +113,7 @@ export default injectIntl(Foo);
 
 exports[`emit asserts for > extractFromFormatMessageStateless 1`] = `
 "import { FormattedMessage, injectIntl, useIntl } from 'react-intl';
-import React from 'react';
+import * as React from 'react';
 function myFunction(param1, { formatMessage, formatDate }) {
     return (formatMessage({ id: "inline1", defaultMessage: "Hello params!" }) + formatDate(new Date()));
 }
@@ -204,7 +204,8 @@ export default class Foo extends Component {
 `;
 
 exports[`emit asserts for > nested 1`] = `
-"intl.formatMessage({ id: "HELLO..13.undefined", defaultMessage: "layer1 {name}" }, {
+""use strict";
+intl.formatMessage({ id: "HELLO..13.undefined", defaultMessage: "layer1 {name}" }, {
     name: intl.formatMessage({ id: "HELLO..6.undefined", defaultMessage: "layer2" }),
 });
 "

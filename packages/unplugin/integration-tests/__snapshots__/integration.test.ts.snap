@@ -1,0 +1,817 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@formatjs/unplugin — esbuild > ast option pre-parses defaultMessage 1`] = `
+"// fixtures/defineMessage.js
+function defineMessage(msg2) {
+  return msg2;
+}
+var msg = defineMessage({
+  id: "jWws65",
+  defaultMessage: [{ "type": 6, "value": "count", "options": { "one": { "value": [{ "type": 0, "value": "You have " }, { "type": 7 }, { "type": 0, "value": " item" }] }, "other": { "value": [{ "type": 0, "value": "You have " }, { "type": 7 }, { "type": 0, "value": " items" }] } }, "offset": 0, "pluralType": "cardinal" }]
+});
+export {
+  msg
+};
+"
+`;
+
+exports[`@formatjs/unplugin — esbuild > defineMessages: processes multiple descriptors 1`] = `
+"// fixtures/defineMessages.js
+function defineMessages(msgs) {
+  return msgs;
+}
+var messages = defineMessages({
+  greeting: {
+    id: "Thkx7j",
+    defaultMessage: "Hello {name}"
+  },
+  farewell: {
+    id: "Vcy7vG",
+    defaultMessage: "Goodbye {name}"
+  }
+});
+export {
+  messages
+};
+"
+`;
+
+exports[`@formatjs/unplugin — esbuild > generates ids and removes descriptions 1`] = `
+"// fixtures/formatMessage.js
+var intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage;
+  }
+};
+var greeting = intl.formatMessage({
+  id: "YyDw8T",
+  defaultMessage: "Hello World"
+});
+var farewell = intl.formatMessage({
+  id: "73dImr",
+  defaultMessage: "Goodbye World"
+});
+export {
+  farewell,
+  greeting
+};
+"
+`;
+
+exports[`@formatjs/unplugin — esbuild > idInterpolationPattern option 1`] = `
+"// fixtures/formatMessage.js
+var intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage;
+  }
+};
+var greeting = intl.formatMessage({
+  id: "6320f0f1",
+  defaultMessage: "Hello World"
+});
+var farewell = intl.formatMessage({
+  id: "ef77489a",
+  defaultMessage: "Goodbye World"
+});
+export {
+  farewell,
+  greeting
+};
+"
+`;
+
+exports[`@formatjs/unplugin — esbuild > overrideIdFn option 1`] = `
+"// fixtures/formatMessage.js
+var intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage;
+  }
+};
+var greeting = intl.formatMessage({
+  id: "custom_Hello_World",
+  defaultMessage: "Hello World"
+});
+var farewell = intl.formatMessage({
+  id: "custom_Goodbye_World",
+  defaultMessage: "Goodbye World"
+});
+export {
+  farewell,
+  greeting
+};
+"
+`;
+
+exports[`@formatjs/unplugin — esbuild > removeDefaultMessage option 1`] = `
+"// fixtures/formatMessage.js
+var intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage;
+  }
+};
+var greeting = intl.formatMessage({
+  id: "YyDw8T"
+});
+var farewell = intl.formatMessage({
+  id: "73dImr"
+});
+export {
+  farewell,
+  greeting
+};
+"
+`;
+
+exports[`@formatjs/unplugin — rollup > ast option pre-parses defaultMessage 1`] = `
+"function defineMessage(msg) {
+  return msg
+}
+
+const msg = defineMessage({id: "jWws65", 
+  defaultMessage: [{"type":6,"value":"count","options":{"one":{"value":[{"type":0,"value":"You have "},{"type":7},{"type":0,"value":" item"}]},"other":{"value":[{"type":0,"value":"You have "},{"type":7},{"type":0,"value":" items"}]}},"offset":0,"pluralType":"cardinal"}],
+});
+
+export { msg };
+"
+`;
+
+exports[`@formatjs/unplugin — rollup > defineMessages: processes multiple descriptors 1`] = `
+"function defineMessages(msgs) {
+  return msgs
+}
+
+const messages = defineMessages({
+  greeting: {id: "Thkx7j", 
+    defaultMessage: 'Hello {name}',
+  },
+  farewell: {id: "Vcy7vG", 
+    defaultMessage: 'Goodbye {name}',
+  },
+});
+
+export { messages };
+"
+`;
+
+exports[`@formatjs/unplugin — rollup > generates ids and removes descriptions 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+};
+
+const greeting = intl.formatMessage({id: "YyDw8T", 
+  defaultMessage: 'Hello World',
+});
+
+const farewell = intl.formatMessage({id: "73dImr", 
+  defaultMessage: 'Goodbye World',
+});
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rollup > idInterpolationPattern option 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+};
+
+const greeting = intl.formatMessage({id: "6320f0f1", 
+  defaultMessage: 'Hello World',
+});
+
+const farewell = intl.formatMessage({id: "ef77489a", 
+  defaultMessage: 'Goodbye World',
+});
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rollup > overrideIdFn option 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+};
+
+const greeting = intl.formatMessage({id: "custom_Hello_World", 
+  defaultMessage: 'Hello World',
+});
+
+const farewell = intl.formatMessage({id: "custom_Goodbye_World", 
+  defaultMessage: 'Goodbye World',
+});
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rollup > removeDefaultMessage option 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+};
+
+const greeting = intl.formatMessage({id: "YyDw8T", 
+});
+
+const farewell = intl.formatMessage({id: "73dImr", 
+});
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rspack > ast option pre-parses defaultMessage 1`] = `
+"// The require scope
+var __webpack_require__ = {};
+
+// webpack/runtime/define_property_getters
+(() => {
+__webpack_require__.d = (exports, getters, values) => {
+	var define = (defs, kind) => {
+		for(var key in defs) {
+			if(__webpack_require__.o(defs, key) && !__webpack_require__.o(exports, key)) {
+				Object.defineProperty(exports, key, { enumerable: true, [kind]: defs[key] });
+			}
+		}
+	};
+	define(getters, "get");
+	define(values, "value");
+};
+})();
+// webpack/runtime/has_own_property
+(() => {
+__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+})();
+var __webpack_exports__ = {};
+function defineMessage(msg) {
+  return msg
+}
+
+const msg = defineMessage({id: "jWws65", 
+  defaultMessage: [{"type":6,"value":"count","options":{"one":{"value":[{"type":0,"value":"You have "},{"type":7},{"type":0,"value":" item"}]},"other":{"value":[{"type":0,"value":"You have "},{"type":7},{"type":0,"value":" items"}]}},"offset":0,"pluralType":"cardinal"}],
+})
+
+__webpack_require__.d(__webpack_exports__, {
+}, {
+  a: msg
+});
+
+var __webpack_exports__msg = __webpack_exports__.a;
+export { __webpack_exports__msg as msg };
+"
+`;
+
+exports[`@formatjs/unplugin — rspack > defineMessages: processes multiple descriptors 1`] = `
+"// The require scope
+var __webpack_require__ = {};
+
+// webpack/runtime/define_property_getters
+(() => {
+__webpack_require__.d = (exports, getters, values) => {
+	var define = (defs, kind) => {
+		for(var key in defs) {
+			if(__webpack_require__.o(defs, key) && !__webpack_require__.o(exports, key)) {
+				Object.defineProperty(exports, key, { enumerable: true, [kind]: defs[key] });
+			}
+		}
+	};
+	define(getters, "get");
+	define(values, "value");
+};
+})();
+// webpack/runtime/has_own_property
+(() => {
+__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+})();
+var __webpack_exports__ = {};
+function defineMessages(msgs) {
+  return msgs
+}
+
+const messages = defineMessages({
+  greeting: {id: "Thkx7j", 
+    defaultMessage: 'Hello {name}',
+  },
+  farewell: {id: "Vcy7vG", 
+    defaultMessage: 'Goodbye {name}',
+  },
+})
+
+__webpack_require__.d(__webpack_exports__, {
+}, {
+  D: messages
+});
+
+var __webpack_exports__messages = __webpack_exports__.D;
+export { __webpack_exports__messages as messages };
+"
+`;
+
+exports[`@formatjs/unplugin — rspack > generates ids and removes descriptions 1`] = `
+"// The require scope
+var __webpack_require__ = {};
+
+// webpack/runtime/define_property_getters
+(() => {
+__webpack_require__.d = (exports, getters, values) => {
+	var define = (defs, kind) => {
+		for(var key in defs) {
+			if(__webpack_require__.o(defs, key) && !__webpack_require__.o(exports, key)) {
+				Object.defineProperty(exports, key, { enumerable: true, [kind]: defs[key] });
+			}
+		}
+	};
+	define(getters, "get");
+	define(values, "value");
+};
+})();
+// webpack/runtime/has_own_property
+(() => {
+__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+})();
+var __webpack_exports__ = {};
+const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "YyDw8T", 
+  defaultMessage: 'Hello World',
+})
+
+const farewell = intl.formatMessage({id: "73dImr", 
+  defaultMessage: 'Goodbye World',
+})
+
+__webpack_require__.d(__webpack_exports__, {
+}, {
+  B: farewell,
+  O: greeting
+});
+
+var __webpack_exports__farewell = __webpack_exports__.B;
+var __webpack_exports__greeting = __webpack_exports__.O;
+export { __webpack_exports__farewell as farewell, __webpack_exports__greeting as greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rspack > idInterpolationPattern option 1`] = `
+"// The require scope
+var __webpack_require__ = {};
+
+// webpack/runtime/define_property_getters
+(() => {
+__webpack_require__.d = (exports, getters, values) => {
+	var define = (defs, kind) => {
+		for(var key in defs) {
+			if(__webpack_require__.o(defs, key) && !__webpack_require__.o(exports, key)) {
+				Object.defineProperty(exports, key, { enumerable: true, [kind]: defs[key] });
+			}
+		}
+	};
+	define(getters, "get");
+	define(values, "value");
+};
+})();
+// webpack/runtime/has_own_property
+(() => {
+__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+})();
+var __webpack_exports__ = {};
+const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "6320f0f1", 
+  defaultMessage: 'Hello World',
+})
+
+const farewell = intl.formatMessage({id: "ef77489a", 
+  defaultMessage: 'Goodbye World',
+})
+
+__webpack_require__.d(__webpack_exports__, {
+}, {
+  B: farewell,
+  O: greeting
+});
+
+var __webpack_exports__farewell = __webpack_exports__.B;
+var __webpack_exports__greeting = __webpack_exports__.O;
+export { __webpack_exports__farewell as farewell, __webpack_exports__greeting as greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rspack > overrideIdFn option 1`] = `
+"// The require scope
+var __webpack_require__ = {};
+
+// webpack/runtime/define_property_getters
+(() => {
+__webpack_require__.d = (exports, getters, values) => {
+	var define = (defs, kind) => {
+		for(var key in defs) {
+			if(__webpack_require__.o(defs, key) && !__webpack_require__.o(exports, key)) {
+				Object.defineProperty(exports, key, { enumerable: true, [kind]: defs[key] });
+			}
+		}
+	};
+	define(getters, "get");
+	define(values, "value");
+};
+})();
+// webpack/runtime/has_own_property
+(() => {
+__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+})();
+var __webpack_exports__ = {};
+const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "custom_Hello_World", 
+  defaultMessage: 'Hello World',
+})
+
+const farewell = intl.formatMessage({id: "custom_Goodbye_World", 
+  defaultMessage: 'Goodbye World',
+})
+
+__webpack_require__.d(__webpack_exports__, {
+}, {
+  B: farewell,
+  O: greeting
+});
+
+var __webpack_exports__farewell = __webpack_exports__.B;
+var __webpack_exports__greeting = __webpack_exports__.O;
+export { __webpack_exports__farewell as farewell, __webpack_exports__greeting as greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — rspack > removeDefaultMessage option 1`] = `
+"// The require scope
+var __webpack_require__ = {};
+
+// webpack/runtime/define_property_getters
+(() => {
+__webpack_require__.d = (exports, getters, values) => {
+	var define = (defs, kind) => {
+		for(var key in defs) {
+			if(__webpack_require__.o(defs, key) && !__webpack_require__.o(exports, key)) {
+				Object.defineProperty(exports, key, { enumerable: true, [kind]: defs[key] });
+			}
+		}
+	};
+	define(getters, "get");
+	define(values, "value");
+};
+})();
+// webpack/runtime/has_own_property
+(() => {
+__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+})();
+var __webpack_exports__ = {};
+const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "YyDw8T", 
+})
+
+const farewell = intl.formatMessage({id: "73dImr", 
+})
+
+__webpack_require__.d(__webpack_exports__, {
+}, {
+  B: farewell,
+  O: greeting
+});
+
+var __webpack_exports__farewell = __webpack_exports__.B;
+var __webpack_exports__greeting = __webpack_exports__.O;
+export { __webpack_exports__farewell as farewell, __webpack_exports__greeting as greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — vite (JSX) > JSX: generates ids and removes descriptions 1`] = `
+"import { jsxDEV } from "react/jsx-dev-runtime";
+//#region fixtures/jsx.tsx
+var _jsxFileName = "<source>";
+function FormattedMessage(_props) {
+	return null;
+}
+function App() {
+	return /* @__PURE__ */ jsxDEV("div", { children: [/* @__PURE__ */ jsxDEV(FormattedMessage, {
+		id: "wdf0o2",
+		defaultMessage: "Welcome to our app"
+	}, void 0, false, {
+		fileName: _jsxFileName,
+		lineNumber: 8,
+		columnNumber: 7
+	}, this), /* @__PURE__ */ jsxDEV(FormattedMessage, {
+		id: "custom.id",
+		defaultMessage: "Custom ID message"
+	}, void 0, false, {
+		fileName: _jsxFileName,
+		lineNumber: 11,
+		columnNumber: 7
+	}, this)] }, void 0, true, {
+		fileName: _jsxFileName,
+		lineNumber: 7,
+		columnNumber: 5
+	}, this);
+}
+//#endregion
+export { App };
+"
+`;
+
+exports[`@formatjs/unplugin — vite (JSX) > compiled JSX: generates ids and removes descriptions 1`] = `
+"import { FormattedMessage } from "react-intl";
+import { jsx } from "react/jsx-runtime";
+//#region fixtures/compiledJsx.js
+function App() {
+	return jsx("div", { children: [jsx(FormattedMessage, {
+		id: "wdf0o2",
+		defaultMessage: "Welcome to our app"
+	}), jsx(FormattedMessage, {
+		id: "custom.id",
+		defaultMessage: "Custom ID message"
+	})] });
+}
+//#endregion
+export { App };
+"
+`;
+
+exports[`@formatjs/unplugin — vite (JSX) > removeDescription for TSX 1`] = `
+"import { Component } from "react";
+import { FormattedMessage } from "react-intl";
+import { jsxDEV } from "react/jsx-dev-runtime";
+//#region fixtures/removeDescription.tsx
+var _jsxFileName = "<source>";
+var Foo = class extends Component {
+	render() {
+		return /* @__PURE__ */ jsxDEV(FormattedMessage, {
+			id: "greeting-world",
+			defaultMessage: "Hello World!"
+		}, void 0, false, {
+			fileName: _jsxFileName,
+			lineNumber: 7,
+			columnNumber: 7
+		}, this);
+	}
+};
+//#endregion
+export { Foo as default };
+"
+`;
+
+exports[`@formatjs/unplugin — vite > ast option pre-parses defaultMessage 1`] = `
+"//#region fixtures/defineMessage.js
+function defineMessage(msg) {
+	return msg;
+}
+var msg = defineMessage({
+	id: "jWws65",
+	defaultMessage: [{
+		"type": 6,
+		"value": "count",
+		"options": {
+			"one": { "value": [
+				{
+					"type": 0,
+					"value": "You have "
+				},
+				{ "type": 7 },
+				{
+					"type": 0,
+					"value": " item"
+				}
+			] },
+			"other": { "value": [
+				{
+					"type": 0,
+					"value": "You have "
+				},
+				{ "type": 7 },
+				{
+					"type": 0,
+					"value": " items"
+				}
+			] }
+		},
+		"offset": 0,
+		"pluralType": "cardinal"
+	}]
+});
+//#endregion
+export { msg };
+"
+`;
+
+exports[`@formatjs/unplugin — vite > defineMessages: processes multiple descriptors 1`] = `
+"//#region fixtures/defineMessages.js
+function defineMessages(msgs) {
+	return msgs;
+}
+var messages = defineMessages({
+	greeting: {
+		id: "Thkx7j",
+		defaultMessage: "Hello {name}"
+	},
+	farewell: {
+		id: "Vcy7vG",
+		defaultMessage: "Goodbye {name}"
+	}
+});
+//#endregion
+export { messages };
+"
+`;
+
+exports[`@formatjs/unplugin — vite > generates ids and removes descriptions 1`] = `
+"//#region fixtures/formatMessage.js
+var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+var greeting = intl.formatMessage({
+	id: "YyDw8T",
+	defaultMessage: "Hello World"
+});
+var farewell = intl.formatMessage({
+	id: "73dImr",
+	defaultMessage: "Goodbye World"
+});
+//#endregion
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — vite > idInterpolationPattern option 1`] = `
+"//#region fixtures/formatMessage.js
+var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+var greeting = intl.formatMessage({
+	id: "6320f0f1",
+	defaultMessage: "Hello World"
+});
+var farewell = intl.formatMessage({
+	id: "ef77489a",
+	defaultMessage: "Goodbye World"
+});
+//#endregion
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — vite > overrideIdFn option 1`] = `
+"//#region fixtures/formatMessage.js
+var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+var greeting = intl.formatMessage({
+	id: "custom_Hello_World",
+	defaultMessage: "Hello World"
+});
+var farewell = intl.formatMessage({
+	id: "custom_Goodbye_World",
+	defaultMessage: "Goodbye World"
+});
+//#endregion
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — vite > removeDefaultMessage option 1`] = `
+"//#region fixtures/formatMessage.js
+var intl = { formatMessage(descriptor) {
+	return descriptor.defaultMessage;
+} };
+var greeting = intl.formatMessage({ id: "YyDw8T" });
+var farewell = intl.formatMessage({ id: "73dImr" });
+//#endregion
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — webpack > ast option pre-parses defaultMessage 1`] = `
+"function defineMessage(msg) {
+  return msg
+}
+
+const msg = defineMessage({id: "jWws65", 
+  defaultMessage: [{"type":6,"value":"count","options":{"one":{"value":[{"type":0,"value":"You have "},{"type":7},{"type":0,"value":" item"}]},"other":{"value":[{"type":0,"value":"You have "},{"type":7},{"type":0,"value":" items"}]}},"offset":0,"pluralType":"cardinal"}],
+})
+
+export { msg };
+"
+`;
+
+exports[`@formatjs/unplugin — webpack > defineMessages: processes multiple descriptors 1`] = `
+"function defineMessages(msgs) {
+  return msgs
+}
+
+const messages = defineMessages({
+  greeting: {id: "Thkx7j", 
+    defaultMessage: 'Hello {name}',
+  },
+  farewell: {id: "Vcy7vG", 
+    defaultMessage: 'Goodbye {name}',
+  },
+})
+
+export { messages };
+"
+`;
+
+exports[`@formatjs/unplugin — webpack > generates ids and removes descriptions 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "YyDw8T", 
+  defaultMessage: 'Hello World',
+})
+
+const farewell = intl.formatMessage({id: "73dImr", 
+  defaultMessage: 'Goodbye World',
+})
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — webpack > idInterpolationPattern option 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "6320f0f1", 
+  defaultMessage: 'Hello World',
+})
+
+const farewell = intl.formatMessage({id: "ef77489a", 
+  defaultMessage: 'Goodbye World',
+})
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — webpack > overrideIdFn option 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "custom_Hello_World", 
+  defaultMessage: 'Hello World',
+})
+
+const farewell = intl.formatMessage({id: "custom_Goodbye_World", 
+  defaultMessage: 'Goodbye World',
+})
+
+export { farewell, greeting };
+"
+`;
+
+exports[`@formatjs/unplugin — webpack > removeDefaultMessage option 1`] = `
+"const intl = {
+  formatMessage(descriptor) {
+    return descriptor.defaultMessage
+  },
+}
+
+const greeting = intl.formatMessage({id: "YyDw8T", 
+})
+
+const farewell = intl.formatMessage({id: "73dImr", 
+})
+
+export { farewell, greeting };
+"
+`;

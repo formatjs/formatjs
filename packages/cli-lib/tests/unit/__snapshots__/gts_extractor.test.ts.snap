@@ -3,6 +3,15 @@
 exports[`gts_extractor > gjs files 1`] = `
 [
   {
+    "defaultMessage": "in template",
+    "description": "in template desc",
+    "id": "7MCO2v",
+  },
+  {
+    "defaultMessage": "G'day!, from a secondary component in the same GJS file",
+    "id": "FmytR9",
+  },
+  {
     "defaultMessage": "js getter with an id",
     "id": "getter-message",
   },
@@ -11,29 +20,8 @@ exports[`gts_extractor > gjs files 1`] = `
     "id": "hdXT/o",
   },
   {
-    "defaultMessage": "G'day!, from a secondary component in the same GJS file",
-    "description": undefined,
-    "id": "FmytR9",
-  },
-  {
-    "defaultMessage": "in template",
-    "description": "in template desc",
-    "id": "7MCO2v",
-  },
-  {
     "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
-    "description": undefined,
     "id": "lMXYqa",
-  },
-  {
-    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
-    "description": undefined,
-    "id": "lMXYqa",
-  },
-  {
-    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
-    "description": "Nice description",
-    "id": "mkhWoT",
   },
   {
     "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
@@ -46,6 +34,11 @@ exports[`gts_extractor > gjs files 1`] = `
 exports[`gts_extractor > gts files 1`] = `
 [
   {
+    "defaultMessage": "in template",
+    "description": "in template desc",
+    "id": "7MCO2v",
+  },
+  {
     "defaultMessage": "js getter with an id",
     "id": "getter-message",
   },
@@ -54,34 +47,17 @@ exports[`gts_extractor > gts files 1`] = `
     "id": "hdXT/o",
   },
   {
+    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
+    "id": "lMXYqa",
+  },
+  {
+    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
+    "description": "Nice description",
+    "id": "mkhWoT",
+  },
+  {
     "defaultMessage": "hello from a secondary component in the same file",
-    "description": undefined,
     "id": "o1wtct",
-  },
-  {
-    "defaultMessage": "in template",
-    "description": "in template desc",
-    "id": "7MCO2v",
-  },
-  {
-    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
-    "description": undefined,
-    "id": "lMXYqa",
-  },
-  {
-    "defaultMessage": "{connectorName, select, none {Install Service} other {Install {connectorName}} }",
-    "description": undefined,
-    "id": "lMXYqa",
-  },
-  {
-    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
-    "description": "Nice description",
-    "id": "mkhWoT",
-  },
-  {
-    "defaultMessage": "Very long message with multiple'' breaklines and multiple spaces '<a href={href}>' Link '</a>'",
-    "description": "Nice description",
-    "id": "mkhWoT",
   },
 ]
 `;

@@ -56,10 +56,9 @@ async function buildWithVite(
       (o: any) => o.type === 'chunk' && o.isEntry
     ) as any
     // Sanitize sandbox-specific paths for stable snapshots
-    return (chunk?.code ?? '').replace(
-      /var _jsxFileName = "[^"]*"/g,
-      'var _jsxFileName = "<source>"'
-    )
+    return (chunk?.code ?? '')
+      .replace(/var _jsxFileName = "[^"]*"/g, 'var _jsxFileName = "<source>"')
+      .replace(/^\/\/#region .*\/fixtures\//gm, '//#region fixtures/')
   }
   throw new Error('Unexpected Vite build result')
 }
@@ -87,13 +86,18 @@ async function buildWithEsbuild(
   options: Options = {}
 ): Promise<string> {
   const result = await esbuildBuild({
+    absWorkingDir: import.meta.dirname,
     entryPoints: [fixturePath(fixture)],
     bundle: true,
     write: false,
     format: 'esm',
     plugins: [esbuildPlugin(options)],
   })
-  return result.outputFiles[0].text
+  // esbuild resolves symlinks outside the sandbox; keep only fixture-relative comments.
+  return result.outputFiles[0].text.replace(
+    /^\/\/ .*\/fixtures\//gm,
+    '// fixtures/'
+  )
 }
 
 // ─── Webpack ──────────────────────────────────────────────────────────────────
@@ -106,6 +110,7 @@ async function buildWithWebpack(
   return new Promise((resolve, reject) => {
     const compiler = webpack({
       mode: 'production',
+      context: import.meta.dirname,
       entry: fixturePath(fixture),
       output: {
         path: outDir,
@@ -137,6 +142,7 @@ async function buildWithRspack(
   return new Promise((resolve, reject) => {
     const compiler = rspack({
       mode: 'production',
+      context: import.meta.dirname,
       entry: fixturePath(fixture),
       output: {
         path: outDir,
