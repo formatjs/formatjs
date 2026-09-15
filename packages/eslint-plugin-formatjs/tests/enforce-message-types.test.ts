@@ -1059,3 +1059,27 @@ ruleTester.run('shared imports across fixes', rule, {
     },
   ],
 })
+
+ruleTester.run('shared descriptor and mixed error catalogs', rule, {
+  valid: [],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage as message, defineMessages} from 'react-intl'; const descriptor = {id: 'count', defaultMessage: '{count, number}'}; message(descriptor); defineMessages({count: descriptor}); intl.$t(descriptor, {count: 2})`,
+      output: `import {defineMessage as message, defineMessages} from 'react-intl'; const descriptor = {id: 'count', defaultMessage: '{count, number}'}; message<{ readonly "count": number | bigint }>(descriptor); defineMessages<{ readonly "count": { readonly "count": number | bigint } }>({count: descriptor}); intl.$t<{ readonly "count": number | bigint }>(descriptor, {count: 2})`,
+      errors: [
+        {messageId: 'contract'},
+        {messageId: 'contract'},
+        {messageId: 'contract'},
+      ],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; import {shared} from './messages'; import type {UploadError} from './errors'; const messages = defineMessages<UploadError['kind']>({Denied: {defaultMessage: 'Access denied'}, TooMany: shared.tooMany, Help: shared.help}); export function getMessage(error: UploadError) {return messages[error.kind]}`,
+      output: `import {defineMessages} from 'react-intl'; import {shared} from './messages'; import type {UploadError} from './errors';\nimport type {MessageValuesOf} from "react-intl"; const messages = defineMessages<{ readonly "Denied": {}; readonly "TooMany": MessageValuesOf<typeof shared.tooMany>; readonly "Help": MessageValuesOf<typeof shared.help> }>({Denied: {defaultMessage: 'Access denied'}, TooMany: shared.tooMany, Help: shared.help}); export function getMessage(error: UploadError) {return messages[error.kind]}`,
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})

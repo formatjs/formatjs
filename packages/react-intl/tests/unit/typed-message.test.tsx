@@ -414,3 +414,38 @@ test('catalogs preserve referenced contracts and computed enum keys', () => {
   }
   void check
 })
+
+test('mixed catalogs infer callbacks from referenced rich-text messages', () => {
+  const shared = defineMessages<{
+    help: {b: MessageTag}
+    tooMany: {count: number | bigint}
+  }>({
+    help: {id: 'upload-help', defaultMessage: '<b>Help</b>'},
+    tooMany: {id: 'upload-count', defaultMessage: '{count, number} files'},
+  })
+  const catalog = defineMessages<{
+    Denied: {}
+    TooMany: MessageValuesOf<typeof shared.tooMany>
+    Help: MessageValuesOf<typeof shared.help>
+  }>({
+    Denied: {id: 'upload-denied', defaultMessage: 'Access denied'},
+    TooMany: shared.tooMany,
+    Help: shared.help,
+  })
+  const rich = intl.$t(catalog.Help, {
+    b: chunks => {
+      expectTypeOf(chunks).toEqualTypeOf<React.ReactNode[]>()
+      return <b>{chunks}</b>
+    },
+  })
+  expect(renderToStaticMarkup(<>{rich}</>)).toBe('<b>Help</b>')
+  expectTypeOf(intl.$t(catalog.Denied)).toEqualTypeOf<string>()
+  expect(intl.$t(catalog.TooMany, {count: 2})).toBe('2 files')
+  const invalid = () => {
+    // @ts-expect-error Referenced rich messages still require their tag callback.
+    intl.$t(catalog.Help)
+    // @ts-expect-error Numeric values must not become untyped through the catalog.
+    intl.$t(catalog.TooMany, {count: 'two'})
+  }
+  void invalid
+})
