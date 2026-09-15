@@ -156,8 +156,8 @@ function checkTypes() {
   richIntl.$t(tag, {b: chunks => ({children: chunks})})
   // @ts-expect-error Tags require callbacks.
   intl.formatMessage(tag, {b: 'bold'})
-  const legacy = defineMessage<{id: 'legacy'; defaultMessage: string}>({
-    id: 'legacy',
+  const legacy = defineMessage({
+    id: 'legacy' as const,
     defaultMessage: '{anything}',
   })
   expectTypeOf(legacy.id).toEqualTypeOf<'legacy'>()
@@ -311,3 +311,22 @@ function checkDerivedRegistry(id: 'registered-count' | 'registered-rich') {
   return [optional, empty]
 }
 void checkDerivedRegistry
+
+test('helper generics carry ICU contracts without an options flag', () => {
+  const descriptor = defineMessage<{count: number}>({
+    id: 'no-flag-count',
+    defaultMessage: '{count, number}',
+  })
+  const catalog = defineMessages<{hello: {name: string}}>({
+    hello: {id: 'no-flag-hello', defaultMessage: 'Hello {name}'},
+  })
+  expect(intl.$t(descriptor, {count: 2})).toBe('2')
+  expect(intl.$t(catalog.hello, {name: 'Ada'})).toBe('Hello Ada')
+  const invalid = () => {
+    // @ts-expect-error Removing the options flag must retain required arguments.
+    intl.$t(descriptor)
+    // @ts-expect-error Catalog contracts still reject mismatched arguments.
+    intl.$t(catalog.hello, {name: 2})
+  }
+  void invalid
+})
