@@ -485,6 +485,9 @@ Above, "source" refers to using the template as is, without any substitutions ma
 take ICU argument types first. The optional second generic defaults to
 `React.ReactNode`; omit it for normal React rich-text output.
 
+`$t` shares all of `formatMessage`'s overloads, including contextual typing for
+rich-text callbacks in calls without generics.
+
 ```tsx
 import {type MessageTag, type MessageValue} from 'react-intl'
 
