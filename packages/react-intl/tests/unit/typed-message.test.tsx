@@ -187,7 +187,12 @@ test('FormattedMessage renders typed descriptors and rich callbacks', () => {
       <IntlProvider locale="en">
         <FormattedMessage
           {...rich}
-          values={{b: chunks => <strong>{chunks}</strong>}}
+          values={{
+            b: chunks => {
+              expectTypeOf(chunks).toEqualTypeOf<React.ReactNode[]>()
+              return <strong>{chunks}</strong>
+            },
+          }}
         />
       </IntlProvider>
     )

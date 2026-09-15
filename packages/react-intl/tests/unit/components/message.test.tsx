@@ -279,7 +279,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, <b>{name}<i>!</i></b>',
           values: {
             name: 'Jest',
-            b: (chunks: any) => <b>{chunks}</b>,
+            b: chunks => <b>{chunks}</b>,
             i: msg => <i>{msg}</i>,
           },
         },
@@ -299,7 +299,7 @@ describe('<FormattedMessage>', () => {
           values: {
             name: <b data-testid="b">Jest</b>,
           },
-          children: (chunks: any) => <strong>{chunks}</strong>,
+          children: chunks => <strong>{chunks}</strong>,
         },
         providerProps
       )

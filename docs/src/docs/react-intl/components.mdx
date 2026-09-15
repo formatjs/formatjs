@@ -678,6 +678,27 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 
 ### Rich Text Formatting
 
+For typed descriptors, a `MessageTag` contract infers the callback parameter as
+`React.ReactNode[]`; no callback annotation is needed:
+
+```tsx
+import {defineMessage, FormattedMessage, type MessageTag} from 'react-intl'
+
+const greeting = defineMessage<{b: MessageTag}>(
+  {id: 'greeting', defaultMessage: 'Hello <b>world</b>'},
+  {typed: true}
+)
+
+function Greeting() {
+  return (
+    <FormattedMessage
+      {...greeting}
+      values={{b: chunks => <strong>{chunks}</strong>}}
+    />
+  )
+}
+```
+
 `<FormattedMessage>` also supports rich-text formatting by specifying a XML tag in the message & resolving that tag in the `values` prop. Here's an example:
 
 ```tsx live
