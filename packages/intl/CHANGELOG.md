@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@5.0.0...@formatjs/intl@6.0.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl:** simplify typed helper calls and generated contracts ([#7420](https://github.com/formatjs/formatjs/issues/7420))
+
+### Features
+
+* **@formatjs/intl:** export shared text message formatter type ([#7418](https://github.com/formatjs/formatjs/issues/7418)) ([e4d9e50](https://github.com/formatjs/formatjs/commit/e4d9e507764c2b58b8e8da0a14896f69e4755f87))
+* **@formatjs/intl:** simplify typed helper calls and generated contracts ([#7420](https://github.com/formatjs/formatjs/issues/7420)) ([0710507](https://github.com/formatjs/formatjs/commit/07105075b60929603b220c82aa8b435174a941af))
+
 ## [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@5.0.0-rc.1...@formatjs/intl@5.0.0) (2026-09-15)
 
 
