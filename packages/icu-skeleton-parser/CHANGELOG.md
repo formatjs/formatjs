@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.12](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@2.1.11...@formatjs/icu-skeleton-parser@2.1.12) (2026-09-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** load Unicode ESM data files ([#7400](https://github.com/formatjs/formatjs/issues/7400)) ([5d752aa](https://github.com/formatjs/formatjs/commit/5d752aa40d4a320dcf94eb1bda66280d202d4d94))
+
 ## 2.1.11 (2026-07-11)
 
 ## What's Changed

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.1...formatjs_cli_v1.7.2) (2026-09-15)
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.149 ([#7397](https://github.com/formatjs/formatjs/issues/7397)) ([afc88cc](https://github.com/formatjs/formatjs/commit/afc88cc81969c03fba73d97e31dc81007c303cf2))
+
 ## 1.7.1 (2026-09-11)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

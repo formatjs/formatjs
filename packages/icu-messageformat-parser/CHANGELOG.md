@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.19](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.18...@formatjs/icu-messageformat-parser@3.5.19) (2026-09-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** load Unicode ESM data files ([#7400](https://github.com/formatjs/formatjs/issues/7400)) ([5d752aa](https://github.com/formatjs/formatjs/commit/5d752aa40d4a320dcf94eb1bda66280d202d4d94))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-skeleton-parser bumped to 2.1.12
+
 ## [3.5.18](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.17...@formatjs/icu-messageformat-parser@3.5.18) (2026-09-12)
 
 

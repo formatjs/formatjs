@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@7.0.0-rc.0...eslint-plugin-formatjs@7.0.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **vue-intl:** vue-intl and @formatjs/svelte-intl return readonly descriptors and catalog entries. Formatter generics use values first and rich output second. Requires TypeScript 5.4. Keep RC publishing until the messaging group graduates together.
+
+### Features
+
+* **vue-intl:** align Vue and Svelte message contracts ([#7404](https://github.com/formatjs/formatjs/issues/7404)) ([5764367](https://github.com/formatjs/formatjs/commit/5764367c8b37bed818f3de03fd446c2f8d6e0188))
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** load Unicode ESM data files ([#7400](https://github.com/formatjs/formatjs/issues/7400)) ([5d752aa](https://github.com/formatjs/formatjs/commit/5d752aa40d4a320dcf94eb1bda66280d202d4d94))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.19
+    * @formatjs/ts-transformer bumped to 4.4.21
+
 ## [7.0.0-rc.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@6.7.0-rc.0...eslint-plugin-formatjs@7.0.0-rc.0) (2026-09-14)
 
 

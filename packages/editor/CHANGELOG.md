@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.5.2...@formatjs/editor@1.6.0) (2026-09-15)
+
+
+### Features
+
+* **@formatjs/editor:** refine localization workflows ([#7403](https://github.com/formatjs/formatjs/issues/7403)) ([be8d268](https://github.com/formatjs/formatjs/commit/be8d2684a21f8e36788ebb52a247b9c565ab8f63))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.19
+
 ## [1.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.5.1...@formatjs/editor@1.5.2) (2026-09-12)
 
 
