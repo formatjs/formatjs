@@ -89,16 +89,22 @@ build:ci --remote_upload_local_results
 build:bb-workflow --build_metadata=ROLE=BB_WORKFLOW
 build:bb-workflow --build_metadata=VISIBILITY=PUBLIC
 build:bb-workflow --config=rbe
-build:rbe --bes_backend=grpcs://formatjs.buildbuddy.io
-build:rbe --bes_results_url=https://formatjs.buildbuddy.io/invocation/
-build:rbe --define=EXECUTOR=rbe
-build:rbe --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
-build:rbe --@rules_go//go/config:gc_linkopts=-extldflags,-no-pie
-build:rbe --jobs=50
-build:rbe --platforms=//platforms:buildbuddy_linux_x86_64_gnu
-build:rbe --remote_cache=grpcs://formatjs.buildbuddy.io
-build:rbe --remote_executor=grpcs://formatjs.buildbuddy.io
-build:rbe --remote_timeout=10m
+build:rbe --config=rbe-platform
+build:rbe --config=rbe-transport
+
+# Shared by RBE producers and local GitHub cache consumers.
+build:rbe-platform --define=EXECUTOR=rbe
+build:rbe-platform --extra_execution_platforms=//platforms:buildbuddy_linux_x86_64_gnu
+build:rbe-platform --@rules_go//go/config:gc_linkopts=-extldflags,-no-pie
+build:rbe-platform --platforms=//platforms:buildbuddy_linux_x86_64_gnu
+
+# Execution and reporting only; keep action settings in rbe-platform.
+build:rbe-transport --bes_backend=grpcs://formatjs.buildbuddy.io
+build:rbe-transport --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:rbe-transport --jobs=50
+build:rbe-transport --remote_cache=grpcs://formatjs.buildbuddy.io
+build:rbe-transport --remote_executor=grpcs://formatjs.buildbuddy.io
+build:rbe-transport --remote_timeout=10m
 
 # Keep the old config name as an alias for existing local workflows.
 build:remote --config=rbe

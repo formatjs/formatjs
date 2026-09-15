@@ -96,6 +96,14 @@ test the full repository locally. Cache eviction, toolchain changes, and targets
 that disable caching can also require work. Restore logs and Bazel's process
 summary distinguish archive restores from actual action cache hits.
 
+GitHub's test job uses `--config=rbe-platform` on main and forks so execution
+platforms, target platforms, and `EXECUTOR` match. Authenticated builds add
+`--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all` to execute on BuildBuddy and populate
+the disk cache. Forks use that disk cache without remote credentials and execute
+cache misses locally. Main saves `gha-test-rbe-v2-*` snapshots; PRs only restore.
+The namespace is separate from the old local-platform cache. Cross-run reuse
+must be verified on Linux with a fresh output base, including local cache misses.
+
 ## TypeScript Build Pipeline
 
 ### Published Packages

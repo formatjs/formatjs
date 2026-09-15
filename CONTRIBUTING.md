@@ -44,6 +44,15 @@ Package `tsconfig.json` files are generated local development files and are not 
 bazel run //:generate_package_tsconfigs
 ```
 
+### GitHub Actions test cache
+
+Main and fork test jobs use `--config=rbe-platform` to share action keys.
+Authenticated jobs add `--config=rbe-transport --remote_upload_local_results
+--remote_download_outputs=all`, executing on BuildBuddy while filling the disk
+cache saved by main. Forks restore that cache without credentials and run
+misses locally. Keep platform, toolchain, and action settings in the shared
+configuration; only remote execution and reporting belong in `rbe-transport`.
+
 ### Build System Architecture
 
 This repository uses a highly optimized TypeScript build pipeline with Bazel:
