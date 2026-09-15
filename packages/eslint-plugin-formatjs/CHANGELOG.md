@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@7.0.0...eslint-plugin-formatjs@8.0.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/intl:** simplify typed helper calls and generated contracts ([#7420](https://github.com/formatjs/formatjs/issues/7420))
+
+### Features
+
+* **@formatjs/intl:** simplify typed helper calls and generated contracts ([#7420](https://github.com/formatjs/formatjs/issues/7420)) ([0710507](https://github.com/formatjs/formatjs/commit/07105075b60929603b220c82aa8b435174a941af))
+
 ## [7.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@7.0.0-rc.0...eslint-plugin-formatjs@7.0.0) (2026-09-15)
 
 
