@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.4.2...@formatjs/intl-numberformat@9.4.3) (2026-09-15)
+
+
+### Bug Fixes
+
+* **deps:** validate committed snapshots in Bazel tests ([#7410](https://github.com/formatjs/formatjs/issues/7410)) ([2f4d794](https://github.com/formatjs/formatjs/commit/2f4d794414b10db4beb1c9c40f49276247a051b8))
+
 ## [9.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.4.1...@formatjs/intl-numberformat@9.4.2) (2026-09-12)
 
 
