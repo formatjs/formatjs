@@ -111,5 +111,7 @@ export interface IntlShape
     opts?: IntlMessageFormatOptions
   ): Array<React.ReactNode>
 
+  $t: IntlShape['formatMessage']
+
   formatters: Formatters
 }

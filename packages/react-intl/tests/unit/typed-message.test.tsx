@@ -24,6 +24,13 @@ const message = defineMessage<{count: number | bigint}>(
   {typed: true}
 )
 
+test('$t infers rich-text callbacks like formatMessage', () => {
+  const descriptor = {id: 'alias-rich', defaultMessage: 'Hello <b>world</b>'}
+  const result = intl.$t(descriptor, {b: chunks => <b>{chunks}</b>})
+  expect(renderToStaticMarkup(<>{result}</>)).toBe('Hello <b>world</b>')
+  expectTypeOf(intl.$t).toEqualTypeOf<typeof intl.formatMessage>()
+})
+
 test('typed helpers work through client and server entrypoints', () => {
   expect(intl.formatMessage(message, {count: 2})).toBe('2')
   const server = serverIntl({locale: 'en'})
