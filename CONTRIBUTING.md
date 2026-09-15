@@ -53,6 +53,12 @@ cache saved by main. Jobs without a key restore that cache and run misses
 locally. Only main pushes publish GHA cache snapshots. Keep platform, toolchain, and action settings in the shared
 configuration; only remote execution and reporting belong in `rbe-transport`.
 
+The shared Vitest macro includes committed `__snapshots__/<source>.snap` files
+beside each source as Bazel runtime inputs. Keep custom snapshot paths in the
+explicit `snapshots` attribute. Missing snapshots must fail tests, not be
+silently created inside the sandbox. Use the `.update` targets only for
+reviewed changes to expected output.
+
 ### Build System Architecture
 
 This repository uses a highly optimized TypeScript build pipeline with Bazel:

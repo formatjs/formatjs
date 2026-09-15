@@ -62,6 +62,15 @@ def vitest(
 
     deps = list(set(deps))
 
+    # External snapshots must be present in the test sandbox, not recreated there.
+    snapshot_patterns = []
+    for src in srcs:
+        if src.startswith((":", "//", "@")):
+            continue
+        parts = src.split("/")
+        snapshot_patterns.append("/".join(parts[:-1] + ["__snapshots__", parts[-1] + ".snap"]))
+    snapshots = snapshots + native.glob(snapshot_patterns, allow_empty = True)
+
     # Filter out snapshot files from srcs
     srcs_no_snapshots = [src for src in srcs if "/__snapshots__/" not in src]
 
@@ -141,18 +150,18 @@ def vitest(
         # Use a unique name for the snapshot target to avoid conflicts when multiple tests share the same snapshot directory
         snapshot_target_name = name + "_" + snapshot_dir.replace("/", "_")
 
-        # Note: data dependencies (like Rust binaries) are not available in snapshot update mode
-        # due to js_run_binary limitations. Tests should conditionally skip tests that require
-        # data dependencies when they can't be resolved.
+        # Use the test runtime configuration and inputs when updating baselines.
         vitest_bin.vitest(
             name = snapshot_target_name,
-            srcs = srcs_no_snapshots + fixtures + deps,
+            srcs = srcs_no_snapshots + fixtures + deps + [item for item in data if item != "//:package.json"] + [actual_config, "//:root_package_json"],
             out_dirs = [snapshot_dir],
             args = [
                 "run",
                 "--no-file-parallelism",
-                "--update",
-            ],
+                "--config",
+                "$(rootpath %s)" % actual_config,
+                "--update=all",
+            ] + test_files_in_dir,
             tags = ["manual"],
         )
 

@@ -496,6 +496,12 @@ generate_package_file()
 
 ### Snapshot and conformance test execution
 
+The shared Vitest macro includes committed `__snapshots__/<source>.snap` files
+beside each source as Bazel runtime inputs. Keep custom snapshot paths in the
+explicit `snapshots` attribute. Missing snapshots must fail tests, not be
+silently created inside the sandbox. Use the `.update` targets only for
+reviewed changes to expected output.
+
 Bazel Vitest tests pass `--update=none`: snapshot mismatches and missing entries
 fail without attempting to write read-only runfiles. Use the explicit snapshot
 update targets to change baselines.
