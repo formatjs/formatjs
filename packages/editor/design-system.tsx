@@ -8,6 +8,10 @@ import {
   type ComponentType,
   type ReactNode,
 } from 'react'
+import type {
+  MessageSearchMode,
+  MessageSearchScope,
+} from '#packages/editor/search.js'
 export interface EditorButtonProps {
   children: ReactNode
   /** Called once per activation, without a DOM event; disabled controls must not call it. */
@@ -105,6 +109,21 @@ export interface EditorMetadataProps {
   label: string
   children: ReactNode
 }
+export interface EditorSearchControlsLabels {
+  title: string
+  scope: string
+  source: string
+  translation: string
+  both: string
+  exact: string
+}
+export interface EditorSearchControlsProps {
+  mode: MessageSearchMode
+  scope: MessageSearchScope
+  onModeChange: (mode: MessageSearchMode) => void
+  onScopeChange: (scope: MessageSearchScope) => void
+  labels: EditorSearchControlsLabels
+}
 /** Optional additions preserve existing complete design-system registries. */
 export interface EditorToolComponents {
   Checkbox: ComponentType<EditorCheckboxProps>
@@ -112,6 +131,7 @@ export interface EditorToolComponents {
   PreviewToken: ComponentType<EditorPreviewTokenProps>
   CopyButton: ComponentType<EditorCopyButtonProps>
   Metadata: ComponentType<EditorMetadataProps>
+  SearchControls: ComponentType<EditorSearchControlsProps>
 }
 export type ResolvedEditorComponents = Required<EditorComponents>
 /** Unstyled native controls; no CSS, icons, or localization provider is required. */
@@ -178,6 +198,34 @@ function NativeTextArea({
 }
 
 export const nativeEditorComponents: ResolvedEditorComponents = {
+  SearchControls: ({mode, scope, onModeChange, onScopeChange, labels}) => (
+    <fieldset>
+      <legend>{labels.title}</legend>
+      <label>
+        {labels.scope}{' '}
+        <select
+          value={scope}
+          onChange={event =>
+            onScopeChange(event.target.value as MessageSearchScope)
+          }
+        >
+          <option value="source">{labels.source}</option>
+          <option value="translation">{labels.translation}</option>
+          <option value="both">{labels.both}</option>
+        </select>
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          checked={mode === 'exact'}
+          onChange={event =>
+            onModeChange(event.target.checked ? 'exact' : 'partial')
+          }
+        />{' '}
+        {labels.exact}
+      </label>
+    </fieldset>
+  ),
   Checkbox: function NativeCheckbox({checked, onCheckedChange, ...props}) {
     const ref = useRef<HTMLInputElement>(null)
     useEffect(() => {

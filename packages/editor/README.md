@@ -38,8 +38,12 @@ Neither API adds elements or requires a provider.
 - `messages` is controlled; `onMessageChange` receives the edited message.
   Apply it to the parent catalog by ID. Invalid ICU text is preserved for editing.
 - `selectMessage`, `selectedMessage`, `query`, and `setQuery` control navigation.
-  Search covers IDs, source text, translations, and descriptions. Filtering does
-  not discard selection or edits. A missing selection falls back to the first
+  General search covers IDs and the selected source/translation text scope.
+  `searchMode` defaults to case-insensitive partial matching; exact mode compares
+  the complete selected field, not a word boundary. Exact mode accepts a complete
+  ID, plus long (at least eight-character) ID fragments so generated ID suffixes
+  remain discoverable without short text queries accidentally matching IDs.
+  Filtering does not discard selection or edits. A missing selection falls back to the first
   catalog message; an empty catalog has no selection.
 - `setTranslation`, `copySource`, and `clearTranslation` edit the selected message.
   Copy means copying source text into the translation, not the system clipboard.
@@ -96,10 +100,22 @@ reflect saved translations, so typing does not move a message out of the list.
 Locales may load asynchronously; an absent selection falls back to the first
 available locale. Pagination clamps when messages or page size change.
 
-General search matches IDs, source, translation, and description. The independent
-`descriptionQuery` / `setDescriptionQuery` pair matches descriptions only; both
-queries are case-insensitive and conjunctive. Controlled server-side views can use
-the same two-search interface without loading a full catalog into the hook.
+General search defaults to case-insensitive partial matching across source and the
+current translation. `setSearchScope` selects source, translation, or both, and
+`setSearchMode('exact')` requires the complete selected text field to equal the
+query. ID lookup is an explicit exception: identifiers remain case-insensitive
+partial matches in partial mode; exact mode also accepts complete IDs and long
+(at least eight-character) ID fragments. The independent
+`descriptionQuery` / `setDescriptionQuery` pair matches descriptions only by
+splitting whitespace and requiring every term in the same description, irrespective
+of order or adjacency. General and description queries are conjunctive. Changing a
+query, scope, or mode resets workflow pagination.
+
+`matchesMessageSearch` and `matchesDescriptionSearch` expose the same semantics for
+server-side catalogs. A server supplies only the translations for selected locales;
+hidden locale values therefore cannot broaden translation search. Optional metadata
+(for example source locations) is partial in partial mode and whole-value in exact
+mode.
 
 `hasTranslationForEveryLocale(translations, locales)` and
 `matchesMessageStatus(translations, locales, status)` expose the multi-locale
@@ -253,9 +269,9 @@ For server-side search, pass the loaded page directly as `messages`, your search
 value/callback as `search`, and your externally selected detail as
 `selectedMessage`. Selection can remain outside the loaded page. `loading` marks
 navigation busy and displays a status; it does not clear the controlled list.
-Pass `descriptionSearch` for a separately controlled description-only field. The
-view does not combine or debounce requests; those data-source concerns remain with
-the caller.
+Pass `descriptionSearch` for a separately controlled description-only field and
+`searchOptions` for controlled scope/exactness UI. The view does not combine or
+debounce requests; those data-source concerns remain with the caller.
 
 ### Component adapters
 
@@ -417,6 +433,10 @@ function TranslationTools() {
   Feedback expires after `feedbackDurationMs` (default 1500); `labels` provides
   `copy`, `copying`, `copied`, and `failed` formatters receiving the supplied label.
   Native clipboard access happens only when the user presses the button.
+- **SourceMessage** and `TranslationEditorView` accept `copySource`,
+  `copyDescription`, and shared `copyOptions`. They render distinct controls beside
+  the corresponding source and description text and copy the exact raw value.
+  The description row and action are omitted when no description is present.
 - **MessageContext** renders an ID, optional description, catalogs, and source
   locations from the existing `EditorMessage` metadata contract. Locations render
   as plain text with optional start/end ranges; `renderLocation(location, text)` can
@@ -442,6 +462,7 @@ one provider to use the same design system across fields and standalone tools:
 | `PreviewToken` / `EditorPreviewTokenProps`             | `children`, `kind` (argument, number, date, time, tag, selector, plural, pound, syntax) | None                                |
 | `CopyButton` / `EditorCopyButtonProps`                 | `label`, `status` (idle, copying, copied, error), `disabled`                            | `onPress()`                         |
 | `Metadata` / `EditorMetadataProps`                     | Accessible `label`, `children`                                                          | None                                |
+| `SearchControls` / `EditorSearchControlsProps`         | Controlled `mode`, `scope`, localized labels                                            | `onModeChange`, `onScopeChange`     |
 
 Checkbox adapters forward IDs, expose mixed state, honor disabled state, and report
 booleans without DOM events. Locale-picker layouts can use a popover, disclosure,
@@ -506,7 +527,7 @@ function CatalogEditor() {
 
 `selectedId` controls list highlighting independently of fetched detail; it defaults
 to `selectedMessage?.id`. `selectedMessage` can remain outside the loaded page.
-`listSummary` appears after search and before the rows/loading status. Lists remain
+`listSummary` appears after search options and before the rows/loading status. Lists remain
 caller-controlled: passing `loading` does not clear existing rows.
 
 `renderTranslations` wraps the generated locale fields (including an empty array)

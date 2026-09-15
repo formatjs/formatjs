@@ -20,6 +20,16 @@ export {
 } from '#packages/editor/message-status.js'
 export type {MessageTranslations} from '#packages/editor/message-status.js'
 export type {TranslatedMessage} from '#packages/editor/types.js'
+export {
+  matchesDescriptionSearch,
+  matchesMessageSearch,
+} from '#packages/editor/search.js'
+export type {
+  MessageSearchMode,
+  MessageSearchOptions,
+  MessageSearchScope,
+  MessageSearchTarget,
+} from '#packages/editor/search.js'
 export {useTranslationEditor} from '#packages/editor/workflow.js'
 export type {
   EditorMessage,

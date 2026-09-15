@@ -1,7 +1,8 @@
 # Headless editor and visual tests
 
 `packages/editor/index.ts` exposes `useMessageEditor` and a render-prop `Editor`.
-The core owns selection, conjunctive general/description search, and ICU parse
+The core owns selection, scoped partial/exact general search, conjunctive
+whitespace-token description search, and ICU parse
 results. Message data is controlled;
 consumers apply `onMessageChange` and own persistence, providers, markup, and styles.
 `Message` exposes the full AST or parse error through a render function.
@@ -25,6 +26,13 @@ eligibility, width-aware autosizing textarea bounds, renderable locale labels, a
 copy controls for catalog and location metadata. Product design systems remain
 adapters at these seams; fetching, debounce/cancellation, locale naming policy, and
 storage/persistence backends remain consumer-owned.
+General text scope is source, translation, or both. Exact mode compares the entire
+selected text field case-insensitively. Partial mode also searches IDs and
+consumer-supplied metadata; exact mode accepts complete metadata values plus long
+ID fragments so generated suffixes remain discoverable without broadening short
+text queries. Descriptions are searched only through their independent field. The
+public pure matchers let server-backed consumers apply identical rules to a full
+catalog and limit translation values to visible locales.
 The core imports neither this view nor React Intl. Material UI and React 17 are
 removed. `//packages/editor:unit_test` checks controlled updates, navigation,
 invalid ICU, empty catalogs, and custom rendering without providers.

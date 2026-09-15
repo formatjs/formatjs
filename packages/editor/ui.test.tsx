@@ -12,6 +12,7 @@ import {useTranslationEditor} from '#packages/editor/index.js'
 import {
   nativeEditorComponents,
   MessageList,
+  SourceMessage,
   EditorDesignSystemProvider,
   useEditorDesignSystem,
   TranslationEditorView,
@@ -527,6 +528,72 @@ describe('public editor view', () => {
     )
     expect(general).toHaveBeenCalledExactlyOnceWith('next')
     expect(description).toHaveBeenCalledExactlyOnceWith('context')
+  })
+
+  it('renders controlled scope and exact search options', () => {
+    const onModeChange = vi.fn()
+    const onScopeChange = vi.fn()
+    render(
+      <MessageList
+        messages={messages}
+        onSelect={() => {}}
+        searchOptions={{
+          mode: 'partial',
+          scope: 'both',
+          onModeChange,
+          onScopeChange,
+        }}
+      />
+    )
+    fireEvent.change(screen.getByRole('combobox', {name: 'Search in'}), {
+      target: {value: 'translation'},
+    })
+    fireEvent.click(screen.getByRole('checkbox', {name: 'Exact text'}))
+    expect(onScopeChange).toHaveBeenCalledExactlyOnceWith('translation')
+    expect(onModeChange).toHaveBeenCalledExactlyOnceWith('exact')
+  })
+
+  it('copies exact source and description text from distinct adjacent controls', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    const description = 'Result label\nwith ICU context {value}'
+    const message = {...messages[0], description}
+    const {rerender} = render(
+      <SourceMessage
+        message={message}
+        copySource
+        copyDescription
+        copyOptions={{writeText}}
+      />
+    )
+    const sourceButton = screen.getByRole('button', {
+      name: 'Copy Source message',
+    })
+    const descriptionButton = screen.getByRole('button', {
+      name: 'Copy Description',
+    })
+    expect(sourceButton.parentElement?.parentElement?.textContent).toContain(
+      SOURCE
+    )
+    expect(
+      descriptionButton.parentElement?.parentElement?.textContent
+    ).toContain(description)
+
+    fireEvent.click(sourceButton)
+    await vi.waitFor(() => expect(writeText).toHaveBeenNthCalledWith(1, SOURCE))
+    fireEvent.click(descriptionButton)
+    await vi.waitFor(() =>
+      expect(writeText).toHaveBeenNthCalledWith(2, description)
+    )
+
+    rerender(
+      <SourceMessage
+        message={{...message, description: undefined}}
+        copySource
+        copyDescription
+        copyOptions={{writeText}}
+      />
+    )
+    expect(screen.queryByRole('button', {name: /Description/})).toBeNull()
   })
 })
 

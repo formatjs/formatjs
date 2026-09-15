@@ -306,6 +306,14 @@ export function useTranslationEditor<TContext = void, TResult = void>({
         editor.setDescriptionQuery(query)
         requestPage(0)
       },
+      setSearchMode: mode => {
+        editor.setSearchMode(mode)
+        requestPage(0)
+      },
+      setSearchScope: scope => {
+        editor.setSearchScope(scope)
+        requestPage(0)
+      },
     },
     selectedMessage,
     locale,

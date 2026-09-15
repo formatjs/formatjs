@@ -52,7 +52,7 @@ describe('headless editor', () => {
     expect(result.current.selectedMessage?.translatedMessage).toBe(
       messages[1].defaultMessage
     )
-    act(() => result.current.setQuery('CART'))
+    act(() => result.current.setQuery('items'))
     expect(result.current.messages.map(message => message.id)).toEqual([
       'count',
     ])
@@ -75,6 +75,46 @@ describe('headless editor', () => {
     )
     act(() => result.current.clearTranslation())
     expect(result.current.selectedMessage?.translatedMessage).toBe('')
+  })
+
+  it('controls exact text scope independently from conjunctive description search', () => {
+    const searchable: TranslatedMessage[] = [
+      {
+        id: 'message000b95ae99',
+        defaultMessage: 'Open',
+        translatedMessage: 'Ouvrir',
+        description:
+          'Result label indicating a correctly answered quiz question.',
+      },
+      {
+        id: 'open-window',
+        defaultMessage: 'Open window',
+        translatedMessage: 'Ouvrir la fenêtre',
+        description: 'Quiz window action label',
+      },
+    ]
+    const {result} = renderHook(() =>
+      useMessageEditor({messages: searchable, onMessageChange: () => {}})
+    )
+    act(() => {
+      result.current.setQuery('open')
+      result.current.setSearchMode('exact')
+    })
+    expect(result.current.messages.map(message => message.id)).toEqual([
+      'message000b95ae99',
+    ])
+    act(() => {
+      result.current.setSearchScope('translation')
+      result.current.setQuery('ouvrir')
+      result.current.setDescriptionQuery('quiz label')
+    })
+    expect(result.current.messages.map(message => message.id)).toEqual([
+      'message000b95ae99',
+    ])
+    act(() => result.current.setQuery('000b95ae99'))
+    expect(result.current.messages.map(message => message.id)).toEqual([
+      'message000b95ae99',
+    ])
   })
 
   it('tracks parent updates and handles removed selections and empty catalogs', () => {
