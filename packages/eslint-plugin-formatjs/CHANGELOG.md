@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.0...eslint-plugin-formatjs@8.0.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** migrate existing message catalogs cleanly ([#7421](https://github.com/formatjs/formatjs/issues/7421)) ([2708367](https://github.com/formatjs/formatjs/commit/27083670c047e208d0288f67f687462b01c8a49c))
+
 ## [8.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@7.0.0...eslint-plugin-formatjs@8.0.0) (2026-09-15)
 
 
