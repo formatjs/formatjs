@@ -505,8 +505,8 @@ the ICU string to require arguments or check each placeholder's type.
 For example, `intl.$t({defaultMessage: '{count, number}'})` still compiles,
 although missing values can cause a runtime formatting error.
 
-A descriptor from `defineMessage<Values>(descriptor, {typed: true})` or
-`defineMessages<Contracts>(messages, {typed: true})` carries its contract into
+A descriptor from `defineMessage<Values>(descriptor)` or
+`defineMessages<Contracts>(messages)` carries its contract into
 calls without generics. Ordinary one-argument helpers do not add these checks.
 Handwritten contracts must match the message; TypeScript does not verify that
 match. Runtime formatting is unchanged. The same rules apply to formatters and

@@ -476,6 +476,17 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
   const imports = hoistTypes(context, node, contract)
   contract = imports.text
   const parameters = (generic as unknown as TypeNode | undefined)?.params
+  if (contract === '{}' && node.arguments.length === 1) {
+    if (!generic) return true
+    if (parameters?.length === 1) {
+      context.report({
+        node: generic,
+        messageId: 'contract',
+        fix: fixer => fixer.remove(generic),
+      })
+      return true
+    }
+  }
   if (
     parameters &&
     parameters.length >= 1 &&
@@ -677,19 +688,11 @@ export const rule: Rule.RuleModule = {
               p.value.type === 'Literal' &&
               p.value.value === true
           )
-        if (!typed && !generated && !context.options[0]?.generateTypes) return
-        // Existing annotations and unrelated second arguments belong to the caller.
-        if (
-          !typed &&
-          generic &&
-          !generated &&
-          !context.options[0]?.generateTypes
-        )
-          return
+        if (!generic && !typed && !context.options[0]?.generateTypes) return
         if (node.arguments.length > 2 || (options && !typed)) return
         const descriptor = node.arguments[0]
         if (!staticObject(descriptor)) {
-          if (typed || generated) context.report({node, messageId: 'dynamic'})
+          if (generic || typed) context.report({node, messageId: 'dynamic'})
           return
         }
         if (
@@ -698,7 +701,7 @@ export const rule: Rule.RuleModule = {
             p => p.type === 'Property' && staticObject(p.value)
           )
         ) {
-          if (typed || generated) context.report({node, messageId: 'dynamic'})
+          if (generic || typed) context.report({node, messageId: 'dynamic'})
           return
         }
         const messages = extractMessages(
@@ -716,7 +719,7 @@ export const rule: Rule.RuleModule = {
               ? 1
               : descriptor.properties.length)
         ) {
-          if (typed || generated) context.report({node, messageId: 'dynamic'})
+          if (generic || typed) context.report({node, messageId: 'dynamic'})
           return
         }
         const annotation =
@@ -818,7 +821,6 @@ export const rule: Rule.RuleModule = {
           parameters.length >= 1 &&
           parameters.length <= 2 &&
           renderType(parameters[0]) === contract &&
-          typed &&
           !generated &&
           annotationMatches
         )
@@ -856,16 +858,6 @@ export const rule: Rule.RuleModule = {
                 fixer.replaceText(
                   annotation.annotation as unknown as Node,
                   catalogType!
-                )
-              )
-            }
-            if (!typed) {
-              const close = source.getLastToken(node)!
-              const previous = source.getTokenBefore(close)!
-              edits.push(
-                fixer.insertTextBefore(
-                  close,
-                  `${previous.value === ',' ? '' : ','} {typed: true}`
                 )
               )
             }

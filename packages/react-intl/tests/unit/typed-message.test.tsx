@@ -367,3 +367,22 @@ function checkTextMessageFormatter(format: TextMessageFormatter) {
   format({id: 'registered-rich'}, {b: chunks => <b>{chunks}</b>})
 }
 void checkTextMessageFormatter
+
+test('helper generics carry ICU contracts without an options flag', () => {
+  const descriptor = defineMessage<{count: number}>({
+    id: 'no-flag-count',
+    defaultMessage: '{count, number}',
+  })
+  const catalog = defineMessages<{hello: {name: string}}>({
+    hello: {id: 'no-flag-hello', defaultMessage: 'Hello {name}'},
+  })
+  expect(intl.$t(descriptor, {count: 2})).toBe('2')
+  expect(intl.$t(catalog.hello, {name: 'Ada'})).toBe('Hello Ada')
+  const invalid = () => {
+    // @ts-expect-error Removing the options flag must retain required arguments.
+    intl.$t(descriptor)
+    // @ts-expect-error Catalog contracts still reject mismatched arguments.
+    intl.$t(catalog.hello, {name: 2})
+  }
+  void invalid
+})

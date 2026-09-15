@@ -1043,13 +1043,10 @@ message strings cannot supply a contract.
 ```ts
 const message = defineMessage<{
   readonly count: number | bigint
-}>(
-  {
-    id: 'items',
-    defaultMessage: '{count, plural, one {# item} other {# items}}',
-  },
-  {typed: true}
-)
+}>({
+  id: 'items',
+  defaultMessage: '{count, plural, one {# item} other {# items}}',
+})
 
 intl.formatMessage(message, {count: 2}) // OK
 intl.formatMessage(message, {count: 'two'}) // TypeScript error
@@ -1116,14 +1113,20 @@ Dynamic strings, parsed AST inputs, and dynamic parser options are not generated
 The argument contracts and tag/value types live in `intl-messageformat`;
 framework packages re-export them.
 
+For inline formatter calls with no ICU arguments and no values argument, autofix
+omits the empty generic and removes an existing `<{}>`. A second output generic
+is preserved. Empty contracts on reusable helpers and calls supplying values
+remain useful for checking later calls or rejecting extra values.
+
 Autofix refreshes the first generic from the message even when it was handwritten,
 and preserves a formatter's second rich-output generic. Legacy marker comments
 are removed when fixing. Typed declarations with unsupported or dynamic source
 expressions receive a diagnostic instead of a guessed contract. Spreads and
 computed properties are not generated.
 
-The `{typed: true}` overload attaches only type-level metadata. Existing helper
-calls and untyped formatting behavior stay unchanged. Both `formatMessage` and
+Helper generics describe ICU arguments and attach only type-level metadata;
+no options flag is required. Calls without generics retain inferred descriptor
+metadata and permissive formatting. Existing `{typed: true}` calls remain valid. Both `formatMessage` and
 `$t` enforce contracts. React Intl also supports rich-text callbacks returning
 React nodes. This does not add typed JSX `FormattedMessage` props or infer
 contracts from ID-only calls. A dynamically selected typed descriptor requires
@@ -1145,10 +1148,9 @@ import {defineMessages, type TypedMessageDescriptor} from 'react-intl'
 
 export const messages: {
   readonly count: TypedMessageDescriptor<{readonly n: number | bigint}>
-} = defineMessages<{readonly count: {readonly n: number | bigint}}>(
-  {count: {defaultMessage: '{n, number}'}},
-  {typed: true}
-)
+} = defineMessages<{readonly count: {readonly n: number | bigint}}>({
+  count: {defaultMessage: '{n, number}'},
+})
 ```
 
 This explicit type works with `isolatedDeclarations`. Subsequent fixes refresh

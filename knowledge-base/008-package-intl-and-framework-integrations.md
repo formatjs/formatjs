@@ -135,8 +135,8 @@ flowchart TD
 
 ### Descriptor adapters
 
-`defineMessage<Values>(descriptor, {typed: true})` and
-`defineMessages<Contracts>(catalog, {typed: true})` attach phantom contracts for
+`defineMessage<Values>(descriptor)` and
+`defineMessages<Contracts>(catalog)` attach phantom contracts for
 `formatMessage` and `$t`. Existing one-argument overloads retain their behavior.
 `MessageValue` represents plain arguments; `MessageTag` is resolved to the
 formatter's callback type. Contracts are explicit; TypeScript does not parse
@@ -183,8 +183,8 @@ objects or recursively transform rich values.
 Typed helpers retain required `id` and `defaultMessage` fields for common
 descriptor shapes. Catalog inference retains fields shared by every entry.
 For literal IDs, custom metadata, or heterogeneous catalogs, supply a second
-descriptor generic: `defineMessage<Values, typeof descriptor>(descriptor, {typed: true})`
-or `defineMessages<Contracts, typeof catalog>(catalog, {typed: true})`.
+descriptor generic: `defineMessage<Values, typeof descriptor>(descriptor)`
+or `defineMessages<Contracts, typeof catalog>(catalog)`.
 TypeScript cannot partially infer that second generic after an explicit first one.
 ESLint refreshes the ICU generic while preserving the metadata generic.
 
@@ -265,3 +265,10 @@ output overloads. The callable interface retains explicit contracts, typed
 descriptors, registered-ID checks, and the guarded legacy overload. Its tag
 callbacks take `string[]` and return strings. It is a type-only API; it does not
 wrap formatters or alter their runtime behavior.
+
+Helper ICU generics select typed overloads without an options flag. `NoInfer`
+prevents contextual return types or catalog keys from supplying an unintended
+contract to calls without explicit generics. Existing `{typed: true}` arguments
+remain accepted for migration. The linter emits flag-free helper calls and omits
+empty generics on inline formatters with no values argument. Reusable empty
+contracts and explicit output generics retain their checks and positions.
