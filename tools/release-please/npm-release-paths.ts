@@ -15,6 +15,9 @@ const dependencyFields = [
   'optionalDependencies',
   'peerDependencies',
 ] as const
+// Successful npm uploads can take several minutes to reach registry metadata.
+const publicationPollIntervalMs = 5_000
+const publicationPollAttempts = 181
 
 export async function isNpmVersionPublished(
   name: string,
@@ -141,17 +144,17 @@ export async function publishNpmPackages(
     version: string,
     publishError?: unknown
   ) {
-    for (let attempt = 0; attempt < 36; attempt++) {
+    for (let attempt = 0; attempt < publicationPollAttempts; attempt++) {
       if (await isPublished(name, version)) {
         return
       }
-      if (attempt === 35) {
+      if (attempt === publicationPollAttempts - 1) {
         throw (
           publishError ||
           new Error(`npm publication not visible: ${name}@${version}`)
         )
       }
-      await wait(5_000)
+      await wait(publicationPollIntervalMs)
     }
   }
   for (const path of orderNpmReleasePaths(paths, packages)) {

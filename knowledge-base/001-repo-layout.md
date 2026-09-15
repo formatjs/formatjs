@@ -139,7 +139,7 @@ The npm publish workflow skips existing versions, orders selected packages by
 workspace dependencies, and checks internal runtime, optional, and peer dependency
 versions before each dependent publication. Independent uploads proceed without
 waiting for each other's registry visibility. The workflow verifies the whole batch
-before completion, allowing up to three minutes for registry propagation per
+before completion, allowing up to fifteen minutes of polling delays for registry propagation per
 version. A failed dependency cannot leave a newly published dependent uninstallable.
 The messaging group (intl-messageformat, @formatjs/intl, react-intl,
 eslint-plugin-formatjs, @formatjs/svelte-intl, and vue-intl) uses

@@ -217,6 +217,28 @@ await publishNpmPackages(
 )
 assert.equal(waits, 2)
 
+// A successful dependency upload can take longer than three minutes to appear.
+const delayedUploads: string[] = []
+let elapsed = 0
+await publishNpmPackages(
+  ['packages/duration', 'packages/matcher'],
+  packages,
+  async path => {
+    if (path === 'packages/duration') {
+      assert.ok(elapsed >= 240_000)
+    }
+    delayedUploads.push(path)
+  },
+  async name =>
+    name === '@formatjs/matcher'
+      ? delayedUploads.includes('packages/matcher') && elapsed >= 240_000
+      : delayedUploads.includes('packages/duration'),
+  async milliseconds => {
+    elapsed += milliseconds
+  }
+)
+assert.deepEqual(delayedUploads, ['packages/matcher', 'packages/duration'])
+
 console.log(
   'Verified npm release reconciliation and dependency-safe publication'
 )
