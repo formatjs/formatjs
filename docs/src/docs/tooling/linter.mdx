@@ -1062,6 +1062,18 @@ Autofix adds normal `import type` declarations for these names, reusing existing
 imports and aliases when possible.
 Incompatible uses of one argument produce a diagnostic without a fix.
 
+Catalogs may use computed identifier or enum-member keys and reference existing
+messages. Referenced contracts use `MessageValuesOf<typeof message>` rather than
+copying another message's ICU arguments. Local `const` descriptors are analyzed
+when their references are limited to message helpers and formatter calls; mutable
+or escaping descriptors still require an explicit contract.
+
+Autofix also replaces broad catalog annotations, including local type aliases and
+`Record` values that allow `undefined`, with per-message descriptor types. It
+removes local type aliases and type imports only when the replaced annotations or
+generics contained their last references. Exported aliases and types used
+elsewhere remain unchanged.
+
 Inline calls receive the ICU contract as their first generic:
 
 ```ts

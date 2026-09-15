@@ -16,10 +16,12 @@ import {
   type MessageArgumentsFromCatalog,
   type TypedMessageDescriptor,
   type MessageValue,
+  type MessageValuesOf,
 } from '#packages/react-intl/index.js'
 import {
   defineMessage as serverMessage,
   createIntl as serverIntl,
+  type MessageValuesOf as ServerMessageValuesOf,
 } from '#packages/react-intl/server.js'
 
 const intl = createIntl({locale: 'en'})
@@ -385,4 +387,30 @@ test('helper generics carry ICU contracts without an options flag', () => {
     intl.$t(catalog.hello, {name: 2})
   }
   void invalid
+})
+
+test('catalogs preserve referenced contracts and computed enum keys', () => {
+  enum Key {
+    Count = 'count',
+    Greeting = 'greeting',
+  }
+  const catalog = defineMessages<{
+    readonly [Key.Count]: MessageValuesOf<typeof message>
+    readonly [Key.Greeting]: {readonly name: MessageValue}
+  }>({
+    [Key.Count]: message,
+    [Key.Greeting]: {id: 'catalog-greeting', defaultMessage: 'Hello {name}'},
+  })
+  expectTypeOf<ServerMessageValuesOf<typeof catalog.count>>().toEqualTypeOf<{
+    count: number | bigint
+  }>()
+  expect(intl.formatMessage(catalog.count, {count: 2})).toBe('2')
+  expect(intl.formatMessage(catalog.greeting, {name: 'Ada'})).toBe('Hello Ada')
+  const check = () => {
+    // @ts-expect-error Referencing a descriptor must preserve required values.
+    intl.formatMessage(catalog.count)
+    // @ts-expect-error Referencing a descriptor must preserve numeric arguments.
+    intl.formatMessage(catalog.count, {count: 'two'})
+  }
+  void check
 })

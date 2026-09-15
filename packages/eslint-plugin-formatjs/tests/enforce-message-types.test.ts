@@ -870,7 +870,7 @@ ruleTester.run('catalog annotations', rule, {
       options: [{generateTypes: true}],
       code: "import {defineMessages, type MessageDescriptor} from 'react-intl'; export const messages: Record<string, MessageDescriptor> = defineMessages({count: {defaultMessage: '{n, number}'}})",
       output:
-        'import {defineMessages, type MessageDescriptor} from \'react-intl\';\nimport type {TypedMessageDescriptor} from "react-intl"; export const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}})',
+        'import {defineMessages} from \'react-intl\';\nimport type {TypedMessageDescriptor} from "react-intl"; export const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}})',
       errors: [{messageId: 'contract'}],
     },
     {
@@ -878,7 +878,7 @@ ruleTester.run('catalog annotations', rule, {
       options: [{generateTypes: true}],
       code: "import {defineMessages as dm, type MessageDescriptor as MD, type TypedMessageDescriptor as TD} from '@formatjs/intl'; const messages: Readonly<Record<'count', MD>> = dm<{readonly count: {readonly n: number | bigint}}>({count: {defaultMessage: '{n, number}'}})",
       output:
-        'import {defineMessages as dm, type MessageDescriptor as MD, type TypedMessageDescriptor as TD} from \'@formatjs/intl\'; const messages: { readonly "count": TD<{ readonly "n": number | bigint }> } = dm<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}})',
+        'import {defineMessages as dm, type TypedMessageDescriptor as TD} from \'@formatjs/intl\'; const messages: { readonly "count": TD<{ readonly "n": number | bigint }> } = dm<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}})',
       errors: [{messageId: 'contract'}],
     },
     {
@@ -886,7 +886,7 @@ ruleTester.run('catalog annotations', rule, {
       options: [{generateTypes: true}],
       code: "import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const messages: {readonly count?: MessageDescriptor} & {readonly count: TypedMessageDescriptor<{readonly n: string}>} = defineMessages<{readonly count: {readonly n: string}}>({count: {defaultMessage: '{n, number}'}})",
       output:
-        'import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from \'react-intl\'; const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}})',
+        'import {defineMessages, type TypedMessageDescriptor} from \'react-intl\'; const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: \'{n, number}\'}})',
       errors: [{messageId: 'contract'}],
     },
     {
@@ -919,6 +919,142 @@ ruleTester.run('descriptor metadata generic', rule, {
       options: [{generateTypes: true}],
       code: "import {defineMessage} from 'react-intl'; defineMessage<{n: string}, Descriptor>({defaultMessage: '{n, number}'})",
       output: `import {defineMessage} from 'react-intl'; defineMessage<{ readonly "n": number | bigint }, Descriptor>({defaultMessage: '{n, number}'})`,
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})
+
+ruleTester.run('existing catalog migration', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages, type MessageValuesOf} from 'react-intl'; import {shared, Keys} from './messages'; defineMessages<{readonly [Keys.Count]: MessageValuesOf<typeof shared.count>}>({[Keys.Count]: shared.count})`,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages, type MessageDescriptor} from 'react-intl'; type Catalog = {count: MessageDescriptor}; const messages: Catalog = defineMessages({count: {defaultMessage: '{n, number}'}})`,
+      output: `import {defineMessages} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl";  const messages: { readonly "count": TypedMessageDescriptor<{ readonly "n": number | bigint }> } = defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: {defaultMessage: '{n, number}'}})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; import {shared, Keys} from './messages'; defineMessages<Keys>({[Keys.Count]: shared.count, [Keys.Hello]: {defaultMessage: 'Hello'}})`,
+      output: `import {defineMessages} from 'react-intl'; import {shared, Keys} from './messages';\nimport type {MessageValuesOf} from "react-intl"; defineMessages<{ readonly [Keys.Count]: MessageValuesOf<typeof shared.count>; readonly [Keys.Hello]: {} }>({[Keys.Count]: shared.count, [Keys.Hello]: {defaultMessage: 'Hello'}})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage} from 'react-intl'; const descriptor = {defaultMessage: '{n, number}'}; defineMessage(descriptor)`,
+      output: `import {defineMessage} from 'react-intl'; const descriptor = {defaultMessage: '{n, number}'}; defineMessage<{ readonly "n": number | bigint }>(descriptor)`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      code: `const descriptor = {defaultMessage: '{n, number}'}; descriptor.defaultMessage = '{name}'; intl.$t<{n: number}>(descriptor, {n: 1})`,
+      errors: [{messageId: 'dynamic'}],
+    },
+  ],
+})
+
+ruleTester.run('safe catalog type cleanup', rule, {
+  valid: [],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages, type MessageDescriptor} from 'react-intl'; const messages: Record<string, MessageDescriptor | undefined> = defineMessages({hello: {defaultMessage: 'Hello'}})`,
+      output: `import {defineMessages} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; const messages: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages, type MessageDescriptor} from 'react-intl'; export type Catalog = {hello: MessageDescriptor}; const messages: Catalog = defineMessages({hello: {defaultMessage: 'Hello'}})`,
+      output: `import {defineMessages, type MessageDescriptor} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; export type Catalog = {hello: MessageDescriptor}; const messages: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; import type {Keys, Unrelated} from './types'; type LocalKeys = Keys; defineMessages<LocalKeys>({hello: {defaultMessage: 'Hello'}}); export type Keep = Unrelated`,
+      output: `import {defineMessages} from 'react-intl'; import type {Unrelated} from './types';  defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); export type Keep = Unrelated`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; import type {Keys} from './types'; defineMessages<Keys>({hello: {defaultMessage: 'Hello'}}); let other: Keys`,
+      output: `import {defineMessages} from 'react-intl'; import type {Keys} from './types'; defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); let other: Keys`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `const descriptor = {defaultMessage: '{n, number}'}; intl.$t(descriptor, {n: 1})`,
+      output: `const descriptor = {defaultMessage: '{n, number}'}; intl.$t<{ readonly "n": number | bigint }>(descriptor, {n: 1})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      code: `import {defineMessage} from 'react-intl'; const descriptor = {defaultMessage: '{n, number}'}; mutate(descriptor); defineMessage<{n: number}>(descriptor)`,
+      errors: [{messageId: 'dynamic'}],
+    },
+    {
+      filename: 'test.ts',
+      code: `import {defineMessage} from 'react-intl'; let descriptor = {defaultMessage: '{n, number}'}; defineMessage<{n: number}>(descriptor)`,
+      errors: [{messageId: 'dynamic'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; type Catalog = Catalog; const messages: Catalog = defineMessages({hello: {defaultMessage: 'Hello'}})`,
+      errors: [{messageId: 'annotation'}],
+    },
+  ],
+})
+
+ruleTester.run('computed annotated catalogs', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages, type TypedMessageDescriptor} from 'react-intl'; import {Keys} from './keys'; const messages: {readonly [Keys.Hello]: TypedMessageDescriptor<{}>} = defineMessages<{readonly [Keys.Hello]: {}}>({[Keys.Hello]: {defaultMessage: 'Hello'}})`,
+    },
+  ],
+  invalid: [],
+})
+
+const sharedCatalogBefore = `import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const a: Record<string, MessageDescriptor> = defineMessages({hello: {defaultMessage: 'Hello'}}); const b: Record<string, MessageDescriptor> = defineMessages({bye: {defaultMessage: 'Bye'}})`
+const sharedCatalogFirstPass = `import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const a: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); const b: Record<string, MessageDescriptor> = defineMessages({bye: {defaultMessage: 'Bye'}})`
+const sharedCatalogFixed = `import {defineMessages, type TypedMessageDescriptor} from 'react-intl'; const a: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); const b: { readonly "bye": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "bye": {} }>({bye: {defaultMessage: 'Bye'}})`
+
+ruleTester.run('shared imports across fixes', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: sharedCatalogFixed,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: sharedCatalogBefore,
+      output: sharedCatalogFirstPass,
+      errors: [{messageId: 'contract'}, {messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: sharedCatalogFirstPass,
+      output: sharedCatalogFixed,
       errors: [{messageId: 'contract'}],
     },
   ],

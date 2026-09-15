@@ -41,6 +41,78 @@ function staticObject(node: Node | undefined): node is ObjectExpression {
   )
 }
 
+// Resolve only local const descriptors whose references cannot mutate or escape them.
+function resolveDescriptor(
+  context: Rule.RuleContext,
+  node: Node | undefined,
+  seen = new Set<Node>()
+): Node | undefined {
+  if (!node || seen.has(node)) return
+  if (node.type !== 'Identifier') return node
+  seen.add(node)
+  let scope: ReturnType<typeof context.sourceCode.getScope> | null =
+    context.sourceCode.getScope(node)
+  while (scope) {
+    const variable = scope.set.get(node.name)
+    if (variable) {
+      const definition = variable.defs[0]
+      if (
+        definition?.type !== 'Variable' ||
+        definition.parent?.kind !== 'const' ||
+        !definition.node.init
+      )
+        return
+      if (
+        variable.references.some(reference => {
+          if (reference.init) return false
+          const parent = (reference.identifier as Node & {parent?: Node}).parent
+          if (
+            parent?.type === 'Property' &&
+            parent.value === reference.identifier
+          ) {
+            const object = (parent as Node & {parent?: Node}).parent
+            const call = (object as (Node & {parent?: Node}) | undefined)
+              ?.parent
+            if (
+              call?.type === 'CallExpression' &&
+              call.arguments[0] === object &&
+              importedHelper(context, call)?.helper === 'defineMessages'
+            )
+              return false
+          }
+          return (
+            parent?.type !== 'CallExpression' ||
+            parent.arguments[0] !== reference.identifier ||
+            (!importedHelper(context, parent) &&
+              !isIntlFormatMessageCall(
+                {
+                  ...parent,
+                  arguments: [{type: 'ObjectExpression', properties: []}],
+                },
+                getSettings(context).additionalFunctionNames
+              ))
+          )
+        })
+      )
+        return
+      return resolveDescriptor(context, definition.node.init, seen)
+    }
+    scope = scope.upper
+  }
+}
+
+function typeQuery(node: Node | undefined): string | undefined {
+  if (node?.type === 'Identifier') return node.name
+  if (
+    node?.type === 'MemberExpression' &&
+    !node.computed &&
+    node.property.type === 'Identifier'
+  ) {
+    const object = typeQuery(node.object)
+    if (object) return object + '.' + node.property.name
+  }
+}
+
 function staticMessage(node: Node | undefined): boolean {
   if (!node) return false
   if (node.type === 'Literal') return typeof node.value === 'string'
@@ -164,6 +236,10 @@ interface TypeNode {
   optional?: boolean
   readonly?: boolean
   computed?: boolean
+  exprName?: TypeNode
+  name?: string
+  left?: TypeNode
+  right?: TypeNode
 }
 
 // Render generated type syntax for stable comparisons before applying autofix.
@@ -183,6 +259,16 @@ function renderType(node: TypeNode | undefined): string | undefined {
       return node.typeName.name + '<' + types.join(', ') + '>'
     return
   }
+  if (node.type === 'Identifier') return node.name
+  if (node.type === 'TSQualifiedName') {
+    const left = renderType(node.left)
+    const right = renderType(node.right)
+    if (left && right) return left + '.' + right
+  }
+  if (node.type === 'TSTypeQuery') {
+    const name = renderType(node.exprName)
+    if (name) return 'typeof ' + name
+  }
   if (node.type === 'TSUnionType') {
     const types = node.types?.map(renderType)
     if (types?.every(type => type !== undefined)) return types.join(' | ')
@@ -198,13 +284,13 @@ function renderType(node: TypeNode | undefined): string | undefined {
   if (node.type === 'TSTypeLiteral' && node.members) {
     const fields: string[] = []
     for (const member of node.members) {
-      if (member.type !== 'TSPropertySignature' || member.computed) return
+      if (member.type !== 'TSPropertySignature') return
       const key =
         member.key?.type === 'Identifier' ? member.key.name : member.key?.value
       const type = renderType(member.typeAnnotation?.typeAnnotation)
-      if (key === undefined || type === undefined) return
+      if ((!member.computed && key === undefined) || type === undefined) return
       fields.push(
-        `${member.readonly ? 'readonly ' : ''}${JSON.stringify(String(key))}${member.optional ? '?' : ''}: ${type}`
+        `${member.readonly ? 'readonly ' : ''}${member.computed ? '[' + (typeQuery(member.key as Node) ?? renderType(member.key as TypeNode)) + ']' : JSON.stringify(String(key))}${member.optional ? '?' : ''}: ${type}`
       )
     }
     return fields.length ? `{ ${fields.join('; ')} }` : '{}'
@@ -221,7 +307,7 @@ function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
   )
   const resolved = new Map<string, string>()
   const text = contract.replace(
-    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValue|TypedMessageDescriptor)/g,
+    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValuesOf|MessageValue|TypedMessageDescriptor)/g,
     (reference, quotedModule: string, imported: string) => {
       if (resolved.has(reference)) return resolved.get(reference)!
       const module = JSON.parse(quotedModule) as string
@@ -295,6 +381,151 @@ function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
   }
 }
 
+// Remove only type declarations whose last references are replaced by this fix.
+function obsoleteTypes(
+  context: Rule.RuleContext,
+  replaced: Node[],
+  replacement: string,
+  fixer: Rule.RuleFixer
+): Rule.Fix[] {
+  const source = context.sourceCode
+  const removed = [...replaced]
+  const declarations = new Set<Node>()
+  const retainedNames = new Set(
+    replacement.match(/[$\p{ID_Start}][$\p{ID_Continue}]*/gu)
+  )
+  const contains = (node: Node) =>
+    removed.some(
+      range =>
+        range.range &&
+        node.range &&
+        range.range[0] <= node.range[0] &&
+        range.range[1] >= node.range[1]
+    )
+  let changed = true
+  while (changed) {
+    changed = false
+    for (const scope of source.scopeManager?.scopes ?? []) {
+      for (const variable of scope.variables) {
+        if (
+          variable.defs.length !== 1 ||
+          !variable.references.length ||
+          !variable.references.every(reference =>
+            contains(reference.identifier)
+          )
+        )
+          continue
+        if (retainedNames.has(variable.name)) continue
+        const definition = variable.defs[0]
+        const declaration = definition.node as Node & {
+          parent?: Node
+          importKind?: string
+        }
+        if (declarations.has(declaration)) continue
+        if (declaration.type === 'ImportSpecifier') {
+          const imported =
+            declaration.imported.type === 'Identifier'
+              ? declaration.imported.name
+              : declaration.imported.value
+          if (
+            declaration.importKind !== 'type' &&
+            (definition.parent as Node & {importKind?: string})?.importKind !==
+              'type' &&
+            !(
+              definition.type === 'ImportBinding' &&
+              descriptorModules.has(String(definition.parent.source.value)) &&
+              ['MessageDescriptor', 'TypedMessageDescriptor'].includes(
+                String(imported)
+              )
+            )
+          )
+            continue
+        } else if (
+          (declaration as {type: string}).type !== 'TSTypeAliasDeclaration' ||
+          declaration.parent?.type === 'ExportNamedDeclaration'
+        )
+          continue
+        declarations.add(declaration)
+        removed.push(declaration)
+        changed = true
+      }
+    }
+  }
+  const edits: Rule.Fix[] = []
+  // Reserve shared type bindings so separate fixes cannot remove their last
+  // references in the same pass without either fix cleaning up the declaration.
+  for (const scope of source.scopeManager?.scopes ?? []) {
+    for (const variable of scope.variables) {
+      if (
+        variable.defs.length !== 1 ||
+        retainedNames.has(variable.name) ||
+        declarations.has(variable.defs[0].node)
+      )
+        continue
+      if (
+        variable.references.some(reference => contains(reference.identifier))
+      ) {
+        const identifier = variable.identifiers[0]
+        if (identifier && !contains(identifier))
+          edits.push(fixer.replaceText(identifier, source.getText(identifier)))
+      }
+    }
+  }
+  const imports = new Map<Node, Set<Node>>()
+  for (const declaration of declarations) {
+    if (declaration.type !== 'ImportSpecifier') {
+      edits.push(fixer.remove(declaration))
+      continue
+    }
+    const parent = (declaration as Node & {parent: Node}).parent
+    const specifiers = imports.get(parent) ?? new Set<Node>()
+    specifiers.add(declaration)
+    imports.set(parent, specifiers)
+  }
+  for (const [declaration, removedSpecifiers] of imports) {
+    if (declaration.type !== 'ImportDeclaration') continue
+    if (
+      declaration.specifiers.every(specifier =>
+        removedSpecifiers.has(specifier)
+      )
+    ) {
+      edits.push(fixer.remove(declaration))
+      continue
+    }
+    // Delete contiguous runs together so adjacent specifiers do not overlap.
+    for (let i = 0; i < declaration.specifiers.length; i++) {
+      const first = declaration.specifiers[i]
+      if (!removedSpecifiers.has(first)) continue
+      let last = first
+      while (
+        i + 1 < declaration.specifiers.length &&
+        removedSpecifiers.has(declaration.specifiers[i + 1])
+      )
+        last = declaration.specifiers[++i]
+      const next = source.getTokenAfter(last)!
+      if (next.value === ',')
+        edits.push(
+          fixer.removeRange([
+            first.range![0],
+            next.range![1] +
+              (source.text.slice(next.range![1]).match(/^\s*/)?.[0].length ??
+                0),
+          ])
+        )
+      else {
+        const previous = source.getTokenBefore(first)!
+        edits.push(
+          fixer.removeRange([
+            previous.value === ',' ? previous.range![0] : first.range![0],
+            last.range![1],
+          ])
+        )
+      }
+    }
+  }
+  return edits
+}
+
 // Replace broad catalog annotations with explicit per-message contracts.
 function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
   const parent = (node as Node & {parent?: Node}).parent
@@ -310,7 +541,7 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
     if (type.type !== 'TSTypeReference' || type.typeName?.type !== 'Identifier')
       return false
     let scope: ReturnType<typeof context.sourceCode.getScope> | null =
-      context.sourceCode.getScope(node)
+      context.sourceCode.getScope(type as unknown as Node)
     while (scope) {
       const binding = scope.set.get(type.typeName.name!)
       if (binding) {
@@ -329,27 +560,54 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
     return false
   }
 
-  function broad(type: TypeNode): boolean {
+  function descriptorType(type: TypeNode): boolean {
+    return (
+      imported(type, 'MessageDescriptor') ||
+      (type.type === 'TSUnionType' &&
+        !!type.types?.every(
+          part =>
+            part.type === 'TSUndefinedKeyword' ||
+            imported(part, 'MessageDescriptor')
+        ))
+    )
+  }
+
+  function broad(type: TypeNode, seen = new Set<TypeNode>()): boolean {
+    if (seen.has(type)) return false
+    seen.add(type)
     if (type.type === 'TSTypeLiteral')
       return !!type.members?.every(
         member =>
           member.type === 'TSPropertySignature' &&
           !!member.typeAnnotation &&
-          imported(member.typeAnnotation.typeAnnotation, 'MessageDescriptor')
+          descriptorType(member.typeAnnotation.typeAnnotation)
       )
     let scope: ReturnType<typeof context.sourceCode.getScope> | null =
-      context.sourceCode.getScope(node)
+      context.sourceCode.getScope(type as unknown as Node)
     while (scope) {
-      if (scope.set.get(type.typeName?.name ?? '')?.defs.length) return false
+      const binding = scope.set.get(type.typeName?.name ?? '')
+      if (binding?.defs.length) {
+        const declaration = binding.defs[0].node as unknown as {
+          type: string
+          typeAnnotation?: TypeNode
+          typeParameters?: unknown
+        }
+        return (
+          declaration.type === 'TSTypeAliasDeclaration' &&
+          !declaration.typeParameters &&
+          !!declaration.typeAnnotation &&
+          broad(declaration.typeAnnotation, seen)
+        )
+      }
       scope = scope.upper
     }
     const parameters = (type.typeArguments ?? type.typeParameters)?.params
     if (type.typeName?.name === 'Readonly' && parameters?.length === 1)
-      return broad(parameters[0])
+      return broad(parameters[0], seen)
     return (
       type.typeName?.name === 'Record' &&
       parameters?.length === 2 &&
-      imported(parameters[1], 'MessageDescriptor')
+      descriptorType(parameters[1])
     )
   }
 
@@ -359,7 +617,6 @@ function catalogAnnotation(context: Rule.RuleContext, node: CallExpression) {
       !!type.members?.every(
         member =>
           member.type === 'TSPropertySignature' &&
-          !member.computed &&
           !!member.typeAnnotation &&
           imported(
             member.typeAnnotation.typeAnnotation,
@@ -426,7 +683,7 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
   const generated =
     !!generic &&
     /^<\s*\/\* @formatjs-generated \*\//.test(source.getText(generic))
-  const descriptor = node.arguments[0]
+  const descriptor = resolveDescriptor(context, node.arguments[0])
   if (!staticObject(descriptor)) {
     if (generic) context.report({node, messageId: 'dynamic'})
     return
@@ -447,7 +704,7 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     if (generic) context.report({node, messageId: 'dynamic'})
     return !!generic
   }
-  const messages = extractMessages(node, settings)
+  const messages = extractMessages({...node, arguments: [descriptor]}, settings)
   const message = messages[0]?.[0]
   if (
     messages.length !== 1 ||
@@ -690,35 +947,89 @@ export const rule: Rule.RuleModule = {
           )
         if (!generic && !typed && !context.options[0]?.generateTypes) return
         if (node.arguments.length > 2 || (options && !typed)) return
-        const descriptor = node.arguments[0]
-        if (!staticObject(descriptor)) {
-          if (generic || typed) context.report({node, messageId: 'dynamic'})
-          return
-        }
+        const descriptor = resolveDescriptor(context, node.arguments[0])
+        const catalog = imported.helper === 'defineMessages'
         if (
-          imported.helper === 'defineMessages' &&
+          descriptor?.type !== 'ObjectExpression' ||
           !descriptor.properties.every(
-            p => p.type === 'Property' && staticObject(p.value)
+            p =>
+              p.type === 'Property' &&
+              p.kind === 'init' &&
+              !p.method &&
+              (!p.computed || !!typeQuery(p.key))
           )
         ) {
           if (generic || typed) context.report({node, messageId: 'dynamic'})
           return
         }
-        const messages = extractMessages(
-          {...node, callee: {type: 'Identifier', name: imported.helper}},
-          getSettings(context)
-        )
-        if (
-          messages.some(
-            ([message]) =>
-              typeof message.message.defaultMessage !== 'string' ||
-              !staticMessage(message.messageNode ?? undefined)
-          ) ||
-          messages.length !==
-            (imported.helper === 'defineMessage'
-              ? 1
-              : descriptor.properties.length)
-        ) {
+        const entries = catalog
+          ? descriptor.properties.map(p => {
+              if (p.type !== 'Property') return undefined
+              return {
+                value: resolveDescriptor(context, p.value),
+                reference: typeQuery(p.value),
+                key: p.computed
+                  ? '[' + typeQuery(p.key) + ']'
+                  : JSON.stringify(
+                      p.key.type === 'Identifier'
+                        ? p.key.name
+                        : p.key.type === 'Literal'
+                          ? String(p.key.value)
+                          : ''
+                    ),
+              }
+            })
+          : [{value: descriptor, reference: undefined, key: ''}]
+        const types: string[] = []
+        for (const entry of entries) {
+          if (entry && staticObject(entry.value)) {
+            const messages = extractMessages(
+              {
+                ...node,
+                callee: {type: 'Identifier', name: 'defineMessage'},
+                arguments: [entry.value],
+              },
+              getSettings(context)
+            )
+            const message = messages[0]?.[0]
+            if (
+              messages.length === 1 &&
+              typeof message?.message.defaultMessage === 'string' &&
+              staticMessage(message.messageNode ?? undefined)
+            ) {
+              try {
+                types.push(
+                  messageTypes(
+                    parse(message.message.defaultMessage, {
+                      ignoreTag: getSettings(context).ignoreTag,
+                    }),
+                    imported.module,
+                    context.options[0]?.ignoreList
+                  )
+                )
+              } catch (error) {
+                context.report({
+                  node,
+                  messageId: 'invalid',
+                  data: {
+                    error:
+                      error instanceof Error ? error.message : String(error),
+                  },
+                })
+                return
+              }
+              continue
+            }
+          } else if (catalog && entry?.reference) {
+            types.push(
+              'import(' +
+                JSON.stringify(imported.module) +
+                ').MessageValuesOf<typeof ' +
+                entry.reference +
+                '>'
+            )
+            continue
+          }
           if (generic || typed) context.report({node, messageId: 'dynamic'})
           return
         }
@@ -736,64 +1047,36 @@ export const rule: Rule.RuleModule = {
         let contract: string
         let catalogType: string | undefined
         try {
-          const types = messages.map(([message]) =>
-            messageTypes(
-              parse(message.message.defaultMessage!, {
-                ignoreTag: getSettings(context).ignoreTag,
-              }),
-              imported.module,
-              context.options[0]?.ignoreList
-            )
-          )
           if (annotation) {
-            catalogType =
-              '{ ' +
-              descriptor.properties
-                .map((property, index) => {
-                  if (property.type !== 'Property')
-                    throw new Error('Unexpected spread')
-                  const key =
-                    property.key.type === 'Identifier'
-                      ? property.key.name
-                      : property.key.type === 'Literal'
-                        ? String(property.key.value)
-                        : undefined
-                  if (key === undefined)
-                    throw new Error('Unsupported catalog key')
-                  return (
-                    'readonly ' +
-                    JSON.stringify(key) +
-                    ': import(' +
-                    JSON.stringify(imported.module) +
-                    ').TypedMessageDescriptor<' +
-                    types[index] +
-                    '>'
+            catalogType = entries.length
+              ? '{ ' +
+                entries
+                  .map(
+                    (entry, index) =>
+                      'readonly ' +
+                      entry!.key +
+                      ': import(' +
+                      JSON.stringify(imported.module) +
+                      ').TypedMessageDescriptor<' +
+                      types[index] +
+                      '>'
                   )
-                })
-                .join('; ') +
-              ' }'
-            if (!descriptor.properties.length) catalogType = '{}'
+                  .join('; ') +
+                ' }'
+              : '{}'
           }
-          contract =
-            imported.helper === 'defineMessage'
-              ? types[0]
-              : descriptor.properties.length === 0
-                ? '{}'
-                : `{ ${descriptor.properties
-                    .map((p, i) => {
-                      if (p.type !== 'Property')
-                        throw new Error('Unexpected spread')
-                      const key =
-                        p.key.type === 'Identifier'
-                          ? p.key.name
-                          : p.key.type === 'Literal'
-                            ? String(p.key.value)
-                            : undefined
-                      if (key === undefined)
-                        throw new Error('Unsupported catalog key')
-                      return `readonly ${JSON.stringify(key)}: ${types[i]}`
-                    })
-                    .join('; ')} }`
+          contract = !catalog
+            ? types[0]
+            : entries.length
+              ? '{ ' +
+                entries
+                  .map(
+                    (entry, index) =>
+                      'readonly ' + entry!.key + ': ' + types[index]
+                  )
+                  .join('; ') +
+                ' }'
+              : '{}'
         } catch (error) {
           context.report({
             node,
@@ -838,6 +1121,19 @@ export const rule: Rule.RuleModule = {
           fix(fixer) {
             const edits = [
               ...imports.fix(fixer),
+              ...obsoleteTypes(
+                context,
+                [
+                  ...(parameters?.[0]
+                    ? [parameters[0] as unknown as Node]
+                    : []),
+                  ...(annotation && !annotationMatches
+                    ? [annotation.annotation as unknown as Node]
+                    : []),
+                ],
+                contract + (catalogType ?? ''),
+                fixer
+              ),
               generic && parameters?.[0]
                 ? fixer.replaceTextRange(
                     [
