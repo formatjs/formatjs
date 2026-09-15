@@ -255,3 +255,13 @@ Vue and Svelte re-export the core typed message helpers and contract types.
 Their descriptors and catalog entries share the readonly core return types.
 The changed helper and formatter generics require major wrapper releases;
 keep both wrappers on RCs until the messaging release group graduates together.
+
+## Shared text-only formatter
+
+`TextMessageFormatter` is exported by `@formatjs/intl` and re-exported by
+`react-intl` and `react-intl/server`. Shared metadata and label helpers can accept
+core or React `formatMessage` / `$t` without depending on their different rich
+output overloads. The callable interface retains explicit contracts, typed
+descriptors, registered-ID checks, and the guarded legacy overload. Its tag
+callbacks take `string[]` and return strings. It is a type-only API; it does not
+wrap formatters or alter their runtime behavior.

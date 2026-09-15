@@ -44,6 +44,7 @@ export {
   type IntlFormatters,
   InvalidConfigError,
   type MessageDescriptor,
+  type TextMessageFormatter,
   MessageFormatError,
   MissingDataError,
   MissingTranslationError,

@@ -1,4 +1,8 @@
-import type {MessageDescriptor} from '@formatjs/intl'
+import {
+  createIntl as createCoreIntl,
+  type MessageDescriptor,
+  type TextMessageFormatter,
+} from '@formatjs/intl'
 import * as React from 'react'
 import {renderToStaticMarkup} from 'react-dom/server'
 import {expect, expectTypeOf, test} from 'vitest'
@@ -315,3 +319,51 @@ function checkRegisteredReactOutput() {
   return output
 }
 void checkRegisteredReactOutput
+
+test('text-only helpers accept core and React formatters', () => {
+  const core = createCoreIntl({locale: 'en'})
+  const formatters: TextMessageFormatter[] = [
+    core.formatMessage,
+    core.$t,
+    intl.formatMessage,
+    intl.$t,
+  ]
+  const rich = defineMessage<{b: MessageTag}>(
+    {id: 'text-only-rich', defaultMessage: '<b>Hello</b>'},
+    {typed: true}
+  )
+  for (const format of formatters) {
+    expect(format(message, {count: 2})).toBe('2')
+    expect(
+      format(rich, {
+        b: chunks => {
+          expectTypeOf(chunks).toEqualTypeOf<string[]>()
+          return chunks.join('').toUpperCase()
+        },
+      })
+    ).toBe('HELLO')
+    expectTypeOf(
+      format({id: 'text-only-plain', defaultMessage: 'Plain text'})
+    ).toEqualTypeOf<string>()
+  }
+})
+
+function checkTextMessageFormatter(format: TextMessageFormatter) {
+  format<{name: string}>({defaultMessage: 'Hello {name}'}, {name: 'Ada'})
+  format({id: 'registered-count'}, {count: 2})
+  // @ts-expect-error Typed descriptors retain required arguments.
+  format(message)
+  // @ts-expect-error Values cannot weaken the descriptor contract.
+  format(message, {count: 'two'})
+  // @ts-expect-error Explicit contracts retain required arguments.
+  format<{name: string}>({defaultMessage: 'Hello {name}'})
+  // @ts-expect-error Registered IDs cannot fall through to legacy formatting.
+  format({id: 'registered-count'})
+  // @ts-expect-error Registered arguments retain their types.
+  format({id: 'registered-count'}, {count: 'two'})
+  // @ts-expect-error Text helpers do not accept React elements.
+  format({defaultMessage: '{name}'}, {name: <b>Ada</b>})
+  // @ts-expect-error Text helpers do not accept callbacks returning React elements.
+  format({id: 'registered-rich'}, {b: chunks => <b>{chunks}</b>})
+}
+void checkTextMessageFormatter
