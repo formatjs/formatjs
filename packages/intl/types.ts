@@ -149,6 +149,36 @@ export type FormatDisplayNameOptions = Omit<
   'localeMatcher'
 >
 
+/** A string-output formatter shared by core and framework integrations. */
+export interface TextMessageFormatter {
+  <V extends MessageValues = never>(
+    this: void,
+    descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
+    ...args: TypedMessageArguments<NoInfer<V>>
+  ): string
+  <D extends TypedMessageDescriptor<MessageValues>>(
+    this: void,
+    descriptor: D,
+    ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>>
+  ): string
+  <const K extends RegisteredMessageId>(
+    this: void,
+    descriptor: UntypedMessageDescriptor & {id: K},
+    ...args: TypedMessageArguments<RegisteredMessageValues<NoInfer<K>>>
+  ): string
+  <
+    V = never,
+    const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<NoInfer<D>>
+      : never,
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+    opts?: IntlMessageFormatOptions
+  ): string
+}
+
 /**
  * `TBase` is the type constraints of the rich text element in the formatted output.
  * For example, with React, `TBase` should be `React.ReactNode`.

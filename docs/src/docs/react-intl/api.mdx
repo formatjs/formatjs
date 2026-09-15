@@ -696,3 +696,28 @@ Catalog entries must retain literal IDs. Use the helpers' explicit descriptor
 metadata generic when needed; widened `string` IDs are omitted. Keep IDs unique:
 duplicate catalog IDs combine their contracts. This API consumes existing typed
 catalogs or application declarations; it does not add a CLI declaration generator.
+
+### Sharing text-only formatters
+
+Use `TextMessageFormatter` for helpers that accept either a core or React
+formatter and produce text, such as page titles and metadata. It is exported
+from `@formatjs/intl`, `react-intl`, and `react-intl/server`.
+
+```ts
+import type {TextMessageFormatter} from '@formatjs/intl'
+
+function pageTitle(format: TextMessageFormatter, count: number): string {
+  return format<{count: number}>(
+    {id: 'page.items', defaultMessage: '{count, number} items'},
+    {count}
+  )
+}
+
+pageTitle(coreIntl.formatMessage, 2)
+pageTitle(reactIntl.$t, 2)
+```
+
+This type preserves explicit argument contracts, typed descriptors, and registered
+message IDs. Rich-text callbacks receive `string[]` and must return strings;
+React elements are not accepted. It adds no runtime wrapper and does not change
+the full formatter types used for rendering rich content.
