@@ -28,30 +28,42 @@ jobs:
           cache-save: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           bazelrc: |
             build --disk_cache=${{ runner.temp }}/formatjs-test-cache
+            build --config=rbe-platform
 
       - name: Restore Test Cache
         id: test-cache
         uses: actions/cache/restore@v5
         with:
           path: ${{ runner.temp }}/formatjs-test-cache
-          key: gha-test-local-v1-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: gha-test-rbe-v2-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            gha-test-local-v1-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-
+            gha-test-rbe-v2-ubuntu24-${{ runner.arch }}-${{ hashFiles('.bazelversion') }}-
 
       - name: Build Hermetic Timezone Data
         run: bazel build //packages/intl-datetimeformat:tz_data_generated
 
-      # Main and fork PRs must produce the same action keys. RBE runs separately
-      # in buildbuddy.yaml; switching platforms here makes main's disk cache useless to forks.
       - name: Run Tests
-        run: bazel test //...
+        env:
+          BUILDBUDDY_API_KEY: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.BUILDBUDDY_ORG_API_KEY || '' }}
+        run: |
+          bazel_args=()
+          if [ -n "$BUILDBUDDY_API_KEY" ]; then
+            bazel_args+=(--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all "--remote_header=x-buildbuddy-api-key=$BUILDBUDDY_API_KEY")
+          fi
+          bazel test "${bazel_args[@]}" //...
 
       - name: Rust CLI Smoke Test
+        env:
+          BUILDBUDDY_API_KEY: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.BUILDBUDDY_ORG_API_KEY || '' }}
         run: |
-          bazel build --compilation_mode=opt //crates/formatjs_cli
-          BINARY_PATH=bazel-bin/crates/formatjs_cli/formatjs_cli
-          $BINARY_PATH --version
-          $BINARY_PATH --help
+          bazel_args=(--compilation_mode=opt)
+          if [ -n "$BUILDBUDDY_API_KEY" ]; then
+            bazel_args+=(--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all "--remote_header=x-buildbuddy-api-key=$BUILDBUDDY_API_KEY")
+          fi
+          bazel build "${bazel_args[@]}" //crates/formatjs_cli
+          BINARY_PATH=$(bazel cquery --compilation_mode=opt --output=files //crates/formatjs_cli | tail -n 1)
+          "$BINARY_PATH" --version
+          "$BINARY_PATH" --help
 
       - name: Save Main Test Cache
         if: >-
