@@ -12,6 +12,8 @@ export interface MessageContextLabels {
   description: string
   catalogs: string
   locations: string
+  catalogCopy: (catalog: string) => string
+  locationCopy: (location: string) => string
 }
 export interface MessageContextProps {
   message?: Pick<
@@ -20,12 +22,14 @@ export interface MessageContextProps {
   > | null
   labels?: Partial<MessageContextLabels>
   copyId?: boolean
+  copyCatalogs?: boolean
+  copyLocations?: boolean
   copyOptions?: Pick<
     CopyTextButtonProps,
     'writeText' | 'onCopy' | 'onError' | 'labels' | 'feedbackDurationMs'
   >
   /** Default locations are plain text, never file URLs or HTML. */
-  renderLocation?: (location: SourceLocation) => ReactNode
+  renderLocation?: (location: SourceLocation, text: string) => ReactNode
 }
 const defaults: MessageContextLabels = {
   title: 'Message context',
@@ -33,6 +37,8 @@ const defaults: MessageContextLabels = {
   description: 'Description',
   catalogs: 'Source catalogs',
   locations: 'Source locations',
+  catalogCopy: catalog => `source catalog ${catalog}`,
+  locationCopy: location => `source location ${location}`,
 }
 function locationText(location: SourceLocation): string {
   const start = location.start === undefined ? '' : `:${location.start}`
@@ -47,6 +53,8 @@ export function MessageContext({
   message,
   labels,
   copyId = true,
+  copyCatalogs = false,
+  copyLocations = false,
   copyOptions,
   renderLocation = locationText,
 }: MessageContextProps): ReactNode {
@@ -81,7 +89,16 @@ export function MessageContext({
               <dd>
                 <ul>
                   {message.catalogs.map((catalog, index) => (
-                    <li key={index}>{catalog}</li>
+                    <li key={`${catalog}:${index}`}>
+                      <span>{catalog}</span>
+                      {copyCatalogs && (
+                        <CopyTextButton
+                          {...copyOptions}
+                          value={catalog}
+                          label={text.catalogCopy(catalog)}
+                        />
+                      )}
+                    </li>
                   ))}
                 </ul>
               </dd>
@@ -92,9 +109,21 @@ export function MessageContext({
               <dt>{text.locations}</dt>
               <dd>
                 <ul>
-                  {message.locations.map((location, index) => (
-                    <li key={index}>{renderLocation(location)}</li>
-                  ))}
+                  {message.locations.map((location, index) => {
+                    const value = locationText(location)
+                    return (
+                      <li key={`${value}:${index}`}>
+                        <span>{renderLocation(location, value)}</span>
+                        {copyLocations && (
+                          <CopyTextButton
+                            {...copyOptions}
+                            value={value}
+                            label={text.locationCopy(value)}
+                          />
+                        )}
+                      </li>
+                    )
+                  })}
                 </ul>
               </dd>
             </div>

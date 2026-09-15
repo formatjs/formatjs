@@ -96,6 +96,21 @@ reflect saved translations, so typing does not move a message out of the list.
 Locales may load asynchronously; an absent selection falls back to the first
 available locale. Pagination clamps when messages or page size change.
 
+General search matches IDs, source, translation, and description. The independent
+`descriptionQuery` / `setDescriptionQuery` pair matches descriptions only; both
+queries are case-insensitive and conjunctive. Controlled server-side views can use
+the same two-search interface without loading a full catalog into the hook.
+
+`hasTranslationForEveryLocale(translations, locales)` and
+`matchesMessageStatus(translations, locales, status)` expose the multi-locale
+status contract: translated means a defined entry exists for every selected locale (including an
+empty string),
+while missing means at least one selected locale has no entry.
+
+`useTranslationLayout({storageKey})` supplies a grid-by-default `grid | list`
+preference. It restores and writes browser localStorage when available, tolerates
+unavailable storage, and accepts a storage adapter for non-browser hosts and tests.
+
 Drafts, reset baselines, errors, and pending saves are scoped by message ID and
 locale. Switching messages, filters, or locales retains drafts. `save()` validates
 the selected draft, ignores duplicate submissions for that key, and reports
@@ -238,6 +253,9 @@ For server-side search, pass the loaded page directly as `messages`, your search
 value/callback as `search`, and your externally selected detail as
 `selectedMessage`. Selection can remain outside the loaded page. `loading` marks
 navigation busy and displays a status; it does not clear the controlled list.
+Pass `descriptionSearch` for a separately controlled description-only field. The
+view does not combine or debounce requests; those data-source concerns remain with
+the caller.
 
 ### Component adapters
 
@@ -299,14 +317,14 @@ controls.
 
 Each component has an exported props contract:
 
-| Component                              | Inputs                                                                                     | Output callback                      |
-| -------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------ |
-| `Button` / `EditorButtonProps`         | `children`, `variant`, optional `disabled`                                                 | `onPress(): void`                    |
-| `TextInput` / `EditorTextInputProps`   | `id`, `value`, `type` (`text` or `search`), optional disabled/error-description attributes | `onValueChange(value: string): void` |
-| `TextArea` / `EditorTextAreaProps`     | `id`, `value`, optional `rows` (default six), disabled/error-description attributes        | `onValueChange(value: string): void` |
-| `MessageRow` / `EditorMessageRowProps` | `children`, controlled `selected`                                                          | `onSelect(): void`                   |
-| `Panel` / `EditorPanelProps`           | `children`, accessible `label`, `kind` (`source` or `translation`)                         | None; layout only                    |
-| `Layout` / `EditorLayoutProps`         | `toolbar`, `navigation`, `content`, optional `sidebar` nodes                               | None; layout only                    |
+| Component                              | Inputs                                                                                                                              | Output callback                      |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `Button` / `EditorButtonProps`         | `children`, `variant`, optional `disabled`                                                                                          | `onPress(): void`                    |
+| `TextInput` / `EditorTextInputProps`   | `id`, `value`, `type` (`text` or `search`), optional disabled/error-description attributes                                          | `onValueChange(value: string): void` |
+| `TextArea` / `EditorTextAreaProps`     | `id`, `value`, `minRows` / `maxRows` bounds (one and ten by default), optional legacy `rows`, disabled/error-description attributes | `onValueChange(value: string): void` |
+| `MessageRow` / `EditorMessageRowProps` | `children`, controlled `selected`                                                                                                   | `onSelect(): void`                   |
+| `Panel` / `EditorPanelProps`           | `children`, accessible `label`, `kind` (`source` or `translation`)                                                                  | None; layout only                    |
+| `Layout` / `EditorLayoutProps`         | `toolbar`, `navigation`, `content`, optional `sidebar` nodes                                                                        | None; layout only                    |
 
 `EditorInputProps` defines the shared input attributes explicitly: `id`, `value`,
 `onValueChange`, optional `disabled`, `aria-invalid`, and `aria-describedby`.
@@ -321,7 +339,10 @@ Adapter requirements:
 
 - Inputs forward `id`, `value`, `disabled`, `aria-invalid`, and
   `aria-describedby` to their focusable control. They report strings through
-  `onValueChange` and stay associated with the view's visible label.
+  `onValueChange` and stay associated with the view's visible label. Textarea
+  adapters honor `minRows` and `maxRows` by growing and shrinking with controlled
+  content, then scrolling above the maximum. The native adapter also resizes when its width
+  changes.
 - Buttons honor `disabled`, support keyboard activation, and do not submit a
   surrounding form. `onPress` and `onSelect` take no event argument.
 - Message rows expose selection (the native adapter uses `aria-current`) and
@@ -356,11 +377,16 @@ function TranslationTools() {
         selectedLocales={selectedLocales}
         onChange={setSelectedLocales}
         getLocaleLabel={locale => displayNames.of(locale) ?? locale}
+        renderLocaleLabel={(locale, label) => (
+          <>
+            <strong>{locale}</strong> {label}
+          </>
+        )}
       />
 
       <MessagePreview message={draft.value} />
       <CopyTextButton value={draft.value} label="translation" />
-      <MessageContext message={selectedMessage} />
+      <MessageContext message={selectedMessage} copyCatalogs copyLocations />
     </>
   )
 }
@@ -374,6 +400,8 @@ function TranslationTools() {
   disable select-all. `getLocaleLabel` defaults to the code so display language
   stays explicit. `labels` overrides `title`, `empty`, `clear`, and the formatter
   callbacks `selectAll(count)`, `selected(count)`, and `trigger(summary)`.
+  `renderLocaleLabel(locale, label)` adds visual structure while
+  `getLocaleLabel` remains the plain accessible text.
 - **MessagePreview** shows ICU structure, not a formatted sample result: all plural
   and select branches, ordinal types, plural offsets, rich-text tags, and exact
   number/date/time format tokens (including skeletons). Literals retain whitespace;
@@ -391,11 +419,17 @@ function TranslationTools() {
   Native clipboard access happens only when the user presses the button.
 - **MessageContext** renders an ID, optional description, catalogs, and source
   locations from the existing `EditorMessage` metadata contract. Locations render
-  as plain text with optional start/end ranges; `renderLocation(location)` can
+  as plain text with optional start/end ranges; `renderLocation(location, text)` can
   customize them. `copyId` defaults to true and `copyOptions` passes clipboard
-  callbacks, labels, writer, and timing to the ID's copy control. `labels` overrides
-  `title`, `id`, `description`, `catalogs`, and `locations`. A missing message clears
-  the content; absent metadata sections are omitted.
+  callbacks, labels, writer, and timing to copy controls. `copyCatalogs` and
+  `copyLocations` opt exact metadata values into the same feedback path. `labels`
+  also exposes their copy-label formatters. A missing message clears the content;
+  absent metadata sections are omitted.
+
+`hasMeaningfulIcuStructure(message)` returns true only when parsing succeeds and the
+AST contains a non-literal element (arguments, selectors, formatters, pound tokens,
+or rich-text tags). Use it to omit structural preview chrome for plain literals,
+escaped braces, and incomplete drafts while keeping validation feedback separate.
 
 Tool adapters are optional in `EditorComponents`, so existing complete registries
 remain valid. The hook resolves all of them to native defaults. Override them in

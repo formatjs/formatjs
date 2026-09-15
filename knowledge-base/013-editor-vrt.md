@@ -1,7 +1,8 @@
 # Headless editor and visual tests
 
 `packages/editor/index.ts` exposes `useMessageEditor` and a render-prop `Editor`.
-The core owns selection/search and ICU parse results. Message data is controlled;
+The core owns selection, conjunctive general/description search, and ICU parse
+results. Message data is controlled;
 consumers apply `onMessageChange` and own persistence, providers, markup, and styles.
 `Message` exposes the full AST or parse error through a render function.
 
@@ -18,6 +19,12 @@ flowchart LR
 `design-system/` owns theme tokens and reusable controls. Vite compiles StyleX
 through `@stylexjs/unplugin` before the React plugin. Visual tests cover editing,
 invalid ICU with keyboard focus, and a narrow RTL layout.
+Reusable workflow behavior also includes guarded grid/list preference persistence,
+all-selected/any-missing status helpers (undefined values remain missing), parser-backed structural-preview
+eligibility, width-aware autosizing textarea bounds, renderable locale labels, and opt-in exact
+copy controls for catalog and location metadata. Product design systems remain
+adapters at these seams; fetching, debounce/cancellation, locale naming policy, and
+storage/persistence backends remain consumer-owned.
 The core imports neither this view nor React Intl. Material UI and React 17 are
 removed. `//packages/editor:unit_test` checks controlled updates, navigation,
 invalid ICU, empty catalogs, and custom rendering without providers.

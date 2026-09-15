@@ -16,6 +16,8 @@ export interface LocalePickerProps {
   onChange: (locales: string[]) => void
   /** Defaults to the locale code; consumers choose the display language. */
   getLocaleLabel?: (locale: string) => string
+  /** Adds presentation without changing the text used for accessible names. */
+  renderLocaleLabel?: (locale: string, label: string) => ReactNode
   labels?: Partial<LocalePickerLabels>
 }
 const defaults: LocalePickerLabels = {
@@ -34,6 +36,7 @@ export function LocalePicker({
   selectedLocales,
   onChange,
   getLocaleLabel = localeCode,
+  renderLocaleLabel = (_locale, label) => label,
   labels,
 }: LocalePickerProps): ReactNode {
   const {Checkbox, Button, LocalePickerLayout} = useEditorDesignSystem()
@@ -43,12 +46,16 @@ export function LocalePicker({
   const selected = new Set(selectedLocales)
   const active = available.filter(locale => selected.has(locale))
   const text = {...defaults, ...labels}
-  const summary =
+  const summaryText =
     active.length === 0
       ? text.empty
       : active.length === 1
         ? getLocaleLabel(active[0]!)
         : text.selected(active.length)
+  const summary =
+    active.length === 1
+      ? renderLocaleLabel(active[0]!, summaryText)
+      : summaryText
   const all = available.length > 0 && active.length === available.length
   const midpoint = Math.ceil(available.length / 2)
   const columns = [available.slice(0, midpoint), available.slice(midpoint)]
@@ -57,7 +64,7 @@ export function LocalePicker({
       id={id}
       title={text.title}
       summary={summary}
-      triggerLabel={text.trigger(summary)}
+      triggerLabel={text.trigger(summaryText)}
       open={open}
       onOpenChange={setOpen}
       controls={
@@ -100,7 +107,7 @@ export function LocalePicker({
                   )
                 }
               />
-              {getLocaleLabel(locale)}
+              {renderLocaleLabel(locale, getLocaleLabel(locale))}
             </label>
           )
         })

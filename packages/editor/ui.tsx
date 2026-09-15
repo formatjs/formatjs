@@ -49,6 +49,7 @@ import type {TranslationValidationError} from '#packages/editor/validation.js'
 
 export interface EditorLabels {
   search: string
+  descriptionSearch: string
   messages: string
   source: string
   noMessages: string
@@ -65,6 +66,7 @@ export interface EditorLabels {
 }
 const defaultLabels: EditorLabels = {
   search: 'Search messages',
+  descriptionSearch: 'Search descriptions',
   messages: 'Messages',
   source: 'Source message',
   noMessages: 'No matching messages',
@@ -116,6 +118,8 @@ export interface MessageListProps<
   selectedId?: string
   onSelect: (id: string) => void
   search?: EditorSearch
+  /** Independent description-only search, conjunctive with general search. */
+  descriptionSearch?: EditorSearch
   loading?: boolean
   pagination?: ReactNode
   /** Summary or controls between search and the loaded rows. */
@@ -139,6 +143,7 @@ export function MessageList<
   selectedId,
   onSelect,
   search,
+  descriptionSearch,
   loading = false,
   pagination,
   listSummary,
@@ -149,6 +154,7 @@ export function MessageList<
   const {TextInput, MessageRow} = useEditorDesignSystem()
   const text = resolveLabels(labels)
   const searchId = useId()
+  const descriptionSearchId = useId()
   return (
     <nav aria-label={text.messages} aria-busy={loading}>
       {search && (
@@ -159,6 +165,21 @@ export function MessageList<
             type="search"
             value={search.value}
             onValueChange={search.onValueChange}
+            aria-label={text.search}
+            placeholder={text.search}
+          />
+        </div>
+      )}
+      {descriptionSearch && (
+        <div>
+          <label htmlFor={descriptionSearchId}>{text.descriptionSearch}</label>
+          <TextInput
+            id={descriptionSearchId}
+            type="search"
+            value={descriptionSearch.value}
+            onValueChange={descriptionSearch.onValueChange}
+            aria-label={text.descriptionSearch}
+            placeholder={text.descriptionSearch}
           />
         </div>
       )}
@@ -245,6 +266,8 @@ export interface TranslationFieldProps extends ViewOptions {
   /** Overrides the default copy/reset/save actions, including with null. */
   actions?: ReactNode
   preview?: ReactNode
+  minRows?: number
+  maxRows?: number
 }
 export function TranslationField({
   locale,
@@ -254,6 +277,8 @@ export function TranslationField({
   onSave,
   actions,
   preview,
+  minRows = 1,
+  maxRows = 10,
   labels,
 }: TranslationFieldProps): ReactNode {
   const {Panel, TextArea, Button} = useEditorDesignSystem()
@@ -274,6 +299,8 @@ export function TranslationField({
         onValueChange={draft.setTranslation}
         aria-invalid={!!validation}
         aria-describedby={error ? `${errorId} ${statusId}` : statusId}
+        minRows={minRows}
+        maxRows={maxRows}
       />
       {error && (
         <p id={errorId} role="alert">
