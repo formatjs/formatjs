@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.1...eslint-plugin-formatjs@8.0.2) (2026-09-15)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** preserve annotated descriptor contracts ([#7425](https://github.com/formatjs/formatjs/issues/7425)) ([eeccf6b](https://github.com/formatjs/formatjs/commit/eeccf6baacdbe5118c79371aa1aa7f6608b528b5))
+
 ## [8.0.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.0...eslint-plugin-formatjs@8.0.1) (2026-09-15)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.6.0...@formatjs/editor@1.7.0) (2026-09-15)
+
+
+### Features
+
+* **@formatjs/editor:** add scoped exact search and source copy controls ([#7424](https://github.com/formatjs/formatjs/issues/7424)) ([e9b8976](https://github.com/formatjs/formatjs/commit/e9b897689784645a1bdea075fd3b30c4baebaa4b))
+
 ## [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.5.2...@formatjs/editor@1.6.0) (2026-09-15)
 
 
