@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@1.1.20-rc.1...@formatjs/svelte-intl@2.0.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **vue-intl:** vue-intl and @formatjs/svelte-intl return readonly descriptors and catalog entries. Formatter generics use values first and rich output second. Requires TypeScript 5.4. Keep RC publishing until the messaging group graduates together.
+
+### Features
+
+* **vue-intl:** align Vue and Svelte message contracts ([#7404](https://github.com/formatjs/formatjs/issues/7404)) ([5764367](https://github.com/formatjs/formatjs/commit/5764367c8b37bed818f3de03fd446c2f8d6e0188))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.19
+    * @formatjs/intl bumped to 5.0.0
+
 ## [1.1.20-rc.1](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@1.1.20-rc.0...@formatjs/svelte-intl@1.1.20-rc.1) (2026-09-14)
 
 

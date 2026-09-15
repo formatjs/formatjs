@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "12.0.0-rc.0",
+  "version": "12.0.0",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "globalization",
