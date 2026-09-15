@@ -198,6 +198,9 @@ untyped JSX remains permissive. Keep the descriptor's phantom contract when
 passing it through wrappers; widening to MessageDescriptor erases the check.
 Runtime rendering, memoization, and children callbacks are unchanged.
 
+`MessageTag` values contextually type inline rich-text callback parameters as
+`React.ReactNode[]`, so examples and callers should omit redundant annotations.
+
 ## Registered message arguments
 
 Applications can opt into ID-only checks by extending

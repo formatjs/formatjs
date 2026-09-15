@@ -55,7 +55,7 @@ const App: React.FC<Props> = props => {
         <br />
         <FormattedMessage
           id="richtext"
-          values={{num: 99, bold: (chunks: any) => <strong>{chunks}</strong>}}
+          values={{num: 99, bold: chunks => <strong>{chunks}</strong>}}
         />
       </p>
     </IntlProvider>

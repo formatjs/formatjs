@@ -1,5 +1,4 @@
 import {render} from '@testing-library/react'
-import * as React from 'react'
 import FormattedMessage from '#packages/react-intl/components/message'
 import IntlProvider from '#packages/react-intl/components/provider'
 import type {IntlConfig} from '#packages/react-intl/types'
@@ -51,7 +50,7 @@ describe('React 19 Key Warning Issue #5135', () => {
         <FormattedMessage
           id="example"
           defaultMessage="Lorem <b>ipsum</b>"
-          values={{b: (chunks: React.ReactNode) => <span>{chunks}</span>}}
+          values={{b: chunks => <span>{chunks}</span>}}
         />
       </IntlProvider>
     )
@@ -74,8 +73,8 @@ describe('React 19 Key Warning Issue #5135', () => {
           defaultMessage="Hello, <b>{name}<i>!</i></b>"
           values={{
             name: 'Jest',
-            b: (chunks: React.ReactNode) => <b>{chunks}</b>,
-            i: (msg: React.ReactNode) => <i>{msg}</i>,
+            b: chunks => <b>{chunks}</b>,
+            i: msg => <i>{msg}</i>,
           }}
         />
       </IntlProvider>
@@ -96,7 +95,7 @@ describe('React 19 Key Warning Issue #5135', () => {
       <IntlProvider
         {...providerProps}
         defaultRichTextElements={{
-          b: (chunks: React.ReactNode) => <b>{chunks}</b>,
+          b: chunks => <b>{chunks}</b>,
         }}
       >
         <FormattedMessage
