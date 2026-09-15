@@ -168,6 +168,21 @@ export interface TextMessageFormatter {
   ): string
   <
     V = never,
+    const D extends
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>> =
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>>,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<D>
+      : never,
+    values?: never,
+    opts?: IntlMessageFormatOptions
+  ): string
+  <
+    V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
   >(
     this: void,
@@ -277,6 +292,21 @@ export interface IntlFormatters<TBase = unknown> {
   ): string | TBase | Array<string | TBase>
   formatMessage<
     V = never,
+    const D extends
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>> =
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>>,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<D>
+      : never,
+    values?: never,
+    opts?: IntlMessageFormatOptions
+  ): string
+  formatMessage<
+    V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
   >(
     this: void,
@@ -331,6 +361,21 @@ export interface IntlFormatters<TBase = unknown> {
     descriptor: UntypedMessageDescriptor & {id: K},
     ...args: TypedMessageArguments<RegisteredMessageValues<NoInfer<K>>, TBase>
   ): string | TBase | Array<string | TBase>
+  $t<
+    V = never,
+    const D extends
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>> =
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>>,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<D>
+      : never,
+    values?: never,
+    opts?: IntlMessageFormatOptions
+  ): string
   $t<
     V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,

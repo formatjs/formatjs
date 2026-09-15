@@ -449,3 +449,29 @@ test('mixed catalogs infer callbacks from referenced rich-text messages', () => 
   }
   void invalid
 })
+
+function checkMixedEmptyDescriptors(
+  legacy: MessageDescriptor,
+  useTyped: boolean
+) {
+  const empty = defineMessage<{}>({defaultMessage: 'Fallback'})
+  const selected = useTyped ? empty : legacy
+  expectTypeOf(intl.formatMessage(selected)).toEqualTypeOf<string>()
+  expectTypeOf(intl.$t(selected)).toEqualTypeOf<string>()
+  const rendered = <FormattedMessage {...selected} />
+  // @ts-expect-error A mixed selection must not hide a required argument.
+  intl.formatMessage(useTyped ? message : legacy)
+  // @ts-expect-error JSX must retain required arguments in mixed selections.
+  const missing = <FormattedMessage {...(useTyped ? message : legacy)} />
+  // @ts-expect-error Empty typed messages do not accept arbitrary values.
+  const extra = <FormattedMessage {...empty} values={{unexpected: 1}} />
+  // @ts-expect-error A typed-empty branch cannot receive arbitrary legacy values.
+  const mixedExtra = <FormattedMessage {...selected} values={{unexpected: 1}} />
+  // @ts-expect-error Explicit empty ICU contracts still validate descriptors.
+  intl.formatMessage<{}>({defaultMessage: 1})
+  const registered = {id: 'registered-count'} as const
+  // @ts-expect-error A mixed registered ID must retain its required values.
+  intl.$t(useTyped ? empty : registered)
+  return [rendered, missing, extra, mixedExtra]
+}
+void checkMixedEmptyDescriptors

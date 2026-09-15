@@ -44,6 +44,13 @@ export type TypedProps<V extends MessageValues> = TypedMessageDescriptor<V> &
 
 export interface FormattedMessageComponent {
   <V extends MessageValues>(props: TypedProps<V>): React.ReactNode
+  (
+    props: (
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>>
+    ) &
+      MessagePresentationProps & {values?: never}
+  ): React.ReactNode
   (props: Props): React.ReactNode
   displayName?: string
 }

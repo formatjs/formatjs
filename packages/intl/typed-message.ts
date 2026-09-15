@@ -193,13 +193,13 @@ export type RegisteredMessageValues<K extends RegisteredMessageId> =
     : never
 
 /** Keep known IDs out of the permissive overload without rejecting dynamic IDs. */
-export type UnregisteredMessageDescriptor<D extends UntypedMessageDescriptor> =
-  D &
-    (D extends {id: infer K}
-      ? Extract<K, RegisteredMessageId> extends never
-        ? unknown
-        : never
-      : unknown)
+export type UnregisteredMessageDescriptor<D extends MessageDescriptor> = D &
+  (Extract<
+    D extends {id: infer K} ? K : never,
+    RegisteredMessageId
+  > extends never
+    ? unknown
+    : never)
 
 /** Derive a registry from typed catalog entries with literal IDs. */
 export type MessageArgumentsFromCatalog<

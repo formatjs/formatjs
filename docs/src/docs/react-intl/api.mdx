@@ -512,6 +512,12 @@ Handwritten contracts must match the message; TypeScript does not verify that
 match. Runtime formatting is unchanged. The same rules apply to formatters and
 typed helpers from `react-intl/server`.
 
+You can select between an untyped descriptor and a typed descriptor with no
+ICU arguments, such as `intl.formatMessage(override ?? emptyFallback)`.
+This mixed call accepts no values and returns `string`. A typed branch with
+required arguments, or a registered message ID that requires arguments, still
+needs its values; select and format those branches separately.
+
 See the [11.x upgrade guide](/docs/react-intl/upgrade-guide-11.x) for migration
 from the previous generic positions.
 

@@ -163,6 +163,15 @@ declares `$t` as `IntlShape['formatMessage']` so the alias also uses React's
 rich-text callback inference and return types instead of inheriting the core
 overloads independently.
 
+Core and React formatters accept mixed untyped/typed-empty descriptor unions
+through a no-values overload. `Record<string, never>` identifies empty contracts;
+`{}` would also accept required contract properties and weaken checks. The
+registered-ID guard collects literal IDs across union branches before testing
+for registered entries. It must preserve descriptor inference at this overload:
+wrapping the descriptor in `NoInfer` here can widen away a registered ID.
+Explicit ICU generics remain excluded from the compatibility overload.
+`FormattedMessage` has the equivalent no-values props overload.
+
 The opt-in `enforce-message-types` ESLint rule generates and refreshes these
 contracts from the ICU parser for static helper calls and formatter constructors.
 It supports local const descriptors with non-escaping uses, computed catalog keys,

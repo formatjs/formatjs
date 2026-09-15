@@ -678,6 +678,10 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 
 ### Rich Text Formatting
 
+`FormattedMessage` also accepts a selection between an untyped descriptor and
+a typed descriptor with no ICU arguments when `values` is omitted. Required
+arguments in a typed branch remain checked.
+
 For typed descriptors, a `MessageTag` contract infers the callback parameter as
 `React.ReactNode[]`; no callback annotation is needed:
 

@@ -330,3 +330,27 @@ test('helper generics carry ICU contracts without an options flag', () => {
   }
   void invalid
 })
+
+function checkMixedEmptyDescriptors(
+  legacy: MessageDescriptor,
+  useTyped: boolean
+) {
+  const empty = defineMessage<{}>({defaultMessage: 'Fallback'})
+  const selected = useTyped ? empty : legacy
+  expectTypeOf(intl.formatMessage(selected)).toEqualTypeOf<string>()
+  expectTypeOf(intl.$t(selected)).toEqualTypeOf<string>()
+  // @ts-expect-error A mixed selection must not hide a required argument.
+  intl.formatMessage(useTyped ? message : legacy)
+  // @ts-expect-error The alias must retain the same required-argument check.
+  intl.$t(useTyped ? message : legacy)
+  // @ts-expect-error Empty typed messages do not accept arbitrary values.
+  intl.formatMessage(empty, {unexpected: 1})
+  // @ts-expect-error Required typed values remain checked in a mixed selection.
+  intl.formatMessage(useTyped ? message : legacy, {count: 'two'})
+  const registered = {id: 'registered-count'} as const
+  // @ts-expect-error Mixing a registered ID with an empty contract still requires its values.
+  intl.formatMessage(useTyped ? empty : registered)
+  // @ts-expect-error Registered message arguments remain required.
+  intl.formatMessage(registered)
+}
+void checkMixedEmptyDescriptors

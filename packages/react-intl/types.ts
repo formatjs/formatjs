@@ -85,6 +85,21 @@ export interface IntlShape
   ): string | React.ReactNode | Array<string | React.ReactNode>
   formatMessage<
     V = never,
+    const D extends
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>> =
+      | UntypedMessageDescriptor
+      | TypedMessageDescriptor<Record<string, never>>,
+  >(
+    this: void,
+    descriptor: [V] extends [never]
+      ? D & UnregisteredMessageDescriptor<D>
+      : never,
+    values?: never,
+    opts?: IntlMessageFormatOptions
+  ): string
+  formatMessage<
+    V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
   >(
     this: void,
