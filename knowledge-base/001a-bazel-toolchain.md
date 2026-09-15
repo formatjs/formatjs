@@ -81,10 +81,12 @@ The `Test` workflow's `test` job uses Ubuntu 24.04 and `--config=rbe-platform`
 on both main and PRs. Execution platforms, target platforms, `EXECUTOR`, and
 Go linker flags must match so PRs can reuse main's action results.
 
-Only main push jobs receive the BuildBuddy key and add
+Jobs with an available BuildBuddy key add
 `--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all`.
-Main executes on BuildBuddy and downloads outputs into its disk cache. PRs get
-no BuildBuddy key, restore the disk cache, and execute misses locally.
+These jobs execute timezone generation, tests, and CLI builds on BuildBuddy
+and download outputs into their disk cache. Jobs without a key restore the
+disk cache and execute misses locally. Secret availability, not branch or
+event type, selects remote execution.
 
 `actions/cache/restore` uses the dedicated `gha-test-rbe-v2-ubuntu24` namespace,
 partitioned by architecture and Bazel version. Non-cancelled main push runs save
@@ -92,8 +94,8 @@ a fresh snapshot keyed by commit, run, and attempt; PRs only restore. Completed
 actions remain useful even when a later test fails. The namespace cannot match
 old local-platform, examples, or release caches.
 
-PR CI validates local execution. RBE population and GHA publication require a
-main run after merge, followed by a PR restore. Check Bazel's process summary
+Jobs with a key validate RBE population; jobs without one validate local
+execution. GHA publication still requires a main push, followed by a PR restore. Check Bazel's process summary
 for actual disk cache hits; an archive restore alone does not prove reuse.
 Cache eviction, toolchain changes, and uncacheable targets still require work.
 
