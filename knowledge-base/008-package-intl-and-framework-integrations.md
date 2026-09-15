@@ -165,6 +165,10 @@ overloads independently.
 
 The opt-in `enforce-message-types` ESLint rule generates and refreshes these
 contracts from the ICU parser for static helper calls and formatter constructors.
+It supports local const descriptors with non-escaping uses, computed catalog keys,
+and referenced descriptors via `MessageValuesOf<typeof descriptor>`. Catalog
+annotation migration resolves local type aliases and removes type-only bindings
+made unused by a fix, while preserving exported aliases and remaining uses.
 
 Optional contract properties stay optional after resolving scalar and tag types.
 The values argument can be omitted when every property is optional. This supports

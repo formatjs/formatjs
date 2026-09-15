@@ -72,6 +72,7 @@ export {
 export {
   defineMessages,
   type MessageValue,
+  type MessageValuesOf,
   type MessageTag,
   type TypedMessageDescriptor,
   type MessageArgumentsFromCatalog,
