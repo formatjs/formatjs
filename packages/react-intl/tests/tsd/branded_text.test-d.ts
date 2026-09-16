@@ -128,6 +128,7 @@ declare global {
 }
 
 let label = intl.formatMessage(descriptor, {count: 2})
+expectType<FormattedText>(label)
 expectError((label = 'Loading'))
 expectAssignable<{label: FormattedText}>({label})
 expectNotAssignable<{label: FormattedText}>({label: 'Loading'})

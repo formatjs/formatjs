@@ -114,6 +114,7 @@ expectError(
 )
 
 let label = intl.formatMessage(descriptor, {count: 2})
+expectType<string>(label)
 label = 'Loading'
 expectType<string>(label)
 expectNotAssignable<FormattedText>(intl.formatMessage(descriptor, {count: 2}))
