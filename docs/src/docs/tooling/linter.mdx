@@ -1061,13 +1061,13 @@ Inline calls keep an explicit empty type when needed to check supplied values.
 
 ### Generated argument types
 
-| ICU argument | Type |
-| --- | --- |
-| Number or plural | `number \| bigint` |
-| Date or time | `number \| Date` |
-| Select | `string` |
-| Plain placeholder | `MessageValue` |
-| Rich-text tag | `MessageTag` (a callback when formatting) |
+| ICU argument      | Type                                      |
+| ----------------- | ----------------------------------------- |
+| Number or plural  | `number \| bigint`                        |
+| Date or time      | `number \| Date`                          |
+| Select            | `string`                                  |
+| Plain placeholder | `MessageValue`                            |
+| Rich-text tag     | `MessageTag` (a callback when formatting) |
 
 Types include arguments from every ICU branch. Incompatible uses of the same
 argument produce a diagnostic instead of a fix. Generated properties are readonly;
