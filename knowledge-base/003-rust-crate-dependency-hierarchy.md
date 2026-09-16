@@ -317,3 +317,12 @@ Rich tags are rejected during generation because Python Intl has no rich callbac
 API. Raw `Intl.format_message` calls keep their existing dynamic interface;
 use the generated wrappers for per-message checks. Generate from source catalogs,
 not independently from each translation.
+
+## Release Metadata Validation
+
+The Test workflow runs `cargo metadata --locked --format-version 1` to verify
+that all workspace dependency version requirements match their local crates
+and the checked-in lockfile. Bazel resolves local crate targets independently
+of these Cargo requirements, so passing Bazel tests alone does not guarantee
+that `cargo publish --locked` can resolve the workspace. Update every consumer's
+version requirement when a local dependency receives a breaking version bump.
