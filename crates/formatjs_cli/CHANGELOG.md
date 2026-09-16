@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.2...formatjs_cli_v1.7.3) (2026-09-16)
+
+
+### Bug Fixes
+
+* **formatjs_cli:** unblock Rust crate publishing ([#7432](https://github.com/formatjs/formatjs/issues/7432)) ([ce4b403](https://github.com/formatjs/formatjs/commit/ce4b403b34807abb0244bc022818c69b6087712d))
+
 ## [1.7.2](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.1...formatjs_cli_v1.7.2) (2026-09-15)
 
 
