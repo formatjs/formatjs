@@ -1011,22 +1011,14 @@ I won the {ranking}{
 
 ## enforce-message-types
 
-Checks missing and unused inline values in JavaScript, JSX, Vue templates, and
-untyped TypeScript calls, using the same checks as `enforce-placeholders`.
-For typed TypeScript calls, the generated contract lets TypeScript check values
-instead, including variables and value types. Type generation remains opt-in.
+Checks message values and keeps TypeScript argument types in sync with ICU
+messages. In JavaScript and untyped calls, it checks inline values like
+[`enforce-placeholders`](#enforce-placeholders). Typed calls also let TypeScript
+check variables, missing arguments, and incorrect value types.
 
-Both rules accept `ignoreList: ['name']`. Inline checks ignore those names.
-Generated contracts make listed names optional and allow listed extra keys;
-present numeric/date values and tag callbacks retain their types. This supports
-values supplied by application wrappers, but does not provide runtime values.
+### Setup
 
-Generate ICU argument contracts for TypeScript `defineMessage` and `defineMessages`
-calls imported from `@formatjs/intl`, `react-intl`, or `react-intl/server`, plus
-`new IntlMessageFormat` imported from `intl-messageformat`. Inline
-`formatMessage({...}, values)` calls and the existing `$t` / `$formatMessage`
-names are supported too.
-This rule is not enabled in the recommended or strict presets.
+Use a TypeScript-capable ESLint parser, enable the rule, and run `eslint --fix`:
 
 ```js
 {
@@ -1034,159 +1026,86 @@ This rule is not enabled in the recommended or strict presets.
 }
 ```
 
-`generateTypes` defaults to `false`. Enable it to annotate previously untyped
-static declarations with `eslint --fix`. Even when false, the rule checks and
-refreshes existing formatter/constructor generics and typed helper contracts. Use a TypeScript-capable ESLint parser.
-JavaScript files receive inline-value checks but no generated types. Dynamic
-message strings cannot supply a contract.
+The rule is not included in the recommended or strict presets. Keep it enabled:
+TypeScript checks the generated types, but only the linter checks that they still
+match your message text.
 
 ```ts
-const message = defineMessage<{
-  readonly count: number | bigint
-}>({
-  id: 'items',
-  defaultMessage: '{count, plural, one {# item} other {# items}}',
+// Before
+const items = defineMessage({defaultMessage: '{count, number} items'})
+
+// After autofix
+const items = defineMessage<{readonly count: number | bigint}>({
+  defaultMessage: '{count, number} items',
 })
 
-intl.formatMessage(message, {count: 2}) // OK
-intl.formatMessage(message, {count: 'two'}) // TypeScript error
-intl.formatMessage(message) // TypeScript error: missing count
+intl.formatMessage(items, {count: 2}) // OK
+intl.formatMessage(items, {count: 'two'}) // Type error
+intl.formatMessage(items) // Type error: count is required
 ```
 
-The existing ICU parser handles apostrophe escaping, tags, skeletons, offsets,
-and nested branches. Contracts include arguments from every branch. Numbers and
-plurals use `number | bigint`; dates and times use `number | Date`; selectors
-use `string` because `other` accepts arbitrary selectors. Plain arguments use
-`MessageValue`, and tags use `MessageTag`, resolved to callbacks by the formatter.
-Autofix adds normal `import type` declarations for these names, reusing existing
-imports and aliases when possible.
-Incompatible uses of one argument produce a diagnostic without a fix.
+### What autofix supports
 
-Catalogs may use computed identifier or enum-member keys and reference existing
-messages. Referenced contracts use `MessageValuesOf<typeof message>` rather than
-copying another message's ICU arguments. Local `const` descriptors are analyzed
-when their references are limited to message helpers and formatter calls; mutable
-or escaping descriptors still require an explicit contract.
+- `defineMessage` and `defineMessages` from `@formatjs/intl`, `react-intl`, or
+  `react-intl/server`.
+- Inline `formatMessage`, `$t`, and `$formatMessage` calls.
+- `new IntlMessageFormat` from `intl-messageformat`.
+- Catalog entries that reference existing messages, including identifier and
+  enum-member keys. References use `MessageValuesOf<typeof message>`.
+- Local `const` descriptors used only by message helpers and formatter calls.
 
-Autofix also replaces broad catalog annotations, including local type aliases and
-`Record` values that allow `undefined`, with per-message descriptor types. It
-removes local type aliases and type imports only when the replaced annotations or
-generics contained their last references. Exported aliases and types used
-elsewhere remain unchanged.
+Autofix updates the first generic, including handwritten types, and preserves
+an optional second generic. It adds type imports as needed. Helpers default to
+no arguments, so empty messages need no `<{}>` or `{typed: true}` option.
+Inline calls keep an explicit empty type when needed to check supplied values.
 
-Inline calls receive the ICU contract as their first generic:
+### Generated argument types
 
-```ts
-intl.formatMessage<{
-  readonly count: number | bigint
-}>({defaultMessage: '{count, number}'}, {count: 2})
-```
+| ICU argument      | Type                                      |
+| ----------------- | ----------------------------------------- |
+| Number or plural  | `number \| bigint`                        |
+| Date or time      | `number \| Date`                          |
+| Select            | `string`                                  |
+| Plain placeholder | `MessageValue`                            |
+| Rich-text tag     | `MessageTag` (a callback when formatting) |
 
-The formatter signature validates the descriptor and values. No assertion or
-runtime wrapper is needed. Autofix replaces the first generic, including a
-handwritten contract,
-preserving an optional second rich-output generic such as `React.ReactNode`.
+Types include arguments from every ICU branch. Incompatible uses of the same
+argument produce a diagnostic instead of a fix. Generated properties are readonly;
+this does not freeze objects at runtime.
 
-For inline calls, `moduleSource` can be `@formatjs/intl`, `react-intl`, or
-`react-intl/server`. By default the first matching import in the file supplies
-the module, with `@formatjs/intl` as fallback. Set `moduleSource: 'react-intl'`
-when an application wrapper supplies the formatter without a direct FormatJS
-import. The selected package must be available to the TypeScript project.
-Descriptor assertions are left unchanged. ID-only descriptors cannot supply
-an argument contract.
+### Options
 
-```ts
-import type {MessageTag, MessageValue} from '@formatjs/intl'
+- **`generateTypes`** (default `false`): add types to untyped TypeScript messages.
+  Existing typed messages are checked and refreshed even when this is off.
+- **`ignoreList`**: argument names supplied by your wrapper. Inline checks ignore
+  them; generated types make them optional and allow listed extra keys. Values
+  still need the right types when supplied. This option does not provide values
+  at runtime.
+- **`moduleSource`**: package to import types from for inline formatter calls.
+  Choose `@formatjs/intl`, `react-intl`, or `react-intl/server`. By default, the
+  rule uses the first matching import, falling back to `@formatjs/intl`. Set this
+  explicitly when your formatter comes from an application wrapper.
 
-intl.$t<{
-  readonly b?: MessageTag
-  readonly count?: number | bigint
-  readonly extra?: MessageValue
-}>({
-  defaultMessage: '<b>{count, number}</b>',
-})
-```
+### Explicit annotations and dynamic keys
 
-This example uses `ignoreList: ['b', 'count', 'extra']`. Generated types need no
-marker comment; the ICU source is the authority for the first generic.
+Autofix replaces broad `MessageDescriptor` annotations with
+`TypedMessageDescriptor` types, including per-message types for catalogs. It
+supports local aliases, imported descriptor aliases, `Record` types, property
+maps, and `Readonly` wrappers. These annotations work with `isolatedDeclarations`.
 
-Direct formatter construction receives the generic without an extra runtime option:
+**Catalog keys become exact:** broad index signatures and optional entries are
+replaced with the messages actually present. Narrow dynamic keys to
+`keyof typeof messages` before indexing. A selected message needs values valid
+for every message it could refer to.
 
-```ts
-const message = new IntlMessageFormat<{
-  readonly count: number | bigint
-}>('{count, number}', 'en')
+### Limits
 
-message.format({count: 2})
-```
+Type generation needs static message text. It cannot derive types from ID-only
+messages, dynamic strings, spreads, or arbitrary computed properties. Constructor
+fixes support a static `ignoreTag` option, but not parsed AST input or dynamic
+parser options. Unsupported typed declarations produce diagnostics rather than
+guessed types; descriptor assertions are left unchanged.
 
-Constructor fixes respect a static `ignoreTag` option in the fourth argument.
-Dynamic strings, parsed AST inputs, and dynamic parser options are not generated.
-The argument contracts and tag/value types live in `intl-messageformat`;
-framework packages re-export them.
-
-For inline formatter calls with no ICU arguments and no values argument, autofix
-omits the empty generic and removes an existing `<{}>`. A second output generic
-is preserved. Reusable helpers also omit empty contracts: `defineMessage` and
-each entry in `defineMessages` default to no ICU arguments, so later calls still
-reject extra values. Generated `TypedMessageDescriptor` annotations omit `<{}>`
-as well. Explicit second metadata generics retain the first contract argument.
-Inline calls supplying values keep their explicit empty contract.
-
-Autofix refreshes the first generic from the message even when it was handwritten,
-and preserves a formatter's second rich-output generic. Legacy marker comments
-are removed when fixing. Typed declarations with unsupported or dynamic source
-expressions receive a diagnostic instead of a guessed contract. Spreads and
-computed properties are not generated.
-
-Helper generics describe ICU arguments and attach only type-level metadata;
-no options flag is required. Calls without generics retain inferred descriptor
-metadata and carry an empty ICU contract. Messages with arguments require an
-explicit contract, which `generateTypes` supplies. Existing `{typed: true}` calls remain valid. Both `formatMessage` and
-`$t` enforce contracts. React Intl also supports rich-text callbacks returning
-React nodes. This does not add typed JSX `FormattedMessage` props or infer
-contracts from ID-only calls. A dynamically selected typed descriptor requires
-values for every possible message.
-
-Keep this rule in CI: TypeScript checks the generated contract, not whether it
-still matches the ICU source. Catalog translations still need structural
-validation. Explicitly widening a typed descriptor to `MessageDescriptor` erases
-its checks, as does using `any`. Generated helper results retain the standard
-`MessageDescriptor` shape rather than the original descriptor's literal ID type.
-
-### Explicit descriptor and catalog annotations
-
-For an annotated `defineMessage` variable, autofix replaces `MessageDescriptor`
-(or a local alias or `Readonly` wrapper) with `TypedMessageDescriptor<Values>`.
-This preserves the generated ICU contract across exports and allows referenced
-catalog entries to use `MessageValuesOf<typeof message>`. Existing typed
-annotations are refreshed when the message changes.
-
-For an annotated `defineMessages` variable, autofix replaces the original
-annotation with per-message `TypedMessageDescriptor` contracts:
-
-```tsx
-import {defineMessages, type TypedMessageDescriptor} from 'react-intl'
-
-export const messages: {
-  readonly count: TypedMessageDescriptor<{readonly n: number | bigint}>
-} = defineMessages<{readonly count: {readonly n: number | bigint}}>({
-  count: {defaultMessage: '{n, number}'},
-})
-```
-
-This explicit type works with `isolatedDeclarations`. Subsequent fixes refresh
-both the call generic and the annotation when messages change. Keys come from the actual catalog. All generated catalog and argument properties
-are readonly, including optional ignored arguments. Autofix refreshes existing
-writable contracts. This affects TypeScript checking only; objects are not frozen.
-
-Supported annotations are `Record<K, MessageDescriptor>`, explicit property
-maps, and their `Readonly<...>` wrappers. Imported descriptor aliases work too.
-Other annotations produce a diagnostic instead of an unsafe rewrite. Keep
-contracts when passing these catalogs through other application types.
-
-**Breaking change:** generated annotations no longer retain broad index signatures,
-optional entries, or separately declared key sets. Every message present becomes
-a required property; unknown keys and arbitrary string indexing fail TypeScript.
-Narrow dynamic keys to `keyof typeof messages`. Widening a selected message later
-to `MessageDescriptor` still erases its contract.
+Keep generated types when passing messages through wrappers. Widening to
+`MessageDescriptor` or `any` loses the checks. This rule generates no JavaScript
+types and does not validate translated catalogs.
