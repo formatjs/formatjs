@@ -286,3 +286,22 @@ The React Intl 12 upgrade guide consolidates the 11/12 API migration. Version 11
 was an unstable transition release; the 11 guide URL points readers to the 12
 guide. Empty helper defaults are released as a correction within the 12.x patch
 line, with their TypeScript migration impact documented explicitly.
+
+## Branded message text
+
+`intl-messageformat/message-types.ts` owns the type-only `FormattedText` string
+brand. Core, React (client/server), Vue, and Svelte re-export that same type.
+`@formatjs/intl` owns `FormatjsIntl.MessageFormatting` and `MessageTextOutput`:
+`brandedText: true` selects `FormattedText`; the default remains `string`.
+Only text-returning `IntlFormatters.formatMessage`, `$t`, React overrides, and
+`TextMessageFormatter` overloads use it. Rich-text unions, standalone core
+`formatMessage`/`FormatMessageFn`, and `IntlMessageFormat.format()` stay unchanged.
+
+The brand records formatter provenance, including fallback IDs and raw default
+messages. It does not enforce interpolation policy, translation coverage, or
+content safety. Augmentation is application-wide; libraries should not opt in on
+consumers' behalf. No runtime branding or wrappers are added.
+
+Core and React `tests/tsd` targets compile default and branded modes separately
+against assembled declarations, checking argument inference, string compatibility,
+rich text, and shared brand identity across framework exports.

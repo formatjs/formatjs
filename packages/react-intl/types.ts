@@ -7,6 +7,7 @@ import {
   type ResolvedIntlConfig as CoreResolvedIntlConfig,
   type Formatters,
   type IntlFormatters,
+  type MessageTextOutput,
   type UntypedMessageDescriptor,
   type RegisteredMessageId,
   type RegisteredMessageValues,
@@ -43,7 +44,7 @@ export interface IntlShape
     this: void,
     descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
     ...args: TypedMessageArguments<NoInfer<V>, string, T>
-  ): string
+  ): MessageTextOutput
   formatMessage<
     V extends MessageValues = never,
     T extends React.ReactNode = React.ReactNode,
@@ -60,7 +61,7 @@ export interface IntlShape
       string,
       React.ReactNode
     >
-  ): string
+  ): MessageTextOutput
   formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
     descriptor: D,
@@ -74,7 +75,7 @@ export interface IntlShape
       string,
       React.ReactNode
     >
-  ): string
+  ): MessageTextOutput
   formatMessage<const K extends RegisteredMessageId>(
     this: void,
     descriptor: UntypedMessageDescriptor & {id: K},
@@ -93,7 +94,7 @@ export interface IntlShape
       : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
-  ): string
+  ): MessageTextOutput
   formatMessage<
     V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,

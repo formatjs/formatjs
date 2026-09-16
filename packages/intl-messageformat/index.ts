@@ -12,6 +12,7 @@ export {IntlMessageFormat}
 export default IntlMessageFormat
 
 export type {
+  FormattedText,
   MessageValue,
   MessageTag,
   MessageValues,

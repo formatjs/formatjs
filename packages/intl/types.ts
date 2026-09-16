@@ -18,7 +18,11 @@ import type {
 import {type MessageFormatElement} from '@formatjs/icu-messageformat-parser'
 
 import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
-import type {FormatError, IntlMessageFormat} from 'intl-messageformat'
+import type {
+  FormatError,
+  FormattedText,
+  IntlMessageFormat,
+} from 'intl-messageformat'
 import {
   type Formats,
   type FormatXMLElementFn,
@@ -34,6 +38,8 @@ import type {
 } from '#packages/intl/error.js'
 import type {DEFAULT_INTL_CONFIG} from '#packages/intl/utils.js'
 
+export type {FormattedText} from 'intl-messageformat'
+
 export interface Part<T = string> {
   type: 'element' | 'literal'
   value: T
@@ -45,11 +51,19 @@ export interface Part<T = string> {
 declare global {
   namespace FormatjsIntl {
     interface Message {}
+    interface MessageFormatting {}
     interface MessageArguments {}
     interface IntlConfig {}
     interface Formats {}
   }
 }
+
+/** Applications can opt in to branded text across the TypeScript program. */
+export type MessageTextOutput = FormatjsIntl.MessageFormatting extends {
+  brandedText: true
+}
+  ? FormattedText
+  : string
 
 type MessageIds = FormatjsIntl.Message extends {ids: infer T}
   ? T extends string
@@ -155,17 +169,17 @@ export interface TextMessageFormatter {
     this: void,
     descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
     ...args: TypedMessageArguments<NoInfer<V>>
-  ): string
+  ): MessageTextOutput
   <D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
     descriptor: D,
     ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>>
-  ): string
+  ): MessageTextOutput
   <const K extends RegisteredMessageId>(
     this: void,
     descriptor: UntypedMessageDescriptor & {id: K},
     ...args: TypedMessageArguments<RegisteredMessageValues<NoInfer<K>>>
-  ): string
+  ): MessageTextOutput
   <
     V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
@@ -176,7 +190,7 @@ export interface TextMessageFormatter {
       : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
-  ): string
+  ): MessageTextOutput
 }
 
 /**
@@ -245,7 +259,7 @@ export interface IntlFormatters<TBase = unknown> {
     this: void,
     descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
     ...args: TypedMessageArguments<NoInfer<V>, string, T>
-  ): string
+  ): MessageTextOutput
   formatMessage<V extends MessageValues = never, T extends TBase = TBase>(
     this: void,
     descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
@@ -255,7 +269,7 @@ export interface IntlFormatters<TBase = unknown> {
     this: void,
     descriptor: D,
     ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, string, TBase>
-  ): string
+  ): MessageTextOutput
   formatMessage<D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
     descriptor: D,
@@ -269,7 +283,7 @@ export interface IntlFormatters<TBase = unknown> {
       string,
       TBase
     >
-  ): string
+  ): MessageTextOutput
   formatMessage<const K extends RegisteredMessageId>(
     this: void,
     descriptor: UntypedMessageDescriptor & {id: K},
@@ -285,7 +299,7 @@ export interface IntlFormatters<TBase = unknown> {
       : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
-  ): string
+  ): MessageTextOutput
   formatMessage<
     V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,
@@ -301,7 +315,7 @@ export interface IntlFormatters<TBase = unknown> {
     this: void,
     descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
     ...args: TypedMessageArguments<NoInfer<V>, string, T>
-  ): string
+  ): MessageTextOutput
   $t<V extends MessageValues = never, T extends TBase = TBase>(
     this: void,
     descriptor: [V] extends [never] ? never : UntypedMessageDescriptor,
@@ -311,7 +325,7 @@ export interface IntlFormatters<TBase = unknown> {
     this: void,
     descriptor: D,
     ...args: TypedMessageArguments<MessageValuesOf<NoInfer<D>>, string, TBase>
-  ): string
+  ): MessageTextOutput
   $t<D extends TypedMessageDescriptor<MessageValues>>(
     this: void,
     descriptor: D,
@@ -325,7 +339,7 @@ export interface IntlFormatters<TBase = unknown> {
       string,
       TBase
     >
-  ): string
+  ): MessageTextOutput
   $t<const K extends RegisteredMessageId>(
     this: void,
     descriptor: UntypedMessageDescriptor & {id: K},
@@ -341,7 +355,7 @@ export interface IntlFormatters<TBase = unknown> {
       : never,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
     opts?: IntlMessageFormatOptions
-  ): string
+  ): MessageTextOutput
   $t<
     V = never,
     const D extends UntypedMessageDescriptor = UntypedMessageDescriptor,

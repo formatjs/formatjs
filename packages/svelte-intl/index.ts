@@ -5,6 +5,8 @@ export {
   defineMessage,
   defineMessages,
   type MessageDescriptor,
+  type FormattedText,
+  type MessageTextOutput,
   type TypedMessageDescriptor,
   type MessageValues,
   type MessageValuesOf,

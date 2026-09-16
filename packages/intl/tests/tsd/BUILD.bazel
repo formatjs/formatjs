@@ -40,3 +40,73 @@ tsd_bin.tsd_test(
         "//packages/ecma402-abstract/types",
     ],
 )
+
+# Compile each mode separately so global augmentation cannot leak between tests.
+
+copy_to_directory(
+    name = "branded_text_test_files",
+    srcs = [
+        "branded_text.test-d.ts",
+        "//packages/intl:pkg",
+        "//packages/intl:tsconfig_json_generated",
+    ],
+    out = "branded_text_test_files",
+    replace_prefixes = {
+        "packages/intl/pkg": "",
+        "packages/intl/tsconfig_json.generated.json": "tsconfig.json",
+        "branded_text.test-d.ts": "tests/branded_text.test-d.ts",
+    },
+)
+
+tsd_bin.tsd_test(
+    name = "branded_text_test",
+    size = "small",
+    args = [
+        "--files",
+        "tests/branded_text.test-d.ts",
+    ],
+    chdir = "packages/intl/tests/tsd/branded_text_test_files",
+    data = [
+        ":branded_text_test_files",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/tsd",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+copy_to_directory(
+    name = "default_text_test_files",
+    srcs = [
+        "default_text.test-d.ts",
+        "//packages/intl:pkg",
+        "//packages/intl:tsconfig_json_generated",
+    ],
+    out = "default_text_test_files",
+    replace_prefixes = {
+        "packages/intl/pkg": "",
+        "packages/intl/tsconfig_json.generated.json": "tsconfig.json",
+        "default_text.test-d.ts": "tests/default_text.test-d.ts",
+    },
+)
+
+tsd_bin.tsd_test(
+    name = "default_text_test",
+    size = "small",
+    args = [
+        "--files",
+        "tests/default_text.test-d.ts",
+    ],
+    chdir = "packages/intl/tests/tsd/default_text_test_files",
+    data = [
+        ":default_text_test_files",
+        "//:node_modules/@formatjs/fast-memoize",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/tsd",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
+)
