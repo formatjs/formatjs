@@ -660,8 +660,8 @@ first and move the output type to the second generic.
 
 ## Branded message text
 
-Applications can require formatter-produced text at component or helper boundaries.
-Add this declaration to a file included by the application's TypeScript project:
+To distinguish formatted messages from plain strings, add this to your app's
+TypeScript declarations:
 
 ```ts
 import '@formatjs/intl'
@@ -675,8 +675,8 @@ declare global {
 }
 ```
 
-Text-returning overloads of `intl.formatMessage`, `intl.$t`, and
-`TextMessageFormatter` then return `FormattedText` instead of `string`.
+Text-only `intl.formatMessage`, `intl.$t`, and `TextMessageFormatter` calls now
+return `FormattedText`, a string type that rejects unformatted text:
 
 ```ts
 import {createIntl, type FormattedText} from '@formatjs/intl'
@@ -690,21 +690,11 @@ pageTitle(intl.formatMessage({id: 'home.title', defaultMessage: 'Home'}))
 pageTitle('Home') // TypeScript error: plain strings lack the brand.
 ```
 
-`FormattedText` is a type-only string brand defined by `intl-messageformat` and
-re-exported by `@formatjs/intl`, `react-intl`, `react-intl/server`, `vue-intl`, and
-`@formatjs/svelte-intl`. All integrations use the same brand. `MessageTextOutput`
-is the conditional output type: `string` by default, `FormattedText` with opt-in.
+All framework integrations export the same `FormattedText` type. It still works
+where a `string` is expected, but string operations generally lose the brand.
+Fallback text also qualifies: this type doesn't guarantee translation or safety.
 
-The brand records provenance only. Fallback IDs, default messages, and raw
-fallback text also qualify. It does not guarantee translation availability,
-safe content, or approved interpolation inputs. Rich-text overloads, other
-formatting APIs, `IntlMessageFormat.format()`, and the standalone core
-`formatMessage` function retain their existing return types. Runtime behavior
-is unchanged.
-
-Augmentation affects the entire TypeScript program, including dependencies;
-reusable libraries should not enable it for their consumers. Branded text remains
-assignable to `string`, but string operations generally lose the brand. Inferred
-variables cannot later receive plain strings, and formatter mocks must return
-branded text. Annotate a variable as `string` when plain-string reassignment is
-intended. Without opt-in, existing return types are unchanged.
+Enable this in apps, not reusable libraries: it affects the whole TypeScript
+program. Runtime behavior, rich text, other formatters, `IntlMessageFormat.format()`,
+and the standalone core `formatMessage` function are unchanged. Without opt-in,
+text output stays `string`; `MessageTextOutput` reflects the selected mode.

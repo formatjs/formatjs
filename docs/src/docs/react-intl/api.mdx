@@ -727,9 +727,7 @@ the full formatter types used for rendering rich content.
 
 ### Branded message text
 
-Enable [branded message text](/docs/intl#branded-message-text) through
-`FormatjsIntl.MessageFormatting` to return `FormattedText` from text-returning
-`intl.formatMessage`, `intl.$t`, and `TextMessageFormatter` overloads. Both
-`react-intl` and `react-intl/server` re-export `FormattedText` and
-`MessageTextOutput`. The brand is shared with the core and other frameworks;
-React rich-text output and `<FormattedMessage>` remain unchanged.
+Opt into [branded message text](/docs/intl#branded-message-text) to get
+`FormattedText` from text-only `formatMessage`, `$t`, and `TextMessageFormatter`
+calls. Both React entry points export this type and `MessageTextOutput`.
+Rich text and `<FormattedMessage>` are unchanged.

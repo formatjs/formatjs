@@ -289,19 +289,13 @@ line, with their TypeScript migration impact documented explicitly.
 
 ## Branded message text
 
-`intl-messageformat/message-types.ts` owns the type-only `FormattedText` string
-brand. Core, React (client/server), Vue, and Svelte re-export that same type.
-`@formatjs/intl` owns `FormatjsIntl.MessageFormatting` and `MessageTextOutput`:
-`brandedText: true` selects `FormattedText`; the default remains `string`.
-Only text-returning `IntlFormatters.formatMessage`, `$t`, React overrides, and
-`TextMessageFormatter` overloads use it. Rich-text unions, standalone core
-`formatMessage`/`FormatMessageFn`, and `IntlMessageFormat.format()` stay unchanged.
+`FormattedText` is defined in `intl-messageformat/message-types.ts` and shared by
+all framework exports. Core's `FormatjsIntl.MessageFormatting.brandedText: true`
+opts text-only `formatMessage`, `$t`, and `TextMessageFormatter` calls into it.
+`MessageTextOutput` selects the type; the default is `string`.
 
-The brand records formatter provenance, including fallback IDs and raw default
-messages. It does not enforce interpolation policy, translation coverage, or
-content safety. Augmentation is application-wide; libraries should not opt in on
-consumers' behalf. No runtime branding or wrappers are added.
+This is app-wide and type-only. Fallbacks qualify, so it doesn't guarantee
+translation or safety. Rich text and low-level formatters are unchanged.
 
-Core and React `tests/tsd` targets compile default and branded modes separately
-against assembled declarations, checking argument inference, string compatibility,
-rich text, and shared brand identity across framework exports.
+Core and React `tests/tsd` targets test both modes separately against packaged
+declarations, including inference and cross-framework compatibility.
