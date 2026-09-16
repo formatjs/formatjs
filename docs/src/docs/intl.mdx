@@ -657,3 +657,44 @@ These types do not change runtime formatting.
 
 For migration from the old rich-output generic positions, supply `Values`
 first and move the output type to the second generic.
+
+## Branded message text
+
+To distinguish formatted messages from plain strings, add this to your app's
+TypeScript declarations:
+
+```ts
+import '@formatjs/intl'
+
+declare global {
+  namespace FormatjsIntl {
+    interface MessageFormatting {
+      brandedText: true
+    }
+  }
+}
+```
+
+Text-only `intl.formatMessage`, `intl.$t`, and `TextMessageFormatter` calls now
+return `FormattedText`, a string type that rejects unformatted text:
+
+```ts
+import {createIntl, type FormattedText} from '@formatjs/intl'
+
+const intl = createIntl({locale: 'en'})
+function pageTitle(title: FormattedText): string {
+  return title
+}
+
+pageTitle(intl.formatMessage({id: 'home.title', defaultMessage: 'Home'}))
+pageTitle('Home') // TypeScript error: plain strings lack the brand.
+```
+
+All framework integrations export the same `FormattedText` type. It still works
+where a `string` is expected, but string operations generally lose the brand.
+Fallback text also qualifies: this type doesn't guarantee translation or safety.
+
+Enable this in apps, not reusable libraries: it affects the whole TypeScript
+program. Runtime behavior, rich text, other formatters, `IntlMessageFormat.format()`,
+and the standalone core `formatMessage` function are unchanged. Without opt-in,
+text output stays `string`; `MessageTextOutput` reflects the selected mode.

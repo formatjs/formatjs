@@ -724,3 +724,10 @@ This type preserves explicit argument contracts, typed descriptors, and register
 message IDs. Rich-text callbacks receive `string[]` and must return strings;
 React elements are not accepted. It adds no runtime wrapper and does not change
 the full formatter types used for rendering rich content.
+
+### Branded message text
+
+Opt into [branded message text](/docs/intl#branded-message-text) to get
+`FormattedText` from text-only `formatMessage`, `$t`, and `TextMessageFormatter`
+calls. Both React entry points export this type and `MessageTextOutput`.
+Rich text and `<FormattedMessage>` are unchanged.

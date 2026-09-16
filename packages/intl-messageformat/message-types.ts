@@ -4,6 +4,13 @@ import type {
   MessageFormatPart,
 } from '#packages/intl-messageformat/formatters.js'
 
+declare const formattedTextBrand: unique symbol
+
+/** Formatter-produced text, including fallbacks; not a translation or safety guarantee. */
+export type FormattedText = string & {
+  readonly [formattedTextBrand]: true
+}
+
 declare const messageValues: unique symbol
 declare const messageTag: unique symbol
 

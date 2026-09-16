@@ -286,3 +286,16 @@ The React Intl 12 upgrade guide consolidates the 11/12 API migration. Version 11
 was an unstable transition release; the 11 guide URL points readers to the 12
 guide. Empty helper defaults are released as a correction within the 12.x patch
 line, with their TypeScript migration impact documented explicitly.
+
+## Branded message text
+
+`FormattedText` is defined in `intl-messageformat/message-types.ts` and shared by
+all framework exports. Core's `FormatjsIntl.MessageFormatting.brandedText: true`
+opts text-only `formatMessage`, `$t`, and `TextMessageFormatter` calls into it.
+`MessageTextOutput` selects the type; the default is `string`.
+
+This is app-wide and type-only. Fallbacks qualify, so it doesn't guarantee
+translation or safety. Rich text and low-level formatters are unchanged.
+
+Core and React `tests/tsd` targets test both modes separately against packaged
+declarations, including inference and cross-framework compatibility.
