@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@2.0.1...@formatjs/svelte-intl@2.0.2) (2026-09-16)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl bumped to 6.0.1
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@2.0.0...@formatjs/svelte-intl@2.0.1) (2026-09-15)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.2...eslint-plugin-formatjs@8.0.3) (2026-09-16)
+
+
+### Bug Fixes
+
+* default message helpers to empty ICU contracts ([#7428](https://github.com/formatjs/formatjs/issues/7428)) ([7bd3c8b](https://github.com/formatjs/formatjs/commit/7bd3c8bb3c4fc0cf298c3f05c6d331910caa9da7))
+
 ## [8.0.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.1...eslint-plugin-formatjs@8.0.2) (2026-09-15)
 
 
