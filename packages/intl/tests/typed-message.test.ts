@@ -156,11 +156,12 @@ function checkTypes() {
   richIntl.$t(tag, {b: chunks => ({children: chunks})})
   // @ts-expect-error Tags require callbacks.
   intl.formatMessage(tag, {b: 'bold'})
-  const legacy = defineMessage({
+  const legacy = defineMessage<{anything: MessageValue}>({
     id: 'legacy' as const,
     defaultMessage: '{anything}',
   })
-  expectTypeOf(legacy.id).toEqualTypeOf<'legacy'>()
+  expectTypeOf(legacy.id).toEqualTypeOf<string>()
+  // @ts-expect-error Nonempty helper contracts require values.
   intl.formatMessage(legacy)
   intl.formatMessage(legacy, {anything: 'still permissive'})
 }
@@ -330,3 +331,32 @@ test('helper generics carry ICU contracts without an options flag', () => {
   }
   void invalid
 })
+
+// Compiled with the test target: empty defaults must not erase the contract.
+function checkDefaultEmptyContracts() {
+  const plain = defineMessage({id: 'empty-default', defaultMessage: 'Hello'})
+  const annotated: TypedMessageDescriptor = plain
+  const catalog = defineMessages({hello: {defaultMessage: 'Hello'}})
+  const withOption = defineMessages(
+    {hello: {defaultMessage: 'Hello'}},
+    {typed: true}
+  )
+  // @ts-expect-error Legacy options do not weaken the default empty contract.
+  intl.$t(withOption.hello, {extra: 1})
+  expectTypeOf(intl.$t(plain)).toEqualTypeOf<string>()
+  expectTypeOf(intl.formatMessage(annotated)).toEqualTypeOf<string>()
+  expectTypeOf(intl.$t(catalog.hello)).toEqualTypeOf<string>()
+  // @ts-expect-error No arguments are allowed by the default empty contract.
+  intl.$t(plain, {extra: 1})
+  // @ts-expect-error An annotation without generics preserves the empty contract.
+  intl.formatMessage(annotated, {extra: 1})
+  // @ts-expect-error Inferred catalogs preserve each empty contract.
+  intl.$t(catalog.hello, {extra: 1})
+  const named = defineMessage<{name: MessageValue}>({defaultMessage: '{name}'})
+  const mixed = defineMessages({plain, named})
+  // @ts-expect-error Reusing a typed descriptor must not replace its contract with {}.
+  intl.$t(mixed.named)
+  expectTypeOf(intl.$t(mixed.named, {name: 'Ada'})).toEqualTypeOf<string>()
+  expectTypeOf(intl.$t(mixed.plain)).toEqualTypeOf<string>()
+}
+void checkDefaultEmptyContracts

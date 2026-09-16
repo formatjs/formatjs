@@ -449,3 +449,34 @@ test('mixed catalogs infer callbacks from referenced rich-text messages', () => 
   }
   void invalid
 })
+
+// Compiled with the test target: empty defaults must not erase the contract.
+function checkDefaultEmptyContracts() {
+  const plain = defineMessage({id: 'empty-default', defaultMessage: 'Hello'})
+  const annotated: TypedMessageDescriptor = plain
+  const catalog = defineMessages({hello: {defaultMessage: 'Hello'}})
+  const withOption = defineMessages(
+    {hello: {defaultMessage: 'Hello'}},
+    {typed: true}
+  )
+  // @ts-expect-error Legacy options do not weaken the default empty contract.
+  intl.$t(withOption.hello, {extra: 1})
+  expectTypeOf(intl.$t(plain)).toEqualTypeOf<string>()
+  expectTypeOf(intl.formatMessage(annotated)).toEqualTypeOf<string>()
+  expectTypeOf(intl.$t(catalog.hello)).toEqualTypeOf<string>()
+  // @ts-expect-error No arguments are allowed by the default empty contract.
+  intl.$t(plain, {extra: 1})
+  // @ts-expect-error An annotation without generics preserves the empty contract.
+  intl.formatMessage(annotated, {extra: 1})
+  // @ts-expect-error Inferred catalogs preserve each empty contract.
+  intl.$t(catalog.hello, {extra: 1})
+  const server = serverIntl({locale: 'en'})
+  const serverPlain = serverMessage({defaultMessage: 'Hello'})
+  expectTypeOf(server.$t(serverPlain)).toEqualTypeOf<string>()
+  // @ts-expect-error Server helper defaults also reject unused values.
+  server.$t(serverPlain, {extra: 1})
+  ;<FormattedMessage {...plain} />
+  // @ts-expect-error Spreading a default empty helper keeps the JSX contract.
+  ;<FormattedMessage {...plain} values={{extra: 1}} />
+}
+void checkDefaultEmptyContracts

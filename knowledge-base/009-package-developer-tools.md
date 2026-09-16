@@ -160,8 +160,8 @@ changes. Import aliases and namespace imports are resolved through lexical scope
 merges repeated arguments, and reports incompatible formatted uses. Autofix
 replaces the first contract generic, including handwritten types, without a marker.
 It hoists MessageTag/MessageValue to normal type imports, reuses visible aliases,
-and avoids collisions with bindings in the file. The
-`{typed: true}` helper overload carries a required phantom symbol contract;
+and avoids collisions with bindings in the file. Helper results carry a required phantom symbol contract, including the default
+empty contract;
 legacy formatter overloads exclude that symbol so invalid typed calls cannot
 fall back to permissive checking. Runtime descriptors remain plain objects.
 React Intl client/server helpers share the core implementation.
@@ -207,3 +207,8 @@ annotations report a diagnostic without a fix.
 Message contracts use readonly properties consistently for defineMessage(s),
 inline formatMessage/$t calls, and IntlMessageFormat constructors, including
 optional ignored arguments. No runtime freezing is introduced.
+
+Empty helper contracts use the API defaults: autofix omits `defineMessage<{}>`,
+all-empty `defineMessages` generics, and `TypedMessageDescriptor<{}>` annotations.
+Explicit second metadata generics retain their first argument. Nonempty contracts
+continue to be generated and refreshed from the ICU parser.

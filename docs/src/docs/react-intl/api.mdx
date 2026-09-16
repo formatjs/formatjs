@@ -507,12 +507,15 @@ although missing values can cause a runtime formatting error.
 
 A descriptor from `defineMessage<Values>(descriptor)` or
 `defineMessages<Contracts>(messages)` carries its contract into
-calls without generics. Ordinary one-argument helpers do not add these checks.
+calls without generics. Helpers without generics carry an empty contract; later
+formatting calls reject extra values. `TypedMessageDescriptor` defaults to that
+same empty contract. For messages with arguments, supply the contract or enable
+`formatjs/enforce-message-types` with `generateTypes: true`.
 Handwritten contracts must match the message; TypeScript does not verify that
 match. Runtime formatting is unchanged. The same rules apply to formatters and
 typed helpers from `react-intl/server`.
 
-See the [11.x upgrade guide](/docs/react-intl/upgrade-guide-11.x) for migration
+See the [12.x upgrade guide](/docs/react-intl/upgrade-guide-12.x) for migration
 from the previous generic positions.
 
 ### Usage

@@ -173,7 +173,11 @@
   },
   "react-intl/upgrade-guide-11.x": {
     "title": "Upgrade Guide 11.x",
-    "description": "Update TypeScript to 5.4 or newer. The declarations now use NoInfer for"
+    "description": "React Intl 11 was an unstable transition release. Upgrade to the latest 12.x"
+  },
+  "react-intl/upgrade-guide-12.x": {
+    "title": "Upgrade Guide 12.x",
+    "description": "React Intl 11 was an unstable transition release while the typed ICU argument"
   },
   "react-intl/upgrade-guide-2.x": {
     "title": "Upgrade Guide 2.x",

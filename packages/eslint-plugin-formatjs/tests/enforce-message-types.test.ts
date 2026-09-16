@@ -235,9 +235,9 @@ ruleTester.run('enforce-message-types', rule, {
           generateTypes: true,
         },
       ],
-      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage?.({defaultMessage: 'Hello'})",
+      code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage?.<{}>({defaultMessage: 'Hello'})",
       output:
-        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage?.<{}>({defaultMessage: 'Hello'})",
+        "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessage?.({defaultMessage: 'Hello'})",
       errors: [
         {
           messageId: 'contract',
@@ -310,9 +310,9 @@ ruleTester.run('enforce-message-types', rule, {
           generateTypes: true,
         },
       ],
-      code: "import {defineMessage as message} from '@formatjs/intl'; message({defaultMessage: 'Hello'})",
+      code: "import {defineMessage as message} from '@formatjs/intl'; message<{}>({defaultMessage: 'Hello'})",
       output:
-        "import {defineMessage as message} from '@formatjs/intl'; message<{}>({defaultMessage: 'Hello'})",
+        "import {defineMessage as message} from '@formatjs/intl'; message({defaultMessage: 'Hello'})",
       errors: [
         {
           messageId: 'contract',
@@ -969,28 +969,28 @@ ruleTester.run('safe catalog type cleanup', rule, {
       filename: 'test.ts',
       options: [{generateTypes: true}],
       code: `import {defineMessages, type MessageDescriptor} from 'react-intl'; const messages: Record<string, MessageDescriptor | undefined> = defineMessages({hello: {defaultMessage: 'Hello'}})`,
-      output: `import {defineMessages} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; const messages: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}})`,
+      output: `import {defineMessages} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; const messages: { readonly "hello": TypedMessageDescriptor } = defineMessages({hello: {defaultMessage: 'Hello'}})`,
       errors: [{messageId: 'contract'}],
     },
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
       code: `import {defineMessages, type MessageDescriptor} from 'react-intl'; export type Catalog = {hello: MessageDescriptor}; const messages: Catalog = defineMessages({hello: {defaultMessage: 'Hello'}})`,
-      output: `import {defineMessages, type MessageDescriptor} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; export type Catalog = {hello: MessageDescriptor}; const messages: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}})`,
+      output: `import {defineMessages, type MessageDescriptor} from 'react-intl';\nimport type {TypedMessageDescriptor} from "react-intl"; export type Catalog = {hello: MessageDescriptor}; const messages: { readonly "hello": TypedMessageDescriptor } = defineMessages({hello: {defaultMessage: 'Hello'}})`,
       errors: [{messageId: 'contract'}],
     },
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
       code: `import {defineMessages} from 'react-intl'; import type {Keys, Unrelated} from './types'; type LocalKeys = Keys; defineMessages<LocalKeys>({hello: {defaultMessage: 'Hello'}}); export type Keep = Unrelated`,
-      output: `import {defineMessages} from 'react-intl'; import type {Unrelated} from './types';  defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); export type Keep = Unrelated`,
+      output: `import {defineMessages} from 'react-intl'; import type {Unrelated} from './types';  defineMessages({hello: {defaultMessage: 'Hello'}}); export type Keep = Unrelated`,
       errors: [{messageId: 'contract'}],
     },
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
       code: `import {defineMessages} from 'react-intl'; import type {Keys} from './types'; defineMessages<Keys>({hello: {defaultMessage: 'Hello'}}); let other: Keys`,
-      output: `import {defineMessages} from 'react-intl'; import type {Keys} from './types'; defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); let other: Keys`,
+      output: `import {defineMessages} from 'react-intl'; import type {Keys} from './types'; defineMessages({hello: {defaultMessage: 'Hello'}}); let other: Keys`,
       errors: [{messageId: 'contract'}],
     },
     {
@@ -1024,15 +1024,15 @@ ruleTester.run('computed annotated catalogs', rule, {
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
-      code: `import {defineMessages, type TypedMessageDescriptor} from 'react-intl'; import {Keys} from './keys'; const messages: {readonly [Keys.Hello]: TypedMessageDescriptor<{}>} = defineMessages<{readonly [Keys.Hello]: {}}>({[Keys.Hello]: {defaultMessage: 'Hello'}})`,
+      code: `import {defineMessages, type TypedMessageDescriptor} from 'react-intl'; import {Keys} from './keys'; const messages: {readonly [Keys.Hello]: TypedMessageDescriptor} = defineMessages({[Keys.Hello]: {defaultMessage: 'Hello'}})`,
     },
   ],
   invalid: [],
 })
 
 const sharedCatalogBefore = `import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const a: Record<string, MessageDescriptor> = defineMessages({hello: {defaultMessage: 'Hello'}}); const b: Record<string, MessageDescriptor> = defineMessages({bye: {defaultMessage: 'Bye'}})`
-const sharedCatalogFirstPass = `import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const a: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); const b: Record<string, MessageDescriptor> = defineMessages({bye: {defaultMessage: 'Bye'}})`
-const sharedCatalogFixed = `import {defineMessages, type TypedMessageDescriptor} from 'react-intl'; const a: { readonly "hello": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "hello": {} }>({hello: {defaultMessage: 'Hello'}}); const b: { readonly "bye": TypedMessageDescriptor<{}> } = defineMessages<{ readonly "bye": {} }>({bye: {defaultMessage: 'Bye'}})`
+const sharedCatalogFirstPass = `import {defineMessages, type MessageDescriptor, type TypedMessageDescriptor} from 'react-intl'; const a: { readonly "hello": TypedMessageDescriptor } = defineMessages({hello: {defaultMessage: 'Hello'}}); const b: Record<string, MessageDescriptor> = defineMessages({bye: {defaultMessage: 'Bye'}})`
+const sharedCatalogFixed = `import {defineMessages, type TypedMessageDescriptor} from 'react-intl'; const a: { readonly "hello": TypedMessageDescriptor } = defineMessages({hello: {defaultMessage: 'Hello'}}); const b: { readonly "bye": TypedMessageDescriptor } = defineMessages({bye: {defaultMessage: 'Bye'}})`
 
 ruleTester.run('shared imports across fixes', rule, {
   valid: [
@@ -1112,6 +1112,39 @@ ruleTester.run('annotated standalone descriptors', rule, {
       options: [{generateTypes: true}],
       code: `import {defineMessage, type TypedMessageDescriptor} from 'react-intl'; export const message: TypedMessageDescriptor<{readonly n: string}> = defineMessage<{readonly n: string}>({defaultMessage: '{n, number}'})`,
       output: `import {defineMessage, type TypedMessageDescriptor} from 'react-intl'; export const message: TypedMessageDescriptor<{ readonly "n": number | bigint }> = defineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'})`,
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})
+
+ruleTester.run('omit empty helper contracts', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessage, defineMessages} from 'react-intl'; defineMessage({defaultMessage: 'Hello'}); defineMessages({hello: {defaultMessage: 'Hello'}})",
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessage} from 'react-intl'; defineMessage<{}, {id: string; defaultMessage: string}>({id: 'hello', defaultMessage: 'Hello'})",
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessage} from 'react-intl'; defineMessage<{}>({defaultMessage: 'Hello'})",
+      output:
+        "import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: 'Hello'})",
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: "import {defineMessages} from 'react-intl'; defineMessages<{hello: {}}>({hello: {defaultMessage: 'Hello'}})",
+      output:
+        "import {defineMessages} from 'react-intl'; defineMessages({hello: {defaultMessage: 'Hello'}})",
       errors: [{messageId: 'contract'}],
     },
   ],

@@ -1127,8 +1127,11 @@ framework packages re-export them.
 
 For inline formatter calls with no ICU arguments and no values argument, autofix
 omits the empty generic and removes an existing `<{}>`. A second output generic
-is preserved. Empty contracts on reusable helpers and calls supplying values
-remain useful for checking later calls or rejecting extra values.
+is preserved. Reusable helpers also omit empty contracts: `defineMessage` and
+each entry in `defineMessages` default to no ICU arguments, so later calls still
+reject extra values. Generated `TypedMessageDescriptor` annotations omit `<{}>`
+as well. Explicit second metadata generics retain the first contract argument.
+Inline calls supplying values keep their explicit empty contract.
 
 Autofix refreshes the first generic from the message even when it was handwritten,
 and preserves a formatter's second rich-output generic. Legacy marker comments
@@ -1138,7 +1141,8 @@ computed properties are not generated.
 
 Helper generics describe ICU arguments and attach only type-level metadata;
 no options flag is required. Calls without generics retain inferred descriptor
-metadata and permissive formatting. Existing `{typed: true}` calls remain valid. Both `formatMessage` and
+metadata and carry an empty ICU contract. Messages with arguments require an
+explicit contract, which `generateTypes` supplies. Existing `{typed: true}` calls remain valid. Both `formatMessage` and
 `$t` enforce contracts. React Intl also supports rich-text callbacks returning
 React nodes. This does not add typed JSX `FormattedMessage` props or infer
 contracts from ID-only calls. A dynamically selected typed descriptor requires

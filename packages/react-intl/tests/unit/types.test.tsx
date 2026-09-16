@@ -1,10 +1,17 @@
-import {defineMessages, useIntl} from '#packages/react-intl/index.js'
+import {
+  defineMessages,
+  useIntl,
+  type MessageTag,
+  type MessageValue,
+} from '#packages/react-intl/index.js'
 import {describe, it} from 'vitest'
 describe('types', () => {
   // https://github.com/formatjs/formatjs/issues/3856
   it('works with react18 typing', () => {
     function Test() {
-      const messages = defineMessages({
+      const messages = defineMessages<{
+        greeting: {name: MessageValue; bold: MessageTag}
+      }>({
         greeting: {
           id: 'app.greeting',
           defaultMessage: 'Hello, <bold>{name}</bold>!',
@@ -26,7 +33,7 @@ describe('types', () => {
 
   it('works with string value types', () => {
     function Test() {
-      const messages = defineMessages({
+      const messages = defineMessages<{greeting: {name: MessageValue}}>({
         greeting: {
           id: 'app.greeting',
           defaultMessage: 'Hello, {name}!',
@@ -50,7 +57,7 @@ describe('types', () => {
 
   it('works with callback value types', () => {
     function Test() {
-      const messages = defineMessages({
+      const messages = defineMessages<{greeting: {bold: MessageTag}}>({
         greeting: {
           id: 'app.greeting',
           defaultMessage: 'Hello, <bold>name</bold>!',

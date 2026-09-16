@@ -137,7 +137,10 @@ flowchart TD
 
 `defineMessage<Values>(descriptor)` and
 `defineMessages<Contracts>(catalog)` attach phantom contracts for
-`formatMessage` and `$t`. Existing one-argument overloads retain their behavior.
+`formatMessage` and `$t`. Omitting helper generics now carries an empty contract
+for a descriptor or every catalog entry. `TypedMessageDescriptor` also defaults
+to `{}`. Messages with ICU arguments need an explicit contract, which the lint
+rule generates; TypeScript does not infer it from the message string.
 `MessageValue` represents plain arguments; `MessageTag` is resolved to the
 formatter's callback type. Contracts are explicit; TypeScript does not parse
 the ICU string. The original helper overload stays last to preserve
@@ -278,3 +281,8 @@ contract to calls without explicit generics. Existing `{typed: true}` arguments
 remain accepted for migration. The linter emits flag-free helper calls and omits
 empty generics on inline formatters with no values argument. Reusable empty
 contracts and explicit output generics retain their checks and positions.
+
+The React Intl 12 upgrade guide consolidates the 11/12 API migration. Version 11
+was an unstable transition release; the 11 guide URL points readers to the 12
+guide. Empty helper defaults are released as a correction within the 12.x patch
+line, with their TypeScript migration impact documented explicitly.
