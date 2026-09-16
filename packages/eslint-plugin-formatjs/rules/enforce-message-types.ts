@@ -1063,9 +1063,8 @@ export const rule: Rule.RuleModule = {
             catalogType = !catalog
               ? 'import(' +
                 JSON.stringify(imported.module) +
-                ').TypedMessageDescriptor<' +
-                types[0] +
-                '>'
+                ').TypedMessageDescriptor' +
+                (types[0] === '{}' ? '' : '<' + types[0] + '>')
               : entries.length
                 ? '{ ' +
                   entries
@@ -1075,9 +1074,8 @@ export const rule: Rule.RuleModule = {
                         entry!.key +
                         ': import(' +
                         JSON.stringify(imported.module) +
-                        ').TypedMessageDescriptor<' +
-                        types[index] +
-                        '>'
+                        ').TypedMessageDescriptor' +
+                        (types[index] === '{}' ? '' : '<' + types[index] + '>')
                     )
                     .join('; ') +
                   ' }'
@@ -1115,9 +1113,16 @@ export const rule: Rule.RuleModule = {
           !annotation ||
           (annotation.annotation === annotation.generated &&
             renderType(annotation.generated) === catalogType)
-        const expected = `<${contract}>`
         const parameters = (generic as unknown as TypeNode | undefined)?.params
+        // Helper defaults carry an empty contract; preserve explicit metadata generics.
+        const omitContract =
+          (imported.helper === 'defineMessage' || catalog) &&
+          types.every(type => type === '{}') &&
+          (!parameters || parameters.length === 1)
+        const expected = omitContract ? '' : `<${contract}>`
+        if (omitContract && !generic && annotationMatches) return
         if (
+          !omitContract &&
           parameters &&
           parameters.length >= 1 &&
           parameters.length <= 2 &&
@@ -1152,20 +1157,22 @@ export const rule: Rule.RuleModule = {
                 contract + (catalogType ?? ''),
                 fixer
               ),
-              generic && parameters?.[0]
-                ? fixer.replaceTextRange(
-                    [
-                      generic.range![0] + 1,
-                      (parameters[0] as unknown as Node).range![1],
-                    ],
-                    contract
-                  )
-                : fixer.insertTextAfter(
-                    node.optional
-                      ? source.getTokenAfter(node.callee)!
-                      : node.callee,
-                    expected
-                  ),
+              omitContract && generic
+                ? fixer.remove(generic)
+                : generic && parameters?.[0]
+                  ? fixer.replaceTextRange(
+                      [
+                        generic.range![0] + 1,
+                        (parameters[0] as unknown as Node).range![1],
+                      ],
+                      contract
+                    )
+                  : fixer.insertTextAfter(
+                      node.optional
+                        ? source.getTokenAfter(node.callee)!
+                        : node.callee,
+                      expected
+                    ),
             ]
             if (annotation && !annotationMatches) {
               edits.push(

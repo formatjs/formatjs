@@ -648,7 +648,10 @@ intl.$t(count) // TypeScript error: missing count
 ```
 
 `defineMessages<Contracts>(catalog, {typed: true})` works the same way for a
-message map. Ordinary one-argument helpers do not add ICU argument checks.
+message map. Without generics, helpers carry an empty ICU contract and reject
+extra values at formatting sites. `TypedMessageDescriptor` also defaults to an
+empty contract. For messages with arguments, supply the contract or generate it
+with `formatjs/enforce-message-types` and `generateTypes: true`.
 TypeScript does not verify that a handwritten contract matches the message.
 These types do not change runtime formatting.
 
