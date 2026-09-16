@@ -177,7 +177,7 @@
   },
   "react-intl/upgrade-guide-12.x": {
     "title": "Upgrade Guide 12.x",
-    "description": "React Intl 11 was an unstable transition release while the typed ICU argument"
+    "description": "React Intl 11 was an unstable transition release."
   },
   "react-intl/upgrade-guide-2.x": {
     "title": "Upgrade Guide 2.x",

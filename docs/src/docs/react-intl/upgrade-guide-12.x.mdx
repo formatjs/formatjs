@@ -1,20 +1,12 @@
 ## Upgrade to React Intl 12
 
-React Intl 11 was an unstable transition release while the typed ICU argument
-API was being finalized. Upgrade directly to the latest 12.x patch release.
-This guide combines the changes introduced in 11 and 12 so applications on 10.x
-or the unstable 11.x releases have one migration path.
-
-The empty-contract helper defaults are a correction to the 12.x API, shipped in
-a patch release. They can surface new TypeScript errors in helper-based messages
-with arguments; run the autofix migration below before updating callers manually.
+React Intl 11 was an unstable transition release.
+Upgrade from 10 or 11 to the latest 12.x patch and use TypeScript 5.4 or newer.
 JavaScript formatting behavior is unchanged.
 
-## Run the type-generation autofix
+## Generate message types
 
-Enable `formatjs/enforce-message-types` with `generateTypes: true` in your linter
-configuration and run autofix. It derives argument contracts from the ICU strings,
-updates existing helper annotations, and removes redundant empty generics.
+Enable this ESLint rule and run `eslint --fix`:
 
 ```json
 {
@@ -24,155 +16,69 @@ updates existing helper annotations, and removes redundant empty generics.
 }
 ```
 
-For example:
+The rule reads your ICU messages and adds their argument types:
 
 ```tsx
-// No arguments: the helper defaults to an empty contract.
-const hello = defineMessage({defaultMessage: 'Hello'})
+// Before
+const items = defineMessage({defaultMessage: '{count, number} items'})
 
-// The linter generates the contract for messages with arguments.
-const count = defineMessage<{readonly count: number | bigint}>({
+// After autofix
+const items = defineMessage<{readonly count: number | bigint}>({
   defaultMessage: '{count, number} items',
 })
 
-intl.$t(hello)
-intl.$t(count, {count: 2})
+intl.$t(items, {count: 2}) // OK
+intl.$t(items, {count: 'two'}) // Type error
+intl.$t(items) // Type error: count is required
 ```
 
-Keep the rule enabled so contracts follow later message edits. Review diagnostics
-that cannot be autofixed, such as dynamic message text or unsafe catalog lookups.
+Messages without arguments need no generic: `defineMessage({defaultMessage:
+'Hello'})` rejects extra values by default. Autofix removes redundant `<{}>`.
+Messages with arguments need the generated types, including when upgrading from
+an earlier 12.x patch.
 
-## API changes from 10.x
+Keep the rule enabled to update types when messages change. Fix any remaining
+diagnostics manually; see the [rule documentation](/docs/tooling/linter#enforce-message-types)
+for supported patterns.
 
-### TypeScript 5.4 required
+## Check these breaking changes
 
-Update TypeScript to 5.4 or newer. The declarations now use `NoInfer` for
-opt-in typed message contracts. This compiler requirement also applies to
-projects that use untyped messages; JavaScript runtime behavior is unchanged.
+### Formatter generics now describe message arguments
 
-### Message formatter generic arguments changed
-
-`formatMessage<Values, RichOutput>` and `$t<Values, RichOutput>` now take the ICU
-argument contract first. Rich output moves to the optional second generic,
-which defaults to `React.ReactNode` in React Intl.
+The first generic of `formatMessage` and `$t` now describes ICU arguments.
+Rich output moves to the second generic and defaults to `React.ReactNode`:
 
 ```tsx
-// Before: first generic described rich output.
+// Before
 intl.$t<React.ReactNode>(descriptor, values)
 
-// After: first generic describes ICU arguments.
+// After
 intl.$t<{name: MessageValue}, React.ReactNode>(descriptor, values)
 ```
 
-Import `MessageValue` from `react-intl` for unformatted placeholders and
-`MessageTag` for tag callbacks.
+Import `MessageValue` from `react-intl`. With typed `defineMessage` or
+`defineMessages` results, omit call-site generics—the descriptor supplies them.
+Plain, untyped descriptors remain permissive.
 
-With a plain descriptor, both
-`intl.$t(descriptor, values)` and `intl.formatMessage(descriptor, values)`
-remain permissive: required argument names and types are not inferred from
-message literals. A descriptor from a typed helper still enforces its contract
-without call-site generics. Runtime formatting and error handling are unchanged.
+### Helper results are readonly
 
-Rich output defaults to `React.ReactNode` in React Intl. In `@formatjs/intl`,
-it uses the type supplied to `createIntl<T>()` (`string` by default); untyped
-rich calls use that base type rather than inferring a narrower output type.
+Create a new descriptor or catalog instead of mutating the result of
+`defineMessage` or `defineMessages`. This is a TypeScript restriction; objects
+are not frozen at runtime.
 
-See [React Intl argument types](/docs/react-intl/api#typed-message-arguments)
-and [core Intl argument types](/docs/intl#typed-message-arguments) for examples.
+If you need literal IDs or custom metadata alongside explicit argument types,
+use `defineMessage<Values, typeof descriptor>(descriptor)` or
+`defineMessages<Contracts, typeof catalog>(catalog)`. TypeScript cannot infer
+the second generic after you supply the first.
 
-### Readonly message helpers
+Legacy `defineMessages<Key, Descriptor>` instantiation expressions need the
+third generic: `defineMessages<Key, Descriptor, Record<Key, Descriptor>>`.
 
-`defineMessage` returns a readonly descriptor. `defineMessages` returns a readonly
-catalog of readonly descriptors, including calls without typed options. Construct
-a new descriptor or catalog instead of mutating a helper result. This is a
-TypeScript breaking change; helpers preserve object identity and do not freeze
-objects or recursively transform rich values.
+### Typed FormattedMessage checks values
 
-### Empty helper contracts by default
+`<FormattedMessage {...items} values={{count: 2}} />` checks the same argument
+types as `$t`. Required arguments need `values`; rich tags need callbacks.
+Avoid widening typed descriptors to `MessageDescriptor`, which loses these checks.
 
-`defineMessage({defaultMessage: 'Hello'})` now carries the same empty ICU
-contract as `defineMessage<{}>(...)`. `defineMessages` defaults each entry to
-an empty contract, and `TypedMessageDescriptor` defaults its type argument to
-`{}`. Formatting these messages rejects extra values without explicit generics.
-
-Helpers for messages with arguments need an explicit contract. Run
-`formatjs/enforce-message-types` with `generateTypes: true` to generate these
-contracts and remove redundant empty generics. This changes TypeScript checking
-only; descriptors keep their runtime identity and formatting behavior.
-
-### Typed helper metadata
-
-Typed helpers retain required `id` and `defaultMessage` fields for common
-descriptor shapes. Catalog inference retains fields shared by every entry.
-For literal IDs, custom metadata, or heterogeneous catalogs, supply a second
-descriptor generic: `defineMessage<Values, typeof descriptor>(descriptor)`
-or `defineMessages<Contracts, typeof catalog>(catalog)`.
-TypeScript cannot partially infer that second generic after an explicit first one.
-ESLint refreshes the ICU generic while preserving the metadata generic.
-
-The two-generic typed catalog overload reserves `defineMessages<Contracts, Descriptors>`.
-Legacy instantiation expressions using `defineMessages<Key, Descriptor>` should
-supply their existing third generic explicitly:
-`defineMessages<Key, Descriptor, Record<Key, Descriptor>>`.
-Calls without explicit generics retain descriptor metadata and now carry an empty
-contract, as described above.
-
-### Typed FormattedMessage
-
-Spreading a typed descriptor into `FormattedMessage` now checks its `values`:
-`<FormattedMessage {...messages.count} values={{count: 2}} />`.
-Required ICU arguments require the values prop, and rich tags require callbacks
-returning React nodes. Argument-free descriptors can omit values. Ordinary
-untyped JSX remains permissive. Keep the descriptor's phantom contract when
-passing it through wrappers; widening to MessageDescriptor erases the check.
-Runtime rendering, memoization, and children callbacks are unchanged.
-
-## Registered message arguments
-
-Applications can opt into ID-only checks by extending
-`FormatjsIntl.MessageArguments`. Both `formatMessage` and `$t` use the map
-in `@formatjs/intl` and React Intl:
-
-```tsx
-declare global {
-  namespace FormatjsIntl {
-    interface MessageArguments {
-      'cart.total': {readonly count: number | bigint}
-      'cart.empty': {}
-    }
-  }
-}
-
-intl.$t({id: 'cart.total'}, {count: 2})
-intl.$t({id: 'cart.empty'})
-// Type error: count is required.
-intl.$t({id: 'cart.total'})
-```
-
-Known literal IDs check required arguments, empty contracts, and rich callbacks.
-Union IDs require values valid for every possible registered message.
-Dynamic strings and unregistered IDs retain legacy behavior; this map does not
-replace the separate `FormatjsIntl.Message.ids` restriction.
-Explicit argument generics and typed descriptors keep their own contracts.
-No ICU parsing, registration, or freezing happens at runtime.
-
-For catalogs already carrying generated contracts, use
-`MessageArgumentsFromCatalog<typeof messages>` from either package:
-
-```ts
-import type {MessageArgumentsFromCatalog} from 'react-intl'
-import type {messages} from './messages'
-
-type AppMessageArguments = MessageArgumentsFromCatalog<typeof messages>
-
-declare global {
-  namespace FormatjsIntl {
-    interface MessageArguments extends AppMessageArguments {}
-  }
-}
-```
-
-Catalog entries must retain literal IDs. Use the helpers' explicit descriptor
-metadata generic when needed; widened `string` IDs are omitted. Keep IDs unique:
-duplicate catalog IDs combine their contracts. This API consumes existing typed
-catalogs or application declarations; it does not add a CLI declaration generator.
+For ID-only calls, you can optionally
+[register message arguments](/docs/react-intl/api#registered-message-arguments).
