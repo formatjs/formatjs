@@ -1084,6 +1084,32 @@ ruleTester.run('shared descriptor and mixed error catalogs', rule, {
   ],
 })
 
+ruleTester.run('nested message helpers in catalogs', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; const defineMessage = (value: unknown) => value; defineMessages({count: {defaultMessage: '{n, number}'}, other: defineMessage({defaultMessage: 'Other'})})`,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage as message, defineMessages} from 'react-intl'; defineMessages({count: {defaultMessage: '{n, number}'}, label: message({defaultMessage: 'Terms'})})`,
+      output: `import {defineMessage as message, defineMessages} from 'react-intl'; defineMessages<{ readonly "count": { readonly "n": number | bigint }; readonly "label": {} }>({count: {defaultMessage: '{n, number}'}, label: message({defaultMessage: 'Terms'})})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import * as intl from 'react-intl'; intl.defineMessages({count: intl.defineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'})})`,
+      output: `import * as intl from 'react-intl'; intl.defineMessages<{ readonly "count": { readonly "n": number | bigint } }>({count: intl.defineMessage<{ readonly "n": number | bigint }>({defaultMessage: '{n, number}'})})`,
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})
+
 ruleTester.run('annotated standalone descriptors', rule, {
   valid: [
     {

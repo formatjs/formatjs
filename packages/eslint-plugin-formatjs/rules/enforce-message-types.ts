@@ -48,6 +48,14 @@ function resolveDescriptor(
   seen = new Set<Node>()
 ): Node | undefined {
   if (!node || seen.has(node)) return
+  if (
+    node.type === 'CallExpression' &&
+    importedHelper(context, node)?.helper === 'defineMessage' &&
+    node.arguments.length === 1
+  ) {
+    seen.add(node)
+    return resolveDescriptor(context, node.arguments[0], seen)
+  }
   if (node.type !== 'Identifier') return node
   seen.add(node)
   let scope: ReturnType<typeof context.sourceCode.getScope> | null =

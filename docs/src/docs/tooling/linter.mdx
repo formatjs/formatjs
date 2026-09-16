@@ -1156,6 +1156,10 @@ its checks, as does using `any`. Generated helper results retain the standard
 
 ### Explicit descriptor and catalog annotations
 
+Catalog generation also recognizes nested imported `defineMessage` calls,
+including aliases and namespace imports, alongside plain descriptor entries.
+An unrelated function with the same name is not treated as a message helper.
+
 For an annotated `defineMessage` variable, autofix replaces `MessageDescriptor`
 (or a local alias or `Readonly` wrapper) with `TypedMessageDescriptor<Values>`.
 This preserves the generated ICU contract across exports and allows referenced

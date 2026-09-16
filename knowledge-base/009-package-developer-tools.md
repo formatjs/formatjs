@@ -155,6 +155,8 @@ ECMA-376 (Office Open XML) number format generation. Used for spreadsheet number
 or React Intl client/server entry points. Existing generated contracts are
 checked even when generation for untyped calls is disabled. Neither preset
 changes. Import aliases and namespace imports are resolved through lexical scope.
+Catalog entries can contain imported `defineMessage` calls as well as plain
+descriptors; resolve the helper argument before deriving the catalog contract.
 
 `message-types.ts` derives contracts from the ICU AST. It visits every branch,
 merges repeated arguments, and reports incompatible formatted uses. Autofix
