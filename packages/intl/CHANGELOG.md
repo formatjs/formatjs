@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@6.0.0...@formatjs/intl@6.0.1) (2026-09-16)
+
+
+### Bug Fixes
+
+* default message helpers to empty ICU contracts ([#7428](https://github.com/formatjs/formatjs/issues/7428)) ([7bd3c8b](https://github.com/formatjs/formatjs/commit/7bd3c8bb3c4fc0cf298c3f05c6d331910caa9da7))
+
 ## [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@5.0.0...@formatjs/intl@6.0.0) (2026-09-15)
 
 
