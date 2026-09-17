@@ -1,3 +1,4 @@
+import {calendars} from '@formatjs_generated/datetimeformat.calendars/index.js'
 import {
   readFileSync,
   readdirSync,
@@ -24,9 +25,14 @@ test('published core excludes optional calendar arithmetic and tables', () => {
   )
   expect(manifest.exports['./calendar-data/*']).toBeUndefined()
   expect(existsSync(new URL('calendar-data/hebrew/en.js', pkg))).toBe(false)
-  expect(manifest.exports['./add-all-calendars.js']).toBe(
-    './add-all-calendars.js'
-  )
+  expect(manifest.exports['./add-all-calendars.js']).toBeUndefined()
+  expect(existsSync(new URL('add-all-calendars.js', pkg))).toBe(false)
+  expect(existsSync(new URL('calendar-data/', pkg))).toBe(false)
+  expect(
+    Object.keys(manifest.exports).some(key =>
+      key.startsWith('./calendar-data/')
+    )
+  ).toBe(false)
   for (const entry of ['index', 'polyfill', 'polyfill-force']) {
     expect(
       sources(entry).filter(
@@ -38,13 +44,29 @@ test('published core excludes optional calendar arithmetic and tables', () => {
       )
     ).toEqual([])
   }
-  const chinese = sources('calendar-data/chinese').join('\n')
+  const chinese = JSON.parse(
+    readFileSync(
+      new URL(
+        '../../intl-datetimeformat-calendar-chinese/pkg/index.js.map',
+        import.meta.url
+      ),
+      'utf8'
+    )
+  ).sources.join('\n')
   expect(chinese).toContain('LunisolarDateFromTime')
   expect(chinese).not.toContain('/dangi')
   expect(chinese).not.toContain('temporal-polyfill')
-  expect(sources('calendar-data/hebrew').join('\n')).not.toContain(
-    'icu.calendar'
-  )
+  expect(
+    JSON.parse(
+      readFileSync(
+        new URL(
+          '../../intl-datetimeformat-calendar-hebrew/pkg/index.js.map',
+          import.meta.url
+        ),
+        'utf8'
+      )
+    ).sources.join('\n')
+  ).not.toContain('icu.calendar')
 })
 
 // Fresh processes exercise the actual npm ESM entries, including registration
@@ -121,15 +143,6 @@ for (const before of [false, true]) {
   })
 }
 
-const calendars = Object.keys(
-  JSON.parse(
-    readFileSync(
-      new URL('../../../tools/calendar-registry.json', import.meta.url),
-      'utf8'
-    )
-  ).calendars
-)
-
 function packageSize(root: URL): {bytes: number; files: number} {
   let bytes = 0
   let files = 0
@@ -201,24 +214,6 @@ test.each([
   },
   40000
 )
-
-test('add-all-calendars exports every registered calendar exactly once', () => {
-  const actual = JSON.parse(
-    execFileSync(
-      process.execPath,
-      [
-        '--input-type=module',
-        '-e',
-        `
-    const {default: calendars} = await import(${JSON.stringify(new URL('add-all-calendars.js', pkg).href)})
-    console.log(JSON.stringify(calendars.map(data => data.calendar)))
-  `,
-      ],
-      {encoding: 'utf8'}
-    )
-  )
-  expect(actual.sort()).toEqual([...calendars].sort())
-})
 
 test('each generated package registers its declared calendar', () => {
   for (const calendar of calendars) {

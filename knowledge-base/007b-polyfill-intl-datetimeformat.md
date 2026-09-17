@@ -270,16 +270,17 @@ cycle interval patterns retain precedence over the synthesized fallback.
 
 The core bundle includes Gregorian/ISO conversion only. Other arithmetic lives in
 `ecma402-abstract/DateTimeFormat/calendars/` and is bundled into independent public
-`calendar-data/<calendar>.js` entries. `add-all-calendars.js` is an explicit opt-in
-to all arithmetic/tables. Core must not import either these modules or generated
+`@formatjs/intl-datetimeformat-calendar-<calendar>` packages. The base package
+exports neither calendar arithmetic nor `add-all-calendars.js`. Core must not import either these modules or generated
 ICU calendar tables. Calendar implementations receive timezone-adjusted values
 through the existing ToLocalTime implementation-details path.
 
 `locale-data/<locale>.js` carries Gregorian patterns only. Each `@formatjs/intl-datetimeformat-calendar-<calendar>` package contains one
 calendar arithmetic entry and `locale-data/<locale>.js` files. The distribution
-script selects a calendar with `--calendar`; the base package never includes
-those optional locale payloads. Old arithmetic entrypoints remain compatible,
-but calendar locale imports move to the new packages. Package tests enforce
+CLI `cldr-calendar.ts` selects a calendar with `--calendar`; `cldr.ts` emits only
+base locale data. Separate CLI targets keep emitter-specific edits out of the
+other action inputs. Both consume shared raw CLDR data. Old arithmetic and locale
+entrypoints move to the calendar packages. Package tests enforce
 250 MB/1700-file base and 200 MB/1600-file per-calendar budgets.
 The CLDR intermediate JSON retains all calendars for generation and full-suite
 tests; it is not the default published locale payload.
@@ -298,12 +299,6 @@ calendar preferences once registered; arithmetic and patterns are both required.
 `tests/calendar-loading.test.ts` covers custom single-date/range conversion and
 isolation. `scripts/calendar-bundle.test.ts` exercises the published npm entries
 in fresh processes, pre-install queues, and source-map payload boundaries.
-
-`bazel test //packages/intl-datetimeformat/scripts:yarn_install_test` runs the
-manual Yarn 4.9.2 install smoke with uncompressed, isolated caches and networking
-disabled. It packs Bazel-built artifacts using release-equivalent workspace
-version replacement, installs the base alone, then Hebrew/Japanese/Chinese
-add-ons, and formats with Gregorian plus IANA timezones and each added calendar.
 
 The default `calendar_bundle_test` also packs every publishable package into a
 `.tgz`, including declarations and source maps, and enforces compressed download
@@ -328,7 +323,7 @@ To add a calendar:
 1. Add its CLDR mapping to `CALENDAR_FILES`.
 2. Add its arithmetic implementation, `calendar-data` wrapper, and `all.ts` entry.
 3. Add the six-line `calendar_package()` BUILD stub and synced `package.json`.
-4. Add workspace and Release Please config/manifest entries, update the pnpm
+4. Add Release Please config/manifest entries, update the pnpm
    lockfile, and run `bash scripts/generate_dist_packages.sh` and
    `bazel run //:gazelle`.
 5. Run `bazel test //tools:calendar_registry_test
@@ -336,8 +331,13 @@ To add a calendar:
 //packages/intl-datetimeformat/scripts:calendar_bundle_test`.
 
 The default CI suite compares independently discovered arithmetic/wrapper
-sources against the registry, checks workspace and release metadata, and tests
-aggregate/per-package registration and CLDR coverage. Missing or extra wiring
+source-name inventories against the registry, checks distribution and release
+metadata, and tests per-package registration and CLDR coverage. Inventories are
+generated within each owning Bazel package; raw sources stay private. Missing or extra wiring
 fails CI. New registered packages automatically receive unpacked/file-count and
 compressed tarball budgets; no separate test list or fixed calendar count exists.
 The Release Please plugin test also uses the registry to check version bumps.
+Generators and runtime tests import `@formatjs_generated/datetimeformat.calendars/index.js`.
+This generated package contains only registry constants; source inventories stay
+separate so inventory changes do not invalidate CLDR generation. Calendar packages
+are discovered by the workspace glob and do not need root devDependencies.

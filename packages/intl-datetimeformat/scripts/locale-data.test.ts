@@ -1,3 +1,4 @@
+import {calendars} from '@formatjs_generated/datetimeformat.calendars/index.js'
 import {readFileSync} from 'node:fs'
 import {runInNewContext} from 'node:vm'
 import {expect, test} from 'vitest'
@@ -81,16 +82,8 @@ test('calendar locale module queues before installation', () => {
 })
 
 test('CLDR data covers every registered calendar', () => {
-  const registry = JSON.parse(
-    readFileSync(
-      new URL('../../../tools/calendar-registry.json', import.meta.url),
-      'utf8'
-    )
-  )
-  expect(Object.keys(calendarData).sort()).toEqual(
-    Object.keys(registry.calendars).sort()
-  )
-  for (const calendar of Object.keys(registry.calendars)) {
+  expect(Object.keys(calendarData).sort()).toEqual([...calendars].sort())
+  for (const calendar of [...calendars]) {
     expect(formats[calendar], calendar).toBeDefined()
   }
 })

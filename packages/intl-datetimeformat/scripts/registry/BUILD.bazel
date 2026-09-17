@@ -1,0 +1,14 @@
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "calendar_registry")
+load("//tools:generated.bzl", "formatjs_generated_package")
+
+calendar_registry(
+    name = "registry",
+    out = "index.ts",
+    typescript = True,
+)
+
+formatjs_generated_package(
+    name = "pkg",
+    package_name = "datetimeformat.calendars",
+    srcs = [":registry"],
+)

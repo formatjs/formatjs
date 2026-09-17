@@ -6,7 +6,8 @@ const registry = read(process.argv[2])
 const graph = read(process.argv[3])
 const config = read(process.argv[4])
 const manifest = read(process.argv[5])
-const workspace = read(process.argv[6])
+const implementations = read(process.argv[6])
+const entrypoints = read(process.argv[7])
 const prefix = 'intl-datetimeformat-calendar-'
 const calendars = Object.keys(registry.calendars).sort()
 assert.ok(calendars.length > 0)
@@ -15,16 +16,8 @@ assert.deepEqual(
   calendars.map(calendar => prefix + calendar),
   'distribution package coverage'
 )
-assert.deepEqual(
-  registry.implementations,
-  calendars,
-  'calendar implementation coverage'
-)
-assert.deepEqual(
-  registry.entrypoints,
-  calendars,
-  'calendar entrypoint coverage'
-)
+assert.deepEqual(implementations, calendars, 'calendar implementation coverage')
+assert.deepEqual(entrypoints, calendars, 'calendar entrypoint coverage')
 for (const [calendar, mapping] of Object.entries(registry.calendars)) {
   assert.match(calendar, /^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   assert.ok(
@@ -53,13 +46,6 @@ for (const [label, paths] of [
     label
   )
 }
-assert.deepEqual(
-  Object.keys(workspace.devDependencies)
-    .filter(name => name.startsWith(`@formatjs/${prefix}`))
-    .sort(),
-  calendars.map(calendar => `@formatjs/${prefix}${calendar}`),
-  'workspace calendar package coverage'
-)
 for (const pkg of calendarPackages) {
   const calendar = pkg.path.slice(`packages/${prefix}`.length)
   assert.equal(pkg.name, `@formatjs/${prefix}${calendar}`)
@@ -72,7 +58,6 @@ for (const pkg of calendarPackages) {
     pkg.peerDependencies['@formatjs/intl-datetimeformat'],
     'workspace:*'
   )
-  assert.equal(workspace.devDependencies[pkg.name], 'workspace:*')
   const release = config.packages[pkg.path]
   assert.equal(release['package-name'], pkg.name)
   assert.equal(release['release-type'] ?? config['release-type'], 'bazel')

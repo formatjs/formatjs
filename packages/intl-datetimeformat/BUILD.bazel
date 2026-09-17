@@ -1,5 +1,3 @@
-load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
-
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
@@ -7,6 +5,7 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:source_inventory.bzl", "source_inventory")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools/test262:defs.bzl", "test262_test")
@@ -57,8 +56,7 @@ ENTRY_POINTS = [
     "polyfill.ts",
     "polyfill-force.ts",
     "should-polyfill.ts",
-    "add-all-calendars.ts",
-] + ["calendar-data/%s.ts" % calendar for calendar in CALENDARS]
+]
 
 formatjs_library(
     name = "intl-datetimeformat",
@@ -122,12 +120,11 @@ formatjs_library(
         "./polyfill.js": "./polyfill.js",
         "./polyfill-force.js": "./polyfill-force.js",
         "./should-polyfill.js": "./should-polyfill.js",
-        "./add-all-calendars.js": "./add-all-calendars.js",
         "./add-all-tz.js": "./add-all-tz.js",
         "./add-golden-tz.js": "./add-golden-tz.js",
         "./locale-data/*": "./locale-data/*",
         "./locale-data": "./locale-data",
-    } | {"./calendar-data/%s.js" % calendar: "./calendar-data/%s.js" % calendar for calendar in CALENDARS},
+    },
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
@@ -506,11 +503,12 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-filegroup(
-    name = "calendar_entrypoint_sources",
-    srcs = glob(
+source_inventory(
+    name = "calendar_entrypoint_inventory",
+    out = "calendar_entrypoint_inventory.json",
+    names = [path.split("/")[-1][:-3] for path in glob(
         ["calendar-data/*.ts"],
         exclude = ["calendar-data/register.ts"],
-    ),
+    )],
     visibility = ["//tools:__pkg__"],
 )

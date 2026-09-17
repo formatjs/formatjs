@@ -1,5 +1,3 @@
-load("@aspect_rules_js//js:defs.bzl", "js_test")
-
 # gazelle:ignore
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//tools:index.bzl", "ts_binary")
@@ -12,16 +10,18 @@ formatjs_test(
     srcs = ["locale-data.test.ts"],
     data = [
         "//packages/intl-datetimeformat:serialization_test_data",
-        "//tools:calendar_registry",
     ],
-    deps = ["//:node_modules/vitest"],
+    deps = [
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
+        "//:node_modules/vitest",
+    ],
 )
 
 ts_binary(
     name = "cldr-raw",
     data = [
         "extract-dates.ts",
-        "//tools:calendar_registry",
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
@@ -29,6 +29,7 @@ ts_binary(
 
 ts_binary(
     name = "cldr",
+    data = ["emit-locale-data.ts"],
     entry_point = "cldr.ts",
     visibility = ["//visibility:public"],
 )
@@ -59,33 +60,19 @@ formatjs_test(
     srcs = ["calendar-bundle.test.ts"],
     data = [
         "//packages/intl-datetimeformat:pkg",
-        "//tools:calendar_registry",
     ] + ["//packages/intl-datetimeformat-calendar-%s:pkg" % calendar for calendar in CALENDARS],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
 )
 
-# Explicit install smoke: packages are large and exercise a real Yarn cache.
-js_test(
-    name = "yarn_install_test",
-    size = "large",
-    args = ["$(rootpath @yarn_install_test_cli//file)"],
-    data = [
-        "yarn-install.test.mjs",
-        "//packages/bigdecimal:pkg",
-        "//packages/fast-memoize:pkg",
-        "//packages/intl-datetimeformat:pkg",
-        "//packages/intl-datetimeformat-calendar-chinese:pkg",
-        "//packages/intl-datetimeformat-calendar-hebrew:pkg",
-        "//packages/intl-datetimeformat-calendar-japanese:pkg",
-        "//packages/intl-localematcher:pkg",
-        "@yarn_install_test_cli//file",
-    ],
-    entry_point = "yarn-install.test.mjs",
-    no_copy_to_bin = ["@yarn_install_test_cli//file"],
-    tags = ["manual"],
+ts_binary(
+    name = "cldr-calendar",
+    data = ["emit-locale-data.ts"],
+    entry_point = "cldr-calendar.ts",
+    visibility = ["//visibility:public"],
 )

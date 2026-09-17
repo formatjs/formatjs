@@ -475,11 +475,3 @@ use_repo(
     browsers,
     "rules_browsers_chrome_linux",
 )
-
-# Pinned Yarn 4 exercises npm tarball conversion, including libzip memory limits.
-http_file(
-    name = "yarn_install_test_cli",
-    downloaded_file_path = "yarn.cjs",
-    sha256 = "ca4310f8ba997b4643a000ce512d9772e01c1485df35511114b325315960acb7",
-    urls = ["https://repo.yarnpkg.com/4.9.2/packages/yarnpkg-cli/bin/yarn.js"],
-)

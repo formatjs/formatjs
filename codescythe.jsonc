@@ -50,7 +50,6 @@
     "packages/intl-datetimeformat/calendar-data/japanese.ts",
     "packages/intl-datetimeformat/calendar-data/persian.ts",
     "packages/intl-datetimeformat/calendar-data/roc.ts",
-    "packages/intl-datetimeformat/scripts/yarn-install.test.mjs",
     "packages/intl-datetimeformat/index.ts",
     "packages/intl-datetimeformat/polyfill.ts",
     "packages/intl-datetimeformat/polyfill-force.ts",

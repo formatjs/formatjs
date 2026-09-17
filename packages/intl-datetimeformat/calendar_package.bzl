@@ -78,21 +78,11 @@ def calendar_package(calendar, version):
             "--outDir",
             "packages/%s/locale-data" % package,
         ],
-        tool = "//packages/intl-datetimeformat/scripts:cldr",
+        tool = "//packages/intl-datetimeformat/scripts:cldr-calendar",
         visibility = ["//visibility:public"],
     )
 
 _README = """# @formatjs/intl-datetimeformat-calendar-{calendar}
 
-Optional {calendar} calendar arithmetic and locale data for `@formatjs/intl-datetimeformat`.
-Requires the DateTimeFormat polyfill's calendar registration APIs (7.7.0 or newer).
-
-```ts
-import '@formatjs/intl-datetimeformat/polyfill-force.js'
-import '@formatjs/intl-datetimeformat/locale-data/en.js'
-import '@formatjs/intl-datetimeformat-calendar-{calendar}'
-import '@formatjs/intl-datetimeformat-calendar-{calendar}/locale-data/en.js'
-```
-
-Install only the calendars you need. Locale modules may load before or after the polyfill.
+See [Optional calendars](https://formatjs.io/docs/polyfills/intl-datetimeformat/#optional-calendars).
 """

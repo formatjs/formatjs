@@ -11,7 +11,6 @@ import glob from 'fast-glob'
 const globSync = glob.sync
 import {resolve, dirname} from 'path'
 import {createRequire} from 'node:module'
-import {readFileSync} from 'node:fs'
 
 const require = createRequire(import.meta.url)
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
@@ -29,14 +28,7 @@ import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
-const {
-  calendars: CALENDAR_FILES,
-}: {calendars: Record<string, [string, string]>} = JSON.parse(
-  readFileSync(
-    new URL('../../../tools/calendar-registry.json', import.meta.url),
-    'utf8'
-  )
-)
+import {calendarFiles as CALENDAR_FILES} from '@formatjs_generated/datetimeformat.calendars/index.js'
 const ERA_KEY = /^\d+$/
 
 function extractEras(eras: Record<string, string>, calendar: string) {

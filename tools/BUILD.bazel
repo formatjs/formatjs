@@ -220,8 +220,6 @@ copy_file(
 calendar_registry(
     name = "calendar_registry",
     out = "calendar-registry.json",
-    entrypoints = ["//packages/intl-datetimeformat:calendar_entrypoint_sources"],
-    implementations = ["//packages/ecma402-abstract/DateTimeFormat/calendars:calendar_implementation_sources"],
     packages = [pkg["dirname"] for pkg in DIST_PACKAGES if pkg["dirname"].startswith("intl-datetimeformat-calendar-")],
     visibility = ["//visibility:public"],
 )
@@ -234,14 +232,16 @@ js_test(
         "$(rootpath //:release_please_npm_workspace_graph)",
         "$(rootpath //:release_please_config)",
         "$(rootpath //:release_please_manifest)",
-        "$(rootpath //:root_package_json)",
+        "$(rootpath //packages/ecma402-abstract/DateTimeFormat/calendars:calendar_implementation_inventory)",
+        "$(rootpath //packages/intl-datetimeformat:calendar_entrypoint_inventory)",
     ],
     data = [
         ":calendar_registry",
         "//:release_please_config",
         "//:release_please_manifest",
         "//:release_please_npm_workspace_graph",
-        "//:root_package_json",
+        "//packages/ecma402-abstract/DateTimeFormat/calendars:calendar_implementation_inventory",
+        "//packages/intl-datetimeformat:calendar_entrypoint_inventory",
     ],
     entry_point = "calendar-registry.test.ts",
     node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],

@@ -1,12 +1,11 @@
-import {join, basename} from 'path'
-import {outputFileSync} from 'fs-extra/esm'
+import {basename} from 'path'
+import {emitLocaleData} from './emit-locale-data.ts'
 import minimist from 'minimist'
 import {readFileSync} from 'fs'
 
 interface Args extends minimist.ParsedArgs {
   cldrFile: string | string[]
   outDir: string
-  calendar?: string
 }
 function main(args: Args) {
   const {outDir} = args
@@ -15,36 +14,9 @@ function main(args: Args) {
   cldrFiles.forEach(cldrFile => {
     const locale = basename(cldrFile, '.json')
     const raw = JSON.parse(readFileSync(cldrFile, 'utf8'))
-    function emit(path: string, data: unknown, method: string, queue: string) {
-      const json = JSON.stringify(data)
-      outputFileSync(
-        join(outDir, path + '.js'),
-        `/* @generated */
-(function (data) {
-  if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.${method} === 'function') {
-    Intl.DateTimeFormat.${method}(data)
-  } else {
-    (globalThis.${queue} = globalThis.${queue} || []).push(data)
-  }
-})(JSON.parse(${JSON.stringify(json)}));
-`
-      )
-      outputFileSync(join(outDir, path + '.d.ts'), 'export {}')
-    }
-    if (args.calendar) {
-      const calendar = args.calendar
-      const data = raw.data.calendarData?.[calendar]
-      if (!data) throw new Error(`Missing ${calendar} data for ${locale}`)
-      emit(
-        locale,
-        {locale, calendar, data, formats: raw.data.formats[calendar]},
-        '__addCalendarLocaleData',
-        '__FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__'
-      )
-      return
-    }
     const {calendarData: _calendars, formats, ...data} = raw.data
-    emit(
+    emitLocaleData(
+      outDir,
       locale,
       {
         ...raw,
