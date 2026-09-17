@@ -1,3 +1,5 @@
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
+
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
@@ -48,23 +50,6 @@ TEST_DEPS = [
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
     "//:node_modules/@types/node",
-]
-
-CALENDARS = [
-    "buddhist",
-    "coptic",
-    "ethiopic",
-    "ethioaa",
-    "roc",
-    "japanese",
-    "indian",
-    "islamic-civil",
-    "islamic-tbla",
-    "persian",
-    "hebrew",
-    "islamic-umalqura",
-    "chinese",
-    "dangi",
 ]
 
 ENTRY_POINTS = [
@@ -138,25 +123,11 @@ formatjs_library(
         "./polyfill-force.js": "./polyfill-force.js",
         "./should-polyfill.js": "./should-polyfill.js",
         "./add-all-calendars.js": "./add-all-calendars.js",
-        "./calendar-data/buddhist.js": "./calendar-data/buddhist.js",
-        "./calendar-data/coptic.js": "./calendar-data/coptic.js",
-        "./calendar-data/ethiopic.js": "./calendar-data/ethiopic.js",
-        "./calendar-data/ethioaa.js": "./calendar-data/ethioaa.js",
-        "./calendar-data/roc.js": "./calendar-data/roc.js",
-        "./calendar-data/japanese.js": "./calendar-data/japanese.js",
-        "./calendar-data/indian.js": "./calendar-data/indian.js",
-        "./calendar-data/islamic-civil.js": "./calendar-data/islamic-civil.js",
-        "./calendar-data/islamic-tbla.js": "./calendar-data/islamic-tbla.js",
-        "./calendar-data/persian.js": "./calendar-data/persian.js",
-        "./calendar-data/hebrew.js": "./calendar-data/hebrew.js",
-        "./calendar-data/islamic-umalqura.js": "./calendar-data/islamic-umalqura.js",
-        "./calendar-data/chinese.js": "./calendar-data/chinese.js",
-        "./calendar-data/dangi.js": "./calendar-data/dangi.js",
         "./add-all-tz.js": "./add-all-tz.js",
         "./add-golden-tz.js": "./add-golden-tz.js",
         "./locale-data/*": "./locale-data/*",
         "./locale-data": "./locale-data",
-    },
+    } | {"./calendar-data/%s.js" % calendar: "./calendar-data/%s.js" % calendar for calendar in CALENDARS},
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
@@ -533,4 +504,13 @@ filegroup(
     name = "calendar_cldr_raw",
     srcs = CLDR_RAW_FILES,
     visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "calendar_entrypoint_sources",
+    srcs = glob(
+        ["calendar-data/*.ts"],
+        exclude = ["calendar-data/register.ts"],
+    ),
+    visibility = ["//tools:__pkg__"],
 )

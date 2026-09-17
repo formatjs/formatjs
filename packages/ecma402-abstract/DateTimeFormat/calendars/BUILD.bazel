@@ -28,3 +28,15 @@ formatjs_library(
         "//packages/ecma402-abstract/DateTimeFormat",
     ],
 )
+
+filegroup(
+    name = "calendar_implementation_sources",
+    srcs = glob(
+        ["*.ts"],
+        exclude = [
+            "all.ts",
+            "temporal.ts",
+        ],
+    ),
+    visibility = ["//tools:__pkg__"],
+)

@@ -121,22 +121,14 @@ for (const before of [false, true]) {
   })
 }
 
-const calendars = [
-  'buddhist',
-  'coptic',
-  'ethiopic',
-  'ethioaa',
-  'roc',
-  'japanese',
-  'indian',
-  'islamic-civil',
-  'islamic-tbla',
-  'persian',
-  'hebrew',
-  'islamic-umalqura',
-  'chinese',
-  'dangi',
-]
+const calendars = Object.keys(
+  JSON.parse(
+    readFileSync(
+      new URL('../../../tools/calendar-registry.json', import.meta.url),
+      'utf8'
+    )
+  ).calendars
+)
 
 function packageSize(root: URL): {bytes: number; files: number} {
   let bytes = 0
@@ -209,3 +201,49 @@ test.each([
   },
   40000
 )
+
+test('add-all-calendars exports every registered calendar exactly once', () => {
+  const actual = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [
+        '--input-type=module',
+        '-e',
+        `
+    const {default: calendars} = await import(${JSON.stringify(new URL('add-all-calendars.js', pkg).href)})
+    console.log(JSON.stringify(calendars.map(data => data.calendar)))
+  `,
+      ],
+      {encoding: 'utf8'}
+    )
+  )
+  expect(actual.sort()).toEqual([...calendars].sort())
+})
+
+test('each generated package registers its declared calendar', () => {
+  for (const calendar of calendars) {
+    const entry = new URL(
+      `../../intl-datetimeformat-calendar-${calendar}/pkg/index.js`,
+      import.meta.url
+    )
+    const actual = execFileSync(
+      process.execPath,
+      [
+        '--input-type=module',
+        '-e',
+        `
+      const {default: data} = await import(${JSON.stringify(entry.href)})
+      console.log(JSON.stringify({
+        exported: data.calendar,
+        registered: globalThis.__FORMATJS_DATETIMEFORMAT_CALENDAR_DATA__?.map(data => data.calendar),
+      }))
+    `,
+      ],
+      {encoding: 'utf8'}
+    ).trim()
+    expect(JSON.parse(actual), calendar).toEqual({
+      exported: calendar,
+      registered: [calendar],
+    })
+  }
+})

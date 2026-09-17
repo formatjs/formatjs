@@ -1,6 +1,7 @@
 """Publishable calendar packages generated from shared DateTimeFormat sources."""
 
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
@@ -18,6 +19,8 @@ _calendar_source = rule(
 
 def calendar_package(calendar, version):
     """Generate one optional calendar npm package with its own release version."""
+    if calendar not in CALENDARS:
+        fail("Unknown calendar: %s; add it to //packages/intl-datetimeformat:calendar_registry.bzl" % calendar)
     package = "intl-datetimeformat-calendar-" + calendar
     _calendar_source(
         name = "calendar_entry",

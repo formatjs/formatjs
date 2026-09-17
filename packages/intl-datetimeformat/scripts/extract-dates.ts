@@ -11,6 +11,7 @@ import glob from 'fast-glob'
 const globSync = glob.sync
 import {resolve, dirname} from 'path'
 import {createRequire} from 'node:module'
+import {readFileSync} from 'node:fs'
 
 const require = createRequire(import.meta.url)
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
@@ -28,22 +29,14 @@ import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
-const CALENDAR_FILES: Record<string, [string, string]> = {
-  chinese: ['chinese', 'chinese'],
-  dangi: ['dangi', 'dangi'],
-  hebrew: ['hebrew', 'hebrew'],
-  buddhist: ['buddhist', 'buddhist'],
-  coptic: ['coptic', 'coptic'],
-  ethiopic: ['ethiopic', 'ethiopic'],
-  ethioaa: ['ethiopic', 'ethiopic-amete-alem'],
-  roc: ['roc', 'roc'],
-  japanese: ['japanese', 'japanese'],
-  indian: ['indian', 'indian'],
-  'islamic-civil': ['islamic', 'islamic-civil'],
-  'islamic-umalqura': ['islamic', 'islamic-umalqura'],
-  'islamic-tbla': ['islamic', 'islamic-tbla'],
-  persian: ['persian', 'persian'],
-}
+const {
+  calendars: CALENDAR_FILES,
+}: {calendars: Record<string, [string, string]>} = JSON.parse(
+  readFileSync(
+    new URL('../../../tools/calendar-registry.json', import.meta.url),
+    'utf8'
+  )
+)
 const ERA_KEY = /^\d+$/
 
 function extractEras(eras: Record<string, string>, calendar: string) {

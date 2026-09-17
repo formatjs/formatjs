@@ -79,3 +79,18 @@ test('calendar locale module queues before installation', () => {
   })
   expect(JSON.parse(JSON.stringify(queue))).toEqual([hebrew])
 })
+
+test('CLDR data covers every registered calendar', () => {
+  const registry = JSON.parse(
+    readFileSync(
+      new URL('../../../tools/calendar-registry.json', import.meta.url),
+      'utf8'
+    )
+  )
+  expect(Object.keys(calendarData).sort()).toEqual(
+    Object.keys(registry.calendars).sort()
+  )
+  for (const calendar of Object.keys(registry.calendars)) {
+    expect(formats[calendar], calendar).toBeDefined()
+  }
+})

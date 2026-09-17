@@ -1,6 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test")
 
 # gazelle:ignore
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -9,7 +10,10 @@ exports_files(["packer.ts"])
 formatjs_test(
     name = "locale_data_test",
     srcs = ["locale-data.test.ts"],
-    data = ["//packages/intl-datetimeformat:serialization_test_data"],
+    data = [
+        "//packages/intl-datetimeformat:serialization_test_data",
+        "//tools:calendar_registry",
+    ],
     deps = ["//:node_modules/vitest"],
 )
 
@@ -17,6 +21,7 @@ ts_binary(
     name = "cldr-raw",
     data = [
         "extract-dates.ts",
+        "//tools:calendar_registry",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
@@ -52,22 +57,10 @@ ts_binary(
 formatjs_test(
     name = "calendar_bundle_test",
     srcs = ["calendar-bundle.test.ts"],
-    data = ["//packages/intl-datetimeformat:pkg"] + ["//packages/intl-datetimeformat-calendar-%s:pkg" % calendar for calendar in [
-        "buddhist",
-        "coptic",
-        "ethiopic",
-        "ethioaa",
-        "roc",
-        "japanese",
-        "indian",
-        "islamic-civil",
-        "islamic-tbla",
-        "persian",
-        "hebrew",
-        "islamic-umalqura",
-        "chinese",
-        "dangi",
-    ]],
+    data = [
+        "//packages/intl-datetimeformat:pkg",
+        "//tools:calendar_registry",
+    ] + ["//packages/intl-datetimeformat-calendar-%s:pkg" % calendar for calendar in CALENDARS],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

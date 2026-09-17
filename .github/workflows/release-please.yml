@@ -67,7 +67,7 @@ jobs:
 
       - name: Verify release dependency propagation
         run: >-
-          bazel test //tools:release_please_npm_plugin_test
+          bazel test //tools:calendar_registry_test //tools:release_please_npm_plugin_test
           --test_env=NODE_PATH="$RUNNER_TEMP/release-please/node_modules"
 
       - name: Verify Release Please package manifest updates

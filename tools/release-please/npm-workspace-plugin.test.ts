@@ -307,7 +307,15 @@ const calendarReleases = await run(['packages/intl-datetimeformat'])
 const calendarPackages = packages.filter(pkg =>
   pkg.path.startsWith('packages/intl-datetimeformat-calendar-')
 )
-assert.equal(calendarPackages.length, 14)
+const registeredCalendars = Object.keys(
+  JSON.parse(readFileSync(process.argv[4], 'utf8')).calendars
+)
+assert.deepEqual(
+  calendarPackages.map(pkg => pkg.path).sort(),
+  registeredCalendars
+    .map(calendar => `packages/intl-datetimeformat-calendar-${calendar}`)
+    .sort()
+)
 for (const pkg of calendarPackages) {
   const candidate = calendarReleases.find(
     candidate => candidate.path === pkg.path

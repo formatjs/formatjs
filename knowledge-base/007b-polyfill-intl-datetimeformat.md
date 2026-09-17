@@ -316,3 +316,28 @@ README, license, manifest, and locale modules. Each package keeps only a small
 Release Please discovery. The distribution registry records
 `packages/intl-datetimeformat` as a release dependency, so changes to the shared
 generator released with the base package also bump all calendar packages.
+
+### Adding a calendar
+
+`packages/intl-datetimeformat/calendar_registry.bzl` owns optional calendar IDs and their CLDR
+package/file mappings. It drives base exports, entrypoints, locale generation,
+and package/tar-budget test coverage. Gregorian and ISO 8601 remain in core.
+
+To add a calendar:
+
+1. Add its CLDR mapping to `CALENDAR_FILES`.
+2. Add its arithmetic implementation, `calendar-data` wrapper, and `all.ts` entry.
+3. Add the six-line `calendar_package()` BUILD stub and synced `package.json`.
+4. Add workspace and Release Please config/manifest entries, update the pnpm
+   lockfile, and run `bash scripts/generate_dist_packages.sh` and
+   `bazel run //:gazelle`.
+5. Run `bazel test //tools:calendar_registry_test
+//packages/intl-datetimeformat/scripts:locale_data_test
+//packages/intl-datetimeformat/scripts:calendar_bundle_test`.
+
+The default CI suite compares independently discovered arithmetic/wrapper
+sources against the registry, checks workspace and release metadata, and tests
+aggregate/per-package registration and CLDR coverage. Missing or extra wiring
+fails CI. New registered packages automatically receive unpacked/file-count and
+compressed tarball budgets; no separate test list or fixed calendar count exists.
+The Release Please plugin test also uses the registry to check version bumps.
