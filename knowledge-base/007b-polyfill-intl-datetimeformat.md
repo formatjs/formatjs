@@ -275,8 +275,12 @@ to all arithmetic/tables. Core must not import either these modules or generated
 ICU calendar tables. Calendar implementations receive timezone-adjusted values
 through the existing ToLocalTime implementation-details path.
 
-`locale-data/<locale>.js` carries Gregorian patterns only. The distribution
-script extracts each other calendar into `calendar-data/<calendar>/<locale>.js`.
+`locale-data/<locale>.js` carries Gregorian patterns only. Each `@formatjs/intl-datetimeformat-calendar-<calendar>` package contains one
+calendar arithmetic entry and `locale-data/<locale>.js` files. The distribution
+script selects a calendar with `--calendar`; the base package never includes
+those optional locale payloads. Old arithmetic entrypoints remain compatible,
+but calendar locale imports move to the new packages. Package tests enforce
+250 MB/1700-file base and 200 MB/1600-file per-calendar budgets.
 The CLDR intermediate JSON retains all calendars for generation and full-suite
 tests; it is not the default published locale payload.
 
@@ -294,3 +298,14 @@ calendar preferences once registered; arithmetic and patterns are both required.
 `tests/calendar-loading.test.ts` covers custom single-date/range conversion and
 isolation. `scripts/calendar-bundle.test.ts` exercises the published npm entries
 in fresh processes, pre-install queues, and source-map payload boundaries.
+
+`bazel test //packages/intl-datetimeformat/scripts:yarn_install_test` runs the
+manual Yarn 4.9.2 install smoke with uncompressed, isolated caches and networking
+disabled. It packs Bazel-built artifacts using release-equivalent workspace
+version replacement, installs the base alone, then Hebrew/Japanese/Chinese
+add-ons, and formats with Gregorian plus IANA timezones and each added calendar.
+
+The default `calendar_bundle_test` also packs every publishable package into a
+`.tgz`, including declarations and source maps, and enforces compressed download
+budgets: 25 MB for base and 15 MB for each calendar package. These checks run in
+CI alongside the unpacked-byte and file-count budgets.

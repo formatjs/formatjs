@@ -136,7 +136,20 @@ formatjs_library(
         "./polyfill-force.js": "./polyfill-force.js",
         "./should-polyfill.js": "./should-polyfill.js",
         "./add-all-calendars.js": "./add-all-calendars.js",
-        "./calendar-data/*": "./calendar-data/*",
+        "./calendar-data/buddhist.js": "./calendar-data/buddhist.js",
+        "./calendar-data/coptic.js": "./calendar-data/coptic.js",
+        "./calendar-data/ethiopic.js": "./calendar-data/ethiopic.js",
+        "./calendar-data/ethioaa.js": "./calendar-data/ethioaa.js",
+        "./calendar-data/roc.js": "./calendar-data/roc.js",
+        "./calendar-data/japanese.js": "./calendar-data/japanese.js",
+        "./calendar-data/indian.js": "./calendar-data/indian.js",
+        "./calendar-data/islamic-civil.js": "./calendar-data/islamic-civil.js",
+        "./calendar-data/islamic-tbla.js": "./calendar-data/islamic-tbla.js",
+        "./calendar-data/persian.js": "./calendar-data/persian.js",
+        "./calendar-data/hebrew.js": "./calendar-data/hebrew.js",
+        "./calendar-data/islamic-umalqura.js": "./calendar-data/islamic-umalqura.js",
+        "./calendar-data/chinese.js": "./calendar-data/chinese.js",
+        "./calendar-data/dangi.js": "./calendar-data/dangi.js",
         "./add-all-tz.js": "./add-all-tz.js",
         "./add-golden-tz.js": "./add-golden-tz.js",
         "./locale-data/*": "./locale-data/*",
@@ -266,15 +279,7 @@ ts_run_binary(
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
-    outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES] + [
-        "calendar-data/%s/%s.%s" % (calendar, locale, extension)
-        for calendar in CALENDARS
-        for locale in ALL_LOCALES
-        for extension in [
-            "js",
-            "d.ts",
-        ]
-    ],
+    outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
     args = [
         "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
@@ -453,9 +458,9 @@ filegroup(
 filegroup(
     name = "serialization_test_data",
     srcs = [
-        ":calendar-data/hebrew/en.js",
         ":cldr-raw/en.json",
         ":locale-data/en.js",
+        "//packages/intl-datetimeformat-calendar-hebrew:locale-data/en.js",
     ],
     visibility = ["//packages/intl-datetimeformat/scripts:__pkg__"],
 )
@@ -520,4 +525,10 @@ formatjs_test(
         ":tests-locale-data-zh-Hans",  # keep: generated locale data imported by tests
     ],
     deps = TEST_DEPS + ["//:node_modules/temporal-polyfill"],
+)
+
+filegroup(
+    name = "calendar_cldr_raw",
+    srcs = CLDR_RAW_FILES,
+    visibility = ["//visibility:public"],
 )

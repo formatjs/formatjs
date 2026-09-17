@@ -188,7 +188,21 @@
     "vue-eslint-parser": "^10.4.0",
     "vue-intl": "workspace:*",
     "vue-loader": "^17.4.2",
-    "webpack": "^5.104.1"
+    "webpack": "^5.104.1",
+    "@formatjs/intl-datetimeformat-calendar-buddhist": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-coptic": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-ethiopic": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-ethioaa": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-roc": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-japanese": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-indian": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-islamic-civil": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-islamic-tbla": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-persian": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-hebrew": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-islamic-umalqura": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-chinese": "workspace:*",
+    "@formatjs/intl-datetimeformat-calendar-dangi": "workspace:*"
   },
   "devEngines": {
     "runtime": {

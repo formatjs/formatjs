@@ -1,0 +1,16 @@
+{
+  "name": "@formatjs/intl-datetimeformat-calendar-islamic-civil",
+  "version": "1.0.0",
+  "description": "islamic-civil calendar data for the Intl.DateTimeFormat polyfill",
+  "license": "MIT",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./locale-data/*": "./locale-data/*"
+  },
+  "peerDependencies": {
+    "@formatjs/intl-datetimeformat": "workspace:*"
+  }
+}

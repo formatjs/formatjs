@@ -43,7 +43,10 @@ test('base locale queues before installation', () => {
 })
 
 const hebrewSource = readFileSync(
-  new URL('../calendar-data/hebrew/en.js', import.meta.url),
+  new URL(
+    '../../intl-datetimeformat-calendar-hebrew/locale-data/en.js',
+    import.meta.url
+  ),
   'utf8'
 )
 const hebrew = {

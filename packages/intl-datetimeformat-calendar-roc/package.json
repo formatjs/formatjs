@@ -1,0 +1,16 @@
+{
+  "name": "@formatjs/intl-datetimeformat-calendar-roc",
+  "version": "1.0.0",
+  "description": "roc calendar data for the Intl.DateTimeFormat polyfill",
+  "license": "MIT",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./locale-data/*": "./locale-data/*"
+  },
+  "peerDependencies": {
+    "@formatjs/intl-datetimeformat": "workspace:*"
+  }
+}

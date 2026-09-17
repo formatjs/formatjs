@@ -6,6 +6,7 @@ import {readFileSync} from 'fs'
 interface Args extends minimist.ParsedArgs {
   cldrFile: string | string[]
   outDir: string
+  calendar?: string
 }
 function main(args: Args) {
   const {outDir} = args
@@ -30,20 +31,17 @@ function main(args: Args) {
       )
       outputFileSync(join(outDir, path + '.d.ts'), 'export {}')
     }
-    for (const [calendar, data] of Object.entries(
-      raw.data.calendarData || {}
-    )) {
+    if (args.calendar) {
+      const calendar = args.calendar
+      const data = raw.data.calendarData?.[calendar]
+      if (!data) throw new Error(`Missing ${calendar} data for ${locale}`)
       emit(
-        `../calendar-data/${calendar}/${locale}`,
-        {
-          locale,
-          calendar,
-          data,
-          formats: raw.data.formats[calendar],
-        },
+        locale,
+        {locale, calendar, data, formats: raw.data.formats[calendar]},
         '__addCalendarLocaleData',
         '__FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__'
       )
+      return
     }
     const {calendarData: _calendars, formats, ...data} = raw.data
     emit(

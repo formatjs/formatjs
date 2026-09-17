@@ -1,3 +1,5 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+
 # gazelle:ignore
 load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
@@ -23,7 +25,7 @@ ts_binary(
 ts_binary(
     name = "cldr",
     entry_point = "cldr.ts",
-    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 ts_binary(
@@ -50,11 +52,47 @@ ts_binary(
 formatjs_test(
     name = "calendar_bundle_test",
     srcs = ["calendar-bundle.test.ts"],
-    data = ["//packages/intl-datetimeformat:pkg"],
+    data = ["//packages/intl-datetimeformat:pkg"] + ["//packages/intl-datetimeformat-calendar-%s:pkg" % calendar for calendar in [
+        "buddhist",
+        "coptic",
+        "ethiopic",
+        "ethioaa",
+        "roc",
+        "japanese",
+        "indian",
+        "islamic-civil",
+        "islamic-tbla",
+        "persian",
+        "hebrew",
+        "islamic-umalqura",
+        "chinese",
+        "dangi",
+    ]],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
+)
+
+# Explicit install smoke: packages are large and exercise a real Yarn cache.
+js_test(
+    name = "yarn_install_test",
+    size = "large",
+    args = ["$(rootpath @yarn_install_test_cli//file)"],
+    data = [
+        "yarn-install.test.mjs",
+        "//packages/bigdecimal:pkg",
+        "//packages/fast-memoize:pkg",
+        "//packages/intl-datetimeformat:pkg",
+        "//packages/intl-datetimeformat-calendar-chinese:pkg",
+        "//packages/intl-datetimeformat-calendar-hebrew:pkg",
+        "//packages/intl-datetimeformat-calendar-japanese:pkg",
+        "//packages/intl-localematcher:pkg",
+        "@yarn_install_test_cli//file",
+    ],
+    entry_point = "yarn-install.test.mjs",
+    no_copy_to_bin = ["@yarn_install_test_cli//file"],
+    tags = ["manual"],
 )
