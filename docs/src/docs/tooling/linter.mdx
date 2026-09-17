@@ -1057,7 +1057,26 @@ intl.formatMessage(items) // Type error: count is required
 Autofix updates the first generic, including handwritten types, and preserves
 an optional second generic. It adds type imports as needed. Helpers default to
 no arguments, so empty messages need no `<{}>` or `{typed: true}` option.
-Inline calls keep an explicit empty type when needed to check supplied values.
+Mixed catalogs and inline calls that need an explicit empty contract use
+`NoMessageValues`, imported from the matching FormatJS package. This type is
+`Record<never, never>`, so generated contracts work with
+`@typescript-eslint/no-empty-object-type` without disabling the rule.
+
+```ts
+import {
+  defineMessages,
+  type NoMessageValues,
+  type MessageValue,
+} from 'react-intl'
+
+const messages = defineMessages<{
+  readonly hello: NoMessageValues
+  readonly welcome: {readonly name: MessageValue}
+}>({
+  hello: {defaultMessage: 'Hello'},
+  welcome: {defaultMessage: 'Welcome, {name}'},
+})
+```
 
 ### Generated argument types
 

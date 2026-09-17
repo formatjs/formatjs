@@ -19,6 +19,7 @@ export {
   type MessageValue,
   type MessageValuesOf,
   type MessageTag,
+  type NoMessageValues,
   type TypedMessageDescriptor,
   type MessageArgumentsFromCatalog,
 } from '@formatjs/intl'

@@ -307,7 +307,7 @@ function hoistTypes(context: Rule.RuleContext, node: Node, contract: string) {
   )
   const resolved = new Map<string, string>()
   const text = contract.replace(
-    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValuesOf|MessageValue|TypedMessageDescriptor)/g,
+    /import\(("(?:[^"\\]|\\.)*")\)\.(MessageTag|MessageValuesOf|MessageValue|NoMessageValues|TypedMessageDescriptor)/g,
     (reference, quotedModule: string, imported: string) => {
       if (resolved.has(reference)) return resolved.get(reference)!
       const module = JSON.parse(quotedModule) as string
@@ -741,10 +741,12 @@ function checkInlineMessage(context: Rule.RuleContext, node: CallExpression) {
     })
     return true
   }
+  const emptyContract =
+    contract === `import(${JSON.stringify(module)}).NoMessageValues`
   const imports = hoistTypes(context, node, contract)
   contract = imports.text
   const parameters = (generic as unknown as TypeNode | undefined)?.params
-  if (contract === '{}' && node.arguments.length === 1) {
+  if (emptyContract && node.arguments.length === 1) {
     if (!generic) return true
     if (parameters?.length === 1) {
       context.report({
@@ -1058,13 +1060,14 @@ export const rule: Rule.RuleModule = {
         }
         let contract: string
         let catalogType: string | undefined
+        const emptyContract = `import(${JSON.stringify(imported.module)}).NoMessageValues`
         try {
           if (annotation) {
             catalogType = !catalog
               ? 'import(' +
                 JSON.stringify(imported.module) +
                 ').TypedMessageDescriptor' +
-                (types[0] === '{}' ? '' : '<' + types[0] + '>')
+                (types[0] === emptyContract ? '' : '<' + types[0] + '>')
               : entries.length
                 ? '{ ' +
                   entries
@@ -1075,7 +1078,9 @@ export const rule: Rule.RuleModule = {
                         ': import(' +
                         JSON.stringify(imported.module) +
                         ').TypedMessageDescriptor' +
-                        (types[index] === '{}' ? '' : '<' + types[index] + '>')
+                        (types[index] === emptyContract
+                          ? ''
+                          : '<' + types[index] + '>')
                     )
                     .join('; ') +
                   ' }'
@@ -1103,22 +1108,23 @@ export const rule: Rule.RuleModule = {
           })
           return
         }
+        const parameters = (generic as unknown as TypeNode | undefined)?.params
+        // Helper defaults carry an empty contract; preserve explicit metadata generics.
+        const omitContract =
+          (imported.helper === 'defineMessage' || catalog) &&
+          types.every(type => type === emptyContract) &&
+          (!parameters || parameters.length === 1)
         const imports = hoistTypes(
           context,
           node,
-          contract + (catalogType ? '\n' + catalogType : '')
+          (omitContract ? '' : contract) +
+            (catalogType ? '\n' + catalogType : '')
         )
         ;[contract, catalogType] = imports.text.split('\n')
         const annotationMatches =
           !annotation ||
           (annotation.annotation === annotation.generated &&
             renderType(annotation.generated) === catalogType)
-        const parameters = (generic as unknown as TypeNode | undefined)?.params
-        // Helper defaults carry an empty contract; preserve explicit metadata generics.
-        const omitContract =
-          (imported.helper === 'defineMessage' || catalog) &&
-          types.every(type => type === '{}') &&
-          (!parameters || parameters.length === 1)
         const expected = omitContract ? '' : `<${contract}>`
         if (omitContract && !generic && annotationMatches) return
         if (

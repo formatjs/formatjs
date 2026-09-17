@@ -168,6 +168,11 @@ overloads independently.
 
 The opt-in `enforce-message-types` ESLint rule generates and refreshes these
 contracts from the ICU parser for static helper calls and formatter constructors.
+Explicit empty contracts use `NoMessageValues = Record<never, never>`, exported
+by `intl-messageformat`, core intl, and the framework entry points. Autofix imports
+this type for mixed catalogs, constructors, and inline calls that need an empty
+contract, avoiding `no-empty-object-type` conflicts. Redundant helper generics are
+still removed. Formatter argument checks remain unchanged.
 It supports local const descriptors with non-escaping uses, computed catalog keys,
 and referenced descriptors via `MessageValuesOf<typeof descriptor>`. Catalog
 annotation migration handles standalone `defineMessage` variables as well as

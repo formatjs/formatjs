@@ -13,6 +13,7 @@ import {
   defineMessage,
   defineMessages,
   type MessageTag,
+  type NoMessageValues,
   type MessageArgumentsFromCatalog,
   type TypedMessageDescriptor,
   type MessageValue,
@@ -22,6 +23,7 @@ import {
   defineMessage as serverMessage,
   createIntl as serverIntl,
   type MessageValuesOf as ServerMessageValuesOf,
+  type NoMessageValues as ServerNoMessageValues,
 } from '#packages/react-intl/server.js'
 
 const intl = createIntl({locale: 'en'})
@@ -480,3 +482,31 @@ function checkDefaultEmptyContracts() {
   ;<FormattedMessage {...plain} values={{extra: 1}} />
 }
 void checkDefaultEmptyContracts
+
+function checkNamedEmptyContracts() {
+  expectTypeOf<keyof NoMessageValues>().toEqualTypeOf<never>()
+  expectTypeOf<NoMessageValues>().toEqualTypeOf<ServerNoMessageValues>()
+  const catalog = defineMessages<{
+    plain: NoMessageValues
+    count: {n: number}
+  }>({
+    plain: {defaultMessage: 'Hello'},
+    count: {defaultMessage: '{n, number}'},
+  })
+  intl.formatMessage(catalog.plain)
+  intl.$t(catalog.plain, {})
+  intl.formatMessage(catalog.count, {n: 1})
+  // @ts-expect-error Empty contracts reject extra arguments.
+  intl.formatMessage(catalog.plain, {extra: 1})
+  // @ts-expect-error Other catalog entries still require arguments.
+  intl.formatMessage(catalog.count)
+  ;<FormattedMessage {...catalog.plain} />
+  // @ts-expect-error JSX preserves empty contracts.
+  ;<FormattedMessage {...catalog.plain} values={{extra: 1}} />
+  const server = serverIntl({locale: 'en'})
+  const plain = serverMessage<ServerNoMessageValues>({defaultMessage: 'Hello'})
+  server.formatMessage(plain)
+  // @ts-expect-error Server formatting rejects extra arguments too.
+  server.formatMessage(plain, {extra: 1})
+}
+void checkNamedEmptyContracts

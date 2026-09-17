@@ -4,6 +4,7 @@ import {parse} from '@formatjs/icu-messageformat-parser'
 import {
   IntlMessageFormat,
   type MessageTag,
+  type NoMessageValues,
   type MessageValue,
 } from '#packages/intl-messageformat/index.js'
 
@@ -34,6 +35,15 @@ test('typed ICU strings and ASTs use the same formatter', () => {
 })
 
 function checkTypes() {
+  const namedEmpty = new IntlMessageFormat<NoMessageValues>('Hello')
+  namedEmpty.format()
+  namedEmpty.format({})
+  namedEmpty.formatToParts()
+  // @ts-expect-error Named empty contracts reject values.
+  namedEmpty.format({extra: 1})
+  // @ts-expect-error Parts enforce the same empty contract.
+  namedEmpty.formatToParts({extra: 1})
+
   const optional = new IntlMessageFormat<{b?: MessageTag; count?: number}>(
     '<b>{count}</b>'
   )

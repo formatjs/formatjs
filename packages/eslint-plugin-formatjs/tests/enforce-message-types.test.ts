@@ -11,12 +11,12 @@ ruleTester.run('enforce-message-types', rule, {
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
-      code: "intl.formatMessage<{}>({defaultMessage: 'Hello'}, {})",
+      code: 'import type {NoMessageValues} from "@formatjs/intl"; intl.formatMessage<NoMessageValues>({defaultMessage: "Hello"}, {})',
     },
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
-      code: "intl.formatMessage<{}, React.ReactNode>({defaultMessage: 'Hello'})",
+      code: 'import type {NoMessageValues} from "@formatjs/intl"; intl.formatMessage<NoMessageValues, React.ReactNode>({defaultMessage: "Hello"})',
     },
     {
       filename: 'test.ts',
@@ -190,7 +190,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import * as intl from 'intl-messageformat'; new intl.IntlMessageFormat('<b>Hello</b>', 'en', undefined, {ignoreTag: true})",
       output:
-        "import * as intl from 'intl-messageformat'; new intl.IntlMessageFormat<{}>('<b>Hello</b>', 'en', undefined, {ignoreTag: true})",
+        "import * as intl from 'intl-messageformat';\nimport type {NoMessageValues} from \"intl-messageformat\"; new intl.IntlMessageFormat<NoMessageValues>('<b>Hello</b>', 'en', undefined, {ignoreTag: true})",
       errors: [
         {
           messageId: 'contract',
@@ -296,7 +296,7 @@ ruleTester.run('enforce-message-types', rule, {
       ],
       code: "import {defineMessage, defineMessages} from 'react-intl';\ndefineMessages({'a b': {defaultMessage: 'Hello'}, nested: {defaultMessage: '{s, select, other {{n, selectordinal, one {#} other {#}}}}'}})",
       output:
-        'import {defineMessage, defineMessages} from \'react-intl\';\ndefineMessages<{ readonly "a b": {}; readonly "nested": { readonly "n": number | bigint; readonly "s": string } }>({\'a b\': {defaultMessage: \'Hello\'}, nested: {defaultMessage: \'{s, select, other {{n, selectordinal, one {#} other {#}}}}\'}})',
+        'import {defineMessage, defineMessages} from \'react-intl\';\nimport type {NoMessageValues} from "react-intl";\ndefineMessages<{ readonly "a b": NoMessageValues; readonly "nested": { readonly "n": number | bigint; readonly "s": string } }>({\'a b\': {defaultMessage: \'Hello\'}, nested: {defaultMessage: \'{s, select, other {{n, selectordinal, one {#} other {#}}}}\'}})',
       errors: [
         {
           messageId: 'contract',
@@ -615,7 +615,7 @@ ruleTester.run('enforce-message-types inline', rule, {
         },
       ],
       output:
-        "formatMessage<{}>({defaultMessage: '<b>Hello</b>'}, {}, {ignoreTag: true})",
+        'import type {NoMessageValues} from "@formatjs/intl";\nformatMessage<NoMessageValues>({defaultMessage: \'<b>Hello</b>\'}, {}, {ignoreTag: true})',
       options: [
         {
           generateTypes: true,
@@ -944,7 +944,7 @@ ruleTester.run('existing catalog migration', rule, {
       filename: 'test.ts',
       options: [{generateTypes: true}],
       code: `import {defineMessages} from 'react-intl'; import {shared, Keys} from './messages'; defineMessages<Keys>({[Keys.Count]: shared.count, [Keys.Hello]: {defaultMessage: 'Hello'}})`,
-      output: `import {defineMessages} from 'react-intl'; import {shared, Keys} from './messages';\nimport type {MessageValuesOf} from "react-intl"; defineMessages<{ readonly [Keys.Count]: MessageValuesOf<typeof shared.count>; readonly [Keys.Hello]: {} }>({[Keys.Count]: shared.count, [Keys.Hello]: {defaultMessage: 'Hello'}})`,
+      output: `import {defineMessages} from 'react-intl'; import {shared, Keys} from './messages';\nimport type {MessageValuesOf, NoMessageValues} from "react-intl"; defineMessages<{ readonly [Keys.Count]: MessageValuesOf<typeof shared.count>; readonly [Keys.Hello]: NoMessageValues }>({[Keys.Count]: shared.count, [Keys.Hello]: {defaultMessage: 'Hello'}})`,
       errors: [{messageId: 'contract'}],
     },
     {
@@ -1078,7 +1078,7 @@ ruleTester.run('shared descriptor and mixed error catalogs', rule, {
       filename: 'test.ts',
       options: [{generateTypes: true}],
       code: `import {defineMessages} from 'react-intl'; import {shared} from './messages'; import type {UploadError} from './errors'; const messages = defineMessages<UploadError['kind']>({Denied: {defaultMessage: 'Access denied'}, TooMany: shared.tooMany, Help: shared.help}); export function getMessage(error: UploadError) {return messages[error.kind]}`,
-      output: `import {defineMessages} from 'react-intl'; import {shared} from './messages'; import type {UploadError} from './errors';\nimport type {MessageValuesOf} from "react-intl"; const messages = defineMessages<{ readonly "Denied": {}; readonly "TooMany": MessageValuesOf<typeof shared.tooMany>; readonly "Help": MessageValuesOf<typeof shared.help> }>({Denied: {defaultMessage: 'Access denied'}, TooMany: shared.tooMany, Help: shared.help}); export function getMessage(error: UploadError) {return messages[error.kind]}`,
+      output: `import {defineMessages} from 'react-intl'; import {shared} from './messages'; import type {UploadError} from './errors';\nimport type {NoMessageValues, MessageValuesOf} from "react-intl"; const messages = defineMessages<{ readonly "Denied": NoMessageValues; readonly "TooMany": MessageValuesOf<typeof shared.tooMany>; readonly "Help": MessageValuesOf<typeof shared.help> }>({Denied: {defaultMessage: 'Access denied'}, TooMany: shared.tooMany, Help: shared.help}); export function getMessage(error: UploadError) {return messages[error.kind]}`,
       errors: [{messageId: 'contract'}],
     },
   ],
@@ -1127,7 +1127,7 @@ ruleTester.run('omit empty helper contracts', rule, {
     {
       filename: 'test.ts',
       options: [{generateTypes: true}],
-      code: "import {defineMessage} from 'react-intl'; defineMessage<{}, {id: string; defaultMessage: string}>({id: 'hello', defaultMessage: 'Hello'})",
+      code: "import {defineMessage, type NoMessageValues} from 'react-intl'; defineMessage<NoMessageValues, {id: string; defaultMessage: string}>({id: 'hello', defaultMessage: 'Hello'})",
     },
   ],
   invalid: [
@@ -1145,6 +1145,32 @@ ruleTester.run('omit empty helper contracts', rule, {
       code: "import {defineMessages} from 'react-intl'; defineMessages<{hello: {}}>({hello: {defaultMessage: 'Hello'}})",
       output:
         "import {defineMessages} from 'react-intl'; defineMessages({hello: {defaultMessage: 'Hello'}})",
+      errors: [{messageId: 'contract'}],
+    },
+  ],
+})
+
+ruleTester.run('lint-compatible empty contracts', rule, {
+  valid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages, type NoMessageValues as Empty} from 'react-intl'; defineMessages<{readonly plain: Empty; readonly count: {readonly n: number | bigint}}>({plain: {defaultMessage: 'Hello'}, count: {defaultMessage: '{n, number}'}})`,
+    },
+  ],
+  invalid: [
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessages} from 'react-intl'; type NoMessageValues = string; defineMessages<{plain: {}; count: {n: number}}>({plain: {defaultMessage: 'Hello'}, count: {defaultMessage: '{n, number}'}})`,
+      output: `import {defineMessages} from 'react-intl';\nimport type {NoMessageValues as NoMessageValues1} from "react-intl"; type NoMessageValues = string; defineMessages<{ readonly "plain": NoMessageValues1; readonly "count": { readonly "n": number | bigint } }>({plain: {defaultMessage: 'Hello'}, count: {defaultMessage: '{n, number}'}})`,
+      errors: [{messageId: 'contract'}],
+    },
+    {
+      filename: 'test.ts',
+      options: [{generateTypes: true}],
+      code: `import {defineMessage, type NoMessageValues} from 'react-intl'; defineMessage<NoMessageValues>({defaultMessage: 'Hello'})`,
+      output: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: 'Hello'})`,
       errors: [{messageId: 'contract'}],
     },
   ],

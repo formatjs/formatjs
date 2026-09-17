@@ -22,6 +22,9 @@ export interface MessageTag {
   readonly [messageTag]: true
 }
 
+/** A message contract with no arguments. */
+export type NoMessageValues = Record<never, never>
+
 export type MessageValues = Record<string, MessageValue | MessageTag>
 
 /** Type-only argument metadata shared by formatter integrations. */
