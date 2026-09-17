@@ -1,4 +1,4 @@
-import data from '#packages/ecma402-abstract/DateTimeFormat/calendars/implementations/persian.js'
+import data from '#packages/intl-datetimeformat/calendars/implementations/persian.js'
 import {registerCalendarData} from '#packages/intl-datetimeformat/register-calendar-data.js'
 
 registerCalendarData(data)

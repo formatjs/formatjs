@@ -1,4 +1,4 @@
-import data from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
+import data from '#packages/intl-datetimeformat/calendars/all.js'
 import {CalendarDateFromTime as convert} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import {describe, expect, test} from 'vitest'
 

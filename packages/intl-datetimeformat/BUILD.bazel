@@ -1,3 +1,4 @@
+# gazelle:exclude tests/CalendarDateFromTime.test.ts
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
@@ -5,11 +6,11 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:source_inventory.bzl", "source_inventory")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load("//tools/test262:defs.bzl", "test262_test")
 load("//tools/test262:locales.bzl", "TEST262_LOCALES")
+load(":calendar_registry.bzl", "validate_calendar_sources")
 load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_tz_data")
 load(":locales.generated.bzl", "ALL_LOCALES")
@@ -42,7 +43,7 @@ TEST_DEPS = [
     "//packages/ecma262-abstract",
     "//packages/ecma402-abstract",
     "//packages/ecma402-abstract/DateTimeFormat",
-    "//packages/ecma402-abstract/DateTimeFormat/calendars",
+    "//packages/intl-datetimeformat/calendars",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
     "//:node_modules/@formatjs/bigdecimal",
@@ -133,8 +134,8 @@ formatjs_library(
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/DateTimeFormat/calendars",
         "//packages/ecma402-abstract/types",
+        "//packages/intl-datetimeformat/calendars",
     ],
 )
 
@@ -176,8 +177,8 @@ formatjs_test(
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/DateTimeFormat/calendars",
         "//packages/ecma402-abstract/types",
+        "//packages/intl-datetimeformat/calendars",
     ],
 )
 
@@ -479,8 +480,8 @@ rolldown_bundle(
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/DateTimeFormat/calendars",  # keep: generated prelude loads optional calendars
         "//packages/ecma402-abstract/types",
+        "//packages/intl-datetimeformat/calendars",  # keep: generated prelude loads optional calendars
     ],
 )
 
@@ -523,9 +524,18 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-source_inventory(
-    name = "calendar_entrypoint_inventory",
-    out = "calendar_entrypoint_inventory.json",
-    names = [path.split("/")[-1][:-3] for path in glob(["calendar-data/*.ts"])],
-    visibility = ["//tools:__pkg__"],
+validate_calendar_sources(
+    kind = "calendar entrypoint",
+    sources = glob(["calendar-data/*.ts"]),
+)
+
+formatjs_test(
+    name = "calendar_test",
+    srcs = ["tests/CalendarDateFromTime.test.ts"],
+    node_toolchain = "//tools/test262:node-runtime",
+    deps = [
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/intl-datetimeformat/calendars",
+    ],
 )

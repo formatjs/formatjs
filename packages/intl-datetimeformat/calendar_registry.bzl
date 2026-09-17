@@ -33,3 +33,14 @@ calendar_registry = rule(
         "typescript": attr.bool(),
     },
 )
+
+def validate_calendar_sources(sources, kind):
+    """Check dedicated calendar directories against the authoritative registry."""
+    names = sorted([path.split("/")[-1][:-3] for path in sources])
+    expected = sorted(CALENDARS)
+    if names != expected:
+        fail("%s coverage: missing %s; unexpected %s" % (
+            kind,
+            [name for name in expected if name not in names],
+            [name for name in names if name not in expected],
+        ))

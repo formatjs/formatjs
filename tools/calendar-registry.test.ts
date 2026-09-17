@@ -6,8 +6,6 @@ const registry = read(process.argv[2])
 const graph = read(process.argv[3])
 const config = read(process.argv[4])
 const manifest = read(process.argv[5])
-const implementations = read(process.argv[6])
-const entrypoints = read(process.argv[7])
 const prefix = 'intl-datetimeformat-calendar-'
 const calendars = Object.keys(registry.calendars).sort()
 assert.ok(calendars.length > 0)
@@ -16,8 +14,6 @@ assert.deepEqual(
   calendars.map(calendar => prefix + calendar),
   'distribution package coverage'
 )
-assert.deepEqual(implementations, calendars, 'calendar implementation coverage')
-assert.deepEqual(entrypoints, calendars, 'calendar entrypoint coverage')
 for (const [calendar, mapping] of Object.entries(registry.calendars)) {
   assert.match(calendar, /^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   assert.ok(

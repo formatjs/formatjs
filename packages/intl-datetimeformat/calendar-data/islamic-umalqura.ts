@@ -1,4 +1,4 @@
-import data from '#packages/ecma402-abstract/DateTimeFormat/calendars/implementations/islamic-umalqura.js'
+import data from '#packages/intl-datetimeformat/calendars/implementations/islamic-umalqura.js'
 import {registerCalendarData} from '#packages/intl-datetimeformat/register-calendar-data.js'
 
 registerCalendarData(data)

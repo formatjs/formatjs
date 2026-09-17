@@ -1,7 +1,7 @@
 import {expect, test} from 'vitest'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
-import hebrew from '#packages/ecma402-abstract/DateTimeFormat/calendars/implementations/hebrew.js'
-import chinese from '#packages/ecma402-abstract/DateTimeFormat/calendars/implementations/chinese.js'
+import hebrew from '#packages/intl-datetimeformat/calendars/implementations/hebrew.js'
+import chinese from '#packages/intl-datetimeformat/calendars/implementations/chinese.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import type {
   RawDateTimeLocaleData,

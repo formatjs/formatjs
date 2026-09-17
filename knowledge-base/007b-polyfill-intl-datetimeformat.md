@@ -269,7 +269,7 @@ cycle interval patterns retain precedence over the synthesized fallback.
 ## Optional calendar loading
 
 The core bundle includes Gregorian/ISO conversion only. Other arithmetic lives in
-`ecma402-abstract/DateTimeFormat/calendars/implementations/` and is bundled into independent public
+`intl-datetimeformat/calendars/implementations/` and is bundled into independent public
 `@formatjs/intl-datetimeformat-calendar-<calendar>` packages. The base package
 exports neither calendar arithmetic nor `add-all-calendars.js`. Core must not import either these modules or generated
 ICU calendar tables. Calendar implementations receive timezone-adjusted values
@@ -318,7 +318,7 @@ generator released with the base package also bump all calendar packages.
 ### Adding a calendar
 
 `packages/intl-datetimeformat/calendar_registry.bzl` owns optional calendar IDs and their CLDR
-package/file mappings. It drives base exports, entrypoints, locale generation,
+package/file mappings. It drives entrypoints, locale generation,
 and package/tar-budget test coverage. Gregorian and ISO 8601 remain in core.
 
 To add a calendar:
@@ -336,16 +336,17 @@ To add a calendar:
 //packages/intl-datetimeformat/scripts:locale_data_test
 //packages/intl-datetimeformat/scripts:calendar_bundle_test`.
 
-The default CI suite compares independently discovered arithmetic/wrapper
-source-name inventories against the registry, checks distribution and release
-metadata, and tests per-package registration and CLDR coverage. Inventories are
-generated within each owning Bazel package; raw sources stay private. Missing or extra wiring
-fails CI. New registered packages automatically receive unpacked/file-count and
-compressed tarball budgets; no separate test list or fixed calendar count exists.
-The Release Please plugin test also uses the registry to check version bumps.
-Generators and runtime tests import `@formatjs_generated/datetimeformat.calendars/index.js`.
-This generated package contains only registry constants; source inventories stay
-separate so inventory changes do not invalidate CLDR generation. Calendar packages
-are discovered by the workspace glob and do not need root devDependencies.
+Bazel compares the implementation and wrapper directory globs directly against
+`CALENDARS` during package loading. Missing or extra modules fail immediately;
+no source inventory artifacts are generated. Shared types and conversion helpers
+remain in `ecma402-abstract`; optional providers and their tests belong to
+`intl-datetimeformat`.
 
-Inventories glob only these dedicated calendar directories, without helper-name exclusions.
+The default CI suite checks distribution and release metadata, per-package
+registration, and CLDR coverage. New registered packages automatically receive
+unpacked/file-count and compressed tarball budgets; no separate test list or fixed
+calendar count exists. The Release Please plugin test also uses the registry to
+check version bumps. Generators and runtime tests import
+`@formatjs_generated/datetimeformat.calendars/index.js`. This generated package
+contains only registry constants. Calendar packages are discovered by the workspace
+glob and do not need root devDependencies.
