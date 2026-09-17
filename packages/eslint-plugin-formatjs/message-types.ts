@@ -66,5 +66,7 @@ export function messageTypes(
       else type = `import(${JSON.stringify(module)}).MessageTag`
       return `readonly ${JSON.stringify(name)}${ignored.has(name) ? '?' : ''}: ${type}`
     })
-  return fields.length ? `{ ${fields.join('; ')} }` : '{}'
+  return fields.length
+    ? `{ ${fields.join('; ')} }`
+    : `import(${JSON.stringify(module)}).NoMessageValues`
 }

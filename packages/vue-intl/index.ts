@@ -13,6 +13,7 @@ export {
   type MessageValuesOf,
   type MessageValue,
   type MessageTag,
+  type NoMessageValues,
   type MessageArgumentsFromCatalog,
   type IntlShape,
   type IntlConfig,

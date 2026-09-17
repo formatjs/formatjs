@@ -10,6 +10,7 @@ import type {MessageDescriptor} from '#packages/intl/types.js'
 export type {
   MessageValue,
   MessageTag,
+  NoMessageValues,
   MessageValues,
   MessageValuesOf,
   TypedMessageValues,

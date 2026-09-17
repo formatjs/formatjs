@@ -15,6 +15,7 @@ export type {
   FormattedText,
   MessageValue,
   MessageTag,
+  NoMessageValues,
   MessageValues,
   MessageContract,
   MessageValuesOf,
