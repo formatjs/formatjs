@@ -52,6 +52,8 @@ TARGETS=$(bazel query "kind(\"npm_package rule\", set(${PACKAGE_TARGETS[*]}))" 2
     release_deps=""
     if [[ "$package_dir" == cli-native-* ]]; then
       release_deps="$NATIVE_RELEASE_DEPS"
+    elif [[ "$package_dir" == intl-datetimeformat-calendar-* ]]; then
+      release_deps="packages/intl-datetimeformat"
     fi
 
     echo "$package_dir|$target|$package_json|$package_name|$release_deps"

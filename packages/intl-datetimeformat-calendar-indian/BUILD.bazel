@@ -1,45 +1,6 @@
-load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
-load("//tools:compile.bzl", "formatjs_library")
-load("//tools:index.bzl", "ts_run_binary")
+load("//packages/intl-datetimeformat:calendar_package.bzl", "calendar_package")
 
-formatjs_library(
-    name = "intl-datetimeformat-calendar-indian",
-    package_name = "@formatjs/intl-datetimeformat-calendar-indian",
-    srcs = ["index.ts"],
-    description = "indian calendar data for the Intl.DateTimeFormat polyfill",
-    extra_npm_srcs = [":locale-data"],
-    license = "MIT",
-    package_peer_deps = ["//:node_modules/@formatjs/intl-datetimeformat"],
-    package_types = "index.d.ts",
-    repository = "formatjs/formatjs.git",
-    type = "module",
-    types = True,
+calendar_package(
+    calendar = "indian",
     version = "1.0.0",  # x-release-please-version
-    exports = {
-        ".": "./index.js",
-        "./locale-data/*": "./locale-data/*",
-    },
-    deps = ["//packages/intl-datetimeformat:lib"],
-)
-
-# gazelle:ignore
-ts_run_binary(
-    name = "locale-data",
-    srcs = [
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
-        "//packages/intl-datetimeformat:calendar_cldr_raw",
-    ],
-    outs = ["locale-data/%s.%s" % (locale, extension) for locale in ALL_LOCALES for extension in [
-        "js",
-        "d.ts",
-    ]],
-    args = ["--cldrFile packages/intl-datetimeformat/cldr-raw/%s.json" % locale for locale in ALL_LOCALES] + [
-        "--calendar",
-        "indian",
-        "--outDir",
-        "packages/intl-datetimeformat-calendar-indian/locale-data",
-    ],
-    tool = "//packages/intl-datetimeformat/scripts:cldr",
-    visibility = ["//visibility:public"],
 )

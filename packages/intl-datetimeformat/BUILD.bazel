@@ -13,6 +13,8 @@ load(":defs.bzl", "ZONES")
 load(":index.bzl", "generate_tz_data")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
+exports_files(["LICENSE.md"])
+
 PACKAGE_NAME = "intl-datetimeformat"
 
 TEST_LOCALES = [

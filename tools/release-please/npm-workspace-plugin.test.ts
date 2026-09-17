@@ -100,7 +100,7 @@ async function run(paths: string[]) {
         component: pkg.name,
         packageName: pkg.name,
         versionFile: 'BUILD.bazel',
-        extraFiles: ['package.json'],
+        extraFiles: rawConfig.packages[pkg.path]['extra-files'],
         changelogNotes: {buildNotes: async () => '## Fixture\n\nRelease'},
         logger,
       }),
@@ -300,3 +300,44 @@ assert.equal(
   stableStrategy.bump(Version.parse('7.2.20-rc.1'), breaking).toString(),
   '8.0.0'
 )
+
+// Generated calendar payloads must release when their shared generator releases,
+// even though peer dependencies do not normally propagate version bumps.
+const calendarReleases = await run(['packages/intl-datetimeformat'])
+const calendarPackages = packages.filter(pkg =>
+  pkg.path.startsWith('packages/intl-datetimeformat-calendar-')
+)
+assert.equal(calendarPackages.length, 14)
+for (const pkg of calendarPackages) {
+  const candidate = calendarReleases.find(
+    candidate => candidate.path === pkg.path
+  )
+  assert.ok(candidate, `${pkg.name} must release with DateTimeFormat`)
+  assert.equal(
+    candidate.pullRequest.version.toString(),
+    new PatchVersionUpdate().bump(Version.parse(pkg.version)).toString()
+  )
+  const buildUpdate = candidate.pullRequest.updates.find(
+    update => update.path === `${pkg.path}/BUILD.bazel`
+  )
+  assert.ok(buildUpdate)
+  assert.ok(
+    buildUpdate.updater
+      .updateContent(
+        `calendar_package(\n    version = "${pkg.version}",  # x-release-please-version\n)\n`
+      )
+      .includes(`version = "${candidate.pullRequest.version}"`)
+  )
+  const manifestUpdate = candidate.pullRequest.updates.find(
+    update => update.path === `${pkg.path}/package.json`
+  )
+  assert.ok(manifestUpdate)
+  assert.equal(
+    JSON.parse(
+      manifestUpdate.updater.updateContent(
+        JSON.stringify({name: pkg.name, version: pkg.version})
+      )
+    ).version,
+    candidate.pullRequest.version.toString()
+  )
+}
