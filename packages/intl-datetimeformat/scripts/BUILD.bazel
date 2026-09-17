@@ -1,3 +1,5 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+
 # gazelle:ignore
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//tools:index.bzl", "ts_binary")
@@ -29,7 +31,6 @@ ts_binary(
 
 ts_binary(
     name = "cldr",
-    data = ["emit-locale-data.ts"],
     entry_point = "cldr.ts",
     visibility = ["//visibility:public"],
 )
@@ -72,7 +73,25 @@ formatjs_test(
 
 ts_binary(
     name = "cldr-calendar",
-    data = ["emit-locale-data.ts"],
     entry_point = "cldr-calendar.ts",
     visibility = ["//visibility:public"],
+)
+
+ts_binary(
+    name = "emit-locale-data",
+    data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+        "//:node_modules/typescript",
+    ],
+    entry_point = "emit-locale-data.ts",
+    visibility = ["//visibility:public"],
+)
+
+js_test(
+    name = "emit_locale_data_test",
+    size = "small",
+    args = ["$(rootpath :emit-locale-data)"],
+    data = [":emit-locale-data"],
+    entry_point = "emit-locale-data.test.ts",
 )

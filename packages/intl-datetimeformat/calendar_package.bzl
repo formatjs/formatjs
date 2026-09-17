@@ -62,23 +62,36 @@ def calendar_package(calendar, version):
     )
 
     ts_run_binary(
-        name = "locale-data",
+        name = "locale-data-json",
         srcs = [
             "//:node_modules/fs-extra",
             "//:node_modules/minimist",
             "//packages/intl-datetimeformat:calendar_cldr_raw",
         ],
-        outs = ["locale-data/%s.%s" % (locale, extension) for locale in ALL_LOCALES for extension in [
-            "js",
-            "d.ts",
-        ]],
+        outs = ["locale-data-json/%s.json" % locale for locale in ALL_LOCALES],
         args = ["--cldrFile packages/intl-datetimeformat/cldr-raw/%s.json" % locale for locale in ALL_LOCALES] + [
             "--calendar",
             calendar,
             "--outDir",
-            "packages/%s/locale-data" % package,
+            "packages/%s/locale-data-json" % package,
         ],
         tool = "//packages/intl-datetimeformat/scripts:cldr-calendar",
+        visibility = ["//visibility:public"],
+    )
+
+    ts_run_binary(
+        name = "locale-data",
+        srcs = [":locale-data-json"],
+        outs = ["locale-data/%s.%s" % (locale, extension) for locale in ALL_LOCALES for extension in ["js", "d.ts"]],
+        args = ["--input packages/%s/locale-data-json/%s.json" % (package, locale) for locale in ALL_LOCALES] + [
+            "--outDir",
+            "packages/%s/locale-data" % package,
+            "--method",
+            "__addCalendarLocaleData",
+            "--queue",
+            "__FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__",
+        ],
+        tool = "//packages/intl-datetimeformat/scripts:emit-locale-data",
         visibility = ["//visibility:public"],
     )
 

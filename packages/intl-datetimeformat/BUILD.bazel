@@ -76,13 +76,13 @@ formatjs_library(
         "calendar-data/islamic-umalqura.ts",
         "calendar-data/japanese.ts",
         "calendar-data/persian.ts",
-        "calendar-data/register.ts",
         "calendar-data/roc.ts",
         "core.ts",
         "get_internal_slots.ts",
         "index.ts",
         "polyfill.ts",
         "polyfill-force.ts",
+        "register-calendar-data.ts",
         "should-polyfill.ts",
         "to_locale_string.ts",
         "types.ts",
@@ -244,21 +244,41 @@ ts_run_binary(
 )
 
 ts_run_binary(
-    name = "locale-data",
+    name = "locale-data-json",
     srcs = CLDR_RAW_FILES + [
         "//:node_modules/fs-extra",
         "//:node_modules/minimist",
     ],
-    outs = ["locale-data/%s.js" % locale for locale in ALL_LOCALES] + ["locale-data/%s.d.ts" % locale for locale in ALL_LOCALES],
+    outs = ["locale-data-json/%s.json" % locale for locale in ALL_LOCALES],
     args = [
         "--cldrFile %s" % f
         for f in CLDR_RAW_FILES
     ] + [
         "--outDir",
-        "locale-data",
+        "locale-data-json",
     ],
     chdir = package_name(),
     tool = "//packages/intl-datetimeformat/scripts:cldr",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "locale-data",
+    srcs = [":locale-data-json"],
+    outs = ["locale-data/%s.%s" % (locale, extension) for locale in ALL_LOCALES for extension in [
+        "js",
+        "d.ts",
+    ]],
+    args = ["--input locale-data-json/%s.json" % locale for locale in ALL_LOCALES] + [
+        "--outDir",
+        "locale-data",
+        "--method",
+        "__addLocaleData",
+        "--queue",
+        "__FORMATJS_DATETIMEFORMAT_DATA__",
+    ],
+    chdir = package_name(),
+    tool = "//packages/intl-datetimeformat/scripts:emit-locale-data",
     visibility = ["//visibility:public"],
 )
 
@@ -506,9 +526,6 @@ filegroup(
 source_inventory(
     name = "calendar_entrypoint_inventory",
     out = "calendar_entrypoint_inventory.json",
-    names = [path.split("/")[-1][:-3] for path in glob(
-        ["calendar-data/*.ts"],
-        exclude = ["calendar-data/register.ts"],
-    )],
+    names = [path.split("/")[-1][:-3] for path in glob(["calendar-data/*.ts"])],
     visibility = ["//tools:__pkg__"],
 )

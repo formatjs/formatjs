@@ -1,5 +1,5 @@
-import {basename} from 'path'
-import {emitLocaleData} from './emit-locale-data.ts'
+import {basename, join} from 'path'
+import {outputJsonSync} from 'fs-extra/esm'
 import minimist from 'minimist'
 import {readFileSync} from 'fs'
 
@@ -19,13 +19,12 @@ function main(args: Args) {
     const formats = raw.data.formats[calendar]
     if (!data || !formats)
       throw new Error(`Missing ${calendar} data for ${locale}`)
-    emitLocaleData(
-      args.outDir,
+    outputJsonSync(join(args.outDir, locale + '.json'), {
       locale,
-      {locale, calendar, data, formats},
-      '__addCalendarLocaleData',
-      '__FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__'
-    )
+      calendar,
+      data,
+      formats,
+    })
   }
 }
 if (import.meta.filename === process.argv[1]) {

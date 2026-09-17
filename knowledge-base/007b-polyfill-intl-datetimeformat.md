@@ -269,7 +269,7 @@ cycle interval patterns retain precedence over the synthesized fallback.
 ## Optional calendar loading
 
 The core bundle includes Gregorian/ISO conversion only. Other arithmetic lives in
-`ecma402-abstract/DateTimeFormat/calendars/` and is bundled into independent public
+`ecma402-abstract/DateTimeFormat/calendars/implementations/` and is bundled into independent public
 `@formatjs/intl-datetimeformat-calendar-<calendar>` packages. The base package
 exports neither calendar arithmetic nor `add-all-calendars.js`. Core must not import either these modules or generated
 ICU calendar tables. Calendar implementations receive timezone-adjusted values
@@ -277,9 +277,12 @@ through the existing ToLocalTime implementation-details path.
 
 `locale-data/<locale>.js` carries Gregorian patterns only. Each `@formatjs/intl-datetimeformat-calendar-<calendar>` package contains one
 calendar arithmetic entry and `locale-data/<locale>.js` files. The distribution
-CLI `cldr-calendar.ts` selects a calendar with `--calendar`; `cldr.ts` emits only
-base locale data. Separate CLI targets keep emitter-specific edits out of the
-other action inputs. Both consume shared raw CLDR data. Old arithmetic and locale
+CLI `cldr-calendar.ts` prepares calendar JSON with `--calendar`; `cldr.ts`
+prepares base JSON. Separate preparation targets keep calendar-specific edits out
+of base action inputs. Both consume shared raw CLDR data. The standalone
+`emit-locale-data.ts` CLI accepts repeated `--input` JSON files plus `--outDir`,
+`--method`, and `--queue`, then prints JavaScript and declarations using the
+TypeScript AST printer. Both package paths use this emitter. Old arithmetic and locale
 entrypoints move to the calendar packages. Package tests enforce
 250 MB/1700-file base and 200 MB/1600-file per-calendar budgets.
 The CLDR intermediate JSON retains all calendars for generation and full-suite
@@ -321,7 +324,10 @@ and package/tar-budget test coverage. Gregorian and ISO 8601 remain in core.
 To add a calendar:
 
 1. Add its CLDR mapping to `CALENDAR_FILES`.
-2. Add its arithmetic implementation, `calendar-data` wrapper, and `all.ts` entry.
+2. Add its arithmetic implementation to `calendars/implementations/<calendar>.ts`,
+   its `calendar-data/<calendar>.ts` wrapper, and its `all.ts` entry. These two
+   directories contain only calendar modules. Keep shared helpers outside them:
+   `calendars/temporal.ts` and `register-calendar-data.ts`.
 3. Add the six-line `calendar_package()` BUILD stub and synced `package.json`.
 4. Add Release Please config/manifest entries, update the pnpm
    lockfile, and run `bash scripts/generate_dist_packages.sh` and
@@ -341,3 +347,5 @@ Generators and runtime tests import `@formatjs_generated/datetimeformat.calendar
 This generated package contains only registry constants; source inventories stay
 separate so inventory changes do not invalidate CLDR generation. Calendar packages
 are discovered by the workspace glob and do not need root devDependencies.
+
+Inventories glob only these dedicated calendar directories, without helper-name exclusions.
