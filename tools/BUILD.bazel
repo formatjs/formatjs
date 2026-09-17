@@ -3,6 +3,8 @@ load("@aspect_rules_js//js:defs.bzl", "js_test")
 # gazelle:ignore
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "calendar_registry")
+load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:package_json.bzl", "formatjs_package_json")
 load("//tools:vitest.bzl", "vitest")
@@ -183,11 +185,13 @@ js_test(
     args = [
         "$(rootpath //:release_please_npm_workspace_graph)",
         "$(rootpath //:release_please_config)",
+        "$(rootpath :calendar_registry)",
     ],
     data = [
         "release-please/npm-workspace-graph.ts",
         "release-please/npm-workspace-plugin.ts",
         "release-please/prerelease-versioning.ts",
+        ":calendar_registry",
         "//:release_please_config",
         "//:release_please_npm_workspace_graph",
     ],
@@ -211,4 +215,30 @@ copy_file(
         "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
+)
+
+calendar_registry(
+    name = "calendar_registry",
+    out = "calendar-registry.json",
+    packages = [pkg["dirname"] for pkg in DIST_PACKAGES if pkg["dirname"].startswith("intl-datetimeformat-calendar-")],
+    visibility = ["//visibility:public"],
+)
+
+js_test(
+    name = "calendar_registry_test",
+    size = "small",
+    args = [
+        "$(rootpath :calendar_registry)",
+        "$(rootpath //:release_please_npm_workspace_graph)",
+        "$(rootpath //:release_please_config)",
+        "$(rootpath //:release_please_manifest)",
+    ],
+    data = [
+        ":calendar_registry",
+        "//:release_please_config",
+        "//:release_please_manifest",
+        "//:release_please_npm_workspace_graph",
+    ],
+    entry_point = "calendar-registry.test.ts",
+    node_options = ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON"],
 )

@@ -46,5 +46,19 @@
   "python/icu_skeleton_parser": "0.1.0",
   "python/icu_messageformat_parser": "0.1.0",
   "python/icu_messageformat": "0.1.0",
-  "python/intl": "0.3.0"
+  "python/intl": "0.3.0",
+  "packages/intl-datetimeformat-calendar-buddhist": "1.0.0",
+  "packages/intl-datetimeformat-calendar-coptic": "1.0.0",
+  "packages/intl-datetimeformat-calendar-ethiopic": "1.0.0",
+  "packages/intl-datetimeformat-calendar-ethioaa": "1.0.0",
+  "packages/intl-datetimeformat-calendar-roc": "1.0.0",
+  "packages/intl-datetimeformat-calendar-japanese": "1.0.0",
+  "packages/intl-datetimeformat-calendar-indian": "1.0.0",
+  "packages/intl-datetimeformat-calendar-islamic-civil": "1.0.0",
+  "packages/intl-datetimeformat-calendar-islamic-tbla": "1.0.0",
+  "packages/intl-datetimeformat-calendar-persian": "1.0.0",
+  "packages/intl-datetimeformat-calendar-hebrew": "1.0.0",
+  "packages/intl-datetimeformat-calendar-islamic-umalqura": "1.0.0",
+  "packages/intl-datetimeformat-calendar-chinese": "1.0.0",
+  "packages/intl-datetimeformat-calendar-dangi": "1.0.0"
 }

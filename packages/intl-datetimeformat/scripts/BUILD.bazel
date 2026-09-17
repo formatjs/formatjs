@@ -1,4 +1,7 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+
 # gazelle:ignore
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -7,14 +10,20 @@ exports_files(["packer.ts"])
 formatjs_test(
     name = "locale_data_test",
     srcs = ["locale-data.test.ts"],
-    data = ["//packages/intl-datetimeformat:serialization_test_data"],
-    deps = ["//:node_modules/vitest"],
+    data = [
+        "//packages/intl-datetimeformat:serialization_test_data",
+    ],
+    deps = [
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
+        "//:node_modules/vitest",
+    ],
 )
 
 ts_binary(
     name = "cldr-raw",
     data = [
         "extract-dates.ts",
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
     ],
     entry_point = "cldr-raw.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
@@ -23,7 +32,7 @@ ts_binary(
 ts_binary(
     name = "cldr",
     entry_point = "cldr.ts",
-    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 ts_binary(
@@ -50,11 +59,39 @@ ts_binary(
 formatjs_test(
     name = "calendar_bundle_test",
     srcs = ["calendar-bundle.test.ts"],
-    data = ["//packages/intl-datetimeformat:pkg"],
+    data = [
+        "//packages/intl-datetimeformat:pkg",
+    ] + ["//packages/intl-datetimeformat-calendar-%s:pkg" % calendar for calendar in CALENDARS],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
+)
+
+ts_binary(
+    name = "cldr-calendar",
+    entry_point = "cldr-calendar.ts",
+    visibility = ["//visibility:public"],
+)
+
+ts_binary(
+    name = "emit-locale-data",
+    data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+        "//:node_modules/typescript",
+    ],
+    entry_point = "emit-locale-data.ts",
+    visibility = ["//visibility:public"],
+)
+
+js_test(
+    name = "emit_locale_data_test",
+    size = "small",
+    args = ["$(rootpath :emit-locale-data)"],
+    data = [":emit-locale-data"],
+    entry_point = "emit-locale-data.test.ts",
 )

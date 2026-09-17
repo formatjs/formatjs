@@ -1,4 +1,4 @@
-import calendars from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
+import calendars from '#packages/intl-datetimeformat/calendars/all.js'
 import 'temporal-polyfill/full/global'
 import {Temporal} from 'temporal-polyfill/full'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'

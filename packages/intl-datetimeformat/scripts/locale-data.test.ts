@@ -1,3 +1,4 @@
+import {calendars} from '@formatjs_generated/datetimeformat.calendars/index.js'
 import {readFileSync} from 'node:fs'
 import {runInNewContext} from 'node:vm'
 import {expect, test} from 'vitest'
@@ -43,7 +44,10 @@ test('base locale queues before installation', () => {
 })
 
 const hebrewSource = readFileSync(
-  new URL('../calendar-data/hebrew/en.js', import.meta.url),
+  new URL(
+    '../../intl-datetimeformat-calendar-hebrew/locale-data/en.js',
+    import.meta.url
+  ),
   'utf8'
 )
 const hebrew = {
@@ -75,4 +79,11 @@ test('calendar locale module queues before installation', () => {
     __FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__: queue,
   })
   expect(JSON.parse(JSON.stringify(queue))).toEqual([hebrew])
+})
+
+test('CLDR data covers every registered calendar', () => {
+  expect(Object.keys(calendarData).sort()).toEqual([...calendars].sort())
+  for (const calendar of [...calendars]) {
+    expect(formats[calendar], calendar).toBeDefined()
+  }
 })

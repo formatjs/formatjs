@@ -1,0 +1,6 @@
+load("//packages/intl-datetimeformat:calendar_package.bzl", "calendar_package")
+
+calendar_package(
+    calendar = "indian",
+    version = "1.0.0",  # x-release-please-version
+)

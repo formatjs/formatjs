@@ -191,8 +191,8 @@ and patterns. Load them before constructing a formatter:
 await import('@formatjs/intl-datetimeformat/polyfill-force.js')
 await Promise.all([
   import('@formatjs/intl-datetimeformat/locale-data/en.js'),
-  import('@formatjs/intl-datetimeformat/calendar-data/hebrew.js'),
-  import('@formatjs/intl-datetimeformat/calendar-data/hebrew/en.js'),
+  import('@formatjs/intl-datetimeformat-calendar-hebrew'),
+  import('@formatjs/intl-datetimeformat-calendar-hebrew/locale-data/en.js'),
 ])
 
 new Intl.DateTimeFormat('en', {calendar: 'hebrew'}).format(new Date())
@@ -204,11 +204,19 @@ Only calendars with both loaded participate in calendar negotiation; unloaded
 calendar requests fall back to a loaded calendar. Existing formatters retain
 the calendar selected when they were constructed.
 
-Use `calendar-data/<calendar>.js` and
-`calendar-data/<calendar>/<locale>.js` for each calendar and locale you need.
-`add-all-calendars.js` explicitly loads all calendar arithmetic and tables;
-localized calendar patterns still load separately. None of these optional
-modules installs `globalThis.Temporal`.
+Install `@formatjs/intl-datetimeformat-calendar-<calendar>` for each calendar you
+need. Import the package and its `locale-data/<locale>.js` entry, as above.
+Requires `@formatjs/intl-datetimeformat` 7.7.0 or newer.
+
+When upgrading from 7.7.x, replace these imports:
+
+- `@formatjs/intl-datetimeformat/calendar-data/<calendar>.js` with
+  `@formatjs/intl-datetimeformat-calendar-<calendar>`.
+- `@formatjs/intl-datetimeformat/calendar-data/<calendar>/<locale>.js` with
+  `@formatjs/intl-datetimeformat-calendar-<calendar>/locale-data/<locale>.js`.
+
+`add-all-calendars.js` is removed; import each calendar package you need.
+These packages do not install `globalThis.Temporal`.
 
 Custom providers can use the same registration APIs. `__addCalendarData` accepts
 `{calendar, dateFromTime}`; the callback receives timezone-adjusted milliseconds
@@ -221,7 +229,7 @@ The arithmetic modules also export their registration record for ponyfill use:
 
 ```js
 import {DateTimeFormat} from '@formatjs/intl-datetimeformat'
-import hebrew from '@formatjs/intl-datetimeformat/calendar-data/hebrew.js'
+import hebrew from '@formatjs/intl-datetimeformat-calendar-hebrew'
 
 DateTimeFormat.__addCalendarData(hebrew)
 // Register base locale data with __addLocaleData and calendar-specific

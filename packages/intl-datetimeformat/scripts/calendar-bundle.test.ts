@@ -1,4 +1,16 @@
-import {readFileSync} from 'node:fs'
+import {calendars} from '@formatjs_generated/datetimeformat.calendars/index.js'
+import {
+  readFileSync,
+  readdirSync,
+  statSync,
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  symlinkSync,
+  rmSync,
+} from 'node:fs'
+import {tmpdir} from 'node:os'
+import {join} from 'node:path'
 import {execFileSync} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
 import {expect, test} from 'vitest'
@@ -11,10 +23,16 @@ test('published core excludes optional calendar arithmetic and tables', () => {
   const manifest = JSON.parse(
     readFileSync(new URL('package.json', pkg), 'utf8')
   )
-  expect(manifest.exports['./calendar-data/*']).toBe('./calendar-data/*')
-  expect(manifest.exports['./add-all-calendars.js']).toBe(
-    './add-all-calendars.js'
-  )
+  expect(manifest.exports['./calendar-data/*']).toBeUndefined()
+  expect(existsSync(new URL('calendar-data/hebrew/en.js', pkg))).toBe(false)
+  expect(manifest.exports['./add-all-calendars.js']).toBeUndefined()
+  expect(existsSync(new URL('add-all-calendars.js', pkg))).toBe(false)
+  expect(existsSync(new URL('calendar-data/', pkg))).toBe(false)
+  expect(
+    Object.keys(manifest.exports).some(key =>
+      key.startsWith('./calendar-data/')
+    )
+  ).toBe(false)
   for (const entry of ['index', 'polyfill', 'polyfill-force']) {
     expect(
       sources(entry).filter(
@@ -26,13 +44,29 @@ test('published core excludes optional calendar arithmetic and tables', () => {
       )
     ).toEqual([])
   }
-  const chinese = sources('calendar-data/chinese').join('\n')
+  const chinese = JSON.parse(
+    readFileSync(
+      new URL(
+        '../../intl-datetimeformat-calendar-chinese/pkg/index.js.map',
+        import.meta.url
+      ),
+      'utf8'
+    )
+  ).sources.join('\n')
   expect(chinese).toContain('LunisolarDateFromTime')
   expect(chinese).not.toContain('/dangi')
   expect(chinese).not.toContain('temporal-polyfill')
-  expect(sources('calendar-data/hebrew').join('\n')).not.toContain(
-    'icu.calendar'
-  )
+  expect(
+    JSON.parse(
+      readFileSync(
+        new URL(
+          '../../intl-datetimeformat-calendar-hebrew/pkg/index.js.map',
+          import.meta.url
+        ),
+        'utf8'
+      )
+    ).sources.join('\n')
+  ).not.toContain('icu.calendar')
 })
 
 // Fresh processes exercise the actual npm ESM entries, including registration
@@ -44,8 +78,8 @@ for (const before of [false, true]) {
       const root = ${JSON.stringify(pkg.href)}
       const load = path => import('@formatjs/intl-datetimeformat/' + path)
       const addons = async () => {
-        await load('calendar-data/hebrew/en.js')
-        await load('calendar-data/hebrew.js')
+        await import('@formatjs/intl-datetimeformat-calendar-hebrew/locale-data/en.js')
+        await import('@formatjs/intl-datetimeformat-calendar-hebrew')
       }
       if (${before}) await addons()
       await load('polyfill-force.js')
@@ -82,12 +116,129 @@ for (const before of [false, true]) {
       assert.equal(globalThis.__FORMATJS_DATETIMEFORMAT_CALENDAR_DATA__, undefined)
       assert.equal(globalThis.__FORMATJS_DATETIMEFORMAT_CALENDAR_LOCALE_DATA__, undefined)
     `
-    expect(() =>
-      execFileSync(process.execPath, ['--input-type=module', '-e', code], {
-        encoding: 'utf8',
-        timeout: 30000,
-        cwd: fileURLToPath(pkg),
-      })
-    ).not.toThrow()
+    const project = mkdtempSync(join(tmpdir(), 'formatjs-calendars-'))
+    try {
+      const scope = join(project, 'node_modules', '@formatjs')
+      mkdirSync(scope, {recursive: true})
+      symlinkSync(fileURLToPath(pkg), join(scope, 'intl-datetimeformat'))
+      symlinkSync(
+        fileURLToPath(
+          new URL(
+            '../../intl-datetimeformat-calendar-hebrew/pkg/',
+            import.meta.url
+          )
+        ),
+        join(scope, 'intl-datetimeformat-calendar-hebrew')
+      )
+      expect(() =>
+        execFileSync(process.execPath, ['--input-type=module', '-e', code], {
+          encoding: 'utf8',
+          timeout: 30000,
+          cwd: project,
+        })
+      ).not.toThrow()
+    } finally {
+      rmSync(project, {recursive: true, force: true})
+    }
   })
 }
+
+function packageSize(root: URL): {bytes: number; files: number} {
+  let bytes = 0
+  let files = 0
+  for (const name of readdirSync(root, {recursive: true})) {
+    const stat = statSync(new URL(String(name), root))
+    if (stat.isFile()) {
+      bytes += stat.size
+      files++
+    }
+  }
+  return {bytes, files}
+}
+
+test('published packages keep optional locale data out of base and within install budgets', () => {
+  const base = packageSize(pkg)
+  expect(base.bytes).toBeLessThan(250_000_000)
+  expect(base.files).toBeLessThan(1700)
+  for (const calendar of calendars) {
+    const root = new URL(
+      `../../intl-datetimeformat-calendar-${calendar}/pkg/`,
+      import.meta.url
+    )
+    const size = packageSize(root)
+    expect(size.bytes, calendar).toBeLessThan(200_000_000)
+    expect(size.files, calendar).toBeLessThan(1600)
+    const manifest = JSON.parse(
+      readFileSync(new URL('package.json', root), 'utf8')
+    )
+    expect(manifest.name).toBe(
+      `@formatjs/intl-datetimeformat-calendar-${calendar}`
+    )
+    expect(existsSync(new URL('locale-data/en.js', root))).toBe(true)
+    expect(existsSync(new URL('locale-data/en.d.ts', root))).toBe(true)
+    expect(
+      Object.keys(
+        JSON.parse(readFileSync(new URL('package.json', pkg), 'utf8'))
+          .dependencies ?? {}
+      ).some(name => name.includes('-calendar-'))
+    ).toBe(false)
+  }
+})
+
+// Pack the complete publishable artifact, including declarations and source maps.
+// Keep this in the default test suite so install-size regressions fail CI.
+test.each([
+  {name: 'intl-datetimeformat', budget: 25_000_000},
+  ...calendars.map(calendar => ({
+    name: `intl-datetimeformat-calendar-${calendar}`,
+    budget: 15_000_000,
+  })),
+])(
+  '$name compressed tarball stays within download budget',
+  ({name, budget}) => {
+    const directory = mkdtempSync(join(tmpdir(), 'formatjs-tar-size-'))
+    try {
+      const root = new URL(`../../${name}/pkg/`, import.meta.url)
+      symlinkSync(fileURLToPath(root), join(directory, 'package'), 'dir')
+      const archive = join(directory, 'package.tgz')
+      // Dereference the staging link to include every file, as npm publishing does.
+      execFileSync('tar', ['-czhf', archive, '-C', directory, 'package'], {
+        timeout: 30000,
+      })
+      const bytes = statSync(archive).size
+      console.log(`${name}: ${bytes} compressed bytes (budget ${budget})`)
+      expect(bytes, `${name} compressed tarball`).toBeLessThan(budget)
+    } finally {
+      rmSync(directory, {recursive: true, force: true})
+    }
+  },
+  40000
+)
+
+test('each generated package registers its declared calendar', () => {
+  for (const calendar of calendars) {
+    const entry = new URL(
+      `../../intl-datetimeformat-calendar-${calendar}/pkg/index.js`,
+      import.meta.url
+    )
+    const actual = execFileSync(
+      process.execPath,
+      [
+        '--input-type=module',
+        '-e',
+        `
+      const {default: data} = await import(${JSON.stringify(entry.href)})
+      console.log(JSON.stringify({
+        exported: data.calendar,
+        registered: globalThis.__FORMATJS_DATETIMEFORMAT_CALENDAR_DATA__?.map(data => data.calendar),
+      }))
+    `,
+      ],
+      {encoding: 'utf8'}
+    ).trim()
+    expect(JSON.parse(actual), calendar).toEqual({
+      exported: calendar,
+      registered: [calendar],
+    })
+  }
+})

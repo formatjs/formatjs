@@ -303,3 +303,9 @@ alias(
     }),
     visibility = ["//visibility:public"],
 )
+
+copy_to_bin(
+    name = "release_please_manifest",
+    srcs = [".release-please-manifest.json"],
+    visibility = ["//tools:__pkg__"],
+)

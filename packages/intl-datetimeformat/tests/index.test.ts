@@ -1,4 +1,4 @@
-import calendars from '#packages/ecma402-abstract/DateTimeFormat/calendars/all.js'
+import calendars from '#packages/intl-datetimeformat/calendars/all.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'

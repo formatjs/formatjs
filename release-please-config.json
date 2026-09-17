@@ -8,10 +8,7 @@
   "changelog-type": "default",
   "bootstrap-sha": "482c8e224b2582b554e3f4b0718fe2332c4b5cff",
   "sequential-calls": true,
-  "exclude-paths": [
-    "**/tests/**",
-    "**/*.md"
-  ],
+  "exclude-paths": ["**/tests/**", "**/*.md"],
   "packages": {
     "packages/babel-plugin-formatjs": {
       "component": "babel-plugin-formatjs",
@@ -571,6 +568,174 @@
         }
       ],
       "package-name": "py_intl"
+    },
+    "packages/intl-datetimeformat-calendar-buddhist": {
+      "component": "@formatjs/intl-datetimeformat-calendar-buddhist",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-buddhist",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-coptic": {
+      "component": "@formatjs/intl-datetimeformat-calendar-coptic",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-coptic",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-ethiopic": {
+      "component": "@formatjs/intl-datetimeformat-calendar-ethiopic",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-ethiopic",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-ethioaa": {
+      "component": "@formatjs/intl-datetimeformat-calendar-ethioaa",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-ethioaa",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-roc": {
+      "component": "@formatjs/intl-datetimeformat-calendar-roc",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-roc",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-japanese": {
+      "component": "@formatjs/intl-datetimeformat-calendar-japanese",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-japanese",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-indian": {
+      "component": "@formatjs/intl-datetimeformat-calendar-indian",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-indian",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-islamic-civil": {
+      "component": "@formatjs/intl-datetimeformat-calendar-islamic-civil",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-islamic-civil",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-islamic-tbla": {
+      "component": "@formatjs/intl-datetimeformat-calendar-islamic-tbla",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-islamic-tbla",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-persian": {
+      "component": "@formatjs/intl-datetimeformat-calendar-persian",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-persian",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-hebrew": {
+      "component": "@formatjs/intl-datetimeformat-calendar-hebrew",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-hebrew",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-islamic-umalqura": {
+      "component": "@formatjs/intl-datetimeformat-calendar-islamic-umalqura",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-islamic-umalqura",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-chinese": {
+      "component": "@formatjs/intl-datetimeformat-calendar-chinese",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-chinese",
+      "version-file": "BUILD.bazel"
+    },
+    "packages/intl-datetimeformat-calendar-dangi": {
+      "component": "@formatjs/intl-datetimeformat-calendar-dangi",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/intl-datetimeformat-calendar-dangi",
+      "version-file": "BUILD.bazel"
     }
   },
   "plugins": [

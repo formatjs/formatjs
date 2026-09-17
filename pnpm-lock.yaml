@@ -921,6 +921,90 @@ importers:
         specifier: workspace:*
         version: link:../intl-localematcher
 
+  packages/intl-datetimeformat-calendar-buddhist:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-chinese:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-coptic:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-dangi:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-ethioaa:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-ethiopic:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-hebrew:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-indian:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-islamic-civil:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-islamic-tbla:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-islamic-umalqura:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-japanese:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-persian:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
+  packages/intl-datetimeformat-calendar-roc:
+    dependencies:
+      '@formatjs/intl-datetimeformat':
+        specifier: workspace:*
+        version: link:../intl-datetimeformat
+
   packages/intl-displaynames:
     dependencies:
       '@formatjs/intl-localematcher':

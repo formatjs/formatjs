@@ -28,22 +28,7 @@ import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
-const CALENDAR_FILES: Record<string, [string, string]> = {
-  chinese: ['chinese', 'chinese'],
-  dangi: ['dangi', 'dangi'],
-  hebrew: ['hebrew', 'hebrew'],
-  buddhist: ['buddhist', 'buddhist'],
-  coptic: ['coptic', 'coptic'],
-  ethiopic: ['ethiopic', 'ethiopic'],
-  ethioaa: ['ethiopic', 'ethiopic-amete-alem'],
-  roc: ['roc', 'roc'],
-  japanese: ['japanese', 'japanese'],
-  indian: ['indian', 'indian'],
-  'islamic-civil': ['islamic', 'islamic-civil'],
-  'islamic-umalqura': ['islamic', 'islamic-umalqura'],
-  'islamic-tbla': ['islamic', 'islamic-tbla'],
-  persian: ['persian', 'persian'],
-}
+import {calendarFiles as CALENDAR_FILES} from '@formatjs_generated/datetimeformat.calendars/index.js'
 const ERA_KEY = /^\d+$/
 
 function extractEras(eras: Record<string, string>, calendar: string) {
