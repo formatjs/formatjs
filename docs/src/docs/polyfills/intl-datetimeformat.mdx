@@ -205,20 +205,18 @@ calendar requests fall back to a loaded calendar. Existing formatters retain
 the calendar selected when they were constructed.
 
 Install `@formatjs/intl-datetimeformat-calendar-<calendar>` for each calendar you
-need, then import that package and its `locale-data/<locale>.js` entry. Calendar
-locale data is distributed separately so Gregorian-only installs do not download
-all calendars. The calendar packages require `@formatjs/intl-datetimeformat`
-7.7.0 or newer.
+need. Import the package and its `locale-data/<locale>.js` entry, as above.
+Requires `@formatjs/intl-datetimeformat` 7.7.0 or newer.
 
-When upgrading from 7.7.x, replace
-`@formatjs/intl-datetimeformat/calendar-data/<calendar>/<locale>.js` imports with
-`@formatjs/intl-datetimeformat-calendar-<calendar>/locale-data/<locale>.js` and
-install the corresponding package. Replace arithmetic-only
-`@formatjs/intl-datetimeformat/calendar-data/<calendar>.js` imports with
-`@formatjs/intl-datetimeformat-calendar-<calendar>` as well. The base package no
-longer exports calendar modules or `add-all-calendars.js`; import each calendar
-package you need explicitly. None of these optional modules installs
-`globalThis.Temporal`.
+When upgrading from 7.7.x, replace these imports:
+
+- `@formatjs/intl-datetimeformat/calendar-data/<calendar>.js` with
+  `@formatjs/intl-datetimeformat-calendar-<calendar>`.
+- `@formatjs/intl-datetimeformat/calendar-data/<calendar>/<locale>.js` with
+  `@formatjs/intl-datetimeformat-calendar-<calendar>/locale-data/<locale>.js`.
+
+`add-all-calendars.js` is removed; import each calendar package you need.
+These packages do not install `globalThis.Temporal`.
 
 Custom providers can use the same registration APIs. `__addCalendarData` accepts
 `{calendar, dateFromTime}`; the callback receives timezone-adjusted milliseconds
