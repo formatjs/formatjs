@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.1.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@12.1.0...intl-messageformat@12.1.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** generate lint-compatible empty message contracts ([#7442](https://github.com/formatjs/formatjs/issues/7442)) ([799efaf](https://github.com/formatjs/formatjs/commit/799efafaebbd242cca5bf8f421e40c416dc89276))
+
 ## [12.1.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@12.0.0...intl-messageformat@12.1.0) (2026-09-16)
 
 
