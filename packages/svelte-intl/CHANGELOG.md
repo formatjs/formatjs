@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@2.1.0...@formatjs/svelte-intl@2.1.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** generate lint-compatible empty message contracts ([#7442](https://github.com/formatjs/formatjs/issues/7442)) ([799efaf](https://github.com/formatjs/formatjs/commit/799efafaebbd242cca5bf8f421e40c416dc89276))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl bumped to 6.1.1
+
 ## [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@2.0.2...@formatjs/svelte-intl@2.1.0) (2026-09-16)
 
 

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.3...eslint-plugin-formatjs@8.0.4) (2026-09-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** generate lint-compatible empty message contracts ([#7442](https://github.com/formatjs/formatjs/issues/7442)) ([799efaf](https://github.com/formatjs/formatjs/commit/799efafaebbd242cca5bf8f421e40c416dc89276))
+
 ## [8.0.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.2...eslint-plugin-formatjs@8.0.3) (2026-09-16)
 
 

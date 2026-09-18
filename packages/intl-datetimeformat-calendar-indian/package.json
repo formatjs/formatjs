@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-datetimeformat-calendar-indian",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "indian calendar data for the Intl.DateTimeFormat polyfill",
   "license": "MIT",
   "repository": "formatjs/formatjs.git",
