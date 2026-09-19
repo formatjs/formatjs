@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.20](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.19...@formatjs/icu-messageformat-parser@3.5.20) (2026-09-19)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** restore Unicode regex fallback ([#7464](https://github.com/formatjs/formatjs/issues/7464)) ([dd8f5cd](https://github.com/formatjs/formatjs/commit/dd8f5cd43259ab501b99643ac0e6a6fd66a0b9e3))
+
 ## [3.5.19](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.18...@formatjs/icu-messageformat-parser@3.5.19) (2026-09-15)
 
 
