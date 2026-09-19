@@ -172,7 +172,7 @@
     "svelte": "^5.0.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18",
-    "temporal-polyfill": "1.0.4",
+    "temporal-polyfill": "1.0.5",
     "test262-harness": "^10.0.0",
     "tinybench": "^6.0.0",
     "ts-jest": "^29",
