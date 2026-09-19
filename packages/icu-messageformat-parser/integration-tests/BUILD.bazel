@@ -1,3 +1,4 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@rules_rs//rs:rust_test.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:package_json.bzl", "generate_package_json")
@@ -16,6 +17,12 @@ generate_package_json(
 # gazelle:ts_enabled false
 
 TEST_CASES = glob(["test_cases/*"])
+
+js_library(
+    name = "test_cases",
+    srcs = TEST_CASES,
+    visibility = ["//packages/icu-messageformat-parser:__pkg__"],
+)
 
 # Generate a file listing all test case filenames
 genrule(

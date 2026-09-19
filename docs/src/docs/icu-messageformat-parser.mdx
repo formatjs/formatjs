@@ -7,6 +7,10 @@ Parses [ICU Message strings](https://unicode-org.github.io/icu/userguide/format_
 
 This package implements a parser in JavaScript that parses the industry standard [ICU Message strings](https://unicode-org.github.io/icu/userguide/format_parse/messages) — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`](/docs/intl-messageformat), to produce localized formatted strings for display to users.
 
+The parser detects Unicode property escape support at startup and falls back to
+generated character ranges when unavailable. No regex polyfill is required for
+identifier parsing.
+
 ## Usage
 
 ```ts

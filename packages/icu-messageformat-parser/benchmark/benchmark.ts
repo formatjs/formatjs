@@ -3,12 +3,36 @@
  *
  * Run with: `bazel run //packages/icu-messageformat-parser/benchmark:benchmark`
  *
+ * Append `-- --fallback` to measure the Unicode-property fallback.
+ *
  * Results: The JavaScript parser is fast, but the Rust parser (optimized build)
  * is 2.3-3.5x faster on this corpus. See
  * crates/icu_messageformat_parser/BENCHMARK.md for detailed comparison.
  */
 import {Bench} from 'tinybench'
-import {parse} from '@formatjs/icu-messageformat-parser'
+const NativeRegExp = globalThis.RegExp
+let rejectedPropertyRegexes = 0
+if (process.argv.includes('--fallback')) {
+  globalThis.RegExp = new Proxy(NativeRegExp, {
+    construct(target, args) {
+      if (String(args[0]).includes('\\p{')) {
+        rejectedPropertyRegexes++
+        throw new SyntaxError('Unicode property escapes unavailable')
+      }
+      return Reflect.construct(target, args)
+    },
+  })
+}
+const {parse} = await (async () => {
+  try {
+    return await import('@formatjs/icu-messageformat-parser')
+  } finally {
+    globalThis.RegExp = NativeRegExp
+  }
+})()
+if (process.argv.includes('--fallback') && rejectedPropertyRegexes === 0) {
+  throw new Error('Benchmark did not exercise the Unicode-property fallback')
+}
 
 const complexMsg =
   '' +
@@ -43,6 +67,8 @@ const normalMsg =
 const simpleMsg = 'Hello, {name}!'
 
 const stringMsg = 'Hello, world!'
+const unicodeMsg =
+  '你好，{姓名}！{数量, plural, one {{𐐀} 📚} other {{имя} # 📚}}'
 
 console.log('complex_msg AST length', JSON.stringify(parse(complexMsg)).length)
 console.log('normal_msg AST length', JSON.stringify(parse(normalMsg)).length)
@@ -57,6 +83,7 @@ async function run() {
     .add('normal_msg', () => parse(normalMsg))
     .add('simple_msg', () => parse(simpleMsg))
     .add('string_msg', () => parse(stringMsg))
+    .add('unicode_msg', () => parse(unicodeMsg))
 
   await bench.run()
 
