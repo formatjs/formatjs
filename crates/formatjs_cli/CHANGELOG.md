@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.4](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.3...formatjs_cli_v1.7.4) (2026-09-19)
+
+
+### Bug Fixes
+
+* **deps:** update Ruff crates together to 0.16.7 ([#7461](https://github.com/formatjs/formatjs/issues/7461)) ([d8725bb](https://github.com/formatjs/formatjs/commit/d8725bb7ed71086e075cffd513b2b65711867288))
+
 ## [1.7.3](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.2...formatjs_cli_v1.7.3) (2026-09-16)
 
 
