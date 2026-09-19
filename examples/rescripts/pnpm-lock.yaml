@@ -190,8 +190,8 @@ importers:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)
       react-intl:
-        specifier: 10.2.1
-        version: 10.2.1(@types/react@19.3.0)(react@19.3.0)
+        specifier: 10.2.2
+        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
       react-scripts:
         specifier: 5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.10.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.3.0)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
@@ -1151,8 +1151,8 @@ packages:
   '@formatjs/icu-skeleton-parser@2.1.11':
     resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
 
-  '@formatjs/intl@4.2.0':
-    resolution: {integrity: sha512-FbiaRjnQjjqo8FzayDEuuFLj+lCrSEDEmeXXGRpBUioaukr/+4djq4TYIpXnsVh2DWqYyOrMu8cLpc/rGmVHlw==}
+  '@formatjs/intl@4.2.1':
+    resolution: {integrity: sha512-GiL0cReencWQkhfJedNLMe0Aorb/wyTRJdi+hLgG9gsDPy4yw2N+EkMcijf5+oGKd5jde75tr5nujsPg78bUTw==}
 
   '@formatjs/ts-transformer@4.4.20':
     resolution: {integrity: sha512-HldiUf2XjTn0cETXpjGATYwaiI9lwjZzIlBtJmfuD9Glr786FC3FdzvjBg7tFWIcz4xQdsvwDXfHEehP3kWUOg==}
@@ -3685,8 +3685,8 @@ packages:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
     engines: {node: '>= 0.4'}
 
-  intl-messageformat@11.2.14:
-    resolution: {integrity: sha512-9f2VD1HFuxUvMw0RxsaP8WmMns6JRTnsNB/zghTFrp11ZktiXWwVDeZBPQchBKEmo+Gx/ZhxI7Qht7YglFD4PA==}
+  intl-messageformat@11.2.15:
+    resolution: {integrity: sha512-W4VNytsXyWgW5lvVchmsb9xgA5rSKqoflu3/IQ9UCtB0z4R+Bx9MoEkwFT/+30RCl/KzUoH0QGGe9lppF5SuvQ==}
 
   ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
@@ -5317,8 +5317,8 @@ packages:
   react-error-overlay@6.1.0:
     resolution: {integrity: sha512-SN/U6Ytxf1QGkw/9ve5Y+NxBbZM6Ht95tuXNMKs8EJyFa/Vy/+Co3stop3KBHARfn/giv+Lj1uUnTfOJ3moFEQ==}
 
-  react-intl@10.2.1:
-    resolution: {integrity: sha512-KQ4pjV31gf4s5AAlSRDnheG/hiime6kHfwFcAPgnzQdN5SnZMix0JtS7BSjp82kd7VYh6bwxYrJW4xvos5pfag==}
+  react-intl@10.2.2:
+    resolution: {integrity: sha512-LUzjoxGMbk9PWS4Kdr2QAYX8sqIuB3EKiFs6fi4kCgGAgWNlrYlq9ZLKxBg9Yeg9xeaFfeZ139FZ4Ub2w5L6SQ==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -7663,11 +7663,11 @@ snapshots:
 
   '@formatjs/icu-skeleton-parser@2.1.11': {}
 
-  '@formatjs/intl@4.2.0':
+  '@formatjs/intl@4.2.1':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.17
-      intl-messageformat: 11.2.14
+      '@formatjs/icu-messageformat-parser': 3.5.18
+      intl-messageformat: 11.2.15
 
   '@formatjs/ts-transformer@4.4.20':
     dependencies:
@@ -10680,10 +10680,10 @@ snapshots:
       hasown: 2.0.4
       side-channel: 1.1.0
 
-  intl-messageformat@11.2.14:
+  intl-messageformat@11.2.15:
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.17
+      '@formatjs/icu-messageformat-parser': 3.5.18
 
   ipaddr.js@1.9.1: {}
 
@@ -12575,12 +12575,12 @@ snapshots:
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@10.2.1(@types/react@19.3.0)(react@19.3.0):
+  react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.17
-      '@formatjs/intl': 4.2.0
+      '@formatjs/icu-messageformat-parser': 3.5.18
+      '@formatjs/intl': 4.2.1
       '@types/react': 19.3.0
-      intl-messageformat: 11.2.14
+      intl-messageformat: 11.2.15
       react: 19.3.0
 
   react-is@16.13.1: {}
