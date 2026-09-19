@@ -10,6 +10,13 @@ Hand-written recursive descent parser for ICU MessageFormat syntax. Core parsing
 
 Chosen for performance — 6-10x faster than the previous PEG-based `intl-messageformat-parser`. The parser is a single-pass recursive descent parser with lookahead.
 
+### Identifier Compatibility
+
+Probe Unicode property escapes once at module initialization. Engines without
+working `White_Space` / `Pattern_Syntax` matching use an equivalent generated
+Unicode range regex. Both paths reuse `lastIndex`; parsing adds no feature checks.
+The generator uses `White_Space`, not `Pattern_White_Space`, for identifiers.
+
 ### AST Node Types
 
 - `LiteralElement` — Plain text
@@ -54,3 +61,6 @@ syntax; the Rust fast path applies when location capture is disabled.
 
 - Vitest unit tests with real-world message samples
 - Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
+
+Run `bazel run //packages/icu-messageformat-parser/benchmark:benchmark` for native
+matching, or append `-- --fallback` to measure engines without property escapes.

@@ -56,11 +56,13 @@ formatjs_test(
         "tests/manipulator.test.ts",
         "tests/no-parser.test.ts",
         "tests/printer.test.ts",
+        "tests/unicode-fallback.test.ts",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         ":icu-messageformat-parser",
+        "//:node_modules/@formatjs_generated/unicode",
         "//:node_modules/vitest",
     ],
 )

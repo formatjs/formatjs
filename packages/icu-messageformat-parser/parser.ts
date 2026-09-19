@@ -13,7 +13,10 @@ import {
   type TagElement,
   TYPE,
 } from '#packages/icu-messageformat-parser/types.js'
-import {SPACE_SEPARATOR_REGEX} from '@formatjs_generated/unicode/icu-messageformat-parser-regex.js'
+import {
+  IDENTIFIER_PREFIX_REGEX,
+  SPACE_SEPARATOR_REGEX,
+} from '@formatjs_generated/unicode/icu-messageformat-parser-regex.js'
 import {
   type NumberSkeletonToken,
   parseNumberSkeleton,
@@ -123,10 +126,21 @@ const trimEnd: (s: string) => string = hasTrimEnd
 
 // #endregion
 
-const IDENTIFIER_PREFIX_RE = new RegExp(
-  '([^\\p{White_Space}\\p{Pattern_Syntax}]*)',
-  'yu'
-)
+const IDENTIFIER_PREFIX_RE = createIdentifierPrefixRegex()
+
+function createIdentifierPrefixRegex(): RegExp {
+  try {
+    const regex = new RegExp('([^\\p{White_Space}\\p{Pattern_Syntax}]*)', 'yu')
+
+    // Some engines accept the flags but do not implement these properties.
+    if (regex.exec('a ')?.[1] === 'a') {
+      return regex
+    }
+  } catch {
+    // Generated ranges also work without Unicode or sticky regex support.
+  }
+  return IDENTIFIER_PREFIX_REGEX
+}
 
 function matchIdentifierAtIndex(s: string, index: number): string {
   IDENTIFIER_PREFIX_RE.lastIndex = index
