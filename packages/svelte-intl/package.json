@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/svelte-intl",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "formatjs intl binding for svelte",
   "keywords": [
     "formatjs",

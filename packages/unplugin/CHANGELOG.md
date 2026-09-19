@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.12](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.11...@formatjs/unplugin@1.2.12) (2026-09-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.20
+    * @formatjs/ts-transformer bumped to 4.4.22
+
 ## [1.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.10...@formatjs/unplugin@1.2.11) (2026-09-15)
 
 
