@@ -126,7 +126,7 @@ const trimEnd: (s: string) => string = hasTrimEnd
 
 // #endregion
 
-const IDENTIFIER_PREFIX_RE = createIdentifierPrefixRegex()
+let IDENTIFIER_PREFIX_RE = createIdentifierPrefixRegex()
 
 function createIdentifierPrefixRegex(): RegExp {
   try {
@@ -140,6 +140,19 @@ function createIdentifierPrefixRegex(): RegExp {
     // Generated ranges also work without Unicode or sticky regex support.
   }
   return IDENTIFIER_PREFIX_REGEX
+}
+
+/** @internal
+ * Runs synchronous parser tests with the fallback, restoring the previous matcher.
+ */
+export function withIdentifierFallbackForTesting<T>(run: () => T): T {
+  const previous = IDENTIFIER_PREFIX_RE
+  IDENTIFIER_PREFIX_RE = IDENTIFIER_PREFIX_REGEX
+  try {
+    return run()
+  } finally {
+    IDENTIFIER_PREFIX_RE = previous
+  }
 }
 
 function matchIdentifierAtIndex(s: string, index: number): string {

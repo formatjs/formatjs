@@ -1,3 +1,9 @@
+import {
+  Parser,
+  type ParserOptions,
+  withIdentifierFallbackForTesting,
+} from '#packages/icu-messageformat-parser/parser.js'
+import {readFileSync, readdirSync} from 'node:fs'
 import {parse} from '#packages/icu-messageformat-parser/index.js'
 import {IDENTIFIER_PREFIX_REGEX} from '@formatjs_generated/unicode/icu-messageformat-parser-regex.js'
 import {afterEach, expect, it, vi} from 'vitest'
@@ -72,5 +78,46 @@ it('matches native Unicode identifier membership for every code point', () => {
     if (actual !== expected) {
       throw new Error(`Identifier mismatch at U+${code.toString(16)}`)
     }
+  }
+})
+
+const fixtureDirectory = new URL(
+  '../integration-tests/test_cases/',
+  import.meta.url
+)
+
+it.each(readdirSync(fixtureDirectory).sort())(
+  'fallback corpus: %s',
+  filename => {
+    const [message, rawOptions, expected] = readFileSync(
+      new URL(filename, fixtureDirectory),
+      'utf8'
+    ).split('\n---\n')
+    const options = JSON.parse(rawOptions)
+    if (options.locale) {
+      options.locale = new Intl.Locale(options.locale)
+    }
+    const result = withIdentifierFallbackForTesting(() =>
+      new Parser(message, options as ParserOptions).parse()
+    )
+    expect(result).toEqual(JSON.parse(expected))
+  }
+)
+
+it('restores the native matcher even when the harness callback throws', () => {
+  const fallbackExec = vi.spyOn(IDENTIFIER_PREFIX_REGEX, 'exec')
+  try {
+    expect(() =>
+      withIdentifierFallbackForTesting(() => {
+        expect(new Parser('{name}').parse().err).toBeNull()
+        throw new Error('test failure')
+      })
+    ).toThrow('test failure')
+    expect(fallbackExec).toHaveBeenCalled()
+    fallbackExec.mockClear()
+    expect(new Parser('{name}').parse().err).toBeNull()
+    expect(fallbackExec).not.toHaveBeenCalled()
+  } finally {
+    fallbackExec.mockRestore()
   }
 })

@@ -61,6 +61,9 @@ syntax; the Rust fast path applies when location capture is disabled.
 
 - Vitest unit tests with real-world message samples
 - Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
+- The same fixture corpus runs under `withIdentifierFallbackForTesting` from
+  `parser.ts`. This internal synchronous harness restores the previous matcher
+  in `finally` and is not exported by the public package entry point.
 
 Run `bazel run //packages/icu-messageformat-parser/benchmark:benchmark` for native
 matching, or append `-- --fallback` to measure engines without property escapes.

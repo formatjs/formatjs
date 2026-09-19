@@ -58,11 +58,16 @@ formatjs_test(
         "tests/printer.test.ts",
         "tests/unicode-fallback.test.ts",
     ],
+    data = [
+        "//packages/icu-messageformat-parser/integration-tests:test_cases",  # keep: runtime corpus fixtures
+    ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
     deps = [
         ":icu-messageformat-parser",
         "//:node_modules/@formatjs_generated/unicode",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
 )
