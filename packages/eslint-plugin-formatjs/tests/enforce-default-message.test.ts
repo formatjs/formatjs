@@ -1,3 +1,6 @@
+import {Linter} from 'eslint'
+import {expect, test} from 'vitest'
+import plugin from '#packages/eslint-plugin-formatjs/index.js'
 import {
   rule,
   name,
@@ -13,6 +16,41 @@ import {
   ruleTester,
   vueRuleTester,
 } from '#packages/eslint-plugin-formatjs/tests/util'
+
+test.each(['recommended', 'strict'] as const)(
+  '%s allows overriding literal while still requiring defaultMessage',
+  preset => {
+    const linter = new Linter()
+    const code = `import {FormattedMessage} from 'react-intl'
+const missing = <FormattedMessage />
+const dynamic = <FormattedMessage defaultMessage={message} />`
+    const verify = (setting: Linter.RuleEntry) =>
+      linter
+        .verify(code, [
+          plugin.configs[preset],
+          {
+            languageOptions: {
+              parserOptions: {ecmaFeatures: {jsx: true}},
+            },
+            rules: {'formatjs/enforce-default-message': setting},
+          },
+        ])
+        .filter(
+          message => message.ruleId === 'formatjs/enforce-default-message'
+        )
+        .map(({messageId, line}) => ({messageId, line}))
+
+    const literalErrors = [
+      {messageId: 'defaultMessage', line: 2},
+      {messageId: 'defaultMessageLiteral', line: 3},
+    ]
+    expect(verify('error')).toEqual(literalErrors)
+    expect(verify(['error'])).toEqual(literalErrors)
+    expect(verify(['error', Option.anything])).toEqual([
+      {messageId: 'defaultMessage', line: 2},
+    ])
+  }
+)
 
 ruleTester.run(name, rule, {
   valid: [
