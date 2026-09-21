@@ -146,7 +146,7 @@
     "minimist": "^1.2.8",
     "oxc-parser": "^0.149.0",
     "oxc-transform": "^0.149.0",
-    "oxfmt": "^0.67.0",
+    "oxfmt": "^0.68.0",
     "oxlint": "^1.64.0",
     "picomatch": "^4.0.4",
     "playwright": "1.63.0",
