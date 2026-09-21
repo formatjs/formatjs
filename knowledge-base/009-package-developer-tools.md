@@ -81,6 +81,12 @@ assembled plugin through its public package import and runs `no-emoji` in ESLint
 
 **Peer dep:** `eslint@9 || 10`
 
+`enforce-default-message` accepts `literal` (require a static message) or
+`anything` (require the property, allowing dynamic values). Both presets use
+`literal`. Override with `['error', 'anything']` after the preset; severity-only
+overrides retain inherited options. ESLint config-merging regressions live in
+`tests/enforce-default-message.test.ts`.
+
 ## @formatjs/cli-lib
 
 **Purpose:** Core library powering both the Node.js CLI and providing programmatic APIs.

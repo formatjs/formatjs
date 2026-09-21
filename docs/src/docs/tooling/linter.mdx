@@ -310,6 +310,25 @@ export default [
 
 Setting `literal` forces `defaultMessage` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `defaultMessage` to always be a literal
 
+Use `anything` to require `defaultMessage` while allowing variables and function calls:
+
+```js
+export default [
+  formatjs.configs.recommended,
+  {
+    rules: {
+      'formatjs/enforce-default-message': ['error', 'anything'],
+    },
+  },
+]
+```
+
+Without an option, the rule only checks that `defaultMessage` is present.
+Both `recommended` and `strict` set `literal`. ESLint preserves inherited options
+when an override only changes severity, so `'error'` or `['error']` will not
+clear `literal`. Set `anything` after the preset to override it. Setting `off`
+disables the entire rule, including the presence check.
+
 ### `enforce-placeholders`
 
 Keep this rule for JavaScript or projects that only need inline placeholder
