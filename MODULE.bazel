@@ -445,33 +445,17 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
-# Released worker for the exact actiond commit validated by the browser rules.
-http_file(
-    name = "actiond_linux_x86_64",
-    downloaded_file_path = "actiond",
-    executable = True,
-    sha256 = "c35a7d9edc1387e83e98ca42a1e309b3fce9b97aa9199e85bf40778d6456a056",
-    url = "https://github.com/hermeticbuild/actiond/releases/download/v0.0.7/linux-actiond_linux_x86_64",
-)
-
+# Integration revision for the browser and worker presets; use a release once merged.
 bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
 git_override(
     module_name = "rules_web_e2e",
-    commit = "03a297fa72116158e7a8ccb7cd024e1fef028076",
+    commit = "a73f4dfce6947725efea0b474a1d5af955997a77",
     remote = "https://github.com/perplexityai/rules_web_e2e.git",
 )
 
-# Angular maintains rules_browsers; pin the catalog containing Playwright 1.63's Chromium.
-bazel_dep(name = "rules_browsers", version = "0.4.0", dev_dependency = True)
-git_override(
-    module_name = "rules_browsers",
-    commit = "c37398d63f5e990d618d02f4c6fb2fefe40f1a79",
-    remote = "https://github.com/angular/rules_browsers.git",
+browsers = use_extension("@rules_web_e2e//playwright:extensions.bzl", "browser_presets", dev_dependency = True)
+browsers.linux_amd64(
+    name = "web_browser",
+    release = "20260921",
 )
-
-browsers = use_extension("@rules_browsers//browsers:extensions.bzl", "browsers", dev_dependency = True)
-browsers.chrome(version = "153.0.8010.12")
-use_repo(
-    browsers,
-    "rules_browsers_chrome_linux",
-)
+use_repo(browsers, "web_browser")

@@ -22,3 +22,6 @@ packages/**/tsconfig.json
 docs/.env
 .env
 .env.local.trunk/
+
+# Materialized browser-worker launcher and diagnostics
+.web-e2e/

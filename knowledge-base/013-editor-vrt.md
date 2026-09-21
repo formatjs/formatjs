@@ -43,14 +43,15 @@ separate npm workspace or lockfile. The root lock pins Playwright to match the
 Chromium archive. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-E2E, component interactions, and VRT all use a declared `linux_chromium_runtime`
-and execute in actiond Linux amd64 actions. Chromium/Node, the selected Linux library closure, and fonts are checksum-pinned
-Bazel inputs. The optional preset omits unrelated OS packages and GPU drivers. No host browser cache,
-FFmpeg download, apt setup, or container image is needed for these suites.
-The browser CI script starts the actiond v0.0.7 release (`4b767e8`), downloaded
-and checksum-verified by `//tools:actiond`,
-and includes its binary SHA256 in remote execution properties to separate cached
-results across worker/kernel changes. See [browser setup](../packages/editor/vrt/README.md).
+E2E, component interactions, and VRT use the versioned `20260921` Linux amd64
+browser preset (`@web_browser//:browser`). It pins Chromium, Node, libraries,
+and fonts as Bazel inputs; FormatJS supplies matching Playwright 1.63.0 packages.
+No host browser cache, FFmpeg download, apt setup, or container image is needed.
+The browser CI script materializes the upstream worker supervisor, which verifies
+its pinned actiond binary and KVM/vsock access, starts a private VM, supplies the
+Bazel execution flags and worker hash, and tears down owned processes afterward.
+CI still provisions device permissions and retains supervisor logs. See
+[browser setup](../packages/editor/vrt/README.md) for individual tests and updates.
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
 CI runs the standard VRT comparison with `matching.ts`; it captures screenshots
 without applying them to source baselines. A separate capture/update validation
