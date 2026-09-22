@@ -87,9 +87,8 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The integration revision combines the upstream [browser preset](https://github.com/perplexityai/rules_web_e2e/pull/45)
-and [worker supervisor](https://github.com/perplexityai/rules_web_e2e/pull/46). Replace
-it with a released revision before merging.
+The browser preset and worker supervisor come from the released `rules_web_e2e`
+3.4.0 module in Bazel Central Registry.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.

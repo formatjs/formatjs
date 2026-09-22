@@ -445,13 +445,7 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
-# Integration revision for the browser and worker presets; use a release once merged.
-bazel_dep(name = "rules_web_e2e", version = "0.0.0", dev_dependency = True)
-git_override(
-    module_name = "rules_web_e2e",
-    commit = "a73f4dfce6947725efea0b474a1d5af955997a77",
-    remote = "https://github.com/perplexityai/rules_web_e2e.git",
-)
+bazel_dep(name = "rules_web_e2e", version = "3.4.0", dev_dependency = True)
 
 browsers = use_extension("@rules_web_e2e//playwright:extensions.bzl", "browser_presets", dev_dependency = True)
 browsers.linux_amd64(
