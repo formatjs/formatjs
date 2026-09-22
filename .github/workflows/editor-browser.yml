@@ -44,4 +44,4 @@ jobs:
           path: |
             bazel-testlogs/packages/editor/vrt/
             packages/editor/vrt/__screenshots__/
-            ${{ runner.temp }}/formatjs-actiond/vm.log
+            ${{ runner.temp }}/formatjs-actiond/logs/

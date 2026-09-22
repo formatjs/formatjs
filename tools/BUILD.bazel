@@ -1,7 +1,6 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test")
 
 # gazelle:ignore
-load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "calendar_registry")
 load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES")
@@ -202,19 +201,6 @@ js_test(
         "external",
         "manual",
     ],
-)
-
-copy_file(
-    name = "actiond",
-    src = "@actiond_linux_x86_64//file",
-    out = "actiond-worker",
-    allow_symlink = True,
-    is_executable = True,
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
-    visibility = ["//visibility:public"],
 )
 
 calendar_registry(

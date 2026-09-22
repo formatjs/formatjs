@@ -7,8 +7,8 @@ builds the gallery with Vite/StyleX before any browser test starts.
 ## Isolated browser tests
 
 E2E, component interactions, and VRT all run in actiond Linux amd64 actions using
-`:linux_browser`. The runtime combines caller-pinned Chromium/Node with the rules'
-checksum-locked libraries and fonts. No host browser cache or apt-installed
+`@web_browser//:browser`. The versioned `20260921` preset pins Chromium, Node,
+libraries, and fonts together. No host browser cache or apt-installed
 libraries are needed. Fixture servers and browsers share action-local loopback
 networking; external services must be replaced with declared fixtures.
 
@@ -18,35 +18,38 @@ use standard test outputs, and retries, `--runs_per_test`, and
 pinned static Bash plus declared, checksum-pinned utilities. VRT comparison and
 capture remain artifact-producing build actions.
 
-Upgrades change the Chromium pin in `MODULE.bazel` and compatible Playwright npm
-packages plus `playwright_runtime.version`. The runner checks the actual browser
-version. Re-run CI and review intentional screenshot changes.
+Upgrades select a new browser preset release in `MODULE.bazel` and matching
+Playwright npm packages. The current preset requires Playwright 1.63.0; the runner
+checks the actual browser version. Re-run CI and review intentional screenshot changes.
 
 ```sh
 # Linux x64 with writable /dev/kvm and /dev/vhost-vsock:
 bash .github/scripts/actiond-vrt.sh
 ```
 
-The script starts a 6 GiB VM using the released actiond v0.0.7 worker downloaded
-and checksum-verified by Bazel, then runs the three test targets. `visual_test`
-already captures screenshots and compares them against the checked-in baselines;
-CI does not run a second capture/update pass. The worker binary SHA256 is included
-in remote execution properties so worker or kernel changes invalidate cached results.
+The upstream supervisor verifies the pinned actiond worker and device access,
+starts a private 6 GiB VM, supplies the remote-execution configuration, and stops
+the worker when the tests finish. Logs remain under
+`${RUNNER_TEMP:-/tmp}/formatjs-actiond/logs/`; CI uploads them with test artifacts.
+`visual_test` captures and compares against committed baselines without updating
+them. Worker hashes separate cached results across worker/kernel changes.
 
-To run a persistent worker separately on Linux x64:
-
-```sh
-bazel run //tools:actiond -- serve-vm --root=/tmp/formatjs-actiond/vm --listen=127.0.0.1:8980 --memory-mib=6144 --cpus=2 --cas-image-size-mib=4096
-```
-
-For an existing worker, obtain its binary SHA256 and run:
+For individual tests or intentional baseline updates, materialize the launcher
+once, then invoke it outside `bazel run`:
 
 ```sh
-bazel test --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 --remote_default_exec_properties=actiond-worker-sha256=WORKER_SHA256 //packages/editor/vrt:e2e_test //packages/editor/vrt:component_test //packages/editor/vrt:visual_test
-bazel run --config=vrt --remote_executor=grpc://WORKER:8980 --remote_cache=grpc://WORKER:8980 --remote_default_exec_properties=actiond-worker-sha256=WORKER_SHA256 //packages/editor/vrt:visual_test.update
+mkdir -p .web-e2e
+bazel run --script_path="$PWD/.web-e2e/run" @rules_web_e2e//worker:runner
+.web-e2e/run doctor
+.web-e2e/run test //packages/editor/vrt:component_test
+.web-e2e/run run //packages/editor/vrt:visual_test.update
 ```
 
-These targets require a Linux worker even from macOS. There is no host fallback.
+Regenerate the launcher after dependency upgrades. Each invocation owns a fresh
+worker and VM state. Local logs remain in `.web-e2e/logs/`. `doctor` checks
+prerequisites; a test run validates VM execution. CI provisions KVM/vsock access;
+the supervisor does not change host permissions. This preset requires Linux x64;
+macOS developers need a Linux runner. There is no host-browser fallback.
 `.update` applies only successful captures; review intentional pixel changes.
 
 ## Built inputs
@@ -84,7 +87,8 @@ explicit in the visual declarations.
 Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
-The rules dependency pins [isolated ordinary browser tests](https://github.com/perplexityai/rules_web_e2e/pull/36).
+The browser preset and worker supervisor come from the released `rules_web_e2e`
+3.4.0 module in Bazel Central Registry.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.
