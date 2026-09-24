@@ -6,7 +6,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "3.5.18",
+    "@formatjs/icu-messageformat-parser": "3.5.19",
     "@formatjs/intl": "4.2.1",
     "intl-messageformat": "11.2.15",
     "react": "18.3.1",
