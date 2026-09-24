@@ -7,6 +7,7 @@ import {
 } from '#packages/cli-lib/console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 import {extname} from 'path'
+import {availableParallelism} from 'os'
 
 import {
   type Formatter,
@@ -284,43 +285,37 @@ async function processFile(source: string, fn: string, opts: ExtractOpts) {
   return {messages, meta}
 }
 
-/**
- * Maximum number of source files read concurrently during extraction.
- * Bounding this prevents exhausting the process file-descriptor limit
- * (EMFILE) on large input sets, which previously produced a silently
- * truncated catalog.
- * https://github.com/formatjs/formatjs/issues/7492
- */
-export const MAX_CONCURRENT_FILE_READS = 100
+// Match Rayon's default worker count and explicit thread override.
+function fileReadConcurrency(): number {
+  const value = process.env.RAYON_NUM_THREADS || ''
+  const threads = /^\+?\d+$/.test(value) ? Number(value) : 0
+  return Number.isSafeInteger(threads) && threads > 0
+    ? threads
+    : availableParallelism()
+}
 
-/**
- * Runs `task` over `items` with at most `limit` concurrent executions and
- * returns per-item settled results in input order.
- */
-export async function mapWithConcurrencyLimit<T, R>(
+async function mapWithConcurrencyLimit<T, R>(
   items: readonly T[],
   limit: number,
-  task: (item: T, index: number) => Promise<R>
-): Promise<Array<PromiseSettledResult<R>>> {
-  const results: Array<PromiseSettledResult<R>> = Array.from({
-    length: items.length,
-  })
+  task: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = []
   let nextIndex = 0
+  let failed = false
   async function worker(): Promise<void> {
-    while (nextIndex < items.length) {
+    while (!failed && nextIndex < items.length) {
       const index = nextIndex++
       try {
-        results[index] = {
-          status: 'fulfilled',
-          value: await task(items[index], index),
-        }
-      } catch (reason) {
-        results[index] = {status: 'rejected', reason}
+        results[index] = await task(items[index])
+      } catch (error) {
+        failed = true
+        throw error
       }
     }
   }
-  const workerCount = Math.min(limit, items.length)
-  await Promise.all(Array.from({length: workerCount}, () => worker()))
+  await Promise.all(
+    Array.from({length: Math.min(limit, items.length)}, () => worker())
+  )
   return results
 }
 
@@ -336,7 +331,7 @@ export async function extract(
   extractOpts: ExtractOpts
 ): Promise<string> {
   const {throws, readFromStdin, signal, ...opts} = extractOpts
-  // When throws is not explicitly true, we want to collect partial results
+  // Message errors may be skipped; input read failures are always fatal.
   const shouldThrow = throws === true
   // Pass throws option to transformer for per-message error handling
   const optsWithThrows = {
@@ -349,65 +344,34 @@ export async function extract(
       : undefined,
   }
 
-  let rawResults: Array<ExtractionResult | undefined> = []
-  try {
-    if (readFromStdin) {
-      debug(`Reading input from stdin`)
-      // Read from stdin
-      if (process.stdin.isTTY) {
-        warn('Reading source file from TTY.')
-      }
-      const stdinSource = await getStdinAsString()
-      rawResults = [await processFile(stdinSource, 'dummy.ts', optsWithThrows)]
-    } else {
-      // File reads are bounded to a fixed concurrency so that large input
-      // sets don't exhaust the process file-descriptor limit (EMFILE), which
-      // previously produced a silently truncated catalog.
-      // https://github.com/formatjs/formatjs/issues/7492
-      // Use settled results when throws is not explicitly true to collect
-      // partial results.
-      if (!shouldThrow) {
-        const settledResults = await mapWithConcurrencyLimit(
-          files,
-          MAX_CONCURRENT_FILE_READS,
-          async fn => {
-            debug('Extracting file:', fn)
-            const source = await readFile(fn, {encoding: 'utf8', signal})
-            return processFile(source, fn, optsWithThrows)
-          }
-        )
-        rawResults = settledResults.map(result => {
-          if (result.status === 'fulfilled') {
-            return result.value
-          } else {
-            warn(String(result.reason))
-            return undefined
-          }
-        })
-      } else {
-        const settledResults = await mapWithConcurrencyLimit(
-          files,
-          MAX_CONCURRENT_FILE_READS,
-          async fn => {
-            debug('Extracting file:', fn)
-            const source = await readFile(fn, {encoding: 'utf8', signal})
-            return processFile(source, fn, optsWithThrows)
-          }
-        )
-        rawResults = settledResults.map(result => {
-          if (result.status === 'rejected') {
-            throw result.reason
-          }
-          return result.value
-        })
-      }
+  async function processSource(source: string, filename: string) {
+    try {
+      return await processFile(source, filename, optsWithThrows)
+    } catch (error) {
+      if (shouldThrow) throw error
+      warn(String(error))
+      return undefined
     }
-  } catch (e) {
-    if (shouldThrow) {
-      throw e
-    } else {
-      warn(String(e))
+  }
+
+  let rawResults: Array<ExtractionResult | undefined>
+  if (readFromStdin) {
+    debug('Reading input from stdin')
+    if (process.stdin.isTTY) {
+      warn('Reading source file from TTY.')
     }
+    const source = await getStdinAsString()
+    rawResults = [await processSource(source, 'dummy.ts')]
+  } else {
+    rawResults = await mapWithConcurrencyLimit(
+      files,
+      fileReadConcurrency(),
+      async filename => {
+        debug('Extracting file:', filename)
+        const source = await readFile(filename, {encoding: 'utf8', signal})
+        return processSource(source, filename)
+      }
+    )
   }
 
   const formatter: Formatter<unknown> = await resolveBuiltinFormatter(

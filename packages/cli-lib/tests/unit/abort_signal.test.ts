@@ -12,14 +12,12 @@ describe('AbortSignal support', () => {
       ).rejects.toThrow(/abort/i)
     })
 
-    it('warns but does not reject when signal is already aborted (throws: false)', async () => {
+    it('rejects when signal is already aborted (throws: false)', async () => {
       const controller = new AbortController()
       controller.abort()
-      // With throws: false, errors are caught and warned, result is empty
-      const result = await extract(['nonexistent.ts'], {
-        signal: controller.signal,
-      })
-      expect(result).toBeDefined()
+      await expect(
+        extract(['nonexistent.ts'], {throws: false, signal: controller.signal})
+      ).rejects.toThrow(/abort/i)
     })
   })
 
