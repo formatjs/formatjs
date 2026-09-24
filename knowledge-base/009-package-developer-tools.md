@@ -112,7 +112,15 @@ overrides retain inherited options. ESLint config-merging regressions live in
 `cli-lib` has no runtime dependency on TypeScript or `@formatjs/ts-transformer`.
 The native binding is required for extraction and compilation.
 
-Node extraction limits concurrent file reads using `os.availableParallelism()`
+Compatible JavaScript, TypeScript, and Rust file batches use the N-API
+`extractFiles` entrypoint. Rayon reads literal paths and parses each file through
+the same extractor as `extractSources`, preserving input order and Node's UTF-8
+replacement decoding. Node retains formatting, generated-ID defaults, metadata,
+and duplicate checks. Framework inputs, stdin, source locations, callbacks, and
+`AbortSignal` keep the Node path. `tests/unit/extract-native.test.ts` checks
+native/fallback parity, zero Node file reads, and native read failures.
+
+The Node fallback limits concurrent file reads using `os.availableParallelism()`
 or a positive integer `RAYON_NUM_THREADS`, matching the Rust worker policy.
 Input read failures and cancelled reads reject regardless of `throws`, before
 output is written. Only message-processing errors retain best-effort behavior.

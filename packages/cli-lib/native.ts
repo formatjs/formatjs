@@ -79,6 +79,7 @@ export interface NativeBinding {
     opts?: NativeCompileOptions
   ): string
   extract(inputFiles: string[], opts?: NativeExtractOptions): string
+  extractFiles(inputFiles: string[], opts?: NativeExtractOptions): string
   extractSources(
     sources: NativeExtractSourceInput[],
     opts?: NativeExtractOptions,
@@ -178,6 +179,13 @@ export function compileMessagesWithNative(
     pseudoLocale: opts.pseudoLocale,
     skipErrors: opts.skipErrors,
   })
+}
+
+export function extractFilesWithNative(
+  files: readonly string[],
+  opts: NativeExtractOptions = {}
+): NativeExtractSourcesResult {
+  return JSON.parse(loadNative().extractFiles([...files], opts))
 }
 
 export function extractSourcesWithNative(

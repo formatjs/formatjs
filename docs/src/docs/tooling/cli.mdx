@@ -410,7 +410,12 @@ Both CLIs always fail on input read errors, including `EMFILE`, and leave
 an existing output catalog unchanged. `--throws` also makes message-processing
 errors fatal. Without it, valid messages from readable files are retained.
 
-Node.js extraction bounds concurrent file reads to the available CPU count,
+The Node.js CLI delegates JavaScript, TypeScript, and Rust file batches to Rust
+for parallel reading and parsing. Catalog formatting and duplicate checks stay
+in Node.js. Framework templates, stdin, source locations, callbacks, and
+`AbortSignal` use the Node.js path.
+
+The Node.js fallback bounds concurrent file reads to the available CPU count,
 matching Rayon's default. Set `RAYON_NUM_THREADS` to a positive integer to
 override this limit; zero or invalid values use the default.
 

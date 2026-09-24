@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io::{self, Write};
@@ -58,13 +59,71 @@ pub fn extract_sources(
     preserve_whitespace: bool,
     flatten: bool,
 ) -> Result<ExtractSourcesResult> {
+    extract_inputs(
+        sources.par_iter().map(|input| Ok(Cow::Borrowed(input))),
+        id_interpolation_pattern,
+        extract_source_location,
+        additional_component_names,
+        additional_function_names,
+        throws,
+        pragma,
+        preserve_whitespace,
+        flatten,
+    )
+}
+
+/// Read and extract literal file paths with Node-compatible UTF-8 decoding.
+#[allow(clippy::too_many_arguments)]
+pub fn extract_files(
+    filenames: &[String],
+    id_interpolation_pattern: Option<&str>,
+    extract_source_location: bool,
+    additional_component_names: &[String],
+    additional_function_names: &[String],
+    throws: bool,
+    pragma: Option<&str>,
+    preserve_whitespace: bool,
+    flatten: bool,
+) -> Result<ExtractSourcesResult> {
+    extract_inputs(
+        filenames.par_iter().map(|filename| {
+            let bytes = fs::read(filename)
+                .with_context(|| format!("Failed to read file {filename}"))?;
+            Ok(Cow::Owned(ExtractSourceInput {
+                filename: filename.clone(),
+                source: String::from_utf8_lossy(&bytes).into_owned(),
+            }))
+        }),
+        id_interpolation_pattern,
+        extract_source_location,
+        additional_component_names,
+        additional_function_names,
+        throws,
+        pragma,
+        preserve_whitespace,
+        flatten,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn extract_inputs<'a>(
+    inputs: impl IndexedParallelIterator<Item = Result<Cow<'a, ExtractSourceInput>>>,
+    id_interpolation_pattern: Option<&str>,
+    extract_source_location: bool,
+    additional_component_names: &[String],
+    additional_function_names: &[String],
+    throws: bool,
+    pragma: Option<&str>,
+    preserve_whitespace: bool,
+    flatten: bool,
+) -> Result<ExtractSourcesResult> {
     let component_names = build_component_names(additional_component_names);
     let function_names = build_function_names(additional_function_names);
     let id_generator = id_interpolation_pattern.map(IdGenerator::new).transpose()?;
 
-    let files = sources
-        .par_iter()
+    let files = inputs
         .map(|input| {
+            let input = input?;
             let path = Path::new(&input.filename);
             let meta = pragma
                 .map(|pragma| extract_pragma(&input.source, pragma))

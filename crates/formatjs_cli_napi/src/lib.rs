@@ -195,6 +195,29 @@ pub fn extract_sources(
 }
 
 #[napi]
+pub fn extract_files(
+    filenames: Vec<String>,
+    opts: Option<ExtractOptions>,
+) -> napi::Result<String> {
+    let opts = opts.unwrap_or_default();
+    let additional_component_names = opts.additional_component_names.unwrap_or_default();
+    let additional_function_names = opts.additional_function_names.unwrap_or_default();
+    let result = cli_extract::extract_files(
+        &filenames,
+        Some(opts.id_interpolation_pattern.as_deref().unwrap_or("[sha1:contenthash:base64:6]")),
+        opts.extract_source_location.unwrap_or(false),
+        &additional_component_names,
+        &additional_function_names,
+        opts.throws.unwrap_or(false),
+        opts.pragma.as_deref(),
+        opts.preserve_whitespace.unwrap_or(false),
+        opts.flatten.unwrap_or(false),
+    )
+    .map_err(to_napi_error)?;
+    serde_json::to_string(&result).map_err(to_napi_error)
+}
+
+#[napi]
 pub fn generate_id(
     pattern: String,
     default_message: Option<String>,
