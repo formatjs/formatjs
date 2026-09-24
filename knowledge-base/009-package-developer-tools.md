@@ -79,6 +79,9 @@ Emoji detection imports Unicode data through its ESM `.mjs` entry points.
 Unicode 2.0.7 removed the old `.js` files. `:package_load_test` loads the
 assembled plugin through its public package import and runs `no-emoji` in ESLint.
 
+`prefer-formatted-message` autofixes verified `useIntl()` JSX children, including
+fragments. It manages component imports and preserves hook calls.
+
 **Peer dep:** `eslint@9 || 10`
 
 `enforce-default-message` accepts `literal` (require a static message) or
