@@ -287,10 +287,12 @@ pub fn extract_to_string(
                 }
             }
             Err(e) => {
-                let err_msg = format!("Error in {}: {}", file_path.display(), e);
-                if throws {
-                    anyhow::bail!(err_msg);
+                // A failed read makes the catalog incomplete, even in best-effort mode.
+                if throws || e.is::<io::Error>() {
+                    return Err(e)
+                        .with_context(|| format!("Error in {}", file_path.display()));
                 }
+                let err_msg = format!("Error in {}: {}", file_path.display(), e);
                 eprintln!("{}", err_msg);
                 errors.push(err_msg);
             }
@@ -2431,6 +2433,59 @@ const msg = defineMessage({
             json["valid.message2"]["defaultMessage"],
             "This is another valid message"
         );
+    }
+
+    #[test]
+    fn test_extract_read_errors_preserve_catalog() {
+        for throws in [false, true] {
+            for existing_output in [false, true] {
+                let temp_dir = tempfile::tempdir().unwrap();
+                let valid_file = temp_dir.path().join("valid.ts");
+                let unreadable_file = temp_dir.path().join("unreadable.ts");
+                let output_file = temp_dir.path().join("messages.json");
+                let previous_catalog = b"{\"previous\":\"Keep this catalog\"}\n";
+                fs::write(
+                    &valid_file,
+                    "defineMessage({id: 'valid', defaultMessage: 'Valid'})",
+                )
+                .unwrap();
+                // Invalid UTF-8 makes read_to_string fail on every platform,
+                // without changing process limits or relying on permissions.
+                fs::write(&unreadable_file, [0xff]).unwrap();
+                if existing_output {
+                    fs::write(&output_file, previous_catalog).unwrap();
+                }
+
+                let error = extract(
+                    &[valid_file, unreadable_file.clone()],
+                    None,
+                    None,
+                    Some(&output_file),
+                    "[sha512:contenthash:base64:6]",
+                    false,
+                    &[],
+                    &[],
+                    &[],
+                    throws,
+                    None,
+                    false,
+                    false,
+                    true,
+                )
+                .expect_err("Input read errors must fail extraction even without --throws");
+
+                assert!(format!("{error:#}").contains(&unreadable_file.display().to_string()));
+                assert_eq!(
+                    error.downcast_ref::<io::Error>().unwrap().kind(),
+                    io::ErrorKind::InvalidData
+                );
+                if existing_output {
+                    assert_eq!(fs::read(&output_file).unwrap(), previous_catalog);
+                } else {
+                    assert!(!output_file.exists());
+                }
+            }
+        }
     }
 
     #[test]

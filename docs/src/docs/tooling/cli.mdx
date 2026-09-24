@@ -406,7 +406,7 @@ List of glob paths to **not** extract translations from.
 
 Whether to throw an exception when we fail to resolve, traverse, or process any file in the batch.
 
-The Node.js CLI always fails on input read errors, including `EMFILE`, and leaves
+Both CLIs always fail on input read errors, including `EMFILE`, and leave
 an existing output catalog unchanged. `--throws` also makes message-processing
 errors fatal. Without it, valid messages from readable files are retained.
 
