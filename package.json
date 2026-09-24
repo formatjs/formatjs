@@ -71,7 +71,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@rspack/core": "^2.0.0",
-    "@stylexjs/stylex": "0.19.0",
+    "@stylexjs/stylex": "0.19.1",
     "@stylexjs/unplugin": "0.19.0",
     "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^7.0.0",
@@ -164,7 +164,7 @@
     "rehype-slug": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
-    "rolldown": "1.2.8",
+    "rolldown": "1.2.9",
     "rolldown-plugin-dts": "^0.28.0",
     "rollup": "^4.40.0",
     "semver": "^7.8.1",
@@ -196,5 +196,5 @@
       "version": ">= 18.x"
     }
   },
-  "packageManager": "pnpm@12.4.1"
+  "packageManager": "pnpm@12.4.2"
 }
