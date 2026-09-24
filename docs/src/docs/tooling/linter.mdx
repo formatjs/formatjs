@@ -908,6 +908,22 @@ Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if 
 
 Consistent coding style in JSX and less syntax clutter.
 
+#### Autofix
+
+`--fix` converts direct JSX children (including fragments) when the formatter
+comes from a local `const` binding to React Intl's `useIntl()`. It supports
+destructured message formatters, reuses unshadowed `FormattedMessage` imports,
+and adds an import alias when needed to avoid name collisions. Message
+properties and the values argument stay as JavaScript expressions.
+
+Fixes require an inline descriptor containing only `id`, `defaultMessage`,
+and `description`. Calls with options, optional chaining, type arguments,
+descriptor spreads/computed keys/accessors, or comments remain report-only.
+Unverified formatter bindings (including standalone `createIntl` instances)
+also remain report-only because their configuration may differ from the React
+provider. Existing `useIntl` calls and bindings are retained to preserve hook
+ordering; unused bindings can be cleaned up separately.
+
 ### `prefer-full-sentence`
 
 Messages should be self-contained, full sentences. Leading or trailing whitespace in a message suggests it is a fragment being concatenated with other strings, which is an anti-pattern for localization. Placeholders joined directly to words, such as `{count}day`, also fail because units and spacing vary by locale.
