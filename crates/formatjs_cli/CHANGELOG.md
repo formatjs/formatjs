@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.5](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.4...formatjs_cli_v1.7.5) (2026-09-24)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** prevent partial catalogs after read failures ([#7497](https://github.com/formatjs/formatjs/issues/7497)) ([a88ac15](https://github.com/formatjs/formatjs/commit/a88ac1530f308cb4ca11189f5f744228db9a0be1))
+* **deps:** update oxc to 0.150 ([#7483](https://github.com/formatjs/formatjs/issues/7483)) ([25ba670](https://github.com/formatjs/formatjs/commit/25ba670ddc1c29f0c0079b261e772fdabfbb3dd3))
+* **deps:** update ruff to v0.16.8 ([#7502](https://github.com/formatjs/formatjs/issues/7502)) ([0a41614](https://github.com/formatjs/formatjs/commit/0a41614f378ef3e37cf0ddf07213e5898e1d42a7))
+
 ## [1.7.4](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.3...formatjs_cli_v1.7.4) (2026-09-19)
 
 

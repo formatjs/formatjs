@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.3.10...@formatjs/intl-supportedvaluesof@2.3.11) (2026-09-24)
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.150 ([#7483](https://github.com/formatjs/formatjs/issues/7483)) ([25ba670](https://github.com/formatjs/formatjs/commit/25ba670ddc1c29f0c0079b261e772fdabfbb3dd3))
+
 ## 2.3.10 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
