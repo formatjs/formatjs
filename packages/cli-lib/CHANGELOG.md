@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.0.7...@formatjs/cli-lib@10.0.8) (2026-09-24)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** prevent partial catalogs after read failures ([#7497](https://github.com/formatjs/formatjs/issues/7497)) ([a88ac15](https://github.com/formatjs/formatjs/commit/a88ac1530f308cb4ca11189f5f744228db9a0be1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.26
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.26
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.24
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.26
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.24
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.27
+
 ## [10.0.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.0.6...@formatjs/cli-lib@10.0.7) (2026-09-19)
 
 

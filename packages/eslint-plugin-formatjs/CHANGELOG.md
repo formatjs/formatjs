@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.5...eslint-plugin-formatjs@8.1.0) (2026-09-24)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** autofix prefer-formatted-message ([#7498](https://github.com/formatjs/formatjs/issues/7498)) ([5ccbc3a](https://github.com/formatjs/formatjs/commit/5ccbc3a67ce94d5ab2dd55257bf83f24eedd2b72))
+
 ## [8.0.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.4...eslint-plugin-formatjs@8.0.5) (2026-09-19)
 
 
