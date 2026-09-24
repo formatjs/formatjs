@@ -557,7 +557,7 @@ importers:
         version: 2.2.0
       lucide-react:
         specifier: ^1.0.0
-        version: 1.46.0(react@19.3.0)
+        version: 1.47.0(react@19.3.0)
       magic-string:
         specifier: ^1.0.0
         version: 1.4.1
@@ -2575,9 +2575,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@oxc-project/types@0.149.0':
-    resolution: {integrity: sha512-Efcc+iF0j3Bf67YjEqIqWXbX5XddXoK/Mw4K1/JuXwRCZ8N16VR7iT23nlCc9XrveFVh/E5Rqs2StT0V8v9LdA==}
-
   '@oxc-project/types@0.150.0':
     resolution: {integrity: sha512-rDS5/31E9HfPl/CIzGrn0DOlvBbXFseQ5URJ9sYMfstbKLD/c6Gm9vmRzRGDdAXyOIL4zmO37lc9RIwYqVruZw==}
 
@@ -3659,9 +3656,6 @@ packages:
 
   '@stylexjs/shared@0.19.1':
     resolution: {integrity: sha512-oFBtW0NPNLJOT1gLweWRNKrIJHjJMwOmSV7fgd6ewok4fwb/Nh95PEaYGKu+ZONk0nNghjLFfOwiIsxJdvh3TQ==}
-
-  '@stylexjs/stylex@0.19.0':
-    resolution: {integrity: sha512-CnUFp7YMaDLDeemsWOfJgoC/gKM5P/yBNMcpJaE6ChJmXr7s0DJwSeGTTlHJcqqwN9OW1qGtmARWLFhGZN1pTA==}
 
   '@stylexjs/stylex@0.19.1':
     resolution: {integrity: sha512-JwNFm0MOYPqi+M4Ax5Un4ZxfZp4HEAX2sAWetZ88KALFcv1eEiHNJs75oO3V3U7RVWnzfkiM8i9eBowC3hqgUw==}
@@ -6236,8 +6230,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-react@1.46.0:
-    resolution: {integrity: sha512-Bv+FZXgZPrxc/NCl1e7JJVQFLdiCxYgxNVhqoV7X0p6I8ADJo8DxBnK1auH0fZz4AmqOJ3jgneL4f1i8LJQRAA==}
+  lucide-react@1.47.0:
+    resolution: {integrity: sha512-o8C23aXpNQypRY73W7fW02EyvWJinEMXgKeGjFoKym0zj3Q73hD97A1IQps1g8C14HTGsOpZL0Am+xjfgFZAbg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -9600,8 +9594,6 @@ snapshots:
   '@oxc-parser/binding-win32-x64-msvc@0.150.0':
     optional: true
 
-  '@oxc-project/types@0.149.0': {}
-
   '@oxc-project/types@0.150.0': {}
 
   '@oxc-transform/binding-android-arm-eabi@0.150.0':
@@ -10353,12 +10345,6 @@ snapshots:
       - supports-color
 
   '@stylexjs/shared@0.19.1': {}
-
-  '@stylexjs/stylex@0.19.0':
-    dependencies:
-      css-mediaquery: 0.1.2
-      invariant: 2.2.4
-      styleq: 0.2.1
 
   '@stylexjs/stylex@0.19.1':
     dependencies:
@@ -13122,7 +13108,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@1.46.0(react@19.3.0):
+  lucide-react@1.47.0(react@19.3.0):
     dependencies:
       react: 19.3.0
 
