@@ -406,6 +406,14 @@ List of glob paths to **not** extract translations from.
 
 Whether to throw an exception when we fail to resolve, traverse, or process any file in the batch.
 
+Both CLIs always fail on input read errors, including `EMFILE`, and leave
+an existing output catalog unchanged. `--throws` also makes message-processing
+errors fatal. Without it, valid messages from readable files are retained.
+
+Node.js extraction bounds concurrent file reads to the available CPU count,
+matching Rayon's default. Set `RAYON_NUM_THREADS` to a positive integer to
+override this limit; zero or invalid values use the default.
+
 ### `--pragma [pragma]`
 
 Parse specific additional custom pragma. This allows you to tag certain file with metadata such as `project`. For example with this file:

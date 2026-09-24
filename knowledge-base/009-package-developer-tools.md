@@ -115,6 +115,13 @@ overrides retain inherited options. ESLint config-merging regressions live in
 `cli-lib` has no runtime dependency on TypeScript or `@formatjs/ts-transformer`.
 The native binding is required for extraction and compilation.
 
+Node extraction limits concurrent file reads using `os.availableParallelism()`
+or a positive integer `RAYON_NUM_THREADS`, matching the Rust worker policy.
+Input read failures and cancelled reads reject regardless of `throws`, before
+output is written. Only message-processing errors retain best-effort behavior.
+`tests/unit/extract-concurrency.test.ts` simulates descriptor exhaustion and
+checks that failed reads preserve an existing catalog or leave output absent.
+
 **Pseudo-locale generation:** Creates fake translations for testing (XxLs, XxAc, XxHa, EnXa, EnXb)
 
 **Engines:** Node >= 20.12.0
@@ -132,6 +139,12 @@ The native binding is required for extraction and compilation.
 - `formatjs compile-folder` — Batch compile a directory
 
 The Rust CLI (`crates/formatjs_cli/`) is a 20.90x faster drop-in replacement in the checked-in extraction benchmark, with parallelized catalog parsing for large compile and structural verify workloads.
+
+Rust extraction propagates input read errors, including invalid UTF-8 and
+`EMFILE`, regardless of `--throws`. It preserves the underlying `io::Error` and
+fails before writing output. Readable files with message-processing errors
+still support best-effort extraction. `test_extract_read_errors_preserve_catalog`
+covers a real read failure with and without an existing output catalog.
 
 Empty string descriptions do not contribute to generated message ID hashes, matching the TypeScript transformer. Keep `description: ""` in extracted catalogs. Regression coverage lives in the Rust ID generator and CLI/unplugin conformance tests.
 

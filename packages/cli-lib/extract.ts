@@ -7,6 +7,7 @@ import {
 } from '#packages/cli-lib/console_utils.js'
 import * as stringifyNs from 'json-stable-stringify'
 import {extname} from 'path'
+import {availableParallelism} from 'os'
 
 import {
   type Formatter,
@@ -284,6 +285,40 @@ async function processFile(source: string, fn: string, opts: ExtractOpts) {
   return {messages, meta}
 }
 
+// Match Rayon's default worker count and explicit thread override.
+function fileReadConcurrency(): number {
+  const value = process.env.RAYON_NUM_THREADS || ''
+  const threads = /^\+?\d+$/.test(value) ? Number(value) : 0
+  return Number.isSafeInteger(threads) && threads > 0
+    ? threads
+    : availableParallelism()
+}
+
+async function mapWithConcurrencyLimit<T, R>(
+  items: readonly T[],
+  limit: number,
+  task: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = []
+  let nextIndex = 0
+  let failed = false
+  async function worker(): Promise<void> {
+    while (!failed && nextIndex < items.length) {
+      const index = nextIndex++
+      try {
+        results[index] = await task(items[index])
+      } catch (error) {
+        failed = true
+        throw error
+      }
+    }
+  }
+  await Promise.all(
+    Array.from({length: Math.min(limit, items.length)}, () => worker())
+  )
+  return results
+}
+
 /**
  * Extract strings from source files
  * @param files list of files
@@ -296,7 +331,7 @@ export async function extract(
   extractOpts: ExtractOpts
 ): Promise<string> {
   const {throws, readFromStdin, signal, ...opts} = extractOpts
-  // When throws is not explicitly true, we want to collect partial results
+  // Message errors may be skipped; input read failures are always fatal.
   const shouldThrow = throws === true
   // Pass throws option to transformer for per-message error handling
   const optsWithThrows = {
@@ -309,50 +344,34 @@ export async function extract(
       : undefined,
   }
 
-  let rawResults: Array<ExtractionResult | undefined> = []
-  try {
-    if (readFromStdin) {
-      debug(`Reading input from stdin`)
-      // Read from stdin
-      if (process.stdin.isTTY) {
-        warn('Reading source file from TTY.')
-      }
-      const stdinSource = await getStdinAsString()
-      rawResults = [await processFile(stdinSource, 'dummy.ts', optsWithThrows)]
-    } else {
-      // Use Promise.allSettled when throws is not explicitly true to collect partial results
-      if (!shouldThrow) {
-        const settledResults = await Promise.allSettled(
-          files.map(async fn => {
-            debug('Extracting file:', fn)
-            const source = await readFile(fn, {encoding: 'utf8', signal})
-            return processFile(source, fn, optsWithThrows)
-          })
-        )
-        rawResults = settledResults.map(result => {
-          if (result.status === 'fulfilled') {
-            return result.value
-          } else {
-            warn(String(result.reason))
-            return undefined
-          }
-        })
-      } else {
-        rawResults = await Promise.all(
-          files.map(async fn => {
-            debug('Extracting file:', fn)
-            const source = await readFile(fn, {encoding: 'utf8', signal})
-            return processFile(source, fn, optsWithThrows)
-          })
-        )
-      }
+  async function processSource(source: string, filename: string) {
+    try {
+      return await processFile(source, filename, optsWithThrows)
+    } catch (error) {
+      if (shouldThrow) throw error
+      warn(String(error))
+      return undefined
     }
-  } catch (e) {
-    if (shouldThrow) {
-      throw e
-    } else {
-      warn(String(e))
+  }
+
+  let rawResults: Array<ExtractionResult | undefined>
+  if (readFromStdin) {
+    debug('Reading input from stdin')
+    if (process.stdin.isTTY) {
+      warn('Reading source file from TTY.')
     }
+    const source = await getStdinAsString()
+    rawResults = [await processSource(source, 'dummy.ts')]
+  } else {
+    rawResults = await mapWithConcurrencyLimit(
+      files,
+      fileReadConcurrency(),
+      async filename => {
+        debug('Extracting file:', filename)
+        const source = await readFile(filename, {encoding: 'utf8', signal})
+        return processSource(source, filename)
+      }
+    )
   }
 
   const formatter: Formatter<unknown> = await resolveBuiltinFormatter(
