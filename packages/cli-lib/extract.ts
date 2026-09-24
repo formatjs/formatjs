@@ -14,7 +14,6 @@ import {
   resolveBuiltinFormatter,
 } from '#packages/cli-lib/formatters/index.js'
 import {
-  extractFilesWithNative,
   extractSourcesWithNative,
   generateIdWithNative,
   type NativeMessageDescriptor,
@@ -286,35 +285,6 @@ async function processFile(source: string, fn: string, opts: ExtractOpts) {
   return {messages, meta}
 }
 
-function canExtractFilesWithNative(
-  files: readonly string[],
-  opts: ExtractOpts
-): boolean {
-  return (
-    files.length > 0 &&
-    !opts.readFromStdin &&
-    !opts.signal &&
-    !opts.extractSourceLocation &&
-    !opts.onMsgExtracted &&
-    !opts.onMetaExtracted &&
-    !opts.onMsgError &&
-    typeof opts.overrideIdFn !== 'function' &&
-    files.every(filename =>
-      [
-        '.cjs',
-        '.cts',
-        '.js',
-        '.jsx',
-        '.mjs',
-        '.mts',
-        '.rs',
-        '.ts',
-        '.tsx',
-      ].includes(extname(filename))
-    )
-  )
-}
-
 // Match Rayon's default worker count and explicit thread override.
 function fileReadConcurrency(): number {
   const value = process.env.RAYON_NUM_THREADS || ''
@@ -385,33 +355,7 @@ export async function extract(
   }
 
   let rawResults: Array<ExtractionResult | undefined>
-  if (canExtractFilesWithNative(files, extractOpts)) {
-    const result = extractFilesWithNative(files, {
-      additionalComponentNames: [
-        '$formatMessage',
-        ...(opts.additionalComponentNames || []),
-      ],
-      additionalFunctionNames: opts.additionalFunctionNames,
-      idInterpolationPattern:
-        typeof opts.overrideIdFn === 'string'
-          ? opts.overrideIdFn
-          : optsWithThrows.idInterpolationPattern,
-      pragma: opts.pragma,
-      preserveWhitespace: opts.preserveWhitespace,
-      flatten: opts.flatten,
-      throws: shouldThrow,
-    })
-    rawResults = result.files.map(file => {
-      for (const error of file.errors || []) warn(error)
-      return {
-        messages: file.messages.map(message => ({
-          ...applyOverrideId(message, file.filename, opts.overrideIdFn),
-          ...(file.meta ? {meta: file.meta} : {}),
-        })),
-        meta: file.meta,
-      }
-    })
-  } else if (readFromStdin) {
+  if (readFromStdin) {
     debug('Reading input from stdin')
     if (process.stdin.isTTY) {
       warn('Reading source file from TTY.')

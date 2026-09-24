@@ -60,9 +60,7 @@ describe('extract file reads', () => {
       return `defineMessage({id: 'message.${id}', defaultMessage: 'Message ${id}'})`
     })
 
-    const result = JSON.parse(
-      await extract(files, {signal: new AbortController().signal})
-    )
+    const result = JSON.parse(await extract(files, {}))
 
     expect(maxInFlight).toBe(limit)
     expect(Object.keys(result)).toHaveLength(files.length)
@@ -97,11 +95,7 @@ describe('extract file reads', () => {
       )
 
       await expect(
-        extractAndWrite([good, bad], {
-          outFile,
-          throws,
-          signal: new AbortController().signal,
-        })
+        extractAndWrite([good, bad], {outFile, throws})
       ).rejects.toBe(error)
       expect(await actualFs.readFile(outFile, 'utf8')).toBe(previousCatalog)
     }
@@ -110,10 +104,7 @@ describe('extract file reads', () => {
   it('does not create output when an input cannot be read', async () => {
     const outFile = join(tempDir, 'messages.json')
     await expect(
-      extractAndWrite([join(tempDir, 'missing.ts')], {
-        outFile,
-        signal: new AbortController().signal,
-      })
+      extractAndWrite([join(tempDir, 'missing.ts')], {outFile})
     ).rejects.toMatchObject({code: 'ENOENT'})
     await expect(actualFs.stat(outFile)).rejects.toMatchObject({code: 'ENOENT'})
   })
@@ -126,9 +117,7 @@ describe('extract file reads', () => {
         await new Promise(resolve => setTimeout(resolve, 10))
       return `defineMessage({id: 'duplicate', defaultMessage: '${file}'})`
     })
-    expect(
-      JSON.parse(await extract(files, {signal: new AbortController().signal}))
-    ).toEqual({
+    expect(JSON.parse(await extract(files, {}))).toEqual({
       duplicate: {defaultMessage: 'last.ts'},
     })
   })
