@@ -908,6 +908,10 @@ Use `<FormattedMessage>` instead of the imperative `intl.formatMessage(...)` if 
 
 Consistent coding style in JSX and less syntax clutter.
 
+`--fix` converts direct JSX children from `useIntl()` bindings and manages
+`FormattedMessage` imports. Only plain inline descriptors are fixed; unsafe
+cases remain report-only. Hook calls are retained.
+
 ### `prefer-full-sentence`
 
 Messages should be self-contained, full sentences. Leading or trailing whitespace in a message suggests it is a fragment being concatenated with other strings, which is an anti-pattern for localization. Placeholders joined directly to words, such as `{count}day`, also fail because units and spacing vary by locale.
