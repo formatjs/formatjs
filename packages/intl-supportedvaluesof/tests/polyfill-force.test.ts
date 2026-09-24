@@ -3,10 +3,14 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 describe('Intl.supportedValuesOf polyfill-force', () => {
   let intlDescriptor: PropertyDescriptor | undefined
 
-  beforeEach(() => {
+  beforeEach(async () => {
     intlDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'Intl')
     vi.resetModules()
-  })
+    Reflect.deleteProperty(globalThis, 'Intl')
+
+    // Cold CLDR imports can exceed the default test timeout on CI.
+    await import('#packages/intl-supportedvaluesof/polyfill-force.js')
+  }, 30_000)
 
   afterEach(() => {
     vi.resetModules()
@@ -17,11 +21,7 @@ describe('Intl.supportedValuesOf polyfill-force', () => {
     }
   })
 
-  it('installs into a missing Intl global', async () => {
-    Reflect.deleteProperty(globalThis, 'Intl')
-
-    await import('#packages/intl-supportedvaluesof/polyfill-force.js')
-
+  it('installs into a missing Intl global', () => {
     expect(globalThis.Intl).toBeDefined()
     expect(
       Object.getOwnPropertyDescriptor(globalThis.Intl, 'supportedValuesOf')
