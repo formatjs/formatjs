@@ -285,6 +285,46 @@ async function processFile(source: string, fn: string, opts: ExtractOpts) {
 }
 
 /**
+ * Maximum number of source files read concurrently during extraction.
+ * Bounding this prevents exhausting the process file-descriptor limit
+ * (EMFILE) on large input sets, which previously produced a silently
+ * truncated catalog.
+ * https://github.com/formatjs/formatjs/issues/7492
+ */
+export const MAX_CONCURRENT_FILE_READS = 100
+
+/**
+ * Runs `task` over `items` with at most `limit` concurrent executions and
+ * returns per-item settled results in input order.
+ */
+export async function mapWithConcurrencyLimit<T, R>(
+  items: readonly T[],
+  limit: number,
+  task: (item: T, index: number) => Promise<R>
+): Promise<Array<PromiseSettledResult<R>>> {
+  const results: Array<PromiseSettledResult<R>> = Array.from({
+    length: items.length,
+  })
+  let nextIndex = 0
+  async function worker(): Promise<void> {
+    while (nextIndex < items.length) {
+      const index = nextIndex++
+      try {
+        results[index] = {
+          status: 'fulfilled',
+          value: await task(items[index], index),
+        }
+      } catch (reason) {
+        results[index] = {status: 'rejected', reason}
+      }
+    }
+  }
+  const workerCount = Math.min(limit, items.length)
+  await Promise.all(Array.from({length: workerCount}, () => worker()))
+  return results
+}
+
+/**
  * Extract strings from source files
  * @param files list of files
  * @param extractOpts extract options
@@ -320,14 +360,21 @@ export async function extract(
       const stdinSource = await getStdinAsString()
       rawResults = [await processFile(stdinSource, 'dummy.ts', optsWithThrows)]
     } else {
-      // Use Promise.allSettled when throws is not explicitly true to collect partial results
+      // File reads are bounded to a fixed concurrency so that large input
+      // sets don't exhaust the process file-descriptor limit (EMFILE), which
+      // previously produced a silently truncated catalog.
+      // https://github.com/formatjs/formatjs/issues/7492
+      // Use settled results when throws is not explicitly true to collect
+      // partial results.
       if (!shouldThrow) {
-        const settledResults = await Promise.allSettled(
-          files.map(async fn => {
+        const settledResults = await mapWithConcurrencyLimit(
+          files,
+          MAX_CONCURRENT_FILE_READS,
+          async fn => {
             debug('Extracting file:', fn)
             const source = await readFile(fn, {encoding: 'utf8', signal})
             return processFile(source, fn, optsWithThrows)
-          })
+          }
         )
         rawResults = settledResults.map(result => {
           if (result.status === 'fulfilled') {
@@ -338,13 +385,21 @@ export async function extract(
           }
         })
       } else {
-        rawResults = await Promise.all(
-          files.map(async fn => {
+        const settledResults = await mapWithConcurrencyLimit(
+          files,
+          MAX_CONCURRENT_FILE_READS,
+          async fn => {
             debug('Extracting file:', fn)
             const source = await readFile(fn, {encoding: 'utf8', signal})
             return processFile(source, fn, optsWithThrows)
-          })
+          }
         )
+        rawResults = settledResults.map(result => {
+          if (result.status === 'rejected') {
+            throw result.reason
+          }
+          return result.value
+        })
       }
     }
   } catch (e) {
