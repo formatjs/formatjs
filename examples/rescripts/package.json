@@ -24,7 +24,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "babel-plugin-react-require": "4.0.3",
-    "eslint": "10.10.0",
+    "eslint": "10.11.0",
     "typescript": "7.0.2"
   },
   "browserslist": [
