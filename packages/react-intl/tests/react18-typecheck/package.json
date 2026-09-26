@@ -7,8 +7,8 @@
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.19",
-    "@formatjs/intl": "4.2.1",
-    "intl-messageformat": "11.2.15",
+    "@formatjs/intl": "6.1.1",
+    "intl-messageformat": "12.1.1",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
