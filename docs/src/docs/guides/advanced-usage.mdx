@@ -20,12 +20,12 @@ You can also pre-compile all messages into `AST` using [`@formatjs/cli`](/docs/t
 
 Precompiling skips runtime parsing but does not remove the parser from your bundle. After precompiling all messages and `defaultMessage`s, alias `@formatjs/icu-messageformat-parser` to `@formatjs/icu-messageformat-parser/no-parser.js`. This keeps AST formatting and throws if parsing is needed.
 
-### Next.js (Turbopack)
+### vite.config.js
 
 ```js
 export default {
-  turbopack: {
-    resolveAlias: {
+  resolve: {
+    alias: {
       '@formatjs/icu-messageformat-parser':
         '@formatjs/icu-messageformat-parser/no-parser.js',
     },
