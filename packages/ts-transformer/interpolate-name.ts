@@ -101,36 +101,58 @@ export function interpolateName(
     }
   }
 
-  let url = filename
+  const regExpMatch =
+    regExp && loaderContext.resourcePath
+      ? loaderContext.resourcePath.match(new RegExp(regExp))
+      : null
 
-  if (content) {
-    // Match hash template
-    url = url
+  // Substitute every placeholder in a single pass so that substituted values
+  // (such as file paths) are never interpolated again.
+  let url = filename.replace(/\[([^[\]]*)\]/g, (placeholder, token: string) => {
+    if (content) {
       // `hash` and `contenthash` are same in `loader-utils` context
       // let's keep `hash` for backward compatibility
-      .replace(
-        /\[(?:([^:\]]+):)?(?:hash|contenthash)(?::([a-z]+\d*[a-z]*))?(?::(\d+))?\]/gi,
-        (_, hashType, digestType, maxLength) =>
-          getHashDigest(content, hashType, digestType, parseInt(maxLength, 10))
-      )
-  }
-
-  url = url
-    .replace(/\[ext\]/gi, () => ext)
-    .replace(/\[name\]/gi, () => basename)
-    .replace(/\[path\]/gi, () => directory)
-    .replace(/\[folder\]/gi, () => folder)
-    .replace(/\[query\]/gi, () => query)
-
-  if (regExp && loaderContext.resourcePath) {
-    const match = loaderContext.resourcePath.match(new RegExp(regExp))
-
-    if (match) {
-      match.forEach((matched, i) => {
-        url = url.replace(new RegExp('\\[' + i + '\\]', 'ig'), matched)
-      })
+      const hashMatch =
+        /^(?:([^:]+):)?(?:hash|contenthash)(?::([a-z]+\d*[a-z]*))?(?::(\d+))?$/i.exec(
+          token
+        )
+      if (hashMatch) {
+        const [, hashType, digestType, maxLength] = hashMatch
+        return getHashDigest(
+          content,
+          hashType,
+          digestType as BinaryToTextEncoding,
+          parseInt(maxLength, 10)
+        )
+      }
     }
-  }
+
+    switch (token.toLowerCase()) {
+      case 'ext':
+        return ext
+      case 'name':
+        return basename
+      case 'path':
+        return directory
+      case 'folder':
+        return folder
+      case 'query':
+        return query
+    }
+
+    const index = Number(token)
+    if (
+      regExpMatch &&
+      Number.isInteger(index) &&
+      index >= 0 &&
+      String(index) === token &&
+      index < regExpMatch.length
+    ) {
+      return regExpMatch[index]
+    }
+
+    return placeholder
+  })
 
   if (
     typeof loaderContext.options === 'object' &&
