@@ -530,7 +530,7 @@ importers:
         version: 5.11.1
       fs-extra:
         specifier: ^11.3.3
-        version: 11.4.0
+        version: 11.4.1
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -798,7 +798,7 @@ importers:
         version: 3.3.3
       fs-extra:
         specifier: '11'
-        version: 11.4.0
+        version: 11.4.1
       json-stable-stringify:
         specifier: '1'
         version: 1.3.0
@@ -5352,8 +5352,8 @@ packages:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
 
-  fs-extra@11.4.0:
-    resolution: {integrity: sha512-EQsFzMUJkCKGr1ePqlYADkIUmHW1s3ZXr5Yqy6wbGrfUCphpl2maM/kyOIRA2HpP3AaFQTZXD4ldjek+nccddA==}
+  fs-extra@11.4.1:
+    resolution: {integrity: sha512-KYAb4c9BJQI6QqGKthV68OHe0badztdXJWKo0WtBA9IuCFPTKvE5ZdUBglP833aMjhaSPNO4A5j/EkzZtGlKjA==}
     engines: {node: '>=14.14'}
 
   fs.realpath@1.0.0:
@@ -12022,7 +12022,7 @@ snapshots:
 
   format@0.2.2: {}
 
-  fs-extra@11.4.0:
+  fs-extra@11.4.1:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.2.1
