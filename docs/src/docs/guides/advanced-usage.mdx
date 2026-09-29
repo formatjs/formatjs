@@ -16,9 +16,22 @@ You can also pre-compile all messages into `AST` using [`@formatjs/cli`](/docs/t
   be efficiently compressed.
 </Admonition>
 
-## `react-intl` without parser (40% smaller)
+## `react-intl` without parser
 
-If you've made sure all your messages & `defaultMessage`s are precompiled as above, you can resolve `@formatjs/icu-messageformat-parser` to `@formatjs/icu-messageformat-parser/no-parser` during bundling to get a much smaller bundler (~40% less). For example:
+Precompiling skips runtime parsing but does not remove the parser from your bundle. After precompiling all messages and `defaultMessage`s, alias `@formatjs/icu-messageformat-parser` to `@formatjs/icu-messageformat-parser/no-parser.js`. This keeps AST formatting and throws if parsing is needed.
+
+### Next.js (Turbopack)
+
+```js
+export default {
+  turbopack: {
+    resolveAlias: {
+      '@formatjs/icu-messageformat-parser':
+        '@formatjs/icu-messageformat-parser/no-parser.js',
+    },
+  },
+}
+```
 
 ### webpack.config.js
 

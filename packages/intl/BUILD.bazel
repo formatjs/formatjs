@@ -3,6 +3,18 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+formatjs_test(
+    name = "no_parser_bundle_test",
+    size = "small",
+    data = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/rolldown",
+    ],
+    entry_point = "tests/no-parser-bundle.mjs",
+)
+
 PACKAGE_NAME = "intl"
 
 ENTRY_POINTS = [
