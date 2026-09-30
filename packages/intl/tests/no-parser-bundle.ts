@@ -75,7 +75,7 @@ for (const withoutParser of [false, true]) {
     const intl = createIntl({
       locale: 'en',
       messages: {greeting: message},
-      onError(error) {
+      onError(error: unknown) {
         throw error
       },
     })
