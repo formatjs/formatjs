@@ -22,4 +22,27 @@ describe('interpolateName', function () {
       })
     ).toBe(hasher.digest('base64url').slice(0, 6))
   })
+  it('should not interpolate placeholders inside the resource path', function () {
+    expect(
+      interpolateName({resourcePath: 'src/[path].tsx'}, '[name]', {
+        content: 'foo',
+      })
+    ).toBe('[path]')
+  })
+  it('should interpolate placeholders inside unmatched brackets', function () {
+    expect(
+      interpolateName({resourcePath: 'src/a.ts'}, '[[name]] [x[ext]', {
+        content: 'foo',
+      })
+    ).toBe('[a] [xts')
+  })
+  it('should only interpolate valid regExp group indexes', function () {
+    expect(
+      interpolateName(
+        {resourcePath: 'src/a.ts'},
+        '[0]-[1]-[2]-[-1]-[1.5]-[01]',
+        {content: 'foo', regExp: /(a)/}
+      )
+    ).toBe('a-a-[2]-[-1]-[1.5]-[01]')
+  })
 })
