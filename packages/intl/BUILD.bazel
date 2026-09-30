@@ -3,6 +3,18 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+formatjs_test(
+    name = "no_parser_bundle_test",
+    size = "small",
+    data = [
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@formatjs/intl",
+        "//:node_modules/intl-messageformat",
+        "//:node_modules/rolldown",
+    ],
+    entry_point = "tests/no-parser-bundle.ts",
+)
+
 PACKAGE_NAME = "intl"
 
 ENTRY_POINTS = [
@@ -89,15 +101,19 @@ formatjs_test(
         "tests/formatPlural.test.ts",
         "tests/formatRelativeTime.test.ts",
         "tests/formatTime.test.ts",
+        "tests/no-parser-bundle.ts",
         "tests/typed-message.test.ts",
     ],
     no_copy_to_bin = ["//:package.json"],
     snapshots = glob(["tests/__snapshots__/*.snap"]),
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
     deps = [
         ":intl",
         "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//:node_modules/@types/node",
         "//:node_modules/intl-messageformat",
+        "//:node_modules/rolldown",
         "//:node_modules/vitest",
     ],
 )
