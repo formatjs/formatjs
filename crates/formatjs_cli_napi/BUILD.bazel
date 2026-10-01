@@ -18,8 +18,17 @@ exports_files(
 )
 
 config_setting(
+    name = "linux",
+    constraint_values = [
+        "@platforms//os:linux",
+    ],
+)
+
+# Specializes :linux, so it wins over it in select().
+config_setting(
     name = "linux_musl",
     constraint_values = [
+        "@platforms//os:linux",
         "@llvm//constraints/libc:musl",
     ],
 )
@@ -34,6 +43,9 @@ rust_shared_library(
     compile_data = select({
         ":linux_musl": [
             "@llvm//runtimes/musl:musl_libc.so",
+        ],
+        ":linux": [
+            "@llvm//runtimes/libunwind:libunwind.static",
         ],
         "//conditions:default": [],
     }),
@@ -51,6 +63,11 @@ rust_shared_library(
             "-Ctarget-feature=-crt-static",
             "-Clink-arg=-Wl,-Bdynamic",
             "-Clink-arg=$(location @llvm//runtimes/musl:musl_libc.so)",
+        ],
+        # rustc's -lgcc_s resolves to the toolchain's empty stub, leaving
+        # _Unwind_* undefined; Node happens to provide them, Bun does not.
+        ":linux": [
+            "-Clink-arg=$(location @llvm//runtimes/libunwind:libunwind.static)",
         ],
         "//conditions:default": [],
     }),
