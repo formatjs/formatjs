@@ -670,8 +670,8 @@ importers:
         specifier: 7.0.2
         version: 7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0)
       typesense:
-        specifier: 3.0.6
-        version: 3.0.6(@babel/runtime@7.29.7)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
+        specifier: 3.1.0
+        version: 3.1.0(@babel/runtime@7.29.7)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       unplugin:
         specifier: ^3.3.0
         version: 3.3.0(@rspack/core@2.2.7)(esbuild@0.28.2)(rolldown@1.2.10)(rollup@4.63.5)(vite@8.3.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2))(webpack@5.111.1(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26)(uglify-js@3.19.3))
@@ -7486,9 +7486,8 @@ packages:
     engines: {node: '>=16.20.0'}
     hasBin: true
 
-  typesense@3.0.6:
-    resolution: {integrity: sha512-d3LL1qOLS8FCRxgAOqH+uDuK+VVA+/HYI1frU9fjYVwOg68mg/dX6XTtZ4yKKAkDCasB/se5uh/ZpMdOz/uJNg==}
-    engines: {node: '>=18'}
+  typesense@3.1.0:
+    resolution: {integrity: sha512-G0Pc5QVxiVS0CStHxBzK9YXCmX71BowrEhjrAhXOxSsxCNSvtKNoX1hWqfWSGxsnLbXHFBBwkIK3Cnl361DOow==}
     peerDependencies:
       '@babel/runtime': ^7.23.2
 
@@ -14755,7 +14754,7 @@ snapshots:
       '@typescript/typescript-win32-arm64': 7.0.2
       '@typescript/typescript-win32-x64': 7.0.2
 
-  typesense@3.0.6(@babel/runtime@7.29.7)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1):
+  typesense@3.1.0(@babel/runtime@7.29.7)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       '@babel/runtime': 7.29.7
       axios: 1.18.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
