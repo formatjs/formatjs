@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.7](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@13.0.6...babel-plugin-formatjs@13.0.7) (2026-10-02)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/ts-transformer bumped to 4.4.23
+
 ## [13.0.6](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@13.0.5...babel-plugin-formatjs@13.0.6) (2026-09-19)
 
 

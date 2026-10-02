@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.1.4](https://github.com/formatjs/formatjs/compare/react-intl@12.1.3...react-intl@12.1.4) (2026-10-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @formatjs/icu-messageformat-parser to v3.5.20 ([#7515](https://github.com/formatjs/formatjs/issues/7515)) ([23a04a9](https://github.com/formatjs/formatjs/commit/23a04a9022e3fc9f3985885e502b34828110ff34))
+
 ## [12.1.3](https://github.com/formatjs/formatjs/compare/react-intl@12.1.2...react-intl@12.1.3) (2026-09-24)
 
 
