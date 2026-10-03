@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.23](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.22...@formatjs/ts-transformer@4.4.23) (2026-10-02)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** interpolate ID placeholders in a single pass ([#7527](https://github.com/formatjs/formatjs/issues/7527)) ([3139c32](https://github.com/formatjs/formatjs/commit/3139c32ca17dbef0d60fd4a8daa0d5216243b5d2))
+
 ## [4.4.22](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.21...@formatjs/ts-transformer@4.4.22) (2026-09-19)
 
 
