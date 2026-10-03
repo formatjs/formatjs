@@ -324,6 +324,8 @@ If certain message descriptors don't have id, this `pattern` will be used to aut
 
 An empty string description generates the same ID as an omitted description. The extracted catalog still preserves `description: ""`.
 
+Use `[content]` to insert the unhashed content instead of a hash: the default message, followed by `#` and the description when one is present. For example, `--id-interpolation-pattern '[content]'` uses each default message as its own ID. Placeholders are expanded in a single pass, so bracketed text inside a message or file path is kept as is.
+
 ### `--extract-source-location`
 
 Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. (default: `false`)
