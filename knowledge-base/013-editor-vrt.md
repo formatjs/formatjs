@@ -104,7 +104,8 @@ Release Please updates the manifest after the release PR lands.
 
 Write native Playwright `*.spec.ts` files in `packages/editor/vrt/`. The
 runner supplies `baseURL`, so specs can use `page.goto('/')`,
-accessible locators, clicks, and web-first assertions. VRT captures are generated from the `.visual.tsx` module. Both targets use the built application. E2E, component tests, and VRT use the same declared Linux runtime in actiond; provisioning is documented in the browser setup guide.
+accessible locators, clicks, and web-first assertions. Component VRT captures come from `.visual.tsx`; E2E VRT uses native
+`toHaveScreenshot()` specs. All targets use the built application. E2E, component tests, and VRT use the same declared Linux runtime in actiond; provisioning is documented in the browser setup guide.
 
 ```sh
 bash .github/scripts/actiond-vrt.sh
@@ -112,7 +113,8 @@ bash .github/scripts/actiond-vrt.sh
 
 E2E covers editing, search, selection, copy/clear, ICU error recovery, locale
 drafts, and saving. It uses checksum-pinned Chromium and declared fixtures in a native Bazel test action on isolated Linux. Bazel retries and repeated runs launch Chromium again. See [browser setup](../packages/editor/vrt/README.md).
-CI should explicitly select both `e2e_test` and `visual_test`. Failures retain
+CI explicitly selects `e2e_test`, `component_test`, `visual_test`, and
+`e2e_visual_test`. Failures retain
 JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
 ## Component browser tests
@@ -125,20 +127,25 @@ clear, ICU validation, and isolation between mounts.
 `component_browser_test` consumes the built gallery and compiled component specs.
 E2E uses a compiled custom server adapter serving the same built app. The runtime
 selects compiled `*.browser.spec.js` separately from E2E `*.spec.js` and generated
-VRT captures. CI should explicitly run all three
-browser targets through the `Editor browser tests` workflow. Screenshot baselines and updates remain in `visual_test`.
+VRT captures. CI runs all four browser targets through the
+`Editor browser tests` workflow. Component baselines belong to `visual_test`;
+E2E baselines belong to `e2e_visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
 renderable cases, browser-side capture hooks, and VRT options. The gallery registers
-that module with `installVisualGallery`. The shared runtime generates all six
-screenshot tests; no `editor.visual.spec.ts` is maintained. Interaction tests stay
+that module with `installVisualGallery`. The shared runtime generates all eight component
+screenshot tests. `editor.visual.spec.ts` separately captures the served page
+after navigation, invalid input, recovery, and saving through native Playwright
+interactions. It uses `visual_test` from `@rules_web_e2e//vrt:defs.bzl` and owns
+`__e2e_screenshots__/`, so its `.update` cannot remove component baselines. Interaction tests stay
 in `editor.browser.spec.tsx`, and the existing PNG names remain explicit in the
 visual declarations.
 
 ## Built browser input interface
 
 The rules' `browser_shell` describes `:bundle` plus `gallery.html`.
-`component_test` and `visual_test` consume that shell. `e2e_test` consumes
+`component_test` and `visual_test` consume that shell. `e2e_test` and
+`e2e_visual_test` consume
 `:editor_server`, whose compiled adapter serves the built assets. The shared
 `:playwright` target groups client packages and browser pin. `:vrt_matching`
 sets screenshot comparison independently from the visual modules' render options.
