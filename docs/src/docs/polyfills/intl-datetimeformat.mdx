@@ -259,8 +259,9 @@ async function polyfill(locale: string) {
 
 ### Adding IANA Timezone Database
 
-Timezone data uses IANA tzdb 2026d, including permanent UTC-06 for
-`America/Inuvik` from November 1, 2026.
+Timezone data uses IANA tzdb 2026e, including permanent UTC-05 for
+`America/Winnipeg` and its `Canada/Central` alias. Manitoba no longer falls back
+on November 1, 2026. This release also corrects Ireland’s September 1925 fallback.
 
 We provide 2 pre-processed IANA Timezone:
 
