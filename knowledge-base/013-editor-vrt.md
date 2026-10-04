@@ -49,7 +49,8 @@ and fonts as Bazel inputs; FormatJS supplies matching Playwright 1.63.0 packages
 No host browser cache, FFmpeg download, apt setup, or container image is needed.
 The browser CI script materializes the upstream worker supervisor, which verifies
 its pinned actiond binary and KVM/vsock access, starts a private VM, supplies the
-Bazel execution flags and worker hash, and tears down owned processes afterward.
+Bazel execution flags, and tears down owned processes afterward. Rules attach the
+worker hash only to browser actions, preserving TypeScript/Vite cache keys.
 CI still provisions device permissions and retains supervisor logs. See
 [browser setup](../packages/editor/vrt/README.md) for individual tests and updates.
 The custom `server.ts` adapter serves built assets; `shell.tsx` owns the IntlProvider.
@@ -146,6 +147,11 @@ The build action owns Vite and StyleX configuration, uses declared workspace
 package links, disables dotenv discovery, and depends on strict typechecks.
 The browser runtime never transpiles source or starts a bundler. See
 `packages/editor/vrt/README.md` for commands and migration details.
+
+`rules_web_e2e` 3.7.0 executes caller packages unchanged. The compiled graph owns
+all dependencies and ESM markers; the runtime does not repair npm links or rewrite
+executables. The explicit Playwright runtime references the same root packages as
+the specs. Browser actions request the worker's glibc 2.39 and Bash.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.

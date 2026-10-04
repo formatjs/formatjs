@@ -32,7 +32,8 @@ starts a private 6 GiB VM, supplies the remote-execution configuration, and stop
 the worker when the tests finish. Logs remain under
 `${RUNNER_TEMP:-/tmp}/formatjs-actiond/logs/`; CI uploads them with test artifacts.
 `visual_test` captures and compares against committed baselines without updating
-them. Worker hashes separate cached results across worker/kernel changes.
+them. Worker hashes separate browser results across worker/kernel changes without
+changing cache keys for TypeScript and Vite prerequisites.
 
 For individual tests or intentional baseline updates, materialize the launcher
 once, then invoke it outside `bazel run`:
@@ -69,6 +70,10 @@ call sites. `server.ts` composes the rules' `serveDirectory` helper; it does not
 start Vite. `shell.tsx` retains the application's IntlProvider and document
 settings. The ESM marker belongs to the compiled module graph.
 
+The runtime executes compiled packages unchanged. Declare the full dependency
+graph; the runner does not repair npm links or rewrite executables. The explicit
+`playwright` target must use the same packages resolved by the specs.
+
 ## Specs and visual cases
 
 Write `*.spec.ts` for navigation, editing, search, validation, and saving.
@@ -88,7 +93,7 @@ Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
 The browser preset and worker supervisor come from the released `rules_web_e2e`
-3.4.0 module in Bazel Central Registry.
+3.7.0 module in Bazel Central Registry.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.
