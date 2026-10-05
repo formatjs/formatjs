@@ -7,6 +7,7 @@ import {
   mkdtempSync,
   mkdirSync,
   symlinkSync,
+  cpSync,
   rmSync,
 } from 'node:fs'
 import {tmpdir} from 'node:os'
@@ -199,10 +200,13 @@ test.each([
     const directory = mkdtempSync(join(tmpdir(), 'formatjs-tar-size-'))
     try {
       const root = new URL(`../../${name}/pkg/`, import.meta.url)
-      symlinkSync(fileURLToPath(root), join(directory, 'package'), 'dir')
+      cpSync(fileURLToPath(root), join(directory, 'package'), {
+        recursive: true,
+        dereference: true,
+      })
       const archive = join(directory, 'package.tgz')
-      // Dereference the staging link to include every file, as npm publishing does.
-      execFileSync('tar', ['-czhf', archive, '-C', directory, 'package'], {
+      // Archive a stable copy, including files reached through runfile symlinks.
+      execFileSync('tar', ['-czf', archive, '-C', directory, 'package'], {
         timeout: 30000,
       })
       const bytes = statSync(archive).size
