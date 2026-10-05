@@ -9,6 +9,23 @@ import {PART_TYPE} from '#packages/intl-messageformat/formatters.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {describe, expect, it} from 'vitest'
 describe('IntlMessageFormat', function () {
+  it('formats rich text with MicrosoftAjax startsWith, GH #7531', () => {
+    const startsWith = String.prototype.startsWith
+    let output
+    try {
+      String.prototype.startsWith = function (prefix: string) {
+        return this.substr(0, prefix.length) === prefix
+      }
+      output = new IntlMessageFormat(
+        'Read our <link>Cookie Policy</link>.',
+        'en'
+      ).format({link: chunks => `[${chunks.join('')}]`})
+    } finally {
+      String.prototype.startsWith = startsWith
+    }
+    expect(output).toBe('Read our [Cookie Policy].')
+  })
+
   it('should be a function', function () {
     expect(typeof IntlMessageFormat).toBe('function')
   })
@@ -95,13 +112,21 @@ describe('IntlMessageFormat', function () {
       const mf = new IntlMessageFormat(parse('hello world, {name}'))
       expect(mf.format({name: 'foo'})).toBe('hello world, foo')
     })
-    it('should format ast w/o parser', function () {
-      const mf = new IntlMessageFormat(parse('hello world'))
-      expect(mf.format()).toBe('hello world')
-    })
-    it('should format ast w/ placeholders w/o parser', function () {
-      const mf = new IntlMessageFormat(parse('hello world, {name}'))
-      expect(mf.format({name: 'foo'})).toBe('hello world, foo')
+    it.each([
+      ['hello world', 'hello world'],
+      ['hello world, {name}', 'hello world, foo'],
+    ])('should format AST without parser: %s', function (message, expected) {
+      const ast = parse(message)
+      const originalParse = IntlMessageFormat.__parse
+      IntlMessageFormat.__parse = undefined
+      try {
+        expect(new IntlMessageFormat(ast).format({name: 'foo'})).toBe(expected)
+        expect(() => new IntlMessageFormat(message)).toThrow(
+          'IntlMessageFormat.__parse must be set to process `message` of type `string`'
+        )
+      } finally {
+        IntlMessageFormat.__parse = originalParse
+      }
     })
   })
 

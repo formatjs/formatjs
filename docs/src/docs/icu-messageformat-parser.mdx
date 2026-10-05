@@ -11,6 +11,9 @@ The parser detects Unicode property escape support at startup and falls back to
 generated character ranges when unavailable. No regex polyfill is required for
 identifier parsing.
 
+Rich-text tags and ICU arguments work on ASP.NET ScriptManager pages where
+MicrosoftAjax overrides `String.prototype.startsWith`.
+
 ## Usage
 
 ```ts

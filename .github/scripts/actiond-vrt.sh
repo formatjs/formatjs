@@ -8,4 +8,5 @@ bazel run --script_path="$work/run-browser-tests" @rules_web_e2e//worker:runner
   //packages/editor/vrt:e2e_test \
   //packages/editor/vrt:component_test \
   //packages/editor/vrt:visual_test \
+  //packages/editor/vrt:e2e_visual_test \
   --test_output=errors

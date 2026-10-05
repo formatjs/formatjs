@@ -17,6 +17,13 @@ working `White_Space` / `Pattern_Syntax` matching use an equivalent generated
 Unicode range regex. Both paths reuse `lastIndex`; parsing adds no feature checks.
 The generator uses `White_Space`, not `Pattern_White_Space`, for identifiers.
 
+### MicrosoftAjax Compatibility
+
+Match parser tokens with `slice()` at the current offset. MicrosoftAjax replaces
+`String.prototype.startsWith` with a version that ignores the position argument,
+which breaks rich-text tags and ICU arguments. Avoid position-dependent
+`startsWith()` calls, regardless of script load order.
+
 ### AST Node Types
 
 - `LiteralElement` — Plain text
@@ -31,7 +38,7 @@ The generator uses `White_Space`, not `Pattern_White_Space`, for identifiers.
 ### Multiple Entry Points
 
 - `index.ts` — Full parser with all features
-- `no-parser.ts` — Utilities (printer, manipulator) without the parser (for tree-shaking when parsing happens at build time)
+- `no-parser.ts` — AST types, guards, and structural comparison with a throwing `parse` stub. Alias the package root to `@formatjs/icu-messageformat-parser/no-parser.js` after precompiling messages and defaults; AST input alone does not remove the parser dependency.
 - `printer.ts` — AST back to ICU MessageFormat string
 - `manipulator.ts` — AST transforms: `hoistSelectors` (flatten nested selects), `isStructurallySame`
 
@@ -64,6 +71,7 @@ syntax; the Rust fast path applies when location capture is disabled.
 - The same fixture corpus runs under `withIdentifierFallbackForTesting` from
   `parser.ts`. This internal synchronous harness restores the previous matcher
   in `finally` and is not exported by the public package entry point.
+- `//packages/intl:no_parser_bundle_test` bundles published packages with the alias, checks parser exclusion, and exercises AST formatting and string rejection.
 
 Run `bazel run //packages/icu-messageformat-parser/benchmark:benchmark` for native
 matching, or append `-- --fallback` to measure engines without property escapes.
