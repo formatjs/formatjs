@@ -192,6 +192,8 @@ jobs:
             //packages/cli-native-darwin-arm64:pkg \
             //packages/cli-native-linux-x64-musl:pkg \
             //packages/cli-native-linux-arm64-musl:pkg \
+            //packages/cli-native-linux-x64:pkg \
+            //packages/cli-native-linux-arm64:pkg \
             //packages/cli-native-win32-x64:pkg
 
           darwin_path=$(bazel cquery "${bazel_query_args[@]}" --output=files //crates/formatjs_cli:release_binary_darwin_arm64 | tail -n 1)
@@ -283,6 +285,18 @@ jobs:
                 exit 1
                 ;;
             esac
+          done
+
+          for package in cli-native-linux-x64 cli-native-linux-arm64; do
+            package_dir=$(bazel cquery "${bazel_query_args[@]}" --output=files "//packages/$package:pkg" | tail -n 1)
+            mkdir -p "artifacts/$package"
+            cp -R "$package_dir"/. "artifacts/$package/"
+            # Node happens to have libgcc_s loaded, so it hides missing unwinder
+            # symbols that make the addon fail to load in other hosts like Bun.
+            if nm -D --undefined-only "artifacts/$package/formatjs_cli_napi.node" | grep '_Unwind_'; then
+              echo "glibc Node addon must not leave _Unwind_* symbols undefined"
+              exit 1
+            fi
           done
 
       - name: Upload Release Artifacts
