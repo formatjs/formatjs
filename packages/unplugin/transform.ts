@@ -1,6 +1,6 @@
 import {parseSync, Visitor} from 'oxc-parser'
 import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
-import type {HookFilter} from 'unplugin'
+import type {TransformHookFilter} from 'unplugin'
 import MagicString from 'magic-string'
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {
@@ -25,7 +25,7 @@ export interface Options {
   ast?: boolean
   preserveWhitespace?: boolean
   flatten?: boolean
-  filter?: HookFilter
+  filter?: TransformHookFilter
 }
 
 const DEFAULT_ID_INTERPOLATION_PATTERN = '[sha512:contenthash:base64:6]'
