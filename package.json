@@ -155,7 +155,7 @@
     "react": "19",
     "react-dom": "19",
     "react-intl": "workspace:*",
-    "react-live": "^4.1.8",
+    "react-live": "^5.0.0",
     "regenerate": "^1.4.2",
     "regexpu-core": "^6.4.0",
     "rehype-autolink-headings": "^7.1.0",
