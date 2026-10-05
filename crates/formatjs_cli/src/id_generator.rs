@@ -48,6 +48,7 @@ struct HashInterpolation {
 enum InterpolationPart {
     Literal(String),
     Hash(HashInterpolation),
+    Content,
     Ext,
     Name,
     Path,
@@ -91,8 +92,9 @@ fn encode_base62(bytes: &[u8]) -> String {
 /// Generate message ID using interpolation pattern.
 ///
 /// Supports loader-utils style interpolation templates, including hash
-/// placeholders in the format `[hash:digest:encoding:length]` and file-name
-/// placeholders such as `[name]` and `[ext]`.
+/// placeholders in the format `[hash:digest:encoding:length]`, file-name
+/// placeholders such as `[name]` and `[ext]`, as well as `[content]` for the
+/// unhashed message content.
 ///
 /// # Supported formats:
 /// - **Hash algorithms**: `md5`, `sha1`, `sha224`, `sha256`, `sha384`, `sha512`
@@ -107,6 +109,7 @@ fn encode_base62(bytes: &[u8]) -> String {
 /// - `[sha512:contenthash:base64url:6]` - 6-character URL-safe base64 ID (uses -_ instead of +/)
 /// - `[sha512:contenthash:base62:6]` - 6-character base62 ID (alphanumeric only)
 /// - `[sha512:contenthash:hex:10]` - 10-character hex ID
+/// - `[content]` - the default message (plus #description, if present) with no hashing
 ///
 /// # Arguments:
 /// * `pattern` - The interpolation pattern string
@@ -141,14 +144,15 @@ impl IdGenerator {
         description: &Option<Value>,
         file_path: Option<&Path>,
     ) -> Result<String> {
-        let content = hash_content(default_message, description);
+        let content = message_content(default_message, description);
         let resource_path_parts = ResourcePathParts::from_path(file_path);
         let mut id = String::new();
 
         for part in &self.parts {
             match part {
                 InterpolationPart::Literal(value) => id.push_str(value),
-                InterpolationPart::Hash(hash) => id.push_str(&hash.generate(&content)),
+                InterpolationPart::Hash(hash) => id.push_str(&hash.generate(content.as_bytes())),
+                InterpolationPart::Content => id.push_str(&content),
                 InterpolationPart::Ext => id.push_str(&resource_path_parts.ext),
                 InterpolationPart::Name => id.push_str(&resource_path_parts.name),
                 InterpolationPart::Path => id.push_str(&resource_path_parts.path),
@@ -286,6 +290,7 @@ fn parse_interpolation_part(token: &str) -> Result<(InterpolationPart, bool)> {
         "path" => Ok((InterpolationPart::Path, true)),
         "folder" => Ok((InterpolationPart::Folder, true)),
         "query" => Ok((InterpolationPart::Query, true)),
+        "content" => Ok((InterpolationPart::Content, true)),
         _ if is_hash_interpolation(token) => {
             Ok((InterpolationPart::Hash(parse_hash_interpolation(token)?), true))
         }
@@ -399,21 +404,21 @@ fn parse_encoding(normalized: &str, original: &str) -> Result<Encoding> {
     }
 }
 
-fn hash_content(default_message: Option<&str>, description: &Option<Value>) -> Vec<u8> {
-    let mut content = Vec::new();
+fn message_content(default_message: Option<&str>, description: &Option<Value>) -> String {
+    let mut content = String::new();
     if let Some(msg) = default_message {
-        content.extend_from_slice(msg.as_bytes());
+        content.push_str(msg);
     }
     if let Some(desc) = description {
         if desc.as_str() == Some("") {
             return content;
         }
-        content.push(b'#');
+        content.push('#');
         // Extract string value for string types to match TypeScript CLI behavior.
         // TypeScript uses: typeof description === 'string' ? description : stringify(description)
         match desc {
-            Value::String(s) => content.extend_from_slice(s.as_bytes()),
-            _ => content.extend_from_slice(desc.to_string().as_bytes()),
+            Value::String(s) => content.push_str(s),
+            _ => content.push_str(&desc.to_string()),
         }
     }
     content
@@ -500,6 +505,35 @@ mod tests {
         )
         .unwrap();
         assert_eq!(id, "a.ts_NhX4DJ");
+    }
+
+    #[test]
+    fn test_generate_id_content() {
+        let id = generate_id("[content]", Some("Hello [name]"), &None, Some("a.ts")).unwrap();
+        assert_eq!(id, "Hello [name]");
+    }
+
+    #[test]
+    fn test_generate_id_content_with_description() {
+        let desc = Value::String("A greeting".to_string());
+        let id = generate_id("[content]", Some("Hello"), &Some(desc), None).unwrap();
+        assert_eq!(id, "Hello#A greeting");
+
+        let empty = Value::String(String::new());
+        let id = generate_id("[content]", Some("Hello"), &Some(empty), None).unwrap();
+        assert_eq!(id, "Hello");
+    }
+
+    #[test]
+    fn test_generate_id_content_with_other_placeholders() {
+        let id = generate_id(
+            "[name]:[CONTENT]:[sha512:contenthash:base64:6]",
+            Some("Hello"),
+            &None,
+            Some("a.ts"),
+        )
+        .unwrap();
+        assert_eq!(id, "a:Hello:NhX4DJ");
     }
 
     #[test]
@@ -626,8 +660,8 @@ mod tests {
             assert_eq!(id, "L91vdv");
         }
         assert_eq!(
-            hash_content(Some("Hello"), &Some(Value::String(" ".into()))),
-            b"Hello# "
+            message_content(Some("Hello"), &Some(Value::String(" ".into()))),
+            "Hello# "
         );
     }
 

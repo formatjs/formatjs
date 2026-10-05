@@ -45,4 +45,44 @@ describe('interpolateName', function () {
       )
     ).toBe('a-a-[2]-[-1]-[1.5]-[01]')
   })
+  it('should interpolate raw content', function () {
+    expect(
+      interpolateName({resourcePath: 'src/a.ts'}, '[content]', {
+        content: 'foo#bar',
+      })
+    ).toBe('foo#bar')
+  })
+  it('should interpolate empty content', function () {
+    expect(interpolateName({}, 'prefix-[content]', {content: ''})).toBe(
+      'prefix-'
+    )
+  })
+  it('should preserve the placeholder when content is missing', function () {
+    expect(interpolateName({}, 'prefix-[content]', {})).toBe('prefix-[content]')
+  })
+  it('should not interpolate placeholders inside content', function () {
+    expect(
+      interpolateName({resourcePath: 'src/a.ts'}, '[name]:[CONTENT]', {
+        content: 'Click [name] or [hash:5]',
+      })
+    ).toBe('a:Click [name] or [hash:5]')
+  })
+  it('should not interpolate [content] inside the resource path', function () {
+    expect(
+      interpolateName({resourcePath: 'app/[content]/page.tsx'}, '[folder]', {
+        content: 'foo',
+      })
+    ).toBe('[content]')
+  })
+  it('should combine content, file, and hash placeholders', function () {
+    const hasher = createHash('sha512')
+    hasher.update('foo')
+    expect(
+      interpolateName(
+        {resourcePath: 'src/a.ts'},
+        '[name].[ext]_[content]_[sha512:contenthash:base64:6]',
+        {content: 'foo'}
+      )
+    ).toBe(`a.ts_foo_${hasher.digest('base64').slice(0, 6)}`)
+  })
 })
