@@ -277,7 +277,7 @@ js_binary(
     urls = ["https://registry.npmjs.org/pyright/-/pyright-1.1.414.tgz"],
 )
 
-IANA_TZ_VERSION = "2026d"
+IANA_TZ_VERSION = "2026e"
 
 CLDR_COMMON_VERSION = "48.2"
 
@@ -293,14 +293,14 @@ tzcode_repository = use_repo_rule("//packages/intl-datetimeformat:tzcode_reposit
 tzcode_repository(
     name = "iana_tzcode",
     build_file = "@//packages/intl-datetimeformat:tzcode.BUILD.bazel",
-    sha256 = "2f5c9f7fe29e6b8cb863583667884b8ce17b0a485355a054b591c6bdfcd81791",
+    sha256 = "cc3d27ca2a0d8399504551b920970d80af83bfb9c216e8082a15491921935d54",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_archive(
     name = "iana_tzdata",
     build_file = "@//packages/intl-datetimeformat:tzdata.BUILD.bazel",
-    sha256 = "0cb2aa8e333c3dc049badc42a0c61f21987b8cd44e107fa900bad764aacc7767",
+    sha256 = "b26882805f26aac59d5b222978e6580484b834ccdc98be89df2f05a6dc53a652",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
@@ -445,7 +445,7 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
-bazel_dep(name = "rules_web_e2e", version = "3.4.0", dev_dependency = True)
+bazel_dep(name = "rules_web_e2e", version = "3.7.0", dev_dependency = True)
 
 browsers = use_extension("@rules_web_e2e//playwright:extensions.bzl", "browser_presets", dev_dependency = True)
 browsers.linux_amd64(

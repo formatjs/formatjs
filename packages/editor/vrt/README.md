@@ -6,7 +6,7 @@ builds the gallery with Vite/StyleX before any browser test starts.
 
 ## Isolated browser tests
 
-E2E, component interactions, and VRT all run in actiond Linux amd64 actions using
+E2E, component interactions, E2E VRT, and component VRT all run in actiond Linux amd64 actions using
 `@web_browser//:browser`. The versioned `20260921` preset pins Chromium, Node,
 libraries, and fonts together. No host browser cache or apt-installed
 libraries are needed. Fixture servers and browsers share action-local loopback
@@ -31,8 +31,9 @@ The upstream supervisor verifies the pinned actiond worker and device access,
 starts a private 6 GiB VM, supplies the remote-execution configuration, and stops
 the worker when the tests finish. Logs remain under
 `${RUNNER_TEMP:-/tmp}/formatjs-actiond/logs/`; CI uploads them with test artifacts.
-`visual_test` captures and compares against committed baselines without updating
-them. Worker hashes separate cached results across worker/kernel changes.
+`visual_test` and `e2e_visual_test` compare committed baselines without updating
+them. Worker hashes separate browser results across worker/kernel changes without
+changing cache keys for TypeScript and Vite prerequisites.
 
 For individual tests or intentional baseline updates, materialize the launcher
 once, then invoke it outside `bazel run`:
@@ -43,6 +44,7 @@ bazel run --script_path="$PWD/.web-e2e/run" @rules_web_e2e//worker:runner
 .web-e2e/run doctor
 .web-e2e/run test //packages/editor/vrt:component_test
 .web-e2e/run run //packages/editor/vrt:visual_test.update
+.web-e2e/run run //packages/editor/vrt:e2e_visual_test.update
 ```
 
 Regenerate the launcher after dependency upgrades. Each invocation owns a fresh
@@ -52,27 +54,48 @@ the supervisor does not change host permissions. This preset requires Linux x64;
 macOS developers need a Linux runner. There is no host-browser fallback.
 `.update` applies only successful captures; review intentional pixel changes.
 
+## Test coverage
+
+CI explicitly runs all four public test rules:
+
+| Target            | Rule                     | Coverage                                                                         |
+| ----------------- | ------------------------ | -------------------------------------------------------------------------------- |
+| `e2e_test`        | `web_e2e_test`           | Clicks, search, copy/clear, locale drafts, saving, clipboard and ICU recovery    |
+| `component_test`  | `component_browser_test` | Mount/update/unmount, provider changes, isolation, keyboard focus and narrow RTL |
+| `visual_test`     | `component_visual_test`  | Eight gallery captures, including tools, editing, errors and narrow RTL          |
+| `e2e_visual_test` | `visual_test`            | Four screenshots after page navigation, invalid input, recovery and saving       |
+
+Component VRT owns `__screenshots__/`; E2E VRT owns `__e2e_screenshots__/`.
+The initial E2E references match the existing component states. Each suite updates
+only its own directory. E2E screenshot specs use native Playwright interactions
+against the served app, independently of gallery capture hooks.
+
 ## Built inputs
 
-| Target                         | Inputs and behavior                                                                 |
-| ------------------------------ | ----------------------------------------------------------------------------------- |
-| `bundle`                       | Builds checked application, providers, visual registry, HTML and CSS into `assets/` |
-| `editor_shell`                 | Selects the built `gallery.html` entry point                                        |
-| `editor_server`                | Compiled custom server adapter serving the built app for E2E                        |
-| `e2e_specs`, `component_specs` | Compiled native Playwright specs and dependencies                                   |
-| `playwright`                   | Reusable matching Playwright client packages                                        |
-| `vrt_matching`                 | Compiled comparison policy with a zero-pixel mismatch budget                        |
+| Target                                             | Inputs and behavior                                                                 |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `bundle`                                           | Builds checked application, providers, visual registry, HTML and CSS into `assets/` |
+| `editor_shell`                                     | Selects the built `gallery.html` entry point                                        |
+| `editor_server`                                    | Compiled custom server adapter serving the built app for E2E                        |
+| `e2e_specs`, `e2e_visual_specs`, `component_specs` | Compiled native Playwright specs and dependencies                                   |
+| `playwright`                                       | Reusable matching Playwright client packages                                        |
+| `vrt_matching`                                     | Compiled comparison policy with a zero-pixel mismatch budget                        |
 
-`e2e_test` brings its own server; component and VRT targets bring their built
-shell. No bundler, raw source list, or npm runner directories appear on test
+`e2e_test` and `e2e_visual_test` use the compiled server; component targets use
+the built shell. No bundler, raw source list, or npm runner directories appear on test
 call sites. `server.ts` composes the rules' `serveDirectory` helper; it does not
 start Vite. `shell.tsx` retains the application's IntlProvider and document
 settings. The ESM marker belongs to the compiled module graph.
 
+The runtime executes compiled packages unchanged. Declare the full dependency
+graph; the runner does not repair npm links or rewrite executables. The explicit
+`playwright` target must use the same packages resolved by the specs.
+
 ## Specs and visual cases
 
 Write `*.spec.ts` for navigation, editing, search, validation, and saving.
-Write `*.browser.spec.tsx` for native `mount()` and component updates. Bazel
+Write `*.browser.spec.tsx` for native `mount()` and component updates.
+Write `*.visual.spec.ts` for E2E `toHaveScreenshot()` assertions. Bazel
 compiles both before execution. Declare subsets as separate Bazel targets or
 set target `args` (for example `["--grep=translation"]`). Ordinary tests also
 accept `--test_arg=--grep=translation`; Bazel includes selection in the test action.
@@ -80,7 +103,7 @@ accept `--test_arg=--grep=translation`; Bazel includes selection in the test act
 `editor.visual.tsx` declares shared renderable cases, browser-side readiness
 hooks, and VRT options. `gallery.tsx` installs the registry and supplies renderer
 mount/update/unmount behavior. The runtime generates all eight screenshot cases;
-there are no separate handwritten screenshot specs. Existing PNG names stay
+E2E screenshots live separately in `editor.visual.spec.ts`. Existing PNG names stay
 explicit in the visual declarations.
 
 `matching.ts` controls pixel comparison independently of render settings.
@@ -88,7 +111,7 @@ Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
 The browser preset and worker supervisor come from the released `rules_web_e2e`
-3.4.0 module in Bazel Central Registry.
+3.7.0 module in Bazel Central Registry.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.
