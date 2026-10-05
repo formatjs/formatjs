@@ -1212,7 +1212,8 @@ export class Parser {
    * and return false.
    */
   private bumpIf(prefix: string): boolean {
-    if (this.message.startsWith(prefix, this.offset())) {
+    const offset = this.offset()
+    if (this.message.slice(offset, offset + prefix.length) === prefix) {
       for (let i = 0; i < prefix.length; i++) {
         this.bump()
       }

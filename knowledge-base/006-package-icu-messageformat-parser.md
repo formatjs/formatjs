@@ -17,6 +17,13 @@ working `White_Space` / `Pattern_Syntax` matching use an equivalent generated
 Unicode range regex. Both paths reuse `lastIndex`; parsing adds no feature checks.
 The generator uses `White_Space`, not `Pattern_White_Space`, for identifiers.
 
+### MicrosoftAjax Compatibility
+
+Match parser tokens with `slice()` at the current offset. MicrosoftAjax replaces
+`String.prototype.startsWith` with a version that ignores the position argument,
+which breaks rich-text tags and ICU arguments. Avoid position-dependent
+`startsWith()` calls, regardless of script load order.
+
 ### AST Node Types
 
 - `LiteralElement` — Plain text
