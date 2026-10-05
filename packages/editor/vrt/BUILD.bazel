@@ -11,7 +11,7 @@ load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("@rules_web_e2e//component:defs.bzl", "browser_shell", "component_browser_test")
 load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test")
 load("@rules_web_e2e//playwright:defs.bzl", "playwright_runtime")
-load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test")
+load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test", "visual_test")
 load(":defs.bzl", "vrt_library", "vrt_test")
 
 npm_link_package(
@@ -81,6 +81,13 @@ js_library(
 )
 
 js_library(
+    name = "e2e_visual_specs",
+    srcs = ["editor.visual.spec.js"],
+    data = [":esm_package_json"],
+    deps = [":visual_sources_compiled"],
+)
+
+js_library(
     name = "component_specs",
     srcs = ["editor.browser.spec.js"],
     data = [":esm_package_json"],
@@ -108,6 +115,18 @@ component_visual_test(
     playwright = ":playwright",
     shell = ":editor_shell",
     target_platform = "//platforms:linux_x86_64_gnu",
+)
+
+visual_test(
+    name = "e2e_visual_test",
+    baseline_dir = "__e2e_screenshots__",
+    baselines = glob(["__e2e_screenshots__/*.png"]),
+    browser = "@web_browser//:browser",
+    matching = ":vrt_matching",
+    playwright = ":playwright",
+    server = ":editor_server",
+    target_platform = "//platforms:linux_x86_64_gnu",
+    tests = ":e2e_visual_specs",
 )
 
 web_e2e_test(
@@ -172,6 +191,7 @@ vrt_test(
     srcs = [
         "editor.browser.spec.tsx",
         "editor.spec.ts",
+        "editor.visual.spec.ts",
     ],
     deps = [
         ":vrt",
