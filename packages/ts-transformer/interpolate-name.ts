@@ -129,7 +129,7 @@ export function interpolateName(
 
     switch (token.toLowerCase()) {
       case 'content':
-        return content || placeholder
+        return content ?? placeholder
       case 'ext':
         return ext
       case 'name':

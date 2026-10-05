@@ -52,6 +52,14 @@ describe('interpolateName', function () {
       })
     ).toBe('foo#bar')
   })
+  it('should interpolate empty content', function () {
+    expect(interpolateName({}, 'prefix-[content]', {content: ''})).toBe(
+      'prefix-'
+    )
+  })
+  it('should preserve the placeholder when content is missing', function () {
+    expect(interpolateName({}, 'prefix-[content]', {})).toBe('prefix-[content]')
+  })
   it('should not interpolate placeholders inside content', function () {
     expect(
       interpolateName({resourcePath: 'src/a.ts'}, '[name]:[CONTENT]', {
