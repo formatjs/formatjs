@@ -37,7 +37,7 @@
 
 - Uses `oxc-parser` for AST analysis (faster than Babel/TypeScript parser)
 - Uses `magic-string` for source map-preserving transformations
-- Single codebase for all bundlers via the `unplugin` framework
+- Single codebase for all bundlers via `unplugin` >=3.4.0; transform filters use its `TransformHookFilter` type
 - Replicates babel-plugin-formatjs + ts-transformer functionality without Babel/TS dependency
 - Unwraps parentheses and TypeScript wrappers around descriptors and declaration maps
 - Separate entry points per bundler: `vite.ts`, `webpack.ts`, `rollup.ts`, `esbuild.ts`, `rspack.ts`

@@ -74,7 +74,7 @@ formatjs_library(
         "@rspack/core": ">=1",
         "esbuild": ">=0.17",
         "rollup": ">=3",
-        "unplugin": ">=3.3.0",
+        "unplugin": ">=3.4.0",
         "vite": ">=5",
     },
     package_peer_deps = [

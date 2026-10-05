@@ -1172,7 +1172,7 @@ importers:
         specifier: '>=3'
         version: 4.63.5
       unplugin:
-        specifier: '>=3.3.0'
+        specifier: '>=3.4.0'
         version: 3.4.0(@rspack/core@2.2.7)(esbuild@0.28.2)(rolldown@1.2.10)(rollup@4.63.5)(vite@8.3.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2))(webpack@5.111.1(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26)(uglify-js@3.19.3))
       vite:
         specifier: '>=5'

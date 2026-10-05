@@ -1,6 +1,6 @@
 import {
   createUnplugin,
-  type HookFilter,
+  type TransformHookFilter,
   type UnpluginFactory,
   type UnpluginInstance,
 } from 'unplugin'
@@ -8,7 +8,7 @@ import {transform, type Options} from '#packages/unplugin/transform.js'
 
 export type {Options} from '#packages/unplugin/transform.js'
 
-const DEFAULT_TRANSFORM_FILTER: HookFilter = {
+const DEFAULT_TRANSFORM_FILTER: TransformHookFilter = {
   id: {
     include: /\.[jt]sx?(?:[?#].*)?$/,
     exclude: /node_modules/,
