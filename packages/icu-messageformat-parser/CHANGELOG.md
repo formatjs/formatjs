@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.21](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.20...@formatjs/icu-messageformat-parser@3.5.21) (2026-10-05)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** tolerate MicrosoftAjax startsWith override ([#7549](https://github.com/formatjs/formatjs/issues/7549)) ([6b3869a](https://github.com/formatjs/formatjs/commit/6b3869a0b06d785fbc85a20b7d33ba8d643fa9f5))
+
 ## [3.5.20](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.19...@formatjs/icu-messageformat-parser@3.5.20) (2026-09-19)
 
 

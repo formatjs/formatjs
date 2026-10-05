@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@2.1.2...@formatjs/svelte-intl@2.1.3) (2026-10-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.21
+    * @formatjs/intl bumped to 6.1.3
+
 ## [2.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/svelte-intl@2.1.1...@formatjs/svelte-intl@2.1.2) (2026-09-19)
 
 
