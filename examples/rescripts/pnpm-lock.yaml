@@ -181,8 +181,8 @@ importers:
         specifier: 13.0.6
         version: 13.0.6
       eslint-plugin-formatjs:
-        specifier: 6.6.3
-        version: 6.6.3(eslint@10.11.0(jiti@1.21.7)(supports-color@8.1.1))
+        specifier: 8.1.0
+        version: 8.1.0(eslint@10.11.0(jiti@1.21.7)(supports-color@8.1.1))
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -1142,29 +1142,14 @@ packages:
   '@formatjs/fast-memoize@3.1.7':
     resolution: {integrity: sha512-zXfhLpvA6T7+efdt9JLbBwZ00tT7NsBMDVnDu8rpHeNNv8KfRZAMo2gkG0k9lK/Nzc//3kJ9pImsfuJxk3KhUA==}
 
-  '@formatjs/icu-messageformat-parser@3.5.18':
-    resolution: {integrity: sha512-wX1efcL8d7K5QapOTRsP/OLTA/kpwe4LwqWyNxDNg5iRs8i9jJbCyxB5P8jc4KOW5oiLzz2DJr+BRY5xMV9+bA==}
-
   '@formatjs/icu-messageformat-parser@3.5.20':
     resolution: {integrity: sha512-DUzCb2iskGDKvLU7P+nz/rjpmN59luoTRbWHFFNYNnZTxWCKvwPI94rNll99TGZaI6XoTbDF0QGegk21GFrQZQ==}
-
-  '@formatjs/icu-skeleton-parser@2.1.11':
-    resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
 
   '@formatjs/icu-skeleton-parser@2.1.12':
     resolution: {integrity: sha512-ca7tZMLpfHX3sUD7hP6gE/qr6Iq89EDd3ZLeRhbsB7r0UD55DGJq+tmFLzrGrnx5StahUevQmQQVtbDRHsfDHA==}
 
   '@formatjs/intl@6.1.2':
     resolution: {integrity: sha512-YH3Ldfa2vmavWgBlCyrT9WiobphTXlNHnHxhhB6nLSUOxmitJ6Bzqzg61uBcnc6yhKTU+YRo8hLhEatOZrVJUg==}
-
-  '@formatjs/ts-transformer@4.4.20':
-    resolution: {integrity: sha512-HldiUf2XjTn0cETXpjGATYwaiI9lwjZzIlBtJmfuD9Glr786FC3FdzvjBg7tFWIcz4xQdsvwDXfHEehP3kWUOg==}
-    engines: {node: '>= 20.12.0'}
-    peerDependencies:
-      ts-jest: '29'
-    peerDependenciesMeta:
-      ts-jest:
-        optional: true
 
   '@formatjs/ts-transformer@4.4.22':
     resolution: {integrity: sha512-xbRC3Cq+7UmCmA1thwvCnaZuJKay47tZ9uDi6IMA5LLxjXE7pluPJZ/uMr+7UlthxEsMKjleY1p1ifBJNhlTYA==}
@@ -3031,8 +3016,8 @@ packages:
       '@babel/plugin-transform-react-jsx': ^7.14.9
       eslint: ^8.1.0
 
-  eslint-plugin-formatjs@6.6.3:
-    resolution: {integrity: sha512-m+DbgTDAaPBxGuJSaERGBYutoqhWHpTLUz4q7TZ4UKiLVTuNwwZXPcrm4MmY38gMwlB7jT6mIocS3Ori1Pk+Ag==}
+  eslint-plugin-formatjs@8.1.0:
+    resolution: {integrity: sha512-pjnhJCkjl0Ly6NXBwiNcRAA7Ttf0slV7tScuBnxM1IzUD1Iox0vOuZDBt46NbneoQP7nG8m/gN077n2PZuLrEQ==}
     peerDependencies:
       eslint: 9 || 10
 
@@ -7665,15 +7650,9 @@ snapshots:
 
   '@formatjs/fast-memoize@3.1.7': {}
 
-  '@formatjs/icu-messageformat-parser@3.5.18':
-    dependencies:
-      '@formatjs/icu-skeleton-parser': 2.1.11
-
   '@formatjs/icu-messageformat-parser@3.5.20':
     dependencies:
       '@formatjs/icu-skeleton-parser': 2.1.12
-
-  '@formatjs/icu-skeleton-parser@2.1.11': {}
 
   '@formatjs/icu-skeleton-parser@2.1.12': {}
 
@@ -7682,14 +7661,6 @@ snapshots:
       '@formatjs/fast-memoize': 3.1.7
       '@formatjs/icu-messageformat-parser': 3.5.20
       intl-messageformat: 12.1.2
-
-  '@formatjs/ts-transformer@4.4.20':
-    dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.18
-      '@types/babel__core': 7.20.5
-      '@types/node': 24.12.4
-      json-stable-stringify: 1.3.0
-      typescript: 7.0.2
 
   '@formatjs/ts-transformer@4.4.22':
     dependencies:
@@ -9855,10 +9826,10 @@ snapshots:
       lodash: 4.18.1
       string-natural-compare: 3.0.1
 
-  eslint-plugin-formatjs@6.6.3(eslint@10.11.0(jiti@1.21.7)(supports-color@8.1.1)):
+  eslint-plugin-formatjs@8.1.0(eslint@10.11.0(jiti@1.21.7)(supports-color@8.1.1)):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.18
-      '@formatjs/ts-transformer': 4.4.20
+      '@formatjs/icu-messageformat-parser': 3.5.20
+      '@formatjs/ts-transformer': 4.4.22
       '@types/estree-jsx': 1.0.5
       '@types/picomatch': 4.0.3
       '@unicode/unicode-17.0.0': 2.0.5
