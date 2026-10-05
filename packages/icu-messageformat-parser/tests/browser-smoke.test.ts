@@ -1,6 +1,30 @@
 import {Parser} from '#packages/icu-messageformat-parser/parser.js'
 import {describe, expect, it} from 'vitest'
 describe('@formatjs/icu-messageformat-parser', function () {
+  it.each([
+    'Read our <link>Cookie Policy</link>.',
+    '<b>outer <i>inner</i></b><br/>',
+    '{amount, number, ::currency/USD}',
+    '{count, plural, offset:1 =0 {none} one {one} other {# items}}',
+    '{kind, select, yes {yes} other {no}}',
+    '<b>mismatched</i>',
+    '<b>unclosed',
+    '{count, plural, other {missing brace}',
+  ])('parses %s with MicrosoftAjax startsWith, GH #7531', message => {
+    const expected = new Parser(message).parse()
+    const startsWith = String.prototype.startsWith
+    let actual
+    try {
+      String.prototype.startsWith = function (prefix: string) {
+        return this.substr(0, prefix.length) === prefix
+      }
+      actual = new Parser(message).parse()
+    } finally {
+      String.prototype.startsWith = startsWith
+    }
+    expect(actual).toEqual(expected)
+  })
+
   it('plural_arg_2', () => {
     expect(
       new Parser(`
