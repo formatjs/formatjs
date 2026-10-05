@@ -671,6 +671,42 @@ describe('Intl.DateTimeFormat', function () {
 
     expect(formatter.format(new Date(date))).toBe(expected)
   })
+  it.each(['America/Winnipeg', 'Canada/Central'])(
+    'keeps %s on UTC-05 after Manitoba ends DST, GH #7529',
+    timeZone => {
+      const formatter = new DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h23',
+        timeZone,
+      })
+
+      for (const [date, expected] of [
+        ['2026-11-01T06:59:59Z', '01:59:59'],
+        ['2026-11-01T07:00:00Z', '02:00:00'],
+        ['2027-01-15T12:00:00Z', '07:00:00'],
+        ['2027-07-15T12:00:00Z', '07:00:00'],
+      ]) {
+        expect(formatter.format(new Date(date))).toBe(expected)
+      }
+    }
+  )
+  it.each([
+    ['1925-09-20T01:59:59Z', '02:59:59'],
+    ['1925-09-20T02:00:00Z', '02:00:00'],
+    ['1925-09-27T12:00:00Z', '12:00:00'],
+  ])('uses Ireland’s corrected 1925 fallback at %s', (date, expected) => {
+    const formatter = new DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23',
+      timeZone: 'Europe/Dublin',
+    })
+
+    expect(formatter.format(new Date(date))).toBe(expected)
+  })
   it('test #2236', function () {
     const date = new Date('2020-09-16T11:55:32.491+02:00')
     const formatter = new DateTimeFormat('en-US', {
