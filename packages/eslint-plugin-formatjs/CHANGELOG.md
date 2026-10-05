@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.1.0...eslint-plugin-formatjs@8.1.1) (2026-10-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.21
+    * @formatjs/ts-transformer bumped to 4.5.0
+
 ## [8.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.0.5...eslint-plugin-formatjs@8.1.0) (2026-09-24)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.5...formatjs_cli_v1.8.0) (2026-10-05)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** support `[content]` in `idInterpolationPattern` ([#7530](https://github.com/formatjs/formatjs/issues/7530)) ([cb514c4](https://github.com/formatjs/formatjs/commit/cb514c466df26a4c5b05bd1dd6397ea445164e4d))
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.151 ([#7524](https://github.com/formatjs/formatjs/issues/7524)) ([b20b90c](https://github.com/formatjs/formatjs/commit/b20b90c987093ef908bf9c1a0f0985ff4588d3d9))
+* **deps:** update oxc to 0.152 ([#7548](https://github.com/formatjs/formatjs/issues/7548)) ([e35b510](https://github.com/formatjs/formatjs/commit/e35b5106830ba610b85bf602c58e1a8249ae29e6))
+* **deps:** update ruff to v0.16.9 ([#7541](https://github.com/formatjs/formatjs/issues/7541)) ([b91479f](https://github.com/formatjs/formatjs/commit/b91479fbfadcc4449611e655e05760198e3f3623))
+
 ## [1.7.5](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.4...formatjs_cli_v1.7.5) (2026-09-24)
 
 

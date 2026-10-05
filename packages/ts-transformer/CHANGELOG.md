@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.22...@formatjs/ts-transformer@4.5.0) (2026-10-05)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** support `[content]` in `idInterpolationPattern` ([#7530](https://github.com/formatjs/formatjs/issues/7530)) ([cb514c4](https://github.com/formatjs/formatjs/commit/cb514c466df26a4c5b05bd1dd6397ea445164e4d))
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** interpolate ID placeholders in a single pass ([#7527](https://github.com/formatjs/formatjs/issues/7527)) ([3139c32](https://github.com/formatjs/formatjs/commit/3139c32ca17dbef0d60fd4a8daa0d5216243b5d2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.21
+
 ## [4.4.22](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.4.21...@formatjs/ts-transformer@4.4.22) (2026-09-19)
 
 

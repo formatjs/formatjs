@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-buddhist@1.1.0...@formatjs/intl-datetimeformat-calendar-buddhist@1.1.1) (2026-10-05)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 7.8.1
+
 ## [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-buddhist@1.0.0...@formatjs/intl-datetimeformat-calendar-buddhist@1.1.0) (2026-09-18)
 
 
