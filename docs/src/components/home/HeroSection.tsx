@@ -25,7 +25,7 @@ const messages = {
   },
   'es-AR': {
     photoCount:
-      '{name} {numPhotos, plural, =0 {no} =1 {una} other {#}} {numPhotos, plural, =0 {fotos} =1 {foto} other {fotos}} el {takenDate, date, long}.',
+      '{name} {numPhotos, plural, =0 {no sacó fotos} =1 {sacó una foto} other {sacó # fotos}} el {takenDate, date, long}.',
   },
   'fr-FR': {
     photoCount:
