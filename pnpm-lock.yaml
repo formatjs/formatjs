@@ -509,7 +509,7 @@ importers:
         version: 15.0.0
       content-tag:
         specifier: ^4.1.0
-        version: 4.2.0
+        version: 4.2.1
       decode-named-character-reference:
         specifier: ^1.3.0
         version: 1.3.0
@@ -743,7 +743,7 @@ importers:
         version: 3.5.43
       content-tag:
         specifier: '4'
-        version: 4.2.0
+        version: 4.2.1
       vue:
         specifier: '3'
         version: 3.5.43(typescript@7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0))
@@ -792,7 +792,7 @@ importers:
         version: 15.0.0
       content-tag:
         specifier: '4'
-        version: 4.2.0
+        version: 4.2.1
       fast-glob:
         specifier: '3'
         version: 3.3.3
@@ -4863,8 +4863,8 @@ packages:
   config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
 
-  content-tag@4.2.0:
-    resolution: {integrity: sha512-f/o+F3qSa4gg23I7RWy6cMDxP2nPo99YWusxw2bjne7ZC6Acqqf4uB/+87AekOq1ehTocHH7b7nMd2X4S3NHVw==}
+  content-tag@4.2.1:
+    resolution: {integrity: sha512-DZwqYmBVGfCrybcMpXv5y5wkbicXZ5zlktIy4hH4EE3q/Sk3W2SRENJa3re+Ak8aegoKgOPCGZSuFmbQQ+h+GQ==}
 
   conventional-changelog-angular@9.4.0:
     resolution: {integrity: sha512-HdxRxuS8bBXVIuo4V82gvSwAXT0vYQUizrjs/izmPg5JdDstr8v8I5hduGL3iQbG+o310dUDxC4+LetuS5hu9w==}
@@ -11322,7 +11322,7 @@ snapshots:
       ini: 1.3.8
       proto-list: 1.2.4
 
-  content-tag@4.2.0: {}
+  content-tag@4.2.1: {}
 
   conventional-changelog-angular@9.4.0:
     dependencies:
