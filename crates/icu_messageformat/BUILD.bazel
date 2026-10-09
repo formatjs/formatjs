@@ -8,6 +8,7 @@ exports_files(
         "error.rs",
         "formatter.rs",
         "lib.rs",
+        "provider_tests.rs",
         "value.rs",
     ],
     visibility = ["//visibility:public"],
@@ -19,6 +20,36 @@ rust_library(
         "error.rs",
         "formatter.rs",
         "lib.rs",
+        "provider_tests.rs",
+        "value.rs",
+    ],
+    crate_features = ["compiled_data"],
+    crate_name = "formatjs_icu_messageformat",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/icu_messageformat_parser",
+        "//crates/icu_skeleton_parser",
+        "@crates//:fixed_decimal",
+        "@crates//:icu",
+        "@crates//:icu_provider",
+    ],
+)
+
+rust_test(
+    name = "icu_messageformat_test",
+    size = "small",
+    crate = ":icu_messageformat",
+    crate_features = ["compiled_data"],
+)
+
+rust_library(
+    name = "without_compiled_data",
+    testonly = True,
+    srcs = [
+        "error.rs",
+        "formatter.rs",
+        "lib.rs",
+        "provider_tests.rs",
         "value.rs",
     ],
     crate_name = "formatjs_icu_messageformat",
@@ -28,11 +59,12 @@ rust_library(
         "//crates/icu_skeleton_parser",
         "@crates//:fixed_decimal",
         "@crates//:icu",
+        "@crates//:icu_provider",
     ],
 )
 
 rust_test(
-    name = "icu_messageformat_test",
+    name = "provider_test",
     size = "small",
-    crate = ":icu_messageformat",
+    crate = ":without_compiled_data",
 )

@@ -23,6 +23,19 @@ jobs:
       - name: Validate Cargo Release Metadata
         run: cargo metadata --locked --format-version 1 > /dev/null
 
+      - name: Validate Provider-Only ICU Features
+        shell: python
+        run: |
+          import re
+          import subprocess
+
+          tree = subprocess.check_output([
+              "cargo", "tree", "--locked", "-p", "formatjs_intl",
+              "--no-default-features", "--edges", "normal,features",
+          ], text=True)
+          if 'feature "compiled_data"' in tree or re.search(r"icu_\w+_data v", tree):
+              raise SystemExit("Provider-only intl must not enable compiled ICU data:\n" + tree)
+
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
         with:

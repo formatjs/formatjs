@@ -234,3 +234,28 @@ This is a breaking change for inline values already erased to `Value`, including
 `values: &values` maps retain runtime validation. Reusable descriptors and ID-only
 calls do not yet carry argument contracts. Value ranges and translated catalog
 compatibility still require runtime checks.
+
+## External ICU data
+
+Existing APIs use the default-on `compiled_data` feature. For caller-provided
+ICU4X data, disable default features on both `formatjs_intl` and any direct
+`formatjs_icu_messageformat` dependency. Create `Options::with_formatters` using
+`ProviderFormatters`, then use:
+
+- `IntlCache::with_options(options.clone())` for source messages and descriptor defaults.
+- `MessageCatalog::insert_precompiled_with_options(locale, messages, options)` for AST catalogs.
+- `LocaleFallbacker::try_new_with_buffer_provider(&provider)` for locale negotiation data.
+- `Intl::try_new_with_fallbacker(requested, default_locale, catalog, cache, &fallbacker)`.
+
+`Options` and `LocaleFallbacker` are re-exported. Standalone negotiation accepts
+an explicit fallbacker through `negotiate_locale_with_fallbacker`.
+
+Each cache owns immutable options. Share it only among requests using that
+configuration; use separate caches for different providers or named formats.
+Precompiled catalogs retain their insertion-time options, so configure both paths
+consistently. Missing formatter data follows the existing message fallback and
+error-reporting behavior.
+
+Without `compiled_data`, default cache construction, `insert_precompiled`,
+`Intl::try_new`, and `negotiate_locale` are unavailable. Explicit-options and
+explicit-fallbacker APIs remain available. Default-feature users need no changes.

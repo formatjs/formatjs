@@ -326,3 +326,25 @@ and the checked-in lockfile. Bazel resolves local crate targets independently
 of these Cargo requirements, so passing Bazel tests alone does not guarantee
 that `cargo publish --locked` can resolve the workspace. Update every consumer's
 version requirement when a local dependency receives a breaking version bump.
+
+## Caller-provided ICU data
+
+The Rust parser, message formatter, and intl runtime expose a default-on
+`compiled_data` feature. Procedural macros disable parser defaults because they
+need no compiled locale data. Runtime dependencies disable defaults and forward this
+feature explicitly, so a standalone consumer can exclude compiled ICU data.
+`ProviderFormatters` accepts a `Send + Sync` buffer provider; both formatter
+backends share option handling. Buffer constructors use ICU's serde support.
+
+`Options::with_formatters` works without compiled data. `IntlCache::with_options`
+fixes options for each cache lifetime, under the existing poisoning boundary.
+Precompiled catalogs accept options at insertion; `Intl::try_new_with_fallbacker`
+and `negotiate_locale_with_fallbacker` accept caller-created fallbackers. Existing
+convenience APIs remain available with default features.
+
+Run the two runtime unit suites plus their `provider_test` targets. Provider
+suites compile runtime APIs without `compiled_data` and exercise a two-locale
+buffer provider, missing data, cache isolation, source/AST paths, and locale
+fallback injection. The shared Bazel external dependency graph still enables ICU
+compiled data for other consumers; these suites alone do not prove binary size
+or a standalone Cargo consumer's feature graph.

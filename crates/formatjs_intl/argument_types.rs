@@ -70,7 +70,7 @@ pub fn tag(
     Value::tag(callback)
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "compiled_data"))]
 mod tests {
     use crate::{Intl, IntlCache, MessageCatalog};
     use std::sync::Arc;
