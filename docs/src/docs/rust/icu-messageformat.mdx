@@ -100,6 +100,13 @@ The provider must support the requested locales or implement locale fallback
 formatter error; it does not silently use compiled data. Deserialization support
 must match the buffer format; `icu_provider_blob` enables Postcard support.
 
+Data errors name the formatter and locale and keep the ICU4X error as
+`source()`. Call `Formatters::check_locale` at startup for each locale you
+format with; it builds every formatter and returns the first such error. Behind
+`LocaleFallbackProvider`, a locale missing from the provider resolves to root
+(`und`) data and passes this check; `formatjs_intl`'s
+`IntlContext::check_catalog` also rejects that case.
+
 Without `compiled_data`, `DefaultFormatters`, `Options::default()`, and the
 constructors that use default options are unavailable. Explicit-options APIs
 remain available. Other dependencies can re-enable ICU compiled data through

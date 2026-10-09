@@ -36,3 +36,4 @@ crate-type = ["rlib"]
 
 [dev-dependencies]
 icu_provider = { version = "2.1", features = ["deserialize_json"] }
+icu_provider_blob = "2.1"
