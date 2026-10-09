@@ -5,6 +5,7 @@ use formatjs_icu_messageformat::{Options, ProviderFormatters};
 use icu_locale::Locale;
 use icu_locale::fallback::LocaleFallbacker;
 use icu_provider::buf::BufferProvider;
+use icu_provider_adapters::fallback::LocaleFallbackProvider;
 use std::collections::HashMap;
 use std::error::Error as StdError;
 use std::fmt;
@@ -371,6 +372,7 @@ impl IntlContext {
         provider: impl BufferProvider + Send + Sync + 'static,
     ) -> std::result::Result<Self, icu_provider::DataError> {
         let fallbacker = LocaleFallbacker::try_new_with_buffer_provider(&provider)?;
+        let provider = LocaleFallbackProvider::new(provider, fallbacker.clone());
         let options = Options::with_formatters(Arc::new(ProviderFormatters::new(provider)));
         Ok(Self {
             cache: Arc::new(IntlCache::with_options(options)),

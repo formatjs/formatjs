@@ -30,6 +30,7 @@ rust_library(
         "//crates/icu_messageformat",
         "@crates//:icu_locale",
         "@crates//:icu_provider",
+        "@crates//:icu_provider_adapters",
     ],
 )
 
@@ -67,6 +68,7 @@ rust_library(
         "//crates/icu_messageformat:without_compiled_data",
         "@crates//:icu_locale",
         "@crates//:icu_provider",
+        "@crates//:icu_provider_adapters",
     ],
 )
 

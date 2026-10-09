@@ -647,6 +647,7 @@ dependencies = [
  "icu",
  "icu_locale",
  "icu_provider",
+ "icu_provider_adapters",
  "serde_json",
 ]
 
@@ -1250,6 +1251,16 @@ dependencies = [
  "zerofrom",
  "zerotrie",
  "zerovec",
+]
+
+[[package]]
+name = "icu_provider_adapters"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df887bc4f55dbc773c7c45a0c7dfa75be886f7b7812830a71ab7271cc1801820"
+dependencies = [
+ "icu_locale_fallback",
+ "icu_provider",
 ]
 
 [[package]]

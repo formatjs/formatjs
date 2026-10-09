@@ -199,8 +199,9 @@ formatjs_intl = { version = "2", default-features = false }
 icu_provider_blob = { version = "2.1", features = ["alloc"] }
 ```
 
-One context supplies all formatters and locale fallback. Catalog APIs stay
-unchanged; reuse the context across requests to share cached messages.
+One context supplies all formatters and locale fallback. Requests such as
+`en-XX` or `en-XX-u-foo-x-private` fall back to available `en` data. Catalog APIs
+stay unchanged; reuse the context across requests to share cached messages.
 
 ### Add French to an English app
 

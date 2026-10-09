@@ -25,6 +25,7 @@ formatjs_icu_messageformat = { path = "../icu_messageformat", version = "0.1.4",
 formatjs_intl_macros = { path = "../formatjs_intl_macros", version = "1.0.0" }
 icu_locale = { version = "2.1", default-features = false, features = ["serde"] }
 icu_provider = { version = "2.1", features = ["sync"] }
+icu_provider_adapters = { version = "2.1", default-features = false }
 
 [lib]
 path = "lib.rs"

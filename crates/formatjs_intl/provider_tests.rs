@@ -168,11 +168,15 @@ fn one_provider_serves_locale_fallback_and_every_formatter() {
                     formatjs_icu_messageformat::ErrorCode::Formatter
                 );
             }
-            assert!(
-                requests.lock().unwrap()[start..]
-                    .iter()
-                    .any(|(_, requested)| requested == locale)
-            );
+            let requests = requests.lock().unwrap();
+            assert!(requests.len() > start);
+            if expected.is_some() {
+                assert!(
+                    requests[start..]
+                        .iter()
+                        .any(|(_, requested)| requested == locale)
+                );
+            }
         }
     }
     let requests = requests.lock().unwrap();
@@ -197,4 +201,62 @@ fn incomplete_fallback_data_rejects_context() {
         })
         .is_err()
     );
+}
+
+#[test]
+fn regional_locales_and_extensions_use_available_provider_data() {
+    let provider = TestProvider::default();
+    let requests = provider.requests.clone();
+    let context = IntlContext::try_with_provider(provider).unwrap();
+    let sources = [
+        ("number", "{n, number}", "1"),
+        ("cardinal", "{n, plural, one {one} other {other}}", "one"),
+        (
+            "ordinal",
+            "{n, selectordinal, one {one} other {other}}",
+            "one",
+        ),
+    ];
+    let mut catalog = MessageCatalog::new();
+    catalog.insert("en", HashMap::new()).unwrap();
+    catalog
+        .insert(
+            "en-XX",
+            sources
+                .iter()
+                .map(|(id, source, _)| (id.to_string(), source.to_string()))
+                .collect(),
+        )
+        .unwrap();
+    let catalog = Arc::new(catalog);
+    let values: Values = HashMap::from([("n".to_owned(), Value::from(1_i64))]);
+    for locale in ["en-XX", "en-XX-u-foo-x-private"] {
+        let intl = Intl::try_new_with_context([locale], "en", catalog.clone(), &context).unwrap();
+        assert_eq!(intl.locale().to_string(), "en-XX");
+        for (id, source, expected) in sources {
+            let start = requests.lock().unwrap().len();
+            assert_eq!(
+                intl.format_message_to_string(
+                    MessageDescriptor::new(id, "wrong fallback"),
+                    &values
+                )
+                .unwrap(),
+                expected
+            );
+            assert!(
+                requests.lock().unwrap()[start..]
+                    .iter()
+                    .any(|(_, locale)| locale == "en")
+            );
+            assert_eq!(
+                context
+                    .cache
+                    .get_or_compile(source)
+                    .unwrap()
+                    .format_to_string(locale, &values)
+                    .unwrap(),
+                expected
+            );
+        }
+    }
 }
