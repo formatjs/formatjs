@@ -37,8 +37,8 @@ it to supply ICU4X data yourself:
 
 ```toml
 [dependencies]
-formatjs_icu_messageformat = { version = "0.1", default-features = false }
-icu_provider_blob = "2.1"
+formatjs_icu_messageformat = { version = "0.2", default-features = false }
+icu_provider_blob = { version = "2.1", features = ["alloc"] }
 ```
 
 ```rust,ignore
