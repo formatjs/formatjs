@@ -326,3 +326,37 @@ and the checked-in lockfile. Bazel resolves local crate targets independently
 of these Cargo requirements, so passing Bazel tests alone does not guarantee
 that `cargo publish --locked` can resolve the workspace. Update every consumer's
 version requirement when a local dependency receives a breaking version bump.
+
+## Caller-provided ICU data
+
+The Rust parser, message formatter, and intl runtime expose a default-on
+`compiled_data` feature. Procedural macros disable parser defaults because they
+need no compiled locale data. Runtime dependencies disable defaults and forward this
+feature explicitly, so a standalone consumer can exclude compiled ICU data.
+`ProviderFormatters` accepts a `Send + Sync` buffer provider; both formatter
+backends share option handling. Buffer constructors use ICU's serde support.
+
+The standalone message formatter retains `Options::with_formatters`. High-level
+consumers create one `IntlContext::try_with_provider` and pass it to
+`Intl::try_new_with_context`. The context owns formatter configuration, locale
+fallback data, and a shared message cache. No per-formatter locale registration
+or catalog configuration is needed; each supplied locale needs all relevant ICU
+markers in the provider. The context wraps the provider in ICU4X
+`LocaleFallbackProvider` using that same fallback data. Regional locales such as
+`en-XX` and extended tags such as `en-XX-u-foo-x-private` can use available `en`
+data independently of catalog matching.
+See the Rust intl docs for a French example. Adding locales requires ICU data,
+translations, and a new context.
+
+`MessageCatalog::insert_precompiled` stores provider-independent ASTs. Each
+context prepares them once using its own options and retains their source
+allocation as its cache identity. Cloned contexts share prepared messages;
+separate contexts remain isolated. Source-cache `len` and `is_empty` continue to
+exclude precompiled entries. Existing default-feature APIs remain available.
+
+Run the two runtime unit suites plus their `provider_test` targets. Provider
+suites compile runtime APIs without `compiled_data` and exercise a two-locale
+buffer provider, missing data, cache isolation, source/AST paths, and locale
+fallback through the same provider. The shared Bazel external dependency graph still enables ICU
+compiled data for other consumers; these suites alone do not prove binary size
+or a standalone Cargo consumer's feature graph.

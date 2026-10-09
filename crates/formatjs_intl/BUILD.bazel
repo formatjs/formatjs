@@ -7,6 +7,7 @@ exports_files(
         "Cargo.toml",
         "README.md",
         "lib.rs",
+        "provider_tests.rs",
         "formatted_message.rs",
         "argument_types.rs",
     ],
@@ -19,13 +20,17 @@ rust_library(
         "argument_types.rs",
         "formatted_message.rs",
         "lib.rs",
+        "provider_tests.rs",
     ],
+    crate_features = ["compiled_data"],
     crate_name = "formatjs_intl",
     visibility = ["//visibility:public"],
     deps = [
         "//crates/formatjs_intl_macros",
         "//crates/icu_messageformat",
         "@crates//:icu_locale",
+        "@crates//:icu_provider",
+        "@crates//:icu_provider_adapters",
     ],
 )
 
@@ -33,11 +38,43 @@ rust_test(
     name = "formatjs_intl_test",
     size = "small",
     crate = ":formatjs_intl",
-    deps = ["@crates//:serde_json"],
+    crate_features = ["compiled_data"],
+    deps = [
+        "@crates//:icu",
+        "@crates//:serde_json",
+    ],
 )
 
 rust_doc_test(
     name = "formatjs_intl_doc_test",
     size = "small",
     crate = ":formatjs_intl",
+    crate_features = ["compiled_data"],
+)
+
+rust_library(
+    name = "without_compiled_data",
+    testonly = True,
+    srcs = [
+        "argument_types.rs",
+        "formatted_message.rs",
+        "lib.rs",
+        "provider_tests.rs",
+    ],
+    crate_name = "formatjs_intl",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/formatjs_intl_macros",
+        "//crates/icu_messageformat:without_compiled_data",
+        "@crates//:icu_locale",
+        "@crates//:icu_provider",
+        "@crates//:icu_provider_adapters",
+    ],
+)
+
+rust_test(
+    name = "provider_test",
+    size = "small",
+    crate = ":without_compiled_data",
+    deps = ["@crates//:icu"],
 )

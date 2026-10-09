@@ -3,17 +3,17 @@ mod formatter;
 mod value;
 
 pub use error::{Error, ErrorCode, Result};
-pub use formatter::{DateTimeKind, DefaultFormatters, Formatters};
 pub use formatjs_icu_messageformat_parser::{
     ParserOptions,
     types::{MessageFormatElement, PluralType},
 };
 pub use formatjs_icu_skeleton_parser::{DateTimeFormatOptions, ExtendedNumberFormatOptions};
+#[cfg(feature = "compiled_data")]
+pub use formatter::DefaultFormatters;
+pub use formatter::{DateTimeKind, Formatters, ProviderFormatters};
 pub use icu::locale::Locale;
 pub use icu::plurals::PluralCategory;
-pub use value::{
-    DateTimeValue, FormattedMessage, NumericValue, Part, TagFunction, Value,
-};
+pub use value::{DateTimeValue, FormattedMessage, NumericValue, Part, TagFunction, Value};
 
 use formatjs_icu_messageformat_parser::types::{
     DateTimeSkeletonOrStyle, NumberSkeletonOrStyle, PluralElement, PluralOrSelectOption,
@@ -125,14 +125,15 @@ impl Default for Formats {
     }
 }
 
+#[derive(Clone)]
 pub struct Options {
     pub parser: ParserOptions,
     pub formats: Formats,
     pub formatters: Arc<dyn Formatters>,
 }
 
-impl Default for Options {
-    fn default() -> Self {
+impl Options {
+    pub fn with_formatters(formatters: Arc<dyn Formatters>) -> Self {
         Self {
             parser: ParserOptions {
                 requires_other_clause: true,
@@ -140,8 +141,15 @@ impl Default for Options {
                 ..Default::default()
             },
             formats: Formats::default(),
-            formatters: Arc::new(DefaultFormatters),
+            formatters,
         }
+    }
+}
+
+#[cfg(feature = "compiled_data")]
+impl Default for Options {
+    fn default() -> Self {
+        Self::with_formatters(Arc::new(DefaultFormatters))
     }
 }
 
@@ -153,18 +161,17 @@ pub struct IcuMessageFormat {
 }
 
 impl IcuMessageFormat {
+    #[cfg(feature = "compiled_data")]
     pub fn new(message: impl AsRef<str>) -> Result<Self> {
         Self::try_new(message)
     }
 
+    #[cfg(feature = "compiled_data")]
     pub fn try_new(message: impl AsRef<str>) -> Result<Self> {
         Self::try_new_with_options(message, Options::default())
     }
 
-    pub fn try_new_with_options(
-        message: impl AsRef<str>,
-        mut options: Options,
-    ) -> Result<Self> {
+    pub fn try_new_with_options(message: impl AsRef<str>, mut options: Options) -> Result<Self> {
         options.parser.locale = None;
         let message = message.as_ref();
         let ast = Parser::new(message, options.parser)
@@ -181,14 +188,12 @@ impl IcuMessageFormat {
         })
     }
 
+    #[cfg(feature = "compiled_data")]
     pub fn from_ast(ast: Vec<MessageFormatElement>) -> Self {
         Self::from_ast_with_options(ast, Options::default())
     }
 
-    pub fn from_ast_with_options(
-        ast: Vec<MessageFormatElement>,
-        options: Options,
-    ) -> Self {
+    pub fn from_ast_with_options(ast: Vec<MessageFormatElement>, options: Options) -> Self {
         Self {
             ast,
             message: None,
@@ -235,7 +240,7 @@ impl IcuMessageFormat {
                     return Err(Error::new(
                         ErrorCode::InvalidValueType,
                         "Cannot convert rich object part to string",
-                    ))
+                    ));
                 }
             }
         }
@@ -288,14 +293,14 @@ impl IcuMessageFormat {
                                 &argument.value,
                                 "string, number, boolean, null, or object",
                                 self.message.as_deref(),
-                            ))
+                            ));
                         }
                         Value::Tag(_) => {
                             return Err(Error::invalid_value_type(
                                 &argument.value,
                                 "non-function value",
                                 self.message.as_deref(),
-                            ))
+                            ));
                         }
                     });
                 }
@@ -311,23 +316,18 @@ impl IcuMessageFormat {
                             )
                         })?;
                     let style = match number.style.as_ref() {
-                        Some(NumberSkeletonOrStyle::String(name)) => self
-                            .formats
-                            .number
-                            .get(name)
-                            .cloned()
-                            .unwrap_or_default(),
+                        Some(NumberSkeletonOrStyle::String(name)) => {
+                            self.formats.number.get(name).cloned().unwrap_or_default()
+                        }
                         Some(NumberSkeletonOrStyle::Skeleton(skeleton)) => {
                             skeleton.parsed_options.clone()
                         }
                         None => ExtendedNumberFormatOptions::default(),
                     };
                     let value = value.scaled(style.scale().unwrap_or(1.0));
-                    result.push(Part::Literal(self.formatters.format_number(
-                        locale,
-                        value,
-                        &style,
-                    )?));
+                    result.push(Part::Literal(
+                        self.formatters.format_number(locale, value, &style)?,
+                    ));
                 }
                 MessageFormatElement::Date(date) => {
                     let value = self
@@ -340,11 +340,8 @@ impl IcuMessageFormat {
                                 self.message.as_deref(),
                             )
                         })?;
-                    let style = self.datetime_style(
-                        locale,
-                        date.style.as_ref(),
-                        DateTimeKind::Date,
-                    )?;
+                    let style =
+                        self.datetime_style(locale, date.style.as_ref(), DateTimeKind::Date)?;
                     result.push(Part::Literal(self.formatters.format_datetime(
                         locale,
                         value,
@@ -363,11 +360,8 @@ impl IcuMessageFormat {
                                 self.message.as_deref(),
                             )
                         })?;
-                    let style = self.datetime_style(
-                        locale,
-                        time.style.as_ref(),
-                        DateTimeKind::Time,
-                    )?;
+                    let style =
+                        self.datetime_style(locale, time.style.as_ref(), DateTimeKind::Time)?;
                     result.push(Part::Literal(self.formatters.format_datetime(
                         locale,
                         value,
@@ -434,12 +428,8 @@ impl IcuMessageFormat {
                             self.message.as_deref(),
                         ));
                     };
-                    let children = self.format_elements(
-                        locale,
-                        &tag.children,
-                        values,
-                        current_plural_value,
-                    )?;
+                    let children =
+                        self.format_elements(locale, &tag.children, values, current_plural_value)?;
                     result.extend(function(children)?);
                 }
             }
@@ -447,11 +437,7 @@ impl IcuMessageFormat {
         Ok(merge_literals(result))
     }
 
-    fn required_value<'a, T>(
-        &self,
-        values: &'a Values<T>,
-        variable: &str,
-    ) -> Result<&'a Value<T>> {
+    fn required_value<'a, T>(&self, values: &'a Values<T>, variable: &str) -> Result<&'a Value<T>> {
         values
             .get(variable)
             .ok_or_else(|| Error::missing_value(variable, self.message.as_deref()))
@@ -478,12 +464,9 @@ impl IcuMessageFormat {
                     .map_err(|error| Error::new(ErrorCode::Formatter, error))?
             }
             Some(DateTimeSkeletonOrStyle::Skeleton(skeleton)) => skeleton.parsed_options.clone(),
-            None if kind == DateTimeKind::Time => self
-                .formats
-                .time
-                .get("medium")
-                .cloned()
-                .unwrap_or_default(),
+            None if kind == DateTimeKind::Time => {
+                self.formats.time.get("medium").cloned().unwrap_or_default()
+            }
             None => DateTimeFormatOptions::default(),
         })
     }
@@ -507,11 +490,9 @@ impl IcuMessageFormat {
         }
 
         let adjusted = NumericValue::Float(numeric - f64::from(plural.offset));
-        let category = self.formatters.plural_category(
-            locale,
-            adjusted,
-            plural.plural_type,
-        )?;
+        let category = self
+            .formatters
+            .plural_category(locale, adjusted, plural.plural_type)?;
         Ok(plural
             .options
             .get(&plural_rule(category))
@@ -560,7 +541,7 @@ fn merge_literals<T>(parts: Vec<Part<T>>) -> Vec<Part<T>> {
     merged
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "compiled_data"))]
 mod tests {
     use super::*;
 
@@ -755,3 +736,6 @@ mod tests {
         );
     }
 }
+
+#[cfg(test)]
+mod provider_tests;

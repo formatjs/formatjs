@@ -234,3 +234,71 @@ This is a breaking change for inline values already erased to `Value`, including
 `values: &values` maps retain runtime validation. Reusable descriptors and ID-only
 calls do not yet carry argument contracts. Value ranges and translated catalog
 compatibility still require runtime checks.
+
+## External ICU data
+
+Existing APIs keep compiled ICU data enabled by default. To supply your own
+locale data, disable default features and create one shared context:
+
+```toml
+[dependencies]
+formatjs_intl = { version = "2", default-features = false }
+icu_provider_blob = { version = "2.1", features = ["alloc"] }
+```
+
+One context supplies all formatters and locale fallback. Requests such as
+`en-XX` or `en-XX-u-foo-x-private` fall back to available `en` data. Catalog APIs
+stay unchanged; reuse the context across requests to share cached messages.
+
+### Add French to an English app
+
+Generate English and French data with a matching
+[ICU4X datagen version](https://icu4x.unicode.org/2_1/tutorials/data-management/):
+
+```sh
+icu4x-datagen --markers all --locales en fr --format blob --out locale-data.postcard --overwrite
+```
+
+`--markers all` includes every formatter and fallback data; `--markers-for-bin`
+can produce a smaller blob. Load it once, then add application translations:
+
+```rust
+use formatjs_intl::{Intl, IntlContext, MessageCatalog, format_message};
+use icu_provider_blob::BlobDataProvider;
+use std::{collections::HashMap, sync::Arc};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let bytes = std::fs::read("locale-data.postcard")?;
+    let provider = BlobDataProvider::try_new_from_blob(bytes.into_boxed_slice())?;
+    let context = IntlContext::try_with_provider(provider)?;
+
+    let mut catalog = MessageCatalog::new();
+    catalog.insert("en", HashMap::new())?;
+    catalog.insert(
+        "fr",
+        HashMap::from([(
+            "tasks.count".to_owned(),
+            "{count, plural, one {# tâche} other {# tâches}}".to_owned(),
+        )]),
+    )?;
+
+    let intl = Intl::try_new_with_context(["fr"], "en", Arc::new(catalog), &context)?;
+    let label = format_message!(
+        &intl,
+        id: "tasks.count",
+        default_message: "{count, plural, one {# task} other {# tasks}}",
+        values: { count: 2_i64 },
+    );
+    assert_eq!(label, "2 tâches");
+    Ok(())
+}
+```
+
+All formatters now have French data. For another locale, regenerate the blob
+including existing locales, add translations, and recreate the context.
+Missing provider data follows normal error handling; compiled data is never
+used as a fallback.
+
+Without `compiled_data`, use `Intl::try_new_with_context`; default caches and
+standalone `negotiate_locale` are unavailable. Disable defaults on direct
+`formatjs_icu_messageformat` dependencies too: Cargo unifies dependency features.

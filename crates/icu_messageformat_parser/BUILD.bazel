@@ -46,6 +46,7 @@ rust_library(
         "time_data_generated.rs",
         "types.rs",
     ],
+    crate_features = ["compiled_data"],
     crate_name = "formatjs_icu_messageformat_parser",
     visibility = ["//visibility:public"],
     deps = [
@@ -62,6 +63,7 @@ rust_library(
 rust_test(
     name = "icu_messageformat_parser_test",
     crate = ":icu_messageformat_parser",
+    crate_features = ["compiled_data"],
 )
 
 rust_binary(

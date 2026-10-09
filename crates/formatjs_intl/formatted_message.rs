@@ -319,7 +319,7 @@ macro_rules! formatted_message {
     }};
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "compiled_data"))]
 mod tests {
     use std::collections::HashMap;
     use std::sync::{Arc, Mutex};
@@ -425,7 +425,7 @@ mod tests {
         let intl = intl();
         let cache = intl.cache.clone();
         let _ = std::panic::catch_unwind(move || {
-            let _messages = cache.messages.write().unwrap();
+            let _messages = cache.state.write().unwrap();
             panic!("poison cache");
         });
         let values = MessageValues::new();
