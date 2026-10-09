@@ -342,9 +342,8 @@ consumers create one `IntlContext::try_with_provider` and pass it to
 fallback data, and a shared message cache. No per-formatter locale registration
 or catalog configuration is needed; each supplied locale needs all relevant ICU
 markers in the provider.
-The Rust intl docs include a complete English/French blob-generation and catalog
-example. Adding a locale requires both ICU data and application translations;
-recreate the context after replacing the blob.
+See the Rust intl docs for a French example. Adding locales requires ICU data,
+translations, and a new context.
 
 `MessageCatalog::insert_precompiled` stores provider-independent ASTs. Each
 context prepares them once using its own options and retains their source

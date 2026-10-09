@@ -199,35 +199,20 @@ formatjs_intl = { version = "2", default-features = false }
 icu_provider_blob = { version = "2.1", features = ["alloc"] }
 ```
 
-One provider supplies number, date/time, cardinal/ordinal plural, and locale
-fallback data. Generate your ICU4X blob with all required markers for every
-locale you include. There is no separate locale registration per formatter.
-The provider must contain requested locales or support ICU4X locale fallback.
-Missing fallback data rejects context creation; missing formatter data follows
-normal message fallback and error reporting, without silently using baked data.
-
-Keep using `MessageCatalog::insert` and `insert_precompiled` unchanged. Catalogs
-store messages independently of locale data; source messages, precompiled ASTs,
-and descriptor defaults all use the context's provider. Clone or borrow the
-context across requests to reuse cached messages. Each context prepares AST
-catalogs once; sharing a catalog between contexts cannot mix their providers.
+One context supplies all formatters and locale fallback. Catalog APIs stay
+unchanged; reuse the context across requests to share cached messages.
 
 ### Add French to an English app
 
-Generate one blob containing English and French locale data. Use an
-`icu4x-datagen` version matching the ICU4X release resolved in your `Cargo.lock`;
-see [ICU4X data generation](https://icu4x.unicode.org/2_1/tutorials/data-management/).
+Generate English and French data with a matching
+[ICU4X datagen version](https://icu4x.unicode.org/2_1/tutorials/data-management/):
 
 ```sh
 icu4x-datagen --markers all --locales en fr --format blob --out locale-data.postcard --overwrite
 ```
 
-`--markers all` includes data for every formatter, plus locale fallback. It keeps
-this example complete; use ICU4X's `--markers-for-bin` option with your compiled
-application to generate a smaller blob.
-
-Locale data supplies formatting rules, not your application's translations. Load
-the blob once, then add French messages through the normal catalog API:
+`--markers all` includes every formatter and fallback data; `--markers-for-bin`
+can produce a smaller blob. Load it once, then add application translations:
 
 ```rust
 use formatjs_intl::{Intl, IntlContext, MessageCatalog, format_message};
@@ -249,8 +234,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )]),
     )?;
 
-    // fr-CA selects the available fr catalog; en remains the default locale.
-    let intl = Intl::try_new_with_context(["fr-CA"], "en", Arc::new(catalog), &context)?;
+    let intl = Intl::try_new_with_context(["fr"], "en", Arc::new(catalog), &context)?;
     let label = format_message!(
         &intl,
         id: "tasks.count",
@@ -258,18 +242,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         values: { count: 2_i64 },
     );
     assert_eq!(label, "2 tâches");
-    println!("{label}");
     Ok(())
 }
 ```
 
-The same context supplies French number, date/time, and plural data. No
-per-formatter registration is needed. To add another locale later, regenerate
-the blob with both existing and new locales, add its translations, then recreate
-the context and request-scoped `Intl` instances using the updated blob.
+All formatters now have French data. For another locale, regenerate the blob
+including existing locales, add translations, and recreate the context.
+Missing provider data follows normal error handling; compiled data is never
+used as a fallback.
 
-Without `compiled_data`, use `Intl::try_new_with_context` instead of
-`Intl::try_new`. Default cache construction and standalone `negotiate_locale`
-require compiled data. Default-feature users need no changes. If you depend on
-`formatjs_icu_messageformat` directly, disable its defaults too; other dependencies
-can re-enable compiled data through Cargo feature unification.
+Without `compiled_data`, use `Intl::try_new_with_context`; default caches and
+standalone `negotiate_locale` are unavailable. Disable defaults on direct
+`formatjs_icu_messageformat` dependencies too: Cargo unifies dependency features.
