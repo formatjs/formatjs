@@ -281,6 +281,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "{count, plural, one {# tâche} other {# tâches}}".to_owned(),
         )]),
     )?;
+    context.check_catalog(&catalog)?;
 
     let intl = Intl::try_new_with_context(["fr"], "en", Arc::new(catalog), &context)?;
     let label = format_message!(
@@ -296,8 +297,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 All formatters now have French data. For another locale, regenerate the blob
 including existing locales, add translations, and recreate the context.
-Missing provider data follows normal error handling; compiled data is never
-used as a fallback.
+Missing provider data follows normal error handling, with one exception: a
+catalog locale the blob lacks entirely falls back to root (`und`) data and
+formats without any error. Compiled data is never used as a fallback.
+
+`IntlContext::check_catalog` catches both at startup, naming the locale. It
+needs a blob generated without `--deduplication maximal`, which keeps locales
+identical to root only as `und`.
 
 Without `compiled_data`, use `Intl::try_new_with_context`; default caches and
 standalone `negotiate_locale` are unavailable. Disable defaults on direct

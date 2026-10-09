@@ -348,6 +348,15 @@ data independently of catalog matching.
 See the Rust intl docs for a French example. Adding locales requires ICU data,
 translations, and a new context.
 
+Data errors name the formatter and the requested locale and keep the ICU4X
+error as `source()`. `Formatters::check_locale` builds every formatter for one
+locale. `IntlContext::check_catalog` runs it for each catalog locale and also
+rejects locales whose decimal or cardinal plural data resolves to root (`und`):
+behind `LocaleFallbackProvider`, a language missing from the provider would
+otherwise format with root data and report no error. Blobs generated with
+`--deduplication maximal` keep root-identical locales only as `und`, so the
+check rejects them.
+
 `MessageCatalog::insert_precompiled` stores provider-independent ASTs. Each
 context prepares them once using its own options and retains their source
 allocation as its cache identity. Cloned contexts share prepared messages;
@@ -357,6 +366,8 @@ exclude precompiled entries. Existing default-feature APIs remain available.
 Run the two runtime unit suites plus their `provider_test` targets. Provider
 suites compile runtime APIs without `compiled_data` and exercise a two-locale
 buffer provider, missing data, cache isolation, source/AST paths, and locale
-fallback through the same provider. The shared Bazel external dependency graph still enables ICU
+fallback through the same provider. Both suites also format from checked-in
+`icu4x-datagen` blobs under `testdata/`; the generating command sits beside each
+`include_bytes!`. The shared Bazel external dependency graph still enables ICU
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.

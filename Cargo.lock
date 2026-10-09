@@ -658,6 +658,7 @@ dependencies = [
  "icu_locale",
  "icu_provider",
  "icu_provider_adapters",
+ "icu_provider_blob",
  "serde_json",
 ]
 

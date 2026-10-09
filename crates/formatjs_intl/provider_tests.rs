@@ -260,3 +260,92 @@ fn regional_locales_and_extensions_use_available_provider_data() {
         }
     }
 }
+
+#[test]
+fn context_stays_unwind_safe() {
+    fn assert_unwind_safe<T: std::panic::UnwindSafe + std::panic::RefUnwindSafe>() {}
+    assert_unwind_safe::<IntlContext>();
+}
+
+mod blob {
+    use super::*;
+    use icu_provider_blob::BlobDataProvider;
+
+    // `icu4x-datagen 2.3.0 --format blob --cldr-tag 48.2.1 --deduplication none`
+    //
+    //  --locales '^en' '^fr' (`^`: locale plus ancestors, including `und`; no descendants)
+    //  --markers DecimalSymbolsV1 DecimalDigitsV1 PluralsCardinalV1 PluralsOrdinalV1
+    //    CalendarPreferredV1 DatetimePatternsDateGregorianV1 DatetimeNamesMonthGregorianV1
+    //    DatetimeNamesYearGregorianV1 DatetimeNamesWeekdayV1 DatetimePatternsTimeV1
+    //    DatetimeNamesDayperiodV1 LocaleLikelySubtagsLanguageV1 LocaleParentsV1
+    //  --out testdata/en_fr.postcard
+    static BLOB: &[u8] = include_bytes!("testdata/en_fr.postcard");
+
+    const SUMMARY: MessageDescriptor = MessageDescriptor::new(
+        "summary",
+        "{count, plural, one {# task} other {# tasks}} · {total, number} · {when, date, medium}",
+    );
+
+    fn context() -> IntlContext {
+        IntlContext::try_with_provider(BlobDataProvider::try_new_from_static_blob(BLOB).unwrap())
+            .unwrap()
+    }
+
+    fn catalog(locales: &[&str]) -> MessageCatalog {
+        let mut catalog = MessageCatalog::new();
+        catalog.insert("en", Messages::new()).unwrap();
+        for locale in locales {
+            catalog
+                .insert(
+                    locale,
+                    HashMap::from([(
+                        SUMMARY.id.to_owned(),
+                        "{count, plural, one {# tâche} other {# tâches}} · {total, number} · {when, date, medium}"
+                            .to_owned(),
+                    )]),
+                )
+                .unwrap();
+        }
+        catalog
+    }
+
+    #[test]
+    fn regional_catalog_formats_with_parent_locale_data() {
+        let context = context();
+        let intl =
+            Intl::try_new_with_context(["fr-CA"], "en", Arc::new(catalog(&["fr-CA"])), &context)
+                .unwrap();
+        let values: Values = HashMap::from([
+            ("count".to_owned(), Value::from(2_i64)),
+            ("total".to_owned(), Value::from(1234.5)),
+            ("when".to_owned(), Value::from(0_i64)),
+        ]);
+
+        assert_eq!(intl.locale().to_string(), "fr-CA");
+        assert_eq!(
+            intl.format_message_to_string(SUMMARY, &values).unwrap(),
+            "2 tâches · 1\u{202f}234,5 · 1 janv. 1970"
+        );
+    }
+
+    #[test]
+    fn check_catalog_accepts_regional_and_root_locales() {
+        context()
+            .check_catalog(&catalog(&["fr", "fr-CA", "und-US"]))
+            .unwrap();
+    }
+
+    // Without the check, `de` formats with root data ("1,234.5 · 1970 M01 1") and reports nothing.
+    #[test]
+    fn check_catalog_rejects_locales_that_resolve_to_root_data() {
+        let error = context()
+            .check_catalog(&catalog(&["fr", "es", "de"]))
+            .unwrap_err();
+        let message = error.to_string();
+        assert!(
+            message.contains("DecimalSymbolsV1 data for locale de")
+                && message.contains("root (und)"),
+            "{message}"
+        );
+    }
+}
