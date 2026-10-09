@@ -253,14 +253,19 @@ stay unchanged; reuse the context across requests to share cached messages.
 ### Add French to an English app
 
 Generate English and French data with a matching
-[ICU4X datagen version](https://icu4x.unicode.org/2_1/tutorials/data-management/):
+[ICU4X datagen version](https://icu4x.unicode.org/2_3/tutorials/data-management/),
+keeping only the markers your release binary uses:
 
 ```sh
-icu4x-datagen --markers all --locales en fr --format blob --out locale-data.postcard --overwrite
+cargo build --release
+icu4x-datagen --markers-for-bin target/release/my-app --locales en fr --format blob --out locale-data.postcard --overwrite
 ```
 
-`--markers all` includes every formatter and fallback data; `--markers-for-bin`
-can produce a smaller blob. Load it once, then add application translations:
+Replace `my-app` with your binary. If it embeds the blob with `include_bytes!`,
+build once against a placeholder blob, generate, then rebuild. `--markers all`
+is the alternative when there is no binary yet: it needs datagen's default
+features (`use_wasm`, or `use_icu4c`) and produces a far larger blob. Load it
+once, then add application translations:
 
 ```rust
 use formatjs_intl::{Intl, IntlContext, MessageCatalog, format_message};
