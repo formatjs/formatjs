@@ -196,17 +196,7 @@ locale data, disable default features and create one shared context:
 ```toml
 [dependencies]
 formatjs_intl = { version = "2", default-features = false }
-icu_provider_blob = "2.1"
-```
-
-```rust
-use formatjs_intl::{Intl, IntlContext};
-use icu_provider_blob::BlobDataProvider;
-use std::sync::Arc;
-
-let provider = BlobDataProvider::try_new_from_blob(bytes.into_boxed_slice())?;
-let context = IntlContext::try_with_provider(provider)?;
-let intl = Intl::try_new_with_context(["fr-CA"], "en", Arc::new(catalog), &context)?;
+icu_provider_blob = { version = "2.1", features = ["alloc"] }
 ```
 
 One provider supplies number, date/time, cardinal/ordinal plural, and locale
@@ -221,6 +211,62 @@ store messages independently of locale data; source messages, precompiled ASTs,
 and descriptor defaults all use the context's provider. Clone or borrow the
 context across requests to reuse cached messages. Each context prepares AST
 catalogs once; sharing a catalog between contexts cannot mix their providers.
+
+### Add French to an English app
+
+Generate one blob containing English and French locale data. Use an
+`icu4x-datagen` version matching the ICU4X release resolved in your `Cargo.lock`;
+see [ICU4X data generation](https://icu4x.unicode.org/2_1/tutorials/data-management/).
+
+```sh
+icu4x-datagen --markers all --locales en fr --format blob --out locale-data.postcard --overwrite
+```
+
+`--markers all` includes data for every formatter, plus locale fallback. It keeps
+this example complete; use ICU4X's `--markers-for-bin` option with your compiled
+application to generate a smaller blob.
+
+Locale data supplies formatting rules, not your application's translations. Load
+the blob once, then add French messages through the normal catalog API:
+
+```rust
+use formatjs_intl::{Intl, IntlContext, MessageCatalog, format_message};
+use icu_provider_blob::BlobDataProvider;
+use std::{collections::HashMap, sync::Arc};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let bytes = std::fs::read("locale-data.postcard")?;
+    let provider = BlobDataProvider::try_new_from_blob(bytes.into_boxed_slice())?;
+    let context = IntlContext::try_with_provider(provider)?;
+
+    let mut catalog = MessageCatalog::new();
+    catalog.insert("en", HashMap::new())?;
+    catalog.insert(
+        "fr",
+        HashMap::from([(
+            "tasks.count".to_owned(),
+            "{count, plural, one {# tâche} other {# tâches}}".to_owned(),
+        )]),
+    )?;
+
+    // fr-CA selects the available fr catalog; en remains the default locale.
+    let intl = Intl::try_new_with_context(["fr-CA"], "en", Arc::new(catalog), &context)?;
+    let label = format_message!(
+        &intl,
+        id: "tasks.count",
+        default_message: "{count, plural, one {# task} other {# tasks}}",
+        values: { count: 2_i64 },
+    );
+    assert_eq!(label, "2 tâches");
+    println!("{label}");
+    Ok(())
+}
+```
+
+The same context supplies French number, date/time, and plural data. No
+per-formatter registration is needed. To add another locale later, regenerate
+the blob with both existing and new locales, add its translations, then recreate
+the context and request-scoped `Intl` instances using the updated blob.
 
 Without `compiled_data`, use `Intl::try_new_with_context` instead of
 `Intl::try_new`. Default cache construction and standalone `negotiate_locale`
