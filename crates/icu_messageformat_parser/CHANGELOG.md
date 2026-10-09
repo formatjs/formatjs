@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v1.0.0...formatjs_icu_messageformat_parser_v1.1.0) (2026-10-09)
+
+
+### Features
+
+* **formatjs_intl:** support caller-provided ICU data ([#7573](https://github.com/formatjs/formatjs/issues/7573)) ([6270b59](https://github.com/formatjs/formatjs/commit/6270b59d5f820ff5edc7845a187566d7dcfc73d4))
+
 ## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v0.3.1...formatjs_icu_messageformat_parser_v1.0.0) (2026-09-14)
 
 

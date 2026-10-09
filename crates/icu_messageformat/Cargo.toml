@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_icu_messageformat"
-version = "0.1.4"
+version = "0.2.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ICU MessageFormat runtime implementation in Rust"
@@ -13,26 +13,12 @@ categories = ["internationalization", "localization"]
 readme = "README.md"
 rust-version = "1.92"
 
-[features]
-default = ["compiled_data"]
-compiled_data = [
-  "icu/default",
-  "formatjs_icu_messageformat_parser/compiled_data",
-]
-
 [dependencies]
 fixed_decimal = "0.7"
-formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "1.0.0", default-features = false }
+formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "1.1.0" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.2" }
-icu = { version = "2.1", default-features = false, features = [
-  "serde",
-  "sync",
-] }
-icu_provider = { version = "2.1", features = ["sync"] }
+icu = "2.1"
 
 [lib]
 path = "lib.rs"
 crate-type = ["rlib"]
-
-[dev-dependencies]
-icu_provider = { version = "2.1", features = ["deserialize_json"] }
