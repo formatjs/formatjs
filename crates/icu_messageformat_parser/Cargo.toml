@@ -13,8 +13,12 @@ categories = ["internationalization", "parser-implementations", "localization"]
 readme = "../../packages/icu-messageformat-parser/README.md"
 rust-version = "1.90"
 
+[features]
+default = ["compiled_data"]
+compiled_data = ["icu/default"]
+
 [dependencies]
-icu = "2.1"
+icu = { version = "2.1", default-features = false }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.2" }
 once_cell = "1.21"
 regex = "1.11"

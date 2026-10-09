@@ -13,14 +13,25 @@ categories = ["internationalization", "localization"]
 readme = "README.md"
 rust-version = "1.92"
 
+[features]
+default = ["compiled_data"]
+compiled_data = [
+  "icu_locale/default",
+  "formatjs_icu_messageformat/compiled_data",
+]
+
 [dependencies]
-formatjs_icu_messageformat = { path = "../icu_messageformat", version = "0.2.0" }
+formatjs_icu_messageformat = { path = "../icu_messageformat", version = "0.2.0", default-features = false }
 formatjs_intl_macros = { path = "../formatjs_intl_macros", version = "1.1.0" }
-icu_locale = "2.1"
+icu_locale = { version = "2.1", default-features = false, features = ["serde"] }
+icu_provider = { version = "2.1", features = ["sync"] }
+icu_provider_adapters = { version = "2.1", default-features = false }
 
 [lib]
 path = "lib.rs"
 crate-type = ["rlib"]
 
 [dev-dependencies]
+icu = { version = "2.1", default-features = false }
+icu_provider = { version = "2.1", features = ["deserialize_json"] }
 serde_json = "1.0"
