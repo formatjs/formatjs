@@ -68,6 +68,34 @@ fn external_data_formats_numbers_and_plurals_from_source_and_ast() {
 }
 
 #[test]
+fn default_parser_options_parse_like_the_runtime() {
+    let source = "{n, number, ::percent} {s, select, a {A} other {B}}";
+    let ast = Parser::new(source, Options::default_parser_options())
+        .parse()
+        .unwrap();
+    let message = IcuMessageFormat::try_new_with_options(source, options()).unwrap();
+    assert_eq!(ast, message.get_ast());
+    let MessageFormatElement::Number(number) = &ast[0] else {
+        panic!("expected a number argument, got {:?}", ast[0]);
+    };
+    let Some(NumberSkeletonOrStyle::Skeleton(skeleton)) = &number.style else {
+        panic!("expected a number skeleton, got {:?}", number.style);
+    };
+    assert!(matches!(
+        skeleton.parsed_options.style(),
+        Some(NumberFormatOptionsStyle::Percent)
+    ));
+
+    let missing_other = "{s, select, a {A}}";
+    assert!(
+        Parser::new(missing_other, Options::default_parser_options())
+            .parse()
+            .is_err()
+    );
+    assert!(IcuMessageFormat::try_new_with_options(missing_other, options()).is_err());
+}
+
+#[test]
 fn missing_provider_data_returns_formatter_errors() {
     // One message per formatter constructor: number, YMD and YMDE in three lengths,
     // T with and without seconds, cardinal and ordinal plural rules.

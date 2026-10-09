@@ -93,6 +93,8 @@ let message = IcuMessageFormat::try_new_with_options("{count, number}", options)
 ```
 
 Use the same options with `from_ast_with_options` for precompiled messages.
+`Options::default_parser_options()` returns the parser settings these options
+use, for parsing or precompiling messages without building formatters.
 Generate a compatible blob with ICU4X `icu4x-datagen`, including the locales and
 markers needed for numbers, cardinal/ordinal plurals, calendars, dates, and times.
 The provider must support the requested locales or implement locale fallback

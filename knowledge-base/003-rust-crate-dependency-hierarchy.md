@@ -336,7 +336,9 @@ feature explicitly, so a standalone consumer can exclude compiled ICU data.
 `ProviderFormatters` accepts a `Send + Sync` buffer provider; both formatter
 backends share option handling. Buffer constructors use ICU's serde support.
 
-The standalone message formatter retains `Options::with_formatters`. High-level
+The standalone message formatter retains `Options::with_formatters`.
+`Options::default_parser_options` returns the runtime's parser settings
+without needing formatters or `compiled_data`. High-level
 consumers create one `IntlContext::try_with_provider` and pass it to
 `Intl::try_new_with_context`. The context owns formatter configuration, locale
 fallback data, and a shared message cache. No per-formatter locale registration
