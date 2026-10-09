@@ -449,6 +449,26 @@ impl IntlContext {
         }
         Ok(())
     }
+
+    /// Picks the catalog locale for `requested_locales` with this context's fallback data;
+    /// the free function `negotiate_locale` does the same with compiled data.
+    pub fn negotiate_locale<I, S>(
+        &self,
+        requested_locales: I,
+        default_locale: &Locale,
+        catalog: &MessageCatalog,
+    ) -> Result<Locale>
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<str>,
+    {
+        negotiate_locale_with_fallbacker(
+            requested_locales,
+            default_locale,
+            catalog,
+            &self.fallbacker,
+        )
+    }
 }
 
 #[cfg_attr(feature = "compiled_data", derive(Default))]

@@ -305,6 +305,7 @@ formats without any error. Compiled data is never used as a fallback.
 needs a blob generated without `--deduplication maximal`, which keeps locales
 identical to root only as `und`.
 
-Without `compiled_data`, use `Intl::try_new_with_context`; default caches and
-standalone `negotiate_locale` are unavailable. Disable defaults on direct
+Without `compiled_data`, use `Intl::try_new_with_context`, and
+`IntlContext::negotiate_locale` in place of the standalone `negotiate_locale`;
+default caches are unavailable. Disable defaults on direct
 `formatjs_icu_messageformat` dependencies too: Cargo unifies dependency features.

@@ -348,4 +348,18 @@ mod blob {
             "{message}"
         );
     }
+
+    #[test]
+    fn negotiates_locales_through_either_provider() {
+        let catalog = catalog(&["fr"]);
+        let default_locale: Locale = "en".parse().unwrap();
+        for (provider, context) in [("synthetic", super::context(false)), ("blob", context())] {
+            for (requested, expected) in [("fr-CA", "fr"), ("de", "en")] {
+                let negotiated = context
+                    .negotiate_locale([requested], &default_locale, &catalog)
+                    .unwrap();
+                assert_eq!(negotiated.to_string(), expected, "{provider}: {requested}");
+            }
+        }
+    }
 }

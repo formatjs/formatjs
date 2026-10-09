@@ -340,7 +340,8 @@ The standalone message formatter retains `Options::with_formatters`.
 `Options::default_parser_options` returns the runtime's parser settings
 without needing formatters or `compiled_data`. High-level
 consumers create one `IntlContext::try_with_provider` and pass it to
-`Intl::try_new_with_context`. The context owns formatter configuration, locale
+`Intl::try_new_with_context`; `IntlContext::negotiate_locale` negotiates with
+the same fallback data. The context owns formatter configuration, locale
 fallback data, and a shared message cache. No per-formatter locale registration
 or catalog configuration is needed; each supplied locale needs all relevant ICU
 markers in the provider. The context wraps the provider in ICU4X
