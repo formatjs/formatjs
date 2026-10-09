@@ -644,7 +644,9 @@ version = "2.0.0"
 dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
+ "icu",
  "icu_locale",
+ "icu_provider",
  "serde_json",
 ]
 

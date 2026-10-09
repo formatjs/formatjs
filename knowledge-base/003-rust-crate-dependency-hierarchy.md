@@ -336,15 +336,22 @@ feature explicitly, so a standalone consumer can exclude compiled ICU data.
 `ProviderFormatters` accepts a `Send + Sync` buffer provider; both formatter
 backends share option handling. Buffer constructors use ICU's serde support.
 
-`Options::with_formatters` works without compiled data. `IntlCache::with_options`
-fixes options for each cache lifetime, under the existing poisoning boundary.
-Precompiled catalogs accept options at insertion; `Intl::try_new_with_fallbacker`
-and `negotiate_locale_with_fallbacker` accept caller-created fallbackers. Existing
-convenience APIs remain available with default features.
+The standalone message formatter retains `Options::with_formatters`. High-level
+consumers create one `IntlContext::try_with_provider` and pass it to
+`Intl::try_new_with_context`. The context owns formatter configuration, locale
+fallback data, and a shared message cache. No per-formatter locale registration
+or catalog configuration is needed; each supplied locale needs all relevant ICU
+markers in the provider.
+
+`MessageCatalog::insert_precompiled` stores provider-independent ASTs. Each
+context prepares them once using its own options and retains their source
+allocation as its cache identity. Cloned contexts share prepared messages;
+separate contexts remain isolated. Source-cache `len` and `is_empty` continue to
+exclude precompiled entries. Existing default-feature APIs remain available.
 
 Run the two runtime unit suites plus their `provider_test` targets. Provider
 suites compile runtime APIs without `compiled_data` and exercise a two-locale
 buffer provider, missing data, cache isolation, source/AST paths, and locale
-fallback injection. The shared Bazel external dependency graph still enables ICU
+fallback through the same provider. The shared Bazel external dependency graph still enables ICU
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.

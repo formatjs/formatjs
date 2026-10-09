@@ -29,6 +29,7 @@ rust_library(
         "//crates/formatjs_intl_macros",
         "//crates/icu_messageformat",
         "@crates//:icu_locale",
+        "@crates//:icu_provider",
     ],
 )
 
@@ -37,7 +38,10 @@ rust_test(
     size = "small",
     crate = ":formatjs_intl",
     crate_features = ["compiled_data"],
-    deps = ["@crates//:serde_json"],
+    deps = [
+        "@crates//:icu",
+        "@crates//:serde_json",
+    ],
 )
 
 rust_doc_test(
@@ -62,6 +66,7 @@ rust_library(
         "//crates/formatjs_intl_macros",
         "//crates/icu_messageformat:without_compiled_data",
         "@crates//:icu_locale",
+        "@crates//:icu_provider",
     ],
 )
 
@@ -69,4 +74,5 @@ rust_test(
     name = "provider_test",
     size = "small",
     crate = ":without_compiled_data",
+    deps = ["@crates//:icu"],
 )

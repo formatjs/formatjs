@@ -190,25 +190,40 @@ compatibility still require runtime checks.
 
 ## External ICU data
 
-Existing APIs use the default-on `compiled_data` feature. For caller-provided
-ICU4X data, disable default features on both `formatjs_intl` and any direct
-`formatjs_icu_messageformat` dependency. Create `Options::with_formatters` using
-`ProviderFormatters`, then use:
+Existing APIs keep compiled ICU data enabled by default. To supply your own
+locale data, disable default features and create one shared context:
 
-- `IntlCache::with_options(options.clone())` for source messages and descriptor defaults.
-- `MessageCatalog::insert_precompiled_with_options(locale, messages, options)` for AST catalogs.
-- `LocaleFallbacker::try_new_with_buffer_provider(&provider)` for locale negotiation data.
-- `Intl::try_new_with_fallbacker(requested, default_locale, catalog, cache, &fallbacker)`.
+```toml
+[dependencies]
+formatjs_intl = { version = "2", default-features = false }
+icu_provider_blob = "2.1"
+```
 
-`Options` and `LocaleFallbacker` are re-exported. Standalone negotiation accepts
-an explicit fallbacker through `negotiate_locale_with_fallbacker`.
+```rust
+use formatjs_intl::{Intl, IntlContext};
+use icu_provider_blob::BlobDataProvider;
+use std::sync::Arc;
 
-Each cache owns immutable options. Share it only among requests using that
-configuration; use separate caches for different providers or named formats.
-Precompiled catalogs retain their insertion-time options, so configure both paths
-consistently. Missing formatter data follows the existing message fallback and
-error-reporting behavior.
+let provider = BlobDataProvider::try_new_from_blob(bytes.into_boxed_slice())?;
+let context = IntlContext::try_with_provider(provider)?;
+let intl = Intl::try_new_with_context(["fr-CA"], "en", Arc::new(catalog), &context)?;
+```
 
-Without `compiled_data`, default cache construction, `insert_precompiled`,
-`Intl::try_new`, and `negotiate_locale` are unavailable. Explicit-options and
-explicit-fallbacker APIs remain available. Default-feature users need no changes.
+One provider supplies number, date/time, cardinal/ordinal plural, and locale
+fallback data. Generate your ICU4X blob with all required markers for every
+locale you include. There is no separate locale registration per formatter.
+The provider must contain requested locales or support ICU4X locale fallback.
+Missing fallback data rejects context creation; missing formatter data follows
+normal message fallback and error reporting, without silently using baked data.
+
+Keep using `MessageCatalog::insert` and `insert_precompiled` unchanged. Catalogs
+store messages independently of locale data; source messages, precompiled ASTs,
+and descriptor defaults all use the context's provider. Clone or borrow the
+context across requests to reuse cached messages. Each context prepares AST
+catalogs once; sharing a catalog between contexts cannot mix their providers.
+
+Without `compiled_data`, use `Intl::try_new_with_context` instead of
+`Intl::try_new`. Default cache construction and standalone `negotiate_locale`
+require compiled data. Default-feature users need no changes. If you depend on
+`formatjs_icu_messageformat` directly, disable its defaults too; other dependencies
+can re-enable compiled data through Cargo feature unification.

@@ -1,9 +1,10 @@
-pub use formatjs_icu_messageformat::Options;
 use formatjs_icu_messageformat::{
     FormattedMessage as RichFormattedMessage, IcuMessageFormat, MessageFormatElement, Part, Values,
 };
+use formatjs_icu_messageformat::{Options, ProviderFormatters};
 use icu_locale::Locale;
-pub use icu_locale::fallback::LocaleFallbacker;
+use icu_locale::fallback::LocaleFallbacker;
+use icu_provider::buf::BufferProvider;
 use std::collections::HashMap;
 use std::error::Error as StdError;
 use std::fmt;
@@ -32,6 +33,12 @@ pub type PrecompiledMessages = HashMap<String, Vec<MessageFormatElement>>;
 type CompiledMessages = HashMap<String, Arc<IcuMessageFormat>>;
 
 #[derive(Clone)]
+enum StoredBundle {
+    Source(Arc<Messages>),
+    Precompiled(Arc<PrecompiledMessages>),
+}
+
+#[derive(Clone)]
 enum CatalogBundle {
     Source(Arc<Messages>),
     Precompiled(Arc<CompiledMessages>),
@@ -40,7 +47,9 @@ enum CatalogBundle {
 impl CatalogBundle {
     fn get(&self, id: &str) -> Option<CatalogMessage<'_>> {
         match self {
-            Self::Source(messages) => messages.get(id).map(|message| CatalogMessage::Source(message)),
+            Self::Source(messages) => messages
+                .get(id)
+                .map(|message| CatalogMessage::Source(message)),
             Self::Precompiled(messages) => messages
                 .get(id)
                 .map(|message| CatalogMessage::Precompiled(message)),
@@ -68,7 +77,10 @@ impl fmt::Display for Error {
                 )
             }
             Self::MissingTranslation { id, locale } => {
-                write!(formatter, "Missing message \"{id}\" for locale \"{locale}\"")
+                write!(
+                    formatter,
+                    "Missing message \"{id}\" for locale \"{locale}\""
+                )
             }
             Self::CachePoisoned => formatter.write_str("Intl cache lock is poisoned"),
             Self::Message(error) => error.fmt(formatter),
@@ -280,7 +292,7 @@ macro_rules! format_message {
 
 #[derive(Clone, Default)]
 pub struct MessageCatalog {
-    bundles: HashMap<String, CatalogBundle>,
+    bundles: HashMap<String, StoredBundle>,
 }
 
 impl fmt::Debug for MessageCatalog {
@@ -299,45 +311,21 @@ impl MessageCatalog {
 
     pub fn insert(&mut self, locale: impl AsRef<str>, messages: Messages) -> Result<()> {
         let locale = parse_locale(locale.as_ref())?;
-        self.bundles.insert(
-            locale.to_string(),
-            CatalogBundle::Source(Arc::new(messages)),
-        );
+        self.bundles
+            .insert(locale.to_string(), StoredBundle::Source(Arc::new(messages)));
         Ok(())
     }
 
     /// Inserts AST messages emitted by `formatjs compile --ast`.
-    #[cfg(feature = "compiled_data")]
     pub fn insert_precompiled(
         &mut self,
         locale: impl AsRef<str>,
         messages: PrecompiledMessages,
     ) -> Result<()> {
-        self.insert_precompiled_with_options(locale, messages, Options::default())
-    }
-
-    pub fn insert_precompiled_with_options(
-        &mut self,
-        locale: impl AsRef<str>,
-        messages: PrecompiledMessages,
-        options: Options,
-    ) -> Result<()> {
         let locale = parse_locale(locale.as_ref())?;
-        let messages = messages
-            .into_iter()
-            .map(|(id, ast)| {
-                (
-                    id,
-                    Arc::new(IcuMessageFormat::from_ast_with_options(
-                        ast,
-                        options.clone(),
-                    )),
-                )
-            })
-            .collect();
         self.bundles.insert(
             locale.to_string(),
-            CatalogBundle::Precompiled(Arc::new(messages)),
+            StoredBundle::Precompiled(Arc::new(messages)),
         );
         Ok(())
     }
@@ -349,7 +337,7 @@ impl MessageCatalog {
     /// Returns source messages for a locale. Precompiled catalogs have no source map.
     pub fn messages(&self, locale: impl fmt::Display) -> Option<Arc<Messages>> {
         match self.bundles.get(&locale.to_string()) {
-            Some(CatalogBundle::Source(messages)) => Some(messages.clone()),
+            Some(StoredBundle::Source(messages)) => Some(messages.clone()),
             _ => None,
         }
     }
@@ -358,8 +346,36 @@ impl MessageCatalog {
         self.bundles.keys().map(String::as_str)
     }
 
-    fn bundle(&self, locale: impl fmt::Display) -> Option<CatalogBundle> {
-        self.bundles.get(&locale.to_string()).cloned()
+    fn bundle(
+        &self,
+        locale: impl fmt::Display,
+        cache: &IntlCache,
+    ) -> Result<Option<CatalogBundle>> {
+        self.bundles
+            .get(&locale.to_string())
+            .map(|bundle| cache.prepare_bundle(bundle))
+            .transpose()
+    }
+}
+
+/// Shared locale data and message cache for request-scoped `Intl` instances.
+#[derive(Clone)]
+pub struct IntlContext {
+    cache: Arc<IntlCache>,
+    fallbacker: Arc<LocaleFallbacker>,
+}
+
+impl IntlContext {
+    /// Uses one provider for all formatters and locale negotiation.
+    pub fn try_with_provider(
+        provider: impl BufferProvider + Send + Sync + 'static,
+    ) -> std::result::Result<Self, icu_provider::DataError> {
+        let fallbacker = LocaleFallbacker::try_new_with_buffer_provider(&provider)?;
+        let options = Options::with_formatters(Arc::new(ProviderFormatters::new(provider)));
+        Ok(Self {
+            cache: Arc::new(IntlCache::with_options(options)),
+            fallbacker: Arc::new(fallbacker),
+        })
     }
 }
 
@@ -372,6 +388,13 @@ pub struct IntlCache {
 struct CacheState {
     options: Options,
     messages: HashMap<String, Arc<IcuMessageFormat>>,
+    precompiled: HashMap<usize, PreparedCatalog>,
+}
+
+struct PreparedCatalog {
+    // Retain the AST allocation so its address cannot be reused as a cache key.
+    _source: Arc<PrecompiledMessages>,
+    messages: Arc<CompiledMessages>,
 }
 
 impl IntlCache {
@@ -381,11 +404,12 @@ impl IntlCache {
     }
 
     /// Options are fixed for the lifetime of this cache.
-    pub fn with_options(options: Options) -> Self {
+    fn with_options(options: Options) -> Self {
         Self {
             state: RwLock::new(CacheState {
                 options,
                 messages: HashMap::new(),
+                precompiled: HashMap::new(),
             }),
         }
     }
@@ -399,6 +423,49 @@ impl IntlCache {
 
     pub fn is_empty(&self) -> Result<bool> {
         self.len().map(|len| len == 0)
+    }
+
+    fn prepare_bundle(&self, bundle: &StoredBundle) -> Result<CatalogBundle> {
+        let source = match bundle {
+            StoredBundle::Source(messages) => return Ok(CatalogBundle::Source(messages.clone())),
+            StoredBundle::Precompiled(source) => source,
+        };
+        let key = Arc::as_ptr(source) as usize;
+        if let Some(prepared) = self
+            .state
+            .read()
+            .map_err(|_| Error::CachePoisoned)?
+            .precompiled
+            .get(&key)
+        {
+            return Ok(CatalogBundle::Precompiled(prepared.messages.clone()));
+        }
+        let mut state = self.state.write().map_err(|_| Error::CachePoisoned)?;
+        if let Some(prepared) = state.precompiled.get(&key) {
+            return Ok(CatalogBundle::Precompiled(prepared.messages.clone()));
+        }
+        let messages = Arc::new(
+            source
+                .iter()
+                .map(|(id, ast)| {
+                    (
+                        id.clone(),
+                        Arc::new(IcuMessageFormat::from_ast_with_options(
+                            ast.clone(),
+                            state.options.clone(),
+                        )),
+                    )
+                })
+                .collect(),
+        );
+        state.precompiled.insert(
+            key,
+            PreparedCatalog {
+                _source: source.clone(),
+                messages: Arc::clone(&messages),
+            },
+        );
+        Ok(CatalogBundle::Precompiled(messages))
     }
 
     fn get_or_compile(&self, source: &str) -> Result<Arc<IcuMessageFormat>> {
@@ -450,7 +517,26 @@ impl Intl {
         )
     }
 
-    pub fn try_new_with_fallbacker<I, S>(
+    pub fn try_new_with_context<I, S>(
+        requested_locales: I,
+        default_locale: impl AsRef<str>,
+        catalog: Arc<MessageCatalog>,
+        context: &IntlContext,
+    ) -> Result<Self>
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<str>,
+    {
+        Self::try_new_with_fallbacker(
+            requested_locales,
+            default_locale,
+            catalog,
+            context.cache.clone(),
+            &context.fallbacker,
+        )
+    }
+
+    fn try_new_with_fallbacker<I, S>(
         requested_locales: I,
         default_locale: impl AsRef<str>,
         catalog: Arc<MessageCatalog>,
@@ -463,7 +549,7 @@ impl Intl {
     {
         let default_locale = parse_locale(default_locale.as_ref())?;
         let default_messages = catalog
-            .bundle(&default_locale)
+            .bundle(&default_locale, &cache)?
             .ok_or_else(|| Error::MissingDefaultLocale(default_locale.to_string()))?;
         let locale = negotiate_locale_with_fallbacker(
             requested_locales,
@@ -472,7 +558,7 @@ impl Intl {
             fallbacker,
         )?;
         let messages = catalog
-            .bundle(&locale)
+            .bundle(&locale, &cache)?
             .unwrap_or_else(|| default_messages.clone());
         let locale_string = locale.to_string();
         let default_locale_string = default_locale.to_string();
@@ -755,7 +841,7 @@ where
     )
 }
 
-pub fn negotiate_locale_with_fallbacker<I, S>(
+fn negotiate_locale_with_fallbacker<I, S>(
     requested_locales: I,
     default_locale: &Locale,
     catalog: &MessageCatalog,
@@ -818,8 +904,7 @@ mod tests {
         "{count, plural, one {default one} other {default other}}",
     );
 
-    const INVALID_DEFAULT: MessageDescriptor =
-        MessageDescriptor::new("invalid.default", "{broken");
+    const INVALID_DEFAULT: MessageDescriptor = MessageDescriptor::new("invalid.default", "{broken");
 
     const EMPTY_DEFAULT: MessageDescriptor = MessageDescriptor::new("empty.default", "");
 
@@ -1117,8 +1202,7 @@ mod tests {
         let values = Values::new();
 
         assert_eq!(
-            intl
-                .format_message_to_string(INVALID_DEFAULT, &values)
+            intl.format_message_to_string(INVALID_DEFAULT, &values)
                 .unwrap(),
             "{translated"
         );
@@ -1127,8 +1211,7 @@ mod tests {
             RichFormattedMessage::Literal("{translated".to_owned())
         );
         assert_eq!(
-            intl
-                .format_message_to_parts(INVALID_DEFAULT, &values)
+            intl.format_message_to_parts(INVALID_DEFAULT, &values)
                 .unwrap(),
             vec![Part::Literal("{translated".to_owned())]
         );
@@ -1137,11 +1220,12 @@ mod tests {
     #[test]
     fn falls_back_on_empty_translation() {
         let mut catalog = MessageCatalog::new();
-        catalog.insert(
-            "fr",
-            HashMap::from([("fallback".to_owned(), String::new())]),
-        )
-        .unwrap();
+        catalog
+            .insert(
+                "fr",
+                HashMap::from([("fallback".to_owned(), String::new())]),
+            )
+            .unwrap();
         catalog.insert("en", Messages::new()).unwrap();
         let intl =
             Intl::try_new(["fr"], "en", Arc::new(catalog), Arc::new(IntlCache::new())).unwrap();
@@ -1161,8 +1245,7 @@ mod tests {
             Intl::try_new(["en"], "en", Arc::new(catalog), Arc::new(IntlCache::new())).unwrap();
 
         assert_eq!(
-            intl
-                .format_message_to_string(EMPTY_DEFAULT, &Values::new())
+            intl.format_message_to_string(EMPTY_DEFAULT, &Values::new())
                 .unwrap(),
             "empty.default"
         );
