@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.1](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.8.0...formatjs_cli_v1.8.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** update ruff to v0.16.10 ([#7571](https://github.com/formatjs/formatjs/issues/7571)) ([d17a8bd](https://github.com/formatjs/formatjs/commit/d17a8bd3e70f25c722c704d26e5dceda27282bc4))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 1.0.0 to 1.1.0
+
 ## [1.8.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.7.5...formatjs_cli_v1.8.0) (2026-10-05)
 
 
