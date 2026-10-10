@@ -9,6 +9,7 @@ on:
       - 'tools/**'
       - 'platforms/**'
       - 'MODULE.bazel*'
+      - 'package.json'
       - 'pnpm-lock.yaml'
       - '.bazelrc'
       - '.github/workflows/editor-browser.yml'
@@ -20,27 +21,59 @@ permissions:
 
 jobs:
   browser:
-    runs-on: ubuntu-24.04
+    name: Browser tests (${{ matrix.mode }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: actiond
+            os: ubuntu-24.04
+          - mode: local
+            os: ubuntu-24.04
+          - mode: host
+            os: macos-15
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/playwright-browsers
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Check VM prerequisites
+        if: matrix.mode == 'actiond'
         run: |
           test -c /dev/kvm
           sudo modprobe vhost_vsock
           test -c /dev/vhost-vsock
           sudo chmod a+rw /dev/kvm /dev/vhost-vsock
+      - name: Allow user namespaces on disposable runner
+        if: matrix.mode == 'local'
+        run: |
+          if [[ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
       - uses: bazel-contrib/setup-bazel@0.19.0
         with:
           bazelisk-cache: true
           repository-cache: true
-          disk-cache: editor-browser
+          disk-cache: editor-browser-${{ matrix.mode }}
       - name: Interaction tests and VRT in Linux VM
+        if: matrix.mode == 'actiond'
         run: bash .github/scripts/actiond-vrt.sh
+      - name: Interaction tests and VRT in Linux namespaces
+        if: matrix.mode == 'local'
+        run: bazel test //packages/editor/vrt:local_browser_tests --test_output=errors
+      - name: Install matching host Chromium
+        if: matrix.mode == 'host'
+        run: bazel run //packages/editor/vrt:install_browsers
+      - name: Host interaction tests and UI discovery
+        if: matrix.mode == 'host'
+        run: |
+          bazel test //packages/editor/vrt:host_browser_tests --test_output=errors
+          bazel run //packages/editor/vrt:e2e_ui -- --list
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: always()
         with:
-          name: editor-browser-results
+          name: editor-browser-results-${{ matrix.mode }}
           path: |
             bazel-testlogs/packages/editor/vrt/
             packages/editor/vrt/__screenshots__/

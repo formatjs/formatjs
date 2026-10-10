@@ -6,7 +6,7 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.1.0")
-bazel_dep(name = "rules_cc", version = "0.2.20")
+bazel_dep(name = "rules_cc", version = "0.2.22")
 bazel_dep(name = "rules_shell", version = "0.8.0")
 bazel_dep(name = "windows_support", version = "0.2.0")
 
@@ -445,7 +445,7 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
-bazel_dep(name = "rules_web_e2e", version = "3.7.0", dev_dependency = True)
+bazel_dep(name = "rules_web_e2e", version = "3.9.0", dev_dependency = True)
 
 browsers = use_extension("@rules_web_e2e//playwright:extensions.bzl", "browser_presets", dev_dependency = True)
 browsers.linux_amd64(
