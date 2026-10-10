@@ -206,14 +206,19 @@ stay unchanged; reuse the context across requests to share cached messages.
 ### Add French to an English app
 
 Generate English and French data with a matching
-[ICU4X datagen version](https://icu4x.unicode.org/2_1/tutorials/data-management/):
+[ICU4X datagen version](https://icu4x.unicode.org/2_3/tutorials/data-management/),
+keeping only the markers your release binary uses:
 
 ```sh
-icu4x-datagen --markers all --locales en fr --format blob --out locale-data.postcard --overwrite
+cargo build --release
+icu4x-datagen --markers-for-bin target/release/my-app --locales en fr --format blob --out locale-data.postcard --overwrite
 ```
 
-`--markers all` includes every formatter and fallback data; `--markers-for-bin`
-can produce a smaller blob. Load it once, then add application translations:
+Replace `my-app` with your binary. If it embeds the blob with `include_bytes!`,
+build once against a placeholder blob, generate, then rebuild. `--markers all`
+is the alternative when there is no binary yet: it needs datagen's default
+features (`use_wasm`, or `use_icu4c`) and produces a far larger blob. Load it
+once, then add application translations:
 
 ```rust
 use formatjs_intl::{Intl, IntlContext, MessageCatalog, format_message};
@@ -234,6 +239,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "{count, plural, one {# tâche} other {# tâches}}".to_owned(),
         )]),
     )?;
+    context.check_catalog(&catalog)?;
 
     let intl = Intl::try_new_with_context(["fr"], "en", Arc::new(catalog), &context)?;
     let label = format_message!(
@@ -249,9 +255,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 All formatters now have French data. For another locale, regenerate the blob
 including existing locales, add translations, and recreate the context.
-Missing provider data follows normal error handling; compiled data is never
-used as a fallback.
+Missing provider data follows normal error handling, with one exception: a
+catalog locale the blob lacks entirely falls back to root (`und`) data and
+formats without any error. Compiled data is never used as a fallback.
 
-Without `compiled_data`, use `Intl::try_new_with_context`; default caches and
-standalone `negotiate_locale` are unavailable. Disable defaults on direct
+`IntlContext::check_catalog` catches both at startup, naming the locale. It
+needs a blob generated without `--deduplication maximal`, which keeps locales
+identical to root only as `und`.
+
+Without `compiled_data`, use `Intl::try_new_with_context`, and
+`IntlContext::negotiate_locale` in place of the standalone `negotiate_locale`;
+default caches are unavailable. Disable defaults on direct
 `formatjs_icu_messageformat` dependencies too: Cargo unifies dependency features.

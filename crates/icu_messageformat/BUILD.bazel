@@ -38,8 +38,10 @@ rust_library(
 rust_test(
     name = "icu_messageformat_test",
     size = "small",
+    compile_data = ["testdata/fr_pl.postcard"],
     crate = ":icu_messageformat",
     crate_features = ["compiled_data"],
+    deps = ["@crates//:icu_provider_blob"],
 )
 
 rust_library(
@@ -66,5 +68,7 @@ rust_library(
 rust_test(
     name = "provider_test",
     size = "small",
+    compile_data = ["testdata/fr_pl.postcard"],
     crate = ":without_compiled_data",
+    deps = ["@crates//:icu_provider_blob"],
 )
