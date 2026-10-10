@@ -34,8 +34,6 @@ jobs:
             os: ubuntu-24.04
           - mode: host
             os: macos-15
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/playwright-browsers
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Check VM prerequisites
@@ -64,9 +62,13 @@ jobs:
         run: bazel test //packages/editor/vrt:local_browser_tests --test_output=errors
       - name: Install matching host Chromium
         if: matrix.mode == 'host'
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/playwright-browsers
         run: bazel run //packages/editor/vrt:install_browsers
       - name: Host interaction tests and UI discovery
         if: matrix.mode == 'host'
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/playwright-browsers
         run: |
           bazel test //packages/editor/vrt:host_browser_tests --test_output=errors
           bazel run //packages/editor/vrt:e2e_ui -- --list
