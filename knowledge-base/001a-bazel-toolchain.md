@@ -19,7 +19,7 @@ across the monorepo.
 | ----------------------- | ------------- | ---------------------------------------------- |
 | `aspect_rules_js`       | 3.0.3         | JS/Node.js rules, npm lock translation         |
 | `rules_nodejs`          | 6.7.4         | Hermetic Node.js toolchain                     |
-| `rules_cc`              | 0.2.20        | C/C++ rules and toolchain setup                |
+| `rules_cc`              | 0.2.22        | C/C++ rules and toolchain setup                |
 | `aspect_rules_ts`       | 3.9.1         | `ts_project`, native TypeScript 7 integration  |
 | `bazel_lib`             | 3.7.1         | Copy, directory, and source-write helper rules |
 | `rules_multirun`        | 0.13.0        | Multi-target run orchestration                 |
