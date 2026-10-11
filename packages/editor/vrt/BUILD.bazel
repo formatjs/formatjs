@@ -7,9 +7,10 @@ load("@aspect_rules_js//js:defs.bzl", "js_library")
 # gazelle:resolve ts @rules-web-e2e/vrt/server :node_modules/@rules-web-e2e/vrt
 # gazelle:resolve ts @rules-web-e2e/vrt :node_modules/@rules-web-e2e/vrt
 load("@aspect_rules_js//npm:defs.bzl", "npm_link_package")
+load("@npm//:playwright/package_json.bzl", playwright_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("@rules_web_e2e//component:defs.bzl", "browser_shell", "component_browser_test")
-load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test")
+load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test", "web_e2e_ui")
 load("@rules_web_e2e//playwright:defs.bzl", "playwright_runtime")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test", "visual_test")
 load(":defs.bzl", "vrt_library", "vrt_test")
@@ -114,6 +115,7 @@ component_visual_test(
     matching = ":vrt_matching",
     playwright = ":playwright",
     shell = ":editor_shell",
+    tags = ["manual"],
     target_platform = "//platforms:linux_x86_64_gnu",
 )
 
@@ -125,6 +127,7 @@ visual_test(
     matching = ":vrt_matching",
     playwright = ":playwright",
     server = ":editor_server",
+    tags = ["manual"],
     target_platform = "//platforms:linux_x86_64_gnu",
     tests = ":e2e_visual_specs",
 )
@@ -134,6 +137,7 @@ web_e2e_test(
     browser = "@web_browser//:browser",
     playwright = ":playwright",
     server = ":editor_server",
+    tags = ["manual"],
     target_platform = "//platforms:linux_x86_64_gnu",
     tests = ":e2e_specs",
 )
@@ -143,8 +147,155 @@ component_browser_test(
     browser = "@web_browser//:browser",
     playwright = ":playwright",
     shell = ":editor_shell",
+    tags = ["manual"],
     target_platform = "//platforms:linux_x86_64_gnu",
     tests = ":component_specs",
+)
+
+test_suite(
+    name = "e2e_tests",
+    tags = ["manual"],
+    tests = [":host_e2e_test"],
+)
+
+test_suite(
+    name = "browser_tests",
+    tags = ["manual"],
+    tests = [
+        ":component_test",
+        ":e2e_test",
+        ":e2e_visual_test",
+        ":visual_test",
+    ],
+)
+
+web_e2e_test(
+    name = "host_e2e_test",
+    config = ":ui_config",
+    data = [":bundle"],
+    playwright = ":playwright",
+    tags = [
+        "external",
+        "manual",
+        "no-cache",
+        "no-remote-exec",
+        "no-sandbox",
+        "requires-network",
+    ],
+    tests = ":e2e_specs",
+)
+
+component_browser_test(
+    name = "host_component_test",
+    playwright = ":playwright",
+    shell = ":editor_shell",
+    tags = [
+        "external",
+        "manual",
+        "no-cache",
+        "no-remote-exec",
+        "no-sandbox",
+        "requires-network",
+    ],
+    tests = ":component_specs",
+)
+
+web_e2e_test(
+    name = "local_e2e_test",
+    browser = "@web_browser//:browser",
+    execution = "local",
+    playwright = ":playwright",
+    server = ":editor_server",
+    tags = ["manual"],
+    target_platform = "//platforms:linux_x86_64_gnu",
+    tests = ":e2e_specs",
+)
+
+component_browser_test(
+    name = "local_component_test",
+    browser = "@web_browser//:browser",
+    execution = "local",
+    playwright = ":playwright",
+    shell = ":editor_shell",
+    tags = ["manual"],
+    target_platform = "//platforms:linux_x86_64_gnu",
+    tests = ":component_specs",
+)
+
+component_visual_test(
+    name = "local_visual_test",
+    baselines = glob(
+        ["__screenshots__/*.png"],
+        allow_empty = True,
+    ),
+    browser = "@web_browser//:browser",
+    execution = "local",
+    matching = ":vrt_matching",
+    playwright = ":playwright",
+    shell = ":editor_shell",
+    tags = ["manual"],
+    target_platform = "//platforms:linux_x86_64_gnu",
+)
+
+visual_test(
+    name = "local_e2e_visual_test",
+    baseline_dir = "__e2e_screenshots__",
+    baselines = glob(["__e2e_screenshots__/*.png"]),
+    browser = "@web_browser//:browser",
+    execution = "local",
+    matching = ":vrt_matching",
+    playwright = ":playwright",
+    server = ":editor_server",
+    tags = ["manual"],
+    target_platform = "//platforms:linux_x86_64_gnu",
+    tests = ":e2e_visual_specs",
+)
+
+test_suite(
+    name = "local_browser_tests",
+    tags = ["manual"],
+    tests = [
+        ":local_component_test",
+        ":local_e2e_test",
+        ":local_e2e_visual_test",
+        ":local_visual_test",
+    ],
+)
+
+playwright_bin.playwright_binary(
+    name = "install_browsers",
+    args = [
+        "install",
+        "chromium",
+    ],
+    tags = ["manual"],
+)
+
+test_suite(
+    name = "host_browser_tests",
+    tags = ["manual"],
+    tests = [
+        ":e2e_tests",
+        ":host_component_test",
+    ],
+)
+
+js_library(
+    name = "ui_config",
+    srcs = ["ui.config.js"],
+    data = [
+        ":esm_package_json",
+        "//:node_modules/http-server",
+    ],
+    deps = [":vrt_compiled"],
+)
+
+web_e2e_ui(
+    name = "e2e_ui",
+    config = ":ui_config",
+    data = [":bundle"],
+    playwright = ":playwright",
+    suites = [":e2e_tests"],
 )
 
 filegroup(
@@ -166,6 +317,7 @@ vrt_library(
         "matching.ts",
         "server.ts",
         "shell.tsx",
+        "ui.config.ts",
         "vite.config.ts",
     ],
     tsconfig_types = ["node"],
@@ -173,6 +325,7 @@ vrt_library(
     deps = [
         ":node_modules/@rules-web-e2e/vrt",
         "//:node_modules/@formatjs/editor",
+        "//:node_modules/@playwright/test",
         "//:node_modules/@stylexjs/unplugin",
         "//:node_modules/@types/node",
         "//:node_modules/@types/react",

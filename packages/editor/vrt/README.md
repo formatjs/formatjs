@@ -70,6 +70,54 @@ The initial E2E references match the existing component states. Each suite updat
 only its own directory. E2E screenshot specs use native Playwright interactions
 against the served app, independently of gallery capture hooks.
 
+## Host interaction tests and Playwright UI
+
+macOS and Linux developers can run E2E/component tests with matching host Chromium.
+Install through the declared Playwright CLI, then use the same browser directory:
+
+```sh
+export PLAYWRIGHT_BROWSERS_PATH="$PWD/.web-e2e/browsers"
+bazel run //packages/editor/vrt:install_browsers
+bazel test //packages/editor/vrt:host_browser_tests
+bazel run //packages/editor/vrt:e2e_ui
+# Discovery without opening UI:
+bazel run //packages/editor/vrt:e2e_ui -- --list
+# Serve UI for port forwarding from a headless Linux machine:
+bazel run //packages/editor/vrt:e2e_ui -- --ui-host=127.0.0.1 --ui-port=8080
+```
+
+Linux host mode also needs Chromium's OS libraries. Host targets explicitly run
+locally without Bazel sandboxing and disable result caching because the browser
+installation is an external input. Host runs do not compare VRT baselines.
+
+`e2e_ui` aggregates the same explicit `e2e_tests` suite used by host CI. It runs
+compiled specs with declared Playwright/Node and a static fixture server on
+`127.0.0.1:4173`; that port must be free. Component/visual suites have different
+runtime contracts and stay outside the aggregate UI. Rebuild/relaunch after
+TypeScript edits. UI artifacts land in `test-results/`.
+
+## Local Linux isolation
+
+Linux x64 can run the pinned browser without KVM using unprivileged user, mount,
+PID, and network namespaces:
+
+```sh
+bazel test //packages/editor/vrt:local_browser_tests
+bazel test //packages/editor/vrt:local_e2e_test --test_arg=--grep=translation
+```
+
+These targets use `execution = "local"` and the same built fixtures, matching
+policy, and committed PNGs as VM tests. Bubblewrap keeps networking on loopback
+and Chromium's sandbox enabled. Namespace restrictions must permit the launcher;
+there is no host fallback. CI enables user namespaces on disposable Ubuntu runners.
+The host kernel remains part of the rendering environment; investigate pixel
+differences before changing baselines. Intentional baseline updates still use
+VM `visual_test.update` to keep the established rendering environment.
+
+All browser targets and aggregate suites carry `manual` tags, so `bazel test //...`
+does not select separately provisioned browser lanes. The browser workflow runs
+VM and local Linux suites plus macOS host interactions and UI discovery.
+
 ## Built inputs
 
 | Target                                             | Inputs and behavior                                                                 |
@@ -111,7 +159,7 @@ Comparison never changes source baselines. Run `.update` only for intentional
 visual changes and review the resulting PNG diff before committing.
 
 The browser preset and worker supervisor come from the released `rules_web_e2e`
-3.7.0 module in Bazel Central Registry.
+3.9.0 module in Bazel Central Registry.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.

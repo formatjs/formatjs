@@ -155,10 +155,35 @@ package links, disables dotenv discovery, and depends on strict typechecks.
 The browser runtime never transpiles source or starts a bundler. See
 `packages/editor/vrt/README.md` for commands and migration details.
 
-`rules_web_e2e` 3.7.0 executes caller packages unchanged. The compiled graph owns
+`rules_web_e2e` 3.9.0 executes caller packages unchanged. The compiled graph owns
 all dependencies and ESM markers; the runtime does not repair npm links or rewrite
 executables. The explicit Playwright runtime references the same root packages as
 the specs. Browser actions request the worker's glibc 2.39 and Bash.
 
 Bazel's native test-launcher utilities are built from pinned sources with hermetic
 LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle.
+
+## Browser execution modes
+
+`rules_web_e2e` 3.9.0 supplies VM, local Linux namespace, host interaction, and
+aggregate Playwright UI execution. The `20260921` browser preset and Playwright
+1.63.0 remain pinned. `browser_tests` groups the existing actiond E2E/component/VRT
+lane; `local_browser_tests` reuses those inputs with `execution = "local"`.
+The latter needs Linux x64 user/mount/PID/network namespaces, not KVM. Both compare
+the committed PNGs; baseline updates remain VM-owned.
+
+`host_browser_tests` groups `e2e_tests` and host component interactions. Provision
+Chromium with `:install_browsers` and an absolute `PLAYWRIGHT_BROWSERS_PATH`.
+Host targets explicitly allow local network/process execution, disable Bazel
+sandboxing, and disable caching for the externally installed browser.
+
+`e2e_ui` consumes the same explicit `e2e_tests` suite and a compiled `ui.config.ts`.
+Declared Node/Playwright run emitted specs; declared `http-server` serves the built
+assets on loopback port 4173. No development bundler runs. Component and visual
+suites are excluded because upstream UI supports managed E2E suites only.
+Rebuild/relaunch after source edits; `--list` checks aggregate discovery.
+
+All browser targets/suites explicitly carry `manual`, preserving the separate CI
+lane now that upstream no longer imposes test-selection tags. The browser workflow
+covers VM/local execution on Ubuntu and host interactions/UI discovery on macOS.
+See the browser README for commands and prerequisites.

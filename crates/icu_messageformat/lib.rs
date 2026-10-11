@@ -133,13 +133,19 @@ pub struct Options {
 }
 
 impl Options {
+    /// Parser settings these options start with,
+    /// for parsing or precompiling messages exactly as the runtime does.
+    pub fn default_parser_options() -> ParserOptions {
+        ParserOptions {
+            requires_other_clause: true,
+            should_parse_skeletons: true,
+            ..Default::default()
+        }
+    }
+
     pub fn with_formatters(formatters: Arc<dyn Formatters>) -> Self {
         Self {
-            parser: ParserOptions {
-                requires_other_clause: true,
-                should_parse_skeletons: true,
-                ..Default::default()
-            },
+            parser: Self::default_parser_options(),
             formats: Formats::default(),
             formatters,
         }

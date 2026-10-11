@@ -25,3 +25,4 @@ docs/.env
 
 # Materialized browser-worker launcher and diagnostics
 .web-e2e/
+test-results/
