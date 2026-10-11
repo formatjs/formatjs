@@ -1,10 +1,13 @@
-use formatjs_icu_messageformat::{ErrorCode, Formatters, Options, ProviderFormatters};
 use formatjs_icu_messageformat::{
     FormattedMessage as RichFormattedMessage, IcuMessageFormat, MessageFormatElement, Part, Values,
 };
+use formatjs_icu_messageformat::{Formatters, Options, ProviderFormatters};
 use icu_locale::Locale;
 use icu_locale::fallback::LocaleFallbacker;
-use icu_provider::buf::BufferProvider;
+use icu_provider::buf::{BufferMarker, BufferProvider};
+use icu_provider::prelude::{
+    DataError, DataMarkerInfo, DataRequest, DataResponse, DynamicDataProvider,
+};
 use icu_provider_adapters::fallback::LocaleFallbackProvider;
 use std::collections::HashMap;
 use std::error::Error as StdError;
@@ -388,64 +391,16 @@ impl IntlContext {
         })
     }
 
-    /// Checks that every locale in `catalog` gets provider data other than root (`und`).
-    ///
-    /// Fails, naming the locale, when a formatter cannot load its data,
-    /// or when decimal or cardinal plural data resolves to root,
-    /// which formatting would otherwise use without reporting an error.
-    /// Regional locales the provider lacks pass and format with their parent's data.
-    /// `--deduplication maximal` blobs keep root-identical locales only as `und`,
-    /// which this check rejects; generate blobs with `none` or `retain-base-languages`.
+    /// Checks every formatter for each catalog locale without root fallback for language data.
+    /// Regional fallback, region defaults, global data, and explicit `und` remain valid.
+    /// Generate blobs with `--deduplication none` or `retain-base-languages`;
+    /// `maximal` removes root-identical locale data that this check requires.
     pub fn check_catalog(&self, catalog: &MessageCatalog) -> Result<()> {
-        use icu::decimal::provider::DecimalSymbolsV1;
-        use icu::plurals::provider::PluralsCardinalV1;
-        use icu_provider::prelude::*;
-
-        let formatters = ProviderFormatters::new(self.provider.clone());
-        let provider = self.provider.as_deserializing();
+        let formatters = ProviderFormatters::new(CatalogDataProvider(self.provider.clone()));
         let mut locales: Vec<&str> = catalog.available_locales().collect();
         locales.sort_unstable();
         for locale in locales {
-            let locale = parse_locale(locale)?;
-            formatters.check_locale(&locale)?;
-
-            let data_locale = DataLocale::from(&locale);
-            if data_locale.language.is_unknown() {
-                continue;
-            }
-            let request = || DataRequest {
-                id: DataIdentifierBorrowed::for_locale(&data_locale),
-                ..Default::default()
-            };
-            let resolved = [
-                (
-                    "DecimalSymbolsV1",
-                    DataProvider::<DecimalSymbolsV1>::load(&provider, request())
-                        .map(|response| response.metadata.locale),
-                ),
-                (
-                    "PluralsCardinalV1",
-                    DataProvider::<PluralsCardinalV1>::load(&provider, request())
-                        .map(|response| response.metadata.locale),
-                ),
-            ];
-            for (marker, resolved) in resolved {
-                let resolved = resolved.map_err(|error| {
-                    formatjs_icu_messageformat::Error::new(
-                        ErrorCode::Formatter,
-                        format!("Cannot load ICU4X {marker} data in locale {locale}"),
-                    )
-                    .with_source(error)
-                })?;
-                if resolved.is_some_and(|resolved| resolved.is_unknown()) {
-                    return Err(Error::Message(formatjs_icu_messageformat::Error::new(
-                        ErrorCode::Formatter,
-                        format!(
-                            "Provider has no {marker} data for locale {locale}; it would format with root (und) data"
-                        ),
-                    )));
-                }
-            }
+            formatters.check_locale(&parse_locale(locale)?)?;
         }
         Ok(())
     }
@@ -468,6 +423,38 @@ impl IntlContext {
             catalog,
             &self.fallbacker,
         )
+    }
+}
+
+// Validate actual formatter loads while leaving runtime fallback unchanged.
+struct CatalogDataProvider(Arc<dyn BufferProvider + Send + Sync>);
+
+impl DynamicDataProvider<BufferMarker> for CatalogDataProvider {
+    fn load_data(
+        &self,
+        marker: DataMarkerInfo,
+        request: DataRequest,
+    ) -> std::result::Result<DataResponse<BufferMarker>, DataError> {
+        use icu::decimal::provider::DecimalDigitsV1;
+        use icu_provider::DataMarker;
+        use icu_provider::fallback::LocaleFallbackPriority;
+
+        let response = self.0.load_data(marker, request)?;
+        // Digit tables depend on numbering system, not language.
+        if !marker.is_singleton
+            && marker != DecimalDigitsV1::INFO
+            && marker.fallback_config.priority == LocaleFallbackPriority::Language
+            && !request.id.locale.language.is_unknown()
+            && response
+                .metadata
+                .locale
+                .is_some_and(|locale| locale.is_unknown())
+        {
+            return Err(
+                DataError::custom("Locale data resolved to root (und)").with_req(marker, request)
+            );
+        }
+        Ok(response)
     }
 }
 

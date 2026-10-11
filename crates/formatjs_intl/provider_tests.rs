@@ -331,7 +331,7 @@ mod blob {
     #[test]
     fn check_catalog_accepts_regional_and_root_locales() {
         context()
-            .check_catalog(&catalog(&["fr", "fr-CA", "und-US"]))
+            .check_catalog(&catalog(&["fr", "fr-CA", "fr-CA-u-nu-latn", "und-US"]))
             .unwrap();
     }
 
@@ -343,10 +343,75 @@ mod blob {
             .unwrap_err();
         let message = error.to_string();
         assert!(
-            message.contains("DecimalSymbolsV1 data for locale de")
-                && message.contains("root (und)"),
+            message.contains("number formatter in locale de"),
             "{message}"
         );
+        assert!(
+            error
+                .source()
+                .unwrap()
+                .source()
+                .unwrap()
+                .to_string()
+                .contains("root (und)")
+        );
+    }
+
+    #[test]
+    fn check_catalog_rejects_partial_locale_data_without_changing_runtime_fallback() {
+        use icu::datetime::provider::semantic_skeletons::DatetimePatternsDateGregorianV1;
+        use icu::datetime::provider::semantic_skeletons::DatetimePatternsTimeV1;
+
+        struct RootOnlyMarker {
+            provider: BlobDataProvider,
+            marker: DataMarkerInfo,
+        }
+        impl DynamicDataProvider<BufferMarker> for RootOnlyMarker {
+            fn load_data(
+                &self,
+                marker: DataMarkerInfo,
+                request: DataRequest,
+            ) -> std::result::Result<DataResponse<BufferMarker>, DataError> {
+                if marker == self.marker && request.id.locale.language.as_str() == "fr" {
+                    return Err(DataErrorKind::IdentifierNotFound.with_req(marker, request));
+                }
+                self.provider.load_data(marker, request)
+            }
+        }
+
+        for (marker, formatter) in [
+            (DatetimePatternsDateGregorianV1::INFO, "date formatter"),
+            (DatetimePatternsTimeV1::INFO, "time formatter"),
+            (PluralsOrdinalV1::INFO, "ordinal plural rules"),
+        ] {
+            let context = IntlContext::try_with_provider(RootOnlyMarker {
+                provider: BlobDataProvider::try_new_from_static_blob(BLOB).unwrap(),
+                marker,
+            })
+            .unwrap();
+            let error = context.check_catalog(&catalog(&["fr"])).unwrap_err();
+            assert!(error.to_string().contains(formatter), "{error}");
+            assert!(error.to_string().contains("in locale fr"), "{error}");
+            assert!(
+                error
+                    .source()
+                    .unwrap()
+                    .source()
+                    .unwrap()
+                    .to_string()
+                    .contains("root (und)")
+            );
+
+            let source = "{when, date, medium}";
+            let message = context.cache.get_or_compile(source).unwrap();
+            let values = Values::from([("when".to_owned(), Value::from(0_i64))]);
+            let formatted = message.format_to_string("fr", &values).unwrap();
+            if marker == DatetimePatternsDateGregorianV1::INFO {
+                assert_eq!(formatted, "1970 janv. 1");
+            } else {
+                assert_eq!(formatted, "1 janv. 1970");
+            }
+        }
     }
 
     #[test]

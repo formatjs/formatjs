@@ -259,9 +259,13 @@ Missing provider data follows normal error handling, with one exception: a
 catalog locale the blob lacks entirely falls back to root (`und`) data and
 formats without any error. Compiled data is never used as a fallback.
 
-`IntlContext::check_catalog` catches both at startup, naming the locale. It
-needs a blob generated without `--deduplication maximal`, which keeps locales
-identical to root only as `und`.
+`IntlContext::check_catalog` validates every formatter at startup, naming the
+locale and formatter when language-specific data resolves to root. This also
+catches partially missing date/time or plural data. Regional fallback, region
+defaults, global data, and explicit `und` remain valid. Runtime fallback is
+unchanged. Generate blobs with `--deduplication none` or
+`retain-base-languages`; `maximal` removes root-identical locale data that this
+check requires.
 
 Without `compiled_data`, use `Intl::try_new_with_context`, and
 `IntlContext::negotiate_locale` in place of the standalone `negotiate_locale`;

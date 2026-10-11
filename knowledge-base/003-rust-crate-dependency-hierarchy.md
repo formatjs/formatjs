@@ -354,9 +354,10 @@ translations, and a new context.
 Data errors name the formatter and the requested locale and keep the ICU4X
 error as `source()`. `Formatters::check_locale` builds every formatter for one
 locale. `IntlContext::check_catalog` runs it for each catalog locale and also
-rejects locales whose decimal or cardinal plural data resolves to root (`und`):
-behind `LocaleFallbackProvider`, a language missing from the provider would
-otherwise format with root data and report no error. Blobs generated with
+validates actual formatter loads, rejecting language-specific data that resolves
+to root (`und`), including partially missing date/time or plural data. Regional
+fallback, region defaults, global data, and explicit `und` remain valid.
+Runtime fallback stays unchanged; validation uses a separate provider wrapper. Blobs generated with
 `--deduplication maximal` keep root-identical locales only as `und`, so the
 check rejects them.
 
