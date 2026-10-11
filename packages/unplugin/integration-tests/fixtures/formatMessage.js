@@ -1,6 +1,6 @@
 const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
