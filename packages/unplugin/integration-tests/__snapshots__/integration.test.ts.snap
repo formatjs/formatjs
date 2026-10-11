@@ -40,7 +40,7 @@ exports[`@formatjs/unplugin — esbuild > generates ids and removes descriptions
 "// fixtures/formatMessage.js
 var intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage;
+    return descriptor.id || descriptor.defaultMessage;
   }
 };
 var greeting = intl.formatMessage({
@@ -62,7 +62,7 @@ exports[`@formatjs/unplugin — esbuild > idInterpolationPattern option 1`] = `
 "// fixtures/formatMessage.js
 var intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage;
+    return descriptor.id || descriptor.defaultMessage;
   }
 };
 var greeting = intl.formatMessage({
@@ -84,7 +84,7 @@ exports[`@formatjs/unplugin — esbuild > overrideIdFn option 1`] = `
 "// fixtures/formatMessage.js
 var intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage;
+    return descriptor.id || descriptor.defaultMessage;
   }
 };
 var greeting = intl.formatMessage({
@@ -106,7 +106,7 @@ exports[`@formatjs/unplugin — esbuild > removeDefaultMessage option 1`] = `
 "// fixtures/formatMessage.js
 var intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage;
+    return descriptor.id || descriptor.defaultMessage;
   }
 };
 var greeting = intl.formatMessage({
@@ -156,7 +156,7 @@ export { messages };
 exports[`@formatjs/unplugin — rollup > generates ids and removes descriptions 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 };
 
@@ -175,7 +175,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — rollup > idInterpolationPattern option 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 };
 
@@ -194,7 +194,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — rollup > overrideIdFn option 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 };
 
@@ -213,7 +213,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — rollup > removeDefaultMessage option 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 };
 
@@ -339,7 +339,7 @@ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj
 var __webpack_exports__ = {};
 const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -388,7 +388,7 @@ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj
 var __webpack_exports__ = {};
 const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -437,7 +437,7 @@ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj
 var __webpack_exports__ = {};
 const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -486,7 +486,7 @@ __webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj
 var __webpack_exports__ = {};
 const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -648,7 +648,7 @@ export { messages };
 exports[`@formatjs/unplugin — vite > generates ids and removes descriptions 1`] = `
 "//#region fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
-	return descriptor.defaultMessage;
+	return descriptor.id || descriptor.defaultMessage;
 } };
 var greeting = intl.formatMessage({
 	id: "YyDw8T",
@@ -666,7 +666,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — vite > idInterpolationPattern option 1`] = `
 "//#region fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
-	return descriptor.defaultMessage;
+	return descriptor.id || descriptor.defaultMessage;
 } };
 var greeting = intl.formatMessage({
 	id: "6320f0f1",
@@ -684,7 +684,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — vite > overrideIdFn option 1`] = `
 "//#region fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
-	return descriptor.defaultMessage;
+	return descriptor.id || descriptor.defaultMessage;
 } };
 var greeting = intl.formatMessage({
 	id: "custom_Hello_World",
@@ -702,7 +702,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — vite > removeDefaultMessage option 1`] = `
 "//#region fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
-	return descriptor.defaultMessage;
+	return descriptor.id || descriptor.defaultMessage;
 } };
 var greeting = intl.formatMessage({ id: "YyDw8T" });
 var farewell = intl.formatMessage({ id: "73dImr" });
@@ -745,7 +745,7 @@ export { messages };
 exports[`@formatjs/unplugin — webpack > generates ids and removes descriptions 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -764,7 +764,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — webpack > idInterpolationPattern option 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -783,7 +783,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — webpack > overrideIdFn option 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
@@ -802,7 +802,7 @@ export { farewell, greeting };
 exports[`@formatjs/unplugin — webpack > removeDefaultMessage option 1`] = `
 "const intl = {
   formatMessage(descriptor) {
-    return descriptor.defaultMessage
+    return descriptor.id || descriptor.defaultMessage
   },
 }
 
