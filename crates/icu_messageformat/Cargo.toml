@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_icu_messageformat"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ICU MessageFormat runtime implementation in Rust"
