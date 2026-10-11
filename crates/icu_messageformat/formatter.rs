@@ -2,7 +2,10 @@ use crate::error::{Error, ErrorCode, Result};
 use crate::value::{DateTimeValue, NumericValue};
 use fixed_decimal::{SignedRoundingMode, UnsignedRoundingMode};
 use formatjs_icu_messageformat_parser::types::PluralType;
-use formatjs_icu_skeleton_parser::{DateTimeFormatOptions, ExtendedNumberFormatOptions};
+use formatjs_icu_skeleton_parser::{
+    DateTimeFormatHour, DateTimeFormatMinute, DateTimeFormatMonth, DateTimeFormatOptions,
+    DateTimeFormatSecond, DateTimeFormatWeekday, ExtendedNumberFormatOptions,
+};
 use icu::datetime::DateTimeFormatter;
 use icu::datetime::fieldsets::{T, YMD, YMDE};
 use icu::datetime::input::{Date, Time};
@@ -41,6 +44,35 @@ pub trait Formatters: Send + Sync {
         value: NumericValue,
         plural_type: PluralType,
     ) -> Result<PluralCategory>;
+
+    /// Builds every formatter this crate can request for `locale`,
+    /// so missing data fails here, naming the formatter and locale, rather than inside a message.
+    fn check_locale(&self, locale: &Locale) -> Result<()> {
+        let number = ExtendedNumberFormatOptions::default();
+        self.format_number(locale, NumericValue::Integer(0), &number)?;
+
+        let epoch = DateTimeValue::from_unix_millis(0);
+        for month in [
+            DateTimeFormatMonth::Numeric,
+            DateTimeFormatMonth::Short,
+            DateTimeFormatMonth::Long,
+        ] {
+            let date = DateTimeFormatOptions::new().with_month(month);
+            self.format_datetime(locale, epoch, DateTimeKind::Date, &date)?;
+            let date = date.with_weekday(DateTimeFormatWeekday::Long);
+            self.format_datetime(locale, epoch, DateTimeKind::Date, &date)?;
+        }
+        let time = DateTimeFormatOptions::new()
+            .with_hour(DateTimeFormatHour::Numeric)
+            .with_minute(DateTimeFormatMinute::Numeric);
+        self.format_datetime(locale, epoch, DateTimeKind::Time, &time)?;
+        let time = time.with_second(DateTimeFormatSecond::Numeric);
+        self.format_datetime(locale, epoch, DateTimeKind::Time, &time)?;
+
+        self.plural_category(locale, NumericValue::Integer(1), PluralType::Cardinal)?;
+        self.plural_category(locale, NumericValue::Integer(1), PluralType::Ordinal)?;
+        Ok(())
+    }
 }
 
 #[cfg(feature = "compiled_data")]
@@ -63,6 +95,20 @@ impl ProviderFormatters {
 
 fn formatter_error(error: impl std::fmt::Display) -> Error {
     Error::new(ErrorCode::Formatter, error.to_string())
+}
+
+// ICU4X's error text omits the requested locale and names the marker only in debug builds,
+// so the message names the formatter and locale and leaves the ICU4X error to `source()`.
+fn data_error(
+    locale: &Locale,
+    formatter: &str,
+    error: impl std::error::Error + Send + Sync + 'static,
+) -> Error {
+    Error::new(
+        ErrorCode::Formatter,
+        format!("Cannot load ICU4X data for the {formatter} in locale {locale}"),
+    )
+    .with_source(error)
 }
 
 #[cfg(feature = "compiled_data")]
@@ -164,7 +210,7 @@ macro_rules! impl_formatters {
                 });
 
                 let formatter = $construct!($this, DecimalFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), formatter_options)
-                    .map_err(formatter_error)?;
+                    .map_err(|error| data_error(locale, "number formatter", error))?;
                 let mut formatted = formatter.format_to_string(&decimal);
 
                 match options.style() {
@@ -223,30 +269,30 @@ macro_rules! impl_formatters {
                         let formatted = if has_weekday {
                             match length {
                                 0 => $construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), YMDE::short())
-                                    .map_err(formatter_error)?
+                                    .map_err(|error| data_error(locale, "date formatter", error))?
                                     .format(&date)
                                     .to_string(),
                                 1 => $construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), YMDE::medium())
-                                    .map_err(formatter_error)?
+                                    .map_err(|error| data_error(locale, "date formatter", error))?
                                     .format(&date)
                                     .to_string(),
                                 _ => $construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), YMDE::long())
-                                    .map_err(formatter_error)?
+                                    .map_err(|error| data_error(locale, "date formatter", error))?
                                     .format(&date)
                                     .to_string(),
                             }
                         } else {
                             match length {
                                 0 => $construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), YMD::short())
-                                    .map_err(formatter_error)?
+                                    .map_err(|error| data_error(locale, "date formatter", error))?
                                     .format(&date)
                                     .to_string(),
                                 1 => $construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), YMD::medium())
-                                    .map_err(formatter_error)?
+                                    .map_err(|error| data_error(locale, "date formatter", error))?
                                     .format(&date)
                                     .to_string(),
                                 _ => $construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), YMD::long())
-                                    .map_err(formatter_error)?
+                                    .map_err(|error| data_error(locale, "date formatter", error))?
                                     .format(&date)
                                     .to_string(),
                             }
@@ -263,12 +309,12 @@ macro_rules! impl_formatters {
                         .map_err(formatter_error)?;
                         if options.second().is_some() {
                             Ok($construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), T::hms())
-                                .map_err(formatter_error)?
+                                .map_err(|error| data_error(locale, "time formatter", error))?
                                 .format(&time)
                                 .to_string())
                         } else {
                             Ok($construct!($this, DateTimeFormatter, try_new, try_new_with_buffer_provider, locale.clone().into(), T::hm())
-                                .map_err(formatter_error)?
+                                .map_err(|error| data_error(locale, "time formatter", error))?
                                 .format(&time)
                                 .to_string())
                         }
@@ -282,11 +328,15 @@ macro_rules! impl_formatters {
                 value: NumericValue,
                 plural_type: PluralType,
             ) -> Result<PluralCategory> {
+                let rules_name = match plural_type {
+                    PluralType::Cardinal => "cardinal plural rules",
+                    PluralType::Ordinal => "ordinal plural rules",
+                };
                 let rules = match plural_type {
                     PluralType::Cardinal => $construct!($this, PluralRules, try_new_cardinal, try_new_cardinal_with_buffer_provider, locale.clone().into()),
                     PluralType::Ordinal => $construct!($this, PluralRules, try_new_ordinal, try_new_ordinal_with_buffer_provider, locale.clone().into()),
                 }
-                .map_err(formatter_error)?;
+                .map_err(|error| data_error(locale, rules_name, error))?;
                 let decimal = Decimal::from_str(&value.decimal_string()?)
                     .map_err(formatter_error)?;
                 let operands = PluralOperands::from(&decimal);

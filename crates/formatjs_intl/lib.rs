@@ -1,10 +1,13 @@
 use formatjs_icu_messageformat::{
     FormattedMessage as RichFormattedMessage, IcuMessageFormat, MessageFormatElement, Part, Values,
 };
-use formatjs_icu_messageformat::{Options, ProviderFormatters};
+use formatjs_icu_messageformat::{Formatters, Options, ProviderFormatters};
 use icu_locale::Locale;
 use icu_locale::fallback::LocaleFallbacker;
-use icu_provider::buf::BufferProvider;
+use icu_provider::buf::{BufferMarker, BufferProvider};
+use icu_provider::prelude::{
+    DataError, DataMarkerInfo, DataRequest, DataResponse, DynamicDataProvider,
+};
 use icu_provider_adapters::fallback::LocaleFallbackProvider;
 use std::collections::HashMap;
 use std::error::Error as StdError;
@@ -364,7 +367,13 @@ impl MessageCatalog {
 pub struct IntlContext {
     cache: Arc<IntlCache>,
     fallbacker: Arc<LocaleFallbacker>,
+    provider: Arc<dyn BufferProvider + Send + Sync>,
 }
+
+// Restores the auto traits the context had before it held `provider` outside the cache's
+// `RwLock`; the provider only serves `&self` data loads.
+impl std::panic::UnwindSafe for IntlContext {}
+impl std::panic::RefUnwindSafe for IntlContext {}
 
 impl IntlContext {
     /// Uses one provider for all formatters and locale negotiation.
@@ -372,12 +381,80 @@ impl IntlContext {
         provider: impl BufferProvider + Send + Sync + 'static,
     ) -> std::result::Result<Self, icu_provider::DataError> {
         let fallbacker = LocaleFallbacker::try_new_with_buffer_provider(&provider)?;
-        let provider = LocaleFallbackProvider::new(provider, fallbacker.clone());
-        let options = Options::with_formatters(Arc::new(ProviderFormatters::new(provider)));
+        let provider: Arc<dyn BufferProvider + Send + Sync> =
+            Arc::new(LocaleFallbackProvider::new(provider, fallbacker.clone()));
+        let options = Options::with_formatters(Arc::new(ProviderFormatters::new(provider.clone())));
         Ok(Self {
             cache: Arc::new(IntlCache::with_options(options)),
             fallbacker: Arc::new(fallbacker),
+            provider,
         })
+    }
+
+    /// Checks every formatter for each catalog locale without root fallback for language data.
+    /// Regional fallback, region defaults, global data, and explicit `und` remain valid.
+    /// Generate blobs with `--deduplication none` or `retain-base-languages`;
+    /// `maximal` removes root-identical locale data that this check requires.
+    pub fn check_catalog(&self, catalog: &MessageCatalog) -> Result<()> {
+        let formatters = ProviderFormatters::new(CatalogDataProvider(self.provider.clone()));
+        let mut locales: Vec<&str> = catalog.available_locales().collect();
+        locales.sort_unstable();
+        for locale in locales {
+            formatters.check_locale(&parse_locale(locale)?)?;
+        }
+        Ok(())
+    }
+
+    /// Picks the catalog locale for `requested_locales` with this context's fallback data;
+    /// the free function `negotiate_locale` does the same with compiled data.
+    pub fn negotiate_locale<I, S>(
+        &self,
+        requested_locales: I,
+        default_locale: &Locale,
+        catalog: &MessageCatalog,
+    ) -> Result<Locale>
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<str>,
+    {
+        negotiate_locale_with_fallbacker(
+            requested_locales,
+            default_locale,
+            catalog,
+            &self.fallbacker,
+        )
+    }
+}
+
+// Validate actual formatter loads while leaving runtime fallback unchanged.
+struct CatalogDataProvider(Arc<dyn BufferProvider + Send + Sync>);
+
+impl DynamicDataProvider<BufferMarker> for CatalogDataProvider {
+    fn load_data(
+        &self,
+        marker: DataMarkerInfo,
+        request: DataRequest,
+    ) -> std::result::Result<DataResponse<BufferMarker>, DataError> {
+        use icu::decimal::provider::DecimalDigitsV1;
+        use icu_provider::DataMarker;
+        use icu_provider::fallback::LocaleFallbackPriority;
+
+        let response = self.0.load_data(marker, request)?;
+        // Digit tables depend on numbering system, not language.
+        if !marker.is_singleton
+            && marker != DecimalDigitsV1::INFO
+            && marker.fallback_config.priority == LocaleFallbackPriority::Language
+            && !request.id.locale.language.is_unknown()
+            && response
+                .metadata
+                .locale
+                .is_some_and(|locale| locale.is_unknown())
+        {
+            return Err(
+                DataError::custom("Locale data resolved to root (und)").with_req(marker, request)
+            );
+        }
+        Ok(response)
     }
 }
 
