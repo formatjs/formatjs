@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_v2.1.0...formatjs_intl_v2.2.0) (2026-10-11)
+
+
+### Features
+
+* **formatjs_intl:** validate catalog locales and negotiate through IntlContext ([881c1fb](https://github.com/formatjs/formatjs/commit/881c1fbece41e1088ff01097335e797e5bedff19))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat bumped from 0.2.0 to 0.3.0
+
 ## [2.1.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_v2.0.0...formatjs_intl_v2.1.0) (2026-10-09)
 
 
