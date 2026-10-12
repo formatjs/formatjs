@@ -48,7 +48,7 @@ across the monorepo.
   native executables must keep them in the execution configuration.
 - A local LLVM patch wires pinned MSVC 14.50 and Windows SDK 10.0.26100 into
   `clang-cl`/`lld-link`. Linux and macOS hosts can produce MSVC ABI artifacts.
-- GitHub test and release workflows build all release artifacts on Linux x64.
+- BuildBuddy CI and GitHub release workflows cross-build artifacts on Linux x64.
   macOS, Windows, and Linux arm64 runners only download and execute artifacts.
 - LLVM's musl source uses a checksum-verified Buildroot mirror plus the
   upstream release URL so temporary upstream outages do not break Linux builds.
@@ -69,35 +69,57 @@ across the monorepo.
 
 - **Remote cache:** `grpcs://formatjs.buildbuddy.io`
 - **Authenticated Linux builds:** `--config=ci` expands to `--config=rbe`,
-  enabling BuildBuddy RBE and remote cache. The GHA `test` job instead uses the
-  same local configuration on main and fork PRs so its disk cache is reusable.
+  enabling BuildBuddy RBE and remote cache. BuildBuddy Workflows owns the full
+  suite and release cross-builds through `--config=bb-workflow`.
 - **macOS CI:** `--config=ci-darwin` uses BuildBuddy BES and remote cache only.
 - **Remote platform:** `//platforms:buildbuddy_linux_x86_64_gnu` with
   `@toolchains_buildbuddy//toolchains/cc:ubuntu_gcc_x86_64`.
 
-### GitHub Actions test cache
+### CI ownership
 
-The `Test` workflow's `test` job uses Ubuntu 24.04 and `--config=rbe-platform`
-on both main and PRs. Execution platforms, target platforms, `EXECUTOR`, and
-Go linker flags must match so PRs can reuse main's action results.
+See [the contributor CI flow diagram](../CONTRIBUTING.md#ci) for both approval paths and the artifact handoff.
 
-Jobs with an available BuildBuddy key add
-`--config=rbe-transport --remote_upload_local_results --remote_download_outputs=all`.
-These jobs execute timezone generation, tests, and CLI builds on BuildBuddy
-and download outputs into their disk cache. Jobs without a key restore the
-disk cache and execute misses locally. Secret availability, not branch or
-event type, selects remote execution.
+BuildBuddy's `Test all targets` action runs `bazel test //...`.
+`Cross-build Release Artifacts` builds optimized macOS, Windows, and Linux
+artifacts, validates formats and addon symbols, smoke-tests the Linux x64 CLI,
+and uploads `release-cross-build-smoke.tar.gz`. Its runner requests 64GB disk
+because extracting the Windows toolchain exhausted the previous runner's disk.
+Its build, collection, binary checks, Linux smoke, and archive upload are separate
+`buildbuddy.yaml` steps. Shared Bazel flags live in `--config=bb-cross-build`.
+Steps use an action-level staging path because shell variables do not persist
+between BuildBuddy steps.
 
-`actions/cache/restore` uses the dedicated `gha-test-rbe-v2-ubuntu24` namespace,
-partitioned by architecture and Bazel version. Non-cancelled main push runs save
-a fresh snapshot keyed by commit, run, and attempt; PRs only restore. Completed
-actions remain useful even when a later test fails. The namespace cannot match
-old local-platform, examples, or release caches.
+GitHub Actions' `test` job only validates Cargo release metadata and provider-only
+ICU features. Other `test.yml` jobs cover independent example workspaces and pnpm
+installation. The old `gha-test-rbe-v2-ubuntu24` disk cache is no longer restored
+or published. Example jobs retain their own Bazel caches.
 
-Jobs with a key validate RBE population; jobs without one validate local
-execution. GHA publication still requires a main push, followed by a PR restore. Check Bazel's process summary
-for actual disk cache hits; an archive restore alone does not prove reuse.
-Cache eviction, toolchain changes, and uncacheable targets still require work.
+`native-smoke.yml` reacts only to `Cross-build Release Artifacts` statuses from
+`buildbuddy-io[bot]`. A trusted downloader uses `BUILDBUDDY_RO_PUBLIC_KEY` to fetch
+the archive after checking the successful invocation's repository and commit SHA.
+It rejects unexpected files, links, path traversal, and oversized archives.
+Separate jobs execute the downloaded artifacts on native macOS, Windows, and
+Linux x64/ARM64 runners without the BuildBuddy secret.
+
+Status-triggered GHA runs use main's workflow, so they work for forks without
+exposing secrets to PR workflow code. Their normal check runs attach to main;
+the final job therefore publishes `Native Smoke Tests` explicitly on the event's
+commit SHA. Concurrency includes the source status context so unrelated statuses
+do not cancel smoke runs. This handoff starts working after the workflow lands
+on main. `test.yml` can also call the smoke workflow through manual dispatch
+with `smoke_invocation_url` and `smoke_commit_sha`, allowing validation before
+the status-triggered workflow lands.
+
+After that rollout, main should require `test`, `verify-hooks`, `Test all targets`,
+`Cross-build Release Artifacts`, and `Native Smoke Tests`. The first two and the
+native smoke status come from GitHub Actions; the other two come from BuildBuddy.
+BuildBuddy also covers main pushes and merge queue commits.
+
+An approving PR review from a collaborator with write permission triggers trusted
+BuildBuddy fork builds. Before approval, `bb-workflow` can fail with
+`PERMISSION_DENIED: Missing API key` because it enables RBE without credentials.
+GitHub Actions PR workflow approval is separate. A new fork commit needs another
+approving review for trusted BuildBuddy execution.
 
 ## TypeScript Build Pipeline
 

@@ -111,13 +111,20 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 | Workflow               | Trigger               | What it does                                                |
 | ---------------------- | --------------------- | ----------------------------------------------------------- |
-| `test.yml`             | PR, push to main      | `bazel test //...` on Ubuntu + macOS                        |
+| `test.yml`             | PR, push to main      | Cargo metadata, examples, pnpm lockfile                     |
 | `release-please.yml`   | Push to main/manual   | Version/changelog PRs, GitHub releases, npm publish handoff |
 | `release.yml`          | Release Please/manual | `bazel build :dist` then npm Trusted Publishing             |
 | `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
 | `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts                        |
 | `website.yml`          | Manual/push           | Deploy docs site                                            |
 | `verify-hooks.yml`     | PR                    | Verify lefthook hooks + commitlint                          |
+
+BuildBuddy's `buildbuddy.yaml` owns the full Bazel test suite and release
+cross-builds. Its artifacts feed `native-smoke.yml` for macOS, Windows, and Linux
+smoke tests. Once that workflow is on main, require `Test all targets`,
+`Cross-build Release Artifacts`, and `Native Smoke Tests` alongside GHA `test` and
+`verify-hooks`. Fork BuildBuddy builds get credentials after a maintainer submits
+an approving PR review. GitHub Actions PR workflow approval remains separate.
 
 Release Please owns version/changelog PRs and GitHub release creation. Its
 package-scoped changelogs use the default Conventional Commits generator.

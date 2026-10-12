@@ -1,0 +1,13 @@
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+
+py_library(
+    name = "buildbuddy_artifacts",
+    srcs = ["buildbuddy_artifacts.py"],
+)
+
+py_test(
+    name = "buildbuddy_artifacts_test",
+    size = "small",
+    srcs = ["buildbuddy_artifacts_test.py"],
+    deps = [":buildbuddy_artifacts"],
+)
