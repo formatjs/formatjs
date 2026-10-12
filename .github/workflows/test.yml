@@ -7,6 +7,13 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      smoke_invocation_url:
+        description: Replay native smoke tests from a successful BuildBuddy cross-build
+        required: false
+      smoke_commit_sha:
+        description: Commit SHA of the cross-build invocation
+        required: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -108,3 +115,15 @@ jobs:
             -f context=test \
             -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
             -f description="Dispatched test workflow $CHECK_STATE"
+
+  native_smoke_replay:
+    if: github.event_name == 'workflow_dispatch' && inputs.smoke_invocation_url != ''
+    permissions:
+      contents: read
+      statuses: write
+    uses: ./.github/workflows/native-smoke.yml
+    with:
+      invocation_url: ${{ inputs.smoke_invocation_url }}
+      commit_sha: ${{ inputs.smoke_commit_sha }}
+    secrets:
+      BUILDBUDDY_RO_PUBLIC_KEY: ${{ secrets.BUILDBUDDY_RO_PUBLIC_KEY }}

@@ -2,26 +2,38 @@ name: Native Smoke Tests
 
 on:
   status:
+  workflow_call:
+    inputs:
+      invocation_url:
+        required: true
+        type: string
+      commit_sha:
+        required: true
+        type: string
+    secrets:
+      BUILDBUDDY_RO_PUBLIC_KEY:
+        required: true
 
 permissions:
   contents: read
 
 concurrency:
-  group: native-smoke-${{ github.event.context }}-${{ github.event.sha }}
+  group: native-smoke-${{ github.event.context || 'Cross-build Release Artifacts' }}-${{ inputs.commit_sha || github.event.sha }}
   cancel-in-progress: true
 
 jobs:
   record_status:
     if: >-
-      github.event.context == 'Cross-build Release Artifacts' &&
-      github.event.sender.login == 'buildbuddy-io[bot]'
+      inputs.invocation_url != '' ||
+      (github.event.context == 'Cross-build Release Artifacts' &&
+      github.event.sender.login == 'buildbuddy-io[bot]')
     runs-on: ubuntu-latest
     permissions:
       statuses: write
     env:
       GH_TOKEN: ${{ github.token }}
-      BUILD_SHA: ${{ github.event.sha }}
-      CHECK_STATE: ${{ github.event.state == 'success' && 'pending' || github.event.state }}
+      BUILD_SHA: ${{ inputs.commit_sha || github.event.sha }}
+      CHECK_STATE: ${{ (inputs.invocation_url != '' || github.event.state == 'success') && 'pending' || github.event.state }}
     steps:
       - name: Record Native Smoke Status
         run: |
@@ -32,7 +44,7 @@ jobs:
 
   download:
     needs: record_status
-    if: github.event.state == 'success'
+    if: inputs.invocation_url != '' || github.event.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Trusted Artifact Downloader
@@ -42,8 +54,8 @@ jobs:
       - name: Download BuildBuddy Artifacts
         env:
           BUILDBUDDY_API_KEY: ${{ secrets.BUILDBUDDY_RO_PUBLIC_KEY }}
-          INVOCATION_URL: ${{ github.event.target_url }}
-          BUILD_SHA: ${{ github.event.sha }}
+          INVOCATION_URL: ${{ inputs.invocation_url || github.event.target_url }}
+          BUILD_SHA: ${{ inputs.commit_sha || github.event.sha }}
         run: python3 tools/ci/buildbuddy_artifacts.py
       - name: Upload Smoke Artifacts
         uses: actions/upload-artifact@v7
@@ -221,15 +233,16 @@ jobs:
       [record_status, download, macos_smoke, windows_smoke, linux_musl_smoke]
     if: >-
       always() && !cancelled() &&
-      github.event.context == 'Cross-build Release Artifacts' &&
+      (inputs.invocation_url != '' ||
+      (github.event.context == 'Cross-build Release Artifacts' &&
       github.event.sender.login == 'buildbuddy-io[bot]' &&
-      github.event.state == 'success'
+      github.event.state == 'success'))
     runs-on: ubuntu-latest
     permissions:
       statuses: write
     env:
       GH_TOKEN: ${{ github.token }}
-      BUILD_SHA: ${{ github.event.sha }}
+      BUILD_SHA: ${{ inputs.commit_sha || github.event.sha }}
       RESULTS: ${{ toJSON(needs) }}
     steps:
       - name: Publish Native Smoke Result

@@ -54,7 +54,8 @@ features, builds examples, checks the pnpm lockfile, and verifies hooks.
 After BuildBuddy's cross-build succeeds, `native-smoke.yml` downloads its archive
 using the existing read-only BuildBuddy secret. Native macOS, Windows, and Linux
 x64/ARM64 jobs execute these artifacts without BuildBuddy credentials. The
-workflow publishes `Native Smoke Tests` on the built commit.
+workflow publishes `Native Smoke Tests` on the built commit. To replay smoke tests,
+manually dispatch `test.yml` with `smoke_invocation_url` and `smoke_commit_sha`.
 
 For fork PRs, a maintainer's GitHub **Approve** review starts trusted BuildBuddy
 runs with credentials. GitHub's **Approve workflows to run** button separately

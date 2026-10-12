@@ -100,7 +100,9 @@ exposing secrets to PR workflow code. Their normal check runs attach to main;
 the final job therefore publishes `Native Smoke Tests` explicitly on the event's
 commit SHA. Concurrency includes the source status context so unrelated statuses
 do not cancel smoke runs. This handoff starts working after the workflow lands
-on main.
+on main. `test.yml` can also call the smoke workflow through manual dispatch
+with `smoke_invocation_url` and `smoke_commit_sha`, allowing validation before
+the status-triggered workflow lands.
 
 After that rollout, main should require `test`, `verify-hooks`, `Test all targets`,
 `Cross-build Release Artifacts`, and `Native Smoke Tests`. The first two and the
