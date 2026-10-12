@@ -1,5 +1,5 @@
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
-load("@rules_rs//rs:rust_test.bzl", "rust_test")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
 
 rust_library(
     name = "icu_skeleton_parser",
@@ -12,16 +12,29 @@ rust_library(
         "number_skeleton_token.rs",
     ],
     crate_name = "formatjs_icu_skeleton_parser",
+    crate_root = "lib.rs",
+    edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
         "@crates//:once_cell",
         "@crates//:regex",
         "@crates//:serde",
-        "@crates//:serde_json",
     ],
 )
 
-rust_test(
+formatjs_rust_test(
     name = "icu_skeleton_parser_test",
-    crate = ":icu_skeleton_parser",
+    srcs = [
+        "datetime_format_options.test.rs",
+        "datetime_parser.test.rs",
+        "number_format_options.test.rs",
+        "number_parser.test.rs",
+        "number_skeleton_token.test.rs",
+    ],
+    crate_name = "icu_skeleton_parser_test",
+    edition = "2024",
+    deps = [
+        ":icu_skeleton_parser",
+        "@crates//:serde_json",
+    ],
 )

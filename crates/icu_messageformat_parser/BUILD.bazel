@@ -1,7 +1,7 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
-load("@rules_rs//rs:rust_test.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
 
 exports_files(
     [
@@ -48,6 +48,8 @@ rust_library(
     ],
     crate_features = ["compiled_data"],
     crate_name = "formatjs_icu_messageformat_parser",
+    crate_root = "lib.rs",
+    edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
         "//crates/icu_skeleton_parser",
@@ -56,20 +58,38 @@ rust_library(
         "@crates//:once_cell",
         "@crates//:regex",
         "@crates//:serde",
+    ],
+)
+
+formatjs_rust_test(
+    name = "icu_messageformat_parser_test",
+    srcs = [
+        "arguments.test.rs",
+        "date_time_pattern_generator.test.rs",
+        "error.test.rs",
+        "lib.test.rs",
+        "manipulator.test.rs",
+        "parser.test.rs",
+        "printer.test.rs",
+        "types.test.rs",
+    ],
+    crate_features = ["compiled_data"],
+    crate_name = "icu_messageformat_parser_test",
+    edition = "2024",
+    deps = [
+        ":icu_messageformat_parser",
+        "@crates//:icu",
+        "@crates//:indexmap",
         "@crates//:serde_json",
     ],
 )
 
-rust_test(
-    name = "icu_messageformat_parser_test",
-    crate = ":icu_messageformat_parser",
-    crate_features = ["compiled_data"],
-)
-
 rust_binary(
     name = "parser_bench",
-    srcs = ["benches/parser_bench.rs"],
+    srcs = ["parser.bench.rs"],
     crate_name = "parser_bench",
+    crate_root = "parser.bench.rs",
+    edition = "2024",
     deps = [
         ":icu_messageformat_parser",
         "@crates//:criterion",

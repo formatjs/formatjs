@@ -360,21 +360,23 @@ Using Bazel:
 bazel test //crates/formatjs_cli:formatjs_cli_test
 ```
 
-Using Cargo:
-
-```bash
-cargo test
-```
+Tests live in standalone `*.test.rs` modules and exercise public APIs. Gazelle
+collects them into one test target and generates the crate root through the
+repository's test macro.
 
 ### Project Structure
 
-```
+```text
 crates/formatjs_cli/
-├── Cargo.toml          # Cargo package manifest
-├── BUILD.bazel         # Bazel build configuration
-├── README.md           # This file
-└── src/
-    └── main.rs         # Main CLI implementation
+├── Cargo.toml
+├── BUILD.bazel
+├── lib.rs
+├── main.rs
+├── extract.rs
+├── extract.test.rs
+└── formatters/
+    ├── mod.rs
+    └── mod.test.rs
 ```
 
 ## Dependencies

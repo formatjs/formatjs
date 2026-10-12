@@ -112,7 +112,7 @@ The tracked implementation differences for covered test cases have been fixed:
 #### 1. ✅ Newline Handling (Fixed)
 
 - **Issue**: TypeScript normalizes newlines to spaces; Rust was preserving literal newlines
-- **Solution**: Added `normalize_whitespace()` function in `crates/formatjs_cli/src/extractor.rs`
+- **Solution**: Added `normalize_whitespace()` function in `crates/formatjs_cli/extractor.rs`
 - **Behavior**: Both CLIs now normalize newlines, tabs, and multiple spaces to single spaces
 - **Related**: Fixes [issue #6021](https://github.com/formatjs/formatjs/issues/6021)
 
@@ -126,7 +126,7 @@ The tracked implementation differences for covered test cases have been fixed:
 
 - **Issue**: Different hash values when using `--flatten` + `--id-interpolation-pattern`
 - **Root cause**: Rust was hashing before flattening; TypeScript hashes after flattening
-- **Solution**: Modified `crates/formatjs_cli/src/extract.rs` to hash the flattened message
+- **Solution**: Modified `crates/formatjs_cli/extract.rs` to hash the flattened message
 - **Behavior**: Both CLIs now generate identical hashes from flattened messages
 
 #### 4. ✅ Output Format Correctness (Fixed)

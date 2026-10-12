@@ -136,3 +136,23 @@ dependencies first, and verifies their
 versions on npm before publishing dependents. Existing versions are skipped, so
 maintainers can retry `release.yml` with the affected `npm_paths` after resolving a
 publication failure.
+
+## Rust BUILD maintenance
+
+After changing Rust modules or imports, regenerate BUILD files with:
+
+```sh
+bazel run //:gazelle -- -strict
+bazel run //:gazelle -- -strict -mode=diff
+bazel test //crates/... //packages/icu-messageformat-parser/integration-tests:integration_tests
+```
+
+Keep Rust crate roots (`lib.rs`, `main.rs`) beside BUILD files. Put tests in
+standalone `*.test.rs` files and import the public library API. Gazelle discovers
+those files; the test macro generates one aggregate main per target. Keep test
+helpers in sibling test modules, without adding test-only public APIs.
+
+Internal imports resolve by crate name. Root Cargo dependency declarations and
+the lockfile select external shorthand aliases. Keep feature flags, native linker
+settings, release targets, and test data in BUILD files. Cargo manifests still
+describe published crates; Bazel owns repository builds and tests.

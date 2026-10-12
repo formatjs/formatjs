@@ -98,4 +98,4 @@ The parser is implemented in Rust with:
 
 ## Benchmark Code
 
-The benchmark implementation can be found in `benches/parser_bench.rs`, which uses the Criterion framework for accurate performance measurement with statistical analysis.
+The benchmark implementation can be found in `parser.bench.rs`, which uses the Criterion framework for accurate performance measurement with statistical analysis.

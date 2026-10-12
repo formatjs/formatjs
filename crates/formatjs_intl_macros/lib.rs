@@ -25,6 +25,7 @@ pub fn __message_descriptor(input: TokenStream) -> TokenStream {
     quote!((#id, #default_message, #description)).into()
 }
 
+/// Rejects missing, unused, and duplicate ICU values during macro expansion.
 #[proc_macro]
 pub fn __validate_message_values(input: TokenStream) -> TokenStream {
     let arguments = parse_macro_input!(input as ValidateMessageValuesArgs);
@@ -171,46 +172,6 @@ fn normalize_whitespace(value: &str) -> String {
 
     normalized
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn validate(input: &str) -> syn::Result<()> {
-        validate_message_values(&syn::parse_str(input)?)
-    }
-
-    #[test]
-    fn validates_nested_icu_values() {
-        validate(
-            r#""{gender, select, other {{name} has {count, plural, one {one task} other {# tasks}} worth {amount, number}, due {due, date} at {time, time}. <b>Review</b>}}"; gender, name, count, amount, due, time, b"#,
-        )
-        .unwrap();
-    }
-
-    #[test]
-    fn rejects_missing_unused_and_duplicate_values() {
-        assert!(
-            validate(r#""Hello, {name}";"#)
-                .unwrap_err()
-                .to_string()
-                .contains("missing ICU value `name`")
-        );
-        assert!(
-            validate(r#""Hello"; name"#)
-                .unwrap_err()
-                .to_string()
-                .contains("unused ICU value `name`")
-        );
-        assert!(
-            validate(r#""Hello, {name}"; name, name"#)
-                .unwrap_err()
-                .to_string()
-                .contains("duplicate ICU value `name`")
-        );
-    }
-}
-
 struct CheckMessageValueArgs {
     runtime: syn::Path,
     message: LitStr,

@@ -140,19 +140,20 @@ bazel_dep(name = "rules_android", version = "0.7.2")
 
 ######### Go + Gazelle #########
 
-bazel_dep(name = "rules_go", version = "0.60.0")
-bazel_dep(name = "gazelle", version = "0.51.0")
+bazel_dep(name = "rules_go", version = "0.62.0")
+bazel_dep(name = "gazelle", version = "0.51.3")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.24.12")
 
 ######### gazelle_ts (TypeScript Gazelle extension) #########
 
-bazel_dep(name = "gazelle_ts", version = "0.4.18")
+bazel_dep(name = "gazelle_ts", version = "0.6.5")
+bazel_dep(name = "gazelle_rs", version = "1.2.1")
 
 ######### Rust rules #########
 
-bazel_dep(name = "rules_rs", version = "0.0.73")
+bazel_dep(name = "rules_rs", version = "0.0.111")
 bazel_dep(name = "llvm", version = "0.8.11")
 single_version_override(
     module_name = "llvm",
@@ -191,7 +192,7 @@ rules_rust_ext = use_extension("@rules_rs//rs:rules_rust.bzl", "rules_rust")
 use_repo(rules_rust_ext, "rules_rust")
 
 register_toolchains(
-    "@rs//:all",
+    "@rs//...",
 )
 
 crate = use_extension("@rules_rs//rs:extensions.bzl", "crate")

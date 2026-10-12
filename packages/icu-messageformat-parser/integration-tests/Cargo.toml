@@ -9,6 +9,6 @@ formatjs_icu_messageformat_parser = { path = "../../../crates/icu_messageformat_
 serde_json = "1.0"
 pretty_assertions = { workspace = true }
 
-[lib]
+[[test]]
 name = "integration_tests"
-path = "integration_tests.rs"
+path = "integration.test.rs"

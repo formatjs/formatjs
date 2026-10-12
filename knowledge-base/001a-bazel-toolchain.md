@@ -26,16 +26,16 @@ across the monorepo.
 | `buildifier_prebuilt`   | 8.5.1.2       | Starlark formatting                            |
 | `protobuf`              | 34.0.bcr.1    | Proto runtime for Rust/Go tooling              |
 | `rules_proto`           | 7.1.0         | Proto rules                                    |
-| `rules_go`              | 0.60.0        | Go SDK/rules for Gazelle                       |
-| `gazelle`               | 0.50.0        | BUILD file generation driver                   |
-| `gazelle_ts`            | 0.4.18        | TypeScript Gazelle extension                   |
-| `rules_rs`              | 0.0.73        | Rust compilation, crates, wasm                 |
+| `rules_go`              | 0.62.0        | Go SDK/rules for Gazelle                       |
+| `gazelle`               | 0.51.3        | BUILD file generation driver                   |
+| `gazelle_ts`            | 0.6.5         | TypeScript Gazelle extension                   |
+| `rules_rs`              | 0.0.111       | Rust compilation, crates, wasm                 |
 | `rules_python`          | 2.3.2         | Hermetic Python and wheel packaging            |
 | `llvm`                  | 0.8.11        | Hermetic LLVM C/C++ toolchains                 |
 | `rules_java`            | 9.6.1         | Java toolchain for ICU4J conformance tests     |
 | `toolchains_buildbuddy` | 0.0.4         | BuildBuddy RBE platform and C/C++ definitions  |
 
-`gazelle_ts` and `rules_rs` are consumed from BCR.
+`gazelle_ts`, `gazelle_rs` (1.2.1), and `rules_rs` are consumed from BCR.
 
 ### Hermetic Runtime Toolchains
 
@@ -79,13 +79,17 @@ across the monorepo.
 
 See [the contributor CI flow diagram](../CONTRIBUTING.md#ci) for both approval paths and the artifact handoff.
 
-BuildBuddy's `Test all targets` action runs `bazel test //...`.
+BuildBuddy's `Test all targets` action runs `bazel test //...` with 16GB memory.
+The expanded Rust toolchain graph caused repository fetches to restart under
+memory pressure on the previous 10GB runner.
 `Cross-build Release Artifacts` builds optimized macOS, Windows, and Linux
 artifacts, validates formats and addon symbols, smoke-tests the Linux x64 CLI,
 and uploads `release-cross-build-smoke.tar.gz`. Its runner requests 64GB disk
 because extracting the Windows toolchain exhausted the previous runner's disk.
 Its build, collection, binary checks, Linux smoke, and archive upload are separate
 `buildbuddy.yaml` steps. Shared Bazel flags live in `--config=bb-cross-build`.
+Linux Node and Python extensions use `cc_runtime_linkage = "static"` to avoid host
+libc++/libunwind dependencies; unresolved unwind symbols fail release checks.
 Steps use an action-level staging path because shell variables do not persist
 between BuildBuddy steps.
 
@@ -238,7 +242,7 @@ Root `BUILD.bazel` configures:
 ```starlark
 gazelle_binary(
     name = "gazelle_bin",
-    languages = ["@gazelle_ts//ts"],
+    languages = ["@gazelle_rs//rs", "@gazelle_ts//ts"],
 )
 ```
 
@@ -250,6 +254,9 @@ map those into local wrappers:
 # gazelle:map_kind ts_test formatjs_test //tools:test.bzl
 # gazelle:ts_npm_link_pattern //:node_modules/{pkg}
 ```
+
+`ts_binary` consumes its sibling library through `deps`; the local wrapper
+forwards those labels to `js_binary.data`.
 
 That means Gazelle owns ordinary source/test file discovery and dependency
 resolution, while local macros keep the FormatJS build semantics.
@@ -397,6 +404,24 @@ See `knowledge-base/011-generated-packages.md` for the generated package layout.
 toolchain and translates root `Cargo.toml` plus `Cargo.lock` into the external
 `@crates` repository. Crate BUILD files use `rust_library`, `rust_binary`, and
 `rust_test`; Bazel targets remain the build and test entry points.
+
+`gazelle_rs` discovers Rust module sources and resolves internal imports by
+`crate_name`. Root `rust_cargo_lock` reads Cargo.toml and Cargo.lock for external
+crates; `resolve` directives cover Ruff git crates, the `md5` import name, and
+Bazel runfiles. `rust_proc_macro napi_derive` classifies the external macro.
+Existing names, feature variants, linker flags, release targets, and test data
+stay in BUILD files. Crate roots are flat. Standalone `*.test.rs` suites import
+public APIs and use `formatjs_rust_test` with `rust_test_main_gen` to generate
+one aggregate main per target. Tests and their dependencies stay out of
+production sources. Compile-fail examples run through `rust_doc_test` against
+the test aggregate. Root `workspace.dependencies` selects shorthand external
+aliases; keep it aligned with per-crate requirements. The root Gazelle runner
+enables `-strict` by default.
+
+`rust_shared_library` and package-local `pyo3_extension` are registered with
+`alias_kind rust_library`, so Gazelle maintains their sources and dependencies
+without replacing the wrappers. Run `bazel run //:gazelle -- -strict`, then
+`bazel run //:gazelle -- -strict -mode=diff` to verify regeneration.
 
 The generated `@rules_rust` repository is a compatibility facade for rules that
 still load that label, including WASM tooling. Keep Cargo manifests, lock data,

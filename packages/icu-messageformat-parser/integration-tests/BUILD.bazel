@@ -1,7 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library")
-load("@rules_rs//rs:rust_test.bzl", "rust_test")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
 load("//tools:vitest.bzl", "vitest")
 
 generate_package_json(
@@ -33,11 +33,14 @@ genrule(
 )
 
 # Single Rust test that runs all integration test cases
-rust_test(
+formatjs_rust_test(
     name = "integration_tests",
     size = "small",
-    srcs = ["integration_tests.rs"],
+    srcs = ["integration.test.rs"],
+    crate_name = "integration_tests",
+    crate_root = "integration.test.rs",
     data = TEST_CASES + [":test_list.txt"],
+    edition = "2024",
     deps = [
         "//crates/icu_messageformat_parser",
         "@crates//:pretty_assertions",

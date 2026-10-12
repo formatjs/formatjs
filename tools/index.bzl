@@ -93,11 +93,12 @@ def ts_compile(name, srcs, deps = [], visibility = None, tsconfig = None, packag
         visibility = visibility,
     )
 
-def ts_binary(name, data = [], node_options = [], tsconfig_types = [], **kwargs):
+def ts_binary(name, data = [], node_options = [], tsconfig_types = [], deps = [], **kwargs):
     """Create a TS binary with prefilled args.
 
     Args:
         name: target name
+        deps: Gazelle's sibling library dependencies
         data: data files or dependencies
         node_options: additional Node.js options
         tsconfig_types: accepted for gazelle_ts compatibility; ts_binary runs
@@ -106,7 +107,7 @@ def ts_binary(name, data = [], node_options = [], tsconfig_types = [], **kwargs)
     """
     js_binary(
         name = name,
-        data = data,
+        data = deps + data,
         node_options = node_options + [
             "--experimental-transform-types",
         ],

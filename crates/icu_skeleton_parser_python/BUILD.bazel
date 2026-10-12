@@ -1,8 +1,13 @@
 load("//tools/python:pyo3_extension.bzl", "pyo3_extension")
 
+# gazelle:alias_kind pyo3_extension rust_library
+
 pyo3_extension(
     name = "icu_skeleton_parser",
     srcs = ["lib.rs"],
+    crate_name = "_native",
+    crate_root = "lib.rs",
+    edition = "2024",
     module_name = "icu_skeleton_parser._native",
     deps = [
         "//crates/icu_skeleton_parser",
