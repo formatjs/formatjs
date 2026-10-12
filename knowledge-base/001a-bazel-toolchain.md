@@ -79,7 +79,9 @@ across the monorepo.
 
 See [the contributor CI flow diagram](../CONTRIBUTING.md#ci) for both approval paths and the artifact handoff.
 
-BuildBuddy's `Test all targets` action runs `bazel test //...`.
+BuildBuddy's `Test all targets` action runs `bazel test //...` with 16GB memory.
+The expanded Rust toolchain graph caused repository fetches to restart under
+memory pressure on the previous 10GB runner.
 `Cross-build Release Artifacts` builds optimized macOS, Windows, and Linux
 artifacts, validates formats and addon symbols, smoke-tests the Linux x64 CLI,
 and uploads `release-cross-build-smoke.tar.gz`. Its runner requests 64GB disk

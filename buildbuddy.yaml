@@ -10,7 +10,7 @@ actions:
         branches:
           - 'main'
     resource_requests:
-      memory: 10GB
+      memory: 16GB
       disk: 32GB
     bazel_commands:
       - 'test --config=bb-workflow --remote_download_minimal //...'
