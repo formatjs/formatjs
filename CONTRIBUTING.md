@@ -44,14 +44,25 @@ Package `tsconfig.json` files are generated local development files and are not 
 bazel run //:generate_package_tsconfigs
 ```
 
-### GitHub Actions test cache
+### CI
 
-Main and PR test jobs use `--config=rbe-platform` to share action keys.
-Jobs with a BuildBuddy key add `--config=rbe-transport --remote_upload_local_results
---remote_download_outputs=all`, executing on BuildBuddy while filling the disk
-cache saved by main. Jobs without a key restore that cache and run misses
-locally. Only main pushes publish GHA cache snapshots. Keep platform, toolchain, and action settings in the shared
-configuration; only remote execution and reporting belong in `rbe-transport`.
+BuildBuddy runs the full Bazel test suite and cross-builds release artifacts.
+Its cross-build action also checks binary formats, Linux CLI compatibility, and
+native addon symbols. GitHub Actions validates Cargo metadata and provider-only
+features, builds examples, checks the pnpm lockfile, and verifies hooks.
+
+After BuildBuddy's cross-build succeeds, `native-smoke.yml` downloads its archive
+using the existing read-only BuildBuddy secret. Native macOS, Windows, and Linux
+x64/ARM64 jobs execute these artifacts without BuildBuddy credentials. The
+workflow publishes `Native Smoke Tests` on the built commit.
+
+For fork PRs, a maintainer's GitHub **Approve** review starts trusted BuildBuddy
+runs with credentials. GitHub's **Approve workflows to run** button separately
+allows PR GitHub Actions workflows to run. New commits need another review for
+trusted BuildBuddy execution.
+
+Once `native-smoke.yml` is on main, require `test`, `verify-hooks`,
+`Test all targets`, `Cross-build Release Artifacts`, and `Native Smoke Tests`.
 
 The shared Vitest macro includes committed `__snapshots__/<source>.snap` files
 beside each source as Bazel runtime inputs. Keep custom snapshot paths in the

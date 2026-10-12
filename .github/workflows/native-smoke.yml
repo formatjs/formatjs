@@ -1,0 +1,241 @@
+name: Native Smoke Tests
+
+on:
+  status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-smoke-${{ github.event.context }}-${{ github.event.sha }}
+  cancel-in-progress: true
+
+jobs:
+  record_status:
+    if: >-
+      github.event.context == 'Cross-build Release Artifacts' &&
+      github.event.sender.login == 'buildbuddy-io[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BUILD_SHA: ${{ github.event.sha }}
+      CHECK_STATE: ${{ github.event.state == 'success' && 'pending' || github.event.state }}
+    steps:
+      - name: Record Native Smoke Status
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$BUILD_SHA" \
+            -f state="$CHECK_STATE" -f context='Native Smoke Tests' \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            -f description="BuildBuddy cross-build: $CHECK_STATE"
+
+  download:
+    needs: record_status
+    if: github.event.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Trusted Artifact Downloader
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Download BuildBuddy Artifacts
+        env:
+          BUILDBUDDY_API_KEY: ${{ secrets.BUILDBUDDY_RO_PUBLIC_KEY }}
+          INVOCATION_URL: ${{ github.event.target_url }}
+          BUILD_SHA: ${{ github.event.sha }}
+        run: python3 tools/ci/buildbuddy_artifacts.py
+      - name: Upload Smoke Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+          retention-days: 7
+
+  linux_musl_smoke:
+    name: Linux musl Smoke Tests (${{ matrix.arch }})
+    needs: download
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: ubuntu-latest
+            package: cli-native-linux-x64-musl
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            package: cli-native-linux-arm64-musl
+
+    steps:
+      - name: Download Linux musl Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+
+      - name: Smoke Test Static musl CLI On GNU
+        run: |
+          chmod +x artifacts/${{ matrix.package }}/formatjs_cli
+          artifacts/${{ matrix.package }}/formatjs_cli --version
+          artifacts/${{ matrix.package }}/formatjs_cli --help
+
+      - name: Smoke Test Package In Alpine
+        run: |
+          docker run --rm \
+            -v "$PWD/artifacts/${{ matrix.package }}:/native:ro" \
+            node:24-alpine \
+            node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
+
+  macos_smoke:
+    name: macOS Smoke Tests
+    needs: download
+    runs-on: macos-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Download Darwin Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+
+      - name: Rust CLI Smoke Test
+        run: |
+          chmod +x artifacts/formatjs_cli-darwin-arm64
+          artifacts/formatjs_cli-darwin-arm64 --version
+          artifacts/formatjs_cli-darwin-arm64 --help
+
+      - name: Native Binding Smoke Test
+        run: |
+          node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-darwin-arm64
+
+  windows_smoke:
+    name: Windows Smoke Tests
+    needs: download
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Download Windows MSVC Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: release-cross-build-smoke
+          path: artifacts
+
+      - name: Rust CLI Smoke Test
+        run: |
+          $binaryPath = Resolve-Path .\artifacts\formatjs_cli-win32-x64.exe
+          & $binaryPath --version
+          & $binaryPath --help
+
+      - name: Native Binding Smoke Test
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $pkgPath = Resolve-Path .\artifacts\cli-native-win32-x64
+          $script = @'
+          const fs = require('node:fs')
+          const os = require('node:os')
+          const path = require('node:path')
+          const native = require(process.argv[2])
+
+          const formatters = native.supportedBuiltinFormatters()
+          if (!formatters.includes('default')) {
+            throw new Error('Missing default formatter')
+          }
+
+          const messageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'formatjs-cli-lib-'))
+          const messageSubdir = path.join(messageDir, 'messages[prod]')
+          fs.mkdirSync(messageSubdir)
+          const messageFile = path.join(messageSubdir, 'primary.json')
+          fs.writeFileSync(
+            messageFile,
+            JSON.stringify({
+              hello: {
+                message: 'Hello {name}',
+                description: 'Smoke test message',
+              },
+            })
+          )
+
+          if (!messageFile.includes('\\')) {
+            throw new Error(`Expected a native Windows path, got ${messageFile}`)
+          }
+
+          const output = native.compile([messageFile], {
+            ast: true,
+            format: 'crowdin',
+          })
+          const compiled = JSON.parse(output)
+          if (!Array.isArray(compiled.hello)) {
+            throw new Error(output)
+          }
+          console.log(output)
+
+          const sourceSubdir = path.join(messageDir, 'src[prod]')
+          fs.mkdirSync(sourceSubdir)
+          const sourceFile = path.join(sourceSubdir, 'component.tsx')
+          fs.writeFileSync(
+            sourceFile,
+            `
+          import {defineMessage} from 'react-intl'
+
+          defineMessage({
+            id: 'native.extract',
+            defaultMessage: 'Native extract smoke',
+          })
+          `
+          )
+
+          if (!sourceFile.includes('\\')) {
+            throw new Error(`Expected a native Windows path, got ${sourceFile}`)
+          }
+
+          const extractedOutput = native.extract([sourceFile], {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+            throws: true,
+          })
+          const extracted = JSON.parse(extractedOutput)
+          if (
+            extracted['native.extract']?.defaultMessage !==
+            'Native extract smoke'
+          ) {
+            throw new Error(extractedOutput)
+          }
+          console.log(extractedOutput)
+          '@
+          $script | node - $pkgPath
+
+  publish_status:
+    needs:
+      [record_status, download, macos_smoke, windows_smoke, linux_musl_smoke]
+    if: >-
+      always() && !cancelled() &&
+      github.event.context == 'Cross-build Release Artifacts' &&
+      github.event.sender.login == 'buildbuddy-io[bot]' &&
+      github.event.state == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BUILD_SHA: ${{ github.event.sha }}
+      RESULTS: ${{ toJSON(needs) }}
+    steps:
+      - name: Publish Native Smoke Result
+        run: |
+          state=$(jq -r 'if all(.[]; .result == "success") then "success" else "failure" end' <<< "$RESULTS")
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$BUILD_SHA" \
+            -f state="$state" -f context='Native Smoke Tests' \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            -f description="Native smoke tests: $state"
