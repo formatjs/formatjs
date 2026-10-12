@@ -77,6 +77,8 @@ across the monorepo.
 
 ### CI ownership
 
+See [the contributor CI flow diagram](../CONTRIBUTING.md#ci) for both approval paths and the artifact handoff.
+
 BuildBuddy's `Test all targets` action runs `bazel test //...`.
 `Cross-build Release Artifacts` builds optimized macOS, Windows, and Linux
 artifacts, validates formats and addon symbols, smoke-tests the Linux x64 CLI,

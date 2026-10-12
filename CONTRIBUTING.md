@@ -62,6 +62,34 @@ runs with credentials. GitHub's **Approve workflows to run** button separately
 allows PR GitHub Actions workflows to run. New commits need another review for
 trusted BuildBuddy execution.
 
+```mermaid
+flowchart TD
+    PR[PR opened or updated]
+    PR --> BB[BuildBuddy]
+    PR --> APPROVE_GHA[Approve GitHub Actions workflows]
+
+    REVIEW[Maintainer submits Approve review]
+    REVIEW --> TRUSTED[Trusted BuildBuddy run]
+
+    BB -->|Outside contributor| UNTRUSTED[Untrusted run: no credentials]
+    TRUSTED --> SUITE[Full Bazel test suite]
+    TRUSTED --> CROSS[Cross-build macOS, Windows, Linux]
+    CROSS --> CHECKS[Binary format, symbols, Linux CLI checks]
+    CHECKS --> ARCHIVE[Upload smoke archive]
+
+    APPROVE_GHA --> GHA[Cargo checks, examples, pnpm, hooks]
+
+    ARCHIVE --> STATUS[Successful BuildBuddy status]
+    STATUS --> DOWNLOAD[Trusted GHA downloader: read-only BB key]
+    DOWNLOAD --> VALIDATE[Verify commit SHA and archive contents]
+    VALIDATE --> MAC[macOS smoke]
+    VALIDATE --> WIN[Windows smoke]
+    VALIDATE --> LINUX[Linux x64 / ARM64 smoke]
+    MAC --> RESULT[Native Smoke Tests status on PR commit]
+    WIN --> RESULT
+    LINUX --> RESULT
+```
+
 Once `native-smoke.yml` is on main, require `test`, `verify-hooks`,
 `Test all targets`, `Cross-build Release Artifacts`, and `Native Smoke Tests`.
 
