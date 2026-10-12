@@ -33,9 +33,7 @@ fn values_from_python(values: Option<&Bound<'_, PyDict>>) -> PyResult<Values<Str
         .map(|values| {
             values
                 .iter()
-                .map(|(key, value)| {
-                    Ok((key.extract::<String>()?, value_from_python(&value)?))
-                })
+                .map(|(key, value)| Ok((key.extract::<String>()?, value_from_python(&value)?)))
                 .collect()
         })
         .unwrap_or_else(|| Ok(Values::new()))

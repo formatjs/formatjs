@@ -289,8 +289,7 @@ pub fn extract_to_string(
             Err(e) => {
                 // A failed read makes the catalog incomplete, even in best-effort mode.
                 if throws || e.is::<io::Error>() {
-                    return Err(e)
-                        .with_context(|| format!("Error in {}", file_path.display()));
+                    return Err(e).with_context(|| format!("Error in {}", file_path.display()));
                 }
                 let err_msg = format!("Error in {}: {}", file_path.display(), e);
                 eprintln!("{}", err_msg);

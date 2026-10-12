@@ -293,9 +293,9 @@ impl<'de> Deserialize<'de> for MessageFormatElement {
             Some(DeserializedStyle::String(style)) => {
                 Ok(Some(DateTimeSkeletonOrStyle::String(style.clone())))
             }
-            Some(DeserializedStyle::DateTime(skeleton)) => Ok(Some(
-                DateTimeSkeletonOrStyle::Skeleton(skeleton.clone()),
-            )),
+            Some(DeserializedStyle::DateTime(skeleton)) => {
+                Ok(Some(DateTimeSkeletonOrStyle::Skeleton(skeleton.clone())))
+            }
             _ => Err(de::Error::custom("expected date/time style")),
         };
 

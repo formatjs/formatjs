@@ -76,7 +76,11 @@ pub fn verify(
 
         let base_dir = crate::extract::extract_base_dir(pattern_str);
         if base_dir.exists() {
-            for entry in WalkDir::new(&base_dir).follow_links(follow_links).into_iter().filter_map(|e| e.ok()) {
+            for entry in WalkDir::new(&base_dir)
+                .follow_links(follow_links)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
                 if entry.path().is_file() {
                     let path_str = entry.path().to_string_lossy();
                     if fast_glob::glob_match(pattern_str, path_str.as_ref()) {
@@ -337,9 +341,7 @@ fn check_structural_equality(locales: &HashMap<String, Value>, source_locale: &s
                 // Parse both messages and compare structure with message ID as context
                 match compare_message_structure(source_msg, target_msg, Some(key)) {
                     Ok((true, _)) => None,
-                    Ok((false, Some(detail))) => {
-                        Some((key.clone(), format_error_message(&detail)))
-                    }
+                    Ok((false, Some(detail))) => Some((key.clone(), format_error_message(&detail))),
                     Ok((false, None)) => Some((
                         key.clone(),
                         "Messages are structurally different".to_string(),
@@ -464,7 +466,11 @@ fn format_error_message(msg: &str) -> String {
 
 /// Compare the structure of two ICU MessageFormat messages
 /// Returns Ok((true, None)) if structures match, Ok((false, Some(detail))) if they don't, Err if parsing fails
-fn compare_message_structure(source: &str, target: &str, message_id: Option<&str>) -> Result<(bool, Option<String>)> {
+fn compare_message_structure(
+    source: &str,
+    target: &str,
+    message_id: Option<&str>,
+) -> Result<(bool, Option<String>)> {
     use formatjs_icu_messageformat_parser::{Parser, ParserOptions, is_structurally_same};
 
     // Parse source message
@@ -608,7 +614,11 @@ mod tests {
     #[test]
     fn test_should_ignore() {
         let file = Path::new("/path/to/file.json");
-        let ignore_patterns = vec!["**/node_modules/**".to_string(), "**/*test*/**".to_string(), "**/*test*.json".to_string()];
+        let ignore_patterns = vec![
+            "**/node_modules/**".to_string(),
+            "**/*test*/**".to_string(),
+            "**/*test*.json".to_string(),
+        ];
         assert!(!should_ignore(file, &ignore_patterns));
 
         let file = Path::new("/path/node_modules/file.json");
@@ -925,15 +935,7 @@ mod tests {
         // Use brace expansion glob
         let pattern = PathBuf::from(format!("{}/**/*.{{json}}", dir.path().display()));
 
-        let result = verify(
-            &[pattern],
-            Some("en"),
-            &[],
-            true,
-            true,
-            false,
-            true,
-        );
+        let result = verify(&[pattern], Some("en"), &[], true, true, false, true);
 
         assert!(result.is_ok());
     }
@@ -963,15 +965,7 @@ mod tests {
 
         let pattern = PathBuf::from(format!("{}/**/*.json", dir.path().display()));
 
-        let result = verify(
-            &[pattern],
-            Some("en"),
-            &[],
-            true,
-            true,
-            false,
-            true,
-        );
+        let result = verify(&[pattern], Some("en"), &[], true, true, false, true);
 
         assert!(result.is_ok());
     }
@@ -995,10 +989,7 @@ mod tests {
 
         // Pass literal file paths (no globs)
         let result = verify(
-            &[
-                dir.path().join("en.json"),
-                dir.path().join("es.json"),
-            ],
+            &[dir.path().join("en.json"), dir.path().join("es.json")],
             Some("en"),
             &[],
             true,
@@ -1015,8 +1006,14 @@ mod tests {
         // Verify glob-based ignore patterns work correctly
         let patterns = vec!["**/node_modules/**".to_string()];
 
-        assert!(should_ignore(Path::new("/project/node_modules/pkg/en.json"), &patterns));
-        assert!(!should_ignore(Path::new("/project/locales/en.json"), &patterns));
+        assert!(should_ignore(
+            Path::new("/project/node_modules/pkg/en.json"),
+            &patterns
+        ));
+        assert!(!should_ignore(
+            Path::new("/project/locales/en.json"),
+            &patterns
+        ));
 
         // Extension-based ignore
         let patterns = vec!["**/*.bak".to_string()];

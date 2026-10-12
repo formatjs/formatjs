@@ -67,12 +67,7 @@ pub fn compile_folder(
     let json_files: Vec<PathBuf> = WalkDir::new(folder)
         .into_iter()
         .filter_map(|e| e.ok())
-        .filter(|e| {
-            e.path().is_file()
-                && e.path()
-                    .extension()
-                    .is_some_and(|ext| ext == "json")
-        })
+        .filter(|e| e.path().is_file() && e.path().extension().is_some_and(|ext| ext == "json"))
         .map(|e| e.path().to_path_buf())
         .collect();
 

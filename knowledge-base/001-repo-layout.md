@@ -97,13 +97,20 @@ package-local manifests use `workspace:*` for first-party dependencies.
 
 Pre-commit hooks run sequentially:
 
-1. `format-rust` — rustfmt on staged .rs files
+1. `format-rust` — pinned rustfmt on staged .rs files via `//tools/rustfmt:rustfmt`
 2. `format-oxfmt` — oxfmt on staged files
 3. `format-starlark` — buildifier on BUILD/bzl files
 4. `lint-staged` — oxlint --fix
 5. `lint-ast-grep` — ast-grep scan on staged .ts/.tsx files
 6. `gazelle` — regenerate BUILD files
 7. `bazel-lock-regen` — bazel mod deps
+
+All hook `bazel run` commands use `-c opt`, including the CI Lefthook entrypoint
+and commitlint, so Gazelle does not invalidate analysis by changing modes.
+The Rust formatter resolves the pinned toolchain directly without compiling
+a target-aware Rust wrapper. That wrapper expects Bazel target labels, not
+Lefthook file paths; using it with staged paths silently skipped formatting. It uses edition 2024 and `skip_children=true`,
+preserving generated-file exclusions and formatting only supplied files.
 
 Commit-msg hook: `commitlint` validates Conventional Commits format.
 

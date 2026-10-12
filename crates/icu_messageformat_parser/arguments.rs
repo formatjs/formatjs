@@ -14,9 +14,7 @@ pub enum ArgumentKind {
 
 /// Collect every occurrence, including all select/plural branches.
 /// Multiple roles for one name must all be satisfied.
-pub fn message_arguments(
-    ast: &[MessageFormatElement],
-) -> BTreeMap<String, BTreeSet<ArgumentKind>> {
+pub fn message_arguments(ast: &[MessageFormatElement]) -> BTreeMap<String, BTreeSet<ArgumentKind>> {
     fn visit(ast: &[MessageFormatElement], out: &mut BTreeMap<String, BTreeSet<ArgumentKind>>) {
         for element in ast {
             let (name, kind) = match element {
@@ -25,11 +23,15 @@ pub fn message_arguments(
                 MessageFormatElement::Date(e) => (&e.value, ArgumentKind::DateTime),
                 MessageFormatElement::Time(e) => (&e.value, ArgumentKind::DateTime),
                 MessageFormatElement::Select(e) => {
-                    for option in e.options.values() { visit(&option.value, out); }
+                    for option in e.options.values() {
+                        visit(&option.value, out);
+                    }
                     (&e.value, ArgumentKind::Select)
                 }
                 MessageFormatElement::Plural(e) => {
-                    for option in e.options.values() { visit(&option.value, out); }
+                    for option in e.options.values() {
+                        visit(&option.value, out);
+                    }
                     (&e.value, ArgumentKind::Number)
                 }
                 MessageFormatElement::Tag(e) => {
@@ -59,7 +61,10 @@ mod tests {
         ).parse().unwrap();
         let args = message_arguments(&ast);
         assert_eq!(args.len(), 4);
-        assert_eq!(args["n"], BTreeSet::from([ArgumentKind::Number, ArgumentKind::Value]));
+        assert_eq!(
+            args["n"],
+            BTreeSet::from([ArgumentKind::Number, ArgumentKind::Value])
+        );
         assert_eq!(args["d"], BTreeSet::from([ArgumentKind::DateTime]));
         assert_eq!(args["b"], BTreeSet::from([ArgumentKind::Tag]));
         assert_eq!(args["kind"], BTreeSet::from([ArgumentKind::Select]));
