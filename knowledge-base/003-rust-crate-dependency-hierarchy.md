@@ -21,6 +21,17 @@ packages/
   icu-messageformat-parser/integration-tests/   # Cross-language integration tests
 ```
 
+## BUILD maintenance
+
+Run `bazel run //:gazelle -- -strict` after Rust module or import changes.
+`gazelle_rs` manages literal `srcs`, `deps`, and `proc_macro_deps`; internal
+crate names resolve from the BUILD index, external crates from the root Cargo
+manifest and lockfile. Keep feature variants and packaging attributes explicit.
+Unit tests use source-based targets with the same crate root as their library,
+allowing test-only dependencies to stay out of production targets. Procedural-macro
+unit tests retain `crate` so rustc receives the macro crate type. Computed
+attributes and `# keep` values remain manually maintained.
+
 ## Dependency Graph
 
 ```

@@ -692,7 +692,8 @@ mod tests {
                 .join("fixtures")
         } else {
             // Fallback for cargo test
-            let manifest_dir = env!("CARGO_MANIFEST_DIR");
+            let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")
+                .expect("Cargo must set CARGO_MANIFEST_DIR outside Bazel");
             PathBuf::from(manifest_dir)
                 .parent()
                 .unwrap()

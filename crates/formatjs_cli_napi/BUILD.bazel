@@ -50,9 +50,10 @@ rust_shared_library(
         "//conditions:default": [],
     }),
     crate_name = "formatjs_cli_napi",
+    crate_root = "src/lib.rs",
     edition = "2024",
     proc_macro_deps = [
-        "@crates//:napi-derive",
+        "@crates//:napi-derive-3.6.10",
     ],
     rustc_flags = select({
         "@platforms//os:macos": [
@@ -74,8 +75,8 @@ rust_shared_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/formatjs_cli:formatjs_cli_lib",
-        "@crates//:napi",
-        "@crates//:serde_json",
+        "@crates//:napi",  # keep: napi_derive expands references to napi.
+        "@crates//:serde_json-1.0.151",
     ],
 )
 

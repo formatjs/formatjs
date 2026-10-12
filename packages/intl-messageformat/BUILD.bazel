@@ -114,6 +114,7 @@ rolldown_bundle(
 js_binary(
     name = "benchmark",
     data = [
+        ":intl-messageformat",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/tinybench",

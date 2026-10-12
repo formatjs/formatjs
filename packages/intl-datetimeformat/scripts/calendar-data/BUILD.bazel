@@ -4,13 +4,19 @@ load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_fi
 rust_binary(
     name = "umm_al_qura",
     srcs = ["umm_al_qura.rs"],
-    deps = ["@crates//:icu"],
+    crate_name = "umm_al_qura",
+    crate_root = "umm_al_qura.rs",
+    edition = "2024",
+    deps = ["@crates//:icu-2.3.1"],
 )
 
 rust_binary(
     name = "lunisolar",
     srcs = ["lunisolar.rs"],
-    deps = ["@crates//:icu"],
+    crate_name = "lunisolar",
+    crate_root = "lunisolar.rs",
+    edition = "2024",
+    deps = ["@crates//:icu-2.3.1"],
 )
 
 [

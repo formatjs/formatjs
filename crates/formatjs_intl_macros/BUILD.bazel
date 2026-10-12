@@ -13,12 +13,14 @@ rust_proc_macro(
     name = "formatjs_intl_macros",
     srcs = ["lib.rs"],
     crate_name = "formatjs_intl_macros",
+    crate_root = "lib.rs",
+    edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
         "//crates/icu_messageformat_parser",
-        "@crates//:base64",
-        "@crates//:quote",
-        "@crates//:sha2",
+        "@crates//:base64-0.23.1",
+        "@crates//:quote-1.0.47",
+        "@crates//:sha2-0.11.0",
         "@crates//:syn",
     ],
 )

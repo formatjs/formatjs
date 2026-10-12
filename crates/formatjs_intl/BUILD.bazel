@@ -14,36 +14,60 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
+# Keep feature-variant dependency edges explicit.
+WITHOUT_COMPILED_DATA_DEPS = [
+    "//crates/icu_messageformat:without_compiled_data",
+    "@crates//:icu",
+    "@crates//:icu_locale",
+    "@crates//:icu_provider",
+    "@crates//:icu_provider_adapters",
+]
+
 rust_library(
     name = "formatjs_intl",
     srcs = [
         "argument_types.rs",
         "formatted_message.rs",
         "lib.rs",
-        "provider_tests.rs",
     ],
     crate_features = ["compiled_data"],
     crate_name = "formatjs_intl",
+    crate_root = "lib.rs",
+    edition = "2024",
+    proc_macro_deps = ["//crates/formatjs_intl_macros"],
     visibility = ["//visibility:public"],
     deps = [
-        "//crates/formatjs_intl_macros",
         "//crates/icu_messageformat",
-        "@crates//:icu",
-        "@crates//:icu_locale",
-        "@crates//:icu_provider",
-        "@crates//:icu_provider_adapters",
+        "@crates//:icu-2.3.1",
+        "@crates//:icu_locale-2.3.1",
+        "@crates//:icu_provider-2.3.1",
+        "@crates//:icu_provider_adapters-2.3.0",
     ],
 )
 
 rust_test(
     name = "formatjs_intl_test",
     size = "small",
+    srcs = [
+        "argument_types.rs",
+        "formatted_message.rs",
+        "lib.rs",
+        "provider_tests.rs",
+    ],
     compile_data = ["testdata/en_fr.postcard"],
-    crate = ":formatjs_intl",
     crate_features = ["compiled_data"],
+    crate_name = "formatjs_intl",
+    crate_root = "lib.rs",
+    edition = "2024",
+    proc_macro_deps = ["//crates/formatjs_intl_macros"],
     deps = [
-        "@crates//:icu_provider_blob",
-        "@crates//:serde_json",
+        "//crates/icu_messageformat",
+        "@crates//:icu-2.3.1",
+        "@crates//:icu_locale-2.3.1",
+        "@crates//:icu_provider-2.3.1",
+        "@crates//:icu_provider_adapters-2.3.0",
+        "@crates//:icu_provider_blob-2.3.0",
+        "@crates//:serde_json-1.0.151",
     ],
 )
 
@@ -61,24 +85,28 @@ rust_library(
         "argument_types.rs",
         "formatted_message.rs",
         "lib.rs",
-        "provider_tests.rs",
     ],
     crate_name = "formatjs_intl",
+    crate_root = "lib.rs",
+    edition = "2024",
+    proc_macro_deps = ["//crates/formatjs_intl_macros"],
     visibility = ["//visibility:public"],
-    deps = [
-        "//crates/formatjs_intl_macros",
-        "//crates/icu_messageformat:without_compiled_data",
-        "@crates//:icu",
-        "@crates//:icu_locale",
-        "@crates//:icu_provider",
-        "@crates//:icu_provider_adapters",
-    ],
+    deps = WITHOUT_COMPILED_DATA_DEPS,
 )
 
 rust_test(
     name = "provider_test",
     size = "small",
+    srcs = [
+        "argument_types.rs",
+        "formatted_message.rs",
+        "lib.rs",
+        "provider_tests.rs",
+    ],
     compile_data = ["testdata/en_fr.postcard"],
-    crate = ":without_compiled_data",
-    deps = ["@crates//:icu_provider_blob"],
+    crate_name = "formatjs_intl",
+    crate_root = "lib.rs",
+    edition = "2024",
+    proc_macro_deps = ["//crates/formatjs_intl_macros"],
+    deps = WITHOUT_COMPILED_DATA_DEPS + ["@crates//:icu_provider_blob"],
 )

@@ -3,7 +3,7 @@
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 
-def pyo3_extension(name, srcs, deps, module_name, visibility = None):
+def pyo3_extension(name, srcs, deps, module_name, visibility = None, crate_root = None, crate_name = "_native", edition = "2024", proc_macro_deps = []):
     """Build an abi3 extension at its import-package path."""
     output = module_name.replace(".", "/") + ".abi3.so"
     basename = module_name.split(".")[-1]
@@ -19,8 +19,10 @@ def pyo3_extension(name, srcs, deps, module_name, visibility = None):
             "pyo3/abi3-py312",
             "pyo3/extension-module",
         ],
-        crate_name = basename,
-        edition = "2024",
+        crate_root = crate_root,
+        crate_name = crate_name,
+        edition = edition,
+        proc_macro_deps = proc_macro_deps,
         deps = deps,
         rustc_flags = select({
             "@platforms//os:macos": [

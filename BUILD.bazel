@@ -16,6 +16,19 @@ load("//tools:index.bzl", "ts_run_binary")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
+# gazelle:rust_edition 2024
+# gazelle:rust_cargo_lock @crates Cargo.toml Cargo.lock
+# gazelle:rust_proc_macro napi_derive
+# Feature variants share crate names; default imports select public libraries.
+# gazelle:resolve rs formatjs_intl //crates/formatjs_intl
+# gazelle:resolve rs formatjs_icu_messageformat //crates/icu_messageformat
+# gazelle:resolve rs runfiles @rules_rust//rust/runfiles
+# gazelle:resolve rs md5 @crates//:md-5
+# gazelle:resolve rs syn @crates//:syn
+# gazelle:resolve rs ruff_python_ast @crates//:ruff_python_ast
+# gazelle:resolve rs ruff_python_parser @crates//:ruff_python_parser
+# gazelle:resolve rs ruff_text_size @crates//:ruff_text_size
+# gazelle:alias_kind rust_shared_library rust_library
 
 # gazelle_ts//ts emits abstract ts_library + ts_test kinds; map_kind
 # rewrites them to our wrappers, which accept the generated attrs
@@ -85,11 +98,15 @@ exports_files(
 
 gazelle_binary(
     name = "gazelle_bin",
-    languages = ["@gazelle_ts//ts"],
+    languages = [
+        "@gazelle_rs//rs",
+        "@gazelle_ts//ts",
+    ],
 )
 
 gazelle(
     name = "gazelle",
+    args = ["-strict"],
     gazelle = ":gazelle_bin",
 )
 

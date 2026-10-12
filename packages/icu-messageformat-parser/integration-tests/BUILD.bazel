@@ -37,11 +37,14 @@ rust_test(
     name = "integration_tests",
     size = "small",
     srcs = ["integration_tests.rs"],
+    crate_name = "integration_tests",
+    crate_root = "integration_tests.rs",
     data = TEST_CASES + [":test_list.txt"],
+    edition = "2024",
     deps = [
         "//crates/icu_messageformat_parser",
         "@crates//:pretty_assertions",
-        "@crates//:serde_json",
+        "@crates//:serde_json-1.0.151",
         "@rules_rust//rust/runfiles",
     ],
 )

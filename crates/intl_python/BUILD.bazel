@@ -1,16 +1,21 @@
 load("//tools/python:pyo3_extension.bzl", "pyo3_extension")
 
+# gazelle:alias_kind pyo3_extension rust_library
+
 pyo3_extension(
     name = "intl",
     srcs = ["lib.rs"],
+    crate_name = "_native",
+    crate_root = "lib.rs",
+    edition = "2024",
     module_name = "intl._native",
     deps = [
         "//crates/formatjs_intl",
         "//crates/icu_messageformat",
         "//crates/icu_messageformat_parser",
-        "@crates//:base64",
-        "@crates//:icu_locale",
+        "@crates//:base64-0.23.1",
+        "@crates//:icu_locale-2.3.1",
         "@crates//:pyo3",
-        "@crates//:sha2",
+        "@crates//:sha2-0.11.0",
     ],
 )

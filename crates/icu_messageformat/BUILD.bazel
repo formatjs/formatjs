@@ -14,8 +14,40 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
+# Keep feature-variant dependency edges explicit.
+WITHOUT_COMPILED_DATA_DEPS = [
+    "//crates/icu_messageformat_parser",
+    "//crates/icu_skeleton_parser",
+    "@crates//:fixed_decimal",
+    "@crates//:icu",
+    "@crates//:icu_provider",
+]
+
 rust_library(
     name = "icu_messageformat",
+    srcs = [
+        "error.rs",
+        "formatter.rs",
+        "lib.rs",
+        "value.rs",
+    ],
+    crate_features = ["compiled_data"],
+    crate_name = "formatjs_icu_messageformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/icu_messageformat_parser",
+        "//crates/icu_skeleton_parser",
+        "@crates//:fixed_decimal-0.7.2",
+        "@crates//:icu-2.3.1",
+        "@crates//:icu_provider-2.3.1",
+    ],
+)
+
+rust_test(
+    name = "icu_messageformat_test",
+    size = "small",
     srcs = [
         "error.rs",
         "formatter.rs",
@@ -23,25 +55,19 @@ rust_library(
         "provider_tests.rs",
         "value.rs",
     ],
+    compile_data = ["testdata/fr_pl.postcard"],
     crate_features = ["compiled_data"],
     crate_name = "formatjs_icu_messageformat",
-    visibility = ["//visibility:public"],
+    crate_root = "lib.rs",
+    edition = "2024",
     deps = [
         "//crates/icu_messageformat_parser",
         "//crates/icu_skeleton_parser",
-        "@crates//:fixed_decimal",
-        "@crates//:icu",
-        "@crates//:icu_provider",
+        "@crates//:fixed_decimal-0.7.2",
+        "@crates//:icu-2.3.1",
+        "@crates//:icu_provider-2.3.1",
+        "@crates//:icu_provider_blob-2.3.0",
     ],
-)
-
-rust_test(
-    name = "icu_messageformat_test",
-    size = "small",
-    compile_data = ["testdata/fr_pl.postcard"],
-    crate = ":icu_messageformat",
-    crate_features = ["compiled_data"],
-    deps = ["@crates//:icu_provider_blob"],
 )
 
 rust_library(
@@ -51,24 +77,28 @@ rust_library(
         "error.rs",
         "formatter.rs",
         "lib.rs",
-        "provider_tests.rs",
         "value.rs",
     ],
     crate_name = "formatjs_icu_messageformat",
+    crate_root = "lib.rs",
+    edition = "2024",
     visibility = ["//visibility:public"],
-    deps = [
-        "//crates/icu_messageformat_parser",
-        "//crates/icu_skeleton_parser",
-        "@crates//:fixed_decimal",
-        "@crates//:icu",
-        "@crates//:icu_provider",
-    ],
+    deps = WITHOUT_COMPILED_DATA_DEPS,
 )
 
 rust_test(
     name = "provider_test",
     size = "small",
+    srcs = [
+        "error.rs",
+        "formatter.rs",
+        "lib.rs",
+        "provider_tests.rs",
+        "value.rs",
+    ],
     compile_data = ["testdata/fr_pl.postcard"],
-    crate = ":without_compiled_data",
-    deps = ["@crates//:icu_provider_blob"],
+    crate_name = "formatjs_icu_messageformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    deps = WITHOUT_COMPILED_DATA_DEPS + ["@crates//:icu_provider_blob"],
 )

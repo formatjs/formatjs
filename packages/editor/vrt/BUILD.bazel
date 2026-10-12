@@ -1,6 +1,8 @@
+# gazelle:ts_enabled false
+
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 
-# Gazelle maintains source graphs; Bazel builds the shell and compiles browser specs.
+# Source graph stays explicit; Bazel builds the shell and compiles browser specs.
 # gazelle:map_kind ts_library vrt_library //packages/editor/vrt:defs.bzl
 # gazelle:map_kind ts_test vrt_test //packages/editor/vrt:defs.bzl
 # gazelle:ts_test_name visual_sources
