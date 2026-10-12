@@ -86,6 +86,8 @@ and uploads `release-cross-build-smoke.tar.gz`. Its runner requests 64GB disk
 because extracting the Windows toolchain exhausted the previous runner's disk.
 Its build, collection, binary checks, Linux smoke, and archive upload are separate
 `buildbuddy.yaml` steps. Shared Bazel flags live in `--config=bb-cross-build`.
+Linux Node and Python extensions use `cc_runtime_linkage = "static"` to avoid host
+libc++/libunwind dependencies; unresolved unwind symbols fail release checks.
 Steps use an action-level staging path because shell variables do not persist
 between BuildBuddy steps.
 

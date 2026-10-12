@@ -38,6 +38,11 @@ rust_shared_library(
     srcs = [
         "lib.rs",
     ],
+    # Published addons must not require host libc++ or libunwind.
+    cc_runtime_linkage = select({
+        "@platforms//os:linux": "static",
+        "//conditions:default": "dynamic",
+    }),
     # The LLVM musl toolchain defaults to a static libc search directory. Node
     # addons must use Alpine's loaded musl runtime instead of embedding libc.
     compile_data = select({

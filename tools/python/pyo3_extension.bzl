@@ -10,6 +10,11 @@ def pyo3_extension(name, srcs, deps, module_name, visibility = None, crate_root 
 
     rust_shared_library(
         name = name + "_cdylib",
+        # Keep wheels independent of host C++ runtimes.
+        cc_runtime_linkage = select({
+            "@platforms//os:linux": "static",
+            "//conditions:default": "dynamic",
+        }),
         srcs = srcs,
         compile_data = select({
             "@platforms//os:linux": ["@llvm//runtimes/libunwind:libunwind.static"],
