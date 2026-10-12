@@ -89,6 +89,9 @@ build:ci --remote_upload_local_results
 build:bb-workflow --build_metadata=ROLE=BB_WORKFLOW
 build:bb-workflow --build_metadata=VISIBILITY=PUBLIC
 build:bb-workflow --config=rbe
+build:bb-cross-build --config=bb-workflow
+build:bb-cross-build --compilation_mode=opt
+build:bb-cross-build --remote_download_outputs=all
 build:rbe --config=rbe-platform
 build:rbe --config=rbe-transport
 

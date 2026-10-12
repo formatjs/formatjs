@@ -84,6 +84,10 @@ BuildBuddy's `Test all targets` action runs `bazel test //...`.
 artifacts, validates formats and addon symbols, smoke-tests the Linux x64 CLI,
 and uploads `release-cross-build-smoke.tar.gz`. Its runner requests 64GB disk
 because extracting the Windows toolchain exhausted the previous runner's disk.
+Its build, collection, binary checks, Linux smoke, and archive upload are separate
+`buildbuddy.yaml` steps. Shared Bazel flags live in `--config=bb-cross-build`.
+Steps use an action-level staging path because shell variables do not persist
+between BuildBuddy steps.
 
 GitHub Actions' `test` job only validates Cargo release metadata and provider-only
 ICU features. Other `test.yml` jobs cover independent example workspaces and pnpm

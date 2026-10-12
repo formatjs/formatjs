@@ -28,8 +28,100 @@ actions:
     resource_requests:
       memory: 10GB
       disk: 64GB
+    env:
+      SMOKE_ARTIFACTS_DIR: '/tmp/formatjs-release-smoke'
     steps:
+      # Install inspection tools.
       - run: |
+          set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends binutils file
-      - run: 'bash .github/scripts/cross-build-smoke.sh'
+
+      # Cross-build release binaries and native packages.
+      - run: |
+          bazel build --config=bb-cross-build \
+            //crates/formatjs_cli:release_binary_darwin_arm64 \
+            //crates/formatjs_cli:release_binary_linux_x64 \
+            //crates/formatjs_cli:release_binary_linux_arm64 \
+            //crates/formatjs_cli:release_binary_windows_x64 \
+            //packages/cli-native-darwin-arm64:pkg \
+            //packages/cli-native-win32-x64:pkg \
+            //packages/cli-native-linux-x64-musl:pkg \
+            //packages/cli-native-linux-arm64-musl:pkg \
+            //packages/cli-native-linux-x64:pkg \
+            //packages/cli-native-linux-arm64:pkg
+
+      # Collect outputs; cquery resolves transitioned paths.
+      - run: |
+          set -euo pipefail
+          rm -rf "$SMOKE_ARTIFACTS_DIR"
+          mkdir -p "$SMOKE_ARTIFACTS_DIR"
+          for package in cli-native-darwin-arm64 cli-native-win32-x64 \
+            cli-native-linux-x64-musl cli-native-linux-arm64-musl \
+            cli-native-linux-x64 cli-native-linux-arm64; do
+            mkdir -p "$SMOKE_ARTIFACTS_DIR/$package"
+            package_dir=$(bazel cquery --config=bb-cross-build --output=files "//packages/$package:pkg" | tail -n 1)
+            cp -RL "$package_dir"/. "$SMOKE_ARTIFACTS_DIR/$package/"
+          done
+          cp "$(bazel cquery --config=bb-cross-build --output=files //crates/formatjs_cli:release_binary_darwin_arm64 | tail -n 1)" "$SMOKE_ARTIFACTS_DIR/formatjs_cli-darwin-arm64"
+          cp "$(bazel cquery --config=bb-cross-build --output=files //crates/formatjs_cli:release_binary_windows_x64 | tail -n 1)" "$SMOKE_ARTIFACTS_DIR/formatjs_cli-win32-x64.exe"
+          for arch in x64 arm64; do
+            binary=$(bazel cquery --config=bb-cross-build --output=files "//crates/formatjs_cli:release_binary_linux_$arch" | tail -n 1)
+            cp "$binary" "$SMOKE_ARTIFACTS_DIR/cli-native-linux-$arch-musl/formatjs_cli"
+          done
+
+      # Check macOS and Windows binary formats.
+      - run: |
+          set -euo pipefail
+          file "$SMOKE_ARTIFACTS_DIR/formatjs_cli-darwin-arm64" | grep -E 'Mach-O 64-bit.*arm64'
+          file "$SMOKE_ARTIFACTS_DIR/cli-native-darwin-arm64/formatjs_cli_napi.node" | grep -E 'Mach-O 64-bit.*arm64.*shared library'
+          file "$SMOKE_ARTIFACTS_DIR/formatjs_cli-win32-x64.exe" | grep -E 'PE32[+].*[(]console[)].*x86-64'
+          file "$SMOKE_ARTIFACTS_DIR/cli-native-win32-x64/formatjs_cli_napi.node" | grep -E 'PE32[+].*[(]DLL[)].*x86-64'
+
+      # Check Linux architectures and static CLI linkage.
+      - run: |
+          set -euo pipefail
+          for arch in x64 arm64; do
+            package_dir="$SMOKE_ARTIFACTS_DIR/cli-native-linux-$arch-musl"
+            machine='x86-64'
+            if [[ "$arch" == arm64 ]]; then machine='ARM aarch64'; fi
+            file "$package_dir/formatjs_cli" | grep -F "$machine"
+            file "$package_dir/formatjs_cli_napi.node" | grep -F "$machine"
+            if readelf -l "$package_dir/formatjs_cli" | grep 'INTERP' >/dev/null ||
+              readelf -d "$package_dir/formatjs_cli" | grep '(NEEDED)' >/dev/null; then
+              echo "Linux release CLI must be a static musl binary" >&2
+              exit 1
+            fi
+            readelf -d "$package_dir/formatjs_cli_napi.node" | grep '(NEEDED)'
+          done
+
+      # Check addon initialization and unwind symbols.
+      - run: |
+          set -euo pipefail
+          for arch in x64 arm64; do
+            if nm -a "$SMOKE_ARTIFACTS_DIR/cli-native-linux-$arch-musl/formatjs_cli_napi.node" | grep 'init_have_lse_atomics' >/dev/null; then
+              echo "musl addon must not initialize outline atomics during dlopen" >&2
+              exit 1
+            fi
+            if nm -D --undefined-only "$SMOKE_ARTIFACTS_DIR/cli-native-linux-$arch/formatjs_cli_napi.node" | grep '_Unwind_'; then
+              echo "glibc addon must not leave unwind symbols undefined" >&2
+              exit 1
+            fi
+          done
+
+      # Smoke-test the Linux x64 CLI.
+      - run: |
+          set -euo pipefail
+          binary="$SMOKE_ARTIFACTS_DIR/cli-native-linux-x64-musl/formatjs_cli"
+          "$binary" --version
+          "$binary" --help
+          if strings "$binary" | grep 'GLIBC_' >/dev/null; then
+            echo "Linux musl binary must not reference glibc symbols" >&2
+            exit 1
+          fi
+
+      # Attach one archive for native GHA smoke jobs.
+      - run: |
+          set -euo pipefail
+          tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/release-cross-build-smoke.tar.gz" -C "$SMOKE_ARTIFACTS_DIR" .
+          rm -rf "$SMOKE_ARTIFACTS_DIR"
