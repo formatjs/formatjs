@@ -560,7 +560,7 @@ importers:
         version: 1.52.0(@types/react@19.3.0)(react@19.3.0)
       magic-string:
         specifier: ^1.0.0
-        version: 1.4.2
+        version: 1.4.3
       minimist:
         specifier: ^1.2.8
         version: 1.2.8
@@ -879,7 +879,7 @@ importers:
         version: 10.12.0(jiti@2.7.0)(supports-color@8.1.1)
       magic-string:
         specifier: '1'
-        version: 1.4.2
+        version: 1.4.3
       picomatch:
         specifier: 2 || 3 || 4
         version: 4.0.7
@@ -1164,7 +1164,7 @@ importers:
         version: 0.28.2
       magic-string:
         specifier: '1'
-        version: 1.4.2
+        version: 1.4.3
       oxc-parser:
         specifier: '0'
         version: 0.152.0
@@ -6223,8 +6223,8 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
-  magic-string@1.4.2:
-    resolution: {integrity: sha512-vG+rjFRj1PqdIBozIxAGMjPlOhaVe+GXpbttY/iSK7rGcJRMlwNJO7dcUwmUqkymsFLJiNGI06t4D7Fr7yRC9g==}
+  magic-string@1.4.3:
+    resolution: {integrity: sha512-z12OxmaPGE0F4xlpGdjuAUckipLpQlTAuAmyGhNoD7ODpYUzvDfvtxUbjM/jwznyP178oju/KDdyi220wNJ0RQ==}
 
   make-dir@4.0.0:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
@@ -10568,7 +10568,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.3
       estree-walker: 3.0.3
-      magic-string: 1.4.2
+      magic-string: 1.4.3
     optionalDependencies:
       vite: 8.3.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)
 
@@ -12879,7 +12879,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  magic-string@1.4.2:
+  magic-string@1.4.3:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
@@ -14753,7 +14753,7 @@ snapshots:
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       obug: 2.1.4
       picomatch: 4.0.7
       std-env: 4.2.0
