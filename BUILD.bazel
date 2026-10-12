@@ -17,6 +17,7 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
 # gazelle:rust_edition 2024
+# gazelle:map_kind rust_test formatjs_rust_test //tools:rust_test.bzl
 # gazelle:rust_cargo_lock @crates Cargo.toml Cargo.lock
 # gazelle:rust_proc_macro napi_derive
 # Feature variants share crate names; default imports select public libraries.

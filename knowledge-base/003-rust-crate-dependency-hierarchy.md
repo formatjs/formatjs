@@ -27,10 +27,21 @@ Run `bazel run //:gazelle -- -strict` after Rust module or import changes.
 `gazelle_rs` manages literal `srcs`, `deps`, and `proc_macro_deps`; internal
 crate names resolve from the BUILD index, external crates from the root Cargo
 manifest and lockfile. Keep feature variants and packaging attributes explicit.
-Unit tests use source-based targets with the same crate root as their library,
-allowing test-only dependencies to stay out of production targets. Procedural-macro
-unit tests retain `crate` so rustc receives the macro crate type. Computed
-attributes and `# keep` values remain manually maintained.
+Crate roots (`lib.rs`, `main.rs`) live beside BUILD files. Supporting modules
+may use subdirectories. Standalone `*.test.rs` files import published APIs;
+production modules contain no test modules or test-only exports.
+
+Root `rust_test` mappings use `formatjs_rust_test()`. This symbolic macro calls
+`rust_test_main_gen` for one generated aggregate main per test target. Do not
+check in test mains. Feature variants explicitly assign sources and library
+dependencies; proc-macro tests invoke exported macros from a separate crate.
+Compile-fail examples live in test sources and run through `rust_doc_test`.
+Computed attributes and `# keep` values remain manually maintained.
+
+Root `workspace.dependencies` declares direct external versions for Gazelle's
+shorthand hub aliases, such as `@crates//:base64`. Per-crate manifests still
+own publication requirements and feature choices; keep their versions aligned.
+Versioned labels are reserved for ambiguous or transitive-only dependencies.
 
 ## Dependency Graph
 

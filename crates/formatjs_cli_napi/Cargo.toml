@@ -10,6 +10,7 @@ publish = false
 rust-version = "1.93"
 
 [lib]
+path = "lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]

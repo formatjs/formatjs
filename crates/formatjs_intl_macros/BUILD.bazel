@@ -1,5 +1,6 @@
 load("@rules_rs//rs:rust_proc_macro.bzl", "rust_proc_macro")
-load("@rules_rs//rs:rust_test.bzl", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_doc_test")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
 
 exports_files(
     [
@@ -18,15 +19,23 @@ rust_proc_macro(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/icu_messageformat_parser",
-        "@crates//:base64-0.23.1",
-        "@crates//:quote-1.0.47",
-        "@crates//:sha2-0.11.0",
+        "@crates//:base64",
+        "@crates//:quote",
+        "@crates//:sha2",
         "@crates//:syn",
     ],
 )
 
-rust_test(
+formatjs_rust_test(
     name = "formatjs_intl_macros_test",
     size = "small",
-    crate = ":formatjs_intl_macros",
+    srcs = ["lib.test.rs"],
+    crate_name = "formatjs_intl_macros_test",
+    edition = "2024",
+    proc_macro_deps = [":formatjs_intl_macros"],
+)
+
+rust_doc_test(
+    name = "macro_doc_test",
+    crate = ":formatjs_intl_macros_test",
 )

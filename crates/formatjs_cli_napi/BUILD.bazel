@@ -12,7 +12,7 @@ load(
 exports_files(
     [
         "Cargo.toml",
-        "src/lib.rs",
+        "lib.rs",
     ],
     visibility = ["//visibility:public"],
 )
@@ -36,7 +36,7 @@ config_setting(
 rust_shared_library(
     name = "formatjs_cli_napi",
     srcs = [
-        "src/lib.rs",
+        "lib.rs",
     ],
     # The LLVM musl toolchain defaults to a static libc search directory. Node
     # addons must use Alpine's loaded musl runtime instead of embedding libc.
@@ -50,10 +50,10 @@ rust_shared_library(
         "//conditions:default": [],
     }),
     crate_name = "formatjs_cli_napi",
-    crate_root = "src/lib.rs",
+    crate_root = "lib.rs",
     edition = "2024",
     proc_macro_deps = [
-        "@crates//:napi-derive-3.6.10",
+        "@crates//:napi-derive",
     ],
     rustc_flags = select({
         "@platforms//os:macos": [
@@ -76,7 +76,7 @@ rust_shared_library(
     deps = [
         "//crates/formatjs_cli:formatjs_cli_lib",
         "@crates//:napi",  # keep: napi_derive expands references to napi.
-        "@crates//:serde_json-1.0.151",
+        "@crates//:serde_json",
     ],
 )
 

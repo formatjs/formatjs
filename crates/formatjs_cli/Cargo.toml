@@ -16,7 +16,7 @@ rust-version = "1.93"
 
 [[bin]]
 name = "formatjs"
-path = "src/main.rs"
+path = "main.rs"
 
 [dependencies]
 clap = { version = "4.5", features = ["derive", "cargo", "env"] }
@@ -47,3 +47,6 @@ ruff_text_size = { git = "https://github.com/astral-sh/ruff.git", tag = "0.16.10
 
 [dev-dependencies]
 tempfile = "3.0"
+
+[lib]
+path = "lib.rs"

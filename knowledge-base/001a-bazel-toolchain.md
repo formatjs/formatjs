@@ -406,9 +406,12 @@ toolchain and translates root `Cargo.toml` plus `Cargo.lock` into the external
 crates; `resolve` directives cover Ruff git crates, the `md5` import name, and
 Bazel runfiles. `rust_proc_macro napi_derive` classifies the external macro.
 Existing names, feature variants, linker flags, release targets, and test data
-stay in BUILD files. Source-based unit tests share the library crate root but
-include test-only modules and imports separately. `rust_doc_test` and
-procedural-macro unit tests still use their library targets. The root Gazelle runner
+stay in BUILD files. Crate roots are flat. Standalone `*.test.rs` suites import
+public APIs and use `formatjs_rust_test` with `rust_test_main_gen` to generate
+one aggregate main per target. Tests and their dependencies stay out of
+production sources. Compile-fail examples run through `rust_doc_test` against
+the test aggregate. Root `workspace.dependencies` selects shorthand external
+aliases; keep it aligned with per-crate requirements. The root Gazelle runner
 enables `-strict` by default.
 
 `rust_shared_library` and package-local `pyo3_extension` are registered with

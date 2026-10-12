@@ -7,7 +7,7 @@ rust_binary(
     crate_name = "umm_al_qura",
     crate_root = "umm_al_qura.rs",
     edition = "2024",
-    deps = ["@crates//:icu-2.3.1"],
+    deps = ["@crates//:icu"],
 )
 
 rust_binary(
@@ -16,7 +16,7 @@ rust_binary(
     crate_name = "lunisolar",
     crate_root = "lunisolar.rs",
     edition = "2024",
-    deps = ["@crates//:icu-2.3.1"],
+    deps = ["@crates//:icu"],
 )
 
 [

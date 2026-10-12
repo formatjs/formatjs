@@ -35,4 +35,5 @@ crate-type = ["rlib"]
 
 [[bench]]
 name = "parser_bench"
+path = "parser.bench.rs"
 harness = false
