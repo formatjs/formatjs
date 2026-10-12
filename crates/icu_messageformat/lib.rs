@@ -22,8 +22,8 @@ use formatjs_icu_messageformat_parser::types::{
 use formatjs_icu_messageformat_parser::{Parser, get_best_pattern};
 use formatjs_icu_skeleton_parser::{
     DateTimeFormatDay, DateTimeFormatHour, DateTimeFormatMinute, DateTimeFormatMonth,
-    DateTimeFormatSecond, DateTimeFormatTimeZoneName, DateTimeFormatWeekday,
-    DateTimeFormatYear, NumberFormatOptionsStyle, parse_date_time_skeleton,
+    DateTimeFormatSecond, DateTimeFormatTimeZoneName, DateTimeFormatWeekday, DateTimeFormatYear,
+    NumberFormatOptionsStyle, parse_date_time_skeleton,
 };
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -183,8 +183,7 @@ impl IcuMessageFormat {
         let ast = Parser::new(message, options.parser)
             .parse()
             .map_err(|error| {
-                Error::new(ErrorCode::Parse, error.to_string())
-                    .with_original_message(Some(message))
+                Error::new(ErrorCode::Parse, error.to_string()).with_original_message(Some(message))
             })?;
         Ok(Self {
             ast,
@@ -463,7 +462,10 @@ impl IcuMessageFormat {
             .cloned()
             .unwrap_or_default(),
             Some(DateTimeSkeletonOrStyle::Skeleton(skeleton))
-                if skeleton.pattern.chars().any(|symbol| matches!(symbol, 'j' | 'J')) =>
+                if skeleton
+                    .pattern
+                    .chars()
+                    .any(|symbol| matches!(symbol, 'j' | 'J')) =>
             {
                 let pattern = get_best_pattern(&skeleton.pattern, locale);
                 parse_date_time_skeleton(&pattern)
@@ -577,16 +579,12 @@ mod tests {
             "{count, plural, one {one} few {few} many {many} other {other}}",
         )
         .unwrap();
-        let values: Values<String> =
-            HashMap::from([("count".to_owned(), Value::from(2_i64))]);
+        let values: Values<String> = HashMap::from([("count".to_owned(), Value::from(2_i64))]);
         assert_eq!(formatter.format_to_string("pl", &values).unwrap(), "few");
 
         assert_eq!(formatter.format_to_string("en", &values).unwrap(), "other");
         assert_eq!(
-            formatter
-                .format_to_string("", &values)
-                .unwrap_err()
-                .code,
+            formatter.format_to_string("", &values).unwrap_err().code,
             ErrorCode::InvalidValue
         );
     }
@@ -667,19 +665,14 @@ mod tests {
         let integer = IcuMessageFormat::try_new("{value, number, integer}").unwrap();
         let integer_values = HashMap::from([("value".to_owned(), Value::from(2.5))]);
         assert_eq!(
-            integer
-                .format_to_string("en-US", &integer_values)
-                .unwrap(),
+            integer.format_to_string("en-US", &integer_values).unwrap(),
             "3"
         );
 
-        let percent =
-            IcuMessageFormat::try_new("{value, number, ::percent scale/0.01}").unwrap();
+        let percent = IcuMessageFormat::try_new("{value, number, ::percent scale/0.01}").unwrap();
         let percent_values = HashMap::from([("value".to_owned(), Value::from(12.3))]);
         assert_eq!(
-            percent
-                .format_to_string("en-US", &percent_values)
-                .unwrap(),
+            percent.format_to_string("en-US", &percent_values).unwrap(),
             "12%"
         );
     }

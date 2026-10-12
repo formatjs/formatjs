@@ -14,11 +14,11 @@ pre-commit:
       glob: '**/*.rs'
       exclude:
         - '*_generated.rs'
-      run: bazel run @rules_rust//:rustfmt -- {staged_files}
+      run: bazel run -c opt //tools/rustfmt:rustfmt -- {staged_files}
       stage_fixed: true
     format-oxfmt:
       glob: '**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,vue,html,mjml,css,scss,less,md,mdx,graphql,gql,yaml,yml,toml,json,jsonc,json5}'
-      run: JS_BINARY__CHDIR="$PWD" bazel run //:oxfmt -- {staged_files}
+      run: JS_BINARY__CHDIR="$PWD" bazel run -c opt //:oxfmt -- {staged_files}
       stage_fixed: true
       exclude:
         - '**/locale-data/**'
@@ -29,21 +29,21 @@ pre-commit:
       glob: '**/*.{bazel,bzl,BUILD}'
       run: |
         set -- {staged_files}
-        bazel run @buildifier_prebuilt//:buildifier -- -mode=fix $(printf "$PWD/%s " "$@")
+        bazel run -c opt @buildifier_prebuilt//:buildifier -- -mode=fix $(printf "$PWD/%s " "$@")
       stage_fixed: true
     lint-staged:
       glob: '**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}'
-      run: JS_BINARY__CHDIR="$PWD" bazel run //:oxlint -- --config .oxlintrc.json --fix {staged_files}
+      run: JS_BINARY__CHDIR="$PWD" bazel run -c opt //:oxlint -- --config .oxlintrc.json --fix {staged_files}
       stage_fixed: true
     lint-ast-grep:
       glob: '**/*.{ts,tsx}'
-      run: bazel run //:ast-grep -- scan {staged_files}
+      run: bazel run -c opt //:ast-grep -- scan {staged_files}
     lint-codescythe:
       glob:
         - '**/*.{ts,tsx}'
         - 'codescythe.jsonc'
         - 'package.json'
-      run: JS_BINARY__CHDIR="$PWD" bazel run //:codescythe -- --directory . --config codescythe.jsonc
+      run: JS_BINARY__CHDIR="$PWD" bazel run -c opt //:codescythe -- --directory . --config codescythe.jsonc
     gazelle:
       run: bazel run -c opt //:gazelle
       stage_fixed: true
@@ -67,4 +67,4 @@ pre-commit:
 commit-msg:
   commands:
     commitlint:
-      run: JS_BINARY__CHDIR="$PWD" bazel run //:commitlint -- --edit {1}
+      run: JS_BINARY__CHDIR="$PWD" bazel run -c opt //:commitlint -- --edit {1}

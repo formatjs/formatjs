@@ -60,17 +60,14 @@ impl Parse for ValidateMessageValuesArgs {
 }
 
 fn validate_message_values(arguments: &ValidateMessageValuesArgs) -> syn::Result<()> {
-    let ast = Parser::new(
-        arguments.default_message.value(),
-        ParserOptions::default(),
-    )
-    .parse()
-    .map_err(|error| {
-        syn::Error::new(
-            arguments.default_message.span(),
-            format!("invalid ICU message: {error}"),
-        )
-    })?;
+    let ast = Parser::new(arguments.default_message.value(), ParserOptions::default())
+        .parse()
+        .map_err(|error| {
+            syn::Error::new(
+                arguments.default_message.span(),
+                format!("invalid ICU message: {error}"),
+            )
+        })?;
     let required = message_arguments(&ast).into_keys().collect::<BTreeSet<_>>();
 
     let mut supplied = BTreeMap::new();
@@ -99,7 +96,6 @@ fn validate_message_values(arguments: &ValidateMessageValuesArgs) -> syn::Result
     }
     Ok(())
 }
-
 
 struct MessageDescriptorArgs {
     id: Option<LitStr>,
@@ -231,22 +227,37 @@ impl Parse for CheckMessageValueArgs {
         let name = input.parse()?;
         input.parse::<Token![;]>()?;
         let value = input.parse()?;
-        Ok(Self {runtime, message, name, value})
+        Ok(Self {
+            runtime,
+            message,
+            name,
+            value,
+        })
     }
 }
 
 /// Checks each ICU role before converting an expression to the runtime value enum.
 #[proc_macro]
 pub fn __check_message_value(input: TokenStream) -> TokenStream {
-    let CheckMessageValueArgs {runtime, message, name, value} =
-        parse_macro_input!(input as CheckMessageValueArgs);
+    let CheckMessageValueArgs {
+        runtime,
+        message,
+        name,
+        value,
+    } = parse_macro_input!(input as CheckMessageValueArgs);
     let ast = match Parser::new(message.value(), ParserOptions::default()).parse() {
         Ok(ast) => ast,
-        Err(error) => return syn::Error::new(message.span(), error.to_string()).into_compile_error().into(),
+        Err(error) => {
+            return syn::Error::new(message.span(), error.to_string())
+                .into_compile_error()
+                .into();
+        }
     };
     let requirements = message_arguments(&ast);
     let Some(kinds) = requirements.get(&name.to_string()) else {
-        return syn::Error::new(name.span(), "unused ICU value").into_compile_error().into();
+        return syn::Error::new(name.span(), "unused ICU value")
+            .into_compile_error()
+            .into();
     };
     let mut checks = Vec::new();
     for kind in kinds {
@@ -264,12 +275,14 @@ pub fn __check_message_value(input: TokenStream) -> TokenStream {
             let value = #runtime::__argument_types::tag(#value);
             #(#checks)*
             value
-        }).into()
+        })
+        .into()
     } else {
         quote!({
             let value = #value;
             #(#checks)*
             value
-        }).into()
+        })
+        .into()
     }
 }

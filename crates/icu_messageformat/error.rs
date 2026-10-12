@@ -45,10 +45,7 @@ impl Error {
         self
     }
 
-    pub fn with_source(
-        mut self,
-        source: impl StdError + Send + Sync + 'static,
-    ) -> Self {
+    pub fn with_source(mut self, source: impl StdError + Send + Sync + 'static) -> Self {
         self.source = Some(Box::new(source));
         self
     }
@@ -77,9 +74,7 @@ impl Error {
             .join("\", \"");
         Self::new(
             ErrorCode::InvalidValue,
-            format!(
-                "Invalid value for \"{variable}\": \"{value}\". Options are \"{options}\""
-            ),
+            format!("Invalid value for \"{variable}\": \"{value}\". Options are \"{options}\""),
         )
         .with_original_message(original_message)
     }

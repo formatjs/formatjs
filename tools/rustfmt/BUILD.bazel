@@ -1,0 +1,16 @@
+load("@rules_python//python:defs.bzl", "py_test")
+load(":rustfmt.bzl", "rustfmt_binary")
+
+rustfmt_binary(
+    name = "rustfmt",
+    visibility = ["//visibility:public"],
+)
+
+py_test(
+    name = "rustfmt_test",
+    size = "small",
+    srcs = ["rustfmt_test.py"],
+    args = ["$(rlocationpath :rustfmt)"],
+    data = [":rustfmt"],
+    deps = ["@rules_python//python/runfiles"],
+)

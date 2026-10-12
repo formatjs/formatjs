@@ -291,9 +291,10 @@ fn parse_interpolation_part(token: &str) -> Result<(InterpolationPart, bool)> {
         "folder" => Ok((InterpolationPart::Folder, true)),
         "query" => Ok((InterpolationPart::Query, true)),
         "content" => Ok((InterpolationPart::Content, true)),
-        _ if is_hash_interpolation(token) => {
-            Ok((InterpolationPart::Hash(parse_hash_interpolation(token)?), true))
-        }
+        _ if is_hash_interpolation(token) => Ok((
+            InterpolationPart::Hash(parse_hash_interpolation(token)?),
+            true,
+        )),
         _ => Ok((InterpolationPart::Literal(format!("[{}]", token)), false)),
     }
 }

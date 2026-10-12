@@ -44,6 +44,10 @@ Package `tsconfig.json` files are generated local development files and are not 
 bazel run //:generate_package_tsconfigs
 ```
 
+Hooks use Bazel's optimized mode consistently. Rust formatting runs the pinned
+formatter through `bazel run -c opt //tools/rustfmt:rustfmt`, with edition 2024
+and module traversal disabled; only supplied files are formatted.
+
 ### CI
 
 BuildBuddy runs the full Bazel test suite and cross-builds release artifacts.

@@ -29,7 +29,9 @@
 //! ```
 use formatjs_icu_messageformat::{DateTimeValue, Part, Result, Value};
 
-mod private { pub trait Sealed {} }
+mod private {
+    pub trait Sealed {}
+}
 pub trait Number: private::Sealed {}
 pub trait DateTime: private::Sealed {}
 pub trait Select: private::Sealed {}
@@ -77,16 +79,19 @@ mod tests {
 
     fn intl() -> Intl {
         let mut catalog = MessageCatalog::new();
-        catalog.insert("en", std::collections::HashMap::new()).unwrap();
+        catalog
+            .insert("en", std::collections::HashMap::new())
+            .unwrap();
         Intl::try_new(["en"], "en", Arc::new(catalog), Arc::new(IntlCache::new())).unwrap()
     }
-
 
     #[test]
     fn preserves_verbatim_selectors() {
         struct Choice;
         impl crate::VerbatimSource for Choice {
-            fn as_verbatim(&self) -> &str { "yes" }
+            fn as_verbatim(&self) -> &str {
+                "yes"
+            }
         }
         let intl = intl();
         let result = crate::formatted_message!(&intl,
@@ -106,14 +111,20 @@ mod tests {
         );
         assert_eq!(result, "2");
         assert_eq!(calls, 1);
-        assert_eq!(crate::format_message!(&intl,
-            default_message: "<b>Hello</b>",
-            values: {b: |parts| Ok(parts)}
-        ), "Hello");
-        assert_eq!(crate::format_message!(&intl,
-            default_message: "{s, select, true {Yes} other {No}}",
-            values: {s: true}
-        ), "Yes");
+        assert_eq!(
+            crate::format_message!(&intl,
+                default_message: "<b>Hello</b>",
+                values: {b: |parts| Ok(parts)}
+            ),
+            "Hello"
+        );
+        assert_eq!(
+            crate::format_message!(&intl,
+                default_message: "{s, select, true {Yes} other {No}}",
+                values: {s: true}
+            ),
+            "Yes"
+        );
         let date = formatjs_icu_messageformat::DateTimeValue::from_unix_millis(0);
         let result = crate::format_message!(&intl,
             default_message: "{d, date} {d, time}", values: {d: date});
@@ -121,8 +132,11 @@ mod tests {
         let result = crate::formatted_message!(&intl,
             default_message: "{n, number}", values: {n: 2_i32});
         assert_eq!(result.as_str(), "2");
-        assert_eq!(crate::format_message!(&intl,
-            default_message: "'{escaped}' '{n, number}' {name}", values: {name: "Ada"}
-        ), "{escaped} {n, number} Ada");
+        assert_eq!(
+            crate::format_message!(&intl,
+                default_message: "'{escaped}' '{n, number}' {name}", values: {name: "Ada"}
+            ),
+            "{escaped} {n, number} Ada"
+        );
     }
 }
