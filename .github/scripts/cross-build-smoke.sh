@@ -100,13 +100,11 @@ for package in cli-native-linux-x64-musl cli-native-linux-arm64-musl; do
       exit 1
       ;;
   esac
-  case "$binary_info" in
-    *"static-pie linked"* | *"statically linked"*) ;;
-    *)
-      echo "Linux release CLI should be a static musl binary"
-      exit 1
-      ;;
-  esac
+  if readelf -l "$artifact_dir/$package/formatjs_cli" | grep 'INTERP' >/dev/null ||
+    readelf -d "$artifact_dir/$package/formatjs_cli" | grep '(NEEDED)' >/dev/null; then
+    echo "Linux release CLI should be a static musl binary"
+    exit 1
+  fi
 done
 
 for package in cli-native-linux-x64 cli-native-linux-arm64; do
