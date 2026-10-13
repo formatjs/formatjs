@@ -605,7 +605,7 @@ importers:
         version: 1.5.0
       regexpu-core:
         specifier: ^6.4.0
-        version: 6.5.2
+        version: 6.5.3
       rehype-autolink-headings:
         specifier: ^7.1.0
         version: 7.1.0
@@ -6938,8 +6938,8 @@ packages:
   regenerate@1.5.0:
     resolution: {integrity: sha512-1s+CxXjJ71i7LNVy8nYwg47XV4y6lAnOEhsMtSKq3WpmPfhl9LuKlTqKIn/3yUpE8lBz+W+TT88Bxyhnr0U4yw==}
 
-  regexpu-core@6.5.2:
-    resolution: {integrity: sha512-zkmVH92DlzjSFc4xKGZp/2BXIFrDIdBQBC8gUXKCsMgKYb1bkCkxfSuoW1werDjaTEMTbULkHtKFHe1L+Abnaw==}
+  regexpu-core@6.5.3:
+    resolution: {integrity: sha512-E8VgUoSK+LMQrLboDxavm76MTBGrQhx9RiNuomRmYnZ10Uw12HrI8fkxOOncktb2hBpzIZ9SV/347euQHG5z+g==}
     engines: {node: '>=4'}
 
   regjsgen@0.8.0:
@@ -8053,7 +8053,7 @@ snapshots:
     dependencies:
       '@babel/core': 8.0.6
       '@babel/helper-annotate-as-pure': 8.0.0
-      regexpu-core: 6.5.2
+      regexpu-core: 6.5.3
       semver: 7.8.5
 
   '@babel/helper-define-polyfill-provider@1.0.0(@babel/core@8.0.6)':
@@ -13879,7 +13879,7 @@ snapshots:
 
   regenerate@1.5.0: {}
 
-  regexpu-core@6.5.2:
+  regexpu-core@6.5.3:
     dependencies:
       regenerate: 1.5.0
       regenerate-unicode-properties: 10.3.0
