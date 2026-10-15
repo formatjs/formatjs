@@ -39,13 +39,13 @@ invalid ICU, empty catalogs, and custom rendering without providers.
 
 `//packages/editor/vrt:visual_test` exercises the example on React 19 with root
 npm dependencies and current workspace React Intl/parser sources. There is no
-separate npm workspace or lockfile. The root lock pins Playwright to match the
-Chromium archive. Bazel workspace npm links supply current package builds; no published formatter
+separate npm workspace or lockfile. The root lock and `:playwright` version match the
+Chromium archive in `MODULE.bazel`. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-E2E, component interactions, and VRT use the versioned `20260921` Linux amd64
-browser preset (`@web_browser//:browser`). It pins Chromium, Node, libraries,
-and fonts as Bazel inputs; FormatJS supplies matching Playwright 1.63.0 packages.
+E2E, component interactions, and VRT use `:browser`, with Chromium 156.0.8078.4
+pinned in `MODULE.bazel` for Playwright 1.64.0. Node comes from the versioned
+`20260921` Linux amd64 preset; libraries and fonts use `noble_20260901`.
 No host browser cache, FFmpeg download, apt setup, or container image is needed.
 The browser CI script materializes the upstream worker supervisor, which verifies
 its pinned actiond binary and KVM/vsock access, starts a private VM, supplies the
@@ -119,7 +119,7 @@ JUnit, screenshots, and Playwright traces in undeclared test outputs.
 
 ## Component browser tests
 
-`component_test` runs Playwright 1.63 native `mount()` specs for the real editor. The typed
+`component_test` runs Playwright 1.64 native `mount()` specs for the real editor. The typed
 `editor.visual.tsx` uses the existing provider shell and demo; `gallery.tsx` owns
 mount/update/unmount. The tests check provider updates without losing a draft,
 clear, ICU validation, and isolation between mounts.
@@ -166,8 +166,8 @@ LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle
 ## Browser execution modes
 
 `rules_web_e2e` 3.9.0 supplies VM, local Linux namespace, host interaction, and
-aggregate Playwright UI execution. The `20260921` browser preset and Playwright
-1.63.0 remain pinned. `browser_tests` groups the existing actiond E2E/component/VRT
+aggregate Playwright UI execution. Chromium 156.0.8078.4 and Playwright
+1.64.0 remain pinned. `browser_tests` groups the existing actiond E2E/component/VRT
 lane; `local_browser_tests` reuses those inputs with `execution = "local"`.
 The latter needs Linux x64 user/mount/PID/network namespaces, not KVM. Both compare
 the committed PNGs; baseline updates remain VM-owned.
