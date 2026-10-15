@@ -77,7 +77,7 @@ formatjs_library(
         "./locale-data": "./locale-data",
     },
     deps = [
-        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/bigdecimal",  # keep: runtime dependency of bundled abstract operations
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//packages/ecma402-abstract",

@@ -29,6 +29,9 @@ This package implements `Intl.PluralRules`. See the [conformance report](https:/
 
 Locale data modules are generated from CLDR supplemental plural-rule data. If a locale is available in other CLDR datasets but absent from the supplemental plural rules, this package does not publish a `locale-data` module for it.
 
+Plural selection uses the rounded value and visible fraction digits, including
+zeros required by `minimumFractionDigits`.
+
 ### Example Usage
 
 #### Global import

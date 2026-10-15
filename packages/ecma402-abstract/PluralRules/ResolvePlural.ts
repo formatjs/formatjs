@@ -6,10 +6,6 @@ import {
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'
-import {
-  GetOperands,
-  type OperandsRecord,
-} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 
 /**
  * Result of ResolvePluralInternal containing both the formatted string and plural category.
@@ -49,8 +45,8 @@ export function ResolvePluralInternal(
     PluralRuleSelect: (
       locale: string,
       type: 'cardinal' | 'ordinal',
-      n: Decimal,
-      operands: OperandsRecord
+      decimalString: string,
+      exponent: number
     ) => LDMLPluralRule
   }
 ): ResolvePluralResult {
@@ -97,10 +93,8 @@ export function ResolvePluralInternal(
     }
   }
 
-  const operands = GetOperands(s, exponent)
-
   // ECMA-402 Spec: Select the appropriate plural category using the locale's plural rules
-  const pluralCategory = PluralRuleSelect(locale, type, n, operands)
+  const pluralCategory = PluralRuleSelect(locale, type, s, exponent)
 
   return {formattedString: s, pluralCategory}
 }
@@ -122,8 +116,8 @@ export function ResolvePlural(
     PluralRuleSelect: (
       locale: string,
       type: 'cardinal' | 'ordinal',
-      n: Decimal,
-      operands: OperandsRecord
+      decimalString: string,
+      exponent: number
     ) => LDMLPluralRule
   }
 ): LDMLPluralRule {

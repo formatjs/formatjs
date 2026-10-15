@@ -3,15 +3,12 @@ import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLoc
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
-import {repeat} from '#packages/ecma402-abstract/utils.js'
 import {
   type CompactExponentData,
   type LDMLPluralRule,
   type PluralRulesData,
   type PluralRulesLocaleData,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
-import type Decimal from '@formatjs/bigdecimal'
-import {type OperandsRecord} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 import {InitializePluralRules} from '#packages/ecma402-abstract/PluralRules/InitializePluralRules.js'
 import {ResolvePlural} from '#packages/ecma402-abstract/PluralRules/ResolvePlural.js'
 import {ResolvePluralRange} from '#packages/ecma402-abstract/PluralRules/ResolvePluralRange.js'
@@ -63,30 +60,18 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
 }
 
 /**
- * http://ecma-international.org/ecma-402/7.0/index.html#sec-pluralruleselect
- * @param locale
- * @param type
- * @param _n
- * @param param3
+ * https://tc39.es/ecma402/#sec-pluralruleselect
  */
 function PluralRuleSelect(
   locale: string,
   type: 'cardinal' | 'ordinal',
-  _n: Decimal,
-  {
-    IntegerDigits,
-    NumberOfFractionDigits,
-    FractionDigits,
-    CompactExponent,
-  }: OperandsRecord
+  decimalString: string,
+  exponent: number
 ): LDMLPluralRule {
-  // Always pass a string to the compiled function to preserve precision for huge numbers
   return PluralRules.localeData[locale].fn(
-    NumberOfFractionDigits
-      ? `${IntegerDigits}.${(repeat('0', NumberOfFractionDigits) + FractionDigits).slice(-NumberOfFractionDigits)}`
-      : String(IntegerDigits),
+    decimalString,
     type === 'ordinal',
-    CompactExponent
+    exponent
   )
 }
 

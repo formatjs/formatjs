@@ -66,6 +66,11 @@ describe('PluralRules', function () {
     expect(new PluralRules('bs').select(0.1)).toBe('one')
     expect(new PluralRules('bs').select(0.2)).toBe('few')
     expect(new PluralRules('lv').select(0.011)).toBe('one')
+    for (const minimumFractionDigits of [22, 100]) {
+      const rules = new PluralRules('bs', {minimumFractionDigits})
+      expect(rules.select(0.1)).toBe('other')
+      expect(rules.selectRange(0.1, 0.1)).toBe('other')
+    }
   })
   if ((PluralRules as any).polyfilled) {
     it('should honor minimumFractionDigits', function () {

@@ -102,8 +102,8 @@ Stage 3: supported-locales.generated.ts (227 locales)
 When `select(value)` is called:
 
 1. Convert number to string via `ToIntlMathematicalValue()` (BigInt-safe)
-2. Extract operands: split integer/decimal parts, compute n, i, v, w, f, t
-3. Call compiled function: `localeData.fn(numberString, isOrdinal, compactExponent)`
+2. Round and format with the configured digit options
+3. Pass the formatted decimal string directly to `localeData.fn(decimalString, isOrdinal, compactExponent)` so leading and trailing fraction zeros survive
 4. Return plural category string
 
 ### Runtime: Range Selection (`abstract/ResolvePluralRange.ts`)

@@ -5,7 +5,6 @@ import {
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'
-import {type OperandsRecord} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 import {ResolvePluralInternal} from '#packages/ecma402-abstract/PluralRules/ResolvePlural.js'
 
 /**
@@ -38,8 +37,8 @@ export function ResolvePluralRange(
     PluralRuleSelect: (
       locale: string,
       type: 'cardinal' | 'ordinal',
-      n: Decimal,
-      operands: OperandsRecord
+      decimalString: string,
+      exponent: number
     ) => LDMLPluralRule
     PluralRuleSelectRange: (
       locale: string,
