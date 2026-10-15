@@ -346,3 +346,61 @@ fn test_plural_with_inner_number_element() {
         "Different plural variable names should fail"
     );
 }
+
+#[test]
+fn test_shared_date_time_variable() {
+    use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+
+    let messages = [
+        "Resets {resetDate, date, ::EEE} at {resetDate, time, short}.",
+        "À {resetDate, time, short}, le {resetDate, date, ::EEE}.",
+        "<b>{resetDate, date}</b> {resetDate, time} {resetDate, date}",
+        "{count, plural, one {{resetDate, date} {resetDate, time}} other {{resetDate, time} {resetDate, date}}}",
+        "{kind, select, date {{resetDate, date}} other {{resetDate, time}}}",
+    ];
+    for message in messages {
+        let ast = Parser::new(message, ParserOptions::default())
+            .parse()
+            .unwrap();
+        assert!(is_structurally_same(&ast, &ast, message.to_string()).is_ok());
+    }
+    let source = Parser::new(messages[0], ParserOptions::default())
+        .parse()
+        .unwrap();
+    let reordered = Parser::new(messages[1], ParserOptions::default())
+        .parse()
+        .unwrap();
+    assert!(is_structurally_same(&source, &reordered, "reset".to_string()).is_ok());
+
+    for message in [
+        "{resetDate, date}",
+        "{resetDate, time}",
+        "{resetDate, number}",
+        "{otherDate, date} {otherDate, time}",
+    ] {
+        let target = Parser::new(message, ParserOptions::default())
+            .parse()
+            .unwrap();
+        assert!(is_structurally_same(&source, &target, "reset".to_string()).is_err());
+        assert!(is_structurally_same(&target, &source, "reset".to_string()).is_err());
+    }
+}
+
+#[test]
+fn test_date_time_still_rejects_incompatible_types() {
+    use formatjs_icu_messageformat_parser::{Parser, ParserOptions};
+
+    for message in [
+        "{x, date} {x, number}",
+        "{x, time} {x}",
+        "{x, date} {x, time} {x, number}",
+    ] {
+        let ast = Parser::new(message, ParserOptions::default())
+            .parse()
+            .unwrap();
+        assert!(
+            std::panic::catch_unwind(|| is_structurally_same(&ast, &ast, "conflict".to_string()))
+                .is_err()
+        );
+    }
+}
