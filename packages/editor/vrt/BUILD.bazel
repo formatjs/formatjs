@@ -13,6 +13,7 @@ load("@npm//:playwright/package_json.bzl", playwright_bin = "bin")
 load("@npm//:vite/package_json.bzl", vite_bin = "bin")
 load("@rules_web_e2e//component:defs.bzl", "browser_shell", "component_browser_test")
 load("@rules_web_e2e//e2e:defs.bzl", "web_e2e_test", "web_e2e_ui")
+load("@rules_web_e2e//playwright:browser.bzl", "linux_chromium_runtime")
 load("@rules_web_e2e//playwright:defs.bzl", "playwright_runtime")
 load("@rules_web_e2e//vrt:defs.bzl", "component_visual_test", "visual_test")
 load(":defs.bzl", "vrt_library", "vrt_test")
@@ -70,10 +71,17 @@ browser_shell(
     entry_point = "gallery.html",
 )
 
+linux_chromium_runtime(
+    name = "browser",
+    chromium = "@editor_chromium//:files",
+    node = "@web_browser_node//:bin/node",
+)
+
 playwright_runtime(
     name = "playwright",
     core = "//:node_modules/playwright-core/dir",
     test = "//:node_modules/@playwright/test/dir",
+    version = "1.64.0",
 )
 
 js_library(
@@ -113,7 +121,7 @@ component_visual_test(
         ["__screenshots__/*.png"],
         allow_empty = True,
     ),
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     matching = ":vrt_matching",
     playwright = ":playwright",
     shell = ":editor_shell",
@@ -125,7 +133,7 @@ visual_test(
     name = "e2e_visual_test",
     baseline_dir = "__e2e_screenshots__",
     baselines = glob(["__e2e_screenshots__/*.png"]),
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     matching = ":vrt_matching",
     playwright = ":playwright",
     server = ":editor_server",
@@ -136,7 +144,7 @@ visual_test(
 
 web_e2e_test(
     name = "e2e_test",
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     playwright = ":playwright",
     server = ":editor_server",
     tags = ["manual"],
@@ -146,7 +154,7 @@ web_e2e_test(
 
 component_browser_test(
     name = "component_test",
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     playwright = ":playwright",
     shell = ":editor_shell",
     tags = ["manual"],
@@ -204,7 +212,7 @@ component_browser_test(
 
 web_e2e_test(
     name = "local_e2e_test",
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     execution = "local",
     playwright = ":playwright",
     server = ":editor_server",
@@ -215,7 +223,7 @@ web_e2e_test(
 
 component_browser_test(
     name = "local_component_test",
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     execution = "local",
     playwright = ":playwright",
     shell = ":editor_shell",
@@ -230,7 +238,7 @@ component_visual_test(
         ["__screenshots__/*.png"],
         allow_empty = True,
     ),
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     execution = "local",
     matching = ":vrt_matching",
     playwright = ":playwright",
@@ -243,7 +251,7 @@ visual_test(
     name = "local_e2e_visual_test",
     baseline_dir = "__e2e_screenshots__",
     baselines = glob(["__e2e_screenshots__/*.png"]),
-    browser = "@web_browser//:browser",
+    browser = ":browser",
     execution = "local",
     matching = ":vrt_matching",
     playwright = ":playwright",

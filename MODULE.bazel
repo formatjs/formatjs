@@ -453,4 +453,12 @@ browsers.linux_amd64(
     name = "web_browser",
     release = "20260921",
 )
-use_repo(browsers, "web_browser")
+use_repo(browsers, "web_browser_node")
+
+http_archive(
+    name = "editor_chromium",
+    build_file_content = 'filegroup(name = "files", srcs = glob(["**"]), visibility = ["//visibility:public"])',
+    sha256 = "c3e50596aef52c58f8fda3c6b3411c33d34c88b177b3ed1c2243359fd3b8ba20",
+    strip_prefix = "chrome-headless-shell-linux64",
+    urls = ["https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip"],
+)

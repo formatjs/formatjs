@@ -58,7 +58,7 @@ copy_file(
 rust_stdlib_shared_library(
     name = "rust_std_lib",
     srcs = [
-        "@@rules_rs++toolchains+rust_stdlib_x86_64_unknown_linux_musl_1_95_0//:rust_std-x86_64-unknown-linux-musl",
+        "@@rules_rs++toolchains+rust_stdlib_x86_64_unknown_linux_musl_1_97_0//:rust_std-x86_64-unknown-linux-musl",
     ],
 )
 
