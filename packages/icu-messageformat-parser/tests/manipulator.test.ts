@@ -5,6 +5,53 @@ import {
 } from '#packages/icu-messageformat-parser/manipulator.js'
 import {printAST} from '#packages/icu-messageformat-parser/printer.js'
 import {expect, test} from 'vitest'
+
+test('shared date/time arguments allow reordering', function () {
+  const source = parse(
+    'Resets {resetDate, date, ::EEE} at {resetDate, time, short}.'
+  )
+  const target = parse(
+    'À {resetDate, time, short}, le {resetDate, date, ::EEE}.'
+  )
+  expect(isStructurallySame(source, target)).toEqual({success: true})
+  expect(isStructurallySame(target, source)).toEqual({success: true})
+})
+
+test.each([
+  '<b>{resetDate, date}</b> {resetDate, time} {resetDate, date}',
+  '{count, plural, one {{resetDate, date} {resetDate, time}} other {{resetDate, time} {resetDate, date}}}',
+  '{kind, select, date {{resetDate, date}} other {{resetDate, time}}}',
+])('shared date/time arguments work recursively: %s', message => {
+  const ast = parse(message)
+  expect(isStructurallySame(ast, ast)).toEqual({success: true})
+})
+
+test.each([
+  '{resetDate, date}',
+  '{resetDate, time}',
+  '{resetDate, number}',
+  '{otherDate, date} {otherDate, time}',
+])(
+  'shared date/time arguments reject missing or changed roles: %s',
+  message => {
+    const source = parse('{resetDate, date} {resetDate, time}')
+    const target = parse(message)
+    expect(isStructurallySame(source, target).success).toBe(false)
+    expect(isStructurallySame(target, source).success).toBe(false)
+  }
+)
+
+test.each([
+  '{x, date} {x, number}',
+  '{x, time} {x}',
+  '{x, date} {x, time} {x, number}',
+])('date/time arguments still reject conflicting types: %s', message => {
+  const ast = parse(message)
+  expect(() => isStructurallySame(ast, ast)).toThrow(
+    'Variable x has conflicting types'
+  )
+})
+
 test('should hoist 1 plural', function () {
   expect(
     printAST(

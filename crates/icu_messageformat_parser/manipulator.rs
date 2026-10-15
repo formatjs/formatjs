@@ -464,14 +464,10 @@ pub fn try_hoist_selectors(
 ///
 /// Returns an error if the same variable name is used with conflicting types
 /// (e.g., `{x, number}` and `{x, date}` in the same message).
-///
-/// # Panics
-///
-/// Panics if a variable is found with conflicting types.
-/// This maintains compatibility with the TypeScript implementation.
+/// A variable may use both date and time formats.
 fn collect_variables(
     ast: &[MessageFormatElement],
-    vars: &mut IndexMap<String, Type>,
+    vars: &mut IndexMap<String, Vec<Type>>,
 ) -> Result<(), ManipulatorError> {
     for el in ast {
         match el {
@@ -488,21 +484,21 @@ fn collect_variables(
                 insert_variable(vars, &time.value, Type::Time)?;
             }
             MessageFormatElement::Plural(plural) => {
-                vars.insert(plural.value.clone(), Type::Plural);
+                vars.insert(plural.value.clone(), vec![Type::Plural]);
                 // Recursively collect from each plural option
                 for option in plural.options.values() {
                     collect_variables(&option.value, vars)?;
                 }
             }
             MessageFormatElement::Select(select) => {
-                vars.insert(select.value.clone(), Type::Select);
+                vars.insert(select.value.clone(), vec![Type::Select]);
                 // Recursively collect from each select option
                 for option in select.options.values() {
                     collect_variables(&option.value, vars)?;
                 }
             }
             MessageFormatElement::Tag(tag) => {
-                vars.insert(tag.value.clone(), Type::Tag);
+                vars.insert(tag.value.clone(), vec![Type::Tag]);
                 // Recursively collect from tag children
                 collect_variables(&tag.children, vars)?;
             }
@@ -514,23 +510,32 @@ fn collect_variables(
 }
 
 fn insert_variable(
-    vars: &mut IndexMap<String, Type>,
+    vars: &mut IndexMap<String, Vec<Type>>,
     variable: &str,
     var_type: Type,
 ) -> Result<(), ManipulatorError> {
-    if let Some(existing_type) = vars.get(variable) {
-        if existing_type != &var_type
-            && existing_type != &Type::Plural
-            && existing_type != &Type::Select
+    if let Some(existing_types) = vars.get_mut(variable) {
+        if existing_types.contains(&var_type)
+            || existing_types.contains(&Type::Plural)
+            || existing_types.contains(&Type::Select)
         {
+            return Ok(());
+        }
+        if matches!(var_type, Type::Date | Type::Time)
+            && existing_types
+                .iter()
+                .all(|t| matches!(t, Type::Date | Type::Time))
+        {
+            existing_types.push(var_type);
+        } else {
             return Err(ManipulatorError::ConflictingVariableType {
                 variable: variable.to_string(),
-                expected: existing_type.clone(),
+                expected: existing_types[0],
                 found: var_type,
             });
         }
     } else {
-        vars.insert(variable.to_string(), var_type);
+        vars.insert(variable.to_string(), vec![var_type]);
     }
 
     Ok(())
@@ -544,6 +549,7 @@ fn insert_variable(
 ///
 /// The actual text content and order of elements doesn't matter - only that the
 /// same variables are present with matching types.
+/// Shared date/time variables must retain both roles, in any order.
 ///
 /// # Example
 ///
@@ -605,11 +611,13 @@ pub fn is_structurally_same(
     }
 
     // Check if all variables match with the same types
-    for (key, a_type) in &a_vars {
-        if b_vars.get(key) != Some(a_type) {
+    for (key, a_types) in &a_vars {
+        if !b_vars.get(key).is_some_and(|b_types| {
+            a_types.len() == b_types.len() && a_types.iter().all(|t| b_types.contains(t))
+        }) {
             return Err(StructuralComparisonError::MissingVariable {
                 variable: key.clone(),
-                var_type: a_type.clone(),
+                var_type: a_types[0],
                 context: Some(context.clone()),
             });
         }
