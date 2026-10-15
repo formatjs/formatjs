@@ -12,7 +12,7 @@ documentation = "https://docs.rs/formatjs_cli"
 keywords = ["icu", "i18n", "internationalization", "cli", "intl"]
 categories = ["internationalization", "command-line-utilities", "localization"]
 readme = "README.md"
-rust-version = "1.93"
+rust-version = "1.97"
 
 [[bin]]
 name = "formatjs"

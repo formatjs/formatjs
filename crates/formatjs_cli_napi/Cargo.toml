@@ -7,7 +7,7 @@ description = "Node-API bindings for the FormatJS Rust CLI core"
 license = "MIT"
 repository = "https://github.com/formatjs/formatjs"
 publish = false
-rust-version = "1.93"
+rust-version = "1.97"
 
 [lib]
 path = "lib.rs"

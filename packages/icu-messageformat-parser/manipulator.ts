@@ -157,13 +157,13 @@ export function hoistSelectors(
 }
 
 /**
- * Collect all variables in an AST to Record<string, TYPE>
+ * Collect variable types, allowing shared date/time arguments.
  * @param ast AST to collect variables from
- * @param vars Record of variable name to variable type
+ * @param vars Map of variable names to type sets
  */
 function collectVariables(
   ast: MessageFormatElement[],
-  vars: Map<string, TYPE> = new Map<string, TYPE>()
+  vars: Map<string, Set<TYPE>> = new Map()
 ): void {
   ast.forEach(el => {
     if (
@@ -175,28 +175,37 @@ function collectVariables(
       // If the variable was already registered as a plural/select, it's normal
       // for it to also appear inside as number/date/time/argument — not a conflict.
       if (vars.has(el.value)) {
-        const existingType = vars.get(el.value)!
+        const existingTypes = vars.get(el.value)!
         if (
-          existingType !== el.type &&
-          existingType !== TYPE.plural &&
-          existingType !== TYPE.select
+          !existingTypes.has(el.type) &&
+          !existingTypes.has(TYPE.plural) &&
+          !existingTypes.has(TYPE.select)
         ) {
-          throw new Error(`Variable ${el.value} has conflicting types`)
+          if (
+            (el.type === TYPE.date || el.type === TYPE.time) &&
+            Array.from(existingTypes).every(
+              type => type === TYPE.date || type === TYPE.time
+            )
+          ) {
+            existingTypes.add(el.type)
+          } else {
+            throw new Error(`Variable ${el.value} has conflicting types`)
+          }
         }
       } else {
-        vars.set(el.value, el.type)
+        vars.set(el.value, new Set([el.type]))
       }
     }
 
     if (isPluralElement(el) || isSelectElement(el)) {
-      vars.set(el.value, el.type)
+      vars.set(el.value, new Set([el.type]))
       Object.keys(el.options).forEach(k => {
         collectVariables(el.options[k].value, vars)
       })
     }
 
     if (isTagElement(el)) {
-      vars.set(el.value, el.type)
+      vars.set(el.value, new Set([el.type]))
       collectVariables(el.children, vars)
     }
   })
@@ -218,8 +227,8 @@ export function isStructurallySame(
   a: MessageFormatElement[],
   b: MessageFormatElement[]
 ): IsStructurallySameResult {
-  const aVars = new Map<string, TYPE>()
-  const bVars = new Map<string, TYPE>()
+  const aVars = new Map<string, Set<TYPE>>()
+  const bVars = new Map<string, Set<TYPE>>()
   collectVariables(a, aVars)
   collectVariables(b, bVars)
 
@@ -244,11 +253,14 @@ export function isStructurallySame(
           error: new Error(`Missing variable ${key} in message`),
         }
       }
-      if (bType !== type) {
+      if (
+        bType.size !== type.size ||
+        !Array.from(type).every(t => bType.has(t))
+      ) {
         return {
           success: false,
           error: new Error(
-            `Variable ${key} has conflicting types: ${TYPE[type]} vs ${TYPE[bType]}`
+            `Variable ${key} has conflicting types: ${Array.from(type, t => TYPE[t]).join(', ')} vs ${Array.from(bType, t => TYPE[t]).join(', ')}`
           ),
         }
       }

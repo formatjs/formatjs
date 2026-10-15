@@ -62,7 +62,7 @@ across the monorepo.
 - A local `rules_ts` patch runs its option pre-validator with pinned TypeScript
   6.0.3 while `ts_project` compiles with native TypeScript 7.
 - Go SDK is pinned to **1.24.12**.
-- Rust is pinned to **1.95.0**, edition **2024**, through `rules_rs`.
+- Rust is pinned to **1.97.0**, edition **2024**, through `rules_rs`.
 - Python is pinned to **3.12.7** through `rules_python`.
 
 ## Remote Cache & RBE

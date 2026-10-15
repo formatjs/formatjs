@@ -119,6 +119,10 @@ support Rust 1.92 and newer.
 - `date_time_pattern_generator.rs` — CLDR datetime pattern generation
 - `lib_wasm.rs` — WebAssembly bindings via wasm-bindgen
 
+Structural comparison accepts shared date/time arguments and compares their
+roles without regard to order. Translations must retain both roles. TypeScript's
+`isStructurallySame` follows the same rule.
+
 **Build targets:**
 
 - **Native library** — Standard Rust library for use by formatjs_cli
@@ -172,6 +176,8 @@ the crate is not published to crates.io.
 - **6 output formatters:** default, simple, crowdin, lokalise, transifex, smartling
 
 **176 unit tests.** Integration tests via `packages/cli/integration-tests/` ensure 100% conformance with the TypeScript CLI (60/60 tests passing).
+
+The CLI and its N-API bindings require Rust 1.97 for OXC 0.153.
 
 ### `formatjs_cli_napi`
 
