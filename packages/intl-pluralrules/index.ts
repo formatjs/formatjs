@@ -3,6 +3,7 @@ import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLoc
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
+import {repeat} from '#packages/ecma402-abstract/utils.js'
 import {
   type CompactExponentData,
   type LDMLPluralRule,
@@ -82,7 +83,7 @@ function PluralRuleSelect(
   // Always pass a string to the compiled function to preserve precision for huge numbers
   return PluralRules.localeData[locale].fn(
     NumberOfFractionDigits
-      ? `${IntegerDigits}.${FractionDigits}`
+      ? `${IntegerDigits}.${(repeat('0', NumberOfFractionDigits) + FractionDigits).slice(-NumberOfFractionDigits)}`
       : String(IntegerDigits),
     type === 'ordinal',
     CompactExponent

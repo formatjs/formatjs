@@ -14,7 +14,10 @@ import pt from '#packages/intl-pluralrules/tests/locale-data/pt.js'
 import ptPT from '#packages/intl-pluralrules/tests/locale-data/pt-PT.js'
 import scn from '#packages/intl-pluralrules/tests/locale-data/scn.js'
 import vec from '#packages/intl-pluralrules/tests/locale-data/vec.js'
+import bs from '#packages/intl-pluralrules/tests/locale-data/bs.js'
+import lv from '#packages/intl-pluralrules/tests/locale-data/lv.js'
 PluralRules.__addLocaleData(en, fr, ca, es, itData, lld, pt, ptPT, scn, vec)
+PluralRules.__addLocaleData(bs, lv)
 
 describe('PluralRules', function () {
   it('default locale', function () {
@@ -58,6 +61,11 @@ describe('PluralRules', function () {
     expect(new PluralRules('en', {type: 'ordinal'}).select(-1)).toBe('one')
     expect(new PluralRules('en', {type: 'ordinal'}).select(-2)).toBe('two')
     expect(new PluralRules('en', {type: 'ordinal'}).select(-3)).toBe('few')
+  })
+  it('should use visible fraction digits', function () {
+    expect(new PluralRules('bs').select(0.1)).toBe('one')
+    expect(new PluralRules('bs').select(0.2)).toBe('few')
+    expect(new PluralRules('lv').select(0.011)).toBe('one')
   })
   if ((PluralRules as any).polyfilled) {
     it('should honor minimumFractionDigits', function () {
