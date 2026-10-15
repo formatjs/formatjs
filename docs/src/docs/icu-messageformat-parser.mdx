@@ -66,6 +66,13 @@ ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35
 
 With a `locale` parse option, `j` uses the locale’s preferred hour cycle. Explicit `hourCycle` options and `u-hc` extensions take precedence. The parser supports both `Intl.Locale.getHourCycles()` and the legacy `hourCycles` property.
 
+## Structural comparison
+
+`isStructurallySame` from `@formatjs/icu-messageformat-parser/manipulator.js`
+accepts shared date/time arguments such as
+`Resets {resetDate, date, ::EEE} at {resetDate, time, short}.`
+Translations may reorder those formats but must retain both roles.
+
 ## Benchmarks
 
 ```

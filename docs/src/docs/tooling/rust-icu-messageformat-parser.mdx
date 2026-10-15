@@ -108,6 +108,10 @@ let are_same = is_structurally_same(
 );
 ```
 
+`is_structurally_same` accepts shared date/time arguments such as
+`Resets {resetDate, date, ::EEE} at {resetDate, time, short}.`
+Translations may reorder those formats but must retain both roles.
+
 ### AST Printing
 
 ```rust
