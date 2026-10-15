@@ -119,6 +119,10 @@ support Rust 1.92 and newer.
 - `date_time_pattern_generator.rs` — CLDR datetime pattern generation
 - `lib_wasm.rs` — WebAssembly bindings via wasm-bindgen
 
+Structural comparison accepts shared date/time arguments and compares their
+roles without regard to order. Translations must retain both roles. TypeScript's
+`isStructurallySame` follows the same rule.
+
 **Build targets:**
 
 - **Native library** — Standard Rust library for use by formatjs_cli
