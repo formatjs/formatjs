@@ -62,7 +62,7 @@ across the monorepo.
 - A local `rules_ts` patch runs its option pre-validator with pinned TypeScript
   6.0.3 while `ts_project` compiles with native TypeScript 7.
 - Go SDK is pinned to **1.24.12**.
-- Rust is pinned to **1.95.0**, edition **2024**, through `rules_rs`.
+- Rust is pinned to **1.97.0**, edition **2024**, through `rules_rs`.
 - Python is pinned to **3.12.7** through `rules_python`.
 
 ## Remote Cache & RBE
@@ -90,6 +90,8 @@ Its build, collection, binary checks, Linux smoke, and archive upload are separa
 `buildbuddy.yaml` steps. Shared Bazel flags live in `--config=bb-cross-build`.
 Linux Node and Python extensions use `cc_runtime_linkage = "static"` to avoid host
 libc++/libunwind dependencies; unresolved unwind symbols fail release checks.
+Musl Node packages bundle `libstd` from the pinned Rust version. Release checks
+verify that the addon's required Rust runtime library exists in each package.
 Steps use an action-level staging path because shell variables do not persist
 between BuildBuddy steps.
 

@@ -177,6 +177,8 @@ the crate is not published to crates.io.
 
 **176 unit tests.** Integration tests via `packages/cli/integration-tests/` ensure 100% conformance with the TypeScript CLI (60/60 tests passing).
 
+The CLI and its N-API bindings require Rust 1.97 for OXC 0.153.
+
 ### `formatjs_cli_napi`
 
 **Purpose:** Native Node.js boundary used by `@formatjs/cli-lib`.

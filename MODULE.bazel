@@ -182,7 +182,7 @@ toolchains = use_extension("@rules_rs//rs/toolchains:module_extension.bzl", "too
 toolchains.toolchain(
     name = "rs",
     edition = "2024",
-    version = "1.95.0",
+    version = "1.97.0",
 )
 use_repo(toolchains, "default_rust_toolchains", "rs")
 

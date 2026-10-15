@@ -93,6 +93,12 @@ actions:
               exit 1
             fi
             readelf -d "$package_dir/formatjs_cli_napi.node" | grep '(NEEDED)'
+            for stdlib in $(readelf -d "$package_dir/formatjs_cli_napi.node" | sed -n 's/.*\[\(libstd-[^]]*\.so\)\].*/\1/p'); do
+              if [[ ! -f "$package_dir/$stdlib" ]]; then
+                echo "Missing Rust runtime library: $stdlib" >&2
+                exit 1
+              fi
+            done
           done
 
       # Check addon initialization and unwind symbols.
