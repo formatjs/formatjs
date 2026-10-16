@@ -86,7 +86,7 @@ export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
     v = 0
   } else {
     iv = s.slice(0, dp)
-    fv = s.slice(dp, s.length)
+    fv = s.slice(dp + 1, s.length)
     f = new Decimal(fv)
     v = fv.length
   }

@@ -10,12 +10,14 @@ load(":locales.generated.bzl", "ALL_LOCALES")
 PACKAGE_NAME = "intl-pluralrules"
 
 TEST_LOCALES = [
+    "bs",
     "ca",
     "en",
     "es",
     "fr",
     "it",
     "lld",
+    "lv",
     "pt",
     "pt-PT",
     "scn",
@@ -75,7 +77,7 @@ formatjs_library(
         "./locale-data": "./locale-data",
     },
     deps = [
-        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/bigdecimal",  # keep: runtime dependency of bundled abstract operations
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//packages/ecma402-abstract",
@@ -89,12 +91,14 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/supported-locales-of.test.ts",
+        ":tests-locale-data-bs",  # keep: generated locale data imported by tests
         ":tests-locale-data-ca",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-es",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr",  # keep: generated locale data imported by tests
         ":tests-locale-data-it",  # keep: generated locale data imported by tests
         ":tests-locale-data-lld",  # keep: generated locale data imported by tests
+        ":tests-locale-data-lv",  # keep: generated locale data imported by tests
         ":tests-locale-data-pt",  # keep: generated locale data imported by tests
         ":tests-locale-data-pt-PT",  # keep: generated locale data imported by tests
         ":tests-locale-data-scn",  # keep: generated locale data imported by tests
