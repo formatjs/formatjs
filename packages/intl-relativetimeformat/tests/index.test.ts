@@ -3,17 +3,29 @@ import '@formatjs/intl-locale/polyfill.js'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/zh'
 import '@formatjs/intl-pluralrules/locale-data/en'
+import '@formatjs/intl-pluralrules/locale-data/gsw'
 import zh from '#packages/intl-relativetimeformat/tests/locale-data/zh.json' with {type: 'json'}
 import zhHant from '#packages/intl-relativetimeformat/tests/locale-data/zh-Hant.json' with {type: 'json'}
 import zhHans from '#packages/intl-relativetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import en from '#packages/intl-relativetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import enAI from '#packages/intl-relativetimeformat/tests/locale-data/en-AI.json' with {type: 'json'}
+import gsw from '#packages/intl-relativetimeformat/tests/locale-data/gsw.json' with {type: 'json'}
 import bn from '#packages/intl-relativetimeformat/tests/locale-data/bn.json' with {type: 'json'}
 import my from '#packages/intl-relativetimeformat/tests/locale-data/my.json' with {type: 'json'}
 import ne from '#packages/intl-relativetimeformat/tests/locale-data/ne.json' with {type: 'json'}
 import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
 import {describe, expect, it} from 'vitest'
-RelativeTimeFormat.__addLocaleData(en, enAI, zh, zhHans, zhHant, bn, my, ne)
+RelativeTimeFormat.__addLocaleData(
+  en,
+  enAI,
+  zh,
+  zhHans,
+  zhHant,
+  bn,
+  my,
+  ne,
+  gsw
+)
 
 describe('Intl.RelativeTimeFormat', function () {
   it('should lookup zh-CN', function () {
@@ -32,6 +44,18 @@ describe('Intl.RelativeTimeFormat', function () {
     expect(new RelativeTimeFormat('en-AI').format(-1, 'second')).toBe(
       '1 second ago'
     )
+  })
+  it('falls back to the other pattern when a plural category is missing', function () {
+    // gsw has no counted relative-time patterns of its own. CLDR resolves them
+    // from root, which only defines `other`, while gsw plural rules select `one`.
+    const rtf = new RelativeTimeFormat('gsw')
+    expect(rtf.format(-1, 'second')).toBe('-1 s')
+    expect(rtf.format(1, 'day')).toBe('+1 d')
+    expect(rtf.formatToParts(1, 'hour')).toEqual([
+      {type: 'literal', value: '+'},
+      {type: 'integer', value: '1', unit: 'hour'},
+      {type: 'literal', value: ' h'},
+    ])
   })
   it('honors the numberingSystem option for locales that default to non-latn digits', function () {
     for (const locale of ['my-MM', 'bn-BD', 'ne-NP']) {
