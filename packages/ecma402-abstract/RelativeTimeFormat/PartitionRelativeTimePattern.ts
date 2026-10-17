@@ -76,6 +76,8 @@ export function PartitionRelativeTimePattern(
           } as Intl.RelativeTimeFormatPart,
         ]
   const pr = pluralRules.select(value) as LDMLPluralRule
-  const pattern = po[pr]
+  // CLDR only guarantees the `other` pattern. Locales that inherit root data
+  // (e.g. gsw) have no `one` pattern even though their plural rules select it.
+  const pattern = po[pr] ?? po.other
   return MakePartsList(pattern!, resolvedUnit, fv)
 }
