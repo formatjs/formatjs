@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.8.2](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.8.1...formatjs_cli_v1.8.2) (2026-10-17)
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.153 ([#7608](https://github.com/formatjs/formatjs/issues/7608)) ([f6c95f8](https://github.com/formatjs/formatjs/commit/f6c95f8946f65e9834a3fa19fdd6c59b5e07c432))
+* **deps:** update ruff to v0.17.0 ([#7629](https://github.com/formatjs/formatjs/issues/7629)) ([cb56c4b](https://github.com/formatjs/formatjs/commit/cb56c4bd8637338436970e7994d8a46c28aee195))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 1.1.0 to 1.1.1
+
 ## [1.8.1](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.8.0...formatjs_cli_v1.8.1) (2026-10-09)
 
 
