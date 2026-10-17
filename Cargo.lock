@@ -563,7 +563,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_cli"
-version = "1.8.1"
+version = "1.8.2"
 dependencies = [
  "anyhow",
  "base64",
@@ -605,7 +605,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "fixed_decimal",
  "formatjs_icu_messageformat_parser",
@@ -617,7 +617,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
@@ -650,7 +650,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl"
-version = "2.2.0"
+version = "2.2.1"
 dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
@@ -664,7 +664,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_macros"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "base64",
  "formatjs_icu_messageformat_parser",

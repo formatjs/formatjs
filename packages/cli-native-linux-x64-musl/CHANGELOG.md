@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.27](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64-musl@1.0.26...@formatjs/cli-native-linux-x64-musl@1.0.27) (2026-10-17)
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.153 ([#7608](https://github.com/formatjs/formatjs/issues/7608)) ([f6c95f8](https://github.com/formatjs/formatjs/commit/f6c95f8946f65e9834a3fa19fdd6c59b5e07c432))
+
 ## [1.0.26](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64-musl@1.0.25...@formatjs/cli-native-linux-x64-musl@1.0.26) (2026-10-09)
 
 ## [1.0.25](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-x64-musl@1.0.24...@formatjs/cli-native-linux-x64-musl@1.0.25) (2026-10-05)

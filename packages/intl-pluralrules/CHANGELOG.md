@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.3.15...@formatjs/intl-pluralrules@6.3.16) (2026-10-17)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** keep fraction digits when selecting ([#7619](https://github.com/formatjs/formatjs/issues/7619)) ([1f5f78d](https://github.com/formatjs/formatjs/commit/1f5f78d46f574885b43a04f255e527ae834e1900))
+
 ## [6.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.3.14...@formatjs/intl-pluralrules@6.3.15) (2026-09-12)
 
 
