@@ -596,6 +596,30 @@ async function loadDatesFields(
       short: Object.values(calendarFields.days.format.abbreviated),
       long: Object.values(calendarFields.days.format.wide),
     },
+    // Include stand-alone weekday forms if they differ from format forms
+    ...(calendarFields.days['stand-alone'] &&
+    (!isEqual(
+      calendarFields.days['stand-alone'].narrow,
+      calendarFields.days.format.narrow
+    ) ||
+      !isEqual(
+        calendarFields.days['stand-alone'].abbreviated,
+        calendarFields.days.format.abbreviated
+      ) ||
+      !isEqual(
+        calendarFields.days['stand-alone'].wide,
+        calendarFields.days.format.wide
+      ))
+      ? {
+          weekdayStandalone: {
+            narrow: Object.values(calendarFields.days['stand-alone'].narrow),
+            short: Object.values(
+              calendarFields.days['stand-alone'].abbreviated
+            ),
+            long: Object.values(calendarFields.days['stand-alone'].wide),
+          },
+        }
+      : {}),
     era: {
       narrow: {
         ...extractEras(calendarFields.eras?.eraNarrow ?? {}, calendar),

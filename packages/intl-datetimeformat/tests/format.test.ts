@@ -6,12 +6,14 @@ import {
   toLocaleTimeString,
 } from '#packages/intl-datetimeformat/to_locale_string'
 import bs from '#packages/intl-datetimeformat/tests/locale-data/bs.json' with {type: 'json'}
+import de from '#packages/intl-datetimeformat/tests/locale-data/de.json' with {type: 'json'}
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import fi from '#packages/intl-datetimeformat/tests/locale-data/fi.json' with {type: 'json'}
 import ko from '#packages/intl-datetimeformat/tests/locale-data/ko.json' with {type: 'json'}
 import ru from '#packages/intl-datetimeformat/tests/locale-data/ru.json' with {type: 'json'}
 import {describe, expect, it} from 'vitest'
 // @ts-ignore
-DateTimeFormat.__addLocaleData(bs, en, ko, ru)
+DateTimeFormat.__addLocaleData(bs, de, en, fi, ko, ru)
 DateTimeFormat.__addTZData(allData)
 
 const tests: Array<{
@@ -406,6 +408,49 @@ describe('stand-alone month forms (issue #5134)', function () {
     expect(fmt.format(january)).toBe('15 января')
     expect(fmt.format(february)).toBe('15 февраля')
     expect(fmt.format(march)).toBe('15 марта')
+  })
+})
+
+describe('stand-alone weekday forms', function () {
+  // Thursday, January 1, 2026
+  const date = new Date(Date.UTC(2026, 0, 1, 13, 5))
+
+  it('German: weekday alone uses the stand-alone abbreviation', function () {
+    expect(
+      new DateTimeFormat('de', {weekday: 'short', timeZone: 'UTC'}).format(date)
+    ).toBe('Do')
+  })
+
+  it('German: weekday with a day or a time keeps the format abbreviation', function () {
+    expect(
+      new DateTimeFormat('de', {
+        weekday: 'short',
+        day: 'numeric',
+        timeZone: 'UTC',
+      }).format(date)
+    ).toBe('Do., 1.')
+    expect(
+      new DateTimeFormat('de', {
+        weekday: 'short',
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'UTC',
+      }).format(date)
+    ).toBe('Do., 13:05')
+  })
+
+  it('Finnish: weekday alone uses the nominative', function () {
+    expect(
+      new DateTimeFormat('fi', {weekday: 'long', timeZone: 'UTC'}).format(date)
+    ).toBe('torstai')
+    expect(
+      new DateTimeFormat('fi', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'numeric',
+        timeZone: 'UTC',
+      }).format(date)
+    ).toBe('torstaina 1.1.')
   })
 })
 

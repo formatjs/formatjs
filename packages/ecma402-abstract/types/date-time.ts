@@ -155,6 +155,15 @@ export interface DateTimeFormatLocaleInternalData {
     long: string[]
     short: string[]
   }
+  /**
+   * Stand-alone weekday names (used when weekday is the only field)
+   * Falls back to format weekday if not provided
+   */
+  weekdayStandalone?: {
+    narrow: string[]
+    long: string[]
+    short: string[]
+  }
   era: {
     narrow: EraData
     long: EraData
