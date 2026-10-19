@@ -260,6 +260,16 @@ GitHub Actions (`rust-cli-release.yml`) builds and publishes binaries for both p
 
 ## Python Bindings
 
+`py_intl` exposes an immutable `MessageCatalog` snapshot backed by
+`Arc<MessageCatalog>`. Cache it at application startup and pass it to per-request
+`Intl` instances to avoid repeating Python dictionary copies and native string
+conversion. Catalogs can cross threads; `Intl` remains thread-bound with its own
+error callback. Mapping-based construction remains supported. Both paths preserve
+native locale normalization, negotiation, and message fallback. Catalog
+`negotiate()` reuses native storage; message compilation stays lazy and shared.
+Measure with `bazel run -c opt //python/intl:constructor_bench`; validate with
+`//python/intl:python_test`, `:codegen_test`, and `:wheel_test`.
+
 `python/` contains typed Python facades and Bazel wheel targets for the four
 PyO3 binding crates. Python names mirror the Rust layers without the
 `formatjs_` prefix:

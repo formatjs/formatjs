@@ -1,5 +1,5 @@
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
 load("//tools/python:wheel.bzl", "formatjs_python_wheel")
 
 py_library(
@@ -29,6 +29,14 @@ py_test(
     srcs = ["tests/test_binding.py"],
     data = [":native_for_test"],
     main = "tests/test_binding.py",
+    deps = [":intl"],
+)
+
+py_binary(
+    name = "constructor_bench",
+    srcs = ["benchmarks/constructor.py"],
+    data = [":native_for_test"],
+    main = "benchmarks/constructor.py",
     deps = [":intl"],
 )
 

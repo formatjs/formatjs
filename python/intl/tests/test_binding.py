@@ -1,12 +1,15 @@
 import base64
 import hashlib
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import FrozenInstanceError
 from datetime import date, datetime
 
 from intl import (
     Intl,
     IntlError,
     IntlErrorCode,
+    MessageCatalog,
     MessageDescriptor,
     MessageSource,
     define_message,
@@ -29,6 +32,84 @@ def assert_raises(
 
 def test_negotiates_locale() -> None:
     assert negotiate(["fr-CA", "fr"], "en", ["en", "fr"]) == "fr"
+
+
+def test_shared_catalog_preserves_fallback_and_errors() -> None:
+    messages = {
+        "en-us": {"hello": "Hello", "missing": "English", "broken": "Safe"},
+        "de-de": {"hello": "Hallo", "broken": "{broken"},
+        "de": {"missing": "Parent"},
+        "zh-Hant": {"hello": "Traditional"},
+    }
+    catalog = MessageCatalog(messages)
+    for requested, expected in [
+        ("de-DE", "de-DE"), ("zh-TW", "zh-Hant"), ("mk-MK", "en-US")
+    ]:
+        assert catalog.negotiate([requested], "en-US") == expected
+        recorded = []
+        for source in (messages, catalog):
+            errors: list[IntlError] = []
+            runtime = Intl([requested], "en-US", source, on_error=errors.append)
+            assert runtime.locale == expected
+            outputs = [
+                runtime.format_message(key, default_message="Descriptor")
+                for key in ("hello", "missing", "broken", "absent")
+            ]
+            assert outputs[1:] == ["English", "Safe", "Descriptor"]
+            recorded.append(
+                (outputs, [(e.code, e.source, e.locale, e.message) for e in errors])
+            )
+        assert recorded[0] == recorded[1]
+
+
+def test_shared_catalog_is_an_immutable_snapshot() -> None:
+    messages = {"en": {"hello": "Hello"}}
+    catalog = MessageCatalog(messages)
+    messages["en"]["hello"] = "Changed"
+    messages.clear()
+    assert_raises(
+        FrozenInstanceError, "cannot assign", lambda: setattr(catalog, "_native", None)
+    )
+    runtime = Intl(["en"], "en", catalog)
+    del catalog
+    assert runtime.format_message("hello") == "Hello"
+
+
+def test_shared_catalog_supports_thread_local_formatters() -> None:
+    catalog = MessageCatalog({"en": {"hello": "Hello"}, "fr": {"hello": "Bonjour"}})
+    main_errors: list[IntlError] = []
+    main = Intl(["en"], "en", catalog, on_error=main_errors.append)
+
+    def format_on_worker(locale: str) -> tuple[str, int]:
+        errors: list[IntlError] = []
+        runtime = Intl([locale], "en", catalog, on_error=errors.append)
+        assert catalog.negotiate([locale], "en") == locale
+        runtime.format_message("missing")
+        return runtime.format_message("hello"), len(errors)
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        assert list(executor.map(format_on_worker, ["en", "fr"] * 8)) == [
+            ("Hello", 1), ("Bonjour", 1)
+        ] * 8
+    assert main.format_message("hello") == "Hello"
+    assert main_errors == []
+
+
+def test_shared_catalog_validates_locales_without_compiling_messages() -> None:
+    assert_raises(
+        ValueError, "Invalid locale", lambda: MessageCatalog({"not_a_locale!": {}})
+    )
+    catalog = MessageCatalog({"fr": {"broken": "{broken"}})
+    assert_raises(
+        ValueError,
+        "Default locale has no translation catalog",
+        lambda: Intl(["fr"], "en", catalog),
+    )
+    errors: list[IntlError] = []
+    runtime = Intl(["fr"], "fr", catalog, on_error=errors.append)
+    assert errors == []
+    assert runtime.format_message("broken", default_message="Safe") == "Safe"
+    assert [error.code for error in errors] == [IntlErrorCode.FORMAT_ERROR]
 
 
 def test_formats_translation_and_fallback() -> None:
@@ -252,6 +333,10 @@ def test_rejects_invalid_calls_and_values() -> None:
 
 if __name__ == "__main__":
     test_negotiates_locale()
+    test_shared_catalog_preserves_fallback_and_errors()
+    test_shared_catalog_is_an_immutable_snapshot()
+    test_shared_catalog_supports_thread_local_formatters()
+    test_shared_catalog_validates_locales_without_compiling_messages()
     test_formats_translation_and_fallback()
     test_reports_fallback_and_formats_python_dates()
     test_formats_arguments_selects_and_plurals()

@@ -21,3 +21,6 @@ with tempfile.TemporaryDirectory() as directory:
     exec(compile(source, "messages.py", "exec"), namespace)
     formatter = intl.Intl(["en"], "en", {"en": {}})
     assert namespace["total"](formatter, values={"n": 12}) == "12"
+    catalog = intl.MessageCatalog({"en-us": {"hello": "Hello"}})
+    assert catalog.negotiate(["en-US"], "en-US") == "en-US"
+    assert intl.Intl(["en-US"], "en-US", catalog).format_message("hello") == "Hello"

@@ -43,12 +43,16 @@ class IntlError(Exception):
         message: str,
     ) -> None: ...
 
+class MessageCatalog:
+    def __init__(self, messages: Mapping[str, Mapping[str, str]]) -> None: ...
+    def negotiate(self, requested_locales: list[str], default_locale: str) -> str: ...
+
 class Intl:
     def __init__(
         self,
         requested_locales: list[str],
         default_locale: str,
-        messages: Mapping[str, Mapping[str, str]],
+        messages: Mapping[str, Mapping[str, str]] | MessageCatalog,
         on_error: Callable[[IntlError], None] | None = None,
     ) -> None: ...
     @property
