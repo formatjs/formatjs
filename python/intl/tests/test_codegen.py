@@ -51,8 +51,11 @@ class CodegenTest(unittest.TestCase):
 
     def test_static_contracts(self):
         good = """from datetime import date, datetime
-from intl import Intl
+from intl import Intl, MessageCatalog
 from messages import cart_total, empty, event, mixed, select, quoted
+catalog = MessageCatalog({"en": {}})
+runtime = Intl(["en"], "en", catalog)
+locale: str = catalog.negotiate(["en"], "en")
 def render(intl: Intl) -> None:
     cart_total(intl, values={"count": 2})
     empty(intl)

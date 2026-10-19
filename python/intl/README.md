@@ -36,6 +36,29 @@ formatting errors while `format_message` continues through FormatJS fallback.
 Datetime fields are formatted as supplied; convert timezone-aware values before
 formatting when another presentation timezone is required.
 
+## Reusing catalogs
+
+Build a `MessageCatalog` once, then share it across request-scoped `Intl` instances:
+
+```python
+from intl import Intl, MessageCatalog
+
+catalog = MessageCatalog({"fr": {"hello": "Bonjour"}, "en": {"hello": "Hello"}})
+intl = Intl(["fr-CA"], "en", catalog)
+assert intl.format_message("hello") == "Bonjour"
+assert catalog.negotiate(["fr-CA"], "en") == "fr"
+```
+
+`MessageCatalog` takes an immutable snapshot, normalizes locale keys, and converts
+messages to native storage once. Later changes to the input mapping have no effect.
+It can be shared across threads; create and use each `Intl` on its own thread.
+Each instance keeps its own error callback. Passing a mapping to `Intl` remains
+supported and converts it on every construction. Message compilation stays lazy
+and uses the shared process-wide cache with either input.
+
+Compare construction costs with
+`bazel run -c opt //python/intl:constructor_bench`.
+
 ## Generated message contracts
 
 Generate typed Python wrappers from a FormatJS source catalog:

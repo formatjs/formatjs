@@ -106,6 +106,46 @@ fn values_from_python(values: Option<&Bound<'_, PyDict>>) -> PyResult<Values<Str
         .unwrap_or_else(|| Ok(Values::new()))
 }
 
+fn message_catalog(
+    messages: HashMap<String, HashMap<String, String>>,
+) -> PyResult<Arc<MessageCatalog>> {
+    let mut catalog = MessageCatalog::new();
+    for (locale, messages) in messages {
+        catalog
+            .insert(locale, messages)
+            .map_err(|error| PyValueError::new_err(error.to_string()))?;
+    }
+    Ok(Arc::new(catalog))
+}
+
+#[pyclass(name = "MessageCatalog", frozen)]
+struct PyMessageCatalog {
+    catalog: Arc<MessageCatalog>,
+}
+
+#[pymethods]
+impl PyMessageCatalog {
+    #[new]
+    fn new(messages: HashMap<String, HashMap<String, String>>) -> PyResult<Self> {
+        Ok(Self {
+            catalog: message_catalog(messages)?,
+        })
+    }
+
+    fn negotiate(
+        &self,
+        requested_locales: Vec<String>,
+        default_locale: String,
+    ) -> PyResult<String> {
+        let default_locale = default_locale
+            .parse::<Locale>()
+            .map_err(|error| PyValueError::new_err(error.to_string()))?;
+        negotiate_locale(requested_locales, &default_locale, &self.catalog)
+            .map(|locale| locale.to_string())
+            .map_err(|error| PyValueError::new_err(error.to_string()))
+    }
+}
+
 #[pyclass(name = "Intl", unsendable)]
 struct PyIntl {
     intl: Intl,
@@ -132,22 +172,16 @@ impl PyIntl {
     fn new(
         requested_locales: Vec<String>,
         default_locale: String,
-        messages: HashMap<String, HashMap<String, String>>,
+        messages: &Bound<'_, PyAny>,
         on_error: Option<Py<PyAny>>,
     ) -> PyResult<Self> {
-        let mut catalog = MessageCatalog::new();
-        for (locale, messages) in messages {
-            catalog
-                .insert(locale, messages)
-                .map_err(|error| PyValueError::new_err(error.to_string()))?;
-        }
-        let mut intl = Intl::try_new(
-            requested_locales,
-            default_locale,
-            Arc::new(catalog),
-            cache(),
-        )
-        .map_err(|error| PyValueError::new_err(error.to_string()))?;
+        let catalog = if let Ok(shared) = messages.extract::<PyRef<'_, PyMessageCatalog>>() {
+            shared.catalog.clone()
+        } else {
+            message_catalog(messages.extract()?)?
+        };
+        let mut intl = Intl::try_new(requested_locales, default_locale, catalog, cache())
+            .map_err(|error| PyValueError::new_err(error.to_string()))?;
         let callback_error = Arc::new(Mutex::new(None));
         if let Some(callback) = on_error {
             let captured_error = callback_error.clone();
@@ -257,6 +291,7 @@ fn negotiate(
 
 #[pymodule]
 fn _native(module: &Bound<'_, PyModule>) -> PyResult<()> {
+    module.add_class::<PyMessageCatalog>()?;
     module.add_class::<PyIntl>()?;
     module.add_function(wrap_pyfunction!(_message_arguments, module)?)?;
     module.add_function(wrap_pyfunction!(negotiate, module)?)?;

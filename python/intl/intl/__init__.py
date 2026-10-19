@@ -8,6 +8,7 @@ from datetime import date, datetime
 from enum import StrEnum
 
 from intl._native import Intl as _NativeIntl
+from intl._native import MessageCatalog as _NativeMessageCatalog
 from intl._native import negotiate
 
 MessageValue = str | bool | int | float | date | datetime | None
@@ -76,12 +77,29 @@ class IntlError(Exception):
         self.message = message
 
 
+@dataclass(frozen=True, slots=True, init=False)
+class MessageCatalog:
+    _native: _NativeMessageCatalog
+
+    def __init__(self, messages: Mapping[str, Mapping[str, str]]) -> None:
+        object.__setattr__(
+            self,
+            "_native",
+            _NativeMessageCatalog(
+                {locale: dict(locale_messages) for locale, locale_messages in messages.items()}
+            ),
+        )
+
+    def negotiate(self, requested_locales: list[str], default_locale: str) -> str:
+        return self._native.negotiate(requested_locales, default_locale)
+
+
 class Intl:
     def __init__(
         self,
         requested_locales: list[str],
         default_locale: str,
-        messages: Mapping[str, Mapping[str, str]],
+        messages: Mapping[str, Mapping[str, str]] | MessageCatalog,
         on_error: Callable[[IntlError], None] | None = None,
     ) -> None:
         def handle_error(
@@ -111,7 +129,9 @@ class Intl:
         self._native = _NativeIntl(
             requested_locales,
             default_locale,
-            {locale: dict(locale_messages) for locale, locale_messages in messages.items()},
+            messages._native
+            if isinstance(messages, MessageCatalog)
+            else {locale: dict(locale_messages) for locale, locale_messages in messages.items()},
             handle_error if on_error is not None else None,
         )
 
@@ -151,6 +171,7 @@ __all__ = [
     "Intl",
     "IntlError",
     "IntlErrorCode",
+    "MessageCatalog",
     "MessageDescriptor",
     "MessageSource",
     "define_message",
