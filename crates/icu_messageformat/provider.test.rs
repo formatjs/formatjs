@@ -106,6 +106,7 @@ fn missing_provider_data_returns_formatter_errors() {
     // T with and without seconds, cardinal and ordinal plural rules.
     for (source, formatter) in [
         ("{n, number}", "number formatter"),
+        ("{n, date, ::EEEE}", "weekday formatter"),
         ("{n, date, short}", "date formatter"),
         ("{n, date, medium}", "date formatter"),
         ("{n, date, long}", "date formatter"),
@@ -198,6 +199,22 @@ mod blob {
                 .unwrap(),
             "00:00"
         );
+    }
+
+    #[test]
+    fn formats_standalone_weekdays_from_external_data() {
+        let values: Values = HashMap::from([("value".to_owned(), Value::from(0_i64))]);
+        for (skeleton, expected) in [("EEE", "jeu."), ("EEEE", "jeudi"), ("EEEEE", "J")] {
+            let source = format!("{{value, date, ::{skeleton}}}");
+            let options = Options::with_formatters(Arc::new(formatters()));
+            let ast = Parser::new(&source, options.parser.clone())
+                .parse()
+                .unwrap();
+            let precompiled = IcuMessageFormat::from_ast_with_options(ast, options);
+            for message in [&compile(&source), &precompiled] {
+                assert_eq!(message.format_to_string("fr", &values).unwrap(), expected);
+            }
+        }
     }
 
     #[test]

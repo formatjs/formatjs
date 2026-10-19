@@ -29,6 +29,7 @@ icu = { version = "2.1", default-features = false, features = [
   "sync",
 ] }
 icu_provider = { version = "2.1", features = ["sync"] }
+writeable = "0.6"
 
 [lib]
 path = "lib.rs"

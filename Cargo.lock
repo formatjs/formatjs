@@ -619,6 +619,7 @@ dependencies = [
  "icu",
  "icu_provider",
  "icu_provider_blob",
+ "writeable",
 ]
 
 [[package]]

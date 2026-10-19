@@ -303,6 +303,27 @@ def test_handles_missing_and_empty_messages() -> None:
     assert default_errors == []
 
 
+def test_formats_standalone_weekdays() -> None:
+    for locale, skeleton, expected in [
+        ("de", "EEE", "Do"),
+        ("de", "EEEE", "Donnerstag"),
+        ("de", "EEEEE", "D"),
+        ("fi", "EEE", "to"),
+        ("fi", "EEEE", "torstai"),
+        ("fi", "EEEEE", "T"),
+    ]:
+        message = "{d, date, ::" + skeleton + "}"
+        errors: list[IntlError] = []
+        runtime = Intl(
+            [locale], "en", {locale: {"weekday": message}, "en": {}},
+            on_error=errors.append,
+        )
+        assert runtime.format_message(
+            "weekday", values={"d": date(2026, 1, 1)}
+        ) == expected
+        assert errors == []
+
+
 def test_rejects_invalid_calls_and_values() -> None:
     runtime = Intl(["en"], "en", {"en": {}})
     descriptor = MessageDescriptor(id="message", default_message="Message")
@@ -343,4 +364,5 @@ if __name__ == "__main__":
     test_falls_back_across_catalogs_and_descriptor()
     test_returns_verbatim_translation_after_all_formatting_fails()
     test_handles_missing_and_empty_messages()
+    test_formats_standalone_weekdays()
     test_rejects_invalid_calls_and_values()

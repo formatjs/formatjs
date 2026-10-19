@@ -192,6 +192,14 @@ export function FormatDateTimePattern(
       part.type === 'era'
   )
   const isMonthStandalone = hasMonth && !hasOtherDateFields
+  // Weekday is stand-alone only when it is the sole field, as in the CLDR `E`
+  // skeleton (`ccc`). With a day or a time it keeps the format form (`Ed`, `EHm`).
+  // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+  const isWeekdayStandalone =
+    contextParts.some(part => part.type === 'weekday') &&
+    contextParts.every(
+      part => part.type === 'weekday' || part.type === 'literal'
+    )
 
   for (const patternPart of patternParts) {
     const p = patternPart.type
@@ -309,7 +317,14 @@ export function FormatDateTimePattern(
               : dataLocaleData.month
           fv = monthData[f][tm.monthNameIndex ?? v - 1]
         } else {
-          fv = dataLocaleData[p as 'weekday'][f][v]
+          // Use stand-alone weekday form if available and weekday is displayed alone
+          const weekdayData =
+            p === 'weekday' &&
+            isWeekdayStandalone &&
+            dataLocaleData.weekdayStandalone
+              ? dataLocaleData.weekdayStandalone
+              : dataLocaleData[p as 'weekday']
+          fv = weekdayData[f][v]
         }
       }
       if (p === 'month' && tm.leapMonth && dataLocaleData.leapMonthPatterns) {

@@ -6,15 +6,18 @@ use formatjs_icu_skeleton_parser::{
     DateTimeFormatHour, DateTimeFormatMinute, DateTimeFormatMonth, DateTimeFormatOptions,
     DateTimeFormatSecond, DateTimeFormatWeekday, ExtendedNumberFormatOptions,
 };
+use icu::calendar::Gregorian;
 use icu::datetime::DateTimeFormatter;
-use icu::datetime::fieldsets::{T, YMD, YMDE};
+use icu::datetime::fieldsets::{E, T, YMD, YMDE};
 use icu::datetime::input::{Date, Time};
+use icu::datetime::pattern::{DateTimePattern, FixedCalendarDateTimeNames, WeekdayNameLength};
 use icu::decimal::DecimalFormatter;
 use icu::decimal::input::Decimal;
 use icu::decimal::options::{DecimalFormatterOptions, GroupingStrategy};
 use icu::locale::Locale;
 use icu::plurals::{PluralCategory, PluralOperands, PluralRules};
 use std::str::FromStr;
+use writeable::TryWriteable;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DateTimeKind {
@@ -61,6 +64,18 @@ pub trait Formatters: Send + Sync {
             self.format_datetime(locale, epoch, DateTimeKind::Date, &date)?;
             let date = date.with_weekday(DateTimeFormatWeekday::Long);
             self.format_datetime(locale, epoch, DateTimeKind::Date, &date)?;
+        }
+        for weekday in [
+            DateTimeFormatWeekday::Short,
+            DateTimeFormatWeekday::Long,
+            DateTimeFormatWeekday::Narrow,
+        ] {
+            self.format_datetime(
+                locale,
+                epoch,
+                DateTimeKind::Date,
+                &DateTimeFormatOptions::new().with_weekday(weekday),
+            )?;
         }
         let time = DateTimeFormatOptions::new()
             .with_hour(DateTimeFormatHour::Numeric)
@@ -113,12 +128,21 @@ fn data_error(
 
 #[cfg(feature = "compiled_data")]
 macro_rules! compiled_constructor {
+    (@weekday $this:ident, $names:ident, $length:expr) => {
+        $names.include_weekday_names($length)
+    };
     ($this:ident, $type:ident, $compiled:ident, $buffer:ident, $($args:expr),*) => {
         $type::$compiled($($args),*)
     };
 }
 
 macro_rules! buffer_constructor {
+    (@weekday $this:ident, $names:ident, $length:expr) => {
+        $names.load_weekday_names(
+            &icu_provider::buf::AsDeserializingBufferProvider::as_deserializing($this.provider.as_ref()),
+            $length,
+        )
+    };
     ($this:ident, $type:ident, $compiled:ident, $buffer:ident, $($args:expr),*) => {
         $type::$buffer($this.provider.as_ref(), $($args),*)
     };
@@ -247,6 +271,34 @@ macro_rules! impl_formatters {
                 options: &DateTimeFormatOptions,
             ) -> Result<String> {
                 use formatjs_icu_skeleton_parser::{DateTimeFormatMonth, DateTimeFormatWeekday};
+
+                if let Some(weekday) = options.weekday().filter(|_| {
+                    options.era().is_none()
+                        && options.year().is_none()
+                        && options.month().is_none()
+                        && options.day().is_none()
+                        && options.hour().is_none()
+                        && options.minute().is_none()
+                        && options.second().is_none()
+                        && options.time_zone_name().is_none()
+                }) {
+                    // A weekday-only skeleton must not acquire year/month/day fields.
+                    let (pattern, length) = match weekday {
+                        DateTimeFormatWeekday::Short => ("ccc", WeekdayNameLength::StandaloneAbbreviated),
+                        DateTimeFormatWeekday::Long => ("cccc", WeekdayNameLength::StandaloneWide),
+                        DateTimeFormatWeekday::Narrow => ("ccccc", WeekdayNameLength::StandaloneNarrow),
+                    };
+                    let pattern: DateTimePattern = pattern.parse().map_err(formatter_error)?;
+                    let mut names = FixedCalendarDateTimeNames::<Gregorian, E>::new_without_number_formatting(locale.clone().into());
+                    $construct!(@weekday $this, names, length)
+                        .map_err(|error| data_error(locale, "weekday formatter", error))?;
+                    let date = Date::try_new_gregorian(value.year, value.month, value.day)
+                        .map_err(formatter_error)?;
+                    return names.with_pattern_unchecked(&pattern).format(&date)
+                        .try_write_to_string()
+                        .map(|formatted| formatted.into_owned())
+                        .map_err(|(error, _)| formatter_error(error));
+                }
 
                 match kind {
                     DateTimeKind::Date => {

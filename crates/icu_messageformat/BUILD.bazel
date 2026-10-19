@@ -31,6 +31,7 @@ WITHOUT_COMPILED_DATA_DEPS = [
     "@crates//:fixed_decimal",
     "@crates//:icu",
     "@crates//:icu_provider",
+    "@crates//:writeable",
 ]
 
 rust_library(
@@ -52,6 +53,7 @@ rust_library(
         "@crates//:fixed_decimal",
         "@crates//:icu",
         "@crates//:icu_provider",
+        "@crates//:writeable-0.6.4",
     ],
 )
 

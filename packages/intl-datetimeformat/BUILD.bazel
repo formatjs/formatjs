@@ -36,6 +36,7 @@ TEST_LOCALES = [
     "ru",
     "zh-Hans",
     "fa",
+    "fi",
     "nl",
 ]
 
@@ -159,6 +160,7 @@ formatjs_test(
         ":tests-locale-data-en-CA",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-GB",  # keep: generated locale data imported by tests
         ":tests-locale-data-fa",  # keep: generated locale data imported by tests
+        ":tests-locale-data-fi",  # keep: generated locale data imported by tests
         ":tests-locale-data-ja",  # keep: generated locale data imported by tests
         ":tests-locale-data-ko",  # keep: generated locale data imported by tests
         ":tests-locale-data-my",  # keep: generated locale data imported by tests
