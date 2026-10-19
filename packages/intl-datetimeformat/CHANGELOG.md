@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.8.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.8.1...@formatjs/intl-datetimeformat@7.8.2) (2026-10-19)
+
+
+### Bug Fixes
+
+* align stand-alone weekday names across TypeScript and Rust ([#7634](https://github.com/formatjs/formatjs/issues/7634)) ([54ab77d](https://github.com/formatjs/formatjs/commit/54ab77d889572e8f253d4b7e22b6e26bebca65fe))
+
 ## [7.8.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.8.0...@formatjs/intl-datetimeformat@7.8.1) (2026-10-05)
 
 

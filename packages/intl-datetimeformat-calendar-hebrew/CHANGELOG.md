@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-hebrew@1.1.1...@formatjs/intl-datetimeformat-calendar-hebrew@1.1.2) (2026-10-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 7.8.2
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-hebrew@1.1.0...@formatjs/intl-datetimeformat-calendar-hebrew@1.1.1) (2026-10-05)
 
 

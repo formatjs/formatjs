@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.1](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_v0.3.0...formatjs_icu_messageformat_v0.3.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* align stand-alone weekday names across TypeScript and Rust ([#7634](https://github.com/formatjs/formatjs/issues/7634)) ([54ab77d](https://github.com/formatjs/formatjs/commit/54ab77d889572e8f253d4b7e22b6e26bebca65fe))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 1.1.0 to 1.1.1
+
 ## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_v0.2.0...formatjs_icu_messageformat_v0.3.0) (2026-10-11)
 
 

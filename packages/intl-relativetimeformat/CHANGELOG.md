@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.15...@formatjs/intl-relativetimeformat@12.3.16) (2026-10-19)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** fall back to the other pattern for missing plural categories ([#7633](https://github.com/formatjs/formatjs/issues/7633)) ([72d1c94](https://github.com/formatjs/formatjs/commit/72d1c94386a0b7cebacdfa4883af394024d329d3))
+
 ## [12.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.14...@formatjs/intl-relativetimeformat@12.3.15) (2026-09-12)
 
 

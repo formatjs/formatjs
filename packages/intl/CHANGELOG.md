@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl@6.1.3...@formatjs/intl@6.1.4) (2026-10-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.22
+    * intl-messageformat bumped to 12.1.4
+
 ## [6.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl@6.1.2...@formatjs/intl@6.1.3) (2026-10-05)
 
 
