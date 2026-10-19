@@ -19,6 +19,7 @@ TEST_LOCALES = [
     "bn",
     "my",
     "ne",
+    "gsw",
 ]
 
 ENTRY_POINTS = [
@@ -89,6 +90,7 @@ formatjs_test(
         ":tests-locale-data-bn",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-AI",  # keep: generated locale data imported by tests
+        ":tests-locale-data-gsw",  # keep: generated locale data imported by tests
         ":tests-locale-data-my",  # keep: generated locale data imported by tests
         ":tests-locale-data-ne",  # keep: generated locale data imported by tests
         ":tests-locale-data-zh",  # keep: generated locale data imported by tests

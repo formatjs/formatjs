@@ -76,6 +76,12 @@ export function PartitionRelativeTimePattern(
           } as Intl.RelativeTimeFormatPart,
         ]
   const pr = pluralRules.select(value) as LDMLPluralRule
-  const pattern = po[pr]
+  // ECMA-402 assumes a pattern for every relevant plural category. Our CLDR
+  // data is sparse (e.g. gsw has `other` but no `one`), so resolve CLDR's
+  // count fallback here rather than duplicating patterns in locale data.
+  // This supplies the effective pattern expected by the spec lookup.
+  // https://tc39.es/ecma402/#sec-intl-relativetimeformat-internal-slots
+  // https://unicode.org/reports/tr35/tr35.html#Lateral_Inheritance
+  const pattern = po[pr] ?? po.other
   return MakePartsList(pattern!, resolvedUnit, fv)
 }
