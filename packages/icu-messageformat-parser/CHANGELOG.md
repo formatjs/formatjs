@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.22](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.21...@formatjs/icu-messageformat-parser@3.5.22) (2026-10-19)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** allow shared date/time arguments ([#7616](https://github.com/formatjs/formatjs/issues/7616)) ([2802fe7](https://github.com/formatjs/formatjs/commit/2802fe7328e327e543405e04c331a9026b135920))
+
 ## [3.5.21](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.20...@formatjs/icu-messageformat-parser@3.5.21) (2026-10-05)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/formatjs/formatjs/compare/py_intl@0.3.0...py_intl@0.4.0) (2026-10-19)
+
+
+### Features
+
+* **intl_python:** add reusable message catalogs ([#7645](https://github.com/formatjs/formatjs/issues/7645)) ([75fd5b9](https://github.com/formatjs/formatjs/commit/75fd5b93f27b41ea4d9ed120bec310530f188135))
+
+
+### Bug Fixes
+
+* align stand-alone weekday names across TypeScript and Rust ([#7634](https://github.com/formatjs/formatjs/issues/7634)) ([54ab77d](https://github.com/formatjs/formatjs/commit/54ab77d889572e8f253d4b7e22b6e26bebca65fe))
+
 ## [0.3.0](https://github.com/formatjs/formatjs/compare/py_intl@0.2.0...py_intl@0.3.0) (2026-09-14)
 
 

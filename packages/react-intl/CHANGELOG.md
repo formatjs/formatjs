@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.1.5](https://github.com/formatjs/formatjs/compare/react-intl@12.1.4...react-intl@12.1.5) (2026-10-19)
+
+
+### Bug Fixes
+
+* **deps:** update formatjs monorepo ([#7599](https://github.com/formatjs/formatjs/issues/7599)) ([0a5bedb](https://github.com/formatjs/formatjs/commit/0a5bedbc5bcd2f061e365a63e8632a26d2c92e56))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.22
+    * @formatjs/intl bumped to 6.1.4
+    * intl-messageformat bumped to 12.1.4
+
 ## [12.1.4](https://github.com/formatjs/formatjs/compare/react-intl@12.1.3...react-intl@12.1.4) (2026-10-05)
 
 

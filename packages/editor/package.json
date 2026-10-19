@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/editor",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "private": false,
   "description": "Headless ICU MessageFormat editor for React",
   "keywords": [
