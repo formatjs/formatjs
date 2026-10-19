@@ -115,6 +115,38 @@ fn formats_numbers_and_dates_with_icu4x() {
 }
 
 #[test]
+fn formats_standalone_weekdays_without_adding_date_fields() {
+    let values: Values<String> = HashMap::from([(
+        "value".to_owned(),
+        Value::DateTime(DateTimeValue::try_new(2026, 1, 1, 13, 5, 0, 0).unwrap()),
+    )]);
+    for (locale, skeleton, expected) in [
+        ("de", "EEE", "Do"),
+        ("de", "EEEE", "Donnerstag"),
+        ("de", "EEEEE", "D"),
+        ("fi", "EEE", "to"),
+        ("fi", "EEEE", "torstai"),
+        ("fi", "EEEEE", "T"),
+    ] {
+        for kind in ["date", "time"] {
+            let source = format!("{{value, {kind}, ::{skeleton}}}");
+            let message = IcuMessageFormat::try_new(&source).unwrap();
+            assert_eq!(
+                message.format_to_string(locale, &values).unwrap(),
+                expected,
+                "{locale} {source}"
+            );
+        }
+    }
+
+    let combined = IcuMessageFormat::try_new("{value, date, ::EEEyMd}").unwrap();
+    assert_eq!(
+        combined.format_to_string("de", &values).unwrap(),
+        "Do., 01.01.26"
+    );
+}
+
+#[test]
 fn reports_missing_values_with_formatjs_error_code() {
     let formatter = IcuMessageFormat::try_new("Hello, {name}!").unwrap();
     let error = formatter

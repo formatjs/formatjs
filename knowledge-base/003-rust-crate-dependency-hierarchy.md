@@ -197,6 +197,10 @@ The CLI and its N-API bindings require Rust 1.97 for OXC 0.153.
 - Reuses the Rust ICU MessageFormat parser AST.
 - Formats arguments, selects, plurals, pound tokens, numbers, dates, times, and rich-text tags.
 - Uses ICU4X by default and accepts custom formatters through a trait.
+- Weekday-only skeletons use ICU4X stand-alone names at the requested width,
+  without adding year/month/day fields. The compiled-data and buffer-provider
+  paths share this logic; both Python runtime bindings inherit it. Mixed
+  date/time skeletons retain their existing fieldset limitations.
 - Parses messages once; locale is supplied per formatting call.
 
 ### `formatjs_intl` (v0.1.0)

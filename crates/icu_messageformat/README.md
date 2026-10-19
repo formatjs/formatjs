@@ -30,6 +30,11 @@ Unix epoch millisecond values are formatted in UTC. ICU4X currently lacks full
 ECMA-402 currency, unit, and time-zone formatting parity; custom implementations
 can be supplied through the `Formatters` trait.
 
+Weekday-only skeletons (`EEE`, `EEEE`, `EEEEE`) render stand-alone abbreviated,
+wide, and narrow names without adding date fields. Python bindings share this
+behavior. Mixed date/time skeleton matching remains limited to the existing
+ICU4X fieldsets.
+
 ## External ICU data
 
 The default `compiled_data` feature preserves the existing constructors. Disable

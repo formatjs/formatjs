@@ -71,6 +71,11 @@ time-zone formatting.
 
 See the complete [`formatjs_icu_messageformat` API](https://docs.rs/formatjs_icu_messageformat).
 
+Weekday-only skeletons (`EEE`, `EEEE`, `EEEEE`) render stand-alone abbreviated,
+wide, and narrow names without adding date fields. Python bindings share this
+behavior. Mixed date/time skeleton matching remains limited to the existing
+ICU4X fieldsets.
+
 ## External ICU data
 
 The default `compiled_data` feature preserves the existing constructors. Disable
