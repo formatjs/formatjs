@@ -57,6 +57,28 @@ async function main(args: Args) {
   }
 
   const workspaceRoot = getWorkspaceRoot()
+  const sourcemapPathTransform = args.dts
+    ? (source: string, sourcemapPath: string): string => {
+        // Keep embedded sources inside the package when npm_package moves the bundle.
+        const absolute = path.resolve(path.dirname(sourcemapPath), source)
+        const binPrefix = process.env.BAZEL_BINDIR
+          ? `${path.sep}${path.normalize(process.env.BAZEL_BINDIR)}${path.sep}`
+          : undefined
+        const relative = (
+          binPrefix && absolute.includes(binPrefix)
+            ? absolute.slice(absolute.lastIndexOf(binPrefix) + binPrefix.length)
+            : path.relative(workspaceRoot, absolute)
+        )
+          .split(path.sep)
+          .join('/')
+        const dependency = relative.lastIndexOf('node_modules/')
+        const logical = dependency >= 0 ? relative.slice(dependency) : relative
+        if (logical.split('/').includes('..')) {
+          throw new Error(`Sourcemap source outside workspace: ${source}`)
+        }
+        return `sources/${logical}`
+      }
+    : undefined
 
   // Parse --define key=value pairs
   const defineMap: Record<string, string> = {}
@@ -118,6 +140,7 @@ async function main(args: Args) {
       dir: outDir,
       format,
       sourcemap: true,
+      sourcemapPathTransform,
       name: globalName,
       target,
       banner,
@@ -131,6 +154,7 @@ async function main(args: Args) {
         dir: dir || '.',
         format,
         sourcemap: true,
+        sourcemapPathTransform,
         name: globalName,
         target,
         banner,

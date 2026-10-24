@@ -46,6 +46,13 @@ Then in your eslint config:
 
 Head over to [eslint-plugin-formatjs](/docs/tooling/linter) for more details on our rules.
 
+## Source maps
+
+Published JavaScript bundles include source maps with embedded source content.
+Paths under `sources/` identify original workspace and dependency files; separate
+TypeScript source files are not required. Bundlers can chain these maps without
+resolving paths outside the installed package.
+
 ## Error Codes
 
 `react-intl` is designed to fail fast when there's a configuration issue but fall back to `defaultLocale` when there's a translation issues. Below are the list of errors that we emit out that can be caught during testing:

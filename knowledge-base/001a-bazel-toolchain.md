@@ -352,6 +352,12 @@ Wraps `js_run_binary("//tools:rolldown-bundle-bin")`.
 The backing TypeScript script handles `#packages/*` workspace resolution and
 delegates declaration bundling to `rolldown-plugin-dts`.
 
+Published bundle sourcemaps embed source content under package-local `sources/`
+paths. Workspace paths retain `packages/`; dependency paths use their logical
+`node_modules/` names without Bazel's `.aspect_rules_js` store. These paths stay
+valid when `npm_package` flattens bundle directories. `//tools:package_sourcemaps_test`
+checks assembled packages and downstream Rolldown sourcemap chaining.
+
 ### `ts_compile()` / `ts_compile_node()` (`tools/index.bzl`)
 
 Legacy/general helper macros still exist for custom TS compilation:
