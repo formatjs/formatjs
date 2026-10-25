@@ -255,3 +255,40 @@ fn parse_pseudo_locale(pseudo_locale: Option<String>) -> napi::Result<Option<Pse
 fn to_napi_error(error: impl std::fmt::Display) -> Error {
     Error::from_reason(error.to_string())
 }
+
+#[napi(object)]
+pub struct EvaluationSpan {
+    pub start: u32,
+    pub end: u32,
+}
+
+#[napi(object)]
+pub struct EvaluatedString {
+    pub start: u32,
+    pub end: u32,
+    pub value: String,
+}
+
+#[napi]
+pub fn evaluate_strings(
+    source: String,
+    filename: String,
+    spans: Vec<EvaluationSpan>,
+) -> napi::Result<Vec<EvaluatedString>> {
+    let spans = spans
+        .into_iter()
+        .map(|span| (span.start, span.end))
+        .collect::<Vec<_>>();
+    formatjs_cli::static_evaluation::evaluate_strings(&source, &filename, &spans)
+        .map(|values| {
+            values
+                .into_iter()
+                .map(|value| EvaluatedString {
+                    start: value.start,
+                    end: value.end,
+                    value: value.value,
+                })
+                .collect()
+        })
+        .map_err(to_napi_error)
+}

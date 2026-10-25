@@ -1,5 +1,9 @@
 import {createRequire} from 'module'
 import {resolve} from 'node:path'
+import type {
+  EvaluationSpan,
+  EvaluatedString,
+} from '#packages/cli-lib/static-evaluation.js'
 
 const require = createRequire(import.meta.url)
 
@@ -73,6 +77,11 @@ export interface NativeExtractSourcesResult {
 }
 
 export interface NativeBinding {
+  evaluateStrings(
+    source: string,
+    filename: string,
+    spans: EvaluationSpan[]
+  ): EvaluatedString[]
   compile(inputFiles: string[], opts?: NativeCompileOptions): string
   compileMessages(
     messages: NativeCompileMessage[],

@@ -28,7 +28,8 @@
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./static-evaluation": "./static-evaluation.js"
   },
   "dependencies": {
     "@babel/types": "8",

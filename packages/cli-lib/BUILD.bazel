@@ -44,6 +44,7 @@ alias(
         ":native_test_linux_x64": "//crates/formatjs_cli_napi:release_node_linux_x64",
         ":native_test_windows_x64": "//crates/formatjs_cli_napi:release_node_win32_x64",
     }),
+    visibility = ["//visibility:public"],
 )
 
 formatjs_library(
@@ -68,6 +69,7 @@ formatjs_library(
         "main.ts",
         "native.ts",
         "pseudo_locale.ts",
+        "static-evaluation.ts",
         "svelte_extractor.ts",
         "types.ts",
         "verify/checkExtraKeys.ts",
@@ -82,6 +84,10 @@ formatjs_library(
     engines = {
         "node": ">= 22.12.0",
     },
+    entry_points = [
+        "index.ts",
+        "static-evaluation.ts",
+    ],
     homepage = "https://github.com/formatjs/formatjs",
     keywords = [
         "cli",
@@ -154,6 +160,7 @@ formatjs_library(
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
+        "./static-evaluation": "./static-evaluation.js",
     },
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc

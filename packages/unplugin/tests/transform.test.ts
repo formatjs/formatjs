@@ -41,6 +41,22 @@ describe('@formatjs/unplugin transform', () => {
         `const greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />`,
       ],
       [
+        'native template evaluation',
+        "const name = 'lo'; const greeting = `Hel${name}`; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'native conditional evaluation',
+        "const greeting = true ? 'Hello' : 'Wrong'; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'native operator evaluation',
+        "const count = 1 + 1; const greeting = count === 2 && 'Hello'; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'Unicode source offsets',
+        "const other = '😀é'; const greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
         'component constant',
         `function Greeting() { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
       ],
@@ -68,6 +84,11 @@ describe('@formatjs/unplugin transform', () => {
       const output = t(source, options)
       expect(output).toContain('id="Hello"')
       expect(output).toContain('defaultMessage={[{"type":0,"value":"Hello"}]}')
+    })
+
+    test('preserves TypeScript angle assertions during native evaluation', () => {
+      const source = `const greeting = <string>'Hello'; defineMessage({defaultMessage: greeting})`
+      expect(t(source, options, 'messages.ts')).toContain('id: "Hello"')
     })
 
     test.each([

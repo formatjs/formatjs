@@ -40,7 +40,8 @@
 - Single codebase for all bundlers via `unplugin` >=3.4.0; transform filters use its `TransformHookFilter` type
 - Replicates babel-plugin-formatjs + ts-transformer functionality without Babel/TS dependency
 - Unwraps parentheses and TypeScript wrappers around descriptors and declaration maps
-- Resolves preceding local `const` strings and aliases through a lexical scope prepass; parameters, imports, mutable bindings, and later declarations block outer values
+- Resolves preceding local `const` strings and aliases using OXC semantic analysis and constant evaluation through the existing `formatjs_cli_napi` binding; parameters, imports, mutable bindings, and later declarations block outer values
+- String literals stay in JavaScript; other descriptor expressions are evaluated once per file through `@formatjs/cli-lib/static-evaluation`. Requests/results use UTF-16 offsets, converted to OXC UTF-8 spans in Rust
 - Rewrites shorthand descriptor properties when inserting IDs or precompiled ASTs; imported, destructured, cyclic, and dynamic values remain unresolved
 - Separate entry points per bundler: `vite.ts`, `webpack.ts`, `rollup.ts`, `esbuild.ts`, `rspack.ts`
 

@@ -17,6 +17,8 @@ generate_package_json(
 vitest(
     name = "integration_test",
     srcs = glob(["*.ts"]),
+    data = ["//packages/cli-lib:native_test_binary"],
+    env = {"FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath //packages/cli-lib:native_test_binary)"},
     fixtures = glob(["fixtures/*"]),
     deps = [
         "//:node_modules/@formatjs/unplugin",

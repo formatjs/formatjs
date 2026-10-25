@@ -103,6 +103,9 @@ for (const source of [
   `function Greeting() { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
   `const greeting = 'Wrong'; function Greeting() { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
   `const greeting = 'Hello'; defineMessage({defaultMessage: greeting})`,
+  "const suffix = 'lo'; const greeting = `Hel${suffix}`; defineMessage({defaultMessage: greeting})",
+  `const greeting = true ? 'Hello' : 'Wrong'; defineMessage({defaultMessage: greeting})`,
+  `const count = 1 + 1; const greeting = count === 2 && 'Hello'; defineMessage({defaultMessage: greeting})`,
 ]) {
   test(`constant binding matches Babel: ${source}`, () => {
     const options = {

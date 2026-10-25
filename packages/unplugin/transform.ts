@@ -1,4 +1,5 @@
-import {parseSync, Visitor, visitorKeys} from 'oxc-parser'
+import {evaluateStrings} from '@formatjs/cli-lib/static-evaluation'
+import {parseSync, Visitor} from 'oxc-parser'
 import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
 import type {TransformHookFilter} from 'unplugin'
 import MagicString from 'magic-string'
@@ -50,187 +51,6 @@ interface DescriptorLocation {
   description?: ValueLocation
   /** Position right after the opening `{` or element name — stable insertion point for `id` */
   insertionPoint?: number
-}
-
-interface StaticBinding {
-  initializer?: any
-}
-
-interface LexicalScope {
-  parent?: LexicalScope
-  varScope: boolean
-  bindings: Map<string, StaticBinding>
-}
-
-function collectLexicalScopes(program: any): WeakMap<object, LexicalScope> {
-  const scopes = new WeakMap<object, LexicalScope>()
-  const writes: any[] = []
-  const createScope = (
-    parent?: LexicalScope,
-    varScope = false
-  ): LexicalScope => ({
-    parent,
-    varScope,
-    bindings: new Map(),
-  })
-
-  function visitPattern(pattern: any, visit: (name: string) => void): void {
-    if (!pattern) return
-    switch (pattern.type) {
-      case 'Identifier':
-        visit(pattern.name)
-        break
-      case 'AssignmentPattern':
-        visitPattern(pattern.left, visit)
-        break
-      case 'RestElement':
-        visitPattern(pattern.argument, visit)
-        break
-      case 'ArrayPattern':
-        for (const element of pattern.elements) visitPattern(element, visit)
-        break
-      case 'ObjectPattern':
-        for (const property of pattern.properties) {
-          visitPattern(
-            property.type === 'RestElement'
-              ? property.argument
-              : property.value,
-            visit
-          )
-        }
-        break
-      case 'TSParameterProperty':
-        visitPattern(pattern.parameter, visit)
-        break
-    }
-  }
-
-  function declare(pattern: any, scope: LexicalScope, initializer?: any): void {
-    visitPattern(pattern, name => {
-      const previous = scope.bindings.get(name)
-      scope.bindings.set(name, {
-        initializer: previous ? undefined : initializer,
-      })
-    })
-  }
-
-  function walk(node: any, parentScope: LexicalScope): void {
-    if (!node || typeof node.type !== 'string') return
-    let scope = parentScope
-    switch (node.type) {
-      case 'FunctionDeclaration':
-        declare(node.id, parentScope)
-        scope = createScope(parentScope, true)
-        for (const parameter of node.params) declare(parameter, scope)
-        break
-      case 'FunctionExpression':
-      case 'ArrowFunctionExpression':
-        scope = createScope(parentScope, true)
-        declare(node.id, scope)
-        for (const parameter of node.params) declare(parameter, scope)
-        break
-      case 'ClassDeclaration':
-        declare(node.id, parentScope)
-        scope = createScope(parentScope)
-        declare(node.id, scope)
-        break
-      case 'ClassExpression':
-        scope = createScope(parentScope)
-        declare(node.id, scope)
-        break
-      case 'BlockStatement':
-      case 'ForStatement':
-      case 'ForInStatement':
-      case 'ForOfStatement':
-        scope = createScope(parentScope)
-        break
-      case 'StaticBlock':
-      case 'TSModuleBlock':
-        scope = createScope(parentScope, true)
-        break
-      case 'CatchClause':
-        scope = createScope(parentScope)
-        declare(node.param, scope)
-        break
-      case 'VariableDeclaration': {
-        let target = scope
-        if (node.kind === 'var') {
-          while (!target.varScope && target.parent) target = target.parent
-        }
-        for (const declaration of node.declarations) {
-          declare(
-            declaration.id,
-            target,
-            node.kind === 'const' && declaration.id.type === 'Identifier'
-              ? declaration.init
-              : undefined
-          )
-        }
-        break
-      }
-      case 'ImportDeclaration':
-        if (node.importKind !== 'type') {
-          for (const specifier of node.specifiers) {
-            if (specifier.importKind !== 'type') declare(specifier.local, scope)
-          }
-        }
-        break
-      case 'TSEnumDeclaration':
-        declare(node.id, scope)
-        scope = createScope(scope)
-        for (const member of node.body.members) {
-          if (typeof member.id.value === 'string') {
-            scope.bindings.set(member.id.value, {})
-          } else {
-            declare(member.id, scope)
-          }
-        }
-        break
-      case 'TSImportEqualsDeclaration':
-      case 'TSModuleDeclaration':
-        declare(node.id, scope)
-        break
-      case 'AssignmentExpression':
-        writes.push(node.left)
-        break
-      case 'UpdateExpression':
-        writes.push(node.argument)
-        break
-    }
-    scopes.set(node, scope)
-    const switchScope =
-      node.type === 'SwitchStatement' ? createScope(scope) : undefined
-    for (const key of visitorKeys[node.type] ?? []) {
-      const childScope = key === 'cases' && switchScope ? switchScope : scope
-      const child = node[key]
-      if (Array.isArray(child)) {
-        for (const element of child) walk(element, childScope)
-      } else {
-        walk(child, childScope)
-      }
-    }
-    if (
-      (node.type === 'ForInStatement' || node.type === 'ForOfStatement') &&
-      node.left.type !== 'VariableDeclaration'
-    ) {
-      writes.push(node.left)
-    }
-  }
-
-  // Collect declarations before resolving references, including later shadowing bindings.
-  walk(program, createScope(undefined, true))
-  for (const target of writes) {
-    visitPattern(target, name => {
-      for (let scope = scopes.get(target); scope; scope = scope.parent) {
-        const binding = scope.bindings.get(name)
-        if (binding) {
-          binding.initializer = undefined
-          break
-        }
-      }
-    })
-  }
-  return scopes
 }
 
 function decodeJSXAttributeValue(value: string): string {
@@ -299,8 +119,7 @@ export function transform(
   const filename = id.replace(/[?#].*$/, '')
   const result = parseSync(filename, code, {sourceType: 'module'})
   const program = result.program
-  let scopes: WeakMap<object, LexicalScope> | undefined
-  const resolving = new Set<StaticBinding>()
+  let evaluatedStrings: Map<string, string> | undefined
 
   let s: MagicString | undefined
 
@@ -326,42 +145,41 @@ export function transform(
   function getStaticValue(node: any): string | undefined {
     node = unwrapTransparentTypeScriptExpression(node)
     if (!node) return undefined
-    if (node.type === 'Identifier') {
-      scopes ??= collectLexicalScopes(program)
-      for (let scope = scopes.get(node); scope; scope = scope.parent) {
-        const binding = scope.bindings.get(node.name)
-        if (!binding) continue
-        const initializer = binding.initializer
-        if (
-          !initializer ||
-          initializer.end > node.start ||
-          resolving.has(binding)
-        )
-          return undefined
-        resolving.add(binding)
-        const value = getStaticValue(initializer)
-        resolving.delete(binding)
-        return value
-      }
-      return undefined
-    }
     if (node.type === 'StringLiteral' || node.type === 'Literal') {
       if (typeof node.value === 'string') return node.value
       return undefined
     }
-    if (node.type === 'TemplateLiteral') {
-      if (node.quasis.length === 1 && node.expressions.length === 0) {
-        return node.quasis[0].value.cooked ?? node.quasis[0].value.raw
+    if (node.type === 'ArrayExpression' || node.type === 'ObjectExpression')
+      return undefined
+    if (!evaluatedStrings) {
+      const spans: {start: number; end: number}[] = []
+      const fields = new Set(['id', 'defaultMessage', 'description'])
+      const collect = (value: any) => {
+        value = unwrapTransparentTypeScriptExpression(value)
+        if (value) spans.push({start: value.start, end: value.end})
       }
-      return undefined
+      new Visitor({
+        Property(property: any) {
+          if (fields.has(property.key?.name ?? property.key?.value))
+            collect(property.value)
+        },
+        JSXAttribute(attribute: any) {
+          if (
+            fields.has(attribute.name?.name) &&
+            attribute.value?.type === 'JSXExpressionContainer'
+          ) {
+            collect(attribute.value.expression)
+          }
+        },
+      }).visit(program)
+      evaluatedStrings = new Map(
+        evaluateStrings(code, filename, spans).map(value => [
+          `${value.start}:${value.end}`,
+          value.value,
+        ])
+      )
     }
-    if (node.type === 'BinaryExpression' && node.operator === '+') {
-      const left = getStaticValue(node.left)
-      const right = getStaticValue(node.right)
-      if (left !== undefined && right !== undefined) return left + right
-      return undefined
-    }
-    return undefined
+    return evaluatedStrings.get(`${node.start}:${node.end}`)
   }
 
   function extractDescriptor(
