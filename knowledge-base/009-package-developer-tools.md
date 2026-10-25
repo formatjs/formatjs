@@ -40,6 +40,8 @@
 - Single codebase for all bundlers via `unplugin` >=3.4.0; transform filters use its `TransformHookFilter` type
 - Replicates babel-plugin-formatjs + ts-transformer functionality without Babel/TS dependency
 - Unwraps parentheses and TypeScript wrappers around descriptors and declaration maps
+- Resolves preceding local `const` strings and aliases through a lexical scope prepass; parameters, imports, mutable bindings, and later declarations block outer values
+- Rewrites shorthand descriptor properties when inserting IDs or precompiled ASTs; imported, destructured, cyclic, and dynamic values remain unresolved
 - Separate entry points per bundler: `vite.ts`, `webpack.ts`, `rollup.ts`, `esbuild.ts`, `rspack.ts`
 
 **Options:** `idInterpolationPattern`, `overrideIdFn`, `removeDefaultMessage`, `ast`, `preserveWhitespace`
