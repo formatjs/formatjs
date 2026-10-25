@@ -1,0 +1,29 @@
+{
+  "start": "2026-09-23",
+  "end": "2026-10-22",
+  "downloads": {
+    "react-intl": 11992790,
+    "@formatjs/intl": 13144541,
+    "eslint-plugin-formatjs": 2765585,
+    "vue-intl": 14268,
+    "@formatjs/svelte-intl": 2352,
+    "intl-messageformat": 81329523,
+    "@formatjs/icu-messageformat-parser": 92917223,
+    "@formatjs/icu-skeleton-parser": 92071812,
+    "@formatjs/intl-localematcher": 91547660,
+    "@formatjs/intl-numberformat": 2206350,
+    "@formatjs/intl-datetimeformat": 1409514,
+    "@formatjs/intl-pluralrules": 3589787,
+    "@formatjs/intl-locale": 3678854,
+    "@formatjs/intl-durationformat": 1412812,
+    "@formatjs/intl-segmenter": 446759,
+    "@formatjs/cli": 3092778,
+    "@formatjs/ts-transformer": 6515109,
+    "babel-plugin-formatjs": 936869,
+    "@formatjs/unplugin": 180350,
+    "formatjs_intl": 401,
+    "formatjs_icu_messageformat": 1497,
+    "formatjs_icu_messageformat_parser": 6116,
+    "py_intl": 25607
+  }
+}

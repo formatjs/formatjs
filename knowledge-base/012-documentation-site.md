@@ -54,6 +54,14 @@ build.
 
 ## Generated Documentation
 
+Homepage library download counts live in
+`docs/src/components/home/library-downloads.json`. Keep all registries on the
+same 30-day window, recorded as `start` and `end`. Use npm's downloads point API,
+sum crates.io's daily `version_downloads` and `meta.extra_downloads`, and sum
+PyPI Stats' daily `without_mirrors` counts. The homepage shows compact counts,
+exact totals on hover, and the snapshot dates. Refresh the snapshot when updating
+library statistics; it does not make browser requests to registries.
+
 `docs/BUILD.bazel` generates the best-practices guide and Skills pages directly
 from `.agents/skills/localization-review/SKILL.md` and
 `.agents/skills/translate/SKILL.md`. Generated MDX files are Bazel outputs,

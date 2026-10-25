@@ -1,4 +1,12 @@
 import * as React from 'react'
+import downloadStats from './library-downloads.json'
+
+const downloadCounts: Record<string, number> = downloadStats.downloads
+const compactNumber = new Intl.NumberFormat('en', {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+})
+const fullNumber = new Intl.NumberFormat('en')
 
 type Library = {name: string; note: string; href: string}
 
@@ -266,10 +274,14 @@ export default function LibrariesSection(): React.ReactNode {
           aria-labelledby={`tab-${group.id}`}
           className="grid content-start gap-1"
         >
+          <p className="m-0 pb-3 text-sm text-home-muted">
+            Downloads · last 30 days ({downloadStats.start}–{downloadStats.end})
+          </p>
           {group.items.map((item, i) => (
             <a
               key={`${group.id}-${item.name}`}
               href={item.href}
+              aria-label={`${item.name}: ${item.note}. ${fullNumber.format(downloadCounts[item.name])} downloads in the last 30 days on ${registry(item.href)}.`}
               style={{'--i': i} as React.CSSProperties}
               className={`home-pane-in ${band} ${i % 2 ? 'bg-home-band' : 'bg-home-surface'} hover:bg-home-raised`}
             >
@@ -279,8 +291,18 @@ export default function LibrariesSection(): React.ReactNode {
                   {item.note}
                 </span>
               </span>
-              <span className="text-sm text-home-muted">
-                {registry(item.href)}
+              <span
+                className="text-sm text-home-muted sm:text-right"
+                title={`${fullNumber.format(downloadCounts[item.name])} downloads in the last 30 days (${downloadStats.start}–${downloadStats.end})`}
+              >
+                <span className="block font-medium text-home-ink">
+                  {compactNumber.format(downloadCounts[item.name])}
+                  <span className="sr-only">
+                    {' '}
+                    downloads in the last 30 days
+                  </span>
+                </span>
+                <span>{registry(item.href)}</span>
               </span>
             </a>
           ))}
