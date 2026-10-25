@@ -30,6 +30,16 @@ export function Head(): React.ReactNode {
         content="Industry-standard i18n libraries for JavaScript. Built on ICU Message syntax."
       />
       <link rel="canonical" href="https://formatjs.io/" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap"
+      />
     </>
   )
 }

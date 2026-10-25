@@ -1,45 +1,45 @@
 import * as React from 'react'
 
+const LOGOS = [
+  {src: '/img/yahoo.svg', alt: 'Yahoo', width: 106, height: 29},
+  {src: '/img/dropbox.svg', alt: 'Dropbox', width: 142, height: 28},
+  {src: '/img/tinder.svg', alt: 'Tinder', width: 118, height: 28},
+  {src: '/img/ethereum.svg', alt: 'Ethereum', width: 36, height: 36},
+  {src: '/img/mozilla.svg', alt: 'Mozilla', width: 105, height: 30},
+  {src: '/img/coinbase_white.svg', alt: 'Coinbase', width: 157, height: 28},
+]
+
 export default function TrustedBySection(): React.ReactNode {
   return (
-    <div className="bg-gray-900 py-8 md:py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-xl md:text-2xl font-semibold text-center mb-8">
-          Trusted by industry leaders.
-        </h2>
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-          <img
-            src="/img/yahoo.svg"
-            alt="Yahoo"
-            className="h-[30px] md:h-10 brightness-75"
-          />
-          <img
-            src="/img/dropbox.svg"
-            alt="Dropbox"
-            className="h-[30px] md:h-10 brightness-75"
-          />
-          <img
-            src="/img/tinder.svg"
-            alt="Tinder"
-            className="h-[30px] md:h-10 brightness-75"
-          />
-          <img
-            src="/img/ethereum.svg"
-            alt="Ethereum"
-            className="h-[30px] md:h-10 brightness-75"
-          />
-          <img
-            src="/img/mozilla.svg"
-            alt="Mozilla"
-            className="h-[30px] md:h-10 brightness-75"
-          />
-          <img
-            src="/img/coinbase_white.svg"
-            alt="Coinbase"
-            className="h-[30px] md:h-10"
-          />
-        </div>
-      </div>
-    </div>
+    <section
+      aria-labelledby="proof-title"
+      className="flex flex-col items-start gap-8 px-[clamp(20px,2.2vw,32px)] py-[100px] sm:py-[140px] lg:flex-row lg:items-center lg:gap-12"
+    >
+      <h2
+        id="proof-title"
+        data-reveal
+        className="m-0 text-lg font-medium whitespace-nowrap"
+      >
+        In production at
+      </h2>
+      <ul
+        data-reveal
+        style={{'--d': '80ms'} as React.CSSProperties}
+        className="m-0 grid w-full list-none grid-cols-2 items-center gap-x-8 gap-y-9 p-0 sm:flex sm:flex-1 sm:flex-wrap sm:justify-between"
+      >
+        {LOGOS.map(logo => (
+          <li key={logo.alt}>
+            <img
+              src={logo.src}
+              alt={logo.alt}
+              width={logo.width}
+              height={logo.height}
+              loading="lazy"
+              className={`w-auto opacity-95 brightness-0 invert-[.95] ${logo.width === logo.height ? 'h-9' : 'h-[26px] sm:h-7'}`}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }

@@ -21,6 +21,17 @@
   --color-card-foreground: #fafafa;
   --color-popover: #18181b;
   --color-popover-foreground: #fafafa;
+
+  /* Homepage: near-black surfaces, bronze secondary accent, Jost display */
+  --color-home-bg: #111111;
+  --color-home-surface: #1c1c1c;
+  --color-home-band: #171717;
+  --color-home-raised: #262626;
+  --color-home-ink: #f2f2f2;
+  --color-home-muted: #9a9a9a;
+  --color-brand-hover: #7d47a8;
+  --color-bronze: #a08672;
+  --font-display: 'Jost', ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
@@ -68,32 +79,4 @@ h4:hover .header-link,
 h5:hover .header-link,
 h6:hover .header-link {
   visibility: visible;
-}
-
-/* Hero section animations */
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
 }
