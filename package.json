@@ -134,7 +134,7 @@
     "fast-xml-parser": "^5.0.9",
     "fs-extra": "^11.3.3",
     "gray-matter": "^4.0.3",
-    "happy-dom": "^20.1.0",
+    "happy-dom": "^21.0.0",
     "http-server": "^14.1.1",
     "intl-messageformat": "workspace:*",
     "json-stable-stringify": "^1.3.0",
