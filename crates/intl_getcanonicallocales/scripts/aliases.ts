@@ -19,6 +19,8 @@ interface LanguageId {
   variants: string[]
 }
 
+// UTS #35 preprocessing 1–4: parse alias types/replacements as Unicode language IDs.
+// https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4175-L4182
 function parseLanguageId(value: string): LanguageId | undefined {
   const parts = value.split('-')
   const language = parts.shift()!.toLowerCase()
@@ -43,11 +45,14 @@ function parseLanguageId(value: string): LanguageId | undefined {
 }
 
 function main(args: Args) {
+  // Preprocessing 1: cldr-core JSON already supplies hyphenated language IDs.
   const languageRules = Object.entries(
     aliases.supplemental.metadata.alias.languageAlias
   )
     .flatMap(([source, data]) => {
       const from = parseLanguageId(source)
+      // Preprocessing 2–4: legacy input is rejected by ECMA-402; discard invalid types
+      // and extract the remaining constraints (und contributes no language constraint).
       if (!from) return []
       const to = parseLanguageId(data._replacement)
       if (!to)
@@ -63,20 +68,27 @@ function main(args: Args) {
       return [{from, replacement: data._replacement, fields, source}]
     })
     .sort((left, right) => {
+      // Preprocessing 5.1: more constrained fields sort first.
+      // https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4184-L4189
       const score =
         right.fields.reduce((a, b) => a + b, 0) -
         left.fields.reduce((a, b) => a + b, 0)
       if (score) return score
+      // Preprocessing 5.2: break ties by language, then script, region, variants.
+      // https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4190-L4204
       for (let i = 0; i < left.fields.length; i++) {
         if (!!left.fields[i] !== !!right.fields[i])
           return right.fields[i] ? 1 : -1
       }
+      // Preprocessing 5.3 / 6: spelling breaks remaining ties; retain this rule order.
+      // https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4205-L4221
       return left.source < right.source
         ? -1
         : left.source > right.source
           ? 1
           : 0
     })
+  // Group lookup is an optimization; runtime matching keeps the sorted rule order.
   const languageGroups = new Map<string, string[]>()
   for (const {from, replacement, fields} of languageRules) {
     const rules = languageGroups.get(from.language) || []
@@ -108,6 +120,9 @@ function main(args: Args) {
       for (const [key, types] of Object.entries(keys)) {
         for (const [type, metadata] of Object.entries(types)) {
           if (typeof metadata !== 'object') continue
+          // Processing LocaleIds 2: preferred names and valid BCP 47 type aliases map
+          // complete u/t values; grammar-invalid aliases cannot occur in accepted input.
+          // https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4262-L4266
           const canonical = metadata._preferred || type
           for (const alias of [type, ...(metadata._alias || '').split(' ')]) {
             const normalized = alias.toLowerCase()
@@ -124,6 +139,8 @@ function main(args: Args) {
       }
     }
   }
+  // Processing LocaleIds 3: first subdivision replacement; territory codes gain zzzz.
+  // https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4267-L4271
   const subdivisions = Object.entries(
     aliases.supplemental.metadata.alias.subdivisionAlias
   )
@@ -133,6 +150,9 @@ function main(args: Args) {
       const replacement = first.length === 2 ? first + 'zzzz' : first
       return `        ${JSON.stringify(alias)} => Some(${JSON.stringify(replacement)}),`
     })
+  // UTS #35 territory replacement: long unregistered languages have no likely region,
+  // so their ICU compatibility path needs the first candidate rather than und inference.
+  // https://github.com/unicode-org/cldr/blob/11299982335beb974c1c63c45265184e759c0f41/docs/ldml/tr35.md#L4128-L4149
   const territories = Object.entries(
     aliases.supplemental.metadata.alias.territoryAlias
   )

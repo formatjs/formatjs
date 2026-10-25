@@ -2,8 +2,8 @@
 
 ## Rust and Hermes
 
-[SPEC.md](../crates/intl_getcanonicallocales/SPEC.md) maps every ECMA-402
-algorithm step to code and tests using pinned specification source lines.
+Inline Rust and JavaScript comments map ECMA-402 algorithm steps to their
+implementation using pinned specification source lines.
 
 `crates/intl_getcanonicallocales` provides a Rust canonicalizer backed by ICU4X.
 It validates ECMA-402 language tags before canonicalization. CLDR BCP 47

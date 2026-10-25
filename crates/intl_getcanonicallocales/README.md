@@ -1,6 +1,7 @@
 # Rust locale canonicalization
 
-[ECMA-402 step-by-step implementation map](./SPEC.md).
+ECMA-402 steps and pinned specification links sit beside the implementing Rust
+and JavaScript code.
 
 `canonicalize_locale` validates ECMA-402 locale-tag grammar and applies ICU4X
 language, script, region, and variant aliases. Unicode/transformed extension
