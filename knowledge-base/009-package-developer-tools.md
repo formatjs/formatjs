@@ -40,6 +40,9 @@
 - Single codebase for all bundlers via `unplugin` >=3.4.0; transform filters use its `TransformHookFilter` type
 - Replicates babel-plugin-formatjs + ts-transformer functionality without Babel/TS dependency
 - Unwraps parentheses and TypeScript wrappers around descriptors and declaration maps
+- Resolves preceding local `const` strings and aliases using OXC semantic analysis and constant evaluation through the existing `formatjs_cli_napi` binding; parameters, imports, mutable bindings, and later declarations block outer values
+- String literals stay in JavaScript; other descriptor expressions are evaluated once per file through `@formatjs/cli-lib/static-evaluation`. Requests/results use UTF-16 offsets, converted to OXC UTF-8 spans in Rust
+- Rewrites shorthand descriptor properties when inserting IDs or precompiled ASTs; imported, destructured, cyclic, and dynamic values remain unresolved
 - Separate entry points per bundler: `vite.ts`, `webpack.ts`, `rollup.ts`, `esbuild.ts`, `rspack.ts`
 
 **Options:** `idInterpolationPattern`, `overrideIdFn`, `removeDefaultMessage`, `ast`, `preserveWhitespace`
@@ -113,7 +116,9 @@ overrides retain inherited options. ESLint config-merging regressions live in
   native results.
 
 `cli-lib` has no runtime dependency on TypeScript or `@formatjs/ts-transformer`.
-The native binding is required for extraction and compilation.
+The native binding is required for extraction and compilation. Bazel tests supply
+`packages/cli-lib/formatjs_cli_napi.node` as a runfile; the loader resolves it with
+`@bazel/runfiles`. Published packages load the matching native npm package.
 
 Node extraction limits concurrent file reads using `os.availableParallelism()`
 or a positive integer `RAYON_NUM_THREADS`, matching the Rust worker policy.

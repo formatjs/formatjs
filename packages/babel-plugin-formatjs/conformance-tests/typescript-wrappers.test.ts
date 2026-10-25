@@ -1,5 +1,6 @@
 import {transformSync} from '@babel/core'
 import {Runfiles} from '@bazel/runfiles'
+import {createHash} from 'node:crypto'
 import {transform} from '@formatjs/unplugin/transform'
 import babelPlugin from 'babel-plugin-formatjs'
 import {execFile as nodeExecFile} from 'node:child_process'
@@ -95,4 +96,50 @@ for (const {name, wrap} of wrappers) {
       )
     })
   }
+}
+
+for (const source of [
+  `const greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />`,
+  `function Greeting() { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
+  `const greeting = 'Wrong'; function Greeting() { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
+  `const greeting = 'Hello'; defineMessage({defaultMessage: greeting})`,
+  "const suffix = 'lo'; const greeting = `Hel${suffix}`; defineMessage({defaultMessage: greeting})",
+  `const greeting = true ? 'Hello' : 'Wrong'; defineMessage({defaultMessage: greeting})`,
+  `const count = 1 + 1; const greeting = count === 2 && 'Hello'; defineMessage({defaultMessage: greeting})`,
+]) {
+  test(`constant binding matches Babel: ${source}`, () => {
+    const options = {
+      ast: true,
+      preserveWhitespace: true,
+      idInterpolationPattern: '[sha256:contenthash:hex:6]',
+    }
+    const babel = transformSync(source, {
+      filename: 'constant.tsx',
+      configFile: false,
+      babelrc: false,
+      parserOpts: {plugins: ['typescript', 'jsx']},
+      plugins: [
+        [
+          babelPlugin,
+          {
+            ...options,
+            overrideIdFn: (
+              _id: string | undefined,
+              message: string | undefined
+            ) =>
+              createHash('sha256')
+                .update(message ?? '')
+                .digest('hex')
+                .slice(0, 6),
+          },
+        ],
+      ],
+    })!
+    const unplugin = transform(source, 'constant.tsx', options)!
+    expect(unplugin).toBeDefined()
+    for (const code of [babel.code!, unplugin.code]) {
+      expect(code).toMatch(/\bid(?::\s*|=)["']185f8d["']/)
+      expect(code).toMatch(/defaultMessage(?::\s*|=\{)\[/)
+    }
+  })
 }

@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@bazel/runfiles": "6",
+    "@formatjs/cli-lib": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@types/node": "22 || 24",

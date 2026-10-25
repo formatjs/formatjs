@@ -198,6 +198,15 @@ for (const {name, build} of bundlers) {
       expect(code).toMatchSnapshot()
     })
 
+    test('compiles a component-local constant (#7682)', async () => {
+      const code = await build('constants.ts', {
+        ast: true,
+        idInterpolationPattern: '[sha256:contenthash:hex:6]',
+      })
+      expect(code).toMatch(/id:\s*["']185f8d["']/)
+      expect(code).toMatch(/defaultMessage:\s*\[/)
+    })
+
     test('overrideIdFn option', async () => {
       const code = await build('formatMessage.js', {
         overrideIdFn: (_id, defaultMessage, _description, _filePath) =>

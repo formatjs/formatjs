@@ -1,3 +1,4 @@
+import {evaluateStrings} from '@formatjs/cli-lib/static-evaluation'
 import {parseSync, Visitor} from 'oxc-parser'
 import type {CallExpression, JSXOpeningElement} from 'oxc-parser'
 import type {TransformHookFilter} from 'unplugin'
@@ -36,10 +37,18 @@ interface MessageDescriptor {
   description?: string
 }
 
+interface ValueLocation {
+  start: number
+  end: number
+  value: string
+  propertyStart?: number
+  shorthand?: string
+}
+
 interface DescriptorLocation {
-  id?: {start: number; end: number; value: string}
-  defaultMessage?: {start: number; end: number; value: string}
-  description?: {start: number; end: number; value: string}
+  id?: ValueLocation
+  defaultMessage?: ValueLocation
+  description?: ValueLocation
   /** Position right after the opening `{` or element name — stable insertion point for `id` */
   insertionPoint?: number
 }
@@ -110,6 +119,7 @@ export function transform(
   const filename = id.replace(/[?#].*$/, '')
   const result = parseSync(filename, code, {sourceType: 'module'})
   const program = result.program
+  let evaluatedStrings: Map<string, string> | undefined
 
   let s: MagicString | undefined
 
@@ -139,19 +149,37 @@ export function transform(
       if (typeof node.value === 'string') return node.value
       return undefined
     }
-    if (node.type === 'TemplateLiteral') {
-      if (node.quasis.length === 1 && node.expressions.length === 0) {
-        return node.quasis[0].value.cooked ?? node.quasis[0].value.raw
+    if (node.type === 'ArrayExpression' || node.type === 'ObjectExpression')
+      return undefined
+    if (!evaluatedStrings) {
+      const spans: {start: number; end: number}[] = []
+      const fields = new Set(['id', 'defaultMessage', 'description'])
+      const collect = (value: any) => {
+        value = unwrapTransparentTypeScriptExpression(value)
+        if (value) spans.push({start: value.start, end: value.end})
       }
-      return undefined
+      new Visitor({
+        Property(property: any) {
+          if (fields.has(property.key?.name ?? property.key?.value))
+            collect(property.value)
+        },
+        JSXAttribute(attribute: any) {
+          if (
+            fields.has(attribute.name?.name) &&
+            attribute.value?.type === 'JSXExpressionContainer'
+          ) {
+            collect(attribute.value.expression)
+          }
+        },
+      }).visit(program)
+      evaluatedStrings = new Map(
+        evaluateStrings(code, filename, spans).map(value => [
+          `${value.start}:${value.end}`,
+          value.value,
+        ])
+      )
     }
-    if (node.type === 'BinaryExpression' && node.operator === '+') {
-      const left = getStaticValue(node.left)
-      const right = getStaticValue(node.right)
-      if (left !== undefined && right !== undefined) return left + right
-      return undefined
-    }
-    return undefined
+    return evaluatedStrings.get(`${node.start}:${node.end}`)
   }
 
   function extractDescriptor(
@@ -188,6 +216,8 @@ export function transform(
         start: prop.value.start,
         end: prop.value.end,
         value: val,
+        propertyStart: prop.start,
+        shorthand: prop.shorthand ? name : undefined,
       }
     }
 
@@ -287,7 +317,11 @@ export function transform(
     if (newId) {
       if (locations.id) {
         // Replace existing id value
-        s.overwrite(locations.id.start, locations.id.end, JSON.stringify(newId))
+        s.overwrite(
+          locations.id.start,
+          locations.id.end,
+          `${locations.id.shorthand ? 'id: ' : ''}${JSON.stringify(newId)}`
+        )
       } else if (locations.insertionPoint != null) {
         // Insert id at a stable position (after `{` for objects, before first attr for JSX)
         if (isJSX) {
@@ -327,7 +361,9 @@ export function transform(
           s.overwrite(
             locations.defaultMessage.start,
             locations.defaultMessage.end,
-            isJSX ? `{${jsonStr}}` : jsonStr
+            isJSX
+              ? `{${jsonStr}}`
+              : `${locations.defaultMessage.shorthand ? 'defaultMessage: ' : ''}${jsonStr}`
           )
         } else if (
           !isJSX &&
@@ -337,47 +373,16 @@ export function transform(
           s.overwrite(
             locations.defaultMessage.start,
             locations.defaultMessage.end,
-            JSON.stringify(defaultMessage)
+            `${locations.defaultMessage.shorthand ? 'defaultMessage: ' : ''}${JSON.stringify(defaultMessage)}`
           )
         }
       }
     }
   }
 
-  function removeObjectProperty(loc: {start: number; end: number}): void {
+  function removeObjectProperty(loc: ValueLocation): void {
     if (!s) return
-    // Find the property boundaries: walk back to find key start, walk forward past trailing comma
-    let propStart = loc.start
-    // Walk backward past value, colon, key, and any whitespace
-    let i = loc.start - 1
-    while (
-      i >= 0 &&
-      (code[i] === ' ' ||
-        code[i] === '\t' ||
-        code[i] === '\n' ||
-        code[i] === '\r')
-    )
-      i--
-    // Skip colon
-    if (i >= 0 && code[i] === ':') i--
-    while (
-      i >= 0 &&
-      (code[i] === ' ' ||
-        code[i] === '\t' ||
-        code[i] === '\n' ||
-        code[i] === '\r')
-    )
-      i--
-    // Walk backward through key (identifier or string literal)
-    if (i >= 0 && (code[i] === '"' || code[i] === "'")) {
-      const quote = code[i]
-      i--
-      while (i >= 0 && code[i] !== quote) i--
-      if (i >= 0) i-- // skip opening quote
-    } else {
-      while (i >= 0 && /[a-zA-Z0-9_$]/.test(code[i])) i--
-    }
-    propStart = i + 1
+    let propStart = loc.propertyStart ?? loc.start
 
     let propEnd = loc.end
     // Walk forward past trailing comma and whitespace

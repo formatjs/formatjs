@@ -8,6 +8,25 @@ load("//tools:index.bzl", "ts_binary")
 load("//tools:package_json.bzl", "formatjs_package_json")
 load("//tools:vitest.bzl", "vitest")
 
+js_test(
+    name = "package_sourcemaps_test",
+    size = "small",
+    args = [
+        "$(rootpath //packages/fast-memoize:pkg)",
+        "$(rootpath //packages/icu-messageformat-parser:pkg)",
+        "$(rootpath //packages/icu-skeleton-parser:pkg)",
+        "$(rootpath //packages/intl-messageformat:pkg)",
+    ],
+    data = [
+        "//:node_modules/rolldown",
+        "//packages/fast-memoize:pkg",
+        "//packages/icu-messageformat-parser:pkg",
+        "//packages/icu-skeleton-parser:pkg",
+        "//packages/intl-messageformat:pkg",
+    ],
+    entry_point = "package-sourcemaps.test.ts",
+)
+
 exports_files([
     "ast_grep_test.sh",
     "supported-locales-gen.ts",

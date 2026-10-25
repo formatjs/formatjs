@@ -28,10 +28,12 @@
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./static-evaluation": "./static-evaluation.js"
   },
   "dependencies": {
     "@babel/types": "8",
+    "@bazel/runfiles": "6",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/fs-extra": "11",
     "@types/node": "22 || 24",

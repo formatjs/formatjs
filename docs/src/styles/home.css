@@ -1,0 +1,162 @@
+/* Homepage-only styles that utilities cannot express cleanly: form control
+   parts, scroll reveals, masked headline lines and keyframes. */
+
+.home {
+  --home-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home ::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.home :focus-visible {
+  outline: 3px solid var(--color-bronze);
+  outline-offset: 3px;
+}
+
+.home p code {
+  background: var(--color-home-raised);
+  padding: 0.05em 0.3em;
+}
+
+/* Hero count slider */
+.home-range {
+  appearance: none;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.home-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: #444;
+}
+
+.home-range::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: #444;
+}
+
+.home-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: var(--color-home-ink);
+  transition: transform 0.15s;
+}
+
+.home-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-home-ink);
+}
+
+.home-range:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+/* Masked headline lines */
+.home-line {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0 0.1em;
+  margin: -0.06em 0 -0.1em;
+}
+
+.home-line > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.home-pane-in {
+  animation: home-pane-in 0.45s var(--home-ease) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-line > span {
+    transform: translateY(105%);
+    animation: home-line-up 0.9s var(--home-ease) forwards;
+    animation-delay: calc(var(--i, 0) * 110ms + 60ms);
+  }
+
+  .home-load {
+    opacity: 0;
+    animation: home-fade-up 0.6s var(--home-ease) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .home-chip-in {
+    animation: home-chip-in 0.7s var(--home-ease) both;
+    animation-delay: 300ms;
+  }
+
+  /* Only hide reveal targets when scripts can reveal them again. */
+  @media (scripting: enabled) {
+    .home [data-reveal] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 0.7s var(--home-ease),
+        transform 0.7s var(--home-ease);
+      transition-delay: var(--d, 0ms);
+    }
+
+    .home [data-reveal].is-in {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-pane-in {
+    animation: none;
+  }
+}
+
+@keyframes home-line-up {
+  to {
+    transform: none;
+  }
+}
+
+@keyframes home-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes home-chip-in {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes home-pane-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

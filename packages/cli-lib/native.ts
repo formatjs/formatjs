@@ -1,5 +1,9 @@
 import {createRequire} from 'module'
-import {resolve} from 'node:path'
+import {Runfiles} from '@bazel/runfiles'
+import type {
+  EvaluationSpan,
+  EvaluatedString,
+} from '#packages/cli-lib/static-evaluation.js'
 
 const require = createRequire(import.meta.url)
 
@@ -73,6 +77,11 @@ export interface NativeExtractSourcesResult {
 }
 
 export interface NativeBinding {
+  evaluateStrings(
+    source: string,
+    filename: string,
+    spans: EvaluationSpan[]
+  ): EvaluatedString[]
   compile(inputFiles: string[], opts?: NativeCompileOptions): string
   compileMessages(
     messages: NativeCompileMessage[],
@@ -125,12 +134,25 @@ export function loadNative(): NativeBinding {
     throw new Error('Native @formatjs/cli-lib binding is unavailable')
   }
 
-  const overridePath = process.env.FORMATJS_CLI_LIB_NATIVE_PATH
+  let runfilesPath: string | undefined
+  if (
+    process.env.RUNFILES_DIR ||
+    process.env.RUNFILES_MANIFEST_FILE ||
+    process.env.RUNFILES
+  ) {
+    try {
+      runfilesPath = new Runfiles().resolveWorkspaceRelative(
+        'packages/cli-lib/formatjs_cli_napi.node'
+      )
+    } catch {
+      // Published packages use platform-specific npm packages.
+    }
+  }
   const packageCandidates = getNativePackageCandidates()
   const installedPackageCandidates =
     getInstalledNativePackageCandidates(packageCandidates)
   const candidates = [
-    overridePath ? resolve(overridePath) : undefined,
+    runfilesPath,
     ...(installedPackageCandidates.length
       ? installedPackageCandidates
       : packageCandidates),
