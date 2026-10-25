@@ -1,111 +1,82 @@
 import * as React from 'react'
-import {Menu as MenuIcon, ExternalLink} from 'lucide-react'
+import {Menu as MenuIcon} from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import {Button} from '../ui/button'
 import {SearchBar} from '../SearchBar'
 
 const navLinks = [
   {label: 'Docs', href: '/docs/getting-started/installation'},
-  {label: 'API References', href: '/docs/react-intl'},
-  {label: 'Polyfills', href: '/docs/polyfills'},
-  {label: 'Tooling', href: '/docs/tooling/cli'},
+  {label: 'Libraries', href: '#libraries'},
+  {label: 'ICU syntax', href: '/docs/core-concepts/icu-syntax'},
+  {label: 'GitHub', href: 'https://github.com/formatjs/formatjs'},
 ]
 
 export default function HomeHeader(): React.ReactNode {
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-purple-600/90 via-purple-700/90 to-indigo-700/90 backdrop-blur-lg border-b border-white/10 shadow-xl">
-      <div className="max-w-7xl mx-auto flex items-center h-16 px-4 lg:px-6">
-        {/* Logo */}
-        <a href="/" className="flex items-center gap-3 mr-8 group">
-          <div className="relative">
-            <div className="absolute inset-0 bg-white/20 rounded-lg blur-md group-hover:bg-white/30 transition-all" />
-            <img
-              src="/img/logo-icon.svg"
-              alt="FormatJS"
-              className="relative h-8 w-8 transition-transform group-hover:scale-110"
-            />
-          </div>
-          <span className="hidden sm:block text-xl font-bold text-white tracking-tight">
-            FormatJS
-          </span>
-        </a>
+    <header className="absolute inset-x-0 top-0 z-20 flex items-center gap-4 px-[clamp(20px,2.2vw,32px)] py-4 md:gap-8 md:py-5">
+      <a
+        href="/"
+        aria-label="FormatJS home"
+        className="inline-flex items-center gap-2.5 text-lg font-bold tracking-tight no-underline"
+      >
+        <img src="/img/logo-icon.svg" alt="" width={26} height={28} />
+        <span>FormatJS</span>
+      </a>
 
-        {/* Mobile Menu */}
-        <div className="flex flex-1 md:hidden">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="navigation menu"
-                className="text-white hover:bg-white/10"
-              >
-                <MenuIcon className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="w-56 bg-gray-900 border-gray-800"
+      <nav
+        aria-label="Primary"
+        className="ml-auto hidden items-center gap-7 lg:flex"
+      >
+        {navLinks.map(link => (
+          <a
+            key={link.label}
+            href={link.href}
+            className="font-medium no-underline hover:underline"
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <div className="ml-auto flex items-center gap-3 lg:ml-0">
+        <SearchBar />
+        <a
+          href="/docs/getting-started/installation"
+          className="hidden min-h-12 items-center bg-primary px-5 font-medium text-white no-underline transition-colors hover:bg-brand-hover sm:inline-flex"
+        >
+          Installation guide
+        </a>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              aria-label="Navigation menu"
+              className="inline-flex size-11 items-center justify-center bg-home-raised lg:hidden"
             >
-              {navLinks.map(link => (
-                <DropdownMenuItem key={link.label} asChild>
-                  <a
-                    href={link.href}
-                    className="cursor-pointer text-gray-100 hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuItem asChild>
-                <a
-                  href="https://github.com/formatjs/formatjs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 cursor-pointer text-gray-100 hover:text-white"
-                >
-                  GitHub
-                  <ExternalLink className="h-4 w-4" />
+              <MenuIcon className="size-5" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="w-56 border-home-raised bg-home-surface"
+          >
+            {[
+              ...navLinks,
+              {label: 'Installation guide', href: navLinks[0].href},
+            ].map(link => (
+              <DropdownMenuItem key={link.label} asChild>
+                <a href={link.href} className="cursor-pointer text-home-ink">
+                  {link.label}
                 </a>
               </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex flex-1 gap-1 items-center">
-          {navLinks.map(link => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="px-4 py-2 text-sm font-medium text-white/90 no-underline rounded-lg transition-all hover:bg-white/10 hover:text-white cursor-pointer"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
-        {/* Search */}
-        <div className="mr-3 flex-1 sm:flex-initial">
-          <SearchBar />
-        </div>
-
-        {/* GitHub Link */}
-        <a
-          href="https://github.com/formatjs/formatjs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white/90 no-underline rounded-lg transition-all hover:bg-white/10 hover:text-white group"
-        >
-          <span>GitHub</span>
-          <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </a>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-    </nav>
+    </header>
   )
 }

@@ -1,262 +1,277 @@
 import * as React from 'react'
 import {
-  defineMessage,
+  defineMessages,
+  FormattedMessage,
+  FormattedNumber,
   IntlProvider,
-  type MessageDescriptor,
-  useIntl,
+  type NoMessageValues,
 } from 'react-intl'
-import {Button} from '../ui/button'
-import {Input} from '../ui/input'
 
-const LOCALES = [
-  {code: 'en-US', label: 'English (US)'},
-  {code: 'es-AR', label: 'Español (AR)'},
-  {code: 'fr-FR', label: 'Français'},
-  {code: 'de-DE', label: 'Deutsch'},
-  {code: 'ja-JP', label: '日本語'},
-  {code: 'pt-BR', label: 'Português (BR)'},
-  {code: 'ko-KR', label: '한국어'},
-]
-
-const messages = {
-  'en-US': {
-    photoCount:
-      '{name} took {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}} on {takenDate, date, long}.',
+// The headline is an ICU message. Its arguments, count and locale, are the
+// controls placed around it.
+const messages = defineMessages<{
+  readonly ship: NoMessageValues
+  readonly count: {readonly count: number | bigint}
+}>({
+  ship: {
+    id: 'hero.ship',
+    defaultMessage: 'Ship in',
+    description: 'Homepage headline, first line',
   },
-  'es-AR': {
-    photoCount:
-      '{name} {numPhotos, plural, =0 {no sacó fotos} =1 {sacó una foto} other {sacó # fotos}} el {takenDate, date, long}.',
+  count: {
+    id: 'hero.count',
+    defaultMessage:
+      '{count, plural, =0 {no languages} one {# language} other {# languages}}',
+    description: 'Homepage headline, second line: number of languages',
   },
-  'fr-FR': {
-    photoCount:
-      '{name} a pris {numPhotos, plural, =0 {aucune photo} =1 {une photo} other {# photos}} le {takenDate, date, long}.',
-  },
-  'de-DE': {
-    photoCount:
-      '{name} hat am {takenDate, date, long} {numPhotos, plural, =0 {keine Fotos} =1 {ein Foto} other {# Fotos}} aufgenommen.',
-  },
-  'ja-JP': {
-    photoCount:
-      '{name}は{takenDate, date, long}に{numPhotos, plural, =0 {写真を撮りませんでした} other {#枚の写真を撮りました}}。',
-  },
-  'pt-BR': {
-    photoCount:
-      '{name} tirou {numPhotos, plural, =0 {nenhuma foto} =1 {uma foto} other {# fotos}} em {takenDate, date, long}.',
-  },
-  'ko-KR': {
-    photoCount:
-      '{name} 님이 {takenDate, date, long}에 {numPhotos, plural, =0 {사진을 찍지 않았습니다} =1 {사진 한 장을 찍었습니다} other {사진 #장을 찍었습니다}}.',
-  },
-}
-
-const MESSAGE: MessageDescriptor = defineMessage({
-  id: 'photoCount',
-  defaultMessage:
-    '{name} took {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}} on {takenDate, date, long}.',
 })
 
-function ExampleOutput({
-  values,
-}: {
-  values: Record<string, any>
-}): React.ReactNode {
-  const intl = useIntl()
-  return (
-    <p className="text-lg font-medium text-gray-800">
-      {intl.formatMessage(MESSAGE, values)}
-    </p>
-  )
+type Branch = [selector: string, text: string]
+
+const HERO_LOCALES: Record<
+  string,
+  {ship: string; branches: Branch[]; dir?: 'rtl'}
+> = {
+  en: {
+    ship: 'Ship in',
+    branches: [
+      ['=0', 'no languages'],
+      ['one', '# language'],
+      ['other', '# languages'],
+    ],
+  },
+  fr: {
+    ship: 'Publiez en',
+    branches: [
+      ['one', '# langue'],
+      ['other', '# langues'],
+    ],
+  },
+  de: {
+    ship: 'Bereit für',
+    branches: [
+      ['one', '# Sprache'],
+      ['other', '# Sprachen'],
+    ],
+  },
+  pl: {
+    ship: 'Gotowe na',
+    branches: [
+      ['one', '# język'],
+      ['few', '# języki'],
+      ['many', '# języków'],
+      ['other', '# języka'],
+    ],
+  },
+  ar: {
+    ship: 'انشر تطبيقك',
+    dir: 'rtl',
+    branches: [
+      ['zero', 'بلا أي لغة'],
+      ['one', 'بلغة واحدة'],
+      ['two', 'بلغتين'],
+      ['few', 'بـ# لغات'],
+      ['many', 'بـ# لغةً'],
+      ['other', 'بـ# لغة'],
+    ],
+  },
+  ja: {ship: '世界へ', branches: [['other', '#言語で公開']]},
 }
 
+const LOCALE_CODES = Object.keys(HERO_LOCALES)
+
+const toMessage = (branches: Branch[]): string =>
+  `{count, plural, ${branches.map(([k, v]) => `${k} {${v}}`).join(' ')}}`
+
+function selectedBranch(locale: string, count: number): string {
+  const {branches} = HERO_LOCALES[locale]
+  const exact = branches.find(([k]) => k === `=${count}`)
+  if (exact) {
+    return exact[0]
+  }
+  const category = new Intl.PluralRules(locale).select(count)
+  return branches.some(([k]) => k === category) ? category : 'other'
+}
+
+const chip =
+  'home-chip-in inline-flex min-h-14 items-center gap-2.5 rounded-lg bg-home-raised px-3 py-2.5 text-sm sm:min-h-16 sm:gap-3.5 sm:px-[18px] sm:py-3'
+
 export default function HeroSection(): React.ReactNode {
-  const [selectedLocale, setSelectedLocale] = React.useState('en-US')
-  const [numPhotos, setNumPhotos] = React.useState(0)
+  const [count, setCount] = React.useState(42)
+  const [locale, setLocale] = React.useState('en')
+  const [showSource, setShowSource] = React.useState(true)
+  const headline = React.useRef<HTMLHeadingElement>(null)
+
+  const hero = HERO_LOCALES[locale]
+  const branch = selectedBranch(locale, count)
+
+  // Size the face so the longer of the two lines fills the stage.
+  React.useLayoutEffect(() => {
+    const h1 = headline.current
+    if (!h1) {
+      return
+    }
+    const fit = (): void => {
+      const lines = Array.from(
+        h1.querySelectorAll<HTMLElement>('.home-line > span')
+      )
+      const stage = h1.parentElement?.clientWidth ?? window.innerWidth
+      const available = stage * (window.innerWidth > 640 ? 0.9 : 1)
+      const max = Math.min(150, Math.max(56, window.innerWidth * 0.09))
+      h1.style.fontSize = '100px'
+      const widest = Math.max(1, ...lines.map(line => line.scrollWidth))
+      h1.style.fontSize = `${Math.min(max, (100 * available) / widest)}px`
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    void document.fonts?.ready.then(fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [locale, count])
+
+  const ruleText = branch.startsWith('=')
+    ? `count = ${count} → exact match ${branch}`
+    : `Intl.PluralRules('${locale}').select(${count}) → ${new Intl.PluralRules(locale).select(count)}`
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Modern gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800" />
-
-      {/* Animated background shapes */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
-        <div className="absolute top-40 right-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
-      </div>
-
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32">
-        {/* Logo and headline */}
-        <div className="text-center mb-16">
-          <div className="inline-block mb-6 relative">
-            <div className="absolute inset-0 bg-white/10 rounded-2xl blur-2xl" />
-            <img
-              src="/img/logo-header.svg"
-              alt="FormatJS"
-              className="relative h-20 md:h-28 mx-auto drop-shadow-2xl"
+    <IntlProvider
+      locale={locale}
+      defaultLocale="en"
+      messages={{
+        [messages.ship.id]: hero.ship,
+        [messages.count.id]: toMessage(hero.branches),
+      }}
+    >
+      <section
+        aria-labelledby="hero-title"
+        className="grid min-h-svh px-[clamp(20px,2.2vw,32px)] pt-24 pb-14 sm:pt-28"
+      >
+        <div className="mx-auto grid w-full min-w-0 max-w-[1320px] grid-cols-[minmax(0,1fr)] content-center justify-items-center gap-5 sm:gap-7">
+          <div
+            className={`${chip} justify-between justify-self-stretch sm:justify-self-center sm:-rotate-3 lg:ml-[9%] lg:justify-self-start`}
+          >
+            <label className="text-home-muted" htmlFor="hero-count">
+              count
+            </label>
+            <input
+              id="hero-count"
+              type="range"
+              min={0}
+              max={120}
+              value={count}
+              onChange={e => setCount(Number(e.target.value))}
+              className="home-range w-auto min-w-0 flex-1 sm:w-[180px] sm:flex-none"
             />
+            <output
+              htmlFor="hero-count"
+              className="min-w-[2.5ch] text-right font-medium tabular-nums"
+            >
+              <FormattedNumber value={count} />
+            </output>
           </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Internationalize your web apps
-            <br />
-            <span className="bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
-              on the client & server
+
+          <h1
+            ref={headline}
+            id="hero-title"
+            lang={locale}
+            dir={hero.dir ?? 'ltr'}
+            className={`m-0 w-full min-w-0 text-center text-[clamp(56px,9vw,150px)] leading-[0.9] font-bold uppercase ${hero.dir ? 'tracking-normal' : 'tracking-[-0.03em]'}`}
+          >
+            <span className="home-line">
+              <span style={{'--i': 0} as React.CSSProperties}>
+                <FormattedMessage {...messages.ship} />
+              </span>
+            </span>
+            <span className="home-line">
+              <span style={{'--i': 1} as React.CSSProperties}>
+                <FormattedMessage {...messages.count} values={{count}} />
+              </span>
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-purple-100 max-w-2xl mx-auto">
-            Industry-standard i18n libraries for JavaScript. Built on ICU
-            Message syntax.
-          </p>
-        </div>
 
-        {/* Interactive demo card */}
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 md:p-8 border border-white/20">
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-                <span className="ml-2 text-sm font-medium text-gray-600">
-                  Live Demo
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <div className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+          <div className="grid w-full grid-cols-1 items-center gap-3.5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-[1fr_minmax(0,40ch)_1fr]">
+            <fieldset
+              aria-label="Locale"
+              className={`${chip} m-0 border-0 flex-col items-start gap-1.5 justify-self-stretch sm:flex-row sm:items-center sm:justify-self-start sm:rotate-2`}
+            >
+              <span className="text-home-muted">locale</span>
+              <div className="flex w-full justify-between gap-0.5 rounded-md bg-[#333] p-[3px] sm:inline-flex sm:w-auto">
+                {LOCALE_CODES.map(code => (
+                  <button
+                    key={code}
+                    type="button"
+                    aria-pressed={code === locale}
+                    onClick={() => setLocale(code)}
+                    className="min-h-11 min-w-0 flex-1 cursor-pointer rounded px-2 font-medium transition-[background-color,transform] duration-150 hover:bg-[#3d3d3d] active:scale-95 aria-pressed:bg-home-ink aria-pressed:text-home-bg sm:min-h-[38px] sm:min-w-10 sm:flex-none"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                  Output
-                </div>
-                <IntlProvider
-                  locale={selectedLocale}
-                  messages={
-                    messages[selectedLocale as keyof typeof messages] || {}
-                  }
-                >
-                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 border-2 border-purple-200">
-                    <ExampleOutput
-                      values={{
-                        name: 'Alex',
-                        numPhotos: numPhotos,
-                        takenDate: new Date(2023, 2, 15),
-                      }}
-                    />
-                  </div>
-                </IntlProvider>
+                    {code}
+                  </button>
+                ))}
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div>
-                <label
-                  htmlFor="num-photos-input"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  # Photos
-                </label>
-                <Input
-                  id="num-photos-input"
-                  type="number"
-                  value={numPhotos}
-                  onChange={e => setNumPhotos(Number(e.target.value))}
-                  className="w-full h-11 text-base text-gray-900"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="locale-select"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Locale
-                </label>
-                <select
-                  id="locale-select"
-                  value={selectedLocale}
-                  onChange={e => setSelectedLocale(e.target.value)}
-                  className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {LOCALES.map(locale => (
-                    <option key={locale.code} value={locale.code}>
-                      {locale.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-4 border-t border-gray-200">
-              <Button
-                asChild
-                size="lg"
-                className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg"
+            </fieldset>
+            <p
+              className="home-load order-3 m-0 max-w-[40ch] justify-self-center text-center sm:order-none sm:col-span-2 sm:row-start-2 lg:col-span-1 lg:row-start-auto"
+              style={{'--d': '420ms'} as React.CSSProperties}
+            >
+              FormatJS is a set of JavaScript libraries for
+              internationalization, built on ICU MessageFormat, Unicode CLDR and
+              the ECMA-402 Intl APIs.
+            </p>
+            <div
+              className={`${chip} justify-between justify-self-stretch sm:justify-self-end sm:-rotate-2`}
+            >
+              <span className="text-home-muted" id="hero-source-label">
+                Show message
+              </span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={showSource}
+                aria-labelledby="hero-source-label"
+                onClick={() => setShowSource(on => !on)}
+                className="group relative h-[30px] w-[52px] cursor-pointer rounded-full bg-[#444] transition-colors aria-checked:bg-primary"
               >
-                <a href="/docs/getting-started/installation">
-                  Get Started
-                  <svg
-                    className="w-4 h-4 ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto border-2"
-              >
-                <a href="/docs/core-concepts/basic-internationalization-principles">
-                  Learn More
-                </a>
-              </Button>
+                <span className="absolute top-[3px] left-[3px] size-6 rounded-full bg-home-ink transition-transform duration-300 group-aria-checked:translate-x-[22px]" />
+              </button>
+              <span className="min-w-[2.5ch] text-right font-medium">
+                {showSource ? 'on' : 'off'}
+              </span>
             </div>
           </div>
-        </div>
 
-        {/* Stats or badges */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-          {[
-            {label: 'NPM Downloads', value: '50M+/month'},
-            {label: 'GitHub Stars', value: '14K+'},
-            {label: 'Languages', value: '150+'},
-            {label: 'Companies', value: '1000+'},
-          ].map(stat => (
-            <div key={stat.label} className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">
-                {stat.value}
-              </div>
-              <div className="text-sm text-purple-200">{stat.label}</div>
+          <div
+            aria-live="polite"
+            aria-hidden={!showSource}
+            className={`w-full max-w-[860px] min-w-0 overflow-hidden rounded-lg bg-home-surface text-sm transition-[opacity,transform] duration-300 ${showSource ? '' : 'pointer-events-none invisible translate-y-2 opacity-0'}`}
+          >
+            <div className="flex flex-col justify-between gap-1 bg-home-raised px-[18px] py-3 text-home-muted sm:flex-row sm:gap-4">
+              <span>lang/{locale}.json</span>
+              <code className="text-home-ink">{ruleText}</code>
             </div>
-          ))}
+            <pre className="m-0 overflow-x-auto px-[18px] pt-4 pb-[18px] text-[13px] leading-[1.65] break-words whitespace-pre-wrap sm:text-sm">
+              <code>
+                {'{\n'}
+                {`  "${messages.ship.id}": "${hero.ship}",\n`}
+                {`  "${messages.count.id}": "{count, plural, `}
+                {hero.branches.map(([selector, text], i) => (
+                  <React.Fragment key={selector}>
+                    {i > 0 && ' '}
+                    <span
+                      className={
+                        selector === branch
+                          ? 'rounded-[3px] bg-primary px-1 py-px text-white'
+                          : 'text-home-muted'
+                      }
+                    >
+                      {selector} {`{${text}}`}
+                    </span>
+                  </React.Fragment>
+                ))}
+                {'}"\n}'}
+              </code>
+            </pre>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </IntlProvider>
   )
 }
