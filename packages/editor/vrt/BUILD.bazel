@@ -81,7 +81,7 @@ playwright_runtime(
     name = "playwright",
     core = "//:node_modules/playwright-core/dir",
     test = "//:node_modules/@playwright/test/dir",
-    version = "1.64.0",
+    version = "1.64.1",
 )
 
 js_library(
