@@ -196,5 +196,5 @@
       "version": ">= 18.x"
     }
   },
-  "packageManager": "pnpm@12.11.1"
+  "packageManager": "pnpm@12.14.0"
 }
