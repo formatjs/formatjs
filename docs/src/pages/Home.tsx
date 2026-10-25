@@ -2,7 +2,6 @@ import * as React from 'react'
 import HomeHeader from '../components/home/HomeHeader'
 import HeroSection from '../components/home/HeroSection'
 import PluralShowcase from '../components/home/PluralShowcase'
-import RosettaSection from '../components/home/RosettaSection'
 import WorkflowSection from '../components/home/WorkflowSection'
 import LibrariesSection from '../components/home/LibrariesSection'
 import TrustedBySection from '../components/home/TrustedBySection'
@@ -49,7 +48,6 @@ export default function Home(): React.ReactNode {
       <main>
         <HeroSection />
         <PluralShowcase />
-        <RosettaSection />
         <WorkflowSection />
         <LibrariesSection />
         <TrustedBySection />

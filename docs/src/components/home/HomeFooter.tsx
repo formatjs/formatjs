@@ -75,22 +75,7 @@ export default function HomeFooter(): React.ReactNode {
           Open source since 2014 and maintained by people who also help write{' '}
           <span className="whitespace-nowrap">ECMA-402</span>.
         </p>
-        <p className="m-0 text-sm text-home-muted">
-          BSD-3-Clause. Photographs: “Rosetta Stone – front face – corrected
-          image” by Awikimate,{' '}
-          <a href="https://creativecommons.org/licenses/by-sa/4.0/">
-            CC BY-SA 4.0
-          </a>
-          , via{' '}
-          <a href="https://commons.wikimedia.org/w/index.php?curid=84378499">
-            Wikimedia Commons
-          </a>
-          ; “Greek Script from Rosetta Stone” by Gary Todd,{' '}
-          <a href="https://commons.wikimedia.org/w/index.php?curid=109158771">
-            CC0
-          </a>
-          .
-        </p>
+        <p className="m-0 text-sm text-home-muted">BSD-3-Clause.</p>
       </div>
       <nav
         data-reveal

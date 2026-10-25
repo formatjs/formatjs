@@ -54,6 +54,60 @@ build.
 
 ## Generated Documentation
 
+### Homepage company logos
+
+`TrustedBySection.tsx` lists known FormatJS users. Anthropic, Perplexity, and
+OpenAI were confirmed by the maintainer on 2026-10-25. Additional usage evidence:
+
+- [Discord's licenses](https://discord.com/licenses) list `intl-messageformat`
+  and FormatJS polyfills.
+- [Atlassian's design system](https://atlassian.design/components/entry-points/modal-trigger/examples)
+  uses `react-intl` in its components.
+- [Elastic's Kibana dependencies](https://github.com/elastic/kibana/blob/main/package.json)
+  include `@formatjs/intl` and the ICU parser.
+
+- [Salesforce's Retail React App](https://github.com/SalesforceCommerceCloud/pwa-kit/blob/develop/packages/template-retail-react-app/package.json)
+  depends on `react-intl` and `@formatjs/cli`.
+- [Grafana](https://github.com/grafana/grafana/blob/main/package.json)
+  depends on `@formatjs/intl-durationformat`.
+- [Red Hat's Insights shell](https://github.com/RedHatInsights/insights-chrome/blob/master/package.json)
+  depends on `react-intl` and `@formatjs/cli`.
+- [Mattermost Channels](https://github.com/mattermost/mattermost/blob/master/webapp/channels/package.json)
+  depends on `react-intl`.
+- [Canva's Apps SDK localization](https://www.canva.dev/docs/apps/localization/recommended-workflow/)
+  uses React Intl and the FormatJS CLI.
+
+Serve company SVGs locally from `docs/public/img/`. Prefer named wordmarks;
+add a visible company name beside symbols. Keep an accessible name on each item.
+Preserve Salesforce and Canva's colors so their lettering stays visible.
+
+Symbol sources: `simple-icons@14.15.0`. Anthropic, Perplexity, Salesforce,
+Canva, Atlassian, Grafana, and Mattermost assets come from
+[SVGL](https://github.com/pheralb/svgl/tree/f9b726cee1d1f3c697a18c880185e89d9a55bb70/static/library).
+Discord's full logo comes from its [brand assets](https://discord.com/branding).
+OpenAI's wordmark comes from [Wikimedia Commons](<https://commons.wikimedia.org/wiki/File:OpenAI_logo_2025_(wordmark).svg>),
+which credits OpenAI's brand guidelines.
+
+The [2026-10-25 company audit](company-usage-audit-2026-10-25.json) records
+100 prominent tech-company candidates, sampled public manifests, and follow-up
+evidence. It is not a market-cap ranking or an exhaustive dependency inventory.
+Missing manifests and unmatched samples leave usage unverified.
+
+Ten additions have product-specific evidence: Google (Chrome DevTools),
+Microsoft (TypeScript website), Amazon (AWS Cloudscape), Adobe (Commerce PWA
+Studio), Cisco (Webex), Block (Goose), Box (UI Elements), Databricks (Genie
+mobile), Snowflake (SnowConvert AI), and Oracle (Siebel CRM 26.3). The audit
+pins repository evidence to commits and links official product notices.
+Goose is now maintained by the Agentic AI Foundation; Block's own investor
+materials confirm its internal use.
+
+New logo sources: Google, Microsoft, AWS, Adobe, and Cisco use the pinned SVGL
+catalog above; Box, Databricks, and Snowflake use `simple-icons@14.15.0`.
+Block's wordmark comes from its [official website](https://block.xyz/).
+Oracle's wordmark comes from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Oracle_wordmark.svg).
+
+### Homepage download counts
+
 Homepage library download counts live in
 `docs/src/components/home/library-downloads.json`. Keep all registries on the
 same 30-day window, recorded as `start` and `end`. Use npm's downloads point API,
