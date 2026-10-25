@@ -114,12 +114,6 @@
       transform: none;
     }
   }
-
-  .home-drift {
-    animation: home-drift linear both;
-    animation-timeline: view();
-    animation-range: entry 0% exit 100%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -164,14 +158,5 @@
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-@keyframes home-drift {
-  from {
-    transform: scale(1.12) translateY(-3%);
-  }
-  to {
-    transform: scale(1) translateY(2%);
   }
 }

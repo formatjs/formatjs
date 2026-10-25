@@ -1,0 +1,951 @@
+{
+  "checked": "2026-10-25",
+  "scope": "100 prominent tech companies; representative public repositories, not a market-cap ranking. A negative sample is not evidence of non-use.",
+  "method": "Inspect direct runtime, peer, optional, and development dependencies in a sampled package manifest. Only company-controlled sources can support logo additions.",
+  "companies": [
+    {
+      "company": "Microsoft",
+      "repository": "microsoft/TypeScript-Website",
+      "source": "https://github.com/microsoft/TypeScript-Website/blob/HEAD/packages/typescriptlang-org/package.json",
+      "matches": {
+        "dependencies": {
+          "react-intl": "^7.1.14"
+        }
+      },
+      "result": "runtime_dependency",
+      "followUp": {
+        "company": "Microsoft",
+        "product": "TypeScript website",
+        "packages": ["react-intl"],
+        "source": "https://github.com/microsoft/TypeScript-Website/blob/3b069fb7d66c9c69b590c18e5cb9f9fa92b16467/packages/typescriptlang-org/package.json",
+        "evidence": "Direct runtime or peer dependency in product manifest"
+      }
+    },
+    {
+      "company": "Apple",
+      "repository": "apple/password-manager-resources",
+      "source": "https://github.com/apple/password-manager-resources/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "NVIDIA",
+      "repository": "NVIDIA/workbench-example-hybrid-rag",
+      "source": "https://github.com/NVIDIA/workbench-example-hybrid-rag/blob/HEAD/code/chat-ui/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Google",
+      "repository": "google/blockly",
+      "source": "https://github.com/google/blockly/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample",
+      "followUp": {
+        "company": "Google",
+        "product": "Chrome DevTools",
+        "packages": ["intl-messageformat"],
+        "source": "https://github.com/ChromeDevTools/devtools-frontend/blob/7be69dfa5dd9cdd753ef832a4cf55b8f253fb6aa/front_end/third_party/intl-messageformat/README.chromium",
+        "evidence": "Shipped: yes; dependency of DevTools localization pipeline"
+      }
+    },
+    {
+      "company": "Amazon",
+      "repository": "amazon-connect/amazon-connect-chat-interface",
+      "source": "https://github.com/amazon-connect/amazon-connect-chat-interface/blob/HEAD/package.json",
+      "matches": {
+        "devDependencies": {
+          "react-intl": "^6.3.2"
+        }
+      },
+      "result": "tooling_only",
+      "followUp": {
+        "company": "Amazon",
+        "product": "AWS Cloudscape",
+        "packages": ["intl-messageformat"],
+        "source": "https://github.com/cloudscape-design/components/blob/1f35242c3287bf296f389f0ed6149393b3b25c20/package.json",
+        "evidence": "Direct runtime or peer dependency in product manifest",
+        "companySource": "https://cloudscape.design/"
+      }
+    },
+    {
+      "company": "Meta",
+      "repository": "facebook/docusaurus",
+      "source": "https://github.com/facebook/docusaurus/blob/HEAD/packages/docusaurus/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Tesla",
+      "repository": "teslamotors/light-show",
+      "source": "https://github.com/teslamotors/light-show/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Broadcom",
+      "repository": "vmware/clarity",
+      "source": "https://github.com/vmware/clarity/blob/HEAD/packages/angular/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Samsung",
+      "repository": "Samsung/ONE",
+      "source": "https://github.com/Samsung/ONE/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Tencent",
+      "repository": "Tencent/tdesign-react",
+      "source": "https://github.com/Tencent/tdesign-react/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Alibaba",
+      "repository": "alibaba/lowcode-engine",
+      "source": "https://github.com/alibaba/lowcode-engine/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Oracle",
+      "repository": "oracle/oraclejet",
+      "source": "https://github.com/oracle/oraclejet/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample",
+      "followUp": {
+        "company": "Oracle",
+        "product": "Siebel CRM 26.3",
+        "packages": ["react-intl"],
+        "source": "https://docs.oracle.com/en/applications/siebel/siebel-crm/26.3/szliu/open-source-or-other-separately-licensed-software-part2.html",
+        "evidence": "Official product separately licensed software list"
+      }
+    },
+    {
+      "company": "SAP",
+      "repository": "SAP/ui5-webcomponents",
+      "source": "https://github.com/SAP/ui5-webcomponents/blob/HEAD/packages/base/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Intel",
+      "repository": "intel/workload-services-framework",
+      "source": "https://github.com/intel/workload-services-framework/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Adobe",
+      "repository": "adobe/react-spectrum",
+      "source": "https://github.com/adobe/react-spectrum/blob/HEAD/packages/@internationalized/message/package.json",
+      "matches": {
+        "dependencies": {
+          "intl-messageformat": "^10.1.0"
+        }
+      },
+      "result": "runtime_dependency",
+      "followUp": {
+        "company": "Adobe",
+        "product": "Adobe Commerce PWA Studio",
+        "packages": ["react-intl"],
+        "source": "https://github.com/magento/pwa-studio/blob/856c1438750f5695ea7edd7edb089e9deabb7306/packages/peregrine/package.json",
+        "evidence": "Direct runtime or peer dependency in product manifest"
+      }
+    },
+    {
+      "company": "Salesforce",
+      "repository": "SalesforceCommerceCloud/pwa-kit",
+      "source": "https://github.com/SalesforceCommerceCloud/pwa-kit/blob/HEAD/packages/template-retail-react-app/package.json",
+      "matches": {
+        "dependencies": {
+          "@formatjs/cli": "6.9.0",
+          "react-intl": "^5.25.1"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "Cisco",
+      "repository": "webex/react-widgets",
+      "source": "https://github.com/webex/react-widgets/blob/HEAD/package.json",
+      "matches": {
+        "dependencies": {
+          "@formatjs/intl-pluralrules": "^1.5.4",
+          "@formatjs/intl-relativetimeformat": "^4.5.11",
+          "react-intl": "^5.15.7"
+        }
+      },
+      "result": "runtime_dependency",
+      "followUp": {
+        "company": "Cisco",
+        "product": "Webex React widgets",
+        "packages": [
+          "react-intl",
+          "@formatjs/intl-pluralrules",
+          "@formatjs/intl-relativetimeformat"
+        ],
+        "source": "https://github.com/webex/react-widgets/blob/c8162628f214e53f83cb7ae6cce45da6b61da31f/package.json",
+        "evidence": "Direct runtime or peer dependency in product manifest"
+      }
+    },
+    {
+      "company": "IBM",
+      "repository": "carbon-design-system/ibm-products",
+      "source": "https://github.com/carbon-design-system/ibm-products/blob/HEAD/packages/ibm-products/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "ServiceNow",
+      "repository": "ServiceNow/servicenow-cli",
+      "source": "https://github.com/ServiceNow/servicenow-cli/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Intuit",
+      "repository": "intuit/design-systems-cli",
+      "source": "https://github.com/intuit/design-systems-cli/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Shopify",
+      "repository": "Shopify/polaris",
+      "source": "https://github.com/Shopify/polaris/blob/HEAD/polaris-react/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Uber",
+      "repository": "uber/baseweb",
+      "source": "https://github.com/uber/baseweb/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Airbnb",
+      "repository": "airbnb/react-dates",
+      "source": "https://github.com/airbnb/react-dates/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Booking.com",
+      "repository": "bookingcom/craftsmanship",
+      "source": "https://github.com/bookingcom/craftsmanship/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Expedia",
+      "repository": "ExpediaGroup/fraudprevention-sdk-javascript",
+      "source": "https://github.com/ExpediaGroup/fraudprevention-sdk-javascript/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "DoorDash",
+      "repository": "doordash/doordash-ui",
+      "source": "https://github.com/doordash/doordash-ui/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Spotify",
+      "repository": "spotify/spotify-web-playback-sdk-example",
+      "source": "https://github.com/spotify/spotify-web-playback-sdk-example/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "PayPal",
+      "repository": "paypal/paypal-checkout-components",
+      "source": "https://github.com/paypal/paypal-checkout-components/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Block",
+      "repository": "block/goose",
+      "source": "https://github.com/block/goose/blob/HEAD/ui/desktop/package.json",
+      "matches": {
+        "dependencies": {
+          "react-intl": "^10.1.0"
+        },
+        "devDependencies": {
+          "@formatjs/cli": "6.14.0",
+          "@formatjs/icu-messageformat-parser": "3.5.16"
+        }
+      },
+      "result": "runtime_dependency",
+      "followUp": {
+        "company": "Block",
+        "product": "Goose desktop",
+        "packages": ["react-intl"],
+        "source": "https://github.com/aaif-goose/goose/blob/e45707d29730e7d8e90b318b3d1bf67520e70a97/ui/desktop/package.json",
+        "evidence": "Direct runtime or peer dependency in product manifest",
+        "companySource": "https://block.xyz/documents/block-investor-day-2025-ai-and-engineering-excellence.pdf",
+        "note": "Goose was created and used by Block; repository now belongs to the Agentic AI Foundation."
+      }
+    },
+    {
+      "company": "Stripe",
+      "repository": "stripe/stripe-js",
+      "source": "https://github.com/stripe/stripe-js/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Adyen",
+      "repository": "Adyen/adyen-web",
+      "source": "https://github.com/Adyen/adyen-web/blob/HEAD/packages/lib/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Coinbase",
+      "repository": "coinbase/coinbase-wallet-sdk",
+      "source": "https://github.com/coinbase/coinbase-wallet-sdk/blob/HEAD/packages/wallet-sdk/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Robinhood",
+      "repository": "robinhood/component-kit",
+      "source": "https://github.com/robinhood/component-kit/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Affirm",
+      "repository": "Affirm/affirm.js",
+      "source": "https://github.com/Affirm/affirm.js/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Klarna",
+      "repository": "klarna/ui-patterns",
+      "source": "https://github.com/klarna/ui-patterns/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Wise",
+      "repository": "transferwise/neptune-web",
+      "source": "https://github.com/transferwise/neptune-web/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Revolut",
+      "repository": "revolut-public/ui-kit",
+      "source": "https://github.com/revolut-public/ui-kit/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "ByteDance",
+      "repository": "arco-design/arco-design",
+      "source": "https://github.com/arco-design/arco-design/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Baidu",
+      "repository": "baidu/amis",
+      "source": "https://github.com/baidu/amis/blob/HEAD/packages/amis/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "X",
+      "repository": "twitter/twitter-text",
+      "source": "https://github.com/twitter/twitter-text/blob/HEAD/js/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Snap",
+      "repository": "Snapchat/camera-kit-web-sample",
+      "source": "https://github.com/Snapchat/camera-kit-web-sample/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Pinterest",
+      "repository": "pinterest/gestalt",
+      "source": "https://github.com/pinterest/gestalt/blob/HEAD/packages/gestalt/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Reddit",
+      "repository": "reddit/reddit",
+      "source": "https://github.com/reddit/reddit/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Discord",
+      "repository": "discord/discord-intl",
+      "source": "https://github.com/discord/discord-intl/blob/HEAD/packages/intl/package.json",
+      "matches": {
+        "dependencies": {
+          "@formatjs/icu-skeleton-parser": "1.8.2",
+          "@formatjs/intl": "^2.10.1",
+          "intl-messageformat": "^10.5.11"
+        },
+        "devDependencies": {
+          "@formatjs/intl-durationformat": "^0.7.3"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "Zoom",
+      "repository": "zoom/videosdk-web",
+      "source": "https://github.com/zoom/videosdk-web/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Twilio",
+      "repository": "twilio-labs/paste",
+      "source": "https://github.com/twilio-labs/paste/blob/HEAD/packages/paste-core/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "HubSpot",
+      "repository": "HubSpot/cms-react",
+      "source": "https://github.com/HubSpot/cms-react/blob/HEAD/packages/cms-components/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Zendesk",
+      "repository": "zendeskgarden/react-components",
+      "source": "https://github.com/zendeskgarden/react-components/blob/HEAD/packages/chrome/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Freshworks",
+      "repository": "freshworks/crayons",
+      "source": "https://github.com/freshworks/crayons/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Atlassian",
+      "repository": "pioug/atlassian-frontend-mirror",
+      "source": "https://github.com/pioug/atlassian-frontend-mirror/blob/HEAD/design-system/button/package.json",
+      "matches": {},
+      "result": "not_found_in_sample",
+      "note": "Community mirror; not used as company-controlled proof. Atlassian logo uses official design-system documentation recorded separately."
+    },
+    {
+      "company": "GitHub",
+      "repository": "primer/react",
+      "source": "https://github.com/primer/react/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "GitLab",
+      "repository": "gitlabhq/gitlabhq",
+      "source": "https://github.com/gitlabhq/gitlabhq/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Datadog",
+      "repository": "DataDog/browser-sdk",
+      "source": "https://github.com/DataDog/browser-sdk/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Splunk",
+      "repository": "splunk/dashboard-framework",
+      "source": "https://github.com/splunk/dashboard-framework/blob/HEAD/packages/dashboard-core/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Databricks",
+      "repository": "databricks/design-system",
+      "source": "https://github.com/databricks/design-system/blob/HEAD/packages/design-system/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified.",
+      "followUp": {
+        "company": "Databricks",
+        "product": "Genie mobile",
+        "packages": ["react-intl"],
+        "source": "https://docs.databricks.com/gcp/en/genie-one/mobile-attributions",
+        "evidence": "Official product third-party attribution"
+      }
+    },
+    {
+      "company": "Snowflake",
+      "repository": "streamlit/streamlit",
+      "source": "https://github.com/streamlit/streamlit/blob/HEAD/frontend/lib/package.json",
+      "matches": {},
+      "result": "not_found_in_sample",
+      "followUp": {
+        "company": "Snowflake",
+        "product": "SnowConvert AI",
+        "packages": ["@formatjs/intl", "react-intl"],
+        "source": "https://docs.snowflake.com/en/migrations/snowconvert-docs/general/terms-and-conditions/open-source-libraries",
+        "evidence": "Official product open-source library list"
+      }
+    },
+    {
+      "company": "MongoDB",
+      "repository": "mongodb-js/compass",
+      "source": "https://github.com/mongodb-js/compass/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Elastic",
+      "repository": "elastic/kibana",
+      "source": "https://github.com/elastic/kibana/blob/HEAD/package.json",
+      "matches": {
+        "dependencies": {
+          "@formatjs/icu-messageformat-parser": "2.11.1",
+          "@formatjs/intl": "2.10.2",
+          "@formatjs/intl-utils": "3.8.4",
+          "@formatjs/ts-transformer": "3.13.14",
+          "react-intl": "6.6.6"
+        },
+        "devDependencies": {
+          "eslint-plugin-formatjs": "4.12.2"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "Confluent",
+      "repository": "confluentinc/ksql",
+      "source": "https://github.com/confluentinc/ksql/blob/HEAD/ksqldb-ui/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "HashiCorp",
+      "repository": "hashicorp/terraform-cdk",
+      "source": "https://github.com/hashicorp/terraform-cdk/blob/HEAD/website/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Cloudflare",
+      "repository": "cloudflare/cloudflare-docs",
+      "source": "https://github.com/cloudflare/cloudflare-docs/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Akamai",
+      "repository": "linode/manager",
+      "source": "https://github.com/linode/manager/blob/HEAD/packages/manager/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Fastly",
+      "repository": "fastly/compute-js-static-publish",
+      "source": "https://github.com/fastly/compute-js-static-publish/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "DigitalOcean",
+      "repository": "digitalocean/do-markdownit",
+      "source": "https://github.com/digitalocean/do-markdownit/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "OVHcloud",
+      "repository": "ovh/manager",
+      "source": "https://github.com/ovh/manager/blob/HEAD/packages/manager/core/application/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Vercel",
+      "repository": "vercel/next.js",
+      "source": "https://github.com/vercel/next.js/blob/HEAD/packages/next/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Netlify",
+      "repository": "netlify/netlify-cms",
+      "source": "https://github.com/netlify/netlify-cms/blob/HEAD/packages/netlify-cms-app/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Figma",
+      "repository": "figma/code-connect",
+      "source": "https://github.com/figma/code-connect/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Canva",
+      "repository": "canva-sdks/canva-apps-sdk-starter-kit",
+      "source": "https://github.com/canva-sdks/canva-apps-sdk-starter-kit/blob/HEAD/package.json",
+      "matches": {
+        "dependencies": {
+          "react-intl": "^7.1.11"
+        },
+        "devDependencies": {
+          "eslint-plugin-formatjs": "5.4.2"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "Notion",
+      "repository": "makenotion/notion-sdk-js",
+      "source": "https://github.com/makenotion/notion-sdk-js/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Linear",
+      "repository": "linear/linear",
+      "source": "https://github.com/linear/linear/blob/HEAD/packages/sdk/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Asana",
+      "repository": "Asana/react-scenejs",
+      "source": "https://github.com/Asana/react-scenejs/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Airtable",
+      "repository": "Airtable/blocks",
+      "source": "https://github.com/Airtable/blocks/blob/HEAD/packages/sdk/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "monday.com",
+      "repository": "mondaycom/monday-ui-react-core",
+      "source": "https://github.com/mondaycom/monday-ui-react-core/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Dropbox",
+      "repository": "dropbox/dropbox-sdk-js",
+      "source": "https://github.com/dropbox/dropbox-sdk-js/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Box",
+      "repository": "box/box-ui-elements",
+      "source": "https://github.com/box/box-ui-elements/blob/HEAD/package.json",
+      "matches": {
+        "peerDependencies": {
+          "intl-messageformat": "^7.8.4",
+          "react-intl": ">=2.9.0"
+        },
+        "devDependencies": {
+          "@formatjs/intl-pluralrules": "^1.5.2",
+          "@formatjs/intl-relativetimeformat": "^4.5.9",
+          "eslint-plugin-formatjs": "^4.13.3",
+          "intl-messageformat": "^7.8.4",
+          "intl-messageformat-parser": "^3.6.4",
+          "react-intl": "^6.6.8"
+        }
+      },
+      "result": "runtime_dependency",
+      "followUp": {
+        "company": "Box",
+        "product": "Box UI Elements",
+        "packages": ["react-intl", "intl-messageformat"],
+        "source": "https://github.com/box/box-ui-elements/blob/3585ffaf397b7155982da8579e20ee632c46d463/package.json",
+        "evidence": "Direct runtime or peer dependency in product manifest"
+      }
+    },
+    {
+      "company": "Docusign",
+      "repository": "docusign/code-examples-node",
+      "source": "https://github.com/docusign/code-examples-node/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Workday",
+      "repository": "Workday/canvas-kit",
+      "source": "https://github.com/Workday/canvas-kit/blob/HEAD/modules/react/common/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Domo",
+      "repository": "domoinc/domo-node-sdk",
+      "source": "https://github.com/domoinc/domo-node-sdk/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Palantir",
+      "repository": "palantir/blueprint",
+      "source": "https://github.com/palantir/blueprint/blob/HEAD/packages/core/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "CrowdStrike",
+      "repository": "CrowdStrike/falconpy",
+      "source": "https://github.com/CrowdStrike/falconpy/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Palo Alto Networks",
+      "repository": "demisto/content",
+      "source": "https://github.com/demisto/content/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Fortinet",
+      "repository": "fortinet/fortigate-autoscale-aws",
+      "source": "https://github.com/fortinet/fortigate-autoscale-aws/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Zscaler",
+      "repository": "zscaler/zscaler-sdk-js",
+      "source": "https://github.com/zscaler/zscaler-sdk-js/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Okta",
+      "repository": "okta/okta-signin-widget",
+      "source": "https://github.com/okta/okta-signin-widget/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Auth0",
+      "repository": "auth0/lock",
+      "source": "https://github.com/auth0/lock/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "1Password",
+      "repository": "1Password/passkey-ready",
+      "source": "https://github.com/1Password/passkey-ready/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Dashlane",
+      "repository": "Dashlane/dashlane-cli",
+      "source": "https://github.com/Dashlane/dashlane-cli/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Bitwarden",
+      "repository": "bitwarden/clients",
+      "source": "https://github.com/bitwarden/clients/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Proton",
+      "repository": "ProtonMail/WebClients",
+      "source": "https://github.com/ProtonMail/WebClients/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Mozilla",
+      "repository": "mozilla/addons-frontend",
+      "source": "https://github.com/mozilla/addons-frontend/blob/HEAD/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Automattic",
+      "repository": "Automattic/wp-calypso",
+      "source": "https://github.com/Automattic/wp-calypso/blob/HEAD/packages/i18n-calypso/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Wix",
+      "repository": "wix/wix-ui",
+      "source": "https://github.com/wix/wix-ui/blob/HEAD/packages/wix-ui-tpa/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Squarespace",
+      "repository": "Squarespace/cldr-engine",
+      "source": "https://github.com/Squarespace/cldr-engine/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "GoDaddy",
+      "repository": "godaddy/ux-core",
+      "source": "https://github.com/godaddy/ux-core/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    },
+    {
+      "company": "Red Hat",
+      "repository": "RedHatInsights/insights-chrome",
+      "source": "https://github.com/RedHatInsights/insights-chrome/blob/HEAD/package.json",
+      "matches": {
+        "dependencies": {
+          "@formatjs/cli": "^6.14.2",
+          "react-intl": "^7.1.14"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "Grafana Labs",
+      "repository": "grafana/grafana",
+      "source": "https://github.com/grafana/grafana/blob/HEAD/package.json",
+      "matches": {
+        "dependencies": {
+          "@formatjs/intl-durationformat": "^0.11.0"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "Mattermost",
+      "repository": "mattermost/mattermost",
+      "source": "https://github.com/mattermost/mattermost/blob/HEAD/webapp/channels/package.json",
+      "matches": {
+        "dependencies": {
+          "react-intl": "*"
+        },
+        "devDependencies": {
+          "eslint-plugin-formatjs": "6.4.15"
+        }
+      },
+      "result": "runtime_dependency"
+    },
+    {
+      "company": "OpenAI",
+      "repository": "openai/chatkit-js",
+      "source": "https://github.com/openai/chatkit-js/blob/HEAD/packages/chatkit-react/package.json",
+      "matches": {},
+      "result": "not_found_in_sample"
+    },
+    {
+      "company": "Anthropic",
+      "repository": "anthropics/claude-code",
+      "source": "https://github.com/anthropics/claude-code/blob/HEAD/package.json",
+      "result": "sample_unavailable",
+      "detail": "Sample manifest unavailable; usage unverified."
+    }
+  ],
+  "additionalConfirmedUsers": [
+    {
+      "company": "Google",
+      "product": "Chrome DevTools",
+      "packages": ["intl-messageformat"],
+      "source": "https://github.com/ChromeDevTools/devtools-frontend/blob/7be69dfa5dd9cdd753ef832a4cf55b8f253fb6aa/front_end/third_party/intl-messageformat/README.chromium",
+      "evidence": "Shipped: yes; dependency of DevTools localization pipeline"
+    },
+    {
+      "company": "Microsoft",
+      "product": "TypeScript website",
+      "packages": ["react-intl"],
+      "source": "https://github.com/microsoft/TypeScript-Website/blob/3b069fb7d66c9c69b590c18e5cb9f9fa92b16467/packages/typescriptlang-org/package.json",
+      "evidence": "Direct runtime or peer dependency in product manifest"
+    },
+    {
+      "company": "Amazon",
+      "product": "AWS Cloudscape",
+      "packages": ["intl-messageformat"],
+      "source": "https://github.com/cloudscape-design/components/blob/1f35242c3287bf296f389f0ed6149393b3b25c20/package.json",
+      "evidence": "Direct runtime or peer dependency in product manifest",
+      "companySource": "https://cloudscape.design/"
+    },
+    {
+      "company": "Adobe",
+      "product": "Adobe Commerce PWA Studio",
+      "packages": ["react-intl"],
+      "source": "https://github.com/magento/pwa-studio/blob/856c1438750f5695ea7edd7edb089e9deabb7306/packages/peregrine/package.json",
+      "evidence": "Direct runtime or peer dependency in product manifest"
+    },
+    {
+      "company": "Cisco",
+      "product": "Webex React widgets",
+      "packages": [
+        "react-intl",
+        "@formatjs/intl-pluralrules",
+        "@formatjs/intl-relativetimeformat"
+      ],
+      "source": "https://github.com/webex/react-widgets/blob/c8162628f214e53f83cb7ae6cce45da6b61da31f/package.json",
+      "evidence": "Direct runtime or peer dependency in product manifest"
+    },
+    {
+      "company": "Block",
+      "product": "Goose desktop",
+      "packages": ["react-intl"],
+      "source": "https://github.com/aaif-goose/goose/blob/e45707d29730e7d8e90b318b3d1bf67520e70a97/ui/desktop/package.json",
+      "evidence": "Direct runtime or peer dependency in product manifest",
+      "companySource": "https://block.xyz/documents/block-investor-day-2025-ai-and-engineering-excellence.pdf",
+      "note": "Goose was created and used by Block; repository now belongs to the Agentic AI Foundation."
+    },
+    {
+      "company": "Box",
+      "product": "Box UI Elements",
+      "packages": ["react-intl", "intl-messageformat"],
+      "source": "https://github.com/box/box-ui-elements/blob/3585ffaf397b7155982da8579e20ee632c46d463/package.json",
+      "evidence": "Direct runtime or peer dependency in product manifest"
+    },
+    {
+      "company": "Databricks",
+      "product": "Genie mobile",
+      "packages": ["react-intl"],
+      "source": "https://docs.databricks.com/gcp/en/genie-one/mobile-attributions",
+      "evidence": "Official product third-party attribution"
+    },
+    {
+      "company": "Snowflake",
+      "product": "SnowConvert AI",
+      "packages": ["@formatjs/intl", "react-intl"],
+      "source": "https://docs.snowflake.com/en/migrations/snowconvert-docs/general/terms-and-conditions/open-source-libraries",
+      "evidence": "Official product open-source library list"
+    },
+    {
+      "company": "Oracle",
+      "product": "Siebel CRM 26.3",
+      "packages": ["react-intl"],
+      "source": "https://docs.oracle.com/en/applications/siebel/siebel-crm/26.3/szliu/open-source-or-other-separately-licensed-software-part2.html",
+      "evidence": "Official product separately licensed software list"
+    }
+  ]
+}
