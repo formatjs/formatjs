@@ -1,8 +1,8 @@
 # Hermes locale canonicalization benchmark
 
 [Recorded results](./results.json): Apple M4 Max, macOS arm64, optimized build,
-2026-10-25. Rust speedups over the JS polyfill: simple tags **5.59×**, aliases
-**8.35×**, extensions **7.62×**, locale lists **7.32×**. All 76 pinned
+2026-10-25. Rust speedups over the JS polyfill: simple tags **5.37×**, aliases
+**7.98×**, extensions **7.14×**, locale lists **7.30×**. All 76 pinned
 `Intl.getCanonicalLocales` Test262 scenarios passed separately in Hermes.
 
 ```sh
