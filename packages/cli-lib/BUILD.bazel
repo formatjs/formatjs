@@ -241,6 +241,7 @@ rolldown_bundle(
     visibility = ["//packages/cli:__pkg__"],
     deps = [
         "//:node_modules/@babel/types",
+        "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/icu-skeleton-parser",
         "//:node_modules/@glimmer/syntax",
