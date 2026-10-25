@@ -6,8 +6,17 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.1.0")
-bazel_dep(name = "rules_cc", version = "0.2.22")
-bazel_dep(name = "rules_foreign_cc", version = "0.16.0")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "hermes")
+
+# Commit-pinned until the overlay's first BCR release.
+archive_override(
+    module_name = "hermes",
+    integrity = "sha256-vaUw4QYM4LrG4PGPnCKV6FI/UeCsgU/5QHYN+vQmyK0=",
+    strip_prefix = "hermes-13e4389e44b7160964e1260cedce4d2f416ff0e9",
+    urls = ["https://github.com/formatjs/hermes/archive/13e4389e44b7160964e1260cedce4d2f416ff0e9.tar.gz"],
+)
+
 bazel_dep(name = "rules_shell", version = "0.8.0")
 bazel_dep(name = "windows_support", version = "0.2.0")
 
@@ -170,7 +179,7 @@ bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
 ######### Python #########
 
-bazel_dep(name = "rules_python", version = "2.3.2", dev_dependency = True)
+bazel_dep(name = "rules_python", version = "2.4.5", dev_dependency = True)
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
 python.toolchain(
@@ -261,17 +270,6 @@ register_toolchains(
 ######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-HERMES_COMMIT = "393a539e645944a6ce879afc18ea8ddaa9232a08"
-
-http_archive(
-    name = "hermes",
-    build_file = "//native/hermes:hermes.BUILD.bazel",
-    sha256 = "5fce2dbb3b9046b21b717de30d9e5192f756420e12daf967dddee3a32d975a51",
-    strip_prefix = "hermes-%s" % HERMES_COMMIT,
-    type = "tar.gz",
-    urls = ["https://codeload.github.com/facebook/hermes/tar.gz/%s" % HERMES_COMMIT],
-)
 
 # Pyright's bundled CLI and typeshed exercise generated Python declarations.
 http_archive(

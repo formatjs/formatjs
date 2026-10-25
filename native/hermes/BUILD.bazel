@@ -1,10 +1,6 @@
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
-load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
-load("@rules_python//python:defs.bzl", "py_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
-
-exports_files(["hermes.BUILD.bazel"])
 
 HOST_COMPATIBILITY = select({
     "@platforms//os:macos": [],
@@ -12,56 +8,10 @@ HOST_COMPATIBILITY = select({
     "//conditions:default": ["@platforms//:incompatible"],
 })
 
-cmake(
+alias(
     name = "hermes_vm",
-    build_data = [":build_python"],
-    cache_entries = {
-        "CMAKE_BUILD_TYPE": "Release",
-        "HERMES_ALLOW_BOOST_CONTEXT": "0",
-        "HERMES_ENABLE_CORE_EXTENSIONS": "OFF",
-        "HERMES_ENABLE_CONTRIB_EXTENSIONS": "OFF",
-        "HERMES_ENABLE_DEBUGGER": "OFF",
-        "HERMES_ENABLE_INTL": "OFF",
-        "HERMES_ENABLE_NAPI": "OFF",
-        "HERMES_ENABLE_TEST_SUITE": "OFF",
-        "HERMES_ENABLE_TOOLS": "ON",
-        "HERMES_UNICODE_LITE": "ON",
-        "Python_EXECUTABLE": "$(execpath :build_python)",
-    } | select({
-        "@platforms//os:macos": {
-            "CMAKE_C_ARCHIVE_CREATE": "<CMAKE_AR> -static -o <TARGET> <OBJECTS>",
-            "CMAKE_C_ARCHIVE_APPEND": "<CMAKE_AR> -static -o <TARGET> <TARGET> <OBJECTS>",
-            "CMAKE_CXX_ARCHIVE_CREATE": "<CMAKE_AR> -static -o <TARGET> <OBJECTS>",
-            "CMAKE_CXX_ARCHIVE_APPEND": "<CMAKE_AR> -static -o <TARGET> <TARGET> <OBJECTS>",
-        },
-        "//conditions:default": {},
-    }),
-    generate_args = ["-GNinja"],
-    install = False,
-    lib_source = "@hermes//:sources",
-    out_static_libs = [
-        "libhermesvm_a.a",
-        "libjsi.a",
-    ],
-    postfix_script = """
-mkdir -p "$$INSTALLDIR/lib" "$$INSTALLDIR/include"
-cp "$$BUILD_TMPDIR/lib/libhermesvm_a.a" "$$INSTALLDIR/lib/"
-cp "$$BUILD_TMPDIR/jsi/libjsi.a" "$$INSTALLDIR/lib/"
-""",
-    tags = ["manual"],
-    target_compatible_with = HOST_COMPATIBILITY,
-    targets = [
-        "hermesvm_a",
-        "jsi",
-    ],
-    # LLVM's linker wrapper receives execroot-relative tools; CMake changes cwd.
-    tool_prefix = 'export LLVM_CLANGXX="$$EXT_BUILD_ROOT/$${LLVM_CLANGXX:-}" LLVM_DSYMUTIL="$$EXT_BUILD_ROOT/$${LLVM_DSYMUTIL:-}" LLVM_STRIP="$$EXT_BUILD_ROOT/$${LLVM_STRIP:-}";',
-)
-
-py_binary(
-    name = "build_python",
-    srcs = ["build_python.py"],
-    tags = ["manual"],
+    actual = "@hermes//:hermes_vm",
+    visibility = ["//visibility:public"],
 )
 
 genrule(

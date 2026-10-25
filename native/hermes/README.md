@@ -17,8 +17,9 @@ Link `//native/hermes:canonical_locales` and supply the embedding application's
 JSI implementation. Rust owns returned UTF-8 buffers; the adapter releases each
 buffer after copying it into a JSI string. No per-runtime Rust cache is retained.
 
-The standalone host runner builds pinned Hermes with Intl disabled, installs the
-Rust implementation, then evaluates each script argument in the same runtime.
+The standalone host runner uses the native Bazel module from
+[formatjs/hermes](https://github.com/formatjs/hermes), with Intl disabled. It
+installs the Rust implementation, then evaluates each script in the same runtime.
 `print()` and monotonic `performance.now()` are available. `--prelude=path.js`
 evaluates a startup script between initial installation and final installation.
 This permits loading a trusted `Intl.Locale` polyfill, whose intrinsic brand

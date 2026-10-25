@@ -30,8 +30,9 @@ access, exceptions, and ordered de-duplication. Rust owns tag validation and
 canonicalization. Install once per runtime before application scripts.
 The adapter uses public JSI APIs, with no Hermes VM changes.
 
-The pinned Hermes VM is built through Bazel and CMake with its platform Intl
-backend disabled. `tools/hermes-test262` runs every pinned upstream
+The pinned Hermes VM uses the native Bazel module from
+[formatjs/hermes](https://github.com/formatjs/hermes), with platform Intl disabled.
+`tools/hermes-test262` runs every pinned upstream
 `Intl.getCanonicalLocales` test in fresh Hermes processes; the Locale-object
 case additionally loads the existing JS `Intl.Locale` polyfill.
 
