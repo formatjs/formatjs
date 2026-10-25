@@ -1,0 +1,41 @@
+# gazelle:ignore
+
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+
+rolldown_bundle(
+    name = "suite_bundle",
+    srcs = ["suite.ts"],
+    entry_point = "suite.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-getcanonicallocales:lib",
+    ],
+)
+
+js_binary(
+    name = "benchmark",
+    data = [
+        "suite_bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run.mjs",
+    tags = ["manual"],
+)
+
+js_test(
+    name = "conformance_test",
+    size = "small",
+    args = ["--test"],
+    data = [
+        "suite_bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run.mjs",
+)

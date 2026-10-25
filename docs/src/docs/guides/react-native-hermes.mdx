@@ -1,5 +1,36 @@
 This guide covers setting up FormatJS polyfills for React Native with the Hermes JavaScript engine. Hermes ships with partial Intl support, so you need to polyfill the missing APIs.
 
+## Experimental Rust canonicalizer
+
+The repository includes a Rust `Intl.getCanonicalLocales` implementation using
+ICU4X and a C++ JSI adapter in `native/hermes`. Embedders can call
+`formatjs::installCanonicalLocales(runtime)` before application scripts to
+install the standard API. Other Intl APIs keep using their existing implementations.
+
+Rust callers can disable the canonicalizer crate's default `compiled_data`
+feature and use `Canonicalizer::try_new_with_provider(&provider)` with
+caller-loaded ICU data. The current JSI installer uses the compiled-data path;
+provider injection into the native installer is separate work.
+
+This is a source integration, not an installable React Native package. The
+desktop benchmark compares it with `@formatjs/intl-getcanonicallocales` inside
+the same Hermes runtime:
+
+```sh
+bazel run -c opt //benchmarks/intl-canonicalization:benchmark
+```
+
+Run the Rust unit tests, Hermes differential tests, and upstream Test262 cases:
+
+```sh
+bazel test -c opt //crates/intl_getcanonicallocales:intl_getcanonicallocales_test \
+  //benchmarks/intl-canonicalization:conformance_test \
+  //tools/hermes-test262:getcanonicallocales_test
+```
+
+These measurements exclude startup. Benchmark on target Android/iOS devices
+before choosing a backend.
+
 ## Hermes Intl support
 
 Hermes includes built-in support for some Intl APIs but not all. The following table shows what's available natively and what needs polyfilling:

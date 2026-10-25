@@ -1,5 +1,54 @@
 # @formatjs/intl-getcanonicallocales
 
+## Rust and Hermes
+
+[SPEC.md](../crates/intl_getcanonicallocales/SPEC.md) maps every ECMA-402
+algorithm step to code and tests using pinned specification source lines.
+
+`crates/intl_getcanonicallocales` provides a Rust canonicalizer backed by ICU4X.
+It validates ECMA-402 language tags before canonicalization. CLDR BCP 47
+extension and subdivision aliases supplement ICU4X; regenerate the checked-in
+Rust table with `bazel run //crates/intl_getcanonicallocales:aliases`.
+
+The default `compiled_data` feature preserves the convenience functions and
+native C ABI. Rust callers can disable defaults and construct a reusable
+`Canonicalizer::try_new_with_provider(&provider)` from the same ICU buffer
+provider used by MessageFormat. Construction loads global canonicalization
+payloads once; subsequent calls use the retained payloads without consulting
+the provider. Reconstruct the canonicalizer to adopt replacement base data.
+The small generated CLDR alias tables remain compiled into the crate.
+
+Canonicalization data is global metadata, not one pack per requested locale.
+Locale-specific formatter packs remain a separate provider concern. The
+`provider_test` target compiles this crate without its `compiled_data` feature;
+the shared Bazel dependency graph can still enable ICU compiled data for other
+consumers, so this target alone is not a binary-size measurement.
+
+`native/hermes` exposes the Rust library through a C ABI and a C++ JSI
+installer. The JS wrapper owns observable locale-list coercion, property
+access, exceptions, and ordered de-duplication. Rust owns tag validation and
+canonicalization. Install once per runtime before application scripts.
+The adapter uses public JSI APIs, with no Hermes VM changes.
+
+The pinned Hermes VM is built through Bazel and CMake with its platform Intl
+backend disabled. `tools/hermes-test262` runs every pinned upstream
+`Intl.getCanonicalLocales` test in fresh Hermes processes; the Locale-object
+case additionally loads the existing JS `Intl.Locale` polyfill.
+
+```sh
+bazel test -c opt //crates/intl_getcanonicallocales:intl_getcanonicallocales_test \
+  //benchmarks/intl-canonicalization:conformance_test \
+  //tools/hermes-test262:getcanonicallocales_test
+bazel run -c opt //benchmarks/intl-canonicalization:benchmark
+```
+
+The benchmark compares complete JS and Rust-backed API calls in the same
+Hermes process, including coercion and JSI overhead. It checks results before
+timing, alternates implementation order, and reports median throughput plus
+raw samples. Timings exclude startup and do not establish Android/iOS results.
+The Rust crate is not published; React Native package and mobile artifact
+distribution are separate work.
+
 **ECMA-402 Section 8.3.1** — `Intl.getCanonicalLocales`
 
 ## Purpose

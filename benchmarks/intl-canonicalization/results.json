@@ -1,0 +1,198 @@
+{
+  "measuredOn": "2026-10-25",
+  "command": "bazel run -c opt //benchmarks/intl-canonicalization:benchmark",
+  "host": {
+    "os": "macOS 26.7.1",
+    "architecture": "arm64",
+    "cpu": "Apple M4 Max"
+  },
+  "formatjsBaseCommit": "3ce3f6195ec8dc6a37e987762324e5246d202aa2",
+  "workspaceDirty": true,
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "hermesBuild": {
+    "mode": "Release",
+    "builtinIntl": false
+  },
+  "rustToolchain": "1.95.0",
+  "icuLocaleVersion": "2.3.1",
+  "javascriptPolyfillVersion": "3.2.12",
+  "cldrCoreVersion": "48.2.0",
+  "clock": "std::chrono::steady_clock exposed as performance.now",
+  "measurement": "Warmed steady-state end-to-end API calls in one Hermes runtime; no mobile startup, size, or memory measurements.",
+  "test262": {
+    "revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93",
+    "cases": 38,
+    "executions": 76,
+    "passed": 76,
+    "failures": []
+  },
+  "correctness": {
+    "type": "correctness",
+    "assertions": 1348,
+    "tags": 49,
+    "invalid": 17,
+    "generatedTags": 1152,
+    "knownBaselineDifferences": [
+      {
+        "input": "root",
+        "rust": "RangeError",
+        "polyfill": ["root"]
+      },
+      {
+        "input": "hye-{Latn,Armn}-SU with variants/extensions",
+        "cases": 32,
+        "rustTerritory": "AM",
+        "polyfillTerritory": "RU"
+      }
+    ]
+  },
+  "benchmarks": [
+    {
+      "type": "benchmark",
+      "workload": "language",
+      "callsPerRound": 51200,
+      "rounds": 9,
+      "rustMedianNs": 613.0932620726526,
+      "polyfillMedianNs": 3424.3522258475423,
+      "speedup": 5.5853692051206245,
+      "rustSamplesNs": [
+        616.5079702623188, 608.0265226773918, 610.7242964208126,
+        614.5556643605232, 613.1420913152397, 614.6630854345858,
+        609.9812895990908, 613.0932620726526, 608.1469729542732
+      ],
+      "polyfillSamplesNs": [
+        3448.246249463409, 3418.2592784054577, 3410.970058757812,
+        3442.6220692694187, 3461.1319936811924, 3485.270196106285,
+        3421.060391701758, 3424.3522258475423, 3403.2568358816206
+      ]
+    },
+    {
+      "type": "benchmark",
+      "workload": "aliases",
+      "callsPerRound": 25600,
+      "rounds": 9,
+      "rustMedianNs": 919.2203916609287,
+      "polyfillMedianNs": 7679.002266377211,
+      "speedup": 8.353820624564376,
+      "rustSamplesNs": [
+        928.12011949718, 909.9251171573997, 913.8069534674287,
+        924.5735919103026, 919.007146731019, 916.1735139787197,
+        922.958985902369, 919.2203916609287, 932.8939067199826
+      ],
+      "polyfillSamplesNs": [
+        7580.787776969373, 7559.858397580683, 7627.298203296959,
+        7737.141912803054, 7718.854178674519, 7679.002266377211,
+        7645.839843899012, 7745.9960943087935, 7740.332032553852
+      ]
+    },
+    {
+      "type": "benchmark",
+      "workload": "extensions",
+      "callsPerRound": 12800,
+      "rounds": 9,
+      "rustMedianNs": 1473.844451829791,
+      "polyfillMedianNs": 11227.262346073985,
+      "speedup": 7.617671140353542,
+      "rustSamplesNs": [
+        1473.844451829791, 1518.8671927899122, 1504.414053633809,
+        1613.3171133697033, 1471.8814846128225, 1468.0078160017729,
+        1455.1497623324394, 1465.5859395861626, 1519.957659766078
+      ],
+      "polyfillSamplesNs": [
+        11272.581405937672, 11155.270161107183, 11227.262346073985,
+        11468.87038834393, 11321.865236386657, 11072.727888822556,
+        11128.561170771718, 11364.62570168078, 11206.679688766599
+      ]
+    },
+    {
+      "type": "benchmark",
+      "workload": "locale-list",
+      "callsPerRound": 6400,
+      "rounds": 9,
+      "rustMedianNs": 2517.8971886634827,
+      "polyfillMedianNs": 18432.304691523314,
+      "speedup": 7.320515219808204,
+      "rustSamplesNs": [
+        2575.6054557859898, 2542.0637615025043, 2493.398431688547,
+        2565.8657774329185, 2550.963591784239, 2481.080796569586,
+        2517.8971886634827, 2481.471411883831, 2475.247345864773
+      ],
+      "polyfillSamplesNs": [
+        18547.187503427267, 18404.687512665987, 18404.147177934647,
+        18421.093747019768, 18914.17969018221, 18576.113283634186,
+        18432.304691523314, 18320.546876639128, 18576.230481266975
+      ]
+    }
+  ],
+  "checksum": 221441465,
+  "nativeOracle": {
+    "type": "node-oracle",
+    "versions": {
+      "node": "24.14.0",
+      "acorn": "8.15.0",
+      "ada": "3.4.2",
+      "amaro": "1.1.7",
+      "ares": "1.34.6",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.3.0",
+      "merve": "1.0.0",
+      "modules": "137",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.68.0",
+      "openssl": "3.5.5",
+      "simdjson": "4.2.4",
+      "simdutf": "6.4.0",
+      "sqlite": "3.51.2",
+      "tz": "2025c",
+      "undici": "7.21.0",
+      "unicode": "17.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.23",
+      "v8": "13.6.233.17-node.41",
+      "zlib": "1.3.1-e00f703",
+      "zstd": "1.5.7"
+    },
+    "results": [
+      {
+        "tag": "hye-Latn-SU",
+        "canonical": ["hy-Latn-AM"]
+      },
+      {
+        "tag": "hye-Armn-SU",
+        "canonical": ["hy-Armn-AM"]
+      },
+      {
+        "tag": "hye-Latn-SU-arevmda",
+        "canonical": ["hyw-Latn-AM"]
+      },
+      {
+        "tag": "hye-Armn-SU-arevmda",
+        "canonical": ["hyw-Armn-AM"]
+      },
+      {
+        "tag": "hy-Latn-SU",
+        "canonical": ["hy-Latn-AM"]
+      },
+      {
+        "tag": "hy-Armn-SU",
+        "canonical": ["hy-Armn-AM"]
+      },
+      {
+        "tag": "und-Armn-SU",
+        "canonical": ["und-Armn-AM"]
+      },
+      {
+        "tag": "abcde-Armn-SU",
+        "canonical": ["abcde-Armn-RU"]
+      },
+      {
+        "tag": "root",
+        "error": "RangeError"
+      }
+    ]
+  }
+}

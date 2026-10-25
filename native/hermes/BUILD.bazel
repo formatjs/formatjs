@@ -1,0 +1,118 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+exports_files(["hermes.BUILD.bazel"])
+
+HOST_COMPATIBILITY = select({
+    "@platforms//os:macos": [],
+    "@platforms//os:linux": [],
+    "//conditions:default": ["@platforms//:incompatible"],
+})
+
+cmake(
+    name = "hermes_vm",
+    build_data = [":build_python"],
+    cache_entries = {
+        "CMAKE_BUILD_TYPE": "Release",
+        "HERMES_ALLOW_BOOST_CONTEXT": "0",
+        "HERMES_ENABLE_CORE_EXTENSIONS": "OFF",
+        "HERMES_ENABLE_CONTRIB_EXTENSIONS": "OFF",
+        "HERMES_ENABLE_DEBUGGER": "OFF",
+        "HERMES_ENABLE_INTL": "OFF",
+        "HERMES_ENABLE_NAPI": "OFF",
+        "HERMES_ENABLE_TEST_SUITE": "OFF",
+        "HERMES_ENABLE_TOOLS": "ON",
+        "HERMES_UNICODE_LITE": "ON",
+        "Python_EXECUTABLE": "$(execpath :build_python)",
+    } | select({
+        "@platforms//os:macos": {
+            "CMAKE_C_ARCHIVE_CREATE": "<CMAKE_AR> -static -o <TARGET> <OBJECTS>",
+            "CMAKE_C_ARCHIVE_APPEND": "<CMAKE_AR> -static -o <TARGET> <TARGET> <OBJECTS>",
+            "CMAKE_CXX_ARCHIVE_CREATE": "<CMAKE_AR> -static -o <TARGET> <OBJECTS>",
+            "CMAKE_CXX_ARCHIVE_APPEND": "<CMAKE_AR> -static -o <TARGET> <TARGET> <OBJECTS>",
+        },
+        "//conditions:default": {},
+    }),
+    generate_args = ["-GNinja"],
+    install = False,
+    lib_source = "@hermes//:sources",
+    out_static_libs = [
+        "libhermesvm_a.a",
+        "libjsi.a",
+    ],
+    postfix_script = """
+mkdir -p "$$INSTALLDIR/lib" "$$INSTALLDIR/include"
+cp "$$BUILD_TMPDIR/lib/libhermesvm_a.a" "$$INSTALLDIR/lib/"
+cp "$$BUILD_TMPDIR/jsi/libjsi.a" "$$INSTALLDIR/lib/"
+""",
+    tags = ["manual"],
+    target_compatible_with = HOST_COMPATIBILITY,
+    targets = [
+        "hermesvm_a",
+        "jsi",
+    ],
+    # LLVM's linker wrapper receives execroot-relative tools; CMake changes cwd.
+    tool_prefix = 'export LLVM_CLANGXX="$$EXT_BUILD_ROOT/$${LLVM_CLANGXX:-}" LLVM_DSYMUTIL="$$EXT_BUILD_ROOT/$${LLVM_DSYMUTIL:-}" LLVM_STRIP="$$EXT_BUILD_ROOT/$${LLVM_STRIP:-}";',
+)
+
+py_binary(
+    name = "build_python",
+    srcs = ["build_python.py"],
+    tags = ["manual"],
+)
+
+genrule(
+    name = "wrapper_source",
+    srcs = ["get_canonical_locales.js"],
+    outs = ["get_canonical_locales.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+cc_library(
+    name = "canonical_locales",
+    srcs = [
+        "canonical_locales.cpp",
+        ":wrapper_source",
+    ],
+    hdrs = ["canonical_locales.h"],
+    copts = ["-std=c++17"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales:headers",
+        "//crates/intl_getcanonicallocales:intl_getcanonicallocales_native",
+        "@hermes//:headers",
+    ],
+)
+
+cc_binary(
+    name = "hermes_runner",
+    srcs = ["runner.cpp"],
+    copts = ["-std=c++17"],
+    tags = ["manual"],
+    target_compatible_with = HOST_COMPATIBILITY,
+    visibility = ["//visibility:public"],
+    deps = [
+        ":canonical_locales",
+        ":hermes_vm",
+    ],
+)
+
+sh_test(
+    name = "canonical_locales_test",
+    size = "small",
+    srcs = ["test.sh"],
+    args = [
+        "$(rootpath :hermes_runner)",
+        "$(rootpath :canonical_locales_test.js)",
+        "$(rootpath :throw_test.js)",
+    ],
+    data = [
+        "canonical_locales_test.js",
+        "throw_test.js",
+        ":hermes_runner",
+    ],
+    target_compatible_with = HOST_COMPATIBILITY,
+)

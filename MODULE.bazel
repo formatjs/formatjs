@@ -7,6 +7,7 @@ module(
 
 bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_foreign_cc", version = "0.16.0")
 bazel_dep(name = "rules_shell", version = "0.8.0")
 bazel_dep(name = "windows_support", version = "0.2.0")
 
@@ -260,6 +261,17 @@ register_toolchains(
 ######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+HERMES_COMMIT = "393a539e645944a6ce879afc18ea8ddaa9232a08"
+
+http_archive(
+    name = "hermes",
+    build_file = "//native/hermes:hermes.BUILD.bazel",
+    sha256 = "5fce2dbb3b9046b21b717de30d9e5192f756420e12daf967dddee3a32d975a51",
+    strip_prefix = "hermes-%s" % HERMES_COMMIT,
+    type = "tar.gz",
+    urls = ["https://codeload.github.com/facebook/hermes/tar.gz/%s" % HERMES_COMMIT],
+)
 
 # Pyright's bundled CLI and typeshed exercise generated Python declarations.
 http_archive(

@@ -1,0 +1,25 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+filegroup(
+    name = "sources",
+    srcs = glob(
+        ["**"],
+        exclude = ["BUILD.bazel"],
+    ),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = glob([
+        "API/hermes/*.h",
+        "API/jsi/jsi/*.h",
+        "public/hermes/Public/*.h",
+    ]),
+    includes = [
+        "API",
+        "API/jsi",
+        "public",
+    ],
+    visibility = ["//visibility:public"],
+)
