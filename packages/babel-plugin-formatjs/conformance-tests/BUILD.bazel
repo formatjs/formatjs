@@ -7,7 +7,6 @@ formatjs_test(
         "//crates/formatjs_cli",
         "//packages/cli-lib:native_test_binary",
     ],  # keep: execute native CLI for conformance
-    env = {"FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath //packages/cli-lib:native_test_binary)"},
     tsconfig_types = ["node"],
     deps = [
         "//:node_modules/@babel/core",

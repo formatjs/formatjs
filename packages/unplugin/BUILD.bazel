@@ -138,7 +138,6 @@ formatjs_test(
         "tests/transform.test.ts",
     ],
     data = ["//packages/cli-lib:native_test_binary"],  # keep: native OXC evaluator
-    env = {"FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath //packages/cli-lib:native_test_binary)"},
     tsconfig_types = ["node"],
     deps = [
         ":unplugin",
@@ -157,7 +156,6 @@ vitest(
         "//crates/formatjs_cli",
         "//packages/cli-lib:native_test_binary",
     ],
-    env = {"FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath //packages/cli-lib:native_test_binary)"},
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/cli-lib",

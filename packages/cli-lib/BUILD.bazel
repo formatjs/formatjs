@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
@@ -36,14 +37,15 @@ config_setting(
     ],
 )
 
-alias(
+copy_file(
     name = "native_test_binary",
-    actual = select({
+    src = select({
         ":native_test_darwin_arm64": "//crates/formatjs_cli_napi:release_node_darwin_arm64",
         ":native_test_linux_arm64": "//crates/formatjs_cli_napi:release_node_linux_arm64",
         ":native_test_linux_x64": "//crates/formatjs_cli_napi:release_node_linux_x64",
         ":native_test_windows_x64": "//crates/formatjs_cli_napi:release_node_win32_x64",
     }),
+    out = "formatjs_cli_napi.node",
     visibility = ["//visibility:public"],
 )
 
@@ -164,6 +166,7 @@ formatjs_library(
     },
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
+        "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@glimmer/syntax",
         "//:node_modules/@types/fs-extra",
@@ -195,17 +198,15 @@ formatjs_test(
         "tests/unit/vue_extractor.test.ts",
     ],
     data = [
-        ":native_test_binary",  # keep: native binding loaded from FORMATJS_CLI_LIB_NATIVE_PATH
+        ":native_test_binary",  # keep: native binding resolved through runfiles
     ],
-    env = {
-        "FORMATJS_CLI_LIB_NATIVE_PATH": "$(rootpath :native_test_binary)",
-    },
     fixtures = glob(
         ["tests/unit/fixtures/**/*"],
     ),
     tsconfig_types = ["node"],
     deps = [
         ":cli-lib",
+        "//:node_modules/@bazel/runfiles",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],

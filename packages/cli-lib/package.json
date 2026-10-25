@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@babel/types": "8",
+    "@bazel/runfiles": "6",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/fs-extra": "11",
     "@types/node": "22 || 24",

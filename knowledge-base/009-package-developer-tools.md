@@ -116,7 +116,9 @@ overrides retain inherited options. ESLint config-merging regressions live in
   native results.
 
 `cli-lib` has no runtime dependency on TypeScript or `@formatjs/ts-transformer`.
-The native binding is required for extraction and compilation.
+The native binding is required for extraction and compilation. Bazel tests supply
+`packages/cli-lib/formatjs_cli_napi.node` as a runfile; the loader resolves it with
+`@bazel/runfiles`. Published packages load the matching native npm package.
 
 Node extraction limits concurrent file reads using `os.availableParallelism()`
 or a positive integer `RAYON_NUM_THREADS`, matching the Rust worker policy.
