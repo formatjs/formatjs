@@ -110,6 +110,27 @@ export default defineConfig({
 })
 ```
 
+## Static message values
+
+Message fields can reference local `const` strings, including aliases, templates,
+string concatenations, and constant conditionals. OXC performs native scope analysis and static evaluation through
+`@formatjs/cli-lib`. Constants must be initialized before the reference. Lexical scope
+and shadowing are respected for JSX and message descriptors.
+
+```tsx
+function Greeting() {
+  const greeting = 'Hello'
+  return <FormattedMessage defaultMessage={greeting} />
+}
+```
+
+Imported values, mutable bindings, destructured bindings, and runtime expressions
+remain unresolved. Keep those message fields inline when they need generated IDs
+or precompiled ASTs.
+
+Native expression evaluation supports macOS arm64, Linux x64/arm64 (glibc and
+musl), and Windows x64.
+
 ## Options
 
 | Option                     | Type         | Default                         | Description                             |

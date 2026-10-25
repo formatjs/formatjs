@@ -3,7 +3,10 @@ load("//tools:test.bzl", "formatjs_test")
 formatjs_test(
     name = "conformance-tests_test",
     srcs = ["typescript-wrappers.test.ts"],
-    data = ["//crates/formatjs_cli"],  # keep: execute native CLI for conformance
+    data = [
+        "//crates/formatjs_cli",
+        "//packages/cli-lib:native_test_binary",
+    ],  # keep: execute native CLI for conformance
     tsconfig_types = ["node"],
     deps = [
         "//:node_modules/@babel/core",

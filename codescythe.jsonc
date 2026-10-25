@@ -5,6 +5,7 @@
     "packages/bigdecimal/index.ts",
     "packages/cli-lib/index.ts",
     "packages/cli-lib/main.ts",
+    "packages/cli-lib/static-evaluation.ts",
     "packages/cli-lib/formatters/crowdin.ts",
     "packages/cli-lib/formatters/default.ts",
     "packages/cli-lib/formatters/lokalise.ts",

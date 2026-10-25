@@ -120,6 +120,7 @@ formatjs_library(
     },
     deps = [
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/cli-lib",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",
@@ -136,6 +137,7 @@ formatjs_test(
         "conformance-tests/cli-unplugin-conformance.test.ts",
         "tests/transform.test.ts",
     ],
+    data = ["//packages/cli-lib:native_test_binary"],  # keep: native OXC evaluator
     tsconfig_types = ["node"],
     deps = [
         ":unplugin",
@@ -152,9 +154,11 @@ vitest(
     ] + glob(["conformance-tests/**/*.ts"]),
     data = [
         "//crates/formatjs_cli",
+        "//packages/cli-lib:native_test_binary",
     ],
     deps = [
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/cli-lib",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/ts-transformer",
         "//:node_modules/@types/node",

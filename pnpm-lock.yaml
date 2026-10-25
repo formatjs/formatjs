@@ -772,6 +772,9 @@ importers:
       '@babel/types':
         specifier: '8'
         version: 8.0.6
+      '@bazel/runfiles':
+        specifier: '6'
+        version: 6.5.0
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser
@@ -1144,6 +1147,9 @@ importers:
       '@bazel/runfiles':
         specifier: '6'
         version: 6.5.0
+      '@formatjs/cli-lib':
+        specifier: workspace:*
+        version: link:../cli-lib
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser

@@ -29,6 +29,190 @@ describe('@formatjs/unplugin transform', () => {
     )
   })
 
+  describe('local string constants (#7682)', () => {
+    const options: Options = {
+      ast: true,
+      overrideIdFn: (_id, message) => message ?? '',
+    }
+
+    test.each([
+      [
+        'module constant',
+        `const greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />`,
+      ],
+      [
+        'native template evaluation',
+        "const name = 'lo'; const greeting = `Hel${name}`; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'native conditional evaluation',
+        "const greeting = true ? 'Hello' : 'Wrong'; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'native operator evaluation',
+        "const count = 1 + 1; const greeting = count === 2 && 'Hello'; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'Unicode source offsets',
+        "const other = '😀é'; const greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'component constant',
+        `function Greeting() { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'arrow component constant',
+        `const Greeting = () => { const greeting = 'Hello'; return <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'inner constant shadows outer',
+        `const greeting = 'Wrong'; { const greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'initializer uses declaration scope',
+        `const greeting = 'Hello'; const alias = greeting; { const greeting = 'Wrong'; <FormattedMessage defaultMessage={alias} /> }`,
+      ],
+      [
+        'constant chains and concatenations',
+        "const first = 'Hel'; const second = `lo`; const greeting = first + second; <FormattedMessage defaultMessage={greeting} />",
+      ],
+      [
+        'TypeScript assertions',
+        `const greeting = ('Hello' as const) satisfies string; <FormattedMessage defaultMessage={greeting!} />`,
+      ],
+    ])('%s', (_name, source) => {
+      const output = t(source, options)
+      expect(output).toContain('id="Hello"')
+      expect(output).toContain('defaultMessage={[{"type":0,"value":"Hello"}]}')
+    })
+
+    test('preserves TypeScript angle assertions during native evaluation', () => {
+      const source = `const greeting = <string>'Hello'; defineMessage({defaultMessage: greeting})`
+      expect(t(source, options, 'messages.ts')).toContain('id: "Hello"')
+    })
+
+    test.each([
+      ['defineMessage', `defineMessage({defaultMessage: greeting})`],
+      ['defineMessages', `defineMessages({hello: {defaultMessage: greeting}})`],
+      ['formatMessage', `intl.formatMessage({defaultMessage: greeting})`],
+      ['compiled JSX', `_jsx(FormattedMessage, {defaultMessage: greeting})`],
+    ])('%s resolves descriptor values', (_name, expression) => {
+      const output = t(`const greeting = 'Hello'; ${expression}`, options)
+      expect(output).toContain('id: "Hello"')
+      expect(output).toContain('defaultMessage: [{"type":0,"value":"Hello"}]')
+    })
+
+    test('resolves id and description constants', () => {
+      const source = `const id = 'greeting'; const description = 'Inbox header'; const message = 'Hello'; defineMessage({id, defaultMessage: message, description})`
+      const output = t(source, {ast: true})
+      expect(output).toContain('id: "greeting"')
+      expect(output).toContain('defaultMessage: [{"type":0,"value":"Hello"}]')
+      expect(output).not.toContain('message, description')
+    })
+
+    test('rewrites shorthand defaultMessage and removes its property', () => {
+      const source = `const defaultMessage = 'Hello'; defineMessage({defaultMessage})`
+      expect(t(source, options)).toContain(
+        'defaultMessage: [{"type":0,"value":"Hello"}]'
+      )
+      expect(t(source, {removeDefaultMessage: true})).toContain(
+        'defineMessage({id: "NhX4DJ", })'
+      )
+    })
+
+    test('keeps switch discriminants outside the case scope', () => {
+      const source = `const greeting = 'Hello'; switch (intl.formatMessage({defaultMessage: greeting})) { default: const greeting = 'Wrong' }`
+      expect(t(source, options)).toContain('id: "Hello"')
+    })
+
+    test('keeps static-block var declarations inside the class', () => {
+      const source = `const greeting = 'Hello'; class Example { static { var greeting = 'Wrong' } } <FormattedMessage defaultMessage={greeting} />`
+      expect(t(source, options)).toContain('id="Hello"')
+    })
+
+    test('does not leak sibling-block declarations', () => {
+      const source = `const greeting = 'Hello'; { const greeting = 'Wrong' } <FormattedMessage defaultMessage={greeting} />`
+      expect(t(source, options)).toContain('id="Hello"')
+    })
+
+    test.each([
+      [
+        'parameter',
+        `function Greeting(greeting) { return <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'destructured parameter',
+        `function Greeting({greeting}) { return <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'rest parameter',
+        `const Greeting = (...greeting) => <FormattedMessage defaultMessage={greeting} />`,
+      ],
+      [
+        'later const',
+        `{ <FormattedMessage defaultMessage={greeting} />; const greeting = 'Wrong' }`,
+      ],
+      [
+        'later let',
+        `{ <FormattedMessage defaultMessage={greeting} />; let greeting = 'Wrong' }`,
+      ],
+      [
+        'hoisted var',
+        `function Greeting() { <FormattedMessage defaultMessage={greeting} />; { var greeting = 'Wrong' } }`,
+      ],
+      [
+        'function declaration',
+        `{ <FormattedMessage defaultMessage={greeting} />; function greeting() {} }`,
+      ],
+      [
+        'class declaration',
+        `{ <FormattedMessage defaultMessage={greeting} />; class greeting {} }`,
+      ],
+      [
+        'named function expression',
+        `const Greeting = function greeting() { return <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'catch parameter',
+        `try {} catch (greeting) { <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'destructured declaration',
+        `{ const {greeting} = values; <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'quoted enum member',
+        `enum Values { 'greeting' = 'Wrong', other = +intl.formatMessage({defaultMessage: greeting}) }`,
+      ],
+      [
+        'loop binding',
+        `for (const greeting of values) { <FormattedMessage defaultMessage={greeting} /> }`,
+      ],
+      [
+        'switch binding',
+        `switch (value) { case 1: <FormattedMessage defaultMessage={greeting} />; break; default: const greeting = 'Wrong' }`,
+      ],
+    ])('%s blocks outer constant', (_name, body) => {
+      const source = `const greeting = 'Hello'; ${body}`
+      expect(t(source, options)).toBe(source)
+    })
+
+    test.each([
+      `let greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />`,
+      `var greeting = 'Hello'; <FormattedMessage defaultMessage={greeting} />`,
+      `import {greeting} from './messages'; <FormattedMessage defaultMessage={greeting} />`,
+      `const greeting = getGreeting(); <FormattedMessage defaultMessage={greeting} />`,
+      `const greeting = other; const other = greeting; <FormattedMessage defaultMessage={greeting} />`,
+      `const greeting = greeting; <FormattedMessage defaultMessage={greeting} />`,
+      `const greeting = 'Hello'; greeting = 'Changed'; <FormattedMessage defaultMessage={greeting} />`,
+    ])(
+      'leaves mutable, imported, dynamic, or cyclic values unchanged: %s',
+      source => {
+        expect(t(source, options)).toBe(source)
+      }
+    )
+  })
+
   describe('id generation', () => {
     test('inserts generated id into formatMessage call', () => {
       const input = `intl.formatMessage({defaultMessage: 'Hello World', description: 'greeting'})`
