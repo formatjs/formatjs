@@ -45,6 +45,7 @@ rust_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
         "@crates//:fixed_decimal",
         "@crates//:icu_plurals",
         "@crates//:icu_provider",

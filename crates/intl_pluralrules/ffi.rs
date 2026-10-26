@@ -208,6 +208,54 @@ enum Query {
     SelectRange { start: String, end: String },
 }
 
+#[derive(Deserialize)]
+struct MatchRequest {
+    requested: Vec<String>,
+    #[serde(default)]
+    lookup: bool,
+    #[serde(default)]
+    supported: bool,
+}
+
+/// Match already canonicalized requested tags against currently loaded data.
+/// # Safety
+/// Registry is live; input bytes readable; out writable. Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_registry_match(
+    registry: *const PluralRegistry,
+    data: *const u8,
+    len: usize,
+    out: *mut PluralBytes,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe {
+        out.write(PluralBytes::EMPTY);
+    }
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let request: MatchRequest =
+            serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
+        let registry = unsafe { &(*registry).0 };
+        let result = if request.supported {
+            json!(registry.supported_locales(&request.requested))
+        } else {
+            json!(
+                registry
+                    .negotiate(&request.requested, request.lookup)
+                    .map_err(status)?
+            )
+        };
+        unsafe {
+            output(result, out);
+        }
+        Ok(())
+    })
+}
+
 /// Query an immutable instance. Selection receives normalized decimal strings
 /// after ToIntlMathematicalValue; outputs are fresh owned JSON bytes.
 /// # Safety

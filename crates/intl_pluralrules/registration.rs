@@ -7,6 +7,8 @@ use std::io::{self, BufRead};
 struct Request {
     packs: Vec<String>,
     queries: Vec<String>,
+    #[serde(default)]
+    requested: Vec<Vec<String>>,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -25,7 +27,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }).collect::<Result<Vec<_>, formatjs_intl_pluralrules::Error>>()?;
         println!(
             "{}",
-            json!({"available":registry.available_locales(),"default":registry.default_locale(),"values":values})
+            json!({"available":registry.available_locales(),"default":registry.default_locale(),"values":values,
+                "matches":request.requested.iter().map(|requested| {
+                    let matched = |lookup| match registry.negotiate(requested, lookup) {
+                        Ok(value) => Ok(Some(value)),
+                        Err(formatjs_intl_pluralrules::Error::MissingLocale) => Ok(None),
+                        Err(error) => Err(error),
+                    };
+                    Ok(json!({"lookup":matched(true)?,"bestFit":matched(false)?,"supported":registry.supported_locales(requested)}))
+                }).collect::<Result<Vec<_>,formatjs_intl_pluralrules::Error>>()?
+            })
         );
     }
     Ok(())

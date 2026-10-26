@@ -190,3 +190,28 @@ fn invalid_abi_inputs_clear_outputs_and_failed_load_is_atomic() {
         formatjs_plural_registry_destroy(ptr::null_mut());
     }
 }
+
+#[test]
+fn registry_matching_observes_current_availability() {
+    let registry = Registry::new();
+    let query = br#"{"requested":["en-GB-u-nu-arab","qzz"],"supported":true}"#;
+    for expected in [json!([]), json!(["en-GB-u-nu-arab"])] {
+        let mut out = PluralBytes {
+            data: ptr::null_mut(),
+            len: 0,
+        };
+        assert_eq!(
+            unsafe {
+                formatjs_plural_registry_match(registry.0, query.as_ptr(), query.len(), &mut out)
+            },
+            0
+        );
+        let value: Value =
+            serde_json::from_slice(unsafe { slice::from_raw_parts(out.data, out.len) }).unwrap();
+        unsafe {
+            formatjs_plural_bytes_free(out);
+        }
+        assert_eq!(value, expected);
+        assert_eq!(registry.load(EN), 0);
+    }
+}

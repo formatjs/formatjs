@@ -154,7 +154,7 @@ The rule engine owns loaded payloads and has no global locale registration or
 baked plural data. `tests:rule_conformance_test` compares all packs with the TS
 compiler over 100,000+ samples. `digits::Digits` now implements typed digit-option resolution and exact decimal
 rounding; `tests:digit_conformance_test` compares selection, ranges and metadata
-with the public TS API. Locale negotiation, full constructor behavior and Hermes/SDK
+with the public TS API. Full constructor behavior and Hermes/SDK
 integration remain in progress.
 
 Conformance also covers canonical aliases during TS data registration (`sh`
@@ -166,7 +166,8 @@ modulo before converting digits to bounded integers.
 `instance::PluralRules` owns validated type/notation/digit options and shares an
 immutable rule payload. The conformance runner exercises this production API for
 selection, ranges and complete resolved metadata. Host adapters handle observable
-JS coercion and locale negotiation before constructing an instance.
+JS coercion before constructing an instance; the registry negotiates locale tags
+with the shared Rust Locale matcher.
 
 The Rust registry loads packs atomically, registers canonical default-content
 aliases and required fallbacks, and protects explicitly loaded payloads from
@@ -177,3 +178,8 @@ The shared Hermes archive exports PluralRules registry/load/create/query/free
 functions from `ffi.rs`. Handles own their data; input buffers never escape a
 call. ABI tests cover registry replacement/destruction, owned output, invalid
 UTF-8, atomic failed loads, lazy non-finite options and RangeError/TypeError codes.
+
+Locale matching shares the TS matcher's CLDR distance rules, region variables
+and paradigm locales through generated Rust metadata in `intl_locale`. Prefix
+lookup strips only Unicode extensions; supported locale results retain requested
+tags. Best fit preserves exact/maximized fast paths and request-order penalties.

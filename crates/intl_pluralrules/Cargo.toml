@@ -13,6 +13,7 @@ path = "lib.rs"
 
 [dependencies]
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
+formatjs_intl_locale = { path = "../intl_locale" }
 fixed_decimal = "0.7"
 icu_plurals = { version = "2.1", default-features = false, features = [
   "serde",

@@ -12,6 +12,8 @@ formatjs_test(
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@types/node",

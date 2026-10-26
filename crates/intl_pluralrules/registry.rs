@@ -17,6 +17,23 @@ pub struct Registry {
 }
 
 impl Registry {
+    /// Canonical requested tags come from the host's CanonicalizeLocaleList.
+    pub fn negotiate(&self, requested: &[String], lookup: bool) -> Result<String, Error> {
+        let matched = if lookup {
+            formatjs_intl_locale::matcher::lookup(&self.available, requested)
+        } else {
+            formatjs_intl_locale::matcher::best_fit(&self.available, requested)
+                .map_err(|_| Error::InvalidOption("locales"))?
+        };
+        matched
+            .or_else(|| self.default.clone())
+            .ok_or(Error::MissingLocale)
+    }
+
+    pub fn supported_locales(&self, requested: &[String]) -> Vec<String> {
+        formatjs_intl_locale::matcher::supported(&self.available, requested)
+    }
+
     fn insert(&mut self, tag: String, rules: Arc<LocaleRules>, replace: bool) {
         let exists = self.data.contains_key(&tag);
         if !exists {

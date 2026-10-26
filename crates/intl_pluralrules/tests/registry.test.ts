@@ -1,5 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill-force.js'
+import '@formatjs/intl-locale/polyfill-force.js'
 import {PluralRules} from '@formatjs/intl-pluralrules'
+import {match, LookupSupportedLocales} from '@formatjs/intl-localematcher'
 import {defaultContent} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
@@ -23,6 +25,10 @@ it('matches TypeScript availability, aliases and late explicit registration', ()
     ['zh-Hant', 'zh'],
     ['fr', 'bn'],
     ['en', 'fr', 'en'],
+    ['en-GB', 'en-US'],
+    ['es', 'en', 'es-419'],
+    ['zh-Hant', 'zh-MO'],
+    ['de', 'ja'],
   ]
   const queries = [
     'en',
@@ -38,13 +44,43 @@ it('matches TypeScript availability, aliases and late explicit registration', ()
     'fr',
     'bn',
   ]
+  const requested = [
+    [],
+    ['en-US'],
+    ['en-GB'],
+    ['en-CA'],
+    ['es-KY'],
+    ['pt-BR'],
+    ['pt-AO'],
+    ['zh-HK'],
+    ['zh-TW'],
+    ['sr-Latn-RS'],
+    ['sr-Cyrl'],
+    ['bn-BD'],
+    ['de-DE', 'fr'],
+    ['fr-XX', 'en'],
+    ['en-GB', 'en-US', 'en'],
+    ['qzz'],
+    ['de-x-u-co-phonebk'],
+    ['de-u-co-phonebk-x-private'],
+    ['de-t-en-u-co-phonebk-x-u-kn'],
+    ['en-u-nu-arab'],
+  ].map(locales => Intl.getCanonicalLocales(locales))
   const records = scenarios.map(locales => {
     PluralRules.localeData = {}
     PluralRules.availableLocales = new Set()
     PluralRules.__defaultLocale = ''
     const packs = locales.map(locale => {
       const source =
-        locale === 'en-US' ? 'en' : locale === 'zh-Hant' ? 'zh' : locale
+        (
+          {
+            'en-US': 'en',
+            'en-GB': 'en',
+            'zh-Hant': 'zh',
+            'zh-MO': 'zh',
+            'es-419': 'es',
+          } as Record<string, string>
+        )[locale] || locale
       const raw = runInNewContext(
         '(' +
           readFileSync(
@@ -70,6 +106,26 @@ it('matches TypeScript availability, aliases and late explicit registration', ()
     const expected = {
       available: [...PluralRules.availableLocales],
       default: PluralRules.__defaultLocale || null,
+      matches: requested.map(requested => ({
+        lookup:
+          match(
+            requested,
+            [...PluralRules.availableLocales],
+            PluralRules.__defaultLocale,
+            {algorithm: 'lookup'}
+          ) || null,
+        bestFit:
+          match(
+            requested,
+            [...PluralRules.availableLocales],
+            PluralRules.__defaultLocale,
+            {algorithm: 'best fit'}
+          ) || null,
+        supported: LookupSupportedLocales(
+          [...PluralRules.availableLocales],
+          requested
+        ),
+      })),
       values: queries.map(locale => {
         if (!PluralRules.availableLocales.has(locale)) return {missing: true}
         const rules = new PluralRules(locale, {localeMatcher: 'lookup'})
@@ -81,7 +137,7 @@ it('matches TypeScript availability, aliases and late explicit registration', ()
         }
       }),
     }
-    return {locales, request: {packs, queries}, expected}
+    return {locales, request: {packs, queries, requested}, expected}
   })
   const result = spawnSync(
     resolve('crates/intl_pluralrules/registration'),
