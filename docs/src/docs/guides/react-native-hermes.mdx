@@ -3,12 +3,12 @@ This guide covers setting up FormatJS polyfills for React Native with the Hermes
 ## Experimental Rust Intl extensions
 
 The repository includes Rust `Intl.getCanonicalLocales`, `Intl.supportedValuesOf`,
-`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames` and `Intl.Segmenter` implementations with C++ JSI adapters.
+`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames`, `Intl.Segmenter` and `Intl.Collator` implementations with C++ JSI adapters.
 SDK `0.1.0` packages public headers, adapter source,
 extension JavaScript, and Rust static libraries for Linux x86_64 GNU and macOS
 arm64. Consumers compile the adapter against their matching Hermes JSI headers
 and link SDK targets `:canonical_locales`, `:supported_values`, `:locale` and
-`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter` from `@formatjs_intl_getcanonicallocales_hermes`.
+`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter`, `:collator` from `@formatjs_intl_getcanonicallocales_hermes`.
 
 The SDK is built from this repository and is not published to BCR, npm, or
 crates.io. It does not include Android/iOS artifacts or React Native package
@@ -24,6 +24,7 @@ to build, extract, and install its public layout.
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
+#include <formatjs/hermes/intl_collator.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -33,6 +34,7 @@ formatjs::installPluralRules(*runtime);
 formatjs::installListFormat(*runtime);
 formatjs::installDisplayNames(*runtime);
 formatjs::installSegmenter(*runtime);
+formatjs::installCollator(*runtime);
 ```
 
 Install before application scripts. For bytecode-only startup, compile the SDK's
@@ -376,3 +378,25 @@ Array.from(words.segment('こんにちは世界'), part => part.segment)
 UTF-16 input and indices stay exact, including lone surrogates. Word/sentence
 boundaries and word-like status may differ from TS; explicit conformance profiles
 cover both implementations. See the [Segmenter port](/docs/polyfills/intl-segmenter#rust-hermes-extension).
+
+### Rust Collator
+
+Link SDK target `:collator`; call `formatjs::installCollator` after canonicalization.
+For precompiled setup, register `js/37-IntlCollator.js` and invoke
+`formatjs::installCollator(runtime, extensions)`. CLDR sort/search rules and ICU4X
+normalization/casing data are compiled in; no locale JSON loading is needed.
+
+```ts
+const compare = Intl.Collator('en', {numeric: true}).compare
+const items = ['item10', 'item2']
+items.sort(compare) // ['item2', 'item10']
+```
+
+The bound comparison function is cached, keeps its original instance alive and
+preserves lone UTF-16 units. See the [Collator port](/docs/polyfills/intl-collator#rust-hermes-extension)
+for its comparison profile and tests.
+
+Collator requires the Hermes proxy-construction fix in overlay commit
+`338ff13ff1e996934ae615952d174f8c621844d9` (proposed `.bcr.1` revision).
+Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
+perform extra observable `newTarget.prototype` reads during construction.

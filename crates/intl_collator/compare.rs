@@ -251,14 +251,11 @@ fn map_valid_chunks(input: &[u16], mut map: impl FnMut(&str) -> String) -> Vec<u
 }
 fn prepare(model: &Collator, input: &[u16]) -> Vec<u16> {
     // CompareStrings is implementation-defined; keep the TS UCA profile.
-    // Sensitivity selects normalization/mark/case preparation and comparison levels.
+    // Sensitivity selects normalization/case preparation and comparison levels.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L241-L280
     let opts = &model.resolved;
     map_valid_chunks(input, |value| {
         let mut value = nfd(value);
-        if matches!(opts.sensitivity, Sensitivity::Base | Sensitivity::Case) {
-            value.retain(|value| !('\u{0300}'..='\u{036f}').contains(&value));
-        }
         if matches!(opts.sensitivity, Sensitivity::Base | Sensitivity::Accent)
             || opts.case_first != CaseFirst::False
         {
@@ -272,20 +269,25 @@ fn prepare(model: &Collator, input: &[u16]) -> Vec<u16> {
 fn prepared(model: &Collator, left: &[u16], right: &[u16]) -> Ordering {
     let left = elements(model.data, &points(left), &model.tailoring);
     let right = elements(model.data, &points(right), &model.tailoring);
-    let levels = match model.resolved.sensitivity {
-        Sensitivity::Base => 1,
-        Sensitivity::Accent => 2,
-        Sensitivity::Case => 3,
-        Sensitivity::Variant => 4,
+    let levels: &[usize] = match model.resolved.sensitivity {
+        Sensitivity::Base => &[0],
+        Sensitivity::Accent => &[0, 1],
+        Sensitivity::Case => &[0, 2],
+        Sensitivity::Variant => &[0, 1, 2, 3],
     };
     // Compare level by level, dropping zero weights. ignorePunctuation filters
     // CLDR variable CEs consistently with the TS profile's shifted approximation.
     // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison
-    for level in 0..levels {
+    for &level in levels {
         let weights = |elements: &[Element]| {
             elements
                 .iter()
                 .filter(|element| !model.resolved.ignore_punctuation || element[4] & 1 == 0)
+                .filter(|element| {
+                    !(model.resolved.sensitivity == Sensitivity::Case
+                        && level == 2
+                        && element[0] == 0)
+                })
                 .map(|element| element[level])
                 .filter(|weight| *weight != 0)
                 .collect::<Vec<_>>()

@@ -179,3 +179,27 @@ fn comparison_keys_honor_sensitivity_and_consistency() {
         assert_ne!(collator.compare(&units("å"), &units("Å")), 0);
     }
 }
+
+#[test]
+fn sensitivity_preserves_primary_tailorings_and_ignores_secondary_only_accents() {
+    for sensitivity in [Sensitivity::Base, Sensitivity::Case] {
+        let collator = model(
+            "sv",
+            Options {
+                sensitivity: Some(sensitivity),
+                ..Default::default()
+            },
+        );
+        assert_eq!(collator.compare(&units("z"), &units("ä")), -1);
+        assert_ne!(collator.compare(&units("a"), &units("ä")), 0);
+    }
+    let search = model(
+        "de",
+        Options {
+            usage: Usage::Search,
+            sensitivity: Some(Sensitivity::Base),
+            ..Default::default()
+        },
+    );
+    assert_eq!(search.compare(&units("AE"), &units("Ä")), 0);
+}

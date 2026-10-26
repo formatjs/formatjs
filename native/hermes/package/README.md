@@ -21,6 +21,8 @@ include/formatjs/hermes/intl_displaynames.h
 include/formatjs/intl/displaynames.h
 include/formatjs/hermes/intl_segmenter.h
 include/formatjs/intl/segmenter.h
+include/formatjs/hermes/intl_collator.h
+include/formatjs/intl/collator.h
 include/formatjs/intl/listformat.h
 include/formatjs/intl/pluralrules.h
 src/canonical_locales.cpp
@@ -37,6 +39,8 @@ src/displaynames.cpp
 src/displaynames.inc
 src/segmenter.cpp
 src/segmenter.inc
+src/collator.cpp
+src/collator.inc
 js/30-IntlGetCanonicalLocales.js
 js/31-IntlSupportedValuesOf.js
 js/32-IntlLocale.js
@@ -44,6 +48,9 @@ js/33-IntlPluralRules.js
 js/34-IntlListFormat.js
 js/35-IntlDisplayNames.js
 js/36-IntlSegmenter.js
+js/37-IntlCollator.js
+js/collator-smoke.js
+examples/collator-smoke.ts
 js/segmenter-smoke.js
 examples/segmenter-smoke.ts
 js/displaynames-smoke.js
@@ -96,7 +103,8 @@ Link `@formatjs_intl_getcanonicallocales_hermes//:pluralrules` for `Intl.PluralR
 Link `@formatjs_intl_getcanonicallocales_hermes//:listformat` for `Intl.ListFormat`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:displaynames` for `Intl.DisplayNames`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:segmenter` for `Intl.Segmenter`.
-All seven targets use one Rust archive. The module retains its original name.
+Link `@formatjs_intl_getcanonicallocales_hermes//:collator` for `Intl.Collator`.
+All eight targets use one Rust archive. The module retains its original name.
 
 ## Install before application JavaScript
 
@@ -110,6 +118,7 @@ For embedders that allow source evaluation:
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
+#include <formatjs/hermes/intl_collator.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -119,6 +128,7 @@ formatjs::installPluralRules(*runtime);
 formatjs::installListFormat(*runtime);
 formatjs::installDisplayNames(*runtime);
 formatjs::installSegmenter(*runtime);
+formatjs::installCollator(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -136,6 +146,7 @@ formatjs::installPluralRules(*runtime, extensions);
 formatjs::installListFormat(*runtime, extensions);
 formatjs::installDisplayNames(*runtime, extensions);
 formatjs::installSegmenter(*runtime, extensions);
+formatjs::installCollator(*runtime, extensions);
 ```
 
 ## Compiled locale data
@@ -237,3 +248,15 @@ and invoke `installSegmenter(runtime, extensions)`. No locale pack loading is
 needed. Segments retain original UTF-16 input; iterators advance independently.
 Word/sentence profiles can differ from TS; both profiles have conformance tests.
 The independent consumer runs `examples/segmenter-smoke.ts` from this SDK.
+
+Collator uses compiled CLDR sort/search data with ICU4X normalization and casing.
+Link `:collator`; install after canonicalization, or register
+`js/37-IntlCollator.js` and call `installCollator(runtime, extensions)`. No locale
+pack loading is needed. The cached bound comparison function retains its original
+instance and accepts exact UTF-16 input. `examples/collator-smoke.ts` covers search,
+locale tailorings, numeric runs, canonical equivalence, brands and descriptors.
+
+Collator requires the Hermes proxy-construction fix in overlay commit
+`338ff13ff1e996934ae615952d174f8c621844d9` (proposed `.bcr.1` revision).
+Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
+perform extra observable `newTarget.prototype` reads during construction.

@@ -360,3 +360,21 @@ it('does not retain the default collation sentinel as a Unicode extension', () =
     ).toMatchObject({locale: 'en', collation: 'default'})
   }
 })
+
+it('keeps primary locale tailorings when sensitivity ignores accents', () => {
+  for (const sensitivity of ['base', 'case'] as const) {
+    const swedish = new Collator('sv', {sensitivity})
+    expect(swedish.compare('z', 'ä')).toBeLessThan(0)
+    expect(swedish.compare('a', 'ä')).not.toBe(0)
+    expect(Math.sign(swedish.compare('z', 'ä'))).toBe(
+      Math.sign(new Intl.Collator('sv', {sensitivity}).compare('z', 'ä'))
+    )
+  }
+  expect(
+    new Collator('de', {usage: 'search', sensitivity: 'base'}).compare(
+      'AE',
+      'Ä'
+    )
+  ).toBe(0)
+  expect(new Collator('en', {sensitivity: 'case'}).compare('a', 'á')).toBe(0)
+})

@@ -30,10 +30,18 @@ genrule(
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
 )
 
+genrule(
+    name = "collator_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/collator-smoke.js"],
+    outs = ["collator_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
 SMOKE_SOURCES = [
     "main.cpp",
     ":displaynames_smoke_source",
     ":segmenter_smoke_source",
+    ":collator_smoke_source",
     ":listformat_smoke_source",
     ":pluralrules_smoke_source",
 ]
@@ -57,6 +65,7 @@ cc_binary(
     tags = ["manual"],
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:collator",
         "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
@@ -80,6 +89,7 @@ cc_test(
     linkstatic = True,
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:collator",
         "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",

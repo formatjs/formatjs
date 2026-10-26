@@ -36,3 +36,8 @@ pub use formatjs_intl_segmenter::ffi::{
     formatjs_segmenter_resolved, formatjs_segmenter_segment, formatjs_segments_containing,
     formatjs_segments_cursor, formatjs_segments_destroy,
 };
+
+pub use formatjs_intl_collator::ffi::{
+    formatjs_collator_bytes_free, formatjs_collator_create, formatjs_collator_destroy,
+    formatjs_collator_query, formatjs_collator_resolve, formatjs_collator_supported,
+};

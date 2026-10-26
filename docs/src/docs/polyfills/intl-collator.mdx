@@ -138,11 +138,23 @@ formatter construction and module initialization are excluded.
 `caseFirst` affects case-sensitive comparisons; `base` and `accent` still ignore
 case. `ignorePunctuation` preserves letters and digits. Canonically equivalent
 strings share case-order keys, including precomposed
-and decomposed accented letters.
+and decomposed accented letters. Sensitivity selects UCA levels after locale
+tailoring, preserving primary letters such as Swedish ä.
 
-## Rust port (experimental)
+## Rust Hermes extension
 
 `crates/intl_collator` ports the CLDR sort/search comparison profile to Rust.
 ICU4X supplies normalization and locale-sensitive casing. Generated data stays
-static, matching this package. Core TS/native conformance is included; Hermes
-installation and SDK packaging are still in progress.
+static, matching this package. The comparison profile retains compact implicit
+weights and CLDR variable-element filtering; it does not claim full ICU Collator
+ordering parity.
+
+Follow the [native SDK guide](/docs/guides/react-native-hermes#rust-collator): link
+`:collator`, install after canonicalization, or register `js/37-IntlCollator.js`
+and call the precompiled installer. The SDK ships public headers, C++ adapter
+source, Linux/macOS Rust archives and a typed independent consumer smoke example.
+Android/iOS artifacts and React Native package installation are not included.
+
+Tests cover all advertised locales/collations, the existing native/TS corpus,
+option combinations, comparator consistency, UTF-16 inputs and Hermes source/
+optimized-bytecode integration.

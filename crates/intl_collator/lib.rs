@@ -159,13 +159,25 @@ impl Collator {
             .map(|value| if value { "true" } else { "false" }.to_owned());
         let first = options.case_first.map(|value| case_name(value).to_owned());
         let search = vec!["default".to_owned()];
+        // CLDR's default tailoring (for example Arabic compat) stays internal.
+        // ECMA-402's default co slot is null, exposed as "default".
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L95-L98
+        let sort: Vec<String> = std::iter::once("default".to_owned())
+            .chain(
+                metadata
+                    .co
+                    .iter()
+                    .filter(|value| *value != "default")
+                    .cloned(),
+            )
+            .collect();
         for (key, values, option) in [
             (
                 "co",
                 if options.usage == Usage::Search {
                     &search
                 } else {
-                    &metadata.co
+                    &sort
                 },
                 collation.as_deref(),
             ),

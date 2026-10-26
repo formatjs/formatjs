@@ -186,6 +186,11 @@ it('compares every available locale, every advertised collation and search with 
     {co: readonly string[]}
   >
   const configurations = availableCollationLocales.flatMap(locale => [
+    {
+      locales: [locale],
+      options: {localeMatcher: 'lookup' as const},
+      pairs,
+    },
     ...metadata[locale].co.map(collation => ({
       locales: [locale],
       options: {collation, localeMatcher: 'lookup' as const},
