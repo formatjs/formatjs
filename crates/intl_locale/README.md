@@ -14,6 +14,11 @@ Numbering-system and collation methods take actual formatter observations.
 Query these at method-call time so on-demand locale loading does not leave
 stale capabilities. Static metadata can be cached; public arrays must be fresh.
 
+`locale.h` exposes an owned opaque handle. Create/destroy once per JS instance;
+query results own UTF-8 JSON bytes, freed separately. Queries accept current
+formatter observations. Scalar metadata omits formatter-dependent work. The JS
+binding maps null optional scalar fields to undefined.
+
 On Linux:
 
 ```sh

@@ -1,7 +1,7 @@
 import '#packages/intl-getcanonicallocales/polyfill-force.js'
 import {Locale} from '#packages/intl-locale/index.js'
 import type {IntlLocaleOptions} from '#packages/intl-locale/index.js'
-import {supportedValuesOf} from '#packages/intl-supportedvaluesof/index.js'
+import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
 import {likelySubtags} from '@formatjs_generated/cldr.core/likelySubtags.js'
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'

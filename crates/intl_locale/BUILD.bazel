@@ -1,7 +1,14 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+cc_library(
+    name = "headers",
+    hdrs = ["locale.h"],
+    visibility = ["//visibility:public"],
+)
 
 generate_src_file(
     name = "data",
@@ -17,6 +24,7 @@ rust_library(
     name = "intl_locale",
     srcs = [
         "data_generated.rs",
+        "ffi.rs",
         "lib.rs",
     ],
     crate_name = "formatjs_intl_locale",
@@ -26,15 +34,22 @@ rust_library(
     deps = [
         "//crates/intl_getcanonicallocales",
         "@crates//:serde",
+        "@crates//:serde_json",
     ],
 )
 
 formatjs_rust_test(
     name = "intl_locale_test",
-    srcs = ["lib.test.rs"],
+    srcs = [
+        "ffi.test.rs",
+        "lib.test.rs",
+    ],
     crate_name = "intl_locale_test",
     edition = "2024",
-    deps = [":intl_locale"],
+    deps = [
+        ":intl_locale",
+        "@crates//:serde_json",
+    ],
 )
 
 rust_binary(

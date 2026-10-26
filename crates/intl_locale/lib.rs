@@ -3,6 +3,7 @@
 //! Observable JS coercion, option access order and brands belong at the boundary.
 
 mod data_generated;
+pub mod ffi;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
