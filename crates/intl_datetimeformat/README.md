@@ -12,7 +12,7 @@ uses Euclidean division for negative instants. Months are 1–12; weekdays are
 Local arithmetic allows one extra day around TimeClip for offset conversion;
 callers must validate the input instant before applying its timezone offset.
 
-Optional calendar implementations, host coercion, C ABI,
+Host coercion, C ABI,
 Hermes facade and SDK installation remain unfinished.
 
 ```sh
@@ -74,7 +74,8 @@ Months use the TS calendar contract's zero-based indices. Local milliseconds may
 cross Date bounds after timezone adjustment. Other calendars require registered
 `CalendarProvider` callbacks; unloaded calendars return `MissingCalendar`.
 Provider records retain leap-month, related-year and cyclic-year fields.
-Optional built-in providers remain unfinished.
+Built-in optional providers live in `../intl_datetimeformat_calendars` and register
+only when requested; this core crate does not link their arithmetic or tables.
 
 `data::LocaleData` owns one raw CLDR locale record, including names, day-period
 rules, timezone names and hour/numbering preferences. Calendar formats and styles

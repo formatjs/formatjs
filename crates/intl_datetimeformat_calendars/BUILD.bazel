@@ -1,0 +1,48 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
+load("//tools:index.bzl", "ts_run_binary")
+
+rust_library(
+    name = "intl_datetimeformat_calendars",
+    srcs = [
+        "arithmetic.rs",
+        "lib.rs",
+        "tables.rs",
+    ],
+    crate_name = "formatjs_intl_datetimeformat_calendars",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_datetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+ts_run_binary(
+    name = "calendar_data",
+    outs = ["calendar-data/%s.json" % calendar for calendar in CALENDARS],
+    args = [
+        "--outDir",
+        package_name() + "/calendar-data",
+    ],
+    tool = "//crates/intl_datetimeformat_calendars/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "calendar_conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//:__pkg__"],
+    deps = [
+        ":intl_datetimeformat_calendars",
+        "//crates/intl_datetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)

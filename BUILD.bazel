@@ -345,6 +345,8 @@ formatjs_test(
         "//crates/intl_datetimeformat:locale_data",
         "//crates/intl_datetimeformat:pattern_conformance",
         "//crates/intl_datetimeformat:timezone_data",
+        "//crates/intl_datetimeformat_calendars:calendar_data",
+        "//crates/intl_datetimeformat_calendars:conformance",
         "//packages/intl-datetimeformat:rust_pattern_cldr_data",
     ] + ["//crates/intl_numberformat:locale-data/%s.json" % locale for locale in [
         "en",
@@ -368,5 +370,6 @@ formatjs_test(
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
+        "//packages/intl-datetimeformat/calendars",
     ],
 )

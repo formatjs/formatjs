@@ -724,7 +724,8 @@ export async function extractDatesFields(
         data.calendarData[calendar] = {
           era,
           month,
-          monthStandalone,
+          // Explicit defaults prevent inheriting Gregorian standalone names.
+          monthStandalone: monthStandalone ?? month,
           yearNames,
           leapMonthPatterns,
           dateFormat,

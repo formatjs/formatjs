@@ -323,7 +323,7 @@ to cross the exact Date bounds after the input instant has passed TimeClip.
 
 Rust units and differential tests cover 8,193 instants against TS DateOperations,
 including year zero, leap centuries, full Date bounds and negative nanoseconds.
-Optional calendar conversion, host coercion, C ABI,
+Host coercion, C ABI,
 Hermes integration and SDK packaging remain unfinished.
 
 The Rust timezone registry consumes the same base-36 packs as JS. `:timezone_data`
@@ -365,7 +365,7 @@ styles prepare at load; format lists and optional calendar styles prepare lazily
 ISO shares Gregorian formats while names/styles honor explicit calendar overrides. Calendar names inherit omitted optional fields
 from the base locale, matching TS record composition. Availability keeps CLDR
 preference order and requires both formats and registered arithmetic.
-Optional arithmetic, owned ABI and Hermes/SDK remain unfinished.
+Owned ABI and Hermes/SDK remain unfinished.
 
 `registry::Registry` now owns raw/processed locale records and optional calendar
 patches. Patches may precede base data/providers; reloads retain them and keep
@@ -445,3 +445,22 @@ Runtime registry borrows never span provider callbacks, allowing replacement
 providers and locale patches during conversion. Range endpoints acquire their
 providers independently; rendering reads names after both callbacks. C ABI/Hermes
 coercion, intrinsic brands and Date.now defaults remain unfinished.
+
+`crates/intl_datetimeformat_calendars` supplies all fourteen optional arithmetic
+providers without a reverse dependency from the base formatter. Eleven use the
+pinned TS calendar formulas; Umm al-Qura, Chinese and Dangi consume selected JSON
+tables generated from the same ICU4X pipeline as TS. Provider registration and
+calendar-locale patches remain independent and on demand. Tables validate all
+indices, year lengths, checkpoints and final bounds before registration.
+
+Arithmetic retains Euclidean division for negative years, Japanese era boundaries,
+Hebrew Adar name indices, Islamic before-era years and the TS Persian 33-year
+cycle. Lunar records preserve related/cyclic years and leap-month metadata.
+Umm al-Qura keeps the civil fallback outside its loaded table. Differential tests
+cover all providers across Date bounds, full-range samples, table checkpoints and
+modern month boundaries, plus rendering/ranges across eight language families.
+
+Optional locale records merge over Gregorian metadata at registration. The CLDR
+extractor now emits standalone month names even when they equal that calendar's
+format names, preventing accidental inheritance of Gregorian names. A Russian
+Hebrew month-only regression covers Adar II and requires string-valued parts.
