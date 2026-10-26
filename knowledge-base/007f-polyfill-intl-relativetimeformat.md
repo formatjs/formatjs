@@ -70,3 +70,21 @@ Stage 3: supported-locales.generated.ts
 
 Internal number and plural formatters use the resolved locale. Internal number
 options have no prototype, so unrelated inherited options cannot affect them.
+
+## Rust port (in progress)
+
+`crates/intl_relativetimeformat` loads versioned, self-contained JSON packs with
+relative fields plus selected Rust number/plural packs. The generator canonicalizes
+locale indexes before matching, preserving aliases such as `sh` / `sr-Latn`.
+Registry matching sees only loaded relative locales; internal formatters retain
+their owned data independently of global JS formatter registrations.
+
+Locale/nu resolution precedes style/numeric reads. Fields are fetched afterward,
+matching the TS initialization order when a getter replaces locale data. Existing
+instances keep their prior records. Numeric text is already a JS Number: the host
+owns observable ToNumber/ToString ordering, BigInt/Symbol rejection and brands.
+Rust preserves negative zero, named auto forms, style fallback, sparse plural
+fallback and unit annotations on number parts. The owned ABI uses separate resolution/final creation calls and serializes
+parts directly to preserve type/value/unit order. Unit UTF-16 keeps invalid
+surrogates on the RangeError path. The SDK archive exports this ABI; Hermes
+facade and SDK installation remain in progress.

@@ -22,3 +22,4 @@ formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof" }
 formatjs_intl_segmenter = { path = "../intl_segmenter" }
 formatjs_intl_collator = { path = "../intl_collator" }
 formatjs_intl_numberformat = { path = "../intl_numberformat" }
+formatjs_intl_relativetimeformat = { path = "../intl_relativetimeformat" }

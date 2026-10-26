@@ -48,3 +48,10 @@ pub use formatjs_intl_numberformat::ffi::{
     formatjs_number_registry_info, formatjs_number_registry_load, formatjs_number_registry_units,
     formatjs_number_resolve, formatjs_number_supported,
 };
+
+pub use formatjs_intl_relativetimeformat::ffi::{
+    formatjs_relative_bytes_free, formatjs_relative_create, formatjs_relative_destroy,
+    formatjs_relative_query, formatjs_relative_registry_create, formatjs_relative_registry_destroy,
+    formatjs_relative_registry_info, formatjs_relative_registry_load, formatjs_relative_resolve,
+    formatjs_relative_supported,
+};

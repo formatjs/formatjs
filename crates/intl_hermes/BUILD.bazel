@@ -30,6 +30,7 @@ rust_static_library(
         "//crates/intl_locale",
         "//crates/intl_numberformat",
         "//crates/intl_pluralrules",
+        "//crates/intl_relativetimeformat",
         "//crates/intl_segmenter",
         "//crates/intl_supportedvaluesof",
     ],

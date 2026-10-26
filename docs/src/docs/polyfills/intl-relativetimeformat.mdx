@@ -241,3 +241,16 @@ options have no prototype, so unrelated inherited options cannot affect them.
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+## Rust core
+
+The experimental `formatjs_intl_relativetimeformat` crate supports every relative
+time unit, long/short/narrow styles, numeric always/auto, and formatted parts.
+Its registry starts empty: build `//crates/intl_relativetimeformat:locale_data`
+and register selected JSON packs. Each pack includes relative patterns plus owned
+number and plural data. No host ICU or global JS formatter is required.
+
+Rust callers create an instance with requested locale tags and typed options,
+then format normalized Number text and a unit. Existing instances retain their
+data across later registrations. An owned C ABI separates locale resolution from final creation and preserves
+UTF-16 unit validation. Hermes installation and SDK packaging remain in progress.
