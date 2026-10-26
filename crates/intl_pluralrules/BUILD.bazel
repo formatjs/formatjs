@@ -1,0 +1,26 @@
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+rust_library(
+    name = "intl_pluralrules",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_intl_pluralrules",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "@crates//:icu",
+        "@crates//:icu_provider",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_pluralrules_test",
+    srcs = ["lib.test.rs"],
+    crate_name = "intl_pluralrules_test",
+    edition = "2024",
+    deps = [":intl_pluralrules"],
+)
