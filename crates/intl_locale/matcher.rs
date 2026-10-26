@@ -182,6 +182,16 @@ fn distance(desired: &Locale, supported: &Locale) -> i32 {
 /// then compare full CLDR distance independently of the fallback heuristic.
 /// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L134-L144
 pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<String>, LocaleError> {
+    Ok(best_fit_requested(available, requested)?.map(|(_, locale)| locale))
+}
+
+/// Return the winning request index as well as its data locale. ResolveLocale
+/// needs that request's Unicode extensions, not the first requested tag's.
+/// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L237-L246
+pub fn best_fit_requested(
+    available: &[String],
+    requested: &[String],
+) -> Result<Option<(usize, String)>, LocaleError> {
     let requested: Vec<_> = requested
         .iter()
         .map(|tag| without_unicode_extension(tag))
@@ -194,7 +204,7 @@ pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<Str
             let distance = index as i32 * 40;
             if distance < lowest {
                 lowest = distance;
-                result = Some(desired.clone());
+                result = Some((index, desired.clone()));
             }
             if index == 0 {
                 return Ok(result);
@@ -220,7 +230,7 @@ pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<Str
                 };
                 if distance < lowest {
                     lowest = distance;
-                    result = Some(candidate.to_owned());
+                    result = Some((index, candidate.to_owned()));
                 }
                 break;
             }
@@ -245,7 +255,7 @@ pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<Str
             let distance = distance(desired, supported) + index as i32 * 40;
             if distance < lowest {
                 lowest = distance;
-                result = Some(available[supported_index].clone());
+                result = Some((index, available[supported_index].clone()));
             }
         }
     }

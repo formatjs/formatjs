@@ -131,3 +131,18 @@ bazel run //packages/intl-collator/benchmark:run
 The benchmark compares Latin, accent, numeric, normalization, Swedish tailoring,
 and CJK cases with native `Intl.Collator`. Each timed task performs 32 comparisons;
 formatter construction and module initialization are excluded.
+
+## Comparison consistency
+
+`numeric: true` keeps unmatched digit runs significant (`x < x1 < x2`).
+`caseFirst` affects case-sensitive comparisons; `base` and `accent` still ignore
+case. `ignorePunctuation` preserves letters and digits. Canonically equivalent
+strings share case-order keys, including precomposed
+and decomposed accented letters.
+
+## Rust port (experimental)
+
+`crates/intl_collator` ports the CLDR sort/search comparison profile to Rust.
+ICU4X supplies normalization and locale-sensitive casing. Generated data stays
+static, matching this package. Core TS/native conformance is included; Hermes
+installation and SDK packaging are still in progress.

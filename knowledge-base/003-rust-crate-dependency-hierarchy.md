@@ -439,6 +439,14 @@ or a standalone Cargo consumer's feature graph.
 an owned UTF-16 ABI. `intl_hermes` assembles its symbols into the shared SDK archive.
 Word/sentence profile differences from TS have explicit conformance expectations.
 
+`intl_collator` consumes the existing static CLDR collation pipeline through a
+Bazel-generated compiled JSON dataset. ICU4X supplies normalization/casing; Rust
+keeps the TS UCA/LDML sort and search comparison profile. Its locale matcher
+retains the winning requested tag for co/kn/kf extension negotiation.
+
+`intl_hermes` also assembles Collator's owned ABI into the shared archive; the
+SDK preserves its static collation data model and exact UTF-16 comparison input.
+
 ### Hermes bridge and C ABI
 
 `native/hermes/bridge.h` owns common JSI transport and buffer/handle cleanup.

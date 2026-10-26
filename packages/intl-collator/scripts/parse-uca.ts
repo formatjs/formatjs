@@ -165,3 +165,17 @@ export function buildUCATrie(entries: ParsedUCAEntry[]): PackedTrieNode {
   })
   return root
 }
+
+/** Compare fractional primaries with the four-byte variable-top boundary. */
+export function isUCAVariableWeight(
+  primary: number,
+  variableTop: number
+): boolean {
+  if (primary <= 0) return false
+  // FractionalUCA omits trailing zero bytes: 2B means 2B 00 00 00,
+  // not 00 00 00 2B. Otherwise Latin letters and digits become variable.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#FractionalUCA
+  let aligned = primary
+  while (aligned < 0x1000000) aligned *= 0x100
+  return aligned <= variableTop
+}

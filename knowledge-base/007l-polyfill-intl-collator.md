@@ -155,3 +155,22 @@ normalization, Swedish tailoring, and CJK comparisons with native controls.
 Each timed task batches 32 comparisons. Construction and module initialization
 are outside the timed region. The benchmark package is Gazelle-managed; its
 private module manifest prevents package self-reference during execution.
+
+## Rust port (in progress)
+
+`crates/intl_collator` serializes the existing generated CLDR root/locale/tailoring
+modules into one compiled dataset. Rust owns locale extension negotiation, UCA
+level comparisons, LDML imports and contextual/contraction matching. ICU4X handles
+normalization and locale-sensitive lowercasing while preserving lone UTF-16 units.
+The sort/search profile mirrors TS, including its compact implicit weights and
+shifted/mark approximations; it does not claim full ICU Collator ordering parity.
+Core conformance covers the existing TSV and every available locale/collation plus
+option combinations. Hermes ABI, bound compare and SDK coverage remain in progress.
+
+Comparison consistency regressions cover unmatched digit runs, base/accent with
+caseFirst, and canonical-equivalent case-order keys. Rust and TS use the same
+per-string normalized case key; canonical equivalence returns positive zero.
+
+FractionalUCA primary weights omit trailing zero bytes. Variable-top classification
+aligns them to the four-byte boundary; raw numeric comparison incorrectly marked
+letters and digits as variable. Parser and comparator consistency tests cover this.

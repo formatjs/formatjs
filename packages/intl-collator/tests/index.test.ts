@@ -210,3 +210,89 @@ describe('built-in descriptors', () => {
     ).toMatchObject({writable: false, enumerable: false, configurable: false})
   })
 })
+
+describe('consistent comparison keys', () => {
+  it('keeps unmatched numeric runs ordered', () => {
+    const collator = new Collator('en', {numeric: true})
+    expect(collator.compare('x', 'x1')).toBeLessThan(0)
+    expect(collator.compare('x', 'x2')).toBeLessThan(0)
+    expect(collator.compare('x1', 'x2')).toBeLessThan(0)
+    expect(collator.compare('x1', 'x')).toBeGreaterThan(0)
+  })
+  it('ignores caseFirst for base and accent sensitivity', () => {
+    for (const sensitivity of ['base', 'accent'] as const)
+      for (const caseFirst of ['upper', 'lower'] as const) {
+        const collator = new Collator('en', {sensitivity, caseFirst})
+        expect(collator.compare('a', 'A')).toBe(0)
+        expect(
+          new Intl.Collator('en', {sensitivity, caseFirst}).compare('a', 'A')
+        ).toBe(0)
+      }
+  })
+  it('uses canonical-equivalent caseFirst keys', () => {
+    for (const caseFirst of ['upper', 'lower'] as const) {
+      const collator = new Collator('en', {caseFirst})
+      expect(collator.compare('Å', 'A\u030a')).toBe(0)
+      expect(Math.sign(collator.compare('å', 'Å'))).toBe(
+        Math.sign(collator.compare('å', 'A\u030a'))
+      )
+      expect(collator.compare('å', 'Å')).not.toBe(0)
+      expect(Math.sign(collator.compare('å', 'Å'))).toBe(
+        Math.sign(new Intl.Collator('en', {caseFirst}).compare('å', 'Å'))
+      )
+    }
+  })
+})
+
+it('defines a consistent comparator across numeric and canonical variants', () => {
+  const values = [
+    '',
+    'x',
+    'x1',
+    'x2',
+    'x01',
+    'x-1',
+    'x-',
+    'a',
+    'A',
+    'å',
+    'Å',
+    'A\u030a',
+    'a\u0301',
+    'á',
+    'a-',
+    'a-1',
+  ]
+  for (const sensitivity of ['base', 'accent', 'case', 'variant'] as const)
+    for (const numeric of [false, true])
+      for (const caseFirst of ['false', 'upper', 'lower'] as const)
+        for (const ignorePunctuation of [false, true]) {
+          const options = {sensitivity, numeric, caseFirst, ignorePunctuation}
+          const model = new Collator('en', options)
+          const table = values.map(left =>
+            values.map(right => Math.sign(model.compare(left, right)))
+          )
+          for (let a = 0; a < values.length; a++) {
+            expect(Object.is(table[a][a], 0), JSON.stringify(options)).toBe(
+              true
+            )
+            for (let b = 0; b < values.length; b++) {
+              expect(
+                table[a][b] + table[b][a],
+                JSON.stringify({options, a: values[a], b: values[b]})
+              ).toBe(0)
+              for (let c = 0; c < values.length; c++)
+                if (table[a][b] <= 0 && table[b][c] <= 0)
+                  expect(
+                    table[a][c],
+                    JSON.stringify({
+                      options,
+                      a: values[a],
+                      b: values[b],
+                      c: values[c],
+                    })
+                  ).toBeLessThanOrEqual(0)
+            }
+          }
+        }
+})
