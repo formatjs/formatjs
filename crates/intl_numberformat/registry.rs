@@ -11,6 +11,47 @@ pub struct Registry {
 }
 
 impl Registry {
+    pub fn create(
+        &self,
+        requested: &[String],
+        options: &crate::Options,
+    ) -> Result<crate::NumberFormat, Error> {
+        use formatjs_intl_locale::matcher;
+        let requested = formatjs_intl_getcanonicallocales::get_canonical_locales(requested)
+            .map_err(|_| Error::InvalidLocale)?;
+        let lookup = crate::options::choice(
+            options.locale_matcher.as_deref(),
+            "best fit",
+            &["lookup", "best fit"],
+            "localeMatcher",
+        )? == "lookup";
+        let matched = if lookup {
+            requested.iter().enumerate().find_map(|(index, tag)| {
+                matcher::lookup(&self.available, std::slice::from_ref(tag))
+                    .map(|locale| (index, locale))
+            })
+        } else {
+            matcher::best_fit_requested(&self.available, &requested)
+                .map_err(|_| Error::InvalidLocale)?
+        };
+        let (index, locale) = matched
+            .map(|(index, locale)| (Some(index), locale))
+            .or_else(|| self.default.clone().map(|locale| (None, locale)))
+            .ok_or(Error::MissingLocale)?;
+        let request = index.map(|index| {
+            let index = if lookup {
+                index
+            } else {
+                let base = matcher::without_unicode_extension(&requested[index]);
+                requested
+                    .iter()
+                    .rposition(|tag| matcher::without_unicode_extension(tag) == base)
+                    .unwrap_or(index)
+            };
+            requested[index].as_str()
+        });
+        crate::NumberFormat::new(self.get(&locale)?, locale, request, options)
+    }
     fn insert(&mut self, tag: String, data: Arc<LocaleData>, replace: bool) {
         if !self.data.contains_key(&tag) {
             self.available.push(tag.clone());

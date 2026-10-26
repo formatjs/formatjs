@@ -805,6 +805,8 @@ dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
  "formatjs_intl_pluralrules",
+ "icu_properties 2.3.0",
+ "regex",
  "serde",
  "serde_json",
 ]

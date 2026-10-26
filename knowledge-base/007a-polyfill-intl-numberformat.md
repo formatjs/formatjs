@@ -156,12 +156,18 @@ Mixed signs remain attached to their endpoints.
 
 ## Rust port (in progress)
 
-`crates/intl_numberformat` currently owns per-locale number/plural records and an
-on-demand registry. Generated packs reuse the TS CLDR extraction and canonical
-plural-locale matching. Registration preserves existing records, explicit aliases,
-and parent fallbacks; invalid numbering-system aliases reject atomically.
-Formatting, native ABI, Hermes installation, and SDK integration remain in progress.
-The full generated locale set is validated through the Rust loader.
+`crates/intl_numberformat` owns formatting, parts, ranges, option/locale resolution,
+and per-locale number/plural records. Generated packs reuse TS CLDR extraction and
+canonical plural-locale matching. Registration preserves existing records,
+explicit aliases and parent fallbacks; invalid aliases reject atomically.
+Rounding reuses PluralRules digit handling with currency/percent defaults.
+Conformance compares every generated locale and all advertised numbering systems
+with TS. Native ABI, Hermes installation and SDK integration remain in progress.
+
+Tiny compact values never receive a suffix from a lexical comparison against an
+exponent-formatted magnitude. Sparse translated currency-name maps fall back to
+the currency code. Both fixes have TS/Rust coverage; tiny values also match native
+Intl formatting and parts.
 
 ## Benchmarks
 
@@ -180,3 +186,7 @@ The shared digit mapping is generated from pinned CLDR `numberingSystems.json`
 numeric entries. It includes all 78 systems in the current ECMA-402 digit table;
 Latin digits use the unchanged ASCII path. Algorithmic numbering systems are not
 digit substitutions. Locale availability still comes from number locale data.
+
+Scientific exponent digits use numbering-system substitution without mantissa
+rounding increments. Native Intl regressions cover both BMP and supplementary
+digit systems; Rust/TS parity includes scientific and engineering increments.

@@ -426,3 +426,24 @@ for example `~$3` in English. Its position follows the locale's sign pattern.
 
 Matching signs can share a currency or unit affix across a range; mixed signs
 remain separate.
+
+## Rust core
+
+The experimental `formatjs_intl_numberformat` crate implements formatting,
+parts, ranges and resolved options with the same generated CLDR data as the
+TypeScript polyfill. It supports decimal, percent, currency and unit styles,
+including compact, scientific and engineering notation.
+
+Locale data loads on demand: build `//crates/intl_numberformat:locale_data` and
+register only the required JSON packs with `Registry::add_locale_data`.
+The registry starts empty; matching considers loaded locales. Existing
+formatters retain their locale records when a replacement pack is registered.
+`add_unit_data` explicitly updates shared unit patterns.
+
+`Registry::create` accepts locale tags and typed options. Formatting methods
+accept the host's normalized ToIntlMathematicalValue strings, preserving exact
+BigInt integers. JavaScript coercion remains the host's responsibility.
+Hermes installation and SDK packaging are still in progress.
+
+Scientific exponents use localized digits, independently of mantissa rounding
+increments. Missing currency-name translations fall back to the currency code.
