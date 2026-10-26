@@ -2,6 +2,7 @@
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
+#include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -16,6 +17,9 @@
 #include <utility>
 
 namespace {
+constexpr char segmentSmoke[] =
+#include "segmenter_smoke.inc"
+    ;
 constexpr char displaySmoke[] =
 #include "displaynames_smoke.inc"
     ;
@@ -155,6 +159,11 @@ int main(int argc, char **argv) {
     auto displayPassed = runtime->global().getProperty(*runtime, "__SDK_DISPLAY_PASSED");
     if (!displayPassed.isBool() || !displayPassed.getBool()) throw std::runtime_error("DisplayNames SDK smoke failed");
     std::cout << "Hermes SDK DisplayNames passed\n";
+    formatjs::installSegmenter(*runtime, extensions);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(segmentSmoke), "formatjs:segmenter-sdk-smoke");
+    auto segmentPassed = runtime->global().getProperty(*runtime, "__SDK_SEGMENTER_PASSED");
+    if (!segmentPassed.isBool() || !segmentPassed.getBool()) throw std::runtime_error("Segmenter SDK smoke failed");
+    std::cout << "Hermes SDK Segmenter passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

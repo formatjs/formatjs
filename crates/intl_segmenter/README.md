@@ -23,4 +23,4 @@ ICU word status for Indic text; isolated marks remain non-word-like.
 
 The owned C ABI exposes immutable segment handles and independent cursors. Handles
 retain original UTF-16 units after parents are destroyed. Hermes source/bytecode tests cover iteration, coercion, brands and complex-script
-models. SDK packaging is in progress.
+models. SDK target `:segmenter` ships public headers, the adapter and a typed smoke example.

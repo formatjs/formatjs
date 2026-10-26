@@ -84,7 +84,7 @@ Available locales come from pinned CLDR locale metadata, including default-conte
 variants and required fallback tags. Locales without tailoring use root UAX rules;
 regional locales retain their language's tailoring and sentence suppressions.
 
-## Rust port (in progress)
+## Rust port
 
 `crates/intl_segmenter` uses ICU4X grapheme/word/sentence models with content-locale
 tailorings and complex-script dictionary/LSTM support. UTF-16 input remains exact,
@@ -94,6 +94,15 @@ Locale metadata mirrors the TS available-locale set through Bazel generation.
 
 Core conformance ports the Unicode 17 grapheme corpus and audits TS records and
 `containing` results across granularities/locales. Word/sentence boundaries and
-word-like classification are implementation-dependent; ICU/TS profiles need
-explicit review before finalizing coverage. Native ABI and Hermes SDK integration
-remain in progress. Segmentation data stays static, matching the existing package.
+word-like classification are implementation-dependent. Tests pin both profiles
+for dictionary words, abbreviation suppressions, Format/Close/Sp handling and
+isolated marks. Unicode letter/number categories supplement ICU word status for
+Indic text. No corpus cases are skipped.
+
+The owned ABI retains UTF-16 tables after parent destruction and gives each
+cursor independent progress. Hermes uses private WeakMaps for brands and retains
+the constructing JS Segmenter. Source/optimized-bytecode tests cover coercion order,
+iterator prototypes, property order and UTF-16 indices. SDK `:segmenter` includes
+public headers, source, `36-IntlSegmenter.js` and a compiled TypeScript smoke example.
+Linux builds/cross-builds the SDK; native runners download and smoke-test artifacts.
+Segmentation data stays static, matching the existing package.

@@ -54,6 +54,22 @@ rolldown_bundle(
     target = "es2020",
 )
 
+ts_project(
+    name = "segmenter_smoke_typecheck",
+    srcs = ["segmenter-smoke.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
+rolldown_bundle(
+    name = "segmenter_smoke_js",
+    srcs = ["segmenter-smoke.ts"],
+    entry_point = "segmenter-smoke.ts",
+    format = "iife",
+    target = "es2020",
+)
+
 platform(
     name = "linux_x86_64",
     constraint_values = ["@llvm//constraints/libc:gnu.2.28"],
@@ -88,14 +104,17 @@ pkg_files(
         "displaynames-smoke.ts",
         "listformat-smoke.ts",
         "pluralrules-smoke.ts",
+        "segmenter-smoke.ts",
         ":displaynames_smoke_js.js",
         ":listformat_smoke_js.js",
         ":pluralrules_smoke_js.js",
+        ":segmenter_smoke_js.js",
         "//crates/intl_displaynames:displaynames.h",
         "//crates/intl_getcanonicallocales:canonicalize.h",
         "//crates/intl_listformat:listformat.h",
         "//crates/intl_locale:locale.h",
         "//crates/intl_pluralrules:pluralrules.h",
+        "//crates/intl_segmenter:segmenter.h",
         "//crates/intl_supportedvaluesof:supported_values.h",
         "//native/hermes:bridge.h",
         "//native/hermes:canonical_locales.cpp",
@@ -109,6 +128,7 @@ pkg_files(
         "//native/hermes:intl_listformat.h",
         "//native/hermes:intl_locale.h",
         "//native/hermes:intl_pluralrules.h",
+        "//native/hermes:intl_segmenter.h",
         "//native/hermes:listformat.cpp",
         "//native/hermes:listformat_extension_js",
         "//native/hermes:listformat_wrapper_source",
@@ -118,6 +138,9 @@ pkg_files(
         "//native/hermes:pluralrules.cpp",
         "//native/hermes:pluralrules_extension_js",
         "//native/hermes:pluralrules_wrapper_source",
+        "//native/hermes:segmenter.cpp",
+        "//native/hermes:segmenter_extension_js",
+        "//native/hermes:segmenter_wrapper_source",
         "//native/hermes:supported_values.cpp",
         "//native/hermes:supported_values.h",
         "//native/hermes:supported_values_extension_js",
@@ -132,6 +155,13 @@ pkg_files(
         "SDK.MODULE.bazel": "MODULE.bazel",
         "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
         "displaynames-smoke.ts": "examples/displaynames-smoke.ts",
+        "segmenter-smoke.ts": "examples/segmenter-smoke.ts",
+        ":segmenter_smoke_js.js": "js/segmenter-smoke.js",
+        "//crates/intl_segmenter:segmenter.h": "include/formatjs/intl/segmenter.h",
+        "//native/hermes:intl_segmenter.h": "include/formatjs/hermes/intl_segmenter.h",
+        "//native/hermes:segmenter.cpp": "src/segmenter.cpp",
+        "//native/hermes:segmenter_extension_js": "js/36-IntlSegmenter.js",
+        "//native/hermes:segmenter_wrapper_source": "src/segmenter.inc",
         ":displaynames_smoke_js.js": "js/displaynames-smoke.js",
         "//crates/intl_displaynames:displaynames.h": "include/formatjs/intl/displaynames.h",
         "//native/hermes:intl_displaynames.h": "include/formatjs/hermes/intl_displaynames.h",

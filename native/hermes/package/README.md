@@ -19,6 +19,8 @@ include/formatjs/hermes/intl_pluralrules.h
 include/formatjs/hermes/intl_listformat.h
 include/formatjs/hermes/intl_displaynames.h
 include/formatjs/intl/displaynames.h
+include/formatjs/hermes/intl_segmenter.h
+include/formatjs/intl/segmenter.h
 include/formatjs/intl/listformat.h
 include/formatjs/intl/pluralrules.h
 src/canonical_locales.cpp
@@ -33,12 +35,17 @@ src/listformat.cpp
 src/listformat.inc
 src/displaynames.cpp
 src/displaynames.inc
+src/segmenter.cpp
+src/segmenter.inc
 js/30-IntlGetCanonicalLocales.js
 js/31-IntlSupportedValuesOf.js
 js/32-IntlLocale.js
 js/33-IntlPluralRules.js
 js/34-IntlListFormat.js
 js/35-IntlDisplayNames.js
+js/36-IntlSegmenter.js
+js/segmenter-smoke.js
+examples/segmenter-smoke.ts
 js/displaynames-smoke.js
 examples/displaynames-smoke.ts
 js/listformat-smoke.js
@@ -88,7 +95,8 @@ Link `@formatjs_intl_getcanonicallocales_hermes//:locale` for `Intl.Locale`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:pluralrules` for `Intl.PluralRules`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:listformat` for `Intl.ListFormat`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:displaynames` for `Intl.DisplayNames`.
-All six targets use one Rust archive. The module retains its original name.
+Link `@formatjs_intl_getcanonicallocales_hermes//:segmenter` for `Intl.Segmenter`.
+All seven targets use one Rust archive. The module retains its original name.
 
 ## Install before application JavaScript
 
@@ -101,6 +109,7 @@ For embedders that allow source evaluation:
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
+#include <formatjs/hermes/intl_segmenter.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -109,6 +118,7 @@ formatjs::installCanonicalLocales(*runtime); // Capture the new Locale brand.
 formatjs::installPluralRules(*runtime);
 formatjs::installListFormat(*runtime);
 formatjs::installDisplayNames(*runtime);
+formatjs::installSegmenter(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -125,6 +135,7 @@ formatjs::installCanonicalLocales(*runtime, extensions);
 formatjs::installPluralRules(*runtime, extensions);
 formatjs::installListFormat(*runtime, extensions);
 formatjs::installDisplayNames(*runtime, extensions);
+formatjs::installSegmenter(*runtime, extensions);
 ```
 
 ## Compiled locale data
@@ -219,3 +230,10 @@ IteratorClose and localized formatting without locale JSON injection.
 
 DisplayNames uses compiled names, including sparse CLDR fallbacks. The smoke
 checks English, French and Afar without locale JSON injection.
+
+Segmenter uses compiled ICU4X data, including dictionary/LSTM word models. Link
+`:segmenter`, install after canonicalization, or register `js/36-IntlSegmenter.js`
+and invoke `installSegmenter(runtime, extensions)`. No locale pack loading is
+needed. Segments retain original UTF-16 input; iterators advance independently.
+Word/sentence profiles can differ from TS; both profiles have conformance tests.
+The independent consumer runs `examples/segmenter-smoke.ts` from this SDK.

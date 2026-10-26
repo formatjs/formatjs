@@ -211,3 +211,22 @@ coerce to BigInt. Errors thrown during coercion propagate unchanged.
 
 Locales without dedicated CLDR tailoring use root Unicode segmentation rules.
 Regional locales retain their language's tailoring, including sentence suppressions.
+
+## Rust Hermes extension
+
+The experimental Rust port uses ICU4X grapheme, word and sentence models. Install
+SDK target `:segmenter` after canonicalization, following the
+[native SDK guide](/docs/guides/react-native-hermes#rust-segmenter). Register
+`js/36-IntlSegmenter.js` for precompiled Hermes extension setup. The SDK includes
+public headers, adapter source, compiled ICU data, and a typed consumer example.
+Android/iOS artifacts and React Native package installation are not included.
+
+ICU dictionary/LSTM models recognize complex-script words. Original UTF-16 input
+and indices remain exact; cursors advance independently. `containing` truncates
+before bounds checks, so `-0.5` selects index zero; BigInt throws `TypeError`.
+
+Word/sentence boundaries and word-like status are implementation-dependent.
+Compared with TS, ICU groups dictionary words, applies different abbreviation
+profiles, and excludes isolated marks/emoji from word-like segments. Tests assert
+both implementations explicitly, plus the complete Unicode 17 grapheme corpus.
+Segmenter keeps static data, matching the existing package's loading model.

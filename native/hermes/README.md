@@ -199,7 +199,8 @@ Rust owns UTF-16 boundary tables and independent cursors. JS handles observable
 coercions, private brands, ordinary records and iterator prototypes. Grapheme data
 and dictionary/LSTM models are static, matching the existing package's loading
 model. Word/sentence boundaries can differ from TS; the crate conformance test
-asserts both profiles explicitly. SDK packaging is in progress.
+asserts both profiles explicitly. SDK target `:segmenter` ships the same adapter and fragment, plus a typed consumer
+smoke example.
 
 ## Existing package conformance
 

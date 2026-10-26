@@ -23,9 +23,17 @@ genrule(
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
 )
 
+genrule(
+    name = "segmenter_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/segmenter-smoke.js"],
+    outs = ["segmenter_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
 SMOKE_SOURCES = [
     "main.cpp",
     ":displaynames_smoke_source",
+    ":segmenter_smoke_source",
     ":listformat_smoke_source",
     ":pluralrules_smoke_source",
 ]
@@ -53,6 +61,7 @@ cc_binary(
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
         "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
+        "@formatjs_intl_getcanonicallocales_hermes//:segmenter",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],
@@ -75,6 +84,7 @@ cc_test(
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
         "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
+        "@formatjs_intl_getcanonicallocales_hermes//:segmenter",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],
