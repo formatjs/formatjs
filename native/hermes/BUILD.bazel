@@ -62,6 +62,8 @@ exports_files(
         "intl_collator.h",
         "numberformat.cpp",
         "intl_numberformat.h",
+        "datetimeformat.cpp",
+        "intl_datetimeformat.h",
         "relativetimeformat.cpp",
         "intl_relativetimeformat.h",
         "intl_segmenter.h",
@@ -825,4 +827,18 @@ genrule(
     srcs = [":datetimeformat_factory"],
     outs = ["datetimeformat.inc"],
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "datetimeformat_extension_js",
+    srcs = ["datetimeformat.ts"],
+    outs = ["40-IntlDateTimeFormat.js"],
+    args = [
+        "--input=$(rootpath :datetimeformat.ts)",
+        "--name=IntlDateTimeFormat",
+        "--out=$(rootpath :40-IntlDateTimeFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
 )

@@ -14,6 +14,7 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:lefthook/package_json.bzl", lefthook = "bin")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@npm//:oxlint/package_json.bzl", oxlint = "bin")
+load("//crates/intl_datetimeformat:conformance.bzl", "optimized_datetime_runtime")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES", "RELEASE_PLEASE_NPM_PACKAGES")
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
@@ -336,17 +337,24 @@ copy_to_bin(
     visibility = ["//tools:__pkg__"],
 )
 
+optimized_datetime_runtime(
+    name = "datetimeformat_conformance_runtime",
+    srcs = [
+        "//crates/intl_datetimeformat:pattern_conformance",
+        "//crates/intl_datetimeformat_calendars:conformance",
+    ],
+)
+
 formatjs_test(
     name = "rust_datetime_pattern_test",
     size = "large",
     srcs = ["//packages/ecma402-abstract:rust_datetime_pattern_test_sources"],
     data = [
+        ":datetimeformat_conformance_runtime",
         "//crates/intl_datetimeformat:calendar_locale_data",
         "//crates/intl_datetimeformat:locale_data",
-        "//crates/intl_datetimeformat:pattern_conformance",
         "//crates/intl_datetimeformat:timezone_data",
         "//crates/intl_datetimeformat_calendars:calendar_data",
-        "//crates/intl_datetimeformat_calendars:conformance",
         "//packages/intl-datetimeformat:rust_pattern_cldr_data",
     ] + ["//crates/intl_numberformat:locale-data/%s.json" % locale for locale in [
         "en",

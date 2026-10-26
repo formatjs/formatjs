@@ -22,6 +22,9 @@ include/formatjs/intl/displaynames.h
 include/formatjs/hermes/intl_segmenter.h
 include/formatjs/intl/segmenter.h
 include/formatjs/hermes/intl_collator.h
+include/formatjs/hermes/intl_datetimeformat.h
+include/formatjs/intl/datetimeformat.h
+include/formatjs/intl/datetimeformat_calendars.h
 include/formatjs/hermes/intl_numberformat.h
 include/formatjs/intl/numberformat.h
 include/formatjs/intl/collator.h
@@ -43,6 +46,15 @@ src/segmenter.cpp
 src/segmenter.inc
 src/collator.cpp
 src/collator.inc
+src/datetimeformat.cpp
+src/datetimeformat.inc
+js/40-IntlDateTimeFormat.js
+js/datetimeformat-smoke.js
+examples/datetimeformat-smoke.ts
+locale-data/datetimeformat/<locale>.json
+locale-data/datetimeformat/calendars/<calendar>/<locale>.json
+calendar-data/datetimeformat/<calendar>.json
+timezone-data/datetimeformat/tz-{all,golden}.json
 src/numberformat.cpp
 src/numberformat.inc
 js/30-IntlGetCanonicalLocales.js
@@ -303,3 +315,57 @@ checks negative zero, named forms, parts, Arabic digits, BigInt rejection and
 operation with global NumberFormat/PluralRules removed. Rust ABI callers use
 `include/formatjs/intl/relativetimeformat.h`; adapter sources live in
 `src/relativetimeformat.cpp` and `src/relativetimeformat.inc`.
+
+## DateTimeFormat
+
+Link `@formatjs_intl_getcanonicallocales_hermes//:datetimeformat` and include
+`<formatjs/hermes/intl_datetimeformat.h>`. Retain its installation guard on the
+JavaScript thread, and destroy the guard before destroying the runtime:
+
+```cpp
+formatjs::installCanonicalLocales(*runtime);
+auto dateTime = formatjs::installDateTimeFormat(*runtime);
+// Run application scripts while dateTime and runtime remain alive.
+```
+
+For precompiled startup, evaluate `js/extensions.js` bytecode into `extensions`
+and retain `formatjs::installDateTimeFormat(*runtime, extensions)` instead.
+`js/40-IntlDateTimeFormat.js` supplies the standalone `IntlDateTimeFormat` factory
+for core/contrib registration. GC finalizers queue handle IDs; native calls and
+guard teardown release records on their creating thread. Calling retained JS
+formatters after guard release throws.
+
+Load selected UTF-8 JSON strings through these independent hooks:
+
+| SDK path                                                        | Registration                                        |
+| --------------------------------------------------------------- | --------------------------------------------------- |
+| `locale-data/datetimeformat/<locale>.json`                      | `Intl.DateTimeFormat.__addLocaleData(text)`         |
+| `calendar-data/datetimeformat/<calendar>.json`                  | `Intl.DateTimeFormat.__addCalendarData(text)`       |
+| `locale-data/datetimeformat/calendars/<calendar>/<locale>.json` | `Intl.DateTimeFormat.__addCalendarLocaleData(text)` |
+| `timezone-data/datetimeformat/tz-golden.json` or `tz-all.json`  | `Intl.DateTimeFormat.__addTZData(text)`             |
+
+Base packs include native number data and Gregorian/ISO patterns. Optional
+calendar arithmetic and locale patches can arrive in either order; both must be
+present before that calendar becomes selectable. Fourteen calendar packs include
+selected lunar/Umm al-Qura tables. Timezone names are available before loading
+transitions, with UTC offsets until data arrives. Replacing timezone data updates
+existing instances on subsequent calls; a range retains one transition snapshot
+across both endpoints. The default timezone starts at UTC; use
+`Intl.DateTimeFormat.__setDefaultTimeZone(name)` to change subsequent defaults.
+
+Public filegroups `:datetimeformat_data`, `:datetimeformat_calendar_data`,
+`:datetimeformat_calendar_locale_data` and `:datetimeformat_timezone_data` expose
+all packs; individual file labels allow apps to package only selected resources.
+The formatter needs no installed JS NumberFormat or PluralRules. If using Temporal,
+install its implementation before the native formatter so captured intrinsics can
+recognize its brands. ZonedDateTime is rejected; use an Instant or plain value.
+
+Custom `__addCalendarData({calendar, dateFromTime})` providers receive adjusted
+local milliseconds with `Intl.DateTimeFormat.calendarData` as `this`. Return typed
+calendar fields; callbacks may reenter formatting and throw JS values with their
+original identity preserved.
+
+`examples/datetimeformat-smoke.ts` ships as `js/datetimeformat-smoke.js`. The
+independent consumer runs source and precompiled installers, late locale loads,
+parts/ranges, DST transition loading, Hebrew Adar II names and formatting after
+removing JS NumberFormat/PluralRules.

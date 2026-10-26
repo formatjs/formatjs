@@ -141,6 +141,22 @@ darwin_archive(
     tags = ["manual"],
 )
 
+ts_project(
+    name = "datetimeformat_smoke_typecheck",
+    srcs = ["datetimeformat-smoke.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
+rolldown_bundle(
+    name = "datetimeformat_smoke_js",
+    srcs = ["datetimeformat-smoke.ts"],
+    entry_point = "datetimeformat-smoke.ts",
+    format = "iife",
+    target = "es2020",
+)
+
 pkg_files(
     name = "sdk_sources",
     srcs = [
@@ -150,6 +166,7 @@ pkg_files(
         "SDK.MODULE.bazel",
         "THIRD_PARTY_NOTICES.html",
         "collator-smoke.ts",
+        "datetimeformat-smoke.ts",
         "displaynames-smoke.ts",
         "listformat-smoke.ts",
         "numberformat-smoke.ts",
@@ -157,6 +174,7 @@ pkg_files(
         "relativetimeformat-smoke.ts",
         "segmenter-smoke.ts",
         ":collator_smoke_js.js",
+        ":datetimeformat_smoke_js.js",
         ":displaynames_smoke_js.js",
         ":listformat_smoke_js.js",
         ":numberformat_smoke_js.js",
@@ -164,6 +182,8 @@ pkg_files(
         ":relativetimeformat_smoke_js.js",
         ":segmenter_smoke_js.js",
         "//crates/intl_collator:collator.h",
+        "//crates/intl_datetimeformat:datetimeformat.h",
+        "//crates/intl_datetimeformat_calendars:datetimeformat_calendars.h",
         "//crates/intl_displaynames:displaynames.h",
         "//crates/intl_getcanonicallocales:canonicalize.h",
         "//crates/intl_listformat:listformat.h",
@@ -179,12 +199,16 @@ pkg_files(
         "//native/hermes:collator.cpp",
         "//native/hermes:collator_extension_js",
         "//native/hermes:collator_wrapper_source",
+        "//native/hermes:datetimeformat.cpp",
+        "//native/hermes:datetimeformat_extension_js",
+        "//native/hermes:datetimeformat_wrapper_source",
         "//native/hermes:displaynames.cpp",
         "//native/hermes:displaynames_extension_js",
         "//native/hermes:displaynames_wrapper_source",
         "//native/hermes:extension_bundle_js",
         "//native/hermes:extension_js",
         "//native/hermes:intl_collator.h",
+        "//native/hermes:intl_datetimeformat.h",
         "//native/hermes:intl_displaynames.h",
         "//native/hermes:intl_listformat.h",
         "//native/hermes:intl_locale.h",
@@ -218,6 +242,14 @@ pkg_files(
     ],
     attributes = pkg_attributes(mode = "0644"),
     renames = {
+        "datetimeformat-smoke.ts": "examples/datetimeformat-smoke.ts",
+        ":datetimeformat_smoke_js.js": "js/datetimeformat-smoke.js",
+        "//crates/intl_datetimeformat:datetimeformat.h": "include/formatjs/intl/datetimeformat.h",
+        "//crates/intl_datetimeformat_calendars:datetimeformat_calendars.h": "include/formatjs/intl/datetimeformat_calendars.h",
+        "//native/hermes:intl_datetimeformat.h": "include/formatjs/hermes/intl_datetimeformat.h",
+        "//native/hermes:datetimeformat.cpp": "src/datetimeformat.cpp",
+        "//native/hermes:datetimeformat_wrapper_source": "src/datetimeformat.inc",
+        "//native/hermes:datetimeformat_extension_js": "js/40-IntlDateTimeFormat.js",
         "LICENSE.md": "LICENSE.md",
         "README.md": "README.md",
         "SDK.BUILD.bazel": "BUILD.bazel",
@@ -309,10 +341,30 @@ pkg_files(
     tags = ["manual"],
 )
 
+pkg_files(
+    name = "datetimeformat_calendar_data",
+    srcs = ["//crates/intl_datetimeformat_calendars:calendar_data"],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "calendar-data/datetimeformat",
+    strip_prefix = strip_prefix.files_only(),
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "datetimeformat_timezone_data",
+    srcs = ["//crates/intl_datetimeformat:timezone_data"],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "timezone-data/datetimeformat",
+    strip_prefix = strip_prefix.files_only(),
+    tags = ["manual"],
+)
+
 pkg_tar(
     name = "sdk",
     srcs = [
         ":darwin_library",
+        ":datetimeformat_calendar_data",
+        ":datetimeformat_timezone_data",
         ":linux_library",
         ":sdk_sources",
     ],

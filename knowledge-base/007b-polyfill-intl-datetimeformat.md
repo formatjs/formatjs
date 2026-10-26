@@ -506,7 +506,8 @@ A C++ Hermes integration test validates real formatting, nested callback failure
 recovery, rejected inputs, released installation errors and worker-thread finalizer
 execution. Installed API differential tests run source and bytecode factories with
 TS reference formatters, eight locale families and actual Temporal polyfill brands.
-SDK packaging, consumer installation and cross-platform smoke remain unfinished.
+The SDK now packages public headers, adapters, selected JSON resources and a typed
+smoke example. Independent consumer and platform validation cover its install path.
 
 The default Hermes compiler shares loop bindings unless ES6 block scoping is
 explicitly enabled. Calendar callback factories therefore use a separate function
@@ -520,3 +521,18 @@ runfiles during cross-builds, matching NumberFormat metadata generation. Resolvi
 through the target execroot selected Darwin npm packages while executing on Linux
 and failed loading Rolldown bindings. Linux-to-Darwin archive validation covers
 both formatter crates after switching those generators to runfiles entrypoints.
+
+Native SDK packaging keeps 766 base packs, fourteen arithmetic/table packs,
+10,724 calendar locale patches and two timezone packs in separate directories.
+Each calendar has a distinct patch prefix so identical locale basenames cannot
+collide during tar assembly. Public filegroups and individual exported labels
+support selective application packaging. The standalone consumer retains the
+installation guard, then tests source and bytecode startup from extracted SDK
+files, late locale registration, DST data loading and Hebrew month/year parts.
+
+The full native differential corpus runs its Rust drivers with an explicit opt
+transition even when the test harness uses fastbuild. Calendar locale validation
+loads every patch and forces its patterns; debug arithmetic/JSON costs exceeded
+the inner test deadline in CI. Collator integration likewise uses the shared
+optimized Hermes runtime, matching NumberFormat and RelativeTimeFormat suites.
+Assertions, corpus sizes and inner deadlines remain unchanged.

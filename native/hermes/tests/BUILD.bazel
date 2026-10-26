@@ -303,9 +303,9 @@ js_test(
     timeout = "long",
     data = [
         ":collator_suite.js",
+        ":optimized_runtime",
         "//:node_modules/@bazel/runfiles",
         "//native/hermes:extension_bundle_bytecode",
-        "//native/hermes:hermes_runner",
     ],
     entry_point = "run-collator.ts",
     node_options = ["--experimental-transform-types"],

@@ -427,3 +427,60 @@ exports_files([
     "js/pluralrules-smoke.js",
     "examples/pluralrules-smoke.ts",
 ])
+
+cc_library(
+    name = "datetimeformat",
+    srcs = [
+        "src/datetimeformat.cpp",
+        "src/datetimeformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_datetimeformat.h",
+        "include/formatjs/intl/datetimeformat.h",
+        "include/formatjs/intl/datetimeformat_calendars.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+exports_files([
+    "examples/datetimeformat-smoke.ts",
+    "js/datetimeformat-smoke.js",
+    "js/40-IntlDateTimeFormat.js",
+])
+
+filegroup(
+    name = "datetimeformat_calendar_data",
+    srcs = glob(["calendar-data/datetimeformat/*.json"]),
+)
+
+exports_files(glob(["calendar-data/datetimeformat/*.json"]))
+
+filegroup(
+    name = "datetimeformat_timezone_data",
+    srcs = glob(["timezone-data/datetimeformat/*.json"]),
+)
+
+exports_files(glob(["timezone-data/datetimeformat/*.json"]))

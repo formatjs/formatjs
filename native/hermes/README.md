@@ -256,7 +256,9 @@ The facade preserves constructor getter phases, callable construction, bound
 format identity, receiver brands, coercion and intrinsic Temporal reads. Actual
 Temporal objects must be available before installation. Plain values serialize
 through captured intrinsics; Rust computes their reference dates and nanoseconds.
-SDK packaging and independent install validation remain in progress.
+The SDK exports selected locale/calendar/timezone JSON resources, both native
+headers and adapter sources. See [package/README.md](package/README.md#datetimeformat)
+for installation and guard lifetime requirements.
 
 ## Existing package conformance
 
