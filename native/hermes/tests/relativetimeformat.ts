@@ -250,7 +250,7 @@ Object.defineProperty(Derived.prototype, 'constructor', {
   },
 })
 equal(
-  new Derived('en').format(1, 'day'),
+  new (Derived as any)('en').format(1, 'day'),
   'in 1 day',
   'subclass skips constructor getter'
 )
