@@ -14,6 +14,26 @@ optimized_runtime(
     srcs = ["//native/hermes:hermes_runner"],
 )
 
+ts_project(
+    name = "locale_typecheck",
+    srcs = [
+        "locale.ts",
+        "locale-late-data.ts",
+        "run-locale.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@types/node",
+    ],
+)
+
 rolldown_bundle(
     name = "formatter_prelude",
     srcs = ["formatter-prelude.ts"],
@@ -55,6 +75,41 @@ js_test(
         "//native/hermes:hermes_runner",
     ],
     entry_point = "run.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+rolldown_bundle(
+    name = "locale_suite",
+    srcs = ["locale.ts"],
+    entry_point = "locale.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs_generated/cldr.core",
+    ],
+)
+
+rolldown_bundle(
+    name = "locale_late_data",
+    srcs = ["locale-late-data.ts"],
+    entry_point = "locale-late-data.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-numberformat"],
+)
+
+js_test(
+    name = "locale_conformance_test",
+    size = "medium",
+    data = [
+        ":formatter_prelude.js",
+        ":locale_late_data.js",
+        ":locale_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run-locale.ts",
     node_options = ["--experimental-transform-types"],
 )
 
@@ -100,3 +155,7 @@ copy_to_bin(
 )
 
 package_formatter_conformance("supportedvaluesof")
+
+package_formatter_conformance("locale")
+
+package_formatter_conformance("getcanonicallocales")

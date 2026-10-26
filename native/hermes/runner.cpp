@@ -1,4 +1,5 @@
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -63,9 +64,12 @@ int main(int argc, char **argv) {
     }
     if (firstScript != 1) formatjs::installCanonicalLocales(rt);
     formatjs::installSupportedValuesOf(rt);
+    formatjs::installLocale(rt);
+    formatjs::installCanonicalLocales(rt);
     if (firstScript < argc && std::string(argv[firstScript]).rfind("--extensions=", 0) == 0) {
       auto extensions = evaluateFile(std::string(argv[firstScript]).substr(13)).asObject(rt);
       if (extensions.hasProperty(rt, "IntlSupportedValuesOf")) formatjs::installSupportedValuesOf(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlLocale")) formatjs::installLocale(rt, extensions);
       if (extensions.hasProperty(rt, "IntlGetCanonicalLocales")) formatjs::installCanonicalLocales(rt, extensions);
       ++firstScript;
     }

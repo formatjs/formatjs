@@ -24,13 +24,15 @@ On Linux:
 ```sh
 bazel test //crates/intl_locale:intl_locale_test
 bazel test //packages/intl-locale:rust_conformance_test
+bazel test //native/hermes/tests:locale_conformance_test
 ```
 
 Conformance compares complete records over aliases, long language subtags,
 variants, Unicode options, region/subdivision overrides and likely-subtag
 entries. Rust tests port existing maximize/minimize and preference examples.
 
-Hermes binding and SDK coverage remain in progress. The binding must own the
-Rust record for the JS instance's lifetime, validate options in spec order,
-and query formatter-dependent methods at call time rather than freezing their
-capabilities in constructor metadata.
+`native/hermes/locale.ts` owns observable coercion and brands; the C++ HostObject
+owns the Rust record until GC. String options validate before the next getter.
+Formatter observations are queried at method-call time. Integration tests load
+Bengali NumberFormat data after construction and verify the same Rust instance
+sees it. The standalone SDK consumer exercises the precompiled extension path.
