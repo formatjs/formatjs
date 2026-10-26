@@ -15,6 +15,14 @@ optimized_runtime(
     srcs = ["//native/hermes:hermes_runner"],
 )
 
+# Match the SDK runtime optimization for the large formatter differential suite.
+_optimized_runtime, _optimized_runtime_internal = with_cfg(native.filegroup).set(
+    "compilation_mode",
+    "opt",
+).build()
+
+_
+
 ts_project(
     name = "pluralrules_typecheck",
     srcs = [
@@ -345,10 +353,10 @@ js_test(
     size = "medium",
     data = [
         ":numberformat_suite.js",
+        ":optimized_runtime",
         "//:node_modules/@bazel/runfiles",
         "//crates/intl_numberformat:locale_data",
         "//native/hermes:extension_bundle_bytecode",
-        "//native/hermes:hermes_runner",
         "//packages/intl-pluralrules:cldr-raw",
     ],
     entry_point = "run-numberformat.ts",
