@@ -24,8 +24,8 @@ pub struct CivilDateTime {
 }
 impl CivilDateTime {
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
-        // Local offsets may cross TimeClip after the instant has been validated.
-        let bound = i128::from(TIME_CLIP_BOUND) * 1_000_000 + NANOSECONDS_PER_DAY;
+        // YearMonth reference dates may reach month edges beyond numeric TimeClip.
+        let bound = i128::from(TIME_CLIP_BOUND) * 1_000_000 + 31 * NANOSECONDS_PER_DAY;
         if value < -bound || value > bound {
             return Err(Error::InvalidDate);
         }

@@ -1,12 +1,29 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+exports_files(
+    ["datetimeformat_calendars.h"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["datetimeformat_calendars.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat:headers"],
+)
 
 rust_library(
     name = "intl_datetimeformat_calendars",
     srcs = [
         "arithmetic.rs",
+        "ffi.rs",
         "lib.rs",
         "tables.rs",
     ],
@@ -43,6 +60,26 @@ rust_binary(
         ":intl_datetimeformat_calendars",
         "//crates/intl_datetimeformat",
         "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_datetimeformat_calendars_test",
+    srcs = ["ffi.test.rs"],
+    compile_data = [
+        "//crates/intl_datetimeformat:locale-data/en.json",
+        "//packages/intl-datetimeformat-calendar-hebrew:locale-data-json/en.json",
+    ],
+    crate_name = "intl_datetimeformat_calendars_test",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_DATETIME_EN": "$(execpath //crates/intl_datetimeformat:locale-data/en.json)",
+        "FORMATJS_HEBREW_EN": "$(execpath //packages/intl-datetimeformat-calendar-hebrew:locale-data-json/en.json)",
+    },
+    deps = [
+        ":intl_datetimeformat_calendars",
+        "//crates/intl_datetimeformat",
         "@crates//:serde_json",
     ],
 )

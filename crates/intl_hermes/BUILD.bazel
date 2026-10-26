@@ -24,6 +24,8 @@ rust_static_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_collator",
+        "//crates/intl_datetimeformat",
+        "//crates/intl_datetimeformat_calendars",
         "//crates/intl_displaynames",
         "//crates/intl_getcanonicallocales",
         "//crates/intl_listformat",

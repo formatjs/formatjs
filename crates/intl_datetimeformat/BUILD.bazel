@@ -1,9 +1,23 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+exports_files(
+    ["datetimeformat.h"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["datetimeformat.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
 
 ts_run_binary(
     name = "timezone_links",
@@ -48,6 +62,8 @@ rust_library(
         "calendar.rs",
         "civil.rs",
         "data.rs",
+        "ffi.rs",
+        "ffi_input.rs",
         "fields.rs",
         "instance.rs",
         "lib.rs",
@@ -85,13 +101,19 @@ formatjs_rust_test(
     name = "intl_datetimeformat_test",
     srcs = [
         "calendar.test.rs",
+        "ffi.test.rs",
         "lib.test.rs",
         "pattern.test.rs",
         "timezone.test.rs",
     ],
+    compile_data = [":locale-data/en.json"],
     crate_name = "intl_datetimeformat_test",
     edition = "2024",
-    deps = [":intl_datetimeformat"],
+    rustc_env = {"FORMATJS_DATETIME_EN": "$(execpath :locale-data/en.json)"},
+    deps = [
+        ":intl_datetimeformat",
+        "@crates//:serde_json",
+    ],
 )
 
 rust_binary(
@@ -154,4 +176,15 @@ filegroup(
     name = "calendar_locale_data",
     srcs = [":calendar_" + calendar + "_locale_data" for calendar in CALENDARS],
     visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "c_abi_test",
+    srcs = ["abi.test.cpp"],
+    copts = ["-std=c++17"],
+    deps = [
+        ":headers",
+        "//crates/intl_datetimeformat_calendars:headers",
+        "//crates/intl_hermes",
+    ],
 )

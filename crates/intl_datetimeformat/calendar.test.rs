@@ -27,7 +27,7 @@ fn gregorian_and_iso_keep_era_years_and_zero_based_months() {
                 .is_ok()
         );
         assert_eq!(
-            registry.date_from_time(calendar, TIME_CLIP_BOUND + 86_400_001),
+            registry.date_from_time(calendar, TIME_CLIP_BOUND + 31 * 86_400_000 + 1),
             Err(Error::InvalidDate)
         );
     }
@@ -79,4 +79,37 @@ fn optional_providers_receive_local_time_and_can_be_replaced() {
     assert_eq!(captured.date_from_time("custom", 123).unwrap(), fields);
     registry.register("gregory".into(), Arc::new(|_| Err(Error::InvalidDate)));
     assert_eq!(registry.date_from_time("gregory", 0).unwrap().year, 1970);
+}
+
+#[test]
+fn replaced_provider_destructors_run_outside_runtime_borrows() {
+    use formatjs_intl_datetimeformat::{Runtime, calendar::CalendarProvider};
+    use std::{cell::Cell, rc::Rc};
+    struct Reenter {
+        runtime: Runtime,
+        calls: Rc<Cell<usize>>,
+    }
+    impl CalendarProvider for Reenter {
+        fn date_from_time(&self, _: i64) -> Result<CalendarFields, Error> {
+            Err(Error::InvalidDate)
+        }
+    }
+    impl Drop for Reenter {
+        fn drop(&mut self) {
+            self.runtime
+                .register_calendar("other".into(), Arc::new(|_| Err(Error::MissingCalendar)));
+            self.calls.set(self.calls.get() + 1);
+        }
+    }
+    let runtime = Runtime::default();
+    let calls = Rc::new(Cell::new(0));
+    runtime.register_calendar(
+        "custom".into(),
+        Arc::new(Reenter {
+            runtime: runtime.clone(),
+            calls: calls.clone(),
+        }),
+    );
+    runtime.register_calendar("custom".into(), Arc::new(|_| Err(Error::InvalidDate)));
+    assert_eq!(calls.get(), 1);
 }

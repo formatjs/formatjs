@@ -26,9 +26,26 @@ impl Runtime {
         self.registry.borrow_mut().add_calendar_locale_data(json)
     }
     pub fn register_calendar(&self, calendar: String, provider: Arc<dyn CalendarProvider>) {
-        self.registry
+        let previous = self
+            .registry
             .borrow_mut()
-            .register_calendar(calendar, provider);
+            .replace_calendar(calendar, provider);
+        drop(previous);
+    }
+    pub fn info(&self) -> Result<RuntimeInfo, Error> {
+        let registry = self.registry.borrow();
+        let default_locale = registry.default_locale().map(str::to_owned);
+        let calendars = default_locale
+            .as_deref()
+            .map(|locale| registry.available_calendars(locale))
+            .transpose()?
+            .unwrap_or_default();
+        Ok(RuntimeInfo {
+            available: registry.available_locales().to_vec(),
+            default_locale,
+            time_zone: self.zones.default_time_zone().identifier().into(),
+            calendars,
+        })
     }
     pub fn time_zones(&self) -> &TimeZoneRegistry {
         &self.zones
@@ -46,6 +63,16 @@ impl Runtime {
             zones: self.zones.snapshot(),
         }
     }
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RuntimeInfo {
+    pub available: Vec<String>,
+    #[serde(rename = "default")]
+    pub default_locale: Option<String>,
+    pub time_zone: String,
+    pub calendars: Vec<String>,
 }
 
 pub struct Construction {
@@ -187,7 +214,7 @@ impl DateTimeFormat {
         render.format(
             &self.configuration,
             &value.profile,
-            &self.runtime.zones,
+            &self.runtime.zones.snapshot(),
             &self.zone,
             value.epoch_nanoseconds,
             value.plain,
@@ -218,18 +245,14 @@ impl DateTimeFormat {
         let second = self.prepare(second)?;
         let snapshot =
             RangeSnapshot::capture(&self.runtime.registry.borrow(), &self.configuration)?;
+        let zones = self.runtime.zones.snapshot();
         let convert = |value: &PreparedValue| {
             let render = RenderData::capture(
                 &self.runtime.registry.borrow(),
                 &self.configuration,
                 &first.profile,
             )?;
-            render.local_time(
-                &self.runtime.zones,
-                &self.zone,
-                value.epoch_nanoseconds,
-                value.plain,
-            )
+            render.local_time(&zones, &self.zone, value.epoch_nanoseconds, value.plain)
         };
         let local_first = convert(&first)?;
         let local_second = convert(&second)?;

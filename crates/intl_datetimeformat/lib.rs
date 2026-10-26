@@ -2,6 +2,8 @@
 pub mod calendar;
 pub mod civil;
 pub mod data;
+pub mod ffi;
+mod ffi_input;
 pub mod fields;
 pub mod instance;
 pub use instance::{DateTimeFormat, DateTimeValue, ResolvedOptions, Runtime};
@@ -30,6 +32,7 @@ pub enum Error {
     TemporalTypeMismatch,
     TemporalCalendarMismatch,
     UnsupportedTemporal,
+    CalendarCallback,
     InvalidTimeZone,
     InvalidTimeZoneData,
 }
@@ -55,6 +58,7 @@ impl std::fmt::Display for Error {
             Self::UnsupportedTemporal => {
                 formatter.write_str("Temporal.ZonedDateTime is not supported by DateTimeFormat")
             }
+            Self::CalendarCallback => formatter.write_str("Calendar provider callback failed"),
             Self::InvalidPattern => formatter.write_str("Invalid DateTimeFormat pattern"),
             Self::InvalidLocaleData => formatter.write_str("Invalid DateTimeFormat locale data"),
             Self::MissingCalendar => formatter.write_str("DateTimeFormat calendar data not loaded"),

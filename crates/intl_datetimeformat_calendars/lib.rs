@@ -1,5 +1,6 @@
 //! Optional DateTimeFormat arithmetic. Locale patches and tables load independently.
 mod arithmetic;
+pub mod ffi;
 mod tables;
 use arithmetic::Calendar;
 use formatjs_intl_datetimeformat::{

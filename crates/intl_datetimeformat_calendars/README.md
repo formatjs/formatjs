@@ -44,4 +44,8 @@ bazel test -c opt //:rust_datetime_pattern_test \
   //crates/intl_datetimeformat_calendars/scripts:typecheck_typecheck_test
 ```
 
-C ABI, Hermes registration and SDK packaging remain unfinished.
+`datetimeformat_calendars.h` exposes `formatjs_datetime_calendar_load` for the
+core DateTimeFormat registry. It validates a selected pack before replacement;
+failed loads leave the previous provider installed. Locale patches still load
+separately. Both ABIs export through the single Rust SDK archive. Hermes
+registration and SDK packaging remain unfinished.

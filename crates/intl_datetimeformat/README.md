@@ -9,11 +9,10 @@ cross the Date range. No host Date/ICU is used.
 `CivilDateTime::from_epoch_nanoseconds` preserves submillisecond precision and
 uses Euclidean division for negative instants. Months are 1–12; weekdays are
 0–6 starting Sunday. `era_year` maps astronomical years to AD/BC display years.
-Local arithmetic allows one extra day around TimeClip for offset conversion;
-callers must validate the input instant before applying its timezone offset.
+Civil conversion allows month-edge padding for valid Temporal YearMonth reference
+dates. Numeric inputs still pass strict TimeClip before timezone adjustment.
 
-Host coercion, C ABI,
-Hermes facade and SDK installation remain unfinished.
+Host coercion, Hermes facade and SDK installation remain unfinished.
 
 ```sh
 bazel test -c opt //crates/intl_datetimeformat/... \
@@ -169,4 +168,41 @@ the same runtime. Registry borrows end before callbacks run; each range endpoint
 captures the current provider separately. A single format retains names captured
 before conversion, while range parts read names after both conversions.
 JavaScript coercion, Date.now defaults and intrinsic Temporal brand detection
-remain host responsibilities pending the C ABI/Hermes facade.
+remain host responsibilities pending the Hermes facade.
+
+## C ABI
+
+`datetimeformat.h` exposes owned registry, construction and formatter handles.
+Call `begin` before locale/option coercion, then `resolve`, `zone`, `capture` and
+`create` in order. Capture forces current calendar formats before late style
+getters. A finalization attempt consumes captured state. The registry accepts
+native base packs, calendar locale patches and timezone packs independently.
+
+Queries return JSON for resolved options, strings or parts. Numeric values use
+strings so NaN, infinity and negative zero cross JSON intact. Epoch records carry
+exact nanosecond strings; plain records accept intrinsic ISO serialization with
+calendar annotations. Date-only references use noon, preserving the source
+Temporal conversion, and YearMonth references may exceed numeric Date bounds.
+Resolved options serialize directly in specification property order.
+
+Statuses distinguish RangeError/data failures (1), invalid ABI/state (2), panic
+(3), TypeError (4) and foreign calendar exceptions (5). Handles remain on their
+creating thread; destroy each handle and free each successful byte result once.
+Formatters retain runtime state after registry-handle destruction. Queries retain
+the formatter during callbacks, allowing reentrant handle destruction.
+
+Calendar callbacks receive adjusted local milliseconds and return borrowed UTF-8
+JSON fields. Bytes remain live until the next callback or context release. When a
+release function is supplied, context ownership transfers on registration entry,
+including rejected registration. Call/release must never unwind through Rust.
+A host bridge stores a foreign exception, returns nonzero from the callback, then
+rethrows after query returns status 5. Replaced contexts drop outside registry
+borrows; active conversion retains its provider until completion.
+
+Rust ABI tests cover phases, errors, exact values, context ownership and callback
+reentry. `:c_abi_test` compiles a C++ client against both headers and links the
+single SDK archive, with checks active in optimized builds.
+
+Range calls retain one transition map across endpoint callbacks. Replacing timezone
+data during conversion affects later calls; both endpoints keep the current call's
+map. Calendar providers still resolve independently for each endpoint.

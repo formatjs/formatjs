@@ -44,6 +44,12 @@ struct RawStyles {
     rename_all_fields = "camelCase"
 )]
 enum Request {
+    ReentrantTz {
+        json: String,
+        patch: String,
+        tz_json: String,
+        replacement: String,
+    },
     CalendarPacks {
         base_files: Vec<String>,
         directories: std::collections::BTreeMap<String, String>,
@@ -463,8 +469,60 @@ fn reentrant(json: &str, patch: &str, replacement: &str) -> Result<Value, Error>
     }
     Ok(serde_json::to_value(output).unwrap())
 }
+fn reentrant_tz(json: &str, patch: &str, tz_json: &str, replacement: &str) -> Result<Value, Error> {
+    let runtime = Runtime::default();
+    runtime.add_locale_data(json)?;
+    runtime.add_calendar_locale_data(patch)?;
+    runtime.time_zones().load_json(tz_json)?;
+    let zones = runtime.time_zones().clone();
+    let replacement = replacement.to_owned();
+    let builtin = CalendarRegistry::default().provider("gregory")?;
+    let calls = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
+    let record = calls.clone();
+    runtime.register_calendar(
+        "custom".into(),
+        std::sync::Arc::new(move |milliseconds| {
+            record.borrow_mut().push(milliseconds);
+            zones.load_json(&replacement)?;
+            builtin.date_from_time(milliseconds)
+        }),
+    );
+    let construction = runtime.begin();
+    let resolution = construction.resolve(
+        &["en".into()],
+        &ResolutionOptions {
+            calendar: Some("custom".into()),
+            hour_cycle: Some("h23".into()),
+            ..Default::default()
+        },
+    )?;
+    let zone = construction.time_zone(Some("Test/Mutable"))?;
+    let fields = Components {
+        hour: Some(formatjs_intl_datetimeformat::fields::NumericWidth::TwoDigit),
+        minute: Some(formatjs_intl_datetimeformat::fields::NumericWidth::TwoDigit),
+        ..Default::default()
+    };
+    let config = construction
+        .capture(resolution, fields)?
+        .select(&SelectionOptions::default())?;
+    let formatter = construction.finish(config, zone);
+    let first = DateTimeValue::Number(0.0);
+    let second = DateTimeValue::Number(3_600_000.0);
+    let rows = vec![
+        formatter.format_range_to_parts(&first, &second)?,
+        formatter.format_to_parts(&first)?,
+        formatter.format_range_to_parts(&first, &second)?,
+    ];
+    Ok(serde_json::json!({"parts":rows,"calls":*calls.borrow()}))
+}
 fn run(request: Request) -> Result<Value, Error> {
     Ok(match request {
+        Request::ReentrantTz {
+            json,
+            patch,
+            tz_json,
+            replacement,
+        } => reentrant_tz(&json, &patch, &tz_json, &replacement)?,
         Request::CalendarPacks {
             base_files,
             directories,

@@ -1,8 +1,8 @@
 use crate::{Error, civil::CivilDateTime};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, sync::Arc};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CalendarFields {
     pub era: String,
@@ -66,7 +66,14 @@ fn gregorian(local_milliseconds: i64) -> Result<CalendarFields, Error> {
 
 impl CalendarRegistry {
     pub fn register(&mut self, calendar: String, provider: Arc<dyn CalendarProvider>) {
-        self.providers.insert(calendar, provider);
+        drop(self.replace(calendar, provider));
+    }
+    pub(crate) fn replace(
+        &mut self,
+        calendar: String,
+        provider: Arc<dyn CalendarProvider>,
+    ) -> Option<Arc<dyn CalendarProvider>> {
+        self.providers.insert(calendar, provider)
     }
 
     pub fn contains(&self, calendar: &str) -> bool {

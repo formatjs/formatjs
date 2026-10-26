@@ -60,8 +60,8 @@ fn full_date_range_and_offset_crossings_use_astronomical_years() {
     for value in [
         i128::MIN,
         i128::MAX,
-        i128::from(TIME_CLIP_BOUND + 86_400_000) * 1_000_000 + 1,
-        -i128::from(TIME_CLIP_BOUND + 86_400_000) * 1_000_000 - 1,
+        i128::from(TIME_CLIP_BOUND + 31 * 86_400_000) * 1_000_000 + 1,
+        -i128::from(TIME_CLIP_BOUND + 31 * 86_400_000) * 1_000_000 - 1,
     ] {
         assert_eq!(
             CivilDateTime::from_epoch_nanoseconds(value),

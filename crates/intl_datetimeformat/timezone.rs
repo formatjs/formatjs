@@ -215,14 +215,30 @@ impl TimeZoneRegistry {
         Ok(())
     }
     pub fn offset_at(&self, zone: &TimeZone, epoch_nanoseconds: i128) -> TimeZoneOffset {
+        self.snapshot().offset_at(zone, epoch_nanoseconds)
+    }
+    pub fn local_time(
+        &self,
+        zone: &TimeZone,
+        epoch_nanoseconds: i128,
+    ) -> Result<(CivilDateTime, TimeZoneOffset), Error> {
+        self.snapshot().local_time(zone, epoch_nanoseconds)
+    }
+}
+
+#[derive(Clone)]
+pub struct TimeZoneSnapshot {
+    zones: Arc<BTreeMap<String, Zone>>,
+}
+impl TimeZoneSnapshot {
+    pub fn offset_at(&self, zone: &TimeZone, epoch_nanoseconds: i128) -> TimeZoneOffset {
         if let Some(seconds) = zone.fixed {
             return TimeZoneOffset {
                 seconds,
                 in_dst: false,
             };
         }
-        let state = self.state.read().expect("time zone registry");
-        let Some(data) = state.zones.get(&zone.name.to_ascii_uppercase()) else {
+        let Some(data) = self.zones.get(&zone.name.to_ascii_uppercase()) else {
             return TimeZoneOffset {
                 seconds: 0,
                 in_dst: false,
@@ -245,13 +261,6 @@ impl TimeZoneRegistry {
             .ok_or(Error::InvalidDate)?;
         Ok((CivilDateTime::from_epoch_nanoseconds(value)?, offset))
     }
-}
-
-#[derive(Clone)]
-pub struct TimeZoneSnapshot {
-    zones: Arc<BTreeMap<String, Zone>>,
-}
-impl TimeZoneSnapshot {
     pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
         if !value.is_ascii() {
             return Err(Error::InvalidTimeZone);

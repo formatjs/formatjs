@@ -4,11 +4,20 @@ import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import {DateTimeFormat as Reference} from '@formatjs/intl-datetimeformat'
 import links from '@formatjs_generated/tz/links.js'
+import {
+  create as createYearMonth,
+  toString as yearMonthString,
+} from 'temporal-polyfill/fns/PlainYearMonth'
+import {
+  DayFromYear,
+  DaysInYear,
+} from '#packages/ecma262-abstract/DateOperations.js'
 import Decimal from '@formatjs/bigdecimal'
 import {
   HandleDateTimeValue,
   type DateTimeFormattable,
 } from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
+import {CalendarDateFromTime} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
 import {PartitionDateTimeRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.js'
 import {FormatDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
@@ -744,4 +753,115 @@ it('allows provider callbacks to replace locale data and the next endpoint provi
   expect(expected[1].parts.some(part => part.value === 'UpdatedMonth')).toBe(
     true
   )
+})
+
+it('formats valid YearMonth reference dates outside numeric Date bounds', () => {
+  const values: Input[] = []
+  for (const [year, month, referenceDay] of [
+    [-271821, 4, 1],
+    [275760, 9, 30],
+    [2024, 2, 29],
+  ]) {
+    const record = createYearMonth(year, month, undefined, referenceDay)
+    const text = yearMonthString(record, {calendarName: 'always'})
+    const match = /^([+-]\d{6}|\d{4})-(\d{2})-(\d{2})/.exec(text)
+    expect(match).not.toBeNull()
+    const y = Number(match![1]),
+      m = Number(match![2]),
+      d = Number(match![3])
+    const starts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+    const days =
+      DayFromYear(y) +
+      starts[m - 1] +
+      d -
+      1 +
+      Number(m > 2 && DaysInYear(y) === 366)
+    values.push({
+      type: 'epoch',
+      kind: 'PlainYearMonth',
+      calendar: 'iso8601',
+      value: String(BigInt(days) * 86400000000000n + 43200000000000n),
+    })
+  }
+  compare(pack('en'), read('packages/intl-datetimeformat/tz-all.json'), [
+    {
+      locales: ['en'],
+      options: {
+        calendar: 'iso8601',
+        year: 'numeric',
+        month: 'long',
+        timeZone: 'America/New_York',
+      },
+      values,
+    },
+  ])
+})
+
+it('keeps one transition snapshot across range callbacks and sees updates on later calls', () => {
+  const entry = pack('en')
+  const patch = {
+    locale: 'en',
+    calendar: 'custom',
+    data: entry.data,
+    formats: entry.data.formats.gregory,
+  }
+  const tzJson = JSON.stringify({
+    abbrvs: 'X',
+    offsets: '0',
+    zones: ['Test/Mutable|,0,0,0'],
+  })
+  const replacement = JSON.stringify({
+    abbrvs: 'Y',
+    offsets: '2s0',
+    zones: ['Test/Mutable|,0,0,0'],
+  })
+  Reference.localeData = {}
+  Reference.availableLocales = new Set()
+  Reference.__defaultLocale = ''
+  Reference.calendarData = Object.create(null)
+  Reference.__addLocaleData(entry)
+  Reference.__addCalendarLocaleData(patch)
+  Reference.__addTZData(JSON.parse(tzJson))
+  const calls: number[] = []
+  Reference.__addCalendarData({
+    calendar: 'custom',
+    dateFromTime(milliseconds) {
+      calls.push(milliseconds)
+      Reference.__addTZData(JSON.parse(replacement))
+      return CalendarDateFromTime(milliseconds, 'gregory')
+    },
+  })
+  const formatter = new Reference(['en'], {
+    calendar: 'custom',
+    hourCycle: 'h23',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Test/Mutable',
+  })
+  const expected = {
+    parts: [
+      formatter.formatRangeToParts(0, 3600000),
+      formatter.formatToParts(0),
+      formatter.formatRangeToParts(0, 3600000),
+    ],
+    calls,
+  }
+  const result = spawnSync(
+    resolve('crates/intl_datetimeformat/pattern_conformance'),
+    [],
+    {
+      input:
+        JSON.stringify({
+          method: 'reentrantTz',
+          json: JSON.stringify(entry),
+          patch: JSON.stringify(patch),
+          tzJson,
+          replacement,
+        }) + '\n',
+      encoding: 'utf8',
+    }
+  )
+  if (result.error) throw result.error
+  expect(result.status, result.stderr).toBe(0)
+  expect(JSON.parse(result.stdout)).toEqual(expected)
 })

@@ -241,6 +241,14 @@ impl Registry {
         self.providers.register(calendar, provider);
     }
 
+    pub(crate) fn replace_calendar(
+        &mut self,
+        calendar: String,
+        provider: Arc<dyn CalendarProvider>,
+    ) -> Option<Arc<dyn CalendarProvider>> {
+        self.providers.replace(calendar, provider)
+    }
+
     pub fn calendar_provider(&self, calendar: &str) -> Result<Arc<dyn CalendarProvider>, Error> {
         self.providers.provider(calendar)
     }

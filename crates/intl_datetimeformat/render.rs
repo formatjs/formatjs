@@ -8,7 +8,7 @@ use crate::{
     pattern::{self, Source},
     registry::Registry,
     selection::{Configuration, Profile},
-    timezone::{TimeZone, TimeZoneOffset, TimeZoneRegistry},
+    timezone::{TimeZone, TimeZoneOffset, TimeZoneSnapshot},
 };
 use serde::Serialize;
 use std::sync::Arc;
@@ -96,7 +96,7 @@ impl RenderData {
         &self,
         config: &Configuration,
         profile: &Profile,
-        zones: &TimeZoneRegistry,
+        zones: &TimeZoneSnapshot,
         zone: &TimeZone,
         epoch_nanoseconds: i128,
         plain: bool,
@@ -114,7 +114,7 @@ impl RenderData {
 
     pub fn local_time(
         &self,
-        zones: &TimeZoneRegistry,
+        zones: &TimeZoneSnapshot,
         zone: &TimeZone,
         epoch_nanoseconds: i128,
         plain: bool,
