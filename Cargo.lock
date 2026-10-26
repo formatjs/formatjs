@@ -767,6 +767,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_durationformat"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_getcanonicallocales"
 version = "0.1.0"
 dependencies = [

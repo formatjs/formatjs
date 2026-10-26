@@ -15,6 +15,7 @@ crates/
   intl_displaynames/          # CLDR names, code validation, caller-loaded locale packs
   intl_listformat/            # CLDR list patterns, UTF-16 parts, caller-loaded locale packs
   intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
+  intl_durationformat/       # Duration records and per-unit option resolution (rendering in progress)
   intl_datetimeformat/       # Core formatter, caller-loaded locales/timezones
   intl_datetimeformat_calendars/ # Optional arithmetic, caller-loaded calendar tables
   intl_collator/             # Native collation and owned locale records

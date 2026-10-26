@@ -1,0 +1,14 @@
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "conformance_test",
+    srcs = ["conformance.test.ts"],
+    data = ["//crates/intl_durationformat:conformance"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DurationFormat",
+    ],
+)

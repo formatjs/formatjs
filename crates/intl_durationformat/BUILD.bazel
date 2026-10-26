@@ -1,0 +1,43 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+rust_library(
+    name = "intl_durationformat",
+    srcs = [
+        "lib.rs",
+        "options.rs",
+        "record.rs",
+        "unit.rs",
+    ],
+    crate_name = "formatjs_intl_durationformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = ["@crates//:serde"],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_durationformat/tests:__pkg__"],
+    deps = [
+        ":intl_durationformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_durationformat_test",
+    srcs = [
+        "options.test.rs",
+        "record.test.rs",
+    ],
+    crate_name = "intl_durationformat_test",
+    edition = "2024",
+    deps = [":intl_durationformat"],
+)

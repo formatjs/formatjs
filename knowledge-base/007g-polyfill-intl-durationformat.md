@@ -90,3 +90,22 @@ objects keep the ECMA-402 property-read order.
 
 Without Temporal, duration-like objects remain supported; duration strings throw
 `RangeError`. This integration follows the Temporal proposal's Intl changes.
+
+## Native port
+
+`crates/intl_durationformat` implements exact duration records and formatting-option
+resolution. Number inputs retain their mathematical integers instead of passing
+through shortest decimal text. Common-sign and normalized-second bounds include
+subsecond contributions exactly; checked arithmetic rejects oversized records.
+
+A phased unit resolver validates each style before its display getter, then
+applies cross-unit constraints and clock padding. Fractional subsecond styles stay
+internal and serialize as numeric in resolved options. TS differential coverage
+compares style/display combinations, propagation, rejection, field order and
+integer bounds, including IEEE values beyond the safe-integer range.
+
+Rendering and native installation remain in progress. Duration locale metadata
+must retain its static compilation model. NumberFormat/ListFormat dependencies
+must preserve selected locale loading; the native port will consume their native
+records without routing duration arithmetic through JS formatters or bundling
+all number/list locale payloads into DurationFormat metadata.
