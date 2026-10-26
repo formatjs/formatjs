@@ -1,12 +1,14 @@
 This guide covers setting up FormatJS polyfills for React Native with the Hermes JavaScript engine. Hermes ships with partial Intl support, so you need to polyfill the missing APIs.
 
-## Experimental Rust canonicalizer
+## Experimental Rust Intl extensions
 
-The repository includes a Rust `Intl.getCanonicalLocales` implementation using
-ICU4X and a C++ JSI adapter. SDK `0.1.0` packages public headers, adapter source,
+The repository includes Rust `Intl.getCanonicalLocales`, `Intl.supportedValuesOf`,
+`Intl.Locale` and `Intl.PluralRules` implementations with C++ JSI adapters.
+SDK `0.1.0` packages public headers, adapter source,
 extension JavaScript, and Rust static libraries for Linux x86_64 GNU and macOS
 arm64. Consumers compile the adapter against their matching Hermes JSI headers
-and link `@formatjs_intl_getcanonicallocales_hermes//:canonical_locales`.
+and link SDK targets `:canonical_locales`, `:supported_values`, `:locale` and
+`:pluralrules` from `@formatjs_intl_getcanonicallocales_hermes`.
 
 The SDK is built from this repository and is not published to BCR, npm, or
 crates.io. It does not include Android/iOS artifacts or React Native package
@@ -16,20 +18,46 @@ to build, extract, and install its public layout.
 
 ```cpp
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/supported_values.h>
+#include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/intl_pluralrules.h>
 
 formatjs::installCanonicalLocales(*runtime);
+formatjs::installSupportedValuesOf(*runtime);
+formatjs::installLocale(*runtime);
+formatjs::installCanonicalLocales(*runtime);
+formatjs::installPluralRules(*runtime);
 ```
 
 Install before application scripts. For bytecode-only startup, compile the SDK's
 `js/extensions.js` with the matching `hermesc`, evaluate it into a setup object,
-then call `formatjs::installCanonicalLocales(*runtime, extensions)`. For Hermes
+then pass that object to each installer, for example
+`formatjs::installPluralRules(*runtime, extensions)`. For Hermes
 core/contrib registration, add `js/30-IntlGetCanonicalLocales.js` to its extension
 source list and call the same overload from the compiled C++ dispatcher.
 Linking the SDK alone does not register a startup hook.
 
 Install trusted `Intl.Locale` before the final adapter installation. If Locale
 needs `Intl.getCanonicalLocales` first, install the adapter, load Locale, then
-reinstall before application code. Other Intl APIs keep their existing implementations.
+reinstall before application code, then install PluralRules so it captures the
+final canonicalizer.
+
+PluralRules starts without locale data. Ship selected SDK files from
+`locale-data/pluralrules/<locale>.json`, then register their UTF-8 text when needed:
+
+```ts
+type NativePluralRules = typeof Intl.PluralRules & {
+  __addLocaleData(...packs: string[]): void
+}
+
+function loadPluralLocale(jsonText: string) {
+  ;(Intl.PluralRules as NativePluralRules).__addLocaleData(jsonText)
+}
+```
+
+Loading another pack updates supported locales. Existing instances keep their
+data, including when a loaded locale is replaced. The standalone SDK consumer
+loads English first and French later, and tests BigInt selection and ranges.
 
 Rust callers can disable the canonicalizer crate's default `compiled_data`
 feature and use `Canonicalizer::try_new_with_provider(&provider)` with

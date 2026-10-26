@@ -15,16 +15,24 @@ include/formatjs/hermes/supported_values.h
 include/formatjs/intl/supported_values.h
 include/formatjs/hermes/intl_locale.h
 include/formatjs/intl/locale.h
+include/formatjs/hermes/intl_pluralrules.h
+include/formatjs/intl/pluralrules.h
 src/canonical_locales.cpp
 src/get_canonical_locales.inc
 src/supported_values.cpp
 src/supported_values_of.inc
 src/locale.cpp
 src/locale.inc
+src/pluralrules.cpp
+src/pluralrules.inc
 js/30-IntlGetCanonicalLocales.js
 js/31-IntlSupportedValuesOf.js
 js/32-IntlLocale.js
+js/33-IntlPluralRules.js
 js/extensions.js
+js/pluralrules-smoke.js
+examples/pluralrules-smoke.ts
+locale-data/pluralrules/<locale>.json
 lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a
 lib/aarch64-apple-darwin/libformatjs_intl_hermes.a
 ```
@@ -64,7 +72,8 @@ See `examples/hermes-intl` in FormatJS for a complete independent root.
 The SDK also contains `Intl.supportedValuesOf`. Link
 `@formatjs_intl_getcanonicallocales_hermes//:supported_values` for that adapter.
 Link `@formatjs_intl_getcanonicallocales_hermes//:locale` for `Intl.Locale`.
-All three targets use one Rust archive. The module retains its original name.
+Link `@formatjs_intl_getcanonicallocales_hermes//:pluralrules` for `Intl.PluralRules`.
+All four targets use one Rust archive. The module retains its original name.
 
 ## Install before application JavaScript
 
@@ -74,11 +83,13 @@ For embedders that allow source evaluation:
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/supported_values.h>
 #include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/intl_pluralrules.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
 formatjs::installLocale(*runtime);
 formatjs::installCanonicalLocales(*runtime); // Capture the new Locale brand.
+formatjs::installPluralRules(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -92,7 +103,33 @@ formatjs::installCanonicalLocales(*runtime, extensions);
 formatjs::installSupportedValuesOf(*runtime, extensions);
 formatjs::installLocale(*runtime, extensions);
 formatjs::installCanonicalLocales(*runtime, extensions);
+formatjs::installPluralRules(*runtime, extensions);
 ```
+
+PluralRules starts with no locale data. Ship selected files from
+`locale-data/pluralrules/` and load their UTF-8 JSON text before constructing a
+formatter. No JS locale functions or other locale packs load implicitly:
+
+```ts
+type NativePluralRules = typeof Intl.PluralRules & {
+  __addLocaleData(...packs: string[]): void
+}
+
+const PluralRules = Intl.PluralRules as NativePluralRules
+// Obtain text through the application's file/network loader.
+PluralRules.__addLocaleData(frenchJsonText)
+const rules = new PluralRules('fr')
+rules.select(0) // 'one'
+```
+
+Loading more packs updates supported locales. Existing instances keep their
+selected payload; replacing a locale affects new instances. The generated packs
+use `formatVersion: 1`. `:pluralrules_data` exposes all JSON files as Bazel data;
+individual file labels allow packaging only the required locales.
+
+The standalone consumer compiles only the selected English/French pack inputs
+into its smoke executable. Its TypeScript smoke source ships under `examples/`;
+the precompiled script requires no Node.js or Rust compiler in the consumer.
 
 The standalone example builds this bytecode through Bazel's execution toolchain,
 so cross-compilation never runs the target-platform `hermesc`.

@@ -203,3 +203,9 @@ getter/coercion order, ToPrimitive, brands, descriptors and fresh result objects
 Rust owns matching, validated options, numeric parsing/rounding and selection.
 Public native conformance runs source/factory installers against TS over 10,000+
 selections/ranges, with separate checks for tampered intrinsics and edge ordering.
+
+The SDK ships the PluralRules C++ adapter, source/precompiled factories and
+individual JSON packs. The independent consumer links `:pluralrules`, embeds
+only English/French packs and a compiled TypeScript smoke script, then registers
+French after creating an English instance. BuildBuddy builds and cross-builds;
+macOS executes the downloaded consumer without building.

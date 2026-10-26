@@ -15,6 +15,13 @@ none. Full-list comparisons with real TS formatters run separately in
 Bengali NumberFormat data after constructing a Locale and checks the existing
 instance sees it.
 
+The consumer also installs Rust `Intl.PluralRules`, loads the SDK's English JSON
+pack, then registers French later. It checks exact BigInt ordinals, ranges,
+receiver errors and existing-instance behavior. This smoke is authored in the
+SDK's `examples/pluralrules-smoke.ts`; the consumer embeds its compiled script
+and only the selected English/French packs. Full source/factory API comparisons
+run in `//native/hermes/tests:pluralrules_conformance_test`.
+
 The SDK is built and tested here but is not published. From the FormatJS root
 on Linux:
 

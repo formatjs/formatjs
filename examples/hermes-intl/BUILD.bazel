@@ -3,6 +3,34 @@ load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load(":dist.bzl", "smoke_macos_arm64")
 
 genrule(
+    name = "pluralrules_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/pluralrules-smoke.js"],
+    outs = ["pluralrules_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "pluralrules_en_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:locale-data/pluralrules/en.json"],
+    outs = ["pluralrules_en.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "pluralrules_fr_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:locale-data/pluralrules/fr.json"],
+    outs = ["pluralrules_fr.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+SMOKE_SOURCES = [
+    "main.cpp",
+    ":pluralrules_smoke_source",
+    ":pluralrules_en_source",
+    ":pluralrules_fr_source",
+]
+
+genrule(
     name = "extension_bytecode",
     srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/extensions.js"],
     outs = ["extensions.hbc"],
@@ -12,7 +40,7 @@ genrule(
 
 cc_binary(
     name = "smoke",
-    srcs = ["main.cpp"],
+    srcs = SMOKE_SOURCES,
     copts = [
         "-std=c++17",
         "-fexceptions",
@@ -22,6 +50,7 @@ cc_binary(
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
+        "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],
@@ -30,7 +59,7 @@ cc_binary(
 cc_test(
     name = "smoke_test",
     size = "small",
-    srcs = ["main.cpp"],
+    srcs = SMOKE_SOURCES,
     args = ["$(rootpath :extension_bytecode)"],
     copts = [
         "-std=c++17",
@@ -41,6 +70,7 @@ cc_test(
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
+        "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],

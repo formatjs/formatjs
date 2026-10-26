@@ -1,5 +1,6 @@
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
 #include <jsi/jsi.h>
@@ -11,6 +12,18 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+
+namespace {
+constexpr char pluralSmoke[] =
+#include "pluralrules_smoke.inc"
+    ;
+constexpr char englishPack[] =
+#include "pluralrules_en.inc"
+    ;
+constexpr char frenchPack[] =
+#include "pluralrules_fr.inc"
+    ;
+}
 
 int main(int argc, char **argv) {
   if (argc != 2) {
@@ -125,6 +138,13 @@ int main(int argc, char **argv) {
     std::cout << "Hermes SDK canonicalization passed\n";
     std::cout << "Hermes SDK supportedValuesOf passed\n";
     std::cout << "Hermes SDK Locale passed\n";
+    formatjs::installPluralRules(*runtime, extensions);
+    runtime->global().setProperty(*runtime, "__SDK_PLURAL_EN", facebook::jsi::String::createFromUtf8(*runtime, englishPack));
+    runtime->global().setProperty(*runtime, "__SDK_PLURAL_FR", facebook::jsi::String::createFromUtf8(*runtime, frenchPack));
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(pluralSmoke), "formatjs:pluralrules-sdk-smoke");
+    auto pluralPassed = runtime->global().getProperty(*runtime, "__SDK_PLURAL_PASSED");
+    if (!pluralPassed.isBool() || !pluralPassed.getBool()) throw std::runtime_error("PluralRules SDK smoke failed");
+    std::cout << "Hermes SDK PluralRules passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

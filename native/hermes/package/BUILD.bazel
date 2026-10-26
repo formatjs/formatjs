@@ -1,6 +1,26 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+# gazelle:ignore
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files", "strip_prefix")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 load(":dist.bzl", "darwin_archive", "linux_archive")
+
+ts_project(
+    name = "pluralrules_smoke_typecheck",
+    srcs = ["pluralrules-smoke.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
+rolldown_bundle(
+    name = "pluralrules_smoke_js",
+    srcs = ["pluralrules-smoke.ts"],
+    entry_point = "pluralrules-smoke.ts",
+    format = "iife",
+    target = "es2020",
+)
 
 platform(
     name = "linux_x86_64",
@@ -33,6 +53,8 @@ pkg_files(
         "SDK.BUILD.bazel",
         "SDK.MODULE.bazel",
         "THIRD_PARTY_NOTICES.html",
+        "pluralrules-smoke.ts",
+        ":pluralrules_smoke_js.js",
         "//crates/intl_getcanonicallocales:canonicalize.h",
         "//crates/intl_locale:locale.h",
         "//crates/intl_pluralrules:pluralrules.h",
@@ -43,9 +65,13 @@ pkg_files(
         "//native/hermes:extension_bundle_js",
         "//native/hermes:extension_js",
         "//native/hermes:intl_locale.h",
+        "//native/hermes:intl_pluralrules.h",
         "//native/hermes:locale.cpp",
         "//native/hermes:locale_extension_js",
         "//native/hermes:locale_wrapper_source",
+        "//native/hermes:pluralrules.cpp",
+        "//native/hermes:pluralrules_extension_js",
+        "//native/hermes:pluralrules_wrapper_source",
         "//native/hermes:supported_values.cpp",
         "//native/hermes:supported_values.h",
         "//native/hermes:supported_values_extension_js",
@@ -59,11 +85,17 @@ pkg_files(
         "SDK.BUILD.bazel": "BUILD.bazel",
         "SDK.MODULE.bazel": "MODULE.bazel",
         "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
+        "pluralrules-smoke.ts": "examples/pluralrules-smoke.ts",
+        ":pluralrules_smoke_js.js": "js/pluralrules-smoke.js",
         "//crates/intl_getcanonicallocales:canonicalize.h": "include/formatjs/intl/canonicalize.h",
         "//crates/intl_locale:locale.h": "include/formatjs/intl/locale.h",
         "//crates/intl_pluralrules:pluralrules.h": "include/formatjs/intl/pluralrules.h",
         "//native/hermes:locale.cpp": "src/locale.cpp",
         "//native/hermes:intl_locale.h": "include/formatjs/hermes/intl_locale.h",
+        "//native/hermes:intl_pluralrules.h": "include/formatjs/hermes/intl_pluralrules.h",
+        "//native/hermes:pluralrules.cpp": "src/pluralrules.cpp",
+        "//native/hermes:pluralrules_extension_js": "js/33-IntlPluralRules.js",
+        "//native/hermes:pluralrules_wrapper_source": "src/pluralrules.inc",
         "//native/hermes:locale_extension_js": "js/32-IntlLocale.js",
         "//native/hermes:locale_wrapper_source": "src/locale.inc",
         "//native/hermes:canonical_locales.cpp": "src/canonical_locales.cpp",
@@ -78,6 +110,15 @@ pkg_files(
         "//native/hermes:supported_values_extension_js": "js/31-IntlSupportedValuesOf.js",
         "//native/hermes:supported_values_wrapper_source": "src/supported_values_of.inc",
     },
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "pluralrules_data",
+    srcs = ["//crates/intl_pluralrules:locale_data"],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "locale-data/pluralrules",
+    strip_prefix = strip_prefix.files_only(),
     tags = ["manual"],
 )
 
@@ -102,6 +143,7 @@ pkg_tar(
     srcs = [
         ":darwin_library",
         ":linux_library",
+        ":pluralrules_data",
         ":sdk_sources",
     ],
     out = "formatjs_intl_getcanonicallocales_hermes-0.1.0.tar.gz",

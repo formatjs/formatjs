@@ -165,3 +165,28 @@ rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+## Rust on Hermes
+
+The [Hermes SDK guide](../guides/react-native-hermes) covers the Rust extension.
+Link the SDK's `:pluralrules` target and call
+`formatjs::installPluralRules(*runtime)` after installing canonicalization.
+The precompiled installer also accepts the SDK extension setup object.
+
+Locale packs stay independent. Ship selected
+`locale-data/pluralrules/<locale>.json` files from the SDK, then pass their UTF-8
+text to the installed constructor:
+
+```ts
+type NativePluralRules = typeof Intl.PluralRules & {
+  __addLocaleData(...packs: string[]): void
+}
+
+const PluralRules = Intl.PluralRules as NativePluralRules
+PluralRules.__addLocaleData(frenchJsonText)
+new PluralRules('fr').select(0) // 'one'
+```
+
+The extension starts without plural locale data. Load additional packs when
+needed; existing instances keep their selected data. Rust handles locale
+matching, exact numeric rounding and ICU4X rule selection.
