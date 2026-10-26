@@ -1,4 +1,4 @@
-#include <formatjs/hermes/locale.h>
+#include <formatjs/hermes/intl_locale.h>
 #include <formatjs/intl/canonicalize.h>
 #include <formatjs/intl/locale.h>
 
@@ -29,7 +29,7 @@ struct CanonicalBytes {
   FormatjsLocaleResult value{nullptr, 0};
   ~CanonicalBytes() { formatjs_locale_result_free(value); }
 };
-const uint8_t *data(const std::string &value) {
+const uint8_t *bytesOf(const std::string &value) {
   return reinterpret_cast<const uint8_t *>(value.data());
 }
 } // namespace
@@ -41,7 +41,7 @@ void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
         if (count != 1 || !args[0].isString()) throw jsi::JSError(rt, "Expected locale tag string");
         auto tag = args[0].asString(rt).utf8(rt);
         CanonicalBytes result;
-        auto status = formatjs_canonicalize_locale(data(tag), tag.size(), &result.value);
+        auto status = formatjs_canonicalize_locale(bytesOf(tag), tag.size(), &result.value);
         if (status == 1) return jsi::Value::null();
         if (status != 0) throw jsi::JSError(rt, "Rust locale canonicalization failed");
         return jsi::String::createFromUtf8(rt, result.value.data, result.value.len);
@@ -53,7 +53,7 @@ void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
         auto tag = args[0].asString(rt).utf8(rt);
         auto options = args[1].asString(rt).utf8(rt);
         FormatjsLocaleHandle *raw = nullptr;
-        auto status = formatjs_locale_create(data(tag), tag.size(), data(options), options.size(), &raw);
+        auto status = formatjs_locale_create(bytesOf(tag), tag.size(), bytesOf(options), options.size(), &raw);
         Handle handle(raw, formatjs_locale_destroy);
         if (status == 1) return jsi::Value::null();
         if (status != 0) throw jsi::JSError(rt, "Rust locale construction failed");
@@ -64,7 +64,7 @@ void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
       [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
         if (count != 2 || !args[0].isString() || !args[1].isString()) throw jsi::JSError(rt, "Expected option name and string value");
         auto name = args[0].asString(rt).utf8(rt), value = args[1].asString(rt).utf8(rt);
-        auto status = formatjs_locale_validate(data(name), name.size(), data(value), value.size());
+        auto status = formatjs_locale_validate(bytesOf(name), name.size(), bytesOf(value), value.size());
         if (status > 1) throw jsi::JSError(rt, "Rust locale validation failed");
         return status == 0;
       });
@@ -77,7 +77,7 @@ void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
         auto record = object.getHostObject<LocaleRecord>(rt);
         auto request = args[1].asString(rt).utf8(rt);
         Bytes result;
-        if (formatjs_locale_query(record->handle.get(), data(request), request.size(), &result.value) != 0) throw jsi::JSError(rt, "Rust locale query failed");
+        if (formatjs_locale_query(record->handle.get(), bytesOf(request), request.size(), &result.value) != 0) throw jsi::JSError(rt, "Rust locale query failed");
         return jsi::String::createFromUtf8(rt, result.value.data, result.value.len);
       });
   jsi::Object bridge(runtime);

@@ -113,7 +113,7 @@ cc_library(
         "src/locale.inc",
     ],
     hdrs = [
-        "include/formatjs/hermes/locale.h",
+        "include/formatjs/hermes/intl_locale.h",
         "include/formatjs/intl/canonicalize.h",
         "include/formatjs/intl/locale.h",
     ],

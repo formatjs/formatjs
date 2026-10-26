@@ -1,5 +1,5 @@
 #include <formatjs/hermes/canonical_locales.h>
-#include <formatjs/hermes/locale.h>
+#include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
 #include <jsi/jsi.h>

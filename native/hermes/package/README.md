@@ -13,7 +13,7 @@ include/formatjs/hermes/canonical_locales.h
 include/formatjs/intl/canonicalize.h
 include/formatjs/hermes/supported_values.h
 include/formatjs/intl/supported_values.h
-include/formatjs/hermes/locale.h
+include/formatjs/hermes/intl_locale.h
 include/formatjs/intl/locale.h
 src/canonical_locales.cpp
 src/get_canonical_locales.inc
@@ -73,7 +73,7 @@ For embedders that allow source evaluation:
 ```cpp
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/supported_values.h>
-#include <formatjs/hermes/locale.h>
+#include <formatjs/hermes/intl_locale.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
