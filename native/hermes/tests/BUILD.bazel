@@ -15,14 +15,6 @@ optimized_runtime(
     srcs = ["//native/hermes:hermes_runner"],
 )
 
-# Match the SDK runtime optimization for the large formatter differential suite.
-_optimized_runtime, _optimized_runtime_internal = with_cfg(native.filegroup).set(
-    "compilation_mode",
-    "opt",
-).build()
-
-_
-
 ts_project(
     name = "pluralrules_typecheck",
     srcs = [
