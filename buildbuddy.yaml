@@ -137,7 +137,8 @@ actions:
           fi
           cp "${sdk_archives[0]}" "$BUILDBUDDY_ARTIFACTS_DIRECTORY/formatjs-intl-getcanonicallocales-hermes.tar.gz"
           sdk_dir=$(mktemp -d)
-          trap 'rm -rf "$sdk_dir"' EXIT
+          sdk_smoke_dir=$(mktemp -d)
+          trap 'rm -rf "$sdk_dir" "$sdk_smoke_dir"' EXIT
           tar -xzf "${sdk_archives[0]}" -C "$sdk_dir"
           cd examples/hermes-intl
           sdk_override="--override_module=formatjs_intl_getcanonicallocales_hermes=$sdk_dir"
@@ -149,11 +150,13 @@ actions:
             echo "Expected one Hermes consumer binary and one extension bytecode file" >&2
             exit 1
           fi
-          cp "${macos_binaries[0]}" "$SMOKE_ARTIFACTS_DIR/hermes-intl-darwin-arm64"
-          cp "${extension_bytecode[0]}" "$SMOKE_ARTIFACTS_DIR/hermes-intl-extension.hbc"
-          file "$SMOKE_ARTIFACTS_DIR/hermes-intl-darwin-arm64" | grep -E 'Mach-O 64-bit.*arm64'
+          cp "${macos_binaries[0]}" "$sdk_smoke_dir/hermes-intl-darwin-arm64"
+          cp "${extension_bytecode[0]}" "$sdk_smoke_dir/hermes-intl-extension.hbc"
+          file "$sdk_smoke_dir/hermes-intl-darwin-arm64" | grep -E 'Mach-O 64-bit.*arm64'
+          tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/hermes-extension-smoke.tar.gz" \
+            -C "$sdk_smoke_dir" hermes-intl-darwin-arm64 hermes-intl-extension.hbc
 
-      # Attach one archive for native GHA smoke jobs.
+      # Preserve the existing CLI archive for the trusted main-branch downloader.
       - run: |
           set -euo pipefail
           tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/release-cross-build-smoke.tar.gz" -C "$SMOKE_ARTIFACTS_DIR" .
