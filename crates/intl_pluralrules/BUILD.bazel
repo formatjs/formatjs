@@ -1,8 +1,22 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//packages/intl-pluralrules:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+exports_files(
+    ["pluralrules.h"],
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["pluralrules.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
 
 ts_run_binary(
     name = "locale_data",
@@ -20,6 +34,7 @@ rust_library(
     name = "intl_pluralrules",
     srcs = [
         "digits.rs",
+        "ffi.rs",
         "instance.rs",
         "lib.rs",
         "registry.rs",
@@ -42,6 +57,7 @@ formatjs_rust_test(
     name = "intl_pluralrules_test",
     srcs = [
         "digits.test.rs",
+        "ffi.test.rs",
         "instance.test.rs",
         "lib.test.rs",
         "registry.test.rs",

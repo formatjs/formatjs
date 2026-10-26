@@ -42,3 +42,9 @@ keep their payload when a later load replaces a registry entry. Available locale
 and the first-loaded default belong to each registry, not a process global.
 `tests:registry_conformance_test` compares availability, defaults, resolved
 locales and selection against TS across alias/explicit-data load orders.
+
+`pluralrules.h` exposes owned registry/instance handles in the shared Hermes
+Rust archive. JSON requests contain already-coerced primitives; non-finite digit
+Numbers use private string sentinels. Successful query buffers must be freed
+once. Instances remain valid after registry destruction. JSI installation and
+observable JS behavior remain in progress.

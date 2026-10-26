@@ -14,5 +14,6 @@ crate-type = ["staticlib"]
 
 [dependencies]
 formatjs_intl_locale = { path = "../intl_locale" }
+formatjs_intl_pluralrules = { path = "../intl_pluralrules" }
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
 formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof" }

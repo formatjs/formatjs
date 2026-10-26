@@ -11,6 +11,7 @@ rust_static_library(
     deps = [
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",
+        "//crates/intl_pluralrules",
         "//crates/intl_supportedvaluesof",
     ],
 )

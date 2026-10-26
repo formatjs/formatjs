@@ -172,3 +172,8 @@ The Rust registry loads packs atomically, registers canonical default-content
 aliases and required fallbacks, and protects explicitly loaded payloads from
 alias replacement. Existing instances keep their selected data after late loads.
 Generated packs carry alias metadata; no other locale pack loads implicitly.
+
+The shared Hermes archive exports PluralRules registry/load/create/query/free
+functions from `ffi.rs`. Handles own their data; input buffers never escape a
+call. ABI tests cover registry replacement/destruction, owned output, invalid
+UTF-8, atomic failed loads, lazy non-finite options and RangeError/TypeError codes.

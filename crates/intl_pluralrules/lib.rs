@@ -15,6 +15,7 @@ use icu_provider::prelude::*;
 use serde::Deserialize;
 
 pub mod digits;
+pub mod ffi;
 pub mod instance;
 pub mod registry;
 
