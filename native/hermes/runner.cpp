@@ -61,6 +61,14 @@ int main(int argc, char **argv) {
     };
     int firstScript = 1;
     formatjs::installCanonicalLocales(rt);
+    while (firstScript < argc && std::string(argv[firstScript]).rfind("--prelude=", 0) == 0) {
+      evaluateFile(std::string(argv[firstScript]).substr(10));
+      ++firstScript;
+    }
+    if (firstScript != 1) formatjs::installCanonicalLocales(rt);
+    formatjs::installSupportedValuesOf(rt);
+    formatjs::installLocale(rt);
+    formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
       if (flag == "--native-displaynames") {
