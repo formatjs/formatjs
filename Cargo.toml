@@ -49,7 +49,7 @@ oxc_data_structures = "0.154"
 oxc_parser = "0.154"
 oxc_span = "0.154"
 oxc_ecmascript = { version = "0.154", features = ["constant_evaluation"] }
-oxc_syntax = "0.154"
+oxc_syntax = "0.155"
 sha1 = "0.11"
 md-5 = "0.11"
 hex = "0.4"
