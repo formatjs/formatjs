@@ -46,28 +46,25 @@ export function checkObservableConformance(
   const rangeError = {error: 'RangeError'}
   const abrupt = {error: 'sentinel'}
 
-  for (const value of [undefined, false, true, 0, 42, NaN, 0n, Symbol('list')])
+  // Capture each factory input in a separate call frame.
+  ;[undefined, false, true, 0, 42, NaN, 0n, Symbol('list')].forEach(value =>
     add('top-level primitive ' + String(value), () => value, [])
+  )
   add('null list', () => null, typeError)
-  for (const value of [
-    undefined,
-    null,
-    false,
-    true,
-    0,
-    42,
-    1n,
-    Symbol('entry'),
-  ])
+  ;[undefined, null, false, true, 0, 42, 1n, Symbol('entry')].forEach(value =>
     add('invalid entry ' + String(value), () => [value], typeError)
-  for (const length of [undefined, null, NaN, -1, -Infinity, 0, -0.5, '0'])
+  )
+  ;[undefined, null, NaN, -1, -Infinity, 0, -0.5, '0'].forEach(length =>
     add('empty ToLength ' + String(length), () => ({0: 'bad_tag', length}), [])
-  for (const length of [1, 1.9, '1.9', true])
+  )
+  ;[1, 1.9, '1.9', true].forEach(length =>
     add('positive ToLength ' + String(length), () => ({0: 'IW', length}), [
       'he',
     ])
-  for (const length of [1n, Symbol('length')])
+  )
+  ;[1n, Symbol('length')].forEach(length =>
     add('invalid length ' + String(length), () => ({length}), typeError)
+  )
 
   add(
     'inherited indices and length',
@@ -379,7 +376,7 @@ export function checkObservableConformance(
     },
     typeError
   )
-  for (const length of [Infinity, 9007199254740992])
+  ;[Infinity, 9007199254740992].forEach(length =>
     add(
       'large ToLength begins iteration ' + String(length),
       (trace, sentinel) =>
@@ -395,14 +392,15 @@ export function checkObservableConformance(
       abrupt,
       ['has:0']
     )
+  )
 
   const localeStart = cases.length
-  for (const input of ['EN-us', 'IW-il', 'fr-u-ca-buddhist']) {
+  ;['EN-us', 'IW-il', 'fr-u-ca-buddhist'].forEach(input => {
     const expected =
       input === 'EN-us' ? 'en-US' : input === 'IW-il' ? 'he-IL' : input
     add('Locale singleton ' + input, () => new Intl.Locale(input), [expected])
     add('Locale entry ' + input, () => [new Intl.Locale(input)], [expected])
-  }
+  })
   add(
     'Locale own conversion hooks ignored',
     (_trace, sentinel) => {
@@ -569,8 +567,8 @@ export function checkObservableConformance(
     '-ü',
   ]
   let invalidTags = 0
-  for (const language of ['en', 'sh', 'hye', 'und', 'posix', 'abcde']) {
-    for (const suffix of invalidSuffixes) {
+  ;['en', 'sh', 'hye', 'und', 'posix', 'abcde'].forEach(language => {
+    invalidSuffixes.forEach(suffix => {
       const test: Case = {
         name: language + suffix,
         run: method => method(language + suffix),
@@ -583,8 +581,8 @@ export function checkObservableConformance(
       check(baseline, expected, 'TypeScript invalid ' + test.name)
       check(actual, baseline, 'differential invalid ' + test.name)
       invalidTags++
-    }
-  }
+    })
+  })
 
   const descriptor = Object.getOwnPropertyDescriptor(
     Intl,

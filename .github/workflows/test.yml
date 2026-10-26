@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   test:
+    if: github.event_name != 'workflow_dispatch' || inputs.smoke_invocation_url == ''
     runs-on: ubuntu-26.04
 
     steps:
@@ -45,6 +46,7 @@ jobs:
                   raise SystemExit(f"Provider-only {crate} must not enable compiled ICU data:\n" + tree)
 
   examples:
+    if: github.event_name != 'workflow_dispatch' || inputs.smoke_invocation_url == ''
     name: Examples (${{ matrix.example }})
     runs-on: ubuntu-latest
 
@@ -76,6 +78,7 @@ jobs:
         run: bazel test //...
 
   validate-pnpm-lock:
+    if: github.event_name != 'workflow_dispatch' || inputs.smoke_invocation_url == ''
     name: Validate pnpm-lock.yaml
     runs-on: ubuntu-latest
 
