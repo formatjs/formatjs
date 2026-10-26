@@ -22,6 +22,7 @@ rust_library(
         "digits.rs",
         "instance.rs",
         "lib.rs",
+        "registry.rs",
     ],
     crate_name = "formatjs_intl_pluralrules",
     crate_root = "lib.rs",
@@ -43,11 +44,26 @@ formatjs_rust_test(
         "digits.test.rs",
         "instance.test.rs",
         "lib.test.rs",
+        "registry.test.rs",
     ],
     crate_name = "intl_pluralrules_test",
     edition = "2024",
     deps = [
         ":intl_pluralrules",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "registration",
+    srcs = ["registration.rs"],
+    crate_name = "registration",
+    crate_root = "registration.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_pluralrules/tests:__pkg__"],
+    deps = [
+        ":intl_pluralrules",
+        "@crates//:serde",
         "@crates//:serde_json",
     ],
 )

@@ -16,6 +16,7 @@ use serde::Deserialize;
 
 pub mod digits;
 pub mod instance;
+pub mod registry;
 
 #[derive(Debug)]
 pub enum Error {
@@ -24,6 +25,7 @@ pub enum Error {
     InvalidRange,
     InvalidOption(&'static str),
     Digits(digits::Error),
+    MissingLocale,
 }
 impl fmt::Display for Error {
     fn fmt(&self, out: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -33,6 +35,7 @@ impl fmt::Display for Error {
             Self::InvalidRange => out.write_str("Plural range endpoints cannot be NaN"),
             Self::InvalidOption(name) => write!(out, "Invalid plural option: {name}"),
             Self::Digits(error) => error.fmt(out),
+            Self::MissingLocale => out.write_str("Plural locale data is not loaded"),
         }
     }
 }
@@ -45,7 +48,11 @@ impl From<digits::Error> for Error {
 
 #[derive(Deserialize)]
 struct Pack<'data> {
+    #[serde(default, rename = "formatVersion")]
+    format_version: Option<u8>,
     locale: String,
+    #[serde(default)]
+    aliases: Vec<String>,
     #[serde(borrow)]
     cardinal: PluralRulesData<'data>,
     #[serde(borrow)]
@@ -146,6 +153,7 @@ fn operands(decimal: &Decimal, exponent: usize) -> PluralOperands {
 
 pub struct LocaleRules {
     locale: String,
+    aliases: Vec<String>,
     cardinal: PluralRules,
     ordinal: PluralRules,
     ranges: BTreeMap<String, BTreeMap<String, String>>,
@@ -157,8 +165,18 @@ impl LocaleRules {
     pub fn from_json(json: &str) -> Result<Self, Error> {
         let pack: Pack<'_> =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
+        if pack.format_version.is_some_and(|version| version != 1) {
+            return Err(Error::InvalidData("formatVersion".to_owned()));
+        }
         let locale = canonicalize_locale(&pack.locale)
             .map_err(|_| Error::InvalidData("locale".to_owned()))?;
+        let aliases = pack
+            .aliases
+            .iter()
+            .map(|alias| {
+                canonicalize_locale(alias).map_err(|_| Error::InvalidData("alias".to_owned()))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
         for (kind, ranges) in &pack.ranges {
             if !["cardinal", "ordinal"].contains(&kind.as_str()) {
                 return Err(Error::InvalidData("range type".to_owned()));
@@ -185,6 +203,7 @@ impl LocaleRules {
             .map_err(|error| Error::InvalidData(error.to_string()))?;
         Ok(Self {
             locale,
+            aliases,
             cardinal,
             ordinal,
             ranges: pack.ranges,

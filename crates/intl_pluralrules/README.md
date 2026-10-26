@@ -4,7 +4,7 @@ ICU4X category selection from caller-loaded CLDR rule packs. Each pack carries
 one locale's cardinal/ordinal rules and range matrices. Loading compiles rules
 once and owns the result; no baked plural data or global registration is needed.
 
-Work in progress: locale negotiation/registration, complete Intl API
+Work in progress: locale negotiation, complete Intl API
 orchestration, Hermes binding and SDK integration.
 `select_rounded` is the typed rule engine, not the complete Intl API.
 
@@ -35,3 +35,10 @@ public TS selection, range results and resolved options across 13 locales and
 It handles rounding, compact scale, selection, ranges and resolved metadata;
 the differential runner uses this same instance API. JS coercion and locale
 negotiation remain host adapter work.
+
+`registry::Registry` loads packs atomically, adds CLDR default-content aliases
+and parent/scriptless fallbacks, and preserves explicitly loaded data. Instances
+keep their payload when a later load replaces a registry entry. Available locales
+and the first-loaded default belong to each registry, not a process global.
+`tests:registry_conformance_test` compares availability, defaults, resolved
+locales and selection against TS across alias/explicit-data load orders.

@@ -25,3 +25,7 @@ serde_json = "1.0"
 [[example]]
 name = "conformance"
 path = "conformance.rs"
+
+[[example]]
+name = "registration"
+path = "registration.rs"

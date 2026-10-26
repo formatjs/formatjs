@@ -154,7 +154,7 @@ The rule engine owns loaded payloads and has no global locale registration or
 baked plural data. `tests:rule_conformance_test` compares all packs with the TS
 compiler over 100,000+ samples. `digits::Digits` now implements typed digit-option resolution and exact decimal
 rounding; `tests:digit_conformance_test` compares selection, ranges and metadata
-with the public TS API. Registration, full constructor behavior and Hermes/SDK
+with the public TS API. Locale negotiation, full constructor behavior and Hermes/SDK
 integration remain in progress.
 
 Conformance also covers canonical aliases during TS data registration (`sh`
@@ -167,3 +167,8 @@ modulo before converting digits to bounded integers.
 immutable rule payload. The conformance runner exercises this production API for
 selection, ranges and complete resolved metadata. Host adapters handle observable
 JS coercion and locale negotiation before constructing an instance.
+
+The Rust registry loads packs atomically, registers canonical default-content
+aliases and required fallbacks, and protects explicitly loaded payloads from
+alias replacement. Existing instances keep their selected data after late loads.
+Generated packs carry alias metadata; no other locale pack loads implicitly.

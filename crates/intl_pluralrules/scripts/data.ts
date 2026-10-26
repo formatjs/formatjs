@@ -5,6 +5,8 @@ import plurals from 'cldr-core/supplemental/plurals.json' with {type: 'json'}
 import ordinals from 'cldr-core/supplemental/ordinals.json' with {type: 'json'}
 import pluralRanges from 'cldr-core/supplemental/pluralRanges.json' with {type: 'json'}
 import {loadCompactExponents} from '#packages/intl-pluralrules/scripts/compact-exponents.ts'
+import {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
+import {defaultContent} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 
 interface Args extends minimist.ParsedArgs {
   outDir: string
@@ -57,6 +59,7 @@ async function main(args: Args) {
     const pack = {
       formatVersion: 1,
       locale,
+      aliases: defaultContent[getCanonicalLocales(locale)[0]] || [],
       cardinal: cardinalRules,
       ordinal: ordinalRules,
       ranges: {cardinal: cardinalRanges, ordinal: {}},

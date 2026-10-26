@@ -32,6 +32,7 @@ pub struct ResolvedOptions<'a> {
 
 pub struct PluralRules {
     rules: Arc<LocaleRules>,
+    locale: String,
     ordinal: bool,
     notation: &'static str,
     compact_display: &'static str,
@@ -55,6 +56,15 @@ fn option(
 
 impl PluralRules {
     pub fn new(rules: Arc<LocaleRules>, options: &Options) -> Result<Self, Error> {
+        let locale = rules.locale().to_owned();
+        Self::with_locale(rules, locale, options)
+    }
+
+    pub(crate) fn with_locale(
+        rules: Arc<LocaleRules>,
+        locale: String,
+        options: &Options,
+    ) -> Result<Self, Error> {
         // Constructor 7–14: validate type, notation, compactDisplay, then digits.
         // compactDisplay is validated even when notation is not compact.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
@@ -72,6 +82,7 @@ impl PluralRules {
         let digits = digits::Digits::new(&options.digits, notation == "compact")?;
         Ok(Self {
             rules,
+            locale,
             ordinal: kind == "ordinal",
             notation,
             compact_display,
@@ -84,7 +95,7 @@ impl PluralRules {
         // The host creates a fresh ordinary object in the spec table's order.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L114-L127
         ResolvedOptions {
-            locale: self.rules.locale(),
+            locale: &self.locale,
             kind: if self.ordinal { "ordinal" } else { "cardinal" },
             notation: self.notation,
             compact_display: (self.notation == "compact").then_some(self.compact_display),
