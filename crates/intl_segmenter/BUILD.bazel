@@ -1,0 +1,52 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "generate_src_file")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+generate_src_file(
+    name = "data",
+    src = "data_generated.rs",
+    data = ["//:node_modules/@formatjs_generated/cldr.supported-locales"],
+    tool = "//crates/intl_segmenter/scripts:data",
+)
+
+rust_library(
+    name = "intl_segmenter",
+    srcs = [
+        "data_generated.rs",
+        "lib.rs",
+    ],
+    crate_name = "formatjs_intl_segmenter",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "@crates//:icu_locale_core-2.3.0",
+        "@crates//:icu_segmenter-2.3.0",
+        "@crates//:serde",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_segmenter_test",
+    srcs = ["lib.test.rs"],
+    crate_name = "intl_segmenter_test",
+    edition = "2024",
+    deps = [":intl_segmenter"],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_segmenter/tests:__pkg__"],
+    deps = [
+        ":intl_segmenter",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)

@@ -798,6 +798,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_segmenter"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_locale_core",
+ "icu_segmenter",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_supportedvaluesof"
 version = "0.1.0"
 dependencies = [

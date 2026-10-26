@@ -83,3 +83,17 @@ coerce to BigInt. Errors thrown during coercion propagate unchanged.
 Available locales come from pinned CLDR locale metadata, including default-content
 variants and required fallback tags. Locales without tailoring use root UAX rules;
 regional locales retain their language's tailoring and sentence suppressions.
+
+## Rust port (in progress)
+
+`crates/intl_segmenter` uses ICU4X grapheme/word/sentence models with content-locale
+tailorings and complex-script dictionary/LSTM support. UTF-16 input remains exact,
+including lone surrogates. Segments share an immutable boundary index; cursors
+advance independently and `containing` finds enclosing code-unit boundaries.
+Locale metadata mirrors the TS available-locale set through Bazel generation.
+
+Core conformance ports the Unicode 17 grapheme corpus and audits TS records and
+`containing` results across granularities/locales. Word/sentence boundaries and
+word-like classification are implementation-dependent; ICU/TS profiles need
+explicit review before finalizing coverage. Native ABI and Hermes SDK integration
+remain in progress. Segmentation data stays static, matching the existing package.
