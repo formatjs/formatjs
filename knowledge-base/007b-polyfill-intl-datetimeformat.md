@@ -323,7 +323,7 @@ to cross the exact Date bounds after the input instant has passed TimeClip.
 
 Rust units and differential tests cover 8,193 instants against TS DateOperations,
 including year zero, leap centuries, full Date bounds and negative nanoseconds.
-Optional calendar conversion, public formatter/ranges, C ABI,
+Optional calendar conversion, public formatter, C ABI,
 Hermes integration and SDK packaging remain unfinished.
 
 The Rust timezone registry consumes the same base-36 packs as JS. `:timezone_data`
@@ -364,8 +364,8 @@ Rust `data::LocaleData` owns typed CLDR metadata and calendar names. Gregorian
 styles prepare at load; format lists and optional calendar styles prepare lazily.
 ISO shares Gregorian formats while names/styles honor explicit calendar overrides. Calendar names inherit omitted optional fields
 from the base locale, matching TS record composition. Availability keeps CLDR
-preference order and requires both formats and registered arithmetic. Ranges,
-optional arithmetic, owned ABI and Hermes/SDK remain unfinished.
+preference order and requires both formats and registered arithmetic.
+Optional arithmetic, owned ABI and Hermes/SDK remain unfinished.
 
 `registry::Registry` now owns raw/processed locale records and optional calendar
 patches. Patches may precede base data/providers; reloads retain them and keep
@@ -413,3 +413,13 @@ the extractor selects the cycle from their first symbol. Timezone name widths
 without a standard name are omitted, allowing GMT fallback instead of emitting
 null array entries. Pack/rendering regressions include `aa`, `ms`, `zh-Hant` and
 `pt-CV`.
+
+Range partitioning uses `render::RangeSnapshot` captured before endpoint calendar
+callbacks. Each endpoint converts through its current provider; rendering data
+is captured after both conversions. `LocalTime` preserves the civil/calendar
+fields and offsets for reuse without extra callbacks. Comparison stops at the
+last displayed field, handles day-period/fractional precision, and chooses CLDR
+intervals or an unchanged shared fallback. All subpatterns receive the complete
+range context for grammatical names. Differential tests compare 76,800 numeric
+ranges and 288 exact Temporal ranges across locale, digit, hour-cycle and timezone
+families, including collapsed, reversed and full-Date-bound endpoints.

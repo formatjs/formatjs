@@ -8,7 +8,10 @@ use formatjs_intl_datetimeformat::{
     pattern::{self, Format, RawPatterns},
 };
 use formatjs_intl_datetimeformat::{calendar::CalendarRegistry, locale_patterns::CalendarPatterns};
-use formatjs_intl_datetimeformat::{render::RenderData, timezone::TimeZoneRegistry};
+use formatjs_intl_datetimeformat::{
+    render::{RangeSnapshot, RenderData},
+    timezone::TimeZoneRegistry,
+};
 use serde::Deserialize;
 use serde_json::Value;
 use std::io::{self, BufRead};
@@ -263,8 +266,18 @@ struct RenderCase {
 #[derive(Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 enum RenderValue {
-    Date { value: String },
-    Epoch { value: String, kind: Kind },
+    Date {
+        value: String,
+    },
+    Epoch {
+        value: String,
+        kind: Kind,
+    },
+    Range {
+        first: String,
+        second: String,
+        kind: Option<Kind>,
+    },
 }
 fn render_case(
     registry: &mut Registry,
@@ -294,6 +307,44 @@ fn render_case(
     let mut output = Vec::new();
     for value in &case.values {
         let result = (|| {
+            if let RenderValue::Range {
+                first,
+                second,
+                kind,
+            } = value
+            {
+                let temporal = kind.map(|kind| config.temporal(kind)).transpose()?;
+                let profile = temporal.as_deref().unwrap_or_else(|| config.profile());
+                let snapshot = RangeSnapshot::capture(registry, &config)?;
+                let convert = |value: &str| -> Result<i128, Error> {
+                    if kind.is_some() {
+                        value.parse().map_err(|_| Error::InvalidDate)
+                    } else {
+                        Ok(i128::from(formatjs_intl_datetimeformat::civil::time_clip(
+                            value.parse().map_err(|_| Error::InvalidDate)?,
+                        )?) * 1_000_000)
+                    }
+                };
+                let first = RenderData::capture(registry, &config, profile)?.local_time(
+                    zones,
+                    &zone,
+                    convert(first)?,
+                    kind.is_some_and(|kind| kind != Kind::Instant),
+                )?;
+                let second = RenderData::capture(registry, &config, profile)?.local_time(
+                    zones,
+                    &zone,
+                    convert(second)?,
+                    kind.is_some_and(|kind| kind != Kind::Instant),
+                )?;
+                let render = RenderData::capture(registry, &config, profile)?;
+                let parts = snapshot.format(&render, &config, profile, &zone, &first, &second)?;
+                let text = parts
+                    .iter()
+                    .map(|part| part.value.as_str())
+                    .collect::<String>();
+                return Ok(serde_json::json!({"parts":parts,"text":text}));
+            }
             let (epoch, kind) = match value {
                 RenderValue::Date { value } => (
                     i128::from(formatjs_intl_datetimeformat::civil::time_clip(
@@ -301,6 +352,7 @@ fn render_case(
                     )?) * 1_000_000,
                     None,
                 ),
+                RenderValue::Range { .. } => unreachable!(),
                 RenderValue::Epoch { value, kind } => (
                     value.parse::<i128>().map_err(|_| Error::InvalidDate)?,
                     Some(*kind),

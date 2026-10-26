@@ -12,7 +12,7 @@ uses Euclidean division for negative instants. Months are 1–12; weekdays are
 Local arithmetic allows one extra day around TimeClip for offset conversion;
 callers must validate the input instant before applying its timezone offset.
 
-The public formatter, optional calendar implementations, ranges, C ABI,
+The public formatter, optional calendar implementations, C ABI,
 Hermes facade and SDK installation remain unfinished.
 
 ```sh
@@ -131,3 +131,12 @@ Differential tests cover 4,368 construction configurations and their Temporal
 profiles, 53,760 numeric rendering cases, exact Temporal instants, reloads and
 every generated base pack. Generator regressions cover CLDR `hB`/`hb` hour-cycle
 tokens and timezone widths missing standard names, which use GMT fallback.
+
+`render::RangeSnapshot` retains comparison metadata before endpoint callbacks.
+Convert each endpoint with a freshly captured provider, then capture rendering
+data after both conversions. `LocalTime` retains exact civil/calendar fields and
+offsets, avoiding repeated callbacks during partitioning. Ranges collapse at
+displayed precision, preserve shared grammatical context, and assign endpoint
+sources without changing cached fallback patterns. Differential tests compare
+76,800 numeric ranges and 288 exact Temporal ranges, including Date bounds,
+historical offsets, DST, supplementary digits and reversed endpoints.

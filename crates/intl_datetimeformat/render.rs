@@ -2,13 +2,13 @@ use crate::{
     Error,
     calendar::{CalendarFields, CalendarProvider},
     civil::CivilDateTime,
-    data::{CalendarLocale, LocaleData},
+    data::{CalendarLocale, LocaleData, Metadata},
     fields::{Field, TextWidth, Value, Width, ZoneWidth},
     numbers::NumberFormatters,
-    pattern::Source,
+    pattern::{self, Source},
     registry::Registry,
     selection::{Configuration, Profile},
-    timezone::{TimeZone, TimeZoneRegistry},
+    timezone::{TimeZone, TimeZoneOffset, TimeZoneRegistry},
 };
 use serde::Serialize;
 use std::sync::Arc;
@@ -101,6 +101,24 @@ impl RenderData {
         epoch_nanoseconds: i128,
         plain: bool,
     ) -> Result<Vec<Part>, Error> {
+        let local = self.local_time(zones, zone, epoch_nanoseconds, plain)?;
+        self.pattern(
+            config,
+            profile,
+            &profile.pattern,
+            &profile.pattern,
+            &local,
+            zone.identifier(),
+        )
+    }
+
+    pub fn local_time(
+        &self,
+        zones: &TimeZoneRegistry,
+        zone: &TimeZone,
+        epoch_nanoseconds: i128,
+        plain: bool,
+    ) -> Result<LocalTime, Error> {
         let plain_zone = if plain {
             Some(zones.resolve("+00:00")?)
         } else {
@@ -115,17 +133,11 @@ impl RenderData {
         let fields = self
             .provider
             .date_from_time(i64::try_from(milliseconds).map_err(|_| Error::InvalidDate)?)?;
-        self.pattern(
-            config,
-            profile,
-            &profile.pattern,
-            &profile.pattern,
+        Ok(LocalTime {
             civil,
-            &fields,
-            zone.identifier(),
-            offset.seconds,
-            offset.in_dst,
-        )
+            fields,
+            offset,
+        })
     }
 
     pub fn pattern(
@@ -134,12 +146,15 @@ impl RenderData {
         profile: &Profile,
         pattern: &str,
         context: &str,
-        civil: CivilDateTime,
-        fields: &CalendarFields,
+        local: &LocalTime,
         zone: &str,
-        offset_seconds: i32,
-        in_dst: bool,
     ) -> Result<Vec<Part>, Error> {
+        let civil = local.civil;
+        let fields = &local.fields;
+        let TimeZoneOffset {
+            seconds: offset_seconds,
+            in_dst,
+        } = local.offset;
         let parts = partition(pattern)?;
         let context = partition(context)?;
         let has = |name: &str| {
@@ -170,7 +185,8 @@ impl RenderData {
                 }
                 Token::Field("dayPeriod") => (
                     PartKind::DayPeriod,
-                    self.day_period(
+                    day_period(
+                        &self.locale.metadata,
                         civil,
                         profile.components.day_period.unwrap_or(TextWidth::Short),
                     ),
@@ -348,50 +364,6 @@ impl RenderData {
         Ok(result)
     }
 
-    fn day_period(&self, civil: CivilDateTime, width: TextWidth) -> String {
-        let value = ((u32::from(civil.hour) * 60 + u32::from(civil.minute)) * 60
-            + u32::from(civil.second))
-            * 1000
-            + civil.nanosecond / 1_000_000;
-        let rules = self
-            .locale
-            .metadata
-            .day_period_rules
-            .as_deref()
-            .unwrap_or(&[]);
-        let rule = rules
-            .iter()
-            .find(|rule| rule.at == Some(value))
-            .or_else(|| {
-                rules.iter().find(|rule| match (rule.from, rule.before) {
-                    (Some(from), Some(before)) => {
-                        if from < before {
-                            value >= from && value < before
-                        } else {
-                            value >= from || value < before
-                        }
-                    }
-                    _ => false,
-                })
-            });
-        rule.and_then(|rule| {
-            self.locale
-                .metadata
-                .day_periods
-                .as_ref()
-                .and_then(|names| names.get(width).get(&rule.name))
-        })
-        .filter(|name| !name.is_empty())
-        .cloned()
-        .unwrap_or_else(|| {
-            if civil.hour < 12 {
-                self.locale.metadata.am.clone()
-            } else {
-                self.locale.metadata.pm.clone()
-            }
-        })
-    }
-
     fn offset_name(&self, seconds: i32, long: bool) -> Result<String, Error> {
         let minutes = seconds.div_euclid(60);
         let absolute = minutes.unsigned_abs();
@@ -451,4 +423,204 @@ fn replace_run(pattern: &str, character: char, value: &str) -> String {
         result.replace_range(start..start + length, value);
     }
     result
+}
+
+fn day_period(metadata: &Metadata, civil: CivilDateTime, width: TextWidth) -> String {
+    let value = ((u32::from(civil.hour) * 60 + u32::from(civil.minute)) * 60
+        + u32::from(civil.second))
+        * 1000
+        + civil.nanosecond / 1_000_000;
+    let rules = metadata.day_period_rules.as_deref().unwrap_or(&[]);
+    let rule = rules
+        .iter()
+        .find(|rule| rule.at == Some(value))
+        .or_else(|| {
+            rules.iter().find(|rule| match (rule.from, rule.before) {
+                (Some(from), Some(before)) => {
+                    if from < before {
+                        value >= from && value < before
+                    } else {
+                        value >= from || value < before
+                    }
+                }
+                _ => false,
+            })
+        });
+    rule.and_then(|rule| {
+        metadata
+            .day_periods
+            .as_ref()
+            .and_then(|names| names.get(width).get(&rule.name))
+    })
+    .filter(|name| !name.is_empty())
+    .cloned()
+    .unwrap_or_else(|| {
+        if civil.hour < 12 {
+            metadata.am.clone()
+        } else {
+            metadata.pm.clone()
+        }
+    })
+}
+
+pub struct LocalTime {
+    pub civil: CivilDateTime,
+    pub fields: CalendarFields,
+    pub offset: TimeZoneOffset,
+}
+
+pub struct RangeSnapshot {
+    locale: Arc<LocaleData>,
+    calendar: Arc<CalendarLocale>,
+}
+impl RangeSnapshot {
+    pub fn capture(registry: &Registry, config: &Configuration) -> Result<Self, Error> {
+        let locale = registry.get(&config.snapshot.resolution.data_locale)?;
+        let calendar = locale.calendar(&config.snapshot.resolution.calendar)?;
+        Ok(Self { locale, calendar })
+    }
+
+    // Capture before endpoint callbacks; acquire rendering data after both conversions.
+    pub fn format(
+        &self,
+        render: &RenderData,
+        config: &Configuration,
+        profile: &Profile,
+        zone: &TimeZone,
+        first: &LocalTime,
+        second: &LocalTime,
+    ) -> Result<Vec<Part>, Error> {
+        const FIELDS: [&str; 10] = [
+            "era",
+            "year",
+            "month",
+            "day",
+            "ampm",
+            "dayPeriod",
+            "hour",
+            "minute",
+            "second",
+            "fractionalSecondDigits",
+        ];
+        let last = partition(&profile.pattern)?
+            .iter()
+            .filter_map(|part| {
+                let Token::Field(name) = part else {
+                    return None;
+                };
+                let name = match *name {
+                    "weekday" => "day",
+                    "relatedYear" | "yearName" => "year",
+                    name => name,
+                };
+                FIELDS.iter().position(|field| *field == name)
+            })
+            .max();
+        let different = last.and_then(|last| {
+            (0..=last).find(|index| {
+                let equal = match FIELDS[*index] {
+                    "era" => first.fields.era == second.fields.era,
+                    "year" => first.fields.year == second.fields.year,
+                    "month" => first.fields.month == second.fields.month,
+                    "day" => first.fields.day == second.fields.day,
+                    "ampm" => (first.civil.hour < 12) == (second.civil.hour < 12),
+                    "dayPeriod" => {
+                        let width = profile.components.day_period.unwrap_or(TextWidth::Short);
+                        day_period(&self.locale.metadata, first.civil, width)
+                            == day_period(&self.locale.metadata, second.civil, width)
+                    }
+                    "hour" => first.civil.hour == second.civil.hour,
+                    "minute" => first.civil.minute == second.civil.minute,
+                    "second" => first.civil.second == second.civil.second,
+                    _ => {
+                        let divisor = 10u32.pow(
+                            9 - u32::from(
+                                profile
+                                    .components
+                                    .fractional_second_digits
+                                    .map(u8::from)
+                                    .unwrap_or(3),
+                            ),
+                        );
+                        first.civil.nanosecond / divisor == second.civil.nanosecond / divisor
+                    }
+                };
+                !equal
+            })
+        });
+        let Some(index) = different else {
+            let mut parts = render.pattern(
+                config,
+                profile,
+                &profile.pattern,
+                &profile.pattern,
+                first,
+                zone.identifier(),
+            )?;
+            for part in &mut parts {
+                part.source = Some(Source::Shared);
+            }
+            return Ok(parts);
+        };
+        let field = FIELDS[index];
+        let selected = profile
+            .range_patterns
+            .get(field)
+            .or_else(|| {
+                if field == "ampm" {
+                    profile.range_patterns.get("hour")
+                } else {
+                    None
+                }
+            })
+            .or_else(|| profile.range_patterns.get("default"));
+        let fallback;
+        let patterns = if let Some(selected) = selected {
+            &selected.pattern_parts
+        } else {
+            fallback = pattern::split_fallback(self.calendar.interval_fallback());
+            &fallback
+        };
+        let expand = |pattern: &str| {
+            if matches!(pattern, "{0}" | "{1}") {
+                profile.pattern.clone()
+            } else {
+                pattern.to_owned()
+            }
+        };
+        let context = patterns
+            .iter()
+            .map(|part| expand(&part.pattern))
+            .collect::<String>();
+        let mut result = Vec::new();
+        for part in patterns {
+            let pattern = expand(&part.pattern);
+            if !pattern.contains('{') {
+                result.push(Part {
+                    kind: PartKind::Literal,
+                    value: pattern,
+                    source: Some(part.source),
+                });
+                continue;
+            }
+            let local = if part.source == Source::EndRange {
+                second
+            } else {
+                first
+            };
+            let mut parts = render.pattern(
+                config,
+                profile,
+                &pattern,
+                &context,
+                local,
+                zone.identifier(),
+            )?;
+            for item in &mut parts {
+                item.source = Some(part.source);
+            }
+            result.extend(parts);
+        }
+        Ok(result)
+    }
 }

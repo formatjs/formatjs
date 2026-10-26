@@ -232,6 +232,10 @@ pub struct CalendarLocale {
 }
 
 impl CalendarLocale {
+    pub fn interval_fallback(&self) -> &str {
+        &self.raw.interval_formats.interval_format_fallback
+    }
+
     pub fn formats(&self) -> Result<&[Format], Error> {
         if let Some(source) = &self.formats_from {
             return source.formats();
