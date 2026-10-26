@@ -3,6 +3,7 @@
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
+#include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -71,6 +72,11 @@ int main(int argc, char **argv) {
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
+      if (flag == "--native-segmenter") {
+        formatjs::installSegmenter(rt);
+        ++firstScript;
+        continue;
+      }
       if (flag == "--native-displaynames") {
         formatjs::installDisplayNames(rt);
         ++firstScript;
@@ -94,6 +100,7 @@ int main(int argc, char **argv) {
       if (extensions.hasProperty(rt, "IntlPluralRules")) formatjs::installPluralRules(rt, extensions);
       if (extensions.hasProperty(rt, "IntlListFormat")) formatjs::installListFormat(rt, extensions);
       if (extensions.hasProperty(rt, "IntlDisplayNames")) formatjs::installDisplayNames(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlSegmenter")) formatjs::installSegmenter(rt, extensions);
       ++firstScript;
     }
     for (int i = firstScript; i < argc; ++i) {

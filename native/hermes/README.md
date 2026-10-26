@@ -188,16 +188,18 @@ conformance compares source/optimized-bytecode installation with TS across all
 six name types, styles and fallbacks. `--native-displaynames` enables the source
 installer in the development runner.
 
-## Native bridge
+## Segmenter
 
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
+Link `//native/hermes:segmenter`; call `formatjs::installSegmenter(runtime)` after
+canonical locales. The overload taking the extension object invokes the compiled
+`IntlSegmenter` factory. `--native-segmenter` enables the source factory in the
+runner; its conformance test also runs the optimized bytecode factory.
 
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
+Rust owns UTF-16 boundary tables and independent cursors. JS handles observable
+coercions, private brands, ordinary records and iterator prototypes. Grapheme data
+and dictionary/LSTM models are static, matching the existing package's loading
+model. Word/sentence boundaries can differ from TS; the crate conformance test
+asserts both profiles explicitly. SDK packaging is in progress.
 
 ## Existing package conformance
 
@@ -206,7 +208,9 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `getcanonicallocales`.
+
+Segmenter uses the original Unicode files, parser, and package case filters.
 
 Canonicalization uses real native Locale objects, including internal-slot checks.
 Locale ICU-specific collation expectations have separate cases, retaining the

@@ -234,6 +234,44 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "segmenter_typecheck",
+    srcs = [
+        "run-segmenter.ts",
+        "segmenter.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "segmenter_suite",
+    srcs = ["segmenter.ts"],
+    entry_point = "segmenter.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-segmenter"],
+)
+
+js_test(
+    name = "segmenter_conformance_test",
+    size = "medium",
+    data = [
+        ":segmenter_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run-segmenter.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -284,6 +322,8 @@ package_formatter_conformance("pluralrules")
 package_formatter_conformance("listformat")
 
 package_formatter_conformance("displaynames")
+
+package_formatter_conformance("segmenter")
 
 package_formatter_conformance("getcanonicallocales")
 

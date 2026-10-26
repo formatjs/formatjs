@@ -7,7 +7,8 @@ fn empty() -> SegmenterBytes {
         len: 0,
     }
 }
-unsafe fn decoded(bytes: SegmenterBytes) -> Value {
+unsafe fn decoded(out: &mut SegmenterBytes) -> Value {
+    let bytes = std::mem::replace(out, empty());
     let value =
         serde_json::from_slice(unsafe { slice::from_raw_parts(bytes.data, bytes.len) }).unwrap();
     unsafe {
@@ -33,9 +34,12 @@ fn cursors_own_input_survive_parents_and_exhaust_independently() {
         formatjs_segmenter_destroy(model);
         let mut out = empty();
         assert_eq!(formatjs_segments_containing(segments, 3, &mut out), 0);
-        assert_eq!(decoded(out), json!({"index":2,"segment":[0xd83d,0xde00]}));
+        assert_eq!(
+            decoded(&mut out),
+            json!({"index":2,"segment":[0xd83d,0xde00]})
+        );
         assert_eq!(formatjs_segments_containing(segments, 5, &mut out), 0);
-        assert_eq!(decoded(out), Value::Null);
+        assert_eq!(decoded(&mut out), Value::Null);
         let mut first = ptr::null_mut();
         let mut second = ptr::null_mut();
         assert_eq!(formatjs_segments_cursor(segments, &mut first), 0);
@@ -49,11 +53,11 @@ fn cursors_own_input_survive_parents_and_exhaust_independently() {
                 (4, vec![0xdc00]),
             ] {
                 assert_eq!(formatjs_segment_cursor_next(cursor, &mut out), 0);
-                assert_eq!(decoded(out), json!({"index":index,"segment":units}));
+                assert_eq!(decoded(&mut out), json!({"index":index,"segment":units}));
             }
             for _ in 0..2 {
                 assert_eq!(formatjs_segment_cursor_next(cursor, &mut out), 0);
-                assert_eq!(decoded(out), Value::Null);
+                assert_eq!(decoded(&mut out), Value::Null);
             }
             formatjs_segment_cursor_destroy(cursor);
         }
@@ -76,7 +80,10 @@ fn word_flags_and_malformed_abi_are_distinct_from_empty_results() {
         );
         let mut out = empty();
         assert_eq!(formatjs_segmenter_resolved(model, &mut out), 0);
-        assert_eq!(decoded(out), json!({"locale":"en","granularity":"word"}));
+        assert_eq!(
+            decoded(&mut out),
+            json!({"locale":"en","granularity":"word"})
+        );
         let mut segments = ptr::null_mut();
         let units = b"[97,32]";
         assert_eq!(
@@ -85,7 +92,7 @@ fn word_flags_and_malformed_abi_are_distinct_from_empty_results() {
         );
         for (index, expected) in [(0, true), (1, false)] {
             assert_eq!(formatjs_segments_containing(segments, index, &mut out), 0);
-            assert_eq!(decoded(out)["isWordLike"], json!(expected));
+            assert_eq!(decoded(&mut out)["isWordLike"], json!(expected));
         }
         formatjs_segments_destroy(segments);
         for units in ["[65536]", "[-1]", "[1.5]", "null", "\"abc\""] {
@@ -138,7 +145,7 @@ fn matching_preserves_supported_extensions_and_default_fallback() {
                 formatjs_segmenter_match(source.as_ptr(), source.len(), &mut out),
                 0
             );
-            assert_eq!(decoded(out), expected);
+            assert_eq!(decoded(&mut out), expected);
         }
     }
 }

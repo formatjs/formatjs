@@ -435,6 +435,10 @@ fallback through the same provider. Both suites also format from checked-in
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.
 
+`intl_segmenter` uses ICU4X segmenter/properties, canonical locale matching, and
+an owned UTF-16 ABI. `intl_hermes` assembles its symbols into the shared SDK archive.
+Word/sentence profile differences from TS have explicit conformance expectations.
+
 ### Hermes bridge and C ABI
 
 `native/hermes/bridge.h` owns common JSI transport and buffer/handle cleanup.

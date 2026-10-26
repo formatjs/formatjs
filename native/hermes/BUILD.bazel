@@ -34,6 +34,7 @@ ts_project(
         "locale.ts",
         "pluralrules.ts",
         "pluralrules_bridge.test.ts",
+        "segmenter.ts",
         "supported_values_of.ts",
     ],
     declaration = True,
@@ -52,6 +53,8 @@ exports_files(
         "intl_listformat.h",
         "intl_displaynames.h",
         "displaynames.cpp",
+        "segmenter.cpp",
+        "intl_segmenter.h",
         "listformat.cpp",
         "intl_pluralrules.h",
         "pluralrules.cpp",
@@ -101,6 +104,7 @@ ts_run_binary(
         "listformat.ts",
         "locale.ts",
         "pluralrules.ts",
+        "segmenter.ts",
         "supported_values_of.ts",
     ],
     outs = ["extensions.js"],
@@ -117,6 +121,8 @@ ts_run_binary(
         "--name=IntlListFormat",
         "--input=$(rootpath :displaynames.ts)",
         "--name=IntlDisplayNames",
+        "--input=$(rootpath :segmenter.ts)",
+        "--name=IntlSegmenter",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -227,6 +233,7 @@ cc_binary(
         ":listformat",
         ":locale",
         ":pluralrules",
+        ":segmenter",
         ":supported_values",
     ],
 )
@@ -501,6 +508,62 @@ ts_run_binary(
         "--input=$(rootpath :displaynames.ts)",
         "--name=IntlDisplayNames",
         "--out=$(rootpath :35-IntlDisplayNames.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "segmenter",
+    srcs = [
+        "segmenter.cpp",
+        ":segmenter_wrapper_source",
+    ],
+    hdrs = ["intl_segmenter.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_hermes",
+        "//crates/intl_segmenter:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "segmenter_factory",
+    srcs = ["segmenter.ts"],
+    outs = ["segmenter_factory.js"],
+    args = [
+        "--input=$(rootpath :segmenter.ts)",
+        "--name=IntlSegmenter",
+        "--out=$(rootpath :segmenter_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "segmenter_wrapper_source",
+    srcs = [":segmenter_factory"],
+    outs = ["segmenter.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "segmenter_extension_js",
+    srcs = ["segmenter.ts"],
+    outs = ["36-IntlSegmenter.js"],
+    args = [
+        "--input=$(rootpath :segmenter.ts)",
+        "--name=IntlSegmenter",
+        "--out=$(rootpath :36-IntlSegmenter.js)",
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//native/hermes/package:__pkg__"],

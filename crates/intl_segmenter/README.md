@@ -22,5 +22,5 @@ and mark-only word flags. No cases are skipped. Unicode letters/numbers suppleme
 ICU word status for Indic text; isolated marks remain non-word-like.
 
 The owned C ABI exposes immutable segment handles and independent cursors. Handles
-retain original UTF-16 units after parents are destroyed. Hermes iteration/coercion
-and SDK packaging are in progress.
+retain original UTF-16 units after parents are destroyed. Hermes source/bytecode tests cover iteration, coercion, brands and complex-script
+models. SDK packaging is in progress.
