@@ -197,4 +197,5 @@ exports_files([
     "js/32-IntlLocale.js",
     "js/33-IntlPluralRules.js",
     "js/pluralrules-smoke.js",
+    "examples/pluralrules-smoke.ts",
 ])

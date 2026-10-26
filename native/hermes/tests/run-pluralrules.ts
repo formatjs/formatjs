@@ -38,13 +38,13 @@ function main() {
     fixture,
     `globalThis.__PLURAL_FIXTURES = {packs:${JSON.stringify(packs)},tsData:[${tsData.join(',')}]};\n`
   )
-  for (const mode of ['source', 'factories']) {
+  for (const mode of ['source', 'bytecode']) {
     const result = spawnSync(
       resolve('native/hermes/hermes_runner'),
       [
         mode === 'source'
           ? '--native-pluralrules'
-          : `--extensions=${resolve('native/hermes/extensions.js')}`,
+          : `--extensions=${resolve('native/hermes/extensions.hbc')}`,
         fixture,
         resolve('native/hermes/tests/pluralrules_suite.js'),
       ],

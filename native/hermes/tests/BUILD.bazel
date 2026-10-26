@@ -46,7 +46,7 @@ js_test(
         ":pluralrules_suite.js",
         "//:node_modules/@bazel/runfiles",
         "//crates/intl_pluralrules:locale_data",
-        "//native/hermes:extension_bundle_js",
+        "//native/hermes:extension_bundle_bytecode",
         "//native/hermes:hermes_runner",
         "//packages/intl-pluralrules:cldr-raw",
     ],

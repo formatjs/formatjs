@@ -201,7 +201,7 @@ values before the shared TS/Rust mathematical conformance comparisons.
 The Hermes facade owns only observable JS behavior: receiver allocation, option
 getter/coercion order, ToPrimitive, brands, descriptors and fresh result objects.
 Rust owns matching, validated options, numeric parsing/rounding and selection.
-Public native conformance runs source/factory installers against TS over 10,000+
+Public native conformance runs source/optimized-bytecode installers against TS over 10,000+
 selections/ranges, with separate checks for tampered intrinsics and edge ordering.
 
 The SDK ships the PluralRules C++ adapter, source/precompiled factories and

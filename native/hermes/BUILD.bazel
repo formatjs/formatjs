@@ -125,6 +125,15 @@ ts_run_binary(
     visibility = ["//visibility:public"],
 )
 
+genrule(
+    name = "extension_bundle_bytecode",
+    srcs = [":extension_bundle_js"],
+    outs = ["extensions.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :extension_bundle_js)",
+    tools = ["@hermes//:hermesc"],
+    visibility = ["//native/hermes/tests:__pkg__"],
+)
+
 ts_run_binary(
     name = "supported_values_factory",
     srcs = ["supported_values_of.ts"],

@@ -30,8 +30,26 @@ check(
 )
 equal(Native.supportedLocalesOf(['en', 'fr']), [], 'no implicit data')
 Native.__addLocaleData(fixtures.packs[0])
+
+const largeText = '1' + '0'.repeat(9_998) + '3'
+const large = BigInt(largeText)
+equal(
+  new Native('en', {type: 'ordinal'}).select(large),
+  'few',
+  'large BigInt bypasses Number overflow'
+)
 TypeScriptPluralRules.__addLocaleData(fixtures.tsData[0])
 const existing = new Native('en')
+equal(
+  existing.select(largeText),
+  'other',
+  'large numeric string clamps to infinity'
+)
+equal(
+  existing.select('\uD800'),
+  'other',
+  'malformed UTF-16 numeric string is NaN'
+)
 equal(existing.select(1), 'one', 'initial English instance')
 equal(Native.supportedLocalesOf('fr'), [], 'French not loaded yet')
 for (let index = 1; index < fixtures.packs.length; index++) {
@@ -40,6 +58,15 @@ for (let index = 1; index < fixtures.packs.length; index++) {
 }
 equal(Native.supportedLocalesOf('fr-FR'), ['fr-FR'], 'late French support')
 equal(new Native('fr').select(0), 'one', 'late French selection')
+const localeObject = new Intl.Locale('fr-u-nu-arab')
+localeObject.toString = () => {
+  throw new Error('Locale brand must bypass overridden toString')
+}
+equal(
+  new Native(localeObject).resolvedOptions().locale,
+  'fr',
+  'Locale intrinsic brand'
+)
 equal(existing.select(1), 'one', 'existing instance survives late load')
 const replacement = JSON.parse(fixtures.packs[0])
 replacement.cardinal = {}
@@ -335,6 +362,31 @@ const numeric = {
 }
 equal(existing.select(numeric), 'one', 'BigInt primitive hook')
 equal(log, ['number'], 'numeric primitive hint')
+log = []
+const observed = new Proxy(
+  {
+    valueOf() {
+      log.push('call')
+      return 1
+    },
+  },
+  {
+    has() {
+      log.push('has')
+      return false
+    },
+    get(target, key, receiver) {
+      log.push(key === Symbol.toPrimitive ? 'primitive' : String(key))
+      return Reflect.get(target, key, receiver)
+    },
+  }
+)
+equal(existing.select(observed), 'one', 'proxy numeric primitive')
+equal(
+  log,
+  ['primitive', 'valueOf', 'call'],
+  'ToPrimitive uses Get without HasProperty'
+)
 equal(
   existing.select({
     [Symbol.toPrimitive]: null,
@@ -349,12 +401,12 @@ const callable: any = function () {}
 callable.valueOf = () => 1
 equal(existing.select(callable), 'one', 'callable objects undergo ToPrimitive')
 equal(
-  existing.select({
+  new Native('fr').select({
     valueOf() {
       return null
     },
   }),
-  'other',
+  'one',
   'null is primitive zero'
 )
 throws(() => existing.select(Symbol()), TypeError, 'Symbol mathematical value')
