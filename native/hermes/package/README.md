@@ -23,6 +23,8 @@ include/formatjs/hermes/intl_segmenter.h
 include/formatjs/intl/segmenter.h
 include/formatjs/hermes/intl_collator.h
 include/formatjs/hermes/intl_datetimeformat.h
+include/formatjs/hermes/intl_durationformat.h
+include/formatjs/intl/durationformat.h
 include/formatjs/intl/datetimeformat.h
 include/formatjs/intl/datetimeformat_calendars.h
 include/formatjs/hermes/intl_numberformat.h
@@ -48,6 +50,11 @@ src/collator.cpp
 src/collator.inc
 src/datetimeformat.cpp
 src/datetimeformat.inc
+src/durationformat.cpp
+src/durationformat.inc
+js/41-IntlDurationFormat.js
+js/durationformat-smoke.js
+examples/durationformat-smoke.ts
 js/40-IntlDateTimeFormat.js
 js/datetimeformat-smoke.js
 examples/datetimeformat-smoke.ts
@@ -363,3 +370,47 @@ original identity preserved.
 independent consumer runs source and precompiled installers with compiled locales,
 parts/ranges, DST transition loading, Hebrew Adar II names and formatting after
 removing JS NumberFormat/PluralRules.
+
+## DurationFormat
+
+Link `@formatjs_intl_getcanonicallocales_hermes//:durationformat`, include
+`<formatjs/hermes/intl_durationformat.h>`, then install after canonicalization:
+
+```cpp
+formatjs::installCanonicalLocales(*runtime);
+formatjs::installDurationFormat(*runtime);
+```
+
+For precompiled startup, evaluate the SDK extension bytecode and call
+`formatjs::installDurationFormat(*runtime, extensions)`. The standalone factory is
+`js/41-IntlDurationFormat.js`. DurationFormat needs no installation guard.
+
+Duration locale/time-separator metadata is static. Register selected existing
+number/list JSON texts as independent native dependencies:
+
+| SDK path                                 | Registration                                      |
+| ---------------------------------------- | ------------------------------------------------- |
+| `locale-data/numberformat/<locale>.json` | `Intl.DurationFormat.__addNumberFormatData(text)` |
+| `locale-data/listformat/<locale>.json`   | `Intl.DurationFormat.__addListFormatData(text)`   |
+
+Use individual exported file labels to ship selected packs. Existing
+`:numberformat_data` and `:listformat_data` filegroups expose all packs; Duration
+adds no locale files. Its available locales stay static before dependency data
+arrives. Number/list registries negotiate independently and may fall back to
+loaded locales. Constructing before registration is supported; rendering needs
+both dependencies. Cached option profiles retain their data after pack replacement.
+Custom number unit sidecars use `__addNumberFormatUnitData` with `{locale,data}` JSON.
+
+Rust owns exact subsecond folding, sign/padding, unit parts and list composition.
+No public JS NumberFormat, ListFormat or PluralRules installation is needed. Install
+Temporal before DurationFormat to accept ISO strings and intrinsic duration brands;
+without Temporal, records work and strings throw RangeError. `format` and
+`formatToParts` are receiver-bound methods, not cached bound-function getters.
+
+`examples/durationformat-smoke.ts` ships as `js/durationformat-smoke.js`. The
+independent consumer runs source and bytecode installers with selected English/French
+number/list packs. It checks late registration, negative leading zero, exact Number
+integers, fractional truncation, parts, Arabic digits, Finnish separators with
+fallback dependency data, brands/coercion and formatting without public JS formatters.
+C ABI callers use `include/formatjs/intl/durationformat.h`; adapter sources are
+`src/durationformat.cpp` and `src/durationformat.inc`.

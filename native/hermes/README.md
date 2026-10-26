@@ -287,8 +287,8 @@ facade to accept duration strings and branded durations through captured intrins
 Without Temporal, duration-like records work and strings throw RangeError.
 Source/bytecode differential coverage includes ten locales, non-colon separators,
 Temporal brands, negative leading zero and IEEE integers beyond the safe range.
-Default-runtime smoke also runs both modes without Temporal. SDK consumer packaging
-and installation examples remain in progress.
+Default-runtime smoke also runs both modes without Temporal. The SDK packages both installers and typed smoke; see
+[SDK installation](package/README.md#durationformat) for dependency paths.
 
 ## Existing package conformance
 

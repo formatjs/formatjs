@@ -137,5 +137,8 @@ NumberFormat/ListFormat data hooks keep dependencies selected and independent of
 public JS formatter constructors. Ten-locale source/bytecode parity and shipping
 runtime smoke cover these paths, including non-colon separators.
 
-SDK consumer packaging and installation examples remain in progress. Number/list payloads stay
+The SDK packages headers, adapters, factory `41-IntlDurationFormat.js` and a typed
+consumer smoke. It reuses existing selected number/list SDK resources and runs
+both source and precompiled installers. Installation is documented in the native
+SDK README and React Native/Hermes guide. Number/list payloads stay
 separate and load on demand; rendering uses no JS formatter callbacks.

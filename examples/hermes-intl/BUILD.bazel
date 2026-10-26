@@ -52,6 +52,13 @@ genrule(
 )
 
 genrule(
+    name = "durationformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/durationformat-smoke.js"],
+    outs = ["durationformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
     name = "datetimeformat_smoke_source",
     srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/datetimeformat-smoke.js"],
     outs = ["datetimeformat_smoke.inc"],
@@ -73,6 +80,7 @@ genrule(
 )
 
 SMOKE_SOURCES = [
+    ":durationformat_smoke_source",
     ":datetimeformat_smoke_source",
     ":datetimeformat_hebrew_source",
     ":datetimeformat_tz_source",
@@ -108,6 +116,7 @@ cc_binary(
         "@formatjs_intl_getcanonicallocales_hermes//:collator",
         "@formatjs_intl_getcanonicallocales_hermes//:datetimeformat",
         "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
+        "@formatjs_intl_getcanonicallocales_hermes//:durationformat",
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
         "@formatjs_intl_getcanonicallocales_hermes//:numberformat",
@@ -135,6 +144,7 @@ cc_test(
         "@formatjs_intl_getcanonicallocales_hermes//:collator",
         "@formatjs_intl_getcanonicallocales_hermes//:datetimeformat",
         "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
+        "@formatjs_intl_getcanonicallocales_hermes//:durationformat",
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
         "@formatjs_intl_getcanonicallocales_hermes//:numberformat",

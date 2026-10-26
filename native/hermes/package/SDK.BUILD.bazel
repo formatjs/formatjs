@@ -484,3 +484,45 @@ filegroup(
 )
 
 exports_files(glob(["timezone-data/datetimeformat/*.json"]))
+
+cc_library(
+    name = "durationformat",
+    srcs = [
+        "src/durationformat.cpp",
+        "src/durationformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_durationformat.h",
+        "include/formatjs/intl/durationformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+exports_files([
+    "examples/durationformat-smoke.ts",
+    "js/durationformat-smoke.js",
+    "js/41-IntlDurationFormat.js",
+])

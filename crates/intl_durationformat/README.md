@@ -1,7 +1,7 @@
 # formatjs_intl_durationformat
 
 Rust duration records, locale/formatting-option resolution and number/list rendering.
-Owned C ABI and Hermes facade are available; SDK integration remains in progress.
+Owned C ABI and Hermes facade are available; SDK packaging includes both installers, native headers/adapters and a typed consumer smoke.
 
 `Duration::from_numbers` accepts ten optional Number values in `Unit::ALL` order.
 It requires at least one defined field, finite integral values, a common sign,
