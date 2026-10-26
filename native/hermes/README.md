@@ -28,24 +28,27 @@ Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
 buffer after copying it into a JSI string. Canonicalization retains no runtime
 cache. Locale instances use owned Rust handles managed by JSI garbage collection.
 
-## Locale and supported values
+## Locale, supported values and plural rules
 
-The SDK also includes `Intl.Locale` and `Intl.supportedValuesOf`. Install all
-three before application code; reinstall canonicalization last so its intrinsic
-Locale brand check recognizes the newly installed constructor:
+The SDK also includes `Intl.Locale`, `Intl.supportedValuesOf` and
+`Intl.PluralRules`. Reinstall canonicalization after Locale so its intrinsic
+brand check recognizes the newly installed constructor:
 
 ```cpp
 #include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
 formatjs::installLocale(*runtime);
 formatjs::installCanonicalLocales(*runtime);
+formatjs::installPluralRules(*runtime);
 ```
 
 Each installer also accepts the precompiled `extensions` object shown below.
-Link SDK targets `:locale` and `:supported_values` alongside `:canonical_locales`.
+Link SDK targets `:locale`, `:supported_values` and `:pluralrules` alongside
+`:canonical_locales`.
 Locale's private WeakMap retains its native handle; JS subclasses and prototype
 changes cannot forge that brand. Information methods query current formatter
 support, so locale data loaded after construction remains visible.
@@ -109,17 +112,17 @@ bazel run -c opt //native/hermes:hermes_runner -- /absolute/path/script.js
 The host runner is an explicit development target. CI cross-builds the SDK and
 standalone macOS executable on Linux; macOS only runs the downloaded artifacts.
 
-`--extensions=/absolute/path/bundle.js` evaluates a factory bundle and installs
-its available native extensions before ordinary scripts. The PluralRules bridge
-is in progress: `//native/hermes:pluralrules_bridge_test` exercises loaded packs,
+`--extensions=/absolute/path/bundle` evaluates a source or bytecode factory
+bundle and installs its available native extensions before ordinary scripts. `//native/hermes:pluralrules_bridge_test` exercises loaded packs,
 matching, owned instances, ranges and late replacement through JSI.
 `//native/hermes/tests:pluralrules_conformance_test` compares the installed public
-API with TS through both source and factory installers, plus coercion order,
+API with TS through source and optimized-bytecode installers, plus coercion order,
 brands, subclasses, descriptors and captured intrinsics. Link
 `//native/hermes:pluralrules` and call `installPluralRules(runtime)` after
 canonicalization. Load selected JSON packs with
 `Intl.PluralRules.__addLocaleData(jsonText)` before constructing formatters.
-Packaged installer coverage remains in progress.
+The independent SDK consumer verifies selected English/French packs, late
+loading, retained instances, BigInt, ranges and receiver checks on Linux and macOS.
 
 ## Existing package conformance
 

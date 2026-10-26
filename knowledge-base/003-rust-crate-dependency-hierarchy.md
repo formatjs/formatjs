@@ -9,7 +9,7 @@ crates/
   intl_getcanonicallocales/    # ICU4X locale canonicalization leaf crate
   intl_supportedvaluesof/     # Runtime-aware supported value enumeration
   intl_locale/                # Locale records, preferences and owned C ABI
-  intl_pluralrules/           # ICU4X rule engine, caller-loaded locale packs (in progress)
+  intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
   intl_hermes/                # One static C ABI archive for the Hermes SDK
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)

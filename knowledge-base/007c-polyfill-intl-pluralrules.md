@@ -141,7 +141,7 @@ plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
 Compact plural selection uses generated CLDR exponent tables for locales whose
 rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
 
-## Rust port (in progress)
+## Rust port
 
 `crates/intl_pluralrules` loads individual CLDR JSON packs into ICU4X rules.
 `//crates/intl_pluralrules:locale_data` emits one `locale-data/<locale>.json`
@@ -154,8 +154,8 @@ The rule engine owns loaded payloads and has no global locale registration or
 baked plural data. `tests:rule_conformance_test` compares all packs with the TS
 compiler over 100,000+ samples. `digits::Digits` now implements typed digit-option resolution and exact decimal
 rounding; `tests:digit_conformance_test` compares selection, ranges and metadata
-with the public TS API. Full constructor behavior and Hermes/SDK
-integration remain in progress.
+with the public TS API. The Hermes adapter implements constructor behavior
+and ships in the standalone SDK.
 
 Conformance also covers canonical aliases during TS data registration (`sh`
 registers as `sr-Latn`), exact digit-string modulo beyond Number precision,
@@ -187,9 +187,10 @@ tags. Best fit preserves exact/maximized fast paths and request-order penalties.
 `native/hermes:pluralrules_bridge_test` runs a TypeScript factory fixture through
 the real Hermes runner and C++ adapter. It tests owned host objects, native
 matching, ranges, error codes and late locale replacement. The runner accepts
-`--extensions=<bundle>` for factory bundles. The public constructor/coercion
-facade uses `pluralrules.ts`; public API validation and SDK packaging remain in
-progress.
+`--extensions=<bundle>` for source or optimized-bytecode factory bundles.
+The public constructor/coercion facade uses `pluralrules.ts`. The standalone
+SDK ships that installer, the C++ adapter and selected per-locale JSON packs;
+its independent consumer verifies lazy loading with downloaded native artifacts.
 
 Mathematical-input normalization handles StringNumericLiteral syntax, radix
 integers, IEEE Number-range clamping and BigInt's early return. Normal finite
