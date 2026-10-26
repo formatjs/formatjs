@@ -742,7 +742,8 @@ name = "formatjs_intl_pluralrules"
 version = "0.1.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
- "icu",
+ "fixed_decimal",
+ "icu_plurals",
  "icu_provider",
  "serde",
  "serde_json",

@@ -13,9 +13,10 @@ path = "lib.rs"
 
 [dependencies]
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
-icu = { version = "2.1", default-features = false, features = [
+fixed_decimal = "0.7"
+icu_plurals = { version = "2.1", default-features = false, features = [
   "serde",
-  "sync",
+  "unstable",
 ] }
 icu_provider = { version = "2.1", features = ["sync"] }
 serde = { version = "1.0", features = ["derive"] }

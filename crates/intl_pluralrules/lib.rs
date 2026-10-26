@@ -6,11 +6,11 @@ use std::collections::BTreeMap;
 use std::fmt;
 use std::str::FromStr;
 
+use fixed_decimal::Decimal;
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
-use icu::decimal::input::Decimal;
-use icu::plurals::provider::rules::runtime::ast::Rule;
-use icu::plurals::provider::{PluralRulesData, PluralsCardinalV1, PluralsOrdinalV1};
-use icu::plurals::{PluralCategory, PluralOperands, PluralRules, RawPluralOperands};
+use icu_plurals::provider::rules::runtime::ast::Rule;
+use icu_plurals::provider::{PluralRulesData, PluralsCardinalV1, PluralsOrdinalV1};
+use icu_plurals::{PluralCategory, PluralOperands, PluralRules, RawPluralOperands};
 use icu_provider::prelude::*;
 use serde::Deserialize;
 
@@ -154,7 +154,8 @@ impl LocaleRules {
         }
     }
     pub fn categories(&self, ordinal: bool) -> Vec<&'static str> {
-        // resolvedOptions lists categories in ECMA-402 Table 31 order.
+        // resolvedOptions step 4 specifies category order, independent of data order.
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L115
         [
             PluralCategory::Zero,
             PluralCategory::One,
