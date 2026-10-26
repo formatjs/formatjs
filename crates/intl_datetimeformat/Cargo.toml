@@ -11,6 +11,14 @@ publish = false
 [lib]
 path = "lib.rs"
 
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
 [[example]]
 name = "civil_conformance"
 path = "civil_conformance.rs"
+
+[[example]]
+name = "timezone_conformance"
+path = "timezone_conformance.rs"

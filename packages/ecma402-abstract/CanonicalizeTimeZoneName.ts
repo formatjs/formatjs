@@ -102,7 +102,10 @@ export function CanonicalizeTimeZoneName(
   //    in the IANA Time Zone Database that is an ASCII-case-insensitive
   //    match of timeZone
   const uppercasedTz = tz.toUpperCase()
-  const uppercasedZones = zoneNames.reduce((all: Record<string, string>, z) => {
+  const uppercasedZones = [
+    ...Object.values(uppercaseLinks),
+    ...zoneNames,
+  ].reduce((all: Record<string, string>, z) => {
     all[z.toUpperCase()] = z
     return all
   }, {})

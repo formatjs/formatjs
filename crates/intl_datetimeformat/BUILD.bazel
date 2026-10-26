@@ -1,22 +1,43 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+ts_run_binary(
+    name = "timezone_links",
+    outs = ["timezone-links.json"],
+    args = [
+        "--out",
+        "$(rootpath timezone-links.json)",
+    ],
+    tool = "//crates/intl_datetimeformat/scripts:timezones",
+)
 
 rust_library(
     name = "intl_datetimeformat",
     srcs = [
         "civil.rs",
         "lib.rs",
+        "timezone.rs",
     ],
+    compile_data = [":timezone_links"],
     crate_name = "formatjs_intl_datetimeformat",
     crate_root = "lib.rs",
     edition = "2024",
+    rustc_env = {"FORMATJS_TIMEZONE_LINKS": "$(execpath :timezone_links)"},
     visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
 )
 
 formatjs_rust_test(
     name = "intl_datetimeformat_test",
-    srcs = ["lib.test.rs"],
+    srcs = [
+        "lib.test.rs",
+        "timezone.test.rs",
+    ],
     crate_name = "intl_datetimeformat_test",
     edition = "2024",
     deps = [":intl_datetimeformat"],
@@ -30,4 +51,27 @@ rust_binary(
     edition = "2024",
     visibility = ["//crates/intl_datetimeformat/tests:__pkg__"],
     deps = [":intl_datetimeformat"],
+)
+
+filegroup(
+    name = "timezone_data",
+    srcs = [
+        "//packages/intl-datetimeformat:tz_all_json",
+        "//packages/intl-datetimeformat:tz_golden_json",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_binary(
+    name = "timezone_conformance",
+    srcs = ["timezone_conformance.rs"],
+    crate_name = "timezone_conformance",
+    crate_root = "timezone_conformance.rs",
+    edition = "2024",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+    deps = [
+        ":intl_datetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
 )

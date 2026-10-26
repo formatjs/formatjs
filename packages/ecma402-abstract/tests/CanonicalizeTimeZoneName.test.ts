@@ -99,3 +99,12 @@ describe('CanonicalizeTimeZoneName', () => {
     expect(CanonicalizeTimeZoneName('-00:00', testData)).toBe('+00:00')
   })
 })
+
+test('regularizes link targets before transition data is loaded', () => {
+  expect(
+    CanonicalizeTimeZoneName('america/new_york', {
+      zoneNames: [],
+      uppercaseLinks: {'US/EASTERN': 'America/New_York'},
+    })
+  ).toBe('America/New_York')
+})

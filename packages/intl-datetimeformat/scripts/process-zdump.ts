@@ -299,11 +299,11 @@ function utTimeToSeconds(utTime: string) {
 
 const LINE_REGEX = /^(.*?)\s+(.*?) UTC? = (.*?) isdst=(0|1) gmtoff=(.*?)$/i
 
-function processZone(
+export function processZone(
   content: string,
   {zones, abbrvs, offsets}: UnpackedData,
-  golden?: string
-) {
+  golden?: boolean
+): void {
   const lines = content.split('\n')
   for (const line of lines) {
     if (line.endsWith('NULL')) {
@@ -315,6 +315,8 @@ function processZone(
     }
 
     const [, zonePath, utTime, localTime, dst, offsetStr] = chunks
+    const timestamp = utTimeToSeconds(utTime)
+    if (!Number.isFinite(timestamp)) continue
     const zone = zonePath.split('zic/')[1]
     if (golden && !GOLDEN_TIMEZONES.has(zone)) {
       continue
@@ -334,7 +336,7 @@ function processZone(
     if (!zones[zone]) {
       zones[zone] = [['', abbrvIndex, offsetIndex, +dst]]
     } else {
-      zones[zone].push([utTimeToSeconds(utTime), abbrvIndex, offsetIndex, +dst])
+      zones[zone].push([timestamp, abbrvIndex, offsetIndex, +dst])
     }
   }
 }
@@ -399,7 +401,9 @@ async function main(args: minimist.ParsedArgs) {
 
   processZone([contents, ...SPECIAL_CASES].join('\n'), data, golden)
 
-  if (polyfill) {
+  if (args.json) {
+    outputFileSync(out, stringify(pack(data)) + '\n')
+  } else if (polyfill) {
     outputFileSync(
       out,
       `// @generated
@@ -426,5 +430,5 @@ export default data`
 }
 
 if (import.meta.filename === process.argv[1]) {
-  main(minimist(process.argv))
+  main(minimist(process.argv, {boolean: ['polyfill', 'golden', 'json']}))
 }
