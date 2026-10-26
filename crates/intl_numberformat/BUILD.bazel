@@ -1,0 +1,69 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//packages/intl-numberformat:locales.generated.bzl", "ALL_LOCALES")
+load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+ts_run_binary(
+    name = "locale_data",
+    srcs = ["//crates/intl_pluralrules:locale_data"] + [
+        "//packages/intl-numberformat:cldr-raw/%s.json" % locale
+        for locale in ALL_LOCALES
+    ],
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        package_name() + "/locale-data",
+        "--pluralDir",
+        "crates/intl_pluralrules/locale-data",
+    ] + ["--cldrFile=packages/intl-numberformat/cldr-raw/%s.json" % locale for locale in ALL_LOCALES],
+    tool = "//crates/intl_numberformat/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "intl_numberformat",
+    srcs = [
+        "data.rs",
+        "lib.rs",
+        "registry.rs",
+    ],
+    crate_name = "formatjs_intl_numberformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "//crates/intl_pluralrules",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_numberformat_test",
+    srcs = ["registry.test.rs"],
+    compile_data = [":locale-data/en.json"],
+    crate_name = "intl_numberformat_test",
+    edition = "2024",
+    rustc_env = {"FORMATJS_NUMBER_EN": "$(execpath :locale-data/en.json)"},
+    deps = [
+        ":intl_numberformat",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "pack_conformance",
+    srcs = ["pack_conformance.rs"],
+    crate_name = "pack_conformance",
+    crate_root = "pack_conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_numberformat/tests:__pkg__"],
+    deps = [
+        ":intl_numberformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)

@@ -154,6 +154,15 @@ suffix signs, bidi literals, and unit wrappers use the same number pattern.
 Matching sign prefixes can be shared alongside a shared currency or unit suffix.
 Mixed signs remain attached to their endpoints.
 
+## Rust port (in progress)
+
+`crates/intl_numberformat` currently owns per-locale number/plural records and an
+on-demand registry. Generated packs reuse the TS CLDR extraction and canonical
+plural-locale matching. Registration preserves existing records, explicit aliases,
+and parent fallbacks; invalid numbering-system aliases reject atomically.
+Formatting, native ABI, Hermes installation, and SDK integration remain in progress.
+The full generated locale set is validated through the Rust loader.
+
 ## Benchmarks
 
 Run `bazel run //packages/intl-numberformat/benchmark:benchmark` for formatting

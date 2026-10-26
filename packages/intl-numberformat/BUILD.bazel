@@ -289,6 +289,7 @@ ts_run_binary(
     chdir = package_name(),
     tool = "//packages/intl-numberformat/scripts:cldr-raw",
     visibility = [
+        "//crates/intl_numberformat:__pkg__",
         "//packages/intl:__subpackages__",
         "//packages/react-intl:__subpackages__",
     ],

@@ -1,0 +1,16 @@
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "packs_test",
+    srcs = ["packs.test.ts"],
+    data = [
+        "//crates/intl_numberformat:locale_data",
+        "//crates/intl_numberformat:pack_conformance",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
