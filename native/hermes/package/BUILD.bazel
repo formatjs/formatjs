@@ -38,6 +38,22 @@ rolldown_bundle(
     target = "es2020",
 )
 
+ts_project(
+    name = "displaynames_smoke_typecheck",
+    srcs = ["displaynames-smoke.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
+rolldown_bundle(
+    name = "displaynames_smoke_js",
+    srcs = ["displaynames-smoke.ts"],
+    entry_point = "displaynames-smoke.ts",
+    format = "iife",
+    target = "es2020",
+)
+
 platform(
     name = "linux_x86_64",
     constraint_values = ["@llvm//constraints/libc:gnu.2.28"],
@@ -69,10 +85,13 @@ pkg_files(
         "SDK.BUILD.bazel",
         "SDK.MODULE.bazel",
         "THIRD_PARTY_NOTICES.html",
+        "displaynames-smoke.ts",
         "listformat-smoke.ts",
         "pluralrules-smoke.ts",
+        ":displaynames_smoke_js.js",
         ":listformat_smoke_js.js",
         ":pluralrules_smoke_js.js",
+        "//crates/intl_displaynames:displaynames.h",
         "//crates/intl_getcanonicallocales:canonicalize.h",
         "//crates/intl_listformat:listformat.h",
         "//crates/intl_locale:locale.h",
@@ -81,8 +100,12 @@ pkg_files(
         "//native/hermes:bridge.h",
         "//native/hermes:canonical_locales.cpp",
         "//native/hermes:canonical_locales.h",
+        "//native/hermes:displaynames.cpp",
+        "//native/hermes:displaynames_extension_js",
+        "//native/hermes:displaynames_wrapper_source",
         "//native/hermes:extension_bundle_js",
         "//native/hermes:extension_js",
+        "//native/hermes:intl_displaynames.h",
         "//native/hermes:intl_listformat.h",
         "//native/hermes:intl_locale.h",
         "//native/hermes:intl_pluralrules.h",
@@ -108,6 +131,13 @@ pkg_files(
         "SDK.BUILD.bazel": "BUILD.bazel",
         "SDK.MODULE.bazel": "MODULE.bazel",
         "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
+        "displaynames-smoke.ts": "examples/displaynames-smoke.ts",
+        ":displaynames_smoke_js.js": "js/displaynames-smoke.js",
+        "//crates/intl_displaynames:displaynames.h": "include/formatjs/intl/displaynames.h",
+        "//native/hermes:intl_displaynames.h": "include/formatjs/hermes/intl_displaynames.h",
+        "//native/hermes:displaynames.cpp": "src/displaynames.cpp",
+        "//native/hermes:displaynames_extension_js": "js/35-IntlDisplayNames.js",
+        "//native/hermes:displaynames_wrapper_source": "src/displaynames.inc",
         "listformat-smoke.ts": "examples/listformat-smoke.ts",
         ":listformat_smoke_js.js": "js/listformat-smoke.js",
         "//crates/intl_listformat:listformat.h": "include/formatjs/intl/listformat.h",

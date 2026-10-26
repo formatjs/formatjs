@@ -15,4 +15,8 @@ bazel test -c opt //crates/intl_displaynames:intl_displaynames_test \
 Conformance compares all locales/types/styles/fallbacks with public TS. Inline
 comments link pinned ECMA-402 source lines. The owned C ABI validates UTF-16
 codes, preserves error classes and returns owned buffers. Hermes observable
-coercion and SDK packaging remain in progress.
+coercion is handled by the TS facade in `native/hermes/displaynames.ts`.
+`//native/hermes/tests:displaynames_conformance_test` compares source and optimized
+bytecode installers with TS. The SDK includes headers, adapters, independent
+locale JSON packs and consumer smoke tests for English, French and Afar.
+Native builds/cross-builds run on Linux; macOS runs downloaded artifacts.

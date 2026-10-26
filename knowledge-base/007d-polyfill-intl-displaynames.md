@@ -62,7 +62,7 @@ five to eight ASCII letters, with optional script, region, and variant subtags.
 Calendar display-name data uses BCP 47 identifiers, including `gregory` and
 `ethioaa`, rather than CLDR legacy keys.
 
-## Rust port (in progress)
+## Rust port
 
 `crates/intl_displaynames` validates and canonicalizes codes, looks up CLDR
 names and composes localized language/region names. Versioned JSON packs reuse
@@ -71,7 +71,11 @@ atomic; existing instances retain their data. The differential suite compares
 all locale/type/style/fallback combinations with TS using lookup negotiation.
 The owned C ABI validates UTF-16 codes and separates invalid-code RangeError
 from malformed ABI input. Handles own their data; successful result buffers
-belong to the caller. Hermes coercion and SDK installation follow within this PR.
+belong to the caller. The Hermes facade handles required options, observable coercion and private
+receiver brands. Public native conformance compares source/optimized-bytecode
+installers with TS, including sparse locales and tampered intrinsics. SDK
+consumers link `:displaynames` and load selected per-locale JSON text. Independent
+consumer smoke covers English/French loading and Afar's code/undefined fallback.
 
 Code validation consumes the entire input, including trailing line terminators.
 

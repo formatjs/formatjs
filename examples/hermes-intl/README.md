@@ -12,6 +12,7 @@ Default locales follow Chromium desktop's full-data UI language filter, includin
 and script variants. Use `--//crates/intl_data:locales=\*` for every CLDR locale.
 Select a custom archive with
 `--//crates/intl_data:locales=en,fr` when building the SDK; rebuild to add locales.
+The full DisplayNames smoke also exercises Afar; include `aa` for that smoke.
 
 The SDK is built and tested here but is not published. From the FormatJS root
 on Linux:

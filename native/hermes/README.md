@@ -175,16 +175,20 @@ arrays preserve lone surrogates across the ABI. The native conformance target
 TS through source and optimized-bytecode installers. `--native-listformat`
 enables the source installer in the development runner.
 
-## Native bridge
+## DisplayNames
 
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
+Link `//native/hermes:displaynames` (SDK `:displaynames`) and call
+`installDisplayNames(runtime)` after canonicalization. The overload accepting
+`extensions` uses the precompiled `IntlDisplayNames` factory. Load selected
+`locale-data/displaynames/<locale>.json` text with
+`Intl.DisplayNames.__addLocaleData(jsonText)` before construction.
 
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
+Rust owns code validation, canonicalization, CLDR lookup and locale matching.
+The TS facade handles required options, getter/coercion order and receiver brands.
+UTF-16 code arrays let Rust report lone surrogates as RangeError. Native
+conformance compares source/optimized-bytecode installation with TS across all
+six name types, styles and fallbacks. `--native-displaynames` enables the source
+installer in the development runner.
 
 ## Existing package conformance
 
@@ -193,7 +197,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `getcanonicallocales`.
 
 Canonicalization uses real native Locale objects, including internal-slot checks.
 Locale ICU-specific collation expectations have separate cases, retaining the
