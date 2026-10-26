@@ -132,7 +132,7 @@ it('matches every locale, type, style and fallback against public TS', () => {
       maxBuffer: 128 * 1024 * 1024,
     }
   )
-  if (result.error) throw result.error
+  if (result.error) throw new Error(String(result.error) + '\n' + result.stderr)
   expect(result.status, result.stderr).toBe(0)
   const results = result.stdout
     .trim()

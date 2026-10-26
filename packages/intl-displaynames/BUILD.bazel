@@ -11,6 +11,8 @@ load(":locales.generated.bzl", "ALL_LOCALES")
 PACKAGE_NAME = "intl-displaynames"
 
 TEST_LOCALES = [
+    "aa",
+    "agq",
     "en",
     "zh",
 ]
@@ -81,6 +83,8 @@ formatjs_test(
         "tests/IsValidDateTimeFieldCode.test.ts",
         "tests/index.test.ts",
         "tests/should-polyfill.test.ts",
+        ":tests-locale-data-aa",  # keep: sparse CLDR locale regression
+        ":tests-locale-data-agq",  # keep: sparse CLDR locale regression
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-zh",  # keep: generated locale data imported by tests
     ],

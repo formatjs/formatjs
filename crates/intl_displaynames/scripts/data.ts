@@ -16,6 +16,8 @@ function main(args: Args) {
       locale: string
       data: unknown
     }
+    if (!raw.data)
+      throw new Error('Missing DisplayNames data for ' + raw.locale)
     const locale = getCanonicalLocales(raw.locale)[0]
     const pack = {
       formatVersion: 1,

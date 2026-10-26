@@ -74,3 +74,7 @@ from malformed ABI input. Handles own their data; successful result buffers
 belong to the caller. Hermes coercion and SDK installation follow within this PR.
 
 Code validation consumes the entire input, including trailing line terminators.
+
+CLDR may omit language, territory or script name files for sparse locales. Those
+categories use empty maps so code/undefined fallback still works. Other extraction
+errors fail generation; they must not produce locale-only packs without data.
