@@ -48,6 +48,9 @@ enum Query {
 }
 
 unsafe fn input<'a>(data: *const u8, len: usize) -> Result<&'a str, ()> {
+    if len > isize::MAX as usize {
+        return Err(());
+    }
     if data.is_null() {
         return if len == 0 { Ok("") } else { Err(()) };
     }
