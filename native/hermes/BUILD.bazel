@@ -32,6 +32,7 @@ ts_project(
         "collator.ts",
         "datetimeformat.ts",
         "displaynames.ts",
+        "durationformat.ts",
         "listformat.ts",
         "locale.ts",
         "numberformat.ts",
@@ -64,6 +65,8 @@ exports_files(
         "intl_numberformat.h",
         "datetimeformat.cpp",
         "intl_datetimeformat.h",
+        "durationformat.cpp",
+        "intl_durationformat.h",
         "relativetimeformat.cpp",
         "intl_relativetimeformat.h",
         "intl_segmenter.h",
@@ -114,6 +117,7 @@ ts_run_binary(
         "collator.ts",
         "datetimeformat.ts",
         "displaynames.ts",
+        "durationformat.ts",
         "get_canonical_locales.js",
         "listformat.ts",
         "locale.ts",
@@ -147,6 +151,8 @@ ts_run_binary(
         "--name=IntlRelativeTimeFormat",
         "--input=$(rootpath :datetimeformat.ts)",
         "--name=IntlDateTimeFormat",
+        "--input=$(rootpath :durationformat.ts)",
+        "--name=IntlDurationFormat",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -255,6 +261,7 @@ cc_binary(
         ":collator",
         ":datetimeformat",
         ":displaynames",
+        ":durationformat",
         ":hermes_vm",
         ":listformat",
         ":locale",
@@ -839,6 +846,62 @@ ts_run_binary(
         "--input=$(rootpath :datetimeformat.ts)",
         "--name=IntlDateTimeFormat",
         "--out=$(rootpath :40-IntlDateTimeFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "durationformat",
+    srcs = [
+        "durationformat.cpp",
+        ":durationformat_wrapper_source",
+    ],
+    hdrs = ["intl_durationformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_durationformat:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "durationformat_factory",
+    srcs = ["durationformat.ts"],
+    outs = ["durationformat_factory.js"],
+    args = [
+        "--input=$(rootpath :durationformat.ts)",
+        "--name=IntlDurationFormat",
+        "--out=$(rootpath :durationformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "durationformat_wrapper_source",
+    srcs = [":durationformat_factory"],
+    outs = ["durationformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "durationformat_extension_js",
+    srcs = ["durationformat.ts"],
+    outs = ["41-IntlDurationFormat.js"],
+    args = [
+        "--input=$(rootpath :durationformat.ts)",
+        "--name=IntlDurationFormat",
+        "--out=$(rootpath :41-IntlDurationFormat.js)",
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//native/hermes/package:__pkg__"],

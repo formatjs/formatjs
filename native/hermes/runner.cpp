@@ -8,6 +8,7 @@
 #include <formatjs/hermes/intl_numberformat.h>
 #include <formatjs/hermes/intl_relativetimeformat.h>
 #include <formatjs/hermes/intl_datetimeformat.h>
+#include <formatjs/hermes/intl_durationformat.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -80,6 +81,11 @@ int main(int argc, char **argv) {
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
+      if (flag == "--native-durationformat") {
+        formatjs::installDurationFormat(rt);
+        ++firstScript;
+        continue;
+      }
       if (flag == "--native-datetimeformat") {
         datetimeInstallation = formatjs::installDateTimeFormat(rt);
         ++firstScript;
@@ -133,6 +139,7 @@ int main(int argc, char **argv) {
       if (extensions.hasProperty(rt, "IntlNumberFormat")) formatjs::installNumberFormat(rt, extensions);
       if (extensions.hasProperty(rt, "IntlRelativeTimeFormat")) formatjs::installRelativeTimeFormat(rt, extensions);
       if (extensions.hasProperty(rt, "IntlDateTimeFormat")) datetimeInstallation = formatjs::installDateTimeFormat(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlDurationFormat")) formatjs::installDurationFormat(rt, extensions);
       ++firstScript;
     }
     for (int i = firstScript; i < argc; ++i) {

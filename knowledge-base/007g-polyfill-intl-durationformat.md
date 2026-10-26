@@ -129,5 +129,13 @@ Owned JSON results keep resolved-property and part-property order. Lifetime test
 cover registry/construction destruction and final-owner release on a worker thread.
 The shared `intl_hermes` archive assembles these symbols.
 
-Hermes/SDK installation remains in progress. Number/list payloads stay
+The Hermes facade uses the same factory for source and precompiled installation.
+JS handles brands, coercion and ordered getters; typed double arrays cross JSI.
+Phased native construction preserves option validation boundaries and resolution
+snapshots. Temporal from/getters are captured before application changes. Native
+NumberFormat/ListFormat data hooks keep dependencies selected and independent of
+public JS formatter constructors. Ten-locale source/bytecode parity and shipping
+runtime smoke cover these paths, including non-colon separators.
+
+SDK consumer packaging and installation examples remain in progress. Number/list payloads stay
 separate and load on demand; rendering uses no JS formatter callbacks.

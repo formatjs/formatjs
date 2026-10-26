@@ -1,7 +1,7 @@
 # formatjs_intl_durationformat
 
 Rust duration records, locale/formatting-option resolution and number/list rendering.
-Owned C ABI is available; Hermes installation and SDK integration remain in progress.
+Owned C ABI and Hermes facade are available; SDK integration remains in progress.
 
 `Duration::from_numbers` accepts ten optional Number values in `Unit::ALL` order.
 It requires at least one defined field, finite integral values, a common sign,
@@ -75,3 +75,11 @@ handles retain their context after registry destruction; the context is synchron
 and contains no host callbacks or thread-bound JS values. Native lifetime coverage
 also formats and drops the final owner on a worker thread. `intl_hermes` exports the
 ABI through the shared Rust archive.
+
+The Hermes facade is `//native/hermes:durationformat`. It preserves observable JS
+coercion/brands, reads ordinary record fields once in specified order and uses
+phased native option validation. Both installers share one factory: evaluated
+source or precompiled `IntlDurationFormat`. Typed Number arrays cross JSI without
+JSON decimal conversion. Temporal must exist before installation; captured
+intrinsic getters/from support branded durations and strings despite later public
+prototype changes. See [Hermes integration](../../native/hermes/README.md#durationformat).

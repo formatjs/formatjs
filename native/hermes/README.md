@@ -264,20 +264,31 @@ The SDK embeds locale data and exports optional calendar/timezone resources, bot
 headers and adapter sources. See [package/README.md](package/README.md#datetimeformat)
 for installation and guard lifetime requirements.
 
-## Native bridge
+## DurationFormat
 
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
+Link `//native/hermes:durationformat`, install canonicalization, then call
+`formatjs::installDurationFormat(runtime)`. The overload taking an extension object
+uses its `IntlDurationFormat` factory. This context contains native Rust data and
+needs no installation guard.
 
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
+Duration locale metadata stays statically compiled. Load selected native
+NumberFormat and ListFormat JSON strings through
+`Intl.DurationFormat.__addNumberFormatData` and `__addListFormatData`; number unit
+sidecars use `__addNumberFormatUnitData` with `{locale,data}` JSON. The packs come
+from the existing `//crates/intl_numberformat:locale_data` and
+`//crates/intl_listformat:locale_data` targets. Their registries negotiate locales
+independently. Data can load after construction; cached formatting profiles retain
+their data after replacement. Rendering calls no public JS NumberFormat/ListFormat.
 
-DateTimeFormat also keeps its handle table and deferred releases in Rust. GC
-threads drop release tickets; the runtime thread drains formatter records. Only
-JSI references and foreign exception identity remain in the C++ adapter.
+JS preserves constructor/record getter order, primitive coercion and private brands.
+Rust resolves locale before style getters, validates each style before its display,
+then folds subseconds and composes parts exactly. Install Temporal before the
+facade to accept duration strings and branded durations through captured intrinsics.
+Without Temporal, duration-like records work and strings throw RangeError.
+Source/bytecode differential coverage includes ten locales, non-colon separators,
+Temporal brands, negative leading zero and IEEE integers beyond the safe range.
+Default-runtime smoke also runs both modes without Temporal. SDK consumer packaging
+and installation examples remain in progress.
 
 ## Existing package conformance
 
