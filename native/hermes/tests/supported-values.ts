@@ -157,6 +157,21 @@ for (const method of [candidate, reference]) {
 for (const receiver of [undefined, null, 123, Symbol(), {}]) {
   equal(candidate.call(receiver, 'unit'), reference('unit'), 'Ignored receiver')
 }
+
+// Support belongs to the current runtime, not a cached build-host snapshot.
+const numberFormatDescriptor = Object.getOwnPropertyDescriptor(
+  Intl,
+  'NumberFormat'
+)!
+const unitsBefore = candidate('unit')
+try {
+  Object.defineProperty(Intl, 'NumberFormat', {value: undefined})
+  equal(candidate('unit'), [], 'Missing formatter')
+} finally {
+  Object.defineProperty(Intl, 'NumberFormat', numberFormatDescriptor)
+}
+equal(candidate('unit'), unitsBefore, 'Restored formatter support')
+
 const descriptor = Object.getOwnPropertyDescriptor(Intl, 'supportedValuesOf')!
 check(descriptor.value === candidate, 'Installed method')
 check(descriptor.writable === true, 'Writable')
