@@ -109,16 +109,11 @@ bazel run -c opt //native/hermes:hermes_runner -- /absolute/path/script.js
 The host runner is an explicit development target. CI cross-builds the SDK and
 standalone macOS executable on Linux; macOS only runs the downloaded artifacts.
 
-## Native bridge
-
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
-
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
+`--extensions=/absolute/path/bundle.js` evaluates a factory bundle and installs
+its available native extensions before ordinary scripts. The PluralRules bridge
+is in progress: `//native/hermes:pluralrules_bridge_test` exercises loaded packs,
+matching, owned instances, ranges and late replacement through JSI. The public
+PluralRules constructor facade and its packaged installer still follow.
 
 ## Existing package conformance
 
@@ -127,7 +122,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `getcanonicallocales`.
 
 Canonicalization uses real native Locale objects, including internal-slot checks.
 Locale ICU-specific collation expectations have separate cases, retaining the

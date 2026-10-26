@@ -183,3 +183,9 @@ Locale matching shares the TS matcher's CLDR distance rules, region variables
 and paradigm locales through generated Rust metadata in `intl_locale`. Prefix
 lookup strips only Unicode extensions; supported locale results retain requested
 tags. Best fit preserves exact/maximized fast paths and request-order penalties.
+
+`native/hermes:pluralrules_bridge_test` runs a TypeScript factory fixture through
+the real Hermes runner and C++ adapter. It tests owned host objects, native
+matching, ranges, error codes and late locale replacement. The runner accepts
+`--extensions=<bundle>` for factory bundles. The public constructor/coercion
+facade remains in progress.

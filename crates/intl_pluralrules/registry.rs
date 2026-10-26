@@ -30,6 +30,7 @@ impl Registry {
             .ok_or(Error::MissingLocale)
     }
 
+    /// Inputs are canonical tags from CanonicalizeLocaleList.
     pub fn supported_locales(&self, requested: &[String]) -> Vec<String> {
         formatjs_intl_locale::matcher::supported(&self.available, requested)
     }

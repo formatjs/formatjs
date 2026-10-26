@@ -30,6 +30,7 @@ ts_project(
     name = "extension_typecheck",
     srcs = [
         "locale.ts",
+        "pluralrules_bridge.test.ts",
         "supported_values_of.ts",
     ],
     declaration = True,
@@ -196,6 +197,7 @@ cc_binary(
         ":canonical_locales",
         ":hermes_vm",
         ":locale",
+        ":pluralrules",
         ":supported_values",
     ],
 )
@@ -249,6 +251,53 @@ genrule(
     outs = ["locale.inc"],
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
     visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "pluralrules",
+    srcs = ["pluralrules.cpp"],
+    hdrs = ["intl_pluralrules.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_hermes",
+        "//crates/intl_pluralrules:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "pluralrules_bridge_fixture",
+    srcs = ["pluralrules_bridge.test.ts"],
+    outs = ["pluralrules_bridge_fixture.js"],
+    args = [
+        "--input=$(rootpath :pluralrules_bridge.test.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :pluralrules_bridge_fixture.js)",
+        "--bundle",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+sh_test(
+    name = "pluralrules_bridge_test",
+    srcs = ["pluralrules_bridge_test.sh"],
+    args = [
+        "$(rootpath :hermes_runner)",
+        "$(rootpath :pluralrules_bridge_fixture)",
+        "$(rootpath :canonical_locales_test.js)",
+    ],
+    data = [
+        "canonical_locales_test.js",
+        ":hermes_runner",
+        ":pluralrules_bridge_fixture",
+    ],
+    target_compatible_with = HOST_COMPATIBILITY,
 )
 
 cc_library(
