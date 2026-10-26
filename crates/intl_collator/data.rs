@@ -49,12 +49,8 @@ pub struct Data {
 pub fn load() -> Result<&'static Data, Error> {
     static DATA: OnceLock<Result<Data, String>> = OnceLock::new();
     DATA.get_or_init(|| {
-        serde_json::from_str(include_str!(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/../../",
-            env!("FORMATJS_COLLATION_DATA")
-        )))
-        .map_err(|error| error.to_string())
+        serde_json::from_str(include_str!(env!("FORMATJS_COLLATION_DATA")))
+            .map_err(|error| error.to_string())
     })
     .as_ref()
     .map_err(|error| Error::InvalidData(error.clone()))

@@ -296,3 +296,67 @@ it('defines a consistent comparator across numeric and canonical variants', () =
           }
         }
 })
+
+it('reads co/kn/kf in spec order and rejects malformed co before later getters', () => {
+  const order: string[] = []
+  new Collator('en', {
+    get usage() {
+      order.push('usage')
+      return 'sort' as const
+    },
+    get localeMatcher() {
+      order.push('localeMatcher')
+      return 'lookup' as const
+    },
+    get collation() {
+      order.push('collation')
+      return 'default'
+    },
+    get numeric() {
+      order.push('numeric')
+      return false
+    },
+    get caseFirst() {
+      order.push('caseFirst')
+      return 'false' as const
+    },
+    get sensitivity() {
+      order.push('sensitivity')
+      return 'variant' as const
+    },
+    get ignorePunctuation() {
+      order.push('ignorePunctuation')
+      return false
+    },
+  })
+  expect(order).toEqual([
+    'usage',
+    'localeMatcher',
+    'collation',
+    'numeric',
+    'caseFirst',
+    'sensitivity',
+    'ignorePunctuation',
+  ])
+  expect(
+    () =>
+      new Collator('en', {
+        collation: 'en_US',
+        get numeric(): boolean {
+          throw new Error('numeric getter before collation validation')
+        },
+      })
+  ).toThrow(RangeError)
+})
+it('does not retain the default collation sentinel as a Unicode extension', () => {
+  for (const collation of ['default', 'standard', 'search']) {
+    const model = new Collator('en-u-co-' + collation)
+    expect(model.resolvedOptions()).toMatchObject({
+      locale: 'en',
+      collation: 'default',
+    })
+    expect(
+      new Intl.Collator('en-u-co-' + collation).resolvedOptions()
+    ).toMatchObject({locale: 'en', collation: 'default'})
+  }
+})

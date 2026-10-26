@@ -238,6 +238,9 @@ it('compares sensitivity/numeric/caseFirst/punctuation/usage combinations and ex
                 pairs,
               })
   for (const locales of [
+    ['en-u-co-default'],
+    ['en-u-co-standard'],
+    ['en-u-co-search'],
     ['en-u-kn-true-kf-upper'],
     ['de-u-co-phonebk'],
     ['zh-u-co-stroke-kf-lower-kn'],

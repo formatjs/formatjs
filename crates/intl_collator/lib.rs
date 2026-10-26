@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::{collections::BTreeSet, sync::Arc};
 mod compare;
 mod data;
+pub mod ffi;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Error {
@@ -182,7 +183,12 @@ impl Collator {
                 } else {
                     requested
                 };
-                if values.iter().any(|value| value == requested) {
+                // "default" encodes the null co default in generated data;
+                // it is not an advertised Unicode extension value.
+                // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L95-L98
+                if !(key == "co" && requested == "default")
+                    && values.iter().any(|value| value == requested)
+                {
                     value = requested;
                     extension = true;
                 }
