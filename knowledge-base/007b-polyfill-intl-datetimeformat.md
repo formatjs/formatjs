@@ -353,3 +353,16 @@ families, all 15 calendars, and 15,120 matcher option combinations. Synthetic
 cases cover token widths, apostrophes, Unicode whitespace, cyclic-year intervals,
 hour preferences, month guards, numeric padding and all style combinations. Its
 compiler check is `//:rust_datetime_pattern_test_typecheck_typecheck_test`.
+
+The Rust `calendar` module separates Gregorian/ISO conversion from optional
+providers. Providers receive already-adjusted local milliseconds and return
+zero-based month indices plus optional leap/related/cyclic-year metadata.
+Unloaded calendars reject; registration replaces the selected callback. No
+optional arithmetic or ICU tables are linked by the core registry.
+
+Rust `data::LocaleData` owns typed CLDR metadata and calendar names. Gregorian
+styles prepare at load; format lists and optional calendar styles prepare lazily.
+ISO shares the Gregorian record. Calendar names inherit omitted optional fields
+from the base locale, matching TS record composition. Availability keeps CLDR
+preference order and requires both formats and registered arithmetic. Multi-locale
+registration, optional locale patches and locale negotiation remain unfinished.

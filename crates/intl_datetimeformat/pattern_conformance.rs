@@ -1,10 +1,11 @@
-use formatjs_intl_datetimeformat::locale_patterns::CalendarPatterns;
+use formatjs_intl_datetimeformat::data::LocaleData;
 use formatjs_intl_datetimeformat::{
     Error,
     fields::Components,
     matching::{self, Style, StyleData, Styles},
     pattern::{self, Format, RawPatterns},
 };
+use formatjs_intl_datetimeformat::{calendar::CalendarRegistry, locale_patterns::CalendarPatterns};
 use serde::Deserialize;
 use serde_json::Value;
 use std::io::{self, BufRead};
@@ -41,6 +42,15 @@ struct RawStyles {
     rename_all_fields = "camelCase"
 )]
 enum Request {
+    Locale {
+        json: String,
+        providers: Vec<String>,
+        calendars: Option<Vec<String>>,
+    },
+    CalendarFields {
+        calendar: String,
+        milliseconds: i64,
+    },
     Parse {
         #[serde(flatten)]
         raw: RawFormat,
@@ -85,6 +95,32 @@ fn styles(raw: Styles<RawFormat>) -> Result<Styles<Format>, Error> {
 }
 fn run(request: Request) -> Result<Value, Error> {
     Ok(match request {
+        Request::Locale {
+            json,
+            providers,
+            calendars: inspect,
+        } => {
+            let data = LocaleData::from_json(&json)?;
+            let mut registry = CalendarRegistry::default();
+            for name in providers {
+                registry.register(name, std::sync::Arc::new(|_| Err(Error::MissingCalendar)));
+            }
+            let mut calendars = std::collections::BTreeMap::new();
+            let names =
+                inspect.unwrap_or_else(|| data.calendar_names().map(str::to_owned).collect());
+            for name in names {
+                let calendar = data.calendar(&name)?;
+                calendars.insert(name,serde_json::json!({"names":calendar.names,"styles":calendar.styles()?,"formats":calendar.formats()?}));
+            }
+            serde_json::json!({"locale":data.locale,"metadata":data.metadata,"available":data.available_calendars(&registry),"calendars":calendars})
+        }
+        Request::CalendarFields {
+            calendar,
+            milliseconds,
+        } => serde_json::to_value(
+            CalendarRegistry::default().date_from_time(&calendar, milliseconds)?,
+        )
+        .unwrap(),
         Request::Calendar { data } => {
             serde_json::json!({"formats":data.formats()?,"styles":data.styles()?})
         }

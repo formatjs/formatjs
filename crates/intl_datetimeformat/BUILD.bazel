@@ -16,7 +16,9 @@ ts_run_binary(
 rust_library(
     name = "intl_datetimeformat",
     srcs = [
+        "calendar.rs",
         "civil.rs",
+        "data.rs",
         "fields.rs",
         "lib.rs",
         "locale_patterns.rs",
@@ -39,6 +41,7 @@ rust_library(
 formatjs_rust_test(
     name = "intl_datetimeformat_test",
     srcs = [
+        "calendar.test.rs",
         "lib.test.rs",
         "pattern.test.rs",
         "timezone.test.rs",

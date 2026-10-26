@@ -14,6 +14,7 @@ import {
   bestFitFormatMatcherScore,
 } from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
 import {DateTimeStyleFormat} from '#packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.js'
+import {CalendarDateFromTime} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import {DateTimeFormat as Reference} from '@formatjs/intl-datetimeformat'
 import type {DateTimeFormatLocaleInternalData} from '#packages/ecma402-abstract/types/date-time.js'
 
@@ -354,6 +355,55 @@ it('matches real CLDR patterns and format matching across calendar and language 
     const {data} = entry
     Reference.__addLocaleData(entry)
     const registered = Reference.localeData[locale]
+    const calendarNameFields = [
+      'era',
+      'month',
+      'monthStandalone',
+      'yearNames',
+      'leapMonthPatterns',
+    ]
+    const patternFields = [
+      'dateFormat',
+      'timeFormat',
+      'dateTimeFormat',
+      'formats',
+      'intervalFormats',
+      'calendarData',
+    ]
+    const [loaded] = run([
+      {method: 'locale', json: JSON.stringify(entry), providers: []},
+    ])
+    expect(loaded, `${locale}/owned locale`).toEqual({
+      locale: entry.locale,
+      metadata: Object.fromEntries(
+        Object.entries(data).filter(
+          ([key]) =>
+            !calendarNameFields.includes(key) && !patternFields.includes(key)
+        )
+      ),
+      available: registered.ca,
+      calendars: Object.fromEntries(
+        Object.keys(registered.formats).map(calendar => {
+          const fields = registered.calendarData?.[calendar] ?? registered
+          return [
+            calendar,
+            {
+              names: Object.fromEntries(
+                Object.entries(fields).filter(([key]) =>
+                  calendarNameFields.includes(key)
+                )
+              ),
+              styles: {
+                date: fields.dateFormat,
+                time: fields.timeFormat,
+                connector: fields.dateTimeFormat,
+              },
+              formats: registered.formats[calendar],
+            },
+          ]
+        })
+      ),
+    })
     for (const [calendar, patterns] of Object.entries(data.formats)) {
       const calendarData = data.calendarData?.[calendar] ?? data
       const intervals = calendarData.intervalFormats
@@ -444,4 +494,98 @@ it('matches real CLDR patterns and format matching across calendar and language 
   }
   expect(calendarCount).toBe(120)
   expect(patternCount).toBeGreaterThan(70000)
-}, 120000)
+}, 300000)
+
+it('matches Gregorian/ISO calendar fields after timezone adjustment at Date bounds', () => {
+  const milliseconds = [
+    -8640000000000000 - 86399999,
+    -8640000000000000,
+    -62167219200000,
+    -62135596800000,
+    -1,
+    0,
+    1,
+    951782400000,
+    8640000000000000,
+    8640000000000000 + 86399999,
+  ]
+  for (let index = 0; index < 128; index++)
+    milliseconds.push(
+      Math.floor(-8640000000000000 + index * (17280000000000000 / 127))
+    )
+  const requests = ['gregory', 'iso8601', 'not-loaded'].flatMap(calendar =>
+    milliseconds.map(milliseconds => ({
+      method: 'calendarFields',
+      calendar,
+      milliseconds,
+    }))
+  )
+  const actual = run(requests)
+  for (let index = 0; index < requests.length; index++) {
+    const {calendar, milliseconds} = requests[index]
+    expect(actual[index], `${calendar}/${milliseconds}`).toEqual(
+      captured(() => CalendarDateFromTime(milliseconds, calendar))
+    )
+  }
+})
+
+it('loads optional calendar patterns lazily and advertises only calendars with arithmetic and formats', () => {
+  const path = runfiles.resolve(
+    `${process.env.TEST_WORKSPACE || '_main'}/packages/intl-datetimeformat/cldr-raw/en.json`
+  )
+  const entry = JSON.parse(readFileSync(path, 'utf8')) as RawDateTimeLocaleData
+  Reference.__addCalendarData({
+    calendar: 'buddhist',
+    dateFromTime: milliseconds => CalendarDateFromTime(milliseconds, 'gregory'),
+  })
+  const modified = structuredClone(entry)
+  modified.data.formats.buddhist = {Q: 'Q'}
+  modified.data.calendarData!.buddhist.dateFormat.full = 'Q'
+  expect(() => Reference.__addLocaleData(modified)).not.toThrow()
+  expect(() => Reference.localeData.en.formats.buddhist).toThrow(RangeError)
+  const requests = [
+    {
+      method: 'locale',
+      json: JSON.stringify(modified),
+      providers: ['buddhist'],
+      calendars: [],
+    },
+    {
+      method: 'locale',
+      json: JSON.stringify(modified),
+      providers: ['buddhist'],
+      calendars: ['buddhist'],
+    },
+  ]
+  const [loaded, parsed] = run<{available: string[]} | {error: string}>(
+    requests
+  )
+  expect(loaded).toMatchObject({available: Reference.localeData.en.ca})
+  expect(parsed).toEqual({error: 'RangeError'})
+  const baseOnly = structuredClone(entry)
+  baseOnly.data.formats = {gregory: entry.data.formats.gregory}
+  const [available] = run([
+    {
+      method: 'locale',
+      json: JSON.stringify(baseOnly),
+      providers: entry.data.ca,
+      calendars: [],
+    },
+  ])
+  Reference.__addLocaleData(baseOnly)
+  expect(available).toMatchObject({available: Reference.localeData.en.ca})
+  const invalidBase = structuredClone(entry)
+  invalidBase.data.dateFormat.full = 'Q'
+  expect(() => Reference.__addLocaleData(invalidBase)).toThrow(RangeError)
+  expect(
+    run([
+      {
+        method: 'locale',
+        json: JSON.stringify(invalidBase),
+        providers: [],
+        calendars: [],
+      },
+    ])
+  ).toEqual([{error: 'RangeError'}])
+  Reference.__addLocaleData(entry)
+})

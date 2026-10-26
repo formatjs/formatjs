@@ -66,3 +66,18 @@ Differential tests cover LDML token widths, quoting, Unicode whitespace, range
 sources and matcher penalties. The real CLDR corpus checks 71,421 patterns across
 eight language families and all 15 calendars, including production registration,
 interval fallback selection, styles and 15,120 matcher option combinations.
+
+## Calendar providers
+
+`calendar::CalendarRegistry` supplies Gregorian/ISO fields without optional data.
+Months use the TS calendar contract's zero-based indices. Local milliseconds may
+cross Date bounds after timezone adjustment. Other calendars require registered
+`CalendarProvider` callbacks; unloaded calendars return `MissingCalendar`.
+Provider records retain leap-month, related-year and cyclic-year fields.
+Optional built-in providers and locale negotiation remain unfinished.
+
+`data::LocaleData` owns one raw CLDR locale record, including names, day-period
+rules, timezone names and hour/numbering preferences. Calendar formats and styles
+have separate lazy caches. Gregorian styles validate during loading; optional
+calendars parse on use. ISO shares Gregorian records. Availability requires both
+patterns and a registered arithmetic provider, preserving locale preference order.
