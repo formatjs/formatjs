@@ -1,4 +1,5 @@
 use formatjs_intl_datetimeformat::data::LocaleData;
+use formatjs_intl_datetimeformat::registry::{Registry, ResolutionOptions};
 use formatjs_intl_datetimeformat::{
     Error,
     fields::Components,
@@ -42,6 +43,9 @@ struct RawStyles {
     rename_all_fields = "camelCase"
 )]
 enum Request {
+    Registry {
+        steps: Vec<RegistryStep>,
+    },
     Locale {
         json: String,
         providers: Vec<String>,
@@ -93,8 +97,98 @@ fn styles(raw: Styles<RawFormat>) -> Result<Styles<Format>, Error> {
         short: raw.short.parse()?,
     })
 }
+#[derive(Deserialize)]
+#[serde(
+    tag = "action",
+    rename_all = "camelCase",
+    rename_all_fields = "camelCase"
+)]
+enum RegistryStep {
+    Load {
+        json: String,
+    },
+    Patch {
+        json: String,
+    },
+    Provider {
+        calendar: String,
+    },
+    Info {
+        locales: Vec<String>,
+    },
+    Resolve {
+        locales: Vec<String>,
+        options: ResolutionOptions,
+    },
+    Supported {
+        locales: Vec<String>,
+        locale_matcher: Option<String>,
+    },
+}
+fn registry_step(registry: &mut Registry, step: RegistryStep) -> Result<Value, Error> {
+    Ok(match step {
+        RegistryStep::Load { json } => {
+            registry.add_locale_data(&json)?;
+            Value::Null
+        }
+        RegistryStep::Patch { json } => {
+            registry.add_calendar_locale_data(&json)?;
+            Value::Null
+        }
+        RegistryStep::Provider { calendar } => {
+            registry.register_calendar(
+                calendar,
+                std::sync::Arc::new(|_| Err(Error::MissingCalendar)),
+            );
+            Value::Null
+        }
+        RegistryStep::Info { locales } => {
+            let mut records = std::collections::BTreeMap::new();
+            for locale in locales {
+                let data = registry.get(&locale)?;
+                let mut months = std::collections::BTreeMap::new();
+                let mut patterns = std::collections::BTreeMap::new();
+                for calendar in data.calendar_names() {
+                    let record = data.calendar(calendar)?;
+                    months.insert(
+                        calendar.to_owned(),
+                        record.names.month.long.first().cloned(),
+                    );
+                    patterns.insert(
+                        calendar.to_owned(),
+                        record
+                            .formats()?
+                            .first()
+                            .map(|format| format.raw_pattern.clone()),
+                    );
+                }
+                records.insert(locale,serde_json::json!({"am":data.metadata.am,"ca":registry.available_calendars(&data.locale)?,"nu":data.metadata.numbering_systems,"hc":data.metadata.hour_cycles,"calendars":data.calendar_names().collect::<Vec<_>>(),"months":months,"patterns":patterns}));
+            }
+            serde_json::json!({"available":registry.available_locales(),"default":registry.default_locale(),"data":records})
+        }
+        RegistryStep::Resolve { locales, options } => {
+            serde_json::to_value(registry.resolve(&locales, &options)?).unwrap()
+        }
+        RegistryStep::Supported {
+            locales,
+            locale_matcher,
+        } => serde_json::to_value(registry.supported_locales(&locales, locale_matcher.as_deref())?)
+            .unwrap(),
+    })
+}
 fn run(request: Request) -> Result<Value, Error> {
     Ok(match request {
+        Request::Registry { steps } => {
+            let mut registry = Registry::default();
+            let output = steps
+                .into_iter()
+                .map(|step| match registry_step(&mut registry, step) {
+                    Ok(value) => value,
+                    Err(_) => serde_json::json!({"error":"RangeError"}),
+                })
+                .collect::<Vec<_>>();
+            serde_json::to_value(output).unwrap()
+        }
         Request::Locale {
             json,
             providers,

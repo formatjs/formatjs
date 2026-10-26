@@ -13,6 +13,16 @@ ts_run_binary(
     tool = "//crates/intl_datetimeformat/scripts:timezones",
 )
 
+ts_run_binary(
+    name = "locale_aliases",
+    outs = ["locale-aliases.json"],
+    args = [
+        "--out",
+        "$(rootpath locale-aliases.json)",
+    ],
+    tool = "//crates/intl_datetimeformat/scripts:locales",
+)
+
 rust_library(
     name = "intl_datetimeformat",
     srcs = [
@@ -24,15 +34,24 @@ rust_library(
         "locale_patterns.rs",
         "matching.rs",
         "pattern.rs",
+        "registry.rs",
         "timezone.rs",
     ],
-    compile_data = [":timezone_links"],
+    compile_data = [
+        ":timezone_links",
+        ":locale_aliases",
+    ],
     crate_name = "formatjs_intl_datetimeformat",
     crate_root = "lib.rs",
     edition = "2024",
-    rustc_env = {"FORMATJS_TIMEZONE_LINKS": "$(execpath :timezone_links)"},
+    rustc_env = {
+        "FORMATJS_TIMEZONE_LINKS": "$(execpath :timezone_links)",
+        "FORMATJS_DATETIME_LOCALE_ALIASES": "$(execpath :locale_aliases)",
+    },
     visibility = ["//visibility:public"],
     deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
         "@crates//:serde",
         "@crates//:serde_json",
     ],

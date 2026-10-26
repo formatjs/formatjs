@@ -6,6 +6,7 @@ pub mod fields;
 pub mod locale_patterns;
 pub mod matching;
 pub mod pattern;
+pub mod registry;
 pub mod timezone;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -15,12 +16,18 @@ pub enum Error {
     MissingFormats,
     MissingCalendar,
     InvalidLocaleData,
+    InvalidLocale,
+    InvalidOption(&'static str),
+    MissingLocale,
     InvalidTimeZone,
     InvalidTimeZoneData,
 }
 impl std::fmt::Display for Error {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::InvalidLocale => formatter.write_str("Invalid DateTimeFormat locale"),
+            Self::InvalidOption(name) => write!(formatter, "Invalid DateTimeFormat option: {name}"),
+            Self::MissingLocale => formatter.write_str("DateTimeFormat locale data not loaded"),
             Self::InvalidPattern => formatter.write_str("Invalid DateTimeFormat pattern"),
             Self::InvalidLocaleData => formatter.write_str("Invalid DateTimeFormat locale data"),
             Self::MissingCalendar => formatter.write_str("DateTimeFormat calendar data not loaded"),

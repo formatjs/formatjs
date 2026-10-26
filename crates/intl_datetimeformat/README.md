@@ -12,7 +12,7 @@ uses Euclidean division for negative instants. Months are 1–12; weekdays are
 Local arithmetic allows one extra day around TimeClip for offset conversion;
 callers must validate the input instant before applying its timezone offset.
 
-The formatter, locale registry, optional calendars, ranges, C ABI,
+The formatter, optional calendar implementations, ranges, C ABI,
 Hermes facade and SDK installation remain unfinished.
 
 ```sh
@@ -74,10 +74,32 @@ Months use the TS calendar contract's zero-based indices. Local milliseconds may
 cross Date bounds after timezone adjustment. Other calendars require registered
 `CalendarProvider` callbacks; unloaded calendars return `MissingCalendar`.
 Provider records retain leap-month, related-year and cyclic-year fields.
-Optional built-in providers and locale negotiation remain unfinished.
+Optional built-in providers remain unfinished.
 
 `data::LocaleData` owns one raw CLDR locale record, including names, day-period
 rules, timezone names and hour/numbering preferences. Calendar formats and styles
 have separate lazy caches. Gregorian styles validate during loading; optional
-calendars parse on use. ISO shares Gregorian records. Availability requires both
+calendars parse on use. ISO shares Gregorian formats while names/styles honor explicit calendar overrides. Availability requires both
 patterns and a registered arithmetic provider, preserving locale preference order.
+
+## Locale registry
+
+`registry::Registry` loads raw locale JSON and optional calendar-locale patch JSON.
+Patches can arrive before the base locale or arithmetic provider. Base reloads keep
+patches; replacing a patch keeps its original registration position. Failed eager
+style validation leaves published records unchanged.
+
+The first base locale becomes the default. Registration uses the same CLDR
+aliases as TS and fills scriptless/parent fallbacks without replacing explicitly
+loaded locales. Reloads update inferred parents that still share the previous
+record. `get` returns an owned snapshot; subsequent lookups see replacement data.
+Locale payloads remain on demand; only default-content alias metadata compiles
+into the registry.
+
+`resolve` implements the locale/Unicode-extension phase of construction, including
+lookup/best-fit matching, calendar/numbering aliases, supported option overrides,
+and `hour12` suppression of the `hc` extension. Its hour cycle can remain null;
+final pattern/hour-cycle selection happens later. `supported_locales` follows TS
+lookup behavior for both matcher options. Differential tests cover registration,
+patch/provider ordering, custom calendars, failed reloads and 12,600 negotiation
+combinations against actual TS constructors and ResolveLocale.

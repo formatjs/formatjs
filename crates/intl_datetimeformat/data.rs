@@ -116,6 +116,24 @@ struct RawCalendar {
 }
 
 impl RawCalendar {
+    fn inherit_names(&mut self, base: &CalendarNames) {
+        self.names.month_standalone = self
+            .names
+            .month_standalone
+            .take()
+            .or_else(|| base.month_standalone.clone());
+        self.names.year_names = self
+            .names
+            .year_names
+            .take()
+            .or_else(|| base.year_names.clone());
+        self.names.leap_month_patterns = self
+            .names
+            .leap_month_patterns
+            .take()
+            .or_else(|| base.leap_month_patterns.clone());
+    }
+
     fn with_formats(self, formats: RawPatterns) -> CalendarLocale {
         CalendarLocale {
             names: self.names,
@@ -127,6 +145,7 @@ impl RawCalendar {
                 interval_formats: self.interval_formats,
             },
             formats: OnceLock::new(),
+            formats_from: None,
             styles: OnceLock::new(),
         }
     }
@@ -144,10 +163,51 @@ struct RawData {
     calendar_data: BTreeMap<String, RawCalendar>,
 }
 
-#[derive(Deserialize)]
-struct RawLocale {
-    locale: String,
+#[derive(Clone, Deserialize)]
+pub(crate) struct RawLocale {
+    pub locale: String,
     data: RawData,
+}
+
+#[derive(Clone, Deserialize)]
+pub(crate) struct CalendarPatch {
+    pub locale: String,
+    pub calendar: String,
+    data: RawCalendar,
+    formats: RawPatterns,
+}
+
+impl RawLocale {
+    pub(crate) fn apply(&mut self, patch: &CalendarPatch) {
+        if !self
+            .data
+            .metadata
+            .calendar_preferences
+            .contains(&patch.calendar)
+        {
+            self.data
+                .metadata
+                .calendar_preferences
+                .push(patch.calendar.clone());
+        }
+        if let Some((_, formats)) = self
+            .data
+            .formats
+            .0
+            .iter_mut()
+            .find(|(calendar, _)| calendar == &patch.calendar)
+        {
+            *formats = patch.formats.clone();
+        } else {
+            self.data
+                .formats
+                .0
+                .push((patch.calendar.clone(), patch.formats.clone()));
+        }
+        self.data
+            .calendar_data
+            .insert(patch.calendar.clone(), patch.data.clone());
+    }
 }
 
 #[derive(Debug)]
@@ -155,11 +215,16 @@ pub struct CalendarLocale {
     pub names: CalendarNames,
     raw: CalendarPatterns,
     formats: OnceLock<Result<Vec<Format>, Error>>,
+    // ISO shares format lists even when localized names/styles differ.
+    formats_from: Option<Arc<CalendarLocale>>,
     styles: OnceLock<Result<StyleData, Error>>,
 }
 
 impl CalendarLocale {
     pub fn formats(&self) -> Result<&[Format], Error> {
+        if let Some(source) = &self.formats_from {
+            return source.formats();
+        }
         self.formats
             .get_or_init(|| self.raw.formats())
             .as_ref()
@@ -183,8 +248,18 @@ pub struct LocaleData {
 
 impl LocaleData {
     pub fn from_json(json: &str) -> Result<Self, Error> {
-        let RawLocale { locale, data } =
-            serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
+        Self::from_raw(serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?)
+    }
+
+    pub(crate) fn from_raw(raw: RawLocale) -> Result<Self, Error> {
+        let RawLocale { locale, data } = raw;
+        let gregory_override = data.calendar_data.contains_key("gregory");
+        if gregory_override {
+            data.gregory
+                .clone()
+                .with_formats(RawPatterns::default())
+                .styles()?;
+        }
         let mut calendars = BTreeMap::new();
         for (calendar, formats) in data.formats.0 {
             if calendar == "iso8601" {
@@ -195,26 +270,30 @@ impl LocaleData {
                 .get(&calendar)
                 .unwrap_or(&data.gregory)
                 .clone();
-            raw.names.month_standalone = raw
-                .names
-                .month_standalone
-                .or_else(|| data.gregory.names.month_standalone.clone());
-            raw.names.year_names = raw
-                .names
-                .year_names
-                .or_else(|| data.gregory.names.year_names.clone());
-            raw.names.leap_month_patterns = raw
-                .names
-                .leap_month_patterns
-                .or_else(|| data.gregory.names.leap_month_patterns.clone());
+            raw.inherit_names(&data.gregory.names);
             calendars.insert(calendar, Arc::new(raw.with_formats(formats)));
         }
         let gregory = calendars
             .get("gregory")
             .cloned()
             .ok_or(Error::InvalidLocaleData)?;
-        gregory.styles()?;
-        calendars.insert("iso8601".into(), gregory);
+        if !gregory_override {
+            gregory.styles()?;
+        }
+        let iso = if gregory_override || data.calendar_data.contains_key("iso8601") {
+            let mut raw = data
+                .calendar_data
+                .get("iso8601")
+                .unwrap_or(&data.gregory)
+                .clone();
+            raw.inherit_names(&data.gregory.names);
+            let mut iso = raw.with_formats(RawPatterns::default());
+            iso.formats_from = Some(gregory);
+            Arc::new(iso)
+        } else {
+            gregory
+        };
+        calendars.insert("iso8601".into(), iso);
         Ok(Self {
             locale,
             metadata: data.metadata,
@@ -227,10 +306,13 @@ impl LocaleData {
     }
 
     pub fn calendar(&self, calendar: &str) -> Result<Arc<CalendarLocale>, Error> {
-        self.calendars
+        let calendar = self
+            .calendars
             .get(calendar)
             .cloned()
-            .ok_or(Error::MissingCalendar)
+            .ok_or(Error::MissingCalendar)?;
+        calendar.styles()?;
+        Ok(calendar)
     }
 
     pub fn available_calendars(&self, providers: &CalendarRegistry) -> Vec<String> {

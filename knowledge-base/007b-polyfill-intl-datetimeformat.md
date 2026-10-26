@@ -323,7 +323,7 @@ to cross the exact Date bounds after the input instant has passed TimeClip.
 
 Rust units and differential tests cover 8,193 instants against TS DateOperations,
 including year zero, leap centuries, full Date bounds and negative nanoseconds.
-Locale registration, optional calendar conversion, formatting/ranges, C ABI,
+Optional calendar conversion, formatting/ranges, C ABI,
 Hermes integration and SDK packaging remain unfinished.
 
 The Rust timezone registry consumes the same base-36 packs as JS. `:timezone_data`
@@ -362,7 +362,27 @@ optional arithmetic or ICU tables are linked by the core registry.
 
 Rust `data::LocaleData` owns typed CLDR metadata and calendar names. Gregorian
 styles prepare at load; format lists and optional calendar styles prepare lazily.
-ISO shares the Gregorian record. Calendar names inherit omitted optional fields
+ISO shares Gregorian formats while names/styles honor explicit calendar overrides. Calendar names inherit omitted optional fields
 from the base locale, matching TS record composition. Availability keeps CLDR
-preference order and requires both formats and registered arithmetic. Multi-locale
-registration, optional locale patches and locale negotiation remain unfinished.
+preference order and requires both formats and registered arithmetic. Rendering/ranges, optional arithmetic, owned ABI and Hermes/SDK remain unfinished.
+
+`registry::Registry` now owns raw/processed locale records and optional calendar
+patches. Patches may precede base data/providers; reloads retain them and keep
+locale calendar preferences intact. Published alias/fallback records sharing a
+replaced record update together, while explicit locale data wins over inferred
+aliases. Invalid eager styles leave published state unchanged. Default-content
+aliases compile from the same generated CLDR map as `registerLocaleData`; locale
+payloads remain on demand.
+
+Locale resolution reuses the Rust Locale matcher/canonicalizer and retains TS's
+last-request extension behavior for repeated best-fit base tags. It negotiates
+`ca`, `nu`, and nullable `hc`, canonicalizes option aliases, and suppresses `hc`
+when `hour12` is supplied. This is the early locale phase, not final hour-cycle
+or pattern selection. Registry differential tests cover explicit/alias precedence,
+scriptless fallbacks, provider/patch ordering, base/patch replacements, custom
+calendars, failed loads and 12,600 option/request combinations.
+
+Core calendar locale patches retain separate names/styles even though ISO format
+lists delegate to Gregorian. Base Gregorian styles validate eagerly; override
+records validate on access. Focused differential regressions cover these cases,
+including invalid override styles and base reloads with retained patches.
