@@ -25,3 +25,5 @@ formatjs_intl_numberformat = { path = "../intl_numberformat" }
 formatjs_intl_relativetimeformat = { path = "../intl_relativetimeformat" }
 formatjs_intl_datetimeformat = { path = "../intl_datetimeformat" }
 formatjs_intl_datetimeformat_calendars = { path = "../intl_datetimeformat_calendars" }
+
+formatjs_intl_durationformat = { path = "../intl_durationformat" }

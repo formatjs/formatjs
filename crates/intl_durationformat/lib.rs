@@ -1,4 +1,5 @@
 //! Duration records, options and native number/list rendering. Hosts own coercions.
+pub mod ffi;
 mod formatter;
 mod metadata;
 mod options;

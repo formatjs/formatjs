@@ -121,5 +121,13 @@ Phased construction retains this resolution snapshot while the host reads option
 Resolved options are compared with TS across all 766 locales; eight-locale
 rendering tests also exercise the complete native constructor and separator lookup.
 
-C ABI and Hermes/SDK installation remain in progress. Number/list payloads stay
+The owned C ABI retains synchronized native dependency contexts across registry,
+construction and formatter handles. Construction enforces style/display phases and
+canonical unit indices before late fractional-digit validation. Typed doubles and
+a defined-field mask preserve Number integers without a decimal round trip.
+Owned JSON results keep resolved-property and part-property order. Lifetime tests
+cover registry/construction destruction and final-owner release on a worker thread.
+The shared `intl_hermes` archive assembles these symbols.
+
+Hermes/SDK installation remains in progress. Number/list payloads stay
 separate and load on demand; rendering uses no JS formatter callbacks.

@@ -27,6 +27,7 @@ rust_static_library(
         "//crates/intl_datetimeformat",
         "//crates/intl_datetimeformat_calendars",
         "//crates/intl_displaynames",
+        "//crates/intl_durationformat",
         "//crates/intl_getcanonicallocales",
         "//crates/intl_listformat",
         "//crates/intl_locale",

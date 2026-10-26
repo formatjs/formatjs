@@ -205,21 +205,23 @@ impl Configuration {
             let prepared = resolver.prepare(unit, input.style)?;
             *output = resolver.finish(prepared, input.display)?;
         }
-        let fractional_digits = options
-            .fractional_digits
-            .map(|value| {
-                if !value.is_finite() || !(0.0..=9.0).contains(&value) {
-                    return Err(Error::InvalidOption);
-                }
-                Ok(value.floor() as u8)
-            })
-            .transpose()?;
+        let fractional_digits = fractional_digits(options.fractional_digits)?;
         Ok(Self {
             style: options.style,
             units,
             fractional_digits,
         })
     }
+}
+pub(crate) fn fractional_digits(value: Option<f64>) -> Result<Option<u8>, Error> {
+    value
+        .map(|value| {
+            if !value.is_finite() || !(0.0..=9.0).contains(&value) {
+                return Err(Error::InvalidOption);
+            }
+            Ok(value.floor() as u8)
+        })
+        .transpose()
 }
 impl Serialize for Configuration {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {

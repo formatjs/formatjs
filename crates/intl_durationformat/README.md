@@ -1,7 +1,7 @@
 # formatjs_intl_durationformat
 
 Rust duration records, locale/formatting-option resolution and number/list rendering.
-C ABI, Hermes installation and SDK integration remain in progress.
+Owned C ABI is available; Hermes installation and SDK integration remain in progress.
 
 `Duration::from_numbers` accepts ten optional Number values in `Unit::ALL` order.
 It requires at least one defined field, finite integral values, a common sign,
@@ -58,3 +58,20 @@ phases. Numbering-system support is probed through native NumberFormat; an empty
 probe retries after locale loading. Successful capability probes remain cached,
 matching the TS dependency constructor lifetime. Locale negotiation and option
 ordering are compared across all 766 CLDR locales with lookup and best-fit.
+
+The C ABI in `durationformat.h` exposes retained dependency contexts, construction
+handles, formatter handles and owned JSON byte results. `begin` resolves locale;
+`style` runs once, followed by `unit_style`/`unit_display` pairs for canonical
+indices 0 through 9. `finish` validates fractional digits last. Invalid, repeated
+or skipped phases fail without producing a handle. Styles/displays cross as JSON
+strings or null for defaults; hosts retain observable coercion and getter order.
+
+`DurationValue` carries ten doubles and a defined-field mask, preserving Number
+integers without decimal conversion. Formatting returns either a JSON string or
+parts. Status codes distinguish RangeError/data errors, invalid ABI input, panic,
+TypeError and missing-dependency Error. All output pointers reset before failure.
+Free successful bytes and destroy owned handles once. Formatters and construction
+handles retain their context after registry destruction; the context is synchronized
+and contains no host callbacks or thread-bound JS values. Native lifetime coverage
+also formats and drops the final owner on a worker thread. `intl_hermes` exports the
+ABI through the shared Rust archive.
