@@ -81,3 +81,16 @@ identifiers and omits aliases such as `Etc/UTC`.
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.
 Only collations accepted by the installed Collator are returned.
+
+## Rust port
+
+`crates/intl_supportedvaluesof` shares the generated candidate data with the
+TypeScript package. Its enumeration core takes formatter observations from
+the embedding, then filters, sorts and deduplicates results. Collations retain
+their CLDR candidate locales; support is not inferred from English alone.
+
+`//packages/intl-supportedvaluesof:rust_conformance_test` compares all six
+complete output lists with TypeScript using real host formatter observations.
+Rust unit tests cover the ported value-selection cases and C ABI ownership.
+The C callback interface is the boundary for the forthcoming Hermes adapter;
+JS key coercion and installation are not implemented by this Rust core.

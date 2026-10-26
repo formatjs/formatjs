@@ -85,6 +85,20 @@ formatjs_test(
     ],
 )
 
+formatjs_test(
+    name = "rust_conformance_test",
+    srcs = ["tests/rust-conformance.test.ts"],
+    data = ["//crates/intl_supportedvaluesof:conformance"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":intl-supportedvaluesof",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
+
 # @formatjs_generated/cldr.supported-values — BCP47 supported value enumerations
 generate_package_file(
     name = "cldr_sv_calendars",
