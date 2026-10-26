@@ -173,6 +173,7 @@ it('matches Intl.PluralRules digit resolution, rounded selection and ranges agai
         ]
         const resolved = rules[0].resolvedOptions() as any
         const expected = {
+          resolved: rules.map(rule => rule.resolvedOptions()),
           digits: Object.fromEntries(
             digitKeys
               .filter(key => key in resolved)
@@ -220,6 +221,12 @@ it('matches Intl.PluralRules digit resolution, rounded selection and ranges agai
         ? []
         : [{locale: record.locale, options: record.options, actual, expected}]
     const fields = []
+    if (!isDeepStrictEqual(actual.resolved, expected.resolved))
+      fields.push({
+        key: 'resolved',
+        actual: actual.resolved,
+        expected: expected.resolved,
+      })
     if (!isDeepStrictEqual(actual.digits, expected.digits))
       fields.push({
         key: 'digits',

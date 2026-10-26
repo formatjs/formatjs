@@ -30,3 +30,8 @@ fraction/significant precision, priority and trailing-zero display. Its fields
 serialize as resolved digit options. `tests:digit_conformance_test` compares
 public TS selection, range results and resolved options across 13 locales and
 900+ configurations. Linux native validation is required before completion.
+
+`instance::PluralRules` retains an `Arc<LocaleRules>` and validated options.
+It handles rounding, compact scale, selection, ranges and resolved metadata;
+the differential runner uses this same instance API. JS coercion and locale
+negotiation remain host adapter work.

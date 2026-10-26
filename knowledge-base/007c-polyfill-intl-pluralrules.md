@@ -162,3 +162,8 @@ registers as `sr-Latn`), exact digit-string modulo beyond Number precision,
 integer-only CLDR `n` membership, and fractions longer than ICU4X's default
 18-digit operand window. Both engines retain visible fraction width and compute
 modulo before converting digits to bounded integers.
+
+`instance::PluralRules` owns validated type/notation/digit options and shares an
+immutable rule payload. The conformance runner exercises this production API for
+selection, ranges and complete resolved metadata. Host adapters handle observable
+JS coercion and locale negotiation before constructing an instance.

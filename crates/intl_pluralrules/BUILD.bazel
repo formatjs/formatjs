@@ -20,6 +20,7 @@ rust_library(
     name = "intl_pluralrules",
     srcs = [
         "digits.rs",
+        "instance.rs",
         "lib.rs",
     ],
     crate_name = "formatjs_intl_pluralrules",
@@ -40,6 +41,7 @@ formatjs_rust_test(
     name = "intl_pluralrules_test",
     srcs = [
         "digits.test.rs",
+        "instance.test.rs",
         "lib.test.rs",
     ],
     crate_name = "intl_pluralrules_test",

@@ -19,6 +19,10 @@ it('can construct and inspect every explicitly registered CLDR plural locale', (
       runInNewContext('(' + readFileSync(join(directory, file), 'utf8') + ')')
     )
   for (const record of records) PluralRules.__addLocaleData(record)
+  // Both French one and many match these operands; CLDR orders one first.
+  expect(
+    records.find(record => record.locale === 'fr').data.fn('1', false, 6)
+  ).toBe('one')
   const failures = records.flatMap(record => {
     try {
       new PluralRules(record.locale).resolvedOptions()

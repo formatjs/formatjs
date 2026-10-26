@@ -1,10 +1,12 @@
 use formatjs_intl_pluralrules::{
-    LocaleRules,
-    digits::{Digits, Error as DigitError, Options},
+    Error, LocaleRules,
+    digits::{Error as DigitError, Options},
+    instance::{Options as InstanceOptions, PluralRules},
 };
 use serde::Deserialize;
 use serde_json::json;
 use std::io::{self, BufRead};
+use std::sync::Arc;
 
 #[derive(Deserialize)]
 struct Case {
@@ -29,75 +31,72 @@ struct Request {
     #[serde(default)]
     ranges: Vec<Range>,
 }
-fn nonfinite(value: &str) -> bool {
-    ["NaN", "Infinity", "-Infinity"].contains(&value)
-}
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     for line in io::stdin().lock().lines() {
         let request: Request = serde_json::from_str(&line?)?;
-        let rules = LocaleRules::from_json(&request.pack)?;
-        let compact = request.notation.as_deref() == Some("compact");
-        let long = request.compact_display.as_deref() == Some("long");
-        let digits = match request
+        let rules = Arc::new(LocaleRules::from_json(&request.pack)?);
+        let instances = match request
             .digits
             .as_ref()
-            .map(|options| Digits::new(options, compact))
+            .map(|digits| {
+                [false, true]
+                    .into_iter()
+                    .map(|ordinal| {
+                        PluralRules::new(
+                            rules.clone(),
+                            &InstanceOptions {
+                                kind: Some(if ordinal { "ordinal" } else { "cardinal" }.to_owned()),
+                                notation: request.notation.clone(),
+                                compact_display: request.compact_display.clone(),
+                                digits: digits.clone(),
+                            },
+                        )
+                    })
+                    .collect::<Result<Vec<_>, Error>>()
+            })
             .transpose()
         {
             Ok(value) => value,
             Err(error) => {
                 println!(
                     "{}",
-                    json!({"error":match error {DigitError::Type(_)=>"TypeError",_=>"RangeError"}})
+                    json!({"error":match error {Error::Digits(DigitError::Type(_))=>"TypeError",_=>"RangeError"}})
                 );
                 continue;
             }
         };
-        let format = |value: &str| -> Result<String, DigitError> {
-            if nonfinite(value) {
-                Ok(value.to_owned())
-            } else if let Some(digits) = &digits {
-                digits.format(value).map(|value| value.formatted_string)
-            } else {
-                Ok(value.to_owned())
-            }
-        };
-        let exponent =
-            |value: &str, fallback: usize| -> Result<usize, formatjs_intl_pluralrules::Error> {
-                if compact && !nonfinite(value) {
-                    rules.compact_exponent(value, long)
-                } else {
-                    Ok(fallback)
-                }
-            };
         let mut values = Vec::new();
         for case in &request.cases {
-            let formatted = format(&case.decimal)?;
-            values.push(rules.select_rounded(
-                &formatted,
-                exponent(&formatted, case.exponent)?,
-                case.ordinal,
-            )?);
+            values.push(if let Some(instances) = &instances {
+                instances[usize::from(case.ordinal)].select(&case.decimal)?
+            } else {
+                rules.select_rounded(&case.decimal, case.exponent, case.ordinal)?
+            });
         }
         let mut ranges = Vec::new();
         for range in &request.ranges {
-            let start = format(&range.start)?;
-            let end = format(&range.end)?;
             ranges.push(
-                rules
-                    .select_range_rounded(
-                        &start,
-                        &end,
-                        exponent(&start, 0)?,
-                        exponent(&end, 0)?,
-                        range.ordinal,
-                    )?
-                    .to_owned(),
+                if let Some(instances) = &instances {
+                    instances[usize::from(range.ordinal)].select_range(&range.start, &range.end)?
+                } else {
+                    rules.select_range_rounded(&range.start, &range.end, 0, 0, range.ordinal)?
+                }
+                .to_owned(),
             );
         }
+        let resolved = instances.as_ref().map(|values| {
+            values
+                .iter()
+                .map(PluralRules::resolved_options)
+                .collect::<Vec<_>>()
+        });
+        let digits = instances
+            .as_ref()
+            .map(|values| values[0].resolved_options().digits);
+
         println!(
             "{}",
-            json!({"locale":rules.locale(),"cardinal":rules.categories(false),"ordinal":rules.categories(true),"values":values,"ranges":ranges,"digits":digits})
+            json!({"locale":rules.locale(),"cardinal":rules.categories(false),"ordinal":rules.categories(true),"values":values,"ranges":ranges,"digits":digits,"resolved":resolved})
         );
     }
     Ok(())

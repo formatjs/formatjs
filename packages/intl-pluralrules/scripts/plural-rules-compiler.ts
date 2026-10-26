@@ -648,9 +648,9 @@ export class PluralRulesCompiler {
   private buildRulesBlock(rules: Map<PluralCategory, string>): ts.Statement[] {
     const statements: ts.Statement[] = []
 
-    // Sort categories to ensure consistent order (but 'other' should be last)
-    const categories = Array.from(rules.keys()).filter(c => c !== 'other')
-    categories.sort()
+    // CLDR rules can overlap. Evaluate in semantic order, not alphabetically.
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1300-L1306
+    const categories: PluralCategory[] = ['zero', 'one', 'two', 'few', 'many']
 
     for (const category of categories) {
       const condition = rules.get(category)

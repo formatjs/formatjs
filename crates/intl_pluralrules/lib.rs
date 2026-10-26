@@ -15,12 +15,15 @@ use icu_provider::prelude::*;
 use serde::Deserialize;
 
 pub mod digits;
+pub mod instance;
 
 #[derive(Debug)]
 pub enum Error {
     InvalidData(String),
     InvalidNumber,
     InvalidRange,
+    InvalidOption(&'static str),
+    Digits(digits::Error),
 }
 impl fmt::Display for Error {
     fn fmt(&self, out: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -28,10 +31,17 @@ impl fmt::Display for Error {
             Self::InvalidData(message) => write!(out, "Invalid plural data: {message}"),
             Self::InvalidNumber => out.write_str("Invalid formatted decimal"),
             Self::InvalidRange => out.write_str("Plural range endpoints cannot be NaN"),
+            Self::InvalidOption(name) => write!(out, "Invalid plural option: {name}"),
+            Self::Digits(error) => error.fmt(out),
         }
     }
 }
 impl std::error::Error for Error {}
+impl From<digits::Error> for Error {
+    fn from(error: digits::Error) -> Self {
+        Self::Digits(error)
+    }
+}
 
 #[derive(Deserialize)]
 struct Pack<'data> {
