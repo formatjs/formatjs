@@ -4,9 +4,7 @@
 
 use std::collections::BTreeMap;
 use std::fmt;
-use std::str::FromStr;
 
-use fixed_decimal::{Decimal, UnsignedDecimal};
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
 use icu_plurals::provider::rules::runtime::ast::Rule;
 use icu_plurals::provider::{PluralRulesData, PluralsCardinalV1, PluralsOrdinalV1};
@@ -17,6 +15,7 @@ use serde::Deserialize;
 pub mod digits;
 pub mod ffi;
 pub mod instance;
+mod mathematical;
 pub mod registry;
 
 #[derive(Debug)]
@@ -120,36 +119,35 @@ fn category(value: &str) -> Option<PluralCategory> {
     }
 }
 
-fn fraction_integer(decimal: &UnsignedDecimal, low: i16) -> u64 {
-    if low >= 0 {
-        return 0;
-    }
-    let top = low.saturating_add(17).min(-1);
-    let mut value = 0;
-    for magnitude in (low..=top).rev() {
-        value = value * 10 + u64::from(decimal.digit_at(magnitude));
-    }
-    // Keep low digits for CLDR moduli; mark nonzero high digits so large
+fn bounded_digits(digits: &str) -> u64 {
+    let low = digits.len().saturating_sub(18);
+    let value = digits[low..]
+        .bytes()
+        .fold(0u64, |value, digit| value * 10 + u64::from(digit - b'0'));
+    // Low digits preserve CLDR moduli; mark nonzero high digits so large
     // operands cannot equal a small literal. ICU4X uses this encoding for i.
-    if (top + 1..=-1).any(|magnitude| decimal.digit_at(magnitude) != 0) {
-        value += 1_000_000_000_000_000_000;
-    }
     value
+        + if digits[..low].bytes().any(|digit| digit != b'0') {
+            1_000_000_000_000_000_000
+        } else {
+            0
+        }
 }
 
-fn operands(decimal: &Decimal, exponent: usize) -> PluralOperands {
-    let mut raw = RawPluralOperands::from(PluralOperands::from(decimal));
-    // CLDR operands retain every visible fraction digit, including beyond
-    // ICU4X's default 18-digit fractional window.
+fn operands(decimal: &str, exponent: usize) -> Result<PluralOperands, Error> {
+    // CLDR operands retain every visible fraction digit. Reading the decimal
+    // string also avoids ICU's 18-digit fraction and i16 magnitude limits.
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1353-L1374
-    let fraction_end = *decimal.absolute.magnitude_range().start();
-    let significant_end = decimal.absolute.nonzero_magnitude_end().min(0);
-    raw.v = usize::from(fraction_end.unsigned_abs());
-    raw.w = usize::from(significant_end.unsigned_abs());
-    raw.f = fraction_integer(&decimal.absolute, fraction_end);
-    raw.t = fraction_integer(&decimal.absolute, significant_end);
-    raw.c = exponent;
-    PluralOperands::from(raw)
+    let (integer, fraction) = mathematical::parts(decimal).ok_or(Error::InvalidNumber)?;
+    let significant = fraction.trim_end_matches('0');
+    Ok(PluralOperands::from(RawPluralOperands {
+        i: bounded_digits(integer),
+        v: fraction.len(),
+        w: significant.len(),
+        f: bounded_digits(fraction),
+        t: bounded_digits(significant),
+        c: exponent,
+    }))
 }
 
 pub struct LocaleRules {
@@ -215,8 +213,17 @@ impl LocaleRules {
         &self.locale
     }
     pub fn compact_exponent(&self, formatted: &str, long: bool) -> Result<usize, Error> {
-        let decimal = Decimal::from_str(formatted).map_err(|_| Error::InvalidNumber)?;
-        let magnitude = decimal.absolute.nonzero_magnitude_start();
+        let (integer, fraction) = mathematical::parts(formatted).ok_or(Error::InvalidNumber)?;
+        let integer = integer.trim_start_matches('0');
+        let magnitude = if !integer.is_empty() {
+            integer.len().saturating_sub(1).min(i16::MAX as usize) as i16
+        } else {
+            fraction
+                .bytes()
+                .position(|digit| digit != b'0')
+                .map(|position| -((position + 1).min(i16::MAX as usize) as i16))
+                .unwrap_or(0)
+        };
         // ResolvePlural 8–10 uses this locale's compact scale after rounding.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L316-L321
         Ok(self
@@ -265,12 +272,9 @@ impl LocaleRules {
         if ["NaN", "Infinity", "-Infinity"].contains(&decimal) {
             return Ok("other");
         }
-        let mut decimal = Decimal::from_str(decimal).map_err(|_| Error::InvalidNumber)?;
-        // Integer padding is formatting width, not a significant operand digit.
-        decimal.absolute.trim_start();
         Ok(name(
             self.rules(ordinal)
-                .category_for(operands(&decimal, exponent)),
+                .category_for(operands(decimal, exponent)?),
         ))
     }
     /// ResolvePluralRange 1–9 rejects NaN, permits infinities, then compares

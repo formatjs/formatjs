@@ -37,6 +37,7 @@ rust_library(
         "ffi.rs",
         "instance.rs",
         "lib.rs",
+        "mathematical.rs",
         "registry.rs",
     ],
     crate_name = "formatjs_intl_pluralrules",

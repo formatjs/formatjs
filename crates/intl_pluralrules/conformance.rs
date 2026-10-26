@@ -13,12 +13,18 @@ struct Case {
     decimal: String,
     exponent: usize,
     ordinal: bool,
+    #[serde(default)]
+    bigint: bool,
 }
 #[derive(Deserialize)]
 struct Range {
     start: String,
     end: String,
     ordinal: bool,
+    #[serde(default, rename = "startBigint")]
+    start_bigint: bool,
+    #[serde(default, rename = "endBigint")]
+    end_bigint: bool,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -30,6 +36,8 @@ struct Request {
     compact_display: Option<String>,
     #[serde(default)]
     ranges: Vec<Range>,
+    #[serde(default)]
+    mathematical: bool,
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     for line in io::stdin().lock().lines() {
@@ -68,7 +76,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut values = Vec::new();
         for case in &request.cases {
             values.push(if let Some(instances) = &instances {
-                instances[usize::from(case.ordinal)].select(&case.decimal)?
+                if request.mathematical {
+                    instances[usize::from(case.ordinal)]
+                        .select_mathematical(&case.decimal, case.bigint)?
+                } else {
+                    instances[usize::from(case.ordinal)].select(&case.decimal)?
+                }
             } else {
                 rules.select_rounded(&case.decimal, case.exponent, case.ordinal)?
             });
@@ -77,7 +90,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for range in &request.ranges {
             ranges.push(
                 if let Some(instances) = &instances {
-                    instances[usize::from(range.ordinal)].select_range(&range.start, &range.end)?
+                    if request.mathematical {
+                        instances[usize::from(range.ordinal)].select_range_mathematical(
+                            &range.start,
+                            &range.end,
+                            range.start_bigint,
+                            range.end_bigint,
+                        )?
+                    } else {
+                        instances[usize::from(range.ordinal)]
+                            .select_range(&range.start, &range.end)?
+                    }
                 } else {
                     rules.select_range_rounded(&range.start, &range.end, 0, 0, range.ordinal)?
                 }

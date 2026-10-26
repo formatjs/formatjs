@@ -110,7 +110,7 @@ impl PluralRules {
         if ["NaN", "Infinity", "-Infinity"].contains(&value) {
             Ok(value.to_owned())
         } else {
-            Ok(self.digits.format(value)?.formatted_string)
+            Ok(self.digits.format_string(value)?)
         }
     }
 
@@ -128,6 +128,25 @@ impl PluralRules {
         let formatted = self.formatted(value)?;
         self.rules
             .select_rounded(&formatted, self.exponent(&formatted)?, self.ordinal)
+    }
+
+    /// Numeric text from a coerced primitive. BigInt bypasses Number-range
+    /// clamping; JS ToPrimitive and Symbol rejection happen in the host.
+    pub fn select_mathematical(&self, value: &str, bigint: bool) -> Result<&'static str, Error> {
+        self.select(&crate::mathematical::for_rounding(value, bigint))
+    }
+
+    pub fn select_range_mathematical(
+        &self,
+        start: &str,
+        end: &str,
+        start_bigint: bool,
+        end_bigint: bool,
+    ) -> Result<&str, Error> {
+        self.select_range(
+            &crate::mathematical::for_rounding(start, start_bigint),
+            &crate::mathematical::for_rounding(end, end_bigint),
+        )
     }
 
     pub fn select_range(&self, start: &str, end: &str) -> Result<&str, Error> {

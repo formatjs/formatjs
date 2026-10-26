@@ -48,3 +48,9 @@ Rust archive. JSON requests contain already-coerced primitives; non-finite digit
 Numbers use private string sentinels. Successful query buffers must be freed
 once. Instances remain valid after registry destruction. JSI installation and
 observable JS behavior remain in progress.
+
+Mathematical-input entry points parse numeric strings/radix literals exactly,
+apply Number overflow/underflow clamping, and keep BigInt outside that clamp.
+Arbitrary-length integers use string rounding when ICU's magnitude range is too
+small. The mathematical conformance suite compares TS selection and ranges,
+including 40,000-digit BigInt and long halfway fractions.

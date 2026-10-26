@@ -204,8 +204,23 @@ pub unsafe extern "C" fn formatjs_plural_create(
 #[serde(tag = "method", rename_all = "camelCase")]
 enum Query {
     ResolvedOptions,
-    Select { value: String },
-    SelectRange { start: String, end: String },
+    Select {
+        value: String,
+        #[serde(default)]
+        mathematical: bool,
+        #[serde(default)]
+        bigint: bool,
+    },
+    SelectRange {
+        start: String,
+        end: String,
+        #[serde(default)]
+        mathematical: bool,
+        #[serde(default, rename = "startBigint")]
+        start_bigint: bool,
+        #[serde(default, rename = "endBigint")]
+        end_bigint: bool,
+    },
 }
 
 #[derive(Deserialize)]
@@ -283,9 +298,33 @@ pub unsafe extern "C" fn formatjs_plural_query(
             Query::ResolvedOptions => {
                 serde_json::to_value(rules.resolved_options()).map_err(|_| 2)?
             }
-            Query::Select { value } => json!(rules.select(&value).map_err(status)?),
-            Query::SelectRange { start, end } => {
-                json!(rules.select_range(&start, &end).map_err(status)?)
+            Query::Select {
+                value,
+                mathematical,
+                bigint,
+            } => json!(
+                if mathematical {
+                    rules.select_mathematical(&value, bigint)
+                } else {
+                    rules.select(&value)
+                }
+                .map_err(status)?
+            ),
+            Query::SelectRange {
+                start,
+                end,
+                mathematical,
+                start_bigint,
+                end_bigint,
+            } => {
+                json!(
+                    if mathematical {
+                        rules.select_range_mathematical(&start, &end, start_bigint, end_bigint)
+                    } else {
+                        rules.select_range(&start, &end)
+                    }
+                    .map_err(status)?
+                )
             }
         };
         unsafe {

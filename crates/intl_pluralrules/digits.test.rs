@@ -33,6 +33,49 @@ fn all_signed_rounding_modes_preserve_exact_ties() {
 }
 
 #[test]
+fn arbitrary_length_integer_rounding_preserves_carries_and_half_even() {
+    let nines = "9".repeat(40_000);
+    let significant = digits(json!({"maximumSignificantDigits":1}));
+    assert_eq!(
+        significant.format_string(&nines).unwrap(),
+        format!("1{}", "0".repeat(40_000))
+    );
+    let even = digits(json!({"maximumSignificantDigits":1,"roundingMode":"halfEven"}));
+    assert_eq!(
+        even.format_string(&format!("25{}", "0".repeat(39_998)))
+            .unwrap(),
+        format!("2{}", "0".repeat(39_999))
+    );
+    assert_eq!(
+        even.format_string(&format!("35{}", "0".repeat(39_998)))
+            .unwrap(),
+        format!("4{}", "0".repeat(39_999))
+    );
+    let fixed = digits(
+        json!({"minimumFractionDigits":0,"maximumFractionDigits":0,"roundingIncrement":5000,"roundingMode":"halfEven"}),
+    );
+    assert_eq!(
+        fixed
+            .format_string(&format!("1{}2500", "0".repeat(39_995)))
+            .unwrap(),
+        format!("1{}", "0".repeat(39_999))
+    );
+    assert_eq!(
+        fixed.format_string(&nines).unwrap(),
+        format!("1{}", "0".repeat(40_000))
+    );
+    let quarter =
+        digits(json!({"minimumFractionDigits":1,"maximumFractionDigits":1,"roundingIncrement":25}));
+    let prefix = "7".repeat(39_988);
+    assert_eq!(
+        quarter
+            .format_string(&format!("{prefix}000000000002"))
+            .unwrap(),
+        format!("{prefix}000000000002.5")
+    );
+}
+
+#[test]
 fn increments_keep_requested_fraction_width_and_even_quotient() {
     let value = digits(
         json!({"minimumFractionDigits":2,"maximumFractionDigits":2,"roundingIncrement":25,"roundingMode":"halfEven"}),

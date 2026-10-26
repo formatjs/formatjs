@@ -163,6 +163,81 @@ fn number(
     Ok(value.floor() as u16)
 }
 impl Digits {
+    /// Rounded unsigned text, including BigInt integers beyond ICU's i16
+    /// magnitude range. Ordinary finite values keep the fixed_decimal path.
+    pub fn format_string(&self, input: &str) -> Result<String, Error> {
+        let Some((integer, fraction)) = crate::mathematical::parts(input) else {
+            return self.format(input).map(|value| value.formatted_string);
+        };
+        let integer = integer.trim_start_matches('0');
+        if integer.len() <= i16::MAX as usize - 2 {
+            return self.format(input).map(|value| value.formatted_string);
+        }
+        if fraction.bytes().any(|digit| digit != b'0') {
+            return Err(Error::InvalidNumber);
+        }
+        let mode = self.rounding_mode.unsigned(input.starts_with('-'));
+        // For huge integers, significant rounding always has a larger rounding
+        // magnitude than fraction rounding. MorePrecision chooses fraction;
+        // LessPrecision chooses significant, even after a carry.
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L726-L738
+        if matches!(self.kind, Kind::Significant | Kind::Less) {
+            let maximum = usize::from(self.maximum_significant_digits.unwrap());
+            let mut retained = integer.as_bytes()[..maximum].to_vec();
+            let remainder = &integer.as_bytes()[maximum..];
+            let nonzero = remainder.iter().any(|digit| *digit != b'0');
+            let above_half = remainder[0] > b'5'
+                || (remainder[0] == b'5' && remainder[1..].iter().any(|digit| *digit != b'0'));
+            let exactly_half =
+                remainder[0] == b'5' && !remainder[1..].iter().any(|digit| *digit != b'0');
+            let expand = match mode {
+                UnsignedRoundingMode::Trunc => false,
+                UnsignedRoundingMode::Expand => nonzero,
+                UnsignedRoundingMode::HalfExpand => above_half || exactly_half,
+                UnsignedRoundingMode::HalfTrunc => above_half,
+                UnsignedRoundingMode::HalfEven => {
+                    above_half || (exactly_half && (retained[maximum - 1] - b'0') % 2 != 0)
+                }
+                _ => unreachable!("validated rounding mode"),
+            };
+            if expand {
+                increment_ascii(&mut retained);
+            }
+            let carry = usize::from(retained.len() > maximum);
+            retained.resize(integer.len() + carry, b'0');
+            return Ok(String::from_utf8(retained).unwrap());
+        }
+        // Every supported increment divides 10^12, with an even quotient.
+        // Rounding this suffix preserves both remainder and halfEven parity;
+        // only a carry can affect the untouched integer prefix.
+        const SUFFIX: usize = 12;
+        let cut = integer.len() - SUFFIX;
+        let mut prefix = integer.as_bytes()[..cut].to_vec();
+        let mut source =
+            UnsignedDecimal::from_str(&integer[cut..]).map_err(|_| Error::InvalidNumber)?;
+        source.trim_start();
+        let mut rounded = self.fraction(&source, mode).0;
+        if self.trailing_zero_display == TrailingZeros::StripIfInteger {
+            rounded.trim_end_if_integer();
+        }
+        let rounded = rounded.to_string();
+        let (tail, fraction) = rounded.split_once('.').unwrap_or((&rounded, ""));
+        let tail = if tail.len() > SUFFIX {
+            increment_ascii(&mut prefix);
+            &tail[1..]
+        } else {
+            tail
+        };
+        let mut result = String::from_utf8(prefix).unwrap();
+        result.extend(std::iter::repeat_n('0', SUFFIX - tail.len()));
+        result.push_str(tail);
+        if !fraction.is_empty() {
+            result.push('.');
+            result.push_str(fraction);
+        }
+        Ok(result)
+    }
+
     pub fn new(options: &Options, compact: bool) -> Result<Self, Error> {
         // SetNumberFormatDigitOptions 1–15: common options precede digit limits.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L112
@@ -369,6 +444,17 @@ impl Digits {
         result.pad_end((exponent - min + 1).min(0));
         (result, exponent - max + 1)
     }
+}
+
+fn increment_ascii(digits: &mut Vec<u8>) {
+    for digit in digits.iter_mut().rev() {
+        if *digit != b'9' {
+            *digit += 1;
+            return;
+        }
+        *digit = b'0';
+    }
+    digits.insert(0, b'1');
 }
 
 pub struct Formatted {
