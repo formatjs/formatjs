@@ -1,5 +1,6 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
@@ -48,6 +49,7 @@ rust_library(
         "civil.rs",
         "data.rs",
         "fields.rs",
+        "instance.rs",
         "lib.rs",
         "locale_patterns.rs",
         "matching.rs",
@@ -137,4 +139,19 @@ rust_binary(
         "@crates//:serde",
         "@crates//:serde_json",
     ],
+)
+
+[
+    filegroup(
+        name = "calendar_" + calendar + "_locale_data",
+        srcs = ["//packages/intl-datetimeformat-calendar-" + calendar + ":locale-data-json"],
+        visibility = ["//visibility:public"],
+    )
+    for calendar in CALENDARS
+]
+
+filegroup(
+    name = "calendar_locale_data",
+    srcs = [":calendar_" + calendar + "_locale_data" for calendar in CALENDARS],
+    visibility = ["//visibility:public"],
 )

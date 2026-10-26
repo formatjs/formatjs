@@ -3,6 +3,8 @@ pub mod calendar;
 pub mod civil;
 pub mod data;
 pub mod fields;
+pub mod instance;
+pub use instance::{DateTimeFormat, DateTimeValue, ResolvedOptions, Runtime};
 pub mod locale_patterns;
 pub mod matching;
 pub mod numbers;
@@ -25,6 +27,9 @@ pub enum Error {
     MissingNumberData,
     StyleComponents,
     TemporalMismatch,
+    TemporalTypeMismatch,
+    TemporalCalendarMismatch,
+    UnsupportedTemporal,
     InvalidTimeZone,
     InvalidTimeZoneData,
 }
@@ -40,6 +45,15 @@ impl std::fmt::Display for Error {
             }
             Self::TemporalMismatch => {
                 formatter.write_str("DateTimeFormat options do not overlap the Temporal type")
+            }
+            Self::TemporalTypeMismatch => {
+                formatter.write_str("Range endpoints must have the same Temporal type")
+            }
+            Self::TemporalCalendarMismatch => {
+                formatter.write_str("Temporal calendar does not match DateTimeFormat")
+            }
+            Self::UnsupportedTemporal => {
+                formatter.write_str("Temporal.ZonedDateTime is not supported by DateTimeFormat")
             }
             Self::InvalidPattern => formatter.write_str("Invalid DateTimeFormat pattern"),
             Self::InvalidLocaleData => formatter.write_str("Invalid DateTimeFormat locale data"),

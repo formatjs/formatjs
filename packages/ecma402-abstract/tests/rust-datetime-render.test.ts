@@ -4,6 +4,11 @@ import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import {DateTimeFormat as Reference} from '@formatjs/intl-datetimeformat'
 import links from '@formatjs_generated/tz/links.js'
+import Decimal from '@formatjs/bigdecimal'
+import {
+  HandleDateTimeValue,
+  type DateTimeFormattable,
+} from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
 import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
 import {PartitionDateTimeRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.js'
 import {FormatDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
@@ -16,16 +21,43 @@ import type {
 
 type RawLocale = Parameters<typeof Reference.__addLocaleData>[number]
 type Packed = RawLocale & {number: unknown}
-type Input =
-  | {type: 'range'; first: string; second: string; kind?: TemporalDateTimeKind}
+type SingleInput =
   | {type: 'date'; value: string}
-  | {type: 'epoch'; value: string; kind: TemporalDateTimeKind}
+  | {
+      type: 'epoch'
+      value: string
+      kind: TemporalDateTimeKind
+      calendar?: string
+    }
+  | {type: 'zoned'}
+type Input =
+  | SingleInput
+  | {
+      type: 'range'
+      first: string
+      second: string
+      kind?: TemporalDateTimeKind
+      calendar?: string
+    }
+  | {type: 'pair'; first: SingleInput; second: SingleInput}
+function formattable(input: SingleInput): DateTimeFormattable {
+  if (input.type === 'date') return new Decimal(Number(input.value))
+  if (input.type === 'zoned')
+    return {kind: 'ZonedDateTime', epochNanoseconds: 0n}
+  return {
+    kind: input.kind,
+    calendar: input.calendar,
+    epochNanoseconds: BigInt(input.value),
+  }
+}
 interface Case {
   locales: string[]
   options: Intl.DateTimeFormatOptions
   values: Input[]
   reload?: string
   tzReload?: string
+  tzDuring?: string
+  inspect?: boolean
 }
 const resolve = (file: string) =>
   runfiles.resolve(`${process.env.TEST_WORKSPACE || '_main'}/${file}`)
@@ -87,8 +119,23 @@ function reference(entry: Packed, tz: string, request: Case): unknown {
     if (request.reload)
       Reference.__addLocaleData(JSON.parse(request.reload) as RawLocale)
     if (request.tzReload) Reference.__addTZData(JSON.parse(request.tzReload))
-    return request.values.map(input => {
+    const values = request.values.map(input => {
       try {
+        if (input.type === 'pair') {
+          const parts = PartitionDateTimeRangePattern(
+            {} as Intl.DateTimeFormat,
+            formattable(input.first),
+            formattable(input.second),
+            {
+              getInternalSlots: () => slots,
+              localeData: Reference.localeData,
+              getDefaultTimeZone: () => Reference.getDefaultTimeZone(),
+              tzData: Reference.tzData,
+              calendarData: Reference.calendarData,
+            }
+          )
+          return {parts, text: parts.map(part => part.value).join('')}
+        }
         if (input.type === 'range') {
           if (!input.kind)
             return {
@@ -103,8 +150,16 @@ function reference(entry: Packed, tz: string, request: Case): unknown {
             }
           const parts = PartitionDateTimeRangePattern(
             {} as Intl.DateTimeFormat,
-            {kind: input.kind, epochNanoseconds: BigInt(input.first)},
-            {kind: input.kind, epochNanoseconds: BigInt(input.second)},
+            {
+              kind: input.kind,
+              calendar: input.calendar,
+              epochNanoseconds: BigInt(input.first),
+            },
+            {
+              kind: input.kind,
+              calendar: input.calendar,
+              epochNanoseconds: BigInt(input.second),
+            },
             {
               getInternalSlots: () => slots,
               localeData: Reference.localeData,
@@ -122,12 +177,13 @@ function reference(entry: Packed, tz: string, request: Case): unknown {
             text: formatter.format(value),
           }
         }
-        const selected = slots.getTemporalFormat!(input.kind)
+        const handled = HandleDateTimeValue(slots, formattable(input))
+        const selected = handled.format
         const parts = FormatDateTimePattern(
           {} as Intl.DateTimeFormat,
           PartitionPattern<IntlDateTimeFormatPart['type']>(selected.pattern),
-          BigInt(input.value),
-          input.kind !== 'Instant',
+          handled.epochNanoseconds,
+          handled.isPlain,
           {
             getInternalSlots: () => selected,
             localeData: Reference.localeData,
@@ -141,6 +197,9 @@ function reference(entry: Packed, tz: string, request: Case): unknown {
         return {error: (error as Error).name}
       }
     })
+    return request.inspect
+      ? {resolved: JSON.stringify(formatter.resolvedOptions()), values}
+      : values
   } catch (error) {
     return {error: (error as Error).name}
   } finally {
@@ -445,4 +504,244 @@ it('formats exact Temporal ranges with cached type profiles', () => {
         values,
       }))
     )
+})
+
+it('preserves resolvedOptions fields and property order for components and styles', () => {
+  const tz = read('packages/intl-datetimeformat/tz-all.json')
+  const fields: Intl.DateTimeFormatOptions[] = [
+    {},
+    {year: 'numeric'},
+    {era: 'short'},
+    {timeZoneName: 'long'},
+    {hour: 'numeric'},
+    {minute: 'numeric', second: 'numeric'},
+    {dayPeriod: 'long', hour: '2-digit'},
+    {second: 'numeric', fractionalSecondDigits: 3},
+    {dateStyle: 'full'},
+    {timeStyle: 'full'},
+    {dateStyle: 'short', timeStyle: 'long'},
+    {
+      year: '2-digit',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+      hour: 'numeric',
+      timeZoneName: 'short',
+    },
+  ]
+  for (const locale of ['en', 'fr', 'ar', 'ja', 'zh-Hans', 'ru', 'hi', 'he']) {
+    const cases: Case[] = []
+    for (const options of fields)
+      for (const preference of [
+        {},
+        {hour12: true},
+        {hour12: false},
+        {hourCycle: 'h11'},
+        {hourCycle: 'h12'},
+        {hourCycle: 'h23'},
+        {hourCycle: 'h24'},
+      ] satisfies Intl.DateTimeFormatOptions[])
+        cases.push({
+          locales: [locale + '-u-nu-arab'],
+          options: {...options, ...preference, timeZone: 'US/Eastern'},
+          values: [],
+          inspect: true,
+        })
+    compare(pack(locale), tz, cases)
+  }
+})
+it('rejects incompatible Temporal calendars, unsupported ZonedDateTime and mixed range types', () => {
+  const values: Input[] = [{type: 'zoned'}]
+  for (const kind of [
+    'Instant',
+    'PlainDateTime',
+    'PlainDate',
+    'PlainTime',
+    'PlainYearMonth',
+    'PlainMonthDay',
+  ] as const)
+    for (const calendar of [undefined, 'gregory', 'iso8601', 'hebrew'])
+      values.push(
+        {type: 'epoch', kind, calendar, value: '0'},
+        {type: 'range', kind, calendar, first: '0', second: '86400000000000'}
+      )
+  const endpoints: SingleInput[] = [
+    {type: 'date', value: 'NaN'},
+    {type: 'date', value: '0'},
+    {type: 'epoch', kind: 'Instant', value: '0'},
+    {type: 'epoch', kind: 'PlainDate', value: '0'},
+    {type: 'epoch', kind: 'PlainTime', value: '0'},
+    {type: 'zoned'},
+  ]
+  for (const first of endpoints)
+    for (const second of endpoints) values.push({type: 'pair', first, second})
+  const tz = read('packages/intl-datetimeformat/tz-all.json')
+  for (const locale of ['en', 'ar', 'ja'])
+    for (const calendar of ['gregory', 'iso8601'])
+      compare(
+        pack(locale),
+        tz,
+        (
+          [
+            {},
+            {dateStyle: 'full'},
+            {timeStyle: 'full'},
+            {dateStyle: 'full', timeStyle: 'long'},
+          ] satisfies Intl.DateTimeFormatOptions[]
+        ).map((options): Case => ({
+          locales: [locale],
+          options: {...options, calendar, timeZone: 'America/New_York'},
+          values,
+        }))
+      )
+})
+it('validates explicit timezone names against constructor-start data while rendering replacement transitions', () => {
+  const entry = pack('en')
+  const original = JSON.stringify({
+    abbrvs: 'X',
+    offsets: '1e0',
+    zones: ['Test/Original|,0,0,0'],
+  })
+  const replacement = JSON.stringify({
+    abbrvs: 'Y',
+    offsets: '2s0',
+    zones: ['Test/Replacement|,0,0,0'],
+  })
+  const changed = JSON.stringify({
+    abbrvs: 'Y',
+    offsets: '2s0',
+    zones: ['Test/Original|,0,0,0'],
+  })
+  const cases: Case[] = []
+  const expected: unknown[] = []
+  for (const [timeZone, tzDuring] of [
+    ['Test/Original', replacement],
+    ['Test/Replacement', replacement],
+    ['test/original', changed],
+    ['US/Eastern', replacement],
+    ['+05:30', replacement],
+  ]) {
+    Reference.localeData = {}
+    Reference.availableLocales = new Set()
+    Reference.__defaultLocale = ''
+    Reference.calendarData = Object.create(null)
+    Reference.__addLocaleData(entry)
+    Reference.__addTZData(JSON.parse(original))
+    const options: Intl.DateTimeFormatOptions = {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'long',
+    }
+    Object.defineProperty(options, 'timeZone', {
+      get() {
+        Reference.__addTZData(JSON.parse(tzDuring))
+        return timeZone
+      },
+    })
+    try {
+      const formatter = new Reference(['en'], options)
+      expected.push({
+        resolved: JSON.stringify(formatter.resolvedOptions()),
+        values: [
+          {parts: formatter.formatToParts(0), text: formatter.format(0)},
+        ],
+      })
+    } catch (error) {
+      expected.push({error: (error as Error).name})
+    }
+    cases.push({
+      locales: ['en'],
+      options: {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZoneName: 'long',
+        timeZone,
+      },
+      tzDuring,
+      values: [{type: 'date', value: '0'}],
+      inspect: true,
+    })
+  }
+  expect(run(entry, original, cases)).toEqual(expected)
+})
+
+it('allows provider callbacks to replace locale data and the next endpoint provider', () => {
+  type Patch = Parameters<typeof Reference.__addCalendarLocaleData>[number]
+  const entry = pack('en')
+  function patch(marker: string): Patch {
+    const data = structuredClone(entry.data)
+    data.month.long[0] = marker
+    return {
+      locale: 'en',
+      calendar: 'custom',
+      data,
+      formats: {yMMMMd: 'MMMM d, y'},
+    }
+  }
+  const initial = patch('InitialMonth'),
+    replacement = patch('UpdatedMonth')
+  const expected = []
+  for (const range of [false, true]) {
+    Reference.localeData = {}
+    Reference.availableLocales = new Set()
+    Reference.__defaultLocale = ''
+    Reference.calendarData = Object.create(null)
+    Reference.__addLocaleData(entry)
+    Reference.__addCalendarLocaleData(initial)
+    const calls: number[] = []
+    const fields = (year: number) => ({era: 'AD', year, month: 0, day: 1})
+    Reference.__addCalendarData({
+      calendar: 'custom',
+      dateFromTime(milliseconds) {
+        calls.push(milliseconds)
+        Reference.__addCalendarData({
+          calendar: 'custom',
+          dateFromTime(milliseconds) {
+            calls.push(milliseconds)
+            return fields(4000)
+          },
+        })
+        Reference.__addCalendarLocaleData(replacement)
+        return fields(3000)
+      },
+    })
+    const formatter = new Reference(['en'], {
+      calendar: 'custom',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    })
+    expected.push({
+      parts: range
+        ? formatter.formatRangeToParts(0, 86400000)
+        : formatter.formatToParts(0),
+      calls,
+    })
+  }
+  const result = spawnSync(
+    resolve('crates/intl_datetimeformat/pattern_conformance'),
+    [],
+    {
+      input:
+        JSON.stringify({
+          method: 'reentrant',
+          json: JSON.stringify(entry),
+          patch: JSON.stringify(initial),
+          replacement: JSON.stringify(replacement),
+        }) + '\n',
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+    }
+  )
+  if (result.error) throw result.error
+  expect(result.status, result.stderr).toBe(0)
+  expect(JSON.parse(result.stdout)).toEqual(expected)
+  expect(expected.map(value => value.calls)).toEqual([[0], [0, 86400000]])
+  expect(expected[0].parts.some(part => part.value === 'InitialMonth')).toBe(
+    true
+  )
+  expect(expected[1].parts.some(part => part.value === 'UpdatedMonth')).toBe(
+    true
+  )
 })

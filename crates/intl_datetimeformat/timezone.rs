@@ -25,7 +25,7 @@ struct Zone {
     transitions: Vec<Transition>,
 }
 struct State {
-    zones: BTreeMap<String, Zone>,
+    zones: Arc<BTreeMap<String, Zone>>,
     default: TimeZone,
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -46,7 +46,7 @@ impl Default for TimeZoneRegistry {
     fn default() -> Self {
         Self {
             state: Arc::new(RwLock::new(State {
-                zones: BTreeMap::new(),
+                zones: Arc::new(BTreeMap::new()),
                 default: utc(),
             })),
         }
@@ -188,26 +188,16 @@ impl TimeZoneRegistry {
         let packed = serde_json::from_str(json).map_err(|_| Error::InvalidTimeZoneData)?;
         let zones = decode(packed)?;
         // JS __addTZData replaces the entire map, including already-used zones.
-        self.state.write().expect("time zone registry").zones = zones;
+        self.state.write().expect("time zone registry").zones = Arc::new(zones);
         Ok(())
     }
+    pub fn snapshot(&self) -> TimeZoneSnapshot {
+        TimeZoneSnapshot {
+            zones: self.state.read().expect("time zone registry").zones.clone(),
+        }
+    }
     pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
-        if !value.is_ascii() {
-            return Err(Error::InvalidTimeZone);
-        }
-        if value.starts_with(['+', '-']) {
-            return offset_zone(value);
-        }
-        let key = value.to_ascii_uppercase();
-        if let Some(name) = links().get(&key) {
-            return Ok(named(name.clone()));
-        }
-        let state = self.state.read().expect("time zone registry");
-        state
-            .zones
-            .get(&key)
-            .map(|zone| named(zone.name.clone()))
-            .ok_or(Error::InvalidTimeZone)
+        self.snapshot().resolve(value)
     }
     pub fn default_time_zone(&self) -> TimeZone {
         self.state
@@ -254,5 +244,28 @@ impl TimeZoneRegistry {
             .checked_add(i128::from(offset.seconds) * 1_000_000_000)
             .ok_or(Error::InvalidDate)?;
         Ok((CivilDateTime::from_epoch_nanoseconds(value)?, offset))
+    }
+}
+
+#[derive(Clone)]
+pub struct TimeZoneSnapshot {
+    zones: Arc<BTreeMap<String, Zone>>,
+}
+impl TimeZoneSnapshot {
+    pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
+        if !value.is_ascii() {
+            return Err(Error::InvalidTimeZone);
+        }
+        if value.starts_with(['+', '-']) {
+            return offset_zone(value);
+        }
+        let key = value.to_ascii_uppercase();
+        if let Some(name) = links().get(&key) {
+            return Ok(named(name.clone()));
+        }
+        self.zones
+            .get(&key)
+            .map(|zone| named(zone.name.clone()))
+            .ok_or(Error::InvalidTimeZone)
     }
 }

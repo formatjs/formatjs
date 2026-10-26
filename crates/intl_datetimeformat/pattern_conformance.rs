@@ -2,16 +2,12 @@ use formatjs_intl_datetimeformat::data::LocaleData;
 use formatjs_intl_datetimeformat::registry::{Registry, ResolutionOptions};
 use formatjs_intl_datetimeformat::selection::{Kind, Options as SelectionOptions, Snapshot};
 use formatjs_intl_datetimeformat::{
-    Error,
+    DateTimeValue, Error, Runtime,
     fields::Components,
     matching::{self, Style, StyleData, Styles},
     pattern::{self, Format, RawPatterns},
 };
 use formatjs_intl_datetimeformat::{calendar::CalendarRegistry, locale_patterns::CalendarPatterns};
-use formatjs_intl_datetimeformat::{
-    render::{RangeSnapshot, RenderData},
-    timezone::TimeZoneRegistry,
-};
 use serde::Deserialize;
 use serde_json::Value;
 use std::io::{self, BufRead};
@@ -48,6 +44,15 @@ struct RawStyles {
     rename_all_fields = "camelCase"
 )]
 enum Request {
+    CalendarPacks {
+        base_files: Vec<String>,
+        directories: std::collections::BTreeMap<String, String>,
+    },
+    Reentrant {
+        json: String,
+        patch: String,
+        replacement: String,
+    },
     Packs {
         files: Vec<String>,
     },
@@ -214,7 +219,7 @@ enum ReloadPhase {
     AfterSnapshot,
 }
 fn failure(error: Error) -> Value {
-    serde_json::json!({"error":if matches!(error,Error::StyleComponents|Error::TemporalMismatch) {"TypeError"} else {"RangeError"}})
+    serde_json::json!({"error":if matches!(error,Error::StyleComponents|Error::TemporalMismatch|Error::TemporalTypeMismatch|Error::UnsupportedTemporal) {"TypeError"} else {"RangeError"}})
 }
 fn creation(registry: &mut Registry, case: &CreationCase) -> Result<Value, Error> {
     let options: ResolutionOptions = serde_json::from_value(case.options.clone())
@@ -262,6 +267,9 @@ struct RenderCase {
     values: Vec<RenderValue>,
     reload: Option<String>,
     tz_reload: Option<String>,
+    tz_during: Option<String>,
+    #[serde(default)]
+    inspect: bool,
 }
 #[derive(Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
@@ -272,107 +280,103 @@ enum RenderValue {
     Epoch {
         value: String,
         kind: Kind,
+        calendar: Option<String>,
+    },
+    Zoned,
+    Pair {
+        first: Box<RenderValue>,
+        second: Box<RenderValue>,
     },
     Range {
         first: String,
         second: String,
         kind: Option<Kind>,
+        calendar: Option<String>,
     },
 }
-fn render_case(
-    registry: &mut Registry,
-    zones: &TimeZoneRegistry,
-    case: &RenderCase,
-) -> Result<Value, Error> {
+fn input_value(input: &RenderValue) -> Result<DateTimeValue, Error> {
+    match input {
+        RenderValue::Date { value } => value
+            .parse()
+            .map(DateTimeValue::Number)
+            .map_err(|_| Error::InvalidDate),
+        RenderValue::Epoch {
+            value,
+            kind,
+            calendar,
+        } => Ok(DateTimeValue::Temporal {
+            kind: *kind,
+            calendar: calendar.clone(),
+            epoch_nanoseconds: value.parse().map_err(|_| Error::InvalidDate)?,
+        }),
+        RenderValue::Zoned => Ok(DateTimeValue::ZonedDateTime),
+        _ => Err(Error::InvalidDate),
+    }
+}
+fn render_case(runtime: &Runtime, case: &RenderCase) -> Result<Value, Error> {
+    let construction = runtime.begin();
     let early: ResolutionOptions = serde_json::from_value(case.options.clone())
         .map_err(|_| Error::InvalidOption("options"))?;
-    let resolution = registry.resolve(&case.locales, &early)?;
-    let zone = zones.resolve(
-        case.options
-            .get("timeZone")
-            .and_then(Value::as_str)
-            .unwrap_or("UTC"),
-    )?;
+    let resolution = construction.resolve(&case.locales, &early)?;
+    if let Some(json) = &case.tz_during {
+        runtime.time_zones().load_json(json)?;
+    }
+    let zone = construction.time_zone(case.options.get("timeZone").and_then(Value::as_str))?;
     let fields: Components = serde_json::from_value(case.options.clone())
         .map_err(|_| Error::InvalidOption("components"))?;
     let late: SelectionOptions = serde_json::from_value(case.options.clone())
         .map_err(|_| Error::InvalidOption("options"))?;
-    let config = Snapshot::capture(registry, resolution, fields)?.select(&late)?;
+    let configuration = construction.capture(resolution, fields)?.select(&late)?;
+    let formatter = construction.finish(configuration, zone);
     if let Some(json) = &case.reload {
-        registry.add_locale_data(json)?;
+        runtime.add_locale_data(json)?;
     }
     if let Some(json) = &case.tz_reload {
-        zones.load_json(json)?;
+        runtime.time_zones().load_json(json)?;
     }
     let mut output = Vec::new();
     for value in &case.values {
         let result = (|| {
-            if let RenderValue::Range {
-                first,
-                second,
-                kind,
-            } = value
-            {
-                let temporal = kind.map(|kind| config.temporal(kind)).transpose()?;
-                let profile = temporal.as_deref().unwrap_or_else(|| config.profile());
-                let snapshot = RangeSnapshot::capture(registry, &config)?;
-                let convert = |value: &str| -> Result<i128, Error> {
-                    if kind.is_some() {
-                        value.parse().map_err(|_| Error::InvalidDate)
-                    } else {
-                        Ok(i128::from(formatjs_intl_datetimeformat::civil::time_clip(
-                            value.parse().map_err(|_| Error::InvalidDate)?,
-                        )?) * 1_000_000)
-                    }
-                };
-                let first = RenderData::capture(registry, &config, profile)?.local_time(
-                    zones,
-                    &zone,
-                    convert(first)?,
-                    kind.is_some_and(|kind| kind != Kind::Instant),
-                )?;
-                let second = RenderData::capture(registry, &config, profile)?.local_time(
-                    zones,
-                    &zone,
-                    convert(second)?,
-                    kind.is_some_and(|kind| kind != Kind::Instant),
-                )?;
-                let render = RenderData::capture(registry, &config, profile)?;
-                let parts = snapshot.format(&render, &config, profile, &zone, &first, &second)?;
-                let text = parts
-                    .iter()
-                    .map(|part| part.value.as_str())
-                    .collect::<String>();
-                return Ok(serde_json::json!({"parts":parts,"text":text}));
-            }
-            let (epoch, kind) = match value {
-                RenderValue::Date { value } => (
-                    i128::from(formatjs_intl_datetimeformat::civil::time_clip(
-                        value.parse::<f64>().map_err(|_| Error::InvalidDate)?,
-                    )?) * 1_000_000,
-                    None,
-                ),
-                RenderValue::Range { .. } => unreachable!(),
-                RenderValue::Epoch { value, kind } => (
-                    value.parse::<i128>().map_err(|_| Error::InvalidDate)?,
-                    Some(*kind),
-                ),
+            let pair = match value {
+                RenderValue::Range {
+                    first,
+                    second,
+                    kind,
+                    calendar,
+                } => {
+                    let convert = |value: &str| {
+                        if let Some(kind) = kind {
+                            Ok(DateTimeValue::Temporal {
+                                kind: *kind,
+                                calendar: calendar.clone(),
+                                epoch_nanoseconds: value.parse().map_err(|_| Error::InvalidDate)?,
+                            })
+                        } else {
+                            value
+                                .parse()
+                                .map(DateTimeValue::Number)
+                                .map_err(|_| Error::InvalidDate)
+                        }
+                    };
+                    Some((convert(first)?, convert(second)?))
+                }
+                RenderValue::Pair { first, second } => {
+                    Some((input_value(first)?, input_value(second)?))
+                }
+                _ => None,
             };
-            let temporal = kind.map(|kind| config.temporal(kind)).transpose()?;
-            let profile = temporal.as_deref().unwrap_or_else(|| config.profile());
-            let context = RenderData::capture(registry, &config, profile)?;
-            let parts = context.format(
-                &config,
-                profile,
-                zones,
-                &zone,
-                epoch,
-                kind.is_some_and(|kind| kind != Kind::Instant),
-            )?;
-            let text = parts
-                .iter()
-                .map(|part| part.value.as_str())
-                .collect::<String>();
+            let (parts, text) = if let Some((first, second)) = pair {
+                (
+                    formatter.format_range_to_parts(&first, &second)?,
+                    formatter.format_range(&first, &second)?,
+                )
+            } else {
+                let value = input_value(value)?;
+                (
+                    formatter.format_to_parts(&value)?,
+                    formatter.format(&value)?,
+                )
+            };
             Ok::<_, Error>(serde_json::json!({"parts":parts,"text":text}))
         })();
         output.push(match result {
@@ -380,10 +384,130 @@ fn render_case(
             Err(error) => failure(error),
         });
     }
+    if case.inspect {
+        Ok(
+            serde_json::json!({"resolved":serde_json::to_string(&formatter.resolved_options()).unwrap(),"values":output}),
+        )
+    } else {
+        Ok(serde_json::to_value(output).unwrap())
+    }
+}
+
+fn reentrant(json: &str, patch: &str, replacement: &str) -> Result<Value, Error> {
+    use formatjs_intl_datetimeformat::calendar::CalendarFields;
+    use std::{cell::RefCell, rc::Rc, sync::Arc};
+    let fields = |year| CalendarFields {
+        era: "AD".into(),
+        year,
+        month: 0,
+        day: 1,
+        month_name_index: None,
+        month_number: None,
+        leap_month: None,
+        related_year: None,
+        year_name: None,
+    };
+    let mut output = Vec::new();
+    for range in [false, true] {
+        let runtime = Runtime::default();
+        runtime.add_locale_data(json)?;
+        runtime.add_calendar_locale_data(patch)?;
+        let calls = Rc::new(RefCell::new(Vec::new()));
+        let record = calls.clone();
+        let inner = runtime.clone();
+        let replacement = replacement.to_owned();
+        runtime.register_calendar(
+            "custom".into(),
+            Arc::new(move |milliseconds| {
+                record.borrow_mut().push(milliseconds);
+                let record = record.clone();
+                inner.register_calendar(
+                    "custom".into(),
+                    Arc::new(move |milliseconds| {
+                        record.borrow_mut().push(milliseconds);
+                        Ok(fields(4000))
+                    }),
+                );
+                inner.add_calendar_locale_data(&replacement)?;
+                Ok(fields(3000))
+            }),
+        );
+        let construction = runtime.begin();
+        let resolution = construction.resolve(
+            &["en".into()],
+            &ResolutionOptions {
+                calendar: Some("custom".into()),
+                ..Default::default()
+            },
+        )?;
+        let zone = construction.time_zone(Some("UTC"))?;
+        let components = Components {
+            year: Some(formatjs_intl_datetimeformat::fields::NumericWidth::Numeric),
+            month: Some(formatjs_intl_datetimeformat::fields::Width::Long),
+            day: Some(formatjs_intl_datetimeformat::fields::NumericWidth::Numeric),
+            ..Default::default()
+        };
+        let config = construction
+            .capture(resolution, components)?
+            .select(&SelectionOptions::default())?;
+        let formatter = construction.finish(config, zone);
+        let parts = if range {
+            formatter.format_range_to_parts(
+                &DateTimeValue::Number(0.0),
+                &DateTimeValue::Number(86_400_000.0),
+            )?
+        } else {
+            formatter.format_to_parts(&DateTimeValue::Number(0.0))?
+        };
+        output.push(serde_json::json!({"parts":parts,"calls":*calls.borrow()}));
+    }
     Ok(serde_json::to_value(output).unwrap())
 }
 fn run(request: Request) -> Result<Value, Error> {
     Ok(match request {
+        Request::CalendarPacks {
+            base_files,
+            directories,
+        } => {
+            let mut rows = Vec::new();
+            for file in base_files {
+                let json = std::fs::read_to_string(&file).map_err(|_| Error::InvalidLocaleData)?;
+                let locale = LocaleData::from_json(&json)?.locale;
+                let mut registry = Registry::default();
+                registry.add_locale_data(&json)?;
+                let filename = std::path::Path::new(&file)
+                    .file_name()
+                    .ok_or(Error::InvalidLocaleData)?;
+                for (calendar, directory) in &directories {
+                    let patch =
+                        std::fs::read_to_string(std::path::Path::new(directory).join(filename))
+                            .map_err(|_| Error::InvalidLocaleData)?;
+                    registry.add_calendar_locale_data(&patch)?;
+                    let data = registry.get(&locale)?;
+                    let record = data.calendar(calendar)?;
+                    let count = record.formats()?.len();
+                    if count == 0 || registry.available_calendars(&locale)?.contains(calendar) {
+                        return Err(Error::InvalidLocaleData);
+                    }
+                    registry.register_calendar(
+                        calendar.clone(),
+                        std::sync::Arc::new(|_| Err(Error::MissingCalendar)),
+                    );
+                    if !registry.available_calendars(&locale)?.contains(calendar) {
+                        return Err(Error::InvalidLocaleData);
+                    }
+                    rows.push(
+                        serde_json::json!({"locale":locale,"calendar":calendar,"count":count}),
+                    );
+                }
+            }
+            serde_json::to_value(rows).unwrap()
+        }
+        Request::Reentrant {
+            json,
+            patch,
+            replacement,
+        } => reentrant(&json, &patch, &replacement)?,
         Request::Packs { files } => {
             let rows=files.into_iter().map(|file|{
                 let result=(||{
@@ -405,21 +529,20 @@ fn run(request: Request) -> Result<Value, Error> {
             tz_json,
             cases,
         } => {
-            let mut registry = Registry::default();
-            registry.add_locale_data(&json)?;
-            let zones = TimeZoneRegistry::default();
-            zones.load_json(&tz_json)?;
+            let runtime = Runtime::default();
+            runtime.add_locale_data(&json)?;
+            runtime.time_zones().load_json(&tz_json)?;
             let mut rows = Vec::new();
             for case in cases {
-                rows.push(match render_case(&mut registry, &zones, &case) {
+                rows.push(match render_case(&runtime, &case) {
                     Ok(value) => value,
                     Err(error) => failure(error),
                 });
                 if case.reload.is_some() {
-                    registry.add_locale_data(&json)?;
+                    runtime.add_locale_data(&json)?;
                 }
-                if case.tz_reload.is_some() {
-                    zones.load_json(&tz_json)?;
+                if case.tz_reload.is_some() || case.tz_during.is_some() {
+                    runtime.time_zones().load_json(&tz_json)?;
                 }
             }
             serde_json::to_value(rows).unwrap()

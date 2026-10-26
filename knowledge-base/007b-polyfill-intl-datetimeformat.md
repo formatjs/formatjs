@@ -323,7 +323,7 @@ to cross the exact Date bounds after the input instant has passed TimeClip.
 
 Rust units and differential tests cover 8,193 instants against TS DateOperations,
 including year zero, leap centuries, full Date bounds and negative nanoseconds.
-Optional calendar conversion, public formatter, C ABI,
+Optional calendar conversion, host coercion, C ABI,
 Hermes integration and SDK packaging remain unfinished.
 
 The Rust timezone registry consumes the same base-36 packs as JS. `:timezone_data`
@@ -400,13 +400,19 @@ nanoseconds, current timezone transitions, standalone grammatical context and
 native NumberFormat digits. Plain Temporal arithmetic uses zero offset while
 timezone-name lookup retains the configured identifier. Tests compare 53,760
 numeric rendering cases plus exact Temporal instants and locale/timezone reloads.
-Host coercion, Temporal brands and the public formatter boundary remain pending.
+Host coercion and Temporal brands remain pending.
 
 The native `:locale_data` generator emits 766 separate Gregorian/ISO base packs
 with a `number` sidecar selected from native NumberFormat packs. Calendar patches
 and transitions remain separate, preserving on-demand loading. Numeric helpers
 cache formatters by locale/system/integer width and truncate two-digit fields by
 Unicode code point. All generated base packs are validated by the native loader.
+
+Native `:calendar_<calendar>_locale_data` targets expose TS-generated optional
+JSON patches without duplicating their generator. `:calendar_locale_data`
+collects all 14 calendars; the base library/data targets do not depend on it.
+Loader coverage validates every locale/calendar patch, lazy formats/styles and
+availability before/after arithmetic registration.
 
 CLDR hour-cycle tokens can include flexible day-period suffixes (`hB`, `hb`);
 the extractor selects the cycle from their first symbol. Timezone name widths
@@ -423,3 +429,19 @@ intervals or an unchanged shared fallback. All subpatterns receive the complete
 range context for grammatical names. Differential tests compare 76,800 numeric
 ranges and 288 exact Temporal ranges across locale, digit, hour-cycle and timezone
 families, including collapsed, reversed and full-Date-bound endpoints.
+
+`instance::Runtime` now binds an owned `DateTimeFormat` to shared locale/provider
+state and live timezone transitions. `begin` captures an Arc of the original
+timezone map before host coercion; `Construction` exposes early resolution,
+explicit/default timezone selection, component snapshot capture and finalization.
+Explicit names use the initial map, including custom loaded names; defaults stay
+live. Transition replacement remains visible to existing formatters.
+
+The formatter exposes resolved options, single/range strings and parts for
+numeric Dates and normalized Temporal records. It enforces calendar compatibility,
+rejects ZonedDateTime and checks range types before TimeClip/profile selection.
+Resolved options retain table order and suppress component properties for styles.
+Runtime registry borrows never span provider callbacks, allowing replacement
+providers and locale patches during conversion. Range endpoints acquire their
+providers independently; rendering reads names after both callbacks. C ABI/Hermes
+coercion, intrinsic brands and Date.now defaults remain unfinished.

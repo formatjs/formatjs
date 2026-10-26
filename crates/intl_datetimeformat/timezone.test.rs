@@ -105,3 +105,64 @@ fn offsets_and_default_zone_preserve_validation_and_ascii_matching() {
     assert_eq!(registry.default_time_zone().identifier(), "UTC");
     assert_eq!(registry.resolve("gmt0").unwrap().identifier(), "UTC");
 }
+
+#[test]
+fn construction_snapshots_keep_name_availability_but_use_current_offsets() {
+    let registry = TimeZoneRegistry::default();
+    let empty = registry.snapshot();
+    let original = PACK.replace("America/New_York", "Test/Original");
+    registry.load_json(&original).unwrap();
+    let before = registry.snapshot();
+    let zone = before.resolve("test/original").unwrap();
+    assert_eq!(empty.resolve("Test/Original"), Err(Error::InvalidTimeZone));
+    assert_eq!(registry.offset_at(&zone, 0).seconds, -18000);
+    registry
+        .load_json(&original.replace("-dw0", "-b40"))
+        .unwrap();
+    assert_eq!(registry.offset_at(&zone, 0).seconds, -14400);
+    registry
+        .load_json(&PACK.replace("America/New_York", "Test/Replacement"))
+        .unwrap();
+    assert_eq!(
+        before.resolve("Test/Replacement"),
+        Err(Error::InvalidTimeZone)
+    );
+    assert_eq!(
+        before.resolve("test/original").unwrap().identifier(),
+        "Test/Original"
+    );
+    assert_eq!(
+        registry.resolve("Test/Original"),
+        Err(Error::InvalidTimeZone)
+    );
+    assert_eq!(registry.offset_at(&zone, 0).seconds, 0);
+    registry
+        .set_default_time_zone(Some("Test/Replacement"))
+        .unwrap();
+    assert_eq!(
+        registry.default_time_zone().identifier(),
+        "Test/Replacement"
+    );
+    assert_eq!(
+        before.resolve("US/Eastern").unwrap().identifier(),
+        "America/New_York"
+    );
+    assert_eq!(before.resolve("-00").unwrap().identifier(), "+00:00");
+}
+
+#[test]
+fn construction_reads_default_timezone_after_earlier_options() {
+    let runtime = formatjs_intl_datetimeformat::Runtime::default();
+    let construction = runtime.begin();
+    runtime
+        .time_zones()
+        .set_default_time_zone(Some("+05:30"))
+        .unwrap();
+    assert_eq!(construction.time_zone(None).unwrap().identifier(), "+05:30");
+    assert_eq!(
+        construction.time_zone(Some("-00")).unwrap().identifier(),
+        "+00:00"
+    );
+    runtime.time_zones().set_default_time_zone(None).unwrap();
+    assert_eq!(construction.time_zone(None).unwrap().identifier(), "UTC");
+}

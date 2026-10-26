@@ -341,6 +341,7 @@ formatjs_test(
     size = "medium",
     srcs = ["//packages/ecma402-abstract:rust_datetime_pattern_test_sources"],
     data = [
+        "//crates/intl_datetimeformat:calendar_locale_data",
         "//crates/intl_datetimeformat:locale_data",
         "//crates/intl_datetimeformat:pattern_conformance",
         "//crates/intl_datetimeformat:timezone_data",
@@ -357,6 +358,7 @@ formatjs_test(
     ]],
     deps = [
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-datetimeformat",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-localematcher",

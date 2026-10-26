@@ -12,7 +12,7 @@ uses Euclidean division for negative instants. Months are 1–12; weekdays are
 Local arithmetic allows one extra day around TimeClip for offset conversion;
 callers must validate the input instant before applying its timezone offset.
 
-The public formatter, optional calendar implementations, C ABI,
+Optional calendar implementations, host coercion, C ABI,
 Hermes facade and SDK installation remain unfinished.
 
 ```sh
@@ -127,6 +127,12 @@ Raw TS locale JSON still loads for metadata/pattern use; numeric rendering needs
 the native pack. NumberFormat instances cache per locale, numbering system and
 minimum integer width; two-digit truncation counts Unicode code points.
 
+`:calendar_<calendar>_locale_data` exposes each optional calendar's existing
+JSON patches; `:calendar_locale_data` collects all 14 calendars. These targets
+reuse the TS generator and remain separate from base packs and the core library.
+Patch loading alone does not make a calendar available: arithmetic registration
+is still required.
+
 Differential tests cover 4,368 construction configurations and their Temporal
 profiles, 53,760 numeric rendering cases, exact Temporal instants, reloads and
 every generated base pack. Generator regressions cover CLDR `hB`/`hb` hour-cycle
@@ -140,3 +146,26 @@ displayed precision, preserve shared grammatical context, and assign endpoint
 sources without changing cached fallback patterns. Differential tests compare
 76,800 numeric ranges and 288 exact Temporal ranges, including Date bounds,
 historical offsets, DST, supplementary digits and reversed endpoints.
+
+## Owned formatter
+
+`Runtime` owns shared locale/provider state and timezone transitions. Clones share
+registrations. `begin` captures timezone-name availability before host locale and
+option coercion. `Construction::resolve` handles early locale options;
+`time_zone` validates explicit names against that snapshot while reading the
+current default when omitted. `capture` prepares the component-phase locale
+snapshot; select its late options, then `finish` creates `DateTimeFormat`.
+Carry the already-read `hour12` option into `Components` without rereading it.
+
+`DateTimeFormat` provides `resolved_options`, `format`, `format_to_parts`,
+`format_range` and `format_range_to_parts`. `DateTimeValue` accepts numeric Date
+values or normalized Temporal records. It validates calendar compatibility,
+rejects ZonedDateTime, and requires matching range types before handling values.
+Resolved options preserve property order and omit components for styled formats.
+
+Calendar callbacks can register replacement providers and locale patches through
+the same runtime. Registry borrows end before callbacks run; each range endpoint
+captures the current provider separately. A single format retains names captured
+before conversion, while range parts read names after both conversions.
+JavaScript coercion, Date.now defaults and intrinsic Temporal brand detection
+remain host responsibilities pending the C ABI/Hermes facade.
