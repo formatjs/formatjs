@@ -100,28 +100,24 @@ it('matches native number/list composition, exact folding, signs and parts', () 
     for (const options of profiles) {
       const reference = new DurationFormat(locale, options)
       const resolved = reference.resolvedOptions()
-      const localeData = DurationFormat.localeData[locale]
-      if (!localeData) throw new Error(locale)
-      const data = localeData.digitalFormat
-      const separator = data[resolved.numberingSystem] ?? data.default
       for (const unsigned of values)
         for (const sign of [1, -1]) {
           const values = unsigned.map(value => value * sign)
           const record = Object.fromEntries(
             units.map((unit, index) => [unit, values[index]])
           )
-          const expected = reference.formatToParts(record)
-          expect(expected.map(part => part.value).join('')).toBe(
+          const parts = reference.formatToParts(record)
+          const expected = {options: resolved, parts}
+          expect(parts.map(part => part.value).join('')).toBe(
             reference.format(record)
           )
           cases.push({locale, options, values, expected})
           requests.push({
-            method: 'format',
+            method: 'renderResolved',
             options,
             values: values.map(String),
-            locale: resolved.locale,
-            numbering_system: resolved.numberingSystem,
-            separator,
+            locales: [locale],
+            resolution: options,
           })
         }
     }
@@ -151,4 +147,4 @@ it('matches native number/list composition, exact folding, signs and parts', () 
       JSON.stringify(context)
     ).toEqual(expected)
   }
-})
+}, 60_000)

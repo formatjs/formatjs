@@ -116,11 +116,35 @@ impl NumberKey {
 #[derive(Default)]
 pub struct Renderer {
     numbers: number::registry::Registry,
+    supported_systems: Vec<String>,
     lists: list::registry::Registry,
     number_cache: HashMap<NumberKey, number::NumberFormat>,
     list_cache: HashMap<(String, Width), list::ListFormat>,
 }
 impl Renderer {
+    pub(crate) fn supported_numbering_systems(&mut self, candidates: &[String]) -> &[String] {
+        if self.supported_systems.is_empty() {
+            self.supported_systems = candidates
+                .iter()
+                .filter(|system| {
+                    self.numbers
+                        .create(
+                            &["en".into()],
+                            &number::Options {
+                                numbering_system: Some((*system).clone()),
+                                ..Default::default()
+                            },
+                        )
+                        .is_ok_and(|formatter| {
+                            formatter.resolved_options().numbering_system == **system
+                        })
+                })
+                .cloned()
+                .collect();
+        }
+        &self.supported_systems
+    }
+
     pub fn add_number_data(&mut self, json: &str) -> Result<(), RenderError> {
         Ok(self.numbers.add_locale_data(json)?)
     }

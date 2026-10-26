@@ -1,7 +1,7 @@
 # formatjs_intl_durationformat
 
-Rust duration records, formatting-option resolution and number/list rendering.
-Locale resolution, C ABI, Hermes installation and SDK integration remain in progress.
+Rust duration records, locale/formatting-option resolution and number/list rendering.
+C ABI, Hermes installation and SDK integration remain in progress.
 
 `Duration::from_numbers` accepts ten optional Number values in `Unit::ALL` order.
 It requires at least one defined field, finite integral values, a common sign,
@@ -42,3 +42,19 @@ Eight-locale TS differential coverage checks 2,176 rendering cases, including al
 base styles, numbering systems, exact fractions and negative leading zero. Native
 lifecycle checks cover late loading, missing dependencies, independent locale
 fallback and formatter snapshots across pack replacement.
+
+`DurationFormat::new` resolves requested locales and `ResolutionOptions` against
+statically compiled CLDR duration metadata, then resolves formatting options. Its
+`format`/`format_to_parts` methods select the locale's numbering-system separator
+and use the supplied dependency renderer. `resolved_options` serializes locale and
+numbering system before configuration fields. `available_locales` remains static
+regardless of dependency registration; `supported_locales` preserves canonical
+requested extensions with prefix filtering for both matcher settings.
+
+For observable construction, call `Renderer::resolve_locale` before reading style
+and unit options, then `DurationFormat::from_resolution` with the completed
+configuration. The resolution snapshot survives dependency loading between those
+phases. Numbering-system support is probed through native NumberFormat; an empty
+probe retries after locale loading. Successful capability probes remain cached,
+matching the TS dependency constructor lifetime. Locale negotiation and option
+ordering are compared across all 766 CLDR locales with lookup and best-fit.

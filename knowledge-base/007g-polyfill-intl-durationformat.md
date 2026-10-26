@@ -112,6 +112,14 @@ data after pack replacement; uncached profiles use current records. Empty output
 still requires ListFormat data. Eight-locale TS comparisons and native lifecycle
 tests cover rendering and dependency behavior.
 
-Duration locale resolution and native installation remain in progress. Duration
-locale metadata must retain its static compilation model. Number/list payloads
-stay separate and load on demand; rendering uses no JS formatter callbacks.
+Native locale metadata compiles the existing time-separator/numbering-system
+exports through Bazel. Static availability retains TS locale ordering and stays
+independent of dependency packs. Lookup/best-fit and nu extension/option negotiation
+run before style resolution. Native NumberFormat probes augment CLDR defaults;
+empty probes retry after loading and successful capability sets remain cached.
+Phased construction retains this resolution snapshot while the host reads options.
+Resolved options are compared with TS across all 766 locales; eight-locale
+rendering tests also exercise the complete native constructor and separator lookup.
+
+C ABI and Hermes/SDK installation remain in progress. Number/list payloads stay
+separate and load on demand; rendering uses no JS formatter callbacks.

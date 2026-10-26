@@ -1,4 +1,7 @@
-use formatjs_intl_durationformat::{Configuration, Duration, Error, Options, Part, Renderer};
+use formatjs_intl_durationformat::{
+    Configuration, Duration, DurationFormat, Error, Options, Part, Renderer, ResolutionOptions,
+    ResolvedOptions, available_locales, supported_locales,
+};
 use serde::{Deserialize, Serialize};
 use std::io::{self, BufRead};
 #[derive(Deserialize)]
@@ -9,6 +12,22 @@ enum Request {
     },
     Record {
         values: [Option<String>; 10],
+    },
+    Available,
+    Supported {
+        locales: Vec<String>,
+        resolution: ResolutionOptions,
+    },
+    Resolved {
+        locales: Vec<String>,
+        resolution: ResolutionOptions,
+        options: Options,
+    },
+    RenderResolved {
+        locales: Vec<String>,
+        resolution: ResolutionOptions,
+        options: Options,
+        values: [String; 10],
     },
     NumberData {
         data: String,
@@ -35,11 +54,52 @@ enum Response {
     Options(Configuration),
     Record(Record),
     Parts(Vec<Part>),
+    Resolved(ResolvedOptions),
+    Formatted {
+        options: ResolvedOptions,
+        parts: Vec<Part>,
+    },
+    Locales(Vec<String>),
     Loaded(bool),
-    Error { error: &'static str },
+    Error {
+        error: &'static str,
+    },
 }
 fn run(request: Request, renderer: &mut Renderer) -> Result<Response, Error> {
     match request {
+        Request::Available => Ok(Response::Locales(available_locales()?.to_vec())),
+        Request::Supported {
+            locales,
+            resolution,
+        } => Ok(Response::Locales(supported_locales(&locales, &resolution)?)),
+        Request::Resolved {
+            locales,
+            resolution,
+            options,
+        } => Ok(Response::Resolved(
+            DurationFormat::new(renderer, &locales, &resolution, &options)?
+                .resolved_options()
+                .clone(),
+        )),
+        Request::RenderResolved {
+            locales,
+            resolution,
+            options,
+            values,
+        } => {
+            let formatter = DurationFormat::new(renderer, &locales, &resolution, &options)?;
+            let mut numbers = [None; 10];
+            for (output, value) in numbers.iter_mut().zip(values) {
+                *output = Some(value.parse::<f64>().map_err(|_| Error::InvalidDuration)?);
+            }
+            let duration = Duration::from_numbers(numbers)?;
+            Ok(Response::Formatted {
+                options: formatter.resolved_options().clone(),
+                parts: formatter
+                    .format_to_parts(renderer, &duration)
+                    .map_err(|_| Error::InvalidOption)?,
+            })
+        }
         Request::NumberData { data } => renderer
             .add_number_data(&data)
             .map(|_| Response::Loaded(true))

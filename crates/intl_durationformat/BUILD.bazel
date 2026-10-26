@@ -1,24 +1,43 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+ts_run_binary(
+    name = "metadata",
+    outs = ["metadata.json"],
+    args = [
+        "--out",
+        "$(rootpath :metadata.json)",
+    ],
+    tool = "//crates/intl_durationformat/scripts:metadata",
+    use_execroot_entry_point = False,
+)
 
 rust_library(
     name = "intl_durationformat",
     srcs = [
+        "formatter.rs",
         "lib.rs",
+        "metadata.rs",
         "options.rs",
         "record.rs",
         "render.rs",
         "unit.rs",
     ],
+    compile_data = [":metadata"],
     crate_name = "formatjs_intl_durationformat",
     crate_root = "lib.rs",
     edition = "2024",
+    rustc_env = {"FORMATJS_DURATION_METADATA": "$(execpath :metadata)"},
     visibility = ["//visibility:public"],
     deps = [
+        "//crates/intl_getcanonicallocales",
         "//crates/intl_listformat",
+        "//crates/intl_locale",
         "//crates/intl_numberformat",
         "@crates//:serde",
+        "@crates//:serde_json",
     ],
 )
 
@@ -39,6 +58,7 @@ rust_binary(
 formatjs_rust_test(
     name = "intl_durationformat_test",
     srcs = [
+        "formatter.test.rs",
         "options.test.rs",
         "record.test.rs",
         "render.test.rs",
