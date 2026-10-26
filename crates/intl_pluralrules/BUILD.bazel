@@ -18,7 +18,10 @@ ts_run_binary(
 
 rust_library(
     name = "intl_pluralrules",
-    srcs = ["lib.rs"],
+    srcs = [
+        "digits.rs",
+        "lib.rs",
+    ],
     crate_name = "formatjs_intl_pluralrules",
     crate_root = "lib.rs",
     edition = "2024",
@@ -35,10 +38,16 @@ rust_library(
 
 formatjs_rust_test(
     name = "intl_pluralrules_test",
-    srcs = ["lib.test.rs"],
+    srcs = [
+        "digits.test.rs",
+        "lib.test.rs",
+    ],
     crate_name = "intl_pluralrules_test",
     edition = "2024",
-    deps = [":intl_pluralrules"],
+    deps = [
+        ":intl_pluralrules",
+        "@crates//:serde_json",
+    ],
 )
 
 rust_binary(

@@ -14,6 +14,8 @@ use icu_plurals::{PluralCategory, PluralOperands, PluralRules, RawPluralOperands
 use icu_provider::prelude::*;
 use serde::Deserialize;
 
+pub mod digits;
+
 #[derive(Debug)]
 pub enum Error {
     InvalidData(String),
@@ -40,6 +42,8 @@ struct Pack<'data> {
     ordinal: PluralRulesData<'data>,
     #[serde(default)]
     ranges: BTreeMap<String, BTreeMap<String, String>>,
+    #[serde(default, rename = "compactExponents")]
+    compact_exponents: BTreeMap<String, BTreeMap<i16, u8>>,
 }
 
 struct Provider {
@@ -103,6 +107,7 @@ pub struct LocaleRules {
     cardinal: PluralRules,
     ordinal: PluralRules,
     ranges: BTreeMap<String, BTreeMap<String, String>>,
+    compact_exponents: BTreeMap<String, BTreeMap<i16, u8>>,
 }
 impl LocaleRules {
     /// Load one locale. The resulting rules own their payloads; callers may
@@ -141,10 +146,23 @@ impl LocaleRules {
             cardinal,
             ordinal,
             ranges: pack.ranges,
+            compact_exponents: pack.compact_exponents,
         })
     }
     pub fn locale(&self) -> &str {
         &self.locale
+    }
+    pub fn compact_exponent(&self, formatted: &str, long: bool) -> Result<usize, Error> {
+        let decimal = Decimal::from_str(formatted).map_err(|_| Error::InvalidNumber)?;
+        let magnitude = decimal.absolute.nonzero_magnitude_start();
+        // ResolvePlural 8–10 uses this locale's compact scale after rounding.
+        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L316-L321
+        Ok(self
+            .compact_exponents
+            .get(if long { "long" } else { "short" })
+            .and_then(|patterns| patterns.range(..=magnitude).next_back())
+            .map(|(_, exponent)| usize::from(*exponent))
+            .unwrap_or(0))
     }
     fn rules(&self, ordinal: bool) -> &PluralRules {
         if ordinal {
@@ -185,7 +203,9 @@ impl LocaleRules {
         if ["NaN", "Infinity", "-Infinity"].contains(&decimal) {
             return Ok("other");
         }
-        let decimal = Decimal::from_str(decimal).map_err(|_| Error::InvalidNumber)?;
+        let mut decimal = Decimal::from_str(decimal).map_err(|_| Error::InvalidNumber)?;
+        // Integer padding is formatting width, not a significant operand digit.
+        decimal.absolute.trim_start();
         let operands = PluralOperands::from(&decimal);
         let mut raw = RawPluralOperands::from(operands);
         raw.c = exponent;

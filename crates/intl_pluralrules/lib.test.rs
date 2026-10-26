@@ -92,3 +92,20 @@ fn compact_exponent_is_preserved() {
     assert_eq!(rules.select_rounded("2000000", 0, false).unwrap(), "other");
     assert_eq!(rules.select_rounded("2000000", 6, false).unwrap(), "many");
 }
+
+#[test]
+fn integer_padding_does_not_change_operands() {
+    let rules = LocaleRules::from_json(EN).unwrap();
+    assert_eq!(
+        rules
+            .select_rounded("000000000000000000001", 0, false)
+            .unwrap(),
+        "one"
+    );
+    assert_eq!(
+        rules
+            .select_rounded("000000000000000000001.0", 0, false)
+            .unwrap(),
+        "other"
+    );
+}

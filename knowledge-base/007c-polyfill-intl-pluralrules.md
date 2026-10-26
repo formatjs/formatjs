@@ -152,5 +152,7 @@ share `scripts/compact-exponents.ts`.
 
 The rule engine owns loaded payloads and has no global locale registration or
 baked plural data. `tests:rule_conformance_test` compares all packs with the TS
-compiler over 100,000+ samples. Rounding, registration, full API conformance and
-Hermes/SDK integration remain in progress.
+compiler over 100,000+ samples. `digits::Digits` now implements typed digit-option resolution and exact decimal
+rounding; `tests:digit_conformance_test` compares selection, ranges and metadata
+with the public TS API. Registration, full constructor behavior and Hermes/SDK
+integration remain in progress.

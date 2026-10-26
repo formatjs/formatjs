@@ -4,8 +4,8 @@ ICU4X category selection from caller-loaded CLDR rule packs. Each pack carries
 one locale's cardinal/ordinal rules and range matrices. Loading compiles rules
 once and owns the result; no baked plural data or global registration is needed.
 
-Work in progress: ECMA-402 digit rounding, locale negotiation/registration,
-generated per-locale packs, TS conformance, Hermes binding and SDK integration.
+Work in progress: locale negotiation/registration, complete Intl API
+orchestration, Hermes binding and SDK integration.
 `select_rounded` is the typed rule engine, not the complete Intl API.
 
 On Linux:
@@ -23,3 +23,10 @@ with the TS pipeline. Applications can ship and load selected files independentl
 locale with the real TS rule compiler over 100,000+ category selections, including
 fraction zeros, compact exponents, large integers and non-finite inputs. This
 checks the rule engine; complete Intl API conformance follows digit rounding.
+
+`digits::Digits` resolves already-coerced ECMA-402 digit options and rounds exact
+decimals with `fixed_decimal`. Covers all nine modes, supported increments,
+fraction/significant precision, priority and trailing-zero display. Its fields
+serialize as resolved digit options. `tests:digit_conformance_test` compares
+public TS selection, range results and resolved options across 13 locales and
+900+ configurations. Linux native validation is required before completion.
