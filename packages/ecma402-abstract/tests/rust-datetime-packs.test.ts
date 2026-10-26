@@ -175,47 +175,53 @@ it('uses valid hour cycles and GMT fallback for sparse timezone names', () => {
   }
 })
 
-it('loads every optional calendar locale patch independently of arithmetic', () => {
-  const directory = dirname(
-    resolve('crates/intl_datetimeformat/locale-data/en.json')
-  )
-  const baseFiles = readdirSync(directory)
-    .filter(file => file.endsWith('.json'))
-    .sort()
-    .map(file => join(directory, file))
-  const calendars = [
-    'buddhist',
-    'chinese',
-    'coptic',
-    'dangi',
-    'ethioaa',
-    'ethiopic',
-    'hebrew',
-    'indian',
-    'islamic-civil',
-    'islamic-tbla',
-    'islamic-umalqura',
-    'japanese',
-    'persian',
-    'roc',
-  ]
-  const directories = Object.fromEntries(
-    calendars.map(calendar => [
-      calendar,
-      dirname(
-        resolve(
-          `packages/intl-datetimeformat-calendar-${calendar}/locale-data-json/en.json`
-        )
-      ),
-    ])
-  )
-  const rows = run<Array<{locale: string; calendar: string; count: number}>>({
-    method: 'calendarPacks',
-    baseFiles,
-    directories,
-  })
-  expect(rows.length).toBe(baseFiles.length * calendars.length)
-  expect(new Set(rows.map(row => row.calendar))).toEqual(new Set(calendars))
-  expect(new Set(rows.map(row => row.locale)).size).toBe(baseFiles.length)
-  expect(rows.every(row => row.count > 0)).toBe(true)
-}, 240000)
+it.each([0, 1, 2, 3, 4])(
+  'loads every optional calendar locale patch independently of arithmetic, batch %i',
+  batch => {
+    const directory = dirname(
+      resolve('crates/intl_datetimeformat/locale-data/en.json')
+    )
+    const allBaseFiles = readdirSync(directory)
+      .filter(file => file.endsWith('.json'))
+      .sort()
+      .map(file => join(directory, file))
+    const size = Math.ceil(allBaseFiles.length / 5)
+    const baseFiles = allBaseFiles.slice(batch * size, (batch + 1) * size)
+    const calendars = [
+      'buddhist',
+      'chinese',
+      'coptic',
+      'dangi',
+      'ethioaa',
+      'ethiopic',
+      'hebrew',
+      'indian',
+      'islamic-civil',
+      'islamic-tbla',
+      'islamic-umalqura',
+      'japanese',
+      'persian',
+      'roc',
+    ]
+    const directories = Object.fromEntries(
+      calendars.map(calendar => [
+        calendar,
+        dirname(
+          resolve(
+            `packages/intl-datetimeformat-calendar-${calendar}/locale-data-json/en.json`
+          )
+        ),
+      ])
+    )
+    const rows = run<Array<{locale: string; calendar: string; count: number}>>({
+      method: 'calendarPacks',
+      baseFiles,
+      directories,
+    })
+    expect(rows.length).toBe(baseFiles.length * calendars.length)
+    expect(new Set(rows.map(row => row.calendar))).toEqual(new Set(calendars))
+    expect(new Set(rows.map(row => row.locale)).size).toBe(baseFiles.length)
+    expect(rows.every(row => row.count > 0)).toBe(true)
+  },
+  240000
+)
