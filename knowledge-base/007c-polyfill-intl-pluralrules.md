@@ -140,3 +140,17 @@ plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
 
 Compact plural selection uses generated CLDR exponent tables for locales whose
 rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
+
+## Rust port (in progress)
+
+`crates/intl_pluralrules` loads individual CLDR JSON packs into ICU4X rules.
+`//crates/intl_pluralrules:locale_data` emits one `locale-data/<locale>.json`
+per locale in the existing `ALL_LOCALES` list. Cardinal/ordinal rules retain the
+original CLDR conditions; sample annotations are removed. Range matrices and
+compact exponent tables accompany the rules. The TS and Rust data pipelines
+share `scripts/compact-exponents.ts`.
+
+The rule engine owns loaded payloads and has no global locale registration or
+baked plural data. `tests:rule_conformance_test` compares all packs with the TS
+compiler over 100,000+ samples. Rounding, registration, full API conformance and
+Hermes/SDK integration remain in progress.

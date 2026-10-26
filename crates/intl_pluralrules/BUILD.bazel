@@ -1,5 +1,20 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//packages/intl-pluralrules:locales.generated.bzl", "ALL_LOCALES")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+ts_run_binary(
+    name = "locale_data",
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        "locale-data",
+    ] + ["--locale=%s" % locale for locale in ALL_LOCALES],
+    chdir = package_name(),
+    tool = "//crates/intl_pluralrules/scripts:data",
+    visibility = ["//visibility:public"],
+)
 
 rust_library(
     name = "intl_pluralrules",
@@ -24,4 +39,18 @@ formatjs_rust_test(
     crate_name = "intl_pluralrules_test",
     edition = "2024",
     deps = [":intl_pluralrules"],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_pluralrules/tests:__pkg__"],
+    deps = [
+        ":intl_pluralrules",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
 )

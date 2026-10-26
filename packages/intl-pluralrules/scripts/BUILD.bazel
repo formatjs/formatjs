@@ -1,9 +1,11 @@
 # gazelle:ignore
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("//tools:index.bzl", "ts_binary")
 
 ts_binary(
     name = "cldr-raw",
     data = [
+        "compact-exponents.ts",
         "plural-rules-compiler.ts",
         "//:root_package_json",
     ],
@@ -27,4 +29,10 @@ ts_binary(
     ],
     entry_point = "test262-main-gen.ts",
     visibility = ["//packages/intl-pluralrules:__pkg__"],
+)
+
+js_library(
+    name = "compact_exponents",
+    srcs = ["compact-exponents.ts"],
+    visibility = ["//crates/intl_pluralrules/scripts:__pkg__"],
 )

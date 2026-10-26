@@ -13,3 +13,13 @@ On Linux:
 ```sh
 bazel test //crates/intl_pluralrules:intl_pluralrules_test
 ```
+
+`//crates/intl_pluralrules:locale_data` generates one JSON file per locale from
+CLDR cardinal/ordinal rules and range data. `formatVersion: 1` packs include
+compact-exponent metadata when needed. The pack generator shares that extraction
+with the TS pipeline. Applications can ship and load selected files independently.
+
+`//crates/intl_pluralrules/tests:rule_conformance_test` compares every generated
+locale with the real TS rule compiler over 100,000+ category selections, including
+fraction zeros, compact exponents, large integers and non-finite inputs. This
+checks the rule engine; complete Intl API conformance follows digit rounding.
