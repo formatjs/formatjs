@@ -161,7 +161,7 @@ fn preferences_respect_region_override_subdivision_and_explicit_region() {
         locale("en-US").week_info()
     );
     assert_eq!(
-        locale("en-US-u-rg-zzzzzz").week_info(),
+        locale("en-US-u-rg-qqzzzz").week_info(),
         locale("en-US").week_info()
     );
     assert_eq!(locale("en-US-u-fw-sun").week_info().first_day, 7);

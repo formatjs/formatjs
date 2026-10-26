@@ -5,6 +5,7 @@ import {supportedValuesOf} from '#packages/intl-supportedvaluesof/index.js'
 import {likelySubtags} from '@formatjs_generated/cldr.core/likelySubtags.js'
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
+import {isDeepStrictEqual} from 'node:util'
 import {expect, it} from 'vitest'
 
 interface Case {
@@ -186,9 +187,22 @@ it('matches complete Locale records, information and likely-subtag methods again
     .split('\n')
     .map(line => JSON.parse(line))
   expect(actual.length).toBe(records.length)
-  for (const [index, record] of records.entries()) {
-    expect(actual[index], JSON.stringify(cases[index])).toEqual(
-      JSON.parse(JSON.stringify(record.expected))
+  const mismatches = records.flatMap((record, index) => {
+    const expected = JSON.parse(JSON.stringify(record.expected))
+    if (isDeepStrictEqual(actual[index], expected)) return []
+    const fields = [
+      ...new Set([...Object.keys(actual[index]), ...Object.keys(expected)]),
+    ]
+      .filter(key => !isDeepStrictEqual(actual[index][key], expected[key]))
+      .map(key => ({key, actual: actual[index][key], expected: expected[key]}))
+    return [{input: cases[index], fields}]
+  })
+  if (mismatches.length)
+    console.error(
+      JSON.stringify({
+        count: mismatches.length,
+        examples: mismatches.slice(0, 20),
+      })
     )
-  }
+  expect(mismatches.length).toBe(0)
 }, 60_000)

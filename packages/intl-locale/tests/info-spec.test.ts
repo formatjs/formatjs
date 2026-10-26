@@ -2,6 +2,11 @@ import {Locale} from '#packages/intl-locale/index.js'
 import {describe, expect, it} from 'vitest'
 
 describe('Locale information follows script metadata and formatter defaults', () => {
+  it('deduplicates primary time zones after alias normalization', () => {
+    const zones = new Locale('en-US').getTimeZones()!
+    expect(zones.filter(zone => zone === 'America/Denver')).toHaveLength(1)
+    expect(zones).toEqual([...new Set(zones)].sort())
+  })
   for (const tag of ['ar-u-ca-gregory', 'en-Arab', 'abcde-Arab']) {
     it(`retains script direction for ${tag}`, () => {
       expect(new Locale(tag).getTextInfo()).toEqual({direction: 'rtl'})
