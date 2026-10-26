@@ -13,5 +13,6 @@ bazel test -c opt //crates/intl_displaynames:intl_displaynames_test \
 ```
 
 Conformance compares all locales/types/styles/fallbacks with public TS. Inline
-comments link pinned ECMA-402 source lines. Hermes observable coercion, owned
-ABI and SDK packaging remain in progress.
+comments link pinned ECMA-402 source lines. The owned C ABI validates UTF-16
+codes, preserves error classes and returns owned buffers. Hermes observable
+coercion and SDK packaging remain in progress.

@@ -7,9 +7,10 @@ use std::sync::Arc;
 
 fn pack(locale: &str) -> Value {
     let language = json!({"long":{"en":"English","en-GB":"British English","zh-Hans":"简体中文"},"short":{"en-GB":"UK English"},"narrow":{}});
+    let standard = json!({"long":{"en":"English","zh-Hans":"简体中文"},"short":{},"narrow":{}});
     let region = json!({"long":{"GB":"United Kingdom","US":"United States","SG":"新加坡"},"short":{"GB":"UK"},"narrow":{}});
     let empty = json!({"long":{},"short":{},"narrow":{}});
-    json!({"formatVersion":1,"locale":locale,"data":{"types":{"language":{"dialect":language,"standard":language},"region":region,"script":empty,"currency":empty,"calendar":empty,"dateTimeField":empty},"patterns":{"locale":"{0}（{1}）"}}})
+    json!({"formatVersion":1,"locale":locale,"data":{"types":{"language":{"dialect":language,"standard":standard},"region":region,"script":empty,"currency":empty,"calendar":empty,"dateTimeField":empty},"patterns":{"locale":"{0}（{1}）"}}})
 }
 fn formatter(options: Options) -> DisplayNames {
     DisplayNames::new(
@@ -99,6 +100,23 @@ fn ported_language_styles_region_composition_and_fallbacks() {
     assert_eq!(
         short.of("en-US").unwrap().as_deref(),
         Some("English（United States）")
+    );
+    let standard = formatter(Options {
+        language_display: LanguageDisplay::Standard,
+        ..Options::default()
+    });
+    assert_eq!(
+        standard.of("en-GB").unwrap().as_deref(),
+        Some("English（United Kingdom）")
+    );
+    let standard_short = formatter(Options {
+        language_display: LanguageDisplay::Standard,
+        style: Style::Short,
+        ..Options::default()
+    });
+    assert_eq!(
+        standard_short.of("en-GB").unwrap().as_deref(),
+        Some("English（UK）")
     );
     let none = formatter(Options {
         fallback: Fallback::None,

@@ -69,6 +69,8 @@ names and composes localized language/region names. Versioned JSON packs reuse
 the TS extraction and carry default-content aliases. Registry replacement is
 atomic; existing instances retain their data. The differential suite compares
 all locale/type/style/fallback combinations with TS using lookup negotiation.
-Hermes coercion, owned ABI and SDK installation follow within this polyfill PR.
+The owned C ABI validates UTF-16 codes and separates invalid-code RangeError
+from malformed ABI input. Handles own their data; successful result buffers
+belong to the caller. Hermes coercion and SDK installation follow within this PR.
 
 Code validation consumes the entire input, including trailing line terminators.
