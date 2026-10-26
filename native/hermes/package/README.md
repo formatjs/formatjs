@@ -22,6 +22,8 @@ include/formatjs/intl/displaynames.h
 include/formatjs/hermes/intl_segmenter.h
 include/formatjs/intl/segmenter.h
 include/formatjs/hermes/intl_collator.h
+include/formatjs/hermes/intl_numberformat.h
+include/formatjs/intl/numberformat.h
 include/formatjs/intl/collator.h
 include/formatjs/intl/listformat.h
 include/formatjs/intl/pluralrules.h
@@ -41,6 +43,8 @@ src/segmenter.cpp
 src/segmenter.inc
 src/collator.cpp
 src/collator.inc
+src/numberformat.cpp
+src/numberformat.inc
 js/30-IntlGetCanonicalLocales.js
 js/31-IntlSupportedValuesOf.js
 js/32-IntlLocale.js
@@ -49,6 +53,10 @@ js/34-IntlListFormat.js
 js/35-IntlDisplayNames.js
 js/36-IntlSegmenter.js
 js/37-IntlCollator.js
+js/38-IntlNumberFormat.js
+js/numberformat-smoke.js
+examples/numberformat-smoke.ts
+locale-data/numberformat/*.json
 js/collator-smoke.js
 examples/collator-smoke.ts
 js/segmenter-smoke.js
@@ -75,7 +83,8 @@ From a FormatJS checkout on Linux:
 ```sh
 bazel build -c opt //native/hermes/package:sdk
 sdk_archive="$(bazel cquery -c opt --output=files //native/hermes/package:sdk)"
-sdk_dir="$(mktemp -d)"
+sdk_dir="$PWD/examples/hermes-intl/.cache/sdk"
+mkdir -p "$sdk_dir"
 tar -xzf "$sdk_archive" -C "$sdk_dir"
 ```
 
@@ -104,7 +113,8 @@ Link `@formatjs_intl_getcanonicallocales_hermes//:listformat` for `Intl.ListForm
 Link `@formatjs_intl_getcanonicallocales_hermes//:displaynames` for `Intl.DisplayNames`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:segmenter` for `Intl.Segmenter`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:collator` for `Intl.Collator`.
-All eight targets use one Rust archive. The module retains its original name.
+Link `@formatjs_intl_getcanonicallocales_hermes//:numberformat` for `Intl.NumberFormat`.
+All nine targets use one Rust archive. The module retains its original name.
 
 ## Install before application JavaScript
 
@@ -119,6 +129,7 @@ For embedders that allow source evaluation:
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_collator.h>
+#include <formatjs/hermes/intl_numberformat.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -129,6 +140,7 @@ formatjs::installListFormat(*runtime);
 formatjs::installDisplayNames(*runtime);
 formatjs::installSegmenter(*runtime);
 formatjs::installCollator(*runtime);
+formatjs::installNumberFormat(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -147,6 +159,7 @@ formatjs::installListFormat(*runtime, extensions);
 formatjs::installDisplayNames(*runtime, extensions);
 formatjs::installSegmenter(*runtime, extensions);
 formatjs::installCollator(*runtime, extensions);
+formatjs::installNumberFormat(*runtime, extensions);
 ```
 
 ## Compiled locale data
@@ -260,3 +273,18 @@ Collator requires the Hermes proxy-construction fix in overlay commit
 `338ff13ff1e996934ae615952d174f8c621844d9` (pending BCR version `260318099.0.0-393a539e6`).
 Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
 perform extra observable `newTarget.prototype` reads during construction.
+
+NumberFormat uses selected JSON packs from `locale-data/numberformat/`. Link
+`:numberformat`, install after canonicalization, then call
+`Intl.NumberFormat.__addLocaleData(jsonText)` for each needed pack. These packs
+include owned plural rules; no JS PluralRules installer or host ICU data is needed.
+`:numberformat_data` exposes all packs; individual labels keep packaging selective.
+
+For precompiled setup, register `js/38-IntlNumberFormat.js` and invoke
+`installNumberFormat(runtime, extensions)`. Construction uses the same pinned
+Hermes proxy fix as Collator. NumberFormat supports decimal, percent, currency,
+units, compact/scientific/engineering notation, parts and ranges. Its cached bound
+format function retains its original instance. Locale replacement affects future
+instances; `__addUnitData(locale, unitJsonText)` explicitly updates shared units.
+`examples/numberformat-smoke.ts` checks exact strings/BigInts, localized exponents,
+ranges, brands, and English/French loading from the extracted SDK.

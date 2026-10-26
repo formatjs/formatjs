@@ -4,6 +4,7 @@
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_collator.h>
+#include <formatjs/hermes/intl_numberformat.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -18,6 +19,15 @@
 #include <utility>
 
 namespace {
+constexpr char numberSmoke[] =
+#include "numberformat_smoke.inc"
+    ;
+constexpr char numberEnglish[] =
+#include "numberformat_en.inc"
+    ;
+constexpr char numberFrench[] =
+#include "numberformat_fr.inc"
+    ;
 constexpr char collatorSmoke[] =
 #include "collator_smoke.inc"
     ;
@@ -173,6 +183,13 @@ int main(int argc, char **argv) {
     auto collatorPassed = runtime->global().getProperty(*runtime, "__SDK_COLLATOR_PASSED");
     if (!collatorPassed.isBool() || !collatorPassed.getBool()) throw std::runtime_error("Collator SDK smoke failed");
     std::cout << "Hermes SDK Collator passed\n";
+    formatjs::installNumberFormat(*runtime, extensions);
+    runtime->global().setProperty(*runtime, "__SDK_NUMBER_EN", facebook::jsi::String::createFromUtf8(*runtime, numberEnglish));
+    runtime->global().setProperty(*runtime, "__SDK_NUMBER_FR", facebook::jsi::String::createFromUtf8(*runtime, numberFrench));
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(numberSmoke), "formatjs:numberformat-sdk-smoke");
+    auto numberPassed = runtime->global().getProperty(*runtime, "__SDK_NUMBER_PASSED");
+    if (!numberPassed.isBool() || !numberPassed.getBool()) throw std::runtime_error("NumberFormat SDK smoke failed");
+    std::cout << "Hermes SDK NumberFormat passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

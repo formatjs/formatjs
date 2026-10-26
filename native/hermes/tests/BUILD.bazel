@@ -311,6 +311,50 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "numberformat_typecheck",
+    srcs = [
+        "numberformat.ts",
+        "run-numberformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "numberformat_suite",
+    srcs = ["numberformat.ts"],
+    entry_point = "numberformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+js_test(
+    name = "numberformat_conformance_test",
+    size = "medium",
+    data = [
+        ":numberformat_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_numberformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-numberformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -365,6 +409,8 @@ package_formatter_conformance("displaynames")
 package_formatter_conformance("segmenter")
 
 package_formatter_conformance("collator")
+
+package_formatter_conformance("numberformat")
 
 package_formatter_conformance("getcanonicallocales")
 

@@ -328,6 +328,42 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "numberformat",
+    srcs = [
+        "src/numberformat.cpp",
+        "src/numberformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_numberformat.h",
+        "include/formatjs/intl/numberformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
@@ -338,6 +374,9 @@ exports_files([
     "js/35-IntlDisplayNames.js",
     "js/36-IntlSegmenter.js",
     "js/37-IntlCollator.js",
+    "js/38-IntlNumberFormat.js",
+    "js/numberformat-smoke.js",
+    "examples/numberformat-smoke.ts",
     "js/collator-smoke.js",
     "examples/collator-smoke.ts",
     "js/segmenter-smoke.js",

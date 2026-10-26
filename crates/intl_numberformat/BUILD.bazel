@@ -20,17 +20,14 @@ cc_library(
 
 ts_run_binary(
     name = "metadata",
-    srcs = [
-        "//:node_modules/@formatjs_generated/cldr.number",
-        "//:node_modules/@formatjs_generated/unicode",
-        "//:root_package_json",
-    ],
     outs = ["metadata.json"],
     args = [
         "--out",
         "$(rootpath :metadata.json)",
     ],
     tool = "//crates/intl_numberformat/scripts:metadata",
+    # Generator dependencies follow the Linux execution platform during cross-builds.
+    use_execroot_entry_point = False,
 )
 
 ts_run_binary(

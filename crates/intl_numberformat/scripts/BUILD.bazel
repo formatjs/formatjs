@@ -3,6 +3,7 @@ load("//tools:index.bzl", "ts_binary")
 
 ts_binary(
     name = "metadata",
+    data = ["//:root_package_json"],  # keep
     entry_point = "metadata.ts",
     tsconfig_types = ["node"],
     visibility = ["//crates/intl_numberformat:__pkg__"],

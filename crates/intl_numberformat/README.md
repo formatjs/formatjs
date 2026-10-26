@@ -2,7 +2,9 @@
 
 Rust NumberFormat core with on-demand CLDR data. Decimal, percent, currency,
 units, compact/scientific/engineering notation, parts and ranges run in Rust.
-Owned C ABI is available; Hermes installation and SDK integration remain in progress.
+Owned C ABI, Hermes source/bytecode installers and SDK packaging are included.
+The native facade owns observable coercion, option getter order, receiver brands
+and cached nonconstructor format functions.
 
 `Registry` starts empty. Add selected JSON files from `:locale_data`, canonicalize
 requested tags before `negotiate`, then obtain an owned `Arc<LocaleData>` with
@@ -52,3 +54,9 @@ Number overflow/underflow and negative zero. The host rejects Symbols and missin
 range endpoints before calling Rust. Status 1 maps to RangeError, 4 to TypeError;
 2 signals invalid ABI input and 3 a caught Rust panic. Destroy each handle and free
 each successful byte result exactly once.
+
+Hermes conformance runs both source and precompiled factories against TS for
+over 7,600 numeric cases per mode, plus ranges, ordered option failures, input/receiver
+errors, constructor prototypes, locale replacement and shared unit updates.
+The SDK ships `38-IntlNumberFormat.js`, public adapters and per-locale packs;
+the independent consumer embeds only selected English/French packs.

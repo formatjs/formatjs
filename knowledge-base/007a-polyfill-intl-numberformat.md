@@ -154,7 +154,7 @@ suffix signs, bidi literals, and unit wrappers use the same number pattern.
 Matching sign prefixes can be shared alongside a shared currency or unit suffix.
 Mixed signs remain attached to their endpoints.
 
-## Rust port (in progress)
+## Rust and Hermes port
 
 `crates/intl_numberformat` owns formatting, parts, ranges, option/locale resolution,
 and per-locale number/plural records. Generated packs reuse TS CLDR extraction and
@@ -166,8 +166,12 @@ with TS. The owned C ABI snapshots locale resolution before later option getters
 replace registered data. Reconfiguration uses that snapshot; handles survive
 registry destruction. Primitive-text queries share PluralRules mathematical
 parsing, including radix strings, exact BigInts and Number clamps. Status 4
-preserves TypeError separately from RangeError. Hermes installation and SDK
-integration remain in progress.
+preserves TypeError separately from RangeError. Hermes source/bytecode factories implement constructor/prototype semantics,
+ordered getter/coercion paths, WeakMap brands, cached format functions and fresh
+resolved options. Both modes compare over 7,600 cases against TS, including all digit
+systems. Locale resolution stays fixed when later getters replace registry data.
+SDK `:numberformat` packages the adapter, `38-IntlNumberFormat.js`, and on-demand
+number/plural packs; an independent typed consumer embeds English/French only.
 
 Tiny compact values never receive a suffix from a lexical comparison against an
 exponent-formatted magnitude. Sparse translated currency-name maps fall back to
