@@ -30,6 +30,7 @@ ts_project(
     name = "extension_typecheck",
     srcs = [
         "collator.ts",
+        "datetimeformat.ts",
         "displaynames.ts",
         "listformat.ts",
         "locale.ts",
@@ -109,6 +110,7 @@ ts_run_binary(
     name = "extension_bundle_js",
     srcs = [
         "collator.ts",
+        "datetimeformat.ts",
         "displaynames.ts",
         "get_canonical_locales.js",
         "listformat.ts",
@@ -141,6 +143,8 @@ ts_run_binary(
         "--name=IntlNumberFormat",
         "--input=$(rootpath :relativetimeformat.ts)",
         "--name=IntlRelativeTimeFormat",
+        "--input=$(rootpath :datetimeformat.ts)",
+        "--name=IntlDateTimeFormat",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -247,6 +251,7 @@ cc_binary(
     deps = [
         ":canonical_locales",
         ":collator",
+        ":datetimeformat",
         ":displaynames",
         ":hermes_vm",
         ":listformat",
@@ -760,4 +765,64 @@ ts_run_binary(
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "datetimeformat",
+    srcs = [
+        "datetimeformat.cpp",
+        ":datetimeformat_wrapper_source",
+    ],
+    hdrs = ["intl_datetimeformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_datetimeformat:headers",
+        "//crates/intl_datetimeformat_calendars:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+cc_test(
+    name = "datetimeformat_bridge_test",
+    srcs = ["datetimeformat_bridge.test.cpp"],
+    args = ["$(rootpath //crates/intl_datetimeformat:locale-data/en.json)"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    data = ["//crates/intl_datetimeformat:locale-data/en.json"],
+    target_compatible_with = HOST_COMPATIBILITY,
+    deps = [
+        ":canonical_locales",
+        ":datetimeformat",
+        ":hermes_vm",
+    ],
+)
+
+ts_run_binary(
+    name = "datetimeformat_factory",
+    srcs = ["datetimeformat.ts"],
+    outs = ["datetimeformat_factory.js"],
+    args = [
+        "--input=$(rootpath :datetimeformat.ts)",
+        "--name=IntlDateTimeFormat",
+        "--out=$(rootpath :datetimeformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "datetimeformat_wrapper_source",
+    srcs = [":datetimeformat_factory"],
+    outs = ["datetimeformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
 )

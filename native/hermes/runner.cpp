@@ -7,6 +7,7 @@
 #include <formatjs/hermes/intl_collator.h>
 #include <formatjs/hermes/intl_numberformat.h>
 #include <formatjs/hermes/intl_relativetimeformat.h>
+#include <formatjs/hermes/intl_datetimeformat.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -26,7 +27,11 @@ int main(int argc, char **argv) {
   std::unique_ptr<facebook::hermes::HermesRuntime> runtime;
   int status = 0;
   try {
-    runtime = facebook::hermes::makeHermesRuntime();
+    int firstScript = 1;
+    const bool blockScoping = argc > 1 && std::string(argv[1]) == "--es6-block-scoping";
+    if (blockScoping) ++firstScript;
+    runtime = facebook::hermes::makeHermesRuntime(
+        ::hermes::vm::RuntimeConfig::Builder().withES6BlockScoping(blockScoping).build());
     auto &rt = *runtime;
     auto print = jsi::Function::createFromHostFunction(
         rt, jsi::PropNameID::forAscii(rt, "print"), 0,
@@ -63,7 +68,7 @@ int main(int argc, char **argv) {
       return rt.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(std::move(source)),
                             path);
     };
-    int firstScript = 1;
+    std::unique_ptr<formatjs::DateTimeFormatInstallation> datetimeInstallation;
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc && std::string(argv[firstScript]).rfind("--prelude=", 0) == 0) {
       evaluateFile(std::string(argv[firstScript]).substr(10));
@@ -75,6 +80,11 @@ int main(int argc, char **argv) {
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
+      if (flag == "--native-datetimeformat") {
+        datetimeInstallation = formatjs::installDateTimeFormat(rt);
+        ++firstScript;
+        continue;
+      }
       if (flag == "--native-relativetimeformat") {
         formatjs::installRelativeTimeFormat(rt);
         ++firstScript;
@@ -122,6 +132,7 @@ int main(int argc, char **argv) {
       if (extensions.hasProperty(rt, "IntlCollator")) formatjs::installCollator(rt, extensions);
       if (extensions.hasProperty(rt, "IntlNumberFormat")) formatjs::installNumberFormat(rt, extensions);
       if (extensions.hasProperty(rt, "IntlRelativeTimeFormat")) formatjs::installRelativeTimeFormat(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlDateTimeFormat")) datetimeInstallation = formatjs::installDateTimeFormat(rt, extensions);
       ++firstScript;
     }
     for (int i = firstScript; i < argc; ++i) {

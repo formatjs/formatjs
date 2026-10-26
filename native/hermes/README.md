@@ -229,16 +229,34 @@ The precompiled overload uses `IntlRelativeTimeFormat` from
 `39-IntlRelativeTimeFormat.js`. SDK setup and a typed smoke example are documented
 in [package/README.md](package/README.md).
 
-## Native bridge
+## DateTimeFormat
 
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
+Link `//native/hermes:datetimeformat`, install canonicalization, then retain the
+installation guard on the JavaScript thread:
 
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
+```cpp
+formatjs::installCanonicalLocales(*runtime);
+auto dateTime = formatjs::installDateTimeFormat(*runtime);
+```
+
+Destroy `dateTime` before `runtime`. The overload taking an extension object uses
+its `IntlDateTimeFormat` factory. GC finalizers only queue IDs; native calls and
+guard teardown release Rust handles on their creating thread. Host functions hold
+weak installation references, so retained JS formatters fail after guard release.
+
+Load selected native base JSON strings with `Intl.DateTimeFormat.__addLocaleData`.
+Calendar arithmetic packs, calendar locale patches and timezone packs load
+independently through `__addCalendarData`, `__addCalendarLocaleData` and
+`__addTZData`. Custom calendar records accept `{calendar, dateFromTime}` functions;
+they receive adjusted local milliseconds with the public calendar registry as
+`this`. Callbacks may reenter formatting, replace providers or throw JS values.
+The bridge preserves exception identity without unwinding through Rust.
+
+The facade preserves constructor getter phases, callable construction, bound
+format identity, receiver brands, coercion and intrinsic Temporal reads. Actual
+Temporal objects must be available before installation. Plain values serialize
+through captured intrinsics; Rust computes their reference dates and nanoseconds.
+SDK packaging and independent install validation remain in progress.
 
 ## Existing package conformance
 

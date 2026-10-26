@@ -27,6 +27,7 @@ ts_run_binary(
         "$(rootpath timezone-links.json)",
     ],
     tool = "//crates/intl_datetimeformat/scripts:timezones",
+    use_execroot_entry_point = False,
 )
 
 ts_run_binary(
@@ -37,6 +38,7 @@ ts_run_binary(
         "$(rootpath locale-aliases.json)",
     ],
     tool = "//crates/intl_datetimeformat/scripts:locales",
+    use_execroot_entry_point = False,
 )
 
 ts_run_binary(

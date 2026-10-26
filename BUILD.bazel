@@ -338,7 +338,7 @@ copy_to_bin(
 
 formatjs_test(
     name = "rust_datetime_pattern_test",
-    size = "medium",
+    size = "large",
     srcs = ["//packages/ecma402-abstract:rust_datetime_pattern_test_sources"],
     data = [
         "//crates/intl_datetimeformat:calendar_locale_data",

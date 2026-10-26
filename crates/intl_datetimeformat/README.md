@@ -167,8 +167,9 @@ Calendar callbacks can register replacement providers and locale patches through
 the same runtime. Registry borrows end before callbacks run; each range endpoint
 captures the current provider separately. A single format retains names captured
 before conversion, while range parts read names after both conversions.
-JavaScript coercion, Date.now defaults and intrinsic Temporal brand detection
-remain host responsibilities pending the Hermes facade.
+The Hermes facade supplies JavaScript coercion, Date.now defaults and captured
+intrinsic Temporal brand detection. Its installation guard owns thread-bound
+cleanup; GC finalizers queue IDs instead of dropping Rust records.
 
 ## C ABI
 

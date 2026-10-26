@@ -399,7 +399,7 @@ nanoseconds, current timezone transitions, standalone grammatical context and
 native NumberFormat digits. Plain Temporal arithmetic uses zero offset while
 timezone-name lookup retains the configured identifier. Tests compare 53,760
 numeric rendering cases plus exact Temporal instants and locale/timezone reloads.
-Host coercion and Temporal brands remain pending.
+Hermes source/bytecode integration now covers host coercion and actual Temporal brands.
 
 The native `:locale_data` generator emits 766 separate Gregorian/ISO base packs
 with a `number` sidecar selected from native NumberFormat packs. Calendar patches
@@ -442,7 +442,7 @@ rejects ZonedDateTime and checks range types before TimeClip/profile selection.
 Resolved options retain table order and suppress component properties for styles.
 Runtime registry borrows never span provider callbacks, allowing replacement
 providers and locale patches during conversion. Range endpoints acquire their
-providers independently; rendering reads names after both callbacks. Hermes coercion, intrinsic brands and Date.now defaults remain unfinished.
+providers independently; rendering reads names after both callbacks. The Hermes facade supplies coercion, intrinsic brands and Date.now defaults.
 
 `crates/intl_datetimeformat_calendars` supplies all fourteen optional arithmetic
 providers without a reverse dependency from the base formatter. Eleven use the
@@ -487,3 +487,36 @@ client validate state order, ownership, callback failures and archive/header ABI
 Range calls retain one transition map across endpoint callbacks. Replacing timezone
 data during conversion affects later calls; both endpoints keep the current call's
 map. Calendar providers still resolve independently for each endpoint.
+
+The Hermes bridge retains thread-bound Rust handles in an installation-owned
+arena. HostObject finalizers enqueue IDs through a separate mutex-protected queue;
+they never lock or own the Rust arena. Native entries drain that queue, and the
+installation guard destroys remaining records before runtime teardown. Only the
+guard and active native calls own the arena; host functions capture weak references.
+This prevents a GC thread from releasing the last Rc-backed Rust runtime owner.
+
+Foreign calendar contexts hold weak JSI functions; private JS slot maps retain
+registered wrappers, including while a bound format survives. Each native entry
+has a separate pending-exception frame, preserving nested callback exception
+identity. Functions catch before crossing Rust and rethrow after status 5 returns.
+The callback wrapper copies enumerable fields before selecting typed calendar
+fields, preserving spread getter effects without invoking a result's toJSON.
+
+A C++ Hermes integration test validates real formatting, nested callback failure
+recovery, rejected inputs, released installation errors and worker-thread finalizer
+execution. Installed API differential tests run source and bytecode factories with
+TS reference formatters, eight locale families and actual Temporal polyfill brands.
+SDK packaging, consumer installation and cross-platform smoke remain unfinished.
+
+The default Hermes compiler shares loop bindings unless ES6 block scoping is
+explicitly enabled. Calendar callback factories therefore use a separate function
+scope per registration. A default-runtime regression registers two calendars in
+one call and requires distinct results. The TS reference suite opts into ES6 block
+scoping because its lazy calendar getters and Temporal fns require those language
+semantics; native factory bytecode still uses the shipping default compiler flags.
+
+The native timezone-link and locale-alias generators use execution-platform
+runfiles during cross-builds, matching NumberFormat metadata generation. Resolving
+through the target execroot selected Darwin npm packages while executing on Linux
+and failed loading Rolldown bindings. Linux-to-Darwin archive validation covers
+both formatter crates after switching those generators to runfiles entrypoints.
