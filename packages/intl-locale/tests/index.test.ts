@@ -32,7 +32,9 @@ describe('intl-locale', () => {
       expect(collations).toContain('emoji')
       expect(collations).toContain('eor')
       expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
-      expect(locale.getNumberingSystems()).toEqual(['latn', 'arab'])
+      expect(locale.getNumberingSystems()).toEqual([
+        new Intl.NumberFormat('ar').resolvedOptions().numberingSystem,
+      ])
       expect(locale.getTimeZones()).toBe(undefined)
     })
 
@@ -83,7 +85,7 @@ describe('intl-locale', () => {
       expect(collations).toContain('emoji')
       expect(collations).toContain('eor')
       expect(locale.getHourCycles()).toEqual(['h23', 'h11', 'h12'])
-      expect(locale.getNumberingSystems()).toEqual(['latn', 'jpan', 'jpanfin'])
+      expect(locale.getNumberingSystems()).toEqual(['latn'])
       expect(locale.getTimeZones()).toBe(undefined)
     })
 

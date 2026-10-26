@@ -209,3 +209,13 @@ It only searches likely-subtag candidates for the requested language.
 `getCollations()` filters global candidates through the requested locale. An
 explicit `co` extension returns that value; an unmatched locale returns
 `emoji` and `eor`.
+
+## Locale information changes
+
+`getTextInfo()` follows script metadata. Unicode extensions do not change
+direction; unknown or unoriented scripts return `{direction: undefined}`.
+Consumers must handle this possibility.
+
+`getNumberingSystems()` returns one default system for the matched
+`Intl.NumberFormat` locale, unless an explicit `nu` extension restricts it.
+Without a matching formatter locale it returns `['latn']`.

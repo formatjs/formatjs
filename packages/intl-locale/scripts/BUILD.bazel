@@ -2,6 +2,13 @@
 load("//tools:index.bzl", "ts_binary")
 
 ts_binary(
+    name = "script-directions",
+    entry_point = "script-directions.ts",
+    visibility = ["//packages/intl-locale:__pkg__"],
+    deps = ["//:node_modules/minimist"],
+)
+
+ts_binary(
     name = "character-orders",
     data = [
         "common-types.ts",

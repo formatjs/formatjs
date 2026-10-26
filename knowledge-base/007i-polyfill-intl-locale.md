@@ -12,7 +12,7 @@ Polyfill for `Intl.Locale` — provides locale information and manipulation, inc
 
 ## CLDR Data Pipeline
 
-This package has the most diverse CLDR source requirements — 6 separate extraction scripts for different data domains.
+This package has seven extraction scripts for its CLDR preference data.
 
 ### Sources
 
@@ -100,3 +100,26 @@ It only searches likely-subtag candidates for the requested language.
 `getCollations()` filters global candidates through the requested locale. An
 explicit `co` extension returns that value; an unmatched locale returns
 `emoji` and `eor`.
+
+## Information semantics
+
+`getTextInfo()` uses the explicit script, otherwise the likely script. Unrelated
+extensions cannot change direction. Unknown or unoriented scripts produce an
+own `direction: undefined` property; its return type reflects this possibility.
+The direction table comes from the pinned CLDR common archive's
+`common/properties/scriptMetadata.txt` through `scripts/script-directions.ts`.
+
+`getNumberingSystems()` returns an explicit `nu` restriction, otherwise only the
+matched NumberFormat locale's default system. Missing support falls back to
+`latn`. It no longer returns every CLDR alternative numbering system.
+
+## Rust port
+
+`crates/intl_locale` shares generated CLDR preference data and ICU4X-backed
+canonicalization with the canonical-locale leaf crate. Likely-subtag trials
+preserve variants/extensions and leave unmatched languages unchanged.
+
+`//packages/intl-locale:rust_conformance_test` compares complete Rust records
+with TypeScript, using real NumberFormat/Collator observations. Native builds
+and tests run on Linux. Hermes binding and SDK coverage remain in progress;
+the typed Rust core alone does not implement JS brands or coercion.
