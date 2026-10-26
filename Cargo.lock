@@ -722,6 +722,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_displaynames"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_getcanonicallocales"
 version = "0.1.0"
 dependencies = [
@@ -733,6 +744,7 @@ dependencies = [
 name = "formatjs_intl_hermes"
 version = "0.1.0"
 dependencies = [
+ "formatjs_intl_displaynames",
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",
  "formatjs_intl_locale",

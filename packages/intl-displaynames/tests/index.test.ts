@@ -323,3 +323,14 @@ it.each(['abcd', 'abcdefghi', 'en-u-ca-gregory'])(
     )
   }
 )
+
+it('rejects trailing line terminators in display-name codes', () => {
+  for (const type of ['language', 'region', 'script'] as const) {
+    const code = {language: 'en', region: 'US', script: 'Latn'}[type]
+    for (const end of ['\n', '\r', '\u2028', '\u2029']) {
+      expect(() => new DisplayNames('en', {type}).of(code + end)).toThrow(
+        RangeError
+      )
+    }
+  }
+})

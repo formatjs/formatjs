@@ -61,3 +61,14 @@ five to eight ASCII letters, with optional script, region, and variant subtags.
 
 Calendar display-name data uses BCP 47 identifiers, including `gregory` and
 `ethioaa`, rather than CLDR legacy keys.
+
+## Rust port (in progress)
+
+`crates/intl_displaynames` validates and canonicalizes codes, looks up CLDR
+names and composes localized language/region names. Versioned JSON packs reuse
+the TS extraction and carry default-content aliases. Registry replacement is
+atomic; existing instances retain their data. The differential suite compares
+all locale/type/style/fallback combinations with TS using lookup negotiation.
+Hermes coercion, owned ABI and SDK installation follow within this polyfill PR.
+
+Code validation consumes the entire input, including trailing line terminators.
