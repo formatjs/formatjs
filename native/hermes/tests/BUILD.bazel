@@ -194,6 +194,46 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "displaynames_typecheck",
+    srcs = [
+        "displaynames.ts",
+        "run-displaynames.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "displaynames_suite",
+    srcs = ["displaynames.ts"],
+    entry_point = "displaynames.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-displaynames"],
+)
+
+js_test(
+    name = "displaynames_conformance_test",
+    size = "medium",
+    data = [
+        ":displaynames_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_displaynames:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-displaynames:cldr-raw",
+    ],
+    entry_point = "run-displaynames.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -242,6 +282,8 @@ package_formatter_conformance("locale")
 package_formatter_conformance("pluralrules")
 
 package_formatter_conformance("listformat")
+
+package_formatter_conformance("displaynames")
 
 package_formatter_conformance("getcanonicallocales")
 

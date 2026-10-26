@@ -23,6 +23,7 @@ rust_static_library(
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
+        "//crates/intl_displaynames",
         "//crates/intl_getcanonicallocales",
         "//crates/intl_listformat",
         "//crates/intl_locale",

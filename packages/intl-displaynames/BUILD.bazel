@@ -135,7 +135,10 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-displaynames/scripts:cldr-raw",
-    visibility = ["//crates/intl_displaynames:__subpackages__"],
+    visibility = [
+        "//crates/intl_displaynames:__subpackages__",
+        "//native/hermes/tests:__pkg__",
+    ],
 )
 
 ts_run_binary(
