@@ -70,7 +70,7 @@ It adds no DOM, styling, provider, or network dependency.
 
 ```tsx
 const workflow = useTranslationEditor({
-  messages, // {id, defaultMessage, description?, catalogs?, locations?, translations}
+  messages, // {id, defaultMessage, description?, catalogs?, sources?, locations?, translations}
   locales: ['fr', 'ru'],
   defaultLocale: 'fr',
   pageSize: 100,
@@ -94,8 +94,8 @@ const workflow = useTranslationEditor({
 ```
 
 Use `workflow.editor` for editing/search/selection, `pageMessages` for the current
-page, and `setLocale`, `setCatalog`, `setStatus`, and `setPage` for navigation.
-`selectedMessage` exposes catalog and source-location context. Status filters
+page, and `setLocale`, `setCatalog`, `setSource`, `setStatus`, and `setPage` for
+navigation. `selectedMessage` exposes catalog, source, and source-location context. Status filters
 reflect saved translations, so typing does not move a message out of the list.
 Locales may load asynchronously; an absent selection falls back to the first
 available locale. Pagination clamps when messages or page size change.
@@ -214,6 +214,76 @@ categories inherit the source `other` branch's argument contract. Repeated
 placeholders do not change that contract. Validation is structural, not a check
 of translation quality.
 
+### Projects and sources
+
+One editor deployment can serve several independent translation workspaces, each
+fed by several upload streams. The workflow models both without loading data:
+
+- `projects` lists selectable workspaces as `{id, label, description?}`. The
+  active project is `project` (controlled) or `defaultProject` (uncontrolled) and
+  falls back to the first entry. `setProject(id)` resets paging, selection, and
+  the catalog/source filters, calls `onProjectChange(id)`, and returns
+  `{status: 'changed', project}`. Selecting the active project returns
+  `{status: 'unchanged'}`; an unknown ID returns
+  `{status: 'blocked', reason: 'unknown-project'}`. While any draft is unsaved the
+  change is refused with `{status: 'blocked', reason: 'unsaved-drafts'}` so nothing
+  is discarded silently; after confirmation, call
+  `setProject(id, {discardDrafts: true})` to drop every draft and switch. The hook
+  never fetches: supply the new project's `messages`, `locales`, and `onSave` from
+  `onProjectChange`. Locale, status, and search text are kept because they usually
+  carry over between workspaces.
+- `message.sources` names the upload streams (for example branches) that currently
+  include a message, distinct from `catalogs`, which are build units. `sources`
+  aggregates them, `source` / `setSource` filter by one stream (the empty string
+  shows every source, as with `catalog`), and the filter composes with status,
+  catalog, and search. Changing it resets pagination.
+- `SourceLocation` accepts optional `source`, `repository`, and `revision`
+  metadata next to `file`, `start`, and `end`.
+
+```tsx
+const workflow = useTranslationEditor({
+  messages,
+  locales,
+  onSave,
+  projects: [
+    {id: 'web', label: 'Web app'},
+    {id: 'mobile', label: 'Mobile app'},
+  ],
+  project: activeProject,
+  onProjectChange: loadProject,
+})
+
+function switchProject(id: string) {
+  const result = workflow.setProject(id)
+  if (result.status === 'blocked' && result.reason === 'unsaved-drafts') {
+    if (confirm('Discard unsaved translations?'))
+      workflow.setProject(id, {discardDrafts: true})
+  }
+}
+```
+
+`formatSourceLocation(location)` returns the plain `file`, `file:start`, or
+`file:start–end` text used by `MessageContext`. `resolveSourceLocationHref`
+builds a link for the same location, or `undefined` when no link can be built:
+
+```tsx
+import {resolveSourceLocationHref} from '@formatjs/editor'
+
+const href = resolveSourceLocationHref(location, {
+  baseUrl: 'https://git.example.com/{repository}/blob/{revision}',
+  revision: 'main', // fallback when the location carries none
+})
+// https://git.example.com/acme/web/blob/main/src/home.tsx#L12-L18
+```
+
+Without `baseUrl` the resolver returns `undefined`, so locations render as text
+by default. A string base may contain `{repository}` and `{revision}`
+placeholders, filled from the location or the option fallbacks; a missing value
+yields `undefined` rather than a broken link. A function base receives the
+location (including its `source`) and returns a base or `undefined`. Path
+segments are URI-encoded and the line fragment defaults to `L{start}` /
+`L{start}-L{end}`; `lineFragment(start, end)` adapts it to other hosts.
+
 The optional `TranslationEditorDemo` in `demo/workflow-demo.tsx` uses the public
 `TranslationEditorView` with a StyleX component adapter and localized labels. It includes locale/catalog/status filters,
 pagination, source locations, localized validation, reset, and save feedback.
@@ -272,6 +342,13 @@ navigation busy and displays a status; it does not clear the controlled list.
 Pass `descriptionSearch` for a separately controlled description-only field and
 `searchOptions` for controlled scope/exactness UI. The view does not combine or
 debounce requests; those data-source concerns remain with the caller.
+
+Pass `projects={{projects, value, onChange}}` to render the `ProjectPicker`
+adapter in the toolbar when more than one project exists, and
+`sourceFilter={{sources, value, onChange}}` to render the `SourceFilter` adapter
+when any source exists; both precede `filters`. Rows list each message's
+`sources` through the `SourceBadge` adapter, and `renderMessage` receives them as
+`state.sources` for custom rows. Without this metadata nothing new is rendered.
 
 ### Component adapters
 
@@ -437,14 +514,15 @@ function TranslationTools() {
   `copyDescription`, and shared `copyOptions`. They render distinct controls beside
   the corresponding source and description text and copy the exact raw value.
   The description row and action are omitted when no description is present.
-- **MessageContext** renders an ID, optional description, catalogs, and source
-  locations from the existing `EditorMessage` metadata contract. Locations render
-  as plain text with optional start/end ranges; `renderLocation(location, text)` can
-  customize them. `copyId` defaults to true and `copyOptions` passes clipboard
-  callbacks, labels, writer, and timing to copy controls. `copyCatalogs` and
-  `copyLocations` opt exact metadata values into the same feedback path. `labels`
-  also exposes their copy-label formatters. A missing message clears the content;
-  absent metadata sections are omitted.
+- **MessageContext** renders an ID, optional description, catalogs, sources, and
+  source locations from the existing `EditorMessage` metadata contract. Locations
+  render as plain text with optional start/end ranges; `renderLocation(location, text)`
+  can customize them, for example by wrapping the text in a link built with
+  `resolveSourceLocationHref`. `copyId` defaults to true and `copyOptions` passes clipboard
+  callbacks, labels, writer, and timing to copy controls. `copyCatalogs`,
+  `copySources`, and `copyLocations` opt exact metadata values into the same feedback
+  path. `labels` also exposes their copy-label formatters. A missing message clears
+  the content; absent metadata sections are omitted.
 
 `hasMeaningfulIcuStructure(message)` returns true only when parsing succeeds and the
 AST contains a non-literal element (arguments, selectors, formatters, pound tokens,
@@ -463,9 +541,15 @@ one provider to use the same design system across fields and standalone tools:
 | `CopyButton` / `EditorCopyButtonProps`                 | `label`, `status` (idle, copying, copied, error), `disabled`                            | `onPress()`                         |
 | `Metadata` / `EditorMetadataProps`                     | Accessible `label`, `children`                                                          | None                                |
 | `SearchControls` / `EditorSearchControlsProps`         | Controlled `mode`, `scope`, localized labels                                            | `onModeChange`, `onScopeChange`     |
+| `ProjectPicker` / `EditorProjectPickerProps`           | `projects`, controlled `value`, accessible `label`, optional `disabled`                 | `onChange(projectId: string)`       |
+| `SourceFilter` / `EditorSourceFilterProps`             | `sources`, controlled `value` (empty for all), `label`, `allLabel`, optional `disabled` | `onChange(source: string)`          |
+| `SourceBadge` / `EditorSourceBadgeProps`               | `source` text, accessible `label`                                                       | None                                |
 
 Checkbox adapters forward IDs, expose mixed state, honor disabled state, and report
-booleans without DOM events. Locale-picker layouts can use a popover, disclosure,
+booleans without DOM events. Project pickers and source filters are keyboard-operable
+selection controls that report IDs, never DOM events; the native implementations are
+`<select>` elements. Source badges are noninteractive text, since they render inside
+the message-row selection control. Locale-picker layouts can use a popover, disclosure,
 or dialog: they own open-state interaction, focus handling, and responsive layout,
 while preserving column order and rendering every control. Copy-button adapters
 can map status to icons, but must retain the accessible label and must not submit
@@ -561,7 +645,8 @@ but no save button. Validation and pending state disable the default save button
 custom action slots own their own disabled/confirmation behavior.
 
 All built-in strings can be overridden through `labels`, including individual
-`labels.validation` entries. Supply already-localized strings from your preferred
+`labels.validation` entries and the `project`, `sourceFilter`, `allSources`, and
+`sourceBadge(source)` strings used by the project and source controls. Supply already-localized strings from your preferred
 library. The workflow demo demonstrates a React Intl consumer without making
 `IntlProvider` a requirement for the public UI.
 

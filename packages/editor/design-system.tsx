@@ -12,6 +12,7 @@ import type {
   MessageSearchMode,
   MessageSearchScope,
 } from '#packages/editor/search.js'
+import type {EditorProject} from '#packages/editor/workflow.js'
 export interface EditorButtonProps {
   children: ReactNode
   /** Called once per activation, without a DOM event; disabled controls must not call it. */
@@ -124,6 +125,32 @@ export interface EditorSearchControlsProps {
   onScopeChange: (scope: MessageSearchScope) => void
   labels: EditorSearchControlsLabels
 }
+export interface EditorProjectPickerProps {
+  projects: readonly EditorProject[]
+  /** Active project ID; undefined when no project is active. */
+  value: string | undefined
+  /** Reports the chosen project ID; never a DOM event. */
+  onChange: (projectId: string) => void
+  /** Accessible name of the control. */
+  label: string
+  disabled?: boolean
+}
+export interface EditorSourceFilterProps {
+  sources: readonly string[]
+  /** Active source, or the empty string for every source. */
+  value: string
+  onChange: (source: string) => void
+  /** Accessible name of the control. */
+  label: string
+  /** Text of the option matching every source. */
+  allLabel: string
+  disabled?: boolean
+}
+export interface EditorSourceBadgeProps {
+  source: string
+  /** Accessible description distinguishing the badge from other metadata. */
+  label: string
+}
 /** Optional additions preserve existing complete design-system registries. */
 export interface EditorToolComponents {
   Checkbox: ComponentType<EditorCheckboxProps>
@@ -132,6 +159,9 @@ export interface EditorToolComponents {
   CopyButton: ComponentType<EditorCopyButtonProps>
   Metadata: ComponentType<EditorMetadataProps>
   SearchControls: ComponentType<EditorSearchControlsProps>
+  ProjectPicker: ComponentType<EditorProjectPickerProps>
+  SourceFilter: ComponentType<EditorSourceFilterProps>
+  SourceBadge: ComponentType<EditorSourceBadgeProps>
 }
 export type ResolvedEditorComponents = Required<EditorComponents>
 /** Unstyled native controls; no CSS, icons, or localization provider is required. */
@@ -281,6 +311,36 @@ export const nativeEditorComponents: ResolvedEditorComponents = {
       </fieldset>
     </div>
   ),
+  ProjectPicker: ({projects, value, onChange, label, disabled}) => (
+    <select
+      aria-label={label}
+      value={value ?? ''}
+      disabled={disabled}
+      onChange={event => onChange(event.target.value)}
+    >
+      {projects.map(project => (
+        <option key={project.id} value={project.id} title={project.description}>
+          {project.label}
+        </option>
+      ))}
+    </select>
+  ),
+  SourceFilter: ({sources, value, onChange, label, allLabel, disabled}) => (
+    <select
+      aria-label={label}
+      value={value}
+      disabled={disabled}
+      onChange={event => onChange(event.target.value)}
+    >
+      <option value="">{allLabel}</option>
+      {sources.map(source => (
+        <option key={source} value={source}>
+          {source}
+        </option>
+      ))}
+    </select>
+  ),
+  SourceBadge: ({source, label}) => <span title={label}>{source}</span>,
   PreviewToken: ({children}) => <code>{children}</code>,
   CopyButton: ({label, onPress, disabled}) => (
     <button type="button" disabled={disabled} onClick={() => onPress()}>

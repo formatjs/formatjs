@@ -253,6 +253,196 @@ describe('translation workflow', () => {
   })
 })
 
+describe('projects and sources', () => {
+  const projects = [
+    {id: 'web', label: 'Web app'},
+    {id: 'mobile', label: 'Mobile app', description: 'Phone and tablet'},
+  ]
+  const sourced: EditorMessage[] = [
+    {
+      id: 'a',
+      defaultMessage: 'First {name}',
+      translations: {fr: 'Premier {name}'},
+      catalogs: ['web'],
+      sources: ['main', 'release'],
+    },
+    {
+      id: 'b',
+      defaultMessage: 'Second {name}',
+      translations: {fr: 'Deuxième {name}'},
+      catalogs: ['web'],
+      sources: ['release'],
+    },
+    {
+      id: 'c',
+      defaultMessage: 'Third {name}',
+      translations: {},
+      catalogs: ['mobile'],
+      sources: ['main'],
+    },
+    {
+      id: 'd',
+      defaultMessage: 'Fourth {name}',
+      translations: {fr: 'Quatrième {name}'},
+    },
+  ]
+  const ids = (state: {editor: {messages: readonly {id: string}[]}}) =>
+    state.editor.messages.map(message => message.id)
+
+  it('composes the source filter with status, catalog, and search filters', () => {
+    const {result} = renderHook(() =>
+      useTranslationEditor(options({messages: sourced, pageSize: 1}))
+    )
+    expect(result.current.sources).toEqual(['main', 'release'])
+    expect(result.current.source).toBe('')
+    expect(ids(result.current)).toEqual(['a', 'b', 'c', 'd'])
+    act(() => result.current.setPage(2))
+    act(() => result.current.setSource('main'))
+    expect(result.current.page).toBe(0)
+    expect(ids(result.current)).toEqual(['a', 'c'])
+    act(() => result.current.setStatus('missing'))
+    expect(ids(result.current)).toEqual(['c'])
+    act(() => result.current.setStatus('all'))
+    act(() => result.current.setCatalog('web'))
+    expect(ids(result.current)).toEqual(['a'])
+    act(() => result.current.editor.setQuery('second'))
+    expect(ids(result.current)).toEqual([])
+    act(() => result.current.setSource('release'))
+    expect(ids(result.current)).toEqual(['b'])
+    act(() => result.current.setSource('unknown'))
+    expect(result.current.source).toBe('')
+    act(() => result.current.editor.setQuery(''))
+    act(() => result.current.setCatalog(''))
+    expect(ids(result.current)).toEqual(['a', 'b', 'c', 'd'])
+  })
+
+  it('exposes no sources and no project without the optional metadata', () => {
+    const {result} = renderHook(() => useTranslationEditor(options()))
+    expect(result.current.sources).toEqual([])
+    expect(result.current.projects).toEqual([])
+    expect(result.current.project).toBeUndefined()
+    expect(result.current.setProject('web')).toEqual({
+      status: 'blocked',
+      reason: 'unknown-project',
+    })
+  })
+
+  it('switches uncontrolled projects and resets paging, selection, and filters', () => {
+    const onProjectChange = vi.fn()
+    const {result} = renderHook(() =>
+      useTranslationEditor(
+        options({
+          messages: sourced,
+          pageSize: 1,
+          projects,
+          defaultProject: 'mobile',
+          onProjectChange,
+        })
+      )
+    )
+    expect(result.current.project).toEqual(projects[1])
+    act(() => result.current.editor.selectMessage('b'))
+    act(() => result.current.setCatalog('web'))
+    act(() => result.current.setSource('release'))
+    act(() => result.current.setStatus('translated'))
+    act(() => result.current.setPage(1))
+    expect(ids(result.current)).toEqual(['a', 'b'])
+    expect(result.current.selectedMessage?.id).toBe('b')
+    expect(result.current.setProject('mobile')).toEqual({status: 'unchanged'})
+    expect(result.current.catalog).toBe('web')
+    expect(result.current.page).toBe(1)
+    expect(onProjectChange).not.toHaveBeenCalled()
+    let outcome!: ReturnType<typeof result.current.setProject>
+    act(() => {
+      outcome = result.current.setProject('web')
+    })
+    expect(outcome).toEqual({status: 'changed', project: projects[0]})
+    expect(onProjectChange).toHaveBeenCalledExactlyOnceWith('web')
+    expect(result.current.project).toEqual(projects[0])
+    expect(result.current.page).toBe(0)
+    expect(result.current.catalog).toBe('')
+    expect(result.current.source).toBe('')
+    expect(result.current.status).toBe('translated')
+    expect(result.current.selectedMessage?.id).toBe('a')
+    expect(result.current.setProject('desktop')).toEqual({
+      status: 'blocked',
+      reason: 'unknown-project',
+    })
+  })
+
+  it('blocks project changes while drafts are unsaved unless they are discarded', () => {
+    const onProjectChange = vi.fn()
+    const initial = options({
+      messages: sourced,
+      projects,
+      defaultProject: 'web',
+      onProjectChange,
+    })
+    const {result, rerender} = renderHook(
+      props => useTranslationEditor(props),
+      {initialProps: initial}
+    )
+    act(() => result.current.editor.setTranslation('Brouillon {name}'))
+    act(() => result.current.editor.selectMessage('b'))
+    let outcome!: ReturnType<typeof result.current.setProject>
+    act(() => {
+      outcome = result.current.setProject('mobile')
+    })
+    expect(outcome).toEqual({status: 'blocked', reason: 'unsaved-drafts'})
+    expect(onProjectChange).not.toHaveBeenCalled()
+    expect(result.current.project).toEqual(projects[0])
+    expect(result.current.getTranslation('a', 'fr')?.value).toBe(
+      'Brouillon {name}'
+    )
+    act(() => result.current.getTranslation('a', 'fr')?.reset())
+    act(() => {
+      outcome = result.current.setProject('mobile')
+    })
+    expect(outcome).toEqual({status: 'changed', project: projects[1]})
+    expect(onProjectChange).toHaveBeenCalledExactlyOnceWith('mobile')
+    act(() => result.current.editor.setTranslation('Autre {name}'))
+    act(() => {
+      outcome = result.current.setProject('web', {discardDrafts: true})
+    })
+    expect(outcome).toEqual({status: 'changed', project: projects[0]})
+    expect(result.current.changed).toBe(false)
+    expect(result.current.editor.selectedMessage?.translatedMessage).toBe(
+      'Premier {name}'
+    )
+    rerender({...initial, messages: [sourced[3]]})
+    expect(result.current.selectedMessage?.id).toBe('d')
+    expect(result.current.sources).toEqual([])
+  })
+
+  it('keeps a controlled project until the consumer applies the change', () => {
+    const onProjectChange = vi.fn()
+    const initial = options({
+      messages: sourced,
+      projects,
+      project: 'web',
+      onProjectChange,
+    })
+    const {result, rerender} = renderHook(
+      props => useTranslationEditor(props),
+      {initialProps: initial}
+    )
+    act(() => result.current.setSource('main'))
+    let outcome!: ReturnType<typeof result.current.setProject>
+    act(() => {
+      outcome = result.current.setProject('mobile')
+    })
+    expect(outcome).toEqual({status: 'changed', project: projects[1]})
+    expect(onProjectChange).toHaveBeenCalledExactlyOnceWith('mobile')
+    expect(result.current.project).toEqual(projects[0])
+    expect(result.current.source).toBe('')
+    rerender({...initial, project: 'mobile', messages: [sourced[2]]})
+    expect(result.current.project).toEqual(projects[1])
+    expect(result.current.selectedMessage?.id).toBe('c')
+    rerender({...initial, project: 'missing'})
+    expect(result.current.project).toEqual(projects[0])
+  })
+})
+
 describe('editor preferences and status', () => {
   it('keeps explicitly undefined translations in the missing filter', () => {
     const {result} = renderHook(() =>

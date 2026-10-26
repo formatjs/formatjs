@@ -20,6 +20,9 @@ export {
   type EditorMetadataProps,
   type EditorSearchControlsLabels,
   type EditorSearchControlsProps,
+  type EditorProjectPickerProps,
+  type EditorSourceFilterProps,
+  type EditorSourceBadgeProps,
   type EditorToolComponents,
   type ResolvedEditorComponents,
   nativeEditorComponents,
@@ -48,6 +51,7 @@ export {
 } from '#packages/editor/message-context.js'
 import type {
   EditorMessage,
+  EditorProject,
   TranslationDraftState,
 } from '#packages/editor/workflow.js'
 import type {
@@ -76,6 +80,12 @@ export interface EditorLabels {
   saved: string
   unsaved: string
   unchanged: string
+  project: string
+  sources: string
+  sourceFilter: string
+  allSources: string
+  /** Accessible description of a row's source badge. */
+  sourceBadge: (source: string) => string
   validation: Record<TranslationValidationError, string>
   searchOptions: EditorSearchControlsLabels
 }
@@ -95,6 +105,11 @@ const defaultLabels: EditorLabels = {
   saved: 'Translation saved.',
   unsaved: 'Unsaved changes',
   unchanged: 'No unsaved changes',
+  project: 'Project',
+  sources: 'Sources',
+  sourceFilter: 'Source',
+  allSources: 'All sources',
+  sourceBadge: source => `Source ${source}`,
   validation: {
     empty: 'Enter a translation before saving.',
     'invalid-source': 'The source contains invalid ICU syntax.',
@@ -133,7 +148,7 @@ interface ViewOptions {
 }
 export type EditorViewMessage = Pick<
   EditorMessage,
-  'id' | 'defaultMessage' | 'description'
+  'id' | 'defaultMessage' | 'description' | 'sources'
 >
 export interface EditorSearch {
   value: string
@@ -147,7 +162,24 @@ export interface EditorSearchOptions {
 }
 export interface EditorMessageRenderState {
   selected: boolean
+  /** Sources of the row's message; empty when it declares none. */
+  sources: readonly string[]
 }
+/** Controlled project selection rendered by the composed view's toolbar. */
+export interface EditorProjectSelection {
+  projects: readonly EditorProject[]
+  value: string | undefined
+  onChange: (projectId: string) => void
+  disabled?: boolean
+}
+/** Controlled source filter; the empty string selects every source. */
+export interface EditorSourceSelection {
+  sources: readonly string[]
+  value: string
+  onChange: (source: string) => void
+  disabled?: boolean
+}
+const noSources: readonly string[] = []
 export interface MessageListProps<
   Message extends EditorViewMessage = EditorViewMessage,
 > extends ViewOptions {
@@ -191,7 +223,8 @@ export function MessageList<
   renderMessageActions,
   labels,
 }: MessageListProps<Message>): ReactNode {
-  const {TextInput, MessageRow, SearchControls} = useEditorDesignSystem()
+  const {TextInput, MessageRow, SearchControls, SourceBadge} =
+    useEditorDesignSystem()
   const text = resolveLabels(labels)
   const searchId = useId()
   const descriptionSearchId = useId()
@@ -234,7 +267,10 @@ export function MessageList<
       )}
       <ul>
         {messages.map(message => {
-          const state = {selected: message.id === selectedId}
+          const state: EditorMessageRenderState = {
+            selected: message.id === selectedId,
+            sources: message.sources ?? noSources,
+          }
           return (
             <li key={message.id}>
               <MessageRow
@@ -247,6 +283,13 @@ export function MessageList<
                   <>
                     <span>{message.defaultMessage}</span>{' '}
                     <code>{message.id}</code>
+                    {state.sources.map(source => (
+                      <SourceBadge
+                        key={source}
+                        source={source}
+                        label={text.sourceBadge(source)}
+                      />
+                    ))}
                   </>
                 )}
               </MessageRow>
@@ -432,6 +475,10 @@ export interface TranslationEditorViewProps<
   /** May be outside the loaded list, e.g. during a server-side page change. */
   selectedMessage?: EditorViewMessage
   translations: readonly EditorTranslation[]
+  /** Rendered through the `ProjectPicker` adapter when more than one project exists. */
+  projects?: EditorProjectSelection
+  /** Rendered through the `SourceFilter` adapter when any source exists. */
+  sourceFilter?: EditorSourceSelection
   filters?: ReactNode
   context?: ReactNode
   copySource?: boolean
@@ -454,6 +501,8 @@ export function TranslationEditorView<
   selectedMessage,
   selectedId = selectedMessage?.id,
   translations,
+  projects,
+  sourceFilter,
   filters,
   context,
   copySource,
@@ -468,8 +517,30 @@ export function TranslationEditorView<
   labels,
   ...list
 }: TranslationEditorViewProps<Message>): ReactNode {
-  const {Layout} = useEditorDesignSystem()
+  const {Layout, ProjectPicker, SourceFilter} = useEditorDesignSystem()
   const text = resolveLabels(labels)
+  const projectPicker =
+    projects && projects.projects.length > 1 ? (
+      <ProjectPicker {...projects} label={text.project} />
+    ) : null
+  const sourceControl =
+    sourceFilter && sourceFilter.sources.length > 0 ? (
+      <SourceFilter
+        {...sourceFilter}
+        label={text.sourceFilter}
+        allLabel={text.allSources}
+      />
+    ) : null
+  const toolbar =
+    projectPicker || sourceControl ? (
+      <>
+        {projectPicker}
+        {sourceControl}
+        {filters}
+      </>
+    ) : (
+      filters
+    )
   const fields = selectedMessage
     ? translations.map(translation => (
         <TranslationField
@@ -514,7 +585,7 @@ export function TranslationEditorView<
   )
   return (
     <Layout
-      toolbar={filters}
+      toolbar={toolbar}
       navigation={
         <MessageList {...list} selectedId={selectedId} labels={labels} />
       }

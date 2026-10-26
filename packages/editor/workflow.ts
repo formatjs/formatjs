@@ -5,17 +5,23 @@ import {
   type TranslationValidationError,
 } from '#packages/editor/validation.js'
 import {matchesMessageStatus} from '#packages/editor/message-status.js'
+import type {SourceLocation} from '#packages/editor/source-location.js'
 
-export interface SourceLocation {
-  file: string
-  start?: number
-  end?: number
+export type {SourceLocation} from '#packages/editor/source-location.js'
+/** One independent translation workspace served by the same editor shell. */
+export interface EditorProject {
+  id: string
+  label: string
+  description?: string
 }
 export interface EditorMessage {
   id: string
   defaultMessage: string
   description?: string
+  /** Build units that compile this message. */
   catalogs?: readonly string[]
+  /** Upload streams (for example branches) that currently include this message. */
+  sources?: readonly string[]
   locations?: readonly SourceLocation[]
   translations: Readonly<Record<string, string | undefined>>
 }
@@ -36,7 +42,16 @@ export type TranslationSaveResult<TResult = void> =
   | {status: 'failed'; error: Error}
   | {status: 'invalid'; validationError: TranslationValidationError}
   | {status: 'skipped'; reason: 'unavailable' | 'unchanged' | 'pending'}
+export type ProjectChangeResult =
+  | {status: 'changed'; project: EditorProject}
+  | {status: 'unchanged'}
+  | {status: 'blocked'; reason: 'unsaved-drafts' | 'unknown-project'}
+export interface ProjectChangeOptions {
+  /** Drop every unsaved draft instead of blocking the change. */
+  discardDrafts?: boolean
+}
 export interface TranslationEditorOptions<TContext = void, TResult = void> {
+  /** Messages, locales, and persistence for the active project. */
   messages: readonly EditorMessage[]
   locales: readonly string[]
   onSave: (
@@ -45,6 +60,13 @@ export interface TranslationEditorOptions<TContext = void, TResult = void> {
   ) => TResult | Promise<TResult>
   defaultLocale?: string
   pageSize?: number
+  /** Selectable workspaces; the hook never loads their data itself. */
+  projects?: readonly EditorProject[]
+  /** Controlled active project ID. */
+  project?: string
+  /** Initial project ID when `project` is uncontrolled. */
+  defaultProject?: string
+  onProjectChange?: (projectId: string) => void
 }
 /** A render snapshot and actions for one message/locale pair. */
 export interface TranslationDraftState<TContext = void, TResult = void> {
@@ -67,6 +89,17 @@ export interface TranslationEditorState<TContext = void, TResult = void> {
   catalogs: readonly string[]
   catalog: string
   setCatalog: (catalog: string) => void
+  sources: readonly string[]
+  /** Active source filter; the empty string shows every source. */
+  source: string
+  setSource: (source: string) => void
+  projects: readonly EditorProject[]
+  project: EditorProject | undefined
+  /** Resets paging, selection, and catalog/source filters; blocked while drafts are unsaved. */
+  setProject: (
+    projectId: string,
+    options?: ProjectChangeOptions
+  ) => ProjectChangeResult
   status: MessageStatus
   setStatus: (status: MessageStatus) => void
   page: number
@@ -95,6 +128,7 @@ interface Draft {
 }
 const draftKey = (id: string, locale: string): string =>
   JSON.stringify([id, locale])
+const noProjects: readonly EditorProject[] = []
 function reconcile(draft: Draft | undefined, remote: string): Draft {
   if (!draft)
     return {
@@ -121,16 +155,25 @@ export function useTranslationEditor<TContext = void, TResult = void>({
   onSave,
   defaultLocale,
   pageSize = 100,
+  projects = noProjects,
+  project: controlledProject,
+  defaultProject,
+  onProjectChange,
 }: TranslationEditorOptions<TContext, TResult>): TranslationEditorState<
   TContext,
   TResult
 > {
+  const [uncontrolledProject, requestProject] = useState(defaultProject)
+  const requestedProject = controlledProject ?? uncontrolledProject
+  const project =
+    projects.find(value => value.id === requestedProject) ?? projects[0]
   const [requestedLocale, requestLocale] = useState(defaultLocale)
   const locale =
     requestedLocale && locales.includes(requestedLocale)
       ? requestedLocale
       : locales[0]
   const [requestedCatalog, requestCatalog] = useState('')
+  const [requestedSource, requestSource] = useState('')
   const [status, updateStatus] = useState<MessageStatus>('all')
   const [requestedPage, requestPage] = useState(0)
   const [drafts, setDrafts] = useState<Record<string, Draft>>({})
@@ -151,6 +194,14 @@ export function useTranslationEditor<TContext = void, TResult = void>({
     return [...values].sort()
   }, [messages])
   const catalog = catalogs.includes(requestedCatalog) ? requestedCatalog : ''
+  const sources = useMemo(() => {
+    const values = new Set<string>()
+    for (const message of messages) {
+      for (const source of message.sources ?? []) values.add(source)
+    }
+    return [...values].sort()
+  }, [messages])
+  const source = sources.includes(requestedSource) ? requestedSource : ''
   const getDraft = (id: string, targetLocale = locale ?? ''): Draft =>
     reconcile(
       drafts[draftKey(id, targetLocale)],
@@ -185,6 +236,7 @@ export function useTranslationEditor<TContext = void, TResult = void>({
                   : {}
               return (
                 (!catalog || message.catalogs?.includes(catalog)) &&
+                (!source || message.sources?.includes(source)) &&
                 matchesMessageStatus(translations, [locale], status)
               )
             })
@@ -295,6 +347,34 @@ export function useTranslationEditor<TContext = void, TResult = void>({
     selectedMessage && locale !== undefined
       ? getTranslation(selectedMessage.id, locale)
       : undefined
+  const hasUnsavedDrafts = (): boolean =>
+    Object.entries(drafts).some(([key, draft]) => {
+      const current = reconcile(
+        draft,
+        remoteValues.current.get(key) ?? draft.remote
+      )
+      return current.value !== current.baseline
+    })
+  function setProject(
+    projectId: string,
+    options?: ProjectChangeOptions
+  ): ProjectChangeResult {
+    const next = projects.find(value => value.id === projectId)
+    if (!next) return {status: 'blocked', reason: 'unknown-project'}
+    if (next.id === project?.id) return {status: 'unchanged'}
+    if (hasUnsavedDrafts()) {
+      if (!options?.discardDrafts)
+        return {status: 'blocked', reason: 'unsaved-drafts'}
+      setDrafts({})
+    }
+    editor.clearSelection()
+    requestCatalog('')
+    requestSource('')
+    requestPage(0)
+    if (controlledProject === undefined) requestProject(projectId)
+    onProjectChange?.(projectId)
+    return {status: 'changed', project: next}
+  }
   return {
     editor: {
       ...editor,
@@ -327,6 +407,15 @@ export function useTranslationEditor<TContext = void, TResult = void>({
       requestCatalog(value)
       requestPage(0)
     },
+    sources,
+    source,
+    setSource: value => {
+      requestSource(value)
+      requestPage(0)
+    },
+    projects,
+    project,
+    setProject,
     status,
     setStatus: value => {
       updateStatus(value)
