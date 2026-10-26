@@ -23,7 +23,7 @@ function main() {
   ]
   const packs = locales.map(locale =>
     readFileSync(
-      resolve(`crates/intl_listformat/locale-data/${locale}.jsonon`),
+      resolve(`crates/intl_listformat/locale-data/${locale}.json`),
       'utf8'
     )
   )
