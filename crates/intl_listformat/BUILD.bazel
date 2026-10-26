@@ -1,0 +1,63 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//packages/intl-listformat:locales.generated.bzl", "ALL_LOCALES")
+load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+ts_run_binary(
+    name = "locale_data",
+    srcs = ["//packages/intl-listformat:cldr-raw/%s.json" % locale for locale in ALL_LOCALES],
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        package_name() + "/locale-data",
+    ] + [
+        "--cldrFile=packages/intl-listformat/cldr-raw/%s.json" % locale
+        for locale in ALL_LOCALES
+    ],
+    tool = "//crates/intl_listformat/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "intl_listformat",
+    srcs = [
+        "lib.rs",
+        "registry.rs",
+    ],
+    crate_name = "formatjs_intl_listformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_listformat_test",
+    srcs = ["lib.test.rs"],
+    crate_name = "intl_listformat_test",
+    edition = "2024",
+    deps = [
+        ":intl_listformat",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_listformat/tests:__pkg__"],
+    deps = [
+        ":intl_listformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)

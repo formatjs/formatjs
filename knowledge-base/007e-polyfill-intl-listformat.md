@@ -65,3 +65,17 @@ Stage 3: supported-locales.generated.ts
 `format` and `formatToParts` accept iterables of strings, including a string's
 individual code points. `undefined` produces an empty list. Non-iterables and
 non-string elements throw `TypeError`; an invalid element also closes the iterator.
+
+## Rust port (in progress)
+
+`crates/intl_listformat` compiles caller-loaded CLDR patterns and implements
+CreatePartsFromList, DeconstructPattern and FormatList. UTF-16 units preserve
+lone surrogates. Iterative pattern expansion avoids recursive stack growth and
+quadratic copying. The shared Rust Locale matcher negotiates registered packs;
+late registration leaves existing instances unchanged.
+
+`//crates/intl_listformat:locale_data` wraps the existing TS extraction in
+versioned per-locale JSON packs, including default-content aliases. The
+differential suite compares every locale/type/style against the public TS
+formatter. Hermes observable behavior and SDK integration follow separately
+within this polyfill's PR.
