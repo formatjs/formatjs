@@ -17,7 +17,11 @@ rust_library(
     name = "intl_datetimeformat",
     srcs = [
         "civil.rs",
+        "fields.rs",
         "lib.rs",
+        "locale_patterns.rs",
+        "matching.rs",
+        "pattern.rs",
         "timezone.rs",
     ],
     compile_data = [":timezone_links"],
@@ -36,6 +40,7 @@ formatjs_rust_test(
     name = "intl_datetimeformat_test",
     srcs = [
         "lib.test.rs",
+        "pattern.test.rs",
         "timezone.test.rs",
     ],
     crate_name = "intl_datetimeformat_test",
@@ -69,6 +74,20 @@ rust_binary(
     crate_root = "timezone_conformance.rs",
     edition = "2024",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
+    deps = [
+        ":intl_datetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "pattern_conformance",
+    srcs = ["pattern_conformance.rs"],
+    crate_name = "pattern_conformance",
+    crate_root = "pattern_conformance.rs",
+    edition = "2024",
+    visibility = ["//:__pkg__"],
     deps = [
         ":intl_datetimeformat",
         "@crates//:serde",

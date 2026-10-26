@@ -613,3 +613,19 @@ formatjs_test(
         "//packages/ecma402-abstract/types",
     ],
 )
+
+filegroup(
+    name = "rust_pattern_cldr_data",
+    testonly = True,
+    srcs = ["cldr-raw/%s.json" % locale for locale in [
+        "en",
+        "fr",
+        "ar",
+        "ja",
+        "zh-Hans",
+        "ru",
+        "hi",
+        "he",
+    ]],
+    visibility = ["//:__pkg__"],
+)

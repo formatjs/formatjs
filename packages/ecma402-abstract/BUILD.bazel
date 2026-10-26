@@ -1,3 +1,6 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+# gazelle:exclude tests/rust-datetime-patterns.test.ts
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -66,4 +69,11 @@ formatjs_test(
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
+)
+
+copy_to_bin(
+    name = "rust_datetime_pattern_test_sources",
+    testonly = True,
+    srcs = ["tests/rust-datetime-patterns.test.ts"],
+    visibility = ["//:__pkg__"],
 )

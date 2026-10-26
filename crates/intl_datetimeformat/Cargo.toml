@@ -22,3 +22,7 @@ path = "civil_conformance.rs"
 [[example]]
 name = "timezone_conformance"
 path = "timezone_conformance.rs"
+
+[[example]]
+name = "pattern_conformance"
+path = "pattern_conformance.rs"

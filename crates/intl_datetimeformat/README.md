@@ -17,7 +17,9 @@ Hermes facade and SDK installation remain unfinished.
 
 ```sh
 bazel test -c opt //crates/intl_datetimeformat/... \
-  //packages/intl-datetimeformat:rust_timezone_test
+  //packages/intl-datetimeformat:rust_timezone_test \
+  //:rust_datetime_pattern_test \
+  //:rust_datetime_pattern_test_typecheck_typecheck_test
 ```
 
 Tests cover TimeClip endpoints, invalid numeric inputs, century rules, negative
@@ -44,3 +46,23 @@ The current packs cover 453 full zones and 247 golden zones: 428,850 transition 
 boundary samples. Raw JSON equals the shipped JS registration payload in both
 modes. Generation excludes zdump end markers beyond Date's range and parses only
 IANA `Link` records as aliases.
+
+## Patterns and matching
+
+`pattern::parse` preserves LDML quoting, field widths, 12/24-hour variants and
+interval endpoint sources. `matching` implements BasicFormatMatcher,
+BestFitFormatMatcher and DateTimeStyleFormat, including hour preferences,
+registration-order ties and numeric/named-month guards. Ordered raw patterns
+preserve CLDR precedence; parsed records retain skeleton and actual pattern fields
+separately.
+
+`locale_patterns::CalendarPatterns` prepares one calendar on demand. Interval
+selection normalizes raw time skeletons and matches date field presence while
+preserving numeric versus named months. Date/time style connectors and fallback
+intervals use the same preparation as the TS locale registry. This module contains
+no locale packs or optional calendar arithmetic.
+
+Differential tests cover LDML token widths, quoting, Unicode whitespace, range
+sources and matcher penalties. The real CLDR corpus checks 71,421 patterns across
+eight language families and all 15 calendars, including production registration,
+interval fallback selection, styles and 15,120 matcher option combinations.

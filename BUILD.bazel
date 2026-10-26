@@ -18,6 +18,7 @@ load("//tools:compile.bzl", "formatjs_library")
 load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES", "RELEASE_PLEASE_NPM_PACKAGES")
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:index.bzl", "ts_run_binary")
+load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
@@ -333,4 +334,21 @@ copy_to_bin(
     name = "release_please_manifest",
     srcs = [".release-please-manifest.json"],
     visibility = ["//tools:__pkg__"],
+)
+
+formatjs_test(
+    name = "rust_datetime_pattern_test",
+    srcs = ["//packages/ecma402-abstract:rust_datetime_pattern_test_sources"],
+    data = [
+        "//crates/intl_datetimeformat:pattern_conformance",
+        "//packages/intl-datetimeformat:rust_pattern_cldr_data",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )

@@ -103,7 +103,7 @@ export function CanonicalizeTimeZoneName(
   //    match of timeZone
   const uppercasedTz = tz.toUpperCase()
   const uppercasedZones = [
-    ...Object.values(uppercaseLinks),
+    ...Object.keys(uppercaseLinks).map(key => uppercaseLinks[key]),
     ...zoneNames,
   ].reduce((all: Record<string, string>, z) => {
     all[z.toUpperCase()] = z
