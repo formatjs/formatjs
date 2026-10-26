@@ -19,5 +19,10 @@ TS conformance covers every generated locale/type/style, list lengths, Unicode
 and malformed UTF-16. Rust tests cover invalid packs, 20,000-element lists,
 matching, lazy loading and retained instances.
 
-Hermes observable behavior and SDK packaging are in progress. The typed engine
-does not perform JS coercion or iteration.
+The owned C ABI exposes per-runtime registries and immutable instances. JSON
+requests carry UTF-16 arrays, keeping lone surrogates outside scalar-text parsing.
+The Hermes facade performs observable coercion, iteration and brand checks.
+`//native/hermes/tests:listformat_conformance_test` compares source and optimized
+bytecode installers with TS. The SDK includes adapters, selected JSON packs and
+an independent consumer smoke test. Native validation runs on Linux; macOS only
+executes cross-built artifacts.

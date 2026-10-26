@@ -25,7 +25,7 @@ const uint8_t *bytesOf(const std::string &value) {
   return reinterpret_cast<const uint8_t *>(value.data());
 }
 jsi::Value result(jsi::Runtime &rt, int32_t status, const Bytes &bytes) {
-  if (status == 1 || status == 4) return jsi::Value(status);
+  if (status == 1) return jsi::Value(status);
   if (status != 0) throw jsi::JSError(rt, "Rust ListFormat bridge failed");
   return jsi::String::createFromUtf8(rt, bytes.value.data, bytes.value.len);
 }
@@ -69,7 +69,7 @@ void installListFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
         FormatjsListHandle *raw = nullptr;
         auto status = formatjs_list_create(registry->get(), bytesOf(locale), locale.size(), bytesOf(options), options.size(), &raw);
         Handle handle(raw, formatjs_list_destroy);
-        if (status == 1 || status == 4) return jsi::Value(status);
+        if (status == 1) return jsi::Value(status);
         if (status != 0) throw jsi::JSError(rt, "Rust list construction failed");
         return jsi::Object::createFromHostObject(rt, std::make_shared<ListRecord>(std::move(handle)));
       }));

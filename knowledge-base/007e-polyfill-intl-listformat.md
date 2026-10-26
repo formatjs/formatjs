@@ -66,7 +66,7 @@ Stage 3: supported-locales.generated.ts
 individual code points. `undefined` produces an empty list. Non-iterables and
 non-string elements throw `TypeError`; an invalid element also closes the iterator.
 
-## Rust port (in progress)
+## Rust port
 
 `crates/intl_listformat` compiles caller-loaded CLDR patterns and implements
 CreatePartsFromList, DeconstructPattern and FormatList. UTF-16 units preserve
@@ -77,5 +77,8 @@ late registration leaves existing instances unchanged.
 `//crates/intl_listformat:locale_data` wraps the existing TS extraction in
 versioned per-locale JSON packs, including default-content aliases. The
 differential suite compares every locale/type/style against the public TS
-formatter. Hermes observable behavior and SDK integration follow separately
-within this polyfill's PR.
+formatter. The Hermes facade handles observable option access and iteration;
+owned C ABI handles retain data independently of the registry. Source and
+optimized-bytecode conformance also checks brands, subclassing, IteratorClose,
+captured intrinsics and fresh results. SDK consumers select independent JSON
+packs and link the `:listformat` adapter against the shared Rust archive.

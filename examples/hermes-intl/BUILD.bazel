@@ -9,8 +9,16 @@ genrule(
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
 )
 
+genrule(
+    name = "listformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/listformat-smoke.js"],
+    outs = ["listformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
 SMOKE_SOURCES = [
     "main.cpp",
+    ":listformat_smoke_source",
     ":pluralrules_smoke_source",
 ]
 
@@ -33,6 +41,7 @@ cc_binary(
     tags = ["manual"],
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
         "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
@@ -53,6 +62,7 @@ cc_test(
     linkstatic = True,
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
         "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",

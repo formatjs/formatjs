@@ -51,3 +51,8 @@ Copy those two outputs to macOS arm64, then run:
 CI builds and tests on Linux through BuildBuddy. macOS only executes the
 downloaded binary and bytecode. SDK target support currently covers Linux
 x86_64 GNU and macOS arm64; this is not a React Native mobile package.
+
+ListFormat smoke uses the SDK's compiled `listformat-smoke.ts` and selected
+English/French JSON packs. It checks lazy loading, parts, lone surrogates,
+string iteration, receiver brands and IteratorClose. Linux builds and cross-builds
+this same consumer; macOS executes its downloaded binary.

@@ -16,6 +16,8 @@ include/formatjs/intl/supported_values.h
 include/formatjs/hermes/intl_locale.h
 include/formatjs/intl/locale.h
 include/formatjs/hermes/intl_pluralrules.h
+include/formatjs/hermes/intl_listformat.h
+include/formatjs/intl/listformat.h
 include/formatjs/intl/pluralrules.h
 src/canonical_locales.cpp
 src/get_canonical_locales.inc
@@ -25,10 +27,16 @@ src/locale.cpp
 src/locale.inc
 src/pluralrules.cpp
 src/pluralrules.inc
+src/listformat.cpp
+src/listformat.inc
 js/30-IntlGetCanonicalLocales.js
 js/31-IntlSupportedValuesOf.js
 js/32-IntlLocale.js
 js/33-IntlPluralRules.js
+js/34-IntlListFormat.js
+js/listformat-smoke.js
+examples/listformat-smoke.ts
+locale-data/listformat/<locale>.json
 js/extensions.js
 js/pluralrules-smoke.js
 examples/pluralrules-smoke.ts
@@ -72,7 +80,8 @@ The SDK also contains `Intl.supportedValuesOf`. Link
 `@formatjs_intl_getcanonicallocales_hermes//:supported_values` for that adapter.
 Link `@formatjs_intl_getcanonicallocales_hermes//:locale` for `Intl.Locale`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:pluralrules` for `Intl.PluralRules`.
-All four targets use one Rust archive. The module retains its original name.
+Link `@formatjs_intl_getcanonicallocales_hermes//:listformat` for `Intl.ListFormat`.
+All five targets use one Rust archive. The module retains its original name.
 
 ## Install before application JavaScript
 
@@ -83,12 +92,14 @@ For embedders that allow source evaluation:
 #include <formatjs/hermes/supported_values.h>
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_pluralrules.h>
+#include <formatjs/hermes/intl_listformat.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
 formatjs::installLocale(*runtime);
 formatjs::installCanonicalLocales(*runtime); // Capture the new Locale brand.
 formatjs::installPluralRules(*runtime);
+formatjs::installListFormat(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -103,6 +114,7 @@ formatjs::installSupportedValuesOf(*runtime, extensions);
 formatjs::installLocale(*runtime, extensions);
 formatjs::installCanonicalLocales(*runtime, extensions);
 formatjs::installPluralRules(*runtime, extensions);
+formatjs::installListFormat(*runtime, extensions);
 ```
 
 ## Compiled locale data
@@ -191,3 +203,10 @@ Compile as C++17 with exceptions enabled and match the embedding runtime's JSI
 ABI and toolchain settings.
 The SDK's `BUILD.bazel` records the supported platform selection and native
 system linker flags.
+
+ListFormat also starts without locale data. Ship selected JSON files from
+`locale-data/listformat/` and pass their text to
+`Intl.ListFormat.__addLocaleData(jsonText)`. `:listformat_data` exposes all packs;
+individual JSON labels let consumers package only required locales. Existing
+instances keep their data when a later load replaces a locale. The independent
+consumer loads English then French and checks parts, UTF-16 and IteratorClose.

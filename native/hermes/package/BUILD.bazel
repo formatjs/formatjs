@@ -22,6 +22,22 @@ rolldown_bundle(
     target = "es2020",
 )
 
+ts_project(
+    name = "listformat_smoke_typecheck",
+    srcs = ["listformat-smoke.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
+rolldown_bundle(
+    name = "listformat_smoke_js",
+    srcs = ["listformat-smoke.ts"],
+    entry_point = "listformat-smoke.ts",
+    format = "iife",
+    target = "es2020",
+)
+
 platform(
     name = "linux_x86_64",
     constraint_values = ["@llvm//constraints/libc:gnu.2.28"],
@@ -53,9 +69,12 @@ pkg_files(
         "SDK.BUILD.bazel",
         "SDK.MODULE.bazel",
         "THIRD_PARTY_NOTICES.html",
+        "listformat-smoke.ts",
         "pluralrules-smoke.ts",
+        ":listformat_smoke_js.js",
         ":pluralrules_smoke_js.js",
         "//crates/intl_getcanonicallocales:canonicalize.h",
+        "//crates/intl_listformat:listformat.h",
         "//crates/intl_locale:locale.h",
         "//crates/intl_pluralrules:pluralrules.h",
         "//crates/intl_supportedvaluesof:supported_values.h",
@@ -64,8 +83,12 @@ pkg_files(
         "//native/hermes:canonical_locales.h",
         "//native/hermes:extension_bundle_js",
         "//native/hermes:extension_js",
+        "//native/hermes:intl_listformat.h",
         "//native/hermes:intl_locale.h",
         "//native/hermes:intl_pluralrules.h",
+        "//native/hermes:listformat.cpp",
+        "//native/hermes:listformat_extension_js",
+        "//native/hermes:listformat_wrapper_source",
         "//native/hermes:locale.cpp",
         "//native/hermes:locale_extension_js",
         "//native/hermes:locale_wrapper_source",
@@ -85,6 +108,13 @@ pkg_files(
         "SDK.BUILD.bazel": "BUILD.bazel",
         "SDK.MODULE.bazel": "MODULE.bazel",
         "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
+        "listformat-smoke.ts": "examples/listformat-smoke.ts",
+        ":listformat_smoke_js.js": "js/listformat-smoke.js",
+        "//crates/intl_listformat:listformat.h": "include/formatjs/intl/listformat.h",
+        "//native/hermes:intl_listformat.h": "include/formatjs/hermes/intl_listformat.h",
+        "//native/hermes:listformat.cpp": "src/listformat.cpp",
+        "//native/hermes:listformat_extension_js": "js/34-IntlListFormat.js",
+        "//native/hermes:listformat_wrapper_source": "src/listformat.inc",
         "pluralrules-smoke.ts": "examples/pluralrules-smoke.ts",
         ":pluralrules_smoke_js.js": "js/pluralrules-smoke.js",
         "//crates/intl_getcanonicallocales:canonicalize.h": "include/formatjs/intl/canonicalize.h",
