@@ -23,6 +23,7 @@
   const define = Object.defineProperty
   const setPrototypeOf = Object.setPrototypeOf
   const getPrototypeOf = Object.getPrototypeOf
+  const hasOwn = Object.prototype.hasOwnProperty
   const object = Object
   const objectPrototype = Object.prototype
   const parse = JSON.parse
@@ -79,6 +80,9 @@
     if (!value) throw new BadReceiver('Incompatible Intl.Segmenter receiver')
     return value
   }
+  // ResolveOptions uses GetOptionsObject; FilterLocales uses CoerceOptionsToObject.
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L302-L305
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L335-L336
   function options(value: unknown, strict = false): any {
     if (value === undefined) return create(null)
     if (
@@ -148,7 +152,7 @@
     property(result, 'segment', text(value.segment), true)
     property(result, 'index', value.index, true)
     property(result, 'input', input, true)
-    if (value.isWordLike !== undefined)
+    if (apply(hasOwn, value, ['isWordLike']))
       property(result, 'isWordLike', value.isWordLike, true)
     return result
   }

@@ -273,6 +273,26 @@ for (const text of ['\u0308', '❤️'])
     [false],
     'marks alone not word-like'
   )
+// Parsed ABI records must not consult inherited fields for optional word status.
+Object.defineProperty(Object.prototype, 'isWordLike', {
+  configurable: true,
+  get() {
+    throw new Error('inherited isWordLike getter')
+  },
+})
+try {
+  const part = grapheme.segment('a').containing(0)
+  check(
+    !Object.prototype.hasOwnProperty.call(part, 'isWordLike'),
+    'grapheme omits word status'
+  )
+  check(
+    words.segment('hello').containing(0).isWordLike === true,
+    'word status is own data'
+  )
+} finally {
+  delete (Object.prototype as any).isWordLike
+}
 ;(globalThis as any).print(
   JSON.stringify({
     type: 'Segmenter-conformance',
