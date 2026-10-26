@@ -8,7 +8,10 @@ formatjs_test(
         "//crates/intl_segmenter:conformance",
         "@GraphemeBreakTest//file",
     ],
-    no_copy_to_bin = ["//:package.json"],
+    no_copy_to_bin = [
+        "//:package.json",
+        "@GraphemeBreakTest//file",
+    ],
     tsconfig_types = ["node"],
     deps = [
         "//:node_modules/@bazel/runfiles",

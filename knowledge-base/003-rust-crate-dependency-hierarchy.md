@@ -11,6 +11,7 @@ crates/
   intl_getcanonicallocales/    # ICU4X locale canonicalization leaf crate
   intl_supportedvaluesof/     # Runtime-aware supported value enumeration
   intl_locale/                # Locale records, preferences and owned C ABI
+  intl_segmenter/             # ICU4X segmentation, UTF-16 indices and cursors
   intl_displaynames/          # CLDR names, code validation, caller-loaded locale packs
   intl_listformat/            # CLDR list patterns, UTF-16 parts, caller-loaded locale packs
   intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
