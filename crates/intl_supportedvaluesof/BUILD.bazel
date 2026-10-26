@@ -5,6 +5,11 @@ load("@rules_rs//rs:rust_static_library.bzl", "rust_static_library")
 load("//tools:index.bzl", "generate_src_file")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 
+exports_files(
+    ["supported_values.h"],
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
 generate_src_file(
     name = "values",
     src = "values_generated.rs",

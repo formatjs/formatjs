@@ -22,6 +22,8 @@ load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 # gazelle:rust_proc_macro napi_derive
 # Feature variants share crate names; default imports select public libraries.
 # gazelle:resolve rs formatjs_intl //crates/formatjs_intl
+# gazelle:resolve rs formatjs_intl_getcanonicallocales //crates/intl_getcanonicallocales
+# gazelle:resolve rs formatjs_intl_supportedvaluesof //crates/intl_supportedvaluesof
 # gazelle:resolve rs formatjs_icu_messageformat //crates/icu_messageformat
 # gazelle:resolve rs runfiles @rules_rust//rust/runfiles
 # gazelle:resolve rs md5 @crates//:md-5

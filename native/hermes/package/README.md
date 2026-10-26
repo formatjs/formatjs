@@ -1,4 +1,4 @@
-# Hermes canonicalization SDK
+# FormatJS Intl Hermes SDK
 
 Version `0.1.0` packages the Rust C ABI, C++ JSI adapter, and Hermes extension
 JavaScript. This archive is built from the repository; it is not published to
@@ -11,12 +11,17 @@ MODULE.bazel
 BUILD.bazel
 include/formatjs/hermes/canonical_locales.h
 include/formatjs/intl/canonicalize.h
+include/formatjs/hermes/supported_values.h
+include/formatjs/intl/supported_values.h
 src/canonical_locales.cpp
 src/get_canonical_locales.inc
+src/supported_values.cpp
+src/supported_values_of.inc
 js/30-IntlGetCanonicalLocales.js
+js/31-IntlSupportedValuesOf.js
 js/extensions.js
-lib/x86_64-unknown-linux-gnu/libformatjs_intl_getcanonicallocales.a
-lib/aarch64-apple-darwin/libformatjs_intl_getcanonicallocales.a
+lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a
+lib/aarch64-apple-darwin/libformatjs_intl_hermes.a
 ```
 
 Rust and its compiled ICU data are prebuilt for Linux x86_64 GNU and macOS
@@ -51,14 +56,20 @@ Hermes runtime. The root module must supply the Hermes archive override and its
 own C++ toolchain; the SDK registers no toolchains and requires no Rust compiler.
 See `examples/hermes-intl` in FormatJS for a complete independent root.
 
+The SDK also contains `Intl.supportedValuesOf`. Link
+`@formatjs_intl_getcanonicallocales_hermes//:supported_values` for that adapter.
+Both targets use one Rust archive. The module retains its original name.
+
 ## Install before application JavaScript
 
 For embedders that allow source evaluation:
 
 ```cpp
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/supported_values.h>
 
 formatjs::installCanonicalLocales(*runtime);
+formatjs::installSupportedValuesOf(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -69,6 +80,7 @@ pass the object to the installer:
 auto extensions = runtime->evaluateJavaScript(bytecode, "extensions.hbc")
                       .asObject(*runtime);
 formatjs::installCanonicalLocales(*runtime, extensions);
+formatjs::installSupportedValuesOf(*runtime, extensions);
 ```
 
 The standalone example builds this bytecode through Bazel's execution toolchain,
@@ -78,6 +90,13 @@ Install a trusted `Intl.Locale` implementation before the final installer call.
 If the Locale polyfill itself needs `Intl.getCanonicalLocales`, install this
 adapter first, load Locale, then reinstall the adapter before application code.
 The final installation captures Locale's intrinsic brand method.
+
+Install `supportedValuesOf` after trusted `Intl.DateTimeFormat`,
+`Intl.NumberFormat` and `Intl.Collator` implementations. Rust enumerates shared
+CLDR/IANA candidates; JSI probes those formatters to determine runtime support.
+Missing formatters produce empty categories, as in the TypeScript polyfill.
+This installer does not install the formatters themselves. Results are fresh
+arrays; no support cache is shared between runtimes or calls.
 
 ## Hermes core/contrib extension integration
 
@@ -92,6 +111,9 @@ JavaScript fragment and C++ adapter.
 The standalone `js/extensions.js` already wraps the fragment in a setup-object
 factory. Do not add that complete bundle to Hermes' concatenated extension
 source list. Linking this SDK alone does not register a Hermes startup hook.
+
+For `supportedValuesOf`, register `js/31-IntlSupportedValuesOf.js` and call
+`formatjs::installSupportedValuesOf(runtime, extensions)` after formatter setup.
 
 Non-Bazel embedders can use the same headers, adapter source, and archive. Add
 `include/` to the include path and keep the private `.inc` beside the adapter.

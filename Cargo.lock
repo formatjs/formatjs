@@ -709,6 +709,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_hermes"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_supportedvaluesof",
+]
+
+[[package]]
 name = "formatjs_intl_macros"
 version = "1.1.1"
 dependencies = [

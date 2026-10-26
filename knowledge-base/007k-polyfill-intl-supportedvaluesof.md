@@ -92,5 +92,15 @@ their CLDR candidate locales; support is not inferred from English alone.
 `//packages/intl-supportedvaluesof:rust_conformance_test` compares all six
 complete output lists with TypeScript using real host formatter observations.
 Rust unit tests cover the ported value-selection cases and C ABI ownership.
-The C callback interface is the boundary for the forthcoming Hermes adapter;
-JS key coercion and installation are not implemented by this Rust core.
+The C callback interface connects to `native/hermes:supported_values`. Its JSI
+adapter probes installed formatters; `supported_values_of.ts` performs key
+coercion and installs the non-constructible built-in with native descriptors.
+Each polyfill keeps its own Rust crate. `crates/intl_hermes` assembles one static
+archive for SDK consumers, avoiding multiple copies of Rust runtime symbols.
+
+`//native/hermes/tests:supported_values_conformance_test` compares complete
+lists inside Hermes with real TS formatters, then checks observable coercion,
+exception identity, receivers, fresh arrays and descriptors. The shared SDK
+packages both installer overloads and `31-IntlSupportedValuesOf.js`; its
+standalone consumer tests the precompiled startup path. All native builds and
+cross-compilation run on Linux; macOS only executes downloaded smoke artifacts.

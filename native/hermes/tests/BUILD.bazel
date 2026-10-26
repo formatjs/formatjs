@@ -1,0 +1,47 @@
+# gazelle:ignore
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+
+rolldown_bundle(
+    name = "formatter_prelude",
+    srcs = ["formatter-prelude.ts"],
+    entry_point = "formatter-prelude.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+rolldown_bundle(
+    name = "supported_values_suite",
+    srcs = ["supported-values.ts"],
+    entry_point = "supported-values.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-supportedvaluesof:lib",
+    ],
+)
+
+js_test(
+    name = "supported_values_conformance_test",
+    size = "medium",
+    data = [
+        ":formatter_prelude.js",
+        ":supported_values_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run.ts",
+    node_options = ["--experimental-transform-types"],
+)

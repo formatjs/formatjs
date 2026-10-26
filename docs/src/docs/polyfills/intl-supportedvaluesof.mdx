@@ -63,9 +63,48 @@ async function polyfill() {
 }
 ```
 
-## Tests
+## Native Hermes SDK
+
+The [shared Hermes SDK](intl-getcanonicallocales#native-hermes-sdk) also provides
+`Intl.supportedValuesOf`. Build and extract it on Linux, then link
+`@formatjs_intl_getcanonicallocales_hermes//:supported_values` in the consumer.
+It contains a prebuilt Rust archive; consumers need Hermes and a C++ toolchain,
+not a Rust compiler. Linux x86_64 GNU and macOS arm64 are supported.
+
+Install trusted `Intl.DateTimeFormat`, `Intl.NumberFormat` and `Intl.Collator`
+implementations first. Rust filters CLDR/IANA candidates against those
+formatters' actual capabilities. Missing formatters produce empty categories;
+the installer does not supply the formatters themselves.
+
+```cpp
+#include <formatjs/hermes/supported_values.h>
+
+formatjs::installSupportedValuesOf(*runtime);
+```
+
+For bytecode-only extension startup, compile the SDK's `js/extensions.js` with
+the matching `hermesc`, evaluate it to obtain `extensions`, then call:
+
+```cpp
+formatjs::installSupportedValuesOf(*runtime, extensions);
+```
+
+For Hermes core/contrib registration, add `js/31-IntlSupportedValuesOf.js` to
+the extension source list and call the same two-argument installer from its
+C++ dispatcher. See the [SDK instructions](https://github.com/formatjs/formatjs/blob/main/native/hermes/package/README.md)
+and [standalone consumer](https://github.com/formatjs/formatjs/tree/main/examples/hermes-intl).
+
+## Conformance tests
 
 The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-supportedvaluesof:test262-strict` to require zero failures.
+
+`//packages/intl-supportedvaluesof:rust_conformance_test` compares every Rust
+output list with TypeScript using real host formatter observations.
+`//native/hermes/tests:supported_values_conformance_test` repeats the comparison
+inside Hermes with real TS formatters and checks coercion, exception identity,
+function descriptors and fresh result arrays. Linux BuildBuddy builds/tests
+the SDK and cross-compiles the standalone consumer; macOS only runs its
+downloaded executable and bytecode.
 
 ## Key coercion
 

@@ -36,3 +36,18 @@ keys and isolation between backends. Rust tests port the existing package's
 sorted/unique lists, aliases, currency names, numbering systems, non-English
 collations, primary time zones and fresh-output cases. JS coercion and
 property descriptors belong at the Hermes boundary.
+
+## Hermes
+
+`//native/hermes:supported_values` provides the C++ JSI adapter.
+`//native/hermes/package:sdk` packages it with the canonicalization adapter,
+generated startup factories and one prebuilt Rust archive. Link the SDK's
+`supported_values` target, then call `formatjs::installSupportedValuesOf` after
+formatter setup. The two-argument overload accepts the evaluated precompiled
+extension setup object. See `native/hermes/package/README.md` and the independent
+`examples/hermes-intl` consumer for installation commands.
+
+The Hermes differential test runs every category against real TS formatters,
+including non-empty output checks. It also ports JS coercion and built-in
+metadata tests. Native SDK compilation and cross-compilation run on Linux;
+macOS only runs the downloaded executable and extension bytecode.

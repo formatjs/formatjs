@@ -1,0 +1,17 @@
+[package]
+name = "formatjs_intl_hermes"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "Rust C ABI assembly for FormatJS Hermes extensions"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = false
+
+[lib]
+path = "lib.rs"
+crate-type = ["staticlib"]
+
+[dependencies]
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
+formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof" }

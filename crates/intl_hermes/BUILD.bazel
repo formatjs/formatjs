@@ -1,0 +1,15 @@
+# gazelle:alias_kind rust_static_library rust_library
+load("@rules_rs//rs:rust_static_library.bzl", "rust_static_library")
+
+rust_static_library(
+    name = "intl_hermes",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_intl_hermes",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_supportedvaluesof",
+    ],
+)

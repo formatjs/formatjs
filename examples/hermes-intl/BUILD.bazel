@@ -21,6 +21,7 @@ cc_binary(
     tags = ["manual"],
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],
 )
@@ -38,6 +39,7 @@ cc_test(
     linkstatic = True,
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],
 )

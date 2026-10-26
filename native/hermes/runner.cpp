@@ -1,4 +1,5 @@
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
 
@@ -61,6 +62,7 @@ int main(int argc, char **argv) {
       ++firstScript;
     }
     if (firstScript != 1) formatjs::installCanonicalLocales(rt);
+    formatjs::installSupportedValuesOf(rt);
     for (int i = firstScript; i < argc; ++i) {
       evaluateFile(argv[i]);
     }
