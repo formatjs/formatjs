@@ -3,12 +3,12 @@ module(name = "formatjs_hermes_intl_example")
 bazel_dep(name = "formatjs_intl_getcanonicallocales_hermes", version = "0.1.0")
 bazel_dep(name = "hermes", version = "260318099.0.0-393a539e6")
 
-# Commit-pinned until the Hermes overlay's first BCR release.
+# Commit-pinned until the committed Hermes overlay is available in BCR.
 archive_override(
     module_name = "hermes",
-    integrity = "sha256-IHFHHavZYP8n+FtcQUWSPo+Yi2h9BwNy4phiqvzc5IM=",
-    strip_prefix = "hermes-7258cc9a9053b7f94108a1627ae11e94d6b5d1ef",
-    urls = ["https://github.com/formatjs/hermes/archive/7258cc9a9053b7f94108a1627ae11e94d6b5d1ef.tar.gz"],
+    integrity = "sha256-saR1nxBKZqgRFaNSW+PNWXEVAPTAJGFfApsIAUZZyS0=",
+    strip_prefix = "hermes-466ecfefae5ba3c0eca5bfd64d178f86275acc86",
+    urls = ["https://github.com/formatjs/hermes/archive/466ecfefae5ba3c0eca5bfd64d178f86275acc86.tar.gz"],
 )
 
 # Build tools belong to this consumer root, not the SDK's public module.
