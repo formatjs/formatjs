@@ -50,18 +50,14 @@
     return result + ']'
   }
 
-  // Proxy construction performs OrdinaryCreateFromConstructor once, including
-  // its fallback to %Intl.Locale.prototype% for a non-object prototype. An
-  // ordinary JS constructor would use %Object.prototype% for that fallback.
+  // A derived constructor returns its own receiver, avoiding both the ordinary
+  // JS constructor's Object.prototype fallback and Hermes's eager allocation
+  // before Proxy construct traps. Read newTarget.prototype exactly once.
   // Intl.Locale 1–6:
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L19-L27
-  const target = function Locale(_tag: unknown) {
-    throw new BadReceiver("Intl.Locale must be called with 'new'")
-  }
-  const prototype = target.prototype
-  const Locale = new Proxy(target, {
-    construct(_target, args, newTarget) {
-      const requestedPrototype = newTarget.prototype
+  class Locale extends null {
+    constructor(tag: unknown, optionsInput: unknown = undefined) {
+      const requestedPrototype = new.target.prototype
       const receiver = create(
         requestedPrototype !== null &&
           (typeof requestedPrototype === 'object' ||
@@ -69,7 +65,6 @@
           ? requestedPrototype
           : prototype
       )
-      let tag = args[0]
       // Steps 7–9: strings/objects only; genuine Locale tags bypass user coercion.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L28-L31
       if (
@@ -93,13 +88,14 @@
       // Steps 10–14: options coercion precedes tag validation; canonicalization
       // precedes every language override getter. Rust owns tag syntax/aliases.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L32-L36
-      const options = args[1] === undefined ? create(null) : args[1]
+      const options: any =
+        optionsInput === undefined ? create(null) : optionsInput
       if (
         options === null ||
         (typeof options !== 'object' && typeof options !== 'function')
       )
         throw new BadReceiver('options must be an object')
-      const canonical = canonicalTag(tag)
+      const canonical = canonicalTag(tag as string)
       if (canonical === null) throw new BadOption('Invalid language tag')
       let encoded = '{'
       let separator = ''
@@ -141,8 +137,11 @@
       const properties = query({handle}, '{"method":"properties"}')
       apply(setSlot, slots, [receiver, {handle, properties}])
       return receiver
-    },
-  }) as unknown as {new (tag: unknown, options?: unknown): object}
+    }
+  }
+  const target = Locale
+  const prototype = Locale.prototype
+  Object.setPrototypeOf(prototype, Object.prototype)
 
   function property(receiver: unknown, name: string): any {
     const value = slot(receiver).properties[name]
