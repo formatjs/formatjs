@@ -1,5 +1,6 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 
@@ -23,6 +24,23 @@ ts_run_binary(
     tool = "//crates/intl_datetimeformat/scripts:locales",
 )
 
+ts_run_binary(
+    name = "locale_data",
+    srcs = ["//crates/intl_numberformat:locale_data"] + [
+        "//packages/intl-datetimeformat:locale-data-json/%s.json" % locale
+        for locale in ALL_LOCALES
+    ],
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        package_name() + "/locale-data",
+        "--numberDir",
+        "crates/intl_numberformat/locale-data",
+    ] + ["--cldrFile=packages/intl-datetimeformat/locale-data-json/%s.json" % locale for locale in ALL_LOCALES],
+    tool = "//crates/intl_datetimeformat/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
 rust_library(
     name = "intl_datetimeformat",
     srcs = [
@@ -33,8 +51,11 @@ rust_library(
         "lib.rs",
         "locale_patterns.rs",
         "matching.rs",
+        "numbers.rs",
         "pattern.rs",
         "registry.rs",
+        "render.rs",
+        "selection.rs",
         "timezone.rs",
     ],
     compile_data = [
@@ -52,6 +73,7 @@ rust_library(
     deps = [
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",
+        "//crates/intl_numberformat",
         "@crates//:serde",
         "@crates//:serde_json",
     ],

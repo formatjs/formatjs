@@ -34,9 +34,34 @@ where
     }
 }
 
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct CalendarRegistry {
     providers: BTreeMap<String, Arc<dyn CalendarProvider>>,
+    builtin: Arc<dyn CalendarProvider>,
+}
+
+impl Default for CalendarRegistry {
+    fn default() -> Self {
+        Self {
+            providers: BTreeMap::new(),
+            builtin: Arc::new(gregorian),
+        }
+    }
+}
+fn gregorian(local_milliseconds: i64) -> Result<CalendarFields, Error> {
+    let civil = CivilDateTime::from_epoch_nanoseconds(i128::from(local_milliseconds) * 1_000_000)?;
+    let (era, year) = civil.era_year();
+    Ok(CalendarFields {
+        era: era.into(),
+        year: year as i32,
+        month: civil.month - 1,
+        day: civil.day,
+        month_name_index: None,
+        month_number: None,
+        leap_month: None,
+        related_year: None,
+        year_name: None,
+    })
 }
 
 impl CalendarRegistry {
@@ -48,31 +73,21 @@ impl CalendarRegistry {
         matches!(calendar, "gregory" | "iso8601") || self.providers.contains_key(calendar)
     }
 
+    pub fn provider(&self, calendar: &str) -> Result<Arc<dyn CalendarProvider>, Error> {
+        if matches!(calendar, "gregory" | "iso8601") {
+            Ok(self.builtin.clone())
+        } else {
+            self.providers
+                .get(calendar)
+                .cloned()
+                .ok_or(Error::MissingCalendar)
+        }
+    }
     pub fn date_from_time(
         &self,
         calendar: &str,
         local_milliseconds: i64,
     ) -> Result<CalendarFields, Error> {
-        if !matches!(calendar, "gregory" | "iso8601") {
-            return self
-                .providers
-                .get(calendar)
-                .ok_or(Error::MissingCalendar)?
-                .date_from_time(local_milliseconds);
-        }
-        let civil =
-            CivilDateTime::from_epoch_nanoseconds(i128::from(local_milliseconds) * 1_000_000)?;
-        let (era, year) = civil.era_year();
-        Ok(CalendarFields {
-            era: era.into(),
-            year: year as i32,
-            month: civil.month - 1,
-            day: civil.day,
-            month_name_index: None,
-            month_number: None,
-            leap_month: None,
-            related_year: None,
-            year_name: None,
-        })
+        self.provider(calendar)?.date_from_time(local_milliseconds)
     }
 }

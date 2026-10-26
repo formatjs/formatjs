@@ -323,7 +323,7 @@ to cross the exact Date bounds after the input instant has passed TimeClip.
 
 Rust units and differential tests cover 8,193 instants against TS DateOperations,
 including year zero, leap centuries, full Date bounds and negative nanoseconds.
-Optional calendar conversion, formatting/ranges, C ABI,
+Optional calendar conversion, public formatter/ranges, C ABI,
 Hermes integration and SDK packaging remain unfinished.
 
 The Rust timezone registry consumes the same base-36 packs as JS. `:timezone_data`
@@ -364,7 +364,8 @@ Rust `data::LocaleData` owns typed CLDR metadata and calendar names. Gregorian
 styles prepare at load; format lists and optional calendar styles prepare lazily.
 ISO shares Gregorian formats while names/styles honor explicit calendar overrides. Calendar names inherit omitted optional fields
 from the base locale, matching TS record composition. Availability keeps CLDR
-preference order and requires both formats and registered arithmetic. Rendering/ranges, optional arithmetic, owned ABI and Hermes/SDK remain unfinished.
+preference order and requires both formats and registered arithmetic. Ranges,
+optional arithmetic, owned ABI and Hermes/SDK remain unfinished.
 
 `registry::Registry` now owns raw/processed locale records and optional calendar
 patches. Patches may precede base data/providers; reloads retain them and keep
@@ -386,3 +387,29 @@ Core calendar locale patches retain separate names/styles even though ISO format
 lists delegate to Gregorian. Base Gregorian styles validate eagerly; override
 records validate on access. Focused differential regressions cover these cases,
 including invalid override styles and base reloads with retained patches.
+
+`selection::Snapshot` captures current locale/calendar records after component
+getters and before late matcher/style getters. Selection prepares defaults,
+hour-cycle preferences, day periods and fractional-second augmentation.
+`Configuration` caches six Temporal type profiles, including their field/style
+restrictions. Differential tests compare 4,368 configurations and all profiles.
+
+`render::RenderData` captures current names and provider handles, allowing callers
+to release registry borrows before user callbacks. Rendering keeps exact
+nanoseconds, current timezone transitions, standalone grammatical context and
+native NumberFormat digits. Plain Temporal arithmetic uses zero offset while
+timezone-name lookup retains the configured identifier. Tests compare 53,760
+numeric rendering cases plus exact Temporal instants and locale/timezone reloads.
+Host coercion, Temporal brands and the public formatter boundary remain pending.
+
+The native `:locale_data` generator emits 766 separate Gregorian/ISO base packs
+with a `number` sidecar selected from native NumberFormat packs. Calendar patches
+and transitions remain separate, preserving on-demand loading. Numeric helpers
+cache formatters by locale/system/integer width and truncate two-digit fields by
+Unicode code point. All generated base packs are validated by the native loader.
+
+CLDR hour-cycle tokens can include flexible day-period suffixes (`hB`, `hb`);
+the extractor selects the cycle from their first symbol. Timezone name widths
+without a standard name are omitted, allowing GMT fallback instead of emitting
+null array entries. Pack/rendering regressions include `aa`, `ms`, `zh-Hant` and
+`pt-CV`.

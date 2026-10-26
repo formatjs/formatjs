@@ -17,15 +17,26 @@ ts_binary(
     deps = [":scripts"],
 )
 
+ts_binary(
+    name = "data",
+    entry_point = "data.ts",
+    tsconfig_types = ["node"],
+    visibility = ["//crates/intl_datetimeformat:__pkg__"],
+    deps = [":scripts"],
+)
+
 formatjs_library(
     name = "scripts",
     srcs = [
+        "data.ts",
         "locales.ts",
         "timezones.ts",
     ],
     tsconfig_types = ["node"],
     visibility = ["//visibility:public"],
     deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/@types/minimist",

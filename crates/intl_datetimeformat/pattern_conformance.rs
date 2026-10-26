@@ -1,5 +1,6 @@
 use formatjs_intl_datetimeformat::data::LocaleData;
 use formatjs_intl_datetimeformat::registry::{Registry, ResolutionOptions};
+use formatjs_intl_datetimeformat::selection::{Kind, Options as SelectionOptions, Snapshot};
 use formatjs_intl_datetimeformat::{
     Error,
     fields::Components,
@@ -7,6 +8,7 @@ use formatjs_intl_datetimeformat::{
     pattern::{self, Format, RawPatterns},
 };
 use formatjs_intl_datetimeformat::{calendar::CalendarRegistry, locale_patterns::CalendarPatterns};
+use formatjs_intl_datetimeformat::{render::RenderData, timezone::TimeZoneRegistry};
 use serde::Deserialize;
 use serde_json::Value;
 use std::io::{self, BufRead};
@@ -43,6 +45,19 @@ struct RawStyles {
     rename_all_fields = "camelCase"
 )]
 enum Request {
+    Packs {
+        files: Vec<String>,
+    },
+    Render {
+        json: String,
+        tz_json: String,
+        cases: Vec<RenderCase>,
+    },
+    Profiles {
+        json: String,
+        providers: Vec<String>,
+        cases: Vec<CreationCase>,
+    },
     Registry {
         steps: Vec<RegistryStep>,
     },
@@ -176,8 +191,212 @@ fn registry_step(registry: &mut Registry, step: RegistryStep) -> Result<Value, E
             .unwrap(),
     })
 }
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct CreationCase {
+    locales: Vec<String>,
+    options: Value,
+    kinds: Vec<Kind>,
+    reload: Option<Reload>,
+}
+#[derive(Deserialize)]
+struct Reload {
+    json: String,
+    phase: ReloadPhase,
+}
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+enum ReloadPhase {
+    BeforeSnapshot,
+    AfterSnapshot,
+}
+fn failure(error: Error) -> Value {
+    serde_json::json!({"error":if matches!(error,Error::StyleComponents|Error::TemporalMismatch) {"TypeError"} else {"RangeError"}})
+}
+fn creation(registry: &mut Registry, case: &CreationCase) -> Result<Value, Error> {
+    let options: ResolutionOptions = serde_json::from_value(case.options.clone())
+        .map_err(|_| Error::InvalidOption("options"))?;
+    let resolution = registry.resolve(&case.locales, &options)?;
+    let components: Components = serde_json::from_value(case.options.clone())
+        .map_err(|_| Error::InvalidOption("components"))?;
+    if let Some(Reload {
+        json,
+        phase: ReloadPhase::BeforeSnapshot,
+    }) = &case.reload
+    {
+        registry.add_locale_data(json)?;
+    }
+    let snapshot = Snapshot::capture(registry, resolution, components)?;
+    if let Some(Reload {
+        json,
+        phase: ReloadPhase::AfterSnapshot,
+    }) = &case.reload
+    {
+        registry.add_locale_data(json)?;
+    }
+    let options: SelectionOptions = serde_json::from_value(case.options.clone())
+        .map_err(|_| Error::InvalidOption("options"))?;
+    let config = snapshot.select(&options)?;
+    let mut temporal = std::collections::BTreeMap::new();
+    let mut identity = true;
+    for kind in &case.kinds {
+        let value = match config.temporal(*kind) {
+            Ok(profile) => {
+                identity &= std::sync::Arc::ptr_eq(&profile, &config.temporal(*kind)?);
+                serde_json::to_value(profile.as_ref()).unwrap()
+            }
+            Err(error) => failure(error),
+        };
+        temporal.insert(format!("{kind:?}"), value);
+    }
+    Ok(serde_json::json!({"main":config.profile(),"temporal":temporal,"identity":identity}))
+}
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct RenderCase {
+    locales: Vec<String>,
+    options: Value,
+    values: Vec<RenderValue>,
+    reload: Option<String>,
+    tz_reload: Option<String>,
+}
+#[derive(Deserialize)]
+#[serde(tag = "type", rename_all = "camelCase")]
+enum RenderValue {
+    Date { value: String },
+    Epoch { value: String, kind: Kind },
+}
+fn render_case(
+    registry: &mut Registry,
+    zones: &TimeZoneRegistry,
+    case: &RenderCase,
+) -> Result<Value, Error> {
+    let early: ResolutionOptions = serde_json::from_value(case.options.clone())
+        .map_err(|_| Error::InvalidOption("options"))?;
+    let resolution = registry.resolve(&case.locales, &early)?;
+    let zone = zones.resolve(
+        case.options
+            .get("timeZone")
+            .and_then(Value::as_str)
+            .unwrap_or("UTC"),
+    )?;
+    let fields: Components = serde_json::from_value(case.options.clone())
+        .map_err(|_| Error::InvalidOption("components"))?;
+    let late: SelectionOptions = serde_json::from_value(case.options.clone())
+        .map_err(|_| Error::InvalidOption("options"))?;
+    let config = Snapshot::capture(registry, resolution, fields)?.select(&late)?;
+    if let Some(json) = &case.reload {
+        registry.add_locale_data(json)?;
+    }
+    if let Some(json) = &case.tz_reload {
+        zones.load_json(json)?;
+    }
+    let mut output = Vec::new();
+    for value in &case.values {
+        let result = (|| {
+            let (epoch, kind) = match value {
+                RenderValue::Date { value } => (
+                    i128::from(formatjs_intl_datetimeformat::civil::time_clip(
+                        value.parse::<f64>().map_err(|_| Error::InvalidDate)?,
+                    )?) * 1_000_000,
+                    None,
+                ),
+                RenderValue::Epoch { value, kind } => (
+                    value.parse::<i128>().map_err(|_| Error::InvalidDate)?,
+                    Some(*kind),
+                ),
+            };
+            let temporal = kind.map(|kind| config.temporal(kind)).transpose()?;
+            let profile = temporal.as_deref().unwrap_or_else(|| config.profile());
+            let context = RenderData::capture(registry, &config, profile)?;
+            let parts = context.format(
+                &config,
+                profile,
+                zones,
+                &zone,
+                epoch,
+                kind.is_some_and(|kind| kind != Kind::Instant),
+            )?;
+            let text = parts
+                .iter()
+                .map(|part| part.value.as_str())
+                .collect::<String>();
+            Ok::<_, Error>(serde_json::json!({"parts":parts,"text":text}))
+        })();
+        output.push(match result {
+            Ok(value) => value,
+            Err(error) => failure(error),
+        });
+    }
+    Ok(serde_json::to_value(output).unwrap())
+}
 fn run(request: Request) -> Result<Value, Error> {
     Ok(match request {
+        Request::Packs { files } => {
+            let rows=files.into_iter().map(|file|{
+                let result=(||{
+                    let json=std::fs::read_to_string(&file).map_err(|_|Error::InvalidLocaleData)?;
+                    let data=LocaleData::from_json(&json)?;
+                    let available=data.available_calendars(&CalendarRegistry::default());
+                    let formats=data.calendar("gregory")?;
+                    let count=formats.formats()?.len();
+                    let system=data.metadata.numbering_systems.first().ok_or(Error::InvalidLocaleData)?;
+                    let decimal=data.numbers()?.decimal(&data.locale,system)?;
+                    Ok::<_,Error>(serde_json::json!({"locale":data.locale,"available":available,"calendars":data.calendar_names().collect::<Vec<_>>(),"count":count,"decimal":decimal}))
+                })();
+                match result {Ok(value)=>value,Err(error)=>serde_json::json!({"file":file,"error":failure(error),"detail":format!("{error:?}")})}
+            }).collect::<Vec<_>>();
+            serde_json::to_value(rows).unwrap()
+        }
+        Request::Render {
+            json,
+            tz_json,
+            cases,
+        } => {
+            let mut registry = Registry::default();
+            registry.add_locale_data(&json)?;
+            let zones = TimeZoneRegistry::default();
+            zones.load_json(&tz_json)?;
+            let mut rows = Vec::new();
+            for case in cases {
+                rows.push(match render_case(&mut registry, &zones, &case) {
+                    Ok(value) => value,
+                    Err(error) => failure(error),
+                });
+                if case.reload.is_some() {
+                    registry.add_locale_data(&json)?;
+                }
+                if case.tz_reload.is_some() {
+                    zones.load_json(&tz_json)?;
+                }
+            }
+            serde_json::to_value(rows).unwrap()
+        }
+        Request::Profiles {
+            json,
+            providers,
+            cases,
+        } => {
+            let mut registry = Registry::default();
+            for provider in providers {
+                registry.register_calendar(
+                    provider,
+                    std::sync::Arc::new(|_| Err(Error::MissingCalendar)),
+                );
+            }
+            registry.add_locale_data(&json)?;
+            let mut output = Vec::new();
+            for case in cases {
+                output.push(match creation(&mut registry, &case) {
+                    Ok(value) => value,
+                    Err(error) => failure(error),
+                });
+                if case.reload.is_some() {
+                    registry.add_locale_data(&json)?;
+                }
+            }
+            serde_json::to_value(output).unwrap()
+        }
         Request::Registry { steps } => {
             let mut registry = Registry::default();
             let output = steps

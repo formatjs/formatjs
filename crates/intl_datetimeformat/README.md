@@ -12,7 +12,7 @@ uses Euclidean division for negative instants. Months are 1–12; weekdays are
 Local arithmetic allows one extra day around TimeClip for offset conversion;
 callers must validate the input instant before applying its timezone offset.
 
-The formatter, optional calendar implementations, ranges, C ABI,
+The public formatter, optional calendar implementations, ranges, C ABI,
 Hermes facade and SDK installation remain unfinished.
 
 ```sh
@@ -103,3 +103,31 @@ final pattern/hour-cycle selection happens later. `supported_locales` follows TS
 lookup behavior for both matcher options. Differential tests cover registration,
 patch/provider ordering, custom calendars, failed reloads and 12,600 negotiation
 combinations against actual TS constructors and ResolveLocale.
+
+## Construction and rendering
+
+`selection::Snapshot::capture` retains locale/calendar records after component
+options, before late matcher/style options. `select` prepares final patterns,
+hour cycles, defaults, day periods and fractional-second separators.
+`Configuration::temporal` lazily caches profiles for the six supported Temporal
+types, preserving field restrictions and style conflicts.
+
+`render::RenderData::capture` reads current locale names and retains the current
+calendar provider before releasing registry borrows. Rendering uses current
+timezone transitions, exact nanoseconds and locale NumberFormat digits. Plain
+Temporal values use zero-offset arithmetic with the configured timezone name.
+Date bounds, eras, standalone grammar, flexible day periods, DST names and GMT
+fallbacks follow TS behavior. Host coercion and Temporal brand checks remain
+unfinished.
+
+`//crates/intl_datetimeformat:locale_data` generates 766 separate base JSON packs.
+Each includes Gregorian/ISO patterns and its native NumberFormat payload under
+`number`; optional calendars and timezone transitions remain separate loads.
+Raw TS locale JSON still loads for metadata/pattern use; numeric rendering needs
+the native pack. NumberFormat instances cache per locale, numbering system and
+minimum integer width; two-digit truncation counts Unicode code points.
+
+Differential tests cover 4,368 construction configurations and their Temporal
+profiles, 53,760 numeric rendering cases, exact Temporal instants, reloads and
+every generated base pack. Generator regressions cover CLDR `hB`/`hb` hour-cycle
+tokens and timezone widths missing standard names, which use GMT fallback.

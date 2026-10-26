@@ -2,6 +2,9 @@ load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # gazelle:exclude tests/rust-datetime-patterns.test.ts
 # gazelle:exclude tests/rust-datetime-registry.test.ts
+# gazelle:exclude tests/rust-datetime-construction.test.ts
+# gazelle:exclude tests/rust-datetime-render.test.ts
+# gazelle:exclude tests/rust-datetime-packs.test.ts
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
 
@@ -76,8 +79,11 @@ copy_to_bin(
     name = "rust_datetime_pattern_test_sources",
     testonly = True,
     srcs = [
+        "tests/rust-datetime-construction.test.ts",
+        "tests/rust-datetime-packs.test.ts",
         "tests/rust-datetime-patterns.test.ts",
         "tests/rust-datetime-registry.test.ts",
+        "tests/rust-datetime-render.test.ts",
     ],
     visibility = ["//:__pkg__"],
 )

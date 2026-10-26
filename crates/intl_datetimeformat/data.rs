@@ -4,6 +4,7 @@ use crate::{
     fields::TextWidth,
     locale_patterns::{CalendarPatterns, IntervalFormats},
     matching::{StyleData, Styles},
+    numbers::NumberData,
     pattern::{Format, RawPatterns},
 };
 use serde::{Deserialize, Serialize};
@@ -163,10 +164,20 @@ struct RawData {
     calendar_data: BTreeMap<String, RawCalendar>,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+#[serde(transparent)]
+struct ArcNumberData(#[serde(deserialize_with = "deserialize_numbers")] Arc<NumberData>);
+fn deserialize_numbers<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> Result<Arc<NumberData>, D::Error> {
+    NumberData::deserialize(deserializer).map(Arc::new)
+}
+
 #[derive(Clone, Deserialize)]
 pub(crate) struct RawLocale {
     pub locale: String,
     data: RawData,
+    number: Option<ArcNumberData>,
 }
 
 #[derive(Clone, Deserialize)]
@@ -243,6 +254,7 @@ impl CalendarLocale {
 pub struct LocaleData {
     pub locale: String,
     pub metadata: Metadata,
+    pub(crate) number: Option<Arc<NumberData>>,
     calendars: BTreeMap<String, Arc<CalendarLocale>>,
 }
 
@@ -252,7 +264,11 @@ impl LocaleData {
     }
 
     pub(crate) fn from_raw(raw: RawLocale) -> Result<Self, Error> {
-        let RawLocale { locale, data } = raw;
+        let RawLocale {
+            locale,
+            data,
+            number,
+        } = raw;
         let gregory_override = data.calendar_data.contains_key("gregory");
         if gregory_override {
             data.gregory
@@ -297,8 +313,13 @@ impl LocaleData {
         Ok(Self {
             locale,
             metadata: data.metadata,
+            number: number.map(|number| number.0),
             calendars,
         })
+    }
+
+    pub fn numbers(&self) -> Result<&Arc<NumberData>, Error> {
+        self.number.as_ref().ok_or(Error::MissingNumberData)
     }
 
     pub fn calendar_names(&self) -> impl Iterator<Item = &str> {

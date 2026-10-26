@@ -241,6 +241,10 @@ impl Registry {
         self.providers.register(calendar, provider);
     }
 
+    pub fn calendar_provider(&self, calendar: &str) -> Result<Arc<dyn CalendarProvider>, Error> {
+        self.providers.provider(calendar)
+    }
+
     pub fn get(&self, locale: &str) -> Result<Arc<LocaleData>, Error> {
         self.data.get(locale).cloned().ok_or(Error::MissingLocale)
     }

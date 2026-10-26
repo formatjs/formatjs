@@ -12,6 +12,7 @@ publish = false
 path = "lib.rs"
 
 [dependencies]
+formatjs_intl_numberformat = { path = "../intl_numberformat" }
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
 formatjs_intl_locale = { path = "../intl_locale" }
 serde = { version = "1.0", features = ["derive"] }

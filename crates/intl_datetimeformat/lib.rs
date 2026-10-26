@@ -5,8 +5,11 @@ pub mod data;
 pub mod fields;
 pub mod locale_patterns;
 pub mod matching;
+pub mod numbers;
 pub mod pattern;
 pub mod registry;
+pub mod render;
+pub mod selection;
 pub mod timezone;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -19,6 +22,9 @@ pub enum Error {
     InvalidLocale,
     InvalidOption(&'static str),
     MissingLocale,
+    MissingNumberData,
+    StyleComponents,
+    TemporalMismatch,
     InvalidTimeZone,
     InvalidTimeZoneData,
 }
@@ -27,7 +33,14 @@ impl std::fmt::Display for Error {
         match self {
             Self::InvalidLocale => formatter.write_str("Invalid DateTimeFormat locale"),
             Self::InvalidOption(name) => write!(formatter, "Invalid DateTimeFormat option: {name}"),
+            Self::MissingNumberData => formatter.write_str("DateTimeFormat number data not loaded"),
             Self::MissingLocale => formatter.write_str("DateTimeFormat locale data not loaded"),
+            Self::StyleComponents => {
+                formatter.write_str("DateTimeFormat styles cannot be combined with components")
+            }
+            Self::TemporalMismatch => {
+                formatter.write_str("DateTimeFormat options do not overlap the Temporal type")
+            }
             Self::InvalidPattern => formatter.write_str("Invalid DateTimeFormat pattern"),
             Self::InvalidLocaleData => formatter.write_str("Invalid DateTimeFormat locale data"),
             Self::MissingCalendar => formatter.write_str("DateTimeFormat calendar data not loaded"),
