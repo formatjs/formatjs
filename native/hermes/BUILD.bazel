@@ -1,7 +1,7 @@
+# gazelle:ignore
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
-load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 
 exports_files(
@@ -172,10 +172,4 @@ sh_test(
         ":hermes_runner",
     ],
     target_compatible_with = HOST_COMPATIBILITY,
-)
-
-formatjs_library(
-    name = "hermes",
-    srcs = ["supported_values_of.ts"],
-    visibility = ["//visibility:public"],
 )

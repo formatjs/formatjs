@@ -89,7 +89,8 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
     auto formatter = context.intl.getPropertyAsFunction(rt, constructor)
                          .callAsConstructor(rt,
                                             jsi::String::createFromUtf8(rt, language),
-                                            options);
+                                            options)
+                         .asObject(rt);
     if (property) {
       auto resolved = formatter.getPropertyAsFunction(rt, "resolvedOptions")
                           .callWithThis(rt, formatter)
