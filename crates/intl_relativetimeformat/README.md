@@ -2,8 +2,8 @@
 
 Rust RelativeTimeFormat core with on-demand CLDR packs. Each pack owns relative
 patterns and the matching NumberFormat/PluralRules data. No host ICU data or JS
-formatters are needed. The owned C ABI is available. Hermes installation and SDK packaging remain in
-progress.
+formatters are needed. The owned C ABI, Hermes source/bytecode installers and
+standalone SDK are available.
 
 `Registry` starts empty. Register selected JSON files from `:locale_data`, then
 call `create` with requested locales and typed options. Lookup/best-fit matching
@@ -39,3 +39,15 @@ Byte serialization preserves type/value/unit part property order. Status 1 maps
 to RangeError; 2 reports invalid ABI input and 3 a caught panic. Hosts own
 ToNumber/ToString sequencing and BigInt/Symbol TypeErrors. Destroy each handle
 and free each successful byte result exactly once.
+
+Hermes callers link `//native/hermes:relativetimeformat` and install after
+canonicalization with `formatjs::installRelativeTimeFormat(runtime)`. The
+precompiled overload takes the extensions object containing
+`39-IntlRelativeTimeFormat.js`. Register selected JSON strings through
+`Intl.RelativeTimeFormat.__addLocaleData(jsonText)`; the registry starts empty.
+The [standalone SDK](../../native/hermes/package/README.md) packages headers,
+adapter sources, factories, typed smoke example and locale packs.
+
+Actual Hermes source and optimized-bytecode tests cover 25,792 cases per mode,
+including coercion order, method brands, getter-time replacement, part property
+order and operation without global NumberFormat/PluralRules constructors.

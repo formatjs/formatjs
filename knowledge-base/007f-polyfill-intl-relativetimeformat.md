@@ -71,7 +71,7 @@ Stage 3: supported-locales.generated.ts
 Internal number and plural formatters use the resolved locale. Internal number
 options have no prototype, so unrelated inherited options cannot affect them.
 
-## Rust port (in progress)
+## Rust and Hermes port
 
 `crates/intl_relativetimeformat` loads versioned, self-contained JSON packs with
 relative fields plus selected Rust number/plural packs. The generator canonicalizes
@@ -86,5 +86,14 @@ owns observable ToNumber/ToString ordering, BigInt/Symbol rejection and brands.
 Rust preserves negative zero, named auto forms, style fallback, sparse plural
 fallback and unit annotations on number parts. The owned ABI uses separate resolution/final creation calls and serializes
 parts directly to preserve type/value/unit order. Unit UTF-16 keeps invalid
-surrogates on the RangeError path. The SDK archive exports this ABI; Hermes
-facade and SDK installation remain in progress.
+surrogates on the RangeError path. The SDK archive exports this ABI, C++ JSI adapters, source/precompiled factories,
+selected locale packs and a typed independent-consumer smoke test.
+
+Hermes links `//native/hermes:relativetimeformat`; SDK consumers link
+`:relativetimeformat`. Install after canonicalization and register JSON strings
+with `__addLocaleData`. No global JS number/plural constructor is required.
+`39-IntlRelativeTimeFormat.js` supplies the precompiled installer factory.
+Source/bytecode conformance covers all units/styles/numeric modes, all digit
+systems, coercion order, brands, property order and registration during getters.
+The TS class constructor relies on class semantics to require `new`; it must not
+read an instance's `constructor` property during subclass construction.

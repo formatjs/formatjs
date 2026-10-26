@@ -284,3 +284,22 @@ format function retains its original instance. Locale replacement affects future
 instances; `__addUnitData(locale, unitJsonText)` explicitly updates shared units.
 `examples/numberformat-smoke.ts` checks exact strings/BigInts, localized exponents,
 ranges, brands, and compiled English/French data from the extracted SDK.
+
+## RelativeTimeFormat
+
+Link `@formatjs_intl_getcanonicallocales_hermes//:relativetimeformat` and include
+`<formatjs/hermes/intl_relativetimeformat.h>`. After canonicalization, call
+`formatjs::installRelativeTimeFormat(runtime)`. For precompiled installation,
+register `js/39-IntlRelativeTimeFormat.js` and call
+`formatjs::installRelativeTimeFormat(runtime, extensions)`.
+
+Relative, number and plural records come from the compiled Rust provider. Installing
+JS NumberFormat or PluralRules is unnecessary. Every unit, style, numeric mode,
+numbering system and formatted part uses the Rust implementation.
+
+`examples/relativetimeformat-smoke.ts` ships compiled as
+`js/relativetimeformat-smoke.js`. The independent consumer uses compiled English/French data,
+checks negative zero, named forms, parts, Arabic digits, BigInt rejection and
+operation with global NumberFormat/PluralRules removed. Rust ABI callers use
+`include/formatjs/intl/relativetimeformat.h`; adapter sources live in
+`src/relativetimeformat.cpp` and `src/relativetimeformat.inc`.

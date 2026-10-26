@@ -364,6 +364,42 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "relativetimeformat",
+    srcs = [
+        "src/relativetimeformat.cpp",
+        "src/relativetimeformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_relativetimeformat.h",
+        "include/formatjs/intl/relativetimeformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
@@ -375,6 +411,9 @@ exports_files([
     "js/36-IntlSegmenter.js",
     "js/37-IntlCollator.js",
     "js/38-IntlNumberFormat.js",
+    "js/39-IntlRelativeTimeFormat.js",
+    "js/relativetimeformat-smoke.js",
+    "examples/relativetimeformat-smoke.ts",
     "js/numberformat-smoke.js",
     "examples/numberformat-smoke.ts",
     "js/collator-smoke.js",

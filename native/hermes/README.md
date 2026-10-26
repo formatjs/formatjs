@@ -215,16 +215,21 @@ comparison. ICU4X supplies normalization/casing. JS preserves constructor/protot
 access, option order, private brands, ToString order and cached non-constructor
 bound functions. Source/bytecode tests compare 6,720 cases per mode with TS.
 
-## Native bridge
+## RelativeTimeFormat
 
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
+Link `//native/hermes:relativetimeformat` and install canonicalization before
+`formatjs::installRelativeTimeFormat(runtime)`. The registry starts empty; load
+selected `//crates/intl_relativetimeformat:locale_data` JSON strings with
+`Intl.RelativeTimeFormat.__addLocaleData(jsonText)`. Packs own relative, number
+and plural data; no JS NumberFormat/PluralRules or host ICU is needed.
 
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
+All units, styles, numeric modes, numbering systems and parts use Rust records.
+The facade preserves brands, ToNumber/ToString order, negative zero and UTF-16
+unit rejection. Locale/numbering-system resolution precedes style/numeric getters;
+relative fields are fetched afterward. Existing instances retain loaded data.
+The precompiled overload uses `IntlRelativeTimeFormat` from
+`39-IntlRelativeTimeFormat.js`. SDK setup and a typed smoke example are documented
+in [package/README.md](package/README.md).
 
 ## Existing package conformance
 
