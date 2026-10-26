@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
+pub mod ffi;
 pub mod registry;
 
 #[derive(Debug, PartialEq, Eq)]

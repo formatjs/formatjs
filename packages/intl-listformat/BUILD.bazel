@@ -129,7 +129,10 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-listformat/scripts:cldr-raw",
-    visibility = ["//crates/intl_listformat:__subpackages__"],
+    visibility = [
+        "//crates/intl_listformat:__subpackages__",
+        "//native/hermes/tests:__pkg__",
+    ],
 )
 
 ts_run_binary(

@@ -74,7 +74,10 @@ it('matches every CLDR locale, type and style against the TS implementation', ()
   let comparisons = 0
   for (let index = 0; index < records.length; index++) {
     const record = records[index]
-    const reference = new ListFormat(record.locale, record.options)
+    const reference = new ListFormat(record.locale, {
+      ...record.options,
+      localeMatcher: 'lookup',
+    })
     expect(results[index].options).toEqual(reference.resolvedOptions())
     for (let j = 0; j < lists.length; j++) {
       const list = lists[j]

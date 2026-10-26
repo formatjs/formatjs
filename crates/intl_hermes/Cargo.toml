@@ -13,6 +13,7 @@ path = "lib.rs"
 crate-type = ["staticlib"]
 
 [dependencies]
+formatjs_intl_listformat = { path = "../intl_listformat" }
 formatjs_intl_locale = { path = "../intl_locale" }
 formatjs_intl_pluralrules = { path = "../intl_pluralrules" }
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }

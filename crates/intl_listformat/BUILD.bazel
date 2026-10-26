@@ -1,8 +1,22 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//packages/intl-listformat:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+exports_files(
+    ["listformat.h"],
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["listformat.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
 
 ts_run_binary(
     name = "locale_data",
@@ -22,6 +36,7 @@ ts_run_binary(
 rust_library(
     name = "intl_listformat",
     srcs = [
+        "ffi.rs",
         "lib.rs",
         "registry.rs",
     ],
@@ -39,7 +54,10 @@ rust_library(
 
 formatjs_rust_test(
     name = "intl_listformat_test",
-    srcs = ["lib.test.rs"],
+    srcs = [
+        "ffi.test.rs",
+        "lib.test.rs",
+    ],
     crate_name = "intl_listformat_test",
     edition = "2024",
     deps = [

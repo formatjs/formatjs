@@ -154,6 +154,46 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "listformat_typecheck",
+    srcs = [
+        "listformat.ts",
+        "run-listformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "listformat_suite",
+    srcs = ["listformat.ts"],
+    entry_point = "listformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-listformat"],
+)
+
+js_test(
+    name = "listformat_conformance_test",
+    size = "medium",
+    data = [
+        ":listformat_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_listformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-listformat:cldr-raw",
+    ],
+    entry_point = "run-listformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -200,6 +240,8 @@ package_formatter_conformance("supportedvaluesof")
 package_formatter_conformance("locale")
 
 package_formatter_conformance("pluralrules")
+
+package_formatter_conformance("listformat")
 
 package_formatter_conformance("getcanonicallocales")
 

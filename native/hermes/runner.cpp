@@ -1,6 +1,7 @@
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_pluralrules.h>
+#include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -67,7 +68,12 @@ int main(int argc, char **argv) {
     formatjs::installSupportedValuesOf(rt);
     formatjs::installLocale(rt);
     formatjs::installCanonicalLocales(rt);
-    while (firstScript < argc && (std::string(argv[firstScript]).rfind("--extensions=", 0) == 0 || std::string(argv[firstScript]) == "--native-pluralrules")) {
+    while (firstScript < argc && (std::string(argv[firstScript]).rfind("--extensions=", 0) == 0 || (std::string(argv[firstScript]) == "--native-pluralrules" || std::string(argv[firstScript]) == "--native-listformat"))) {
+      if (std::string(argv[firstScript]) == "--native-listformat") {
+        formatjs::installListFormat(rt);
+        ++firstScript;
+        continue;
+      }
       if (std::string(argv[firstScript]) == "--native-pluralrules") {
         formatjs::installPluralRules(rt);
         ++firstScript;
@@ -78,6 +84,7 @@ int main(int argc, char **argv) {
       if (extensions.hasProperty(rt, "IntlLocale")) formatjs::installLocale(rt, extensions);
       if (extensions.hasProperty(rt, "IntlGetCanonicalLocales")) formatjs::installCanonicalLocales(rt, extensions);
       if (extensions.hasProperty(rt, "IntlPluralRules")) formatjs::installPluralRules(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlListFormat")) formatjs::installListFormat(rt, extensions);
       ++firstScript;
     }
     for (int i = firstScript; i < argc; ++i) {
