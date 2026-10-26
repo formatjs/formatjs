@@ -156,3 +156,9 @@ compiler over 100,000+ samples. `digits::Digits` now implements typed digit-opti
 rounding; `tests:digit_conformance_test` compares selection, ranges and metadata
 with the public TS API. Registration, full constructor behavior and Hermes/SDK
 integration remain in progress.
+
+Conformance also covers canonical aliases during TS data registration (`sh`
+registers as `sr-Latn`), exact digit-string modulo beyond Number precision,
+integer-only CLDR `n` membership, and fractions longer than ICU4X's default
+18-digit operand window. Both engines retain visible fraction width and compute
+modulo before converting digits to bounded integers.

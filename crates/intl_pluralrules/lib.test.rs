@@ -109,3 +109,26 @@ fn integer_padding_does_not_change_operands() {
         "other"
     );
 }
+
+#[test]
+fn fraction_operands_retain_digits_beyond_icu_default_window() {
+    let rules = LocaleRules::from_json(
+        r#"{"locale":"lv","cardinal":{"zero":"n % 10 = 0","one":"v != 2 and f % 10 = 1"},"ordinal":{}}"#,
+    ).unwrap();
+    for value in [
+        "0.0000000000000000000001",
+        "1.0000000000000000000001",
+        "0.123456789012345678901",
+    ] {
+        assert_eq!(
+            rules.select_rounded(value, 0, false).unwrap(),
+            "one",
+            "{value}"
+        );
+    }
+    let english = LocaleRules::from_json(EN).unwrap();
+    assert_eq!(
+        english.select_rounded("9007199254740993", 0, true).unwrap(),
+        "few"
+    );
+}

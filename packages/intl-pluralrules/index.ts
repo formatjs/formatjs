@@ -273,7 +273,11 @@ export class PluralRules {
     )
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]): void {
-    for (const {data: d, locale} of data) {
+    for (const {data: d, locale: tag} of data) {
+      // AvailableLocales and its data keys must use the same canonical ID.
+      // Otherwise sh resolves to sr-Latn, where no registered payload exists.
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L18-L26
+      const [locale] = CanonicalizeLocaleList(tag)
       registerLocaleData(
         locale,
         d,

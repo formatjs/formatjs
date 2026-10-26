@@ -41,6 +41,29 @@ function parseOperand(operandStr: string, modulo?: string): ts.Expression {
   if (modulo) {
     // Extract the divisor from "% 100" format
     const divisor = parseInt(modulo.replace('%', '').trim(), 10)
+    if ('nift'.includes(operandStr.trim())) {
+      const digits =
+        operandStr.trim() === 'f'
+          ? ts.factory.createIdentifier('decimalPart')
+          : operandStr.trim() === 't'
+            ? ts.factory.createCallExpression(
+                ts.factory.createPropertyAccessExpression(
+                  ts.factory.createIdentifier('decimalPart'),
+                  'replace'
+                ),
+                undefined,
+                [
+                  ts.factory.createRegularExpressionLiteral('/0+$/'),
+                  ts.factory.createStringLiteral(''),
+                ]
+              )
+            : ts.factory.createIdentifier('integerPart')
+      return ts.factory.createCallExpression(
+        ts.factory.createIdentifier('modDigits'),
+        undefined,
+        [digits, ts.factory.createNumericLiteral(divisor)]
+      )
+    }
     return ts.factory.createParenthesizedExpression(
       ts.factory.createBinaryExpression(
         operand,
@@ -139,9 +162,10 @@ function parseComparison(comparisonStr: string): ts.Expression {
   // Split values by comma
   const valueParts = values.split(',').map(v => v.trim())
 
+  let comparison: ts.Expression
   if (valueParts.length === 1) {
     // Single value or range
-    return parseValuePart(operand, valueParts[0], isEquals)
+    comparison = parseValuePart(operand, valueParts[0], isEquals)
   } else {
     // Multiple values/ranges
     const expressions = valueParts.map(part =>
@@ -149,7 +173,7 @@ function parseComparison(comparisonStr: string): ts.Expression {
     )
 
     // Combine with OR for '=', AND for '!='
-    return expressions.reduce((acc, expr) =>
+    comparison = expressions.reduce((acc, expr) =>
       ts.factory.createParenthesizedExpression(
         ts.factory.createBinaryExpression(
           acc,
@@ -161,6 +185,34 @@ function parseComparison(comparisonStr: string): ts.Expression {
       )
     )
   }
+  if (operandStr === 'n') {
+    // CLDR '=' tests membership in integer values/ranges. Fractional n cannot
+    // satisfy it; '!=' is its complement. Visible zero fractions remain integers.
+    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1324-L1368
+    const fractional = ts.factory.createCallExpression(
+      ts.factory.createPropertyAccessExpression(
+        ts.factory.createRegularExpressionLiteral('/[1-9]/'),
+        'test'
+      ),
+      undefined,
+      [ts.factory.createIdentifier('decimalPart')]
+    )
+    comparison = ts.factory.createParenthesizedExpression(
+      ts.factory.createBinaryExpression(
+        isEquals
+          ? ts.factory.createPrefixUnaryExpression(
+              ts.SyntaxKind.ExclamationToken,
+              fractional
+            )
+          : fractional,
+        isEquals
+          ? ts.SyntaxKind.AmpersandAmpersandToken
+          : ts.SyntaxKind.BarBarToken,
+        comparison
+      )
+    )
+  }
+  return comparison
 }
 
 /**
@@ -369,6 +421,16 @@ export class PluralRulesCompiler {
     // This reduces generated code size and improves performance
     const usedOperands = this.detectUsedOperands()
     const operands = this.getOperandsInOrder(usedOperands)
+    const preciseModulo = [
+      ...this.cardinalRules.values(),
+      ...this.ordinalRules.values(),
+    ].some(condition => /\b[nift]\s*%/.test(condition.split('@')[0]))
+    if (preciseModulo)
+      statements.push(
+        ts.factory.createExpressionStatement(
+          ts.factory.createIdentifier('__MOD_DIGITS__')
+        )
+      )
 
     // Only generate parsing code if we actually need operands
     if (operands.length > 0) {
@@ -547,6 +609,21 @@ export class PluralRulesCompiler {
       ts.ScriptKind.JS
     )
     let code = printer.printNode(ts.EmitHint.Unspecified, func, sourceFile)
+    if (preciseModulo) {
+      // Reduce decimal digits before Number conversion. CLDR divisors stay
+      // small, so each intermediate remains exact even for BigInt-sized inputs.
+      code = code.replace(
+        '__MOD_DIGITS__;',
+        `function modDigits(digits, divisor) {
+        let value = 0;
+        for (let index = 0; index < digits.length; index++) {
+          const digit = digits.charCodeAt(index) - 48;
+          if (digit >= 0 && digit <= 9) value = (value * 10 + digit) % divisor;
+        }
+        return value;
+      }`
+      )
+    }
 
     // Replace placeholder expressions with actual expressions (only for used operands)
     const exprReplacements: Record<string, string> = {}

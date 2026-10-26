@@ -37,3 +37,17 @@ formatjs_test(
         "//:node_modules/vitest",
     ],
 )
+
+formatjs_test(
+    name = "registration_conformance_test",
+    srcs = ["registration.test.ts"],
+    data = ["//packages/intl-pluralrules:cldr-raw"],
+    no_copy_to_bin = ["//:package.json"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
