@@ -154,7 +154,10 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-pluralrules/scripts:cldr-raw",
-    visibility = ["//crates/intl_pluralrules/tests:__pkg__"],
+    visibility = [
+        "//crates/intl_pluralrules/tests:__pkg__",
+        "//native/hermes/tests:__pkg__",
+    ],
 )
 
 ts_run_binary(

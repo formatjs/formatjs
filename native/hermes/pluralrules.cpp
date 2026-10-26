@@ -8,6 +8,9 @@
 namespace formatjs {
 namespace jsi = facebook::jsi;
 namespace {
+constexpr char wrapperSource[] =
+#include "pluralrules.inc"
+    ;
 using Handle = std::unique_ptr<FormatjsPluralHandle, decltype(&formatjs_plural_destroy)>;
 using Registry = std::unique_ptr<FormatjsPluralRegistry, decltype(&formatjs_plural_registry_destroy)>;
 struct PluralRecord final : jsi::HostObject {
@@ -82,5 +85,12 @@ void installPluralRules(jsi::Runtime &runtime, jsi::Object &extensions) {
         return result(rt, formatjs_plural_query(record->handle.get(), bytesOf(data), data.size(), &bytes.value), bytes);
       }));
   extensions.getPropertyAsFunction(runtime, "IntlPluralRules").call(runtime, bridge);
+}
+
+void installPluralRules(jsi::Runtime &runtime) {
+  auto factory = runtime.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(wrapperSource), "formatjs:PluralRules").asObject(runtime).asFunction(runtime);
+  jsi::Object extensions(runtime);
+  extensions.setProperty(runtime, "IntlPluralRules", std::move(factory));
+  installPluralRules(runtime, extensions);
 }
 } // namespace formatjs

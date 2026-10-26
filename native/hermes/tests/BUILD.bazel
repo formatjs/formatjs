@@ -15,6 +15,46 @@ optimized_runtime(
 )
 
 ts_project(
+    name = "pluralrules_typecheck",
+    srcs = [
+        "pluralrules.ts",
+        "run-pluralrules.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "pluralrules_suite",
+    srcs = ["pluralrules.ts"],
+    entry_point = "pluralrules.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-pluralrules"],
+)
+
+js_test(
+    name = "pluralrules_conformance_test",
+    size = "medium",
+    data = [
+        ":pluralrules_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_pluralrules:locale_data",
+        "//native/hermes:extension_bundle_js",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-pluralrules.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
     name = "locale_typecheck",
     srcs = [
         "locale.ts",

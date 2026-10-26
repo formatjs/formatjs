@@ -188,7 +188,8 @@ tags. Best fit preserves exact/maximized fast paths and request-order penalties.
 the real Hermes runner and C++ adapter. It tests owned host objects, native
 matching, ranges, error codes and late locale replacement. The runner accepts
 `--extensions=<bundle>` for factory bundles. The public constructor/coercion
-facade remains in progress.
+facade uses `pluralrules.ts`; public API validation and SDK packaging remain in
+progress.
 
 Mathematical-input normalization handles StringNumericLiteral syntax, radix
 integers, IEEE Number-range clamping and BigInt's early return. Normal finite
@@ -196,3 +197,9 @@ values use fixed_decimal; huge BigInt integers use prefix/suffix string rounding
 to avoid its i16 magnitude limit. Plural operands read decimal text directly.
 TS regression coverage rejects malformed numeric text and preserves exact radix
 values before the shared TS/Rust mathematical conformance comparisons.
+
+The Hermes facade owns only observable JS behavior: receiver allocation, option
+getter/coercion order, ToPrimitive, brands, descriptors and fresh result objects.
+Rust owns matching, validated options, numeric parsing/rounding and selection.
+Public native conformance runs source/factory installers against TS over 10,000+
+selections/ranges, with separate checks for tampered intrinsics and edge ordering.

@@ -112,8 +112,14 @@ standalone macOS executable on Linux; macOS only runs the downloaded artifacts.
 `--extensions=/absolute/path/bundle.js` evaluates a factory bundle and installs
 its available native extensions before ordinary scripts. The PluralRules bridge
 is in progress: `//native/hermes:pluralrules_bridge_test` exercises loaded packs,
-matching, owned instances, ranges and late replacement through JSI. The public
-PluralRules constructor facade and its packaged installer still follow.
+matching, owned instances, ranges and late replacement through JSI.
+`//native/hermes/tests:pluralrules_conformance_test` compares the installed public
+API with TS through both source and factory installers, plus coercion order,
+brands, subclasses, descriptors and captured intrinsics. Link
+`//native/hermes:pluralrules` and call `installPluralRules(runtime)` after
+canonicalization. Load selected JSON packs with
+`Intl.PluralRules.__addLocaleData(jsonText)` before constructing formatters.
+Packaged installer coverage remains in progress.
 
 ## Existing package conformance
 

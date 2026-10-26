@@ -271,8 +271,8 @@ pub unsafe extern "C" fn formatjs_plural_registry_match(
     })
 }
 
-/// Query an immutable instance. Selection receives normalized decimal strings
-/// after ToIntlMathematicalValue; outputs are fresh owned JSON bytes.
+/// Query an immutable instance. Selection receives normalized decimals or
+/// primitive text with mathematical=true; outputs are fresh owned JSON bytes.
 /// # Safety
 /// Handle is live; query bytes readable; out writable. Free successful output once.
 #[unsafe(no_mangle)]
