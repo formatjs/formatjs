@@ -72,6 +72,18 @@ it('formats percentage with compact notation', () => {
   ).toBe('1M')
 })
 
+// ar-SS defaults to the arab numbering system, which has no compact currency
+// patterns of its own in CLDR. Root aliases them to the latn ones.
+it('formats compact currency in a numbering system without compact patterns', () => {
+  const nf = NumberFormat('ar-SS', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+  })
+  expect(nf.format(1234)).toBe('\u200f١٫٢\u00a0ألف\u00a0US$')
+  expect(nf.format(-5_600_000)).toBe('\u061c-\u200f٥٫٦\u00a0مليون\u00a0US$')
+})
+
 it('should lookup locale correctly', function () {
   expect(
     new NumberFormat('en-BS', {
