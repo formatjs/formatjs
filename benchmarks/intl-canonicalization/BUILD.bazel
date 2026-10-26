@@ -1,6 +1,7 @@
 # gazelle:ignore
 
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("//tools:index.bzl", "ts_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 
 rolldown_bundle(
@@ -42,14 +43,15 @@ js_test(
     entry_point = "reference_bundle.js",
 )
 
-js_binary(
+ts_binary(
     name = "benchmark",
     data = [
         "suite_bundle.js",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/minimist",
         "//native/hermes:hermes_runner",
     ],
-    entry_point = "run.mjs",
+    entry_point = "run.ts",
     tags = ["manual"],
 )
 
@@ -60,8 +62,10 @@ js_test(
     data = [
         "suite_bundle.js",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/minimist",
         "//native/hermes:hermes_runner",
         "//tools/hermes-test262:locale_prelude.js",
     ],
-    entry_point = "run.mjs",
+    entry_point = "run.ts",
+    node_options = ["--experimental-transform-types"],
 )

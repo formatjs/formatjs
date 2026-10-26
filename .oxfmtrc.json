@@ -17,7 +17,6 @@
     "bazel-out",
     "dist",
     "locale-data",
-    "native/hermes/package/licenses/**",
     "package.json",
     "packages/*/CHANGELOG.md",
     "packages/cli-lib/tests/extract/typescript/err.tsx",

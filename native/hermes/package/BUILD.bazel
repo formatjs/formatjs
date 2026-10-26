@@ -1,4 +1,4 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files", "strip_prefix")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load(":dist.bzl", "darwin_archive", "linux_archive")
 
@@ -32,7 +32,7 @@ pkg_files(
         "README.md",
         "SDK.BUILD.bazel",
         "SDK.MODULE.bazel",
-        "THIRD_PARTY_NOTICES.md",
+        "THIRD_PARTY_NOTICES.html",
         "//crates/intl_getcanonicallocales:canonicalize.h",
         "//native/hermes:canonical_locales.cpp",
         "//native/hermes:canonical_locales.h",
@@ -46,7 +46,7 @@ pkg_files(
         "README.md": "README.md",
         "SDK.BUILD.bazel": "BUILD.bazel",
         "SDK.MODULE.bazel": "MODULE.bazel",
-        "THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
+        "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
         "//crates/intl_getcanonicallocales:canonicalize.h": "include/formatjs/intl/canonicalize.h",
         "//native/hermes:canonical_locales.cpp": "src/canonical_locales.cpp",
         "//native/hermes:canonical_locales.h": "include/formatjs/hermes/canonical_locales.h",
@@ -54,14 +54,6 @@ pkg_files(
         "//native/hermes:extension_js": "js/30-IntlGetCanonicalLocales.js",
         "//native/hermes:wrapper_source": "src/get_canonical_locales.inc",
     },
-    tags = ["manual"],
-)
-
-pkg_files(
-    name = "sdk_licenses",
-    srcs = glob(["licenses/**"]),
-    attributes = pkg_attributes(mode = "0644"),
-    strip_prefix = strip_prefix.from_pkg(),
     tags = ["manual"],
 )
 
@@ -86,7 +78,6 @@ pkg_tar(
     srcs = [
         ":darwin_library",
         ":linux_library",
-        ":sdk_licenses",
         ":sdk_sources",
     ],
     out = "formatjs_intl_getcanonicallocales_hermes-0.1.0.tar.gz",
