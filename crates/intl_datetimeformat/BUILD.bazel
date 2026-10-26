@@ -1,0 +1,33 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+rust_library(
+    name = "intl_datetimeformat",
+    srcs = [
+        "civil.rs",
+        "lib.rs",
+    ],
+    crate_name = "formatjs_intl_datetimeformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+)
+
+formatjs_rust_test(
+    name = "intl_datetimeformat_test",
+    srcs = ["lib.test.rs"],
+    crate_name = "intl_datetimeformat_test",
+    edition = "2024",
+    deps = [":intl_datetimeformat"],
+)
+
+rust_binary(
+    name = "civil_conformance",
+    srcs = ["civil_conformance.rs"],
+    crate_name = "civil_conformance",
+    crate_root = "civil_conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_datetimeformat/tests:__pkg__"],
+    deps = [":intl_datetimeformat"],
+)

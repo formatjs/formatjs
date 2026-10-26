@@ -1,0 +1,16 @@
+[package]
+name = "formatjs_intl_datetimeformat"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "DateTimeFormat arithmetic and owned CLDR records"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = false
+
+[lib]
+path = "lib.rs"
+
+[[example]]
+name = "civil_conformance"
+path = "civil_conformance.rs"

@@ -310,3 +310,16 @@ Bazel checks both directories against `CALENDARS`, rejecting missing or extra
 modules. CI checks release wiring and automatically tests every registered
 package's contents and size. Generators and runtime tests use the same registry
 through `@formatjs_generated/datetimeformat.calendars`.
+
+## Rust port (in progress)
+
+`crates/intl_datetimeformat` currently provides numeric TimeClip and Gregorian
+civil arithmetic from epoch nanoseconds. Fields retain astronomical years and
+nanosecond precision; `era_year` supplies AD/BC display years. Euclidean division
+preserves negative fractional instants. Local arithmetic permits timezone offsets
+to cross the exact Date bounds after the input instant has passed TimeClip.
+
+Rust units and differential tests cover 8,193 instants against TS DateOperations,
+including year zero, leap centuries, full Date bounds and negative nanoseconds.
+Timezone/locale registries, optional calendar conversion, pattern matching,
+formatting/ranges, C ABI, Hermes integration and SDK packaging remain unfinished.
