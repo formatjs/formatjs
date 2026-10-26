@@ -12,9 +12,9 @@ bazel_dep(name = "hermes")
 # Commit-pinned until the overlay's first BCR release.
 archive_override(
     module_name = "hermes",
-    integrity = "sha256-vaUw4QYM4LrG4PGPnCKV6FI/UeCsgU/5QHYN+vQmyK0=",
-    strip_prefix = "hermes-13e4389e44b7160964e1260cedce4d2f416ff0e9",
-    urls = ["https://github.com/formatjs/hermes/archive/13e4389e44b7160964e1260cedce4d2f416ff0e9.tar.gz"],
+    integrity = "sha256-IHFHHavZYP8n+FtcQUWSPo+Yi2h9BwNy4phiqvzc5IM=",
+    strip_prefix = "hermes-7258cc9a9053b7f94108a1627ae11e94d6b5d1ef",
+    urls = ["https://github.com/formatjs/hermes/archive/7258cc9a9053b7f94108a1627ae11e94d6b5d1ef.tar.gz"],
 )
 
 bazel_dep(name = "rules_shell", version = "0.8.0")
