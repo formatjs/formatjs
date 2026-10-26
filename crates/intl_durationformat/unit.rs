@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[repr(usize)]
 pub enum Unit {
     Years,
@@ -37,6 +37,20 @@ impl Unit {
             "milliseconds",
             "microseconds",
             "nanoseconds",
+        ][self as usize]
+    }
+    pub fn singular(self) -> &'static str {
+        [
+            "year",
+            "month",
+            "week",
+            "day",
+            "hour",
+            "minute",
+            "second",
+            "millisecond",
+            "microsecond",
+            "nanosecond",
         ][self as usize]
     }
     pub fn display_key(self) -> &'static str {

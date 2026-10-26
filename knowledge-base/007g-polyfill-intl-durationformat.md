@@ -104,8 +104,14 @@ internal and serialize as numeric in resolved options. TS differential coverage
 compares style/display combinations, propagation, rejection, field order and
 integer bounds, including IEEE values beyond the safe-integer range.
 
-Rendering and native installation remain in progress. Duration locale metadata
-must retain its static compilation model. NumberFormat/ListFormat dependencies
-must preserve selected locale loading; the native port will consume their native
-records without routing duration arithmetic through JS formatters or bundling
-all number/list locale payloads into DurationFormat metadata.
+The native renderer consumes caller-selected NumberFormat/ListFormat packs and
+negotiates each dependency independently. It folds subseconds with integer
+arithmetic, applies native NumberFormat truncation/sign rules and flattens native
+ListFormat parts while preserving unit annotations. Cached profiles retain their
+data after pack replacement; uncached profiles use current records. Empty output
+still requires ListFormat data. Eight-locale TS comparisons and native lifecycle
+tests cover rendering and dependency behavior.
+
+Duration locale resolution and native installation remain in progress. Duration
+locale metadata must retain its static compilation model. Number/list payloads
+stay separate and load on demand; rendering uses no JS formatter callbacks.

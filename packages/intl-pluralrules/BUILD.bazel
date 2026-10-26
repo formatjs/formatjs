@@ -156,6 +156,7 @@ ts_run_binary(
     chdir = package_name(),
     tool = "//packages/intl-pluralrules/scripts:cldr-raw",
     visibility = [
+        "//crates/intl_durationformat/tests:__pkg__",
         "//crates/intl_numberformat/tests:__pkg__",
         "//crates/intl_pluralrules/tests:__pkg__",
         "//crates/intl_relativetimeformat/tests:__pkg__",

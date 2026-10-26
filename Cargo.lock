@@ -770,6 +770,8 @@ dependencies = [
 name = "formatjs_intl_durationformat"
 version = "0.1.0"
 dependencies = [
+ "formatjs_intl_listformat",
+ "formatjs_intl_numberformat",
  "serde",
  "serde_json",
 ]

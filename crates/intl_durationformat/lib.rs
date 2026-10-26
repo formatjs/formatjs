@@ -1,12 +1,14 @@
-//! Duration records and formatting options. Hosts own observable coercions.
+//! Duration records, options and native number/list rendering. Hosts own coercions.
 mod options;
 mod record;
+mod render;
 mod unit;
 pub use options::{
     Configuration, Display, Options, PreparedUnit, Style, UnitInput, UnitOptions, UnitResolver,
     UnitStyle,
 };
 pub use record::Duration;
+pub use render::{Part, RenderError, Renderer};
 pub use unit::Unit;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {

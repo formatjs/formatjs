@@ -12,3 +12,26 @@ formatjs_test(
         "//packages/ecma402-abstract/DurationFormat",
     ],
 )
+
+formatjs_test(
+    name = "render_test",
+    srcs = ["render.test.ts"],
+    data = [
+        "//crates/intl_durationformat:conformance",
+        "//crates/intl_listformat:locale_data",
+        "//crates/intl_numberformat:locale_data",
+        "//packages/intl-listformat:cldr-raw",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/intl-durationformat",
+    ],
+)

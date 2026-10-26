@@ -8,13 +8,18 @@ rust_library(
         "lib.rs",
         "options.rs",
         "record.rs",
+        "render.rs",
         "unit.rs",
     ],
     crate_name = "formatjs_intl_durationformat",
     crate_root = "lib.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
-    deps = ["@crates//:serde"],
+    deps = [
+        "//crates/intl_listformat",
+        "//crates/intl_numberformat",
+        "@crates//:serde",
+    ],
 )
 
 rust_binary(
@@ -36,8 +41,22 @@ formatjs_rust_test(
     srcs = [
         "options.test.rs",
         "record.test.rs",
+        "render.test.rs",
+    ],
+    compile_data = [
+        "//crates/intl_numberformat:locale-data/en.json",
+        "//crates/intl_listformat:locale-data/en.json",
+        "//crates/intl_listformat:locale-data/ja.json",
     ],
     crate_name = "intl_durationformat_test",
     edition = "2024",
-    deps = [":intl_durationformat"],
+    rustc_env = {
+        "FORMATJS_DURATION_NUMBER_EN": "$(execpath //crates/intl_numberformat:locale-data/en.json)",
+        "FORMATJS_DURATION_LIST_EN": "$(execpath //crates/intl_listformat:locale-data/en.json)",
+        "FORMATJS_DURATION_LIST_JA": "$(execpath //crates/intl_listformat:locale-data/ja.json)",
+    },
+    deps = [
+        ":intl_durationformat",
+        "@crates//:serde_json",
+    ],
 )
