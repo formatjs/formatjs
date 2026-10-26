@@ -2,7 +2,7 @@
 
 Rust NumberFormat core with on-demand CLDR data. Decimal, percent, currency,
 units, compact/scientific/engineering notation, parts and ranges run in Rust.
-Native ABI, Hermes installation and SDK integration remain in progress.
+Owned C ABI is available; Hermes installation and SDK integration remain in progress.
 
 `Registry` starts empty. Add selected JSON files from `:locale_data`, canonicalize
 requested tags before `negotiate`, then obtain an owned `Arc<LocaleData>` with
@@ -39,3 +39,16 @@ and atomic rejection. Core tests cover 40,002-digit integers, tiny fractions,
 directed rounding and explicit unit updates. Output conformance compares every
 generated locale and all advertised numbering systems with TS, including currency
 digits, units, compound units, precision, signs, notation and range affixes.
+
+The C ABI in `numberformat.h` separates locale resolution from formatting options.
+`formatjs_number_resolve` captures the selected record and numbering system;
+`formatjs_number_create` configures it without consulting the registry again.
+This preserves resolution when later JS option getters register replacement packs.
+Both handles own their data and survive registry destruction.
+
+Queries accept primitive text plus a BigInt flag after the host performs
+ToPrimitive. The shared mathematical parser handles exact radix/decimal strings,
+Number overflow/underflow and negative zero. The host rejects Symbols and missing
+range endpoints before calling Rust. Status 1 maps to RangeError, 4 to TypeError;
+2 signals invalid ABI input and 3 a caught Rust panic. Destroy each handle and free
+each successful byte result exactly once.

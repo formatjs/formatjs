@@ -21,3 +21,4 @@ formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
 formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof" }
 formatjs_intl_segmenter = { path = "../intl_segmenter" }
 formatjs_intl_collator = { path = "../intl_collator" }
+formatjs_intl_numberformat = { path = "../intl_numberformat" }

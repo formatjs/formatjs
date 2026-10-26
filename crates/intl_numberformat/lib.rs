@@ -1,5 +1,6 @@
 //! Number formatting with on-demand locale records, independent of host ICU data.
 mod data;
+pub mod ffi;
 mod format;
 mod metadata;
 mod numeric;
@@ -82,6 +83,22 @@ impl NumberFormat {
             locale.push_str("-u-nu-");
             locale.push_str(&system);
         }
+        Self::with_locale(data, locale, system, options)
+    }
+    pub(crate) fn reconfigure(&self, options: &Options) -> Result<Self, Error> {
+        Self::with_locale(
+            self.data.clone(),
+            self.resolved.locale.clone(),
+            self.resolved.numbering_system.clone(),
+            options,
+        )
+    }
+    fn with_locale(
+        data: Arc<LocaleData>,
+        locale: String,
+        system: String,
+        options: &Options,
+    ) -> Result<Self, Error> {
         let resolved = options::resolve(locale, system.clone(), options)?;
         let digit_values = serde_json::to_value(&resolved.digits)
             .map_err(|error| Error::InvalidData(error.to_string()))?;

@@ -133,7 +133,7 @@ impl PluralRules {
     /// Numeric text from a coerced primitive. BigInt bypasses Number-range
     /// clamping; JS ToPrimitive and Symbol rejection happen in the host.
     pub fn select_mathematical(&self, value: &str, bigint: bool) -> Result<&'static str, Error> {
-        self.select(&crate::mathematical::for_rounding(value, bigint))
+        self.select(&crate::mathematical::to_mathematical_value(value, bigint))
     }
 
     pub fn select_range_mathematical(
@@ -144,8 +144,8 @@ impl PluralRules {
         end_bigint: bool,
     ) -> Result<&str, Error> {
         self.select_range(
-            &crate::mathematical::for_rounding(start, start_bigint),
-            &crate::mathematical::for_rounding(end, end_bigint),
+            &crate::mathematical::to_mathematical_value(start, start_bigint),
+            &crate::mathematical::to_mathematical_value(end, end_bigint),
         )
     }
 

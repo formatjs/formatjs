@@ -162,7 +162,12 @@ canonical plural-locale matching. Registration preserves existing records,
 explicit aliases and parent fallbacks; invalid aliases reject atomically.
 Rounding reuses PluralRules digit handling with currency/percent defaults.
 Conformance compares every generated locale and all advertised numbering systems
-with TS. Native ABI, Hermes installation and SDK integration remain in progress.
+with TS. The owned C ABI snapshots locale resolution before later option getters can
+replace registered data. Reconfiguration uses that snapshot; handles survive
+registry destruction. Primitive-text queries share PluralRules mathematical
+parsing, including radix strings, exact BigInts and Number clamps. Status 4
+preserves TypeError separately from RangeError. Hermes installation and SDK
+integration remain in progress.
 
 Tiny compact values never receive a suffix from a lexical comparison against an
 exponent-formatted magnitude. Sparse translated currency-name maps fall back to

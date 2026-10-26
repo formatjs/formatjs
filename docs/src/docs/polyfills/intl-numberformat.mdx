@@ -443,6 +443,8 @@ formatters retain their locale records when a replacement pack is registered.
 `Registry::create` accepts locale tags and typed options. Formatting methods
 accept the host's normalized ToIntlMathematicalValue strings, preserving exact
 BigInt integers. JavaScript coercion remains the host's responsibility.
+The owned C ABI captures locale resolution separately from later formatting
+options, preserving existing instances across registry replacement or destruction.
 Hermes installation and SDK packaging are still in progress.
 
 Scientific exponents use localized digits, independently of mantissa rounding

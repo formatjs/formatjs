@@ -28,6 +28,7 @@ rust_static_library(
         "//crates/intl_getcanonicallocales",
         "//crates/intl_listformat",
         "//crates/intl_locale",
+        "//crates/intl_numberformat",
         "//crates/intl_pluralrules",
         "//crates/intl_segmenter",
         "//crates/intl_supportedvaluesof",

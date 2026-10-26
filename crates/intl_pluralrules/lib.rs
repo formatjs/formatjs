@@ -15,7 +15,7 @@ use serde::Deserialize;
 pub mod digits;
 pub mod ffi;
 pub mod instance;
-mod mathematical;
+pub mod mathematical;
 pub mod registry;
 
 #[derive(Debug)]
