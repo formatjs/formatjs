@@ -127,6 +127,11 @@ jobs:
         run: |
           node -e 'const native = require(process.argv[1]); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);' ./artifacts/cli-native-darwin-arm64
 
+      - name: Hermes Extension SDK Smoke Test
+        run: |
+          chmod +x artifacts/hermes-intl-darwin-arm64
+          artifacts/hermes-intl-darwin-arm64 artifacts/hermes-intl-extension.hbc
+
   windows_smoke:
     name: Windows Smoke Tests
     needs: download

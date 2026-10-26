@@ -1,0 +1,109 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//tools:index.bzl", "ts_run_binary")
+
+exports_files(
+    [
+        "canonical_locales.cpp",
+        "canonical_locales.h",
+    ],
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+HOST_COMPATIBILITY = select({
+    "@platforms//os:macos": [],
+    "@platforms//os:linux": [],
+    "//conditions:default": ["@platforms//:incompatible"],
+})
+
+alias(
+    name = "hermes_vm",
+    actual = "@hermes//:hermes_vm",
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "wrapper_source",
+    srcs = ["get_canonical_locales.js"],
+    outs = ["get_canonical_locales.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "extension_js",
+    srcs = ["get_canonical_locales.js"],
+    outs = ["30-IntlGetCanonicalLocales.js"],
+    args = [
+        "--input=$(rootpath :get_canonical_locales.js)",
+        "--out=$(rootpath :30-IntlGetCanonicalLocales.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "extension_bundle_js",
+    srcs = ["get_canonical_locales.js"],
+    outs = ["extensions.js"],
+    args = [
+        "--input=$(rootpath :get_canonical_locales.js)",
+        "--out=$(rootpath :extensions.js)",
+        "--bundle",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "canonical_locales",
+    srcs = [
+        "canonical_locales.cpp",
+        ":wrapper_source",
+    ],
+    hdrs = ["canonical_locales.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales:headers",
+        "//crates/intl_getcanonicallocales:intl_getcanonicallocales_native",
+        "@hermes//:headers",
+    ],
+)
+
+cc_binary(
+    name = "hermes_runner",
+    srcs = ["runner.cpp"],
+    copts = ["-std=c++17"],
+    tags = ["manual"],
+    target_compatible_with = HOST_COMPATIBILITY,
+    visibility = ["//visibility:public"],
+    deps = [
+        ":canonical_locales",
+        ":hermes_vm",
+    ],
+)
+
+sh_test(
+    name = "canonical_locales_test",
+    size = "small",
+    srcs = ["test.sh"],
+    args = [
+        "$(rootpath :hermes_runner)",
+        "$(rootpath :canonical_locales_test.js)",
+        "$(rootpath :throw_test.js)",
+    ],
+    data = [
+        "canonical_locales_test.js",
+        "throw_test.js",
+        ":hermes_runner",
+    ],
+    target_compatible_with = HOST_COMPATIBILITY,
+)

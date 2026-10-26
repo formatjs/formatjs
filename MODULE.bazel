@@ -6,8 +6,21 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.1.0")
-bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "hermes")
+
+# Commit-pinned until the committed overlay is available in BCR.
+archive_override(
+    module_name = "hermes",
+    integrity = "sha256-saR1nxBKZqgRFaNSW+PNWXEVAPTAJGFfApsIAUZZyS0=",
+    strip_prefix = "hermes-466ecfefae5ba3c0eca5bfd64d178f86275acc86",
+    urls = ["https://github.com/formatjs/hermes/archive/466ecfefae5ba3c0eca5bfd64d178f86275acc86.tar.gz"],
+)
+
 bazel_dep(name = "rules_shell", version = "0.8.0")
+
+bazel_dep(name = "rules_pkg", version = "1.3.0", dev_dependency = True)
+
 bazel_dep(name = "windows_support", version = "0.2.0")
 
 cc_configure = use_extension("@rules_cc//cc:extensions.bzl", "cc_configure_extension")
@@ -169,7 +182,7 @@ bazel_dep(name = "with_cfg.bzl", version = "0.14.6")
 
 ######### Python #########
 
-bazel_dep(name = "rules_python", version = "2.3.2", dev_dependency = True)
+bazel_dep(name = "rules_python", version = "2.4.5", dev_dependency = True)
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
 python.toolchain(

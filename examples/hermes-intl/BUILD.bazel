@@ -1,0 +1,49 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+load(":dist.bzl", "smoke_macos_arm64")
+
+genrule(
+    name = "extension_bytecode",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/extensions.js"],
+    outs = ["extensions.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath @formatjs_intl_getcanonicallocales_hermes//:js/extensions.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+cc_binary(
+    name = "smoke",
+    srcs = ["main.cpp"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkstatic = True,
+    tags = ["manual"],
+    deps = [
+        "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@hermes//:hermes_vm",
+    ],
+)
+
+cc_test(
+    name = "smoke_test",
+    size = "small",
+    srcs = ["main.cpp"],
+    args = ["$(rootpath :extension_bytecode)"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    data = [":extension_bytecode"],
+    linkstatic = True,
+    deps = [
+        "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@hermes//:hermes_vm",
+    ],
+)
+
+smoke_macos_arm64(
+    name = "smoke_macos_arm64",
+    srcs = [":smoke"],
+    tags = ["manual"],
+)

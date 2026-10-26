@@ -1,0 +1,87 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load(":dist.bzl", "darwin_archive", "linux_archive")
+
+platform(
+    name = "linux_x86_64",
+    constraint_values = ["@llvm//constraints/libc:gnu.2.28"],
+    parents = ["@rules_rs//rs/platforms:x86_64-unknown-linux-gnu"],
+)
+
+platform(
+    name = "darwin_arm64",
+    parents = ["@rules_rs//rs/platforms:aarch64-apple-darwin"],
+)
+
+linux_archive(
+    name = "linux_static_library",
+    srcs = ["//crates/intl_getcanonicallocales:intl_getcanonicallocales_native"],
+    tags = ["manual"],
+)
+
+darwin_archive(
+    name = "darwin_static_library",
+    srcs = ["//crates/intl_getcanonicallocales:intl_getcanonicallocales_native"],
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "sdk_sources",
+    srcs = [
+        "LICENSE.md",
+        "README.md",
+        "SDK.BUILD.bazel",
+        "SDK.MODULE.bazel",
+        "THIRD_PARTY_NOTICES.html",
+        "//crates/intl_getcanonicallocales:canonicalize.h",
+        "//native/hermes:canonical_locales.cpp",
+        "//native/hermes:canonical_locales.h",
+        "//native/hermes:extension_bundle_js",
+        "//native/hermes:extension_js",
+        "//native/hermes:wrapper_source",
+    ],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {
+        "LICENSE.md": "LICENSE.md",
+        "README.md": "README.md",
+        "SDK.BUILD.bazel": "BUILD.bazel",
+        "SDK.MODULE.bazel": "MODULE.bazel",
+        "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
+        "//crates/intl_getcanonicallocales:canonicalize.h": "include/formatjs/intl/canonicalize.h",
+        "//native/hermes:canonical_locales.cpp": "src/canonical_locales.cpp",
+        "//native/hermes:canonical_locales.h": "include/formatjs/hermes/canonical_locales.h",
+        "//native/hermes:extension_bundle_js": "js/extensions.js",
+        "//native/hermes:extension_js": "js/30-IntlGetCanonicalLocales.js",
+        "//native/hermes:wrapper_source": "src/get_canonical_locales.inc",
+    },
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "linux_library",
+    srcs = [":linux_static_library"],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {":linux_static_library": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_getcanonicallocales.a"},
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "darwin_library",
+    srcs = [":darwin_static_library"],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {":darwin_static_library": "lib/aarch64-apple-darwin/libformatjs_intl_getcanonicallocales.a"},
+    tags = ["manual"],
+)
+
+pkg_tar(
+    name = "sdk",
+    srcs = [
+        ":darwin_library",
+        ":linux_library",
+        ":sdk_sources",
+    ],
+    out = "formatjs_intl_getcanonicallocales_hermes-0.1.0.tar.gz",
+    extension = "tar.gz",
+    tags = ["manual"],
+    visibility = ["//visibility:public"],
+)

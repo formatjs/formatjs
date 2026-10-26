@@ -1,0 +1,30 @@
+common --enable_bzlmod
+build --compilation_mode=opt
+build --noremote_upload_local_results
+build --remote_cache_compression
+build --@llvm//config:experimental_stub_libgcc_s=True
+build --@llvm//config/bootstrap:experimental_stub_libgcc_s=True
+test --test_output=errors
+
+build:linux --platforms=@llvm//platforms:linux_x86_64_gnu.2.28
+build:linux --host_platform=@llvm//platforms:linux_x86_64_gnu.2.28
+build:linux --extra_execution_platforms=@llvm//platforms:linux_x86_64_gnu.2.28
+build:linux --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build:linux --incompatible_strict_action_env
+
+build:bb-workflow --build_metadata=ROLE=BB_WORKFLOW
+build:bb-workflow --build_metadata=VISIBILITY=PUBLIC
+build:bb-workflow --build_metadata=REPO_URL=https://github.com/formatjs/formatjs.git
+build:bb-workflow --config=linux
+build:bb-workflow --remote_default_exec_properties=OSFamily=Linux
+build:bb-workflow --remote_default_exec_properties=Arch=amd64
+build:bb-workflow --remote_default_exec_properties=container-image=docker://gcr.io/flame-public/rbe-ubuntu22-04:latest
+build:bb-workflow --remote_default_exec_properties=network=off
+build:bb-workflow --bes_backend=grpcs://formatjs.buildbuddy.io
+build:bb-workflow --bes_results_url=https://formatjs.buildbuddy.io/invocation/
+build:bb-workflow --remote_cache=grpcs://formatjs.buildbuddy.io
+build:bb-workflow --remote_executor=grpcs://formatjs.buildbuddy.io
+build:bb-workflow --jobs=50
+build:bb-workflow --remote_timeout=10m
+
+try-import %workspace%/.bazelrc.user

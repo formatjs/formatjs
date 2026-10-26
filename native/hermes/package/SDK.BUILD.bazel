@@ -1,0 +1,68 @@
+load("@rules_cc//cc:cc_import.bzl", "cc_import")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+config_setting(
+    name = "linux_x86_64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+)
+
+config_setting(
+    name = "darwin_arm64",
+    constraint_values = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+)
+
+cc_import(
+    name = "rust_canonicalizer",
+    static_library = select({
+        ":darwin_arm64": "lib/aarch64-apple-darwin/libformatjs_intl_getcanonicallocales.a",
+        ":linux_x86_64": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_getcanonicallocales.a",
+    }),
+)
+
+cc_library(
+    name = "canonical_locales",
+    srcs = [
+        "src/canonical_locales.cpp",
+        "src/get_canonical_locales.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/canonical_locales.h",
+        "include/formatjs/intl/canonicalize.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":rust_canonicalizer",
+        "@hermes//:headers",
+    ],
+)
+
+exports_files([
+    "js/30-IntlGetCanonicalLocales.js",
+    "js/extensions.js",
+])

@@ -1,0 +1,39 @@
+# gazelle:ignore
+
+load("@rules_python//python:py_test.bzl", "py_test")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+
+rolldown_bundle(
+    name = "locale_prelude",
+    srcs = ["locale-prelude.ts"],
+    entry_point = "locale-prelude.ts",
+    format = "iife",
+    target = "es2020",
+    visibility = ["//benchmarks/intl-canonicalization:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@formatjs_generated/cldr.locale",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-locale:lib",
+    ],
+)
+
+py_test(
+    name = "getcanonicallocales_test",
+    size = "small",
+    srcs = ["run.py"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath :locale_prelude.js)",
+        "$(rootpaths @com_github_tc39_test262//:test262-getcanonicallocales)",
+    ],
+    data = [
+        ":locale_prelude.js",
+        "//native/hermes:hermes_runner",
+        "@com_github_tc39_test262//:test262-getcanonicallocales",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    main = "run.py",
+)

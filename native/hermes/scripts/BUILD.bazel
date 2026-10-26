@@ -1,0 +1,12 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "extension",
+    entry_point = "extension.ts",
+    visibility = ["//native/hermes:__pkg__"],
+    deps = [
+        "//:node_modules/minimist",
+        "//:node_modules/typescript",
+    ],
+)

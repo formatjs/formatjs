@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   test:
+    if: github.event_name != 'workflow_dispatch' || inputs.smoke_invocation_url == ''
     runs-on: ubuntu-26.04
 
     steps:
@@ -36,14 +37,16 @@ jobs:
           import re
           import subprocess
 
-          tree = subprocess.check_output([
-              "cargo", "tree", "--locked", "-p", "formatjs_intl",
-              "--no-default-features", "--edges", "normal,features",
-          ], text=True)
-          if 'feature "compiled_data"' in tree or re.search(r"icu_\w+_data v", tree):
-              raise SystemExit("Provider-only intl must not enable compiled ICU data:\n" + tree)
+          for crate in ("formatjs_intl", "formatjs_intl_getcanonicallocales"):
+              tree = subprocess.check_output([
+                  "cargo", "tree", "--locked", "-p", crate,
+                  "--no-default-features", "--edges", "normal,features",
+              ], text=True)
+              if 'feature "compiled_data"' in tree or re.search(r"icu_\w+_data v", tree):
+                  raise SystemExit(f"Provider-only {crate} must not enable compiled ICU data:\n" + tree)
 
   examples:
+    if: github.event_name != 'workflow_dispatch' || inputs.smoke_invocation_url == ''
     name: Examples (${{ matrix.example }})
     runs-on: ubuntu-latest
 
@@ -75,6 +78,7 @@ jobs:
         run: bazel test //...
 
   validate-pnpm-lock:
+    if: github.event_name != 'workflow_dispatch' || inputs.smoke_invocation_url == ''
     name: Validate pnpm-lock.yaml
     runs-on: ubuntu-latest
 

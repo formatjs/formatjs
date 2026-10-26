@@ -66,6 +66,58 @@ async function polyfill() {
 }
 ```
 
+## Native Hermes SDK
+
+Hermes embedders can install the Rust-backed implementation through public JSI.
+SDK `0.1.0` contains prebuilt Rust libraries for Linux x86_64 GNU and macOS
+arm64, public headers, and C++ adapter source compiled against the consumer's
+JSI headers. It is built from this repository and is not published to BCR, npm,
+or crates.io. Android/iOS and React Native packages are not included.
+
+From a FormatJS checkout on Linux, build the archive and run the independent
+consumer against its extracted layout:
+
+```sh
+bazel build -c opt //native/hermes/package:sdk
+sdk_archive="$(bazel cquery -c opt --output=files //native/hermes/package:sdk)"
+sdk_dir="$(mktemp -d)"
+tar -xzf "$sdk_archive" -C "$sdk_dir"
+cd examples/hermes-intl
+bazel test --config=linux \
+  --override_module=formatjs_intl_getcanonicallocales_hermes="$sdk_dir" \
+  //:smoke_test
+```
+
+External Bazel applications depend on the module
+`formatjs_intl_getcanonicallocales_hermes` at version `0.1.0`, pass the same
+`--override_module` until publication, and link
+`@formatjs_intl_getcanonicallocales_hermes//:canonical_locales` with their Hermes
+runtime. The application supplies its Hermes archive override and C++ toolchain.
+
+```cpp
+#include <formatjs/hermes/canonical_locales.h>
+
+formatjs::installCanonicalLocales(*runtime);
+```
+
+That overload evaluates the embedded setup source. Bytecode-only embedders can
+compile the SDK's `js/extensions.js` with the matching `hermesc`, evaluate it to
+obtain a setup object, then call
+`formatjs::installCanonicalLocales(*runtime, extensions)`. The
+[standalone example](https://github.com/formatjs/formatjs/tree/main/examples/hermes-intl)
+uses this path and keeps `hermesc` on the execution platform during cross builds.
+
+Hermes core/contrib integration instead adds
+`js/30-IntlGetCanonicalLocales.js` to the extension source list and calls that
+same overload from the compiled C++ extension dispatcher. Linking the SDK alone
+does not install a startup hook. See the
+[SDK integration instructions](https://github.com/formatjs/formatjs/blob/main/native/hermes/package/README.md).
+
+Install a trusted `Intl.Locale` implementation before the final installer call.
+If the Locale polyfill needs `Intl.getCanonicalLocales` first, install this
+adapter, load Locale, then reinstall the adapter before application code. This
+captures Locale's intrinsic brand method.
+
 ## Tests
 
 The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-getcanonicallocales:test262-strict` to require zero failures.

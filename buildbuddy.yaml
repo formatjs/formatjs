@@ -126,7 +126,37 @@ actions:
             exit 1
           fi
 
-      # Attach one archive for native GHA smoke jobs.
+      # Build and test the packaged SDK from a standalone consumer.
+      - run: |
+          set -euo pipefail
+          bazel build --config=bb-cross-build --remote_download_toplevel //native/hermes/package:sdk
+          mapfile -t sdk_archives < <(bazel cquery --config=bb-cross-build --remote_download_toplevel --output=files //native/hermes/package:sdk)
+          if [[ ${#sdk_archives[@]} -ne 1 || "${sdk_archives[0]}" != *.tar.gz ]]; then
+            echo "Expected one Hermes extension SDK archive" >&2
+            exit 1
+          fi
+          cp "${sdk_archives[0]}" "$BUILDBUDDY_ARTIFACTS_DIRECTORY/formatjs-intl-getcanonicallocales-hermes.tar.gz"
+          sdk_dir=$(mktemp -d)
+          sdk_smoke_dir=$(mktemp -d)
+          trap 'rm -rf "$sdk_dir" "$sdk_smoke_dir"' EXIT
+          tar -xzf "${sdk_archives[0]}" -C "$sdk_dir"
+          cd examples/hermes-intl
+          sdk_override="--override_module=formatjs_intl_getcanonicallocales_hermes=$sdk_dir"
+          bazel test --config=bb-workflow "$sdk_override" //:smoke_test
+          bazel build --config=bb-workflow "$sdk_override" --remote_download_toplevel //:smoke_macos_arm64 //:extension_bytecode
+          mapfile -t macos_binaries < <(bazel cquery --config=bb-workflow "$sdk_override" --remote_download_toplevel --output=files //:smoke_macos_arm64)
+          mapfile -t extension_bytecode < <(bazel cquery --config=bb-workflow "$sdk_override" --remote_download_toplevel --output=files //:extension_bytecode)
+          if [[ ${#macos_binaries[@]} -ne 1 || ${#extension_bytecode[@]} -ne 1 ]]; then
+            echo "Expected one Hermes consumer binary and one extension bytecode file" >&2
+            exit 1
+          fi
+          cp "${macos_binaries[0]}" "$sdk_smoke_dir/hermes-intl-darwin-arm64"
+          cp "${extension_bytecode[0]}" "$sdk_smoke_dir/hermes-intl-extension.hbc"
+          file "$sdk_smoke_dir/hermes-intl-darwin-arm64" | grep -E 'Mach-O 64-bit.*arm64'
+          tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/hermes-extension-smoke.tar.gz" \
+            -C "$sdk_smoke_dir" hermes-intl-darwin-arm64 hermes-intl-extension.hbc
+
+      # Preserve the existing CLI archive for the trusted main-branch downloader.
       - run: |
           set -euo pipefail
           tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/release-cross-build-smoke.tar.gz" -C "$SMOKE_ARTIFACTS_DIR" .

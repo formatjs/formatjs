@@ -1,0 +1,26 @@
+[package]
+name = "formatjs_intl_getcanonicallocales"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "ECMA-402 locale canonicalization with ICU4X"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = false
+
+[features]
+default = ["compiled_data"]
+compiled_data = ["icu_locale/compiled_data"]
+
+[dependencies]
+icu_locale = { version = "2.3.1", default-features = false, features = [
+  "serde",
+] }
+icu_provider = { version = "2.3.1", features = ["sync"] }
+
+[lib]
+path = "lib.rs"
+crate-type = ["rlib", "staticlib"]
+
+[dev-dependencies]
+icu_provider = { version = "2.3.1", features = ["deserialize_json"] }

@@ -1,0 +1,71 @@
+# gazelle:ignore
+
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("//tools:index.bzl", "ts_binary")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+
+rolldown_bundle(
+    name = "suite_bundle",
+    srcs = [
+        "observable-conformance.ts",
+        "suite.ts",
+    ],
+    entry_point = "suite.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-getcanonicallocales:lib",
+    ],
+)
+
+rolldown_bundle(
+    name = "reference_bundle",
+    srcs = [
+        "observable-conformance.ts",
+        "reference.ts",
+    ],
+    entry_point = "reference.ts",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-getcanonicallocales:lib",
+    ],
+)
+
+js_test(
+    name = "reference_test",
+    size = "small",
+    entry_point = "reference_bundle.js",
+)
+
+ts_binary(
+    name = "benchmark",
+    data = [
+        "suite_bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/minimist",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run.ts",
+    tags = ["manual"],
+)
+
+js_test(
+    name = "conformance_test",
+    size = "small",
+    args = ["--test"],
+    data = [
+        "suite_bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/minimist",
+        "//native/hermes:hermes_runner",
+        "//tools/hermes-test262:locale_prelude.js",
+    ],
+    entry_point = "run.ts",
+    node_options = ["--experimental-transform-types"],
+)

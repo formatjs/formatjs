@@ -49,7 +49,10 @@ copy_to_bin(
 filegroup(
     name = "test262-getcanonicallocales",
     srcs = glob(["test/intl402/Intl/getCanonicalLocales/**/*.js"]),
-    visibility = ["@//packages/intl-getcanonicallocales:__pkg__"],
+    visibility = [
+        "@//packages/intl-getcanonicallocales:__pkg__",
+        "@//tools/hermes-test262:__pkg__",
+    ],
 )
 copy_to_bin(
     name = "test262-getcanonicallocales-copy",
