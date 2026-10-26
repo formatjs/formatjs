@@ -32,6 +32,7 @@ if (process.argv.includes('--oracle')) {
 } else {
   const workspace = process.env.TEST_WORKSPACE || '_main'
   const resolve = value => runfiles.resolve(`${workspace}/${value}`)
+  const testOnly = process.argv.includes('--test')
   const directory = fs.mkdtempSync(
     path.join(os.tmpdir(), 'formatjs-canonical-')
   )
@@ -39,15 +40,44 @@ if (process.argv.includes('--oracle')) {
     const options = path.join(directory, 'options.js')
     fs.writeFileSync(
       options,
-      `globalThis.FORMATJS_CANONICAL_TEST_ONLY = ${process.argv.includes('--test')};\n`
+      `globalThis.FORMATJS_CANONICAL_TEST_ONLY = ${testOnly};\n`
     )
     const result = spawnSync(
       resolve('native/hermes/hermes_runner'),
-      [options, resolve('benchmarks/intl-canonicalization/suite_bundle.js')],
-      {stdio: 'inherit'}
+      [
+        ...(testOnly
+          ? [`--prelude=${resolve('tools/hermes-test262/locale_prelude.js')}`]
+          : []),
+        options,
+        resolve('benchmarks/intl-canonicalization/suite_bundle.js'),
+      ],
+      testOnly ? {encoding: 'utf8'} : {stdio: 'inherit'}
     )
     if (result.error) throw result.error
     if (result.signal) throw new Error(`Hermes terminated: ${result.signal}`)
+    if (testOnly) {
+      process.stdout.write(result.stdout || '')
+      process.stderr.write(result.stderr || '')
+      if (result.status === 0) {
+        const reports = result.stdout
+          .trim()
+          .split('\n')
+          .map(line => JSON.parse(line))
+        const report = reports.find(value => value.type === 'correctness')
+        if (
+          report?.candidate !== 'Rust JSI installed API' ||
+          report.reference !==
+            '@formatjs/intl-getcanonicallocales TypeScript source' ||
+          !report.observable?.cases ||
+          !report.observable.localeCases ||
+          !report.observable.invalidTags ||
+          !report.casingVariants
+        )
+          throw new Error(
+            'Hermes differential conformance report missing coverage'
+          )
+      }
+    }
     process.exitCode = result.status ?? 1
   } finally {
     fs.rmSync(directory, {recursive: true, force: true})

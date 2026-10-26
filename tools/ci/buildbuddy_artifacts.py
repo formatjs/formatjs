@@ -24,6 +24,8 @@ PACKAGES = (
 REQUIRED_FILES = {
     "formatjs_cli-darwin-arm64",
     "formatjs_cli-win32-x64.exe",
+    "hermes-intl-darwin-arm64",
+    "hermes-intl-extension.hbc",
     *(f"{package}/formatjs_cli_napi.node" for package in PACKAGES),
     *(f"{package}/package.json" for package in PACKAGES),
     "cli-native-linux-x64-musl/formatjs_cli",

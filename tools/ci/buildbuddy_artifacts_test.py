@@ -99,11 +99,16 @@ class ArtifactTest(unittest.TestCase):
                 self.assertFalse(destination.exists())
 
     def test_rejects_missing_artifacts(self):
-        with tempfile.TemporaryDirectory() as directory, self.assertRaises(ValueError):
-            artifacts.extract_archive(
-                self.archive(omit=["formatjs_cli-win32-x64.exe"]),
-                Path(directory) / "artifacts",
-            )
+        for missing in (
+            "formatjs_cli-win32-x64.exe",
+            "hermes-intl-darwin-arm64",
+            "hermes-intl-extension.hbc",
+        ):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as directory:
+                destination = Path(directory) / "artifacts"
+                with self.assertRaisesRegex(ValueError, "missing required artifacts"):
+                    artifacts.extract_archive(self.archive(omit=[missing]), destination)
+                self.assertFalse(destination.exists())
 
 
 if __name__ == "__main__":

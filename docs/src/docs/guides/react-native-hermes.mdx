@@ -3,18 +3,41 @@ This guide covers setting up FormatJS polyfills for React Native with the Hermes
 ## Experimental Rust canonicalizer
 
 The repository includes a Rust `Intl.getCanonicalLocales` implementation using
-ICU4X and a C++ JSI adapter in `native/hermes`. Embedders can call
-`formatjs::installCanonicalLocales(runtime)` before application scripts to
-install the standard API. Other Intl APIs keep using their existing implementations.
+ICU4X and a C++ JSI adapter. SDK `0.1.0` packages public headers, adapter source,
+extension JavaScript, and Rust static libraries for Linux x86_64 GNU and macOS
+arm64. Consumers compile the adapter against their matching Hermes JSI headers
+and link `@formatjs_intl_getcanonicallocales_hermes//:canonical_locales`.
+
+The SDK is built from this repository and is not published to BCR, npm, or
+crates.io. It does not include Android/iOS artifacts or React Native package
+installation. Follow the [native SDK instructions](/docs/polyfills/intl-getcanonicallocales#native-hermes-sdk)
+and [independent consumer example](https://github.com/formatjs/formatjs/tree/main/examples/hermes-intl)
+to build, extract, and install its public layout.
+
+```cpp
+#include <formatjs/hermes/canonical_locales.h>
+
+formatjs::installCanonicalLocales(*runtime);
+```
+
+Install before application scripts. For bytecode-only startup, compile the SDK's
+`js/extensions.js` with the matching `hermesc`, evaluate it into a setup object,
+then call `formatjs::installCanonicalLocales(*runtime, extensions)`. For Hermes
+core/contrib registration, add `js/30-IntlGetCanonicalLocales.js` to its extension
+source list and call the same overload from the compiled C++ dispatcher.
+Linking the SDK alone does not register a startup hook.
+
+Install trusted `Intl.Locale` before the final adapter installation. If Locale
+needs `Intl.getCanonicalLocales` first, install the adapter, load Locale, then
+reinstall before application code. Other Intl APIs keep their existing implementations.
 
 Rust callers can disable the canonicalizer crate's default `compiled_data`
 feature and use `Canonicalizer::try_new_with_provider(&provider)` with
 caller-loaded ICU data. The current JSI installer uses the compiled-data path;
 provider injection into the native installer is separate work.
 
-This is a source integration, not an installable React Native package. The
-desktop benchmark compares it with `@formatjs/intl-getcanonicallocales` inside
-the same Hermes runtime:
+The desktop benchmark compares it with `@formatjs/intl-getcanonicallocales`
+inside the same Hermes runtime:
 
 ```sh
 bazel run -c opt //benchmarks/intl-canonicalization:benchmark

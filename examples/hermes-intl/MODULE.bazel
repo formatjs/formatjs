@@ -1,0 +1,26 @@
+module(name = "formatjs_hermes_intl_example")
+
+bazel_dep(name = "formatjs_intl_getcanonicallocales_hermes", version = "0.1.0")
+bazel_dep(name = "hermes", version = "260318099.0.0-393a539e6")
+
+# Commit-pinned until the Hermes overlay's first BCR release.
+archive_override(
+    module_name = "hermes",
+    integrity = "sha256-IHFHHavZYP8n+FtcQUWSPo+Yi2h9BwNy4phiqvzc5IM=",
+    strip_prefix = "hermes-7258cc9a9053b7f94108a1627ae11e94d6b5d1ef",
+    urls = ["https://github.com/formatjs/hermes/archive/7258cc9a9053b7f94108a1627ae11e94d6b5d1ef.tar.gz"],
+)
+
+# Build tools belong to this consumer root, not the SDK's public module.
+bazel_dep(name = "llvm", version = "0.8.25", dev_dependency = True)
+bazel_dep(name = "rules_cc", version = "0.2.27", dev_dependency = True)
+bazel_dep(name = "rules_python", version = "2.4.5", dev_dependency = True)
+bazel_dep(name = "with_cfg.bzl", version = "1.0.1", dev_dependency = True)
+
+register_toolchains(
+    "@llvm//toolchain:all",
+    dev_dependency = True,
+)
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
+python.toolchain(python_version = "3.12.7")

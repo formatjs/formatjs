@@ -9,6 +9,9 @@ packages/intl-datetimeformat/tz_data.tar.gz binary
 website/* linguist-documentation
 **/CHANGELOG.md linguist-documentation
 
+# Preserve upstream license text, including its whitespace and line endings.
+native/hermes/package/licenses/** -text whitespace=-trailing-space,cr-at-eol
+
 # A custom merge driver for the Bazel lockfile.
 # https://bazel.build/external/lockfile#automatic-resolution
 MODULE.bazel.lock merge=bazel-lockfile-merge

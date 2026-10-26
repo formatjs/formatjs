@@ -27,8 +27,63 @@ consumers, so this target alone is not a binary-size measurement.
 `native/hermes` exposes the Rust library through a C ABI and a C++ JSI
 installer. The JS wrapper owns observable locale-list coercion, property
 access, exceptions, and ordered de-duplication. Rust owns tag validation and
-canonicalization. Install once per runtime before application scripts.
-The adapter uses public JSI APIs, with no Hermes VM changes.
+canonicalization. Install before application scripts. The adapter uses public
+JSI APIs, with no Hermes VM changes.
+
+### Standalone SDK and extension installation
+
+`//native/hermes/package:sdk` assembles SDK `0.1.0`, module
+`formatjs_intl_getcanonicallocales_hermes`. The archive contains public headers
+under `include/formatjs/`, C++ adapter source with its private wrapper include,
+extension JavaScript, and Rust static archives for `x86_64-unknown-linux-gnu`
+and `aarch64-apple-darwin`. Package-local `with_cfg` transitions select optimized
+Rust builds; packaging targets are manual so root tests do not build every
+archive implicitly. Consumers compile the adapter against their Hermes JSI
+headers and link the public `:canonical_locales` target. They need a C++
+toolchain and Hermes module, but no Rust toolchain.
+
+The SDK is not published to BCR, npm, or crates.io. Build and extract it on Linux,
+then pass its absolute directory as an explicit consumer override:
+
+```sh
+bazel build -c opt //native/hermes/package:sdk
+sdk_archive="$(bazel cquery -c opt --output=files //native/hermes/package:sdk)"
+sdk_dir="$(mktemp -d)"
+tar -xzf "$sdk_archive" -C "$sdk_dir"
+cd examples/hermes-intl
+bazel test --config=linux \
+  --override_module=formatjs_intl_getcanonicallocales_hermes="$sdk_dir" \
+  //:smoke_test
+```
+
+`examples/hermes-intl` is an independent root consuming only that archive's
+public layout. Its LLVM and `with_cfg` dependencies are dev-only. Linux CI runs
+the consumer test and cross-builds the macOS arm64 executable; macOS smoke jobs
+only execute the downloaded binary and extension bytecode. Android/iOS artifacts
+and React Native packaging are separate work.
+
+`<formatjs/hermes/canonical_locales.h>` exposes two installers. The one-argument
+overload evaluates the embedded setup source. The overload accepting a JSI
+`extensions` object uses `extensions.IntlGetCanonicalLocales`, allowing startup
+from precompiled bytecode. The standalone example compiles the SDK's complete
+`js/extensions.js` bundle with the execution platform's `hermesc` and passes its
+evaluated object to the installer.
+
+Hermes core/contrib integration uses the fragment
+`js/30-IntlGetCanonicalLocales.js` in its concatenated extension sources, links
+the adapter and target Rust archive, and adds an explicit installer call in the
+C++ extension dispatcher. The complete standalone bundle is not a concatenation
+fragment. Linking the SDK alone does not register a startup hook.
+
+Install trusted `Intl.Locale` before the final adapter installation so the
+wrapper captures its intrinsic brand method. When Locale itself needs
+`Intl.getCanonicalLocales`, bootstrap with the adapter, load Locale, then
+reinstall the adapter before application scripts. The native runner's trusted
+prelude follows this order.
+
+See `native/hermes/package/README.md` for archive layout, native linker inputs,
+and core/contrib integration; `examples/hermes-intl/README.md` documents the
+standalone build and cross-compilation commands.
 
 The pinned Hermes VM uses the native Bazel module from
 [formatjs/hermes](https://github.com/formatjs/hermes), with platform Intl disabled.
@@ -47,8 +102,8 @@ The benchmark compares complete JS and Rust-backed API calls in the same
 Hermes process, including coercion and JSI overhead. It checks results before
 timing, alternates implementation order, and reports median throughput plus
 raw samples. Timings exclude startup and do not establish Android/iOS results.
-The Rust crate is not published; React Native package and mobile artifact
-distribution are separate work.
+The Rust crate remains unpublished; desktop SDK validation does not establish
+Android/iOS behavior or performance.
 
 **ECMA-402 Section 8.3.1** — `Intl.getCanonicalLocales`
 

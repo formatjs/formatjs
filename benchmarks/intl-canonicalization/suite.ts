@@ -1,9 +1,12 @@
 import {getCanonicalLocales as polyfill} from '#packages/intl-getcanonicallocales/index.js'
+import {
+  checkObservableConformance,
+  type Canonicalizer,
+} from './observable-conformance.js'
 
 declare function print(message: string): void
 declare const FORMATJS_CANONICAL_TEST_ONLY: boolean
 
-type Canonicalizer = (input?: any) => string[]
 const rust: Canonicalizer = Intl.getCanonicalLocales
 if (typeof rust !== 'function') throw new Error('Rust JSI method missing')
 
@@ -186,16 +189,6 @@ function check(method: Canonicalizer, name: string): void {
     Array.prototype.push = originalPush
   }
   equal(result!, ['en-u-kn', 'sl-biske-rozaj'], `${name} push override`)
-  if (typeof Intl.Locale === 'function') {
-    const locale = new Intl.Locale('en-US')
-    Object.defineProperty(locale, 'toString', {
-      value() {
-        throw new Error('own toString')
-      },
-    })
-    equal(method(locale), ['en-US'], `${name} Locale singleton`)
-    equal(method([locale]), ['en-US'], `${name} Locale entry`)
-  }
 }
 
 check(rust, 'rust-jsi')
@@ -252,14 +245,34 @@ for (const language of ['en', 'sh', 'hye', 'und', 'posix', 'abcde']) {
     }
   }
 }
+const observable = FORMATJS_CANONICAL_TEST_ONLY
+  ? checkObservableConformance(rust, polyfill, equal)
+  : undefined
+let casingVariants = 0
+if (FORMATJS_CANONICAL_TEST_ONLY) {
+  for (const [input, expected] of tags) {
+    for (const variant of [input.toLowerCase(), input.toUpperCase()]) {
+      const nativeResult = outcome(rust, variant)
+      const polyfillResult = outcome(polyfill, variant)
+      equal(nativeResult, [expected], `rust-jsi casing ${variant}`)
+      equal(polyfillResult, [expected], `js-polyfill casing ${variant}`)
+      equal(nativeResult, polyfillResult, `differential casing ${variant}`)
+      casingVariants++
+    }
+  }
+}
 if (failures.length) throw new Error(failures.join('\n'))
 print(
   JSON.stringify({
     type: 'correctness',
+    candidate: 'Rust JSI installed API',
+    reference: '@formatjs/intl-getcanonicallocales TypeScript source',
     assertions,
     tags: tags.length,
     invalid: invalid.length,
     generatedTags,
+    observable,
+    casingVariants,
     knownBaselineDifferences: [
       {input: 'root', rust: 'RangeError', polyfill: ['root']},
       {

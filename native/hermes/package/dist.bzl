@@ -1,0 +1,40 @@
+"""Cross-compiled Rust archives for the standalone Hermes SDK."""
+
+load("@with_cfg.bzl", "with_cfg")
+
+_HOSTS = [
+    "linux_aarch64",
+    "linux_x86_64",
+    "macos_aarch64",
+    "macos_x86_64",
+    "windows_aarch64",
+    "windows_x86_64",
+]
+
+def _archive(platform, llvm_target):
+    return with_cfg(native.filegroup).set(
+        "compilation_mode",
+        "opt",
+    ).set(
+        "platforms",
+        [Label(platform)],
+    ).extend(
+        "extra_toolchains",
+        [Label("@llvm//toolchain:%s_to_%s" % (host, llvm_target)) for host in _HOSTS],
+    ).set(
+        Label("@llvm//config:experimental_stub_libgcc_s"),
+        True,
+    ).set(
+        Label("@llvm//config/bootstrap:experimental_stub_libgcc_s"),
+        True,
+    ).build()
+
+linux_archive, _linux_archive_internal = _archive(
+    "//native/hermes/package:linux_x86_64",
+    "linux_x86_64",
+)
+
+darwin_archive, _darwin_archive_internal = _archive(
+    "//native/hermes/package:darwin_arm64",
+    "macos_aarch64",
+)

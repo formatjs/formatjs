@@ -5,7 +5,10 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 
 rolldown_bundle(
     name = "suite_bundle",
-    srcs = ["suite.ts"],
+    srcs = [
+        "observable-conformance.ts",
+        "suite.ts",
+    ],
     entry_point = "suite.ts",
     format = "iife",
     target = "es2020",
@@ -15,6 +18,28 @@ rolldown_bundle(
         "//packages/ecma402-abstract",
         "//packages/intl-getcanonicallocales:lib",
     ],
+)
+
+rolldown_bundle(
+    name = "reference_bundle",
+    srcs = [
+        "observable-conformance.ts",
+        "reference.ts",
+    ],
+    entry_point = "reference.ts",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-getcanonicallocales:lib",
+    ],
+)
+
+js_test(
+    name = "reference_test",
+    size = "small",
+    entry_point = "reference_bundle.js",
 )
 
 js_binary(
@@ -36,6 +61,7 @@ js_test(
         "suite_bundle.js",
         "//:node_modules/@bazel/runfiles",
         "//native/hermes:hermes_runner",
+        "//tools/hermes-test262:locale_prelude.js",
     ],
     entry_point = "run.mjs",
 )

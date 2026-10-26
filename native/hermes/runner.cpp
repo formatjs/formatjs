@@ -1,4 +1,4 @@
-#include "native/hermes/canonical_locales.h"
+#include <formatjs/hermes/canonical_locales.h>
 
 #include <hermes/hermes.h>
 

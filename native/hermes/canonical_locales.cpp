@@ -1,16 +1,17 @@
-#include "native/hermes/canonical_locales.h"
+#include <formatjs/hermes/canonical_locales.h>
 
-#include "crates/intl_getcanonicallocales/canonicalize.h"
+#include <formatjs/intl/canonicalize.h>
 
 #include <memory>
 #include <string>
+#include <utility>
 
 namespace formatjs {
 namespace jsi = facebook::jsi;
 namespace {
 
 constexpr char wrapperSource[] =
-#include "native/hermes/get_canonical_locales.inc"
+#include "get_canonical_locales.inc"
     ;
 
 // Rust owns the UTF-8 output until JSI copies it; also release on exceptions.
@@ -21,7 +22,7 @@ struct LocaleResult {
 
 } // namespace
 
-void installCanonicalLocales(jsi::Runtime &runtime) {
+void installCanonicalLocales(jsi::Runtime &runtime, jsi::Object &extensions) {
   // Install after trusted Intl.Locale setup, before application code. Public JSI
   // cannot read arbitrary internal slots; capture Intl.Locale.prototype.toString
   // for the brand/tag checks in CanonicalizeLocaleList 3 and 7.c.iii–iii.1.
@@ -53,13 +54,21 @@ void installCanonicalLocales(jsi::Runtime &runtime) {
         return jsi::String::createFromUtf8(runtime, result.value.data,
                                           result.value.len);
       });
+  auto factory =
+      extensions.getPropertyAsFunction(runtime, "IntlGetCanonicalLocales");
+  factory.call(runtime, canonicalize);
+}
+
+void installCanonicalLocales(jsi::Runtime &runtime) {
   auto factory = runtime
                      .evaluateJavaScript(
                          std::make_shared<jsi::StringBuffer>(wrapperSource),
                          "formatjs:getCanonicalLocales")
                      .asObject(runtime)
                      .asFunction(runtime);
-  factory.call(runtime, canonicalize);
+  jsi::Object extensions(runtime);
+  extensions.setProperty(runtime, "IntlGetCanonicalLocales", std::move(factory));
+  installCanonicalLocales(runtime, extensions);
 }
 
 } // namespace formatjs

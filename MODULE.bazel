@@ -18,6 +18,9 @@ archive_override(
 )
 
 bazel_dep(name = "rules_shell", version = "0.8.0")
+
+bazel_dep(name = "rules_pkg", version = "1.3.0", dev_dependency = True)
+
 bazel_dep(name = "windows_support", version = "0.2.0")
 
 cc_configure = use_extension("@rules_cc//cc:extensions.bzl", "cc_configure_extension")
