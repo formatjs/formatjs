@@ -16,5 +16,11 @@ bazel test -c opt //crates/intl_segmenter:intl_segmenter_test \
 ```
 
 Conformance ports the Unicode 17 grapheme corpus and compares TS records and
-`containing` results. Broader word/sentence comparisons audit ICU/TS locale
-profiles. Native ABI, Hermes iteration/coercion and SDK packaging are in progress.
+`containing` results. Word/sentence comparisons assert both implementations against explicit ICU/TS
+profiles: dictionary words, abbreviation suppressions, Format/Close/Sp rules,
+and mark-only word flags. No cases are skipped. Unicode letters/numbers supplement
+ICU word status for Indic text; isolated marks remain non-word-like.
+
+The owned C ABI exposes immutable segment handles and independent cursors. Handles
+retain original UTF-16 units after parents are destroyed. Hermes iteration/coercion
+and SDK packaging are in progress.

@@ -5,6 +5,7 @@ import {spawnSync} from 'node:child_process'
 import {readFileSync} from 'node:fs'
 import {isDeepStrictEqual} from 'node:util'
 import {expect, it} from 'vitest'
+import {profiles} from './profiles.js'
 
 type Granularity = 'grapheme' | 'word' | 'sentence'
 interface Part {
@@ -164,6 +165,7 @@ it('compares all granularities, locale tailoring, word flags and containing resu
       inputs: inputs.map(units),
     }))
   )
+  const usedProfiles = new Set<number>()
   const mismatches: {
     locale: string
     granularity: Granularity
@@ -184,7 +186,46 @@ it('compares all granularities, locale tailoring, word flags and containing resu
         ),
       }
       const actual = results[index].values[j]
-      if (!isDeepStrictEqual(actual, expected)) {
+      const profileIndex = profiles.findIndex(
+        profile =>
+          (profile.locales as readonly string[]).includes(locale) &&
+          profile.granularity === granularity &&
+          profile.input === inputs[j]
+      )
+      if (profileIndex !== -1) {
+        usedProfiles.add(profileIndex)
+        const profile = profiles[profileIndex]
+        function expanded(
+          parts: readonly (readonly [readonly number[], ...boolean[]])[]
+        ) {
+          let index = 0
+          const records: WirePart[] = parts.map(([segment, word]) => {
+            const part: WirePart = {segment: [...segment], index}
+            if (word !== undefined) part.isWordLike = word
+            index += segment.length
+            return part
+          })
+          expect(index).toBe(inputs[j].length)
+          return {
+            records,
+            containing: Array.from(
+              {length: index + 1},
+              (_, position) =>
+                records.find(
+                  part =>
+                    position >= part.index &&
+                    position < part.index + part.segment.length
+                ) || null
+            ),
+          }
+        }
+        expect(actual, `${locale}/${granularity}/${j}/ICU`).toEqual(
+          expanded(profile.rust)
+        )
+        expect(expected, `${locale}/${granularity}/${j}/TS`).toEqual(
+          expanded(profile.typescript)
+        )
+      } else if (!isDeepStrictEqual(actual, expected)) {
         const recordsDiffer = !isDeepStrictEqual(
           actual.records,
           expected.records
@@ -207,4 +248,5 @@ it('compares all granularities, locale tailoring, word flags and containing resu
     }
   }
   expect(mismatches).toEqual([])
+  expect(usedProfiles.size).toBe(profiles.length)
 }, 120_000)

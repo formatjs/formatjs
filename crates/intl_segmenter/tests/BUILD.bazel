@@ -1,9 +1,13 @@
+# gazelle:ignore
 load("//tools:test.bzl", "formatjs_test")
 
 formatjs_test(
     name = "conformance_test",
     size = "medium",
-    srcs = ["conformance.test.ts"],
+    srcs = [
+        "conformance.test.ts",
+        "profiles.ts",
+    ],
     data = [
         "//crates/intl_segmenter:conformance",
         "@GraphemeBreakTest//file",

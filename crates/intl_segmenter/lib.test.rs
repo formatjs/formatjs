@@ -159,3 +159,29 @@ fn locale_matching_uses_canonical_tags_and_en_default() {
         Err(Error::InvalidLocale)
     ));
 }
+
+#[test]
+fn indic_letters_are_words_but_isolated_marks_and_emoji_are_not() {
+    let segmenter = Segmenter::new(
+        &["en".into()],
+        &Options {
+            granularity: Granularity::Word,
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    for (text, flags) in [
+        ("नमस्ते दुनिया।", vec![true, false, true, false]),
+        ("\u{0308}", vec![false]),
+        ("❤️", vec![false]),
+    ] {
+        let segments = segmenter.segment(text.encode_utf16().collect());
+        assert_eq!(
+            segments
+                .iter()
+                .map(|part| part.is_word_like.unwrap())
+                .collect::<Vec<_>>(),
+            flags
+        );
+    }
+}

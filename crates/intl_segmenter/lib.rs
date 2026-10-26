@@ -2,6 +2,10 @@
 //! host adapters supply observable coercion, brands and ordinary JS objects.
 
 use icu_locale_core::LanguageIdentifier;
+use icu_properties::{
+    CodePointMapData,
+    props::{GeneralCategory, GeneralCategoryGroup},
+};
 use icu_segmenter::{
     GraphemeClusterSegmenter, SentenceSegmenter, WordSegmenter,
     options::{SentenceBreakOptions, WordBreakOptions},
@@ -10,6 +14,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::{Arc, OnceLock};
 
 mod data_generated;
+pub mod ffi;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Error {
@@ -166,7 +171,21 @@ impl Segmenter {
                     boundaries.push(Boundary {
                         start,
                         end,
-                        word_like: Some(iterator.is_word_like()),
+                        // ICU rule status can classify Indic ALetter sequences as None.
+                        // Preserve ICU statuses, then recognize Unicode letters/numbers;
+                        // isolated marks and variation selectors remain non-word-like.
+                        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L372
+                        word_like: Some(
+                            iterator.is_word_like()
+                                || char::decode_utf16(input[start..end].iter().copied())
+                                    .filter_map(Result::ok)
+                                    .any(|ch| {
+                                        let category =
+                                            CodePointMapData::<GeneralCategory>::new().get(ch);
+                                        GeneralCategoryGroup::Letter.contains(category)
+                                            || GeneralCategoryGroup::Number.contains(category)
+                                    }),
+                        ),
                     });
                     start = end;
                 }
