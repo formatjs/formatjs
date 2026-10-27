@@ -111,7 +111,7 @@ The SDK embeds locale records in its Rust archive, like `formatjs_intl`'s
 compiled-data configuration. Installing a formatter makes those locales available;
 application JS and C++ do not register locale JSON.
 
-Default locales follow [Chromium desktop's ICU language filter](https://chromium.googlesource.com/chromium/deps/icu/+/2a51536dfb3b448bdf3dae70c782ea2879c90904/filters/common.json),
+Default locales follow [Chromium desktop's full-data UI language filter](https://chromium.googlesource.com/chromium/deps/icu/+/2a51536dfb3b448bdf3dae70c782ea2879c90904/filters/common.json),
 including regional and script variants available in this checkout. This selects locale
 coverage; it does not copy Chrome's per-resource trimming or promise identical ICU results.
 Use `--//crates/intl_data:locales=\*` for every CLDR locale. Select a custom set:

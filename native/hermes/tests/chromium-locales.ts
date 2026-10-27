@@ -36,7 +36,7 @@ for (const [kind, name] of Object.entries({
   ]
   equal(api[name].supportedLocalesOf(included), included)
   if (kind !== 'durationformat')
-    equal(api[name].supportedLocalesOf(['aa', 'agq']), [])
+    equal(api[name].supportedLocalesOf(['aa', 'agq', 'ak', 'az']), [])
   kinds.push(kind)
 }
 if (api.NumberFormat?.polyfilled) {
