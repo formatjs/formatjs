@@ -215,6 +215,17 @@ comparison. ICU4X supplies normalization/casing. JS preserves constructor/protot
 access, option order, private brands, ToString order and cached non-constructor
 bound functions. Source/bytecode tests compare 6,720 cases per mode with TS.
 
+## Native bridge
+
+Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
+callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
+branded handles, owned buffers, and factory installation.
+
+C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
+pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
+C names. The SDK ships generated headers and the shared bridge; SDK consumers
+need neither Rust nor cbindgen to build the JSI adapters.
+
 ## Existing package conformance
 
 Each `//native/hermes/tests:<polyfill>_package_conformance_test` reuses package API

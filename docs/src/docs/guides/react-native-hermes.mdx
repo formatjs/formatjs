@@ -397,6 +397,6 @@ preserves lone UTF-16 units. See the [Collator port](/docs/polyfills/intl-collat
 for its comparison profile and tests.
 
 Collator requires the Hermes proxy-construction fix in overlay commit
-`338ff13ff1e996934ae615952d174f8c621844d9` (proposed `.bcr.1` revision).
+`338ff13ff1e996934ae615952d174f8c621844d9` (pending BCR version `260318099.0.0-393a539e6`).
 Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
 perform extra observable `newTarget.prototype` reads during construction.
