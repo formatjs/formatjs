@@ -198,4 +198,6 @@ package_formatter_conformance("supportedvaluesof")
 
 package_formatter_conformance("locale")
 
+package_formatter_conformance("pluralrules")
+
 package_formatter_conformance("getcanonicallocales")
