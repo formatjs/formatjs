@@ -218,10 +218,8 @@ bound functions. Source/bytecode tests compare 6,720 cases per mode with TS.
 ## RelativeTimeFormat
 
 Link `//native/hermes:relativetimeformat` and install canonicalization before
-`formatjs::installRelativeTimeFormat(runtime)`. The registry starts empty; load
-selected `//crates/intl_relativetimeformat:locale_data` JSON strings with
-`Intl.RelativeTimeFormat.__addLocaleData(jsonText)`. Packs own relative, number
-and plural data; no JS NumberFormat/PluralRules or host ICU is needed.
+`formatjs::installRelativeTimeFormat(runtime)`. Compiled records own relative,
+number and plural data; no JS NumberFormat/PluralRules or host ICU is needed.
 
 All units, styles, numeric modes, numbering systems and parts use Rust records.
 The facade preserves brands, ToNumber/ToString order, negative zero and UTF-16

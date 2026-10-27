@@ -51,3 +51,13 @@ adapter sources, factories, typed smoke example and locale packs.
 Actual Hermes source and optimized-bytecode tests cover 25,792 cases per mode,
 including coercion order, method brands, getter-time replacement, part property
 order and operation without global NumberFormat/PluralRules constructors.
+
+## Compiled provider
+
+`:with_compiled_data` embeds build-selected binary locale records.
+`Registry::with_compiled_data()` makes those locales available without JSON
+registration. Select locales with `--//crates/intl_data:locales=en,fr`; the default is all locales.
+Rust validates packs and compiles plural rules during the build. Records decode
+lazily into per-registry caches; mutable data never crosses registry boundaries.
+The original target and `Registry::default()` retain explicit registration for
+custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).

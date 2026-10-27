@@ -5,21 +5,17 @@ interface RustRelativeConstructor {
     options?: Intl.RelativeTimeFormatOptions & {numberingSystem?: string}
   ): Intl.RelativeTimeFormat
   supportedLocalesOf(locales: string[]): string[]
-  __addLocaleData(...packs: string[]): void
 }
 const RelativeTimeFormat =
   Intl.RelativeTimeFormat as unknown as RustRelativeConstructor
 const root = globalThis as unknown as {
-  __SDK_RELATIVE_EN: string
-  __SDK_RELATIVE_FR: string
   __SDK_RELATIVE_PASSED?: boolean
 }
 function equal(actual: unknown, expected: unknown): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(RelativeTimeFormat.supportedLocalesOf(['en', 'fr']), [])
-RelativeTimeFormat.__addLocaleData(root.__SDK_RELATIVE_EN)
+equal(RelativeTimeFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 const old = new RelativeTimeFormat('en')
 equal(old.format(-0, 'day'), '0 days ago')
 equal(
@@ -40,7 +36,6 @@ try {
   caught = error instanceof TypeError
 }
 if (!caught) throw new Error('BigInt must throw')
-RelativeTimeFormat.__addLocaleData(root.__SDK_RELATIVE_FR)
 equal(RelativeTimeFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 equal(old.format(1, 'day'), 'in 1 day')
 equal(new RelativeTimeFormat('fr').format(2, 'day'), 'dans 2 jours')

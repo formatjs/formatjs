@@ -44,6 +44,7 @@ COMPILED_DEPS = [
     "//crates/intl_locale",
     "//crates/intl_numberformat:with_compiled_data",
     "//crates/intl_pluralrules:with_compiled_data",
+    "//crates/intl_relativetimeformat:with_compiled_data",
     "//crates/intl_segmenter",
     "//crates/intl_supportedvaluesof",
 ]

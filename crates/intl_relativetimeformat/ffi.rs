@@ -63,7 +63,7 @@ pub unsafe extern "C" fn formatjs_relative_registry_create(out: *mut *mut Relati
     guarded(|| {
         unsafe {
             out.write(Box::into_raw(Box::new(RelativeRegistry(
-                Registry::default(),
+                Registry::initial(),
             ))));
         }
         Ok(())

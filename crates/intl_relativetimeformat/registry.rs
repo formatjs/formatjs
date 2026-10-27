@@ -1,4 +1,7 @@
 use crate::{Error, LocaleData, Options, RelativeTimeFormat, Resolution, choice};
+#[cfg(feature = "compiled_data")]
+use formatjs_intl_data::Compiled;
+use formatjs_intl_data::Data;
 use formatjs_intl_locale::{Locale, LocaleOptions, matcher};
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -6,12 +9,23 @@ use std::{
 };
 #[derive(Default)]
 pub struct Registry {
-    data: BTreeMap<String, Arc<LocaleData>>,
+    data: BTreeMap<String, Data<LocaleData>>,
     explicit: BTreeSet<String>,
     available: Vec<String>,
     default: Option<String>,
 }
 impl Registry {
+    pub(crate) fn initial() -> Self {
+        #[cfg(feature = "compiled_data")]
+        {
+            Self::with_compiled_data()
+        }
+        #[cfg(not(feature = "compiled_data"))]
+        {
+            Self::default()
+        }
+    }
+
     pub fn resolve(&self, requested: &[String], options: &Options) -> Result<Resolution, Error> {
         let requested = formatjs_intl_getcanonicallocales::get_canonical_locales(requested)
             .map_err(|_| Error::InvalidLocale)?;
@@ -105,7 +119,7 @@ impl Registry {
         // using the already resolved data locale instead of retaining an early snapshot.
         RelativeTimeFormat::new(self.get(&resolution.data_locale)?, resolution, options)
     }
-    fn insert(&mut self, tag: String, data: Arc<LocaleData>, replace: bool) {
+    fn insert(&mut self, tag: String, data: Data<LocaleData>, replace: bool) {
         if !self.data.contains_key(&tag) {
             self.available.push(tag.clone());
         }
@@ -115,11 +129,39 @@ impl Registry {
     }
 
     pub fn add_locale_data(&mut self, json: &str) -> Result<(), Error> {
-        let data = Arc::new(LocaleData::from_json(json)?);
-        let locale = data.locale.clone();
-        let tags: Vec<_> = std::iter::once(locale.clone())
-            .chain(data.aliases.iter().cloned())
-            .collect();
+        self.add_data(LocaleData::from_json(json)?)
+    }
+
+    pub fn add_data(&mut self, data: LocaleData) -> Result<(), Error> {
+        let locale = data.locale().to_owned();
+        let aliases = data.aliases.clone();
+        self.register(locale, aliases, Data::Owned(Arc::new(data)));
+        Ok(())
+    }
+
+    #[cfg(feature = "compiled_data")]
+    pub fn with_compiled_data() -> Self {
+        let mut registry = Self::default();
+        crate::compiled_data::initialize(&mut registry);
+        registry
+    }
+
+    #[cfg(feature = "compiled_data")]
+    pub(crate) fn add_compiled(
+        &mut self,
+        locale: &str,
+        aliases: &[&str],
+        data: &'static Compiled<LocaleData>,
+    ) {
+        self.register(
+            locale.into(),
+            aliases.iter().map(|tag| (*tag).into()).collect(),
+            Data::compiled(data),
+        );
+    }
+
+    fn register(&mut self, locale: String, aliases: Vec<String>, data: Data<LocaleData>) {
+        let tags: Vec<_> = std::iter::once(locale.clone()).chain(aliases).collect();
         self.explicit.insert(locale.clone());
         for tag in &tags {
             self.insert(
@@ -148,7 +190,6 @@ impl Registry {
         if self.default.is_none() {
             self.default = Some(locale);
         }
-        Ok(())
     }
 
     pub fn supported_locales(&self, requested: &[String]) -> Vec<String> {
@@ -161,6 +202,10 @@ impl Registry {
         self.default.as_deref()
     }
     pub fn get(&self, locale: &str) -> Result<Arc<LocaleData>, Error> {
-        self.data.get(locale).cloned().ok_or(Error::MissingLocale)
+        self.data
+            .get(locale)
+            .ok_or(Error::MissingLocale)?
+            .get()
+            .map_err(Error::InvalidData)
     }
 }

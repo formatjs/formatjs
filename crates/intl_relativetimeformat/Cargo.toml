@@ -11,7 +11,11 @@ publish = false
 [lib]
 path = "lib.rs"
 
+[features]
+compiled_data = []
+
 [dependencies]
+formatjs_intl_data = { path = "../intl_data" }
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
 formatjs_intl_locale = { path = "../intl_locale" }
 formatjs_intl_numberformat = { path = "../intl_numberformat" }

@@ -832,6 +832,7 @@ dependencies = [
 name = "formatjs_intl_relativetimeformat"
 version = "0.1.0"
 dependencies = [
+ "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
  "formatjs_intl_numberformat",

@@ -483,6 +483,7 @@ js_test(
         "listformat",
         "displaynames",
         "numberformat",
+        "relativetimeformat",
     ],
     data = [
         ":compiled_locales_suite.js",

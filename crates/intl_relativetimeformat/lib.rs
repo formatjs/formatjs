@@ -206,3 +206,8 @@ impl std::fmt::Display for Error {
     }
 }
 impl std::error::Error for Error {}
+
+#[cfg(feature = "compiled_data")]
+mod compiled_data {
+    include!(env!("FORMATJS_COMPILED_LOCALES"));
+}

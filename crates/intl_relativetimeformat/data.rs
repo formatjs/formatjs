@@ -29,8 +29,8 @@ struct Pack {
     #[serde(default)]
     aliases: Vec<String>,
     data: Fields,
-    number: serde_json::Value,
-    plurals: serde_json::Value,
+    number: formatjs_intl_numberformat::LocaleData,
+    plurals: formatjs_intl_pluralrules::LocaleRules,
 }
 pub struct LocaleData {
     pub(crate) locale: String,
@@ -44,6 +44,10 @@ impl LocaleData {
     pub fn from_json(json: &str) -> Result<Self, Error> {
         let pack: Pack =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
+        Self::from_pack(pack)
+    }
+
+    fn from_pack(pack: Pack) -> Result<Self, Error> {
         if pack.format_version != 1
             || pack.data.nu.is_empty()
             || UNITS
@@ -73,11 +77,11 @@ impl LocaleData {
             .collect::<Result<_, _>>()?;
         let mut numbers = NumberRegistry::default();
         numbers
-            .add_locale_data(&pack.number.to_string())
+            .add_data(pack.number)
             .map_err(|error| Error::InvalidData(error.to_string()))?;
         let mut plurals = PluralRegistry::default();
         plurals
-            .add_locale_data(&pack.plurals.to_string())
+            .add_data(pack.plurals)
             .map_err(|error| Error::InvalidData(error.to_string()))?;
         Ok(Self {
             locale,
@@ -90,5 +94,12 @@ impl LocaleData {
     }
     pub fn locale(&self) -> &str {
         &self.locale
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for LocaleData {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let pack = Pack::deserialize(deserializer)?;
+        Self::from_pack(pack).map_err(serde::de::Error::custom)
     }
 }
