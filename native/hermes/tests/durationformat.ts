@@ -5,6 +5,9 @@ import ListFormat from '@formatjs/intl-listformat'
 import {DurationFormat as Reference} from '@formatjs/intl-durationformat'
 import type {DurationFormatOptions} from '@formatjs/intl-durationformat'
 const Native = (Intl as any).DurationFormat
+const HostNumberFormat = Intl.NumberFormat as typeof Intl.NumberFormat & {
+  __addLocaleData?: (...packs: string[]) => void
+}
 const fixtures = (globalThis as any).__DURATION_FIXTURES as {
   locales: string[]
   numbers: string[]
@@ -139,6 +142,7 @@ for (let index = 0; index < fixtures.locales.length; index++) {
     fixtures.plurals[index]
   )
   NumberFormat.__addLocaleData(JSON.parse(fixtures.numbers[index]))
+  HostNumberFormat?.__addLocaleData?.(fixtures.numbers[index])
   ListFormat.__addLocaleData(fixtures.rawLists[index])
   Native.__addNumberFormatData(fixtures.numbers[index])
   Native.__addListFormatData(fixtures.lists[index])
