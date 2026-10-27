@@ -5,6 +5,9 @@ function main() {
   const resolve = (path: string) =>
     runfiles.resolve(`${process.env.TEST_WORKSPACE || '_main'}/${path}`)
   const kinds = process.argv.slice(2)
+  const suite = kinds[0]?.startsWith('--suite=')
+    ? kinds.shift()!.slice('--suite='.length)
+    : 'compiled_locales_suite.js'
   for (const mode of ['source', 'bytecode']) {
     const args =
       mode === 'source'
@@ -12,7 +15,7 @@ function main() {
         : [`--extensions=${resolve('native/hermes/extensions.hbc')}`]
     const result = spawnSync(
       resolve('native/hermes/hermes_runner'),
-      [...args, resolve('native/hermes/tests/compiled_locales_suite.js')],
+      [...args, resolve(`native/hermes/tests/${suite}`)],
       {encoding: 'utf8', timeout: 60_000}
     )
     if (result.error) throw result.error

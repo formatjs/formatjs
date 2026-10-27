@@ -8,7 +8,9 @@ Locale data comes from the Rust archive. The consumer injects no locale JSON;
 English/French formatting works immediately after installation. Existing smoke
 assertions cover exact numeric inputs, receiver checks and localized results.
 
-All locales are included by default. Select a smaller archive with
+Default locales follow Chromium desktop's ICU language filter, including regional
+and script variants. Use `--//crates/intl_data:locales=\*` for every CLDR locale.
+Select a custom archive with
 `--//crates/intl_data:locales=en,fr` when building the SDK; rebuild to add locales.
 
 The SDK is built and tested here but is not published. From the FormatJS root

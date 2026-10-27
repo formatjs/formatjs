@@ -6,7 +6,7 @@ load("//tools:index.bzl", "ts_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
-load(":compiled-runtime.bzl", "compiled_runtime")
+load(":compiled-runtime.bzl", "chromium_runtime", "compiled_runtime")
 load(":package-tests.bzl", "package_formatter_conformance")
 load(":runtime.bzl", "optimized_runtime")
 
@@ -233,6 +233,7 @@ js_test(
 ts_project(
     name = "compiled_locales_typecheck",
     srcs = [
+        "chromium-locales.ts",
         "compiled-locales.ts",
         "run-compiled-locales.ts",
     ],
@@ -243,4 +244,34 @@ ts_project(
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@types/node",
     ],
+)
+
+chromium_runtime(
+    name = "chromium_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+)
+
+rolldown_bundle(
+    name = "chromium_locales_suite",
+    srcs = ["chromium-locales.ts"],
+    entry_point = "chromium-locales.ts",
+    format = "iife",
+    target = "es2020",
+)
+
+js_test(
+    name = "chromium_locales_test",
+    size = "medium",
+    args = [
+        "--suite=chromium_locales_suite.js",
+        "pluralrules",
+    ],
+    data = [
+        ":chromium_locales_suite.js",
+        ":chromium_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:extension_bundle_bytecode",
+    ],
+    entry_point = "run-compiled-locales.ts",
+    node_options = ["--experimental-transform-types"],
 )

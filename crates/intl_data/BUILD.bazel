@@ -1,10 +1,11 @@
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load(":chromium_locales.bzl", "CHROMIUM_LOCALES")
 load(":defs.bzl", "compiled_data", "locales")
 
 locales(
     name = "locales",
-    build_setting_default = ["*"],
+    build_setting_default = CHROMIUM_LOCALES,
     visibility = ["//visibility:public"],
 )
 
