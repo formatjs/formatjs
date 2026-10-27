@@ -386,23 +386,10 @@ For precompiled startup, evaluate the SDK extension bytecode and call
 `formatjs::installDurationFormat(*runtime, extensions)`. The standalone factory is
 `js/41-IntlDurationFormat.js`. DurationFormat needs no installation guard.
 
-Duration locale/time-separator metadata is static. Register selected existing
-number/list JSON texts as independent native dependencies:
+Duration metadata remains static. Its private number/list registries use the same
+build-selected compiled data. Neither dependency needs JS installation or JSON
+registration. Explicit overrides retain the original instance and cache semantics.
 
-| SDK path                                 | Registration                                      |
-| ---------------------------------------- | ------------------------------------------------- |
-| `locale-data/numberformat/<locale>.json` | `Intl.DurationFormat.__addNumberFormatData(text)` |
-| `locale-data/listformat/<locale>.json`   | `Intl.DurationFormat.__addListFormatData(text)`   |
-
-Use individual exported file labels to ship selected packs. Existing
-`:numberformat_data` and `:listformat_data` filegroups expose all packs; Duration
-adds no locale files. Its available locales stay static before dependency data
-arrives. Number/list registries negotiate independently and may fall back to
-loaded locales. Constructing before registration is supported; rendering needs
-both dependencies. Cached option profiles retain their data after pack replacement.
-Custom number unit sidecars use `__addNumberFormatUnitData` with `{locale,data}` JSON.
-
-Rust owns exact subsecond folding, sign/padding, unit parts and list composition.
 No public JS NumberFormat, ListFormat or PluralRules installation is needed. Install
 Temporal before DurationFormat to accept ISO strings and intrinsic duration brands;
 without Temporal, records work and strings throw RangeError. `format` and
@@ -410,7 +397,7 @@ without Temporal, records work and strings throw RangeError. `format` and
 
 `examples/durationformat-smoke.ts` ships as `js/durationformat-smoke.js`. The
 independent consumer runs source and bytecode installers with selected English/French
-number/list packs. It checks late registration, negative leading zero, exact Number
+number/list data. It checks negative leading zero, exact Number
 integers, fractional truncation, parts, Arabic digits, Finnish separators with
 fallback dependency data, brands/coercion and formatting without public JS formatters.
 C ABI callers use `include/formatjs/intl/durationformat.h`; adapter sources are

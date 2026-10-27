@@ -122,6 +122,21 @@ pub struct Renderer {
     list_cache: HashMap<(String, Width), list::ListFormat>,
 }
 impl Renderer {
+    pub(crate) fn initial() -> Self {
+        #[cfg(feature = "compiled_data")]
+        {
+            Self {
+                numbers: number::registry::Registry::with_compiled_data(),
+                lists: list::registry::Registry::with_compiled_data(),
+                ..Self::default()
+            }
+        }
+        #[cfg(not(feature = "compiled_data"))]
+        {
+            Self::default()
+        }
+    }
+
     pub(crate) fn supported_numbering_systems(&mut self, candidates: &[String]) -> &[String] {
         if self.supported_systems.is_empty() {
             self.supported_systems = candidates

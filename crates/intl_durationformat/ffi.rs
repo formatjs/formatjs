@@ -128,7 +128,7 @@ pub unsafe extern "C" fn formatjs_duration_registry_create(out: *mut *mut Durati
     guarded(|| {
         unsafe {
             out.write(Box::into_raw(Box::new(DurationRegistry(Arc::new(
-                Mutex::new(Renderer::default()),
+                Mutex::new(Renderer::initial()),
             )))));
         }
         Ok(())

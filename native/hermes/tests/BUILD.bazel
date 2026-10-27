@@ -604,6 +604,7 @@ js_test(
         "numberformat",
         "relativetimeformat",
         "datetimeformat",
+        "durationformat",
     ],
     data = [
         ":compiled_locales_suite.js",

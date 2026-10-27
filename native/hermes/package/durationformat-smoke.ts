@@ -40,17 +40,11 @@ interface DurationConstructor {
     options?: DurationOptions
   ): DurationFormatter
   supportedLocalesOf(locales: string[]): string[]
-  __addNumberFormatData(...packs: string[]): void
-  __addListFormatData(...packs: string[]): void
 }
 const DurationFormat = (
   Intl as unknown as {DurationFormat: DurationConstructor}
 ).DurationFormat
 const root = globalThis as unknown as {
-  __SDK_NUMBER_EN: string
-  __SDK_NUMBER_FR: string
-  __SDK_LIST_EN: string
-  __SDK_LIST_FR: string
   __SDK_DURATION_PASSED?: boolean
 }
 function equal(actual: unknown, expected: unknown): void {
@@ -68,8 +62,6 @@ const old = new DurationFormat('en', {
   secondsDisplay: 'auto',
 })
 equal(old.resolvedOptions().numberingSystem, 'latn')
-DurationFormat.__addNumberFormatData(root.__SDK_NUMBER_EN)
-DurationFormat.__addListFormatData(root.__SDK_LIST_EN)
 equal(old.format({seconds: 1, milliseconds: 473}), '0:00:01.473')
 equal(old.format({hours: 1, seconds: 2}), '1:00:02')
 equal(
@@ -90,7 +82,6 @@ equal(old.formatToParts({seconds: -1, milliseconds: -473}), [
   {type: 'fraction', value: '473', unit: 'second'},
 ])
 equal(old.format({microseconds: 1e18 + 100}), '0:00:1000000000000.000128')
-// Duration metadata is static; dependency registries fall back independently.
 equal(
   new DurationFormat('fi', {style: 'digital'}).format({
     hours: 1,
@@ -99,8 +90,6 @@ equal(
   }),
   '1.02.03'
 )
-DurationFormat.__addNumberFormatData(root.__SDK_NUMBER_FR)
-DurationFormat.__addListFormatData(root.__SDK_LIST_FR)
 equal(
   new DurationFormat('fr', {style: 'digital'}).format({
     seconds: 1,

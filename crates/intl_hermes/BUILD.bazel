@@ -44,6 +44,7 @@ COMPILED_DEPS = [
     "//crates/intl_datetimeformat:with_compiled_data",
     "//crates/intl_datetimeformat_calendars:with_compiled_data",
     "//crates/intl_displaynames:with_compiled_data",
+    "//crates/intl_durationformat:with_compiled_data",
     "//crates/intl_getcanonicallocales",
     "//crates/intl_listformat:with_compiled_data",
     "//crates/intl_locale",

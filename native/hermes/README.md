@@ -271,14 +271,9 @@ Link `//native/hermes:durationformat`, install canonicalization, then call
 uses its `IntlDurationFormat` factory. This context contains native Rust data and
 needs no installation guard.
 
-Duration locale metadata stays statically compiled. Load selected native
-NumberFormat and ListFormat JSON strings through
-`Intl.DurationFormat.__addNumberFormatData` and `__addListFormatData`; number unit
-sidecars use `__addNumberFormatUnitData` with `{locale,data}` JSON. The packs come
-from the existing `//crates/intl_numberformat:locale_data` and
-`//crates/intl_listformat:locale_data` targets. Their registries negotiate locales
-independently. Data can load after construction; cached formatting profiles retain
-their data after replacement. Rendering calls no public JS NumberFormat/ListFormat.
+Duration locale metadata stays static. Its private NumberFormat and ListFormat
+registries use the build-selected compiled provider. Rendering calls no public JS
+formatters. Explicit custom-provider registration and unit overrides remain available.
 
 JS preserves constructor/record getter order, primitive coercion and private brands.
 Rust resolves locale before style getters, validates each style before its display,

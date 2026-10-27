@@ -9,6 +9,12 @@ repository = "https://github.com/formatjs/formatjs"
 publish = false
 [lib]
 path = "lib.rs"
+[features]
+compiled_data = [
+  "formatjs_intl_numberformat/compiled_data",
+  "formatjs_intl_listformat/compiled_data",
+]
+
 [dependencies]
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
 formatjs_intl_locale = { path = "../intl_locale" }

@@ -5,6 +5,7 @@
 # gazelle:resolve rs formatjs_intl_relativetimeformat //crates/intl_relativetimeformat
 # gazelle:resolve rs formatjs_intl_datetimeformat //crates/intl_datetimeformat
 # gazelle:resolve rs formatjs_intl_datetimeformat_calendars //crates/intl_datetimeformat_calendars
+# gazelle:resolve rs formatjs_intl_durationformat //crates/intl_durationformat
 load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
