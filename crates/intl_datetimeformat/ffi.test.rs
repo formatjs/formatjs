@@ -440,3 +440,59 @@ fn abi_supported_locales_reads_only_its_matcher_option() {
         assert_eq!(bytes.len, 0);
     }
 }
+
+#[test]
+fn host_records_validate_installation_and_kind_then_release_construction() {
+    unsafe {
+        let registry = Registry::new();
+        let construction = Construction::begin(&registry);
+        let raw = construction.0;
+        std::mem::forget(construction);
+        let mut records = ptr::null_mut();
+        let mut other = ptr::null_mut();
+        assert_eq!(formatjs_datetime_records_create(&mut records), 0);
+        assert_eq!(formatjs_datetime_records_create(&mut other), 0);
+        let mut ticket = ptr::null_mut();
+        assert_eq!(
+            formatjs_datetime_records_construction(records, raw, &mut ticket),
+            0
+        );
+        let mut found = ptr::null_mut();
+        assert_eq!(
+            formatjs_datetime_records_get_construction(records, ticket, &mut found),
+            0
+        );
+        assert_eq!(found, raw);
+        assert_eq!(
+            formatjs_datetime_records_get_construction(other, ticket, &mut found),
+            2
+        );
+        assert!(found.is_null());
+        let mut formatter = ptr::null_mut();
+        assert_eq!(
+            formatjs_datetime_records_get_formatter(records, ticket, &mut formatter),
+            2
+        );
+        assert!(formatter.is_null());
+        assert_eq!(
+            formatjs_datetime_records_release_construction(records, ticket),
+            0
+        );
+        assert_eq!(
+            formatjs_datetime_records_release_construction(records, ticket),
+            0
+        );
+        assert_eq!(
+            formatjs_datetime_records_get_construction(records, ticket, &mut found),
+            0
+        );
+        assert!(found.is_null());
+        let ticket = Box::from_raw(ticket);
+        std::thread::spawn(move || formatjs_datetime_ticket_destroy(Box::into_raw(ticket)))
+            .join()
+            .unwrap();
+        assert_eq!(formatjs_datetime_records_drain(records), 0);
+        formatjs_datetime_records_destroy(records);
+        formatjs_datetime_records_destroy(other);
+    }
+}

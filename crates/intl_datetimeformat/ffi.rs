@@ -68,7 +68,7 @@ pub type CalendarCall = unsafe extern "C" fn(*mut c_void, i64, *mut DateTimeBorr
 pub type CalendarRelease = unsafe extern "C" fn(*mut c_void);
 struct CallbackContext {
     context: *mut c_void,
-    release: Option<CalendarRelease>,
+    release: Option<unsafe extern "C" fn(*mut c_void)>,
 }
 impl Drop for CallbackContext {
     fn drop(&mut self) {
@@ -278,8 +278,8 @@ pub unsafe extern "C" fn formatjs_datetime_registry_calendar(
     name: *const u8,
     len: usize,
     context: *mut c_void,
-    call: Option<CalendarCall>,
-    release: Option<CalendarRelease>,
+    call: Option<unsafe extern "C" fn(*mut c_void, i64, *mut DateTimeBorrowed) -> i32>,
+    release: Option<unsafe extern "C" fn(*mut c_void)>,
 ) -> i32 {
     let context = CallbackContext { context, release };
     if registry.is_null() || call.is_none() {
@@ -567,4 +567,194 @@ pub unsafe extern "C" fn formatjs_datetime_bytes_free(value: DateTimeBytes) {
             )));
         }
     }
+}
+
+pub struct DateTimeRecords(crate::handles::Records<HostRecord>);
+pub struct DateTimeTicket(crate::handles::Ticket);
+enum HostRecord {
+    Construction(Option<Box<DateTimeConstruction>>),
+    // Calendar callbacks may reenter while a formatter is borrowed. Moving table
+    // entries must not create an exclusive reference to its live allocation.
+    Formatter(Rc<DateTimeHandle>),
+}
+
+/// # Safety
+/// Out is writable. Create/use/destroy records on the runtime thread.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_create(out: *mut *mut DateTimeRecords) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    guarded(|| {
+        unsafe {
+            out.write(Box::into_raw(Box::new(DateTimeRecords(
+                crate::handles::Records::new(),
+            ))))
+        };
+        Ok(())
+    })
+}
+
+unsafe fn retain_record(
+    records: *mut DateTimeRecords,
+    record: HostRecord,
+    out: *mut *mut DateTimeTicket,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    if records.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let records = unsafe { &mut *records };
+        let ticket = records.0.insert(record)?;
+        unsafe { out.write(Box::into_raw(Box::new(DateTimeTicket(ticket)))) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Records/out live on the runtime thread. Takes construction ownership on entry,
+/// including rejected calls. Ticket destruction may run on another thread.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_construction(
+    records: *mut DateTimeRecords,
+    value: *mut DateTimeConstruction,
+    out: *mut *mut DateTimeTicket,
+) -> i32 {
+    if value.is_null() {
+        return 2;
+    }
+    unsafe {
+        retain_record(
+            records,
+            HostRecord::Construction(Some(Box::from_raw(value))),
+            out,
+        )
+    }
+}
+
+/// # Safety
+/// Same ownership/thread contract as formatjs_datetime_records_construction.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_formatter(
+    records: *mut DateTimeRecords,
+    value: *mut DateTimeHandle,
+    out: *mut *mut DateTimeTicket,
+) -> i32 {
+    if value.is_null() {
+        return 2;
+    }
+    unsafe {
+        retain_record(
+            records,
+            HostRecord::Formatter(Rc::new(*Box::from_raw(value))),
+            out,
+        )
+    }
+}
+
+/// # Safety
+/// Records/ticket live; out writable. Borrowed output lives until release/drain.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_get_construction(
+    records: *mut DateTimeRecords,
+    ticket: *const DateTimeTicket,
+    out: *mut *mut DateTimeConstruction,
+) -> i32 {
+    if records.is_null() || ticket.is_null() || out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    guarded(|| {
+        let records = unsafe { &mut *records };
+        let HostRecord::Construction(value) = records.0.get(unsafe { &(*ticket).0 })? else {
+            return Err(2);
+        };
+        unsafe {
+            out.write(
+                value
+                    .as_deref_mut()
+                    .map_or(ptr::null_mut(), |value| value as *mut _),
+            )
+        };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Same borrowing/thread contract as formatjs_datetime_records_get_construction.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_get_formatter(
+    records: *mut DateTimeRecords,
+    ticket: *const DateTimeTicket,
+    out: *mut *mut DateTimeHandle,
+) -> i32 {
+    if records.is_null() || ticket.is_null() || out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    guarded(|| {
+        let records = unsafe { &mut *records };
+        let HostRecord::Formatter(value) = records.0.get(unsafe { &(*ticket).0 })? else {
+            return Err(2);
+        };
+        unsafe { out.write(Rc::as_ptr(value).cast_mut()) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Records/ticket live on the runtime thread. Repeated release is accepted.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_release_construction(
+    records: *mut DateTimeRecords,
+    ticket: *const DateTimeTicket,
+) -> i32 {
+    if records.is_null() || ticket.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let records = unsafe { &mut *records };
+        let HostRecord::Construction(value) = records.0.get(unsafe { &(*ticket).0 })? else {
+            return Err(2);
+        };
+        *value = None;
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Ticket is owned and destroyed exactly once. May run on a GC thread.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_ticket_destroy(ticket: *mut DateTimeTicket) {
+    if !ticket.is_null() {
+        let _ = catch_unwind(AssertUnwindSafe(|| unsafe { drop(Box::from_raw(ticket)) }));
+    }
+}
+
+/// # Safety
+/// Records is owned and destroyed once on its creating runtime thread.
+/// Outstanding tickets remain safe to destroy after this call.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_destroy(records: *mut DateTimeRecords) {
+    if !records.is_null() {
+        let _ = catch_unwind(AssertUnwindSafe(|| unsafe { drop(Box::from_raw(records)) }));
+    }
+}
+
+/// # Safety
+/// Records live on their creating runtime thread.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_records_drain(records: *mut DateTimeRecords) -> i32 {
+    if records.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        unsafe { (&mut *records).0.drain() };
+        Ok(())
+    })
 }

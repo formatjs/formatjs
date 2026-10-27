@@ -5,6 +5,7 @@ pub mod data;
 pub mod ffi;
 mod ffi_input;
 pub mod fields;
+mod handles;
 pub mod instance;
 pub use instance::{DateTimeFormat, DateTimeValue, ResolvedOptions, Runtime};
 pub mod locale_patterns;

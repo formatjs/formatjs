@@ -4,10 +4,12 @@ load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 
-exports_files(
-    ["datetimeformat_calendars.h"],
-    visibility = ["//visibility:public"],
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "datetimeformat_calendars.h",
 )
 
 cc_library(

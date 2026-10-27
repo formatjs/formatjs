@@ -1,16 +1,15 @@
+#include <formatjs/hermes/bridge.h>
 #include <formatjs/hermes/intl_datetimeformat.h>
 #include <formatjs/intl/datetimeformat.h>
 #include <formatjs/intl/datetimeformat_calendars.h>
 
 #include <cstring>
 #include <exception>
-#include <map>
-#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <type_traits>
 #include <utility>
-#include <variant>
 #include <vector>
 
 namespace formatjs {
@@ -22,25 +21,14 @@ constexpr char wrapperSource[] =
 using Construction = std::unique_ptr<FormatjsDateTimeConstruction, decltype(&formatjs_datetime_construction_destroy)>;
 using Formatter = std::unique_ptr<FormatjsDateTimeHandle, decltype(&formatjs_datetime_destroy)>;
 using Registry = std::unique_ptr<FormatjsDateTimeRegistry, decltype(&formatjs_datetime_registry_destroy)>;
-using RecordValue = std::variant<Construction, Formatter>;
-struct Finalizers {
-  std::mutex mutex;
-  std::vector<size_t> ids;
-};
+using Records = std::unique_ptr<FormatjsDateTimeRecords, decltype(&formatjs_datetime_records_destroy)>;
+using Ticket = std::unique_ptr<FormatjsDateTimeTicket, decltype(&formatjs_datetime_ticket_destroy)>;
 struct Record final : jsi::HostObject {
-  Record(size_t id, std::shared_ptr<Finalizers> finalizers) : id(id), finalizers(std::move(finalizers)) {}
-  ~Record() override {
-    std::lock_guard<std::mutex> lock(finalizers->mutex);
-    finalizers->ids.push_back(id);
-  }
-  size_t id;
-  std::shared_ptr<Finalizers> finalizers;
+  explicit Record(Ticket value) : ticket(std::move(value)) {}
+  Ticket ticket;
 };
-struct Bytes {
-  FormatjsDateTimeBytes value{nullptr, 0};
-  ~Bytes() { formatjs_datetime_bytes_free(value); }
-};
-const uint8_t *bytesOf(const std::string &value) { return reinterpret_cast<const uint8_t *>(value.data()); }
+using Bytes = hermes_bridge::Buffer<FormatjsDateTimeBytes, formatjs_datetime_bytes_free>;
+using hermes_bridge::bytesOf;
 std::string stringArgument(jsi::Runtime &rt, const jsi::Value *args, size_t count, size_t index) {
   if (index >= count || !args[index].isString()) throw jsi::JSError(rt, "Expected DateTimeFormat string argument");
   return args[index].asString(rt).utf8(rt);
@@ -48,14 +36,17 @@ std::string stringArgument(jsi::Runtime &rt, const jsi::Value *args, size_t coun
 } // namespace
 
 struct DateTimeFormatInstallation::State {
-  explicit State(jsi::Runtime &rt) : runtime(rt), owner(std::this_thread::get_id()), registry(nullptr, formatjs_datetime_registry_destroy) {
+  explicit State(jsi::Runtime &rt) : runtime(rt), owner(std::this_thread::get_id()), registry(nullptr, formatjs_datetime_registry_destroy), records(nullptr, formatjs_datetime_records_destroy) {
     FormatjsDateTimeRegistry *raw = nullptr;
     if (formatjs_datetime_registry_create(&raw) != 0) throw std::runtime_error("Cannot create DateTimeFormat registry");
     registry.reset(raw);
+    FormatjsDateTimeRecords *handles = nullptr;
+    if (formatjs_datetime_records_create(&handles) != 0) throw std::runtime_error("Cannot create DateTimeFormat records");
+    records.reset(handles);
   }
   ~State() {
     requireOwner();
-    records.clear();
+    records.reset();
     registry.reset();
   }
   void requireOwner() const {
@@ -63,30 +54,37 @@ struct DateTimeFormatInstallation::State {
   }
   void drain() {
     requireOwner();
-    std::vector<size_t> ids;
-    {
-      std::lock_guard<std::mutex> lock(finalizers->mutex);
-      ids.swap(finalizers->ids);
-    }
-    for (size_t id : ids) records.erase(id);
+    if (formatjs_datetime_records_drain(records.get())) throw jsi::JSError(runtime, "Cannot drain DateTimeFormat records");
   }
-  jsi::Object retain(RecordValue value) {
-    const auto id = next++;
-    records.emplace(id, std::move(value));
-    return jsi::Object::createFromHostObject(runtime, std::make_shared<Record>(id, finalizers));
+  template <typename T> jsi::Object retain(T value) {
+    FormatjsDateTimeTicket *raw = nullptr;
+    int32_t code;
+    if constexpr (std::is_same_v<T, Construction>)
+      code = formatjs_datetime_records_construction(records.get(), value.release(), &raw);
+    else
+      code = formatjs_datetime_records_formatter(records.get(), value.release(), &raw);
+    Ticket ticket(raw, formatjs_datetime_ticket_destroy);
+    if (code) throw jsi::JSError(runtime, "Cannot retain DateTimeFormat record");
+    return jsi::Object::createFromHostObject(runtime, std::make_shared<Record>(std::move(ticket)));
   }
-  template <typename T> T &get(const jsi::Value &value) {
-    if (!value.isObject()) throw jsi::JSError(runtime, "Expected DateTimeFormat record");
-    auto object = value.asObject(runtime);
-    if (!object.isHostObject<Record>(runtime)) throw jsi::JSError(runtime, "Invalid DateTimeFormat record");
-    auto record = object.getHostObject<Record>(runtime);
-    auto found = records.find(record->id);
-    if (record->finalizers != finalizers || found == records.end() || !std::holds_alternative<T>(found->second))
-      throw jsi::JSError(runtime, "Invalid DateTimeFormat record");
-    return std::get<T>(found->second);
+  std::shared_ptr<Record> record(const jsi::Value &value) {
+    return hermes_bridge::record<Record>(runtime, value, "Expected DateTimeFormat record", "Invalid DateTimeFormat record");
+  }
+  template <typename T> typename T::element_type *get(const jsi::Value &value) {
+    auto model = record(value);
+    typename T::element_type *raw = nullptr;
+    int32_t code;
+    if constexpr (std::is_same_v<T, Construction>)
+      code = formatjs_datetime_records_get_construction(records.get(), model->ticket.get(), &raw);
+    else
+      code = formatjs_datetime_records_get_formatter(records.get(), model->ticket.get(), &raw);
+    if (code) throw jsi::JSError(runtime, "Invalid DateTimeFormat record");
+    return raw;
   }
   void releaseConstruction(const jsi::Value &value) {
-    get<Construction>(value).reset();
+    auto model = record(value);
+    if (formatjs_datetime_records_release_construction(records.get(), model->ticket.get()))
+      throw jsi::JSError(runtime, "Invalid DateTimeFormat record");
   }
   jsi::Value status(int32_t code) {
     if (code == 0 || code == 1 || code == 4) return jsi::Value(code);
@@ -146,9 +144,7 @@ struct DateTimeFormatInstallation::State {
   jsi::Runtime &runtime;
   std::thread::id owner;
   Registry registry;
-  std::shared_ptr<Finalizers> finalizers = std::make_shared<Finalizers>();
-  std::map<size_t, RecordValue> records;
-  size_t next = 0;
+  Records records;
   std::vector<std::exception_ptr> errors;
 };
 
@@ -203,20 +199,20 @@ std::unique_ptr<DateTimeFormatInstallation> installDateTimeFormat(jsi::Runtime &
   });
   add("nativeResolve", 2, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 1);
-    return state.status(formatjs_datetime_resolve(state.get<Construction>(args[0]).get(), bytesOf(data), data.size()));
+    return state.status(formatjs_datetime_resolve(state.get<Construction>(args[0]), bytesOf(data), data.size()));
   });
   add("nativeZone", 2, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 1);
-    return state.status(formatjs_datetime_zone(state.get<Construction>(args[0]).get(), bytesOf(data), data.size()));
+    return state.status(formatjs_datetime_zone(state.get<Construction>(args[0]), bytesOf(data), data.size()));
   });
   add("nativeCapture", 2, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 1);
-    return state.status(formatjs_datetime_capture(state.get<Construction>(args[0]).get(), bytesOf(data), data.size()));
+    return state.status(formatjs_datetime_capture(state.get<Construction>(args[0]), bytesOf(data), data.size()));
   });
   add("nativeCreate", 2, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 1);
     FormatjsDateTimeHandle *raw = nullptr;
-    auto status = formatjs_datetime_create(state.get<Construction>(args[0]).get(), bytesOf(data), data.size(), &raw);
+    auto status = formatjs_datetime_create(state.get<Construction>(args[0]), bytesOf(data), data.size(), &raw);
     Formatter handle(raw, formatjs_datetime_destroy);
     if (status) return state.status(status);
     return state.retain(std::move(handle));
@@ -228,7 +224,7 @@ std::unique_ptr<DateTimeFormatInstallation> installDateTimeFormat(jsi::Runtime &
   });
   add("nativeQuery", 2, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 1);
-    auto *handle = state.get<Formatter>(args[0]).get();
+    auto *handle = state.get<Formatter>(args[0]);
     Bytes bytes;
     auto status = formatjs_datetime_query(handle, bytesOf(data), data.size(), &bytes.value);
     return state.result(status, bytes);
@@ -237,9 +233,7 @@ std::unique_ptr<DateTimeFormatInstallation> installDateTimeFormat(jsi::Runtime &
   return std::unique_ptr<DateTimeFormatInstallation>(new DateTimeFormatInstallation(std::move(state)));
 }
 std::unique_ptr<DateTimeFormatInstallation> installDateTimeFormat(jsi::Runtime &runtime) {
-  auto factory = runtime.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(wrapperSource), "formatjs:DateTimeFormat");
-  jsi::Object extensions(runtime);
-  extensions.setProperty(runtime, "IntlDateTimeFormat", std::move(factory));
+  auto extensions = hermes_bridge::factory(runtime, wrapperSource, "formatjs:DateTimeFormat", "IntlDateTimeFormat");
   return installDateTimeFormat(runtime, extensions);
 }
 } // namespace formatjs

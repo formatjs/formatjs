@@ -5,10 +5,11 @@ load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
 load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 
-exports_files(
-    ["datetimeformat.h"],
-    visibility = ["//visibility:public"],
+rust_ffi_header(
+    name = "generate_header",
+    out = "datetimeformat.h",
 )
 
 cc_library(
@@ -67,6 +68,7 @@ rust_library(
         "ffi.rs",
         "ffi_input.rs",
         "fields.rs",
+        "handles.rs",
         "instance.rs",
         "lib.rs",
         "locale_patterns.rs",
@@ -108,7 +110,9 @@ formatjs_rust_test(
         "pattern.test.rs",
         "timezone.test.rs",
     ],
-    compile_data = [":locale-data/en.json"],
+    compile_data = [
+        ":locale-data/en.json",
+    ],
     crate_name = "intl_datetimeformat_test",
     edition = "2024",
     rustc_env = {"FORMATJS_DATETIME_EN": "$(execpath :locale-data/en.json)"},
@@ -116,6 +120,17 @@ formatjs_rust_test(
         ":intl_datetimeformat",
         "@crates//:serde_json",
     ],
+)
+
+formatjs_rust_test(
+    name = "runtime_handles_test",
+    srcs = [
+        "handles.rs",
+        "handles.test.rs",
+    ],
+    crate_name = "runtime_handles_test",
+    crate_root = "handles.test.rs",
+    edition = "2024",
 )
 
 rust_binary(
