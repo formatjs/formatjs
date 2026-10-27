@@ -45,14 +45,21 @@ const checks: Record<string, [string, () => void]> = {
   ],
   datetimeformat: [
     'DateTimeFormat',
-    () =>
+    () => {
       equal(
         new api.DateTimeFormat('fr', {
           timeZone: 'UTC',
           dateStyle: 'long',
         }).format(0),
         '1 janvier 1970'
-      ),
+      )
+      const newYork = new api.DateTimeFormat('fr', {
+        timeZone: 'america/new_york',
+        dateStyle: 'long',
+      })
+      equal(newYork.resolvedOptions().timeZone, 'America/New_York')
+      equal(newYork.format(0), '31 décembre 1969')
+    },
   ],
   durationformat: [
     'DurationFormat',

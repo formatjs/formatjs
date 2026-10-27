@@ -217,6 +217,15 @@ fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
     Ok(result)
 }
 impl TimeZoneRegistry {
+    #[cfg(feature = "compiled_data")]
+    pub fn with_compiled_data() -> Self {
+        let registry = Self::default();
+        registry
+            .load_json(include_str!(env!("FORMATJS_COMPILED_TIMEZONES")))
+            .expect("generated IANA time zones");
+        registry
+    }
+
     pub fn load_json(&self, json: &str) -> Result<(), Error> {
         let packed = serde_json::from_str(json).map_err(|_| Error::InvalidTimeZoneData)?;
         let zones = decode(packed)?;

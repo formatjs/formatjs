@@ -7,11 +7,13 @@ runner="$3"
 suite="$4"
 timeout="$5"
 temporal_prelude="$6"
+temporal_shim="$7"
 root="../+http_archive+com_github_tc39_test262"
 report="${TEST_UNDECLARED_OUTPUTS_DIR:?}/results.json"
 
 export FORMATJS_HERMES_RUNNER="$PWD/$runner"
 export FORMATJS_HERMES_TEMPORAL_PRELUDE="$PWD/$temporal_prelude"
+export FORMATJS_HERMES_TEMPORAL_SHIM="$PWD/$temporal_shim"
 export BAZEL_BINDIR=.
 status=0
 "$harness" \

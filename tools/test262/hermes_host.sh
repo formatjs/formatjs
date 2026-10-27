@@ -11,6 +11,7 @@ done
 
 exec "${FORMATJS_HERMES_RUNNER:?}" \
   --es6-block-scoping \
+  "--prelude=${FORMATJS_HERMES_TEMPORAL_SHIM:?}" \
   "--prelude=${FORMATJS_HERMES_TEMPORAL_PRELUDE:?}" \
   --native-pluralrules --native-listformat --native-displaynames \
   --native-segmenter --native-collator --native-numberformat \
