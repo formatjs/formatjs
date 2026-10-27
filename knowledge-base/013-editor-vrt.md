@@ -133,7 +133,7 @@ E2E baselines belong to `e2e_visual_test`.
 
 The default export of `editor.visual.tsx` is a `ComponentVisualModule`: it declares
 renderable cases, browser-side capture hooks, and VRT options. The gallery registers
-that module with `installVisualGallery`. The shared runtime generates all eight component
+that module with `installVisualGallery`. The shared runtime generates all twelve component
 screenshot tests. `editor.visual.spec.ts` separately captures the served page
 after navigation, invalid input, recovery, and saving through native Playwright
 interactions. It uses `visual_test` from `@rules_web_e2e//vrt:defs.bzl` and owns
@@ -187,3 +187,12 @@ All browser targets/suites explicitly carry `manual`, preserving the separate CI
 lane now that upstream no longer imposes test-selection tags. The browser workflow
 covers VM/local execution on Ubuntu and host interactions/UI discovery on macOS.
 See the browser README for commands and prerequisites.
+
+## Projects and sources
+
+`ProjectsFixture` in `editor.visual.tsx` composes `useTranslationEditor`,
+`TranslationEditorView`, and `MessageContext`. It binds controlled projects to
+independent message sets, maps visible IDs back to source metadata for row
+badges, and resolves repository/revision links with `resolveSourceLocationHref`.
+Four captures cover desktop metadata, source filtering, a switched project, and
+narrow RTL. Browser interactions verify filter reset and unsaved-draft blocking.
