@@ -127,14 +127,14 @@ while missing means at least one selected locale has no entry.
 preference. It restores and writes browser localStorage when available, tolerates
 unavailable storage, and accepts a storage adapter for non-browser hosts and tests.
 
-Drafts, reset baselines, errors, and pending saves are scoped by message ID and
-locale. Switching messages, filters, or locales retains drafts. `save()` validates
+Each active project owns its drafts, reset baselines, errors, and pending saves,
+keyed by message ID and locale. Switching messages, filters, or locales retains drafts. `save()` validates
 the selected draft, ignores duplicate submissions for that key, and reports
 failure through `saveError`. A completed save updates only its submitted key;
 newer edits remain dirty. Update controlled messages after persistence succeeds.
 Clean drafts adopt external changes; dirty drafts retain their text. `reset()`
-restores the latest saved baseline. Remount when switching unrelated catalogs
-that reuse message IDs, or when intentionally discarding all drafts.
+restores the latest saved baseline. Without projects, remount when switching
+unrelated datasets that reuse message IDs, or when discarding all drafts.
 
 ### Multiple locale views
 
@@ -231,7 +231,11 @@ fed by several upload streams. The workflow models both without loading data:
   `setProject(id, {discardDrafts: true})` to drop every draft and switch. The hook
   never fetches: supply the new project's `messages`, `locales`, and `onSave` from
   `onProjectChange`. Locale, status, and search text are kept because they usually
-  carry over between workspaces.
+  carry over between workspaces. Each project activation starts with fresh draft
+  and pending-save state, including controlled `project` changes and returning to
+  a previous project. In-flight saves still settle for their callers, but cannot
+  update the active project's baselines, errors, or save guards. Retained draft
+  handlers from a previous activation become unavailable.
 - `message.sources` names the upload streams (for example branches) that currently
   include a message, distinct from `catalogs`, which are build units. `sources`
   aggregates them, `source` / `setSource` filter by one stream (the empty string

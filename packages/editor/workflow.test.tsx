@@ -414,6 +414,148 @@ describe('projects and sources', () => {
     expect(result.current.sources).toEqual([])
   })
 
+  it.each(['saved', 'failed'] as const)(
+    'ignores %s save completion after discarding and switching projects',
+    async outcome => {
+      const request = deferred()
+      const initial = options({
+        projects,
+        project: 'web',
+        onSave: () => request.promise,
+      })
+      const {result, rerender} = renderHook(
+        props => useTranslationEditor(props),
+        {initialProps: initial}
+      )
+      act(() => result.current.editor.setTranslation('Web draft {name}'))
+      let save!: Promise<TranslationSaveResult>
+      act(() => {
+        save = result.current.save()
+      })
+      act(() => {
+        result.current.setProject('mobile', {discardDrafts: true})
+      })
+      rerender({
+        ...initial,
+        project: 'mobile',
+        messages: [{...messages[0], translations: {fr: 'Mobile {name}'}}],
+      })
+      act(() => result.current.editor.setTranslation('Mobile draft {name}'))
+      await act(async () => {
+        if (outcome === 'saved') request.resolve()
+        else request.reject(new Error('Web save failed'))
+        expect((await save).status).toBe(outcome)
+      })
+      expect(result.current.getTranslation('a', 'fr')?.baseline).toBe(
+        'Mobile {name}'
+      )
+      expect(result.current.saveError).toBeNull()
+      expect(result.current.saved).toBe(false)
+      act(() => result.current.reset())
+      expect(result.current.editor.selectedMessage?.translatedMessage).toBe(
+        'Mobile {name}'
+      )
+    }
+  )
+
+  it('isolates pending guards and retained handlers across controlled projects', async () => {
+    const web = deferred()
+    const mobile = deferred()
+    const initial = options({
+      projects,
+      project: 'web',
+      onSave: () => web.promise,
+    })
+    const {result, rerender} = renderHook(
+      props => useTranslationEditor(props),
+      {initialProps: initial}
+    )
+    act(() => result.current.editor.setTranslation('Web draft {name}'))
+    const retained = result.current.getTranslation('a', 'fr')!
+    let webSave!: Promise<TranslationSaveResult>
+    act(() => {
+      webSave = retained.save()
+    })
+    const mobileSaveHandler = vi.fn(() => mobile.promise)
+    rerender({...initial, project: 'mobile', onSave: mobileSaveHandler})
+    expect(result.current.isSaving).toBe(false)
+    expect(result.current.changed).toBe(false)
+    act(() => {
+      retained.setTranslation('Stale {name}')
+      retained.reset()
+    })
+    expect(await retained.save()).toEqual({
+      status: 'skipped',
+      reason: 'unavailable',
+    })
+    act(() => result.current.editor.setTranslation('Mobile draft {name}'))
+    let mobileSave!: Promise<TranslationSaveResult>
+    act(() => {
+      mobileSave = result.current.save()
+    })
+    expect(mobileSaveHandler).toHaveBeenCalledOnce()
+    await act(async () => {
+      web.resolve()
+      await webSave
+    })
+    expect(result.current.isSaving).toBe(true)
+    expect(await result.current.save()).toEqual({
+      status: 'skipped',
+      reason: 'pending',
+    })
+    await act(async () => {
+      mobile.resolve()
+      await mobileSave
+    })
+    expect(result.current.isSaving).toBe(false)
+    expect(result.current.getTranslation('a', 'fr')?.baseline).toBe(
+      'Mobile draft {name}'
+    )
+  })
+
+  it('does not revive old drafts or save completions when returning to a project', async () => {
+    const request = deferred()
+    const initial = options({
+      projects,
+      project: 'web',
+      onSave: () => request.promise,
+    })
+    const {result, rerender} = renderHook(
+      props => useTranslationEditor(props),
+      {initialProps: initial}
+    )
+    act(() => result.current.editor.setTranslation('Old web {name}'))
+    let save!: Promise<TranslationSaveResult>
+    act(() => {
+      save = result.current.save()
+    })
+    rerender({...initial, project: 'mobile'})
+    rerender(initial)
+    expect(result.current.editor.selectedMessage?.translatedMessage).toBe(
+      'Premier {name}'
+    )
+    act(() => result.current.editor.setTranslation('New web {name}'))
+    await act(async () => {
+      request.resolve()
+      await save
+    })
+    expect(result.current.getTranslation('a', 'fr')?.baseline).toBe(
+      'Premier {name}'
+    )
+    expect(result.current.editor.selectedMessage?.translatedMessage).toBe(
+      'New web {name}'
+    )
+    act(() => result.current.reset())
+    expect(result.current.editor.selectedMessage?.translatedMessage).toBe(
+      'Premier {name}'
+    )
+    let change!: ReturnType<typeof result.current.setProject>
+    act(() => {
+      change = result.current.setProject('mobile')
+    })
+    expect(change.status).toBe('changed')
+  })
+
   it('keeps a controlled project until the consumer applies the change', () => {
     const onProjectChange = vi.fn()
     const initial = options({

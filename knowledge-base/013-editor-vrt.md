@@ -66,7 +66,11 @@ inputs. Bazel generates a runtime-only `package.json` containing `{"type":"modul
 so Node loads compiled specs, server code, and matching policy as ESM. It declares no dependencies.
 
 `useTranslationEditor` composes `useMessageEditor` for multi-locale workflows.
-Draft state and in-flight save guards use `[message ID, locale]` keys. Completion
+Draft state and in-flight save guards use `[message ID, locale]` keys inside a
+store owned by the active project. Every project change, including a controlled
+change or return to an earlier project, creates a fresh store. Old save
+completions and retained handlers cannot update it; pending requests still settle
+for their callers. Completion
 updates the submitted key and baseline, preserving newer edits and other selections.
 Controlled catalog updates refresh clean drafts without overwriting dirty text.
 Locale fallback and clamped pagination handle asynchronously changing inputs.

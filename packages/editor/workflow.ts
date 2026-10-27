@@ -126,6 +126,14 @@ interface Draft {
   error: Error | null
   saved: boolean
 }
+interface DraftStore {
+  projectId: string | undefined
+  drafts: Record<string, Draft>
+  pending: Set<string>
+}
+function createDraftStore(projectId: string | undefined): DraftStore {
+  return {projectId, drafts: {}, pending: new Set()}
+}
 const draftKey = (id: string, locale: string): string =>
   JSON.stringify([id, locale])
 const noProjects: readonly EditorProject[] = []
@@ -176,16 +184,23 @@ export function useTranslationEditor<TContext = void, TResult = void>({
   const [requestedSource, requestSource] = useState('')
   const [status, updateStatus] = useState<MessageStatus>('all')
   const [requestedPage, requestPage] = useState(0)
-  const [drafts, setDrafts] = useState<Record<string, Draft>>({})
-  const pending = useRef(new Set<string>())
-  const remoteValues = useRef(new Map<string, string>())
+  const [storedDrafts, setStoredDrafts] = useState(() =>
+    createDraftStore(project?.id)
+  )
+  let draftStore = storedDrafts
+  if (draftStore.projectId !== project?.id) {
+    draftStore = createDraftStore(project?.id)
+    setStoredDrafts(draftStore)
+  }
+  const {drafts, pending} = draftStore
   const values = new Map<string, string>()
   for (const message of messages) {
     for (const value of locales) {
       values.set(draftKey(message.id, value), message.translations[value] ?? '')
     }
   }
-  remoteValues.current = values
+  const remoteValues = useRef({pending, values})
+  remoteValues.current = {pending, values}
   const catalogs = useMemo(() => {
     const values = new Set<string>()
     for (const message of messages) {
@@ -205,18 +220,33 @@ export function useTranslationEditor<TContext = void, TResult = void>({
   const getDraft = (id: string, targetLocale = locale ?? ''): Draft =>
     reconcile(
       drafts[draftKey(id, targetLocale)],
-      remoteValues.current.get(draftKey(id, targetLocale)) ?? ''
+      remoteValues.current.values.get(draftKey(id, targetLocale)) ?? ''
     )
+  function isAvailable(key: string): boolean {
+    return (
+      remoteValues.current.pending === pending &&
+      remoteValues.current.values.has(key)
+    )
+  }
   function update(key: string, change: (draft: Draft) => Draft): void {
-    setDrafts(current => ({
-      ...current,
-      [key]: change(
-        reconcile(
-          current[key],
-          remoteValues.current.get(key) ?? current[key]?.remote ?? ''
-        )
-      ),
-    }))
+    setStoredDrafts(current => {
+      // A previous project activation cannot update this store.
+      if (current.pending !== pending) return current
+      return {
+        ...current,
+        drafts: {
+          ...current.drafts,
+          [key]: change(
+            reconcile(
+              current.drafts[key],
+              remoteValues.current.values.get(key) ??
+                current.drafts[key]?.remote ??
+                ''
+            )
+          ),
+        },
+      }
+    })
   }
   const editor = useMessageEditor({
     messages:
@@ -288,11 +318,11 @@ export function useTranslationEditor<TContext = void, TResult = void>({
       saveError: draft.error,
       saved: draft.saved && !changed,
       setTranslation: value => {
-        if (!remoteValues.current.has(key)) return
+        if (!isAvailable(key)) return
         update(key, current => ({...current, value, error: null, saved: false}))
       },
       reset: () => {
-        if (!remoteValues.current.has(key)) return
+        if (!isAvailable(key)) return
         update(key, current => ({
           ...current,
           value: current.baseline,
@@ -301,10 +331,8 @@ export function useTranslationEditor<TContext = void, TResult = void>({
         }))
       },
       save: async context => {
-        if (!remoteValues.current.has(key))
-          return {status: 'skipped', reason: 'unavailable'}
-        if (pending.current.has(key))
-          return {status: 'skipped', reason: 'pending'}
+        if (!isAvailable(key)) return {status: 'skipped', reason: 'unavailable'}
+        if (pending.has(key)) return {status: 'skipped', reason: 'pending'}
         if (!changed) return {status: 'skipped', reason: 'unchanged'}
         if (validationError) return {status: 'invalid', validationError}
         const submitted = draft.value
@@ -313,7 +341,7 @@ export function useTranslationEditor<TContext = void, TResult = void>({
           baselineTranslation: draft.baseline,
           context,
         })
-        pending.current.add(key)
+        pending.add(key)
         update(key, current => ({
           ...current,
           saving: true,
@@ -337,7 +365,7 @@ export function useTranslationEditor<TContext = void, TResult = void>({
           update(key, current => ({...current, error: saveError}))
           return {status: 'failed', error: saveError}
         } finally {
-          pending.current.delete(key)
+          pending.delete(key)
           update(key, current => ({...current, saving: false}))
         }
       },
@@ -351,7 +379,7 @@ export function useTranslationEditor<TContext = void, TResult = void>({
     Object.entries(drafts).some(([key, draft]) => {
       const current = reconcile(
         draft,
-        remoteValues.current.get(key) ?? draft.remote
+        remoteValues.current.values.get(key) ?? draft.remote
       )
       return current.value !== current.baseline
     })
@@ -365,7 +393,9 @@ export function useTranslationEditor<TContext = void, TResult = void>({
     if (hasUnsavedDrafts()) {
       if (!options?.discardDrafts)
         return {status: 'blocked', reason: 'unsaved-drafts'}
-      setDrafts({})
+      setStoredDrafts(current =>
+        current.pending === pending ? {...current, drafts: {}} : current
+      )
     }
     editor.clearSelection()
     requestCatalog('')
