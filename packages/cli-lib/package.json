@@ -44,7 +44,7 @@
     "loud-rejection": "2"
   },
   "peerDependencies": {
-    "@glimmer/syntax": "^0.84.3 || ^0.95.0",
+    "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.96.0",
     "@vue/compiler-core": "3",
     "content-tag": "4",
     "svelte": "5",
