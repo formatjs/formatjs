@@ -16,7 +16,7 @@ struct Pack {
     #[serde(default)]
     aliases: Vec<String>,
     data: RawData,
-    plurals: serde_json::Value,
+    plurals: LocaleRules,
 }
 
 #[derive(Deserialize)]
@@ -138,6 +138,10 @@ impl LocaleData {
     pub fn from_json(json: &str) -> Result<Self, Error> {
         let pack: Pack =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
+        Self::from_pack(pack)
+    }
+
+    fn from_pack(pack: Pack) -> Result<Self, Error> {
         if pack.format_version != 1 || pack.data.nu.is_empty() || pack.data.numbers.nu.is_empty() {
             return Err(Error::InvalidData(
                 "Invalid NumberFormat locale pack".into(),
@@ -162,8 +166,7 @@ impl LocaleData {
                 )));
             }
         }
-        let plurals = LocaleRules::from_json(&pack.plurals.to_string())
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
+        let plurals = pack.plurals;
         Ok(Self {
             locale,
             aliases,
@@ -194,5 +197,12 @@ impl LocaleData {
         units.simple.extend(additional.simple);
         units.compound.extend(additional.compound);
         Ok(())
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for LocaleData {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let pack = Pack::deserialize(deserializer)?;
+        Self::from_pack(pack).map_err(serde::de::Error::custom)
     }
 }

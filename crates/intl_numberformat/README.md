@@ -60,3 +60,13 @@ over 7,600 numeric cases per mode, plus ranges, ordered option failures, input/r
 errors, constructor prototypes, locale replacement and shared unit updates.
 The SDK ships `38-IntlNumberFormat.js`, public adapters and per-locale packs;
 the independent consumer embeds only selected English/French packs.
+
+## Compiled provider
+
+`:with_compiled_data` embeds build-selected binary locale records.
+`Registry::with_compiled_data()` makes those locales available without JSON
+registration. Select locales with `--//crates/intl_data:locales=en,fr`; the default is all locales.
+Rust validates packs and compiles plural rules during the build. Records decode
+lazily into per-registry caches; mutable data never crosses registry boundaries.
+The original target and `Registry::default()` retain explicit registration for
+custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).

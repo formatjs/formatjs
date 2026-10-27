@@ -22,12 +22,6 @@ namespace {
 constexpr char numberSmoke[] =
 #include "numberformat_smoke.inc"
     ;
-constexpr char numberEnglish[] =
-#include "numberformat_en.inc"
-    ;
-constexpr char numberFrench[] =
-#include "numberformat_fr.inc"
-    ;
 constexpr char collatorSmoke[] =
 #include "collator_smoke.inc"
     ;
@@ -184,8 +178,6 @@ int main(int argc, char **argv) {
     if (!collatorPassed.isBool() || !collatorPassed.getBool()) throw std::runtime_error("Collator SDK smoke failed");
     std::cout << "Hermes SDK Collator passed\n";
     formatjs::installNumberFormat(*runtime, extensions);
-    runtime->global().setProperty(*runtime, "__SDK_NUMBER_EN", facebook::jsi::String::createFromUtf8(*runtime, numberEnglish));
-    runtime->global().setProperty(*runtime, "__SDK_NUMBER_FR", facebook::jsi::String::createFromUtf8(*runtime, numberFrench));
     runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(numberSmoke), "formatjs:numberformat-sdk-smoke");
     auto numberPassed = runtime->global().getProperty(*runtime, "__SDK_NUMBER_PASSED");
     if (!numberPassed.isBool() || !numberPassed.getBool()) throw std::runtime_error("NumberFormat SDK smoke failed");

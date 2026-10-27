@@ -56,7 +56,6 @@ js/37-IntlCollator.js
 js/38-IntlNumberFormat.js
 js/numberformat-smoke.js
 examples/numberformat-smoke.ts
-locale-data/numberformat/*.json
 js/collator-smoke.js
 examples/collator-smoke.ts
 js/segmenter-smoke.js
@@ -274,11 +273,8 @@ Collator requires the Hermes proxy-construction fix in overlay commit
 Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
 perform extra observable `newTarget.prototype` reads during construction.
 
-NumberFormat uses selected JSON packs from `locale-data/numberformat/`. Link
-`:numberformat`, install after canonicalization, then call
-`Intl.NumberFormat.__addLocaleData(jsonText)` for each needed pack. These packs
-include owned plural rules; no JS PluralRules installer or host ICU data is needed.
-`:numberformat_data` exposes all packs; individual labels keep packaging selective.
+NumberFormat uses compiled number and plural records. Link `:numberformat` and
+install after canonicalization; no JS PluralRules installer or host ICU is needed.
 
 For precompiled setup, register `js/38-IntlNumberFormat.js` and invoke
 `installNumberFormat(runtime, extensions)`. Construction uses the same pinned
@@ -287,4 +283,4 @@ units, compact/scientific/engineering notation, parts and ranges. Its cached bou
 format function retains its original instance. Locale replacement affects future
 instances; `__addUnitData(locale, unitJsonText)` explicitly updates shared units.
 `examples/numberformat-smoke.ts` checks exact strings/BigInts, localized exponents,
-ranges, brands, and English/French loading from the extracted SDK.
+ranges, brands, and compiled English/French data from the extracted SDK.

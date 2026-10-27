@@ -103,7 +103,7 @@ pub unsafe extern "C" fn formatjs_number_registry_create(out: *mut *mut NumberRe
     }
     guarded(|| {
         unsafe {
-            out.write(Box::into_raw(Box::new(NumberRegistry(Registry::default()))));
+            out.write(Box::into_raw(Box::new(NumberRegistry(Registry::initial()))));
         }
         Ok(())
     })

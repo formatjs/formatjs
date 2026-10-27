@@ -434,6 +434,7 @@ js_test(
         "pluralrules",
         "listformat",
         "displaynames",
+        "numberformat",
     ],
     data = [
         ":compiled_locales_suite.js",

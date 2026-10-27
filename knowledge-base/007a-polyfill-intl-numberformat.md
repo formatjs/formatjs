@@ -199,3 +199,12 @@ digit substitutions. Locale availability still comes from number locale data.
 Scientific exponent digits use numbering-system substitution without mantissa
 rounding increments. Native Intl regressions cover both BMP and supplementary
 digit systems; Rust/TS parity includes scientific and engineering increments.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

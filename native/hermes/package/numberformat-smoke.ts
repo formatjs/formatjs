@@ -16,20 +16,16 @@ interface RustNumberConstructor {
   ): RustNumberFormat
   prototype: RustNumberFormat
   supportedLocalesOf(locales: string | string[]): string[]
-  __addLocaleData(...packs: string[]): void
 }
 const NumberFormat = Intl.NumberFormat as unknown as RustNumberConstructor
 const root = globalThis as unknown as {
-  __SDK_NUMBER_EN: string
-  __SDK_NUMBER_FR: string
   __SDK_NUMBER_PASSED?: boolean
 }
 function equal(actual: unknown, expected: unknown): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(NumberFormat.supportedLocalesOf(['en', 'fr']), [])
-NumberFormat.__addLocaleData(root.__SDK_NUMBER_EN)
+equal(NumberFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 const model = NumberFormat('en')
 equal(model.format('9007199254740993.125'), '9,007,199,254,740,993.125')
 equal(model.format(9007199254740993n), '9,007,199,254,740,993')
@@ -86,7 +82,6 @@ equal(
   }).format(1234),
   '١٫٢٣٤اس٣'
 )
-NumberFormat.__addLocaleData(root.__SDK_NUMBER_FR)
 equal(NumberFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 equal(new NumberFormat('fr').format(1234.5), '1 234,5')
 equal(model.format(1.5), '1.5')
