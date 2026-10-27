@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
       if (!file) throw std::runtime_error("Cannot open " + path);
       std::string source((std::istreambuf_iterator<char>(file)),
                          std::istreambuf_iterator<char>());
-      rt.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(std::move(source)),
+      return rt.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(std::move(source)),
                             path);
     };
     int firstScript = 1;
@@ -63,6 +63,12 @@ int main(int argc, char **argv) {
     }
     if (firstScript != 1) formatjs::installCanonicalLocales(rt);
     formatjs::installSupportedValuesOf(rt);
+    if (firstScript < argc && std::string(argv[firstScript]).rfind("--extensions=", 0) == 0) {
+      auto extensions = evaluateFile(std::string(argv[firstScript]).substr(13)).asObject(rt);
+      if (extensions.hasProperty(rt, "IntlSupportedValuesOf")) formatjs::installSupportedValuesOf(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlGetCanonicalLocales")) formatjs::installCanonicalLocales(rt, extensions);
+      ++firstScript;
+    }
     for (int i = firstScript; i < argc; ++i) {
       evaluateFile(argv[i]);
     }

@@ -146,3 +146,16 @@ test('asymmetric matchers reject wrong types and missing members', () => {
   expect(result.passed).toBe(0)
   expect(result.failures).toHaveLength(2)
 })
+
+test('partial object matching requires explicitly undefined properties', () => {
+  const result = run(() => {
+    harness.it('missing', () =>
+      harness.expect({}).toMatchObject({value: undefined})
+    )
+    harness.it('present', () =>
+      harness.expect({value: undefined}).toMatchObject({value: undefined})
+    )
+  })
+  expect(result.passed).toBe(1)
+  expect(result.failures).toHaveLength(1)
+})

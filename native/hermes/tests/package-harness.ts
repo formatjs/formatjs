@@ -193,7 +193,7 @@ function equal(
       Object.is(+actual, +wanted)
     )
   const keys = Object.keys(wanted).filter(
-    key => strict || wanted[key] !== undefined
+    key => strict || partial || wanted[key] !== undefined
   )
   return (
     (partial ||
