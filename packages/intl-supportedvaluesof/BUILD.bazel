@@ -1,4 +1,5 @@
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -209,4 +210,10 @@ test262_test(
     ],
     prelude = "test262-polyfill.js",
     suite = "intl402/Intl/supportedValuesOf",
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )
