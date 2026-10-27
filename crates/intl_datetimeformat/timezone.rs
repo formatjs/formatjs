@@ -304,18 +304,16 @@ impl TimeZoneSnapshot {
         }
         let key = value.to_ascii_uppercase();
         if matches!(key.as_str(), "UTC" | "GMT" | "ETC/UTC" | "ETC/GMT") {
-            let name = match key.as_str() {
-                "ETC/UTC" => "Etc/UTC",
-                "ETC/GMT" => "Etc/GMT",
-                _ => key.as_str(),
-            };
-            return Ok(named(name.into(), "UTC".into()));
+            return Ok(named("UTC".into(), "UTC".into()));
         }
         if let Some(zone) = etc_gmt_zone(&key) {
             return Ok(zone);
         }
-        if let Some((name, target)) = links().get(&key) {
-            return Ok(named(name.clone(), target.clone()));
+        if let Some((_, target)) = links().get(&key) {
+            if matches!(target.as_str(), "Etc/UTC" | "Etc/GMT") {
+                return Ok(named("UTC".into(), "UTC".into()));
+            }
+            return Ok(named(target.clone(), target.clone()));
         }
         self.zones
             .get(&key)
