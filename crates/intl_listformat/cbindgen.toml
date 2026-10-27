@@ -1,0 +1,15 @@
+language = "C"
+cpp_compat = true
+pragma_once = true
+include_version = false
+usize_is_size_t = true
+documentation = true
+style = "both"
+
+[export.rename]
+"ListRegistry" = "FormatjsListRegistry"
+"ListHandle" = "FormatjsListHandle"
+"ListBytes" = "FormatjsListBytes"
+
+[export]
+item_types = ["enums", "structs", "unions", "typedefs", "opaque", "functions"]
