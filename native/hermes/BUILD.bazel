@@ -529,6 +529,7 @@ cc_library(
     strip_include_prefix = ".",
     visibility = ["//visibility:public"],
     deps = [
+        ":bridge",
         "//crates/intl_hermes",
         "//crates/intl_segmenter:headers",
         "@hermes//:headers",
