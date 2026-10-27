@@ -533,6 +533,7 @@ js_test(
         "listformat",
         "displaynames",
         "numberformat",
+        "relativetimeformat",
     ],
     data = [
         ":chromium_locales_suite.js",
