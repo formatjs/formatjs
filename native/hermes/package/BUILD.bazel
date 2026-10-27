@@ -15,13 +15,13 @@ platform(
 
 linux_archive(
     name = "linux_static_library",
-    srcs = ["//crates/intl_getcanonicallocales:intl_getcanonicallocales_native"],
+    srcs = ["//crates/intl_hermes"],
     tags = ["manual"],
 )
 
 darwin_archive(
     name = "darwin_static_library",
-    srcs = ["//crates/intl_getcanonicallocales:intl_getcanonicallocales_native"],
+    srcs = ["//crates/intl_hermes"],
     tags = ["manual"],
 )
 
@@ -34,10 +34,16 @@ pkg_files(
         "SDK.MODULE.bazel",
         "THIRD_PARTY_NOTICES.html",
         "//crates/intl_getcanonicallocales:canonicalize.h",
+        "//crates/intl_supportedvaluesof:supported_values.h",
+        "//native/hermes:bridge.h",
         "//native/hermes:canonical_locales.cpp",
         "//native/hermes:canonical_locales.h",
         "//native/hermes:extension_bundle_js",
         "//native/hermes:extension_js",
+        "//native/hermes:supported_values.cpp",
+        "//native/hermes:supported_values.h",
+        "//native/hermes:supported_values_extension_js",
+        "//native/hermes:supported_values_wrapper_source",
         "//native/hermes:wrapper_source",
     ],
     attributes = pkg_attributes(mode = "0644"),
@@ -49,10 +55,16 @@ pkg_files(
         "THIRD_PARTY_NOTICES.html": "THIRD_PARTY_NOTICES.html",
         "//crates/intl_getcanonicallocales:canonicalize.h": "include/formatjs/intl/canonicalize.h",
         "//native/hermes:canonical_locales.cpp": "src/canonical_locales.cpp",
+        "//native/hermes:bridge.h": "include/formatjs/hermes/bridge.h",
         "//native/hermes:canonical_locales.h": "include/formatjs/hermes/canonical_locales.h",
         "//native/hermes:extension_bundle_js": "js/extensions.js",
         "//native/hermes:extension_js": "js/30-IntlGetCanonicalLocales.js",
         "//native/hermes:wrapper_source": "src/get_canonical_locales.inc",
+        "//crates/intl_supportedvaluesof:supported_values.h": "include/formatjs/intl/supported_values.h",
+        "//native/hermes:supported_values.cpp": "src/supported_values.cpp",
+        "//native/hermes:supported_values.h": "include/formatjs/hermes/supported_values.h",
+        "//native/hermes:supported_values_extension_js": "js/31-IntlSupportedValuesOf.js",
+        "//native/hermes:supported_values_wrapper_source": "src/supported_values_of.inc",
     },
     tags = ["manual"],
 )
@@ -61,7 +73,7 @@ pkg_files(
     name = "linux_library",
     srcs = [":linux_static_library"],
     attributes = pkg_attributes(mode = "0644"),
-    renames = {":linux_static_library": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_getcanonicallocales.a"},
+    renames = {":linux_static_library": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a"},
     tags = ["manual"],
 )
 
@@ -69,7 +81,7 @@ pkg_files(
     name = "darwin_library",
     srcs = [":darwin_static_library"],
     attributes = pkg_attributes(mode = "0644"),
-    renames = {":darwin_static_library": "lib/aarch64-apple-darwin/libformatjs_intl_getcanonicallocales.a"},
+    renames = {":darwin_static_library": "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a"},
     tags = ["manual"],
 )
 

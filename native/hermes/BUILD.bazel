@@ -1,12 +1,36 @@
+# gazelle:ignore
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "ts_run_binary")
 
+cc_library(
+    name = "bridge",
+    hdrs = ["bridge.h"],
+    include_prefix = "formatjs/hermes",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = ["@hermes//:headers"],
+)
+
+cc_test(
+    name = "bridge_test",
+    srcs = ["bridge.test.cpp"],
+    copts = ["-std=c++17"],
+    deps = [
+        ":bridge",
+        "@hermes//:hermes_vm",
+    ],
+)
+
 exports_files(
     [
+        "bridge.h",
         "canonical_locales.cpp",
         "canonical_locales.h",
+        "supported_values.cpp",
+        "supported_values.h",
     ],
     visibility = ["//native/hermes/package:__pkg__"],
 )
@@ -45,15 +69,55 @@ ts_run_binary(
 
 ts_run_binary(
     name = "extension_bundle_js",
-    srcs = ["get_canonical_locales.js"],
+    srcs = [
+        "get_canonical_locales.js",
+        "supported_values_of.ts",
+    ],
     outs = ["extensions.js"],
     args = [
         "--input=$(rootpath :get_canonical_locales.js)",
+        "--name=IntlGetCanonicalLocales",
+        "--input=$(rootpath :supported_values_of.ts)",
+        "--name=IntlSupportedValuesOf",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "supported_values_extension_js",
+    srcs = ["supported_values_of.ts"],
+    outs = ["31-IntlSupportedValuesOf.js"],
+    args = [
+        "--input=$(rootpath :supported_values_of.ts)",
+        "--name=IntlSupportedValuesOf",
+        "--out=$(rootpath :31-IntlSupportedValuesOf.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "supported_values_factory",
+    srcs = ["supported_values_of.ts"],
+    outs = ["supported_values_factory.js"],
+    args = [
+        "--input=$(rootpath :supported_values_of.ts)",
+        "--name=IntlSupportedValuesOf",
+        "--out=$(rootpath :supported_values_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "supported_values_wrapper_source",
+    srcs = [":supported_values_factory"],
+    outs = ["supported_values_of.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
 )
 
 cc_library(
@@ -72,8 +136,32 @@ cc_library(
     strip_include_prefix = ".",
     visibility = ["//visibility:public"],
     deps = [
+        ":bridge",
         "//crates/intl_getcanonicallocales:headers",
-        "//crates/intl_getcanonicallocales:intl_getcanonicallocales_native",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "supported_values",
+    srcs = [
+        "supported_values.cpp",
+        ":supported_values_wrapper_source",
+    ],
+    hdrs = ["supported_values.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_supportedvaluesof:headers",
         "@hermes//:headers",
     ],
 )
@@ -88,6 +176,7 @@ cc_binary(
     deps = [
         ":canonical_locales",
         ":hermes_vm",
+        ":supported_values",
     ],
 )
 
@@ -106,4 +195,13 @@ sh_test(
         ":hermes_runner",
     ],
     target_compatible_with = HOST_COMPATIBILITY,
+)
+
+genrule(
+    name = "extension_bundle_bytecode",
+    srcs = [":extension_bundle_js"],
+    outs = ["extensions.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :extension_bundle_js)",
+    tools = ["@hermes//:hermesc"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

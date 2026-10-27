@@ -1,0 +1,102 @@
+# gazelle:ignore
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("//tools:index.bzl", "ts_binary")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load(":package-tests.bzl", "package_formatter_conformance")
+load(":runtime.bzl", "optimized_runtime")
+
+optimized_runtime(
+    name = "optimized_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+)
+
+rolldown_bundle(
+    name = "formatter_prelude",
+    srcs = ["formatter-prelude.ts"],
+    entry_point = "formatter-prelude.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+rolldown_bundle(
+    name = "supported_values_suite",
+    srcs = ["supported-values.ts"],
+    entry_point = "supported-values.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-supportedvaluesof:lib",
+    ],
+)
+
+js_test(
+    name = "supported_values_conformance_test",
+    size = "medium",
+    data = [
+        ":formatter_prelude.js",
+        ":supported_values_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_binary(
+    name = "bundle_package_tests",
+    data = [
+        "//:node_modules/minimist",
+        "//:node_modules/rolldown",
+    ],
+    entry_point = "bundle-package-tests.ts",
+)
+
+formatjs_test(
+    name = "package_harness_test",
+    srcs = [
+        "package-harness.test.ts",
+        "package-harness.ts",
+    ],
+    deps = ["//:node_modules/vitest"],
+)
+
+ts_project(
+    name = "package_runner_typecheck",
+    srcs = [
+        "bundle-package-tests.ts",
+        "run-package-tests.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//:node_modules/rolldown",
+    ],
+)
+
+copy_to_bin(
+    name = "package_harness_sources",
+    srcs = ["package-harness.ts"],
+)
+
+package_formatter_conformance("supportedvaluesof")

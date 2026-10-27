@@ -2,10 +2,13 @@
 
 ## Workspace Members
 
-The Rust workspace (`Cargo.toml`) contains 12 members:
+The Rust workspace (`Cargo.toml`) contains 15 members:
 
 ```
 crates/
+  intl_getcanonicallocales/    # ICU4X locale canonicalization leaf crate
+  intl_supportedvaluesof/     # Runtime-aware supported value enumeration
+  intl_hermes/                # One static C ABI archive for the Hermes SDK
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)
   icu_messageformat/           # ICU MessageFormat runtime formatter
@@ -91,6 +94,13 @@ formatjs_intl (v0.1.0)
 
 `formatjs_icu_messageformat`, `formatjs_intl_macros`, and `formatjs_intl`
 support Rust 1.92 and newer.
+
+The Intl polyfill crates stay independent of the high-level `formatjs_intl`
+runtime. `intl_hermes` assembles their C ABI exports into one static archive;
+JSI adapters and consumer applications remain under `native/hermes` and
+`examples/hermes-intl`. Canonicalization uses ICU4X. Supported-value enumeration
+uses shared CLDR/IANA candidates and observations from the embedding's actual
+formatters; it does not advertise unsupported candidate values.
 
 ## Crate Details
 
@@ -417,3 +427,14 @@ fallback through the same provider. Both suites also format from checked-in
 `include_bytes!`. The shared Bazel external dependency graph still enables ICU
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.
+
+### Hermes bridge and C ABI
+
+`native/hermes/bridge.h` owns common JSI transport and buffer/handle cleanup.
+Polyfill state stays in Rust; only runtime references and foreign exception
+identity belong in C++ adapters.
+
+`tools/ffi_headers` builds pinned cbindgen from source with its upstream lockfile.
+Each Intl crate's `cbindgen.toml` keeps public C names while `rust_ffi_header`
+generates its header from Rust declarations. SDK packaging consumes those outputs,
+so changing an exported Rust signature updates the shipped ABI declaration.

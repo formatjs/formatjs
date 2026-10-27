@@ -1,6 +1,8 @@
 [workspace]
 members = [
   "crates/intl_getcanonicallocales",
+  "crates/intl_supportedvaluesof",
+  "crates/intl_hermes",
   "crates/icu_skeleton_parser",
   "crates/icu_messageformat_parser",
   "crates/icu_messageformat",

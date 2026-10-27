@@ -20,11 +20,18 @@ config_setting(
 )
 
 cc_import(
-    name = "rust_canonicalizer",
+    name = "rust_intl",
     static_library = select({
-        ":darwin_arm64": "lib/aarch64-apple-darwin/libformatjs_intl_getcanonicallocales.a",
-        ":linux_x86_64": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_getcanonicallocales.a",
+        ":darwin_arm64": "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a",
+        ":linux_x86_64": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a",
     }),
+)
+
+cc_library(
+    name = "bridge",
+    hdrs = ["include/formatjs/hermes/bridge.h"],
+    strip_include_prefix = "include",
+    deps = ["@hermes//:headers"],
 )
 
 cc_library(
@@ -57,12 +64,55 @@ cc_library(
     }),
     strip_include_prefix = "include",
     deps = [
-        ":rust_canonicalizer",
+        ":bridge",
+        ":rust_intl",
         "@hermes//:headers",
     ],
+)
+
+cc_library(
+    name = "supported_values",
+    srcs = [
+        "src/supported_values.cpp",
+        "src/supported_values_of.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/supported_values.h",
+        "include/formatjs/intl/supported_values.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+alias(
+    name = "rust_canonicalizer",
+    actual = ":rust_intl",
 )
 
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
+    "js/31-IntlSupportedValuesOf.js",
 ])

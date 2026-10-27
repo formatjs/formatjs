@@ -85,3 +85,28 @@ bazel run -c opt //native/hermes:hermes_runner -- /absolute/path/script.js
 
 The host runner is an explicit development target. CI cross-builds the SDK and
 standalone macOS executable on Linux; macOS only runs the downloaded artifacts.
+
+## Native bridge
+
+Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
+callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
+branded handles, owned buffers, and factory installation.
+
+C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
+pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
+C names. The SDK ships generated headers and the shared bridge; SDK consumers
+need neither Rust nor cbindgen to build the JSI adapters.
+
+## Existing package conformance
+
+Each `//native/hermes/tests:<polyfill>_package_conformance_test` reuses package API
+test bodies against Rust JSI, in source and optimized-bytecode installer modes.
+Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
+implementations; native data envelopes preserve the original test payloads.
+
+Current targets: `supportedvaluesof`.
+
+Explicit exclusion reports identify TS-private state, implementation-defined
+diagnostics, and host-specific behavior. Original TS unit suites retain those
+checks. Unsupported assertions, stale exclusions, and unmet assertion counts fail.
+The host timezone stays UTC.

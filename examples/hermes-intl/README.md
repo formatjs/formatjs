@@ -4,7 +4,11 @@ This independent Bazel module consumes the extracted SDK archive. It does not
 load FormatJS build targets or compile Rust. The example creates a Hermes
 runtime, evaluates the SDK's precompiled extension setup, installs
 `Intl.getCanonicalLocales`, and checks aliases, duplicate removal, array-like
-inputs, and exceptions.
+inputs, and exceptions. It also installs `Intl.supportedValuesOf` from the same
+precompiled setup object and checks arrays, coercion, descriptors and errors.
+The embedding supplies formatters; this bare Hermes smoke intentionally has
+none. Full-list comparisons with real TS formatters run separately in
+`//native/hermes/tests:supported_values_conformance_test`.
 
 The SDK is built and tested here but is not published. From the FormatJS root
 on Linux:
