@@ -65,7 +65,9 @@ the independent consumer embeds only selected English/French packs.
 
 `:with_compiled_data` embeds build-selected binary locale records.
 `Registry::with_compiled_data()` makes those locales available without JSON
-registration. Select locales with `--//crates/intl_data:locales=en,fr`; the default is all locales.
+registration. Select locales with `--//crates/intl_data:locales=en,fr`; the default follows Chromium desktop's ICU language filter, including regional
+and script variants available in this checkout. Use `--//crates/intl_data:locales=\*`
+to include every CLDR locale.
 Rust validates packs and compiles plural rules during the build. Records decode
 lazily into per-registry caches; mutable data never crosses registry boundaries.
 The original target and `Registry::default()` retain explicit registration for

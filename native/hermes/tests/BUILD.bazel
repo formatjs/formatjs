@@ -483,6 +483,7 @@ js_test(
         "pluralrules",
         "listformat",
         "displaynames",
+        "numberformat",
     ],
     data = [
         ":chromium_locales_suite.js",
