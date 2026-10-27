@@ -23,3 +23,28 @@ pub unsafe extern "C" fn formatjs_datetime_calendar_load(
     .map(|result| result.err().unwrap_or(0))
     .unwrap_or(3)
 }
+
+/// # Safety
+/// Registry live on its creating thread.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_calendar_load_compiled(
+    registry: *const DateTimeRegistry,
+) -> i32 {
+    if registry.is_null() {
+        return 2;
+    }
+    #[cfg(feature = "compiled_data")]
+    {
+        catch_unwind(AssertUnwindSafe(|| {
+            let runtime = unsafe { (&*registry).runtime() };
+            crate::compiled::register(&runtime).map_err(|_| 1)?;
+            Ok::<_, i32>(())
+        }))
+        .map(|result| result.err().unwrap_or(0))
+        .unwrap_or(3)
+    }
+    #[cfg(not(feature = "compiled_data"))]
+    {
+        0
+    }
+}

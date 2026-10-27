@@ -65,7 +65,9 @@ pub use formatjs_intl_datetimeformat::ffi::{
     formatjs_datetime_registry_zone, formatjs_datetime_resolve, formatjs_datetime_supported,
     formatjs_datetime_zone,
 };
-pub use formatjs_intl_datetimeformat_calendars::ffi::formatjs_datetime_calendar_load;
+pub use formatjs_intl_datetimeformat_calendars::ffi::{
+    formatjs_datetime_calendar_load, formatjs_datetime_calendar_load_compiled,
+};
 
 pub use formatjs_intl_durationformat::ffi::{
     formatjs_duration_begin, formatjs_duration_bytes_free, formatjs_duration_construction_destroy,

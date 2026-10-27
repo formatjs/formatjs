@@ -40,6 +40,7 @@ struct DateTimeFormatInstallation::State {
     FormatjsDateTimeRegistry *raw = nullptr;
     if (formatjs_datetime_registry_create(&raw) != 0) throw std::runtime_error("Cannot create DateTimeFormat registry");
     registry.reset(raw);
+    if (formatjs_datetime_calendar_load_compiled(registry.get()) != 0) throw std::runtime_error("Cannot load compiled DateTimeFormat calendars");
     FormatjsDateTimeRecords *handles = nullptr;
     if (formatjs_datetime_records_create(&handles) != 0) throw std::runtime_error("Cannot create DateTimeFormat records");
     records.reset(handles);
