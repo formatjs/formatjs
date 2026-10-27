@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
@@ -533,4 +534,13 @@ formatjs_test(
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",
     ],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob([
+        "tests/**/*.ts",
+        "tests/**/*.snap",
+    ]) + TEST_LOCALE_DATA + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

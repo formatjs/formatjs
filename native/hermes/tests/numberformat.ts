@@ -483,6 +483,7 @@ for (const options of [
   {notation: 'bad'},
   {minimumIntegerDigits: 0},
   {roundingIncrement: 3},
+  {roundingIncrement: 2, minimumFractionDigits: 1, maximumFractionDigits: 2},
   {roundingMode: 'bad'},
   {roundingPriority: 'bad'},
   {trailingZeroDisplay: 'bad'},
