@@ -290,6 +290,21 @@ Temporal brands, negative leading zero and IEEE integers beyond the safe range.
 Default-runtime smoke also runs both modes without Temporal. The SDK packages both installers and typed smoke; see
 [SDK installation](package/README.md#durationformat) for dependency paths.
 
+## Native bridge
+
+Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
+callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
+branded handles, owned buffers, and factory installation.
+
+C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
+pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
+C names. The SDK ships generated headers and the shared bridge; SDK consumers
+need neither Rust nor cbindgen to build the JSI adapters.
+
+DateTimeFormat also keeps its handle table and deferred releases in Rust. GC
+threads drop release tickets; the runtime thread drains formatter records. Only
+JSI references and foreign exception identity remain in the C++ adapter.
+
 ## Existing package conformance
 
 Each `//native/hermes/tests:<polyfill>_package_conformance_test` reuses package API

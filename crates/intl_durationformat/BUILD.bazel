@@ -3,10 +3,12 @@ load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 
-exports_files(
-    ["durationformat.h"],
-    visibility = ["//native/hermes/package:__pkg__"],
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "durationformat.h",
 )
 
 cc_library(
