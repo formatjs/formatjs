@@ -159,6 +159,60 @@
     if (value === null) throw new BadReceiver('Options cannot be null')
     return object(value)
   }
+  function dateTimeOptions(
+    value: unknown,
+    required: 'all' | 'date' | 'time'
+  ): any {
+    const result = create(options(value))
+    let defaults = true
+    if (required !== 'time') {
+      for (const key of ['weekday', 'year', 'month', 'day'])
+        if (result[key] !== undefined) defaults = false
+    }
+    if (required !== 'date') {
+      for (const key of [
+        'dayPeriod',
+        'hour',
+        'minute',
+        'second',
+        'fractionalSecondDigits',
+      ])
+        if (result[key] !== undefined) defaults = false
+    }
+    const dateStyle = result.dateStyle,
+      timeStyle = result.timeStyle
+    if (required === 'date' && timeStyle !== undefined)
+      throw new BadReceiver('timeStyle is not valid for toLocaleDateString')
+    if (required === 'time' && dateStyle !== undefined)
+      throw new BadReceiver('dateStyle is not valid for toLocaleTimeString')
+    if (dateStyle !== undefined || timeStyle !== undefined) defaults = false
+    if (defaults) {
+      if (required !== 'time') {
+        property(result, 'year', 'numeric', true, true)
+        property(result, 'month', 'numeric', true, true)
+        property(result, 'day', 'numeric', true, true)
+      }
+      if (required !== 'date') {
+        property(result, 'hour', 'numeric', true, true)
+        property(result, 'minute', 'numeric', true, true)
+        property(result, 'second', 'numeric', true, true)
+      }
+    }
+    return result
+  }
+  function localDate(
+    receiver: unknown,
+    locales: unknown,
+    optionsInput: unknown,
+    required: 'all' | 'date' | 'time'
+  ): string {
+    const milliseconds = apply(dateGetTime, receiver, []) as number
+    if (milliseconds !== milliseconds) return 'Invalid Date'
+    return new (DateTimeFormat as any)(
+      locales,
+      dateTimeOptions(optionsInput, required)
+    ).format(milliseconds)
+  }
   function option(
     value: any,
     key: string,
@@ -555,4 +609,25 @@
   attributes.writable = false
   define(DateTimeFormat, 'prototype', attributes)
   property(intl, 'DateTimeFormat', DateTimeFormat)
+  property(
+    Date.prototype,
+    'toLocaleString',
+    function toLocaleString(this: unknown) {
+      return localDate(this, arguments[0], arguments[1], 'all')
+    }
+  )
+  property(
+    Date.prototype,
+    'toLocaleDateString',
+    function toLocaleDateString(this: unknown) {
+      return localDate(this, arguments[0], arguments[1], 'date')
+    }
+  )
+  property(
+    Date.prototype,
+    'toLocaleTimeString',
+    function toLocaleTimeString(this: unknown) {
+      return localDate(this, arguments[0], arguments[1], 'time')
+    }
+  )
 })
