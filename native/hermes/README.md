@@ -312,7 +312,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `datetimeformat`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `datetimeformat`, `durationformat`, `getcanonicallocales`.
 
 Segmenter uses the original Unicode files, parser, and package case filters.
 
@@ -327,3 +327,6 @@ Explicit exclusion reports identify TS-private state, implementation-defined
 diagnostics, and host-specific behavior. Original TS unit suites retain those
 checks. Unsupported assertions, stale exclusions, and unmet assertion counts fail.
 The host timezone stays UTC.
+
+DurationFormat owns its Rust formatter registry; host NumberFormat replacement
+tests remain TS-only.

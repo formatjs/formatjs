@@ -577,6 +577,8 @@ package_formatter_conformance("relativetimeformat")
 
 package_formatter_conformance("datetimeformat")
 
+package_formatter_conformance("durationformat")
+
 package_formatter_conformance("getcanonicallocales")
 
 compiled_runtime(
