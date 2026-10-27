@@ -213,7 +213,7 @@ map. Calendar providers still resolve independently for each endpoint.
 `:with_compiled_data` embeds build-selected binary locale records.
 `Registry::with_compiled_data()` makes those locales available without JSON
 registration. DateTimeFormat also exposes `Runtime::with_compiled_data()`.
-Select locales with `--//crates/intl_data:locales=en,fr`; the default follows Chromium desktop's ICU language filter, including regional
+Select locales with `--//crates/intl_data:locales=en,fr`; the default follows Chromium desktop's full-data UI language filter, including regional
 and script variants available in this checkout. Use `--//crates/intl_data:locales=\*`
 to include every CLDR locale.
 Rust validates packs and compiles plural rules during the build. Records decode
