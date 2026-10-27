@@ -82,3 +82,12 @@ owned C ABI handles retain data independently of the registry. Source and
 optimized-bytecode conformance also checks brands, subclassing, IteratorClose,
 captured intrinsics and fresh results. SDK consumers select independent JSON
 packs and link the `:listformat` adapter against the shared Rust archive.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

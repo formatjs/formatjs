@@ -26,3 +26,13 @@ The Hermes facade performs observable coercion, iteration and brand checks.
 bytecode installers with TS. The SDK includes adapters, selected JSON packs and
 an independent consumer smoke test. Native validation runs on Linux; macOS only
 executes cross-built artifacts.
+
+## Compiled provider
+
+`:with_compiled_data` embeds build-selected binary locale records.
+`Registry::with_compiled_data()` makes those locales available without JSON
+registration. Select locales with `--//crates/intl_data:locales=en,fr`; the default is all locales.
+Rust validates packs and compiles plural rules during the build. Records decode
+lazily into per-registry caches; mutable data never crosses registry boundaries.
+The original target and `Registry::default()` retain explicit registration for
+custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).

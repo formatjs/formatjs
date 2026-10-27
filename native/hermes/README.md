@@ -166,9 +166,7 @@ The independent SDK consumer verifies compiled English/French data, retained ins
 
 Link `//native/hermes:listformat` (SDK `:listformat`) and call
 `installListFormat(runtime)` after canonicalization. The overload accepting
-`extensions` uses the precompiled `IntlListFormat` factory. Load selected
-`locale-data/listformat/<locale>.json` text with
-`Intl.ListFormat.__addLocaleData(jsonText)` before construction.
+`extensions` uses the precompiled `IntlListFormat` factory. SDK locale data is compiled into Rust.
 
 Rust owns patterns, matching and parts. The TS facade supplies receiver brands,
 option access and StringListFromIterable, including IteratorClose. UTF-16 unit

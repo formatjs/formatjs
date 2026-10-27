@@ -1,15 +1,12 @@
 export {}
 
 const root = globalThis as any
-const ListFormat = Intl.ListFormat as typeof Intl.ListFormat & {
-  __addLocaleData(...packs: string[]): void
-}
+const ListFormat = Intl.ListFormat
 function equal(actual: unknown, expected: unknown): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(ListFormat.supportedLocalesOf(['en', 'fr']), [])
-ListFormat.__addLocaleData(root.__SDK_LIST_EN)
+equal(ListFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 const english = new ListFormat('en')
 equal(english.format(['A', 'B', 'C']), 'A, B, and C')
 equal(english.formatToParts(['\ud800', '\udc00']), [
@@ -18,8 +15,7 @@ equal(english.formatToParts(['\ud800', '\udc00']), [
   {type: 'element', value: '\udc00'},
 ])
 equal(english.format('😀A'), '😀 and A')
-equal(ListFormat.supportedLocalesOf('fr'), [])
-ListFormat.__addLocaleData(root.__SDK_LIST_FR)
+equal(ListFormat.supportedLocalesOf('fr'), ['fr'])
 equal(new ListFormat('fr').format(['A', 'B']), 'A et B')
 equal(english.format(['A', 'B']), 'A and B')
 equal(ListFormat.supportedLocalesOf(['fr-FR-u-nu-arab']), ['fr-FR-u-nu-arab'])

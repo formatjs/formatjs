@@ -261,7 +261,10 @@ rolldown_bundle(
 js_test(
     name = "compiled_locales_test",
     size = "medium",
-    args = ["pluralrules"],
+    args = [
+        "pluralrules",
+        "listformat",
+    ],
     data = [
         ":compiled_locales_suite.js",
         ":compiled_runtime",

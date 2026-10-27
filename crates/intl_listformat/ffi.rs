@@ -72,7 +72,7 @@ pub unsafe extern "C" fn formatjs_list_registry_create(out: *mut *mut ListRegist
     }
     guarded(|| {
         unsafe {
-            out.write(Box::into_raw(Box::new(ListRegistry(Registry::default()))));
+            out.write(Box::into_raw(Box::new(ListRegistry(Registry::initial()))));
         }
         Ok(())
     })

@@ -1,4 +1,5 @@
 # gazelle:resolve rs formatjs_intl_pluralrules //crates/intl_pluralrules
+# gazelle:resolve rs formatjs_intl_listformat //crates/intl_listformat
 load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")

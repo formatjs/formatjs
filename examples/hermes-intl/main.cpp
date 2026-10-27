@@ -18,12 +18,6 @@ namespace {
 constexpr char listSmoke[] =
 #include "listformat_smoke.inc"
     ;
-constexpr char listEnglish[] =
-#include "listformat_en.inc"
-    ;
-constexpr char listFrench[] =
-#include "listformat_fr.inc"
-    ;
 constexpr char pluralSmoke[] =
 #include "pluralrules_smoke.inc"
     ;
@@ -148,8 +142,6 @@ int main(int argc, char **argv) {
     if (!pluralPassed.isBool() || !pluralPassed.getBool()) throw std::runtime_error("PluralRules SDK smoke failed");
     std::cout << "Hermes SDK PluralRules passed\n";
     formatjs::installListFormat(*runtime, extensions);
-    runtime->global().setProperty(*runtime, "__SDK_LIST_EN", facebook::jsi::String::createFromUtf8(*runtime, listEnglish));
-    runtime->global().setProperty(*runtime, "__SDK_LIST_FR", facebook::jsi::String::createFromUtf8(*runtime, listFrench));
     runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(listSmoke), "formatjs:listformat-sdk-smoke");
     auto listPassed = runtime->global().getProperty(*runtime, "__SDK_LIST_PASSED");
     if (!listPassed.isBool() || !listPassed.getBool()) throw std::runtime_error("ListFormat SDK smoke failed");

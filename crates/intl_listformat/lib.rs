@@ -133,19 +133,23 @@ pub struct LocalePatterns {
     aliases: Vec<String>,
     templates: BTreeMap<String, BTreeMap<String, Templates>>,
 }
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct Pack {
+    format_version: u8,
+    locale: String,
+    #[serde(default)]
+    aliases: Vec<String>,
+    data: BTreeMap<String, BTreeMap<String, RawTemplates>>,
+}
 impl LocalePatterns {
     pub fn from_json(json: &str) -> Result<Self, Error> {
-        #[derive(Deserialize)]
-        #[serde(rename_all = "camelCase")]
-        struct Pack {
-            format_version: u8,
-            locale: String,
-            #[serde(default)]
-            aliases: Vec<String>,
-            data: BTreeMap<String, BTreeMap<String, RawTemplates>>,
-        }
         let pack: Pack =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
+        Self::from_pack(pack)
+    }
+
+    fn from_pack(pack: Pack) -> Result<Self, Error> {
         if pack.format_version != 1 {
             return Err(Error::InvalidData("unsupported pack version".into()));
         }
@@ -295,4 +299,16 @@ impl ListFormat {
             .flat_map(|part| part.value)
             .collect()
     }
+}
+
+impl<'de> serde::Deserialize<'de> for LocalePatterns {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let pack = Pack::deserialize(deserializer)?;
+        Self::from_pack(pack).map_err(serde::de::Error::custom)
+    }
+}
+
+#[cfg(feature = "compiled_data")]
+mod compiled_data {
+    include!(env!("FORMATJS_COMPILED_LOCALES"));
 }

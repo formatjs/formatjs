@@ -36,7 +36,6 @@ js/33-IntlPluralRules.js
 js/34-IntlListFormat.js
 js/listformat-smoke.js
 examples/listformat-smoke.ts
-locale-data/listformat/<locale>.json
 js/extensions.js
 js/pluralrules-smoke.js
 examples/pluralrules-smoke.ts
@@ -204,9 +203,5 @@ ABI and toolchain settings.
 The SDK's `BUILD.bazel` records the supported platform selection and native
 system linker flags.
 
-ListFormat also starts without locale data. Ship selected JSON files from
-`locale-data/listformat/` and pass their text to
-`Intl.ListFormat.__addLocaleData(jsonText)`. `:listformat_data` exposes all packs;
-individual JSON labels let consumers package only required locales. Existing
-instances keep their data when a later load replaces a locale. The independent
-consumer loads English then French and checks parts, UTF-16 and IteratorClose.
+ListFormat uses the compiled Rust provider. Its smoke checks parts, UTF-16,
+IteratorClose and localized formatting without locale JSON injection.
