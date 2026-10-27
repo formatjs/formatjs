@@ -351,3 +351,9 @@ impl LocaleData {
             .collect()
     }
 }
+
+impl<'de> Deserialize<'de> for LocaleData {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        Self::from_raw(RawLocale::deserialize(deserializer)?).map_err(serde::de::Error::custom)
+    }
+}

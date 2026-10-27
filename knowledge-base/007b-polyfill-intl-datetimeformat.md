@@ -536,3 +536,12 @@ loads every patch and forces its patterns; debug arithmetic/JSON costs exceeded
 the inner test deadline in CI. Collator integration likewise uses the shared
 optimized Hermes runtime, matching NumberFormat and RelativeTimeFormat suites.
 Assertions, corpus sizes and inner deadlines remain unchanged.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

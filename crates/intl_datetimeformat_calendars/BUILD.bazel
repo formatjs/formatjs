@@ -40,6 +40,27 @@ rust_library(
     ],
 )
 
+COMPILED_DEPS = [
+    "//crates/intl_datetimeformat:with_compiled_data",
+    "@crates//:serde",
+    "@crates//:serde_json",
+]
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "arithmetic.rs",
+        "ffi.rs",
+        "lib.rs",
+        "tables.rs",
+    ],
+    crate_name = "formatjs_intl_datetimeformat_calendars",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
+)
+
 ts_run_binary(
     name = "calendar_data",
     outs = ["calendar-data/%s.json" % calendar for calendar in CALENDARS],

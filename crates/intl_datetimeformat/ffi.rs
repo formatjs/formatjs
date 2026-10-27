@@ -149,7 +149,7 @@ pub unsafe extern "C" fn formatjs_datetime_registry_create(out: *mut *mut DateTi
     guarded(|| {
         unsafe {
             out.write(Box::into_raw(Box::new(
-                DateTimeRegistry(Runtime::default()),
+                DateTimeRegistry(Runtime::initial()),
             )));
         }
         Ok(())

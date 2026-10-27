@@ -549,6 +549,7 @@ js_test(
         "displaynames",
         "numberformat",
         "relativetimeformat",
+        "datetimeformat",
     ],
     data = [
         ":compiled_locales_suite.js",

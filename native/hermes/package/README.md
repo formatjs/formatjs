@@ -51,8 +51,6 @@ src/datetimeformat.inc
 js/40-IntlDateTimeFormat.js
 js/datetimeformat-smoke.js
 examples/datetimeformat-smoke.ts
-locale-data/datetimeformat/<locale>.json
-locale-data/datetimeformat/calendars/<calendar>/<locale>.json
 calendar-data/datetimeformat/<calendar>.json
 timezone-data/datetimeformat/tz-{all,golden}.json
 src/numberformat.cpp
@@ -193,7 +191,8 @@ aliases. Formatters without matching data retain their native fallback. Unknown
 languages fail the build. Rebuild the Rust archive to add another locale.
 
 Rust build tools validate the original CLDR packs, compile plural-rule expressions,
-and emit binary records. Runtime registries decode records lazily and cache them
+and emit binary records. Calendar locale patches join their base DateTimeFormat
+record at build time. Runtime registries decode records lazily and cache them
 independently, so unit updates and explicit overrides cannot leak between runtimes.
 The raw CLDR extraction remains shared with the TS packages.
 
@@ -209,9 +208,13 @@ flowchart LR
 Source builds can select the same provider with
 `--//crates/intl_data:compiled=true`. Rust callers use each formatter's
 `:with_compiled_data` target and `Registry::with_compiled_data()`;
-The uncompiled targets
+DateTimeFormat exposes `Runtime::with_compiled_data()`. The uncompiled targets
 retain explicit registration for custom providers and original TS conformance
 fixtures. Their JSON hooks remain available for intentional runtime overrides.
+
+Calendar arithmetic/table providers and timezone transitions remain independently
+selectable. Compiling a locale includes its calendar names and patterns; enabling
+an optional calendar provider no longer requires a separate locale patch.
 
 The standalone example builds this bytecode through Bazel's execution toolchain,
 so cross-compilation never runs the target-platform `hermesc`.
@@ -335,30 +338,21 @@ for core/contrib registration. GC finalizers queue handle IDs; native calls and
 guard teardown release records on their creating thread. Calling retained JS
 formatters after guard release throws.
 
-Load selected UTF-8 JSON strings through these independent hooks:
+Base locale data and calendar locale patches are compiled into Rust. Optional
+calendar providers still use `Intl.DateTimeFormat.__addCalendarData(text)` with
+`calendar-data/datetimeformat/<calendar>.json`. Fourteen providers include selected
+lunar/Umm al-Qura tables. Their locale names and patterns are already present.
 
-| SDK path                                                        | Registration                                        |
-| --------------------------------------------------------------- | --------------------------------------------------- |
-| `locale-data/datetimeformat/<locale>.json`                      | `Intl.DateTimeFormat.__addLocaleData(text)`         |
-| `calendar-data/datetimeformat/<calendar>.json`                  | `Intl.DateTimeFormat.__addCalendarData(text)`       |
-| `locale-data/datetimeformat/calendars/<calendar>/<locale>.json` | `Intl.DateTimeFormat.__addCalendarLocaleData(text)` |
-| `timezone-data/datetimeformat/tz-golden.json` or `tz-all.json`  | `Intl.DateTimeFormat.__addTZData(text)`             |
+Timezone transitions load through `Intl.DateTimeFormat.__addTZData(text)` from
+`timezone-data/datetimeformat/tz-golden.json` or `tz-all.json`. Names are available
+before loading transitions, with UTC offsets until data arrives. Replacement
+updates existing instances; ranges retain one transition snapshot across endpoints.
+The default timezone starts at UTC; `__setDefaultTimeZone(name)` changes subsequent
+defaults. `:datetimeformat_calendar_data` and `:datetimeformat_timezone_data` expose
+these resources separately.
 
-Base packs include native number data and Gregorian/ISO patterns. Optional
-calendar arithmetic and locale patches can arrive in either order; both must be
-present before that calendar becomes selectable. Fourteen calendar packs include
-selected lunar/Umm al-Qura tables. Timezone names are available before loading
-transitions, with UTC offsets until data arrives. Replacing timezone data updates
-existing instances on subsequent calls; a range retains one transition snapshot
-across both endpoints. The default timezone starts at UTC; use
-`Intl.DateTimeFormat.__setDefaultTimeZone(name)` to change subsequent defaults.
-
-Public filegroups `:datetimeformat_data`, `:datetimeformat_calendar_data`,
-`:datetimeformat_calendar_locale_data` and `:datetimeformat_timezone_data` expose
-all packs; individual file labels allow apps to package only selected resources.
-The formatter needs no installed JS NumberFormat or PluralRules. If using Temporal,
-install its implementation before the native formatter so captured intrinsics can
-recognize its brands. ZonedDateTime is rejected; use an Instant or plain value.
+Install Temporal before the formatter to capture its brands. ZonedDateTime is
+rejected; use an Instant or plain value. JS NumberFormat/PluralRules are unnecessary.
 
 Custom `__addCalendarData({calendar, dateFromTime})` providers receive adjusted
 local milliseconds with `Intl.DateTimeFormat.calendarData` as `this`. Return typed
@@ -366,6 +360,6 @@ calendar fields; callbacks may reenter formatting and throw JS values with their
 original identity preserved.
 
 `examples/datetimeformat-smoke.ts` ships as `js/datetimeformat-smoke.js`. The
-independent consumer runs source and precompiled installers, late locale loads,
+independent consumer runs source and precompiled installers with compiled locales,
 parts/ranges, DST transition loading, Hebrew Adar II names and formatting after
 removing JS NumberFormat/PluralRules.

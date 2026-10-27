@@ -207,3 +207,14 @@ single SDK archive, with checks active in optimized builds.
 Range calls retain one transition map across endpoint callbacks. Replacing timezone
 data during conversion affects later calls; both endpoints keep the current call's
 map. Calendar providers still resolve independently for each endpoint.
+
+## Compiled provider
+
+`:with_compiled_data` embeds build-selected binary locale records.
+`Registry::with_compiled_data()` makes those locales available without JSON
+registration. DateTimeFormat also exposes `Runtime::with_compiled_data()`.
+Select locales with `--//crates/intl_data:locales=en,fr`; the default is all locales.
+Rust validates packs and compiles plural rules during the build. Records decode
+lazily into per-registry caches; mutable data never crosses registry boundaries.
+The original target and `Registry::default()` retain explicit registration for
+custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).

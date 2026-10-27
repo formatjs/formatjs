@@ -19,6 +19,17 @@ pub struct Runtime {
     zones: TimeZoneRegistry,
 }
 impl Runtime {
+    pub(crate) fn initial() -> Self {
+        Self {
+            registry: Rc::new(RefCell::new(Registry::initial())),
+            zones: TimeZoneRegistry::default(),
+        }
+    }
+    #[cfg(feature = "compiled_data")]
+    pub fn with_compiled_data() -> Self {
+        Self::initial()
+    }
+
     pub fn add_locale_data(&self, json: &str) -> Result<(), Error> {
         self.registry.borrow_mut().add_locale_data(json)
     }

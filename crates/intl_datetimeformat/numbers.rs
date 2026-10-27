@@ -20,15 +20,21 @@ impl std::fmt::Debug for NumberData {
 }
 impl<'de> Deserialize<'de> for NumberData {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let value = serde_json::Value::deserialize(deserializer)?;
-        Self::from_json(&value.to_string()).map_err(serde::de::Error::custom)
+        let data = formatjs_intl_numberformat::LocaleData::deserialize(deserializer)?;
+        Self::from_data(data).map_err(serde::de::Error::custom)
     }
 }
 impl NumberData {
     pub fn from_json(json: &str) -> Result<Self, Error> {
+        Self::from_data(
+            formatjs_intl_numberformat::LocaleData::from_json(json)
+                .map_err(|_| Error::InvalidLocaleData)?,
+        )
+    }
+    fn from_data(data: formatjs_intl_numberformat::LocaleData) -> Result<Self, Error> {
         let mut registry = Registry::default();
         registry
-            .add_locale_data(json)
+            .add_data(data)
             .map_err(|_| Error::InvalidLocaleData)?;
         Ok(Self {
             registry,

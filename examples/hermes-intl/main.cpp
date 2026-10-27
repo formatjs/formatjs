@@ -24,17 +24,8 @@ namespace {
 constexpr char datetimeformat_smoke[] =
 #include "datetimeformat_smoke.inc"
     ;
-constexpr char datetimeformat_en[] =
-#include "datetimeformat_en.inc"
-    ;
-constexpr char datetimeformat_fr[] =
-#include "datetimeformat_fr.inc"
-    ;
 constexpr char datetimeformat_hebrew[] =
 #include "datetimeformat_hebrew.inc"
-    ;
-constexpr char datetimeformat_hebrew_en[] =
-#include "datetimeformat_hebrew_en.inc"
     ;
 constexpr char datetimeformat_tz[] =
 #include "datetimeformat_tz.inc"
@@ -212,10 +203,7 @@ int main(int argc, char **argv) {
     std::cout << "Hermes SDK RelativeTimeFormat passed\n";
 
     auto dateTimeInstallation = formatjs::installDateTimeFormat(*runtime, extensions);
-    runtime->global().setProperty(*runtime, "__SDK_DATETIME_EN", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_en));
-    runtime->global().setProperty(*runtime, "__SDK_DATETIME_FR", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_fr));
     runtime->global().setProperty(*runtime, "__SDK_DATETIME_HEBREW", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_hebrew));
-    runtime->global().setProperty(*runtime, "__SDK_DATETIME_HEBREW_EN", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_hebrew_en));
     runtime->global().setProperty(*runtime, "__SDK_DATETIME_TZ", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_tz));
     runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(datetimeformat_smoke), "formatjs:datetimeformat-sdk-smoke");
     auto dateTimePassed = runtime->global().getProperty(*runtime, "__SDK_DATETIME_PASSED");

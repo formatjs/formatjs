@@ -3,6 +3,9 @@ use crate::{
     calendar::{CalendarProvider, CalendarRegistry},
     data::{CalendarPatch, HourCycle, LocaleData, RawLocale},
 };
+#[cfg(feature = "compiled_data")]
+use formatjs_intl_data::Compiled;
+use formatjs_intl_data::Data;
 use formatjs_intl_getcanonicallocales::get_canonical_locales;
 use formatjs_intl_locale::{Locale, LocaleOptions, matcher};
 use serde::{Deserialize, Serialize};
@@ -31,8 +34,28 @@ pub struct Resolution {
     pub hour_cycle: Option<HourCycle>,
 }
 
+struct CompiledLocale {
+    locale: String,
+    raw: Data<RawLocale>,
+    prepared: OnceLock<Option<Arc<LocaleData>>>,
+}
+impl CompiledLocale {
+    fn get(&self) -> Result<Arc<LocaleData>, Error> {
+        self.prepared
+            .get_or_init(|| {
+                self.raw
+                    .get()
+                    .ok()
+                    .and_then(|raw| Registry::prepare(&raw, &[]).ok())
+            })
+            .clone()
+            .ok_or(Error::InvalidLocaleData)
+    }
+}
+
 #[derive(Default)]
 pub struct Registry {
+    compiled: BTreeMap<String, Arc<CompiledLocale>>,
     raw: BTreeMap<String, Arc<RawLocale>>,
     patches: BTreeMap<String, Vec<Arc<CalendarPatch>>>,
     processed: BTreeMap<String, Arc<LocaleData>>,
@@ -139,6 +162,75 @@ fn keyword(
 }
 
 impl Registry {
+    pub(crate) fn initial() -> Self {
+        #[cfg(feature = "compiled_data")]
+        {
+            Self::with_compiled_data()
+        }
+        #[cfg(not(feature = "compiled_data"))]
+        {
+            Self::default()
+        }
+    }
+
+    #[cfg(feature = "compiled_data")]
+    pub fn with_compiled_data() -> Self {
+        let mut registry = Self::default();
+        crate::compiled_data::initialize(&mut registry);
+        registry
+    }
+
+    #[cfg(feature = "compiled_data")]
+    pub(crate) fn add_compiled(
+        &mut self,
+        locale: &str,
+        _aliases: &[&str],
+        data: &'static Compiled<RawLocale>,
+    ) {
+        let record = Arc::new(CompiledLocale {
+            locale: locale.into(),
+            raw: Data::compiled(data),
+            prepared: OnceLock::new(),
+        });
+        self.explicit.insert(locale.into());
+        let tags: Vec<_> = std::iter::once(locale.to_owned())
+            .chain(aliases().get(locale).into_iter().flatten().cloned())
+            .collect();
+        for tag in &tags {
+            if tag == locale || !self.explicit.contains(tag) {
+                self.insert_compiled(tag.clone(), record.clone(), true);
+            }
+        }
+        for tag in tags {
+            let selected = self.compiled[&tag].clone();
+            let mut parts: Vec<_> = tag.split('-').collect();
+            while parts.len() > 1 {
+                if parts.len() > 2 && parts[1].len() == 4 {
+                    let scriptless = std::iter::once(parts[0])
+                        .chain(parts[2..].iter().copied())
+                        .collect::<Vec<_>>()
+                        .join("-");
+                    self.insert_compiled(scriptless, selected.clone(), false);
+                }
+                parts.pop();
+                self.insert_compiled(parts.join("-"), selected.clone(), false);
+            }
+        }
+        if self.default.is_none() {
+            self.default = Some(locale.into());
+        }
+    }
+
+    #[cfg(feature = "compiled_data")]
+    fn insert_compiled(&mut self, tag: String, data: Arc<CompiledLocale>, replace: bool) {
+        if !self.compiled.contains_key(&tag) {
+            self.available.push(tag.clone());
+        }
+        if replace || !self.compiled.contains_key(&tag) {
+            self.compiled.insert(tag, data);
+        }
+    }
+
     fn prepare(raw: &RawLocale, patches: &[Arc<CalendarPatch>]) -> Result<Arc<LocaleData>, Error> {
         let mut raw = raw.clone();
         for patch in patches {
@@ -148,15 +240,20 @@ impl Registry {
     }
 
     fn insert(&mut self, tag: String, data: Arc<LocaleData>, replace: bool) {
-        if !self.data.contains_key(&tag) {
+        if !self.data.contains_key(&tag) && !self.compiled.contains_key(&tag) {
             self.available.push(tag.clone());
         }
-        if replace || !self.data.contains_key(&tag) {
+        if replace || (!self.data.contains_key(&tag) && !self.compiled.contains_key(&tag)) {
             self.data.insert(tag, data);
         }
     }
 
     fn publish(&mut self, locale: &str, data: Arc<LocaleData>) {
+        for (tag, record) in &self.compiled {
+            if record.locale == locale && !self.data.contains_key(tag) {
+                self.data.insert(tag.clone(), data.clone());
+            }
+        }
         // Reload inferred parents only while they still share the previous record.
         if let Some(previous) = self.processed.get(locale) {
             for value in self.data.values_mut() {
@@ -216,6 +313,12 @@ impl Registry {
         let patch: CalendarPatch =
             serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
         let locale = patch.locale.clone();
+        if !self.raw.contains_key(&locale) {
+            if let Some(record) = self.compiled.get(&locale) {
+                let raw = record.raw.get().map_err(|_| Error::InvalidLocaleData)?;
+                self.raw.insert(locale.clone(), raw);
+            }
+        }
         let mut patches = self.patches.get(&locale).cloned().unwrap_or_default();
         if let Some(previous) = patches
             .iter_mut()
@@ -254,7 +357,10 @@ impl Registry {
     }
 
     pub fn get(&self, locale: &str) -> Result<Arc<LocaleData>, Error> {
-        self.data.get(locale).cloned().ok_or(Error::MissingLocale)
+        if let Some(data) = self.data.get(locale) {
+            return Ok(data.clone());
+        }
+        self.compiled.get(locale).ok_or(Error::MissingLocale)?.get()
     }
 
     pub fn available_locales(&self) -> &[String] {

@@ -5,17 +5,12 @@ interface RustDateTimeConstructor {
     options?: Intl.DateTimeFormatOptions
   ): Intl.DateTimeFormat
   supportedLocalesOf(locales: string[]): string[]
-  __addLocaleData(...packs: string[]): void
   __addCalendarData(...packs: string[]): void
-  __addCalendarLocaleData(...packs: string[]): void
   __addTZData(pack: string): void
 }
 const DateTimeFormat = Intl.DateTimeFormat as unknown as RustDateTimeConstructor
 const root = globalThis as unknown as {
-  __SDK_DATETIME_EN: string
-  __SDK_DATETIME_FR: string
   __SDK_DATETIME_HEBREW: string
-  __SDK_DATETIME_HEBREW_EN: string
   __SDK_DATETIME_TZ: string
   __SDK_DATETIME_PASSED?: boolean
 }
@@ -23,8 +18,7 @@ function equal(actual: unknown, expected: unknown): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(DateTimeFormat.supportedLocalesOf(['en', 'fr']), [])
-DateTimeFormat.__addLocaleData(root.__SDK_DATETIME_EN)
+equal(DateTimeFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 const old = new DateTimeFormat('en', {
   timeZone: 'UTC',
   year: 'numeric',
@@ -47,7 +41,6 @@ if (
   !range.some(part => part.source === 'endRange')
 )
   throw new Error('Missing range sources')
-DateTimeFormat.__addLocaleData(root.__SDK_DATETIME_FR)
 equal(DateTimeFormat.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 equal(old.format(0), '01/01/1970')
 equal(
@@ -72,9 +65,8 @@ equal(ny.format(Date.UTC(2024, 2, 10, 7, 30)), '03:30')
 DateTimeFormat.__addCalendarData(root.__SDK_DATETIME_HEBREW)
 equal(
   new DateTimeFormat('en', {calendar: 'hebrew'}).resolvedOptions().calendar,
-  'gregory'
+  'hebrew'
 )
-DateTimeFormat.__addCalendarLocaleData(root.__SDK_DATETIME_HEBREW_EN)
 const hebrew = new DateTimeFormat('en', {
   calendar: 'hebrew',
   timeZone: 'UTC',
