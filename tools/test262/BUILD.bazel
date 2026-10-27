@@ -242,6 +242,7 @@ INTL_SUITES = [
         tags = [] if name in [
             "getcanonicallocales",
             "durationformat",
+            "supportedvaluesof",
         ] else ["manual"],
     )
     for name, suite in INTL_SUITES
