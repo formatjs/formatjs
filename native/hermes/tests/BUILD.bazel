@@ -600,6 +600,7 @@ js_test(
         "displaynames",
         "numberformat",
         "relativetimeformat",
+        "datetimeformat",
     ],
     data = [
         ":chromium_locales_suite.js",
