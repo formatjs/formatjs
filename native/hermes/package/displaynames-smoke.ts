@@ -1,15 +1,12 @@
 export {}
 
 const root = globalThis as any
-const DisplayNames = Intl.DisplayNames as typeof Intl.DisplayNames & {
-  __addLocaleData(...packs: string[]): void
-}
+const DisplayNames = Intl.DisplayNames
 function equal(actual: unknown, expected: unknown): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(DisplayNames.supportedLocalesOf(['en', 'fr', 'aa']), [])
-DisplayNames.__addLocaleData(root.__SDK_DISPLAY_EN)
+equal(DisplayNames.supportedLocalesOf(['en', 'fr', 'aa']), ['en', 'fr', 'aa'])
 const english = new DisplayNames('en', {type: 'language'})
 equal(english.of('en'), 'English')
 equal(english.of('en-GB'), 'British English')
@@ -25,12 +22,10 @@ equal(
   new DisplayNames('en', {type: 'currency', fallback: 'none'}).of('zzz'),
   undefined
 )
-equal(DisplayNames.supportedLocalesOf('fr'), [])
-DisplayNames.__addLocaleData(root.__SDK_DISPLAY_FR)
+equal(DisplayNames.supportedLocalesOf('fr'), ['fr'])
 equal(new DisplayNames('fr', {type: 'language'}).of('en'), 'anglais')
 equal(english.of('en'), 'English')
 equal(DisplayNames.supportedLocalesOf(['fr-FR-u-nu-arab']), ['fr-FR-u-nu-arab'])
-DisplayNames.__addLocaleData(root.__SDK_DISPLAY_AA)
 equal(new DisplayNames('aa', {type: 'language'}).of('en'), 'en')
 equal(
   new DisplayNames('aa', {type: 'language', fallback: 'none'}).of('en'),

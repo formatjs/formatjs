@@ -82,3 +82,12 @@ Code validation consumes the entire input, including trailing line terminators.
 CLDR may omit language, territory or script name files for sparse locales. Those
 categories use empty maps so code/undefined fallback still works. Other extraction
 errors fail generation; they must not produce locale-only packs without data.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

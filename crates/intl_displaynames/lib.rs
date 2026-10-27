@@ -116,19 +116,23 @@ pub struct LocaleNames {
     aliases: Vec<String>,
     data: Data,
 }
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct Pack {
+    format_version: u8,
+    locale: String,
+    #[serde(default)]
+    aliases: Vec<String>,
+    data: Data,
+}
 impl LocaleNames {
     pub fn from_json(json: &str) -> Result<Self, Error> {
-        #[derive(Deserialize)]
-        #[serde(rename_all = "camelCase")]
-        struct Pack {
-            format_version: u8,
-            locale: String,
-            #[serde(default)]
-            aliases: Vec<String>,
-            data: Data,
-        }
         let pack: Pack =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
+        Self::from_pack(pack)
+    }
+
+    fn from_pack(pack: Pack) -> Result<Self, Error> {
         if pack.format_version != 1 {
             return Err(Error::InvalidData("unsupported pack version".into()));
         }
@@ -332,4 +336,16 @@ impl DisplayNames {
         }
         Ok((self.options.fallback == Fallback::Code).then_some(code))
     }
+}
+
+impl<'de> serde::Deserialize<'de> for LocaleNames {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let pack = Pack::deserialize(deserializer)?;
+        Self::from_pack(pack).map_err(serde::de::Error::custom)
+    }
+}
+
+#[cfg(feature = "compiled_data")]
+mod compiled_data {
+    include!(env!("FORMATJS_COMPILED_LOCALES"));
 }

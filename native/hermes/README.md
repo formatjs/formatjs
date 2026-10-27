@@ -179,9 +179,7 @@ enables the source installer in the development runner.
 
 Link `//native/hermes:displaynames` (SDK `:displaynames`) and call
 `installDisplayNames(runtime)` after canonicalization. The overload accepting
-`extensions` uses the precompiled `IntlDisplayNames` factory. Load selected
-`locale-data/displaynames/<locale>.json` text with
-`Intl.DisplayNames.__addLocaleData(jsonText)` before construction.
+`extensions` uses the precompiled `IntlDisplayNames` factory. SDK locale data is compiled into Rust.
 
 Rust owns code validation, canonicalization, CLDR lookup and locale matching.
 The TS facade handles required options, getter/coercion order and receiver brands.

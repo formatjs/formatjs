@@ -76,7 +76,7 @@ pub unsafe extern "C" fn formatjs_display_registry_create(out: *mut *mut Display
     guarded(|| {
         unsafe {
             out.write(Box::into_raw(Box::new(
-                DisplayRegistry(Registry::default()),
+                DisplayRegistry(Registry::initial()),
             )));
         }
         Ok(())
