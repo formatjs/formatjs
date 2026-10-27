@@ -4,10 +4,12 @@ load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("//packages/intl-displaynames:locales.generated.bzl", "ALL_LOCALES")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 
-exports_files(
-    ["displaynames.h"],
-    visibility = ["//native/hermes/package:__pkg__"],
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "displaynames.h",
 )
 
 cc_library(
