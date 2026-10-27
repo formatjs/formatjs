@@ -31,6 +31,7 @@
   const upper = String.prototype.toUpperCase
   const indexOf = String.prototype.indexOf
   const slice = String.prototype.slice
+  const numberValueOf = Number.prototype.valueOf
   const ProxyConstructor = Proxy
   const SetConstructor = Set
   const setAdd = Set.prototype.add
@@ -633,4 +634,12 @@
   prototypeDescriptor.writable = false
   define(NumberFormat, 'prototype', prototypeDescriptor)
   property(intl, 'NumberFormat', NumberFormat)
+  property(
+    Number.prototype,
+    'toLocaleString',
+    function toLocaleString(this: unknown) {
+      const value = apply(numberValueOf, this, [])
+      return new NumberFormat(arguments[0], arguments[1]).format(value)
+    }
+  )
 })

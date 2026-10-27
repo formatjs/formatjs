@@ -4,12 +4,44 @@ use formatjs_intl_datetimeformat::{
 };
 
 const PACK: &str = r#"{"abbrvs":"EST|EDT","offsets":"-dw0|-b40","zones":["America/New_York|,0,0,0|2s,1,1,1|5k,0,0,0"]}"#;
+
+#[test]
+fn etc_gmt_zones_use_tzdb_signs_without_transition_data() {
+    let registry = TimeZoneRegistry::default();
+    for (input, canonical, seconds) in [
+        ("etc/gmt+1", "Etc/GMT+1", -3600),
+        ("Etc/GMT+12", "Etc/GMT+12", -43200),
+        ("etc/gmt-14", "Etc/GMT-14", 50400),
+    ] {
+        let zone = registry.resolve(input).unwrap();
+        assert_eq!(zone.identifier(), canonical);
+        assert_eq!(registry.offset_at(&zone, 0).seconds, seconds);
+    }
+    for invalid in ["Etc/GMT+01", "Etc/GMT+13", "Etc/GMT-15"] {
+        assert_eq!(registry.resolve(invalid), Err(Error::InvalidTimeZone));
+    }
+}
+#[test]
+fn named_aliases_keep_their_identifier_and_use_target_offsets() {
+    let registry = TimeZoneRegistry::default();
+    registry.load_json(PACK).unwrap();
+    let alias = registry.resolve("us/eastern").unwrap();
+    assert_eq!(alias.identifier(), "US/Eastern");
+    assert_eq!(registry.offset_at(&alias, 0).seconds, -18000);
+    for (input, name) in [
+        ("etc/gmt", "Etc/GMT"),
+        ("etc/utc", "Etc/UTC"),
+        ("gmt", "GMT"),
+    ] {
+        assert_eq!(registry.resolve(input).unwrap().identifier(), name);
+    }
+}
 #[test]
 fn loaded_transitions_switch_exactly_at_instant_and_keep_historical_seconds() {
     let registry = TimeZoneRegistry::default();
     registry.load_json(PACK).unwrap();
     let zone = registry.resolve("us/eastern").unwrap();
-    assert_eq!(zone.identifier(), "America/New_York");
+    assert_eq!(zone.identifier(), "US/Eastern");
     for (instant, seconds, in_dst) in [
         (0, -18000, false),
         (99_999_999_999, -18000, false),
@@ -103,7 +135,7 @@ fn offsets_and_default_zone_preserve_validation_and_ascii_matching() {
     assert_eq!(registry.default_time_zone().identifier(), "+05:30");
     registry.set_default_time_zone(None).unwrap();
     assert_eq!(registry.default_time_zone().identifier(), "UTC");
-    assert_eq!(registry.resolve("gmt0").unwrap().identifier(), "UTC");
+    assert_eq!(registry.resolve("gmt0").unwrap().identifier(), "GMT0");
 }
 
 #[test]
@@ -145,7 +177,7 @@ fn construction_snapshots_keep_name_availability_but_use_current_offsets() {
     );
     assert_eq!(
         before.resolve("US/Eastern").unwrap().identifier(),
-        "America/New_York"
+        "US/Eastern"
     );
     assert_eq!(before.resolve("-00").unwrap().identifier(), "+00:00");
 }

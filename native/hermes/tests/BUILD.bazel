@@ -6,7 +6,7 @@ load("//tools:index.bzl", "ts_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
-load(":compiled-runtime.bzl", "chromium_runtime", "compiled_runtime")
+load(":compiled-runtime.bzl", "chromium_runtime", "compiled_runtime", "test262_runtime")
 load(":package-tests.bzl", "package_formatter_conformance")
 load(":runtime.bzl", "optimized_runtime")
 
@@ -428,6 +428,7 @@ rolldown_bundle(
     entry_point = "datetimeformat-prelude.ts",
     format = "iife",
     target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
     deps = ["//:node_modules/temporal-polyfill"],
 )
 
@@ -635,6 +636,12 @@ ts_project(
 chromium_runtime(
     name = "chromium_runtime",
     srcs = ["//native/hermes:hermes_runner"],
+)
+
+test262_runtime(
+    name = "test262_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+    visibility = ["//tools/test262:__pkg__"],
 )
 
 rolldown_bundle(

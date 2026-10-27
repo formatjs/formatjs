@@ -108,7 +108,7 @@ impl RenderData {
             &profile.pattern,
             &profile.pattern,
             &local,
-            zone.identifier(),
+            zone.data_identifier(),
         )
     }
 
@@ -555,7 +555,7 @@ impl RangeSnapshot {
                 &profile.pattern,
                 &profile.pattern,
                 first,
-                zone.identifier(),
+                zone.data_identifier(),
             )?;
             for part in &mut parts {
                 part.source = Some(Source::Shared);
@@ -614,7 +614,7 @@ impl RangeSnapshot {
                 &pattern,
                 &context,
                 local,
-                zone.identifier(),
+                zone.data_identifier(),
             )?;
             for item in &mut parts {
                 item.source = Some(part.source);
