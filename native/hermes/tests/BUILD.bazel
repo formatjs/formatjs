@@ -310,6 +310,7 @@ js_test(
     args = [
         "--suite=chromium_locales_suite.js",
         "pluralrules",
+        "listformat",
     ],
     data = [
         ":chromium_locales_suite.js",
