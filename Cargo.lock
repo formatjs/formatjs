@@ -701,6 +701,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_data"
+version = "0.1.0"
+dependencies = [
+ "ciborium",
+ "serde",
+]
+
+[[package]]
+name = "formatjs_intl_data_build"
+version = "0.1.0"
+dependencies = [
+ "ciborium",
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_plurals",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_getcanonicallocales"
 version = "0.1.0"
 dependencies = [
@@ -742,9 +763,10 @@ dependencies = [
 name = "formatjs_intl_pluralrules"
 version = "0.1.0"
 dependencies = [
+ "fixed_decimal",
+ "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
- "fixed_decimal",
  "icu_plurals",
  "icu_provider",
  "serde",

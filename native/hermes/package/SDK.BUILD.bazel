@@ -184,13 +184,6 @@ cc_library(
     ],
 )
 
-filegroup(
-    name = "pluralrules_data",
-    srcs = glob(["locale-data/pluralrules/*.json"]),
-)
-
-exports_files(glob(["locale-data/pluralrules/*.json"]))
-
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",

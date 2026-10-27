@@ -9,25 +9,9 @@ genrule(
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
 )
 
-genrule(
-    name = "pluralrules_en_source",
-    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:locale-data/pluralrules/en.json"],
-    outs = ["pluralrules_en.inc"],
-    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
-)
-
-genrule(
-    name = "pluralrules_fr_source",
-    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:locale-data/pluralrules/fr.json"],
-    outs = ["pluralrules_fr.inc"],
-    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
-)
-
 SMOKE_SOURCES = [
     "main.cpp",
     ":pluralrules_smoke_source",
-    ":pluralrules_en_source",
-    ":pluralrules_fr_source",
 ]
 
 genrule(

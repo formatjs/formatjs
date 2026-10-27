@@ -1,6 +1,10 @@
 //! Per-runtime locale registration. Loading a pack never changes existing
 //! instances or fetches another locale implicitly.
 
+#[cfg(feature = "compiled_data")]
+use formatjs_intl_data::Compiled;
+use formatjs_intl_data::Data;
+
 use crate::{
     Error, LocaleRules,
     instance::{Options, PluralRules},
@@ -10,13 +14,24 @@ use std::sync::Arc;
 
 #[derive(Default)]
 pub struct Registry {
-    data: BTreeMap<String, Arc<LocaleRules>>,
+    data: BTreeMap<String, Data<LocaleRules>>,
     explicit: BTreeSet<String>,
     available: Vec<String>,
     default: Option<String>,
 }
 
 impl Registry {
+    pub(crate) fn initial() -> Self {
+        #[cfg(feature = "compiled_data")]
+        {
+            Self::with_compiled_data()
+        }
+        #[cfg(not(feature = "compiled_data"))]
+        {
+            Self::default()
+        }
+    }
+
     /// Canonical requested tags come from the host's CanonicalizeLocaleList.
     pub fn negotiate(&self, requested: &[String], lookup: bool) -> Result<String, Error> {
         let matched = if lookup {
@@ -35,7 +50,7 @@ impl Registry {
         formatjs_intl_locale::matcher::supported(&self.available, requested)
     }
 
-    fn insert(&mut self, tag: String, rules: Arc<LocaleRules>, replace: bool) {
+    fn insert(&mut self, tag: String, rules: Data<LocaleRules>, replace: bool) {
         let exists = self.data.contains_key(&tag);
         if !exists {
             self.available.push(tag.clone());
@@ -46,13 +61,40 @@ impl Registry {
     }
 
     pub fn add_locale_data(&mut self, json: &str) -> Result<(), Error> {
-        // Validate the complete pack before changing availability or defaults.
-        let rules = Arc::new(LocaleRules::from_json(json)?);
-        let locale = rules.locale().to_owned();
+        self.add_data(LocaleRules::from_json(json)?)
+    }
+
+    pub fn add_data(&mut self, data: LocaleRules) -> Result<(), Error> {
+        let locale = data.locale().to_owned();
+        let aliases = data.aliases.clone();
+        self.register(locale, aliases, Data::Owned(Arc::new(data)));
+        Ok(())
+    }
+
+    #[cfg(feature = "compiled_data")]
+    pub fn with_compiled_data() -> Self {
+        let mut registry = Self::default();
+        crate::compiled_data::initialize(&mut registry);
+        registry
+    }
+
+    #[cfg(feature = "compiled_data")]
+    pub(crate) fn add_compiled(
+        &mut self,
+        locale: &str,
+        aliases: &[&str],
+        data: &'static Compiled<LocaleRules>,
+    ) {
+        self.register(
+            locale.into(),
+            aliases.iter().map(|tag| (*tag).into()).collect(),
+            Data::compiled(data),
+        );
+    }
+
+    fn register(&mut self, locale: String, aliases: Vec<String>, rules: Data<LocaleRules>) {
         self.explicit.insert(locale.clone());
-        let tags: Vec<_> = std::iter::once(locale.clone())
-            .chain(rules.aliases.iter().cloned())
-            .collect();
+        let tags: Vec<_> = std::iter::once(locale.clone()).chain(aliases).collect();
         for tag in &tags {
             let replace = tag == &locale || !self.explicit.contains(tag);
             self.insert(tag.clone(), rules.clone(), replace);
@@ -78,7 +120,6 @@ impl Registry {
         if self.default.is_none() {
             self.default = Some(locale);
         }
-        Ok(())
     }
 
     /// Canonical tags, in registration order. Locale matching uses this snapshot.
@@ -93,7 +134,12 @@ impl Registry {
     /// `locale` is the already negotiated AvailableLocales entry. No implicit
     /// fallback here: lookup/best-fit matching belongs before instance creation.
     pub fn create(&self, locale: &str, options: &Options) -> Result<PluralRules, Error> {
-        let rules = self.data.get(locale).ok_or(Error::MissingLocale)?.clone();
+        let rules = self
+            .data
+            .get(locale)
+            .ok_or(Error::MissingLocale)?
+            .get()
+            .map_err(Error::InvalidData)?;
         PluralRules::with_locale(rules, locale.to_owned(), options)
     }
 }

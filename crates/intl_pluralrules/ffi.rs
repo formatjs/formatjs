@@ -112,7 +112,7 @@ pub unsafe extern "C" fn formatjs_plural_registry_create(out: *mut *mut PluralRe
     }
     guarded(|| {
         unsafe {
-            out.write(Box::into_raw(Box::new(PluralRegistry(Registry::default()))));
+            out.write(Box::into_raw(Box::new(PluralRegistry(Registry::initial()))));
         }
         Ok(())
     })

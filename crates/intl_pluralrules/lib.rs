@@ -1,5 +1,5 @@
-//! Locale rule packs loaded on demand. ICU4X compiles CLDR rule strings at load
-//! time; selecting a category does not parse rules or require baked locale data.
+//! Locale rules from explicit packs or a build-compiled provider. Compiled rules
+//! use ICU4X binary data; explicit JSON providers compile CLDR expressions on load.
 //! Constructor options and ECMA-402 decimal rounding are added above this layer.
 
 use std::collections::BTreeMap;
@@ -47,16 +47,14 @@ impl From<digits::Error> for Error {
 }
 
 #[derive(Deserialize)]
-struct Pack<'data> {
+struct Pack {
     #[serde(default, rename = "formatVersion")]
     format_version: Option<u8>,
     locale: String,
     #[serde(default)]
     aliases: Vec<String>,
-    #[serde(borrow)]
-    cardinal: PluralRulesData<'data>,
-    #[serde(borrow)]
-    ordinal: PluralRulesData<'data>,
+    cardinal: RulesData,
+    ordinal: RulesData,
     #[serde(default)]
     ranges: BTreeMap<String, BTreeMap<String, String>>,
     #[serde(default, rename = "compactExponents")]
@@ -84,16 +82,51 @@ impl DataProvider<PluralsOrdinalV1> for Provider {
     }
 }
 
-fn owned(data: PluralRulesData<'_>) -> PluralRulesData<'static> {
-    fn rule(value: Option<Rule<'_>>) -> Option<Rule<'static>> {
-        value.map(|value| Rule(value.0.into_owned()))
+struct OwnedRule(Rule<'static>);
+impl<'de> Deserialize<'de> for OwnedRule {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        struct Visitor;
+        impl<'de> serde::de::Visitor<'de> for Visitor {
+            type Value = OwnedRule;
+            fn expecting(&self, output: &mut fmt::Formatter) -> fmt::Result {
+                output.write_str("a CLDR rule or compiled rule bytes")
+            }
+            fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
+                let rule =
+                    Rule::deserialize(serde::de::value::BorrowedStrDeserializer::<E>::new(value))?;
+                Ok(OwnedRule(Rule(rule.0.into_owned())))
+            }
+            fn visit_bytes<E: serde::de::Error>(self, value: &[u8]) -> Result<Self::Value, E> {
+                let rule = Rule::deserialize(
+                    serde::de::value::BorrowedBytesDeserializer::<E>::new(value),
+                )?;
+                Ok(OwnedRule(Rule(rule.0.into_owned())))
+            }
+        }
+        if deserializer.is_human_readable() {
+            deserializer.deserialize_str(Visitor)
+        } else {
+            deserializer.deserialize_bytes(Visitor)
+        }
     }
-    PluralRulesData {
-        zero: rule(data.zero),
-        one: rule(data.one),
-        two: rule(data.two),
-        few: rule(data.few),
-        many: rule(data.many),
+}
+#[derive(Deserialize)]
+struct RulesData {
+    zero: Option<OwnedRule>,
+    one: Option<OwnedRule>,
+    two: Option<OwnedRule>,
+    few: Option<OwnedRule>,
+    many: Option<OwnedRule>,
+}
+impl RulesData {
+    fn rules(self) -> PluralRulesData<'static> {
+        PluralRulesData {
+            zero: self.zero.map(|rule| rule.0),
+            one: self.one.map(|rule| rule.0),
+            two: self.two.map(|rule| rule.0),
+            few: self.few.map(|rule| rule.0),
+            many: self.many.map(|rule| rule.0),
+        }
     }
 }
 
@@ -162,8 +195,12 @@ impl LocaleRules {
     /// Load one locale. The resulting rules own their payloads; callers may
     /// release the JSON buffer immediately. No global available-locale set exists.
     pub fn from_json(json: &str) -> Result<Self, Error> {
-        let pack: Pack<'_> =
+        let pack: Pack =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
+        Self::from_pack(pack)
+    }
+
+    fn from_pack(pack: Pack) -> Result<Self, Error> {
         if pack.format_version.is_some_and(|version| version != 1) {
             return Err(Error::InvalidData("formatVersion".to_owned()));
         }
@@ -193,8 +230,8 @@ impl LocaleRules {
         // The private provider serves this explicitly selected pack. Locale
         // negotiation happens outside it, before constructing ICU4X rules.
         let provider = Provider {
-            cardinal: DataPayload::from_owned(owned(pack.cardinal)),
-            ordinal: DataPayload::from_owned(owned(pack.ordinal)),
+            cardinal: DataPayload::from_owned(pack.cardinal.rules()),
+            ordinal: DataPayload::from_owned(pack.ordinal.rules()),
         };
         let cardinal = PluralRules::try_new_cardinal_unstable(&provider, Default::default())
             .map_err(|error| Error::InvalidData(error.to_string()))?;
@@ -304,4 +341,16 @@ impl LocaleRules {
             .map(String::as_str)
             .unwrap_or(last))
     }
+}
+
+impl<'de> serde::Deserialize<'de> for LocaleRules {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let pack = Pack::deserialize(deserializer)?;
+        Self::from_pack(pack).map_err(serde::de::Error::custom)
+    }
+}
+
+#[cfg(feature = "compiled_data")]
+mod compiled_data {
+    include!(env!("FORMATJS_COMPILED_LOCALES"));
 }

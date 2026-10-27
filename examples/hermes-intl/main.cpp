@@ -17,12 +17,6 @@ namespace {
 constexpr char pluralSmoke[] =
 #include "pluralrules_smoke.inc"
     ;
-constexpr char englishPack[] =
-#include "pluralrules_en.inc"
-    ;
-constexpr char frenchPack[] =
-#include "pluralrules_fr.inc"
-    ;
 }
 
 int main(int argc, char **argv) {
@@ -139,8 +133,6 @@ int main(int argc, char **argv) {
     std::cout << "Hermes SDK supportedValuesOf passed\n";
     std::cout << "Hermes SDK Locale passed\n";
     formatjs::installPluralRules(*runtime, extensions);
-    runtime->global().setProperty(*runtime, "__SDK_PLURAL_EN", facebook::jsi::String::createFromUtf8(*runtime, englishPack));
-    runtime->global().setProperty(*runtime, "__SDK_PLURAL_FR", facebook::jsi::String::createFromUtf8(*runtime, frenchPack));
     runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(pluralSmoke), "formatjs:pluralrules-sdk-smoke");
     auto pluralPassed = runtime->global().getProperty(*runtime, "__SDK_PLURAL_PASSED");
     if (!pluralPassed.isBool() || !pluralPassed.getBool()) throw std::runtime_error("PluralRules SDK smoke failed");

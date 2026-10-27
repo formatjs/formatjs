@@ -128,3 +128,12 @@ overwriting explicitly loaded data. Likely-subtag minimization does not merge
 distinct locale records, so loading `ar-EG` cannot replace `ar`.
 The default locale remains the first loaded locale's actual tag, rather than a
 minimized tag that later data loading could overwrite.
+
+## Native compiled data
+
+Hermes SDK builds select locale records in Rust, independently of the TS packages'
+dynamic registration API. See [native data setup](../native/hermes/README.md#compiled-locale-data).
+Rust tools validate existing CLDR inputs, compile plural expressions, merge calendar
+locale patches, and embed binary records in each native archive. No application JS
+or C++ locale registration is required. Additional locales require a native rebuild.
+Calendar arithmetic/table providers and timezone transitions remain optional resources.

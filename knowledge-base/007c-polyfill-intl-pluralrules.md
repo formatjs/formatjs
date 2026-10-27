@@ -210,3 +210,12 @@ individual JSON packs. The independent consumer links `:pluralrules`, embeds
 only English/French packs and a compiled TypeScript smoke script, then registers
 French after creating an English instance. BuildBuddy builds and cross-builds;
 macOS executes the downloaded consumer without building.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

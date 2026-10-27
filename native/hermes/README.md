@@ -93,6 +93,43 @@ Install trusted `Intl.Locale` before the final installer call. If Locale itself
 needs `Intl.getCanonicalLocales`, install the adapter, load Locale, then reinstall
 the adapter before application code so it captures Locale's intrinsic brand method.
 
+## Compiled locale data
+
+The SDK embeds locale records in its Rust archive, like `formatjs_intl`'s
+compiled-data configuration. Installing a formatter makes those locales available;
+application JS and C++ do not register locale JSON.
+
+All locales are included by default. Build a smaller SDK from the FormatJS checkout:
+
+```sh
+bazel build -c opt --//crates/intl_data:locales=en,fr //native/hermes/package:sdk
+```
+
+The setting applies to both platform archives. Locale selection uses Rust matching for scripts, regions and default-content
+aliases. Formatters without matching data retain their native fallback. Unknown
+languages fail the build. Rebuild the Rust archive to add another locale.
+
+Rust build tools validate the original CLDR packs, compile plural-rule expressions,
+and emit binary records. Runtime registries decode records lazily and cache them
+independently, so unit updates and explicit overrides cannot leak between runtimes.
+The raw CLDR extraction remains shared with the TS packages.
+
+```mermaid
+flowchart LR
+  CLDR[Existing CLDR inputs] --> Rust[Rust validation and rule compilation]
+  Selection[Build locale selection] --> Rust
+  Rust --> Archive[Native archive with binary records]
+  Archive --> Registry[Per-runtime lazy registry]
+  Registry --> Intl[Intl formatters]
+```
+
+Source builds can select the same provider with
+`--//crates/intl_data:compiled=true`. Rust callers use each formatter's
+`:with_compiled_data` target and `Registry::with_compiled_data()`;
+The uncompiled targets
+retain explicit registration for custom providers and original TS conformance
+fixtures. Their JSON hooks remain available for intentional runtime overrides.
+
 ## Development runner
 
 The standalone host runner uses the native Bazel module from
@@ -119,10 +156,8 @@ matching, owned instances, ranges and late replacement through JSI.
 API with TS through source and optimized-bytecode installers, plus coercion order,
 brands, subclasses, descriptors and captured intrinsics. Link
 `//native/hermes:pluralrules` and call `installPluralRules(runtime)` after
-canonicalization. Load selected JSON packs with
-`Intl.PluralRules.__addLocaleData(jsonText)` before constructing formatters.
-The independent SDK consumer verifies selected English/French packs, late
-loading, retained instances, BigInt, ranges and receiver checks on Linux and macOS.
+canonicalization. SDK locale data is compiled into Rust as described above.
+The independent SDK consumer verifies compiled English/French data, retained instances, BigInt, ranges and receiver checks on Linux and macOS.
 
 ## Native bridge
 

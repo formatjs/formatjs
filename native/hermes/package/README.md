@@ -32,7 +32,6 @@ js/33-IntlPluralRules.js
 js/extensions.js
 js/pluralrules-smoke.js
 examples/pluralrules-smoke.ts
-locale-data/pluralrules/<locale>.json
 lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a
 lib/aarch64-apple-darwin/libformatjs_intl_hermes.a
 ```
@@ -106,30 +105,42 @@ formatjs::installCanonicalLocales(*runtime, extensions);
 formatjs::installPluralRules(*runtime, extensions);
 ```
 
-PluralRules starts with no locale data. Ship selected files from
-`locale-data/pluralrules/` and load their UTF-8 JSON text before constructing a
-formatter. No JS locale functions or other locale packs load implicitly:
+## Compiled locale data
 
-```ts
-type NativePluralRules = typeof Intl.PluralRules & {
-  __addLocaleData(...packs: string[]): void
-}
+The SDK embeds locale records in its Rust archive, like `formatjs_intl`'s
+compiled-data configuration. Installing a formatter makes those locales available;
+application JS and C++ do not register locale JSON.
 
-const PluralRules = Intl.PluralRules as NativePluralRules
-// Obtain text through the application's file/network loader.
-PluralRules.__addLocaleData(frenchJsonText)
-const rules = new PluralRules('fr')
-rules.select(0) // 'one'
+All locales are included by default. Build a smaller SDK from the FormatJS checkout:
+
+```sh
+bazel build -c opt --//crates/intl_data:locales=en,fr //native/hermes/package:sdk
 ```
 
-Loading more packs updates supported locales. Existing instances keep their
-selected payload; replacing a locale affects new instances. The generated packs
-use `formatVersion: 1`. `:pluralrules_data` exposes all JSON files as Bazel data;
-individual file labels allow packaging only the required locales.
+The setting applies to both platform archives. Locale selection uses Rust matching for scripts, regions and default-content
+aliases. Formatters without matching data retain their native fallback. Unknown
+languages fail the build. Rebuild the Rust archive to add another locale.
 
-The standalone consumer compiles only the selected English/French pack inputs
-into its smoke executable. Its TypeScript smoke source ships under `examples/`;
-the precompiled script requires no Node.js or Rust compiler in the consumer.
+Rust build tools validate the original CLDR packs, compile plural-rule expressions,
+and emit binary records. Runtime registries decode records lazily and cache them
+independently, so unit updates and explicit overrides cannot leak between runtimes.
+The raw CLDR extraction remains shared with the TS packages.
+
+```mermaid
+flowchart LR
+  CLDR[Existing CLDR inputs] --> Rust[Rust validation and rule compilation]
+  Selection[Build locale selection] --> Rust
+  Rust --> Archive[Native archive with binary records]
+  Archive --> Registry[Per-runtime lazy registry]
+  Registry --> Intl[Intl formatters]
+```
+
+Source builds can select the same provider with
+`--//crates/intl_data:compiled=true`. Rust callers use each formatter's
+`:with_compiled_data` target and `Registry::with_compiled_data()`;
+The uncompiled targets
+retain explicit registration for custom providers and original TS conformance
+fixtures. Their JSON hooks remain available for intentional runtime overrides.
 
 The standalone example builds this bytecode through Bazel's execution toolchain,
 so cross-compilation never runs the target-platform `hermesc`.

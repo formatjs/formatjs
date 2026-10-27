@@ -1,26 +1,21 @@
 export {}
 
 const root = globalThis as any
-type NativePluralRules = typeof Intl.PluralRules & {
-  __addLocaleData(...packs: string[]): void
-}
 type Rules = Intl.PluralRules & {
   selectRange(start: unknown, end: unknown): string
 }
-const PluralRules = Intl.PluralRules as NativePluralRules
+const PluralRules = Intl.PluralRules
 function equal(actual: unknown, expected: unknown) {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(PluralRules.supportedLocalesOf(['en', 'fr']), [])
-PluralRules.__addLocaleData(root.__SDK_PLURAL_EN)
+equal(PluralRules.supportedLocalesOf(['en', 'fr']), ['en', 'fr'])
 const english = new PluralRules('en') as Rules
 const ordinal = new PluralRules('en', {type: 'ordinal'})
 equal(english.select(1), 'one')
 equal(ordinal.select(9007199254740993n as any), 'few')
 equal(english.selectRange(1n, 2n), 'other')
-equal(PluralRules.supportedLocalesOf('fr'), [])
-PluralRules.__addLocaleData(root.__SDK_PLURAL_FR)
+equal(PluralRules.supportedLocalesOf('fr'), ['fr'])
 equal(new PluralRules('fr').select(0), 'one')
 equal(english.select(1), 'one')
 equal(PluralRules.supportedLocalesOf(['fr-FR-u-nu-arab']), ['fr-FR-u-nu-arab'])

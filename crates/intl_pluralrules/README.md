@@ -58,3 +58,13 @@ apply Number overflow/underflow clamping, and keep BigInt outside that clamp.
 Arbitrary-length integers use string rounding when ICU's magnitude range is too
 small. The mathematical conformance suite compares TS selection and ranges,
 including 40,000-digit BigInt and long halfway fractions.
+
+## Compiled provider
+
+`:with_compiled_data` embeds build-selected binary locale records.
+`Registry::with_compiled_data()` makes those locales available without JSON
+registration. Select locales with `--//crates/intl_data:locales=en,fr`; the default is all locales.
+Rust validates packs and compiles plural rules during the build. Records decode
+lazily into per-registry caches; mutable data never crosses registry boundaries.
+The original target and `Registry::default()` retain explicit registration for
+custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).
