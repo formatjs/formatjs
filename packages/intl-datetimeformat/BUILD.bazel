@@ -1,3 +1,5 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
 # gazelle:exclude tests/rust-timezones.test.ts
 # gazelle:exclude tests/CalendarDateFromTime.test.ts
 # gazelle:exclude tests/temporal.test.ts
@@ -628,4 +630,10 @@ filegroup(
         "he",
     ]],
     visibility = ["//:__pkg__"],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES] + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )
