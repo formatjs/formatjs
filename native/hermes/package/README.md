@@ -291,7 +291,8 @@ instance and accepts exact UTF-16 input. `examples/collator-smoke.ts` covers sea
 locale tailorings, numeric runs, canonical equivalence, brands and descriptors.
 
 Collator requires the Hermes proxy-construction fix in overlay commit
-`338ff13ff1e996934ae615952d174f8c621844d9` (pending BCR version `260318099.0.0-393a539e6`).
+`338ff13ff1e996934ae615952d174f8c621844d9`, included in the pending BCR
+version `260318099.0.0-393a539e6`.
 Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
 perform extra observable `newTarget.prototype` reads during construction.
 
