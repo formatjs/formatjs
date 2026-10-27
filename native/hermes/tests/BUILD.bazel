@@ -354,6 +354,7 @@ js_test(
         "--suite=chromium_locales_suite.js",
         "pluralrules",
         "listformat",
+        "displaynames",
     ],
     data = [
         ":chromium_locales_suite.js",
