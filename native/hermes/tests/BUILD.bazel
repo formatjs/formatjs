@@ -656,6 +656,7 @@ js_test(
         "numberformat",
         "relativetimeformat",
         "datetimeformat",
+        "durationformat",
     ],
     data = [
         ":chromium_locales_suite.js",
