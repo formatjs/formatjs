@@ -307,6 +307,7 @@
     configurable: true,
   })
   defineProperty(target, 'prototype', {writable: false})
+  defineProperty(Locale, 'polyfilled', {value: true})
   defineProperty(intl, 'Locale', {
     value: Locale,
     writable: true,

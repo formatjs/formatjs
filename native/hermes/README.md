@@ -127,7 +127,11 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`.
+Current targets: `supportedvaluesof`, `locale`, `getcanonicallocales`.
+
+Canonicalization uses real native Locale objects, including internal-slot checks.
+Locale ICU-specific collation expectations have separate cases, retaining the
+other locale-info assertions and original expected values.
 
 Explicit exclusion reports identify TS-private state, implementation-defined
 diagnostics, and host-specific behavior. Original TS unit suites retain those

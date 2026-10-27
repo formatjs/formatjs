@@ -1,4 +1,5 @@
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -241,4 +242,10 @@ copy_file(
     name = "script_metadata",
     src = "@cldr_common//:common/properties/scriptMetadata.txt",
     out = "script-metadata.txt",
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )
