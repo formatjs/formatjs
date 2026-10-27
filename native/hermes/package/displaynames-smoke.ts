@@ -6,7 +6,7 @@ function equal(actual: unknown, expected: unknown): void {
   if (JSON.stringify(actual) !== JSON.stringify(expected))
     throw new Error(JSON.stringify({actual, expected}))
 }
-equal(DisplayNames.supportedLocalesOf(['en', 'fr', 'aa']), ['en', 'fr', 'aa'])
+equal(DisplayNames.supportedLocalesOf(['en', 'fr', 'zz']), ['en', 'fr'])
 const english = new DisplayNames('en', {type: 'language'})
 equal(english.of('en'), 'English')
 equal(english.of('en-GB'), 'British English')
@@ -26,12 +26,15 @@ equal(DisplayNames.supportedLocalesOf('fr'), ['fr'])
 equal(new DisplayNames('fr', {type: 'language'}).of('en'), 'anglais')
 equal(english.of('en'), 'English')
 equal(DisplayNames.supportedLocalesOf(['fr-FR-u-nu-arab']), ['fr-FR-u-nu-arab'])
-equal(new DisplayNames('aa', {type: 'language'}).of('en'), 'en')
+equal(new DisplayNames('zz', {type: 'language'}).of('en'), 'English')
 equal(
-  new DisplayNames('aa', {type: 'language', fallback: 'none'}).of('en'),
-  undefined
+  new DisplayNames('zz', {type: 'language', fallback: 'none'}).of('en'),
+  'English'
 )
-equal(new DisplayNames('aa', {type: 'calendar'}).of('gregory'), 'gregory')
+equal(
+  new DisplayNames('zz', {type: 'calendar'}).of('gregory'),
+  'Gregorian Calendar'
+)
 let badReceiver = false,
   badCode = false
 try {
