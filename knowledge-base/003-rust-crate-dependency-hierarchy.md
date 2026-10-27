@@ -427,3 +427,14 @@ fallback through the same provider. Both suites also format from checked-in
 `include_bytes!`. The shared Bazel external dependency graph still enables ICU
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.
+
+### Hermes bridge and C ABI
+
+`native/hermes/bridge.h` owns common JSI transport and buffer/handle cleanup.
+Polyfill state stays in Rust; only runtime references and foreign exception
+identity belong in C++ adapters.
+
+`tools/ffi_headers` builds pinned cbindgen from source with its upstream lockfile.
+Each Intl crate's `cbindgen.toml` keeps public C names while `rust_ffi_header`
+generates its header from Rust declarations. SDK packaging consumes those outputs,
+so changing an exported Rust signature updates the shipped ABI declaration.

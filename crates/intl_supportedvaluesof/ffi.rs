@@ -70,7 +70,15 @@ unsafe fn copy_string(value: BorrowedString) -> Result<Option<String>, ()> {
 pub unsafe extern "C" fn formatjs_supported_values_of(
     key: *const u8,
     len: usize,
-    probe: Option<Probe>,
+    probe: Option<
+        unsafe extern "C" fn(
+            *mut c_void,
+            u32,
+            BorrowedString,
+            BorrowedString,
+            *mut ProbeResult,
+        ) -> i32,
+    >,
     context: *mut c_void,
     out: *mut ValuesResult,
 ) -> i32 {

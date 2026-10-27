@@ -1,3 +1,4 @@
+#include <formatjs/hermes/bridge.h>
 #include <formatjs/hermes/supported_values.h>
 #include <formatjs/intl/supported_values.h>
 
@@ -16,10 +17,7 @@ constexpr char wrapperSource[] =
 #include "supported_values_of.inc"
     ;
 
-struct ValuesResult {
-  FormatjsValuesResult value{nullptr, 0};
-  ~ValuesResult() { formatjs_values_free(value); }
-};
+using ValuesResult = hermes_bridge::Buffer<FormatjsValuesResult, formatjs_values_free>;
 
 struct ProbeContext {
   jsi::Runtime &runtime;
@@ -162,12 +160,7 @@ void installSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &extensions) {
 }
 
 void installSupportedValuesOf(jsi::Runtime &runtime) {
-  auto factory = runtime.evaluateJavaScript(
-      std::make_shared<jsi::StringBuffer>(wrapperSource), "formatjs:supportedValuesOf")
-                     .asObject(runtime)
-                     .asFunction(runtime);
-  jsi::Object extensions(runtime);
-  extensions.setProperty(runtime, "IntlSupportedValuesOf", std::move(factory));
+  auto extensions = hermes_bridge::factory(runtime, wrapperSource, "formatjs:supportedValuesOf", "IntlSupportedValuesOf");
   installSupportedValuesOf(runtime, extensions);
 }
 

@@ -28,6 +28,13 @@ cc_import(
 )
 
 cc_library(
+    name = "bridge",
+    hdrs = ["include/formatjs/hermes/bridge.h"],
+    strip_include_prefix = "include",
+    deps = ["@hermes//:headers"],
+)
+
+cc_library(
     name = "canonical_locales",
     srcs = [
         "src/canonical_locales.cpp",
@@ -57,6 +64,7 @@ cc_library(
     }),
     strip_include_prefix = "include",
     deps = [
+        ":bridge",
         ":rust_intl",
         "@hermes//:headers",
     ],
@@ -92,6 +100,7 @@ cc_library(
     }),
     strip_include_prefix = "include",
     deps = [
+        ":bridge",
         ":rust_intl",
         "@hermes//:headers",
     ],

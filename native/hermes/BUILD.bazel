@@ -1,11 +1,32 @@
 # gazelle:ignore
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "ts_run_binary")
 
+cc_library(
+    name = "bridge",
+    hdrs = ["bridge.h"],
+    include_prefix = "formatjs/hermes",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = ["@hermes//:headers"],
+)
+
+cc_test(
+    name = "bridge_test",
+    srcs = ["bridge.test.cpp"],
+    copts = ["-std=c++17"],
+    deps = [
+        ":bridge",
+        "@hermes//:hermes_vm",
+    ],
+)
+
 exports_files(
     [
+        "bridge.h",
         "canonical_locales.cpp",
         "canonical_locales.h",
         "supported_values.cpp",
@@ -115,6 +136,7 @@ cc_library(
     strip_include_prefix = ".",
     visibility = ["//visibility:public"],
     deps = [
+        ":bridge",
         "//crates/intl_getcanonicallocales:headers",
         "//crates/intl_hermes",
         "@hermes//:headers",
@@ -137,6 +159,7 @@ cc_library(
     strip_include_prefix = ".",
     visibility = ["//visibility:public"],
     deps = [
+        ":bridge",
         "//crates/intl_hermes",
         "//crates/intl_supportedvaluesof:headers",
         "@hermes//:headers",
