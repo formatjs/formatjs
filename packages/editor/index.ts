@@ -33,7 +33,10 @@ export type {
 export {useTranslationEditor} from '#packages/editor/workflow.js'
 export type {
   EditorMessage,
+  EditorProject,
   MessageStatus,
+  ProjectChangeOptions,
+  ProjectChangeResult,
   SourceLocation,
   TranslationUpdate,
   TranslationDraftState,
@@ -42,5 +45,10 @@ export type {
   TranslationEditorOptions,
   TranslationEditorState,
 } from '#packages/editor/workflow.js'
+export {
+  formatSourceLocation,
+  resolveSourceLocationHref,
+} from '#packages/editor/source-location.js'
+export type {SourceLocationHrefOptions} from '#packages/editor/source-location.js'
 export {validateTranslation} from '#packages/editor/validation.js'
 export type {TranslationValidationError} from '#packages/editor/validation.js'

@@ -58,12 +58,18 @@ macOS developers need a Linux runner. There is no host-browser fallback.
 
 CI explicitly runs all four public test rules:
 
-| Target            | Rule                     | Coverage                                                                         |
-| ----------------- | ------------------------ | -------------------------------------------------------------------------------- |
-| `e2e_test`        | `web_e2e_test`           | Clicks, search, copy/clear, locale drafts, saving, clipboard and ICU recovery    |
-| `component_test`  | `component_browser_test` | Mount/update/unmount, provider changes, isolation, keyboard focus and narrow RTL |
-| `visual_test`     | `component_visual_test`  | Eight gallery captures, including tools, editing, errors and narrow RTL          |
-| `e2e_visual_test` | `visual_test`            | Four screenshots after page navigation, invalid input, recovery and saving       |
+| Target            | Rule                     | Coverage                                                                                   |
+| ----------------- | ------------------------ | ------------------------------------------------------------------------------------------ |
+| `e2e_test`        | `web_e2e_test`           | Clicks, search, copy/clear, locale drafts, saving, clipboard and ICU recovery              |
+| `component_test`  | `component_browser_test` | Mount/update/unmount, provider changes, isolation, keyboard focus and narrow RTL           |
+| `visual_test`     | `component_visual_test`  | Twelve gallery captures, including projects/sources, tools, editing, errors and narrow RTL |
+| `e2e_visual_test` | `visual_test`            | Four screenshots after page navigation, invalid input, recovery and saving                 |
+
+Project/source cases use the public workflow and view with the existing StyleX
+adapter plus native project/source controls. They cover both source badges,
+metadata copy controls, repository links, source filtering, project changes that
+reset filters, and a 390px RTL layout. Component interactions also verify that
+unsaved drafts block a project change until reset.
 
 Component VRT owns `__screenshots__/`; E2E VRT owns `__e2e_screenshots__/`.
 The initial E2E references match the existing component states. Each suite updates
@@ -150,7 +156,7 @@ accept `--test_arg=--grep=translation`; Bazel includes selection in the test act
 
 `editor.visual.tsx` declares shared renderable cases, browser-side readiness
 hooks, and VRT options. `gallery.tsx` installs the registry and supplies renderer
-mount/update/unmount behavior. The runtime generates all eight screenshot cases;
+mount/update/unmount behavior. The runtime generates all twelve screenshot cases;
 E2E screenshots live separately in `editor.visual.spec.ts`. Existing PNG names stay
 explicit in the visual declarations.
 

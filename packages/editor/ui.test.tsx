@@ -595,6 +595,116 @@ describe('public editor view', () => {
     )
     expect(screen.queryByRole('button', {name: /Description/})).toBeNull()
   })
+
+  it('renders project, source filter, and badges through adapters only when data exists', () => {
+    const projects = [
+      {id: 'web', label: 'Web app'},
+      {id: 'mobile', label: 'Mobile app'},
+    ]
+    const onProject = vi.fn()
+    const onSource = vi.fn()
+    const sourced = [
+      {...messages[0], sources: ['main', 'release']},
+      {id: 'plain', defaultMessage: 'No sources'},
+    ]
+    const props = {
+      messages: sourced,
+      selectedMessage: sourced[0],
+      onSelect: () => {},
+      translations: [],
+      filters: <h1>Workspace</h1>,
+    }
+    const {rerender} = render(
+      <TranslationEditorView
+        {...props}
+        projects={{projects, value: 'web', onChange: onProject}}
+        sourceFilter={{
+          sources: ['main', 'release'],
+          value: '',
+          onChange: onSource,
+        }}
+      />
+    )
+    const picker = screen.getByRole('combobox', {
+      name: 'Project',
+    }) as HTMLSelectElement
+    const filter = screen.getByRole('combobox', {
+      name: 'Source',
+    }) as HTMLSelectElement
+    expect(picker.value).toBe('web')
+    expect(
+      within(filter)
+        .getAllByRole('option')
+        .map(option => option.textContent)
+    ).toEqual(['All sources', 'main', 'release'])
+    fireEvent.change(picker, {target: {value: 'mobile'}})
+    fireEvent.change(filter, {target: {value: 'release'}})
+    expect(onProject).toHaveBeenCalledExactlyOnceWith('mobile')
+    expect(onSource).toHaveBeenCalledExactlyOnceWith('release')
+    expect(screen.getByRole('heading', {name: 'Workspace'})).toBeTruthy()
+    const row = screen.getByRole('button', {name: /Hello \{name\}/})
+    expect(within(row).getByTitle('Source main').textContent).toBe('main')
+    expect(within(row).getByTitle('Source release').textContent).toBe('release')
+    const plain = screen.getByRole('button', {name: /No sources/})
+    expect(within(plain).queryByTitle(/Source/)).toBeNull()
+    rerender(
+      <TranslationEditorView
+        {...props}
+        projects={{projects: [projects[0]], value: 'web', onChange: onProject}}
+        sourceFilter={{sources: [], value: '', onChange: onSource}}
+        labels={{project: 'Workspace', sourceBadge: source => `From ${source}`}}
+      />
+    )
+    expect(screen.queryByRole('combobox')).toBeNull()
+    expect(screen.getByRole('heading', {name: 'Workspace'})).toBeTruthy()
+    expect(screen.getByTitle('From main')).toBeTruthy()
+    rerender(<TranslationEditorView {...props} messages={messages} />)
+    expect(screen.queryByRole('combobox')).toBeNull()
+    expect(screen.queryByTitle(/Source|From/)).toBeNull()
+  })
+
+  it('exposes row sources to custom renderers and keeps registries without new adapters working', () => {
+    const seen = vi.fn()
+    const sourced = [{...messages[0], sources: ['release']}]
+    render(
+      <EditorDesignSystemProvider components={customComponents}>
+        <TranslationEditorView
+          messages={sourced}
+          selectedMessage={sourced[0]}
+          onSelect={() => {}}
+          translations={[]}
+          projects={{
+            projects: [
+              {id: 'web', label: 'Web app'},
+              {id: 'mobile', label: 'Mobile app'},
+            ],
+            value: 'mobile',
+            onChange: () => {},
+          }}
+          sourceFilter={{
+            sources: ['release'],
+            value: 'release',
+            onChange: () => {},
+          }}
+          renderMessage={(message, state) => {
+            seen(message.id, state)
+            return <span>{message.defaultMessage}</span>
+          }}
+        />
+      </EditorDesignSystemProvider>
+    )
+    const workspace = screen.getByRole('article', {name: 'Custom workspace'})
+    expect(
+      within(workspace)
+        .getAllByRole('combobox')
+        .map(select => (select as HTMLSelectElement).value)
+    ).toEqual(['mobile', 'release'])
+    expect(seen).toHaveBeenCalledWith('greeting', {
+      selected: true,
+      sources: ['release'],
+    })
+    expect(within(workspace).queryByTitle('Source release')).toBeNull()
+  })
 })
 
 describe('native textarea sizing', () => {
