@@ -1,0 +1,13 @@
+{
+  "total": 498,
+  "failures": {
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Incompatible Intl.NumberFormat receiver",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Incompatible Intl.NumberFormat receiver",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (default)": "Expected no error, got true: undefined",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol-property.js (strict mode)": "Expected no error, got true: undefined",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol.js (default)": "Expected no error, got false: undefined",
+    "intl402/NumberFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected no error, got false: undefined",
+    "intl402/NumberFormat/proto-from-ctor-realm.js (default)": "Expected no error, got stack: undefined",
+    "intl402/NumberFormat/proto-from-ctor-realm.js (strict mode)": "Expected no error, got stack: undefined"
+  }
+}

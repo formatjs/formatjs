@@ -1,0 +1,7 @@
+{
+  "total": 160,
+  "failures": {
+    "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got stack: undefined",
+    "intl402/RelativeTimeFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got stack: undefined"
+  }
+}
