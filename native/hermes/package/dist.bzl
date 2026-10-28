@@ -41,3 +41,19 @@ darwin_archive, _darwin_archive_internal = _archive(
     "//native/hermes/package:darwin_arm64",
     "macos_aarch64",
 )
+
+android_archive, _android_archive_internal = with_cfg(native.filegroup).set(
+    "compilation_mode",
+    "opt",
+).set(
+    "platforms",
+    [Label("//native/hermes/package:android_arm64")],
+).build()
+
+android_x86_64_archive, _android_x86_64_archive_internal = with_cfg(native.filegroup).set(
+    "compilation_mode",
+    "opt",
+).set(
+    "platforms",
+    [Label("//native/hermes/package:android_x86_64")],
+).build()

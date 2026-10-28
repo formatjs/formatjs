@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.13)
+project(appmodules)
+
+include(${REACT_ANDROID_DIR}/cmake-utils/ReactNative-application.cmake)
+
+if(NOT DEFINED FORMATJS_HERMES_SDK)
+  message(FATAL_ERROR "Set FORMATJS_HERMES_SDK to extracted Android SDK directory")
+endif()
+
+set(SDK ${FORMATJS_HERMES_SDK})
+if(ANDROID_ABI STREQUAL "arm64-v8a")
+  set(RUST_TRIPLE aarch64-linux-android)
+elseif(ANDROID_ABI STREQUAL "x86_64")
+  set(RUST_TRIPLE x86_64-linux-android)
+else()
+  message(FATAL_ERROR "Unsupported Android ABI: ${ANDROID_ABI}")
+endif()
+set(RUST_ARCHIVE ${SDK}/lib/${RUST_TRIPLE}/libformatjs_intl_hermes.a)
+if(NOT EXISTS ${RUST_ARCHIVE})
+  message(FATAL_ERROR "Missing Rust Android archive: ${RUST_ARCHIVE}")
+endif()
+
+file(GLOB INTL_SOURCES ${SDK}/src/*.cpp)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+  ../../../../../shared/NativeIntlModule.cpp
+  ${INTL_SOURCES}
+)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+  ../../../../../shared
+  ${SDK}/include
+)
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -std=c++17 -fexceptions)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${RUST_ARCHIVE})
