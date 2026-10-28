@@ -192,6 +192,13 @@ pub fn best_fit_requested(
     available: &[String],
     requested: &[String],
 ) -> Result<Option<(usize, String)>, LocaleError> {
+    // An exact first request needs no fallback locale index.
+    if let Some(desired) = requested.first() {
+        let desired = without_unicode_extension(desired);
+        if available.contains(&desired) {
+            return Ok(Some((0, desired)));
+        }
+    }
     let requested: Vec<_> = requested
         .iter()
         .map(|tag| without_unicode_extension(tag))
@@ -205,9 +212,6 @@ pub fn best_fit_requested(
             if distance < lowest {
                 lowest = distance;
                 result = Some((index, desired.clone()));
-            }
-            if index == 0 {
-                return Ok(result);
             }
         }
     }
