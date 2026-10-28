@@ -30,12 +30,12 @@ cd android
 ```
 
 `IntlScreenTest` checks Hermes, native installation, and every Intl API on
-rendered screen. It streams app-content `intl-screen.png` to shell temp storage
-so Gradle can uninstall the test APK before capture retrieval.
+rendered screen. It saves app-content `intl-screen.png` through Android
+MediaStore so Gradle can uninstall the test APK before capture retrieval.
 Pull and compare it against reviewed baseline:
 
 ```sh
-adb pull /data/local/tmp/intl-screen.png /tmp/intl-screen.png
+adb pull /sdcard/Pictures/FormatJS/intl-screen.png /tmp/intl-screen.png
 npm run vrt -- /tmp/intl-screen.png
 ```
 

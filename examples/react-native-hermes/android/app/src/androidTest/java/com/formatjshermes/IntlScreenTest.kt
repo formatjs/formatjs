@@ -1,8 +1,10 @@
 package com.formatjshermes
 
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.os.ParcelFileDescriptor
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -12,7 +14,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 class IntlScreenTest {
@@ -42,20 +43,26 @@ class IntlScreenTest {
         Thread.sleep(250)
       }
       assertTrue("Rendered text: $rendered", rendered.containsAll(expected))
-      val screenshot = File(context.getExternalFilesDir(null), "intl-screen.png")
       scenario.onActivity { activity ->
         val root = activity.findViewById<View>(android.R.id.content)
         val bitmap = Bitmap.createBitmap(root.width, root.height, Bitmap.Config.ARGB_8888)
         root.draw(Canvas(bitmap))
-        screenshot.outputStream().use {
+        val values = ContentValues().apply {
+          put(MediaStore.Images.Media.DISPLAY_NAME, "intl-screen.png")
+          put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+          put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/FormatJS")
+          put(MediaStore.Images.Media.IS_PENDING, 1)
+        }
+        val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+          ?: error("Screenshot MediaStore insert failed")
+        (context.contentResolver.openOutputStream(uri) ?: error("Screenshot output failed")).use {
           assertTrue("Screenshot capture failed", bitmap.compress(Bitmap.CompressFormat.PNG, 100, it))
         }
+        values.clear()
+        values.put(MediaStore.Images.Media.IS_PENDING, 0)
+        context.contentResolver.update(uri, values, null, null)
       }
-      val pipes = InstrumentationRegistry.getInstrumentation().uiAutomation
-        .executeShellCommandRw("cat > /data/local/tmp/intl-screen.png")
-      ParcelFileDescriptor.AutoCloseOutputStream(pipes[1]).use { it.write(screenshot.readBytes()) }
-      ParcelFileDescriptor.AutoCloseInputStream(pipes[0]).use { it.readBytes() }
-      println("Intl screen screenshot: ${screenshot.absolutePath}")
+      println("Intl screen screenshot: Pictures/FormatJS/intl-screen.png")
     }
   }
 }

@@ -21,4 +21,4 @@ if [ "$passed" -ne 1 ]; then
   adb pull /sdcard/window.xml "$RUNNER_TEMP/window.xml" || true
   exit 1
 fi
-adb pull /data/local/tmp/intl-screen.png "$RUNNER_TEMP/intl-screen.png"
+adb pull /sdcard/Pictures/FormatJS/intl-screen.png "$RUNNER_TEMP/intl-screen.png"
