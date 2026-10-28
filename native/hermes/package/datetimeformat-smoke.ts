@@ -58,7 +58,7 @@ const ny = new DateTimeFormat('en', {
   hour: '2-digit',
   minute: '2-digit',
 })
-equal(ny.format(Date.UTC(2024, 2, 10, 7, 30)), '07:30')
+equal(ny.format(Date.UTC(2024, 2, 10, 7, 30)), '03:30')
 DateTimeFormat.__addTZData(root.__SDK_DATETIME_TZ)
 equal(ny.format(Date.UTC(2024, 2, 10, 6, 30)), '01:30')
 equal(ny.format(Date.UTC(2024, 2, 10, 7, 30)), '03:30')

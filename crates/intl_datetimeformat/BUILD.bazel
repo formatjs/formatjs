@@ -135,6 +135,7 @@ rust_library(
     ],
     compile_data = [
         ":timezone_links",
+        "//packages/intl-datetimeformat:tz_all_json",
         ":locale_aliases",
         ":compiled_locale_data",
         ":compiled_module",
@@ -145,6 +146,7 @@ rust_library(
     edition = "2024",
     rustc_env = {
         "FORMATJS_TIMEZONE_LINKS": "$(execpath :timezone_links)",
+        "FORMATJS_COMPILED_TIMEZONES": "$(execpath //packages/intl-datetimeformat:tz_all_json)",
         "FORMATJS_DATETIME_LOCALE_ALIASES": "$(execpath :locale_aliases)",
         "FORMATJS_COMPILED_LOCALES": "$(execpath :compiled_module)",
     },

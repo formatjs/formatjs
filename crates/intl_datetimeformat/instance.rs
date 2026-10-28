@@ -20,9 +20,13 @@ pub struct Runtime {
 }
 impl Runtime {
     pub(crate) fn initial() -> Self {
+        #[cfg(feature = "compiled_data")]
+        let zones = TimeZoneRegistry::with_compiled_data();
+        #[cfg(not(feature = "compiled_data"))]
+        let zones = TimeZoneRegistry::default();
         Self {
             registry: Rc::new(RefCell::new(Registry::initial())),
-            zones: TimeZoneRegistry::default(),
+            zones,
         }
     }
     #[cfg(feature = "compiled_data")]

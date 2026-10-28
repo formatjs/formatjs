@@ -229,10 +229,12 @@ INTL_SUITES = [
             suite,
             "120000" if name == "numberformat" else "30000",
             "$(rootpath //native/hermes/tests:datetimeformat_prelude.js)",
+            "$(rootpath :hermes_temporal_shim.js)",
         ],
         data = [
             ":hermes-" + name + "-harness",
             "hermes_host.sh",
+            "hermes_temporal_shim.js",
             "//native/hermes/tests:datetimeformat_prelude.js",
             "//native/hermes/tests:test262_runtime",
             "@com_github_tc39_test262//:test262-harness-copy",
