@@ -27,6 +27,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - uses: android-actions/setup-android@v3
       - uses: bazel-contrib/setup-bazel@0.19.1
         with:
           bazelisk-cache: true
