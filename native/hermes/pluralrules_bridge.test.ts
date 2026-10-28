@@ -6,6 +6,7 @@
   nativeMatch: (request: string) => string | number
   nativeCreate: (locale: string, options: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
+  nativeSelect: (handle: object, value: string, bigint: boolean) => number
 }) {
   'use strict'
   function equal(actual: unknown, expected: unknown) {
@@ -60,6 +61,9 @@
     ['en-GB-u-nu-arab']
   )
   const original = handle()
+  equal(native.nativeSelect(original, '1', false), 1)
+  equal(native.nativeSelect(original, '2', false), 5)
+  equal(native.nativeSelect(original, '9007199254740993', true), 5)
   equal(query(original, {method: 'select', value: '1'}), 'one')
   equal(query(original, {method: 'selectRange', start: '1', end: '2'}), 'other')
   equal(
