@@ -18,7 +18,7 @@ alias(
 rust_static_library(
     name = "without_compiled_data",
     srcs = ["lib.rs"],
-    crate_name = "formatjs_intl_hermes",
+    crate_name = "formatjs_intl_hermes_uncompiled",
     crate_root = "lib.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
