@@ -713,7 +713,17 @@ name = "formatjs_intl_hermes"
 version = "0.1.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
  "formatjs_intl_supportedvaluesof",
+]
+
+[[package]]
+name = "formatjs_intl_locale"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

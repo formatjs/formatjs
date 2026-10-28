@@ -208,6 +208,10 @@ export function canonicalizeUnicodeLanguageId(
     if (regionAlias) {
       const regions = regionAlias.split(' ')
       replacedRegion = regions[0]
+      // Territory replacement uses likely subtags: try language-script, then
+      // language alone. A missing script-specific row must not skip fallback.
+      // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4146
+      // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2546-L2551
       const likelySubtag =
         likelySubtags[
           emitUnicodeLanguageId({
@@ -215,7 +219,7 @@ export function canonicalizeUnicodeLanguageId(
             script: finalLangAst.script,
             variants: [],
           }) as 'aa'
-        ]
+        ] || likelySubtags[finalLangAst.lang as 'aa']
       if (likelySubtag) {
         const {region: likelyRegion} = parseUnicodeLanguageId(
           likelySubtag.split(SEPARATOR)

@@ -121,6 +121,10 @@ After that rollout, main should require `test`, `verify-hooks`, `Test all target
 native smoke status come from GitHub Actions; the other two come from BuildBuddy.
 BuildBuddy also covers main pushes and merge queue commits.
 
+BuildBuddy PR triggers include `codex/*` target branches so stacked polyfill
+PRs get the same Linux test and cross-build checks before their parent lands.
+GitHub Actions continues to execute native smoke artifacts without compiling.
+
 An approving PR review from a collaborator with write permission triggers trusted
 BuildBuddy fork builds. Before approval, `bb-workflow` can fail with
 `PERMISSION_DENIED: Missing API key` because it enables RBE without credentials.

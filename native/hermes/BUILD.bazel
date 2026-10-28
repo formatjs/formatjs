@@ -1,9 +1,11 @@
 # gazelle:ignore
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "ts_run_binary")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 
 cc_library(
     name = "bridge",
@@ -24,11 +26,25 @@ cc_test(
     ],
 )
 
+ts_project(
+    name = "extension_typecheck",
+    srcs = [
+        "locale.ts",
+        "supported_values_of.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
 exports_files(
     [
         "bridge.h",
         "canonical_locales.cpp",
         "canonical_locales.h",
+        "locale.cpp",
+        "intl_locale.h",
         "supported_values.cpp",
         "supported_values.h",
     ],
@@ -71,6 +87,7 @@ ts_run_binary(
     name = "extension_bundle_js",
     srcs = [
         "get_canonical_locales.js",
+        "locale.ts",
         "supported_values_of.ts",
     ],
     outs = ["extensions.js"],
@@ -79,6 +96,8 @@ ts_run_binary(
         "--name=IntlGetCanonicalLocales",
         "--input=$(rootpath :supported_values_of.ts)",
         "--name=IntlSupportedValuesOf",
+        "--input=$(rootpath :locale.ts)",
+        "--name=IntlLocale",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -176,6 +195,7 @@ cc_binary(
     deps = [
         ":canonical_locales",
         ":hermes_vm",
+        ":locale",
         ":supported_values",
     ],
 )
@@ -195,6 +215,64 @@ sh_test(
         ":hermes_runner",
     ],
     target_compatible_with = HOST_COMPATIBILITY,
+)
+
+ts_run_binary(
+    name = "locale_extension_js",
+    srcs = ["locale.ts"],
+    outs = ["32-IntlLocale.js"],
+    args = [
+        "--input=$(rootpath :locale.ts)",
+        "--name=IntlLocale",
+        "--out=$(rootpath :32-IntlLocale.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "locale_factory",
+    srcs = ["locale.ts"],
+    outs = ["locale_factory.js"],
+    args = [
+        "--input=$(rootpath :locale.ts)",
+        "--name=IntlLocale",
+        "--out=$(rootpath :locale_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "locale_wrapper_source",
+    srcs = [":locale_factory"],
+    outs = ["locale.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "locale",
+    srcs = [
+        "locale.cpp",
+        ":locale_wrapper_source",
+    ],
+    hdrs = ["intl_locale.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_getcanonicallocales:headers",
+        "//crates/intl_hermes",
+        "//crates/intl_locale:headers",
+        "@hermes//:headers",
+    ],
 )
 
 genrule(

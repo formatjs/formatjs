@@ -1,4 +1,5 @@
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
 #include <jsi/jsi.h>
@@ -37,6 +38,8 @@ int main(int argc, char **argv) {
                           .asObject(*runtime);
     formatjs::installCanonicalLocales(*runtime, extensions);
     formatjs::installSupportedValuesOf(*runtime, extensions);
+    formatjs::installLocale(*runtime, extensions);
+    formatjs::installCanonicalLocales(*runtime, extensions);
     auto result = runtime->evaluateJavaScript(
         std::make_shared<facebook::jsi::StringBuffer>(R"JS(
           (function () {
@@ -96,6 +99,22 @@ int main(int argc, char **argv) {
               typeError = error instanceof TypeError;
             }
             if (!typeError) throw new Error('supportedValuesOf must not be constructible');
+            var locale = new Intl.Locale('hye-Latn-SU', {calendar: 'islamicc', numeric: true});
+            equal(locale.toString(), 'hy-Latn-AM-u-ca-islamic-civil-kn');
+            equal(locale.calendar, 'islamic-civil');
+            equal(locale.numeric, true);
+            equal(locale.minimize().toString(), 'hy-Latn-u-ca-islamic-civil-kn');
+            equal(new Intl.Locale('und-Thai').maximize().toString(), 'th-Thai-TH');
+            equal(new Intl.Locale('ar').getTextInfo(), {direction: 'rtl'});
+            equal(new Intl.Locale('en').getNumberingSystems(), ['latn']);
+            equal(new Intl.Locale('en-u-nu-thai').getNumberingSystems(), ['thai']);
+            equal(new Intl.Locale('en').getCollations(), ['emoji', 'eor']);
+            equal(new Intl.Locale('en-US-u-fw-mon').getWeekInfo(), {firstDay: 1, weekend: [6, 7]});
+            equal(canonical(locale), ['hy-Latn-AM-u-ca-islamic-civil-kn']);
+            typeError = false;
+            try { Intl.Locale.prototype.toString.call(Object.create(Intl.Locale.prototype)); }
+            catch (error) { typeError = error instanceof TypeError; }
+            if (!typeError) throw new Error('Expected Locale receiver TypeError');
             return true;
           })()
         )JS"),
@@ -105,6 +124,7 @@ int main(int argc, char **argv) {
     }
     std::cout << "Hermes SDK canonicalization passed\n";
     std::cout << "Hermes SDK supportedValuesOf passed\n";
+    std::cout << "Hermes SDK Locale passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

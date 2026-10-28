@@ -1,4 +1,4 @@
-# Rust Intl.getCanonicalLocales on Hermes
+# Rust Intl extensions on Hermes
 
 The C++ adapter requires C++17 and exceptions enabled. Compile against the
 embedding runtime's JSI headers with matching ABI and toolchain settings.
@@ -24,8 +24,31 @@ arm64; consumers compile its C++ adapter against their matching JSI headers.
 Version `0.1.0` is built from this repository and is not published to BCR, npm,
 or crates.io. Android/iOS artifacts and React Native packaging are separate work.
 
-Rust owns returned UTF-8 buffers; the adapter releases each buffer after copying
-it into a JSI string. No per-runtime Rust cache is retained.
+Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
+buffer after copying it into a JSI string. Canonicalization retains no runtime
+cache. Locale instances use owned Rust handles managed by JSI garbage collection.
+
+## Locale and supported values
+
+The SDK also includes `Intl.Locale` and `Intl.supportedValuesOf`. Install all
+three before application code; reinstall canonicalization last so its intrinsic
+Locale brand check recognizes the newly installed constructor:
+
+```cpp
+#include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/supported_values.h>
+
+formatjs::installCanonicalLocales(*runtime);
+formatjs::installSupportedValuesOf(*runtime);
+formatjs::installLocale(*runtime);
+formatjs::installCanonicalLocales(*runtime);
+```
+
+Each installer also accepts the precompiled `extensions` object shown below.
+Link SDK targets `:locale` and `:supported_values` alongside `:canonical_locales`.
+Locale's private WeakMap retains its native handle; JS subclasses and prototype
+changes cannot forge that brand. Information methods query current formatter
+support, so locale data loaded after construction remains visible.
 
 ## Standalone installation
 
@@ -104,7 +127,11 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`.
+Current targets: `supportedvaluesof`, `locale`, `getcanonicallocales`.
+
+Canonicalization uses real native Locale objects, including internal-slot checks.
+Locale ICU-specific collation expectations have separate cases, retaining the
+other locale-info assertions and original expected values.
 
 Explicit exclusion reports identify TS-private state, implementation-defined
 diagnostics, and host-specific behavior. Original TS unit suites retain those

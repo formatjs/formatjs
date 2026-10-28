@@ -60,7 +60,9 @@ export function getTimeZonePreferenceForRegion(region: string): string[] {
   const territory = region.toLowerCase() as TimezonesTerritory
 
   if (timezones[territory]) {
-    return [...timezones[territory]] as string[]
+    // TimeZonesOfLocale step 3 requires unique identifiers after alias mapping.
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L741
+    return [...new Set(timezones[territory])] as string[]
   }
 
   return []

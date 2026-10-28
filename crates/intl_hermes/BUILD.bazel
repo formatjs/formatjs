@@ -10,6 +10,7 @@ rust_static_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
         "//crates/intl_supportedvaluesof",
     ],
 )
