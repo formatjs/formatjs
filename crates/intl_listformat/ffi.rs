@@ -269,7 +269,7 @@ pub unsafe extern "C" fn formatjs_list_query(
     })
 }
 
-unsafe fn list_values(items: *const ListSlice, len: usize) -> Result<Vec<Vec<u16>>, i32> {
+unsafe fn list_values<'a>(items: *const ListSlice, len: usize) -> Result<Vec<&'a [u16]>, i32> {
     if len > isize::MAX as usize / std::mem::size_of::<ListSlice>() || (len != 0 && items.is_null())
     {
         return Err(2);
@@ -291,7 +291,7 @@ unsafe fn list_values(items: *const ListSlice, len: usize) -> Result<Vec<Vec<u16
         } else {
             unsafe { slice::from_raw_parts(item.data, item.len) }
         };
-        values.push(units.to_vec());
+        values.push(units);
     }
     Ok(values)
 }
@@ -327,7 +327,7 @@ pub unsafe extern "C" fn formatjs_list_format(
     }
     guarded(|| {
         let values = unsafe { list_values(items, len)? };
-        let result = unsafe { &(*handle).0 }.format(&values);
+        let result = unsafe { &(*handle).0 }.format_borrowed(&values);
         unsafe { output_units(result, out) };
         Ok(())
     })
@@ -352,7 +352,7 @@ pub unsafe extern "C" fn formatjs_list_parts(
     }
     guarded(|| {
         let values = unsafe { list_values(items, len)? };
-        let parts = unsafe { &(*handle).0 }.format_to_parts(&values);
+        let parts = unsafe { &(*handle).0 }.format_to_parts_borrowed(&values);
         let mut result = Vec::new();
         for part in parts {
             let len = u32::try_from(part.value.len()).map_err(|_| 2)?;

@@ -59,6 +59,13 @@ fn preserves_utf16_and_large_lists_without_recursion() {
     let list = vec![vec![0x0061]; 20_000];
     let parts = formatter.format_to_parts(&list);
     assert_eq!(
+        formatter.format(&list),
+        parts
+            .iter()
+            .flat_map(|part| part.value.iter().copied())
+            .collect::<Vec<_>>()
+    );
+    assert_eq!(
         parts.iter().filter(|part| part.kind == "element").count(),
         list.len()
     );
@@ -81,6 +88,17 @@ fn deconstructs_reversed_placeholders_and_retains_literal_boundaries() {
         "before B between A after"
     );
     assert_eq!(formatter.format_to_parts(&units(&["A", "B"])).len(), 5);
+    let raw = vec![vec![0xd800], vec![0xdc00, 0x0061]];
+    assert_eq!(
+        formatter.format(&raw),
+        "before "
+            .encode_utf16()
+            .chain([0xdc00, 0x0061])
+            .chain(" between ".encode_utf16())
+            .chain([0xd800])
+            .chain(" after".encode_utf16())
+            .collect::<Vec<_>>()
+    );
 }
 
 #[test]
