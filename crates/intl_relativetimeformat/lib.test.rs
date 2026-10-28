@@ -42,6 +42,57 @@ fn negative_zero_named_forms_and_number_parts_keep_distinct_semantics() {
     assert_eq!(auto.format_to_parts("1", "day").unwrap()[0].unit, None);
 }
 #[test]
+fn plural_selection_shares_rounding_but_uses_relative_locale_rules() {
+    let mut data: Value = serde_json::from_str(EN).unwrap();
+    data["plurals"]["cardinal"]["one"] = json!("i = 2 and v = 0");
+    let mut registry = Registry::default();
+    registry.add_locale_data(&data.to_string()).unwrap();
+    let model = registry
+        .create(&["en".into()], &Options::default())
+        .unwrap();
+    assert_eq!(model.format("1.9996", "day").unwrap(), "in 2 day");
+    assert_eq!(model.format("1.9994", "day").unwrap(), "in 1.999 days");
+    assert_eq!(model.format("1", "day").unwrap(), "in 1 days");
+    assert_eq!(
+        serde_json::to_value(model.format_to_parts("1.9996", "day").unwrap()).unwrap(),
+        json!([
+            {"type":"literal","value":"in "},
+            {"type":"integer","value":"2","unit":"day"},
+            {"type":"literal","value":" day"}
+        ])
+    );
+}
+#[test]
+fn repeated_slots_and_empty_named_forms_keep_part_boundaries() {
+    let mut data: Value = serde_json::from_str(EN).unwrap();
+    data["data"]["day"]["future"]["other"] = json!("{0}|{0}");
+    data["data"]["day"]["0"] = json!("");
+    let mut registry = Registry::default();
+    registry.add_locale_data(&data.to_string()).unwrap();
+    let model = registry
+        .create(&["en".into()], &Options::default())
+        .unwrap();
+    assert_eq!(model.format("2", "day").unwrap(), "2|2");
+    assert_eq!(
+        serde_json::to_value(model.format_to_parts("2", "day").unwrap()).unwrap(),
+        json!([
+            {"type":"integer","value":"2","unit":"day"},
+            {"type":"literal","value":"|"},
+            {"type":"integer","value":"2","unit":"day"}
+        ])
+    );
+    let auto = registry
+        .create(&["en".into()], &options(json!({"numeric":"auto"})))
+        .unwrap();
+    assert_eq!(auto.format("0", "day").unwrap(), "");
+    assert_eq!(
+        serde_json::to_value(auto.format_to_parts("0", "day").unwrap()).unwrap(),
+        json!([
+            {"type":"literal","value":""}
+        ])
+    );
+}
+#[test]
 fn resolution_stays_fixed_but_fields_follow_later_registration() {
     let mut registry = loaded();
     let old = registry

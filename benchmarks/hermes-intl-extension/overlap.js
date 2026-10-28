@@ -62,6 +62,24 @@
         }
       })(),
     ],
+    [
+      'RelativeTimeFormat.format(decimal)',
+      (function () {
+        var x = new Intl.RelativeTimeFormat('en', {numeric: 'always'})
+        return function () {
+          return x.format(-1234.5, 'day')
+        }
+      })(),
+    ],
+    [
+      'RelativeTimeFormat.format(auto)',
+      (function () {
+        var x = new Intl.RelativeTimeFormat('en', {numeric: 'auto'})
+        return function () {
+          return x.format(-1, 'day')
+        }
+      })(),
+    ],
   ]
   cases.push([
     'Locale.new',

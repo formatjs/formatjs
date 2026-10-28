@@ -1,7 +1,6 @@
 use crate::Error;
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
 use formatjs_intl_numberformat::registry::Registry as NumberRegistry;
-use formatjs_intl_pluralrules::registry::Registry as PluralRegistry;
 use serde::Deserialize;
 use std::collections::BTreeMap;
 
@@ -38,7 +37,7 @@ pub struct LocaleData {
     pub(crate) nu: Vec<String>,
     pub(crate) fields: BTreeMap<String, Field>,
     pub(crate) numbers: NumberRegistry,
-    pub(crate) plurals: PluralRegistry,
+    pub(crate) plurals: formatjs_intl_pluralrules::LocaleRules,
 }
 impl LocaleData {
     pub fn from_json(json: &str) -> Result<Self, Error> {
@@ -79,17 +78,13 @@ impl LocaleData {
         numbers
             .add_data(pack.number)
             .map_err(|error| Error::InvalidData(error.to_string()))?;
-        let mut plurals = PluralRegistry::default();
-        plurals
-            .add_data(pack.plurals)
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
         Ok(Self {
             locale,
             aliases,
             nu: pack.data.nu,
             fields: pack.data.fields,
             numbers,
-            plurals,
+            plurals: pack.plurals,
         })
     }
     pub fn locale(&self) -> &str {

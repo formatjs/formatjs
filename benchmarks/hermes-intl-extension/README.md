@@ -15,24 +15,25 @@ rounds calibrated to roughly 50 ms each. The `formatToParts` cases include
 run with their own Intl dependencies in the same Hermes process. Results are
 median time per call.
 
-Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C:
+Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Table uses
+the median of three complete benchmark invocations:
 
 | Operation                          | Native µs | TypeScript µs | Native speedup |
 | ---------------------------------- | --------: | ------------: | -------------: |
-| `getCanonicalLocales`              |      0.84 |          5.76 |          6.84x |
-| `supportedValuesOf`                |      1.78 |          58.6 |          32.9x |
-| `Locale.maximize`                  |      4.64 |          33.2 |          7.16x |
-| `PluralRules.select`               |      1.39 |           139 |          99.9x |
-| `ListFormat.format`                |      1.20 |          3.96 |          3.30x |
-| `ListFormat.formatToParts`         |      6.05 |          5.57 |          0.92x |
-| `DisplayNames.of`                  |      1.68 |          9.77 |          5.80x |
+| `getCanonicalLocales`              |      0.83 |          4.44 |          5.35x |
+| `supportedValuesOf`                |      1.78 |          59.4 |          33.3x |
+| `Locale.maximize`                  |      4.83 |          33.2 |          6.87x |
+| `PluralRules.select`               |      0.65 |           122 |           188x |
+| `ListFormat.format`                |      1.21 |          3.91 |          3.23x |
+| `ListFormat.formatToParts`         |      6.05 |          5.47 |          0.90x |
+| `DisplayNames.of`                  |      1.54 |          7.81 |          5.08x |
 | `Segmenter.segment`                |      6.05 |          8.89 |          1.47x |
-| `Collator.compare`                 |      1.66 |          4.59 |          2.76x |
-| `NumberFormat.format`              |      3.71 |           388 |           104x |
-| `RelativeTimeFormat.format`        |      2.64 |           456 |           173x |
-| `RelativeTimeFormat.formatToParts` |      5.47 |           456 |          83.4x |
-| `DateTimeFormat.format`            |      7.42 |         1,138 |           153x |
-| `DurationFormat.format`            |      7.42 |         1,013 |           136x |
+| `Collator.compare`                 |      1.64 |          3.17 |          1.94x |
+| `NumberFormat.format`              |      2.39 |           344 |           144x |
+| `RelativeTimeFormat.format`        |      1.10 |           400 |           364x |
+| `RelativeTimeFormat.formatToParts` |      4.00 |           400 |          99.9x |
+| `DateTimeFormat.format`            |      4.10 |         1,000 |           244x |
+| `DurationFormat.format`            |      4.00 |           900 |           225x |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -47,19 +48,34 @@ without JSON. The earlier native result was 10.16 µs on the same host.
 
 `overlap.js` runs the APIs shared with
 [magrinj/hermes-intl at 7cd12b6](https://github.com/magrinj/hermes-intl/tree/7cd12b68fb6f707192426065cec1dba4ced68d5a) on either Hermes
-host. It uses `__now()` when available, otherwise `Date.now()`. On this host,
-median of three runs: our `ListFormat.format` fell from 7.06 to 1.11 µs,
-`formatToParts` from 9.84 to 4.69 µs, and `RelativeTimeFormat.format` from 3.92
-to 2.53 µs. Magrinj measured 0.70, 4.55, and 1.01 µs respectively. Our bridge
-keeps lone surrogates and reads array getters once; magrinj's shortcut
-does neither.
-Direct ListFormat string assembly and borrowed UTF-16 input cut `format` from
-1.52 to 1.11 µs on the same host; `formatToParts` still returns fresh records.
-Direct PluralRules selection cut `select` from 1.23 to 0.62 µs; magrinj measured
-0.56 µs. Both versions use the same JS coercion and Rust plural rules.
-Skipping pattern tokenization for the plain `#,##0.###` decimal pattern cut
-`RelativeTimeFormat.format(-3, "day")` from 2.44 to 1.70 µs. Magrinj measured
-0.98 µs. A Rust stage profile measured 1.51 µs in NumberFormat and 0.34 µs
-in plural selection for that case before this change.
-Skipping the exponent-rounding preview in standard notation reduced the same
-RTF case further, from 1.70 to 1.37 µs (median of three runs).
+host. It uses `__now()` when available, otherwise `Date.now()`. Median of three
+runs on the same host. Both C++ hosts use Release `-O3`; FormatJS Rust uses
+Bazel `-c opt`, magrinj Rust uses its release profile (`opt-level="z"`, LTO):
+
+| Operation                            | FormatJS µs | Magrinj µs |
+| ------------------------------------ | ----------: | ---------: |
+| `getCanonicalLocales`                |        0.79 |       1.44 |
+| `Locale.maximize`                    |        6.09 |       2.58 |
+| `PluralRules.select`                 |        0.61 |       0.56 |
+| `ListFormat.format`                  |        1.11 |       0.69 |
+| `ListFormat.formatToParts`           |        4.77 |       4.35 |
+| `RelativeTimeFormat.format`          |        1.05 |       0.96 |
+| `RelativeTimeFormat.format(decimal)` |        1.50 |       1.04 |
+| `RelativeTimeFormat.format(auto)`    |        0.52 |       0.85 |
+| `RelativeTimeFormat.formatToParts`   |        3.09 |       2.92 |
+| `Locale.new`                         |        6.95 |       1.20 |
+| `PluralRules.new`                    |        10.6 |       5.67 |
+| `ListFormat.new`                     |        18.8 |       3.36 |
+| `RelativeTimeFormat.new`             |        28.1 |       5.43 |
+
+The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
+These parts timings read array length, whereas the full suite serializes parts.
+Our ListFormat bridge preserves lone surrogates and reads array getters once;
+magrinj's shortcut does neither.
+
+Shared RTF rounding, direct string assembly, and stack unit decoding reduced
+`format` from 1.39 to 1.05 µs, decimal formatting from 1.99 to 1.50 µs, and
+`formatToParts` from 3.36 to 3.09 µs in alternating before/after runs.
+An earlier Rust stage profile put 1.51 µs in NumberFormat and 0.34 µs in plural
+selection. NumberFormat pattern and exponent optimizations reduced that cost;
+RTF now selects its own locale rules from the number formatter's rounded value.

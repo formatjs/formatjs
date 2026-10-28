@@ -387,6 +387,32 @@ impl NumberFormat {
         approximately: bool,
     ) -> Result<Vec<Part>, Error> {
         let number = self.render(input)?;
+        self.partition_rendered(&number, approximately)
+    }
+
+    /// Format standard decimal parts and select cardinal rules from the same
+    /// rounded value. RelativeTimeFormat uses identical default digit options
+    /// for its number and plural formatters.
+    pub fn format_decimal_with_plural(
+        &self,
+        value: &str,
+        rules: &formatjs_intl_pluralrules::LocaleRules,
+    ) -> Result<(Vec<Part>, &'static str), Error> {
+        if self.resolved.style != "decimal" || self.resolved.notation != "standard" {
+            return Err(Error::Range("Expected standard decimal formatting"));
+        }
+        let number = self.render(&Numeric::parse(value)?)?;
+        let category = rules
+            .select_rounded(number.rounded.special.unwrap_or(&number.text), 0, false)
+            .map_err(|error| Error::InvalidData(error.to_string()))?;
+        Ok((self.partition_rendered(&number, false)?, category))
+    }
+
+    fn partition_rendered(
+        &self,
+        number: &Rendered,
+        approximately: bool,
+    ) -> Result<Vec<Part>, Error> {
         let options = &self.resolved;
         let symbols = &self.data.numbers.symbols[&self.system];
         let approximately = approximately && !symbols.approximately_sign.is_empty();
@@ -403,7 +429,7 @@ impl NumberFormat {
             } else if number.sign > 0 {
                 parts.push(Part::new("plusSign", symbols.plus_sign.clone()));
             }
-            parts.extend(self.number_parts(&number, "#,##0.###", false)?);
+            parts.extend(self.number_parts(number, "#,##0.###", false)?);
             return Ok(parts);
         }
         let compact = if options.notation == "compact" && number.magnitude != 0 {
@@ -487,11 +513,7 @@ impl NumberFormat {
             }
             let part = match token.as_str() {
                 "{0}" => {
-                    parts.extend(self.number_parts(
-                        &number,
-                        &decimal_pattern,
-                        compact.is_some(),
-                    )?);
+                    parts.extend(self.number_parts(number, &decimal_pattern, compact.is_some())?);
                     end = token.end();
                     continue;
                 }

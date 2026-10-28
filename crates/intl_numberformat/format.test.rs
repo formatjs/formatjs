@@ -13,6 +13,34 @@ fn options(value: Value) -> Options {
 }
 
 #[test]
+fn shared_plural_selection_keeps_visible_fraction_digits() {
+    let registry = registry();
+    let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
+        r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
+    )
+    .unwrap();
+    let number = registry
+        .create(&["en".into()], &options(json!({"minimumFractionDigits":2})))
+        .unwrap();
+    let (parts, category) = number.format_decimal_with_plural("1", &rules).unwrap();
+    assert_eq!(category, "other");
+    assert_eq!(
+        serde_json::to_value(parts).unwrap(),
+        json!([
+            {"type":"integer","value":"1"},
+            {"type":"decimal","value":"."},
+            {"type":"fraction","value":"00"}
+        ])
+    );
+    for options in [json!({"style":"percent"}), json!({"notation":"scientific"})] {
+        let number = registry
+            .create(&["en".into()], &serde_json::from_value(options).unwrap())
+            .unwrap();
+        assert!(number.format_decimal_with_plural("1", &rules).is_err());
+    }
+}
+
+#[test]
 fn huge_integer_rounding_retains_sticky_digits_and_directed_sign() {
     let registry = registry();
     let input = format!("1{}1", "0".repeat(40_000));
