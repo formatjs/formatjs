@@ -1,0 +1,25 @@
+# gazelle:ignore
+
+load("//tools:rolldown.bzl", "rolldown_bundle")
+
+rolldown_bundle(
+    name = "suite_bundle",
+    srcs = [
+        "setup.ts",
+        "suite.ts",
+    ],
+    entry_point = "suite.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/intl-datetimeformat:locale-data/en.js",
+        "//packages/intl-listformat:locale-data/en.js",
+        "//packages/intl-numberformat:locale-data/en.js",
+        "//packages/intl-pluralrules:locale-data/en.js",
+    ],
+)

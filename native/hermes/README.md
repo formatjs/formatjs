@@ -19,10 +19,9 @@ formatjs::installCanonicalLocales(*runtime);
 Inside FormatJS, link `//native/hermes:canonical_locales`. External consumers
 use the [standalone SDK](package/README.md) and link
 `@formatjs_intl_getcanonicallocales_hermes//:canonical_locales` with their Hermes
-runtime. The SDK ships Rust static libraries for Linux x86_64 GNU and macOS
-arm64; consumers compile its C++ adapter against their matching JSI headers.
-Version `0.1.0` is built from this repository and is not published to BCR, npm,
-or crates.io. Android/iOS artifacts and React Native packaging are separate work.
+runtime. The desktop SDK ships Rust static libraries for Linux x86_64 GNU and
+macOS arm64; the Android SDK ships arm64 and x86_64 archives. Consumers compile
+its C++ adapter against their matching JSI headers.
 
 Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
 buffer after copying it into a JSI string. Canonicalization retains no runtime
@@ -81,17 +80,10 @@ formatjs::installCanonicalLocales(*runtime, extensions);
 
 ## Hermes extension registration
 
-For Hermes core/contrib integration, include the SDK's
-`js/30-IntlGetCanonicalLocales.js` in Hermes' concatenated extension sources,
-compile/link the adapter and target Rust archive, then call
-`formatjs::installCanonicalLocales(runtime, extensions)` from the C++ extension
-dispatcher. Keep the JavaScript fragment and adapter at the same SDK version.
-The complete `js/extensions.js` bundle is for standalone startup, not the
-concatenated source list. Linking the SDK does not register a startup hook.
-
-Install trusted `Intl.Locale` before the final installer call. If Locale itself
-needs `Intl.getCanonicalLocales`, install the adapter, load Locale, then reinstall
-the adapter before application code so it captures Locale's intrinsic brand method.
+The SDK includes a [Hermes contrib package](package/contrib/README.md) with all
+12 JavaScript fragments, one C++ installer, and CMake linkage. Add those sources
+to Hermes' contrib extension dispatcher to install Intl before application code.
+The complete `js/extensions.js` bundle remains for standalone startup.
 
 ## Compiled locale data
 
