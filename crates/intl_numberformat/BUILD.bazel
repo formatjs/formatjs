@@ -1,0 +1,194 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//crates/intl_data:defs.bzl", "compiled_locale_data")
+load("//packages/intl-numberformat:locales.generated.bzl", "ALL_LOCALES")
+load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
+
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "numberformat.h",
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["numberformat.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "metadata",
+    outs = ["metadata.json"],
+    args = [
+        "--out",
+        "$(rootpath :metadata.json)",
+    ],
+    tool = "//crates/intl_numberformat/scripts:metadata",
+    # Generator dependencies follow the Linux execution platform during cross-builds.
+    use_execroot_entry_point = False,
+)
+
+ts_run_binary(
+    name = "locale_data",
+    srcs = ["//crates/intl_pluralrules:locale_data"] + [
+        "//packages/intl-numberformat:cldr-raw/%s.json" % locale
+        for locale in ALL_LOCALES
+    ],
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        package_name() + "/locale-data",
+        "--pluralDir",
+        "crates/intl_pluralrules/locale-data",
+    ] + ["--cldrFile=packages/intl-numberformat/cldr-raw/%s.json" % locale for locale in ALL_LOCALES],
+    tool = "//crates/intl_numberformat/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "intl_numberformat",
+    srcs = [
+        "data.rs",
+        "ffi.rs",
+        "format.rs",
+        "lib.rs",
+        "metadata.rs",
+        "numeric.rs",
+        "options.rs",
+        "range.rs",
+        "registry.rs",
+    ],
+    compile_data = [":metadata"],
+    crate_name = "formatjs_intl_numberformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_NUMBER_METADATA": "$(execpath :metadata)"},
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_data",
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "//crates/intl_pluralrules",
+        "@crates//:icu_properties-2.3.0",
+        "@crates//:regex",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+COMPILED_DEPS = [
+    "//crates/intl_data",
+    "//crates/intl_getcanonicallocales",
+    "//crates/intl_locale",
+    "//crates/intl_pluralrules:with_compiled_data",
+    "@crates//:icu_properties-2.3.0",
+    "@crates//:regex",
+    "@crates//:serde",
+    "@crates//:serde_json",
+]
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "data.rs",
+        "ffi.rs",
+        "format.rs",
+        "lib.rs",
+        "metadata.rs",
+        "numeric.rs",
+        "options.rs",
+        "range.rs",
+        "registry.rs",
+    ],
+    compile_data = [
+        ":metadata",
+        ":compiled_locale_data",
+        ":compiled_module",
+    ],
+    crate_features = ["compiled_data"],
+    crate_name = "formatjs_intl_numberformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_NUMBER_METADATA": "$(execpath :metadata)",
+        "FORMATJS_COMPILED_LOCALES": "$(execpath :compiled_module)",
+    },
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
+)
+
+formatjs_rust_test(
+    name = "intl_numberformat_test",
+    srcs = [
+        "ffi.test.rs",
+        "format.test.rs",
+        "registry.test.rs",
+    ],
+    compile_data = [":locale-data/en.json"],
+    crate_name = "intl_numberformat_test",
+    edition = "2024",
+    rustc_env = {"FORMATJS_NUMBER_EN": "$(execpath :locale-data/en.json)"},
+    deps = [
+        ":intl_numberformat",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "pack_conformance",
+    srcs = ["pack_conformance.rs"],
+    crate_name = "pack_conformance",
+    crate_root = "pack_conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_numberformat/tests:__pkg__"],
+    deps = [
+        ":intl_numberformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_numberformat/tests:__pkg__"],
+    deps = [
+        ":intl_numberformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+compiled_locale_data(
+    name = "compiled_locale_data",
+    srcs = [":locale_data"],
+    data_type = "crate::LocaleData",
+    tool = ":compile_locales",
+)
+
+filegroup(
+    name = "compiled_module",
+    srcs = [":compiled_locale_data"],
+    output_group = "module",
+)
+
+rust_binary(
+    name = "compile_locales",
+    srcs = ["datagen.rs"],
+    crate_name = "compile_locales_numberformat",
+    crate_root = "datagen.rs",
+    edition = "2024",
+    deps = [
+        # keep
+        ":intl_numberformat",
+        "//crates/intl_data_build",
+    ],
+)

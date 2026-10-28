@@ -10,6 +10,7 @@ members = [
   "crates/intl_displaynames",
   "crates/intl_segmenter",
   "crates/intl_collator",
+  "crates/intl_numberformat",
   "crates/intl_hermes",
   "crates/icu_skeleton_parser",
   "crates/icu_messageformat_parser",

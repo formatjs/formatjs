@@ -65,7 +65,7 @@ fn radix(digits: &str, base: u32) -> String {
     }
 }
 
-pub(crate) fn for_rounding(input: &str, bigint: bool) -> String {
+pub fn to_mathematical_value(input: &str, bigint: bool) -> String {
     // ToIntlMathematicalValue 1–2: the host already performed ToPrimitive.
     // BigInt's mathematical value returns before Number-range clamping.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1652-L1653

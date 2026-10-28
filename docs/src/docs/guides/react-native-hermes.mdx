@@ -3,12 +3,12 @@ This guide covers setting up FormatJS polyfills for React Native with the Hermes
 ## Experimental Rust Intl extensions
 
 The repository includes Rust `Intl.getCanonicalLocales`, `Intl.supportedValuesOf`,
-`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames`, `Intl.Segmenter` and `Intl.Collator` implementations with C++ JSI adapters.
+`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames`, `Intl.Segmenter`, `Intl.Collator` and `Intl.NumberFormat` implementations with C++ JSI adapters.
 SDK `0.1.0` packages public headers, adapter source,
 extension JavaScript, and Rust static libraries for Linux x86_64 GNU and macOS
 arm64. Consumers compile the adapter against their matching Hermes JSI headers
 and link SDK targets `:canonical_locales`, `:supported_values`, `:locale` and
-`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter`, `:collator` from `@formatjs_intl_getcanonicallocales_hermes`.
+`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter`, `:collator`, `:numberformat` from `@formatjs_intl_getcanonicallocales_hermes`.
 
 The SDK is built from this repository and is not published to BCR, npm, or
 crates.io. It does not include Android/iOS artifacts or React Native package
@@ -25,6 +25,7 @@ to build, extract, and install its public layout.
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_collator.h>
+#include <formatjs/hermes/intl_numberformat.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -35,6 +36,7 @@ formatjs::installListFormat(*runtime);
 formatjs::installDisplayNames(*runtime);
 formatjs::installSegmenter(*runtime);
 formatjs::installCollator(*runtime);
+formatjs::installNumberFormat(*runtime);
 ```
 
 Install before application scripts. For bytecode-only startup, compile the SDK's
@@ -400,3 +402,25 @@ Collator requires the Hermes proxy-construction fix in overlay commit
 `338ff13ff1e996934ae615952d174f8c621844d9` (pending BCR version `260318099.0.0-393a539e6`).
 Use the pinned override from `examples/hermes-intl/MODULE.bazel`; older overlays
 perform extra observable `newTarget.prototype` reads during construction.
+
+### Rust NumberFormat
+
+Link SDK target `:numberformat`; install after canonicalization with
+`formatjs::installNumberFormat(runtime)` or its precompiled-factory overload.
+`js/38-IntlNumberFormat.js` registers the individual factory. Ship selected
+`locale-data/numberformat/<locale>.json` files and register their UTF-8 text:
+
+```ts
+const NumberFormat = Intl.NumberFormat as typeof Intl.NumberFormat & {
+  __addLocaleData(...packs: string[]): void
+}
+NumberFormat.__addLocaleData(englishJsonText)
+new NumberFormat('en', {style: 'currency', currency: 'USD'}).format(1234.5)
+```
+
+Each pack includes plural rules, so this Rust adapter runs without a JS
+PluralRules polyfill. Supported locales update as packs load; existing instances
+retain their selected record when a replacement is registered. Parts and ranges,
+exact BigInts/numeric strings, localized exponents and rounding run in Rust.
+The SDK's typed smoke loads English, then French, through the precompiled
+installer. Linux builds both native artifacts; macOS only runs downloaded smoke.

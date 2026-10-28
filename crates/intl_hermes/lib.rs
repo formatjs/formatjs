@@ -41,3 +41,10 @@ pub use formatjs_intl_collator::ffi::{
     formatjs_collator_bytes_free, formatjs_collator_create, formatjs_collator_destroy,
     formatjs_collator_query, formatjs_collator_resolve, formatjs_collator_supported,
 };
+
+pub use formatjs_intl_numberformat::ffi::{
+    formatjs_number_bytes_free, formatjs_number_create, formatjs_number_destroy,
+    formatjs_number_query, formatjs_number_registry_create, formatjs_number_registry_destroy,
+    formatjs_number_registry_info, formatjs_number_registry_load, formatjs_number_registry_units,
+    formatjs_number_resolve, formatjs_number_supported,
+};

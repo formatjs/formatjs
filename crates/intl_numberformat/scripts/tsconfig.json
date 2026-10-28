@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "paths": {
+      "#packages/*": ["../../../packages/*"]
+    },
+    "types": ["node"]
+  },
+  "extends": "../../../tsconfig.json",
+  "references": [
+    {
+      "path": "../../../packages/ecma402-abstract/tsconfig.json"
+    },
+    {
+      "path": "../../../packages/ecma402-abstract/types/tsconfig.json"
+    }
+  ]
+}

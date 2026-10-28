@@ -1,4 +1,4 @@
-import {Decimal} from '@formatjs/bigdecimal'
+import type {Decimal} from '@formatjs/bigdecimal'
 import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/regex.js'
 import {
   type DecimalFormatNum,
@@ -12,17 +12,13 @@ import {
   type NumberFormatOptionsUnitDisplay,
   type NumberFormatPart,
   type RawNumberFormatResult,
-  type RoundingModeType,
   type SymbolsData,
   type UnitData,
-  type UnsignedRoundingModeType,
   type UseGroupingType,
 } from '#packages/ecma402-abstract/types/number.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 import {digitMapping} from '@formatjs_generated/unicode/digit-mapping.js'
-import {GetUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/GetUnsignedRoundingMode.js'
-import {ToRawFixed} from '#packages/ecma402-abstract/NumberFormat/ToRawFixed.js'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
 // IE11 does not support unicode flag, otherwise this is just /\p{S}/u.
@@ -61,8 +57,6 @@ export default function formatToParts(
     // Unit
     unit?: string
     unitDisplay?: NumberFormatOptionsUnitDisplay
-    roundingIncrement: number
-    roundingMode: RoundingModeType
   },
   approximately = false
 ): NumberFormatPart[] {
@@ -216,9 +210,7 @@ export default function formatToParts(
             !compactNumberPattern && (options.useGrouping ?? true),
             decimalNumberPattern,
             data.numbers.minimumGroupingDigits ?? 1,
-            style,
-            options.roundingIncrement,
-            GetUnsignedRoundingMode(options.roundingMode, sign === -1)
+            style
           )
         )
         break
@@ -274,11 +266,15 @@ export default function formatToParts(
         let unitName: string
         const currencyNameData = data.currencies[options.currency!]
         if (currencyNameData) {
-          unitName = selectPlural(
-            pl,
-            numberResult.roundedNumber.times(getPowerOf10(exponent)).toNumber(),
-            currencyNameData.displayName
-          )
+          // Sparse CLDR locales can omit names for an otherwise known currency.
+          unitName =
+            selectPlural(
+              pl,
+              numberResult.roundedNumber
+                .times(getPowerOf10(exponent))
+                .toNumber(),
+              currencyNameData.displayName
+            ) || options.currency!
         } else {
           // Fallback for unknown currency
           unitName = options.currency!
@@ -404,9 +400,7 @@ function partitionNumberIntoParts(
    */
   decimalNumberPattern: string,
   minimumGroupingDigits: number,
-  style: NumberFormatOptionsStyle,
-  roundingIncrement: number,
-  unsignedRoundingMode: UnsignedRoundingModeType
+  style: NumberFormatOptionsStyle
 ): NumberFormatPart[] {
   const result: NumberFormatPart[] = []
   // eslint-disable-next-line prefer-const
@@ -524,16 +518,16 @@ function partitionNumberIntoParts(
       result.push({type: 'exponentMinusSign', value: symbols.minusSign})
       exponent = -exponent
     }
-    const exponentResult = ToRawFixed(
-      new Decimal(exponent),
-      0,
-      0,
-      roundingIncrement,
-      unsignedRoundingMode
-    )
+    // Exponent digits use the numbering system, independently of mantissa rounding.
+    const exponentDigits = String(exponent)
     result.push({
       type: 'exponentInteger',
-      value: exponentResult.formattedString,
+      value: digitReplacementTable
+        ? exponentDigits.replace(
+            /\d/g,
+            digit => digitReplacementTable[+digit] || digit
+          )
+        : exponentDigits,
     })
   }
 
@@ -590,6 +584,9 @@ function getCompactDisplayPattern(
   numberingSystem: string
 ): string | null {
   const {roundedNumber, sign, magnitude} = numberResult
+  // String(10 ** magnitude) uses exponent notation for tiny values; comparing
+  // "1e-7" lexically with CLDR thresholds would select the largest suffix.
+  if (magnitude < 0) return null
   let magnitudeKey = String(10 ** magnitude) as DecimalFormatNum
   const defaultNumberingSystem = data.numbers.nu[0]
 

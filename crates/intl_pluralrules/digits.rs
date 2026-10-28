@@ -239,6 +239,18 @@ impl Digits {
     }
 
     pub fn new(options: &Options, compact: bool) -> Result<Self, Error> {
+        Self::with_fraction_defaults(options, compact, 0, 3)
+    }
+
+    pub fn with_fraction_defaults(
+        options: &Options,
+        compact: bool,
+        minimum_default: u8,
+        maximum_default: u8,
+    ) -> Result<Self, Error> {
+        if minimum_default > maximum_default || maximum_default > 100 {
+            return Err(Error::Range("fractionDigits"));
+        }
         // SetNumberFormatDigitOptions 1–15: common options precede digit limits.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L112
         let minimum_integer_digits = number(
@@ -300,7 +312,12 @@ impl Digits {
         }
         let (mut minimum_fraction_digits, mut maximum_fraction_digits) = (None, None);
         if need_fraction {
-            let max_default: u16 = if rounding_increment == 1 { 3 } else { 0 };
+            let min_default = u16::from(minimum_default);
+            let max_default = u16::from(if rounding_increment == 1 {
+                maximum_default
+            } else {
+                minimum_default
+            });
             let mut min = options
                 .minimum_fraction_digits
                 .map(|value| number(Some(value), 0, 100, 0, "minimumFractionDigits"))
@@ -310,7 +327,7 @@ impl Digits {
                 .map(|value| number(Some(value), 0, 100, 0, "maximumFractionDigits"))
                 .transpose()?;
             if min.is_none() {
-                min = Some(0);
+                min = Some(min_default.min(max.unwrap_or(max_default)));
             }
             if max.is_none() {
                 max = Some(max_default.max(min.unwrap()));

@@ -154,6 +154,30 @@ suffix signs, bidi literals, and unit wrappers use the same number pattern.
 Matching sign prefixes can be shared alongside a shared currency or unit suffix.
 Mixed signs remain attached to their endpoints.
 
+## Rust and Hermes port
+
+`crates/intl_numberformat` owns formatting, parts, ranges, option/locale resolution,
+and per-locale number/plural records. Generated packs reuse TS CLDR extraction and
+canonical plural-locale matching. Registration preserves existing records,
+explicit aliases and parent fallbacks; invalid aliases reject atomically.
+Rounding reuses PluralRules digit handling with currency/percent defaults.
+Conformance compares every generated locale and all advertised numbering systems
+with TS. The owned C ABI snapshots locale resolution before later option getters can
+replace registered data. Reconfiguration uses that snapshot; handles survive
+registry destruction. Primitive-text queries share PluralRules mathematical
+parsing, including radix strings, exact BigInts and Number clamps. Status 4
+preserves TypeError separately from RangeError. Hermes source/bytecode factories implement constructor/prototype semantics,
+ordered getter/coercion paths, WeakMap brands, cached format functions and fresh
+resolved options. Both modes compare over 7,600 cases against TS, including all digit
+systems. Locale resolution stays fixed when later getters replace registry data.
+SDK `:numberformat` packages the adapter, `38-IntlNumberFormat.js`, and on-demand
+number/plural packs; an independent typed consumer embeds English/French only.
+
+Tiny compact values never receive a suffix from a lexical comparison against an
+exponent-formatted magnitude. Sparse translated currency-name maps fall back to
+the currency code. Both fixes have TS/Rust coverage; tiny values also match native
+Intl formatting and parts.
+
 ## Benchmarks
 
 Run `bazel run //packages/intl-numberformat/benchmark:benchmark` for formatting
@@ -171,3 +195,16 @@ The shared digit mapping is generated from pinned CLDR `numberingSystems.json`
 numeric entries. It includes all 78 systems in the current ECMA-402 digit table;
 Latin digits use the unchanged ASCII path. Algorithmic numbering systems are not
 digit substitutions. Locale availability still comes from number locale data.
+
+Scientific exponent digits use numbering-system substitution without mantissa
+rounding increments. Native Intl regressions cover both BMP and supplementary
+digit systems; Rust/TS parity includes scientific and engineering increments.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

@@ -20,7 +20,8 @@ on Linux:
 ```sh
 bazel build -c opt //native/hermes/package:sdk
 sdk_archive="$(bazel cquery -c opt --output=files //native/hermes/package:sdk)"
-sdk_dir="$(mktemp -d)"
+sdk_dir="$PWD/examples/hermes-intl/.cache/sdk"
+mkdir -p "$sdk_dir"
 tar -xzf "$sdk_archive" -C "$sdk_dir"
 cd examples/hermes-intl
 bazel test --config=linux \

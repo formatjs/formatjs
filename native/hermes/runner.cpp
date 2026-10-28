@@ -5,6 +5,7 @@
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_collator.h>
+#include <formatjs/hermes/intl_numberformat.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -73,6 +74,11 @@ int main(int argc, char **argv) {
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
+      if (flag == "--native-numberformat") {
+        formatjs::installNumberFormat(rt);
+        ++firstScript;
+        continue;
+      }
       if (flag == "--native-collator") {
         formatjs::installCollator(rt);
         ++firstScript;
@@ -108,6 +114,7 @@ int main(int argc, char **argv) {
       if (extensions.hasProperty(rt, "IntlDisplayNames")) formatjs::installDisplayNames(rt, extensions);
       if (extensions.hasProperty(rt, "IntlSegmenter")) formatjs::installSegmenter(rt, extensions);
       if (extensions.hasProperty(rt, "IntlCollator")) formatjs::installCollator(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlNumberFormat")) formatjs::installNumberFormat(rt, extensions);
       ++firstScript;
     }
     for (int i = firstScript; i < argc; ++i) {
