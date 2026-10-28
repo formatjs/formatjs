@@ -8,6 +8,8 @@ suite="$4"
 timeout="$5"
 temporal_prelude="$6"
 temporal_shim="$7"
+baseline="${8:-}"
+validator="${9:-}"
 root="../+http_archive+com_github_tc39_test262"
 report="${TEST_UNDECLARED_OUTPUTS_DIR:?}/results.json"
 
@@ -30,6 +32,12 @@ status=0
 if ! grep -q '"file":' "$report"; then
   echo "Test262 discovered no tests for $suite" >&2
   exit 1
+fi
+if [[ -n "$baseline" ]]; then
+  printf '%s\n' "$status" >"${TEST_UNDECLARED_OUTPUTS_DIR}/exit-code.txt"
+  exec "$validator" --suite "$suite" --baseline "$baseline" --report "$report" \
+    --status "${TEST_UNDECLARED_OUTPUTS_DIR}/exit-code.txt" \
+    --stderr "${TEST_UNDECLARED_OUTPUTS_DIR}/stderr.txt"
 fi
 if (( status != 0 )); then
   echo "Hermes Test262 $suite: $(grep -c '"pass":false' "$report") failures; see results.json" >&2

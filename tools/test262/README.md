@@ -28,7 +28,11 @@ full JSON report in Bazel test outputs. Failing targets remain manual until
 their failures are resolved; a passing subset does not establish full
 conformance. The host enables Hermes ES6 block scoping and loads the pinned
 Temporal polyfill before native extensions so Temporal cases execute.
-Cross-realm cases still report Hermes host limitations.
+Cross-realm cases still report Hermes host limitations. `:hermes` runs the
+passing strict suites and baseline-gated suites in CI. Baselines track remaining
+raw failures, including cross-realm tests, optional legacy constructors, and
+locale-data-dependent assertions. Green baseline gates mean no regression;
+`:hermes-strict` remains the raw conformance diagnostic.
 
 Upstream runner contract: https://github.com/tc39/test262/blob/main/INTERPRETING.md
 

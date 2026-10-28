@@ -1,0 +1,23 @@
+{
+  "total": 488,
+  "failures": {
+    "intl402/DateTimeFormat/canonicalize-timezone.js (default)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/canonicalize-timezone.js (strict mode)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (default)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (strict mode)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Incompatible Intl.DateTimeFormat receiver",
+    "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Incompatible Intl.DateTimeFormat receiver",
+    "intl402/DateTimeFormat/intl-legacy-constructed-symbol-property.js (default)": "Expected no error, got DateTimeFormat: undefined",
+    "intl402/DateTimeFormat/intl-legacy-constructed-symbol-property.js (strict mode)": "Expected no error, got DateTimeFormat: undefined",
+    "intl402/DateTimeFormat/intl-legacy-constructed-symbol.js (default)": "Expected no error, got false: undefined",
+    "intl402/DateTimeFormat/intl-legacy-constructed-symbol.js (strict mode)": "Expected no error, got false: undefined",
+    "intl402/DateTimeFormat/proto-from-ctor-realm.js (default)": "Expected no error, got stack: undefined",
+    "intl402/DateTimeFormat/proto-from-ctor-realm.js (strict mode)": "Expected no error, got stack: undefined",
+    "intl402/DateTimeFormat/prototype/format/numbering-system.js (default)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/prototype/format/numbering-system.js (strict mode)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/timezone-case-insensitive.js (default)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/timezone-case-insensitive.js (strict mode)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/timezone-not-canonicalized.js (default)": "Expected no error, got true: undefined",
+    "intl402/DateTimeFormat/timezone-not-canonicalized.js (strict mode)": "Expected no error, got true: undefined"
+  }
+}
