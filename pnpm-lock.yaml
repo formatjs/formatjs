@@ -391,7 +391,7 @@ importers:
         specifier: ^1.2.5
         version: 1.2.5
       '@types/node':
-        specifier: 22 || 24
+        specifier: 22 || 24 || 26
         version: 24.13.3
       '@types/picomatch':
         specifier: ^4.0.0
@@ -785,7 +785,7 @@ importers:
         specifier: '11'
         version: 11.0.4
       '@types/node':
-        specifier: 22 || 24
+        specifier: 22 || 24 || 26
         version: 24.13.3
       '@vue/compiler-core':
         specifier: '3'
@@ -1130,7 +1130,7 @@ importers:
         specifier: '7'
         version: 7.20.5
       '@types/node':
-        specifier: 22 || 24
+        specifier: 22 || 24 || 26
         version: 24.13.3
       json-stable-stringify:
         specifier: '1'
@@ -1160,7 +1160,7 @@ importers:
         specifier: '>=1'
         version: 2.2.9
       '@types/node':
-        specifier: 22 || 24
+        specifier: 22 || 24 || 26
         version: 24.13.3
       decode-named-character-reference:
         specifier: '1'
