@@ -204,7 +204,8 @@ impl NumberFormat {
             } else {
                 self.exponent(magnitude)?
             };
-            if !number.zero() {
+            // Standard notation keeps exponent zero, so rounding cannot change it.
+            if !number.zero() && self.resolved.notation != "standard" {
                 let mut preview = number.clone();
                 preview.negative = false;
                 preview.shift(-exponent)?;

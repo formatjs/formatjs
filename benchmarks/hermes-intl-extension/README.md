@@ -61,3 +61,5 @@ Skipping pattern tokenization for the plain `#,##0.###` decimal pattern cut
 `RelativeTimeFormat.format(-3, "day")` from 2.44 to 1.70 µs. Magrinj measured
 0.98 µs. A Rust stage profile measured 1.51 µs in NumberFormat and 0.34 µs
 in plural selection for that case before this change.
+Skipping the exponent-rounding preview in standard notation reduced the same
+RTF case further, from 1.70 to 1.37 µs (median of three runs).
