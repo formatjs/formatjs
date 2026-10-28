@@ -3,7 +3,6 @@ import {Text, View} from 'react-native'
 import NativeIntlModule from './specs/NativeIntlModule'
 
 const installed = NativeIntlModule.install()
-const intl = Intl as any
 
 function check(name: string, run: () => boolean): [string, boolean] {
   try {
@@ -14,46 +13,49 @@ function check(name: string, run: () => boolean): [string, boolean] {
 }
 
 const results = [
-  check('Hermes', () => typeof (globalThis as any).HermesInternal === 'object'),
+  check(
+    'Hermes',
+    () => typeof Reflect.get(globalThis, 'HermesInternal') === 'object'
+  ),
   check('native install', () => installed),
   check(
     'getCanonicalLocales',
-    () => intl.getCanonicalLocales('en-us')[0] === 'en-US'
+    () => Intl.getCanonicalLocales('en-us')[0] === 'en-US'
   ),
   check('supportedValuesOf', () =>
-    intl.supportedValuesOf('calendar').includes('gregory')
+    Intl.supportedValuesOf('calendar').includes('gregory')
   ),
-  check('Locale', () => new intl.Locale('en-US').language === 'en'),
-  check('PluralRules', () => new intl.PluralRules('en').select(1) === 'one'),
+  check('Locale', () => new Intl.Locale('en-US').language === 'en'),
+  check('PluralRules', () => new Intl.PluralRules('en').select(1) === 'one'),
   check(
     'ListFormat',
-    () => new intl.ListFormat('en').format(['A', 'B']) === 'A and B'
+    () => new Intl.ListFormat('en').format(['A', 'B']) === 'A and B'
   ),
   check(
     'DisplayNames',
-    () => new intl.DisplayNames('en', {type: 'language'}).of('fr') === 'French'
+    () => new Intl.DisplayNames('en', {type: 'language'}).of('fr') === 'French'
   ),
   check(
     'Segmenter',
     () =>
-      [...new intl.Segmenter('en', {granularity: 'grapheme'}).segment('A🙂')]
+      [...new Intl.Segmenter('en', {granularity: 'grapheme'}).segment('A🙂')]
         .length === 2
   ),
-  check('Collator', () => new intl.Collator('en').compare('a', 'b') < 0),
+  check('Collator', () => new Intl.Collator('en').compare('a', 'b') < 0),
   check(
     'NumberFormat',
-    () => new intl.NumberFormat('en-US').format(1234.5) === '1,234.5'
+    () => new Intl.NumberFormat('en-US').format(1234.5) === '1,234.5'
   ),
   check(
     'RelativeTimeFormat',
     () =>
-      new intl.RelativeTimeFormat('en', {numeric: 'auto'}).format(-1, 'day') ===
+      new Intl.RelativeTimeFormat('en', {numeric: 'auto'}).format(-1, 'day') ===
       'yesterday'
   ),
   check(
     'DateTimeFormat',
     () =>
-      new intl.DateTimeFormat('en-US', {
+      new Intl.DateTimeFormat('en-US', {
         timeZone: 'UTC',
         year: 'numeric',
         month: '2-digit',
@@ -63,7 +65,7 @@ const results = [
   check(
     'DurationFormat',
     () =>
-      new intl.DurationFormat('en', {style: 'digital'}).format({
+      new Intl.DurationFormat('en', {style: 'digital'}).format({
         hours: 1,
         minutes: 2,
         seconds: 3,
@@ -75,7 +77,7 @@ export default function App() {
   return (
     <View style={{flex: 1, padding: 16, backgroundColor: '#fff'}}>
       {results.map(([name, passed]) => (
-        <Text key={name as string} style={{fontSize: 16, paddingVertical: 5}}>
+        <Text key={name} style={{fontSize: 16, paddingVertical: 5}}>
           {name}: {passed ? 'PASS' : 'FAIL'}
         </Text>
       ))}

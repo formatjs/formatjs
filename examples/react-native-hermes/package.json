@@ -5,7 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "start": "react-native start",
-    "vrt": "node vrt/compare.mjs"
+    "vrt": "node vrt/compare.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "codegenConfig": {
     "name": "AppSpecs",

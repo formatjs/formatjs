@@ -21,14 +21,8 @@ if(NOT EXISTS ${RUST_ARCHIVE})
 endif()
 
 file(GLOB INTL_SOURCES ${SDK}/src/*.cpp)
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-  ../../../../../shared/NativeIntlModule.cpp
-  ${INTL_SOURCES}
-)
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-  ../../../../../shared
-  ${SDK}/include
-)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${INTL_SOURCES})
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${SDK}/include)
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_20)
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -fexceptions)
 target_link_libraries(${CMAKE_PROJECT_NAME} ${RUST_ARCHIVE})

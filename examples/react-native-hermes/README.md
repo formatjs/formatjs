@@ -1,7 +1,7 @@
 # React Native Hermes Intl example
 
 Android arm64/x86_64 app. Installs all twelve Rust-backed Intl polyfills into React
-Native's Hermes runtime through a synchronous C++ TurboModule. Screen shows
+Native's Hermes runtime through a synchronous C++ TurboModule in `OnLoad.cpp`. Screen shows
 one result per API. Android instrumentation test reads the rendered text and
 captures a screenshot.
 
