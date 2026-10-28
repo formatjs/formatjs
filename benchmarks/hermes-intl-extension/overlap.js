@@ -100,6 +100,18 @@
     },
   ])
   cases.push([
+    'ListFormat.new(fallback)',
+    function () {
+      return new Intl.ListFormat('en-XX')
+    },
+  ])
+  cases.push([
+    'ListFormat.new(unsupported)',
+    function () {
+      return new Intl.ListFormat('qzz')
+    },
+  ])
+  cases.push([
     'RelativeTimeFormat.new',
     function () {
       return new Intl.RelativeTimeFormat('en', {numeric: 'always'})
@@ -122,7 +134,9 @@
     var name = cases[c][0],
       f = cases[c][1]
     var value = f()
-    var n = 100
+    if (name.indexOf('ListFormat.new(') === 0)
+      value = value.resolvedOptions().locale
+    var n = 1
     while (n < 10000000 && run(f, n) < 50) n *= 2
     var samples = []
     for (var r = 0; r < 7; r++) samples.push((run(f, n) * 1000) / n)

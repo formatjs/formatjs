@@ -68,6 +68,14 @@ fn prefix_lookup_keeps_requested_supported_tags_and_private_use() {
 #[test]
 fn winning_request_index_keeps_the_matching_unicode_extension() {
     let available = tags(&["de", "en"]);
+    assert_eq!(
+        formatjs_intl_locale::matcher::best_fit_requested(
+            &available,
+            &tags(&["en-u-kf-upper", "de"])
+        )
+        .unwrap(),
+        Some((0, "en".into()))
+    );
     let requested = tags(&["zz-ZZ-u-kn", "en-u-kf-upper"]);
     let matched =
         formatjs_intl_locale::matcher::best_fit_requested(&available, &requested).unwrap();

@@ -54,19 +54,21 @@ Bazel `-c opt`, magrinj Rust uses its release profile (`opt-level="z"`, LTO):
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.79 |       1.44 |
-| `Locale.maximize`                    |        6.09 |       2.58 |
-| `PluralRules.select`                 |        0.61 |       0.56 |
+| `getCanonicalLocales`                |        0.79 |       1.43 |
+| `Locale.maximize`                    |        5.86 |       2.57 |
+| `PluralRules.select`                 |        0.63 |       0.56 |
 | `ListFormat.format`                  |        1.11 |       0.69 |
-| `ListFormat.formatToParts`           |        4.77 |       4.35 |
-| `RelativeTimeFormat.format`          |        1.05 |       0.96 |
+| `ListFormat.formatToParts`           |        4.70 |       4.37 |
+| `RelativeTimeFormat.format`          |        1.07 |       0.95 |
 | `RelativeTimeFormat.format(decimal)` |        1.50 |       1.04 |
 | `RelativeTimeFormat.format(auto)`    |        0.52 |       0.85 |
-| `RelativeTimeFormat.formatToParts`   |        3.09 |       2.92 |
-| `Locale.new`                         |        6.95 |       1.20 |
-| `PluralRules.new`                    |        10.6 |       5.67 |
-| `ListFormat.new`                     |        18.8 |       3.36 |
-| `RelativeTimeFormat.new`             |        28.1 |       5.43 |
+| `RelativeTimeFormat.formatToParts`   |        3.17 |       2.89 |
+| `Locale.new`                         |        6.96 |       1.21 |
+| `PluralRules.new`                    |        7.45 |       5.71 |
+| `ListFormat.new`                     |        3.30 |       3.40 |
+| `ListFormat.new(fallback)`           |       7,875 |       4.32 |
+| `ListFormat.new(unsupported)`        |      11,000 |       4.31 |
+| `RelativeTimeFormat.new`             |        13.2 |       5.50 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -79,3 +81,16 @@ Shared RTF rounding, direct string assembly, and stack unit decoding reduced
 An earlier Rust stage profile put 1.51 µs in NumberFormat and 0.34 µs in plural
 selection. NumberFormat pattern and exponent optimizations reduced that cost;
 RTF now selects its own locale rules from the number formatter's rounded value.
+
+Returning an exact first locale before building the fallback matcher index cut
+`ListFormat.new` from 18.3 to 3.30 µs, `PluralRules.new` from 10.7 to 7.45 µs,
+and `RelativeTimeFormat.new` from 28.8 to 13.2 µs in alternating runs. Fallback
+matching still uses the same CLDR distance algorithm and request ordering.
+Keep its request collection separate: chaining the already-inspected first
+request back into the iterator regressed nonexact matching by 17–18% in optimized
+builds. The separate collection preserves baseline fallback timings.
+
+Fallback requests `en-XX`; unsupported requests `qzz`. FormatJS resolves them
+to `en-GB` and `en`, respectively; magrinj resolves them to `en` and `en-US`.
+These cases compare constructor cost with different matching results. Their
+timings exclude reading `resolvedOptions().locale`.
