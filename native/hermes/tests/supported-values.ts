@@ -4,6 +4,7 @@ declare function print(value: string): void
 
 const candidate = Intl.supportedValuesOf as (key?: unknown) => string[]
 const reference = supportedValuesOf as (key?: unknown) => string[]
+const savedAddUnitData = (Intl.NumberFormat as any).__addUnitData
 const keys = [
   'calendar',
   'collation',
@@ -192,6 +193,30 @@ try {
   )
 }
 equal(candidate('unit'), unitsBefore, 'Restored formatter behavior')
+
+let probes = 0
+try {
+  Object.defineProperty(Intl.NumberFormat.prototype, 'resolvedOptions', {
+    ...resolvedDescriptor,
+    value() {
+      probes++
+      return resolvedDescriptor.value.call(this)
+    },
+  })
+  candidate('unit')
+  const first = probes
+  candidate('unit')
+  check(probes === first, 'Cached formatter observations')
+  savedAddUnitData('en', {simple: {}, compound: {}})
+  candidate('unit')
+  check(probes > first, 'Saved locale loader invalidates cache')
+} finally {
+  Object.defineProperty(
+    Intl.NumberFormat.prototype,
+    'resolvedOptions',
+    resolvedDescriptor
+  )
+}
 
 const descriptor = Object.getOwnPropertyDescriptor(Intl, 'supportedValuesOf')!
 check(descriptor.value === candidate, 'Installed method')
