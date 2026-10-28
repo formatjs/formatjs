@@ -52,6 +52,22 @@ declarations and `format_message(...)` calls. Inline calls accept dynamic
 `values`. IDs are optional; missing IDs use the same 10-character generated ID
 as Rust.
 
+Set `id_encoding="hex"` on `define_message`, `MessageDescriptor`, or an inline
+`format_message` call to select `[sha512:contenthash:hex:10]`. The CLI reads
+that literal option from `define_message` and inline calls. Base64 remains the
+default; explicit IDs take precedence. Descriptors and inline calls share the
+native Unicode White_Space normalization and treat empty descriptions as absent.
+Changing encoding requires rekeying translation catalogs and switching extraction
+and runtime together.
+
+```python
+SHARED = define_message(
+    default_message="Hello, {name}!",
+    description="Greeting",
+    id_encoding="hex",
+)
+```
+
 ```python
 title = intl.format_message(
     default_message="Welcome, {name}!",

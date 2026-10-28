@@ -1,24 +1,16 @@
 """High-level internationalization runtime."""
 
-import base64
-import hashlib
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import date, datetime
 from enum import StrEnum
+from typing import Literal
 
 from intl._native import Intl as _NativeIntl
 from intl._native import MessageCatalog as _NativeMessageCatalog
-from intl._native import negotiate
+from intl._native import _generate_id, negotiate
 
 MessageValue = str | bool | int | float | date | datetime | None
-
-
-def _generate_id(default_message: str, description: str | None) -> str:
-    content = " ".join(default_message.split())
-    if description is not None:
-        content += f"#{description}"
-    return base64.b64encode(hashlib.sha512(content.encode()).digest()).decode()[:10]
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,13 +18,14 @@ class MessageDescriptor:
     default_message: str
     id: str = ""
     description: str | None = None
+    id_encoding: Literal["base64", "hex"] = "base64"
 
     def __post_init__(self) -> None:
         if not self.id:
             object.__setattr__(
                 self,
                 "id",
-                _generate_id(self.default_message, self.description),
+                _generate_id(self.default_message, self.description, self.id_encoding),
             )
 
 
@@ -41,11 +34,13 @@ def define_message(
     default_message: str,
     id: str | None = None,
     description: str | None = None,
+    id_encoding: Literal["base64", "hex"] = "base64",
 ) -> MessageDescriptor:
     return MessageDescriptor(
         id=id or "",
         default_message=default_message,
         description=description,
+        id_encoding=id_encoding,
     )
 
 
@@ -146,6 +141,7 @@ class Intl:
         id: str | None = None,
         default_message: str | None = None,
         description: str | None = None,
+        id_encoding: Literal["base64", "hex"] | None = None,
         values: Mapping[str, MessageValue] | None = None,
     ) -> str:
         if isinstance(descriptor, str):
@@ -153,7 +149,12 @@ class Intl:
                 raise TypeError("id was provided twice")
             id = descriptor
         elif descriptor is not None:
-            if id is not None or default_message is not None or description is not None:
+            if (
+                id is not None
+                or default_message is not None
+                or description is not None
+                or id_encoding is not None
+            ):
                 raise TypeError("descriptor fields cannot be combined with a descriptor")
             id = descriptor.id or None
             default_message = descriptor.default_message
@@ -163,6 +164,7 @@ class Intl:
             id,
             default_message=default_message or "",
             description=description,
+            id_encoding="base64" if id_encoding is None else id_encoding,
             values=dict(values or {}),
         )
 

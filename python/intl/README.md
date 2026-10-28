@@ -20,7 +20,7 @@ intl = Intl(
 )
 assert intl.format_message("hello", default_message="Hello") == "Bonjour"
 
-# IDs are optional and generated from the descriptor.
+# IDs are optional. Add id_encoding="hex" to match web hex IDs.
 assert intl.format_message(default_message="Welcome") == "Welcome"
 
 greeting = define_message(default_message="Hello, {name}!")
@@ -107,3 +107,10 @@ Rich tags are rejected during generation because Python Intl has no rich callbac
 API. Raw `Intl.format_message` calls keep their existing dynamic interface;
 use the generated wrappers for per-message checks. Generate from source catalogs,
 not independently from each translation.
+
+Generated IDs default to SHA-512/Base64 truncated to 10 characters. Set
+`id_encoding="hex"` on `define_message`, `MessageDescriptor`, or inline
+`format_message` calls for 10 lowercase hex characters. The CLI reads the same
+literal option. Explicit IDs take precedence. Empty descriptions hash like absent
+ones; normalization uses Unicode White_Space. Rekey existing translation catalogs
+when changing encodings, then switch extraction and runtime together.

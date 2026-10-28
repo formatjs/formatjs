@@ -91,8 +91,19 @@ impl RustMessageExtractor<'_> {
         let id = match arguments.id {
             Some(id) => id,
             None => {
-                self.id_generator
-                    .generate(Some(&normalized_default_message), &description, None)?
+                if arguments.id_encoding.as_deref() == Some("hex") {
+                    IdGenerator::new("[sha512:contenthash:hex:10]")?.generate(
+                        Some(&normalized_default_message),
+                        &description,
+                        None,
+                    )?
+                } else {
+                    self.id_generator.generate(
+                        Some(&normalized_default_message),
+                        &description,
+                        None,
+                    )?
+                }
             }
         };
         let default_message = if self.preserve_whitespace {
@@ -175,6 +186,7 @@ struct MessageArgs {
     id: Option<String>,
     default_message: String,
     description: Option<String>,
+    id_encoding: Option<String>,
 }
 
 impl Parse for MessageArgs {
@@ -187,6 +199,7 @@ fn parse_message_args(input: ParseStream<'_>, allow_values: bool) -> syn::Result
     let mut id = None;
     let mut default_message = None;
     let mut description = None;
+    let mut id_encoding = None;
     let mut values = false;
     while !input.is_empty() {
         let key: Ident = input.parse()?;
@@ -227,7 +240,16 @@ fn parse_message_args(input: ParseStream<'_>, allow_values: bool) -> syn::Result
                         default_message = Some(value.value())
                     }
                     "description" if description.is_none() => description = Some(value.value()),
-                    "id" | "default_message" | "description" => {
+                    "id_encoding" if id_encoding.is_none() => {
+                        if !matches!(value.value().as_str(), "base64" | "hex") {
+                            return Err(syn::Error::new(
+                                value.span(),
+                                "id_encoding must be base64 or hex",
+                            ));
+                        }
+                        id_encoding = Some(value.value());
+                    }
+                    "id" | "default_message" | "description" | "id_encoding" => {
                         return Err(syn::Error::new(key.span(), "duplicate message field"));
                     }
                     _ => return Err(syn::Error::new(key.span(), "unknown message field")),
@@ -246,5 +268,6 @@ fn parse_message_args(input: ParseStream<'_>, allow_values: bool) -> syn::Result
         default_message: default_message
             .ok_or_else(|| syn::Error::new(Span::call_site(), "default_message is required"))?,
         description,
+        id_encoding,
     })
 }

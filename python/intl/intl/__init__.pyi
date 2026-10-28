@@ -2,6 +2,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import date, datetime
 from enum import StrEnum
+from typing import Literal
 
 MessageValue = str | bool | int | float | date | datetime | None
 
@@ -10,6 +11,7 @@ class MessageDescriptor:
     default_message: str
     id: str = ""
     description: str | None = None
+    id_encoding: Literal["base64", "hex"] = "base64"
     def __post_init__(self) -> None: ...
 
 def define_message(
@@ -17,6 +19,7 @@ def define_message(
     default_message: str,
     id: str | None = None,
     description: str | None = None,
+    id_encoding: Literal["base64", "hex"] = "base64",
 ) -> MessageDescriptor: ...
 
 class IntlErrorCode(StrEnum):
@@ -64,6 +67,7 @@ class Intl:
         id: str | None = None,
         default_message: str | None = None,
         description: str | None = None,
+        id_encoding: Literal["base64", "hex"] | None = None,
         values: Mapping[str, MessageValue] | None = None,
     ) -> str: ...
 

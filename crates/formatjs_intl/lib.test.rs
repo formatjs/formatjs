@@ -374,3 +374,56 @@ fn requires_default_catalog() {
     };
     assert!(matches!(error, Error::MissingDefaultLocale(locale) if locale == "en"));
 }
+
+#[test]
+fn hex_ids_match_web_and_format_translations() {
+    let greeting = message_descriptor!(
+        default_message: "  Hello,\n {name}! \u{0085}",
+        description: "Greeting",
+        id_encoding: "hex",
+    );
+    assert_eq!(greeting.id, "106d712534");
+    assert_eq!(
+        message_descriptor!(default_message: "Hello", description: "", id_encoding: "hex").id,
+        "3615f80c9d"
+    );
+    assert_eq!(
+        message_descriptor!(default_message: "Hello", description: "").id,
+        message_descriptor!(default_message: "Hello").id
+    );
+    assert_eq!(
+        message_descriptor!(id: "manual", default_message: "Hello", id_encoding: "hex").id,
+        "manual"
+    );
+    let mut catalog = MessageCatalog::new();
+    catalog.insert("en", HashMap::new()).unwrap();
+    catalog
+        .insert(
+            "fr",
+            HashMap::from([
+                ("106d712534".to_owned(), "Bonjour, {name}!".to_owned()),
+                ("3615f80c9d".to_owned(), "Bonjour".to_owned()),
+            ]),
+        )
+        .unwrap();
+    let intl = Intl::try_new(["fr"], "en", Arc::new(catalog), Arc::new(IntlCache::new())).unwrap();
+    let values: Values = HashMap::from([("name".to_owned(), Value::from("Ada"))]);
+    assert_eq!(
+        format_message!(&intl, default_message: "Hello, {name}!", description: "Greeting", id_encoding: "hex", values: { name: "Ada" }),
+        "Bonjour, Ada!"
+    );
+    assert_eq!(
+        format_message!(&intl, default_message: "Hello, {name}!", description: "Greeting", id_encoding: "hex", values: &values),
+        "Bonjour, Ada!"
+    );
+    assert_eq!(
+        format_message!(&intl, default_message: "Hello", id_encoding: "hex"),
+        "Bonjour"
+    );
+    assert_eq!(
+        formatted_message!(&intl, default_message: "Hello", id_encoding: "hex").to_string(),
+        "Bonjour"
+    );
+    let name = formatted_message!(&intl, id: "name", default_message: "Ada");
+    assert_eq!(formatted_message!(&intl, default_message: "Hello, {name}!", description: "Greeting", id_encoding: "hex", values: { name: &name }).as_str(), "Bonjour, Ada!");
+}

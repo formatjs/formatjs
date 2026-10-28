@@ -25,3 +25,15 @@ fn validates_nested_icu_values() {
         gender, name, count, amount, due, time, b
     );
 }
+
+/// Invalid encodings and duplicate options fail at compile time.
+///
+/// ```compile_fail
+/// formatjs_intl_macros::__message_descriptor!(default_message: "Hello", id_encoding: "rot13");
+/// ```
+///
+/// ```compile_fail
+/// formatjs_intl_macros::__message_descriptor!(default_message: "Hello", id_encoding: "hex", id_encoding: "hex");
+/// ```
+#[allow(dead_code)]
+pub fn encoding_examples() {}

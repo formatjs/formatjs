@@ -188,7 +188,8 @@ the crate is not published to crates.io.
 - Uses Ruff's Python parser for literal `define_message(...)` declarations and
   inline `format_message(...)` calls
 - Python inline calls mirror Rust named fields; missing IDs use
-  `[sha512:contenthash:base64:10]`
+  `[sha512:contenthash:base64:10]`; literal `id_encoding="hex"` selects
+  `[sha512:contenthash:hex:10]`, matching the Python runtime
 - Python runtime calls accept reusable `MessageDescriptor` objects, inline
   descriptor fields, mapping values, or arbitrary value keyword arguments
 - Generated IDs are locale-independent; request-specific `Intl` instances use
@@ -240,7 +241,12 @@ The CLI and its N-API bindings require Rust 1.97 for OXC 0.153.
 - Accepts checked inline `values: { name: expression }`; its procedural macro
   parses the default ICU message and rejects missing, unused, or duplicate names.
 - Keeps `values: &values` for dynamically assembled or reused maps.
-- Generates missing IDs with `[sha512:contenthash:base64:10]`; explicit IDs remain supported.
+- Generates missing IDs with `[sha512:contenthash:base64:10]`; literal
+  `id_encoding: "hex"` selects `[sha512:contenthash:hex:10]` for descriptors and
+  both formatting macros. Explicit IDs take precedence. CLI extraction reads
+  the same option. Python descriptor and inline ID generation share the native
+  helper; both native runtimes omit the separator for empty descriptions.
+  Changing encoding requires rekeying catalogs before switching consumers.
 - Selects translation catalogs with ICU4X locale fallback.
 - Falls back from selected catalog to default catalog, then descriptor message.
 - Retries parse and format failures through the same chain, using each source's

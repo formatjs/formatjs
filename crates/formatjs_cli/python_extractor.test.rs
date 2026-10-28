@@ -227,3 +227,51 @@ fn rejects_invalid_python() {
 
     assert!(error.to_string().contains("Parse error in invalid.py"));
 }
+
+#[test]
+fn extracts_web_hex_ids_and_preserves_explicit_ids() {
+    let source = r#"
+define_message(default_message="  Hello,\n {name}! \u0085", description="Greeting", id_encoding="hex")
+intl.format_message(default_message="Hello", description="", id_encoding="hex")
+intl.format_message("manual", default_message="Hello", id_encoding="hex")
+"#;
+    let messages = extract_messages_from_python_source(
+        source,
+        Path::new("messages.py"),
+        false,
+        false,
+        true,
+        true,
+    )
+    .unwrap();
+    assert_eq!(
+        messages
+            .iter()
+            .map(|message| message.id.as_deref().unwrap())
+            .collect::<Vec<_>>(),
+        ["106d712534", "3615f80c9d", "manual"]
+    );
+}
+
+#[test]
+fn rejects_invalid_id_encoding() {
+    for source in [
+        r#"define_message(default_message="Hello", id_encoding="rot13")"#,
+        r#"intl.format_message(default_message="Hello", id_encoding="rot13")"#,
+    ] {
+        let error = extract_messages_from_python_source(
+            source,
+            Path::new("messages.py"),
+            false,
+            false,
+            false,
+            true,
+        )
+        .unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("id_encoding must be base64 or hex")
+        );
+    }
+}

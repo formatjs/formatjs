@@ -5,7 +5,10 @@ translation catalogs, ICU4X locale negotiation, and shared compiled-message
 caching. Formatting delegates to `formatjs_icu_messageformat`.
 
 `message_descriptor!` generates missing IDs with
-`[sha512:contenthash:base64:10]`. Pass `id:` to keep a semantic ID.
+`[sha512:contenthash:base64:10]`. Set `id_encoding: "hex"` after `description`
+for `[sha512:contenthash:hex:10]`; `format_message!`, `formatted_message!`, and CLI
+extraction honor the same option. Pass `id:` to keep a semantic ID. Switching
+encoding requires rekeying existing catalogs. Empty descriptions hash like absent ones.
 
 ```rust
 use formatjs_icu_messageformat::{Value, Values};

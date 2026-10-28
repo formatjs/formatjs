@@ -352,7 +352,55 @@ def test_rejects_invalid_calls_and_values() -> None:
     )
 
 
+def test_hex_ids_match_web_and_format_translations() -> None:
+    descriptor = define_message(
+        default_message="  Hello,\n {name}! \u0085",
+        description="Greeting",
+        id_encoding="hex",
+    )
+    assert descriptor.id == "106d712534"
+    assert (
+        define_message(default_message="Hello", description="", id_encoding="hex").id
+        == "3615f80c9d"
+    )
+    assert (
+        define_message(id="manual", default_message="Hello", id_encoding="hex").id
+        == "manual"
+    )
+    runtime = Intl(["fr"], "en", {"en": {}, "fr": {"106d712534": "Bonjour, {name}!"}})
+    assert runtime.format_message(descriptor, values={"name": "Ada"}) == "Bonjour, Ada!"
+    assert (
+        runtime.format_message(
+            default_message="Hello, {name}!",
+            description="Greeting",
+            id_encoding="hex",
+            values={"name": "Ada"},
+        )
+        == "Bonjour, Ada!"
+    )
+    assert_raises(
+        ValueError,
+        "id_encoding must be base64 or hex",
+        lambda: define_message(
+            default_message="Hello", id_encoding="rot13"  # type: ignore[arg-type]
+        ),
+    )
+    assert_raises(
+        ValueError,
+        "id_encoding must be base64 or hex",
+        lambda: runtime.format_message(
+            default_message="Hello", id_encoding="rot13"  # type: ignore[arg-type]
+        ),
+    )
+    assert_raises(
+        TypeError,
+        "descriptor fields cannot be combined with a descriptor",
+        lambda: runtime.format_message(descriptor, id_encoding="hex"),
+    )
+
+
 if __name__ == "__main__":
+    test_hex_ids_match_web_and_format_translations()
     test_negotiates_locale()
     test_shared_catalog_preserves_fallback_and_errors()
     test_shared_catalog_is_an_immutable_snapshot()

@@ -87,6 +87,7 @@ impl PythonMessageExtractor<'_> {
         let mut id = None;
         let mut default_message = None;
         let mut description = None;
+        let mut id_encoding = None;
         for keyword in &call.arguments.keywords {
             let Some(name) = keyword.arg.as_ref().map(|argument| argument.as_str()) else {
                 bail!("define_message does not accept **kwargs");
@@ -97,7 +98,13 @@ impl PythonMessageExtractor<'_> {
                 "id" if id.is_none() => id = Some(value),
                 "default_message" if default_message.is_none() => default_message = Some(value),
                 "description" if description.is_none() => description = Some(value),
-                "id" | "default_message" | "description" => {
+                "id_encoding" if id_encoding.is_none() => {
+                    if !matches!(value.as_str(), "base64" | "hex") {
+                        bail!("id_encoding must be base64 or hex");
+                    }
+                    id_encoding = Some(value);
+                }
+                "id" | "default_message" | "description" | "id_encoding" => {
                     bail!("duplicate define_message field: {name}")
                 }
                 _ => bail!("unknown define_message field: {name}"),
@@ -106,7 +113,7 @@ impl PythonMessageExtractor<'_> {
 
         let default_message = default_message
             .ok_or_else(|| anyhow::anyhow!("define_message default_message is required"))?;
-        self.message_descriptor(call, id, Some(default_message), description)
+        self.message_descriptor(call, id, Some(default_message), description, id_encoding)
     }
 
     fn format_message_descriptor(&self, call: &ast::ExprCall) -> Result<Option<MessageDescriptor>> {
@@ -123,6 +130,7 @@ impl PythonMessageExtractor<'_> {
         };
         let mut default_message = None;
         let mut description = None;
+        let mut id_encoding = None;
         let mut values = false;
         for keyword in &call.arguments.keywords {
             let Some(name) = keyword.arg.as_ref().map(|argument| argument.as_str()) else {
@@ -144,8 +152,17 @@ impl PythonMessageExtractor<'_> {
                         anyhow::anyhow!("format_message description must be a string literal")
                     })?);
                 }
+                "id_encoding" if id_encoding.is_none() => {
+                    let value = string_literal(&keyword.value).ok_or_else(|| {
+                        anyhow::anyhow!("format_message id_encoding must be a string literal")
+                    })?;
+                    if !matches!(value.as_str(), "base64" | "hex") {
+                        bail!("id_encoding must be base64 or hex");
+                    }
+                    id_encoding = Some(value);
+                }
                 "values" if !values => values = true,
-                "id" | "default_message" | "description" | "values" => {
+                "id" | "default_message" | "description" | "id_encoding" | "values" => {
                     bail!("duplicate format_message field: {name}")
                 }
                 _ => bail!("unknown format_message field: {name}"),
@@ -155,7 +172,7 @@ impl PythonMessageExtractor<'_> {
         if id.is_none() && default_message.is_none() {
             bail!("format_message default_message is required when id is omitted");
         }
-        self.message_descriptor(call, id, default_message, description)
+        self.message_descriptor(call, id, default_message, description, id_encoding)
             .map(Some)
     }
 
@@ -165,16 +182,27 @@ impl PythonMessageExtractor<'_> {
         id: Option<String>,
         default_message: Option<String>,
         description: Option<String>,
+        id_encoding: Option<String>,
     ) -> Result<MessageDescriptor> {
         let normalized_default_message = default_message.as_deref().map(normalize_whitespace);
         let description = description.map(Value::String);
         let id = match id {
             Some(id) => id,
-            None => self.id_generator.generate(
-                normalized_default_message.as_deref(),
-                &description,
-                None,
-            )?,
+            None => {
+                if id_encoding.as_deref() == Some("hex") {
+                    IdGenerator::new("[sha512:contenthash:hex:10]")?.generate(
+                        normalized_default_message.as_deref(),
+                        &description,
+                        None,
+                    )?
+                } else {
+                    self.id_generator.generate(
+                        normalized_default_message.as_deref(),
+                        &description,
+                        None,
+                    )?
+                }
+            }
         };
         let default_message = if self.preserve_whitespace {
             default_message

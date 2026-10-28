@@ -192,7 +192,8 @@ formatjs extract "src/**/*.tsx" --out-file messages.json
 
 Rust extraction reads `formatjs_intl::message_descriptor!` descriptors and
 inline `formatjs_intl::format_message!` or `formatjs_intl::formatted_message!` calls. Missing IDs use
-`[sha512:contenthash:base64:10]`:
+`[sha512:contenthash:base64:10]`. Add `id_encoding: "hex"` to a descriptor or
+inline macro for `[sha512:contenthash:hex:10]`, matching runtime generation:
 
 ```rust
 const GREETING: formatjs_intl::MessageDescriptor = formatjs_intl::message_descriptor!(
@@ -217,7 +218,9 @@ formatjs extract "src/**/*.rs" --out-file messages.json
 
 Python extraction reads explicit `define_message` declarations and inline
 `format_message` calls. `id` is optional; missing IDs use
-`[sha512:contenthash:base64:10]`. Descriptor fields must be string literals;
+`[sha512:contenthash:base64:10]`. Add `id_encoding="hex"` for
+`[sha512:contenthash:hex:10]`, matching runtime generation. Explicit IDs take
+precedence. Descriptor fields must be string literals;
 `values` may be dynamic mappings or arbitrary keyword arguments. Descriptor
 objects declared elsewhere are extracted from their `define_message` call.
 

@@ -101,6 +101,25 @@ formatjs extract "src/**/*.rs" --out-file messages.json
 
 Use `id: "greeting"` when a stable semantic ID is preferred.
 
+Set `id_encoding: "hex"` after `description` to generate
+`[sha512:contenthash:hex:10]` IDs matching web projects that use that pattern.
+The option also works in `format_message!` and `formatted_message!`; the CLI
+reads the same literal option, so extraction and runtime IDs agree. Omit it or
+use `"base64"` to keep existing generated IDs. Explicit `id` values take precedence.
+
+```rust
+const SHARED: MessageDescriptor = message_descriptor!(
+    default_message: "Hello, {name}!",
+    description: "Greeting",
+    id_encoding: "hex",
+);
+```
+
+Both encodings hash the default message after Unicode White_Space trim and
+collapse, followed by `#` and the verbatim description when nonempty. Empty
+and absent descriptions generate the same ID. Changing encoding changes IDs:
+rekey existing translation catalogs before switching extraction and runtime together.
+
 ## Inline formatting
 
 `format_message!` creates an extractable descriptor and formats it in one

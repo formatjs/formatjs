@@ -241,6 +241,7 @@ macro_rules! format_message {
         $(id: $id:literal,)?
         default_message: $default_message:literal
         $(, description: $description:literal)?
+        $(, id_encoding: $id_encoding:literal)?
         , values: { $($name:ident : $value:expr),+ $(,)? }
         $(,)?
     ) => {{
@@ -259,6 +260,7 @@ macro_rules! format_message {
             $(id: $id,)?
             default_message: $default_message
             $(, description: $description)?
+            $(, id_encoding: $id_encoding)?
         );
         $intl.format_message_to_string_or_default(descriptor, &values)
     }};
@@ -267,6 +269,7 @@ macro_rules! format_message {
         $(id: $id:literal,)?
         default_message: $default_message:literal
         $(, description: $description:literal)?
+        $(, id_encoding: $id_encoding:literal)?
         , values: $values:expr
         $(,)?
     ) => {{
@@ -274,6 +277,7 @@ macro_rules! format_message {
             $(id: $id,)?
             default_message: $default_message
             $(, description: $description)?
+            $(, id_encoding: $id_encoding)?
         );
         $intl.format_message_to_string_or_default(descriptor, $values)
     }};
@@ -282,6 +286,7 @@ macro_rules! format_message {
         $(id: $id:literal,)?
         default_message: $default_message:literal
         $(, description: $description:literal)?
+        $(, id_encoding: $id_encoding:literal)?
         $(,)?
     ) => {{
         const _: () = $crate::__validate_message_values!($default_message;);
@@ -289,6 +294,7 @@ macro_rules! format_message {
             $(id: $id,)?
             default_message: $default_message
             $(, description: $description)?
+            $(, id_encoding: $id_encoding)?
         );
         $intl.format_message_to_string_or_default(descriptor, &$crate::__Values::new())
     }};

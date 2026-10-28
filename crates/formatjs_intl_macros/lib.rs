@@ -14,7 +14,13 @@ pub fn __message_descriptor(input: TokenStream) -> TokenStream {
     let arguments = parse_macro_input!(input as MessageDescriptorArgs);
     let default_message = normalize_whitespace(&arguments.default_message.value());
     let id = arguments.id.map_or_else(
-        || generate_id(&default_message, arguments.description.as_ref()),
+        || {
+            generate_id(
+                &default_message,
+                arguments.description.as_ref(),
+                arguments.id_encoding.as_ref(),
+            )
+        },
         |id| id.value(),
     );
     let description = arguments.description.map_or_else(
@@ -102,6 +108,7 @@ struct MessageDescriptorArgs {
     id: Option<LitStr>,
     default_message: LitStr,
     description: Option<LitStr>,
+    id_encoding: Option<LitStr>,
 }
 
 impl Parse for MessageDescriptorArgs {
@@ -109,6 +116,7 @@ impl Parse for MessageDescriptorArgs {
         let mut id = None;
         let mut default_message = None;
         let mut description = None;
+        let mut id_encoding = None;
 
         while !input.is_empty() {
             let key: Ident = input.parse()?;
@@ -118,7 +126,16 @@ impl Parse for MessageDescriptorArgs {
                 "id" if id.is_none() => id = Some(value),
                 "default_message" if default_message.is_none() => default_message = Some(value),
                 "description" if description.is_none() => description = Some(value),
-                "id" | "default_message" | "description" => {
+                "id_encoding" if id_encoding.is_none() => {
+                    if !matches!(value.value().as_str(), "base64" | "hex") {
+                        return Err(syn::Error::new(
+                            value.span(),
+                            "id_encoding must be base64 or hex",
+                        ));
+                    }
+                    id_encoding = Some(value);
+                }
+                "id" | "default_message" | "description" | "id_encoding" => {
                     return Err(syn::Error::new(key.span(), "duplicate message field"));
                 }
                 _ => return Err(syn::Error::new(key.span(), "unknown message field")),
@@ -136,21 +153,32 @@ impl Parse for MessageDescriptorArgs {
             default_message: default_message
                 .ok_or_else(|| syn::Error::new(input.span(), "default_message is required"))?,
             description,
+            id_encoding,
         })
     }
 }
 
-fn generate_id(default_message: &str, description: Option<&LitStr>) -> String {
+fn generate_id(
+    default_message: &str,
+    description: Option<&LitStr>,
+    id_encoding: Option<&LitStr>,
+) -> String {
     let mut content = default_message.as_bytes().to_vec();
-    if let Some(description) = description {
+    if let Some(description) = description.filter(|value| !value.value().is_empty()) {
         content.push(b'#');
         content.extend_from_slice(description.value().as_bytes());
     }
-    base64::engine::general_purpose::STANDARD
-        .encode(Sha512::digest(content))
-        .chars()
-        .take(GENERATED_ID_LENGTH)
-        .collect()
+    let digest = Sha512::digest(content);
+    let encoded = if id_encoding.is_some_and(|encoding| encoding.value() == "hex") {
+        digest
+            .iter()
+            .take(GENERATED_ID_LENGTH / 2)
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>()
+    } else {
+        base64::engine::general_purpose::STANDARD.encode(digest)
+    };
+    encoded.chars().take(GENERATED_ID_LENGTH).collect()
 }
 
 fn normalize_whitespace(value: &str) -> String {

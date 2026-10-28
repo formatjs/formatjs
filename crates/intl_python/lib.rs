@@ -32,17 +32,27 @@ fn normalize_whitespace(value: &str) -> String {
     normalized
 }
 
-fn generate_id(default_message: &str, description: Option<&str>) -> String {
+fn generate_id(
+    default_message: &str,
+    description: Option<&str>,
+    id_encoding: &str,
+) -> PyResult<String> {
     let mut content = normalize_whitespace(default_message).into_bytes();
-    if let Some(description) = description {
+    if let Some(description) = description.filter(|value| !value.is_empty()) {
         content.push(b'#');
         content.extend_from_slice(description.as_bytes());
     }
-    base64::engine::general_purpose::STANDARD
-        .encode(Sha512::digest(content))
-        .chars()
-        .take(GENERATED_ID_LENGTH)
-        .collect()
+    let digest = Sha512::digest(content);
+    let encoded = match id_encoding {
+        "hex" => digest
+            .iter()
+            .take(GENERATED_ID_LENGTH / 2)
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>(),
+        "base64" => base64::engine::general_purpose::STANDARD.encode(digest),
+        _ => return Err(PyValueError::new_err("id_encoding must be base64 or hex")),
+    };
+    Ok(encoded.chars().take(GENERATED_ID_LENGTH).collect())
 }
 
 fn value_from_python(value: &Bound<'_, PyAny>) -> PyResult<Value<String>> {
@@ -226,12 +236,13 @@ impl PyIntl {
         self.intl.locale().to_string()
     }
 
-    #[pyo3(signature = (id = None, *, default_message = "", description = None, values = None))]
+    #[pyo3(signature = (id = None, *, default_message = "", description = None, id_encoding = "base64", values = None))]
     fn format_message(
         &self,
         id: Option<&str>,
         default_message: &str,
         description: Option<&str>,
+        id_encoding: &str,
         values: Option<&Bound<'_, PyDict>>,
     ) -> PyResult<String> {
         self.callback_error
@@ -245,7 +256,7 @@ impl PyIntl {
                     "default_message is required when id is omitted",
                 ));
             }
-            None => generate_id(default_message, description),
+            None => generate_id(default_message, description, id_encoding)?,
         };
         let values = values_from_python(values)?;
         let descriptor = match description {
@@ -294,6 +305,7 @@ fn _native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<PyMessageCatalog>()?;
     module.add_class::<PyIntl>()?;
     module.add_function(wrap_pyfunction!(_message_arguments, module)?)?;
+    module.add_function(wrap_pyfunction!(_generate_id, module)?)?;
     module.add_function(wrap_pyfunction!(negotiate, module)?)?;
     Ok(())
 }
@@ -324,4 +336,14 @@ fn _message_arguments(
             (name, names)
         })
         .collect())
+}
+
+#[pyfunction]
+#[pyo3(signature = (default_message, description = None, id_encoding = "base64"))]
+fn _generate_id(
+    default_message: &str,
+    description: Option<&str>,
+    id_encoding: &str,
+) -> PyResult<String> {
+    generate_id(default_message, description, id_encoding)
 }
