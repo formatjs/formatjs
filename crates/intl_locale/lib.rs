@@ -356,6 +356,17 @@ impl Locale {
         tag
     }
 
+    fn with_id(&self, id: LanguageId) -> Self {
+        // Existing extensions are canonical; only language ID changes.
+        let tag = self.emit_with_id(&id);
+        Self {
+            tag,
+            id,
+            extensions: self.extensions.clone(),
+            keywords: self.keywords.clone(),
+        }
+    }
+
     pub fn as_str(&self) -> &str {
         &self.tag
     }
@@ -422,11 +433,7 @@ impl Locale {
     pub fn maximize(&self) -> Self {
         // Intl.Locale.prototype.maximize 3–4 preserves variants/extensions.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L284-L285
-        Self::new(
-            &self.emit_with_id(&Self::maximized_id(&self.id)),
-            &LocaleOptions::default(),
-        )
-        .unwrap_or_else(|_| self.clone())
+        self.with_id(Self::maximized_id(&self.id))
     }
 
     pub fn minimize(&self) -> Self {
@@ -448,13 +455,11 @@ impl Locale {
             };
             if Self::maximized_id(&trial) == maximal {
                 trial.variants = variants;
-                return Self::new(&self.emit_with_id(&trial), &LocaleOptions::default())
-                    .unwrap_or_else(|_| self.clone());
+                return self.with_id(trial);
             }
         }
         maximal.variants = variants;
-        Self::new(&self.emit_with_id(&maximal), &LocaleOptions::default())
-            .unwrap_or_else(|_| self.clone())
+        self.with_id(maximal)
     }
 
     fn subdivision_region(&self, key: &str) -> Option<String> {

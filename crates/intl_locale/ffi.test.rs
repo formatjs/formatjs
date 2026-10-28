@@ -41,6 +41,15 @@ impl Handle {
         }
         value
     }
+    fn transform(&self, kind: u32) -> Self {
+        let mut handle = ptr::null_mut();
+        assert_eq!(
+            unsafe { formatjs_locale_transform(self.0, kind, &mut handle) },
+            0
+        );
+        assert!(!handle.is_null());
+        Self(handle)
+    }
 }
 impl Drop for Handle {
     fn drop(&mut self) {
@@ -61,6 +70,19 @@ fn owned_record_preserves_canonical_properties() {
     assert_eq!(
         locale.query(json!({"method":"maximize"})),
         "he-Hebr-MM-u-ca-islamic-civil-kn"
+    );
+    let maximized = locale.transform(0);
+    assert_eq!(
+        maximized.query(json!({"method":"properties"}))["locale"],
+        "he-Hebr-MM-u-ca-islamic-civil-kn"
+    );
+    assert_eq!(
+        maximized.transform(1).query(json!({"method":"properties"}))["locale"],
+        "he-MM-u-ca-islamic-civil-kn"
+    );
+    assert_eq!(
+        locale.query(json!({"method":"properties"}))["locale"],
+        "he-MM-u-ca-islamic-civil-kn"
     );
     assert_eq!(
         locale.query(json!({"method":"textInfo"})),
@@ -118,6 +140,22 @@ fn abi_rejects_invalid_inputs_and_clears_outputs() {
     assert!(handle.is_null());
     assert_eq!(
         unsafe { formatjs_locale_create(b"en".as_ptr(), 2, b"null".as_ptr(), 4, &mut handle) },
+        2
+    );
+    let locale = Handle::new("en", json!({}));
+    handle = 1usize as *mut LocaleHandle;
+    assert_eq!(
+        unsafe { formatjs_locale_transform(locale.0, 2, &mut handle) },
+        2
+    );
+    assert!(handle.is_null());
+    assert_eq!(
+        unsafe { formatjs_locale_transform(ptr::null(), 0, &mut handle) },
+        2
+    );
+    assert!(handle.is_null());
+    assert_eq!(
+        unsafe { formatjs_locale_transform(locale.0, 0, ptr::null_mut()) },
         2
     );
     assert_eq!(

@@ -109,6 +109,36 @@ pub unsafe extern "C" fn formatjs_locale_create(
     .unwrap_or(3)
 }
 
+/// Transform an existing record without re-entering the JS constructor.
+///
+/// # Safety
+/// `handle` is live and `out` is writable. Destroy a successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_locale_transform(
+    handle: *const LocaleHandle,
+    kind: u32,
+    out: *mut *mut LocaleHandle,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    if handle.is_null() || kind > 1 {
+        return 2;
+    }
+    catch_unwind(AssertUnwindSafe(|| {
+        let locale = &unsafe { &*handle }.0;
+        let transformed = if kind == 0 {
+            locale.maximize()
+        } else {
+            locale.minimize()
+        };
+        unsafe { out.write(Box::into_raw(Box::new(LocaleHandle(transformed)))) };
+        0
+    }))
+    .unwrap_or(3)
+}
+
 /// Validate each coerced string option before JS reads the next property.
 /// Uses the same status codes as `formatjs_locale_create`.
 ///
