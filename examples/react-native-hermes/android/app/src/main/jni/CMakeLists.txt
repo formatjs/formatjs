@@ -29,5 +29,6 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
   ../../../../../shared
   ${SDK}/include
 )
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -std=c++17 -fexceptions)
+target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_20)
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -fexceptions)
 target_link_libraries(${CMAKE_PROJECT_NAME} ${RUST_ARCHIVE})
