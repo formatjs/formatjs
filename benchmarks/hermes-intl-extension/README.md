@@ -55,3 +55,5 @@ keeps lone surrogates and reads array getters once; magrinj's shortcut
 does neither.
 Direct ListFormat string assembly and borrowed UTF-16 input cut `format` from
 1.52 to 1.11 µs on the same host; `formatToParts` still returns fresh records.
+Direct PluralRules selection cut `select` from 1.23 to 0.62 µs; magrinj measured
+0.56 µs. Both versions use the same JS coercion and Rust plural rules.
