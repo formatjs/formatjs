@@ -1,18 +1,40 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@rules_java//java:defs.bzl", "java_import", "java_test")
+
+exports_files(["locale-format-fixtures.tsv"])
+
+copy_to_bin(
+    name = "locale_format_fixtures",
+    srcs = ["locale-format-fixtures.tsv"],
+    visibility = ["//native/hermes/tests:__pkg__"],
+)
 
 java_import(
     name = "icu4j",
     jars = ["@icu4j_jar//file"],
 )
 
-java_binary(
+java_test(
     name = "icu_conformance_test",
+    size = "small",
     srcs = ["ICUConformanceTest.java"],
     data = ["//packages/intl-localematcher:tests/locale-match-fixtures.json"],
     env = {
         "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/locale-match-fixtures.json)",
     },
     main_class = "ICUConformanceTest",
+    test_class = "ICUConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_test(
+    name = "intl_locale_formatting_conformance_test",
+    size = "small",
+    srcs = ["IntlLocaleFormattingConformanceTest.java"],
+    data = ["locale-format-fixtures.tsv"],
+    env = {"LOCALE_FORMAT_FIXTURES": "$(rootpath locale-format-fixtures.tsv)"},
+    main_class = "IntlLocaleFormattingConformanceTest",
+    test_class = "IntlLocaleFormattingConformanceTest",
     deps = [":icu4j"],
 )
 

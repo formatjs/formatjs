@@ -35,6 +35,14 @@ Locale matching extracts only the Unicode `u` extension. Private-use subtags
 remain intact, including text resembling `u-co-phonebk`; trailing extensions
 are preserved separately from Unicode keywords.
 
+Rust matcher tests consume the same locale-match fixtures validated by ICU4J
+78.1. Regional formatting fixtures in
+`conformance-tests/icu4j/locale-format-fixtures.tsv` are checked by ICU4J and by
+the Chromium-locale Hermes test in source and bytecode modes. They cover Chinese
+script/region aliases across lists, relative time, display names, dates and units.
+When several packs generate a scriptless alias such as `zh-HK`, registries prefer
+the likely script (`Hant`) while preserving explicitly registered locale data.
+
 `CanonicalizeUValue` applies ASCII case normalization and generated CLDR Unicode
 keyword/subdivision aliases before `ResolveLocale` matches option values. For
 example, `calendar: "islamicc"` resolves to `islamic-civil`. Unknown values remain

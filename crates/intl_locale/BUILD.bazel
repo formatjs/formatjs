@@ -57,10 +57,13 @@ formatjs_rust_test(
         "lib.test.rs",
         "matcher.test.rs",
     ],
+    compile_data = ["//packages/intl-localematcher:tests/locale-match-fixtures.json"],
     crate_name = "intl_locale_test",
     edition = "2024",
+    rustc_env = {"FORMATJS_LOCALE_MATCH_FIXTURES": "$(execpath //packages/intl-localematcher:tests/locale-match-fixtures.json)"},
     deps = [
         ":intl_locale",
+        "@crates//:serde",
         "@crates//:serde_json",
     ],
 )

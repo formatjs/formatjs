@@ -75,6 +75,11 @@ These parts timings read array length, whereas the full suite serializes parts.
 Our ListFormat bridge preserves lone surrogates and reads array getters once;
 magrinj's shortcut does neither.
 
+The [regional fixtures](../../conformance-tests/icu4j/locale-format-fixtures.tsv)
+pin Chinese output against ICU4J 78.1. At the magrinj revision above, `zh-TW`
+formats weeks as `3周前` instead of `3 週前`; `zh-Hant-HK` produces `3 週前`
+instead of Hong Kong's `3 星期前`. The timing table uses English requests.
+
 Shared RTF rounding, direct string assembly, and stack unit decoding reduced
 `format` from 1.39 to 1.05 µs, decimal formatting from 1.99 to 1.50 µs, and
 `formatToParts` from 3.36 to 3.09 µs in alternating before/after runs.

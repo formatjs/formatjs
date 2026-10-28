@@ -5,6 +5,26 @@ fn tags(values: &[&str]) -> Vec<String> {
 }
 
 #[test]
+fn shared_icu4j_locale_matching_fixtures() {
+    #[derive(serde::Deserialize)]
+    struct Fixture {
+        description: String,
+        requested: Vec<String>,
+        supported: Vec<String>,
+        expected: String,
+    }
+    let fixtures: Vec<Fixture> =
+        serde_json::from_str(include_str!(env!("FORMATJS_LOCALE_MATCH_FIXTURES"))).unwrap();
+    assert!(!fixtures.is_empty());
+    for fixture in fixtures {
+        let actual = best_fit(&fixture.supported, &fixture.requested)
+            .unwrap()
+            .unwrap_or_else(|| fixture.supported[0].clone());
+        assert_eq!(actual, fixture.expected, "{}", fixture.description);
+    }
+}
+
+#[test]
 fn ported_ts_best_fit_regressions() {
     for (available, requested, expected) in [
         (vec!["fr", "en"], vec!["fr-XX", "en"], Some("fr")),

@@ -24,6 +24,43 @@ fn formatter() -> ListFormat {
 }
 
 #[test]
+fn scriptless_alias_prefers_likely_script_in_either_registration_order() {
+    let simplified = pack("zh-Hans-HK", "{0} simplified {1}").to_string();
+    let traditional = pack("zh-Hant-HK", "{0} traditional {1}").to_string();
+    for order in [[&simplified, &traditional], [&traditional, &simplified]] {
+        let mut registry = Registry::default();
+        for data in order {
+            registry.add_locale_data(data).unwrap();
+        }
+        let locale = registry.negotiate(&["zh-HK".into()], false).unwrap();
+        assert_eq!(
+            String::from_utf16(
+                &registry
+                    .create(&locale, &Options::default())
+                    .unwrap()
+                    .format(&units(&["A", "B"]))
+            )
+            .unwrap(),
+            "A traditional B"
+        );
+        registry
+            .add_locale_data(&pack("zh-HK", "{0} explicit {1}").to_string())
+            .unwrap();
+        registry.add_locale_data(&traditional).unwrap();
+        assert_eq!(
+            String::from_utf16(
+                &registry
+                    .create("zh-HK", &Options::default())
+                    .unwrap()
+                    .format(&units(&["A", "B"]))
+            )
+            .unwrap(),
+            "A explicit B"
+        );
+    }
+}
+
+#[test]
 fn ported_english_lengths_and_parts() {
     let formatter = formatter();
     for (list, expected) in [
