@@ -321,10 +321,16 @@ pub unsafe extern "C" fn formatjs_relative_format(
         } else {
             unsafe { slice::from_raw_parts(unit, unit_len) }
         };
-        let unit = String::from_utf16(unit).map_err(|_| 1)?;
-        let text = unsafe { &(*handle).0 }
-            .format(value, &unit)
-            .map_err(|_| 1)?;
+        // Supported unit names are ASCII and at most eight code units.
+        let mut ascii = [0u8; 8];
+        if unit.len() > ascii.len() {
+            return Err(1);
+        }
+        for (out, value) in ascii.iter_mut().zip(unit) {
+            *out = u8::try_from(*value).map_err(|_| 1)?;
+        }
+        let unit = str::from_utf8(&ascii[..unit.len()]).map_err(|_| 1)?;
+        let text = unsafe { &(*handle).0 }.format(value, unit).map_err(|_| 1)?;
         unsafe { output(text.into_bytes(), out) };
         Ok(())
     })

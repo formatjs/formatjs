@@ -4,7 +4,6 @@ pub mod ffi;
 pub mod registry;
 pub use data::LocaleData;
 use formatjs_intl_numberformat::{NumberFormat, Options as NumberOptions};
-use formatjs_intl_pluralrules::instance::PluralRules;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -52,11 +51,14 @@ pub struct Part {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit: Option<&'static str>,
 }
+enum Piece<'a> {
+    Literal(&'a str),
+    Number(&'a [formatjs_intl_numberformat::Part], &'static str),
+}
 pub struct RelativeTimeFormat {
     data: Arc<LocaleData>,
     resolved: ResolvedOptions,
     number: NumberFormat,
-    plural: PluralRules,
 }
 impl RelativeTimeFormat {
     pub(crate) fn new(
@@ -86,14 +88,6 @@ impl RelativeTimeFormat {
                 },
             )
             .map_err(|error| Error::InvalidData(error.to_string()))?;
-        let locale = data
-            .plurals
-            .negotiate(std::slice::from_ref(&resolution.locale), false)
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
-        let plural = data
-            .plurals
-            .create(&locale, &Default::default())
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
         let resolved = ResolvedOptions {
             locale: resolution.locale.clone(),
             style: style.into(),
@@ -104,20 +98,45 @@ impl RelativeTimeFormat {
             data,
             resolved,
             number,
-            plural,
         })
     }
     pub fn resolved_options(&self) -> &ResolvedOptions {
         &self.resolved
     }
     pub fn format(&self, value: &str, unit: &str) -> Result<String, Error> {
-        Ok(self
-            .format_to_parts(value, unit)?
-            .iter()
-            .map(|part| part.value.as_str())
-            .collect())
+        let mut result = String::with_capacity(32);
+        self.visit_pattern(value, unit, |piece| match piece {
+            Piece::Literal(value) => result.push_str(value),
+            Piece::Number(parts, _) => {
+                for part in parts {
+                    result.push_str(&part.value);
+                }
+            }
+        })?;
+        Ok(result)
     }
     pub fn format_to_parts(&self, value: &str, unit: &str) -> Result<Vec<Part>, Error> {
+        let mut result = Vec::new();
+        self.visit_pattern(value, unit, |piece| match piece {
+            Piece::Literal(value) => result.push(Part {
+                kind: "literal",
+                value: value.into(),
+                unit: None,
+            }),
+            Piece::Number(parts, unit) => result.extend(parts.iter().map(|part| Part {
+                kind: part.kind,
+                value: part.value.clone(),
+                unit: Some(unit),
+            })),
+        })?;
+        Ok(result)
+    }
+    fn visit_pattern(
+        &self,
+        value: &str,
+        unit: &str,
+        mut visit: impl FnMut(Piece<'_>),
+    ) -> Result<(), Error> {
         let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
         if !numeric.is_finite() {
             return Err(Error::InvalidNumber);
@@ -147,11 +166,8 @@ impl RelativeTimeFormat {
                 numeric.to_string()
             };
             if let Some(literal) = field.relative.get(&key) {
-                return Ok(vec![Part {
-                    kind: "literal",
-                    value: literal.clone(),
-                    unit: None,
-                }]);
+                visit(Piece::Literal(literal));
+                return Ok(());
             }
         }
         let patterns = if numeric.is_sign_negative() {
@@ -159,36 +175,26 @@ impl RelativeTimeFormat {
         } else {
             &field.future
         };
-        let category = self
-            .plural
-            .select_mathematical(value, false)
+        let (number, category) = self
+            .number
+            .format_decimal_with_plural(
+                value.strip_prefix('-').unwrap_or(value),
+                &self.data.plurals,
+            )
             .map_err(|error| Error::InvalidData(error.to_string()))?;
         let pattern = patterns
             .get(category)
             .or_else(|| patterns.get("other"))
             .ok_or_else(|| Error::InvalidData("Missing relative plural pattern".into()))?;
-        let number = self
-            .number
-            .format_to_parts(value.strip_prefix('-').unwrap_or(value))
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
-        let mut result = Vec::new();
         for (index, literal) in pattern.split("{0}").enumerate() {
             if index > 0 {
-                result.extend(number.iter().map(|part| Part {
-                    kind: part.kind,
-                    value: part.value.clone(),
-                    unit: Some(unit),
-                }))
+                visit(Piece::Number(&number, unit));
             }
             if !literal.is_empty() {
-                result.push(Part {
-                    kind: "literal",
-                    value: literal.into(),
-                    unit: None,
-                })
+                visit(Piece::Literal(literal));
             }
         }
-        Ok(result)
+        Ok(())
     }
 }
 #[derive(Debug)]

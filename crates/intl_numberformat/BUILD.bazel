@@ -136,6 +136,7 @@ formatjs_rust_test(
     rustc_env = {"FORMATJS_NUMBER_EN": "$(execpath :locale-data/en.json)"},
     deps = [
         ":intl_numberformat",
+        "//crates/intl_pluralrules",
         "@crates//:serde_json",
     ],
 )
