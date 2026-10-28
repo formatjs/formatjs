@@ -157,6 +157,22 @@ rolldown_bundle(
     target = "es2020",
 )
 
+ts_project(
+    name = "durationformat_smoke_typecheck",
+    srcs = ["durationformat-smoke.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
+rolldown_bundle(
+    name = "durationformat_smoke_js",
+    srcs = ["durationformat-smoke.ts"],
+    entry_point = "durationformat-smoke.ts",
+    format = "iife",
+    target = "es2020",
+)
+
 pkg_files(
     name = "sdk_sources",
     srcs = [
@@ -168,6 +184,7 @@ pkg_files(
         "collator-smoke.ts",
         "datetimeformat-smoke.ts",
         "displaynames-smoke.ts",
+        "durationformat-smoke.ts",
         "listformat-smoke.ts",
         "numberformat-smoke.ts",
         "pluralrules-smoke.ts",
@@ -176,6 +193,7 @@ pkg_files(
         ":collator_smoke_js.js",
         ":datetimeformat_smoke_js.js",
         ":displaynames_smoke_js.js",
+        ":durationformat_smoke_js.js",
         ":listformat_smoke_js.js",
         ":numberformat_smoke_js.js",
         ":pluralrules_smoke_js.js",
@@ -185,6 +203,7 @@ pkg_files(
         "//crates/intl_datetimeformat:datetimeformat.h",
         "//crates/intl_datetimeformat_calendars:datetimeformat_calendars.h",
         "//crates/intl_displaynames:displaynames.h",
+        "//crates/intl_durationformat:durationformat.h",
         "//crates/intl_getcanonicallocales:canonicalize.h",
         "//crates/intl_listformat:listformat.h",
         "//crates/intl_locale:locale.h",
@@ -205,11 +224,15 @@ pkg_files(
         "//native/hermes:displaynames.cpp",
         "//native/hermes:displaynames_extension_js",
         "//native/hermes:displaynames_wrapper_source",
+        "//native/hermes:durationformat.cpp",
+        "//native/hermes:durationformat_extension_js",
+        "//native/hermes:durationformat_wrapper_source",
         "//native/hermes:extension_bundle_js",
         "//native/hermes:extension_js",
         "//native/hermes:intl_collator.h",
         "//native/hermes:intl_datetimeformat.h",
         "//native/hermes:intl_displaynames.h",
+        "//native/hermes:intl_durationformat.h",
         "//native/hermes:intl_listformat.h",
         "//native/hermes:intl_locale.h",
         "//native/hermes:intl_numberformat.h",
@@ -242,6 +265,13 @@ pkg_files(
     ],
     attributes = pkg_attributes(mode = "0644"),
     renames = {
+        "durationformat-smoke.ts": "examples/durationformat-smoke.ts",
+        ":durationformat_smoke_js.js": "js/durationformat-smoke.js",
+        "//crates/intl_durationformat:durationformat.h": "include/formatjs/intl/durationformat.h",
+        "//native/hermes:intl_durationformat.h": "include/formatjs/hermes/intl_durationformat.h",
+        "//native/hermes:durationformat.cpp": "src/durationformat.cpp",
+        "//native/hermes:durationformat_wrapper_source": "src/durationformat.inc",
+        "//native/hermes:durationformat_extension_js": "js/41-IntlDurationFormat.js",
         "datetimeformat-smoke.ts": "examples/datetimeformat-smoke.ts",
         ":datetimeformat_smoke_js.js": "js/datetimeformat-smoke.js",
         "//crates/intl_datetimeformat:datetimeformat.h": "include/formatjs/intl/datetimeformat.h",

@@ -464,6 +464,58 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "durationformat_typecheck",
+    srcs = [
+        "durationformat.ts",
+        "run-durationformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "durationformat_suite",
+    srcs = ["durationformat.ts"],
+    entry_point = "durationformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+js_test(
+    name = "durationformat_conformance_test",
+    size = "large",
+    data = [
+        "durationformat-smoke.js",
+        ":datetimeformat_prelude.js",
+        ":durationformat_suite.js",
+        ":optimized_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_listformat:locale_data",
+        "//crates/intl_numberformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//packages/intl-listformat:cldr-raw",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-durationformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -525,6 +577,8 @@ package_formatter_conformance("relativetimeformat")
 
 package_formatter_conformance("datetimeformat")
 
+package_formatter_conformance("durationformat")
+
 package_formatter_conformance("getcanonicallocales")
 
 compiled_runtime(
@@ -550,6 +604,7 @@ js_test(
         "numberformat",
         "relativetimeformat",
         "datetimeformat",
+        "durationformat",
     ],
     data = [
         ":compiled_locales_suite.js",
@@ -601,6 +656,7 @@ js_test(
         "numberformat",
         "relativetimeformat",
         "datetimeformat",
+        "durationformat",
     ],
     data = [
         ":chromium_locales_suite.js",

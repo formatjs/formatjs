@@ -1,0 +1,131 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
+
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "durationformat.h",
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["durationformat.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "metadata",
+    outs = ["metadata.json"],
+    args = [
+        "--out",
+        "$(rootpath :metadata.json)",
+    ],
+    tool = "//crates/intl_durationformat/scripts:metadata",
+    use_execroot_entry_point = False,
+)
+
+rust_library(
+    name = "intl_durationformat",
+    srcs = [
+        "ffi.rs",
+        "formatter.rs",
+        "lib.rs",
+        "metadata.rs",
+        "options.rs",
+        "record.rs",
+        "render.rs",
+        "unit.rs",
+    ],
+    compile_data = [":metadata"],
+    crate_name = "formatjs_intl_durationformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_DURATION_METADATA": "$(execpath :metadata)"},
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_listformat",
+        "//crates/intl_locale",
+        "//crates/intl_numberformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+COMPILED_DEPS = [
+    "//crates/intl_getcanonicallocales",
+    "//crates/intl_listformat:with_compiled_data",
+    "//crates/intl_locale",
+    "//crates/intl_numberformat:with_compiled_data",
+    "@crates//:serde",
+    "@crates//:serde_json",
+]
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "ffi.rs",
+        "formatter.rs",
+        "lib.rs",
+        "metadata.rs",
+        "options.rs",
+        "record.rs",
+        "render.rs",
+        "unit.rs",
+    ],
+    compile_data = [":metadata"],
+    crate_features = ["compiled_data"],
+    crate_name = "formatjs_intl_durationformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_DURATION_METADATA": "$(execpath :metadata)"},
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_durationformat/tests:__pkg__"],
+    deps = [
+        ":intl_durationformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_durationformat_test",
+    srcs = [
+        "ffi.test.rs",
+        "formatter.test.rs",
+        "options.test.rs",
+        "record.test.rs",
+        "render.test.rs",
+    ],
+    compile_data = [
+        "//crates/intl_numberformat:locale-data/en.json",
+        "//crates/intl_listformat:locale-data/en.json",
+        "//crates/intl_listformat:locale-data/ja.json",
+    ],
+    crate_name = "intl_durationformat_test",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_DURATION_NUMBER_EN": "$(execpath //crates/intl_numberformat:locale-data/en.json)",
+        "FORMATJS_DURATION_LIST_EN": "$(execpath //crates/intl_listformat:locale-data/en.json)",
+        "FORMATJS_DURATION_LIST_JA": "$(execpath //crates/intl_listformat:locale-data/ja.json)",
+    },
+    deps = [
+        ":intl_durationformat",
+        "@crates//:serde_json",
+    ],
+)

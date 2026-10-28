@@ -767,6 +767,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_durationformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "formatjs_intl_listformat",
+ "formatjs_intl_numberformat",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_getcanonicallocales"
 version = "0.1.0"
 dependencies = [
@@ -782,6 +794,7 @@ dependencies = [
  "formatjs_intl_datetimeformat_calendars",
  "formatjs_intl_collator",
  "formatjs_intl_displaynames",
+ "formatjs_intl_durationformat",
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",
  "formatjs_intl_locale",

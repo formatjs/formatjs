@@ -7,6 +7,7 @@
 #include <formatjs/hermes/intl_numberformat.h>
 #include <formatjs/hermes/intl_relativetimeformat.h>
 #include <formatjs/hermes/intl_datetimeformat.h>
+#include <formatjs/hermes/intl_durationformat.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -21,6 +22,9 @@
 #include <utility>
 
 namespace {
+constexpr char durationSmoke[] =
+#include "durationformat_smoke.inc"
+    ;
 constexpr char datetimeformat_smoke[] =
 #include "datetimeformat_smoke.inc"
     ;
@@ -215,6 +219,18 @@ int main(int argc, char **argv) {
     dateTimePassed = runtime->global().getProperty(*runtime, "__SDK_DATETIME_PASSED");
     if (!dateTimePassed.isBool() || !dateTimePassed.getBool()) throw std::runtime_error("DateTimeFormat source SDK smoke failed");
     std::cout << "Hermes SDK DateTimeFormat source passed\n";
+
+    formatjs::installDurationFormat(*runtime, extensions);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(durationSmoke), "formatjs:durationformat-sdk-smoke");
+    auto durationPassed = runtime->global().getProperty(*runtime, "__SDK_DURATION_PASSED");
+    if (!durationPassed.isBool() || !durationPassed.getBool()) throw std::runtime_error("DurationFormat SDK smoke failed");
+    std::cout << "Hermes SDK DurationFormat passed\n";
+    formatjs::installDurationFormat(*runtime);
+    runtime->global().setProperty(*runtime, "__SDK_DURATION_PASSED", false);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(durationSmoke), "formatjs:durationformat-source-sdk-smoke");
+    durationPassed = runtime->global().getProperty(*runtime, "__SDK_DURATION_PASSED");
+    if (!durationPassed.isBool() || !durationPassed.getBool()) throw std::runtime_error("DurationFormat source SDK smoke failed");
+    std::cout << "Hermes SDK DurationFormat source passed\n";
 
 
     return 0;

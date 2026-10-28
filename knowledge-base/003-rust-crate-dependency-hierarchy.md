@@ -15,6 +15,7 @@ crates/
   intl_displaynames/          # CLDR names, code validation, caller-loaded locale packs
   intl_listformat/            # CLDR list patterns, UTF-16 parts, caller-loaded locale packs
   intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
+  intl_durationformat/       # Duration locale/options resolution and native number/list rendering
   intl_datetimeformat/       # Core formatter, caller-loaded locales/timezones
   intl_datetimeformat_calendars/ # Optional arithmetic, caller-loaded calendar tables
   intl_collator/             # Native collation and owned locale records
@@ -456,6 +457,16 @@ SDK preserves its static collation data model and exact UTF-16 comparison input.
 provider contract. The base crate must not depend on optional providers or their
 tables. Calendar JSON data and locale patch targets remain separate from both
 libraries so registration can load only the selected calendar and locale.
+
+`intl_durationformat` depends on native NumberFormat and ListFormat for rendering.
+It owns selected dependency registries and memoized instances; their locale packs
+remain caller-loaded. Duration compiles the existing CLDR time-separator exports
+for static locale/numbering metadata; canonical locale resolution uses shared
+getcanonicallocales and Locale matcher records.
+
+`intl_hermes` assembles DurationFormat's owned ABI as well. Its dependency context
+contains only native Rust data, so synchronized retained handles can outlive their
+registry and be destroyed on another thread without a JS runtime guard.
 
 ### Hermes bridge and C ABI
 

@@ -264,6 +264,27 @@ The SDK embeds locale data and exports optional calendar/timezone resources, bot
 headers and adapter sources. See [package/README.md](package/README.md#datetimeformat)
 for installation and guard lifetime requirements.
 
+## DurationFormat
+
+Link `//native/hermes:durationformat`, install canonicalization, then call
+`formatjs::installDurationFormat(runtime)`. The overload taking an extension object
+uses its `IntlDurationFormat` factory. This context contains native Rust data and
+needs no installation guard.
+
+Duration locale metadata stays static. Its private NumberFormat and ListFormat
+registries use the build-selected compiled provider. Rendering calls no public JS
+formatters. Explicit custom-provider registration and unit overrides remain available.
+
+JS preserves constructor/record getter order, primitive coercion and private brands.
+Rust resolves locale before style getters, validates each style before its display,
+then folds subseconds and composes parts exactly. Install Temporal before the
+facade to accept duration strings and branded durations through captured intrinsics.
+Without Temporal, duration-like records work and strings throw RangeError.
+Source/bytecode differential coverage includes ten locales, non-colon separators,
+Temporal brands, negative leading zero and IEEE integers beyond the safe range.
+Default-runtime smoke also runs both modes without Temporal. The SDK packages both installers and typed smoke; see
+[SDK installation](package/README.md#durationformat) for dependency paths.
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -286,7 +307,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `datetimeformat`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `datetimeformat`, `durationformat`, `getcanonicallocales`.
 
 Segmenter uses the original Unicode files, parser, and package case filters.
 
@@ -301,3 +322,6 @@ Explicit exclusion reports identify TS-private state, implementation-defined
 diagnostics, and host-specific behavior. Original TS unit suites retain those
 checks. Unsupported assertions, stale exclusions, and unmet assertion counts fail.
 The host timezone stays UTC.
+
+DurationFormat owns its Rust formatter registry; host NumberFormat replacement
+tests remain TS-only.
