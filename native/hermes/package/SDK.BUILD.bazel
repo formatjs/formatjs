@@ -220,6 +220,42 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "displaynames",
+    srcs = [
+        "src/displaynames.cpp",
+        "src/displaynames.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_displaynames.h",
+        "include/formatjs/intl/displaynames.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
@@ -227,6 +263,9 @@ exports_files([
     "js/32-IntlLocale.js",
     "js/33-IntlPluralRules.js",
     "js/34-IntlListFormat.js",
+    "js/35-IntlDisplayNames.js",
+    "js/displaynames-smoke.js",
+    "examples/displaynames-smoke.ts",
     "js/listformat-smoke.js",
     "examples/listformat-smoke.ts",
     "js/pluralrules-smoke.js",

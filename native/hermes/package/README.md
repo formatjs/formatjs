@@ -17,6 +17,8 @@ include/formatjs/hermes/intl_locale.h
 include/formatjs/intl/locale.h
 include/formatjs/hermes/intl_pluralrules.h
 include/formatjs/hermes/intl_listformat.h
+include/formatjs/hermes/intl_displaynames.h
+include/formatjs/intl/displaynames.h
 include/formatjs/intl/listformat.h
 include/formatjs/intl/pluralrules.h
 src/canonical_locales.cpp
@@ -29,11 +31,16 @@ src/pluralrules.cpp
 src/pluralrules.inc
 src/listformat.cpp
 src/listformat.inc
+src/displaynames.cpp
+src/displaynames.inc
 js/30-IntlGetCanonicalLocales.js
 js/31-IntlSupportedValuesOf.js
 js/32-IntlLocale.js
 js/33-IntlPluralRules.js
 js/34-IntlListFormat.js
+js/35-IntlDisplayNames.js
+js/displaynames-smoke.js
+examples/displaynames-smoke.ts
 js/listformat-smoke.js
 examples/listformat-smoke.ts
 js/extensions.js
@@ -80,7 +87,8 @@ The SDK also contains `Intl.supportedValuesOf`. Link
 Link `@formatjs_intl_getcanonicallocales_hermes//:locale` for `Intl.Locale`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:pluralrules` for `Intl.PluralRules`.
 Link `@formatjs_intl_getcanonicallocales_hermes//:listformat` for `Intl.ListFormat`.
-All five targets use one Rust archive. The module retains its original name.
+Link `@formatjs_intl_getcanonicallocales_hermes//:displaynames` for `Intl.DisplayNames`.
+All six targets use one Rust archive. The module retains its original name.
 
 ## Install before application JavaScript
 
@@ -92,6 +100,7 @@ For embedders that allow source evaluation:
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/intl_listformat.h>
+#include <formatjs/hermes/intl_displaynames.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -99,6 +108,7 @@ formatjs::installLocale(*runtime);
 formatjs::installCanonicalLocales(*runtime); // Capture the new Locale brand.
 formatjs::installPluralRules(*runtime);
 formatjs::installListFormat(*runtime);
+formatjs::installDisplayNames(*runtime);
 ```
 
 For bytecode-only startup, compile `js/extensions.js` with the same `hermesc`
@@ -114,6 +124,7 @@ formatjs::installLocale(*runtime, extensions);
 formatjs::installCanonicalLocales(*runtime, extensions);
 formatjs::installPluralRules(*runtime, extensions);
 formatjs::installListFormat(*runtime, extensions);
+formatjs::installDisplayNames(*runtime, extensions);
 ```
 
 ## Compiled locale data
@@ -205,3 +216,6 @@ system linker flags.
 
 ListFormat uses the compiled Rust provider. Its smoke checks parts, UTF-16,
 IteratorClose and localized formatting without locale JSON injection.
+
+DisplayNames uses compiled names, including sparse CLDR fallbacks. The smoke
+checks English, French and Afar without locale JSON injection.

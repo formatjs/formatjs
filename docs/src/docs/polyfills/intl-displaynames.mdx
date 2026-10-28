@@ -223,3 +223,12 @@ Calendar display-name data uses BCP 47 identifiers, including `gregory` and
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+## Rust on Hermes
+
+The experimental [Hermes SDK](../guides/react-native-hermes) includes a Rust
+DisplayNames engine, C++ JSI adapter and source/precompiled installers. Link
+`:displaynames`, install after canonicalization, then register selected JSON text
+from `locale-data/displaynames/<locale>.json` with
+`Intl.DisplayNames.__addLocaleData(jsonText)`. The SDK is built from this
+repository; package publication and Android/iOS artifacts are separate work.

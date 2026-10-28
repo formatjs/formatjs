@@ -175,6 +175,19 @@ arrays preserve lone surrogates across the ABI. The native conformance target
 TS through source and optimized-bytecode installers. `--native-listformat`
 enables the source installer in the development runner.
 
+## DisplayNames
+
+Link `//native/hermes:displaynames` (SDK `:displaynames`) and call
+`installDisplayNames(runtime)` after canonicalization. The overload accepting
+`extensions` uses the precompiled `IntlDisplayNames` factory. SDK locale data is compiled into Rust.
+
+Rust owns code validation, canonicalization, CLDR lookup and locale matching.
+The TS facade handles required options, getter/coercion order and receiver brands.
+UTF-16 code arrays let Rust report lone surrogates as RangeError. Native
+conformance compares source/optimized-bytecode installation with TS across all
+six name types, styles and fallbacks. `--native-displaynames` enables the source
+installer in the development runner.
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -193,7 +206,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `getcanonicallocales`.
 
 Canonicalization uses real native Locale objects, including internal-slot checks.
 Locale ICU-specific collation expectations have separate cases, retaining the

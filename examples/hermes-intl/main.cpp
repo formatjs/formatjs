@@ -1,6 +1,7 @@
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_listformat.h>
+#include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -15,6 +16,9 @@
 #include <utility>
 
 namespace {
+constexpr char displaySmoke[] =
+#include "displaynames_smoke.inc"
+    ;
 constexpr char listSmoke[] =
 #include "listformat_smoke.inc"
     ;
@@ -146,6 +150,11 @@ int main(int argc, char **argv) {
     auto listPassed = runtime->global().getProperty(*runtime, "__SDK_LIST_PASSED");
     if (!listPassed.isBool() || !listPassed.getBool()) throw std::runtime_error("ListFormat SDK smoke failed");
     std::cout << "Hermes SDK ListFormat passed\n";
+    formatjs::installDisplayNames(*runtime, extensions);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(displaySmoke), "formatjs:displaynames-sdk-smoke");
+    auto displayPassed = runtime->global().getProperty(*runtime, "__SDK_DISPLAY_PASSED");
+    if (!displayPassed.isBool() || !displayPassed.getBool()) throw std::runtime_error("DisplayNames SDK smoke failed");
+    std::cout << "Hermes SDK DisplayNames passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

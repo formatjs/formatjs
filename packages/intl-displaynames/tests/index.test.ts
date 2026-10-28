@@ -5,6 +5,8 @@ import {DisplayNames} from '#packages/intl-displaynames/index.js'
 import {describe, expect, it} from 'vitest'
 
 import en from '#packages/intl-displaynames/tests/locale-data/en.json' with {type: 'json'}
+import aa from '#packages/intl-displaynames/tests/locale-data/aa.json' with {type: 'json'}
+import agq from '#packages/intl-displaynames/tests/locale-data/agq.json' with {type: 'json'}
 import zh from '#packages/intl-displaynames/tests/locale-data/zh.json' with {type: 'json'}
 DisplayNames.__addLocaleData(en, zh)
 
@@ -323,3 +325,26 @@ it.each(['abcd', 'abcdefghi', 'en-u-ca-gregory'])(
     )
   }
 )
+
+it('rejects trailing line terminators in display-name codes', () => {
+  for (const type of ['language', 'region', 'script'] as const) {
+    const code = {language: 'en', region: 'US', script: 'Latn'}[type]
+    for (const end of ['\n', '\r', '\u2028', '\u2029']) {
+      expect(() => new DisplayNames('en', {type}).of(code + end)).toThrow(
+        RangeError
+      )
+    }
+  }
+})
+
+it('keeps sparse CLDR locales loadable with code/undefined fallback', () => {
+  DisplayNames.__addLocaleData(aa, agq)
+  expect(new DisplayNames('aa', {type: 'language'}).of('en')).toBe('en')
+  expect(
+    new DisplayNames('aa', {type: 'language', fallback: 'none'}).of('en')
+  ).toBeUndefined()
+  expect(new DisplayNames('aa', {type: 'calendar'}).of('gregory')).toBe(
+    'gregory'
+  )
+  expect(new DisplayNames('agq', {type: 'script'}).of('Latn')).toBe('Latn')
+})

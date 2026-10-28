@@ -22,3 +22,10 @@ pub use formatjs_intl_listformat::ffi::{
     formatjs_list_registry_create, formatjs_list_registry_destroy, formatjs_list_registry_info,
     formatjs_list_registry_load, formatjs_list_registry_match,
 };
+
+pub use formatjs_intl_displaynames::ffi::{
+    formatjs_display_bytes_free, formatjs_display_create, formatjs_display_destroy,
+    formatjs_display_query, formatjs_display_registry_create, formatjs_display_registry_destroy,
+    formatjs_display_registry_info, formatjs_display_registry_load,
+    formatjs_display_registry_match,
+};
