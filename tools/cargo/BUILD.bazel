@@ -1,0 +1,19 @@
+# gazelle:ignore
+load("@rules_python//python:py_binary.bzl", "py_binary")
+load("@rules_python//python:py_test.bzl", "py_test")
+
+py_binary(
+    name = "package",
+    srcs = ["package.py"],
+    main = "package.py",
+    visibility = ["//visibility:public"],
+)
+
+py_test(
+    name = "release_package_test",
+    size = "small",
+    srcs = ["package_test.py"],
+    args = ["$(rootpath //crates:intl_release)"],
+    data = ["//crates:intl_release"],
+    main = "package_test.py",
+)

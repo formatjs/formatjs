@@ -381,7 +381,10 @@ formatjs_generated_package(
             "$(rootpath tz-%s.json)" % selection,
         ],
         tool = "//packages/intl-datetimeformat/scripts:process-zdump",
-        visibility = ["//crates/intl_datetimeformat:__subpackages__"],
+        visibility = [
+            "//crates:__pkg__",
+            "//crates/intl_datetimeformat:__subpackages__",
+        ],
     )
     for selection in [
         "all",

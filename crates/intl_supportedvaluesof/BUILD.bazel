@@ -81,3 +81,12 @@ rust_binary(
         "@crates//:serde_json",
     ],
 )
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
+)

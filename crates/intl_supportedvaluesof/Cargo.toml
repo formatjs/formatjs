@@ -6,7 +6,7 @@ authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ECMA-402 supported value enumeration for FormatJS runtimes"
 license = "BSD-3-Clause"
 repository = "https://github.com/formatjs/formatjs"
-publish = false
+publish = true
 
 [lib]
 path = "lib.rs"

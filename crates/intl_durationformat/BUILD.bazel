@@ -28,6 +28,7 @@ ts_run_binary(
     ],
     tool = "//crates/intl_durationformat/scripts:metadata",
     use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
 )
 
 rust_library(
@@ -128,4 +129,13 @@ formatjs_rust_test(
         ":intl_durationformat",
         "@crates//:serde_json",
     ],
+)
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
 )

@@ -23,6 +23,22 @@ on:
           - formatjs_icu_messageformat
           - formatjs_intl_macros
           - formatjs_intl
+          - formatjs_intl_collator
+          - formatjs_intl_data
+          - formatjs_intl_data_build
+          - formatjs_intl_datetimeformat
+          - formatjs_intl_datetimeformat_calendars
+          - formatjs_intl_displaynames
+          - formatjs_intl_durationformat
+          - formatjs_intl_getcanonicallocales
+          - formatjs_intl_hermes
+          - formatjs_intl_listformat
+          - formatjs_intl_locale
+          - formatjs_intl_numberformat
+          - formatjs_intl_pluralrules
+          - formatjs_intl_relativetimeformat
+          - formatjs_intl_segmenter
+          - formatjs_intl_supportedvaluesof
 
 concurrency:
   group: ${{ github.workflow }}
@@ -61,6 +77,41 @@ jobs:
         run: |
           set -euo pipefail
 
+          intl_crates=(
+            formatjs_intl_collator
+            formatjs_intl_data
+            formatjs_intl_data_build
+            formatjs_intl_datetimeformat
+            formatjs_intl_datetimeformat_calendars
+            formatjs_intl_displaynames
+            formatjs_intl_durationformat
+            formatjs_intl_getcanonicallocales
+            formatjs_intl_hermes
+            formatjs_intl_listformat
+            formatjs_intl_locale
+            formatjs_intl_numberformat
+            formatjs_intl_pluralrules
+            formatjs_intl_relativetimeformat
+            formatjs_intl_segmenter
+            formatjs_intl_supportedvaluesof
+          )
+          all_crates=(
+            formatjs_icu_skeleton_parser
+            formatjs_icu_messageformat_parser
+            formatjs_icu_messageformat
+            formatjs_intl_macros
+            formatjs_intl
+            "${intl_crates[@]}"
+          )
+          contains_crate() {
+            local candidate="$1"
+            local allowed
+            shift
+            for allowed in "$@"; do
+              if [ "$allowed" = "$candidate" ]; then return 0; fi
+            done
+            return 1
+          }
           dry_run="$INPUT_DRY_RUN"
 
           case "$EVENT_NAME" in
@@ -82,30 +133,30 @@ jobs:
                 formatjs_intl_v*|crates/formatjs_intl_v*)
                   crates=(formatjs_intl)
                   ;;
+                formatjs_intl_*_v*|intl_*_v*|crates/intl_*_v*)
+                  crate="${RELEASE_TAG##*/}"
+                  crate="${crate%_v*}"
+                  if [[ "$crate" == intl_* ]]; then crate="formatjs_$crate"; fi
+                  if contains_crate "$crate" "${intl_crates[@]}"; then
+                    crates=("$crate")
+                  else
+                    crates=()
+                  fi
+                  ;;
                 *)
                   crates=()
                   ;;
               esac
               ;;
             workflow_dispatch)
-              case "$INPUT_CRATE" in
-                all)
-                  crates=(
-                    formatjs_icu_skeleton_parser
-                    formatjs_icu_messageformat_parser
-                    formatjs_icu_messageformat
-                    formatjs_intl_macros
-                    formatjs_intl
-                  )
-                  ;;
-                formatjs_icu_skeleton_parser|formatjs_icu_messageformat_parser|formatjs_icu_messageformat|formatjs_intl_macros|formatjs_intl)
-                  crates=("$INPUT_CRATE")
-                  ;;
-                *)
-                  echo "Unknown crate: $INPUT_CRATE" >&2
-                  exit 1
-                  ;;
-              esac
+              if [ "$INPUT_CRATE" = all ]; then
+                crates=("${all_crates[@]}")
+              elif contains_crate "$INPUT_CRATE" "${all_crates[@]}"; then
+                crates=("$INPUT_CRATE")
+              else
+                echo "Unknown crate: $INPUT_CRATE" >&2
+                exit 1
+              fi
               ;;
             *)
               echo "Unsupported event: $EVENT_NAME" >&2
@@ -120,13 +171,24 @@ jobs:
             exit 0
           fi
 
+          has_intl=false
+          for crate in "${crates[@]}"; do
+            if contains_crate "$crate" "${intl_crates[@]}"; then has_intl=true; fi
+          done
           {
+            echo "has_intl=$has_intl"
             echo "has_crates=true"
             echo "dry_run=$dry_run"
             echo "names<<EOF"
             printf '%s\n' "${crates[@]}"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
+      - name: Setup Cargo Toolchain
+        if: ${{ steps.crates.outputs.has_crates == 'true' }}
+        run: |
+          rustup toolchain install 1.97.0 --profile minimal
+          echo "RUSTUP_TOOLCHAIN=1.97.0" >> "$GITHUB_ENV"
 
       - name: Validate Rust Crates
         if: ${{ steps.crates.outputs.has_crates == 'true' }}
@@ -140,6 +202,10 @@ jobs:
             //crates/formatjs_intl:formatjs_intl_test
           )
 
+          if [ "${{ steps.crates.outputs.has_intl }}" = true ]; then
+            targets+=(//tools/cargo:release_package_test)
+          fi
+
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel test \
               --config=ci \
@@ -149,14 +215,41 @@ jobs:
             bazel test "${targets[@]}"
           fi
 
+      - name: Assemble Intl Cargo Packages
+        if: ${{ steps.crates.outputs.has_intl == 'true' }}
+        env:
+          BUILDBUDDY_ORG_API_KEY: ${{ secrets.BUILDBUDDY_ORG_API_KEY }}
+        run: |
+          set -euo pipefail
+          bazel_args=()
+          if [ -n "$BUILDBUDDY_ORG_API_KEY" ]; then
+            bazel_args+=(--config=ci "--remote_header=x-buildbuddy-api-key=$BUILDBUDDY_ORG_API_KEY")
+          fi
+          bazel build "${bazel_args[@]}" //crates:intl_release
+          package_path="$(bazel cquery "${bazel_args[@]}" --output=files //crates:intl_release)"
+          release_dir="$RUNNER_TEMP/intl-crates"
+          mkdir -p "$release_dir"
+          git archive HEAD | tar -x -C "$release_dir"
+          cp -RL "$package_path/crates/." "$release_dir/crates/"
+          chmod -R u+w "$release_dir"
+          echo "INTL_RELEASE_DIR=$release_dir" >> "$GITHUB_ENV"
+
       - name: Dry-run Crate Publish
         if: ${{ steps.crates.outputs.has_crates == 'true' && steps.crates.outputs.dry_run == 'true' }}
         run: |
           set -euo pipefail
 
+          intl_packages=()
           while IFS= read -r crate; do
-            cargo publish --locked --dry-run -p "$crate"
+            if [ -n "${INTL_RELEASE_DIR:-}" ] && [ -f "$INTL_RELEASE_DIR/crates/${crate#formatjs_}/Cargo.toml" ]; then
+              intl_packages+=(-p "$crate")
+            else
+              cargo publish --locked --dry-run -p "$crate"
+            fi
           done <<< "${{ steps.crates.outputs.names }}"
+          if [ "${#intl_packages[@]}" -gt 0 ]; then
+            (cd "$INTL_RELEASE_DIR" && cargo publish --locked --dry-run --all-features "${intl_packages[@]}")
+          fi
 
       - name: Authenticate with crates.io
         id: auth
@@ -226,7 +319,12 @@ jobs:
             sed -n "s/^$crate = .*version = \"\\([^\"]*\\)\".*/\\1/p" "$manifest" | head -1
           }
 
+          intl_packages=()
           while IFS= read -r crate; do
+            if [ -n "${INTL_RELEASE_DIR:-}" ] && [ -f "$INTL_RELEASE_DIR/crates/${crate#formatjs_}/Cargo.toml" ]; then
+              intl_packages+=(-p "$crate")
+              continue
+            fi
             case "$crate" in
               formatjs_icu_messageformat_parser)
                 wait_if_published_by_this_run \
@@ -253,3 +351,6 @@ jobs:
 
             cargo publish --locked -p "$crate"
           done <<< "${{ steps.crates.outputs.names }}"
+          if [ "${#intl_packages[@]}" -gt 0 ]; then
+            (cd "$INTL_RELEASE_DIR" && cargo publish --locked --all-features "${intl_packages[@]}")
+          fi

@@ -30,6 +30,7 @@ ts_run_binary(
     ],
     tool = "//crates/intl_datetimeformat/scripts:timezones",
     use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
 )
 
 ts_run_binary(
@@ -41,6 +42,7 @@ ts_run_binary(
     ],
     tool = "//crates/intl_datetimeformat/scripts:locales",
     use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
 )
 
 ts_run_binary(
@@ -265,6 +267,7 @@ compiled_locale_data(
     data_type = "crate::data::RawLocale",
     patches = [":calendar_locale_data"],
     tool = ":compile_locales",
+    visibility = ["//crates:__pkg__"],
 )
 
 filegroup(
@@ -284,4 +287,13 @@ rust_binary(
         ":intl_datetimeformat",
         "//crates/intl_data_build",
     ],
+)
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
 )

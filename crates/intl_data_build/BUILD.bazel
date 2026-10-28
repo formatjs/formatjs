@@ -35,3 +35,12 @@ formatjs_rust_test(
         "//crates/intl_pluralrules",
     ],
 )
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
+)

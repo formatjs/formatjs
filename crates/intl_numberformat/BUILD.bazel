@@ -31,6 +31,7 @@ ts_run_binary(
     tool = "//crates/intl_numberformat/scripts:metadata",
     # Generator dependencies follow the Linux execution platform during cross-builds.
     use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
 )
 
 ts_run_binary(
@@ -172,6 +173,7 @@ compiled_locale_data(
     srcs = [":locale_data"],
     data_type = "crate::LocaleData",
     tool = ":compile_locales",
+    visibility = ["//crates:__pkg__"],
 )
 
 filegroup(
@@ -191,4 +193,13 @@ rust_binary(
         ":intl_numberformat",
         "//crates/intl_data_build",
     ],
+)
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
 )
