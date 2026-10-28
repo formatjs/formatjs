@@ -66,8 +66,8 @@ Bazel `-c opt`, magrinj Rust uses its release profile (`opt-level="z"`, LTO):
 | `Locale.new`                         |        6.96 |       1.21 |
 | `PluralRules.new`                    |        7.45 |       5.71 |
 | `ListFormat.new`                     |        3.30 |       3.40 |
-| `ListFormat.new(fallback)`           |       7,875 |       4.32 |
-| `ListFormat.new(unsupported)`        |      11,000 |       4.31 |
+| `ListFormat.new(fallback)`           |       6,875 |       4.32 |
+| `ListFormat.new(unsupported)`        |       9,875 |       4.31 |
 | `RelativeTimeFormat.new`             |        13.2 |       5.50 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
@@ -94,3 +94,10 @@ Fallback requests `en-XX`; unsupported requests `qzz`. FormatJS resolves them
 to `en-GB` and `en`, respectively; magrinj resolves them to `en` and `en-US`.
 These cases compare constructor cost with different matching results. Their
 timings exclude reading `resolvedOptions().locale`.
+
+Using ICU4X `LocaleExpander` directly for matching reduced the fallback case
+from 7,875 to 6,875 µs and the unsupported case from 11,000 to 9,875 µs in
+three alternating optimized before/after runs. Selected locales stayed the
+same. The compatibility path still accepts ECMA-402's 5–8-letter languages
+and applies the generated CLDR likely subtags for unresolved `und` identifiers.
+This change speeds up maximization; the CLDR distance scan remains expensive.

@@ -23,6 +23,16 @@ fn ported_ts_best_fit_regressions() {
         (vec!["zh-Hant", "zh-MO"], vec!["zh-HK"], Some("zh-MO")),
         (vec!["en-GB", "en-US"], vec!["en-CA"], Some("en-US")),
         (vec!["es", "en", "es-419"], vec!["es-KY"], Some("es-419")),
+        (vec!["en", "ccp-Cakm"], vec!["ccp"], Some("ccp-Cakm")),
+        (
+            vec!["en", "de-Latn-DE"],
+            vec!["de-1996-u-co-phonebk-x-private"],
+            Some("de-Latn-DE"),
+        ),
+        (vec!["en", "fr"], vec!["qzz"], None),
+        (vec!["und", "en"], vec!["qzz"], None),
+        (vec!["en"], vec!["und"], Some("en")),
+        (vec!["en"], vec!["fullwide"], None),
     ] {
         assert_eq!(
             best_fit(&tags(&available), &tags(&requested))

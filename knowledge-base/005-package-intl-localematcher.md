@@ -35,6 +35,14 @@ Locale matching extracts only the Unicode `u` extension. Private-use subtags
 remain intact, including text resembling `u-co-phonebk`; trailing extensions
 are preserved separately from Unicode keywords.
 
+The shared Rust matcher uses ICU4X `LocaleExpander` directly on canonical locale
+records. It avoids constructing `Intl.Locale` preferences for every candidate.
+The ECMA-compatible path handles 5–8-letter languages and unresolved `und` using
+the generated CLDR likely subtags, so registered `und` data cannot make unrelated
+unknown languages appear supported. Best-fit
+internals may differ from TypeScript; ECMA-402 behavior and conformance results
+remain the contract.
+
 `CanonicalizeUValue` applies ASCII case normalization and generated CLDR Unicode
 keyword/subdivision aliases before `ResolveLocale` matches option values. For
 example, `calendar: "islamicc"` resolves to `islamic-civil`. Unknown values remain

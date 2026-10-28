@@ -854,6 +854,7 @@ name = "formatjs_intl_locale"
 version = "0.1.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
+ "icu_locale",
  "serde",
  "serde_json",
 ]

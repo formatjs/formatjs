@@ -1,10 +1,12 @@
-//! Canonical-tag matching shared by native polyfills. Best fit follows the TS
-//! matcher, including request-order penalties and CLDR paradigm tie breaking.
+//! Canonical-tag matching shared by native polyfills. ICU4X likely subtags
+//! feed exact/maximized matching and CLDR distance comparisons.
 
 use crate::{
-    Locale, LocaleError, LocaleOptions,
+    LocaleError,
     data_generated::{MATCH_PARADIGMS, MATCH_RULES, MATCH_VARIABLES},
 };
+use icu_locale::{Locale as IcuLocale, LocaleExpander};
+use std::borrow::Cow;
 use std::collections::BTreeSet;
 use std::sync::OnceLock;
 
@@ -67,8 +69,33 @@ pub fn supported(available: &[String], requested: &[String]) -> Vec<String> {
         .collect()
 }
 
-fn maximize(tag: &str) -> Result<Locale, LocaleError> {
-    Ok(Locale::new(tag, &LocaleOptions::default())?.maximize())
+#[derive(Eq, PartialEq)]
+enum MaximizedLocale {
+    Icu(IcuLocale),
+    Ecma(crate::Locale),
+}
+
+impl MaximizedLocale {
+    fn tag(&self) -> Cow<'_, str> {
+        match self {
+            Self::Icu(locale) => Cow::Owned(locale.to_string()),
+            Self::Ecma(locale) => Cow::Borrowed(locale.as_str()),
+        }
+    }
+}
+
+fn maximize(tag: &str) -> Result<MaximizedLocale, LocaleError> {
+    if let Ok(mut locale) = tag.parse::<IcuLocale>() {
+        // Inputs are already canonical; matching needs no Intl.Locale preferences.
+        LocaleExpander::new_extended().maximize(&mut locale.id);
+        if !locale.id.language.is_unknown() {
+            return Ok(MaximizedLocale::Icu(locale));
+        }
+    }
+    // ICU4X excludes 5–8-letter languages and leaves some `und` tags unexpanded.
+    Ok(MaximizedLocale::Ecma(
+        crate::Locale::new(tag, &Default::default())?.maximize(),
+    ))
 }
 
 #[derive(Clone, Copy)]
@@ -78,11 +105,18 @@ struct Lsr<'a> {
     region: &'a str,
 }
 impl<'a> Lsr<'a> {
-    fn from(locale: &'a Locale) -> Self {
-        Self {
-            language: locale.language(),
-            script: locale.script().unwrap_or(""),
-            region: locale.region().unwrap_or(""),
+    fn from(locale: &'a MaximizedLocale) -> Self {
+        match locale {
+            MaximizedLocale::Icu(locale) => Self {
+                language: locale.id.language.as_str(),
+                script: locale.id.script.as_ref().map_or("", |value| value.as_str()),
+                region: locale.id.region.as_ref().map_or("", |value| value.as_str()),
+            },
+            MaximizedLocale::Ecma(locale) => Self {
+                language: locale.language(),
+                script: locale.script().unwrap_or(""),
+                region: locale.region().unwrap_or(""),
+            },
         }
     }
     fn emit(self) -> String {
@@ -122,7 +156,7 @@ fn paradigms() -> &'static BTreeSet<String> {
             .iter()
             .flat_map(|tag| {
                 std::iter::once((*tag).to_owned())
-                    .chain(maximize(tag).ok().map(|locale| locale.as_str().to_owned()))
+                    .chain(maximize(tag).ok().map(|locale| locale.tag().into_owned()))
             })
             .collect()
     })
@@ -142,7 +176,7 @@ fn component_distance(desired: Lsr<'_>, supported: Lsr<'_>) -> i32 {
     // CLDR's final wildcard rule covers each component dimension.
     unreachable!("CLDR language matching table lacks a wildcard")
 }
-fn distance(desired: &Locale, supported: &Locale) -> i32 {
+fn distance(desired: &MaximizedLocale, supported: &MaximizedLocale) -> i32 {
     let desired = Lsr::from(desired);
     let supported = Lsr::from(supported);
     let mut distance = 0;
@@ -178,8 +212,8 @@ fn distance(desired: &Locale, supported: &Locale) -> i32 {
     distance
 }
 
-/// Best fit is implementation-defined. Keep TS's exact/maximized fast paths,
-/// then compare full CLDR distance independently of the fallback heuristic.
+/// Best fit is implementation-defined. Exact/maximized matches avoid the full
+/// CLDR distance comparison when possible.
 /// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L134-L144
 pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<String>, LocaleError> {
     Ok(best_fit_requested(available, requested)?.map(|(_, locale)| locale))
@@ -220,14 +254,15 @@ pub fn best_fit_requested(
         .map(|tag| maximize(tag))
         .collect::<Result<_, _>>()?;
     for (index, (desired, maximal)) in requested.iter().zip(&desired_max).enumerate() {
-        let mut candidate = maximal.as_str();
+        let maximal_tag = maximal.tag();
+        let mut candidate = maximal_tag.as_ref();
         if candidate == desired {
             continue;
         }
         let mut removed = 0;
         loop {
             if candidate != desired && set.contains(candidate) {
-                let distance = if maximize(candidate)?.as_str() == maximal.as_str() {
+                let distance = if maximize(candidate)? == *maximal {
                     index as i32 * 40
                 } else {
                     removed * 10 + index as i32 * 40
