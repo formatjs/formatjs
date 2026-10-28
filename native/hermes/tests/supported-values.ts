@@ -172,6 +172,27 @@ try {
 }
 equal(candidate('unit'), unitsBefore, 'Restored formatter support')
 
+const resolvedDescriptor = Object.getOwnPropertyDescriptor(
+  Intl.NumberFormat.prototype,
+  'resolvedOptions'
+)!
+try {
+  Object.defineProperty(Intl.NumberFormat.prototype, 'resolvedOptions', {
+    ...resolvedDescriptor,
+    value() {
+      return {...resolvedDescriptor.value.call(this), unit: 'unsupported'}
+    },
+  })
+  equal(candidate('unit'), [], 'Changed formatter behavior')
+} finally {
+  Object.defineProperty(
+    Intl.NumberFormat.prototype,
+    'resolvedOptions',
+    resolvedDescriptor
+  )
+}
+equal(candidate('unit'), unitsBefore, 'Restored formatter behavior')
+
 const descriptor = Object.getOwnPropertyDescriptor(Intl, 'supportedValuesOf')!
 check(descriptor.value === candidate, 'Installed method')
 check(descriptor.writable === true, 'Writable')

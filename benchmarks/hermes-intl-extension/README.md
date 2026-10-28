@@ -20,7 +20,7 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C:
 | Operation                          | Native µs | TypeScript µs | Native speedup |
 | ---------------------------------- | --------: | ------------: | -------------: |
 | `getCanonicalLocales`              |      0.84 |          5.76 |          6.84x |
-| `supportedValuesOf`                |     1,675 |          79.7 |         0.047x |
+| `supportedValuesOf`                |      1.78 |          58.6 |          32.9x |
 | `Locale.maximize`                  |      10.9 |          53.9 |          4.93x |
 | `PluralRules.select`               |      1.39 |           139 |          99.9x |
 | `ListFormat.format`                |      1.64 |          5.37 |          3.28x |
@@ -36,6 +36,10 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C:
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
+
+`supportedValuesOf` now reuses results while its formatter and locale data stay
+unchanged. First call still probes candidates; later calls return fresh arrays.
+The earlier 1,675 µs native result was before this cache.
 
 `overlap.js` runs the APIs shared with
 [magrinj/hermes-intl at 7cd12b6](https://github.com/magrinj/hermes-intl/tree/7cd12b68fb6f707192426065cec1dba4ced68d5a) on either Hermes
