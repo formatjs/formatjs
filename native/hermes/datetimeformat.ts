@@ -464,16 +464,6 @@
     ): object[] {
       return range(this, first, second, 'rangeParts')
     },
-    get format(): (input?: unknown) => string {
-      const state = slot(this)
-      if (!state.bound) {
-        const bound = (input?: unknown): string =>
-          single(state, input, 'format')
-        property(bound, 'name', '', false)
-        state.bound = bound
-      }
-      return state.bound
-    },
     supportedLocalesOf(locales: unknown, optionsInput?: unknown): string[] {
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
       const values = create(null)
@@ -579,7 +569,19 @@
   for (let index = 0; index < instanceNames.length; index++)
     property(prototype, instanceNames[index], methods[instanceNames[index]])
   const format = create(null)
-  format.get = descriptor(methods, 'format')!.get
+  // Hermes makes object-literal getters constructible; the arrow target is not.
+  format.get = new Proxy(() => {}, {
+    apply(_target, receiver) {
+      const state = slot(receiver)
+      if (!state.bound) {
+        const bound = (input?: unknown): string =>
+          single(state, input, 'format')
+        property(bound, 'name', '', false)
+        state.bound = bound
+      }
+      return state.bound
+    },
+  })
   format.configurable = true
   property(format.get, 'name', 'get format', false)
   define(prototype, 'format', format)
