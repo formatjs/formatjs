@@ -51,11 +51,10 @@ class IntlScreenTest {
           assertTrue("Screenshot capture failed", bitmap.compress(Bitmap.CompressFormat.PNG, 100, it))
         }
       }
-      val command = "cp ${screenshot.absolutePath} /data/local/tmp/intl-screen.png && ls /data/local/tmp/intl-screen.png"
-      val output = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command).use { descriptor ->
-        ParcelFileDescriptor.AutoCloseInputStream(descriptor).bufferedReader().use { it.readText() }
-      }
-      assertTrue("Screenshot copy failed: $output", output.contains("intl-screen.png"))
+      val pipes = InstrumentationRegistry.getInstrumentation().uiAutomation
+        .executeShellCommandRw("cat > /data/local/tmp/intl-screen.png")
+      ParcelFileDescriptor.AutoCloseOutputStream(pipes[1]).use { it.write(screenshot.readBytes()) }
+      ParcelFileDescriptor.AutoCloseInputStream(pipes[0]).use { it.readBytes() }
       println("Intl screen screenshot: ${screenshot.absolutePath}")
     }
   }
