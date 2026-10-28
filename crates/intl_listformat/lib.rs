@@ -228,19 +228,22 @@ impl ListFormat {
             style: self.options.style,
         }
     }
-    pub fn format_to_parts(&self, list: &[Vec<u16>]) -> Vec<Part> {
+    fn visit_parts<T: AsRef<[u16]>>(&self, list: &[T], mut visit: impl FnMut(bool, &[u16])) {
         // CreatePartsFromList 1–2: empty list has no parts. One empty string
         // still produces one element record (steps 4–8).
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L274-L299
         if list.is_empty() {
-            return Vec::new();
+            return;
         }
         let templates = &self.data.templates[self.options.kind.key()][self.options.style.key()];
         enum Node<'a> {
             Element(&'a [u16]),
             Join(&'a Pattern, usize, usize),
         }
-        let mut nodes: Vec<_> = list.iter().map(|value| Node::Element(value)).collect();
+        let mut nodes: Vec<_> = list
+            .iter()
+            .map(|value| Node::Element(value.as_ref()))
+            .collect();
         let mut tail = list.len() - 1;
         // Steps 3–8: pair uses Pair; otherwise reverse-fold End, Middle, Start.
         // An arena delays expansion, avoiding quadratic copies and recursion.
@@ -262,21 +265,14 @@ impl ListFormat {
             Literal(&'a [u16]),
         }
         let mut pending = vec![Task::Node(tail)];
-        let mut parts = Vec::new();
         // DeconstructPattern 1–4: append literal records and substitute element
         // records/lists without merging adjacent parts or interpreting inputs.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L244-L258
         while let Some(task) = pending.pop() {
             match task {
-                Task::Literal(value) => parts.push(Part {
-                    kind: "literal",
-                    value: value.to_vec(),
-                }),
+                Task::Literal(value) => visit(false, value),
                 Task::Node(index) => match &nodes[index] {
-                    Node::Element(value) => parts.push(Part {
-                        kind: "element",
-                        value: value.to_vec(),
-                    }),
+                    Node::Element(value) => visit(true, value),
                     Node::Join(pattern, first, second) => {
                         for token in pattern.0.iter().rev() {
                             pending.push(match token {
@@ -289,15 +285,35 @@ impl ListFormat {
                 },
             }
         }
+    }
+    fn parts_with<T: AsRef<[u16]>>(&self, list: &[T]) -> Vec<Part> {
+        let mut parts = Vec::new();
+        self.visit_parts(list, |element, value| {
+            parts.push(Part {
+                kind: if element { "element" } else { "literal" },
+                value: value.to_vec(),
+            });
+        });
         parts
     }
-    pub fn format(&self, list: &[Vec<u16>]) -> Vec<u16> {
+    pub fn format_to_parts(&self, list: &[Vec<u16>]) -> Vec<Part> {
+        self.parts_with(list)
+    }
+    pub(crate) fn format_to_parts_borrowed(&self, list: &[&[u16]]) -> Vec<Part> {
+        self.parts_with(list)
+    }
+    fn format_with<T: AsRef<[u16]>>(&self, list: &[T]) -> Vec<u16> {
         // FormatList 1–5: concatenate all part values, including empty elements.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L317-L321
-        self.format_to_parts(list)
-            .into_iter()
-            .flat_map(|part| part.value)
-            .collect()
+        let mut result = Vec::new();
+        self.visit_parts(list, |_, value| result.extend_from_slice(value));
+        result
+    }
+    pub fn format(&self, list: &[Vec<u16>]) -> Vec<u16> {
+        self.format_with(list)
+    }
+    pub(crate) fn format_borrowed(&self, list: &[&[u16]]) -> Vec<u16> {
+        self.format_with(list)
     }
 }
 

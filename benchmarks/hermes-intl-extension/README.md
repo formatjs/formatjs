@@ -23,8 +23,8 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C:
 | `supportedValuesOf`                |      1.78 |          58.6 |          32.9x |
 | `Locale.maximize`                  |      4.64 |          33.2 |          7.16x |
 | `PluralRules.select`               |      1.39 |           139 |          99.9x |
-| `ListFormat.format`                |      1.64 |          5.37 |          3.28x |
-| `ListFormat.formatToParts`         |      6.25 |          7.13 |          1.14x |
+| `ListFormat.format`                |      1.20 |          3.96 |          3.30x |
+| `ListFormat.formatToParts`         |      6.05 |          5.57 |          0.92x |
 | `DisplayNames.of`                  |      1.68 |          9.77 |          5.80x |
 | `Segmenter.segment`                |      6.05 |          8.89 |          1.47x |
 | `Collator.compare`                 |      1.66 |          4.59 |          2.76x |
@@ -48,8 +48,10 @@ without JSON. The earlier native result was 10.16 µs on the same host.
 `overlap.js` runs the APIs shared with
 [magrinj/hermes-intl at 7cd12b6](https://github.com/magrinj/hermes-intl/tree/7cd12b68fb6f707192426065cec1dba4ced68d5a) on either Hermes
 host. It uses `__now()` when available, otherwise `Date.now()`. On this host,
-median of three runs: our `ListFormat.format` fell from 7.06 to 1.50 µs,
-`formatToParts` from 9.84 to 4.80 µs, and `RelativeTimeFormat.format` from 3.92
+median of three runs: our `ListFormat.format` fell from 7.06 to 1.11 µs,
+`formatToParts` from 9.84 to 4.69 µs, and `RelativeTimeFormat.format` from 3.92
 to 2.53 µs. Magrinj measured 0.70, 4.55, and 1.01 µs respectively. Our bridge
 keeps lone surrogates and reads array getters once; magrinj's shortcut
 does neither.
+Direct ListFormat string assembly and borrowed UTF-16 input cut `format` from
+1.52 to 1.11 µs on the same host; `formatToParts` still returns fresh records.
