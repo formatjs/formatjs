@@ -43,6 +43,11 @@
     if (value === null) throw new BadReceiver('options must not be null')
     return object(value)
   }
+  function constructorOptions(value: unknown): any {
+    if (value === undefined) return create(null)
+    if (!isObject(value)) throw new BadReceiver('options must be an object')
+    return value
+  }
   function option(
     options: any,
     name: string,
@@ -146,7 +151,7 @@
         isObject(requestedPrototype) ? requestedPrototype : prototype
       )
       const requested = apply(canonicalize, intl, [locales]) as string[]
-      const opts = options(optionsInput)
+      const opts = constructorOptions(optionsInput)
       const matcher = option(
         opts,
         'localeMatcher',

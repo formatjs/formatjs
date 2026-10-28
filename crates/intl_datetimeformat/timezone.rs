@@ -32,10 +32,14 @@ struct State {
 pub struct TimeZone {
     name: String,
     fixed: Option<i32>,
+    target: Option<String>,
 }
 impl TimeZone {
     pub fn identifier(&self) -> &str {
         &self.name
+    }
+    pub fn data_identifier(&self) -> &str {
+        self.target.as_deref().unwrap_or(&self.name)
     }
 }
 #[derive(Clone)]
@@ -56,28 +60,33 @@ fn utc() -> TimeZone {
     TimeZone {
         name: "UTC".into(),
         fixed: None,
+        target: None,
     }
 }
-fn named(name: String) -> TimeZone {
-    if name == "Etc/UTC" || name == "Etc/GMT" || name == "UTC" {
-        utc()
-    } else {
-        TimeZone { name, fixed: None }
+fn named(name: String, target: String) -> TimeZone {
+    let fixed = (target == "UTC" || target == "Etc/UTC" || target == "Etc/GMT").then_some(0);
+    let target = (name != target).then_some(target);
+    TimeZone {
+        name,
+        fixed,
+        target,
     }
 }
-fn links() -> &'static BTreeMap<String, String> {
-    static LINKS: OnceLock<BTreeMap<String, String>> = OnceLock::new();
+fn links() -> &'static BTreeMap<String, (String, String)> {
+    static LINKS: OnceLock<BTreeMap<String, (String, String)>> = OnceLock::new();
     LINKS.get_or_init(|| {
         let raw: BTreeMap<String, String> =
             serde_json::from_str(include_str!(env!("FORMATJS_TIMEZONE_LINKS")))
                 .expect("generated IANA links");
         let mut result = BTreeMap::new();
         for target in raw.values() {
-            result.insert(target.to_ascii_uppercase(), target.clone());
+            result.insert(
+                target.to_ascii_uppercase(),
+                (target.clone(), target.clone()),
+            );
         }
-        // Alias mappings have precedence over regularized zone names.
         for (alias, target) in raw {
-            result.insert(alias.to_ascii_uppercase(), target);
+            result.insert(alias.to_ascii_uppercase(), (alias, target));
         }
         result
     })
@@ -106,6 +115,30 @@ fn offset_zone(value: &str) -> Result<TimeZone, Error> {
     Ok(TimeZone {
         name: format!("{sign}{hours:02}:{minutes:02}"),
         fixed: Some(seconds),
+        target: None,
+    })
+}
+
+fn etc_gmt_zone(value: &str) -> Option<TimeZone> {
+    let suffix = value.strip_prefix("ETC/GMT")?;
+    if suffix.len() < 2 {
+        return None;
+    }
+    let (sign, hours_text) = suffix.split_at(1);
+    let hours: u8 = hours_text.parse().ok()?;
+    if hours.to_string() != hours_text || hours == 0 {
+        return None;
+    }
+    // IANA Etc/GMT signs are opposite UTC offset signs.
+    let seconds = match sign {
+        "+" if hours <= 12 => -i32::from(hours) * 3600,
+        "-" if hours <= 14 => i32::from(hours) * 3600,
+        _ => return None,
+    };
+    Some(TimeZone {
+        name: format!("Etc/GMT{sign}{hours}"),
+        fixed: Some(seconds),
+        target: None,
     })
 }
 fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
@@ -238,7 +271,8 @@ impl TimeZoneSnapshot {
                 in_dst: false,
             };
         }
-        let Some(data) = self.zones.get(&zone.name.to_ascii_uppercase()) else {
+        let lookup = zone.target.as_deref().unwrap_or(&zone.name);
+        let Some(data) = self.zones.get(&lookup.to_ascii_uppercase()) else {
             return TimeZoneOffset {
                 seconds: 0,
                 in_dst: false,
@@ -269,12 +303,21 @@ impl TimeZoneSnapshot {
             return offset_zone(value);
         }
         let key = value.to_ascii_uppercase();
-        if let Some(name) = links().get(&key) {
-            return Ok(named(name.clone()));
+        if matches!(key.as_str(), "UTC" | "GMT" | "ETC/UTC" | "ETC/GMT") {
+            return Ok(named("UTC".into(), "UTC".into()));
+        }
+        if let Some(zone) = etc_gmt_zone(&key) {
+            return Ok(zone);
+        }
+        if let Some((_, target)) = links().get(&key) {
+            if matches!(target.as_str(), "Etc/UTC" | "Etc/GMT") {
+                return Ok(named("UTC".into(), "UTC".into()));
+            }
+            return Ok(named(target.clone(), target.clone()));
         }
         self.zones
             .get(&key)
-            .map(|zone| named(zone.name.clone()))
+            .map(|zone| named(zone.name.clone(), zone.name.clone()))
             .ok_or(Error::InvalidTimeZone)
     }
 }

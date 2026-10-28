@@ -21,6 +21,15 @@ to fail on any harness-reported failure. Normal `:test262` targets guard
 against regressions while the baseline is reduced. Do not interpret green
 baseline checks as complete ECMA-402 conformance.
 
+Hermes strict targets live under `//tools/test262:hermes-<polyfill>-strict`.
+`//tools/test262:hermes-strict` runs all twelve suites against the bundled
+native extensions with all locale data compiled. Each failing target keeps its
+full JSON report in Bazel test outputs. Failing targets remain manual until
+their failures are resolved; a passing subset does not establish full
+conformance. The host enables Hermes ES6 block scoping and loads the pinned
+Temporal polyfill before native extensions so Temporal cases execute.
+Cross-realm cases still report Hermes host limitations.
+
 Upstream runner contract: https://github.com/tc39/test262/blob/main/INTERPRETING.md
 
 ## Complete selection and host controls
