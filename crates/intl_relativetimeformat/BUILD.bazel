@@ -1,0 +1,152 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//crates/intl_data:defs.bzl", "compiled_locale_data")
+load("//packages/intl-relativetimeformat:locales.generated.bzl", "ALL_LOCALES")
+load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
+
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "relativetimeformat.h",
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["relativetimeformat.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "locale_data",
+    srcs = [
+        "//:root_package_json",
+        "//crates/intl_numberformat:locale_data",
+        "//crates/intl_pluralrules:locale_data",
+    ] + ["//packages/intl-relativetimeformat:cldr-raw/%s.json" % locale for locale in ALL_LOCALES],
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        package_name() + "/locale-data",
+        "--numberDir",
+        "crates/intl_numberformat/locale-data",
+        "--pluralDir",
+        "crates/intl_pluralrules/locale-data",
+    ] + ["--cldrFile=packages/intl-relativetimeformat/cldr-raw/%s.json" % locale for locale in ALL_LOCALES],
+    tool = "//crates/intl_relativetimeformat/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "intl_relativetimeformat",
+    srcs = [
+        "data.rs",
+        "ffi.rs",
+        "lib.rs",
+        "registry.rs",
+    ],
+    crate_name = "formatjs_intl_relativetimeformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_data",
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "//crates/intl_numberformat",
+        "//crates/intl_pluralrules",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+COMPILED_DEPS = [
+    "//crates/intl_data",
+    "//crates/intl_getcanonicallocales",
+    "//crates/intl_locale",
+    "//crates/intl_numberformat:with_compiled_data",
+    "//crates/intl_pluralrules:with_compiled_data",
+    "@crates//:serde",
+    "@crates//:serde_json",
+]
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "data.rs",
+        "ffi.rs",
+        "lib.rs",
+        "registry.rs",
+    ],
+    compile_data = [
+        ":compiled_locale_data",
+        ":compiled_module",
+    ],
+    crate_features = ["compiled_data"],
+    crate_name = "formatjs_intl_relativetimeformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_COMPILED_LOCALES": "$(execpath :compiled_module)"},
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
+)
+
+formatjs_rust_test(
+    name = "intl_relativetimeformat_test",
+    srcs = [
+        "ffi.test.rs",
+        "lib.test.rs",
+    ],
+    compile_data = [":locale-data/en.json"],
+    crate_name = "intl_relativetimeformat_test",
+    edition = "2024",
+    rustc_env = {"FORMATJS_RELATIVE_EN": "$(execpath :locale-data/en.json)"},
+    deps = [
+        ":intl_relativetimeformat",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "conformance",
+    srcs = ["conformance.rs"],
+    crate_name = "conformance",
+    crate_root = "conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_relativetimeformat/tests:__pkg__"],
+    deps = [
+        ":intl_relativetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+compiled_locale_data(
+    name = "compiled_locale_data",
+    srcs = [":locale_data"],
+    data_type = "crate::LocaleData",
+    tool = ":compile_locales",
+)
+
+filegroup(
+    name = "compiled_module",
+    srcs = [":compiled_locale_data"],
+    output_group = "module",
+)
+
+rust_binary(
+    name = "compile_locales",
+    srcs = ["datagen.rs"],
+    crate_name = "compile_locales_relativetimeformat",
+    crate_root = "datagen.rs",
+    edition = "2024",
+    deps = [
+        # keep
+        ":intl_relativetimeformat",
+        "//crates/intl_data_build",
+    ],
+)

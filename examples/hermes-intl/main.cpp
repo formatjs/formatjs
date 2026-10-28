@@ -5,6 +5,7 @@
 #include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_collator.h>
 #include <formatjs/hermes/intl_numberformat.h>
+#include <formatjs/hermes/intl_relativetimeformat.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -21,6 +22,9 @@
 namespace {
 constexpr char numberSmoke[] =
 #include "numberformat_smoke.inc"
+    ;
+constexpr char relativeSmoke[] =
+#include "relativetimeformat_smoke.inc"
     ;
 constexpr char collatorSmoke[] =
 #include "collator_smoke.inc"
@@ -182,6 +186,11 @@ int main(int argc, char **argv) {
     auto numberPassed = runtime->global().getProperty(*runtime, "__SDK_NUMBER_PASSED");
     if (!numberPassed.isBool() || !numberPassed.getBool()) throw std::runtime_error("NumberFormat SDK smoke failed");
     std::cout << "Hermes SDK NumberFormat passed\n";
+    formatjs::installRelativeTimeFormat(*runtime, extensions);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(relativeSmoke), "formatjs:relativetimeformat-sdk-smoke");
+    auto relativePassed = runtime->global().getProperty(*runtime, "__SDK_RELATIVE_PASSED");
+    if (!relativePassed.isBool() || !relativePassed.getBool()) throw std::runtime_error("RelativeTimeFormat SDK smoke failed");
+    std::cout << "Hermes SDK RelativeTimeFormat passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

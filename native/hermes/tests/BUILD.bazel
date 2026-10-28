@@ -355,6 +355,52 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "relativetimeformat_typecheck",
+    srcs = [
+        "relativetimeformat.ts",
+        "run-relativetimeformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "relativetimeformat_suite",
+    srcs = ["relativetimeformat.ts"],
+    entry_point = "relativetimeformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+    ],
+)
+
+js_test(
+    name = "relativetimeformat_conformance_test",
+    size = "medium",
+    data = [
+        ":optimized_runtime",
+        ":relativetimeformat_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_relativetimeformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-relativetimeformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -412,6 +458,8 @@ package_formatter_conformance("collator")
 
 package_formatter_conformance("numberformat")
 
+package_formatter_conformance("relativetimeformat")
+
 package_formatter_conformance("getcanonicallocales")
 
 compiled_runtime(
@@ -435,6 +483,7 @@ js_test(
         "listformat",
         "displaynames",
         "numberformat",
+        "relativetimeformat",
     ],
     data = [
         ":compiled_locales_suite.js",
@@ -484,6 +533,7 @@ js_test(
         "listformat",
         "displaynames",
         "numberformat",
+        "relativetimeformat",
     ],
     data = [
         ":chromium_locales_suite.js",

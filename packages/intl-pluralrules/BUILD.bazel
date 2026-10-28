@@ -158,6 +158,7 @@ ts_run_binary(
     visibility = [
         "//crates/intl_numberformat/tests:__pkg__",
         "//crates/intl_pluralrules/tests:__pkg__",
+        "//crates/intl_relativetimeformat/tests:__pkg__",
         "//native/hermes/tests:__pkg__",
     ],
 )

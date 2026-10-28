@@ -215,6 +215,20 @@ comparison. ICU4X supplies normalization/casing. JS preserves constructor/protot
 access, option order, private brands, ToString order and cached non-constructor
 bound functions. Source/bytecode tests compare 6,720 cases per mode with TS.
 
+## RelativeTimeFormat
+
+Link `//native/hermes:relativetimeformat` and install canonicalization before
+`formatjs::installRelativeTimeFormat(runtime)`. Compiled records own relative,
+number and plural data; no JS NumberFormat/PluralRules or host ICU is needed.
+
+All units, styles, numeric modes, numbering systems and parts use Rust records.
+The facade preserves brands, ToNumber/ToString order, negative zero and UTF-16
+unit rejection. Locale/numbering-system resolution precedes style/numeric getters;
+relative fields are fetched afterward. Existing instances retain loaded data.
+The precompiled overload uses `IntlRelativeTimeFormat` from
+`39-IntlRelativeTimeFormat.js`. SDK setup and a typed smoke example are documented
+in [package/README.md](package/README.md).
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -233,7 +247,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `getcanonicallocales`.
 
 Segmenter uses the original Unicode files, parser, and package case filters.
 

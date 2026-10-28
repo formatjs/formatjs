@@ -28,7 +28,9 @@ Combined: 2,498 executions, 2,454 passes, 44 failures.
 
 Combined installation adds two Locale collation-data expectation failures while
 fixing two native Locale-branding failures. RelativeTimeFormat has the same two
-foreign-realm failures in both modes; its numbering-system coverage no longer
+foreign-realm failures in both modes. Removing its redundant class constructor
+guard changes those diagnostics from TypeError to prototype mismatch; failure
+identities and counts stay unchanged. Its numbering-system coverage no longer
 depends on suppressing unsupported systems. Compact PluralRules also passes
 independently of NumberFormat locale data. Raw reports and checked-in baselines
 preserve every remaining diagnostic.
