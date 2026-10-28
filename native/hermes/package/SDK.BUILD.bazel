@@ -256,6 +256,42 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "segmenter",
+    srcs = [
+        "src/segmenter.cpp",
+        "src/segmenter.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_segmenter.h",
+        "include/formatjs/intl/segmenter.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
@@ -264,6 +300,9 @@ exports_files([
     "js/33-IntlPluralRules.js",
     "js/34-IntlListFormat.js",
     "js/35-IntlDisplayNames.js",
+    "js/36-IntlSegmenter.js",
+    "js/segmenter-smoke.js",
+    "examples/segmenter-smoke.ts",
     "js/displaynames-smoke.js",
     "examples/displaynames-smoke.ts",
     "js/listformat-smoke.js",

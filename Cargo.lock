@@ -749,6 +749,7 @@ dependencies = [
  "formatjs_intl_listformat",
  "formatjs_intl_locale",
  "formatjs_intl_pluralrules",
+ "formatjs_intl_segmenter",
  "formatjs_intl_supportedvaluesof",
 ]
 
@@ -793,6 +794,19 @@ dependencies = [
  "formatjs_intl_locale",
  "icu_plurals",
  "icu_provider",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_segmenter"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_locale_core",
+ "icu_properties",
+ "icu_segmenter",
  "serde",
  "serde_json",
 ]

@@ -1,0 +1,27 @@
+# gazelle:ignore
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "conformance_test",
+    size = "medium",
+    srcs = [
+        "conformance.test.ts",
+        "profiles.ts",
+    ],
+    data = [
+        "//crates/intl_segmenter:conformance",
+        "@GraphemeBreakTest//file",
+    ],
+    no_copy_to_bin = [
+        "//:package.json",
+        "@GraphemeBreakTest//file",
+    ],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)

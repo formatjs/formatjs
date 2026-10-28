@@ -29,3 +29,10 @@ pub use formatjs_intl_displaynames::ffi::{
     formatjs_display_registry_info, formatjs_display_registry_load,
     formatjs_display_registry_match,
 };
+
+pub use formatjs_intl_segmenter::ffi::{
+    formatjs_segment_cursor_destroy, formatjs_segment_cursor_next, formatjs_segmenter_bytes_free,
+    formatjs_segmenter_create, formatjs_segmenter_destroy, formatjs_segmenter_match,
+    formatjs_segmenter_resolved, formatjs_segmenter_segment, formatjs_segments_containing,
+    formatjs_segments_cursor, formatjs_segments_destroy,
+};

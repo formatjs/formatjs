@@ -11,6 +11,7 @@ crates/
   intl_getcanonicallocales/    # ICU4X locale canonicalization leaf crate
   intl_supportedvaluesof/     # Runtime-aware supported value enumeration
   intl_locale/                # Locale records, preferences and owned C ABI
+  intl_segmenter/             # ICU4X segmentation, UTF-16 indices and cursors
   intl_displaynames/          # CLDR names, code validation, caller-loaded locale packs
   intl_listformat/            # CLDR list patterns, UTF-16 parts, caller-loaded locale packs
   intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
@@ -433,6 +434,10 @@ fallback through the same provider. Both suites also format from checked-in
 `include_bytes!`. The shared Bazel external dependency graph still enables ICU
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.
+
+`intl_segmenter` uses ICU4X segmenter/properties, canonical locale matching, and
+an owned UTF-16 ABI. `intl_hermes` assembles its symbols into the shared SDK archive.
+Word/sentence profile differences from TS have explicit conformance expectations.
 
 ### Hermes bridge and C ABI
 

@@ -3,12 +3,12 @@ This guide covers setting up FormatJS polyfills for React Native with the Hermes
 ## Experimental Rust Intl extensions
 
 The repository includes Rust `Intl.getCanonicalLocales`, `Intl.supportedValuesOf`,
-`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat` and `Intl.DisplayNames` implementations with C++ JSI adapters.
+`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames` and `Intl.Segmenter` implementations with C++ JSI adapters.
 SDK `0.1.0` packages public headers, adapter source,
 extension JavaScript, and Rust static libraries for Linux x86_64 GNU and macOS
 arm64. Consumers compile the adapter against their matching Hermes JSI headers
 and link SDK targets `:canonical_locales`, `:supported_values`, `:locale` and
-`:pluralrules`, `:listformat`, `:displaynames` from `@formatjs_intl_getcanonicallocales_hermes`.
+`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter` from `@formatjs_intl_getcanonicallocales_hermes`.
 
 The SDK is built from this repository and is not published to BCR, npm, or
 crates.io. It does not include Android/iOS artifacts or React Native package
@@ -23,6 +23,7 @@ to build, extract, and install its public layout.
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
+#include <formatjs/hermes/intl_segmenter.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -31,6 +32,7 @@ formatjs::installCanonicalLocales(*runtime);
 formatjs::installPluralRules(*runtime);
 formatjs::installListFormat(*runtime);
 formatjs::installDisplayNames(*runtime);
+formatjs::installSegmenter(*runtime);
 ```
 
 Install before application scripts. For bytecode-only startup, compile the SDK's
@@ -357,3 +359,20 @@ Locale packs load independently. Existing instances retain their data. Sparse
 CLDR categories use code/undefined fallback; invalid codes, including lone
 surrogates, throw `RangeError`. Source and precompiled installers share the same
 Rust lookup and validation.
+
+### Rust Segmenter
+
+Link SDK target `:segmenter`; call `formatjs::installSegmenter` after canonicalization.
+For precompiled setup, register `js/36-IntlSegmenter.js` and call
+`formatjs::installSegmenter(runtime, extensions)`. ICU4X data and dictionary/LSTM
+models are static; no per-locale JSON loading is required.
+
+```ts
+const words = new Intl.Segmenter('ja', {granularity: 'word'})
+Array.from(words.segment('こんにちは世界'), part => part.segment)
+// ['こんにちは', '世界']
+```
+
+UTF-16 input and indices stay exact, including lone surrogates. Word/sentence
+boundaries and word-like status may differ from TS; explicit conformance profiles
+cover both implementations. See the [Segmenter port](/docs/polyfills/intl-segmenter#rust-hermes-extension).
