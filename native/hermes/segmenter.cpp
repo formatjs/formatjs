@@ -19,6 +19,15 @@ using Segments = hermes_bridge::Record<FormatjsSegmentsHandle, formatjs_segments
 using Cursor = hermes_bridge::Record<FormatjsSegmentCursorHandle, formatjs_segment_cursor_destroy>;
 using Bytes = hermes_bridge::Buffer<FormatjsSegmenterBytes, formatjs_segmenter_bytes_free>;
 using hermes_bridge::bytesOf;
+jsi::Value span(jsi::Runtime &rt, int32_t status, const SegmenterSpan &value) {
+  if (status == 1) return jsi::Value::undefined();
+  if (status != 0) throw jsi::JSError(rt, "Rust Segmenter bridge failed");
+  jsi::Array result(rt, 3);
+  result.setValueAtIndex(rt, 0, static_cast<double>(value.start));
+  result.setValueAtIndex(rt, 1, static_cast<double>(value.end));
+  result.setValueAtIndex(rt, 2, value.word_like);
+  return result;
+}
 jsi::Value result(jsi::Runtime &rt, int32_t status, const Bytes &bytes) {
   if (status == 1) return jsi::Value(status);
   if (status != 0) throw jsi::JSError(rt, "Rust Segmenter bridge failed");
@@ -64,11 +73,11 @@ void installSegmenter(jsi::Runtime &runtime, jsi::Object &extensions) {
     return result(rt, formatjs_segmenter_resolved(model->handle.get(), &bytes.value), bytes);
   });
   hermes_bridge::bind(runtime, bridge, "nativeSegment", "segmenterSegment", 2, [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
-    if (count != 2) throw jsi::JSError(rt, "Expected Segmenter model/UTF-16 units");
+    if (count != 2 || !args[1].isString()) throw jsi::JSError(rt, "Expected Segmenter model/string");
     auto model = record<Model>(rt, args[0]);
-    auto data = text(rt, args[1]);
+    auto data = args[1].asString(rt).utf16(rt);
     FormatjsSegmentsHandle *raw = nullptr;
-    auto status = formatjs_segmenter_segment(model->handle.get(), bytesOf(data), data.size(), &raw);
+    auto status = formatjs_segmenter_segment_units(model->handle.get(), reinterpret_cast<const uint16_t *>(data.data()), data.size(), &raw);
     return owned<Segments>(rt, status, raw);
   });
   hermes_bridge::bind(runtime, bridge, "nativeContaining", "segmenterContaining", 2, [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
@@ -79,8 +88,8 @@ void installSegmenter(jsi::Runtime &runtime, jsi::Object &extensions) {
     if (!std::isfinite(index) || index < 0 || std::trunc(index) != index ||
         index >= static_cast<double>(std::numeric_limits<size_t>::max()))
       throw jsi::JSError(rt, "Invalid UTF-16 index");
-    Bytes bytes;
-    return result(rt, formatjs_segments_containing(segments->handle.get(), static_cast<size_t>(index), &bytes.value), bytes);
+    SegmenterSpan value{};
+    return span(rt, formatjs_segments_containing_span(segments->handle.get(), static_cast<size_t>(index), &value), value);
   });
   hermes_bridge::bind(runtime, bridge, "nativeCursor", "segmenterCursor", 1, [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
     if (count != 1) throw jsi::JSError(rt, "Expected Segments");
@@ -92,8 +101,8 @@ void installSegmenter(jsi::Runtime &runtime, jsi::Object &extensions) {
   hermes_bridge::bind(runtime, bridge, "nativeNext", "segmenterNext", 1, [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
     if (count != 1) throw jsi::JSError(rt, "Expected Segmenter cursor");
     auto cursor = record<Cursor>(rt, args[0]);
-    Bytes bytes;
-    return result(rt, formatjs_segment_cursor_next(cursor->handle.get(), &bytes.value), bytes);
+    SegmenterSpan value{};
+    return span(rt, formatjs_segment_cursor_next_span(cursor->handle.get(), &value), value);
   });
   extensions.getPropertyAsFunction(runtime, "IntlSegmenter").call(runtime, bridge);
 }
