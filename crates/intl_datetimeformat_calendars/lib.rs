@@ -1,5 +1,7 @@
 //! Optional DateTimeFormat arithmetic. Locale patches and tables load independently.
 mod arithmetic;
+#[cfg(feature = "compiled_data")]
+mod compiled;
 pub mod ffi;
 mod tables;
 use arithmetic::Calendar;

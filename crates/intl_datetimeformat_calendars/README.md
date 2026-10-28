@@ -2,8 +2,9 @@
 
 Optional arithmetic providers for the native DateTimeFormat runtime. The base
 `formatjs_intl_datetimeformat` crate does not depend on this crate or its tables.
-Register only the calendar requested by the application; locale patches load
-separately through `Runtime::add_calendar_locale_data`.
+The standalone crate lets applications register selected calendars; the
+`with_compiled_data` variant registers all calendars for Hermes. Locale patches
+load separately through `Runtime::add_calendar_locale_data`.
 
 `Provider::arithmetic(name)` constructs Buddhist, Coptic, Ethiopic, Amete Alem,
 ROC, Japanese, Indian, civil/tabular Islamic, Persian or Hebrew arithmetic.
@@ -22,8 +23,9 @@ Provider::arithmetic("hebrew").unwrap().register(&runtime);
 
 `//crates/intl_datetimeformat_calendars:calendar_data` generates one JSON pack per
 calendar. The eleven arithmetic packs contain only a calendar identifier. Table
-packs reuse the pinned TS ICU4X generators; nothing compiles their data into the
-provider library. Loads validate table indices, bit widths, year/checkpoint counts,
+packs reuse the pinned TS ICU4X generators. The `with_compiled_data` target embeds
+all packs in the Rust archive and registers them when Hermes creates a
+DateTimeFormat registry. Loads validate table indices, bit widths, year/checkpoint counts,
 checkpoint positions and final bounds before registration.
 
 Umm al-Qura uses the same official month data and civil fallback as TS.
@@ -47,5 +49,5 @@ bazel test -c opt //:rust_datetime_pattern_test \
 `datetimeformat_calendars.h` exposes `formatjs_datetime_calendar_load` for the
 core DateTimeFormat registry. It validates a selected pack before replacement;
 failed loads leave the previous provider installed. Locale patches still load
-separately. Both ABIs export through the single Rust SDK archive. Hermes
-registration and SDK packaging remain unfinished.
+separately. Both ABIs export through the single Rust SDK archive. Hermes loads
+compiled packs at startup; other embedders may call the selected-pack loader.

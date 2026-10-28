@@ -11,6 +11,9 @@ publish = false
 [lib]
 path = "lib.rs"
 
+[features]
+compiled_data = []
+
 [dependencies]
 formatjs_intl_datetimeformat = { path = "../intl_datetimeformat" }
 serde = { version = "1.0", features = ["derive"] }

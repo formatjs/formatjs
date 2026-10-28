@@ -25,6 +25,7 @@ rust_library(
     name = "intl_datetimeformat_calendars",
     srcs = [
         "arithmetic.rs",
+        "compiled.rs",
         "ffi.rs",
         "lib.rs",
         "tables.rs",
@@ -50,13 +51,20 @@ rust_library(
     name = "with_compiled_data",
     srcs = [
         "arithmetic.rs",
+        "compiled.rs",
         "ffi.rs",
         "lib.rs",
         "tables.rs",
     ],
+    compile_data = [":calendar-data/%s.json" % calendar for calendar in CALENDARS],
+    crate_features = ["compiled_data"],
     crate_name = "formatjs_intl_datetimeformat_calendars",
     crate_root = "lib.rs",
     edition = "2024",
+    rustc_env = {
+        "FORMATJS_CALENDAR_%s" % calendar.upper().replace("-", "_"): "$(execpath :calendar-data/%s.json)" % calendar
+        for calendar in CALENDARS
+    },
     visibility = ["//visibility:public"],
     deps = COMPILED_DEPS,
 )
@@ -105,4 +113,16 @@ formatjs_rust_test(
         "//crates/intl_datetimeformat",
         "@crates//:serde_json",
     ],
+)
+
+formatjs_rust_test(
+    name = "compiled_calendars_test",
+    srcs = ["compiled.test.rs"],
+    crate_name = "compiled_calendars_test",
+    edition = "2024",
+    deps = [
+        ":with_compiled_data",
+        "//crates/intl_datetimeformat:with_compiled_data",
+        "@crates//:serde_json",
+    ],  # keep
 )
