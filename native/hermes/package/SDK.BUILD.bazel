@@ -184,12 +184,51 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "listformat",
+    srcs = [
+        "src/listformat.cpp",
+        "src/listformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_listformat.h",
+        "include/formatjs/intl/listformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
     "js/31-IntlSupportedValuesOf.js",
     "js/32-IntlLocale.js",
     "js/33-IntlPluralRules.js",
+    "js/34-IntlListFormat.js",
+    "js/listformat-smoke.js",
+    "examples/listformat-smoke.ts",
     "js/pluralrules-smoke.js",
     "examples/pluralrules-smoke.ts",
 ])

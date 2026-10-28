@@ -6,6 +6,7 @@ members = [
   "crates/intl_supportedvaluesof",
   "crates/intl_locale",
   "crates/intl_pluralrules",
+  "crates/intl_listformat",
   "crates/intl_hermes",
   "crates/icu_skeleton_parser",
   "crates/icu_messageformat_parser",

@@ -36,7 +36,7 @@ brand check recognizes the newly installed constructor:
 
 ```cpp
 #include <formatjs/hermes/intl_locale.h>
-#include <formatjs/hermes/pluralrules.h>
+#include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 
 formatjs::installCanonicalLocales(*runtime);
@@ -162,6 +162,19 @@ brands, subclasses, descriptors and captured intrinsics. Link
 canonicalization. SDK locale data is compiled into Rust as described above.
 The independent SDK consumer verifies compiled English/French data, retained instances, BigInt, ranges and receiver checks on Linux and macOS.
 
+## ListFormat
+
+Link `//native/hermes:listformat` (SDK `:listformat`) and call
+`installListFormat(runtime)` after canonicalization. The overload accepting
+`extensions` uses the precompiled `IntlListFormat` factory. SDK locale data is compiled into Rust.
+
+Rust owns patterns, matching and parts. The TS facade supplies receiver brands,
+option access and StringListFromIterable, including IteratorClose. UTF-16 unit
+arrays preserve lone surrogates across the ABI. The native conformance target
+`//native/hermes/tests:listformat_conformance_test` compares the public API with
+TS through source and optimized-bytecode installers. `--native-listformat`
+enables the source installer in the development runner.
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -180,7 +193,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `getcanonicallocales`.
 
 Canonicalization uses real native Locale objects, including internal-slot checks.
 Locale ICU-specific collation expectations have separate cases, retaining the

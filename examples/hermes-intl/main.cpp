@@ -1,5 +1,6 @@
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -14,6 +15,9 @@
 #include <utility>
 
 namespace {
+constexpr char listSmoke[] =
+#include "listformat_smoke.inc"
+    ;
 constexpr char pluralSmoke[] =
 #include "pluralrules_smoke.inc"
     ;
@@ -137,6 +141,11 @@ int main(int argc, char **argv) {
     auto pluralPassed = runtime->global().getProperty(*runtime, "__SDK_PLURAL_PASSED");
     if (!pluralPassed.isBool() || !pluralPassed.getBool()) throw std::runtime_error("PluralRules SDK smoke failed");
     std::cout << "Hermes SDK PluralRules passed\n";
+    formatjs::installListFormat(*runtime, extensions);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(listSmoke), "formatjs:listformat-sdk-smoke");
+    auto listPassed = runtime->global().getProperty(*runtime, "__SDK_LIST_PASSED");
+    if (!listPassed.isBool() || !listPassed.getBool()) throw std::runtime_error("ListFormat SDK smoke failed");
+    std::cout << "Hermes SDK ListFormat passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

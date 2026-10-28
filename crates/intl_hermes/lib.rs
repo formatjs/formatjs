@@ -16,3 +16,9 @@ pub use formatjs_intl_pluralrules::ffi::{
 pub use formatjs_intl_supportedvaluesof::ffi::{
     formatjs_supported_values_of, formatjs_values_free,
 };
+
+pub use formatjs_intl_listformat::ffi::{
+    formatjs_list_bytes_free, formatjs_list_create, formatjs_list_destroy, formatjs_list_query,
+    formatjs_list_registry_create, formatjs_list_registry_destroy, formatjs_list_registry_info,
+    formatjs_list_registry_load, formatjs_list_registry_match,
+};

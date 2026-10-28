@@ -29,6 +29,7 @@ cc_test(
 ts_project(
     name = "extension_typecheck",
     srcs = [
+        "listformat.ts",
         "locale.ts",
         "pluralrules.ts",
         "pluralrules_bridge.test.ts",
@@ -47,6 +48,8 @@ exports_files(
         "canonical_locales.h",
         "locale.cpp",
         "intl_locale.h",
+        "intl_listformat.h",
+        "listformat.cpp",
         "intl_pluralrules.h",
         "pluralrules.cpp",
         "supported_values.cpp",
@@ -91,6 +94,7 @@ ts_run_binary(
     name = "extension_bundle_js",
     srcs = [
         "get_canonical_locales.js",
+        "listformat.ts",
         "locale.ts",
         "pluralrules.ts",
         "supported_values_of.ts",
@@ -105,6 +109,8 @@ ts_run_binary(
         "--name=IntlLocale",
         "--input=$(rootpath :pluralrules.ts)",
         "--name=IntlPluralRules",
+        "--input=$(rootpath :listformat.ts)",
+        "--name=IntlListFormat",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -211,6 +217,7 @@ cc_binary(
     deps = [
         ":canonical_locales",
         ":hermes_vm",
+        ":listformat",
         ":locale",
         ":pluralrules",
         ":supported_values",
@@ -376,4 +383,61 @@ cc_library(
         "//crates/intl_locale:headers",
         "@hermes//:headers",
     ],
+)
+
+cc_library(
+    name = "listformat",
+    srcs = [
+        "listformat.cpp",
+        ":listformat_wrapper_source",
+    ],
+    hdrs = ["intl_listformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_listformat:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "listformat_factory",
+    srcs = ["listformat.ts"],
+    outs = ["listformat_factory.js"],
+    args = [
+        "--input=$(rootpath :listformat.ts)",
+        "--name=IntlListFormat",
+        "--out=$(rootpath :listformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "listformat_wrapper_source",
+    srcs = [":listformat_factory"],
+    outs = ["listformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "listformat_extension_js",
+    srcs = ["listformat.ts"],
+    outs = ["34-IntlListFormat.js"],
+    args = [
+        "--input=$(rootpath :listformat.ts)",
+        "--name=IntlListFormat",
+        "--out=$(rootpath :34-IntlListFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
 )
