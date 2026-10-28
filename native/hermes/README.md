@@ -28,24 +28,27 @@ Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
 buffer after copying it into a JSI string. Canonicalization retains no runtime
 cache. Locale instances use owned Rust handles managed by JSI garbage collection.
 
-## Locale and supported values
+## Locale, supported values and plural rules
 
-The SDK also includes `Intl.Locale` and `Intl.supportedValuesOf`. Install all
-three before application code; reinstall canonicalization last so its intrinsic
-Locale brand check recognizes the newly installed constructor:
+The SDK also includes `Intl.Locale`, `Intl.supportedValuesOf` and
+`Intl.PluralRules`. Reinstall canonicalization after Locale so its intrinsic
+brand check recognizes the newly installed constructor:
 
 ```cpp
 #include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
 formatjs::installLocale(*runtime);
 formatjs::installCanonicalLocales(*runtime);
+formatjs::installPluralRules(*runtime);
 ```
 
 Each installer also accepts the precompiled `extensions` object shown below.
-Link SDK targets `:locale` and `:supported_values` alongside `:canonical_locales`.
+Link SDK targets `:locale`, `:supported_values` and `:pluralrules` alongside
+`:canonical_locales`.
 Locale's private WeakMap retains its native handle; JS subclasses and prototype
 changes cannot forge that brand. Information methods query current formatter
 support, so locale data loaded after construction remains visible.
@@ -90,6 +93,46 @@ Install trusted `Intl.Locale` before the final installer call. If Locale itself
 needs `Intl.getCanonicalLocales`, install the adapter, load Locale, then reinstall
 the adapter before application code so it captures Locale's intrinsic brand method.
 
+## Compiled locale data
+
+The SDK embeds locale records in its Rust archive, like `formatjs_intl`'s
+compiled-data configuration. Installing a formatter makes those locales available;
+application JS and C++ do not register locale JSON.
+
+Default locales follow [Chromium desktop's full-data UI language filter](https://chromium.googlesource.com/chromium/deps/icu/+/2a51536dfb3b448bdf3dae70c782ea2879c90904/filters/common.json),
+including regional and script variants available in this checkout. This selects locale
+coverage; it does not copy Chrome's per-resource trimming or promise identical ICU results.
+Use `--//crates/intl_data:locales=\*` for every CLDR locale. Select a custom set:
+
+```sh
+bazel build -c opt --//crates/intl_data:locales=en,fr //native/hermes/package:sdk
+```
+
+The setting applies to both platform archives. Locale selection uses Rust matching for scripts, regions and default-content
+aliases. Formatters without matching data retain their native fallback. Unknown
+languages fail the build. Rebuild the Rust archive to add another locale.
+
+Rust build tools validate the original CLDR packs, compile plural-rule expressions,
+and emit binary records. Runtime registries decode records lazily and cache them
+independently, so unit updates and explicit overrides cannot leak between runtimes.
+The raw CLDR extraction remains shared with the TS packages.
+
+```mermaid
+flowchart LR
+  CLDR[Existing CLDR inputs] --> Rust[Rust validation and rule compilation]
+  Selection[Build locale selection] --> Rust
+  Rust --> Archive[Native archive with binary records]
+  Archive --> Registry[Per-runtime lazy registry]
+  Registry --> Intl[Intl formatters]
+```
+
+Source builds can select the same provider with
+`--//crates/intl_data:compiled=true`. Rust callers use each formatter's
+`:with_compiled_data` target and `Registry::with_compiled_data()`;
+The uncompiled targets
+retain explicit registration for custom providers and original TS conformance
+fixtures. Their JSON hooks remain available for intentional runtime overrides.
+
 ## Development runner
 
 The standalone host runner uses the native Bazel module from
@@ -109,6 +152,16 @@ bazel run -c opt //native/hermes:hermes_runner -- /absolute/path/script.js
 The host runner is an explicit development target. CI cross-builds the SDK and
 standalone macOS executable on Linux; macOS only runs the downloaded artifacts.
 
+`--extensions=/absolute/path/bundle` evaluates a source or bytecode factory
+bundle and installs its available native extensions before ordinary scripts. `//native/hermes:pluralrules_bridge_test` exercises loaded packs,
+matching, owned instances, ranges and late replacement through JSI.
+`//native/hermes/tests:pluralrules_conformance_test` compares the installed public
+API with TS through source and optimized-bytecode installers, plus coercion order,
+brands, subclasses, descriptors and captured intrinsics. Link
+`//native/hermes:pluralrules` and call `installPluralRules(runtime)` after
+canonicalization. SDK locale data is compiled into Rust as described above.
+The independent SDK consumer verifies compiled English/French data, retained instances, BigInt, ranges and receiver checks on Linux and macOS.
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -127,7 +180,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `getcanonicallocales`.
 
 Canonicalization uses real native Locale objects, including internal-slot checks.
 Locale ICU-specific collation expectations have separate cases, retaining the

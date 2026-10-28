@@ -1,16 +1,48 @@
 # gazelle:alias_kind rust_static_library rust_library
 load("@rules_rs//rs:rust_static_library.bzl", "rust_static_library")
 
-rust_static_library(
+config_setting(
+    name = "compiled",
+    flag_values = {"//crates/intl_data:compiled": "true"},
+)
+
+alias(
     name = "intl_hermes",
+    actual = select({
+        ":compiled": ":with_compiled_data",
+        "//conditions:default": ":without_compiled_data",
+    }),
+    visibility = ["//visibility:public"],
+)
+
+rust_static_library(
+    name = "without_compiled_data",
     srcs = ["lib.rs"],
-    crate_name = "formatjs_intl_hermes",
+    crate_name = "formatjs_intl_hermes_uncompiled",
     crate_root = "lib.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",
+        "//crates/intl_pluralrules",
         "//crates/intl_supportedvaluesof",
     ],
+)
+
+COMPILED_DEPS = [
+    "//crates/intl_getcanonicallocales",
+    "//crates/intl_locale",
+    "//crates/intl_pluralrules:with_compiled_data",
+    "//crates/intl_supportedvaluesof",
+]
+
+rust_static_library(
+    name = "with_compiled_data",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_intl_hermes",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
 )

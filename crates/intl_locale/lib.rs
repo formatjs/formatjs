@@ -4,6 +4,7 @@
 
 mod data_generated;
 pub mod ffi;
+pub mod matcher;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;

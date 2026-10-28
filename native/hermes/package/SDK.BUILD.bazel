@@ -148,9 +148,48 @@ alias(
     actual = ":rust_intl",
 )
 
+cc_library(
+    name = "pluralrules",
+    srcs = [
+        "src/pluralrules.cpp",
+        "src/pluralrules.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_pluralrules.h",
+        "include/formatjs/intl/pluralrules.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
     "js/31-IntlSupportedValuesOf.js",
     "js/32-IntlLocale.js",
+    "js/33-IntlPluralRules.js",
+    "js/pluralrules-smoke.js",
+    "examples/pluralrules-smoke.ts",
 ])

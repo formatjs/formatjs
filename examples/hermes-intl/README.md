@@ -1,19 +1,17 @@
 # Standalone Hermes SDK consumer
 
-This independent Bazel module consumes the extracted SDK archive. It does not
-load FormatJS build targets or compile Rust. The example creates a Hermes
-runtime, evaluates the SDK's precompiled extension setup, installs
-`Intl.getCanonicalLocales`, and checks aliases, duplicate removal, array-like
-inputs, and exceptions. It also installs `Intl.supportedValuesOf` from the same
-precompiled setup object and checks arrays, coercion, descriptors and errors.
-It also installs Rust `Intl.Locale`, checking canonical options, likely subtags,
-script direction, week information, fallback behavior and receiver brands.
-The embedding supplies formatters; this bare Hermes smoke intentionally has
-none. Full-list comparisons with real TS formatters run separately in
-`//native/hermes/tests:supported_values_conformance_test` and
-`//native/hermes/tests:locale_conformance_test`. The Locale suite also loads
-Bengali NumberFormat data after constructing a Locale and checks the existing
-instance sees it.
+This independent Bazel module consumes the extracted SDK without compiling Rust
+or loading FormatJS build targets. It installs the available Intl extensions and
+runs the SDK's compiled TypeScript smoke scripts through real Hermes.
+
+Locale data comes from the Rust archive. The consumer injects no locale JSON;
+English/French formatting works immediately after installation. Existing smoke
+assertions cover exact numeric inputs, receiver checks and localized results.
+
+Default locales follow Chromium desktop's full-data UI language filter, including regional
+and script variants. Use `--//crates/intl_data:locales=\*` for every CLDR locale.
+Select a custom archive with
+`--//crates/intl_data:locales=en,fr` when building the SDK; rebuild to add locales.
 
 The SDK is built and tested here but is not published. From the FormatJS root
 on Linux:

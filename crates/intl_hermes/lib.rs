@@ -8,6 +8,11 @@ pub use formatjs_intl_locale::ffi::{
     formatjs_locale_bytes_free, formatjs_locale_create, formatjs_locale_destroy,
     formatjs_locale_query, formatjs_locale_validate,
 };
+pub use formatjs_intl_pluralrules::ffi::{
+    formatjs_plural_bytes_free, formatjs_plural_create, formatjs_plural_destroy,
+    formatjs_plural_query, formatjs_plural_registry_create, formatjs_plural_registry_destroy,
+    formatjs_plural_registry_info, formatjs_plural_registry_load, formatjs_plural_registry_match,
+};
 pub use formatjs_intl_supportedvaluesof::ffi::{
     formatjs_supported_values_of, formatjs_values_free,
 };

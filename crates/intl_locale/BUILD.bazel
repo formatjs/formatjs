@@ -22,9 +22,11 @@ cc_library(
 generate_src_file(
     name = "data",
     src = "data_generated.rs",
+    args = ["--matching=$(rootpath //packages/intl-localematcher:language_matching_source)"],
     data = [
         "//:node_modules/@formatjs_generated/cldr.core",
         "//:node_modules/@formatjs_generated/cldr.locale",
+        "//packages/intl-localematcher:language_matching_source",
     ],
     tool = "//crates/intl_locale/scripts:data",
 )
@@ -35,6 +37,7 @@ rust_library(
         "data_generated.rs",
         "ffi.rs",
         "lib.rs",
+        "matcher.rs",
     ],
     crate_name = "formatjs_intl_locale",
     crate_root = "lib.rs",
@@ -52,6 +55,7 @@ formatjs_rust_test(
     srcs = [
         "ffi.test.rs",
         "lib.test.rs",
+        "matcher.test.rs",
     ],
     crate_name = "intl_locale_test",
     edition = "2024",

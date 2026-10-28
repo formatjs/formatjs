@@ -1,0 +1,37 @@
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load(":chromium_locales.bzl", "CHROMIUM_LOCALES")
+load(":defs.bzl", "compiled_data", "locales")
+
+locales(
+    name = "locales",
+    build_setting_default = CHROMIUM_LOCALES,
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "intl_data",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_intl_data",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:ciborium",
+        "@crates//:serde",
+    ],
+)
+
+compiled_data(
+    name = "compiled",
+    build_setting_default = False,
+    visibility = ["//visibility:public"],
+)
+
+formatjs_rust_test(
+    name = "intl_data_test",
+    srcs = ["lib.test.rs"],
+    crate_name = "intl_data_test",
+    edition = "2024",
+    deps = [":intl_data"],
+)

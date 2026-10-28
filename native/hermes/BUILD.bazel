@@ -30,6 +30,8 @@ ts_project(
     name = "extension_typecheck",
     srcs = [
         "locale.ts",
+        "pluralrules.ts",
+        "pluralrules_bridge.test.ts",
         "supported_values_of.ts",
     ],
     declaration = True,
@@ -45,6 +47,8 @@ exports_files(
         "canonical_locales.h",
         "locale.cpp",
         "intl_locale.h",
+        "intl_pluralrules.h",
+        "pluralrules.cpp",
         "supported_values.cpp",
         "supported_values.h",
     ],
@@ -88,6 +92,7 @@ ts_run_binary(
     srcs = [
         "get_canonical_locales.js",
         "locale.ts",
+        "pluralrules.ts",
         "supported_values_of.ts",
     ],
     outs = ["extensions.js"],
@@ -98,6 +103,8 @@ ts_run_binary(
         "--name=IntlSupportedValuesOf",
         "--input=$(rootpath :locale.ts)",
         "--name=IntlLocale",
+        "--input=$(rootpath :pluralrules.ts)",
+        "--name=IntlPluralRules",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -116,6 +123,15 @@ ts_run_binary(
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "extension_bundle_bytecode",
+    srcs = [":extension_bundle_js"],
+    outs = ["extensions.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :extension_bundle_js)",
+    tools = ["@hermes//:hermesc"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )
 
 ts_run_binary(
@@ -196,6 +212,7 @@ cc_binary(
         ":canonical_locales",
         ":hermes_vm",
         ":locale",
+        ":pluralrules",
         ":supported_values",
     ],
 )
@@ -252,6 +269,92 @@ genrule(
 )
 
 cc_library(
+    name = "pluralrules",
+    srcs = [
+        "pluralrules.cpp",
+        ":pluralrules_wrapper_source",
+    ],
+    hdrs = ["intl_pluralrules.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_pluralrules:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "pluralrules_factory",
+    srcs = ["pluralrules.ts"],
+    outs = ["pluralrules_factory.js"],
+    args = [
+        "--input=$(rootpath :pluralrules.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :pluralrules_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "pluralrules_wrapper_source",
+    srcs = [":pluralrules_factory"],
+    outs = ["pluralrules.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "pluralrules_extension_js",
+    srcs = ["pluralrules.ts"],
+    outs = ["33-IntlPluralRules.js"],
+    args = [
+        "--input=$(rootpath :pluralrules.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :33-IntlPluralRules.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "pluralrules_bridge_fixture",
+    srcs = ["pluralrules_bridge.test.ts"],
+    outs = ["pluralrules_bridge_fixture.js"],
+    args = [
+        "--input=$(rootpath :pluralrules_bridge.test.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :pluralrules_bridge_fixture.js)",
+        "--bundle",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+sh_test(
+    name = "pluralrules_bridge_test",
+    srcs = ["pluralrules_bridge_test.sh"],
+    args = [
+        "$(rootpath :hermes_runner)",
+        "$(rootpath :pluralrules_bridge_fixture)",
+        "$(rootpath :canonical_locales_test.js)",
+    ],
+    data = [
+        "canonical_locales_test.js",
+        ":hermes_runner",
+        ":pluralrules_bridge_fixture",
+    ],
+    target_compatible_with = HOST_COMPATIBILITY,
+)
+
+cc_library(
     name = "locale",
     srcs = [
         "locale.cpp",
@@ -273,13 +376,4 @@ cc_library(
         "//crates/intl_locale:headers",
         "@hermes//:headers",
     ],
-)
-
-genrule(
-    name = "extension_bundle_bytecode",
-    srcs = [":extension_bundle_js"],
-    outs = ["extensions.hbc"],
-    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :extension_bundle_js)",
-    tools = ["@hermes//:hermesc"],
-    visibility = ["//native/hermes/tests:__pkg__"],
 )
