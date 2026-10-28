@@ -28,6 +28,7 @@ ts_run_binary(
         "$(rootpath :collation_data.json)",
     ],
     tool = "//crates/intl_collator/scripts:data",
+    visibility = ["//crates:__pkg__"],
 )
 
 rust_library(
@@ -81,4 +82,13 @@ rust_binary(
         "@crates//:serde",
         "@crates//:serde_json",
     ],
+)
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
 )

@@ -11,17 +11,21 @@ Node nor Bazel to compile.
 
 ## Publishing
 
-Requires Python 3.11+, the repository's Bazel toolchain, and Cargo 1.97+.
-From the repository root, prepare a fresh staging directory:
+Release Please manages versions and GitHub releases. The shared
+`.github/workflows/crates-release.yml` workflow validates with Bazel, assembles
+`//crates:intl_release`, and publishes through crates.io trusted publishing.
+Use its `crate` and `dry_run` inputs to validate a release without publishing.
 
-```sh
-python3 scripts/prepare_intl_crates.py --out /tmp/formatjs-intl-release
-cd /tmp/formatjs-intl-release
-cargo publish --dry-run --workspace --all-features
-cargo publish --workspace --all-features
-```
+`bazel build //crates:intl_release` assembles Cargo package sources with
+metadata, locale records, license notices, and Cargo build scripts. Bazel declares
+all inputs and runs its pinned Python toolchain; no separate preparation command
+is needed. DateTimeFormat extracts compressed records only with `compiled_data`.
 
-Preparation builds data with Bazel and bundles it with each crate. Cargo build
-scripts locate bundled metadata; DateTimeFormat extracts its compressed locale
-records at build time when `compiled_data` is enabled. Cargo publishes packages
-in dependency order. Configure crates.io authentication before the final command.
+The workflow exports release sources with `git archive`, overlays the Bazel
+package sources, then runs Cargo 1.97+ from that writable checkout. Keeping the
+full Cargo workspace preserves its checked-in lockfile. Cargo handles dependency
+order for selected Intl packages.
+
+After a crate's initial publication, its owner must authorize
+`formatjs/formatjs` and workflow `crates-release.yml` in its
+[crates.io trusted publishing settings](https://crates.io/docs/trusted-publishing).

@@ -113,3 +113,12 @@ cc_library(
     strip_include_prefix = ".",
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
+)

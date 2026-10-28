@@ -126,3 +126,12 @@ formatjs_rust_test(
         "@crates//:serde_json",
     ],  # keep
 )
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
+)

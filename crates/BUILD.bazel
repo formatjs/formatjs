@@ -1,1 +1,43 @@
-# Bazel package marker for crates/ directory.
+# gazelle:ignore
+load("//tools/cargo:package.bzl", "cargo_release")
+
+cargo_release(
+    name = "intl_release",
+    srcs = [
+        "//crates/intl_collator:cargo_sources",
+        "//crates/intl_data:cargo_sources",
+        "//crates/intl_data_build:cargo_sources",
+        "//crates/intl_datetimeformat:cargo_sources",
+        "//crates/intl_datetimeformat_calendars:cargo_sources",
+        "//crates/intl_displaynames:cargo_sources",
+        "//crates/intl_durationformat:cargo_sources",
+        "//crates/intl_getcanonicallocales:cargo_sources",
+        "//crates/intl_hermes:cargo_sources",
+        "//crates/intl_listformat:cargo_sources",
+        "//crates/intl_locale:cargo_sources",
+        "//crates/intl_numberformat:cargo_sources",
+        "//crates/intl_pluralrules:cargo_sources",
+        "//crates/intl_relativetimeformat:cargo_sources",
+        "//crates/intl_segmenter:cargo_sources",
+        "//crates/intl_supportedvaluesof:cargo_sources",
+    ],
+    calendars = "//crates/intl_datetimeformat_calendars:calendar_data",
+    compiled = {
+        "//crates/intl_numberformat:compiled_locale_data": "intl_numberformat",
+        "//crates/intl_datetimeformat:compiled_locale_data": "intl_datetimeformat",
+        "//crates/intl_pluralrules:compiled_locale_data": "intl_pluralrules",
+        "//crates/intl_listformat:compiled_locale_data": "intl_listformat",
+        "//crates/intl_displaynames:compiled_locale_data": "intl_displaynames",
+        "//crates/intl_relativetimeformat:compiled_locale_data": "intl_relativetimeformat",
+    },
+    metadata = {
+        "//crates/intl_collator:data": "intl_collator:FORMATJS_COLLATION_DATA",
+        "//crates/intl_numberformat:metadata": "intl_numberformat:FORMATJS_NUMBER_METADATA",
+        "//crates/intl_durationformat:metadata": "intl_durationformat:FORMATJS_DURATION_METADATA",
+        "//crates/intl_datetimeformat:timezone_links": "intl_datetimeformat:FORMATJS_TIMEZONE_LINKS",
+        "//crates/intl_datetimeformat:locale_aliases": "intl_datetimeformat:FORMATJS_DATETIME_LOCALE_ALIASES",
+        "//packages/intl-datetimeformat:tz_all_json": "intl_datetimeformat:FORMATJS_COMPILED_TIMEZONES",
+    },
+    notices = ["//native/hermes/package:cargo_notices"],
+    visibility = ["//visibility:public"],
+)

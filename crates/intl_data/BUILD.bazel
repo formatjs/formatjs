@@ -35,3 +35,12 @@ formatjs_rust_test(
     edition = "2024",
     deps = [":intl_data"],
 )
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
+)

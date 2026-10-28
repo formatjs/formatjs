@@ -143,6 +143,7 @@ compiled_locale_data(
     srcs = [":locale_data"],
     data_type = "crate::LocaleRules",
     tool = ":compile_locales",
+    visibility = ["//crates:__pkg__"],
 )
 
 filegroup(
@@ -163,4 +164,13 @@ rust_binary(
         ":intl_pluralrules",
         "//crates/intl_data_build",
     ],
+)
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
 )

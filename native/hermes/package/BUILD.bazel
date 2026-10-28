@@ -403,3 +403,12 @@ pkg_tar(
     tags = ["manual"],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "cargo_notices",
+    srcs = [
+        "LICENSE.md",
+        "THIRD_PARTY_NOTICES.html",
+    ],
+    visibility = ["//crates:__pkg__"],
+)

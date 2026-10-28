@@ -60,5 +60,21 @@
   "packages/intl-datetimeformat-calendar-hebrew": "1.1.2",
   "packages/intl-datetimeformat-calendar-islamic-umalqura": "1.1.2",
   "packages/intl-datetimeformat-calendar-chinese": "1.1.2",
-  "packages/intl-datetimeformat-calendar-dangi": "1.1.2"
+  "packages/intl-datetimeformat-calendar-dangi": "1.1.2",
+  "crates/intl_collator": "0.1.0",
+  "crates/intl_data": "0.1.0",
+  "crates/intl_data_build": "0.1.0",
+  "crates/intl_datetimeformat": "0.1.0",
+  "crates/intl_datetimeformat_calendars": "0.1.0",
+  "crates/intl_displaynames": "0.1.0",
+  "crates/intl_durationformat": "0.1.0",
+  "crates/intl_getcanonicallocales": "0.1.0",
+  "crates/intl_hermes": "0.1.0",
+  "crates/intl_listformat": "0.1.0",
+  "crates/intl_locale": "0.1.0",
+  "crates/intl_numberformat": "0.1.0",
+  "crates/intl_pluralrules": "0.1.0",
+  "crates/intl_relativetimeformat": "0.1.0",
+  "crates/intl_segmenter": "0.1.0",
+  "crates/intl_supportedvaluesof": "0.1.0"
 }

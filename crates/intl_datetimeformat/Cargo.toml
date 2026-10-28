@@ -33,3 +33,7 @@ path = "timezone_conformance.rs"
 [[example]]
 name = "pattern_conformance"
 path = "pattern_conformance.rs"
+
+[build-dependencies]
+lzma-rs = "0.3"
+tar = "0.4"

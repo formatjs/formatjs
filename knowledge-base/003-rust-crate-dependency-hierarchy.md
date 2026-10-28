@@ -499,13 +499,16 @@ The explicit-registration targets remain the custom-provider and TS-fixture path
 
 ## Intl crate publication
 
-`python3 scripts/prepare_intl_crates.py --out <fresh-directory>` builds data with
-Bazel, then stages the sixteen `formatjs_intl_*` polyfill crates for Cargo. It
-bundles metadata, compiled locale records, Cargo build scripts, and license
-notices. DateTimeFormat records use an xz archive because repeated calendar data
-exceeds crates.io's size limit with gzip alone. Its Cargo build script extracts
-records only when `compiled_data` is enabled, using pure Rust dependencies.
+`//crates:intl_release` assembles the sixteen polyfill crates as Cargo package
+sources. Rust sources, metadata, compiled locale records, and notices are
+declared Bazel inputs. The sandboxed packaging action uses the
+repository's pinned Python toolchain, without invoking Bazel or Cargo itself.
+DateTimeFormat records use xz to fit crates.io's compressed size limit; its Cargo
+build script extracts records with pure Rust dependencies when `compiled_data`
+is enabled.
 
-Run `cargo publish --dry-run --workspace --all-features` in the staged workspace
-before `cargo publish --workspace --all-features`. Cargo handles dependency order.
-No Bazel output paths or local path dependencies survive in published packages.
+The same Release Please Rust strategy and `crates-release.yml` trusted publishing
+workflow manage these crates and the existing parser/message crates. The workflow
+exports release sources with `git archive`, overlays Bazel package sources,
+then runs Cargo from the full workspace with
+`--locked --all-features`. Cargo handles selected Intl crates in dependency order.
