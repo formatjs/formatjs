@@ -27,6 +27,7 @@ use the [standalone SDK](package/README.md) and link
 runtime. The desktop SDK ships Rust static libraries for Linux x86_64 GNU and
 macOS arm64; the Android SDK ships arm64 and x86_64 archives. Consumers compile
 its C++ adapter against their matching JSI headers.
+See the [React Native example](https://github.com/formatjs/hermes-intl) for Android.
 
 Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
 buffer after copying it into a JSI string. The JS factory retains at most 64

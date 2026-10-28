@@ -90,7 +90,7 @@ lib/aarch64-apple-darwin/libformatjs_intl_hermes.a
 
 Rust and its compiled ICU data are prebuilt for Linux x86_64 GNU and macOS
 arm64 in this desktop archive. Separate `android_sdk` target packages Android
-arm64 and x86_64 archives for [React Native example](../../../examples/react-native-hermes/README.md).
+arm64 and x86_64 archives for [React Native example](https://github.com/formatjs/hermes-intl).
 Consumer compiles C++ adapter against embedding runtime's JSI headers.
 iOS and other target triples are not included.
 
