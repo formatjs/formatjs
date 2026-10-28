@@ -3,13 +3,11 @@ package com.formatjshermes
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.Until
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,9 +15,13 @@ import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 class IntlScreenTest {
+  private fun textOnScreen(view: View): List<String> {
+    val own = if (view is TextView) listOf(view.text.toString()) else emptyList()
+    return if (view is ViewGroup) own + (0 until view.childCount).flatMap { textOnScreen(view.getChildAt(it)) } else own
+  }
+
   @Test
   fun rendersHermesAndEveryRustIntlPolyfill() {
-    val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     val context = InstrumentationRegistry.getInstrumentation().targetContext
     ActivityScenario.launch(MainActivity::class.java).use { scenario ->
       val names = listOf(
@@ -28,11 +30,17 @@ class IntlScreenTest {
         "Collator", "NumberFormat", "RelativeTimeFormat", "DateTimeFormat",
         "DurationFormat",
       )
-      for (name in names) {
-        val label = "$name: PASS"
-        device.wait(Until.hasObject(By.text(label)), if (name == "Hermes") 60_000 else 10_000)
-        assertNotNull(label, device.findObject(By.text(label)))
+      val expected = names.map { "$it: PASS" }
+      var rendered = emptyList<String>()
+      val deadline = System.currentTimeMillis() + 60_000
+      while (System.currentTimeMillis() < deadline) {
+        scenario.onActivity { activity ->
+          rendered = textOnScreen(activity.findViewById(android.R.id.content))
+        }
+        if (rendered.containsAll(expected)) break
+        Thread.sleep(250)
       }
+      assertTrue("Rendered text: $rendered", rendered.containsAll(expected))
       val screenshot = File(context.getExternalFilesDir(null), "intl-screen.png")
       scenario.onActivity { activity ->
         val root = activity.findViewById<View>(android.R.id.content)
