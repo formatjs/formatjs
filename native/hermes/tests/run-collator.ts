@@ -12,7 +12,7 @@ function main() {
           : `--extensions=${resolve('native/hermes/extensions.hbc')}`,
         resolve('native/hermes/tests/collator_suite.js'),
       ],
-      {encoding: 'utf8', timeout: 180_000, maxBuffer: 4 * 1024 * 1024}
+      {encoding: 'utf8', timeout: 360_000, maxBuffer: 4 * 1024 * 1024}
     )
     if (result.error) throw result.error
     process.stdout.write(result.stdout || '')

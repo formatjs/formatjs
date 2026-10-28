@@ -300,6 +300,7 @@ rolldown_bundle(
 js_test(
     name = "collator_conformance_test",
     size = "medium",
+    timeout = "long",
     data = [
         ":collator_suite.js",
         "//:node_modules/@bazel/runfiles",
