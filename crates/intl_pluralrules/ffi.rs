@@ -334,6 +334,43 @@ pub unsafe extern "C" fn formatjs_plural_query(
     })
 }
 
+/// Select a plural category from the already coerced mathematical text.
+/// # Safety
+/// Handle is live; value bytes readable; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_select(
+    handle: *const PluralHandle,
+    value: *const u8,
+    len: usize,
+    bigint: bool,
+    out: *mut u8,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(255) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let value = unsafe { input(value, len)? };
+        let category = unsafe { &(*handle).0 }
+            .select_mathematical(value, bigint)
+            .map_err(status)?;
+        let index = match category {
+            "zero" => 0,
+            "one" => 1,
+            "two" => 2,
+            "few" => 3,
+            "many" => 4,
+            "other" => 5,
+            _ => return Err(3),
+        };
+        unsafe { out.write(index) };
+        Ok(())
+    })
+}
+
 /// # Safety
 /// Registry is null or a live owned handle. No call may still borrow it.
 #[unsafe(no_mangle)]

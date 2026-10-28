@@ -69,8 +69,50 @@ impl Handle {
         }
         Ok(value)
     }
+    fn select(&self, value: &str, bigint: bool) -> Result<u8, i32> {
+        let mut category = 255;
+        let status = unsafe {
+            formatjs_plural_select(self.0, value.as_ptr(), value.len(), bigint, &mut category)
+        };
+        if status == 0 {
+            Ok(category)
+        } else {
+            assert_eq!(category, 255);
+            Err(status)
+        }
+    }
 }
 const EN: &str = r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{"cardinal":{"one_other":"other"}}}"#;
+
+#[test]
+fn direct_select_matches_json_for_mathematical_inputs() {
+    let registry = Registry::new();
+    assert_eq!(registry.load(EN), 0);
+    let handle = registry.create("{}").unwrap();
+    for (value, bigint) in [
+        ("1", false),
+        ("1.0", false),
+        ("1e0", false),
+        ("-0", false),
+        ("NaN", false),
+        ("Infinity", false),
+        ("9007199254740993", true),
+        ("-9007199254740993", true),
+    ] {
+        let expected = handle
+            .query(json!({"method":"select","mathematical":true,"value":value,"bigint":bigint}))
+            .unwrap();
+        let category = ["zero", "one", "two", "few", "many", "other"]
+            [handle.select(value, bigint).unwrap() as usize];
+        assert_eq!(expected, category, "{value} (bigint={bigint})");
+    }
+    let mut out = 0;
+    assert_eq!(
+        unsafe { formatjs_plural_select(ptr::null(), b"1".as_ptr(), 1, false, &mut out) },
+        2
+    );
+    assert_eq!(out, 255);
+}
 
 #[test]
 fn abi_handles_own_rules_after_registry_and_input_release() {

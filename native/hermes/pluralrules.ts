@@ -5,10 +5,17 @@
   nativeMatch: (request: string) => string | number
   nativeCreate: (locale: string, options: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
+  nativeSelect: (handle: object, value: string, bigint: boolean) => number
 }) {
   'use strict'
-  const {nativeLoad, nativeInfo, nativeMatch, nativeCreate, nativeQuery} =
-    native
+  const {
+    nativeLoad,
+    nativeInfo,
+    nativeMatch,
+    nativeCreate,
+    nativeQuery,
+    nativeSelect,
+  } = native
   const apply = Reflect.apply
   const create = Object.create
   const define = Object.defineProperty
@@ -24,6 +31,7 @@
   const slots = new WeakMap<object, object>()
   const getSlot = WeakMap.prototype.get
   const setSlot = WeakMap.prototype.set
+  const categories = ['zero', 'one', 'two', 'few', 'many', 'other']
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -366,16 +374,9 @@
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L220-L223
       const handle = slot(this),
         number = mathematical(value)
-      return decoded(
-        nativeQuery(
-          handle,
-          '{"method":"select","mathematical":true,"value":' +
-            quote(number.text) +
-            ',"bigint":' +
-            number.bigint +
-            '}'
-        )
-      )
+      const result = nativeSelect(handle, number.text, number.bigint)
+      if (result < 0) decoded(-result)
+      return categories[result]
     },
     selectRange(this: unknown, start: unknown, end: unknown): string {
       // selectRange 1–6: reject either undefined endpoint before coercing either;
