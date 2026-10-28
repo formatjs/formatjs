@@ -15,6 +15,27 @@ pub struct SegmenterBytes {
     pub data: *mut u8,
     pub len: usize,
 }
+#[repr(C)]
+pub struct SegmenterSpan {
+    pub start: usize,
+    pub end: usize,
+    pub word_like: i32,
+}
+
+fn write_span(value: Option<SegmentData<'_>>, out: *mut SegmenterSpan) -> i32 {
+    let Some(value) = value else {
+        return 1;
+    };
+    unsafe {
+        out.write(SegmenterSpan {
+            start: value.index,
+            end: value.index + value.segment.len(),
+            word_like: value.is_word_like.map(i32::from).unwrap_or(-1),
+        });
+    }
+    0
+}
+
 impl SegmenterBytes {
     const EMPTY: Self = Self {
         data: ptr::null_mut(),
@@ -199,6 +220,42 @@ pub unsafe extern "C" fn formatjs_segmenter_segment(
     })
 }
 
+/// Copy UTF-16 units into an immutable segment table. Surrogates remain raw.
+/// # Safety
+/// Model live; data readable for len units; out writable. Destroy result once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_segmenter_segment_units(
+    handle: *const SegmenterHandle,
+    data: *const u16,
+    len: usize,
+    out: *mut *mut SegmentsHandle,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe {
+        out.write(ptr::null_mut());
+    }
+    if handle.is_null()
+        || len > isize::MAX as usize / std::mem::size_of::<u16>()
+        || (data.is_null() && len != 0)
+    {
+        return 2;
+    }
+    guarded(|| {
+        let units = if len == 0 {
+            Vec::new()
+        } else {
+            unsafe { slice::from_raw_parts(data, len) }.to_vec()
+        };
+        let segments = unsafe { (&*handle).0.segment(units) };
+        unsafe {
+            out.write(Box::into_raw(Box::new(SegmentsHandle(segments))));
+        }
+        Ok(())
+    })
+}
+
 /// Query a validated nonnegative UTF-16 index; past-end returns JSON null.
 /// # Safety
 /// Handle live; out writable. Free output once.
@@ -222,6 +279,24 @@ pub unsafe extern "C" fn formatjs_segments_containing(
             output(record((&*handle).0.containing(index)), out);
         }
         Ok(())
+    })
+}
+
+/// Return UTF-16 boundaries without serializing segment text.
+/// # Safety
+/// Handle live; out writable. Status 1 means no containing segment.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_segments_containing_span(
+    handle: *const SegmentsHandle,
+    index: usize,
+    out: *mut SegmenterSpan,
+) -> i32 {
+    if handle.is_null() || out.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let status = write_span(unsafe { (&*handle).0.containing(index) }, out);
+        if status == 0 { Ok(()) } else { Err(status) }
     })
 }
 
@@ -272,6 +347,23 @@ pub unsafe extern "C" fn formatjs_segment_cursor_next(
             output(record((&mut *handle).0.next_record()), out);
         }
         Ok(())
+    })
+}
+
+/// Advance cursor and return UTF-16 boundaries. Status 1 means exhaustion.
+/// # Safety
+/// Cursor live and exclusively borrowed; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_segment_cursor_next_span(
+    handle: *mut CursorHandle,
+    out: *mut SegmenterSpan,
+) -> i32 {
+    if handle.is_null() || out.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let status = write_span(unsafe { (&mut *handle).0.next_record() }, out);
+        if status == 0 { Ok(()) } else { Err(status) }
     })
 }
 

@@ -26,7 +26,7 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C:
 | `ListFormat.format`                |      1.64 |          5.37 |          3.28x |
 | `ListFormat.formatToParts`         |      6.25 |          7.13 |          1.14x |
 | `DisplayNames.of`                  |      1.68 |          9.77 |          5.80x |
-| `Segmenter.segment`                |      10.7 |          11.3 |          1.05x |
+| `Segmenter.segment`                |      6.05 |          8.89 |          1.47x |
 | `Collator.compare`                 |      1.66 |          4.59 |          2.76x |
 | `NumberFormat.format`              |      3.71 |           388 |           104x |
 | `RelativeTimeFormat.format`        |      2.64 |           456 |           173x |
@@ -42,6 +42,8 @@ unchanged. First call still probes candidates; later calls return fresh arrays.
 The earlier 1,675 µs native result was before this cache.
 `Locale.maximize` now transforms its Rust record directly. The earlier native
 result was 10.9 µs.
+`Segmenter.segment` now passes UTF-16 directly and returns segment boundaries
+without JSON. The earlier native result was 10.16 µs on the same host.
 
 `overlap.js` runs the APIs shared with
 [magrinj/hermes-intl at 7cd12b6](https://github.com/magrinj/hermes-intl/tree/7cd12b68fb6f707192426065cec1dba4ced68d5a) on either Hermes

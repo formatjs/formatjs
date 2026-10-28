@@ -3,10 +3,10 @@
   nativeMatch: (request: string) => string | number
   nativeCreate: (locale: string, options: string) => object | number
   nativeResolved: (handle: object) => string | number
-  nativeSegment: (handle: object, units: string) => object | number
-  nativeContaining: (handle: object, index: number) => string | number
+  nativeSegment: (handle: object, input: string) => object | number
+  nativeContaining: (handle: object, index: number) => number[] | undefined
   nativeCursor: (handle: object) => object | number
-  nativeNext: (handle: object) => string | number
+  nativeNext: (handle: object) => number[] | undefined
 }) {
   'use strict'
   const {
@@ -23,13 +23,11 @@
   const define = Object.defineProperty
   const setPrototypeOf = Object.setPrototypeOf
   const getPrototypeOf = Object.getPrototypeOf
-  const hasOwn = Object.prototype.hasOwnProperty
   const object = Object
   const objectPrototype = Object.prototype
   const parse = JSON.parse
   const stringify = JSON.stringify
-  const charCodeAt = String.prototype.charCodeAt
-  const fromCharCode = String.fromCharCode
+  const slice = String.prototype.slice
   const trunc = Math.trunc
   const BadReceiver = TypeError
   const BadOption = RangeError
@@ -125,35 +123,18 @@
       )
     )
   }
-  function unitsJSON(text: string): string {
-    let result = '['
-    for (let index = 0; index < text.length; index++)
-      result += (index ? ',' : '') + apply(charCodeAt, text, [index])
-    return result + ']'
-  }
-  function text(units: number[]): string {
-    let result = ''
-    // Bounded apply avoids engine argument limits; null prototypes avoid setters.
-    for (let offset = 0; offset < units.length; offset += 1024) {
-      const chunk = create(null)
-      const size = units.length - offset < 1024 ? units.length - offset : 1024
-      for (let index = 0; index < size; index++)
-        chunk[index] = units[offset + index]
-      chunk.length = size
-      result += apply(fromCharCode, undefined, chunk)
-    }
-    return result
-  }
-  function record(value: any, input: string): object | undefined {
-    if (value === null) return undefined
+  function record(
+    value: number[] | undefined,
+    input: string
+  ): object | undefined {
+    if (value === undefined) return undefined
     // CreateSegmentDataObject: ordinary record, specified property order, original input.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L358-L370
     const result = create(objectPrototype)
-    property(result, 'segment', text(value.segment), true)
-    property(result, 'index', value.index, true)
+    property(result, 'segment', apply(slice, input, [value[0], value[1]]), true)
+    property(result, 'index', value[0], true)
     property(result, 'input', input, true)
-    if (apply(hasOwn, value, ['isWordLike']))
-      property(result, 'isWordLike', value.isWordLike, true)
+    if (value[2] !== -1) property(result, 'isWordLike', value[2] === 1, true)
     return result
   }
   // Constructor 1–11: one prototype Get, canonicalize, matcher, resolve, granularity.
@@ -222,7 +203,7 @@
       apply(setSlot, segments, [
         result,
         {
-          handle: handle(nativeSegment(model, unitsJSON(value))),
+          handle: handle(nativeSegment(model, value)),
           owner: this,
           input: value,
         },
@@ -248,10 +229,7 @@
       const number = +(index as any)
       const position = number !== number ? 0 : trunc(number)
       if (position < 0 || position >= state.input.length) return undefined
-      return record(
-        decoded(nativeContaining(state.handle, position)),
-        state.input
-      )
+      return record(nativeContaining(state.handle, position), state.input)
     },
     [iteratorSymbol](this: unknown): object {
       // Independent cursor retains original constructing Segmenter and input.
@@ -274,7 +252,7 @@
       // Each step returns fresh ordinary {value, done}; exhaustion stays exhausted.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L291-L298
       const state = slot(cursors, this)
-      const value = record(decoded(nativeNext(state.handle)), state.input)
+      const value = record(nativeNext(state.handle), state.input)
       const result = create(objectPrototype)
       property(result, 'value', value, true)
       property(result, 'done', value === undefined, true)
