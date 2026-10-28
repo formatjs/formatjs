@@ -5,10 +5,19 @@
   nativeMatch: (request: string) => string | number
   nativeCreate: (locale: string, options: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
+  nativeFormat: (handle: object, values: string[]) => string
+  nativeParts: (handle: object, values: string[]) => string
 }) {
   'use strict'
-  const {nativeLoad, nativeInfo, nativeMatch, nativeCreate, nativeQuery} =
-    native
+  const {
+    nativeLoad,
+    nativeInfo,
+    nativeMatch,
+    nativeCreate,
+    nativeQuery,
+    nativeFormat,
+    nativeParts,
+  } = native
   const apply = Reflect.apply
   const create = Object.create
   const define = Object.defineProperty
@@ -18,7 +27,7 @@
   const parse = JSON.parse
   const stringify = JSON.stringify
   const charCodeAt = String.prototype.charCodeAt
-  const fromCharCode = String.fromCharCode
+  const slice = String.prototype.slice
   const BadReceiver = TypeError
   const BadOption = RangeError
   const slots = new WeakMap<object, object>()
@@ -106,37 +115,21 @@
     descriptor.configurable = true
     define(target, name, descriptor)
   }
-  function text(units: number[]): string {
-    let result = ''
-    // Bounded apply avoids argument limits; null-prototype chunks bypass
-    // inherited setters. Code units cross the ABI without UTF-8 replacement.
-    for (let offset = 0; offset < units.length; offset += 1024) {
-      const chunk = create(null)
-      let count = 0
-      for (; count < 1024 && offset + count < units.length; count++)
-        chunk[count] = units[offset + count]
-      chunk.length = count
-      result += apply(fromCharCode, undefined, chunk)
-    }
-    return result
-  }
-  function listJSON(input: unknown): string {
-    // StringListFromIterable 1–5: undefined is empty; for-of supplies GetIterator,
-    // IteratorStepValue and IteratorClose on a non-string element. Never coerce.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L357-L368
-    if (input === undefined) return '[]'
-    let result = '[',
-      separator = ''
+  function listValues(input: unknown): string[] {
+    // Validate during iteration so non-string values close the iterator.
+    if (input === undefined) return []
+    const result: string[] = []
     for (const value of input as Iterable<unknown>) {
       if (typeof value !== 'string')
         throw new BadReceiver('Iterable yielded a non-string value')
-      result += separator + '['
-      for (let index = 0; index < value.length; index++)
-        result += (index ? ',' : '') + apply(charCodeAt, value, [index])
-      result += ']'
-      separator = ','
+      define(result, result.length, {
+        value,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
     }
-    return result + ']'
+    return result
   }
   // Constructor 1–6: allocate once before ResolveOptions. A derived constructor
   // avoids Hermes allocating from newTarget.prototype before our explicit Get.
@@ -210,27 +203,31 @@
       // Brand check precedes iteration; Rust implements FormatList.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L162-L166
       const handle = slot(this)
-      return text(
-        decoded(
-          nativeQuery(
-            handle,
-            '{"method":"format","list":' + listJSON(list) + '}'
-          )
-        )
-      )
+      return nativeFormat(handle, listValues(list))
     },
     formatToParts(this: unknown, list: unknown): object[] {
       // Fresh ordinary array/records; Rust preserves element/literal boundaries.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L335-L344
       const handle = slot(this)
-      const parts = decoded(
-        nativeQuery(
-          handle,
-          '{"method":"formatToParts","list":' + listJSON(list) + '}'
-        )
-      )
-      for (let index = 0; index < parts.length; index++)
-        parts[index].value = text(parts[index].value)
+      const packed = nativeParts(handle, listValues(list))
+      const parts: object[] = []
+      for (let offset = 0; offset < packed.length;) {
+        const kind = apply(charCodeAt, packed, [offset++])
+        const length =
+          apply(charCodeAt, packed, [offset++]) * 65536 +
+          apply(charCodeAt, packed, [offset++])
+        const value = apply(slice, packed, [offset, offset + length])
+        offset += length
+        const part = create(objectPrototype)
+        property(part, 'type', kind === 0 ? 'element' : 'literal', true)
+        property(part, 'value', value, true)
+        define(parts, parts.length, {
+          value: part,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        })
+      }
       return parts
     },
     resolvedOptions(this: unknown): object {

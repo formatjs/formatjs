@@ -290,6 +290,45 @@ pub unsafe extern "C" fn formatjs_relative_query(
         Ok(())
     })
 }
+
+/// Format pre-coerced numeric text and UTF-16 unit without JSON on the hot path.
+/// # Safety
+/// Handle live; value and unit readable for their lengths; out writable.
+/// Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format(
+    handle: *const RelativeHandle,
+    value: *const u8,
+    value_len: usize,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(RelativeBytes::EMPTY) };
+    if handle.is_null()
+        || unit_len > isize::MAX as usize / std::mem::size_of::<u16>()
+        || (unit_len != 0 && unit.is_null())
+    {
+        return 2;
+    }
+    guarded(|| {
+        let value = unsafe { input(value, value_len)? };
+        let unit = if unit_len == 0 {
+            &[][..]
+        } else {
+            unsafe { slice::from_raw_parts(unit, unit_len) }
+        };
+        let unit = String::from_utf16(unit).map_err(|_| 1)?;
+        let text = unsafe { &(*handle).0 }
+            .format(value, &unit)
+            .map_err(|_| 1)?;
+        unsafe { output(text.into_bytes(), out) };
+        Ok(())
+    })
+}
 /// # Safety
 /// Registry null or live owned handle; no outstanding borrows.
 #[unsafe(no_mangle)]

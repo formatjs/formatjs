@@ -135,3 +135,80 @@ fn invalid_input_clears_output_and_failed_load_is_atomic() {
         formatjs_list_bytes_free(empty());
     }
 }
+
+#[test]
+fn direct_format_preserves_unpaired_surrogates_and_rejects_bad_slices() {
+    unsafe {
+        let mut registry = ptr::null_mut();
+        assert_eq!(formatjs_list_registry_create(&mut registry), 0);
+        let data = pack("{0} and {1}");
+        assert_eq!(
+            formatjs_list_registry_load(registry, data.as_ptr(), data.len()),
+            0
+        );
+        let mut handle = ptr::null_mut();
+        assert_eq!(
+            formatjs_list_create(registry, b"en".as_ptr(), 2, b"{}".as_ptr(), 2, &mut handle),
+            0
+        );
+        let first = [0xd800];
+        let second = [b'b' as u16];
+        let items = [
+            ListSlice {
+                data: first.as_ptr(),
+                len: first.len(),
+            },
+            ListSlice {
+                data: second.as_ptr(),
+                len: second.len(),
+            },
+        ];
+        let mut out = ListUnits {
+            data: ptr::null_mut(),
+            len: 0,
+        };
+        assert_eq!(
+            formatjs_list_format(handle, items.as_ptr(), items.len(), &mut out),
+            0
+        );
+        assert_eq!(
+            slice::from_raw_parts(out.data, out.len),
+            &[0xd800, 32, 97, 110, 100, 32, 98]
+        );
+        formatjs_list_units_free(out);
+        let mut out = ListUnits {
+            data: ptr::null_mut(),
+            len: 0,
+        };
+        assert_eq!(
+            formatjs_list_parts(handle, items.as_ptr(), items.len(), &mut out),
+            0
+        );
+        assert_eq!(
+            slice::from_raw_parts(out.data, out.len),
+            &[0, 0, 1, 0xd800, 1, 0, 5, 32, 97, 110, 100, 32, 0, 0, 1, 98,]
+        );
+        formatjs_list_units_free(out);
+        let invalid = [ListSlice {
+            data: ptr::null(),
+            len: 1,
+        }];
+        let mut out = ListUnits {
+            data: ptr::dangling_mut(),
+            len: 99,
+        };
+        assert_eq!(
+            formatjs_list_format(handle, invalid.as_ptr(), 1, &mut out),
+            2
+        );
+        assert!(out.data.is_null());
+        assert_eq!(out.len, 0);
+        assert_eq!(
+            formatjs_list_parts(handle, items.as_ptr(), isize::MAX as usize, &mut out),
+            2
+        );
+        assert!(out.data.is_null());
+        formatjs_list_destroy(handle);
+        formatjs_list_registry_destroy(registry);
+    }
+}

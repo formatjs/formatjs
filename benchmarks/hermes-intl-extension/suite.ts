@@ -70,6 +70,12 @@ const scenarios = [
     formatter => formatter.format(['one', 'two', 'three'])
   ),
   scenario(
+    'ListFormat.formatToParts',
+    () => new Intl.ListFormat('en'),
+    formatter =>
+      JSON.stringify(formatter.formatToParts(['one', 'two', 'three']))
+  ),
+  scenario(
     'DisplayNames.of',
     () => new Intl.DisplayNames('en', {type: 'language'}),
     formatter => formatter.of('fr') || ''
@@ -94,6 +100,11 @@ const scenarios = [
     'RelativeTimeFormat.format',
     () => new Intl.RelativeTimeFormat('en', {numeric: 'always'}),
     formatter => formatter.format(-3, 'day')
+  ),
+  scenario(
+    'RelativeTimeFormat.formatToParts',
+    () => new Intl.RelativeTimeFormat('en', {numeric: 'always'}),
+    formatter => JSON.stringify(formatter.formatToParts(-3, 'day'))
   ),
   scenario(
     'DateTimeFormat.format',

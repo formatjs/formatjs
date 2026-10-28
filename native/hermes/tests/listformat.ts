@@ -105,6 +105,19 @@ equal(
   'empty element survives'
 )
 equal(formatter.format('😀A'), '😀 and A', 'string iterates code points')
+const observed = ['A', 'B']
+let reads = 0
+Object.defineProperty(observed, '0', {
+  get() {
+    reads++
+    return 'A'
+  },
+})
+formatter.format(observed)
+equal(reads, 1, 'format reads each element once')
+reads = 0
+formatter.formatToParts(observed)
+equal(reads, 1, 'formatToParts reads each element once')
 for (const value of [null, 1, true, {}, {length: 1, 0: 'A'}])
   throws(() => formatter.format(value), TypeError, 'requires iterable')
 for (const value of [1, null, undefined, {}, new String('A'), Symbol(), 1n])
@@ -269,7 +282,8 @@ equal(formatter.resolvedOptions().locale, 'en', 'fresh options')
 const originalParse = JSON.parse,
   originalStringify = JSON.stringify
 const originalCharCodeAt = String.prototype.charCodeAt,
-  originalFromCharCode = String.fromCharCode
+  originalFromCharCode = String.fromCharCode,
+  originalSlice = String.prototype.slice
 const originalApply = Reflect.apply,
   originalGet = WeakMap.prototype.get,
   originalSet = WeakMap.prototype.set
@@ -281,6 +295,7 @@ try {
   JSON.stringify = poisoned
   String.prototype.charCodeAt = poisoned
   String.fromCharCode = poisoned
+  String.prototype.slice = poisoned
   Reflect.apply = poisoned
   WeakMap.prototype.get = poisoned
   WeakMap.prototype.set = poisoned
@@ -303,6 +318,7 @@ try {
   JSON.stringify = originalStringify
   String.prototype.charCodeAt = originalCharCodeAt
   String.fromCharCode = originalFromCharCode
+  String.prototype.slice = originalSlice
   Reflect.apply = originalApply
   WeakMap.prototype.get = originalGet
   WeakMap.prototype.set = originalSet
