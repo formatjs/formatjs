@@ -3,6 +3,7 @@
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/hermes/intl_displaynames.h>
 #include <formatjs/hermes/intl_segmenter.h>
+#include <formatjs/hermes/intl_collator.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -17,6 +18,9 @@
 #include <utility>
 
 namespace {
+constexpr char collatorSmoke[] =
+#include "collator_smoke.inc"
+    ;
 constexpr char segmentSmoke[] =
 #include "segmenter_smoke.inc"
     ;
@@ -164,6 +168,11 @@ int main(int argc, char **argv) {
     auto segmentPassed = runtime->global().getProperty(*runtime, "__SDK_SEGMENTER_PASSED");
     if (!segmentPassed.isBool() || !segmentPassed.getBool()) throw std::runtime_error("Segmenter SDK smoke failed");
     std::cout << "Hermes SDK Segmenter passed\n";
+    formatjs::installCollator(*runtime, extensions);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(collatorSmoke), "formatjs:collator-sdk-smoke");
+    auto collatorPassed = runtime->global().getProperty(*runtime, "__SDK_COLLATOR_PASSED");
+    if (!collatorPassed.isBool() || !collatorPassed.getBool()) throw std::runtime_error("Collator SDK smoke failed");
+    std::cout << "Hermes SDK Collator passed\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

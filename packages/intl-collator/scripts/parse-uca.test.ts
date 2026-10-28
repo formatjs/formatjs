@@ -6,6 +6,7 @@ import {
   parseUCA,
   parseUCALine,
   parseUCAVariableTop,
+  isUCAVariableWeight,
 } from '#packages/intl-collator/scripts/parse-uca.js'
 
 describe('UCA parser', () => {
@@ -126,4 +127,15 @@ describe('UCA parser', () => {
       },
     })
   })
+})
+
+it('aligns fractional variable weights without classifying letters or digits as punctuation', () => {
+  const top = 0x0bffffff
+  expect(isUCAVariableWeight(0x051a, top)).toBe(true) // em dash
+  expect(isUCAVariableWeight(0x2b, top)).toBe(false) // Latin a
+  expect(isUCAVariableWeight(0x59, top)).toBe(false) // Latin x
+  expect(isUCAVariableWeight(0x12, top)).toBe(false) // digit zero
+  expect(isUCAVariableWeight(0, top)).toBe(false)
+  expect(isUCAVariableWeight(0x0bffffff, top)).toBe(true)
+  expect(isUCAVariableWeight(0x0c, top)).toBe(false)
 })

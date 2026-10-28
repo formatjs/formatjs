@@ -29,6 +29,7 @@ cc_test(
 ts_project(
     name = "extension_typecheck",
     srcs = [
+        "collator.ts",
         "displaynames.ts",
         "listformat.ts",
         "locale.ts",
@@ -54,6 +55,8 @@ exports_files(
         "intl_displaynames.h",
         "displaynames.cpp",
         "segmenter.cpp",
+        "collator.cpp",
+        "intl_collator.h",
         "intl_segmenter.h",
         "listformat.cpp",
         "intl_pluralrules.h",
@@ -99,6 +102,7 @@ ts_run_binary(
 ts_run_binary(
     name = "extension_bundle_js",
     srcs = [
+        "collator.ts",
         "displaynames.ts",
         "get_canonical_locales.js",
         "listformat.ts",
@@ -123,6 +127,8 @@ ts_run_binary(
         "--name=IntlDisplayNames",
         "--input=$(rootpath :segmenter.ts)",
         "--name=IntlSegmenter",
+        "--input=$(rootpath :collator.ts)",
+        "--name=IntlCollator",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -228,6 +234,7 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":canonical_locales",
+        ":collator",
         ":displaynames",
         ":hermes_vm",
         ":listformat",
@@ -565,6 +572,63 @@ ts_run_binary(
         "--input=$(rootpath :segmenter.ts)",
         "--name=IntlSegmenter",
         "--out=$(rootpath :36-IntlSegmenter.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "collator",
+    srcs = [
+        "collator.cpp",
+        ":collator_wrapper_source",
+    ],
+    hdrs = ["intl_collator.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_collator:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "collator_factory",
+    srcs = ["collator.ts"],
+    outs = ["collator_factory.js"],
+    args = [
+        "--input=$(rootpath :collator.ts)",
+        "--name=IntlCollator",
+        "--out=$(rootpath :collator_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "collator_wrapper_source",
+    srcs = [":collator_factory"],
+    outs = ["collator.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "collator_extension_js",
+    srcs = ["collator.ts"],
+    outs = ["37-IntlCollator.js"],
+    args = [
+        "--input=$(rootpath :collator.ts)",
+        "--name=IntlCollator",
+        "--out=$(rootpath :37-IntlCollator.js)",
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//native/hermes/package:__pkg__"],

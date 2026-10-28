@@ -5,6 +5,7 @@ import {
   buildUCATrie,
   parseUCA,
   parseUCAVariableTop,
+  isUCAVariableWeight,
   type PackedTrieNode,
   type ParsedUCAEntry,
 } from './parse-uca.js'
@@ -38,8 +39,7 @@ function packElement(
     element.quaternary,
     element.variable ||
     (variableTop !== undefined &&
-      element.primary > 0 &&
-      element.primary <= variableTop)
+      isUCAVariableWeight(element.primary, variableTop))
       ? 1
       : 0,
   ])

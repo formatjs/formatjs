@@ -701,6 +701,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_collator"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_casemap",
+ "icu_locale_core",
+ "icu_normalizer",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_data"
 version = "0.1.0"
 dependencies = [
@@ -744,6 +757,7 @@ dependencies = [
 name = "formatjs_intl_hermes"
 version = "0.1.0"
 dependencies = [
+ "formatjs_intl_collator",
  "formatjs_intl_displaynames",
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",

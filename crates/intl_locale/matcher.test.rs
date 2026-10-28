@@ -64,3 +64,13 @@ fn prefix_lookup_keeps_requested_supported_tags_and_private_use() {
         ]
     );
 }
+
+#[test]
+fn winning_request_index_keeps_the_matching_unicode_extension() {
+    let available = tags(&["de", "en"]);
+    let requested = tags(&["zz-ZZ-u-kn", "en-u-kf-upper"]);
+    let matched =
+        formatjs_intl_locale::matcher::best_fit_requested(&available, &requested).unwrap();
+    assert_eq!(matched, Some((1, "en".into())));
+    assert_eq!(best_fit(&available, &requested).unwrap(), Some("en".into()));
+}

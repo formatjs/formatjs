@@ -20,3 +20,4 @@ formatjs_intl_pluralrules = { path = "../intl_pluralrules" }
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
 formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof" }
 formatjs_intl_segmenter = { path = "../intl_segmenter" }
+formatjs_intl_collator = { path = "../intl_collator" }

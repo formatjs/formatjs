@@ -292,6 +292,42 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "collator",
+    srcs = [
+        "src/collator.cpp",
+        "src/collator.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_collator.h",
+        "include/formatjs/intl/collator.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
@@ -301,6 +337,9 @@ exports_files([
     "js/34-IntlListFormat.js",
     "js/35-IntlDisplayNames.js",
     "js/36-IntlSegmenter.js",
+    "js/37-IntlCollator.js",
+    "js/collator-smoke.js",
+    "examples/collator-smoke.ts",
     "js/segmenter-smoke.js",
     "examples/segmenter-smoke.ts",
     "js/displaynames-smoke.js",

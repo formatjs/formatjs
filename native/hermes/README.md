@@ -202,6 +202,19 @@ model. Word/sentence boundaries can differ from TS; the crate conformance test
 asserts both profiles explicitly. SDK target `:segmenter` ships the same adapter and fragment, plus a typed consumer
 smoke example.
 
+## Collator
+
+Link `//native/hermes:collator` (SDK `:collator`); call
+`formatjs::installCollator(runtime)` after canonicalization. The overload taking
+an extension object invokes the precompiled `IntlCollator` factory. The SDK
+includes `37-IntlCollator.js`, public headers, adapter source and a typed smoke
+example. Data stays static, matching TS.
+
+Rust owns CLDR root/prefix/tailoring data, locale extension resolution, search and
+comparison. ICU4X supplies normalization/casing. JS preserves constructor/prototype
+access, option order, private brands, ToString order and cached non-constructor
+bound functions. Source/bytecode tests compare 6,720 cases per mode with TS.
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -220,7 +233,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `getcanonicallocales`.
 
 Segmenter uses the original Unicode files, parser, and package case filters.
 
