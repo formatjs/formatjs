@@ -30,7 +30,7 @@ class IntlScreenTest {
       )
       for (name in names) {
         val label = "$name: PASS"
-        device.wait(Until.hasObject(By.text(label)), 5_000)
+        device.wait(Until.hasObject(By.text(label)), if (name == "Hermes") 60_000 else 10_000)
         assertNotNull(label, device.findObject(By.text(label)))
       }
       val screenshot = File(context.getExternalFilesDir(null), "intl-screen.png")

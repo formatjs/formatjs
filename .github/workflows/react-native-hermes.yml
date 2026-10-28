@@ -35,6 +35,7 @@ jobs:
           bazelisk-cache: true
           repository-cache: true
           disk-cache: hermes-android
+      - uses: gradle/actions/setup-gradle@v5
       - name: Install Android toolchain
         run: |
           sdkmanager --install 'ndk;27.1.12297006' 'platforms;android-36' 'build-tools;36.0.0' 'cmake;3.22.1'
@@ -73,4 +74,7 @@ jobs:
           path: |
             ${{ runner.temp }}/intl-screen.png
             ${{ runner.temp }}/intl-screen-diff.png
+            ${{ runner.temp }}/failure-screen.png
+            ${{ runner.temp }}/android-logcat.txt
+            ${{ runner.temp }}/window.xml
             examples/react-native-hermes/android/app/build/reports/androidTests/
