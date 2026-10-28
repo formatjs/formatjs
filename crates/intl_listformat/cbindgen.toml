@@ -10,6 +10,8 @@ style = "both"
 "ListRegistry" = "FormatjsListRegistry"
 "ListHandle" = "FormatjsListHandle"
 "ListBytes" = "FormatjsListBytes"
+"ListSlice" = "FormatjsListSlice"
+"ListUnits" = "FormatjsListUnits"
 
 [export]
 item_types = ["enums", "structs", "unions", "typedefs", "opaque", "functions"]

@@ -17,6 +17,22 @@ pub struct ListBytes {
     pub data: *mut u8,
     pub len: usize,
 }
+#[repr(C)]
+pub struct ListSlice {
+    pub data: *const u16,
+    pub len: usize,
+}
+#[repr(C)]
+pub struct ListUnits {
+    pub data: *mut u16,
+    pub len: usize,
+}
+impl ListUnits {
+    const EMPTY: Self = Self {
+        data: ptr::null_mut(),
+        len: 0,
+    };
+}
 impl ListBytes {
     const EMPTY: Self = Self {
         data: ptr::null_mut(),
@@ -251,6 +267,114 @@ pub unsafe extern "C" fn formatjs_list_query(
         }
         Ok(())
     })
+}
+
+unsafe fn list_values(items: *const ListSlice, len: usize) -> Result<Vec<Vec<u16>>, i32> {
+    if len > isize::MAX as usize / std::mem::size_of::<ListSlice>() || (len != 0 && items.is_null())
+    {
+        return Err(2);
+    }
+    let items = if len == 0 {
+        &[][..]
+    } else {
+        unsafe { slice::from_raw_parts(items, len) }
+    };
+    let mut values = Vec::with_capacity(len);
+    for item in items {
+        if item.len > isize::MAX as usize / std::mem::size_of::<u16>()
+            || (item.len != 0 && item.data.is_null())
+        {
+            return Err(2);
+        }
+        let units = if item.len == 0 {
+            &[][..]
+        } else {
+            unsafe { slice::from_raw_parts(item.data, item.len) }
+        };
+        values.push(units.to_vec());
+    }
+    Ok(values)
+}
+
+unsafe fn output_units(result: Vec<u16>, out: *mut ListUnits) {
+    let result = result.into_boxed_slice();
+    let len = result.len();
+    unsafe {
+        out.write(ListUnits {
+            data: Box::into_raw(result).cast(),
+            len,
+        })
+    };
+}
+
+/// Format validated string values without JSON or Unicode scalar conversion.
+/// # Safety
+/// Handle is live; items and their UTF-16 slices are readable; out writable.
+/// Free successful output exactly once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_format(
+    handle: *const ListHandle,
+    items: *const ListSlice,
+    len: usize,
+    out: *mut ListUnits,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ListUnits::EMPTY) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let values = unsafe { list_values(items, len)? };
+        let result = unsafe { &(*handle).0 }.format(&values);
+        unsafe { output_units(result, out) };
+        Ok(())
+    })
+}
+
+/// Return parts as UTF-16 records: kind, high length, low length, value units.
+/// # Safety
+/// Same input and output ownership contract as formatjs_list_format.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_parts(
+    handle: *const ListHandle,
+    items: *const ListSlice,
+    len: usize,
+    out: *mut ListUnits,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ListUnits::EMPTY) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let values = unsafe { list_values(items, len)? };
+        let parts = unsafe { &(*handle).0 }.format_to_parts(&values);
+        let mut result = Vec::new();
+        for part in parts {
+            let len = u32::try_from(part.value.len()).map_err(|_| 2)?;
+            result.extend_from_slice(&[
+                if part.kind == "element" { 0 } else { 1 },
+                (len >> 16) as u16,
+                len as u16,
+            ]);
+            result.extend(part.value);
+        }
+        unsafe { output_units(result, out) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Value is empty or an unreleased result from formatjs_list_format.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_units_free(value: ListUnits) {
+    if !value.data.is_null() {
+        drop(unsafe { Box::from_raw(ptr::slice_from_raw_parts_mut(value.data, value.len)) });
+    }
 }
 
 /// # Safety

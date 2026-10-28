@@ -6,6 +6,7 @@
   nativeCreate: (request: string) => object | number
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, request: string) => string | number
+  nativeFormat: (handle: object, value: string, unit: string) => string | number
 }) {
   'use strict'
   const {
@@ -15,6 +16,7 @@
     nativeCreate,
     nativeSupported,
     nativeQuery,
+    nativeFormat,
   } = native
   const apply = Reflect.apply,
     create = Object.create,
@@ -149,6 +151,12 @@
     const text = `${unit}`
     const number =
       numeric === 0 && 1 / numeric === -Infinity ? '-0' : `${numeric}`
+    if (method === 'format') {
+      const formatted = nativeFormat(handle, number, text)
+      if (typeof formatted === 'number')
+        throw new BadOption('Invalid Intl.RelativeTimeFormat value or unit')
+      return formatted
+    }
     return decoded(
       nativeQuery(
         handle,

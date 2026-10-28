@@ -4,9 +4,16 @@
   nativeCreate: (tag: string, options: string) => object | null
   nativeValidate: (name: string, value: string) => boolean
   nativeQuery: (handle: object, request: string) => string
+  nativeTransform: (handle: object, kind: number) => object
 }) {
   'use strict'
-  const {canonicalTag, nativeCreate, nativeValidate, nativeQuery} = native
+  const {
+    canonicalTag,
+    nativeCreate,
+    nativeValidate,
+    nativeQuery,
+    nativeTransform,
+  } = native
   const apply = Reflect.apply
   const create = Object.create
   const defineProperty = Object.defineProperty
@@ -35,6 +42,13 @@
   }
   function query(record: {handle: object}, request: string): any {
     return parse(nativeQuery(record.handle, request))
+  }
+  function transform(receiver: unknown, kind: number): Locale {
+    const handle = nativeTransform(slot(receiver).handle, kind)
+    const result = create(prototype)
+    const properties = query({handle}, '{"method":"properties"}')
+    apply(setSlot, slots, [result, {handle, properties}])
+    return result
   }
   function quote(value: string): string {
     return stringify(value)!
@@ -191,10 +205,10 @@
     // constructor property, preserving variants and extensions in Rust.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L279-L295
     maximize() {
-      return new Locale(query(slot(this), '{"method":"maximize"}'))
+      return transform(this, 0)
     },
     minimize() {
-      return new Locale(query(slot(this), '{"method":"minimize"}'))
+      return transform(this, 1)
     },
     getCalendars() {
       return query(slot(this), '{"method":"calendars"}')

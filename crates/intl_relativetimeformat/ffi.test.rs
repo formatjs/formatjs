@@ -153,6 +153,57 @@ fn abi_parts_keep_property_order_and_named_forms_omit_unit() {
     );
 }
 #[test]
+fn direct_format_preserves_negative_zero_and_rejects_unpaired_unit() {
+    let (registry, resolution) = loaded();
+    let model = registry.create(&resolution, json!({})).unwrap();
+    let unit: Vec<u16> = "day".encode_utf16().collect();
+    let mut out = RelativeBytes {
+        data: ptr::null_mut(),
+        len: 0,
+    };
+    assert_eq!(
+        unsafe {
+            formatjs_relative_format(
+                model.0,
+                b"-0".as_ptr(),
+                2,
+                unit.as_ptr(),
+                unit.len(),
+                &mut out,
+            )
+        },
+        0
+    );
+    assert_eq!(unsafe { owned(out) }, "0 days ago");
+    let invalid = [0xd800];
+    let mut out = RelativeBytes {
+        data: ptr::dangling_mut(),
+        len: 99,
+    };
+    assert_eq!(
+        unsafe {
+            formatjs_relative_format(model.0, b"1".as_ptr(), 1, invalid.as_ptr(), 1, &mut out)
+        },
+        1
+    );
+    assert!(out.data.is_null());
+    assert_eq!(out.len, 0);
+    assert_eq!(
+        unsafe {
+            formatjs_relative_format(
+                model.0,
+                b"1".as_ptr(),
+                1,
+                invalid.as_ptr(),
+                isize::MAX as usize,
+                &mut out,
+            )
+        },
+        2
+    );
+    assert!(out.data.is_null());
+}
+#[test]
 fn abi_errors_leave_outputs_empty_and_reject_invalid_options() {
     let registry = Registry::new();
     assert_eq!(registry.resolve(json!({"locales":["en"]})), Err(1));
