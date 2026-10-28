@@ -18,6 +18,9 @@ function main(args: Args) {
     const [kind, name] = line.trim().split(/\s+/)
     if (kind === 'Zone') timezones.add(name)
   }
+  // IANA names both as Zones; ECMA-402 exposes only UTC as their primary ID.
+  timezones.delete('Etc/GMT')
+  timezones.delete('Etc/UTC')
   timezones.add('UTC')
   outputFileSync(
     args.out,
