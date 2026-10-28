@@ -57,3 +57,7 @@ Direct ListFormat string assembly and borrowed UTF-16 input cut `format` from
 1.52 to 1.11 µs on the same host; `formatToParts` still returns fresh records.
 Direct PluralRules selection cut `select` from 1.23 to 0.62 µs; magrinj measured
 0.56 µs. Both versions use the same JS coercion and Rust plural rules.
+Skipping pattern tokenization for the plain `#,##0.###` decimal pattern cut
+`RelativeTimeFormat.format(-3, "day")` from 2.44 to 1.70 µs. Magrinj measured
+0.98 µs. A Rust stage profile measured 1.51 µs in NumberFormat and 0.34 µs
+in plural selection for that case before this change.
