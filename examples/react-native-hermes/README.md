@@ -5,7 +5,7 @@ Native's Hermes runtime through a synchronous C++ TurboModule. Screen shows
 one result per API. Android instrumentation test reads the rendered text and
 captures a screenshot.
 
-Requires Node 22+, Java 17, Android SDK 37, NDK 27.1.12297006, an Android
+Requires Node 22+, Java 17, Android SDK 36, NDK 27.1.12297006, an Android
 arm64 device or x86_64 emulator, and Bazel 9. Set `ANDROID_HOME` and
 `ANDROID_NDK_HOME` to installed SDK and NDK directories.
 

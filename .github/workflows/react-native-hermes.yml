@@ -37,7 +37,7 @@ jobs:
           disk-cache: hermes-android
       - name: Install Android toolchain
         run: |
-          sdkmanager --install 'ndk;27.1.12297006' 'platforms;android-37' 'build-tools;37.0.0' 'cmake;3.22.1'
+          sdkmanager --install 'ndk;27.1.12297006' 'platforms;android-36' 'build-tools;36.0.0' 'cmake;3.22.1'
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.1.12297006" >> "$GITHUB_ENV"
       - name: Build Rust Android SDK
         run: |
