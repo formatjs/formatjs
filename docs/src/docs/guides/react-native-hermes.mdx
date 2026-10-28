@@ -3,12 +3,12 @@ This guide covers setting up FormatJS polyfills for React Native with the Hermes
 ## Experimental Rust Intl extensions
 
 The repository includes Rust `Intl.getCanonicalLocales`, `Intl.supportedValuesOf`,
-`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames`, `Intl.Segmenter`, `Intl.Collator` and `Intl.NumberFormat` implementations with C++ JSI adapters.
+`Intl.Locale`, `Intl.PluralRules`, `Intl.ListFormat`, `Intl.DisplayNames`, `Intl.Segmenter`, `Intl.Collator`, `Intl.NumberFormat`, `Intl.RelativeTimeFormat` and `Intl.DateTimeFormat` implementations with C++ JSI adapters.
 SDK `0.1.0` packages public headers, adapter source,
 extension JavaScript, and Rust static libraries for Linux x86_64 GNU and macOS
 arm64. Consumers compile the adapter against their matching Hermes JSI headers
 and link SDK targets `:canonical_locales`, `:supported_values`, `:locale` and
-`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter`, `:collator`, `:numberformat` from `@formatjs_intl_getcanonicallocales_hermes`.
+`:pluralrules`, `:listformat`, `:displaynames`, `:segmenter`, `:collator`, `:numberformat`, `:relativetimeformat`, `:datetimeformat` from `@formatjs_intl_getcanonicallocales_hermes`.
 
 The SDK is built from this repository and is not published to BCR, npm, or
 crates.io. It does not include Android/iOS artifacts or React Native package
@@ -26,6 +26,8 @@ to build, extract, and install its public layout.
 #include <formatjs/hermes/intl_segmenter.h>
 #include <formatjs/hermes/intl_collator.h>
 #include <formatjs/hermes/intl_numberformat.h>
+#include <formatjs/hermes/intl_relativetimeformat.h>
+#include <formatjs/hermes/intl_datetimeformat.h>
 
 formatjs::installCanonicalLocales(*runtime);
 formatjs::installSupportedValuesOf(*runtime);
@@ -37,6 +39,8 @@ formatjs::installDisplayNames(*runtime);
 formatjs::installSegmenter(*runtime);
 formatjs::installCollator(*runtime);
 formatjs::installNumberFormat(*runtime);
+formatjs::installRelativeTimeFormat(*runtime);
+auto dateTime = formatjs::installDateTimeFormat(*runtime);
 ```
 
 Install before application scripts. For bytecode-only startup, compile the SDK's
@@ -424,3 +428,50 @@ retain their selected record when a replacement is registered. Parts and ranges,
 exact BigInts/numeric strings, localized exponents and rounding run in Rust.
 The SDK's typed smoke loads English, then French, through the precompiled
 installer. Linux builds both native artifacts; macOS only runs downloaded smoke.
+
+## Native DateTimeFormat SDK
+
+Retain the `DateTimeFormatInstallation` guard returned by
+`formatjs::installDateTimeFormat(runtime)` on the JavaScript thread. Destroy it
+before the runtime. For precompiled factories, retain the result of
+`formatjs::installDateTimeFormat(runtime, extensions)` after evaluating the SDK
+extension bytecode. The guard owns thread-bound records; GC finalizers queue
+cleanup for the JavaScript thread.
+
+Register selected SDK JSON text with these hooks:
+
+```ts
+type NativeDateTimeFormat = typeof Intl.DateTimeFormat & {
+  __addLocaleData(...packs: string[]): void
+  __addCalendarData(...packs: string[]): void
+  __addCalendarLocaleData(...packs: string[]): void
+  __addTZData(pack: string): void
+}
+const NativeDateTimeFormat = Intl.DateTimeFormat as NativeDateTimeFormat
+NativeDateTimeFormat.__addLocaleData(englishJsonText)
+NativeDateTimeFormat.__addCalendarData(hebrewArithmeticJsonText)
+NativeDateTimeFormat.__addCalendarLocaleData(hebrewEnglishJsonText)
+NativeDateTimeFormat.__addTZData(goldenTimezoneJsonText)
+```
+
+Read those texts from `locale-data/datetimeformat/en.json`,
+`calendar-data/datetimeformat/hebrew.json`,
+`locale-data/datetimeformat/calendars/hebrew/en.json` and
+`timezone-data/datetimeformat/tz-golden.json`. Base locales, calendar providers,
+calendar locale patches and timezone transitions load independently. Both provider
+and locale patch are needed before selecting an optional calendar. The SDK ships
+fourteen optional calendar providers; Chinese, Dangi and Umm al-Qura load their
+selected tables from the arithmetic JSON packs. No JS NumberFormat or PluralRules
+installation is needed for native date formatting.
+
+Timezone names initially use UTC offsets until transitions load. Existing
+formatters see replacement transitions on subsequent calls; range endpoints share
+one snapshot per call. Defaults start at UTC and can change through
+`Intl.DateTimeFormat.__setDefaultTimeZone`. Install a Temporal implementation before
+the DateTimeFormat adapter when formatting Temporal values. Plain values and
+Instant retain exact nanoseconds; ZonedDateTime inputs throw TypeError.
+
+The independent SDK consumer exercises source and bytecode installation, locale
+loading, parts/ranges, DST and Hebrew Adar II names. See its
+[installation example](https://github.com/formatjs/formatjs/tree/main/examples/hermes-intl)
+for build and smoke commands.

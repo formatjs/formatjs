@@ -3,6 +3,8 @@
 # gazelle:resolve rs formatjs_intl_displaynames //crates/intl_displaynames
 # gazelle:resolve rs formatjs_intl_numberformat //crates/intl_numberformat
 # gazelle:resolve rs formatjs_intl_relativetimeformat //crates/intl_relativetimeformat
+# gazelle:resolve rs formatjs_intl_datetimeformat //crates/intl_datetimeformat
+# gazelle:resolve rs formatjs_intl_datetimeformat_calendars //crates/intl_datetimeformat_calendars
 load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
@@ -14,10 +16,12 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@npm//:lefthook/package_json.bzl", lefthook = "bin")
 load("@npm//:oxfmt/package_json.bzl", oxfmt = "bin")
 load("@npm//:oxlint/package_json.bzl", oxlint = "bin")
+load("//crates/intl_datetimeformat:conformance.bzl", "optimized_datetime_runtime")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:dist_packages_registry.bzl", "DIST_PACKAGES", "RELEASE_PLEASE_NPM_PACKAGES")
 load("//tools:generated_packages.bzl", "link_all_generated_packages")
 load("//tools:index.bzl", "ts_run_binary")
+load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "BASE_TSCONFIG")
 
 # gazelle:generation_mode update_only
@@ -333,4 +337,51 @@ copy_to_bin(
     name = "release_please_manifest",
     srcs = [".release-please-manifest.json"],
     visibility = ["//tools:__pkg__"],
+)
+
+optimized_datetime_runtime(
+    name = "datetimeformat_conformance_runtime",
+    srcs = [
+        "//crates/intl_datetimeformat:pattern_conformance",
+        "//crates/intl_datetimeformat_calendars:conformance",
+    ],
+)
+
+formatjs_test(
+    name = "rust_datetime_pattern_test",
+    size = "large",
+    srcs = ["//packages/ecma402-abstract:rust_datetime_pattern_test_sources"],
+    data = [
+        ":datetimeformat_conformance_runtime",
+        "//crates/intl_datetimeformat:calendar_locale_data",
+        "//crates/intl_datetimeformat:locale_data",
+        "//crates/intl_datetimeformat:timezone_data",
+        "//crates/intl_datetimeformat_calendars:calendar_data",
+        "//packages/intl-datetimeformat:rust_pattern_cldr_data",
+    ] + ["//crates/intl_numberformat:locale-data/%s.json" % locale for locale in [
+        "en",
+        "fr",
+        "ar",
+        "ja",
+        "zh-Hans",
+        "ru",
+        "hi",
+        "he",
+    ]],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+        "//packages/intl-datetimeformat/calendars",
+    ],
 )

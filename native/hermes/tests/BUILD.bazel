@@ -303,9 +303,9 @@ js_test(
     timeout = "long",
     data = [
         ":collator_suite.js",
+        ":optimized_runtime",
         "//:node_modules/@bazel/runfiles",
         "//native/hermes:extension_bundle_bytecode",
-        "//native/hermes:hermes_runner",
     ],
     entry_point = "run-collator.ts",
     node_options = ["--experimental-transform-types"],
@@ -401,6 +401,69 @@ js_test(
     node_options = ["--experimental-transform-types"],
 )
 
+ts_project(
+    name = "datetimeformat_typecheck",
+    srcs = [
+        "datetimeformat.ts",
+        "datetimeformat-prelude.ts",
+        "run-datetimeformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+rolldown_bundle(
+    name = "datetimeformat_prelude",
+    srcs = ["datetimeformat-prelude.ts"],
+    entry_point = "datetimeformat-prelude.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/temporal-polyfill"],
+)
+
+rolldown_bundle(
+    name = "datetimeformat_suite",
+    srcs = ["datetimeformat.ts"],
+    entry_point = "datetimeformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+js_test(
+    name = "datetimeformat_conformance_test",
+    size = "large",
+    data = [
+        ":datetimeformat_prelude.js",
+        ":datetimeformat_suite.js",
+        ":formatter_prelude.js",
+        ":optimized_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_datetimeformat:calendar_locale_data",
+        "//crates/intl_datetimeformat:locale_data",
+        "//crates/intl_datetimeformat:timezone_data",
+        "//crates/intl_datetimeformat_calendars:calendar_data",
+        "//native/hermes:extension_bundle_bytecode",
+    ],
+    entry_point = "run-datetimeformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
 ts_binary(
     name = "bundle_package_tests",
     data = [
@@ -460,6 +523,8 @@ package_formatter_conformance("numberformat")
 
 package_formatter_conformance("relativetimeformat")
 
+package_formatter_conformance("datetimeformat")
+
 package_formatter_conformance("getcanonicallocales")
 
 compiled_runtime(
@@ -484,6 +549,7 @@ js_test(
         "displaynames",
         "numberformat",
         "relativetimeformat",
+        "datetimeformat",
     ],
     data = [
         ":compiled_locales_suite.js",
@@ -534,6 +600,7 @@ js_test(
         "displaynames",
         "numberformat",
         "relativetimeformat",
+        "datetimeformat",
     ],
     data = [
         ":chromium_locales_suite.js",

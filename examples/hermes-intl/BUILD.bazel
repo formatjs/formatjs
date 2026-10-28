@@ -51,7 +51,31 @@ genrule(
     cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
 )
 
+genrule(
+    name = "datetimeformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/datetimeformat-smoke.js"],
+    outs = ["datetimeformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "datetimeformat_hebrew_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:calendar-data/datetimeformat/hebrew.json"],
+    outs = ["datetimeformat_hebrew.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "datetimeformat_tz_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:timezone-data/datetimeformat/tz-golden.json"],
+    outs = ["datetimeformat_tz.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
 SMOKE_SOURCES = [
+    ":datetimeformat_smoke_source",
+    ":datetimeformat_hebrew_source",
+    ":datetimeformat_tz_source",
     "main.cpp",
     ":displaynames_smoke_source",
     ":segmenter_smoke_source",
@@ -82,6 +106,7 @@ cc_binary(
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
         "@formatjs_intl_getcanonicallocales_hermes//:collator",
+        "@formatjs_intl_getcanonicallocales_hermes//:datetimeformat",
         "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
@@ -108,6 +133,7 @@ cc_test(
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
         "@formatjs_intl_getcanonicallocales_hermes//:collator",
+        "@formatjs_intl_getcanonicallocales_hermes//:datetimeformat",
         "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
         "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",

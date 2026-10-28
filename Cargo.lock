@@ -735,6 +735,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_datetimeformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "formatjs_intl_numberformat",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_datetimeformat_calendars"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_datetimeformat",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_displaynames"
 version = "0.1.0"
 dependencies = [
@@ -757,6 +778,8 @@ dependencies = [
 name = "formatjs_intl_hermes"
 version = "0.1.0"
 dependencies = [
+ "formatjs_intl_datetimeformat",
+ "formatjs_intl_datetimeformat_calendars",
  "formatjs_intl_collator",
  "formatjs_intl_displaynames",
  "formatjs_intl_getcanonicallocales",

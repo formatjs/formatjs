@@ -55,3 +55,14 @@ pub use formatjs_intl_relativetimeformat::ffi::{
     formatjs_relative_registry_info, formatjs_relative_registry_load, formatjs_relative_resolve,
     formatjs_relative_supported,
 };
+
+pub use formatjs_intl_datetimeformat::ffi::{
+    formatjs_datetime_begin, formatjs_datetime_bytes_free, formatjs_datetime_capture,
+    formatjs_datetime_construction_destroy, formatjs_datetime_create, formatjs_datetime_destroy,
+    formatjs_datetime_query, formatjs_datetime_registry_calendar,
+    formatjs_datetime_registry_create, formatjs_datetime_registry_destroy,
+    formatjs_datetime_registry_info, formatjs_datetime_registry_load,
+    formatjs_datetime_registry_zone, formatjs_datetime_resolve, formatjs_datetime_supported,
+    formatjs_datetime_zone,
+};
+pub use formatjs_intl_datetimeformat_calendars::ffi::formatjs_datetime_calendar_load;

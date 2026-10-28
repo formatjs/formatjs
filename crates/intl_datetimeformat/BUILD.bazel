@@ -1,0 +1,285 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//crates/intl_data:defs.bzl", "compiled_locale_data")
+load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
+load("//packages/intl-datetimeformat:locales.generated.bzl", "ALL_LOCALES")
+load("//tools:index.bzl", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
+
+rust_ffi_header(
+    name = "generate_header",
+    out = "datetimeformat.h",
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["datetimeformat.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "timezone_links",
+    outs = ["timezone-links.json"],
+    args = [
+        "--out",
+        "$(rootpath timezone-links.json)",
+    ],
+    tool = "//crates/intl_datetimeformat/scripts:timezones",
+    use_execroot_entry_point = False,
+)
+
+ts_run_binary(
+    name = "locale_aliases",
+    outs = ["locale-aliases.json"],
+    args = [
+        "--out",
+        "$(rootpath locale-aliases.json)",
+    ],
+    tool = "//crates/intl_datetimeformat/scripts:locales",
+    use_execroot_entry_point = False,
+)
+
+ts_run_binary(
+    name = "locale_data",
+    srcs = ["//crates/intl_numberformat:locale_data"] + [
+        "//packages/intl-datetimeformat:locale-data-json/%s.json" % locale
+        for locale in ALL_LOCALES
+    ],
+    outs = ["locale-data/%s.json" % locale for locale in ALL_LOCALES],
+    args = [
+        "--outDir",
+        package_name() + "/locale-data",
+        "--numberDir",
+        "crates/intl_numberformat/locale-data",
+    ] + ["--cldrFile=packages/intl-datetimeformat/locale-data-json/%s.json" % locale for locale in ALL_LOCALES],
+    tool = "//crates/intl_datetimeformat/scripts:data",
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "intl_datetimeformat",
+    srcs = [
+        "calendar.rs",
+        "civil.rs",
+        "data.rs",
+        "ffi.rs",
+        "ffi_input.rs",
+        "fields.rs",
+        "handles.rs",
+        "instance.rs",
+        "lib.rs",
+        "locale_patterns.rs",
+        "matching.rs",
+        "numbers.rs",
+        "pattern.rs",
+        "registry.rs",
+        "render.rs",
+        "selection.rs",
+        "timezone.rs",
+    ],
+    compile_data = [
+        ":timezone_links",
+        ":locale_aliases",
+    ],
+    crate_name = "formatjs_intl_datetimeformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_TIMEZONE_LINKS": "$(execpath :timezone_links)",
+        "FORMATJS_DATETIME_LOCALE_ALIASES": "$(execpath :locale_aliases)",
+    },
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_data",
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "//crates/intl_numberformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+COMPILED_DEPS = [
+    "//crates/intl_data",
+    "//crates/intl_getcanonicallocales",
+    "//crates/intl_locale",
+    "//crates/intl_numberformat:with_compiled_data",
+    "@crates//:serde",
+    "@crates//:serde_json",
+]
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "calendar.rs",
+        "civil.rs",
+        "data.rs",
+        "ffi.rs",
+        "ffi_input.rs",
+        "fields.rs",
+        "handles.rs",
+        "instance.rs",
+        "lib.rs",
+        "locale_patterns.rs",
+        "matching.rs",
+        "numbers.rs",
+        "pattern.rs",
+        "registry.rs",
+        "render.rs",
+        "selection.rs",
+        "timezone.rs",
+    ],
+    compile_data = [
+        ":timezone_links",
+        ":locale_aliases",
+        ":compiled_locale_data",
+        ":compiled_module",
+    ],
+    crate_features = ["compiled_data"],
+    crate_name = "formatjs_intl_datetimeformat",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_TIMEZONE_LINKS": "$(execpath :timezone_links)",
+        "FORMATJS_DATETIME_LOCALE_ALIASES": "$(execpath :locale_aliases)",
+        "FORMATJS_COMPILED_LOCALES": "$(execpath :compiled_module)",
+    },
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
+)
+
+formatjs_rust_test(
+    name = "intl_datetimeformat_test",
+    srcs = [
+        "calendar.test.rs",
+        "ffi.test.rs",
+        "lib.test.rs",
+        "pattern.test.rs",
+        "timezone.test.rs",
+    ],
+    compile_data = [
+        ":locale-data/en.json",
+    ],
+    crate_name = "intl_datetimeformat_test",
+    edition = "2024",
+    rustc_env = {"FORMATJS_DATETIME_EN": "$(execpath :locale-data/en.json)"},
+    deps = [
+        ":intl_datetimeformat",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_rust_test(
+    name = "runtime_handles_test",
+    srcs = [
+        "handles.rs",
+        "handles.test.rs",
+    ],
+    crate_name = "runtime_handles_test",
+    crate_root = "handles.test.rs",
+    edition = "2024",
+)
+
+rust_binary(
+    name = "civil_conformance",
+    srcs = ["civil_conformance.rs"],
+    crate_name = "civil_conformance",
+    crate_root = "civil_conformance.rs",
+    edition = "2024",
+    visibility = ["//crates/intl_datetimeformat/tests:__pkg__"],
+    deps = [":intl_datetimeformat"],
+)
+
+filegroup(
+    name = "timezone_data",
+    srcs = [
+        "//packages/intl-datetimeformat:tz_all_json",
+        "//packages/intl-datetimeformat:tz_golden_json",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_binary(
+    name = "timezone_conformance",
+    srcs = ["timezone_conformance.rs"],
+    crate_name = "timezone_conformance",
+    crate_root = "timezone_conformance.rs",
+    edition = "2024",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+    deps = [
+        ":intl_datetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "pattern_conformance",
+    srcs = ["pattern_conformance.rs"],
+    crate_name = "pattern_conformance",
+    crate_root = "pattern_conformance.rs",
+    edition = "2024",
+    visibility = ["//:__pkg__"],
+    deps = [
+        ":intl_datetimeformat",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
+[
+    filegroup(
+        name = "calendar_" + calendar + "_locale_data",
+        srcs = ["//packages/intl-datetimeformat-calendar-" + calendar + ":locale-data-json"],
+        visibility = ["//visibility:public"],
+    )
+    for calendar in CALENDARS
+]
+
+filegroup(
+    name = "calendar_locale_data",
+    srcs = [":calendar_" + calendar + "_locale_data" for calendar in CALENDARS],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "c_abi_test",
+    srcs = ["abi.test.cpp"],
+    copts = ["-std=c++17"],
+    deps = [
+        ":headers",
+        "//crates/intl_datetimeformat_calendars:headers",
+        "//crates/intl_hermes",
+    ],
+)
+
+compiled_locale_data(
+    name = "compiled_locale_data",
+    srcs = [":locale_data"],
+    data_type = "crate::data::RawLocale",
+    patches = [":calendar_locale_data"],
+    tool = ":compile_locales",
+)
+
+filegroup(
+    name = "compiled_module",
+    srcs = [":compiled_locale_data"],
+    output_group = "module",
+)
+
+rust_binary(
+    name = "compile_locales",
+    srcs = ["datagen.rs"],
+    crate_name = "compile_locales_datetimeformat",
+    crate_root = "datagen.rs",
+    edition = "2024",
+    deps = [
+        # keep
+        ":intl_datetimeformat",
+        "//crates/intl_data_build",
+    ],
+)

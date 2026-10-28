@@ -13,6 +13,8 @@ and script variants. Use `--//crates/intl_data:locales=\*` for every CLDR locale
 Select a custom archive with
 `--//crates/intl_data:locales=en,fr` when building the SDK; rebuild to add locales.
 The full DisplayNames smoke also exercises Afar; include `aa` for that smoke.
+DateTimeFormat retains its guard; calendar providers and timezone transitions
+remain separate resources, with calendar locale names already compiled.
 
 The SDK is built and tested here but is not published. From the FormatJS root
 on Linux:

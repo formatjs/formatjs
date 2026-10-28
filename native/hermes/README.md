@@ -113,7 +113,8 @@ aliases. Formatters without matching data retain their native fallback. Unknown
 languages fail the build. Rebuild the Rust archive to add another locale.
 
 Rust build tools validate the original CLDR packs, compile plural-rule expressions,
-and emit binary records. Runtime registries decode records lazily and cache them
+and emit binary records. Calendar locale patches join their base DateTimeFormat
+record at build time. Runtime registries decode records lazily and cache them
 independently, so unit updates and explicit overrides cannot leak between runtimes.
 The raw CLDR extraction remains shared with the TS packages.
 
@@ -129,9 +130,13 @@ flowchart LR
 Source builds can select the same provider with
 `--//crates/intl_data:compiled=true`. Rust callers use each formatter's
 `:with_compiled_data` target and `Registry::with_compiled_data()`;
-The uncompiled targets
+DateTimeFormat exposes `Runtime::with_compiled_data()`. The uncompiled targets
 retain explicit registration for custom providers and original TS conformance
 fixtures. Their JSON hooks remain available for intentional runtime overrides.
+
+Calendar arithmetic/table providers and timezone transitions remain independently
+selectable. Compiling a locale includes its calendar names and patterns; enabling
+an optional calendar provider no longer requires a separate locale patch.
 
 ## Development runner
 
@@ -229,6 +234,36 @@ The precompiled overload uses `IntlRelativeTimeFormat` from
 `39-IntlRelativeTimeFormat.js`. SDK setup and a typed smoke example are documented
 in [package/README.md](package/README.md).
 
+## DateTimeFormat
+
+Link `//native/hermes:datetimeformat`, install canonicalization, then retain the
+installation guard on the JavaScript thread:
+
+```cpp
+formatjs::installCanonicalLocales(*runtime);
+auto dateTime = formatjs::installDateTimeFormat(*runtime);
+```
+
+Destroy `dateTime` before `runtime`. The overload taking an extension object uses
+its `IntlDateTimeFormat` factory. GC finalizers only queue IDs; native calls and
+guard teardown release Rust handles on their creating thread. Host functions hold
+weak installation references, so retained JS formatters fail after guard release.
+
+SDK base locales and calendar locale patches are compiled into Rust. Calendar
+arithmetic/table providers and timezone packs remain independent through
+`__addCalendarData` and `__addTZData`. Custom calendar records accept `{calendar, dateFromTime}` functions;
+they receive adjusted local milliseconds with the public calendar registry as
+`this`. Callbacks may reenter formatting, replace providers or throw JS values.
+The bridge preserves exception identity without unwinding through Rust.
+
+The facade preserves constructor getter phases, callable construction, bound
+format identity, receiver brands, coercion and intrinsic Temporal reads. Actual
+Temporal objects must be available before installation. Plain values serialize
+through captured intrinsics; Rust computes their reference dates and nanoseconds.
+The SDK embeds locale data and exports optional calendar/timezone resources, both native
+headers and adapter sources. See [package/README.md](package/README.md#datetimeformat)
+for installation and guard lifetime requirements.
+
 ## Native bridge
 
 Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
@@ -240,6 +275,10 @@ pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
 C names. The SDK ships generated headers and the shared bridge; SDK consumers
 need neither Rust nor cbindgen to build the JSI adapters.
 
+DateTimeFormat also keeps its handle table and deferred releases in Rust. GC
+threads drop release tickets; the runtime thread drains formatter records. Only
+JSI references and foreign exception identity remain in the C++ adapter.
+
 ## Existing package conformance
 
 Each `//native/hermes/tests:<polyfill>_package_conformance_test` reuses package API
@@ -247,7 +286,7 @@ test bodies against Rust JSI, in source and optimized-bytecode installer modes.
 Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
 implementations; native data envelopes preserve the original test payloads.
 
-Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `getcanonicallocales`.
+Current targets: `supportedvaluesof`, `locale`, `pluralrules`, `listformat`, `displaynames`, `segmenter`, `collator`, `numberformat`, `relativetimeformat`, `datetimeformat`, `getcanonicallocales`.
 
 Segmenter uses the original Unicode files, parser, and package case filters.
 

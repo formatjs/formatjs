@@ -12,6 +12,8 @@ members = [
   "crates/intl_collator",
   "crates/intl_numberformat",
   "crates/intl_relativetimeformat",
+  "crates/intl_datetimeformat",
+  "crates/intl_datetimeformat_calendars",
   "crates/intl_hermes",
   "crates/icu_skeleton_parser",
   "crates/icu_messageformat_parser",

@@ -2,7 +2,7 @@
 
 ## Workspace Members
 
-The Rust workspace (`Cargo.toml`) contains 17 members:
+The Rust workspace members are listed in `Cargo.toml`:
 
 ```
 crates/
@@ -15,6 +15,11 @@ crates/
   intl_displaynames/          # CLDR names, code validation, caller-loaded locale packs
   intl_listformat/            # CLDR list patterns, UTF-16 parts, caller-loaded locale packs
   intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
+  intl_datetimeformat/       # Core formatter, caller-loaded locales/timezones
+  intl_datetimeformat_calendars/ # Optional arithmetic, caller-loaded calendar tables
+  intl_collator/             # Native collation and owned locale records
+  intl_numberformat/         # Native number formatting, caller-loaded locale packs
+  intl_relativetimeformat/   # Relative patterns with owned number/plural data
   intl_hermes/                # One static C ABI archive for the Hermes SDK
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)
@@ -447,6 +452,11 @@ retains the winning requested tag for co/kn/kf extension negotiation.
 `intl_hermes` also assembles Collator's owned ABI into the shared archive; the
 SDK preserves its static collation data model and exact UTF-16 comparison input.
 
+`intl_datetimeformat_calendars` depends on the base DateTimeFormat crate for its
+provider contract. The base crate must not depend on optional providers or their
+tables. Calendar JSON data and locale patch targets remain separate from both
+libraries so registration can load only the selected calendar and locale.
+
 ### Hermes bridge and C ABI
 
 `native/hermes/bridge.h` owns common JSI transport and buffer/handle cleanup.
@@ -457,6 +467,10 @@ identity belong in C++ adapters.
 Each Intl crate's `cbindgen.toml` keeps public C names while `rust_ffi_header`
 generates its header from Rust declarations. SDK packaging consumes those outputs,
 so changing an exported Rust signature updates the shipped ABI declaration.
+
+DateTimeFormat's `handles.rs` owns its record table and release queue. GC threads
+may drop tickets; formatter records drain on the runtime thread. The C++ adapter
+retains runtime references and preserves foreign exception identity.
 
 ## Hermes compiled locale provider
 

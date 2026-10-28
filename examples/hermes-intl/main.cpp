@@ -6,6 +6,7 @@
 #include <formatjs/hermes/intl_collator.h>
 #include <formatjs/hermes/intl_numberformat.h>
 #include <formatjs/hermes/intl_relativetimeformat.h>
+#include <formatjs/hermes/intl_datetimeformat.h>
 #include <formatjs/hermes/intl_pluralrules.h>
 #include <formatjs/hermes/supported_values.h>
 #include <hermes/hermes.h>
@@ -20,6 +21,15 @@
 #include <utility>
 
 namespace {
+constexpr char datetimeformat_smoke[] =
+#include "datetimeformat_smoke.inc"
+    ;
+constexpr char datetimeformat_hebrew[] =
+#include "datetimeformat_hebrew.inc"
+    ;
+constexpr char datetimeformat_tz[] =
+#include "datetimeformat_tz.inc"
+    ;
 constexpr char numberSmoke[] =
 #include "numberformat_smoke.inc"
     ;
@@ -191,6 +201,22 @@ int main(int argc, char **argv) {
     auto relativePassed = runtime->global().getProperty(*runtime, "__SDK_RELATIVE_PASSED");
     if (!relativePassed.isBool() || !relativePassed.getBool()) throw std::runtime_error("RelativeTimeFormat SDK smoke failed");
     std::cout << "Hermes SDK RelativeTimeFormat passed\n";
+
+    auto dateTimeInstallation = formatjs::installDateTimeFormat(*runtime, extensions);
+    runtime->global().setProperty(*runtime, "__SDK_DATETIME_HEBREW", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_hebrew));
+    runtime->global().setProperty(*runtime, "__SDK_DATETIME_TZ", facebook::jsi::String::createFromUtf8(*runtime, datetimeformat_tz));
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(datetimeformat_smoke), "formatjs:datetimeformat-sdk-smoke");
+    auto dateTimePassed = runtime->global().getProperty(*runtime, "__SDK_DATETIME_PASSED");
+    if (!dateTimePassed.isBool() || !dateTimePassed.getBool()) throw std::runtime_error("DateTimeFormat SDK smoke failed");
+    std::cout << "Hermes SDK DateTimeFormat passed\n";
+    dateTimeInstallation = formatjs::installDateTimeFormat(*runtime);
+    runtime->global().setProperty(*runtime, "__SDK_DATETIME_PASSED", false);
+    runtime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(datetimeformat_smoke), "formatjs:datetimeformat-source-sdk-smoke");
+    dateTimePassed = runtime->global().getProperty(*runtime, "__SDK_DATETIME_PASSED");
+    if (!dateTimePassed.isBool() || !dateTimePassed.getBool()) throw std::runtime_error("DateTimeFormat source SDK smoke failed");
+    std::cout << "Hermes SDK DateTimeFormat source passed\n";
+
+
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';
