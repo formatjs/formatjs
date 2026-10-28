@@ -73,7 +73,7 @@ const results = [
 
 export default function App() {
   return (
-    <View style={{padding: 16}}>
+    <View style={{flex: 1, padding: 16, backgroundColor: '#fff'}}>
       {results.map(([name, passed]) => (
         <Text key={name as string} style={{fontSize: 16, paddingVertical: 5}}>
           {name}: {passed ? 'PASS' : 'FAIL'}
