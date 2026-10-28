@@ -2,6 +2,7 @@ package com.formatjshermes
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.ParcelFileDescriptor
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -50,6 +51,11 @@ class IntlScreenTest {
           assertTrue("Screenshot capture failed", bitmap.compress(Bitmap.CompressFormat.PNG, 100, it))
         }
       }
+      val command = "cp ${screenshot.absolutePath} /data/local/tmp/intl-screen.png && ls /data/local/tmp/intl-screen.png"
+      val output = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command).use { descriptor ->
+        ParcelFileDescriptor.AutoCloseInputStream(descriptor).bufferedReader().use { it.readText() }
+      }
+      assertTrue("Screenshot copy failed: $output", output.contains("intl-screen.png"))
       println("Intl screen screenshot: ${screenshot.absolutePath}")
     }
   }

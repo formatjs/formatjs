@@ -9,4 +9,4 @@ if ! ./gradlew connectedDebugAndroidTest --no-daemon; then
   adb pull /sdcard/window.xml "$RUNNER_TEMP/window.xml" || true
   exit 1
 fi
-adb pull /sdcard/Android/data/com.formatjshermes/files/intl-screen.png "$RUNNER_TEMP/intl-screen.png"
+adb pull /data/local/tmp/intl-screen.png "$RUNNER_TEMP/intl-screen.png"
