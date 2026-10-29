@@ -221,3 +221,69 @@ fn late_locale_registration_changes_nonexact_best_fit() {
         "A and B"
     );
 }
+
+#[test]
+fn adjacent_fields_preserve_empty_elements_without_literal_parts() {
+    let mut data = pack("en", "{0}{1}");
+    for name in ["start", "middle", "end"] {
+        data["data"]["conjunction"]["long"][name] = json!("{0}{1}");
+    }
+    let formatter = ListFormat::new(
+        Arc::new(LocalePatterns::from_json(&data.to_string()).unwrap()),
+        Options::default(),
+    );
+    let list = units(&["", "B", ""]);
+    assert_eq!(formatter.format(&list), units(&["B"])[0]);
+    let parts = formatter.format_to_parts(&list);
+    assert_eq!(
+        parts
+            .iter()
+            .map(|part| (part.kind, String::from_utf16(&part.value).unwrap()))
+            .collect::<Vec<_>>(),
+        [
+            ("element", "".into()),
+            ("element", "B".into()),
+            ("element", "".into())
+        ]
+    );
+}
+
+#[test]
+fn decorated_reversed_chain_retains_each_literal_boundary() {
+    let mut data = pack("en", "{0} and {1}");
+    data["data"]["conjunction"]["long"]["start"] = json!("s[{0}|{1}]");
+    data["data"]["conjunction"]["long"]["middle"] = json!("m({1}/{0})");
+    data["data"]["conjunction"]["long"]["end"] = json!("e<{0}:{1}>");
+    let formatter = ListFormat::new(
+        Arc::new(LocalePatterns::from_json(&data.to_string()).unwrap()),
+        Options::default(),
+    );
+    let list = units(&["A", "B", "C", "D"]);
+    assert_eq!(
+        String::from_utf16(&formatter.format(&list)).unwrap(),
+        "s[A|m(e<C:D>/B)]"
+    );
+    assert_eq!(
+        formatter
+            .format_to_parts(&list)
+            .iter()
+            .map(|part| (part.kind, String::from_utf16(&part.value).unwrap()))
+            .collect::<Vec<_>>(),
+        [
+            ("literal", "s["),
+            ("element", "A"),
+            ("literal", "|"),
+            ("literal", "m("),
+            ("literal", "e<"),
+            ("element", "C"),
+            ("literal", ":"),
+            ("element", "D"),
+            ("literal", ">"),
+            ("literal", "/"),
+            ("element", "B"),
+            ("literal", ")"),
+            ("literal", "]")
+        ]
+        .map(|(kind, value)| (kind, value.to_owned()))
+    );
+}
