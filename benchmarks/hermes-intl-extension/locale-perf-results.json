@@ -1,0 +1,404 @@
+{
+  "baselineCommit": "98982117414e6e658a141e71f837a0142894673f",
+  "hermesCommit": "393a539e6",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "platform": "Linux x86_64 Intel Xeon Platinum 8488C",
+  "build": {
+    "cpp": "Release -O3 -DNDEBUG",
+    "formatjsRust": "Bazel -c opt",
+    "magrinjRust": "release opt-level=z LTO codegen-units=1"
+  },
+  "command": "<host> benchmarks/hermes-intl-extension/overlap.js",
+  "order": [
+    "baseline",
+    "candidate",
+    "magrinj",
+    "baseline",
+    "candidate",
+    "magrinj",
+    "baseline",
+    "candidate",
+    "magrinj"
+  ],
+  "results": [
+    {
+      "name": "getCanonicalLocales",
+      "baseline": {
+        "us": [0.7781982421875, 0.762939453125, 0.762939453125],
+        "medianUs": 0.762939453125,
+        "value": "en-US"
+      },
+      "candidate": {
+        "us": [0.7781982421875, 0.762939453125, 0.762939453125],
+        "medianUs": 0.762939453125,
+        "value": "en-US"
+      },
+      "magrinj": {
+        "us": [1.4154776436043903, 1.4172666051308624, 1.4104611618677154],
+        "medianUs": 1.4154776436043903,
+        "value": "en-US"
+      }
+    },
+    {
+      "name": "Locale.maximize",
+      "baseline": {
+        "us": [5.79833984375, 5.615234375, 5.9814453125],
+        "medianUs": 5.79833984375,
+        "value": "en-Latn-US"
+      },
+      "candidate": {
+        "us": [4.0283203125, 3.84521484375, 3.84521484375],
+        "medianUs": 3.84521484375,
+        "value": "en-Latn-US"
+      },
+      "magrinj": {
+        "us": [2.5478186580585316, 2.581564476713538, 2.5292264472227544],
+        "medianUs": 2.5478186580585316,
+        "value": "en-Latn-US"
+      }
+    },
+    {
+      "name": "PluralRules.select",
+      "baseline": {
+        "us": [0.60272216796875, 0.5950927734375, 0.6103515625],
+        "medianUs": 0.60272216796875,
+        "value": "one"
+      },
+      "candidate": {
+        "us": [0.60272216796875, 0.60272216796875, 0.60272216796875],
+        "medianUs": 0.60272216796875,
+        "value": "one"
+      },
+      "magrinj": {
+        "us": [0.5572588961513247, 0.5556143732974306, 0.5556350261031184],
+        "medianUs": 0.5556350261031184,
+        "value": "one"
+      }
+    },
+    {
+      "name": "ListFormat.format",
+      "baseline": {
+        "us": [1.0833740234375, 1.0833740234375, 1.0986328125],
+        "medianUs": 1.0833740234375,
+        "value": "one, two, and three"
+      },
+      "candidate": {
+        "us": [1.1138916015625, 1.0833740234375, 1.0833740234375],
+        "medianUs": 1.0833740234375,
+        "value": "one, two, and three"
+      },
+      "magrinj": {
+        "us": [0.6897375933476724, 0.6859090754005592, 0.6855204919702373],
+        "medianUs": 0.6859090754005592,
+        "value": "one, two, and three"
+      }
+    },
+    {
+      "name": "ListFormat.formatToParts",
+      "baseline": {
+        "us": [4.638671875, 4.57763671875, 4.638671875],
+        "medianUs": 4.638671875,
+        "value": 5
+      },
+      "candidate": {
+        "us": [4.69970703125, 4.57763671875, 4.57763671875],
+        "medianUs": 4.57763671875,
+        "value": 5
+      },
+      "magrinj": {
+        "us": [4.331847885623574, 4.300498665543273, 4.3072149564977735],
+        "medianUs": 4.3072149564977735,
+        "value": 5
+      }
+    },
+    {
+      "name": "RelativeTimeFormat.format",
+      "baseline": {
+        "us": [1.0528564453125, 1.0833740234375, 1.068115234375],
+        "medianUs": 1.068115234375,
+        "value": "3 days ago"
+      },
+      "candidate": {
+        "us": [1.0833740234375, 1.068115234375, 1.0528564453125],
+        "medianUs": 1.068115234375,
+        "value": "3 days ago"
+      },
+      "magrinj": {
+        "us": [0.9504398622084409, 0.9530089737381786, 0.9490029042353854],
+        "medianUs": 0.9504398622084409,
+        "value": "3 days ago"
+      }
+    },
+    {
+      "name": "RelativeTimeFormat.formatToParts",
+      "baseline": {
+        "us": [3.11279296875, 3.173828125, 3.23486328125],
+        "medianUs": 3.173828125,
+        "value": 2
+      },
+      "candidate": {
+        "us": [3.0517578125, 3.0517578125, 3.0517578125],
+        "medianUs": 3.0517578125,
+        "value": 2
+      },
+      "magrinj": {
+        "us": [2.8779153944924474, 2.9089579184073955, 2.906966008595191],
+        "medianUs": 2.906966008595191,
+        "value": 2
+      }
+    },
+    {
+      "name": "RelativeTimeFormat.format(decimal)",
+      "baseline": {
+        "us": [1.495361328125, 1.495361328125, 1.52587890625],
+        "medianUs": 1.495361328125,
+        "value": "1,234.5 days ago"
+      },
+      "candidate": {
+        "us": [1.46484375, 1.46484375, 1.46484375],
+        "medianUs": 1.46484375,
+        "value": "1,234.5 days ago"
+      },
+      "magrinj": {
+        "us": [1.0327181880711578, 1.1197359781363048, 1.0200392571277916],
+        "medianUs": 1.0327181880711578,
+        "value": "1,234.5 days ago"
+      }
+    },
+    {
+      "name": "RelativeTimeFormat.format(auto)",
+      "baseline": {
+        "us": [0.52642822265625, 0.51116943359375, 0.54168701171875],
+        "medianUs": 0.52642822265625,
+        "value": "yesterday"
+      },
+      "candidate": {
+        "us": [0.518798828125, 0.51116943359375, 0.51116943359375],
+        "medianUs": 0.51116943359375,
+        "value": "yesterday"
+      },
+      "magrinj": {
+        "us": [0.8463944104732946, 0.8513265565852635, 0.8386228801100515],
+        "medianUs": 0.8463944104732946,
+        "value": "yesterday"
+      }
+    },
+    {
+      "name": "Locale.new",
+      "baseline": {
+        "us": [7.080078125, 6.8359375, 6.9580078125],
+        "medianUs": 6.9580078125,
+        "value": "en"
+      },
+      "candidate": {
+        "us": [4.5166015625, 4.5166015625, 4.45556640625],
+        "medianUs": 4.5166015625,
+        "value": "en"
+      },
+      "magrinj": {
+        "us": [1.2027693082927726, 1.1862777537317015, 1.1890006862813607],
+        "medianUs": 1.1890006862813607,
+        "value": "en"
+      }
+    },
+    {
+      "name": "Locale.new(options)",
+      "baseline": {
+        "us": [8.544921875, 8.30078125, 8.1787109375],
+        "medianUs": 8.30078125,
+        "value": "en-GB"
+      },
+      "candidate": {
+        "us": [6.2255859375, 5.859375, 6.103515625],
+        "medianUs": 6.103515625,
+        "value": "en-GB"
+      },
+      "magrinj": {
+        "us": [6.407801411114633, 6.4071378437802196, 6.434694223571569],
+        "medianUs": 6.407801411114633,
+        "value": "en-GB"
+      }
+    },
+    {
+      "name": "Locale.new(zh-HK)",
+      "baseline": {
+        "us": [7.8125, 7.6904296875, 7.6904296875],
+        "medianUs": 7.6904296875,
+        "value": "zh-HK"
+      },
+      "candidate": {
+        "us": [5.126953125, 4.94384765625, 5.18798828125],
+        "medianUs": 5.126953125,
+        "value": "zh-HK"
+      },
+      "magrinj": {
+        "us": [1.6344901669071987, 1.62208141409792, 1.6228047461481765],
+        "medianUs": 1.6228047461481765,
+        "value": "zh-HK"
+      }
+    },
+    {
+      "name": "PluralRules.new",
+      "baseline": {
+        "us": [7.568359375, 7.568359375, 7.2021484375],
+        "medianUs": 7.568359375,
+        "value": {}
+      },
+      "candidate": {
+        "us": [7.4462890625, 7.4462890625, 7.568359375],
+        "medianUs": 7.4462890625,
+        "value": {}
+      },
+      "magrinj": {
+        "us": [5.59869286371395, 5.511672730790451, 5.488675727974623],
+        "medianUs": 5.511672730790451,
+        "value": {}
+      }
+    },
+    {
+      "name": "ListFormat.new",
+      "baseline": {
+        "us": [3.41796875, 3.41796875, 3.35693359375],
+        "medianUs": 3.41796875,
+        "value": {}
+      },
+      "candidate": {
+        "us": [3.35693359375, 3.2958984375, 3.35693359375],
+        "medianUs": 3.35693359375,
+        "value": {}
+      },
+      "magrinj": {
+        "us": [3.324525197967887, 3.2457372290082276, 3.254851180827245],
+        "medianUs": 3.254851180827245,
+        "value": {}
+      }
+    },
+    {
+      "name": "ListFormat.new(fallback)",
+      "baseline": {
+        "us": [18.798828125, 17.822265625, 17.822265625],
+        "medianUs": 17.822265625,
+        "value": "en"
+      },
+      "candidate": {
+        "us": [16.357421875, 16.357421875, 16.6015625],
+        "medianUs": 16.357421875,
+        "value": "en"
+      },
+      "magrinj": {
+        "us": [4.221421608235687, 4.140166332945228, 4.132956964895129],
+        "medianUs": 4.140166332945228,
+        "value": "en"
+      }
+    },
+    {
+      "name": "ListFormat.new(unsupported)",
+      "baseline": {
+        "us": [14.404296875, 14.16015625, 13.916015625],
+        "medianUs": 14.16015625,
+        "value": "en"
+      },
+      "candidate": {
+        "us": [12.6953125, 12.451171875, 12.6953125],
+        "medianUs": 12.6953125,
+        "value": "en"
+      },
+      "magrinj": {
+        "us": [4.236090928316116, 4.147257481236011, 4.152327572228387],
+        "medianUs": 4.152327572228387,
+        "value": "en-US"
+      }
+    },
+    {
+      "name": "RelativeTimeFormat.new",
+      "baseline": {
+        "us": [13.427734375, 12.939453125, 12.6953125],
+        "medianUs": 12.939453125,
+        "value": {}
+      },
+      "candidate": {
+        "us": [11.5966796875, 10.986328125, 11.474609375],
+        "medianUs": 11.474609375,
+        "value": {}
+      },
+      "magrinj": {
+        "us": [5.108934885356575, 4.964484309311956, 4.983075195923448],
+        "medianUs": 4.983075195923448,
+        "value": {}
+      }
+    }
+  ],
+  "fullSuiteCommand": "<host> bazel-bin/benchmarks/hermes-intl-extension/suite_bundle.js",
+  "fullSuite": [
+    {
+      "name": "getCanonicalLocales",
+      "nativeNs": [817.87109375, 805.6640625, 793.45703125],
+      "typescriptNs": [4394.53125, 4589.84375, 4443.359375]
+    },
+    {
+      "name": "supportedValuesOf",
+      "nativeNs": [1806.640625, 1831.0546875, 1782.2265625],
+      "typescriptNs": [59375, 60156.25, 58593.75]
+    },
+    {
+      "name": "Locale.maximize",
+      "nativeNs": [3320.3125, 3564.453125, 3320.3125],
+      "typescriptNs": [32812.5, 32812.5, 32812.5]
+    },
+    {
+      "name": "PluralRules.select",
+      "nativeNs": [634.765625, 634.765625, 634.765625],
+      "typescriptNs": [121875, 121875, 125000]
+    },
+    {
+      "name": "ListFormat.format",
+      "nativeNs": [1171.875, 1171.875, 1196.2890625],
+      "typescriptNs": [3906.25, 3906.25, 3906.25]
+    },
+    {
+      "name": "ListFormat.formatToParts",
+      "nativeNs": [5957.03125, 6054.6875, 6054.6875],
+      "typescriptNs": [5468.75, 5566.40625, 5566.40625]
+    },
+    {
+      "name": "DisplayNames.of",
+      "nativeNs": [1513.671875, 1513.671875, 1538.0859375],
+      "typescriptNs": [7714.84375, 7617.1875, 7812.5]
+    },
+    {
+      "name": "Segmenter.segment",
+      "nativeNs": [5859.375, 5859.375, 5957.03125],
+      "typescriptNs": [8789.0625, 8886.71875, 8886.71875]
+    },
+    {
+      "name": "Collator.compare",
+      "nativeNs": [1586.9140625, 1611.328125, 1611.328125],
+      "typescriptNs": [3173.828125, 3173.828125, 3173.828125]
+    },
+    {
+      "name": "NumberFormat.format",
+      "nativeNs": [2343.75, 2392.578125, 2392.578125],
+      "typescriptNs": [337500, 343750, 343750]
+    },
+    {
+      "name": "RelativeTimeFormat.format",
+      "nativeNs": [1086.42578125, 1086.42578125, 1086.42578125],
+      "typescriptNs": [393750, 400000, 400000]
+    },
+    {
+      "name": "RelativeTimeFormat.formatToParts",
+      "nativeNs": [3906.25, 3955.078125, 3906.25],
+      "typescriptNs": [393750, 393750, 406250]
+    },
+    {
+      "name": "DateTimeFormat.format",
+      "nativeNs": [4052.734375, 4101.5625, 4101.5625],
+      "typescriptNs": [1000000, 1000000, 1012500]
+    },
+    {
+      "name": "DurationFormat.format",
+      "nativeNs": [3857.421875, 3857.421875, 3857.421875],
+      "typescriptNs": [875000, 875000, 887500]
+    }
+  ]
+}

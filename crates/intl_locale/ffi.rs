@@ -4,8 +4,7 @@
 use std::panic::{AssertUnwindSafe, catch_unwind};
 use std::{ptr, slice, str};
 
-use serde::Deserialize;
-use serde_json::{Value, json};
+use serde::{Deserialize, Serialize};
 
 use crate::{Locale, LocaleOptions, validate_option};
 
@@ -57,16 +56,42 @@ unsafe fn input<'a>(data: *const u8, len: usize) -> Result<&'a str, ()> {
     str::from_utf8(unsafe { slice::from_raw_parts(data, len) }).map_err(|_| ())
 }
 
-fn properties(locale: &Locale) -> Value {
-    json!({
-        "locale": locale.as_str(), "baseName": locale.base_name(),
-        "language": locale.language(), "script": locale.script(),
-        "region": locale.region(), "variants": locale.variants(),
-        "calendar": locale.keyword("ca"), "collation": locale.keyword("co"),
-        "hourCycle": locale.keyword("hc"), "caseFirst": locale.keyword("kf"),
-        "numeric": locale.numeric(), "numberingSystem": locale.keyword("nu"),
-        "firstDayOfWeek": locale.keyword("fw"),
-    })
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Properties<'a> {
+    locale: &'a str,
+    base_name: String,
+    language: &'a str,
+    script: Option<&'a str>,
+    region: Option<&'a str>,
+    variants: Option<String>,
+    calendar: Option<&'a str>,
+    collation: Option<&'a str>,
+    hour_cycle: Option<&'a str>,
+    case_first: Option<&'a str>,
+    numeric: bool,
+    numbering_system: Option<&'a str>,
+    first_day_of_week: Option<&'a str>,
+}
+
+impl<'a> From<&'a Locale> for Properties<'a> {
+    fn from(locale: &'a Locale) -> Self {
+        Self {
+            locale: locale.as_str(),
+            base_name: locale.base_name(),
+            language: locale.language(),
+            script: locale.script(),
+            region: locale.region(),
+            variants: locale.variants(),
+            calendar: locale.keyword("ca"),
+            collation: locale.keyword("co"),
+            hour_cycle: locale.keyword("hc"),
+            case_first: locale.keyword("kf"),
+            numeric: locale.numeric(),
+            numbering_system: locale.keyword("nu"),
+            first_day_of_week: locale.keyword("fw"),
+        }
+    }
 }
 
 /// Returns 0 on success, 1 for invalid locale/options, 2 for invalid ABI input,
@@ -197,27 +222,27 @@ pub unsafe extern "C" fn formatjs_locale_query(
             return 2;
         };
         let locale = &unsafe { &*handle }.0;
-        let value = match query {
-            Query::Properties => properties(locale),
-            Query::Maximize => json!(locale.maximize().as_str()),
-            Query::Minimize => json!(locale.minimize().as_str()),
-            Query::Calendars => json!(locale.calendars()),
-            Query::HourCycles => json!(locale.hour_cycles()),
+        let bytes = match query {
+            Query::Properties => serde_json::to_vec(&Properties::from(locale)),
+            Query::Maximize => serde_json::to_vec(locale.maximize().as_str()),
+            Query::Minimize => serde_json::to_vec(locale.minimize().as_str()),
+            Query::Calendars => serde_json::to_vec(&locale.calendars()),
+            Query::HourCycles => serde_json::to_vec(&locale.hour_cycles()),
             Query::NumberingSystems {
                 default_numbering_system,
-            } => json!(locale.numbering_systems(default_numbering_system.as_deref())),
+            } => serde_json::to_vec(&locale.numbering_systems(default_numbering_system.as_deref())),
             Query::Collations {
                 global_collations,
                 matched,
                 accepted,
-            } => json!(locale.collations(&global_collations, matched, |value| {
+            } => serde_json::to_vec(&locale.collations(&global_collations, matched, |value| {
                 accepted.iter().any(|candidate| candidate == value)
             })),
-            Query::TimeZones => json!(locale.time_zones()),
-            Query::TextInfo => json!(locale.text_info()),
-            Query::WeekInfo => json!(locale.week_info()),
+            Query::TimeZones => serde_json::to_vec(&locale.time_zones()),
+            Query::TextInfo => serde_json::to_vec(&locale.text_info()),
+            Query::WeekInfo => serde_json::to_vec(&locale.week_info()),
         };
-        let Ok(bytes) = serde_json::to_vec(&value) else {
+        let Ok(bytes) = bytes else {
             return 3;
         };
         let mut bytes = bytes.into_boxed_slice();

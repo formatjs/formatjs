@@ -20,20 +20,20 @@ the median of three complete benchmark invocations:
 
 | Operation                          | Native µs | TypeScript µs | Native speedup |
 | ---------------------------------- | --------: | ------------: | -------------: |
-| `getCanonicalLocales`              |      0.83 |          4.44 |          5.35x |
-| `supportedValuesOf`                |      1.78 |          59.4 |          33.3x |
-| `Locale.maximize`                  |      4.83 |          33.2 |          6.87x |
-| `PluralRules.select`               |      0.65 |           122 |           188x |
-| `ListFormat.format`                |      1.21 |          3.91 |          3.23x |
-| `ListFormat.formatToParts`         |      6.05 |          5.47 |          0.90x |
-| `DisplayNames.of`                  |      1.54 |          7.81 |          5.08x |
-| `Segmenter.segment`                |      6.05 |          8.89 |          1.47x |
-| `Collator.compare`                 |      1.64 |          3.17 |          1.94x |
-| `NumberFormat.format`              |      2.39 |           344 |           144x |
-| `RelativeTimeFormat.format`        |      1.10 |           400 |           364x |
-| `RelativeTimeFormat.formatToParts` |      4.00 |           400 |          99.9x |
-| `DateTimeFormat.format`            |      4.10 |         1,000 |           244x |
-| `DurationFormat.format`            |      4.00 |           900 |           225x |
+| `getCanonicalLocales`              |      0.81 |          4.44 |          5.52x |
+| `supportedValuesOf`                |      1.81 |         59.38 |         32.86x |
+| `Locale.maximize`                  |      3.32 |         32.81 |          9.88x |
+| `PluralRules.select`               |      0.63 |        121.88 |        192.00x |
+| `ListFormat.format`                |      1.17 |          3.91 |          3.33x |
+| `ListFormat.formatToParts`         |      6.05 |          5.57 |          0.92x |
+| `DisplayNames.of`                  |      1.51 |          7.71 |          5.10x |
+| `Segmenter.segment`                |      5.86 |          8.89 |          1.52x |
+| `Collator.compare`                 |      1.61 |          3.17 |          1.97x |
+| `NumberFormat.format`              |      2.39 |        343.75 |        143.67x |
+| `RelativeTimeFormat.format`        |      1.09 |        400.00 |        368.18x |
+| `RelativeTimeFormat.formatToParts` |      3.91 |        393.75 |        100.80x |
+| `DateTimeFormat.format`            |      4.10 |       1000.00 |        243.81x |
+| `DurationFormat.format`            |      3.86 |        875.00 |        226.84x |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -54,21 +54,23 @@ Bazel `-c opt`, magrinj Rust uses its release profile (`opt-level="z"`, LTO):
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.79 |       1.43 |
-| `Locale.maximize`                    |        5.86 |       2.57 |
-| `PluralRules.select`                 |        0.63 |       0.56 |
-| `ListFormat.format`                  |        1.11 |       0.69 |
-| `ListFormat.formatToParts`           |        4.70 |       4.37 |
+| `getCanonicalLocales`                |        0.76 |       1.42 |
+| `Locale.maximize`                    |        3.85 |       2.55 |
+| `PluralRules.select`                 |        0.60 |       0.56 |
+| `ListFormat.format`                  |        1.08 |       0.69 |
+| `ListFormat.formatToParts`           |        4.58 |       4.31 |
 | `RelativeTimeFormat.format`          |        1.07 |       0.95 |
-| `RelativeTimeFormat.format(decimal)` |        1.50 |       1.04 |
-| `RelativeTimeFormat.format(auto)`    |        0.52 |       0.85 |
-| `RelativeTimeFormat.formatToParts`   |        3.17 |       2.89 |
-| `Locale.new`                         |        6.96 |       1.21 |
-| `PluralRules.new`                    |        7.45 |       5.71 |
-| `ListFormat.new`                     |        3.30 |       3.40 |
-| `ListFormat.new(fallback)`           |       7,875 |       4.32 |
-| `ListFormat.new(unsupported)`        |      11,000 |       4.31 |
-| `RelativeTimeFormat.new`             |        13.2 |       5.50 |
+| `RelativeTimeFormat.formatToParts`   |        3.05 |       2.91 |
+| `RelativeTimeFormat.format(decimal)` |        1.46 |       1.03 |
+| `RelativeTimeFormat.format(auto)`    |        0.51 |       0.85 |
+| `Locale.new`                         |        4.52 |       1.19 |
+| `Locale.new(options)`                |        6.10 |       6.41 |
+| `Locale.new(zh-HK)`                  |        5.13 |       1.62 |
+| `PluralRules.new`                    |        7.45 |       5.51 |
+| `ListFormat.new`                     |        3.36 |       3.25 |
+| `ListFormat.new(fallback)`           |       16.36 |       4.14 |
+| `ListFormat.new(unsupported)`        |       12.70 |       4.15 |
+| `RelativeTimeFormat.new`             |       11.47 |       4.98 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -96,6 +98,17 @@ request back into the iterator regressed nonexact matching by 17–18% in optimi
 builds. The separate collection preserves baseline fallback timings.
 
 Fallback requests `en-XX`; unsupported requests `qzz`. FormatJS resolves them
-to `en-GB` and `en`, respectively; magrinj resolves them to `en` and `en-US`.
+to `en` in both cases; magrinj resolves them to `en` and `en-US`.
 These cases compare constructor cost with different matching results. Their
 timings exclude reading `resolvedOptions().locale`.
+
+Direct serialization of typed Rust properties removes the intermediate JSON
+tree. Constructor canonicalization repeats only after options change a language
+ID or Unicode keywords. In three alternating optimized host runs against
+`989821174`, `Locale.new` fell from 6.96 to 4.52 µs (35%), the region-option
+case from 8.30 to 6.10 µs (26%), `zh-HK` from 7.69 to 5.13 µs (33%), and
+`Locale.maximize` from 5.80 to 3.85 µs (34%). JS option getter order stays intact.
+[Raw samples and build settings](locale-perf-results.json) include all overlap
+operations and the magrinj comparison. An isolated Rust stage probe measured
+constructor cost at 1.03 µs before and 0.34 µs after; properties JSON cost fell
+from 1.38 to 0.35 µs.
