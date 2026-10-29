@@ -152,3 +152,16 @@ genrule(
     tools = [":intl_pluralrules_oracle"],
     visibility = ["//visibility:public"],
 )
+
+exports_files(["canonical-private-fixtures.tsv"])
+
+java_test(
+    name = "intl_canonical_private_conformance_test",
+    size = "small",
+    srcs = ["IntlCanonicalPrivateConformanceTest.java"],
+    data = ["canonical-private-fixtures.tsv"],
+    env = {"CANONICAL_PRIVATE_FIXTURES": "$(rootpath canonical-private-fixtures.tsv)"},
+    main_class = "IntlCanonicalPrivateConformanceTest",
+    test_class = "IntlCanonicalPrivateConformanceTest",
+    deps = [":icu4j"],
+)

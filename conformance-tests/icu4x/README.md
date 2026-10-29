@@ -40,3 +40,11 @@ ICU4C/J outputs separately; unknown, changed and unused differences fail.
 Another 99 lone-surrogate cases remain covered by ICU4C/J and Hermes because
 ICU4X strings cannot represent them. All styles and types, empty elements and
 Spanish/Hebrew contextual patterns remain in the shared corpus.
+
+Private-use canonicalization compares 21 tags independently with ICU4C 78.1,
+ICU4J 78.1 and ICU4X `icu_locale` 2.3.1. The shared corpus covers base-language
+aliases, mixed casing, zh-TW/zh-HK, single-character private subtags, long
+suffixes and preceding Unicode extensions. Both FormatJS canonicalization and
+Rust Locale constructors must match every pinned output; no differences are
+normalized or skipped. Structural rejection remains covered by the existing
+canonicalizer tests and strict Hermes getCanonicalLocales Test262 suite.

@@ -69,45 +69,45 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-29, pinned to CPU 0 on every host,
-including reused private ListFormat constructor values and streamed Rust patterns.
+including borrowed canonicalization boundaries and direct private-use emission.
 All hosts use high-resolution `__now()`.
-[Raw results, constructor/size controls and profiles](list-bound-results.json).
+[Raw results, controls and profiles](canonical-extension-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.08 |       1.12 |
-| `Locale.maximize`                    |        0.26 |       2.27 |
-| `PluralRules.select`                 |        0.36 |       0.45 |
+| `getCanonicalLocales`                |        0.07 |       1.11 |
+| `Locale.maximize`                    |        0.26 |       2.11 |
+| `PluralRules.select`                 |        0.35 |       0.46 |
 | `PluralRules.select(decimal)`        |        0.41 |       0.46 |
-| `PluralRules.select(string)`         |        0.51 |       0.92 |
-| `PluralRules.select(ordinal)`        |        0.38 |       0.45 |
+| `PluralRules.select(string)`         |        0.50 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.37 |       0.45 |
 | `PluralRules.select(ru)`             |        0.39 |       0.50 |
-| `PluralRules.selectRange`            |        0.80 |       0.89 |
-| `ListFormat.format`                  |        0.72 |       0.54 |
-| `ListFormat.formatToParts`           |        3.09 |       3.30 |
-| `RelativeTimeFormat.format`          |        0.96 |       0.71 |
-| `RelativeTimeFormat.formatToParts`   |        1.73 |       2.16 |
-| `RelativeTimeFormat.format(decimal)` |        1.29 |       0.80 |
-| `RelativeTimeFormat.format(auto)`    |        0.47 |       0.60 |
-| `Locale.new`                         |        0.35 |       1.03 |
-| `Locale.new(options)`                |        1.80 |       4.94 |
-| `Locale.new(zh-HK)`                  |        0.35 |       1.38 |
-| `Locale.new.language`                |        0.43 |       1.41 |
-| `Locale.new.toString`                |        0.41 |       1.05 |
+| `PluralRules.selectRange`            |        0.79 |       0.89 |
+| `ListFormat.format`                  |        0.71 |       0.53 |
+| `ListFormat.formatToParts`           |        3.02 |       3.26 |
+| `RelativeTimeFormat.format`          |        0.98 |       0.72 |
+| `RelativeTimeFormat.formatToParts`   |        1.75 |       2.15 |
+| `RelativeTimeFormat.format(decimal)` |        1.33 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.46 |       0.60 |
+| `Locale.new`                         |        0.35 |       0.94 |
+| `Locale.new(options)`                |        1.79 |       4.91 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.36 |
+| `Locale.new.language`                |        0.43 |       1.28 |
+| `Locale.new.toString`                |        0.40 |       1.00 |
 | `Locale.language`                    |        0.08 |       0.09 |
-| `Locale.new(Locale)`                 |        0.32 |       0.97 |
-| `Locale.new(diverse)`                |        3.01 |       1.46 |
-| `Locale.new(long)`                   |        4.57 |       4.00 |
-| `PluralRules.new`                    |        2.05 |       4.65 |
-| `PluralRules.new(options)`           |        5.44 |       5.13 |
-| `ListFormat.new`                     |        1.30 |       2.88 |
-| `ListFormat.new(default)`            |        1.09 |       2.59 |
-| `ListFormat.new(array)`              |        1.65 |       2.87 |
-| `ListFormat.new(options)`            |        2.46 |       2.78 |
-| `ListFormat.new(fallback)`           |        2.17 |       3.60 |
-| `ListFormat.new(unsupported)`        |        2.43 |       3.87 |
-| `RelativeTimeFormat.new`             |        4.17 |       4.78 |
-| `RelativeTimeFormat.new(fallback)`   |        5.28 |       5.42 |
+| `Locale.new(Locale)`                 |        0.32 |       0.96 |
+| `Locale.new(diverse)`                |        2.49 |       1.43 |
+| `Locale.new(long)`                   |        3.48 |       3.81 |
+| `PluralRules.new`                    |        2.11 |       4.70 |
+| `PluralRules.new(options)`           |        5.17 |       5.09 |
+| `ListFormat.new`                     |        1.29 |       2.83 |
+| `ListFormat.new(default)`            |        1.06 |       2.57 |
+| `ListFormat.new(array)`              |        1.60 |       2.83 |
+| `ListFormat.new(options)`            |        2.47 |       2.62 |
+| `ListFormat.new(fallback)`           |        2.00 |       3.60 |
+| `ListFormat.new(unsupported)`        |        2.15 |       3.80 |
+| `RelativeTimeFormat.new`             |        4.19 |       4.68 |
+| `RelativeTimeFormat.new(fallback)`   |        5.20 |       5.55 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -599,3 +599,38 @@ locales improve 2.290 to 2.054 µs. All 423 values match, retaining only the
 known omitted/unsupported comparator default-locale choices. This closes the
 explicit-options ListFormat gap in these comparisons, with the measured `en`
 constructor and parts regressions retained rather than hidden.
+
+Canonicalization now borrows the language identifier before its first extension,
+then canonicalizes only the extension suffix. A first private-use extension is
+copied and lowercased directly after full structural validation: private subtags
+have no aliases or internal ordering. Base aliases still use ICU4X; other
+extensions retain existing processing.
+
+Three optimized CPU-0-pinned complete comparisons reduce cold diverse Locale
+construction from 3.012 to 2.490 µs (17.3%) and long tags from 4.303 to 3.476 µs
+(19.2%). Magrinj measures 1.429/3.815 µs. Separate Locale controls improve
+2.417/4.621 to 1.818/3.621 µs, versus magrinj 1.442/3.821 µs. Cold diverse
+construction remains slower; long tags lead in both workloads. Canonical-tag
+controls improve diverse/long from 0.890/2.586 to 0.627/1.299 µs, versus
+magrinj 0.985/3.042 µs. Repeated tags remain near 0.070 µs.
+
+Rust diagnostics reduce private-tag canonicalization allocations from 16 to 3
+and long tags from 40 to 6; full Locale allocations fall 21 to 8 and 48 to 14.
+Separate unpinned Rust timing runs put long Locale construction near 2,504 ns
+before and 1,363 ns after; these are diagnostics, not SDK benchmark results.
+Native host-call profile samples fall 395 to 306 for cold tags and 285 to 186
+for long tags. Total samples fall 641 to 541 and 340 to 244.
+
+All 423 benchmark output checks pass. Seventy broad gates pass, including the
+native Hermes API suites, Hermes Test262 suite with existing baselines, strict
+getCanonicalLocales, and all pinned ICU4C/J/X comparisons. A new 21-case corpus
+independently checks aliases, casing, zh-TW/zh-HK, single-character private
+subtags, long suffixes and preceding Unicode extensions. All nine SDK API smoke
+scripts pass.
+
+Separate ListFormat constructor controls shift `en`/omitted locales from
+1.113/0.945 to 1.227/1.034 µs despite unchanged JS and C++ sources. The complete
+workload does not show comparable shifts; raw controls remain recorded without
+attributing their cause. RTF integer/decimal medians worsen 2.1%/2.7% in the full
+workload. String ListFormat, RTF, cold diverse Locale and explicit-options
+PluralRules gaps remain open.

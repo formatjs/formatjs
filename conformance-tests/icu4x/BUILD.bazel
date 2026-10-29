@@ -80,3 +80,17 @@ copy_to_bin(
     srcs = ["plural-range-icu-differences.tsv"],
     visibility = ["//native/hermes/tests:__pkg__"],
 )
+
+formatjs_rust_test(
+    name = "intl_canonical_private_conformance_test",
+    srcs = ["canonical-private.test.rs"],
+    crate_name = "icu4x_canonical_private_conformance_test",
+    data = ["//conformance-tests/icu4j:canonical-private-fixtures.tsv"],
+    edition = "2024",
+    env = {"CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)"},
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "@crates//:icu_locale",
+    ],
+)
