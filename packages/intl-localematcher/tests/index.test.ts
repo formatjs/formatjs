@@ -273,3 +273,23 @@ test('preserves legacy RegExp statics across matching paths', () => {
     expect(after).toEqual(before)
   }
 })
+
+test.each(['0', '1'])('internal arrays ignore inherited setter %s', key => {
+  let actual: string | undefined
+  let error: unknown
+  Object.defineProperty(Object.prototype, key, {
+    configurable: true,
+    set() {
+      throw new Error('Inherited numeric setter')
+    },
+  })
+  try {
+    actual = match(['de-1901', 'fr'], ['en', 'fr', 'de'], 'en')
+  } catch (caught) {
+    error = caught
+  } finally {
+    delete (Object.prototype as Record<string, unknown>)[key]
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toBe('de')
+})

@@ -143,11 +143,8 @@ function fields(tag: string): LSR {
   let {script, region} = parsed
   const parts =
     parsed.end < tag.length ? tag.slice(parsed.end + 1).split('-') : []
-  const variants: string[] = []
-  for (const part of parts) {
-    if (part.length === 1) break
-    variants.push(part)
-  }
+  const extension = parts.findIndex(part => part.length === 1)
+  const variants = extension < 0 ? parts : parts.slice(0, extension)
   const pseudo = variants.find(
     p => p === 'psaccent' || p === 'psbidi' || p === 'pscrack'
   )
@@ -377,7 +374,13 @@ function rawMatch(data: Supported, key: string): number | undefined {
   // A zero-distance match cannot be improved by later supported locales.
   for (let index = data.tags.length; index < data.original.length; index++) {
     const tag = canonicalize(data.original[index])
-    data.tags.push(tag)
+    // CreateDataProperty avoids inherited numeric setters on internal arrays.
+    Object.defineProperty(data.tags, index, {
+      value: tag,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
     const candidate = rawKey(tag)
     if (!data.raw.has(candidate)) data.raw.set(candidate, index)
     if (candidate === key) return data.raw.get(candidate)
