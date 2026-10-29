@@ -364,6 +364,25 @@ const Collator = Intl.Collator
 equal(locale.getCollations(), ['emoji', 'eor'], 'missing collator fallback')
 ;(Intl as any).Collator = Collator
 
+// Scalar metadata must retain the constructor's options until its first read.
+const deferredOptions = {region: 'GB', calendar: 'gregory', numeric: true}
+const deferred = new NativeLocale('en', deferredOptions)
+deferredOptions.region = 'US'
+deferredOptions.calendar = 'buddhist'
+deferredOptions.numeric = false
+check(deferred.getWeekInfo().firstDay === 1, 'query before scalar access')
+equal(
+  [deferred.region, deferred.calendar, deferred.numeric],
+  ['GB', 'gregory', true],
+  'first scalar access retains constructor options'
+)
+equal(
+  new NativeLocale(deferred).toString(),
+  'en-GB-u-ca-gregory-kn',
+  'Locale tag retains original options'
+)
+equal(deferred.maximize().language, 'en', 'transformed first scalar access')
+
 // Constructor and query transport must not invoke application serialization hooks.
 const parse = JSON.parse,
   stringify = JSON.stringify

@@ -62,29 +62,33 @@ list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.78 |       1.09 |
-| `Locale.maximize`                    |        3.97 |       2.09 |
-| `PluralRules.select`                 |        0.50 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.57 |       0.46 |
-| `PluralRules.select(string)`         |        0.67 |       0.91 |
-| `PluralRules.select(ordinal)`        |        0.53 |       0.46 |
+| `getCanonicalLocales`                |        0.78 |       1.11 |
+| `Locale.maximize`                    |        4.03 |       2.10 |
+| `PluralRules.select`                 |        0.51 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.58 |       0.46 |
+| `PluralRules.select(string)`         |        0.68 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.54 |       0.46 |
 | `PluralRules.select(ru)`             |        0.55 |       0.50 |
-| `PluralRules.selectRange`            |        2.04 |       0.89 |
+| `PluralRules.selectRange`            |        2.04 |       0.90 |
 | `ListFormat.format`                  |        1.04 |       0.53 |
-| `ListFormat.formatToParts`           |        3.17 |       3.22 |
-| `RelativeTimeFormat.format`          |        1.07 |       0.71 |
-| `RelativeTimeFormat.formatToParts`   |        3.05 |       2.16 |
-| `RelativeTimeFormat.format(decimal)` |        1.48 |       0.79 |
-| `RelativeTimeFormat.format(auto)`    |        0.52 |       0.60 |
-| `Locale.new`                         |        4.52 |       0.91 |
-| `Locale.new(options)`                |        5.98 |       4.83 |
-| `Locale.new(zh-HK)`                  |        5.07 |       1.33 |
-| `PluralRules.new`                    |        2.87 |       4.39 |
-| `PluralRules.new(options)`           |        6.23 |       4.77 |
-| `ListFormat.new`                     |        3.42 |       2.74 |
-| `ListFormat.new(fallback)`           |       16.85 |       3.58 |
-| `ListFormat.new(unsupported)`        |       12.70 |       3.78 |
-| `RelativeTimeFormat.new`             |       11.35 |       4.86 |
+| `ListFormat.formatToParts`           |        3.17 |       3.23 |
+| `RelativeTimeFormat.format`          |        1.05 |       0.72 |
+| `RelativeTimeFormat.formatToParts`   |        3.11 |       2.17 |
+| `RelativeTimeFormat.format(decimal)` |        1.43 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.52 |       0.61 |
+| `Locale.new`                         |        1.68 |       0.91 |
+| `Locale.new(options)`                |        4.09 |       4.88 |
+| `Locale.new(zh-HK)`                  |        2.17 |       1.33 |
+| `Locale.new.language`                |        3.72 |       1.24 |
+| `Locale.new.toString`                |        3.66 |       0.98 |
+| `Locale.language`                    |        0.10 |       0.08 |
+| `Locale.new(Locale)`                 |        1.80 |       0.95 |
+| `PluralRules.new`                    |        2.84 |       4.27 |
+| `PluralRules.new(options)`           |        6.23 |       4.76 |
+| `ListFormat.new`                     |        3.42 |       2.68 |
+| `ListFormat.new(fallback)`           |       16.85 |       3.51 |
+| `ListFormat.new(unsupported)`        |       12.70 |       3.75 |
+| `RelativeTimeFormat.new`             |       11.35 |       4.72 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -126,6 +130,23 @@ case from 8.30 to 6.10 µs (26%), `zh-HK` from 7.69 to 5.13 µs (33%), and
 operations and the magrinj comparison. An isolated Rust stage probe measured
 constructor cost at 1.03 µs before and 0.34 µs after; properties JSON cost fell
 from 1.38 to 0.35 µs.
+
+Locale now retains its immutable scalar snapshot on first access. With no
+options, Rust handles validation and canonicalization in one call. Explicit
+options retain their observable getter order. Against `08db5df5e`, three
+alternating optimized runs cut default construction from 4.58 to 1.68 µs (63%),
+region options from 5.98 to 4.09 µs (32%), and `zh-HK` from 5.07 to 2.17 µs (57%).
+Construction plus first `language` access falls from 4.76 to 3.72 µs (22%);
+first `toString` from 4.76 to 3.66 µs (23%). This includes the deferred work.
+Warm `language` reads increase from 95 to 103 ns; maximize stays near 4 µs.
+Default construction remains slower than optimized magrinj's 0.91 µs; the region
+option case beats its 4.88 µs. [Raw runs](locale-snapshot-results.json) include the
+isolated lazy-only step, first-read checks, warm getters and Locale copies.
+
+Before this change, a 1 kHz Hermes constructor profile attributes 43% of samples
+to the scalar query and `JSON.parse`. Reproduce with
+`locale-constructor-profile.js` and the profiling command below. The optimization
+retains eager validation and per-call formatter capability queries.
 
 The [three-oracle list matrix](../../conformance-tests/icu4c/README.md) exposed
 108 output differences against the selected ICU4C behavior in the previous

@@ -134,6 +134,12 @@ Rust canonicalizes the input once, repeating only after language or Unicode
 options change it. ABI queries serialize typed values directly, avoiding an
 intermediate JSON tree when Hermes reads Locale properties.
 
+Hermes snapshots scalar properties on first access and retains them with the
+immutable Rust handle. Constructor validation stays eager. Omitted options use
+one Rust construction call; explicit options still canonicalize before reading
+their getters. Formatter capability queries remain per-call, so loading data
+after construction still affects numbering systems and collations.
+
 `//native/hermes/tests:locale_conformance_test` compares the installed Rust API
 against TS over full records and observable constructor/method behavior. It loads
 Bengali NumberFormat data after creating a Locale, verifying per-call capability
