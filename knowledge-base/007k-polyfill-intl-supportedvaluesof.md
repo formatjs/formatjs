@@ -104,3 +104,8 @@ exception identity, receivers, fresh arrays and descriptors. The shared SDK
 packages both installer overloads and `31-IntlSupportedValuesOf.js`; its
 standalone consumer tests the precompiled startup path. All native builds and
 cross-compilation run on Linux; macOS only executes downloaded smoke artifacts.
+
+Contrib setup uses `prepareSupportedValuesOf` before Locale captures its
+enumerator. Its private callback observes formatter loaders after the remaining
+constructors are installed, before application code can retain those methods.
+Regular installer overloads continue observing already-installed formatters.
