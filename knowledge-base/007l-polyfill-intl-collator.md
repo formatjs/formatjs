@@ -1,5 +1,11 @@
 # @formatjs/intl-collator
 
+The shared 27-case ordering fixture is checked independently by ICU4C 78.1,
+ICU4J 78.1 and ICU4X Collator 2.3.1, as well as the Rust/TS differential suite.
+The ICU adapters preserve locale keyword defaults and explicitly map Intl
+sensitivity, case-first, numeric and punctuation options. See
+`conformance-tests/icu4c/README.md` for targets and coverage limits.
+
 **ECMA-402 Section 10** - `Intl.Collator`
 
 ## Current Status
