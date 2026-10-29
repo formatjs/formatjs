@@ -265,3 +265,9 @@ allocation replaces temporary digit strings and floating-point parsing. Validati
 still rejects non-digits, leading integer zeros and trailing fraction zeros from
 this path. General normalization handles exponents, radix literals and other
 forms; BigInt retains its separate arbitrary-length handling.
+
+Hermes constructor enum/increment tables are private installation-time constants.
+Captured canonicalization and bound WeakMap setters avoid per-call argument arrays.
+Validated ASCII enums and bounded integer options serialize directly, omitting
+undefined digits so Rust retains default and rounding-priority resolution. Locale
+matching and every observable getter/coercion keep their original phase order.

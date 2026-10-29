@@ -40,8 +40,33 @@
   const getSlot = WeakMap.prototype.get.bind(slots) as (
     receiver: unknown
   ) => object | undefined
-  const setSlot = WeakMap.prototype.set
+  const setSlot = WeakMap.prototype.set.bind(slots)
   const categories = ['zero', 'one', 'two', 'few', 'many', 'other']
+  const matchers = ['lookup', 'best fit'] as const
+  const types = ['cardinal', 'ordinal'] as const
+  const notations = [
+    'standard',
+    'scientific',
+    'engineering',
+    'compact',
+  ] as const
+  const compactDisplays = ['short', 'long'] as const
+  const priorities = ['auto', 'morePrecision', 'lessPrecision'] as const
+  const trailingZeros = ['auto', 'stripIfInteger'] as const
+  const roundingModes = [
+    'ceil',
+    'floor',
+    'expand',
+    'trunc',
+    'halfCeil',
+    'halfFloor',
+    'halfExpand',
+    'halfTrunc',
+    'halfEven',
+  ] as const
+  const increments = [
+    1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
+  ] as const
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -73,7 +98,7 @@
   function option(
     options: any,
     name: string,
-    values: string[],
+    values: readonly string[],
     fallback: string
   ): string {
     const value = options[name]
@@ -102,7 +127,7 @@
   ): object {
     const handle = nativeCreate(locale, options)
     if (typeof handle === 'number') decoded(handle)
-    apply(setSlot, slots, [receiver, handle])
+    setSlot(receiver, handle)
     return receiver
   }
   function slot(receiver: unknown): object {
@@ -211,80 +236,46 @@
       // ResolveOptions 1–4: locale-list access precedes option coercion/getters.
       // PluralRules has no relevant Unicode extension keys or resolution options.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L303-L318
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const opts = options(optionsInput)
-      const matcher = option(
-        opts,
-        'localeMatcher',
-        ['lookup', 'best fit'],
-        'best fit'
-      )
+      const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
       const locale = match(requested, matcher === 'lookup', false) as string
       // Undefined options expose no getters; Rust resolves all defaults.
       if (optionsInput === undefined) return initialize(receiver, locale, '{}')
       // Constructor 7–13: each enum's coercion/validation precedes the next Get.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
-      const values: Record<string, string | number | undefined> = create(null)
-      values.type = option(opts, 'type', ['cardinal', 'ordinal'], 'cardinal')
-      const notation = (values.notation = option(
-        opts,
-        'notation',
-        ['standard', 'scientific', 'engineering', 'compact'],
-        'standard'
-      ))
-      values.compactDisplay = option(
+      const kind = option(opts, 'type', types, 'cardinal')
+      const notation = option(opts, 'notation', notations, 'standard')
+      const compactDisplay = option(
         opts,
         'compactDisplay',
-        ['short', 'long'],
+        compactDisplays,
         'short'
       )
       // SetNumberFormatDigitOptions 1–11: validate minimumInteger/increment as
       // read, but retain the four precision values without coercing them yet.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L108
-      values.minimumIntegerDigits = number(opts.minimumIntegerDigits, 1, 21, 1)
+      const minimumInteger = number(opts.minimumIntegerDigits, 1, 21, 1)!
       const minFraction = opts.minimumFractionDigits,
         maxFraction = opts.maximumFractionDigits
       const minSignificant = opts.minimumSignificantDigits,
         maxSignificant = opts.maximumSignificantDigits
-      const increment = (values.roundingIncrement = number(
-        opts.roundingIncrement,
-        1,
-        5000,
-        1
-      )!)
-      const increments = [
-        1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
-      ]
+      const increment = number(opts.roundingIncrement, 1, 5000, 1)!
       let valid = false
       for (let index = 0; index < increments.length; index++)
         if (increment === increments[index]) valid = true
       if (!valid) throw new BadOption('Invalid roundingIncrement')
-      values.roundingMode = option(
+      const roundingMode = option(
         opts,
         'roundingMode',
-        [
-          'ceil',
-          'floor',
-          'expand',
-          'trunc',
-          'halfCeil',
-          'halfFloor',
-          'halfExpand',
-          'halfTrunc',
-          'halfEven',
-        ],
+        roundingModes,
         'halfExpand'
       )
-      const priority = (values.roundingPriority = option(
-        opts,
-        'roundingPriority',
-        ['auto', 'morePrecision', 'lessPrecision'],
-        'auto'
-      ))
-      values.trailingZeroDisplay = option(
+      const priority = option(opts, 'roundingPriority', priorities, 'auto')
+      const trailingZeroDisplay = option(
         opts,
         'trailingZeroDisplay',
-        ['auto', 'stripIfInteger'],
+        trailingZeros,
         'auto'
       )
       // Active precision: inactive values never undergo ToNumber. Validate
@@ -298,29 +289,49 @@
       const needFraction =
         priority !== 'auto' ||
         !(hasSignificant || (!hasFraction && notation === 'compact'))
+      let digits = ''
       if (needSignificant) {
-        const minimum = (values.minimumSignificantDigits = number(
-          minSignificant,
-          1,
-          21,
-          1
-        )!)
-        values.maximumSignificantDigits = number(
-          maxSignificant,
-          minimum,
-          21,
-          21
-        )
+        const minimum = number(minSignificant, 1, 21, 1)!
+        const maximum = number(maxSignificant, minimum, 21, 21)!
+        digits +=
+          ',"minimumSignificantDigits":' +
+          minimum +
+          ',"maximumSignificantDigits":' +
+          maximum
       }
       if (needFraction) {
-        values.minimumFractionDigits = number(minFraction, 0, 100, undefined)
-        values.maximumFractionDigits = number(maxFraction, 0, 100, undefined)
+        const minimum = number(minFraction, 0, 100, undefined)
+        const maximum = number(maxFraction, 0, 100, undefined)
+        if (minimum !== undefined)
+          digits += ',"minimumFractionDigits":' + minimum
+        if (maximum !== undefined)
+          digits += ',"maximumFractionDigits":' + maximum
       }
-      // Resolve rounding type/priority and increment restrictions in
-      // Rust. Install the private brand only after successful initialization.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L140-L161
-      // Private options hold validated primitives and cannot inherit toJSON.
-      return initialize(receiver, locale, stringify(values)!)
+      // Enums are validated ASCII and digit values are bounded integers.
+      // Omit undefined digits so Rust retains its default/priority resolution.
+      return initialize(
+        receiver,
+        locale,
+        '{"type":"' +
+          kind +
+          '","notation":"' +
+          notation +
+          '","compactDisplay":"' +
+          compactDisplay +
+          '","minimumIntegerDigits":' +
+          minimumInteger +
+          ',"roundingIncrement":' +
+          increment +
+          ',"roundingMode":"' +
+          roundingMode +
+          '","roundingPriority":"' +
+          priority +
+          '","trailingZeroDisplay":"' +
+          trailingZeroDisplay +
+          '"' +
+          digits +
+          '}'
+      )
     }
     static supportedLocalesOf(
       locales: unknown,
@@ -329,11 +340,11 @@
       // supportedLocalesOf 1–3 and FilterLocales: canonicalize before options;
       // Rust returns requested tags, including their Unicode extensions.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L62-L64
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const matcher = option(
         options(optionsInput),
         'localeMatcher',
-        ['lookup', 'best fit'],
+        matchers,
         'best fit'
       )
       return match(requested, matcher === 'lookup', true)

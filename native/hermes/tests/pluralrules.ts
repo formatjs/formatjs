@@ -491,6 +491,7 @@ const saved = {
   set: WeakMap.prototype.set,
   canonical: Intl.getCanonicalLocales,
   floor: Math.floor,
+  bind: Function.prototype.bind,
 }
 let captured: any
 const poison = () => {
@@ -506,6 +507,7 @@ try {
   WeakMap.prototype.set = poison
   Intl.getCanonicalLocales = poison
   Math.floor = poison
+  Function.prototype.bind = poison
   saved.define(Object.prototype, 'toJSON', {value: poison, configurable: true})
   saved.define(Object.prototype, 'get', {get: poison, configurable: true})
   const value = new Native('EN-us', {
@@ -528,6 +530,7 @@ try {
   WeakMap.prototype.set = saved.set
   Intl.getCanonicalLocales = saved.canonical
   Math.floor = saved.floor
+  Function.prototype.bind = saved.bind
 }
 equal(captured.category, 'few', 'captured intrinsics')
 equal(captured.resolved.minimumIntegerDigits, 1, 'captured floor')
