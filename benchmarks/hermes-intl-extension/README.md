@@ -16,7 +16,8 @@ run with their own Intl dependencies in the same Hermes process. Results are
 median time per call.
 
 Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Table uses
-the median of three complete benchmark invocations:
+the median of three complete benchmark invocations. This is the historical
+full-API baseline, before the later optimizations below:
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
@@ -60,40 +61,73 @@ cross-implementation timings; historical FormatJS before/after comparisons remai
 useful. Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
+Three alternating optimized runs on 2026-10-29, including the registry
+snapshot change. [Raw results and profiles](native-matching-results.json).
+
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.78 |       1.11 |
-| `Locale.maximize`                    |        4.03 |       2.10 |
-| `PluralRules.select`                 |        0.51 |       0.45 |
+| `getCanonicalLocales`                |        0.78 |       1.10 |
+| `Locale.maximize`                    |        0.26 |       2.10 |
+| `PluralRules.select`                 |        0.52 |       0.45 |
 | `PluralRules.select(decimal)`        |        0.58 |       0.46 |
-| `PluralRules.select(string)`         |        0.68 |       0.91 |
+| `PluralRules.select(string)`         |        0.68 |       0.92 |
 | `PluralRules.select(ordinal)`        |        0.54 |       0.46 |
-| `PluralRules.select(ru)`             |        0.55 |       0.50 |
-| `PluralRules.selectRange`            |        2.04 |       0.90 |
-| `ListFormat.format`                  |        1.04 |       0.53 |
-| `ListFormat.formatToParts`           |        3.17 |       3.23 |
-| `RelativeTimeFormat.format`          |        1.05 |       0.72 |
-| `RelativeTimeFormat.formatToParts`   |        3.11 |       2.17 |
-| `RelativeTimeFormat.format(decimal)` |        1.43 |       0.79 |
-| `RelativeTimeFormat.format(auto)`    |        0.52 |       0.61 |
-| `Locale.new`                         |        1.68 |       0.91 |
-| `Locale.new(options)`                |        4.09 |       4.88 |
-| `Locale.new(zh-HK)`                  |        2.17 |       1.33 |
-| `Locale.new.language`                |        3.72 |       1.24 |
-| `Locale.new.toString`                |        3.66 |       0.98 |
-| `Locale.language`                    |        0.10 |       0.08 |
-| `Locale.new(Locale)`                 |        1.80 |       0.95 |
-| `PluralRules.new`                    |        2.84 |       4.27 |
-| `PluralRules.new(options)`           |        6.23 |       4.76 |
-| `ListFormat.new`                     |        3.42 |       2.68 |
-| `ListFormat.new(fallback)`           |       16.85 |       3.51 |
-| `ListFormat.new(unsupported)`        |       12.70 |       3.75 |
-| `RelativeTimeFormat.new`             |       11.35 |       4.72 |
+| `PluralRules.select(ru)`             |        0.60 |       0.50 |
+| `PluralRules.selectRange`            |        2.20 |       0.89 |
+| `ListFormat.format`                  |        1.10 |       0.53 |
+| `ListFormat.formatToParts`           |        3.36 |       3.24 |
+| `RelativeTimeFormat.format`          |        1.08 |       0.71 |
+| `RelativeTimeFormat.formatToParts`   |        3.30 |       2.17 |
+| `RelativeTimeFormat.format(decimal)` |        1.48 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.53 |       0.61 |
+| `Locale.new`                         |        0.35 |       0.92 |
+| `Locale.new(options)`                |        1.80 |       4.87 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.34 |
+| `Locale.new.language`                |        0.43 |       1.25 |
+| `Locale.new.toString`                |        0.40 |       0.98 |
+| `Locale.language`                    |        0.08 |       0.09 |
+| `Locale.new(Locale)`                 |        0.32 |       0.94 |
+| `Locale.new(diverse)`                |        4.61 |       1.41 |
+| `Locale.new(long)`                   |        5.98 |       3.79 |
+| `PluralRules.new`                    |        2.87 |       4.34 |
+| `PluralRules.new(options)`           |        6.35 |       4.72 |
+| `ListFormat.new`                     |        3.42 |       2.67 |
+| `ListFormat.new(fallback)`           |        4.27 |       3.52 |
+| `ListFormat.new(unsupported)`        |        4.39 |       3.66 |
+| `RelativeTimeFormat.new`             |       11.11 |       4.59 |
+| `RelativeTimeFormat.new(fallback)`   |       11.96 |       5.37 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
 Our ListFormat bridge preserves lone surrogates and reads array getters once;
 magrinj's shortcut does neither.
+
+Native registries retain prepared locale matchers rather than hashing all
+423 registered IDs per call. After the first nonexact request, a lazy raw-key
+index also replaces the linear exact-candidate scan. Registering new IDs
+invalidates both; replacing data under existing IDs keeps matching unchanged.
+First exact requests retain the cheap existing path. Distances, thresholds,
+registration-order ties and winning-request indices stay unchanged.
+
+Three-run medians against `427eb62d` cut ListFormat fallback construction from
+18.07 to 4.27 µs (76%), unsupported construction from 14.16 to 4.39 µs (69%),
+and RelativeTimeFormat fallback construction from 25.39 to 11.96 µs (53%).
+Optimized magrinj remains faster at 3.52, 3.66 and 5.37 µs respectively. Default
+ListFormat/RTF constructors and their steady string/parts formats move by
+1–3%; all raw cases remain in the results file. Constructor checks include resolved locales outside timing.
+
+The mixed `Locale.new(diverse)` control shifts from 3.94 to 4.61 µs, with
+overlapping run ranges. A separate paired control extracts that unchanged case
+and harness, running it as source against both optimized factories. Both isolated
+medians are 4.18 µs. The shift does not reproduce in isolation; the raw mixed
+results remain authoritative and the cause is unproven.
+
+The Rust probe isolates the old shared wrapper at 14.0 µs for `en-XX`, versus
+about 0.6 µs through the new registry snapshot. Exact `en` remains around 70 ns.
+Bypassing the scan without an index would make that exact path slower, so it is
+not used. The 1 kHz constructor profile reduces `listMatch` from 80% to 26% of
+self samples. Host frames aggregate C++ and Rust; canonicalization, JSON and
+record creation now account for much of the remaining cost.
 
 The [regional fixtures](../../conformance-tests/icu4j/locale-format-fixtures.tsv)
 pin Chinese output against ICU4J 78.1. At the magrinj revision above, `zh-TW`

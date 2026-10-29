@@ -1,4 +1,6 @@
-use formatjs_intl_locale::matcher::{best_fit, lookup, supported, without_unicode_extension};
+use formatjs_intl_locale::matcher::{
+    AvailableLocales, best_fit, lookup, supported, without_unicode_extension,
+};
 
 fn tags(values: &[&str]) -> Vec<String> {
     values.iter().map(|value| (*value).to_owned()).collect()
@@ -120,11 +122,14 @@ fn shared_matcher_keeps_icu_priority_and_variant_ties() {
     ] {
         let available = tags(&available);
         let requested = tags(&requested);
+        let owned = AvailableLocales::new(available.clone());
+        assert_eq!(owned.best_fit(&tags(&["abcdefgh"])).unwrap(), None);
         for _ in 0..2 {
             assert_eq!(
                 best_fit(&available, &requested).unwrap().as_deref(),
                 expected
             );
+            assert_eq!(owned.best_fit(&requested).unwrap().as_deref(), expected);
         }
     }
 }
@@ -166,6 +171,18 @@ fn native_matcher_agrees_with_icu4j_grid() {
         let expected = fields[4].parse::<isize>().unwrap();
         let actual =
             formatjs_intl_locale::matcher::best_fit_requested(&available, &requested).unwrap();
+        let owned = AvailableLocales::new(available.clone());
+        assert_eq!(
+            owned.best_fit_requested(&requested).unwrap(),
+            actual,
+            "{line}"
+        );
+        assert_eq!(owned.best_fit(&tags(&["abcdefgh"])).unwrap(), None);
+        assert_eq!(
+            owned.best_fit_requested(&requested).unwrap(),
+            actual,
+            "{line}"
+        );
         assert_eq!(
             actual
                 .as_ref()
@@ -180,4 +197,19 @@ fn native_matcher_agrees_with_icu4j_grid() {
         checked += 1;
     }
     assert!(checked >= 2_640);
+}
+
+#[test]
+fn owned_matching_refreshes_after_registration_and_keeps_request_index() {
+    let mut available = AvailableLocales::new(tags(&["en-US", "en"]));
+    let requested = tags(&["qzz", "en-AU-u-nu-arab"]);
+    assert_eq!(
+        available.best_fit_requested(&requested).unwrap(),
+        Some((1, "en-US".into()))
+    );
+    available.push("en-GB".into());
+    assert_eq!(
+        available.best_fit_requested(&requested).unwrap(),
+        Some((1, "en-GB".into()))
+    );
 }

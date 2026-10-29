@@ -1,5 +1,6 @@
 # gazelle:ignore
 
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 
 rolldown_bundle(
@@ -63,4 +64,16 @@ $(execpath @hermes//:hermesc) -O -emit-binary -out $(@D)/magrinj-bootstrap.hbc $
 cp $(execpath magrinj.LICENSE) $(@D)/magrinj-bootstrap.LICENSE
 """,
     tools = ["@hermes//:hermesc"],
+)
+
+rust_binary(
+    name = "matcher_probe",
+    srcs = ["matcher-probe.rs"],
+    crate_name = "hermes_matcher_probe",
+    edition = "2024",
+    deps = [
+        "//crates/intl_listformat:with_compiled_data",
+        "//crates/intl_locale",
+        "//crates/intl_localematcher",
+    ],
 )

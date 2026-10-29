@@ -11,7 +11,7 @@ use std::{
 pub struct Registry {
     data: BTreeMap<String, Data<LocaleData>>,
     explicit: BTreeSet<String>,
-    available: Vec<String>,
+    available: formatjs_intl_locale::matcher::AvailableLocales,
     default: Option<String>,
 }
 impl Registry {
@@ -52,11 +52,12 @@ impl Registry {
             .transpose()?;
         let matched = if lookup {
             requested.iter().enumerate().find_map(|(index, tag)| {
-                matcher::lookup(&self.available, std::slice::from_ref(tag))
+                matcher::lookup(self.available.as_slice(), std::slice::from_ref(tag))
                     .map(|locale| (index, locale))
             })
         } else {
-            matcher::best_fit_requested(&self.available, &requested)
+            self.available
+                .best_fit_requested(&requested)
                 .map_err(|_| Error::InvalidLocale)?
         };
         let (index, data_locale) = matched
@@ -195,10 +196,10 @@ impl Registry {
     }
 
     pub fn supported_locales(&self, requested: &[String]) -> Vec<String> {
-        matcher::supported(&self.available, requested)
+        matcher::supported(self.available.as_slice(), requested)
     }
     pub fn available_locales(&self) -> &[String] {
-        &self.available
+        self.available.as_slice()
     }
     pub fn default_locale(&self) -> Option<&str> {
         self.default.as_deref()
