@@ -1,0 +1,14 @@
+[package]
+name = "formatjs_intl_data"
+version = "0.1.0"
+edition = "2024"
+publish = true
+license = "BSD-3-Clause"
+description = "Build-selected locale records for native Intl"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+ciborium = "0.2.2"
+serde = "1.0"

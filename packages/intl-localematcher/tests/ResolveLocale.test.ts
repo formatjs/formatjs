@@ -1,5 +1,6 @@
 import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 import {expect, test} from 'vitest'
+import {runInNewContext} from 'node:vm'
 test('ResolveLocale', function () {
   expect(
     ResolveLocale(
@@ -154,4 +155,41 @@ test('canonicalizes calendar aliases before matching supported values', () => {
       () => 'en'
     )
   ).toMatchObject({locale: 'en', ca: 'islamic-civil'})
+})
+
+test('supported locale caches track array and Set mutations', () => {
+  for (const locales of [['en', 'fr'], new Set(['en', 'fr'])]) {
+    const resolve = () =>
+      ResolveLocale(
+        locales,
+        ['de'],
+        {localeMatcher: 'best fit'},
+        [],
+        {},
+        () => 'en'
+      ).locale
+    expect(resolve()).toBe('en')
+    if (locales instanceof Set) {
+      locales.delete('fr')
+      locales.add('de')
+    } else locales[1] = 'de'
+    expect(resolve()).toBe('de')
+    if (locales instanceof Set) locales.delete('de')
+    else locales.pop()
+    expect(resolve()).toBe('en')
+  }
+})
+
+test('supports Sets from another realm', () => {
+  const locales = runInNewContext('new Set(["en", "fr"])') as Set<string>
+  expect(
+    ResolveLocale(
+      locales,
+      ['fr'],
+      {localeMatcher: 'best fit'},
+      [],
+      {},
+      () => 'en'
+    ).locale
+  ).toBe('fr')
 })

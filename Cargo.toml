@@ -1,6 +1,22 @@
 [workspace]
 members = [
+  "crates/intl_localematcher",
+  "crates/intl_data",
+  "crates/intl_data_build",
   "crates/intl_getcanonicallocales",
+  "crates/intl_supportedvaluesof",
+  "crates/intl_locale",
+  "crates/intl_pluralrules",
+  "crates/intl_listformat",
+  "crates/intl_displaynames",
+  "crates/intl_segmenter",
+  "crates/intl_collator",
+  "crates/intl_numberformat",
+  "crates/intl_relativetimeformat",
+  "crates/intl_datetimeformat",
+  "crates/intl_durationformat",
+  "crates/intl_datetimeformat_calendars",
+  "crates/intl_hermes",
   "crates/icu_skeleton_parser",
   "crates/icu_messageformat_parser",
   "crates/icu_messageformat",
@@ -17,11 +33,13 @@ members = [
 resolver = "3"
 
 [workspace.dependencies]
+ciborium = "0.2.2"
 pretty_assertions = "1.4"
 pyo3 = { version = "0.29.2", features = ["abi3-py312"] }
 pythonize = "0.29.0"
 base64 = "0.23"
 icu_locale = "2.1"
+icu_plurals = "2.1"
 sha2 = "0.11"
 icu = "2.1"
 icu_provider = "2.1"

@@ -33,8 +33,10 @@ JSI APIs, with no Hermes VM changes.
 ### Standalone SDK and extension installation
 
 `//native/hermes/package:sdk` assembles SDK `0.1.0`, module
-`formatjs_intl_getcanonicallocales_hermes`. The archive contains public headers
-under `include/formatjs/`, C++ adapter source with its private wrapper include,
+`formatjs_intl_getcanonicallocales_hermes`. The existing module name is retained.
+Both canonicalization and supported-value enumeration use one Rust archive
+assembled by `crates/intl_hermes`. The SDK contains public headers under
+`include/formatjs/`, C++ adapter source with its private wrapper include,
 extension JavaScript, and Rust static archives for `x86_64-unknown-linux-gnu`
 and `aarch64-apple-darwin`. Package-local `with_cfg` transitions select optimized
 Rust builds; packaging targets are manual so root tests do not build every

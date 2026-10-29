@@ -1,5 +1,15 @@
 import {useState, type ReactElement, type ReactNode} from 'react'
-import type {EditorMessage} from '@formatjs/editor'
+import {
+  useTranslationEditor,
+  resolveSourceLocationHref,
+  type EditorMessage,
+} from '@formatjs/editor'
+import {
+  TranslationEditorView,
+  EditorDesignSystemProvider,
+  MessageContext,
+} from '@formatjs/editor/ui'
+import {stylexEditorComponents} from '../demo/design-system/editor-components.js'
 import type {
   ComponentVisualModule,
   ComponentVisual,
@@ -86,6 +96,127 @@ export function WorkflowFixture(): ReactElement {
   )
 }
 
+const projects = [
+  {id: 'web', label: 'Web app'},
+  {id: 'mobile', label: 'Mobile app'},
+]
+const projectMessages: Record<string, EditorMessage[]> = {
+  web: [
+    {
+      id: 'welcome',
+      defaultMessage: 'Welcome, {name}',
+      translations: {fr: 'Bonjour, {name}'},
+      catalogs: ['homepage'],
+      sources: ['main', 'release/2026.10'],
+      description: 'Greeting shown after sign-in',
+      locations: [
+        {
+          file: 'src/home.tsx',
+          start: 12,
+          end: 18,
+          repository: 'acme/web',
+          revision: 'main',
+        },
+      ],
+    },
+    {
+      id: 'checkout',
+      defaultMessage: 'Proceed to checkout',
+      translations: {},
+      sources: ['release/2026.10'],
+    },
+    {
+      id: 'legacy',
+      defaultMessage: 'Legacy message without source metadata',
+      translations: {},
+    },
+  ],
+  mobile: [
+    {
+      id: 'settings',
+      defaultMessage: 'Open settings',
+      translations: {fr: 'Ouvrir les paramètres'},
+      sources: ['android', 'ios'],
+      locations: [
+        {
+          file: 'src/settings.tsx',
+          start: 42,
+          repository: 'acme/mobile',
+          revision: 'release',
+        },
+      ],
+    },
+  ],
+}
+
+export function ProjectsFixture(): ReactElement {
+  const [project, setProject] = useState('web')
+  const [blocked, setBlocked] = useState(false)
+  const workflow = useTranslationEditor({
+    projects,
+    project,
+    onProjectChange: setProject,
+    messages: projectMessages[project],
+    locales: ['fr'],
+    onSave: () => {},
+  })
+  const selected = workflow.selectedMessage
+  const draft = selected && workflow.getTranslation(selected.id, 'fr')
+  return (
+    <EditorDesignSystemProvider components={stylexEditorComponents}>
+      <TranslationEditorView
+        projects={{
+          projects,
+          value: workflow.project?.id,
+          onChange: id => {
+            setBlocked(workflow.setProject(id).status === 'blocked')
+          },
+        }}
+        sourceFilter={{
+          sources: workflow.sources,
+          value: workflow.source,
+          onChange: workflow.setSource,
+        }}
+        messages={workflow.pageMessages.map(message =>
+          projectMessages[project].find(value => value.id === message.id)!
+        )}
+        selectedMessage={selected}
+        onSelect={workflow.editor.selectMessage}
+        search={{
+          value: workflow.editor.query,
+          onValueChange: workflow.editor.setQuery,
+        }}
+        translations={
+          draft ? [{locale: 'fr', label: 'French translation', draft}] : []
+        }
+        notice={
+          blocked && (
+            <p role="alert">
+              Reset unsaved translations before switching projects.
+            </p>
+          )
+        }
+        context={
+          <MessageContext
+            message={selected}
+            copySources
+            renderLocation={(location, text) => (
+              <a
+                href={resolveSourceLocationHref(location, {
+                  baseUrl:
+                    'https://git.example.com/{repository}/blob/{revision}',
+                })}
+              >
+                {text}
+              </a>
+            )}
+          />
+        }
+      />
+    </EditorDesignSystemProvider>
+  )
+}
+
 const frame = (): Promise<void> =>
   new Promise(resolve => requestAnimationFrame(() => resolve()))
 async function fillTranslation(
@@ -106,8 +237,12 @@ async function select(label: string, value: string): Promise<void> {
   const element = [...document.querySelectorAll('label')].find(
     element => element.firstChild?.textContent?.trim() === label
   )
-  if (!element) throw new Error(`Missing control: ${label}`)
-  const input = document.getElementById(element.htmlFor) as HTMLSelectElement
+  const input = element
+    ? (document.getElementById(element.htmlFor) as HTMLSelectElement)
+    : [...document.querySelectorAll('select')].find(
+        input => input.getAttribute('aria-label') === label
+      )
+  if (!input) throw new Error(`Missing control: ${label}`)
   input.value = value
   input.dispatchEvent(new Event('change', {bubbles: true}))
   await frame()
@@ -137,6 +272,54 @@ const visualModule: ComponentVisualModule<ReactNode> = {
   renderShell: children => <div id="editor-root">{children}</div>,
   visuals: (
     [
+      {
+        visualId: 'projects',
+        name: 'Projects and sources',
+        render: () => (
+          <EditorTestShell>
+            <ProjectsFixture />
+          </EditorTestShell>
+        ),
+        vrt: {screenshotName: 'editor-projects'},
+      },
+      {
+        visualId: 'projects-filtered',
+        name: 'Filtered project sources',
+        render: () => (
+          <EditorTestShell>
+            <ProjectsFixture />
+          </EditorTestShell>
+        ),
+        beforeCapture: () => select('Source', 'release/2026.10'),
+        vrt: {screenshotName: 'editor-projects-filtered'},
+      },
+      {
+        visualId: 'projects-switched',
+        name: 'Switched project',
+        render: () => (
+          <EditorTestShell>
+            <ProjectsFixture />
+          </EditorTestShell>
+        ),
+        beforeCapture: async () => {
+          await select('Source', 'release/2026.10')
+          await select('Project', 'mobile')
+        },
+        vrt: {screenshotName: 'editor-projects-switched'},
+      },
+      {
+        visualId: 'projects-mobile-rtl',
+        name: 'Narrow RTL projects and sources',
+        render: () => (
+          <EditorTestShell direction="rtl">
+            <ProjectsFixture />
+          </EditorTestShell>
+        ),
+        vrt: {
+          screenshotName: 'editor-projects-mobile-rtl',
+          viewport: {width: 390, height: 844},
+        },
+      },
       {
         visualId: 'tools',
         name: 'Reusable tools',

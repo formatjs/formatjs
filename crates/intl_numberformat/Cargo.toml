@@ -1,0 +1,33 @@
+[package]
+name = "formatjs_intl_numberformat"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "ECMA-402 NumberFormat with on-demand CLDR locale data"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = true
+
+[lib]
+path = "lib.rs"
+
+[features]
+compiled_data = []
+
+[dependencies]
+formatjs_intl_data = { path = "../intl_data", version = "0.1.0" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.1.0" }
+formatjs_intl_locale = { path = "../intl_locale", version = "0.1.0" }
+formatjs_intl_pluralrules = { path = "../intl_pluralrules", version = "0.1.0" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+icu_properties = "2.3"
+regex = "1.12"
+
+[[example]]
+name = "pack_conformance"
+path = "pack_conformance.rs"
+
+[[example]]
+name = "conformance"
+path = "conformance.rs"

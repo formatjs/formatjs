@@ -12,7 +12,7 @@ Polyfill for `Intl.Locale` — provides locale information and manipulation, inc
 
 ## CLDR Data Pipeline
 
-This package has the most diverse CLDR source requirements — 6 separate extraction scripts for different data domains.
+This package has seven extraction scripts for its CLDR preference data.
 
 ### Sources
 
@@ -21,6 +21,7 @@ This package has the most diverse CLDR source requirements — 6 separate extrac
 | `cldr-core`             | calendarPreferenceData.json, territoryInfo.json, weekData.json, timeData.json, aliases.json, likelySubtags.json |
 | `cldr-localenames-full` | Character order data (collation)                                                                                |
 | `cldr-numbers-full`     | Default numbering systems per locale                                                                            |
+| `cldr-common`           | properties/scriptMetadata.txt (script direction)                                                                |
 | `cldr-bcp47`            | timezone.json (territory → timezone mapping)                                                                    |
 
 ### Extraction Scripts (`scripts/`)
@@ -36,7 +37,7 @@ This package has the most diverse CLDR source requirements — 6 separate extrac
 
 ### Build Pipeline
 
-6 independent `generate_src_file` targets, each producing one `.generated.ts`:
+Seven `generate_package_file` targets produce data in the generated CLDR locale package:
 
 ```
 calendars.ts          → calendars.generated.ts
@@ -45,6 +46,7 @@ hour-cycles.ts        → hour-cycles.generated.ts
 timezones.ts          → timezones.generated.ts
 character-orders.ts   → character-orders.generated.ts
 numbering-systems.ts  → numbering-systems.generated.ts
+script-directions.ts → script-directions.ts
 ```
 
 ### Runtime Loading
@@ -100,3 +102,45 @@ It only searches likely-subtag candidates for the requested language.
 `getCollations()` filters global candidates through the requested locale. An
 explicit `co` extension returns that value; an unmatched locale returns
 `emoji` and `eor`.
+
+## Information semantics
+
+`getTextInfo()` uses the explicit script, otherwise the likely script. Unrelated
+extensions cannot change direction. Unknown or unoriented scripts produce an
+own `direction: undefined` property; its return type reflects this possibility.
+The direction table comes from the pinned CLDR common archive's
+`common/properties/scriptMetadata.txt` through `scripts/script-directions.ts`.
+
+`getNumberingSystems()` returns an explicit `nu` restriction, otherwise only the
+matched NumberFormat locale's default system. Missing support falls back to
+`latn`. It no longer returns every CLDR alternative numbering system.
+
+`getTimeZones()` removes duplicate canonical identifiers. Canonicalization
+tries language likely subtags when a language-script entry is absent while
+resolving deprecated territories; `hye-Latn-SU` becomes `hy-Latn-AM`.
+
+## Rust port
+
+`crates/intl_locale` shares generated CLDR preference data and ICU4X-backed
+canonicalization with the canonical-locale leaf crate. Likely-subtag trials
+preserve variants/extensions and leave unmatched languages unchanged.
+
+`//packages/intl-locale:rust_conformance_test` compares complete Rust records
+with TypeScript, using real NumberFormat/Collator observations. Native builds
+and tests run on Linux. `native/hermes/locale.ts` supplies JS brands, coercion,
+prototype fallback and descriptors; its C++ HostObject owns an opaque Rust handle.
+
+Rust canonicalizes the input once, repeating only after language or Unicode
+options change it. ABI queries serialize typed values directly, avoiding an
+intermediate JSON tree when Hermes reads Locale properties.
+
+`//native/hermes/tests:locale_conformance_test` compares the installed Rust API
+against TS over full records and observable constructor/method behavior. It loads
+Bengali NumberFormat data after creating a Locale, verifying per-call capability
+queries. `//native/hermes/package:sdk` exports the `:locale` adapter and
+`32-IntlLocale.js`; the independent consumer exercises precompiled setup on
+Linux and is cross-built there for macOS smoke-only execution.
+
+Install canonicalization, trusted formatter backends, supportedValuesOf, Locale,
+then reinstall canonicalization to capture the new Locale brand. No global
+formatter capability cache is retained.

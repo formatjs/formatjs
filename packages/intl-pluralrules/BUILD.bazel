@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
@@ -154,6 +155,13 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-pluralrules/scripts:cldr-raw",
+    visibility = [
+        "//crates/intl_durationformat/tests:__pkg__",
+        "//crates/intl_numberformat/tests:__pkg__",
+        "//crates/intl_pluralrules/tests:__pkg__",
+        "//crates/intl_relativetimeformat/tests:__pkg__",
+        "//native/hermes/tests:__pkg__",
+    ],
 )
 
 ts_run_binary(
@@ -255,4 +263,10 @@ rolldown_bundle(
         "//packages/ecma402-abstract/PluralRules",
         "//packages/ecma402-abstract/types",
     ],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + TEST_LOCALE_DATA + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

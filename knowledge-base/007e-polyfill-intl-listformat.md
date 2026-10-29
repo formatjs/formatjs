@@ -65,3 +65,29 @@ Stage 3: supported-locales.generated.ts
 `format` and `formatToParts` accept iterables of strings, including a string's
 individual code points. `undefined` produces an empty list. Non-iterables and
 non-string elements throw `TypeError`; an invalid element also closes the iterator.
+
+## Rust port
+
+`crates/intl_listformat` compiles caller-loaded CLDR patterns and implements
+CreatePartsFromList, DeconstructPattern and FormatList. UTF-16 units preserve
+lone surrogates. Iterative pattern expansion avoids recursive stack growth and
+quadratic copying. The shared Rust Locale matcher negotiates registered packs;
+late registration leaves existing instances unchanged.
+
+`//crates/intl_listformat:locale_data` wraps the existing TS extraction in
+versioned per-locale JSON packs, including default-content aliases. The
+differential suite compares every locale/type/style against the public TS
+formatter. The Hermes facade handles observable option access and iteration;
+owned C ABI handles retain data independently of the registry. Source and
+optimized-bytecode conformance also checks brands, subclassing, IteratorClose,
+captured intrinsics and fresh results. SDK consumers select independent JSON
+packs and link the `:listformat` adapter against the shared Rust archive.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).

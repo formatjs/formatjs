@@ -1,0 +1,89 @@
+export {}
+
+declare function print(value: string): void
+
+const api = Intl as any
+let assertions = 0
+let formatter = ''
+function equal(actual: unknown, expected: unknown): void {
+  assertions++
+  if (JSON.stringify(actual) !== JSON.stringify(expected))
+    throw new Error(
+      `${formatter}: ${JSON.stringify(actual)} !== ${JSON.stringify(expected)}`
+    )
+}
+const kinds: string[] = []
+for (const [kind, name] of Object.entries({
+  pluralrules: 'PluralRules',
+  listformat: 'ListFormat',
+  displaynames: 'DisplayNames',
+  numberformat: 'NumberFormat',
+  relativetimeformat: 'RelativeTimeFormat',
+  datetimeformat: 'DateTimeFormat',
+  durationformat: 'DurationFormat',
+})) {
+  if (!api[name]?.polyfilled) continue
+  formatter = name
+  const included = [
+    'en',
+    'fr-CA',
+    'en-AU',
+    'de',
+    'es-MX',
+    'ja',
+    'zh-TW',
+    'sr-Latn',
+  ]
+  equal(api[name].supportedLocalesOf(included), included)
+  if (kind !== 'durationformat')
+    equal(api[name].supportedLocalesOf(['aa', 'agq', 'ak', 'az']), [])
+  kinds.push(kind)
+}
+if (api.NumberFormat?.polyfilled) {
+  equal(new api.NumberFormat('fr-CA').resolvedOptions().locale, 'fr-CA')
+  equal(new api.NumberFormat('fr-CA').format(1234.5), '1\u00a0234,5')
+}
+if (api.DurationFormat?.polyfilled)
+  equal(
+    new api.DurationFormat('fr', {style: 'long'}).format({hours: 2}),
+    '2\u00a0heures'
+  )
+if (api.DisplayNames?.polyfilled)
+  equal(new api.DisplayNames('zh-TW', {type: 'region'}).of('US'), '美國')
+for (const [locale, list, week, quarter, region, weekday, hour] of (
+  globalThis as any
+).__LOCALE_FORMAT_FIXTURES as string[][]) {
+  formatter = locale
+  if (api.ListFormat?.polyfilled)
+    equal(new api.ListFormat(locale).format(['A', 'B', 'C']), list)
+  if (api.RelativeTimeFormat?.polyfilled) {
+    const relative = new api.RelativeTimeFormat(locale)
+    equal(relative.format(-3, 'week'), week)
+    equal(relative.format(-3, 'quarter'), quarter)
+  }
+  if (api.DisplayNames?.polyfilled)
+    equal(new api.DisplayNames(locale, {type: 'region'}).of('US'), region)
+  if (api.DateTimeFormat?.polyfilled)
+    equal(
+      new api.DateTimeFormat(locale, {
+        weekday: 'short',
+        timeZone: 'UTC',
+      }).format(0),
+      weekday
+    )
+  if (api.NumberFormat?.polyfilled)
+    equal(
+      new api.NumberFormat(locale, {
+        style: 'unit',
+        unit: 'hour',
+        unitDisplay: 'long',
+      }).format(3),
+      hour
+    )
+  if (api.DurationFormat?.polyfilled)
+    equal(
+      new api.DurationFormat(locale, {style: 'long'}).format({hours: 3}),
+      hour
+    )
+}
+print(JSON.stringify({type: 'compiled-locales', kinds, assertions}))

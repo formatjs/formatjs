@@ -469,3 +469,18 @@ it('accepts infinite range endpoints but still rejects NaN', () => {
   expect(() => rules.selectRange(NaN, 2)).toThrow(RangeError)
   expect(() => rules.selectRange(2, NaN)).toThrow(RangeError)
 })
+
+it('parses StringNumericLiteral before exact mathematical rounding', () => {
+  const french = new PluralRules('fr')
+  for (const value of ['.', '--1', '1e3junk', '+0x1', '1e9999'])
+    expect(french.select(value as any), value).toBe('other')
+  const ordinal = new PluralRules('en', {type: 'ordinal'})
+  expect(ordinal.select('0x20000000000001' as any)).toBe('few')
+  expect(ordinal.select('0xDEAD1' as any)).toBe('one')
+  const ceil = new PluralRules('en', {
+    roundingMode: 'ceil',
+    maximumFractionDigits: 0,
+  })
+  expect(ceil.select('1e-9999' as any)).toBe('other')
+  expect(french.select(' \uFEFF ' as any)).toBe('one')
+})

@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
@@ -11,6 +12,8 @@ load(":locales.generated.bzl", "ALL_LOCALES")
 PACKAGE_NAME = "intl-displaynames"
 
 TEST_LOCALES = [
+    "aa",
+    "agq",
     "en",
     "zh",
 ]
@@ -81,6 +84,8 @@ formatjs_test(
         "tests/IsValidDateTimeFieldCode.test.ts",
         "tests/index.test.ts",
         "tests/should-polyfill.test.ts",
+        ":tests-locale-data-aa",  # keep: sparse CLDR locale regression
+        ":tests-locale-data-agq",  # keep: sparse CLDR locale regression
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-zh",  # keep: generated locale data imported by tests
     ],
@@ -131,6 +136,10 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-displaynames/scripts:cldr-raw",
+    visibility = [
+        "//crates/intl_displaynames:__subpackages__",
+        "//native/hermes/tests:__pkg__",
+    ],
 )
 
 ts_run_binary(
@@ -223,4 +232,10 @@ rolldown_bundle(
         "//packages/ecma402-abstract/DisplayNames",
         "//packages/ecma402-abstract/types",
     ],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES] + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

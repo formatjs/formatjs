@@ -5,8 +5,10 @@ import {invariant} from '#packages/ecma402-abstract/utils.js'
 
 import {IsValidDateTimeFieldCode} from '#packages/ecma402-abstract/DisplayNames/IsValidDateTimeFieldCode.js'
 
-const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
-const ALPHA_4 = /^[a-z]{4}$/i
+// Match the complete code, including trailing line terminators.
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L239-L244
+const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})(?![\s\S])/i
+const ALPHA_4 = /^[a-z]{4}(?![\s\S])/i
 
 function isUnicodeRegionSubtag(region: string): boolean {
   return UNICODE_REGION_SUBTAG_REGEX.test(region)

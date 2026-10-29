@@ -8,7 +8,10 @@
   "changelog-type": "default",
   "bootstrap-sha": "482c8e224b2582b554e3f4b0718fe2332c4b5cff",
   "sequential-calls": true,
-  "exclude-paths": ["**/tests/**", "**/*.md"],
+  "exclude-paths": [
+    "**/tests/**",
+    "**/*.md"
+  ],
   "packages": {
     "packages/babel-plugin-formatjs": {
       "component": "babel-plugin-formatjs",
@@ -736,6 +739,125 @@
       ],
       "package-name": "@formatjs/intl-datetimeformat-calendar-dangi",
       "version-file": "BUILD.bazel"
+    },
+    "crates/intl_collator": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_data": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_data_build": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_datetimeformat": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_datetimeformat_calendars": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_displaynames": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_durationformat": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_getcanonicallocales": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_hermes": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_listformat": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_locale": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_localematcher": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_numberformat": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_pluralrules": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_relativetimeformat": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_segmenter": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
+    "crates/intl_supportedvaluesof": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
     }
   },
   "plugins": [

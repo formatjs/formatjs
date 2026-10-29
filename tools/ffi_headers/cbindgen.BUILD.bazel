@@ -1,0 +1,31 @@
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+
+exports_files([
+    "Cargo.toml",
+    "Cargo.lock",
+])
+
+rust_library(
+    name = "cbindgen",
+    srcs = glob(
+        ["src/**/*.rs"],
+        exclude = ["src/main.rs"],
+    ),
+    crate_name = "cbindgen",
+    crate_root = "src/lib.rs",
+    edition = "2021",
+    rustc_env = {"CARGO_PKG_VERSION": "0.29.4"},
+    visibility = ["//visibility:public"],
+    deps = [
+        "@cbindgen_crates//:heck",
+        "@cbindgen_crates//:indexmap",
+        "@cbindgen_crates//:log",
+        "@cbindgen_crates//:proc-macro2",
+        "@cbindgen_crates//:quote",
+        "@cbindgen_crates//:serde",
+        "@cbindgen_crates//:serde_json",
+        "@cbindgen_crates//:syn",
+        "@cbindgen_crates//:tempfile",
+        "@cbindgen_crates//:toml",
+    ],
+)

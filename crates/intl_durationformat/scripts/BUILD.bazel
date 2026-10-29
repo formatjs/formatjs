@@ -1,0 +1,23 @@
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "metadata",
+    entry_point = "metadata.ts",
+    tsconfig_types = ["node"],
+    visibility = ["//crates/intl_durationformat:__pkg__"],
+    deps = [":scripts"],
+)
+
+formatjs_library(
+    name = "scripts",
+    srcs = ["metadata.ts"],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+)

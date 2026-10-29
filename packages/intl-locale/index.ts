@@ -24,11 +24,10 @@ import {
   parseUnicodeLanguageId,
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
-import {characterOrders} from '@formatjs_generated/cldr.locale/character-orders.js'
+import {scriptDirections} from '@formatjs_generated/cldr.locale/script-directions.js'
 import getInternalSlots, {
   getInternalSlotsIfPresent,
 } from '#packages/intl-locale/get_internal_slots.js'
-import {numberingSystems} from '@formatjs_generated/cldr.locale/numbering-systems.js'
 import {
   getCalendarPreferenceDataForRegion,
   getHourCyclesPreferenceDataForLocaleOrRegion,
@@ -36,7 +35,6 @@ import {
   getWeekDataForRegion,
 } from '#packages/intl-locale/preference-data.js'
 
-import type {CharacterOrder} from '@formatjs_generated/cldr.locale/character-orders.js'
 import type {WeekInfoInternal} from '#packages/intl-locale/preference-data.js'
 
 export interface IntlLocaleOptions {
@@ -417,20 +415,21 @@ function numberingSystemsOfLocale(loc: Locale): Array<string> {
 
   const restricted = locInternalSlots.numberingSystem
   const locale = locInternalSlots.locale
-  const language = loc.language
-
-  const localeNumberingSystems =
-    numberingSystems[locale as keyof typeof numberingSystems] ??
-    numberingSystems[language as keyof typeof numberingSystems]
-
-  if (localeNumberingSystems) {
-    return createArrayFromListOrRestricted(
-      [...localeNumberingSystems],
-      restricted
-    )
+  // NumberingSystemsOfLocale 1–5 returns the explicit extension or the matched
+  // NumberFormat locale's default system, with latn when no locale matches.
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L715-L727
+  if (restricted !== undefined) return [restricted]
+  const NumberFormat = Intl.NumberFormat
+  if (
+    typeof NumberFormat !== 'function' ||
+    !NumberFormat.supportedLocalesOf([locale], {localeMatcher: 'lookup'}).length
+  ) {
+    return ['latn']
   }
-
-  return createArrayFromListOrRestricted([], restricted)
+  return [
+    new NumberFormat(locale, {localeMatcher: 'lookup'}).resolvedOptions()
+      .numberingSystem,
+  ]
 }
 
 function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
@@ -449,17 +448,15 @@ function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
   return Array.from(preferredTimeZones)
 }
 
-function translateCharacterOrder(order: CharacterOrder | undefined): string {
-  if (order === 'right-to-left') {
-    return 'rtl'
-  }
-
-  return 'ltr'
-}
-
-function characterDirectionOfLocale(loc: Locale): string {
-  const locale = loc.minimize().toString() as keyof typeof characterOrders
-  return translateCharacterOrder(characterOrders[locale])
+function characterDirectionOfLocale(loc: Locale): string | undefined {
+  // TextDirectionOfLocale 1–6: use the explicit script, otherwise likely script;
+  // unknown or unoriented scripts return undefined. Extensions do not matter.
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L758-L767
+  const locale = getInternalSlots(loc).locale
+  const script =
+    parseUnicodeLanguageId(locale).script ||
+    parseUnicodeLanguageId(addLikelySubtags(locale)).script
+  return script ? scriptDirections[script] : undefined
 }
 
 function regionPreference(loc: Locale): {
@@ -837,7 +834,7 @@ export class Locale {
    * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo
    */
   public getTextInfo(): {
-    direction: string
+    direction: string | undefined
   } {
     const info = Object.create(Object.prototype)
     const dir = characterDirectionOfLocale(this)

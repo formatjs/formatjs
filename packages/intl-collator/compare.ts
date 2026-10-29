@@ -16,7 +16,6 @@ import {
   type PackedLDMLRule,
 } from '@formatjs_generated/cldr.collation/tailoring.js'
 
-const COMBINING_MARKS = /[\u0300-\u036f]/g
 const ASCII_DIGIT_RUN = /[0-9]+/g
 const IMPORT_COLLATION_RE = /^(.+)-u-co-([a-z0-9-]+)$/i
 const LEADING_ZERO_RE = /^0+/
@@ -30,19 +29,11 @@ function normalize(input: string): string {
   return typeof input.normalize === 'function' ? input.normalize('NFD') : input
 }
 
-function stripMarks(input: string): string {
-  return input.replace(COMBINING_MARKS, '')
-}
-
-// Implements ECMA-402 sensitivity by dropping marks/case before UCA lookup:
-// base ignores marks and case, accent ignores case, case ignores marks, and
-// variant keeps all levels. caseFirst keeps original case for its tie-breaker.
-// https://tc39.es/ecma402/#sec-properties-of-intl-collator-instances
+// Normalize before tailoring. Sensitivity selects UCA levels; deleting marks
+// first would erase locale primary letters such as Swedish ä.
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L247-L288
 function prepare(input: string, slots: IntlCollatorInternal): string {
   let result = normalize(input)
-  if (slots.sensitivity === 'base' || slots.sensitivity === 'case') {
-    result = stripMarks(result)
-  }
   if (
     slots.sensitivity === 'base' ||
     slots.sensitivity === 'accent' ||
@@ -423,40 +414,47 @@ function collationElements(
   return elements
 }
 
-function levelCount(slots: IntlCollatorInternal): number {
-  // ECMA-402 sensitivity selects how many UCA levels participate in
-  // CompareStrings: base=primary, accent=primary+secondary,
-  // case/variant include tertiary handling in this compact implementation.
-  // https://tc39.es/ecma402/#sec-properties-of-intl-collator-instances
+function comparisonLevels(slots: IntlCollatorInternal): readonly number[] {
   switch (slots.sensitivity) {
     case 'base':
-      return 1
+      return [0]
     case 'accent':
-      return 2
+      return [0, 1]
     case 'case':
-      return 3
+      return [0, 2]
     default:
-      return 4
+      return [0, 1, 2, 3]
   }
 }
 
 function compareCollationElements(
   left: readonly PackedCollationElement[],
   right: readonly PackedCollationElement[],
-  levels: number,
-  ignoreVariable: boolean
+  levels: readonly number[],
+  ignoreVariable: boolean,
+  caseOnly: boolean
 ): number {
   // UCA compares level by level. ignorePunctuation maps to shifted handling for
   // variable elements, approximated here by filtering variable weights.
   // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison
   // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
-  for (let level = 0; level < levels; level++) {
+  for (const level of levels) {
+    // A secondary-only accent CE does not contribute a case weight.
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L273-L276
     const leftWeights = left
-      .filter(element => !ignoreVariable || (element[4] & 1) === 0)
+      .filter(
+        element =>
+          (!ignoreVariable || (element[4] & 1) === 0) &&
+          !(caseOnly && level === 2 && element[0] === 0)
+      )
       .map(element => element[level])
       .filter(weight => weight !== 0)
     const rightWeights = right
-      .filter(element => !ignoreVariable || (element[4] & 1) === 0)
+      .filter(
+        element =>
+          (!ignoreVariable || (element[4] & 1) === 0) &&
+          !(caseOnly && level === 2 && element[0] === 0)
+      )
       .map(element => element[level])
       .filter(weight => weight !== 0)
     const length = Math.max(leftWeights.length, rightWeights.length)
@@ -485,8 +483,9 @@ function comparePreparedStrings(
   return compareCollationElements(
     collationElements(left, tailoring),
     collationElements(right, tailoring),
-    levelCount(slots),
-    slots.ignorePunctuation
+    comparisonLevels(slots),
+    slots.ignorePunctuation,
+    slots.sensitivity === 'case'
   )
 }
 
@@ -517,6 +516,15 @@ function compareNumeric(
     const leftNumber = leftDigits[i]
     const rightNumber = rightDigits[i]
     if (leftNumber === undefined || rightNumber === undefined) {
+      // An unmatched digit run still participates; ignoring it makes equality
+      // non-transitive ("x" = "x1", "x" = "x2", but "x1" < "x2").
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L295
+      const result = comparePreparedStrings(
+        leftNumber || '',
+        rightNumber || '',
+        slots
+      )
+      if (result) return result
       continue
     }
 
@@ -546,29 +554,29 @@ function compareCaseFirst(
   locale: string,
   caseFirst: IntlCollatorInternal['caseFirst']
 ): number {
-  if (caseFirst === 'false') {
-    return 0
-  }
-  const length = Math.min(left.length, right.length)
-  for (let i = 0; i < length; i++) {
-    const leftChar = left.charAt(i)
-    const rightChar = right.charAt(i)
-    const lowerLeft = leftChar.toLocaleLowerCase(locale)
-    const lowerRight = rightChar.toLocaleLowerCase(locale)
-    if (lowerLeft !== lowerRight) {
-      continue
+  if (caseFirst === 'false') return 0
+  // Canonical equivalents need identical tie-break keys. A lexicographic key
+  // also avoids pair-dependent equality when case mapping expands characters.
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L295
+  function key(input: string): number[] {
+    const result: number[] = []
+    for (const value of normalize(input)) {
+      const lower = value.toLocaleLowerCase(locale)
+      const upper = value.toLocaleUpperCase(locale)
+      if (lower !== upper)
+        result.push(value === lower ? 0 : value === upper ? 2 : 1)
     }
-    const leftIsUpper = leftChar !== lowerLeft
-    const rightIsUpper = rightChar !== lowerRight
-    if (leftIsUpper !== rightIsUpper) {
-      // ECMA-402 caseFirst / Unicode extension kf determines whether upper or
-      // lower case sorts first once base collation weights compare equal.
-      // https://tc39.es/ecma402/#sec-initializecollator
-      const upperResult = leftIsUpper ? -1 : 1
-      return caseFirst === 'upper' ? upperResult : -upperResult
-    }
+    return result
   }
-  return 0
+  const leftKey = key(left),
+    rightKey = key(right)
+  const length = Math.min(leftKey.length, rightKey.length)
+  let result = 0
+  for (let index = 0; index < length && !result; index++)
+    result = compareNumbers(leftKey[index], rightKey[index])
+  if (!result) result = compareNumbers(leftKey.length, rightKey.length)
+  if (!result) return 0
+  return caseFirst === 'upper' ? -result : result
 }
 
 export function compareCollatorStrings(
@@ -587,5 +595,9 @@ export function compareCollatorStrings(
   if (result) {
     return result
   }
-  return compareCaseFirst(x, y, slots.locale, slots.caseFirst)
+  // base/accent must ignore case even when caseFirst is requested.
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L261-L270
+  return slots.sensitivity === 'base' || slots.sensitivity === 'accent'
+    ? 0
+    : compareCaseFirst(x, y, slots.locale, slots.caseFirst)
 }

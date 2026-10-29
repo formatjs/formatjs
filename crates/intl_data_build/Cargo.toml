@@ -1,0 +1,22 @@
+[package]
+name = "formatjs_intl_data_build"
+version = "0.1.0"
+edition = "2024"
+publish = true
+license = "BSD-3-Clause"
+description = "Rust locale validation and native data compilation"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+formatjs_intl_locale = { path = "../intl_locale", version = "0.1.0" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.1.0" }
+formatjs_intl_data = { path = "../intl_data", version = "0.1.0" }
+ciborium = "0.2.2"
+icu_plurals = { version = "2.1", default-features = false, features = [
+  "serde",
+  "unstable",
+] }
+serde = "1.0"
+serde_json = { version = "1.0", features = ["preserve_order"] }

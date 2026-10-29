@@ -14,9 +14,13 @@ import {
   LocalePicker,
   MessageContext,
   MessagePreview,
+  nativeEditorComponents,
   type EditorComponents,
 } from '#packages/editor/ui.js'
-import {hasMeaningfulIcuStructure} from '#packages/editor/index.js'
+import {
+  hasMeaningfulIcuStructure,
+  resolveSourceLocationHref,
+} from '#packages/editor/index.js'
 
 const RAW = 'Hello\n  {name}'
 const NEXT = 'Bonjour\n {name}'
@@ -349,5 +353,158 @@ describe('preview and context', () => {
     rerender(tree(false))
     expect(context.queryByText('example')).toBeNull()
     expect(context.queryByRole('button')).toBeNull()
+  })
+
+  it('renders sources beside catalogs with copy controls and omits the row without sources', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    const message = {
+      id: 'example',
+      catalogs: ['web'],
+      sources: ['main', 'release'],
+      locations: [{file: 'Greeting.tsx', start: 0, end: 8}, {file: 'other.ts'}],
+    }
+    const {rerender, container} = render(
+      <MessageContext message={message} copyOptions={{writeText}} copySources />
+    )
+    const context = within(screen.getByLabelText('Message context'))
+    const terms = [...container.querySelectorAll('dt')].map(
+      term => term.textContent
+    )
+    expect(terms).toEqual([
+      'Message ID',
+      'Source catalogs',
+      'Sources',
+      'Source locations',
+    ])
+    expect(context.getByText('release')).toBeTruthy()
+    expect(
+      context.queryByRole('button', {name: 'Copy source catalog web'})
+    ).toBeNull()
+    await act(async () =>
+      fireEvent.click(context.getByRole('button', {name: 'Copy source main'}))
+    )
+    expect(writeText).toHaveBeenCalledExactlyOnceWith('main')
+    rerender(
+      <MessageContext
+        message={{...message, sources: []}}
+        labels={{sources: 'Streams', sourceCopy: source => `stream ${source}`}}
+        copySources
+      />
+    )
+    expect(context.queryByText('Sources')).toBeNull()
+    expect(context.queryByText('Streams')).toBeNull()
+    expect(context.queryByText('main')).toBeNull()
+    rerender(<MessageContext message={{id: 'example', sources: ['main']}} />)
+    expect(context.getByText('Sources')).toBeTruthy()
+    expect(context.getByText('main')).toBeTruthy()
+    expect(context.queryByRole('button', {name: 'Copy source main'})).toBeNull()
+  })
+
+  it('renders location metadata as text by default and links only through the resolver', () => {
+    const location = {
+      file: 'src/Greeting.tsx',
+      start: 4,
+      end: 9,
+      source: 'release',
+      repository: 'acme/web',
+      revision: 'v2.0.0',
+    }
+    const {rerender, container} = render(
+      <MessageContext message={{id: 'example', locations: [location]}} />
+    )
+    expect(screen.getByText('src/Greeting.tsx:4–9')).toBeTruthy()
+    expect(container.querySelector('a')).toBeNull()
+    rerender(
+      <MessageContext
+        message={{id: 'example', locations: [location]}}
+        renderLocation={(value, text) => {
+          const href = resolveSourceLocationHref(value, {
+            baseUrl: 'https://git.example.com/{repository}/blob/{revision}',
+          })
+          return href ? <a href={href}>{text}</a> : text
+        }}
+      />
+    )
+    expect(
+      screen
+        .getByRole('link', {name: 'src/Greeting.tsx:4–9'})
+        .getAttribute('href')
+    ).toBe(
+      'https://git.example.com/acme/web/blob/v2.0.0/src/Greeting.tsx#L4-L9'
+    )
+  })
+})
+
+describe('project and source adapters', () => {
+  const projects = [
+    {id: 'web', label: 'Web app'},
+    {id: 'mobile', label: 'Mobile app', description: 'Phone and tablet'},
+  ]
+
+  it('renders a keyboard-operable native project picker', () => {
+    const onChange = vi.fn()
+    const {ProjectPicker} = nativeEditorComponents
+    const {rerender} = render(
+      <ProjectPicker
+        projects={projects}
+        value="web"
+        onChange={onChange}
+        label="Project"
+      />
+    )
+    const picker = screen.getByRole('combobox', {
+      name: 'Project',
+    }) as HTMLSelectElement
+    expect(picker.value).toBe('web')
+    expect(
+      screen.getAllByRole('option').map(option => option.textContent)
+    ).toEqual(['Web app', 'Mobile app'])
+    expect(screen.getByRole('option', {name: 'Mobile app'}).title).toBe(
+      'Phone and tablet'
+    )
+    picker.focus()
+    expect(document.activeElement).toBe(picker)
+    fireEvent.change(picker, {target: {value: 'mobile'}})
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('mobile')
+    expect(picker.value).toBe('web')
+    rerender(
+      <ProjectPicker
+        projects={projects}
+        value={undefined}
+        onChange={onChange}
+        label="Project"
+        disabled
+      />
+    )
+    expect(picker.disabled).toBe(true)
+  })
+
+  it('renders a native source filter with an all-sources option and plain badges', () => {
+    const onChange = vi.fn()
+    const {SourceFilter, SourceBadge} = nativeEditorComponents
+    render(
+      <>
+        <SourceFilter
+          sources={['main', 'release']}
+          value=""
+          onChange={onChange}
+          label="Source"
+          allLabel="All sources"
+        />
+        <SourceBadge source="release" label="Source release" />
+      </>
+    )
+    const filter = screen.getByRole('combobox', {
+      name: 'Source',
+    }) as HTMLSelectElement
+    expect(filter.value).toBe('')
+    expect(
+      screen.getAllByRole('option').map(option => option.textContent)
+    ).toEqual(['All sources', 'main', 'release'])
+    fireEvent.change(filter, {target: {value: 'release'}})
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('release')
+    const badge = screen.getByTitle('Source release')
+    expect(badge.textContent).toBe('release')
+    expect(badge.querySelector('a, button')).toBeNull()
   })
 })

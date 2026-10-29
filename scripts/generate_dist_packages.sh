@@ -2,6 +2,7 @@
 # Generates tools/dist_packages_registry.bzl from Bazel query.
 # Usage: bash scripts/generate_dist_packages.sh
 set -euo pipefail
+export LC_ALL=C
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT="$REPO_ROOT/tools/dist_packages_registry.bzl"

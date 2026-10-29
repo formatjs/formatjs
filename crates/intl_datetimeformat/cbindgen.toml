@@ -1,0 +1,22 @@
+language = "C"
+cpp_compat = true
+pragma_once = true
+include_version = false
+usize_is_size_t = true
+documentation = true
+style = "both"
+
+[export.rename]
+"DateTimeRecords" = "FormatjsDateTimeRecords"
+"DateTimeTicket" = "FormatjsDateTimeTicket"
+"DateTimeRegistry" = "FormatjsDateTimeRegistry"
+"DateTimeHandle" = "FormatjsDateTimeHandle"
+"DateTimeConstruction" = "FormatjsDateTimeConstruction"
+"DateTimeBytes" = "FormatjsDateTimeBytes"
+"DateTimeBorrowed" = "FormatjsDateTimeBorrowed"
+"CalendarCall" = "FormatjsDateTimeCalendarCall"
+"CalendarRelease" = "FormatjsDateTimeCalendarRelease"
+
+[export]
+item_types = ["enums", "structs", "unions", "typedefs", "opaque", "functions"]
+include = ["CalendarCall", "CalendarRelease"]

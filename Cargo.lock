@@ -189,6 +189,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "175812e0be2bccb6abe50bb8d566126198344f707e304f45c648fd8f2cc0365e"
 
 [[package]]
+name = "byteorder"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
+
+[[package]]
 name = "calendrical_calculations"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -393,6 +399,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "crc"
+version = "3.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5eb8a2a1cd12ab0d987a5d5e825195d372001a4094a0376319d5a0ad71c1ba0d"
+dependencies = [
+ "crc-catalog",
+]
+
+[[package]]
+name = "crc-catalog"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "217698eaf96b4a3f0bc4f3662aaa55bdf913cd54d7204591faa790070c6d0853"
+
+[[package]]
 name = "criterion"
 version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -574,6 +595,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da7c62ceae207dd37ea5b845da6a0696c799f85e97da1ab5b7910be3c1c80223"
 
 [[package]]
+name = "filetime"
+version = "0.2.29"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c287a33c7f0a620c38e641e7f60827713987b3c0f26e8ddc9462cc69cf75759"
+dependencies = [
+ "cfg-if",
+ "libc",
+]
+
+[[package]]
 name = "find-msvc-tools"
 version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -598,7 +629,7 @@ checksum = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.8.2"
+version = "1.8.3"
 dependencies = [
  "anyhow",
  "base64",
@@ -701,11 +732,139 @@ dependencies = [
 ]
 
 [[package]]
+name = "formatjs_intl_collator"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_casemap",
+ "icu_locale_core",
+ "icu_normalizer",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_data"
+version = "0.1.0"
+dependencies = [
+ "ciborium",
+ "serde",
+]
+
+[[package]]
+name = "formatjs_intl_data_build"
+version = "0.1.0"
+dependencies = [
+ "ciborium",
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_plurals",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_datetimeformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "formatjs_intl_numberformat",
+ "lzma-rs",
+ "serde",
+ "serde_json",
+ "tar",
+]
+
+[[package]]
+name = "formatjs_intl_datetimeformat_calendars"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_datetimeformat",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_displaynames"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_durationformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_listformat",
+ "formatjs_intl_locale",
+ "formatjs_intl_numberformat",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "formatjs_intl_getcanonicallocales"
 version = "0.1.0"
 dependencies = [
  "icu_locale",
  "icu_provider",
+]
+
+[[package]]
+name = "formatjs_intl_hermes"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_collator",
+ "formatjs_intl_datetimeformat",
+ "formatjs_intl_datetimeformat_calendars",
+ "formatjs_intl_displaynames",
+ "formatjs_intl_durationformat",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_listformat",
+ "formatjs_intl_locale",
+ "formatjs_intl_numberformat",
+ "formatjs_intl_pluralrules",
+ "formatjs_intl_relativetimeformat",
+ "formatjs_intl_segmenter",
+ "formatjs_intl_supportedvaluesof",
+]
+
+[[package]]
+name = "formatjs_intl_listformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_locale"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_localematcher",
+ "formatjs_intl_getcanonicallocales",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_localematcher"
+version = "0.1.0"
+dependencies = [
+ "icu_locale",
+ "serde_json",
 ]
 
 [[package]]
@@ -717,6 +876,68 @@ dependencies = [
  "quote",
  "sha2",
  "syn 3.0.9",
+]
+
+[[package]]
+name = "formatjs_intl_numberformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "formatjs_intl_pluralrules",
+ "icu_properties",
+ "regex",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_pluralrules"
+version = "0.1.0"
+dependencies = [
+ "fixed_decimal",
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_plurals",
+ "icu_provider",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_relativetimeformat"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_data",
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "formatjs_intl_numberformat",
+ "formatjs_intl_pluralrules",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_segmenter"
+version = "0.1.0"
+dependencies = [
+ "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_locale",
+ "icu_locale_core",
+ "icu_properties",
+ "icu_segmenter",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "formatjs_intl_supportedvaluesof"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -1497,6 +1718,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "47d9d19d1d6efa0109d2f65ff4c85cddd50bd572e5a00127ab10987290bcefae"
 dependencies = [
  "serde_core",
+]
+
+[[package]]
+name = "lzma-rs"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "297e814c836ae64db86b36cf2a557ba54368d03f6afcd7d947c266692f71115e"
+dependencies = [
+ "byteorder",
+ "crc",
 ]
 
 [[package]]
@@ -2691,6 +2922,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "tar"
+version = "0.4.46"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f6221d9a6003c78398e3b239969f352578258df48c8eb051caadae0015bc840"
+dependencies = [
+ "filetime",
+ "libc",
+ "xattr",
+]
+
+[[package]]
 name = "target-lexicon"
 version = "0.13.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2969,6 +3211,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ad82d2a33cdc9674dc7465672f271e096168fcdbe0f799d9e6db8c5892679dc"
 dependencies = [
  "either",
+]
+
+[[package]]
+name = "xattr"
+version = "1.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "32e45ad4206f6d2479085147f02bc2ef834ac85886624a23575ae137c8aa8156"
+dependencies = [
+ "libc",
+ "rustix",
 ]
 
 [[package]]

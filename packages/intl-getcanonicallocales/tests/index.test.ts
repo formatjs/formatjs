@@ -147,6 +147,12 @@ describe('Intl.getCanonicalLocales', () => {
     expect(getCanonicalLocales('und-Armn-SU')).toEqual(['und-Armn-AM'])
   })
 
+  it('falls back to language likely subtags for territory aliases', () => {
+    expect(getCanonicalLocales('hye-Latn-SU')).toEqual(['hy-Latn-AM'])
+    expect(getCanonicalLocales('hy-Latn-SU')).toEqual(['hy-Latn-AM'])
+    expect(getCanonicalLocales('abcde-Armn-SU')).toEqual(['abcde-Armn-RU'])
+  })
+
   describe('Intl.Locale object support', () => {
     it('should handle single Intl.Locale object', function () {
       const locale = new Intl.Locale('en-US')

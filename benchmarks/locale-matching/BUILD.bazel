@@ -1,0 +1,60 @@
+# gazelle:ignore
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("//tools:index.bzl", "ts_run_binary")
+
+ts_run_binary(
+    name = "cases",
+    srcs = [
+        "//:node_modules/cldr-core",
+        "//:node_modules/minimist",
+    ],
+    outs = ["cases.tsv"],
+    args = [
+        "--out",
+        "$(rootpath cases.tsv)",
+    ],
+    entry_point = "cases-gen.ts",
+)
+
+rust_binary(
+    name = "icu4x_bench",
+    srcs = ["icu4x.rs"],
+    crate_name = "icu4x_fallback_bench",
+    crate_root = "icu4x.rs",
+    edition = "2024",
+    deps = [
+        "@crates//:icu_locale",
+        "@crates//:icu_provider",
+    ],
+)
+
+rust_binary(
+    name = "rust_bench",
+    srcs = ["rust.rs"],
+    crate_name = "locale_matching_bench",
+    crate_root = "rust.rs",
+    edition = "2024",
+    deps = ["//crates/intl_localematcher"],
+)
+
+java_binary(
+    name = "icu4j_bench",
+    srcs = ["LocaleMatchingBench.java"],
+    jvm_flags = [
+        "-Xms256m",
+        "-Xmx256m",
+        "-XX:+UseSerialGC",
+    ],
+    main_class = "LocaleMatchingBench",
+    deps = ["//conformance-tests/icu4j"],
+)
+
+cc_binary(
+    name = "icu4c_bench",
+    srcs = ["icu4c.cc"],
+    copts = ["-std=c++17"],
+    tags = ["manual"],
+    deps = ["@icu4c_benchmark_local//:icu"],
+)

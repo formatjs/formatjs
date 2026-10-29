@@ -21,6 +21,8 @@ export interface EditorState {
   messages: readonly TranslatedMessage[]
   selectedMessage: TranslatedMessage | undefined
   selectMessage: (id: string) => void
+  /** Drops the explicit selection so the first visible message is selected. */
+  clearSelection: () => void
   query: string
   setQuery: (query: string) => void
   descriptionQuery: string
@@ -84,6 +86,7 @@ export function useMessageEditor({
     messages: visibleMessages,
     selectedMessage,
     selectMessage,
+    clearSelection: () => selectMessage(undefined),
     query,
     setQuery,
     descriptionQuery,

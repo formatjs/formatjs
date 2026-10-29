@@ -1,0 +1,14 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "values",
+    entry_point = "values.ts",
+    visibility = ["//crates/intl_supportedvaluesof:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//:node_modules/minimist",
+    ],
+)

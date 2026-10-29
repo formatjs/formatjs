@@ -1,0 +1,22 @@
+[package]
+name = "formatjs_intl_collator"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "ECMA-402 Collator with CLDR tailorings and ICU4X normalization"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = true
+[lib]
+path = "lib.rs"
+[dependencies]
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.1.0" }
+formatjs_intl_locale = { path = "../intl_locale", version = "0.1.0" }
+icu_casemap = "2.3"
+icu_locale_core = "2.3"
+icu_normalizer = "2.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+[[example]]
+name = "conformance"
+path = "conformance.rs"

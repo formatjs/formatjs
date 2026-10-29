@@ -20,11 +20,18 @@ config_setting(
 )
 
 cc_import(
-    name = "rust_canonicalizer",
+    name = "rust_intl",
     static_library = select({
-        ":darwin_arm64": "lib/aarch64-apple-darwin/libformatjs_intl_getcanonicallocales.a",
-        ":linux_x86_64": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_getcanonicallocales.a",
+        ":darwin_arm64": "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a",
+        ":linux_x86_64": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a",
     }),
+)
+
+cc_library(
+    name = "bridge",
+    hdrs = ["include/formatjs/hermes/bridge.h"],
+    strip_include_prefix = "include",
+    deps = ["@hermes//:headers"],
 )
 
 cc_library(
@@ -57,7 +64,338 @@ cc_library(
     }),
     strip_include_prefix = "include",
     deps = [
-        ":rust_canonicalizer",
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "supported_values",
+    srcs = [
+        "src/supported_values.cpp",
+        "src/supported_values_of.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/supported_values.h",
+        "include/formatjs/intl/supported_values.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "locale",
+    srcs = [
+        "src/locale.cpp",
+        "src/locale.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_locale.h",
+        "include/formatjs/intl/canonicalize.h",
+        "include/formatjs/intl/locale.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+alias(
+    name = "rust_canonicalizer",
+    actual = ":rust_intl",
+)
+
+cc_library(
+    name = "pluralrules",
+    srcs = [
+        "src/pluralrules.cpp",
+        "src/pluralrules.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_pluralrules.h",
+        "include/formatjs/intl/pluralrules.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "listformat",
+    srcs = [
+        "src/listformat.cpp",
+        "src/listformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_listformat.h",
+        "include/formatjs/intl/listformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "displaynames",
+    srcs = [
+        "src/displaynames.cpp",
+        "src/displaynames.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_displaynames.h",
+        "include/formatjs/intl/displaynames.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "segmenter",
+    srcs = [
+        "src/segmenter.cpp",
+        "src/segmenter.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_segmenter.h",
+        "include/formatjs/intl/segmenter.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "collator",
+    srcs = [
+        "src/collator.cpp",
+        "src/collator.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_collator.h",
+        "include/formatjs/intl/collator.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "numberformat",
+    srcs = [
+        "src/numberformat.cpp",
+        "src/numberformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_numberformat.h",
+        "include/formatjs/intl/numberformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "relativetimeformat",
+    srcs = [
+        "src/relativetimeformat.cpp",
+        "src/relativetimeformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_relativetimeformat.h",
+        "include/formatjs/intl/relativetimeformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
         "@hermes//:headers",
     ],
 )
@@ -65,4 +403,126 @@ cc_library(
 exports_files([
     "js/30-IntlGetCanonicalLocales.js",
     "js/extensions.js",
+    "js/31-IntlSupportedValuesOf.js",
+    "js/32-IntlLocale.js",
+    "js/33-IntlPluralRules.js",
+    "js/34-IntlListFormat.js",
+    "js/35-IntlDisplayNames.js",
+    "js/36-IntlSegmenter.js",
+    "js/37-IntlCollator.js",
+    "js/38-IntlNumberFormat.js",
+    "js/39-IntlRelativeTimeFormat.js",
+    "js/relativetimeformat-smoke.js",
+    "examples/relativetimeformat-smoke.ts",
+    "js/numberformat-smoke.js",
+    "examples/numberformat-smoke.ts",
+    "js/collator-smoke.js",
+    "examples/collator-smoke.ts",
+    "js/segmenter-smoke.js",
+    "examples/segmenter-smoke.ts",
+    "js/displaynames-smoke.js",
+    "examples/displaynames-smoke.ts",
+    "js/listformat-smoke.js",
+    "examples/listformat-smoke.ts",
+    "js/pluralrules-smoke.js",
+    "examples/pluralrules-smoke.ts",
+])
+
+cc_library(
+    name = "datetimeformat",
+    srcs = [
+        "src/datetimeformat.cpp",
+        "src/datetimeformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_datetimeformat.h",
+        "include/formatjs/intl/datetimeformat.h",
+        "include/formatjs/intl/datetimeformat_calendars.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+exports_files([
+    "examples/datetimeformat-smoke.ts",
+    "js/datetimeformat-smoke.js",
+    "js/40-IntlDateTimeFormat.js",
+])
+
+filegroup(
+    name = "datetimeformat_calendar_data",
+    srcs = glob(["calendar-data/datetimeformat/*.json"]),
+)
+
+exports_files(glob(["calendar-data/datetimeformat/*.json"]))
+
+filegroup(
+    name = "datetimeformat_timezone_data",
+    srcs = glob(["timezone-data/datetimeformat/*.json"]),
+)
+
+exports_files(glob(["timezone-data/datetimeformat/*.json"]))
+
+cc_library(
+    name = "durationformat",
+    srcs = [
+        "src/durationformat.cpp",
+        "src/durationformat.inc",
+    ],
+    hdrs = [
+        "include/formatjs/hermes/intl_durationformat.h",
+        "include/formatjs/intl/durationformat.h",
+    ],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    linkopts = select({
+        ":darwin_arm64": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+    }),
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":rust_intl",
+        "@hermes//:headers",
+    ],
+)
+
+exports_files([
+    "examples/durationformat-smoke.ts",
+    "js/durationformat-smoke.js",
+    "js/41-IntlDurationFormat.js",
 ])

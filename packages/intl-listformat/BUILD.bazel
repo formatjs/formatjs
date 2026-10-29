@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
@@ -129,6 +130,11 @@ ts_run_binary(
     ],
     chdir = package_name(),
     tool = "//packages/intl-listformat/scripts:cldr-raw",
+    visibility = [
+        "//crates/intl_durationformat/tests:__pkg__",
+        "//crates/intl_listformat:__subpackages__",
+        "//native/hermes/tests:__pkg__",
+    ],
 )
 
 ts_run_binary(
@@ -217,4 +223,10 @@ rolldown_bundle(
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/types",
     ],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES] + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )
