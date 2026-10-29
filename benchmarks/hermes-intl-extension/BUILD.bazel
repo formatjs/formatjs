@@ -148,3 +148,21 @@ genrule(
     cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath list-size-control.js)",
     tools = ["@hermes//:hermesc"],
 )
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["list-traversal-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_list_traversal_probe",
+        edition = "2024",
+        deps = ["//crates/intl_listformat:with_compiled_data"],
+    )
+    for name, features in [
+        ("list_traversal_probe", []),
+        (
+            "list_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]

@@ -128,6 +128,13 @@ impl Pattern {
             _ => &self.tokens,
         }
     }
+    fn separator(&self, next: &[u16]) -> Option<&[u16]> {
+        match self.for_next(next) {
+            [Token::First, Token::Second] => Some(&[]),
+            [Token::First, Token::Literal(value), Token::Second] => Some(value),
+            _ => None,
+        }
+    }
     fn parse(text: &str) -> Result<Self, Error> {
         // LocaleData requires each placeholder exactly once. Compile its
         // PartitionPattern result on load; substitution never reparses inputs.
@@ -297,7 +304,44 @@ impl ListFormat {
         if list.is_empty() {
             return;
         }
+        if list.len() == 1 {
+            visit(true, list[0].as_ref());
+            return;
+        }
         let templates = &self.data.templates[self.options.kind.key()][self.options.style.key()];
+        let last = list[list.len() - 1].as_ref();
+        // Forward joins can stream borrowed slices without traversal storage.
+        if list.len() == 2 {
+            if let Some(separator) = templates.pair.separator(last) {
+                visit(true, list[0].as_ref());
+                if !separator.is_empty() {
+                    visit(false, separator);
+                }
+                visit(true, last);
+                return;
+            }
+        } else if let (Some(start), Some(middle), Some(end)) = (
+            templates.start.separator(last),
+            templates.middle.separator(last),
+            templates.end.separator(last),
+        ) {
+            visit(true, list[0].as_ref());
+            if !start.is_empty() {
+                visit(false, start);
+            }
+            for value in &list[1..list.len() - 2] {
+                visit(true, value.as_ref());
+                if !middle.is_empty() {
+                    visit(false, middle);
+                }
+            }
+            visit(true, list[list.len() - 2].as_ref());
+            if !end.is_empty() {
+                visit(false, end);
+            }
+            visit(true, last);
+            return;
+        }
         enum Node<'a> {
             Element(&'a [u16]),
             Join(&'a Pattern, usize, usize),
@@ -367,7 +411,9 @@ impl ListFormat {
     fn format_with<T: AsRef<[u16]>>(&self, list: &[T]) -> Vec<u16> {
         // FormatList 1–5: concatenate all part values, including empty elements.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L317-L321
-        let mut result = Vec::new();
+        // Every input appears once; literals only add to this lower bound.
+        let capacity = list.iter().map(|value| value.as_ref().len()).sum();
+        let mut result = Vec::with_capacity(capacity);
         self.visit_parts(list, |_, value| result.extend_from_slice(value));
         result
     }

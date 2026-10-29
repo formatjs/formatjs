@@ -124,3 +124,9 @@ The private copy of iterable input drops its array prototype on the first valid
 element. Direct index writes then bypass inherited setters without per-element
 descriptors. Real iteration and validation still control IteratorClose. Empty
 inputs avoid prototype mutation; public parts arrays and records stay ordinary.
+
+Singleton lists emit their element directly. Forward patterns with an optional
+separator stream borrowed UTF-16 slices without arena/task allocations, including
+contextual Spanish/Hebrew joins. Reversed, prefixed or suffixed patterns retain
+the general traversal. Empty separators add no literal record; empty input strings
+still produce element records. String output reserves its input-length lower bound.

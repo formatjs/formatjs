@@ -43,3 +43,9 @@ Rust validates packs and compiles plural rules during the build. Records decode
 lazily into per-registry caches; mutable data never crosses registry boundaries.
 The original target and `Registry::default()` retain explicit registration for
 custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).
+
+Singleton lists emit their element directly. Forward patterns with an optional
+separator stream borrowed UTF-16 slices without arena/task allocations, including
+contextual Spanish/Hebrew joins. Reversed, prefixed or suffixed patterns retain
+the general traversal. Empty separators add no literal record; empty input strings
+still produce element records. String output reserves its input-length lower bound.
