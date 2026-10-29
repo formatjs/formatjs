@@ -304,6 +304,34 @@ pub unsafe extern "C" fn formatjs_relative_format(
     unit_len: usize,
     out: *mut RelativeBytes,
 ) -> i32 {
+    unsafe { formatted(handle, value, value_len, unit, unit_len, out, false) }
+}
+
+/// Format parts from pre-coerced numeric text and UTF-16 unit; output is JSON.
+/// # Safety
+/// Handle live; value and unit readable for their lengths; out writable.
+/// Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format_to_parts(
+    handle: *const RelativeHandle,
+    value: *const u8,
+    value_len: usize,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted(handle, value, value_len, unit, unit_len, out, true) }
+}
+
+unsafe fn formatted(
+    handle: *const RelativeHandle,
+    value: *const u8,
+    value_len: usize,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+    parts: bool,
+) -> i32 {
     if out.is_null() {
         return 2;
     }
@@ -330,8 +358,13 @@ pub unsafe extern "C" fn formatjs_relative_format(
             *out = u8::try_from(*value).map_err(|_| 1)?;
         }
         let unit = str::from_utf8(&ascii[..unit.len()]).map_err(|_| 1)?;
-        let text = unsafe { &(*handle).0 }.format(value, unit).map_err(|_| 1)?;
-        unsafe { output(text.into_bytes(), out) };
+        let model = unsafe { &(*handle).0 };
+        let bytes = if parts {
+            encode(&model.format_to_parts(value, unit).map_err(|_| 1)?)?
+        } else {
+            model.format(value, unit).map_err(|_| 1)?.into_bytes()
+        };
+        unsafe { output(bytes, out) };
         Ok(())
     })
 }

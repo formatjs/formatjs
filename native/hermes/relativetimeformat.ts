@@ -7,6 +7,7 @@
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeFormat: (handle: object, value: string, unit: string) => string | number
+  nativeParts: (handle: object, value: string, unit: string) => string | number
 }) {
   'use strict'
   const {
@@ -17,6 +18,7 @@
     nativeSupported,
     nativeQuery,
     nativeFormat,
+    nativeParts,
   } = native
   const apply = Reflect.apply,
     create = Object.create,
@@ -119,12 +121,6 @@
       throw new BadReceiver('Incompatible Intl.RelativeTimeFormat receiver')
     return handle
   }
-  function utf16(text: string): string {
-    let result = '['
-    for (let index = 0; index < text.length; index++)
-      result += (index ? ',' : '') + apply(charCodeAt, text, [index])
-    return result + ']'
-  }
   function format(
     receiver: unknown,
     value: unknown,
@@ -144,19 +140,9 @@
         throw new BadOption('Invalid Intl.RelativeTimeFormat value or unit')
       return formatted
     }
-    return decoded(
-      nativeQuery(
-        handle,
-        '{"method":' +
-          quote(method) +
-          ',"value":' +
-          quote(number) +
-          ',"unit":' +
-          utf16(text) +
-          '}'
-      )
-    )
+    return decoded(nativeParts(handle, number, text))
   }
+
   class RelativeTimeFormat extends null {
     constructor(
       locales: unknown = undefined,

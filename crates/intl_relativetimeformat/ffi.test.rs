@@ -204,6 +204,79 @@ fn direct_format_preserves_negative_zero_and_rejects_unpaired_unit() {
     assert!(out.data.is_null());
 }
 #[test]
+fn direct_parts_match_query_and_preserve_error_statuses() {
+    let (registry, resolution) = loaded();
+    for options in [json!({}), json!({"numeric":"auto","style":"narrow"})] {
+        let model = registry.create(&resolution, options).unwrap();
+        for (value, unit) in [
+            ("-0", vec![100, 97, 121]),
+            ("-1234.5", "days".encode_utf16().collect()),
+            ("1e+21", "seconds".encode_utf16().collect()),
+            ("-1", "day".encode_utf16().collect()),
+            ("Infinity", "day".encode_utf16().collect()),
+            ("1", vec![0xd800]),
+            ("1", vec![]),
+            ("1", "milliseconds".encode_utf16().collect()),
+        ] {
+            let expected = model.query(json!({"method":"formatToParts","value":value,"unit":unit}));
+            let mut out = RelativeBytes {
+                data: ptr::dangling_mut(),
+                len: 99,
+            };
+            let status = unsafe {
+                formatjs_relative_format_to_parts(
+                    model.0,
+                    value.as_ptr(),
+                    value.len(),
+                    unit.as_ptr(),
+                    unit.len(),
+                    &mut out,
+                )
+            };
+            if status == 0 {
+                let actual: Value = serde_json::from_str(&unsafe { owned(out) }).unwrap();
+                assert_eq!(Ok(actual), expected, "{value} {unit:?}");
+            } else {
+                assert_eq!(expected, Err(status), "{value} {unit:?}");
+                assert!(out.data.is_null());
+                assert_eq!(out.len, 0);
+            }
+        }
+        let mut out = RelativeBytes {
+            data: ptr::dangling_mut(),
+            len: 99,
+        };
+        assert_eq!(
+            unsafe {
+                formatjs_relative_format_to_parts(
+                    model.0,
+                    b"1".as_ptr(),
+                    1,
+                    ptr::null(),
+                    1,
+                    &mut out,
+                )
+            },
+            2
+        );
+        assert!(out.data.is_null());
+        assert_eq!(out.len, 0);
+        assert_eq!(
+            unsafe {
+                formatjs_relative_format_to_parts(
+                    model.0,
+                    b"1".as_ptr(),
+                    1,
+                    ptr::null(),
+                    0,
+                    ptr::null_mut(),
+                )
+            },
+            2
+        );
+    }
+}
+#[test]
 fn abi_errors_leave_outputs_empty_and_reject_invalid_options() {
     let registry = Registry::new();
     assert_eq!(registry.resolve(json!({"locales":["en"]})), Err(1));

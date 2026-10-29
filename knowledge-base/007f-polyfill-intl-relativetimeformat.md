@@ -106,6 +106,11 @@ the buffer at the final slot. Parts move their strings into the result; string
 formatting reads them without cloning. Long-style field lookup borrows the unit
 key. Custom repeated-slot patterns retain their output.
 
+Hermes passes pre-coerced numeric text and UTF-16 unit strings directly for both
+format methods. The Rust ABI validates units; parts output remains JSON. This
+avoids JS code-unit traversal and input JSON parsing without changing coercion
+order or lone-surrogate errors. The JSON query ABI remains available.
+
 ### Native compiled provider
 
 The Hermes SDK now embeds build-selected locale records in Rust rather than

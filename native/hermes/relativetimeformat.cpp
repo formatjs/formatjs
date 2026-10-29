@@ -44,19 +44,22 @@ void installRelativeTimeFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
     Bytes bytes;
     return result(rt, formatjs_relative_query(model->handle.get(), bytesOf(data), data.size(), &bytes.value), bytes);
   });
-  hermes_bridge::bind(runtime, bridge, "nativeFormat", "relativeFormat", 3,
-      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+  for (bool parts : {false, true}) {
+    const auto format = parts ? formatjs_relative_format_to_parts : formatjs_relative_format;
+    hermes_bridge::bind(runtime, bridge, parts ? "nativeParts" : "nativeFormat",
+        parts ? "relativeParts" : "relativeFormat", 3,
+      [format](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
         if (count != 3 || !args[0].isObject() || !args[1].isString() || !args[2].isString())
           throw jsi::JSError(rt, "Expected RelativeTimeFormat record, value and unit");
         auto model = record(rt, args[0]);
         auto value = args[1].asString(rt).utf8(rt);
         auto unit = args[2].asString(rt).utf16(rt);
         Bytes bytes;
-        auto code = formatjs_relative_format(model->handle.get(), bytesOf(value), value.size(),
+        auto code = format(model->handle.get(), bytesOf(value), value.size(),
             reinterpret_cast<const uint16_t *>(unit.data()), unit.size(), &bytes.value);
-        if (code != 0) return hermes_bridge::status(rt, code, 2, "Rust RelativeTimeFormat bridge failed");
-        return jsi::String::createFromUtf8(rt, bytes.value.data, bytes.value.len);
+        return result(rt, code, bytes);
       });
+  }
   extensions.getPropertyAsFunction(runtime, "IntlRelativeTimeFormat").call(runtime, bridge);
 }
 void installRelativeTimeFormat(jsi::Runtime &runtime) {
