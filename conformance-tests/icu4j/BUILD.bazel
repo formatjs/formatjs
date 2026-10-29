@@ -3,6 +3,17 @@ load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
 
 exports_files(["locale-format-fixtures.tsv"])
 
+java_test(
+    name = "intl_relativetimeformat_conformance_test",
+    size = "small",
+    srcs = ["RelativeTimeConformanceTest.java"],
+    data = ["//conformance-tests/icu4x:relative-icu4x-differences.tsv"],
+    env = {"RELATIVE_TIME_DIFFERENCES": "$(rootpath //conformance-tests/icu4x:relative-icu4x-differences.tsv)"},
+    main_class = "RelativeTimeConformanceTest",
+    test_class = "RelativeTimeConformanceTest",
+    deps = [":icu4j"],
+)
+
 copy_to_bin(
     name = "locale_format_fixtures",
     srcs = ["locale-format-fixtures.tsv"],

@@ -3,7 +3,7 @@ mod data;
 pub mod ffi;
 pub mod registry;
 pub use data::LocaleData;
-use formatjs_intl_numberformat::{NumberFormat, Options as NumberOptions};
+use formatjs_intl_numberformat::NumberFormat;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -58,7 +58,7 @@ enum Piece<'a> {
 pub struct RelativeTimeFormat {
     data: Arc<LocaleData>,
     resolved: ResolvedOptions,
-    number: NumberFormat,
+    number: Arc<NumberFormat>,
 }
 impl RelativeTimeFormat {
     pub(crate) fn new(
@@ -78,16 +78,7 @@ impl RelativeTimeFormat {
             &["always", "auto"],
             "numeric",
         )?;
-        let number = data
-            .numbers
-            .create(
-                std::slice::from_ref(&resolution.locale),
-                &NumberOptions {
-                    numbering_system: Some(resolution.numbering_system.clone()),
-                    ..Default::default()
-                },
-            )
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
+        let number = data.number_format(resolution)?;
         let resolved = ResolvedOptions {
             locale: resolution.locale.clone(),
             style: style.into(),

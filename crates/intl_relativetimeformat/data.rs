@@ -1,8 +1,10 @@
-use crate::Error;
+use crate::{Error, Resolution};
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
 use formatjs_intl_numberformat::registry::Registry as NumberRegistry;
+use formatjs_intl_numberformat::{NumberFormat, Options as NumberOptions};
 use serde::Deserialize;
 use std::collections::BTreeMap;
+use std::sync::{Arc, Mutex};
 
 pub(crate) const UNITS: [&str; 8] = [
     "second", "minute", "hour", "day", "week", "month", "quarter", "year",
@@ -36,10 +38,54 @@ pub struct LocaleData {
     pub(crate) aliases: Vec<String>,
     pub(crate) nu: Vec<String>,
     pub(crate) fields: BTreeMap<String, Field>,
-    pub(crate) numbers: NumberRegistry,
+    numbers: NumberRegistry,
+    number_formats: Mutex<Vec<NumberPlan>>,
     pub(crate) plurals: formatjs_intl_pluralrules::LocaleRules,
 }
+struct NumberPlan {
+    locale: String,
+    numbering_system: String,
+    value: Arc<NumberFormat>,
+}
 impl LocaleData {
+    pub(crate) fn number_format(
+        &self,
+        resolution: &Resolution,
+    ) -> Result<Arc<NumberFormat>, Error> {
+        let mut cache = self
+            .number_formats
+            .lock()
+            .unwrap_or_else(|error| error.into_inner());
+        if let Some(plan) = cache.iter().find(|plan| {
+            plan.locale == resolution.locale && plan.numbering_system == resolution.numbering_system
+        }) {
+            return Ok(Arc::clone(&plan.value));
+        }
+        let value = Arc::new(
+            self.numbers
+                .create(
+                    std::slice::from_ref(&resolution.locale),
+                    &NumberOptions {
+                        numbering_system: Some(resolution.numbering_system.clone()),
+                        ..Default::default()
+                    },
+                )
+                .map_err(|error| Error::InvalidData(error.to_string()))?,
+        );
+        // Plans belong to this immutable pack, so replacing locale data cannot
+        // reuse old number symbols. Bound keys supplied through the owned ABI.
+        if resolution.locale.len() + resolution.numbering_system.len() <= 128 {
+            if cache.len() == 64 {
+                cache.clear();
+            }
+            cache.push(NumberPlan {
+                locale: resolution.locale.clone(),
+                numbering_system: resolution.numbering_system.clone(),
+                value: Arc::clone(&value),
+            });
+        }
+        Ok(value)
+    }
     pub fn from_json(json: &str) -> Result<Self, Error> {
         let pack: Pack =
             serde_json::from_str(json).map_err(|error| Error::InvalidData(error.to_string()))?;
@@ -84,6 +130,7 @@ impl LocaleData {
             nu: pack.data.nu,
             fields: pack.data.fields,
             numbers,
+            number_formats: Mutex::new(Vec::new()),
             plurals: pack.plurals,
         })
     }

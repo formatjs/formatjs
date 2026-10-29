@@ -1,0 +1,1441 @@
+locale	numberingSystem	style	numeric	unit	value	ICU4C_J_FormatJS	ICU4X
+en	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ seconds ago	١,٢٣٤.٥ seconds ago
+en	arab	long	always	second	1.25	in ١٫٢٥ seconds	in ١.٢٥ seconds
+en	arab	long	always	second	1234.5	in ١٬٢٣٤٫٥ seconds	in ١,٢٣٤.٥ seconds
+en	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ minutes ago	١,٢٣٤.٥ minutes ago
+en	arab	long	always	minute	1.25	in ١٫٢٥ minutes	in ١.٢٥ minutes
+en	arab	long	always	minute	1234.5	in ١٬٢٣٤٫٥ minutes	in ١,٢٣٤.٥ minutes
+en	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ hours ago	١,٢٣٤.٥ hours ago
+en	arab	long	always	hour	1.25	in ١٫٢٥ hours	in ١.٢٥ hours
+en	arab	long	always	hour	1234.5	in ١٬٢٣٤٫٥ hours	in ١,٢٣٤.٥ hours
+en	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ days ago	١,٢٣٤.٥ days ago
+en	arab	long	always	day	1.25	in ١٫٢٥ days	in ١.٢٥ days
+en	arab	long	always	day	1234.5	in ١٬٢٣٤٫٥ days	in ١,٢٣٤.٥ days
+en	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ weeks ago	١,٢٣٤.٥ weeks ago
+en	arab	long	always	week	1.25	in ١٫٢٥ weeks	in ١.٢٥ weeks
+en	arab	long	always	week	1234.5	in ١٬٢٣٤٫٥ weeks	in ١,٢٣٤.٥ weeks
+en	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ months ago	١,٢٣٤.٥ months ago
+en	arab	long	always	month	1.25	in ١٫٢٥ months	in ١.٢٥ months
+en	arab	long	always	month	1234.5	in ١٬٢٣٤٫٥ months	in ١,٢٣٤.٥ months
+en	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ quarters ago	١,٢٣٤.٥ quarters ago
+en	arab	long	always	quarter	1.25	in ١٫٢٥ quarters	in ١.٢٥ quarters
+en	arab	long	always	quarter	1234.5	in ١٬٢٣٤٫٥ quarters	in ١,٢٣٤.٥ quarters
+en	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ years ago	١,٢٣٤.٥ years ago
+en	arab	long	always	year	1.25	in ١٫٢٥ years	in ١.٢٥ years
+en	arab	long	always	year	1234.5	in ١٬٢٣٤٫٥ years	in ١,٢٣٤.٥ years
+en	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ seconds ago	١,٢٣٤.٥ seconds ago
+en	arab	long	auto	second	1.25	in ١٫٢٥ seconds	in ١.٢٥ seconds
+en	arab	long	auto	second	1234.5	in ١٬٢٣٤٫٥ seconds	in ١,٢٣٤.٥ seconds
+en	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ minutes ago	١,٢٣٤.٥ minutes ago
+en	arab	long	auto	minute	1.25	in ١٫٢٥ minutes	in ١.٢٥ minutes
+en	arab	long	auto	minute	1234.5	in ١٬٢٣٤٫٥ minutes	in ١,٢٣٤.٥ minutes
+en	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ hours ago	١,٢٣٤.٥ hours ago
+en	arab	long	auto	hour	1.25	in ١٫٢٥ hours	in ١.٢٥ hours
+en	arab	long	auto	hour	1234.5	in ١٬٢٣٤٫٥ hours	in ١,٢٣٤.٥ hours
+en	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ days ago	١,٢٣٤.٥ days ago
+en	arab	long	auto	day	1.25	in ١٫٢٥ days	in ١.٢٥ days
+en	arab	long	auto	day	1234.5	in ١٬٢٣٤٫٥ days	in ١,٢٣٤.٥ days
+en	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ weeks ago	١,٢٣٤.٥ weeks ago
+en	arab	long	auto	week	1.25	in ١٫٢٥ weeks	in ١.٢٥ weeks
+en	arab	long	auto	week	1234.5	in ١٬٢٣٤٫٥ weeks	in ١,٢٣٤.٥ weeks
+en	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ months ago	١,٢٣٤.٥ months ago
+en	arab	long	auto	month	1.25	in ١٫٢٥ months	in ١.٢٥ months
+en	arab	long	auto	month	1234.5	in ١٬٢٣٤٫٥ months	in ١,٢٣٤.٥ months
+en	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ quarters ago	١,٢٣٤.٥ quarters ago
+en	arab	long	auto	quarter	1.25	in ١٫٢٥ quarters	in ١.٢٥ quarters
+en	arab	long	auto	quarter	1234.5	in ١٬٢٣٤٫٥ quarters	in ١,٢٣٤.٥ quarters
+en	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ years ago	١,٢٣٤.٥ years ago
+en	arab	long	auto	year	1.25	in ١٫٢٥ years	in ١.٢٥ years
+en	arab	long	auto	year	1234.5	in ١٬٢٣٤٫٥ years	in ١,٢٣٤.٥ years
+en	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ sec. ago	١,٢٣٤.٥ sec. ago
+en	arab	short	always	second	1.25	in ١٫٢٥ sec.	in ١.٢٥ sec.
+en	arab	short	always	second	1234.5	in ١٬٢٣٤٫٥ sec.	in ١,٢٣٤.٥ sec.
+en	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ min. ago	١,٢٣٤.٥ min. ago
+en	arab	short	always	minute	1.25	in ١٫٢٥ min.	in ١.٢٥ min.
+en	arab	short	always	minute	1234.5	in ١٬٢٣٤٫٥ min.	in ١,٢٣٤.٥ min.
+en	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ hr. ago	١,٢٣٤.٥ hr. ago
+en	arab	short	always	hour	1.25	in ١٫٢٥ hr.	in ١.٢٥ hr.
+en	arab	short	always	hour	1234.5	in ١٬٢٣٤٫٥ hr.	in ١,٢٣٤.٥ hr.
+en	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ days ago	١,٢٣٤.٥ days ago
+en	arab	short	always	day	1.25	in ١٫٢٥ days	in ١.٢٥ days
+en	arab	short	always	day	1234.5	in ١٬٢٣٤٫٥ days	in ١,٢٣٤.٥ days
+en	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ wk. ago	١,٢٣٤.٥ wk. ago
+en	arab	short	always	week	1.25	in ١٫٢٥ wk.	in ١.٢٥ wk.
+en	arab	short	always	week	1234.5	in ١٬٢٣٤٫٥ wk.	in ١,٢٣٤.٥ wk.
+en	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ mo. ago	١,٢٣٤.٥ mo. ago
+en	arab	short	always	month	1.25	in ١٫٢٥ mo.	in ١.٢٥ mo.
+en	arab	short	always	month	1234.5	in ١٬٢٣٤٫٥ mo.	in ١,٢٣٤.٥ mo.
+en	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ qtrs. ago	١,٢٣٤.٥ qtrs. ago
+en	arab	short	always	quarter	1.25	in ١٫٢٥ qtrs.	in ١.٢٥ qtrs.
+en	arab	short	always	quarter	1234.5	in ١٬٢٣٤٫٥ qtrs.	in ١,٢٣٤.٥ qtrs.
+en	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ yr. ago	١,٢٣٤.٥ yr. ago
+en	arab	short	always	year	1.25	in ١٫٢٥ yr.	in ١.٢٥ yr.
+en	arab	short	always	year	1234.5	in ١٬٢٣٤٫٥ yr.	in ١,٢٣٤.٥ yr.
+en	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ sec. ago	١,٢٣٤.٥ sec. ago
+en	arab	short	auto	second	1.25	in ١٫٢٥ sec.	in ١.٢٥ sec.
+en	arab	short	auto	second	1234.5	in ١٬٢٣٤٫٥ sec.	in ١,٢٣٤.٥ sec.
+en	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ min. ago	١,٢٣٤.٥ min. ago
+en	arab	short	auto	minute	1.25	in ١٫٢٥ min.	in ١.٢٥ min.
+en	arab	short	auto	minute	1234.5	in ١٬٢٣٤٫٥ min.	in ١,٢٣٤.٥ min.
+en	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ hr. ago	١,٢٣٤.٥ hr. ago
+en	arab	short	auto	hour	1.25	in ١٫٢٥ hr.	in ١.٢٥ hr.
+en	arab	short	auto	hour	1234.5	in ١٬٢٣٤٫٥ hr.	in ١,٢٣٤.٥ hr.
+en	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ days ago	١,٢٣٤.٥ days ago
+en	arab	short	auto	day	1.25	in ١٫٢٥ days	in ١.٢٥ days
+en	arab	short	auto	day	1234.5	in ١٬٢٣٤٫٥ days	in ١,٢٣٤.٥ days
+en	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ wk. ago	١,٢٣٤.٥ wk. ago
+en	arab	short	auto	week	1.25	in ١٫٢٥ wk.	in ١.٢٥ wk.
+en	arab	short	auto	week	1234.5	in ١٬٢٣٤٫٥ wk.	in ١,٢٣٤.٥ wk.
+en	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ mo. ago	١,٢٣٤.٥ mo. ago
+en	arab	short	auto	month	1.25	in ١٫٢٥ mo.	in ١.٢٥ mo.
+en	arab	short	auto	month	1234.5	in ١٬٢٣٤٫٥ mo.	in ١,٢٣٤.٥ mo.
+en	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ qtrs. ago	١,٢٣٤.٥ qtrs. ago
+en	arab	short	auto	quarter	1.25	in ١٫٢٥ qtrs.	in ١.٢٥ qtrs.
+en	arab	short	auto	quarter	1234.5	in ١٬٢٣٤٫٥ qtrs.	in ١,٢٣٤.٥ qtrs.
+en	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ yr. ago	١,٢٣٤.٥ yr. ago
+en	arab	short	auto	year	1.25	in ١٫٢٥ yr.	in ١.٢٥ yr.
+en	arab	short	auto	year	1234.5	in ١٬٢٣٤٫٥ yr.	in ١,٢٣٤.٥ yr.
+en	arab	narrow	always	second	-1234.5	١٬٢٣٤٫٥s ago	١,٢٣٤.٥s ago
+en	arab	narrow	always	second	1.25	in ١٫٢٥s	in ١.٢٥s
+en	arab	narrow	always	second	1234.5	in ١٬٢٣٤٫٥s	in ١,٢٣٤.٥s
+en	arab	narrow	always	minute	-1234.5	١٬٢٣٤٫٥m ago	١,٢٣٤.٥m ago
+en	arab	narrow	always	minute	1.25	in ١٫٢٥m	in ١.٢٥m
+en	arab	narrow	always	minute	1234.5	in ١٬٢٣٤٫٥m	in ١,٢٣٤.٥m
+en	arab	narrow	always	hour	-1234.5	١٬٢٣٤٫٥h ago	١,٢٣٤.٥h ago
+en	arab	narrow	always	hour	1.25	in ١٫٢٥h	in ١.٢٥h
+en	arab	narrow	always	hour	1234.5	in ١٬٢٣٤٫٥h	in ١,٢٣٤.٥h
+en	arab	narrow	always	day	-1234.5	١٬٢٣٤٫٥d ago	١,٢٣٤.٥d ago
+en	arab	narrow	always	day	1.25	in ١٫٢٥d	in ١.٢٥d
+en	arab	narrow	always	day	1234.5	in ١٬٢٣٤٫٥d	in ١,٢٣٤.٥d
+en	arab	narrow	always	week	-1234.5	١٬٢٣٤٫٥w ago	١,٢٣٤.٥w ago
+en	arab	narrow	always	week	1.25	in ١٫٢٥w	in ١.٢٥w
+en	arab	narrow	always	week	1234.5	in ١٬٢٣٤٫٥w	in ١,٢٣٤.٥w
+en	arab	narrow	always	month	-1234.5	١٬٢٣٤٫٥mo ago	١,٢٣٤.٥mo ago
+en	arab	narrow	always	month	1.25	in ١٫٢٥mo	in ١.٢٥mo
+en	arab	narrow	always	month	1234.5	in ١٬٢٣٤٫٥mo	in ١,٢٣٤.٥mo
+en	arab	narrow	always	quarter	-1234.5	١٬٢٣٤٫٥q ago	١,٢٣٤.٥q ago
+en	arab	narrow	always	quarter	1.25	in ١٫٢٥q	in ١.٢٥q
+en	arab	narrow	always	quarter	1234.5	in ١٬٢٣٤٫٥q	in ١,٢٣٤.٥q
+en	arab	narrow	always	year	-1234.5	١٬٢٣٤٫٥y ago	١,٢٣٤.٥y ago
+en	arab	narrow	always	year	1.25	in ١٫٢٥y	in ١.٢٥y
+en	arab	narrow	always	year	1234.5	in ١٬٢٣٤٫٥y	in ١,٢٣٤.٥y
+en	arab	narrow	auto	second	-1234.5	١٬٢٣٤٫٥s ago	١,٢٣٤.٥s ago
+en	arab	narrow	auto	second	1.25	in ١٫٢٥s	in ١.٢٥s
+en	arab	narrow	auto	second	1234.5	in ١٬٢٣٤٫٥s	in ١,٢٣٤.٥s
+en	arab	narrow	auto	minute	-1234.5	١٬٢٣٤٫٥m ago	١,٢٣٤.٥m ago
+en	arab	narrow	auto	minute	1.25	in ١٫٢٥m	in ١.٢٥m
+en	arab	narrow	auto	minute	1234.5	in ١٬٢٣٤٫٥m	in ١,٢٣٤.٥m
+en	arab	narrow	auto	hour	-1234.5	١٬٢٣٤٫٥h ago	١,٢٣٤.٥h ago
+en	arab	narrow	auto	hour	1.25	in ١٫٢٥h	in ١.٢٥h
+en	arab	narrow	auto	hour	1234.5	in ١٬٢٣٤٫٥h	in ١,٢٣٤.٥h
+en	arab	narrow	auto	day	-1234.5	١٬٢٣٤٫٥d ago	١,٢٣٤.٥d ago
+en	arab	narrow	auto	day	1.25	in ١٫٢٥d	in ١.٢٥d
+en	arab	narrow	auto	day	1234.5	in ١٬٢٣٤٫٥d	in ١,٢٣٤.٥d
+en	arab	narrow	auto	week	-1234.5	١٬٢٣٤٫٥w ago	١,٢٣٤.٥w ago
+en	arab	narrow	auto	week	1.25	in ١٫٢٥w	in ١.٢٥w
+en	arab	narrow	auto	week	1234.5	in ١٬٢٣٤٫٥w	in ١,٢٣٤.٥w
+en	arab	narrow	auto	month	-1234.5	١٬٢٣٤٫٥mo ago	١,٢٣٤.٥mo ago
+en	arab	narrow	auto	month	1.25	in ١٫٢٥mo	in ١.٢٥mo
+en	arab	narrow	auto	month	1234.5	in ١٬٢٣٤٫٥mo	in ١,٢٣٤.٥mo
+en	arab	narrow	auto	quarter	-1234.5	١٬٢٣٤٫٥q ago	١,٢٣٤.٥q ago
+en	arab	narrow	auto	quarter	1.25	in ١٫٢٥q	in ١.٢٥q
+en	arab	narrow	auto	quarter	1234.5	in ١٬٢٣٤٫٥q	in ١,٢٣٤.٥q
+en	arab	narrow	auto	year	-1234.5	١٬٢٣٤٫٥y ago	١,٢٣٤.٥y ago
+en	arab	narrow	auto	year	1.25	in ١٫٢٥y	in ١.٢٥y
+en	arab	narrow	auto	year	1234.5	in ١٬٢٣٤٫٥y	in ١,٢٣٤.٥y
+fr	arab	long	always	second	-1234.5	il y a ١٬٢٣٤٫٥ secondes	il y a ١ ٢٣٤,٥ secondes
+fr	arab	long	always	second	1.25	dans ١٫٢٥ seconde	dans ١,٢٥ seconde
+fr	arab	long	always	second	1234.5	dans ١٬٢٣٤٫٥ secondes	dans ١ ٢٣٤,٥ secondes
+fr	arab	long	always	minute	-1234.5	il y a ١٬٢٣٤٫٥ minutes	il y a ١ ٢٣٤,٥ minutes
+fr	arab	long	always	minute	1.25	dans ١٫٢٥ minute	dans ١,٢٥ minute
+fr	arab	long	always	minute	1234.5	dans ١٬٢٣٤٫٥ minutes	dans ١ ٢٣٤,٥ minutes
+fr	arab	long	always	hour	-1234.5	il y a ١٬٢٣٤٫٥ heures	il y a ١ ٢٣٤,٥ heures
+fr	arab	long	always	hour	1.25	dans ١٫٢٥ heure	dans ١,٢٥ heure
+fr	arab	long	always	hour	1234.5	dans ١٬٢٣٤٫٥ heures	dans ١ ٢٣٤,٥ heures
+fr	arab	long	always	day	-1234.5	il y a ١٬٢٣٤٫٥ jours	il y a ١ ٢٣٤,٥ jours
+fr	arab	long	always	day	1.25	dans ١٫٢٥ jour	dans ١,٢٥ jour
+fr	arab	long	always	day	1234.5	dans ١٬٢٣٤٫٥ jours	dans ١ ٢٣٤,٥ jours
+fr	arab	long	always	week	-1234.5	il y a ١٬٢٣٤٫٥ semaines	il y a ١ ٢٣٤,٥ semaines
+fr	arab	long	always	week	1.25	dans ١٫٢٥ semaine	dans ١,٢٥ semaine
+fr	arab	long	always	week	1234.5	dans ١٬٢٣٤٫٥ semaines	dans ١ ٢٣٤,٥ semaines
+fr	arab	long	always	month	-1234.5	il y a ١٬٢٣٤٫٥ mois	il y a ١ ٢٣٤,٥ mois
+fr	arab	long	always	month	1.25	dans ١٫٢٥ mois	dans ١,٢٥ mois
+fr	arab	long	always	month	1234.5	dans ١٬٢٣٤٫٥ mois	dans ١ ٢٣٤,٥ mois
+fr	arab	long	always	quarter	-1234.5	il y a ١٬٢٣٤٫٥ trimestres	il y a ١ ٢٣٤,٥ trimestres
+fr	arab	long	always	quarter	1.25	dans ١٫٢٥ trimestre	dans ١,٢٥ trimestre
+fr	arab	long	always	quarter	1234.5	dans ١٬٢٣٤٫٥ trimestres	dans ١ ٢٣٤,٥ trimestres
+fr	arab	long	always	year	-1234.5	il y a ١٬٢٣٤٫٥ ans	il y a ١ ٢٣٤,٥ ans
+fr	arab	long	always	year	1.25	dans ١٫٢٥ an	dans ١,٢٥ an
+fr	arab	long	always	year	1234.5	dans ١٬٢٣٤٫٥ ans	dans ١ ٢٣٤,٥ ans
+fr	arab	long	auto	second	-1234.5	il y a ١٬٢٣٤٫٥ secondes	il y a ١ ٢٣٤,٥ secondes
+fr	arab	long	auto	second	1.25	dans ١٫٢٥ seconde	dans ١,٢٥ seconde
+fr	arab	long	auto	second	1234.5	dans ١٬٢٣٤٫٥ secondes	dans ١ ٢٣٤,٥ secondes
+fr	arab	long	auto	minute	-1234.5	il y a ١٬٢٣٤٫٥ minutes	il y a ١ ٢٣٤,٥ minutes
+fr	arab	long	auto	minute	1.25	dans ١٫٢٥ minute	dans ١,٢٥ minute
+fr	arab	long	auto	minute	1234.5	dans ١٬٢٣٤٫٥ minutes	dans ١ ٢٣٤,٥ minutes
+fr	arab	long	auto	hour	-1234.5	il y a ١٬٢٣٤٫٥ heures	il y a ١ ٢٣٤,٥ heures
+fr	arab	long	auto	hour	1.25	dans ١٫٢٥ heure	dans ١,٢٥ heure
+fr	arab	long	auto	hour	1234.5	dans ١٬٢٣٤٫٥ heures	dans ١ ٢٣٤,٥ heures
+fr	arab	long	auto	day	-1234.5	il y a ١٬٢٣٤٫٥ jours	il y a ١ ٢٣٤,٥ jours
+fr	arab	long	auto	day	1.25	dans ١٫٢٥ jour	dans ١,٢٥ jour
+fr	arab	long	auto	day	1234.5	dans ١٬٢٣٤٫٥ jours	dans ١ ٢٣٤,٥ jours
+fr	arab	long	auto	week	-1234.5	il y a ١٬٢٣٤٫٥ semaines	il y a ١ ٢٣٤,٥ semaines
+fr	arab	long	auto	week	1.25	dans ١٫٢٥ semaine	dans ١,٢٥ semaine
+fr	arab	long	auto	week	1234.5	dans ١٬٢٣٤٫٥ semaines	dans ١ ٢٣٤,٥ semaines
+fr	arab	long	auto	month	-1234.5	il y a ١٬٢٣٤٫٥ mois	il y a ١ ٢٣٤,٥ mois
+fr	arab	long	auto	month	1.25	dans ١٫٢٥ mois	dans ١,٢٥ mois
+fr	arab	long	auto	month	1234.5	dans ١٬٢٣٤٫٥ mois	dans ١ ٢٣٤,٥ mois
+fr	arab	long	auto	quarter	-1234.5	il y a ١٬٢٣٤٫٥ trimestres	il y a ١ ٢٣٤,٥ trimestres
+fr	arab	long	auto	quarter	1.25	dans ١٫٢٥ trimestre	dans ١,٢٥ trimestre
+fr	arab	long	auto	quarter	1234.5	dans ١٬٢٣٤٫٥ trimestres	dans ١ ٢٣٤,٥ trimestres
+fr	arab	long	auto	year	-1234.5	il y a ١٬٢٣٤٫٥ ans	il y a ١ ٢٣٤,٥ ans
+fr	arab	long	auto	year	1.25	dans ١٫٢٥ an	dans ١,٢٥ an
+fr	arab	long	auto	year	1234.5	dans ١٬٢٣٤٫٥ ans	dans ١ ٢٣٤,٥ ans
+fr	arab	short	always	second	-1234.5	il y a ١٬٢٣٤٫٥ s	il y a ١ ٢٣٤,٥ s
+fr	arab	short	always	second	1.25	dans ١٫٢٥ s	dans ١,٢٥ s
+fr	arab	short	always	second	1234.5	dans ١٬٢٣٤٫٥ s	dans ١ ٢٣٤,٥ s
+fr	arab	short	always	minute	-1234.5	il y a ١٬٢٣٤٫٥ min	il y a ١ ٢٣٤,٥ min
+fr	arab	short	always	minute	1.25	dans ١٫٢٥ min	dans ١,٢٥ min
+fr	arab	short	always	minute	1234.5	dans ١٬٢٣٤٫٥ min	dans ١ ٢٣٤,٥ min
+fr	arab	short	always	hour	-1234.5	il y a ١٬٢٣٤٫٥ h	il y a ١ ٢٣٤,٥ h
+fr	arab	short	always	hour	1.25	dans ١٫٢٥ h	dans ١,٢٥ h
+fr	arab	short	always	hour	1234.5	dans ١٬٢٣٤٫٥ h	dans ١ ٢٣٤,٥ h
+fr	arab	short	always	day	-1234.5	il y a ١٬٢٣٤٫٥ j	il y a ١ ٢٣٤,٥ j
+fr	arab	short	always	day	1.25	dans ١٫٢٥ j	dans ١,٢٥ j
+fr	arab	short	always	day	1234.5	dans ١٬٢٣٤٫٥ j	dans ١ ٢٣٤,٥ j
+fr	arab	short	always	week	-1234.5	il y a ١٬٢٣٤٫٥ sem.	il y a ١ ٢٣٤,٥ sem.
+fr	arab	short	always	week	1.25	dans ١٫٢٥ sem.	dans ١,٢٥ sem.
+fr	arab	short	always	week	1234.5	dans ١٬٢٣٤٫٥ sem.	dans ١ ٢٣٤,٥ sem.
+fr	arab	short	always	month	-1234.5	il y a ١٬٢٣٤٫٥ m.	il y a ١ ٢٣٤,٥ m.
+fr	arab	short	always	month	1.25	dans ١٫٢٥ m.	dans ١,٢٥ m.
+fr	arab	short	always	month	1234.5	dans ١٬٢٣٤٫٥ m.	dans ١ ٢٣٤,٥ m.
+fr	arab	short	always	quarter	-1234.5	il y a ١٬٢٣٤٫٥ trim.	il y a ١ ٢٣٤,٥ trim.
+fr	arab	short	always	quarter	1.25	dans ١٫٢٥ trim.	dans ١,٢٥ trim.
+fr	arab	short	always	quarter	1234.5	dans ١٬٢٣٤٫٥ trim.	dans ١ ٢٣٤,٥ trim.
+fr	arab	short	always	year	-1234.5	il y a ١٬٢٣٤٫٥ a	il y a ١ ٢٣٤,٥ a
+fr	arab	short	always	year	1.25	dans ١٫٢٥ a	dans ١,٢٥ a
+fr	arab	short	always	year	1234.5	dans ١٬٢٣٤٫٥ a	dans ١ ٢٣٤,٥ a
+fr	arab	short	auto	second	-1234.5	il y a ١٬٢٣٤٫٥ s	il y a ١ ٢٣٤,٥ s
+fr	arab	short	auto	second	1.25	dans ١٫٢٥ s	dans ١,٢٥ s
+fr	arab	short	auto	second	1234.5	dans ١٬٢٣٤٫٥ s	dans ١ ٢٣٤,٥ s
+fr	arab	short	auto	minute	-1234.5	il y a ١٬٢٣٤٫٥ min	il y a ١ ٢٣٤,٥ min
+fr	arab	short	auto	minute	1.25	dans ١٫٢٥ min	dans ١,٢٥ min
+fr	arab	short	auto	minute	1234.5	dans ١٬٢٣٤٫٥ min	dans ١ ٢٣٤,٥ min
+fr	arab	short	auto	hour	-1234.5	il y a ١٬٢٣٤٫٥ h	il y a ١ ٢٣٤,٥ h
+fr	arab	short	auto	hour	1.25	dans ١٫٢٥ h	dans ١,٢٥ h
+fr	arab	short	auto	hour	1234.5	dans ١٬٢٣٤٫٥ h	dans ١ ٢٣٤,٥ h
+fr	arab	short	auto	day	-1234.5	il y a ١٬٢٣٤٫٥ j	il y a ١ ٢٣٤,٥ j
+fr	arab	short	auto	day	1.25	dans ١٫٢٥ j	dans ١,٢٥ j
+fr	arab	short	auto	day	1234.5	dans ١٬٢٣٤٫٥ j	dans ١ ٢٣٤,٥ j
+fr	arab	short	auto	week	-1234.5	il y a ١٬٢٣٤٫٥ sem.	il y a ١ ٢٣٤,٥ sem.
+fr	arab	short	auto	week	1.25	dans ١٫٢٥ sem.	dans ١,٢٥ sem.
+fr	arab	short	auto	week	1234.5	dans ١٬٢٣٤٫٥ sem.	dans ١ ٢٣٤,٥ sem.
+fr	arab	short	auto	month	-1234.5	il y a ١٬٢٣٤٫٥ m.	il y a ١ ٢٣٤,٥ m.
+fr	arab	short	auto	month	1.25	dans ١٫٢٥ m.	dans ١,٢٥ m.
+fr	arab	short	auto	month	1234.5	dans ١٬٢٣٤٫٥ m.	dans ١ ٢٣٤,٥ m.
+fr	arab	short	auto	quarter	-1234.5	il y a ١٬٢٣٤٫٥ trim.	il y a ١ ٢٣٤,٥ trim.
+fr	arab	short	auto	quarter	1.25	dans ١٫٢٥ trim.	dans ١,٢٥ trim.
+fr	arab	short	auto	quarter	1234.5	dans ١٬٢٣٤٫٥ trim.	dans ١ ٢٣٤,٥ trim.
+fr	arab	short	auto	year	-1234.5	il y a ١٬٢٣٤٫٥ a	il y a ١ ٢٣٤,٥ a
+fr	arab	short	auto	year	1.25	dans ١٫٢٥ a	dans ١,٢٥ a
+fr	arab	short	auto	year	1234.5	dans ١٬٢٣٤٫٥ a	dans ١ ٢٣٤,٥ a
+fr	arab	narrow	always	second	-1234.5	-١٬٢٣٤٫٥ s	-١ ٢٣٤,٥ s
+fr	arab	narrow	always	second	1.25	+١٫٢٥ s	+١,٢٥ s
+fr	arab	narrow	always	second	1234.5	+١٬٢٣٤٫٥ s	+١ ٢٣٤,٥ s
+fr	arab	narrow	always	minute	-1234.5	-١٬٢٣٤٫٥ min	-١ ٢٣٤,٥ min
+fr	arab	narrow	always	minute	1.25	+١٫٢٥ min	+١,٢٥ min
+fr	arab	narrow	always	minute	1234.5	+١٬٢٣٤٫٥ min	+١ ٢٣٤,٥ min
+fr	arab	narrow	always	hour	-1234.5	-١٬٢٣٤٫٥ h	-١ ٢٣٤,٥ h
+fr	arab	narrow	always	hour	1.25	+١٫٢٥ h	+١,٢٥ h
+fr	arab	narrow	always	hour	1234.5	+١٬٢٣٤٫٥ h	+١ ٢٣٤,٥ h
+fr	arab	narrow	always	day	-1234.5	-١٬٢٣٤٫٥ j	-١ ٢٣٤,٥ j
+fr	arab	narrow	always	day	1.25	+١٫٢٥ j	+١,٢٥ j
+fr	arab	narrow	always	day	1234.5	+١٬٢٣٤٫٥ j	+١ ٢٣٤,٥ j
+fr	arab	narrow	always	week	-1234.5	-١٬٢٣٤٫٥ sem.	-١ ٢٣٤,٥ sem.
+fr	arab	narrow	always	week	1.25	+١٫٢٥ sem.	+١,٢٥ sem.
+fr	arab	narrow	always	week	1234.5	+١٬٢٣٤٫٥ sem.	+١ ٢٣٤,٥ sem.
+fr	arab	narrow	always	month	-1234.5	-١٬٢٣٤٫٥ m.	-١ ٢٣٤,٥ m.
+fr	arab	narrow	always	month	1.25	+١٫٢٥ m.	+١,٢٥ m.
+fr	arab	narrow	always	month	1234.5	+١٬٢٣٤٫٥ m.	+١ ٢٣٤,٥ m.
+fr	arab	narrow	always	quarter	-1234.5	-١٬٢٣٤٫٥ trim.	-١ ٢٣٤,٥ trim.
+fr	arab	narrow	always	quarter	1.25	+١٫٢٥ trim.	+١,٢٥ trim.
+fr	arab	narrow	always	quarter	1234.5	+١٬٢٣٤٫٥ trim.	+١ ٢٣٤,٥ trim.
+fr	arab	narrow	always	year	-1234.5	-١٬٢٣٤٫٥ a	-١ ٢٣٤,٥ a
+fr	arab	narrow	always	year	1.25	+١٫٢٥ a	+١,٢٥ a
+fr	arab	narrow	always	year	1234.5	+١٬٢٣٤٫٥ a	+١ ٢٣٤,٥ a
+fr	arab	narrow	auto	second	-1234.5	-١٬٢٣٤٫٥ s	-١ ٢٣٤,٥ s
+fr	arab	narrow	auto	second	1.25	+١٫٢٥ s	+١,٢٥ s
+fr	arab	narrow	auto	second	1234.5	+١٬٢٣٤٫٥ s	+١ ٢٣٤,٥ s
+fr	arab	narrow	auto	minute	-1234.5	-١٬٢٣٤٫٥ min	-١ ٢٣٤,٥ min
+fr	arab	narrow	auto	minute	1.25	+١٫٢٥ min	+١,٢٥ min
+fr	arab	narrow	auto	minute	1234.5	+١٬٢٣٤٫٥ min	+١ ٢٣٤,٥ min
+fr	arab	narrow	auto	hour	-1234.5	-١٬٢٣٤٫٥ h	-١ ٢٣٤,٥ h
+fr	arab	narrow	auto	hour	1.25	+١٫٢٥ h	+١,٢٥ h
+fr	arab	narrow	auto	hour	1234.5	+١٬٢٣٤٫٥ h	+١ ٢٣٤,٥ h
+fr	arab	narrow	auto	day	-1234.5	-١٬٢٣٤٫٥ j	-١ ٢٣٤,٥ j
+fr	arab	narrow	auto	day	1.25	+١٫٢٥ j	+١,٢٥ j
+fr	arab	narrow	auto	day	1234.5	+١٬٢٣٤٫٥ j	+١ ٢٣٤,٥ j
+fr	arab	narrow	auto	week	-1234.5	-١٬٢٣٤٫٥ sem.	-١ ٢٣٤,٥ sem.
+fr	arab	narrow	auto	week	1.25	+١٫٢٥ sem.	+١,٢٥ sem.
+fr	arab	narrow	auto	week	1234.5	+١٬٢٣٤٫٥ sem.	+١ ٢٣٤,٥ sem.
+fr	arab	narrow	auto	month	-1234.5	-١٬٢٣٤٫٥ m.	-١ ٢٣٤,٥ m.
+fr	arab	narrow	auto	month	1.25	+١٫٢٥ m.	+١,٢٥ m.
+fr	arab	narrow	auto	month	1234.5	+١٬٢٣٤٫٥ m.	+١ ٢٣٤,٥ m.
+fr	arab	narrow	auto	quarter	-1234.5	-١٬٢٣٤٫٥ trim.	-١ ٢٣٤,٥ trim.
+fr	arab	narrow	auto	quarter	1.25	+١٫٢٥ trim.	+١,٢٥ trim.
+fr	arab	narrow	auto	quarter	1234.5	+١٬٢٣٤٫٥ trim.	+١ ٢٣٤,٥ trim.
+fr	arab	narrow	auto	year	-1234.5	-١٬٢٣٤٫٥ a	-١ ٢٣٤,٥ a
+fr	arab	narrow	auto	year	1.25	+١٫٢٥ a	+١,٢٥ a
+fr	arab	narrow	auto	year	1234.5	+١٬٢٣٤٫٥ a	+١ ٢٣٤,٥ a
+de	arab	long	always	second	-1234.5	vor ١٬٢٣٤٫٥ Sekunden	vor ١.٢٣٤,٥ Sekunden
+de	arab	long	always	second	1.25	in ١٫٢٥ Sekunden	in ١,٢٥ Sekunden
+de	arab	long	always	second	1234.5	in ١٬٢٣٤٫٥ Sekunden	in ١.٢٣٤,٥ Sekunden
+de	arab	long	always	minute	-1234.5	vor ١٬٢٣٤٫٥ Minuten	vor ١.٢٣٤,٥ Minuten
+de	arab	long	always	minute	1.25	in ١٫٢٥ Minuten	in ١,٢٥ Minuten
+de	arab	long	always	minute	1234.5	in ١٬٢٣٤٫٥ Minuten	in ١.٢٣٤,٥ Minuten
+de	arab	long	always	hour	-1234.5	vor ١٬٢٣٤٫٥ Stunden	vor ١.٢٣٤,٥ Stunden
+de	arab	long	always	hour	1.25	in ١٫٢٥ Stunden	in ١,٢٥ Stunden
+de	arab	long	always	hour	1234.5	in ١٬٢٣٤٫٥ Stunden	in ١.٢٣٤,٥ Stunden
+de	arab	long	always	day	-1234.5	vor ١٬٢٣٤٫٥ Tagen	vor ١.٢٣٤,٥ Tagen
+de	arab	long	always	day	1.25	in ١٫٢٥ Tagen	in ١,٢٥ Tagen
+de	arab	long	always	day	1234.5	in ١٬٢٣٤٫٥ Tagen	in ١.٢٣٤,٥ Tagen
+de	arab	long	always	week	-1234.5	vor ١٬٢٣٤٫٥ Wochen	vor ١.٢٣٤,٥ Wochen
+de	arab	long	always	week	1.25	in ١٫٢٥ Wochen	in ١,٢٥ Wochen
+de	arab	long	always	week	1234.5	in ١٬٢٣٤٫٥ Wochen	in ١.٢٣٤,٥ Wochen
+de	arab	long	always	month	-1234.5	vor ١٬٢٣٤٫٥ Monaten	vor ١.٢٣٤,٥ Monaten
+de	arab	long	always	month	1.25	in ١٫٢٥ Monaten	in ١,٢٥ Monaten
+de	arab	long	always	month	1234.5	in ١٬٢٣٤٫٥ Monaten	in ١.٢٣٤,٥ Monaten
+de	arab	long	always	quarter	-1234.5	vor ١٬٢٣٤٫٥ Quartalen	vor ١.٢٣٤,٥ Quartalen
+de	arab	long	always	quarter	1.25	in ١٫٢٥ Quartalen	in ١,٢٥ Quartalen
+de	arab	long	always	quarter	1234.5	in ١٬٢٣٤٫٥ Quartalen	in ١.٢٣٤,٥ Quartalen
+de	arab	long	always	year	-1234.5	vor ١٬٢٣٤٫٥ Jahren	vor ١.٢٣٤,٥ Jahren
+de	arab	long	always	year	1.25	in ١٫٢٥ Jahren	in ١,٢٥ Jahren
+de	arab	long	always	year	1234.5	in ١٬٢٣٤٫٥ Jahren	in ١.٢٣٤,٥ Jahren
+de	arab	long	auto	second	-1234.5	vor ١٬٢٣٤٫٥ Sekunden	vor ١.٢٣٤,٥ Sekunden
+de	arab	long	auto	second	1.25	in ١٫٢٥ Sekunden	in ١,٢٥ Sekunden
+de	arab	long	auto	second	1234.5	in ١٬٢٣٤٫٥ Sekunden	in ١.٢٣٤,٥ Sekunden
+de	arab	long	auto	minute	-1234.5	vor ١٬٢٣٤٫٥ Minuten	vor ١.٢٣٤,٥ Minuten
+de	arab	long	auto	minute	1.25	in ١٫٢٥ Minuten	in ١,٢٥ Minuten
+de	arab	long	auto	minute	1234.5	in ١٬٢٣٤٫٥ Minuten	in ١.٢٣٤,٥ Minuten
+de	arab	long	auto	hour	-1234.5	vor ١٬٢٣٤٫٥ Stunden	vor ١.٢٣٤,٥ Stunden
+de	arab	long	auto	hour	1.25	in ١٫٢٥ Stunden	in ١,٢٥ Stunden
+de	arab	long	auto	hour	1234.5	in ١٬٢٣٤٫٥ Stunden	in ١.٢٣٤,٥ Stunden
+de	arab	long	auto	day	-1234.5	vor ١٬٢٣٤٫٥ Tagen	vor ١.٢٣٤,٥ Tagen
+de	arab	long	auto	day	1.25	in ١٫٢٥ Tagen	in ١,٢٥ Tagen
+de	arab	long	auto	day	1234.5	in ١٬٢٣٤٫٥ Tagen	in ١.٢٣٤,٥ Tagen
+de	arab	long	auto	week	-1234.5	vor ١٬٢٣٤٫٥ Wochen	vor ١.٢٣٤,٥ Wochen
+de	arab	long	auto	week	1.25	in ١٫٢٥ Wochen	in ١,٢٥ Wochen
+de	arab	long	auto	week	1234.5	in ١٬٢٣٤٫٥ Wochen	in ١.٢٣٤,٥ Wochen
+de	arab	long	auto	month	-1234.5	vor ١٬٢٣٤٫٥ Monaten	vor ١.٢٣٤,٥ Monaten
+de	arab	long	auto	month	1.25	in ١٫٢٥ Monaten	in ١,٢٥ Monaten
+de	arab	long	auto	month	1234.5	in ١٬٢٣٤٫٥ Monaten	in ١.٢٣٤,٥ Monaten
+de	arab	long	auto	quarter	-1234.5	vor ١٬٢٣٤٫٥ Quartalen	vor ١.٢٣٤,٥ Quartalen
+de	arab	long	auto	quarter	1.25	in ١٫٢٥ Quartalen	in ١,٢٥ Quartalen
+de	arab	long	auto	quarter	1234.5	in ١٬٢٣٤٫٥ Quartalen	in ١.٢٣٤,٥ Quartalen
+de	arab	long	auto	year	-1234.5	vor ١٬٢٣٤٫٥ Jahren	vor ١.٢٣٤,٥ Jahren
+de	arab	long	auto	year	1.25	in ١٫٢٥ Jahren	in ١,٢٥ Jahren
+de	arab	long	auto	year	1234.5	in ١٬٢٣٤٫٥ Jahren	in ١.٢٣٤,٥ Jahren
+de	arab	short	always	second	-1234.5	vor ١٬٢٣٤٫٥ Sek.	vor ١.٢٣٤,٥ Sek.
+de	arab	short	always	second	1.25	in ١٫٢٥ Sek.	in ١,٢٥ Sek.
+de	arab	short	always	second	1234.5	in ١٬٢٣٤٫٥ Sek.	in ١.٢٣٤,٥ Sek.
+de	arab	short	always	minute	-1234.5	vor ١٬٢٣٤٫٥ Min.	vor ١.٢٣٤,٥ Min.
+de	arab	short	always	minute	1.25	in ١٫٢٥ Min.	in ١,٢٥ Min.
+de	arab	short	always	minute	1234.5	in ١٬٢٣٤٫٥ Min.	in ١.٢٣٤,٥ Min.
+de	arab	short	always	hour	-1234.5	vor ١٬٢٣٤٫٥ Std.	vor ١.٢٣٤,٥ Std.
+de	arab	short	always	hour	1.25	in ١٫٢٥ Std.	in ١,٢٥ Std.
+de	arab	short	always	hour	1234.5	in ١٬٢٣٤٫٥ Std.	in ١.٢٣٤,٥ Std.
+de	arab	short	always	day	-1234.5	vor ١٬٢٣٤٫٥ Tagen	vor ١.٢٣٤,٥ Tagen
+de	arab	short	always	day	1.25	in ١٫٢٥ Tagen	in ١,٢٥ Tagen
+de	arab	short	always	day	1234.5	in ١٬٢٣٤٫٥ Tagen	in ١.٢٣٤,٥ Tagen
+de	arab	short	always	week	-1234.5	vor ١٬٢٣٤٫٥ Wochen	vor ١.٢٣٤,٥ Wochen
+de	arab	short	always	week	1.25	in ١٫٢٥ Wochen	in ١,٢٥ Wochen
+de	arab	short	always	week	1234.5	in ١٬٢٣٤٫٥ Wochen	in ١.٢٣٤,٥ Wochen
+de	arab	short	always	month	-1234.5	vor ١٬٢٣٤٫٥ Monaten	vor ١.٢٣٤,٥ Monaten
+de	arab	short	always	month	1.25	in ١٫٢٥ Monaten	in ١,٢٥ Monaten
+de	arab	short	always	month	1234.5	in ١٬٢٣٤٫٥ Monaten	in ١.٢٣٤,٥ Monaten
+de	arab	short	always	quarter	-1234.5	vor ١٬٢٣٤٫٥ Quart.	vor ١.٢٣٤,٥ Quart.
+de	arab	short	always	quarter	1.25	in ١٫٢٥ Quart.	in ١,٢٥ Quart.
+de	arab	short	always	quarter	1234.5	in ١٬٢٣٤٫٥ Quart.	in ١.٢٣٤,٥ Quart.
+de	arab	short	always	year	-1234.5	vor ١٬٢٣٤٫٥ Jahren	vor ١.٢٣٤,٥ Jahren
+de	arab	short	always	year	1.25	in ١٫٢٥ Jahren	in ١,٢٥ Jahren
+de	arab	short	always	year	1234.5	in ١٬٢٣٤٫٥ Jahren	in ١.٢٣٤,٥ Jahren
+de	arab	short	auto	second	-1234.5	vor ١٬٢٣٤٫٥ Sek.	vor ١.٢٣٤,٥ Sek.
+de	arab	short	auto	second	1.25	in ١٫٢٥ Sek.	in ١,٢٥ Sek.
+de	arab	short	auto	second	1234.5	in ١٬٢٣٤٫٥ Sek.	in ١.٢٣٤,٥ Sek.
+de	arab	short	auto	minute	-1234.5	vor ١٬٢٣٤٫٥ Min.	vor ١.٢٣٤,٥ Min.
+de	arab	short	auto	minute	1.25	in ١٫٢٥ Min.	in ١,٢٥ Min.
+de	arab	short	auto	minute	1234.5	in ١٬٢٣٤٫٥ Min.	in ١.٢٣٤,٥ Min.
+de	arab	short	auto	hour	-1234.5	vor ١٬٢٣٤٫٥ Std.	vor ١.٢٣٤,٥ Std.
+de	arab	short	auto	hour	1.25	in ١٫٢٥ Std.	in ١,٢٥ Std.
+de	arab	short	auto	hour	1234.5	in ١٬٢٣٤٫٥ Std.	in ١.٢٣٤,٥ Std.
+de	arab	short	auto	day	-1234.5	vor ١٬٢٣٤٫٥ Tagen	vor ١.٢٣٤,٥ Tagen
+de	arab	short	auto	day	1.25	in ١٫٢٥ Tagen	in ١,٢٥ Tagen
+de	arab	short	auto	day	1234.5	in ١٬٢٣٤٫٥ Tagen	in ١.٢٣٤,٥ Tagen
+de	arab	short	auto	week	-1234.5	vor ١٬٢٣٤٫٥ Wochen	vor ١.٢٣٤,٥ Wochen
+de	arab	short	auto	week	1.25	in ١٫٢٥ Wochen	in ١,٢٥ Wochen
+de	arab	short	auto	week	1234.5	in ١٬٢٣٤٫٥ Wochen	in ١.٢٣٤,٥ Wochen
+de	arab	short	auto	month	-1234.5	vor ١٬٢٣٤٫٥ Monaten	vor ١.٢٣٤,٥ Monaten
+de	arab	short	auto	month	1.25	in ١٫٢٥ Monaten	in ١,٢٥ Monaten
+de	arab	short	auto	month	1234.5	in ١٬٢٣٤٫٥ Monaten	in ١.٢٣٤,٥ Monaten
+de	arab	short	auto	quarter	-1234.5	vor ١٬٢٣٤٫٥ Quart.	vor ١.٢٣٤,٥ Quart.
+de	arab	short	auto	quarter	1.25	in ١٫٢٥ Quart.	in ١,٢٥ Quart.
+de	arab	short	auto	quarter	1234.5	in ١٬٢٣٤٫٥ Quart.	in ١.٢٣٤,٥ Quart.
+de	arab	short	auto	year	-1234.5	vor ١٬٢٣٤٫٥ Jahren	vor ١.٢٣٤,٥ Jahren
+de	arab	short	auto	year	1.25	in ١٫٢٥ Jahren	in ١,٢٥ Jahren
+de	arab	short	auto	year	1234.5	in ١٬٢٣٤٫٥ Jahren	in ١.٢٣٤,٥ Jahren
+de	arab	narrow	always	second	-1234.5	vor ١٬٢٣٤٫٥ s	vor ١.٢٣٤,٥ s
+de	arab	narrow	always	second	1.25	in ١٫٢٥ s	in ١,٢٥ s
+de	arab	narrow	always	second	1234.5	in ١٬٢٣٤٫٥ s	in ١.٢٣٤,٥ s
+de	arab	narrow	always	minute	-1234.5	vor ١٬٢٣٤٫٥ m	vor ١.٢٣٤,٥ m
+de	arab	narrow	always	minute	1.25	in ١٫٢٥ m	in ١,٢٥ m
+de	arab	narrow	always	minute	1234.5	in ١٬٢٣٤٫٥ m	in ١.٢٣٤,٥ m
+de	arab	narrow	always	hour	-1234.5	vor ١٬٢٣٤٫٥ Std.	vor ١.٢٣٤,٥ Std.
+de	arab	narrow	always	hour	1.25	in ١٫٢٥ Std.	in ١,٢٥ Std.
+de	arab	narrow	always	hour	1234.5	in ١٬٢٣٤٫٥ Std.	in ١.٢٣٤,٥ Std.
+de	arab	narrow	always	day	-1234.5	vor ١٬٢٣٤٫٥ Tagen	vor ١.٢٣٤,٥ Tagen
+de	arab	narrow	always	day	1.25	in ١٫٢٥ Tagen	in ١,٢٥ Tagen
+de	arab	narrow	always	day	1234.5	in ١٬٢٣٤٫٥ Tagen	in ١.٢٣٤,٥ Tagen
+de	arab	narrow	always	week	-1234.5	vor ١٬٢٣٤٫٥ Wo.	vor ١.٢٣٤,٥ Wo.
+de	arab	narrow	always	week	1.25	in ١٫٢٥ Wo.	in ١,٢٥ Wo.
+de	arab	narrow	always	week	1234.5	in ١٬٢٣٤٫٥ Wo.	in ١.٢٣٤,٥ Wo.
+de	arab	narrow	always	month	-1234.5	vor ١٬٢٣٤٫٥ Monaten	vor ١.٢٣٤,٥ Monaten
+de	arab	narrow	always	month	1.25	in ١٫٢٥ Monaten	in ١,٢٥ Monaten
+de	arab	narrow	always	month	1234.5	in ١٬٢٣٤٫٥ Monaten	in ١.٢٣٤,٥ Monaten
+de	arab	narrow	always	quarter	-1234.5	vor ١٬٢٣٤٫٥ Q	vor ١.٢٣٤,٥ Q
+de	arab	narrow	always	quarter	1.25	in ١٫٢٥ Q	in ١,٢٥ Q
+de	arab	narrow	always	quarter	1234.5	in ١٬٢٣٤٫٥ Q	in ١.٢٣٤,٥ Q
+de	arab	narrow	always	year	-1234.5	vor ١٬٢٣٤٫٥ Jahren	vor ١.٢٣٤,٥ Jahren
+de	arab	narrow	always	year	1.25	in ١٫٢٥ Jahren	in ١,٢٥ Jahren
+de	arab	narrow	always	year	1234.5	in ١٬٢٣٤٫٥ Jahren	in ١.٢٣٤,٥ Jahren
+de	arab	narrow	auto	second	-1234.5	vor ١٬٢٣٤٫٥ s	vor ١.٢٣٤,٥ s
+de	arab	narrow	auto	second	1.25	in ١٫٢٥ s	in ١,٢٥ s
+de	arab	narrow	auto	second	1234.5	in ١٬٢٣٤٫٥ s	in ١.٢٣٤,٥ s
+de	arab	narrow	auto	minute	-1234.5	vor ١٬٢٣٤٫٥ m	vor ١.٢٣٤,٥ m
+de	arab	narrow	auto	minute	1.25	in ١٫٢٥ m	in ١,٢٥ m
+de	arab	narrow	auto	minute	1234.5	in ١٬٢٣٤٫٥ m	in ١.٢٣٤,٥ m
+de	arab	narrow	auto	hour	-1234.5	vor ١٬٢٣٤٫٥ Std.	vor ١.٢٣٤,٥ Std.
+de	arab	narrow	auto	hour	1.25	in ١٫٢٥ Std.	in ١,٢٥ Std.
+de	arab	narrow	auto	hour	1234.5	in ١٬٢٣٤٫٥ Std.	in ١.٢٣٤,٥ Std.
+de	arab	narrow	auto	day	-1234.5	vor ١٬٢٣٤٫٥ Tagen	vor ١.٢٣٤,٥ Tagen
+de	arab	narrow	auto	day	1.25	in ١٫٢٥ Tagen	in ١,٢٥ Tagen
+de	arab	narrow	auto	day	1234.5	in ١٬٢٣٤٫٥ Tagen	in ١.٢٣٤,٥ Tagen
+de	arab	narrow	auto	week	-1234.5	vor ١٬٢٣٤٫٥ Wo.	vor ١.٢٣٤,٥ Wo.
+de	arab	narrow	auto	week	1.25	in ١٫٢٥ Wo.	in ١,٢٥ Wo.
+de	arab	narrow	auto	week	1234.5	in ١٬٢٣٤٫٥ Wo.	in ١.٢٣٤,٥ Wo.
+de	arab	narrow	auto	month	-1234.5	vor ١٬٢٣٤٫٥ Monaten	vor ١.٢٣٤,٥ Monaten
+de	arab	narrow	auto	month	1.25	in ١٫٢٥ Monaten	in ١,٢٥ Monaten
+de	arab	narrow	auto	month	1234.5	in ١٬٢٣٤٫٥ Monaten	in ١.٢٣٤,٥ Monaten
+de	arab	narrow	auto	quarter	-1234.5	vor ١٬٢٣٤٫٥ Q	vor ١.٢٣٤,٥ Q
+de	arab	narrow	auto	quarter	1.25	in ١٫٢٥ Q	in ١,٢٥ Q
+de	arab	narrow	auto	quarter	1234.5	in ١٬٢٣٤٫٥ Q	in ١.٢٣٤,٥ Q
+de	arab	narrow	auto	year	-1234.5	vor ١٬٢٣٤٫٥ Jahren	vor ١.٢٣٤,٥ Jahren
+de	arab	narrow	auto	year	1.25	in ١٫٢٥ Jahren	in ١,٢٥ Jahren
+de	arab	narrow	auto	year	1234.5	in ١٬٢٣٤٫٥ Jahren	in ١.٢٣٤,٥ Jahren
+hi	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ सेकंड पहले	١,٢٣٤.٥ सेकंड पहले
+hi	arab	long	always	second	1.25	١٫٢٥ सेकंड में	١.٢٥ सेकंड में
+hi	arab	long	always	second	1234.5	١٬٢٣٤٫٥ सेकंड में	١,٢٣٤.٥ सेकंड में
+hi	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ मिनट पहले	١,٢٣٤.٥ मिनट पहले
+hi	arab	long	always	minute	1.25	١٫٢٥ मिनट में	١.٢٥ मिनट में
+hi	arab	long	always	minute	1234.5	١٬٢٣٤٫٥ मिनट में	١,٢٣٤.٥ मिनट में
+hi	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ घंटे पहले	١,٢٣٤.٥ घंटे पहले
+hi	arab	long	always	hour	1.25	١٫٢٥ घंटे में	١.٢٥ घंटे में
+hi	arab	long	always	hour	1234.5	١٬٢٣٤٫٥ घंटे में	١,٢٣٤.٥ घंटे में
+hi	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ दिन पहले	١,٢٣٤.٥ दिन पहले
+hi	arab	long	always	day	1.25	١٫٢٥ दिन में	١.٢٥ दिन में
+hi	arab	long	always	day	1234.5	١٬٢٣٤٫٥ दिन में	١,٢٣٤.٥ दिन में
+hi	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ सप्ताह पहले	١,٢٣٤.٥ सप्ताह पहले
+hi	arab	long	always	week	1.25	١٫٢٥ सप्ताह में	١.٢٥ सप्ताह में
+hi	arab	long	always	week	1234.5	١٬٢٣٤٫٥ सप्ताह में	١,٢٣٤.٥ सप्ताह में
+hi	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ माह पहले	١,٢٣٤.٥ माह पहले
+hi	arab	long	always	month	1.25	١٫٢٥ माह में	١.٢٥ माह में
+hi	arab	long	always	month	1234.5	١٬٢٣٤٫٥ माह में	١,٢٣٤.٥ माह में
+hi	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ तिमाही पहले	١,٢٣٤.٥ तिमाही पहले
+hi	arab	long	always	quarter	1.25	١٫٢٥ तिमाहियों में	١.٢٥ तिमाहियों में
+hi	arab	long	always	quarter	1234.5	١٬٢٣٤٫٥ तिमाहियों में	١,٢٣٤.٥ तिमाहियों में
+hi	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ वर्ष पहले	١,٢٣٤.٥ वर्ष पहले
+hi	arab	long	always	year	1.25	١٫٢٥ वर्ष में	١.٢٥ वर्ष में
+hi	arab	long	always	year	1234.5	١٬٢٣٤٫٥ वर्ष में	١,٢٣٤.٥ वर्ष में
+hi	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ सेकंड पहले	١,٢٣٤.٥ सेकंड पहले
+hi	arab	long	auto	second	1.25	١٫٢٥ सेकंड में	١.٢٥ सेकंड में
+hi	arab	long	auto	second	1234.5	١٬٢٣٤٫٥ सेकंड में	١,٢٣٤.٥ सेकंड में
+hi	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ मिनट पहले	١,٢٣٤.٥ मिनट पहले
+hi	arab	long	auto	minute	1.25	١٫٢٥ मिनट में	١.٢٥ मिनट में
+hi	arab	long	auto	minute	1234.5	١٬٢٣٤٫٥ मिनट में	١,٢٣٤.٥ मिनट में
+hi	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ घंटे पहले	١,٢٣٤.٥ घंटे पहले
+hi	arab	long	auto	hour	1.25	١٫٢٥ घंटे में	١.٢٥ घंटे में
+hi	arab	long	auto	hour	1234.5	١٬٢٣٤٫٥ घंटे में	١,٢٣٤.٥ घंटे में
+hi	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ दिन पहले	١,٢٣٤.٥ दिन पहले
+hi	arab	long	auto	day	1.25	١٫٢٥ दिन में	١.٢٥ दिन में
+hi	arab	long	auto	day	1234.5	١٬٢٣٤٫٥ दिन में	١,٢٣٤.٥ दिन में
+hi	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ सप्ताह पहले	١,٢٣٤.٥ सप्ताह पहले
+hi	arab	long	auto	week	1.25	١٫٢٥ सप्ताह में	١.٢٥ सप्ताह में
+hi	arab	long	auto	week	1234.5	١٬٢٣٤٫٥ सप्ताह में	١,٢٣٤.٥ सप्ताह में
+hi	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ माह पहले	١,٢٣٤.٥ माह पहले
+hi	arab	long	auto	month	1.25	١٫٢٥ माह में	١.٢٥ माह में
+hi	arab	long	auto	month	1234.5	١٬٢٣٤٫٥ माह में	١,٢٣٤.٥ माह में
+hi	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ तिमाही पहले	١,٢٣٤.٥ तिमाही पहले
+hi	arab	long	auto	quarter	1.25	١٫٢٥ तिमाहियों में	١.٢٥ तिमाहियों में
+hi	arab	long	auto	quarter	1234.5	١٬٢٣٤٫٥ तिमाहियों में	١,٢٣٤.٥ तिमाहियों में
+hi	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ वर्ष पहले	١,٢٣٤.٥ वर्ष पहले
+hi	arab	long	auto	year	1.25	١٫٢٥ वर्ष में	١.٢٥ वर्ष में
+hi	arab	long	auto	year	1234.5	١٬٢٣٤٫٥ वर्ष में	١,٢٣٤.٥ वर्ष में
+hi	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ से॰ पहले	١,٢٣٤.٥ से॰ पहले
+hi	arab	short	always	second	1.25	١٫٢٥ से॰ में	١.٢٥ से॰ में
+hi	arab	short	always	second	1234.5	١٬٢٣٤٫٥ से॰ में	١,٢٣٤.٥ से॰ में
+hi	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ मि॰ पहले	١,٢٣٤.٥ मि॰ पहले
+hi	arab	short	always	minute	1.25	١٫٢٥ मि॰ में	١.٢٥ मि॰ में
+hi	arab	short	always	minute	1234.5	١٬٢٣٤٫٥ मि॰ में	١,٢٣٤.٥ मि॰ में
+hi	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ घं॰ पहले	١,٢٣٤.٥ घं॰ पहले
+hi	arab	short	always	hour	1.25	١٫٢٥ घं॰ में	١.٢٥ घं॰ में
+hi	arab	short	always	hour	1234.5	١٬٢٣٤٫٥ घं॰ में	١,٢٣٤.٥ घं॰ में
+hi	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ दिन पहले	١,٢٣٤.٥ दिन पहले
+hi	arab	short	always	day	1.25	١٫٢٥ दिन में	١.٢٥ दिन में
+hi	arab	short	always	day	1234.5	١٬٢٣٤٫٥ दिन में	١,٢٣٤.٥ दिन में
+hi	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ सप्ताह पहले	١,٢٣٤.٥ सप्ताह पहले
+hi	arab	short	always	week	1.25	١٫٢٥ सप्ताह में	١.٢٥ सप्ताह में
+hi	arab	short	always	week	1234.5	١٬٢٣٤٫٥ सप्ताह में	١,٢٣٤.٥ सप्ताह में
+hi	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ माह पहले	١,٢٣٤.٥ माह पहले
+hi	arab	short	always	month	1.25	١٫٢٥ माह में	١.٢٥ माह में
+hi	arab	short	always	month	1234.5	١٬٢٣٤٫٥ माह में	١,٢٣٤.٥ माह में
+hi	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ तिमाहियों पहले	١,٢٣٤.٥ तिमाहियों पहले
+hi	arab	short	always	quarter	1.25	١٫٢٥ तिमाहियों में	١.٢٥ तिमाहियों में
+hi	arab	short	always	quarter	1234.5	١٬٢٣٤٫٥ तिमाहियों में	١,٢٣٤.٥ तिमाहियों में
+hi	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ वर्ष पहले	١,٢٣٤.٥ वर्ष पहले
+hi	arab	short	always	year	1.25	١٫٢٥ वर्ष में	١.٢٥ वर्ष में
+hi	arab	short	always	year	1234.5	١٬٢٣٤٫٥ वर्ष में	١,٢٣٤.٥ वर्ष में
+hi	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ से॰ पहले	١,٢٣٤.٥ से॰ पहले
+hi	arab	short	auto	second	1.25	١٫٢٥ से॰ में	١.٢٥ से॰ में
+hi	arab	short	auto	second	1234.5	١٬٢٣٤٫٥ से॰ में	١,٢٣٤.٥ से॰ में
+hi	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ मि॰ पहले	١,٢٣٤.٥ मि॰ पहले
+hi	arab	short	auto	minute	1.25	١٫٢٥ मि॰ में	١.٢٥ मि॰ में
+hi	arab	short	auto	minute	1234.5	١٬٢٣٤٫٥ मि॰ में	١,٢٣٤.٥ मि॰ में
+hi	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ घं॰ पहले	١,٢٣٤.٥ घं॰ पहले
+hi	arab	short	auto	hour	1.25	١٫٢٥ घं॰ में	١.٢٥ घं॰ में
+hi	arab	short	auto	hour	1234.5	١٬٢٣٤٫٥ घं॰ में	١,٢٣٤.٥ घं॰ में
+hi	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ दिन पहले	١,٢٣٤.٥ दिन पहले
+hi	arab	short	auto	day	1.25	١٫٢٥ दिन में	١.٢٥ दिन में
+hi	arab	short	auto	day	1234.5	١٬٢٣٤٫٥ दिन में	١,٢٣٤.٥ दिन में
+hi	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ सप्ताह पहले	١,٢٣٤.٥ सप्ताह पहले
+hi	arab	short	auto	week	1.25	١٫٢٥ सप्ताह में	١.٢٥ सप्ताह में
+hi	arab	short	auto	week	1234.5	١٬٢٣٤٫٥ सप्ताह में	١,٢٣٤.٥ सप्ताह में
+hi	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ माह पहले	١,٢٣٤.٥ माह पहले
+hi	arab	short	auto	month	1.25	١٫٢٥ माह में	١.٢٥ माह में
+hi	arab	short	auto	month	1234.5	١٬٢٣٤٫٥ माह में	١,٢٣٤.٥ माह में
+hi	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ तिमाहियों पहले	١,٢٣٤.٥ तिमाहियों पहले
+hi	arab	short	auto	quarter	1.25	١٫٢٥ तिमाहियों में	١.٢٥ तिमाहियों में
+hi	arab	short	auto	quarter	1234.5	١٬٢٣٤٫٥ तिमाहियों में	١,٢٣٤.٥ तिमाहियों में
+hi	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ वर्ष पहले	١,٢٣٤.٥ वर्ष पहले
+hi	arab	short	auto	year	1.25	١٫٢٥ वर्ष में	١.٢٥ वर्ष में
+hi	arab	short	auto	year	1234.5	١٬٢٣٤٫٥ वर्ष में	١,٢٣٤.٥ वर्ष में
+hi	arab	narrow	always	second	-1234.5	١٬٢٣٤٫٥ से॰ पहले	١,٢٣٤.٥ से॰ पहले
+hi	arab	narrow	always	second	1.25	١٫٢٥ से॰ में	١.٢٥ से॰ में
+hi	arab	narrow	always	second	1234.5	١٬٢٣٤٫٥ से॰ में	١,٢٣٤.٥ से॰ में
+hi	arab	narrow	always	minute	-1234.5	١٬٢٣٤٫٥ मि॰ पहले	١,٢٣٤.٥ मि॰ पहले
+hi	arab	narrow	always	minute	1.25	١٫٢٥ मि॰ में	١.٢٥ मि॰ में
+hi	arab	narrow	always	minute	1234.5	١٬٢٣٤٫٥ मि॰ में	١,٢٣٤.٥ मि॰ में
+hi	arab	narrow	always	hour	-1234.5	١٬٢٣٤٫٥ घं॰ पहले	١,٢٣٤.٥ घं॰ पहले
+hi	arab	narrow	always	hour	1.25	١٫٢٥ घं॰ में	١.٢٥ घं॰ में
+hi	arab	narrow	always	hour	1234.5	١٬٢٣٤٫٥ घं॰ में	١,٢٣٤.٥ घं॰ में
+hi	arab	narrow	always	day	-1234.5	١٬٢٣٤٫٥ दिन पहले	١,٢٣٤.٥ दिन पहले
+hi	arab	narrow	always	day	1.25	١٫٢٥ दिन में	١.٢٥ दिन में
+hi	arab	narrow	always	day	1234.5	١٬٢٣٤٫٥ दिन में	١,٢٣٤.٥ दिन में
+hi	arab	narrow	always	week	-1234.5	١٬٢٣٤٫٥ सप्ताह पहले	١,٢٣٤.٥ सप्ताह पहले
+hi	arab	narrow	always	week	1.25	١٫٢٥ सप्ताह में	١.٢٥ सप्ताह में
+hi	arab	narrow	always	week	1234.5	١٬٢٣٤٫٥ सप्ताह में	١,٢٣٤.٥ सप्ताह में
+hi	arab	narrow	always	month	-1234.5	١٬٢٣٤٫٥ माह पहले	١,٢٣٤.٥ माह पहले
+hi	arab	narrow	always	month	1.25	١٫٢٥ माह में	١.٢٥ माह में
+hi	arab	narrow	always	month	1234.5	١٬٢٣٤٫٥ माह में	١,٢٣٤.٥ माह में
+hi	arab	narrow	always	quarter	-1234.5	١٬٢٣٤٫٥ ति॰ पहले	١,٢٣٤.٥ ति॰ पहले
+hi	arab	narrow	always	quarter	1.25	١٫٢٥ ति॰ में	١.٢٥ ति॰ में
+hi	arab	narrow	always	quarter	1234.5	١٬٢٣٤٫٥ ति॰ में	١,٢٣٤.٥ ति॰ में
+hi	arab	narrow	always	year	-1234.5	١٬٢٣٤٫٥ वर्ष पहले	١,٢٣٤.٥ वर्ष पहले
+hi	arab	narrow	always	year	1.25	١٫٢٥ वर्ष में	١.٢٥ वर्ष में
+hi	arab	narrow	always	year	1234.5	١٬٢٣٤٫٥ वर्ष में	١,٢٣٤.٥ वर्ष में
+hi	arab	narrow	auto	second	-1234.5	١٬٢٣٤٫٥ से॰ पहले	١,٢٣٤.٥ से॰ पहले
+hi	arab	narrow	auto	second	1.25	١٫٢٥ से॰ में	١.٢٥ से॰ में
+hi	arab	narrow	auto	second	1234.5	١٬٢٣٤٫٥ से॰ में	١,٢٣٤.٥ से॰ में
+hi	arab	narrow	auto	minute	-1234.5	١٬٢٣٤٫٥ मि॰ पहले	١,٢٣٤.٥ मि॰ पहले
+hi	arab	narrow	auto	minute	1.25	١٫٢٥ मि॰ में	١.٢٥ मि॰ में
+hi	arab	narrow	auto	minute	1234.5	١٬٢٣٤٫٥ मि॰ में	١,٢٣٤.٥ मि॰ में
+hi	arab	narrow	auto	hour	-1234.5	١٬٢٣٤٫٥ घं॰ पहले	١,٢٣٤.٥ घं॰ पहले
+hi	arab	narrow	auto	hour	1.25	١٫٢٥ घं॰ में	١.٢٥ घं॰ में
+hi	arab	narrow	auto	hour	1234.5	١٬٢٣٤٫٥ घं॰ में	١,٢٣٤.٥ घं॰ में
+hi	arab	narrow	auto	day	-1234.5	١٬٢٣٤٫٥ दिन पहले	١,٢٣٤.٥ दिन पहले
+hi	arab	narrow	auto	day	1.25	١٫٢٥ दिन में	١.٢٥ दिन में
+hi	arab	narrow	auto	day	1234.5	١٬٢٣٤٫٥ दिन में	١,٢٣٤.٥ दिन में
+hi	arab	narrow	auto	week	-1234.5	١٬٢٣٤٫٥ सप्ताह पहले	١,٢٣٤.٥ सप्ताह पहले
+hi	arab	narrow	auto	week	1.25	١٫٢٥ सप्ताह में	١.٢٥ सप्ताह में
+hi	arab	narrow	auto	week	1234.5	١٬٢٣٤٫٥ सप्ताह में	١,٢٣٤.٥ सप्ताह में
+hi	arab	narrow	auto	month	-1234.5	١٬٢٣٤٫٥ माह पहले	١,٢٣٤.٥ माह पहले
+hi	arab	narrow	auto	month	1.25	١٫٢٥ माह में	١.٢٥ माह में
+hi	arab	narrow	auto	month	1234.5	١٬٢٣٤٫٥ माह में	١,٢٣٤.٥ माह में
+hi	arab	narrow	auto	quarter	-1234.5	١٬٢٣٤٫٥ ति॰ पहले	١,٢٣٤.٥ ति॰ पहले
+hi	arab	narrow	auto	quarter	1.25	١٫٢٥ ति॰ में	١.٢٥ ति॰ में
+hi	arab	narrow	auto	quarter	1234.5	١٬٢٣٤٫٥ ति॰ में	١,٢٣٤.٥ ति॰ में
+hi	arab	narrow	auto	year	-1234.5	١٬٢٣٤٫٥ वर्ष पहले	١,٢٣٤.٥ वर्ष पहले
+hi	arab	narrow	auto	year	1.25	١٫٢٥ वर्ष में	١.٢٥ वर्ष में
+hi	arab	narrow	auto	year	1234.5	١٬٢٣٤٫٥ वर्ष में	١,٢٣٤.٥ वर्ष में
+ru	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ секунды назад	١ ٢٣٤,٥ секунды назад
+ru	arab	long	always	second	1.25	через ١٫٢٥ секунды	через ١,٢٥ секунды
+ru	arab	long	always	second	1234.5	через ١٬٢٣٤٫٥ секунды	через ١ ٢٣٤,٥ секунды
+ru	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ минуты назад	١ ٢٣٤,٥ минуты назад
+ru	arab	long	always	minute	1.25	через ١٫٢٥ минуты	через ١,٢٥ минуты
+ru	arab	long	always	minute	1234.5	через ١٬٢٣٤٫٥ минуты	через ١ ٢٣٤,٥ минуты
+ru	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ часа назад	١ ٢٣٤,٥ часа назад
+ru	arab	long	always	hour	1.25	через ١٫٢٥ часа	через ١,٢٥ часа
+ru	arab	long	always	hour	1234.5	через ١٬٢٣٤٫٥ часа	через ١ ٢٣٤,٥ часа
+ru	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ дня назад	١ ٢٣٤,٥ дня назад
+ru	arab	long	always	day	1.25	через ١٫٢٥ дня	через ١,٢٥ дня
+ru	arab	long	always	day	1234.5	через ١٬٢٣٤٫٥ дня	через ١ ٢٣٤,٥ дня
+ru	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ недели назад	١ ٢٣٤,٥ недели назад
+ru	arab	long	always	week	1.25	через ١٫٢٥ недели	через ١,٢٥ недели
+ru	arab	long	always	week	1234.5	через ١٬٢٣٤٫٥ недели	через ١ ٢٣٤,٥ недели
+ru	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ месяца назад	١ ٢٣٤,٥ месяца назад
+ru	arab	long	always	month	1.25	через ١٫٢٥ месяца	через ١,٢٥ месяца
+ru	arab	long	always	month	1234.5	через ١٬٢٣٤٫٥ месяца	через ١ ٢٣٤,٥ месяца
+ru	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ квартала назад	١ ٢٣٤,٥ квартала назад
+ru	arab	long	always	quarter	1.25	через ١٫٢٥ квартала	через ١,٢٥ квартала
+ru	arab	long	always	quarter	1234.5	через ١٬٢٣٤٫٥ квартала	через ١ ٢٣٤,٥ квартала
+ru	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ года назад	١ ٢٣٤,٥ года назад
+ru	arab	long	always	year	1.25	через ١٫٢٥ года	через ١,٢٥ года
+ru	arab	long	always	year	1234.5	через ١٬٢٣٤٫٥ года	через ١ ٢٣٤,٥ года
+ru	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ секунды назад	١ ٢٣٤,٥ секунды назад
+ru	arab	long	auto	second	1.25	через ١٫٢٥ секунды	через ١,٢٥ секунды
+ru	arab	long	auto	second	1234.5	через ١٬٢٣٤٫٥ секунды	через ١ ٢٣٤,٥ секунды
+ru	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ минуты назад	١ ٢٣٤,٥ минуты назад
+ru	arab	long	auto	minute	1.25	через ١٫٢٥ минуты	через ١,٢٥ минуты
+ru	arab	long	auto	minute	1234.5	через ١٬٢٣٤٫٥ минуты	через ١ ٢٣٤,٥ минуты
+ru	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ часа назад	١ ٢٣٤,٥ часа назад
+ru	arab	long	auto	hour	1.25	через ١٫٢٥ часа	через ١,٢٥ часа
+ru	arab	long	auto	hour	1234.5	через ١٬٢٣٤٫٥ часа	через ١ ٢٣٤,٥ часа
+ru	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ дня назад	١ ٢٣٤,٥ дня назад
+ru	arab	long	auto	day	1.25	через ١٫٢٥ дня	через ١,٢٥ дня
+ru	arab	long	auto	day	1234.5	через ١٬٢٣٤٫٥ дня	через ١ ٢٣٤,٥ дня
+ru	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ недели назад	١ ٢٣٤,٥ недели назад
+ru	arab	long	auto	week	1.25	через ١٫٢٥ недели	через ١,٢٥ недели
+ru	arab	long	auto	week	1234.5	через ١٬٢٣٤٫٥ недели	через ١ ٢٣٤,٥ недели
+ru	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ месяца назад	١ ٢٣٤,٥ месяца назад
+ru	arab	long	auto	month	1.25	через ١٫٢٥ месяца	через ١,٢٥ месяца
+ru	arab	long	auto	month	1234.5	через ١٬٢٣٤٫٥ месяца	через ١ ٢٣٤,٥ месяца
+ru	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ квартала назад	١ ٢٣٤,٥ квартала назад
+ru	arab	long	auto	quarter	1.25	через ١٫٢٥ квартала	через ١,٢٥ квартала
+ru	arab	long	auto	quarter	1234.5	через ١٬٢٣٤٫٥ квартала	через ١ ٢٣٤,٥ квартала
+ru	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ года назад	١ ٢٣٤,٥ года назад
+ru	arab	long	auto	year	1.25	через ١٫٢٥ года	через ١,٢٥ года
+ru	arab	long	auto	year	1234.5	через ١٬٢٣٤٫٥ года	через ١ ٢٣٤,٥ года
+ru	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ сек. назад	١ ٢٣٤,٥ сек. назад
+ru	arab	short	always	second	1.25	через ١٫٢٥ сек.	через ١,٢٥ сек.
+ru	arab	short	always	second	1234.5	через ١٬٢٣٤٫٥ сек.	через ١ ٢٣٤,٥ сек.
+ru	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ мин. назад	١ ٢٣٤,٥ мин. назад
+ru	arab	short	always	minute	1.25	через ١٫٢٥ мин.	через ١,٢٥ мин.
+ru	arab	short	always	minute	1234.5	через ١٬٢٣٤٫٥ мин.	через ١ ٢٣٤,٥ мин.
+ru	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ ч назад	١ ٢٣٤,٥ ч назад
+ru	arab	short	always	hour	1.25	через ١٫٢٥ ч	через ١,٢٥ ч
+ru	arab	short	always	hour	1234.5	через ١٬٢٣٤٫٥ ч	через ١ ٢٣٤,٥ ч
+ru	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ дн. назад	١ ٢٣٤,٥ дн. назад
+ru	arab	short	always	day	1.25	через ١٫٢٥ дн.	через ١,٢٥ дн.
+ru	arab	short	always	day	1234.5	через ١٬٢٣٤٫٥ дн.	через ١ ٢٣٤,٥ дн.
+ru	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ нед. назад	١ ٢٣٤,٥ нед. назад
+ru	arab	short	always	week	1.25	через ١٫٢٥ нед.	через ١,٢٥ нед.
+ru	arab	short	always	week	1234.5	через ١٬٢٣٤٫٥ нед.	через ١ ٢٣٤,٥ нед.
+ru	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ мес. назад	١ ٢٣٤,٥ мес. назад
+ru	arab	short	always	month	1.25	через ١٫٢٥ мес.	через ١,٢٥ мес.
+ru	arab	short	always	month	1234.5	через ١٬٢٣٤٫٥ мес.	через ١ ٢٣٤,٥ мес.
+ru	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ кв. назад	١ ٢٣٤,٥ кв. назад
+ru	arab	short	always	quarter	1.25	через ١٫٢٥ кв.	через ١,٢٥ кв.
+ru	arab	short	always	quarter	1234.5	через ١٬٢٣٤٫٥ кв.	через ١ ٢٣٤,٥ кв.
+ru	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ г. назад	١ ٢٣٤,٥ г. назад
+ru	arab	short	always	year	1.25	через ١٫٢٥ г.	через ١,٢٥ г.
+ru	arab	short	always	year	1234.5	через ١٬٢٣٤٫٥ г.	через ١ ٢٣٤,٥ г.
+ru	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ сек. назад	١ ٢٣٤,٥ сек. назад
+ru	arab	short	auto	second	1.25	через ١٫٢٥ сек.	через ١,٢٥ сек.
+ru	arab	short	auto	second	1234.5	через ١٬٢٣٤٫٥ сек.	через ١ ٢٣٤,٥ сек.
+ru	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ мин. назад	١ ٢٣٤,٥ мин. назад
+ru	arab	short	auto	minute	1.25	через ١٫٢٥ мин.	через ١,٢٥ мин.
+ru	arab	short	auto	minute	1234.5	через ١٬٢٣٤٫٥ мин.	через ١ ٢٣٤,٥ мин.
+ru	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ ч назад	١ ٢٣٤,٥ ч назад
+ru	arab	short	auto	hour	1.25	через ١٫٢٥ ч	через ١,٢٥ ч
+ru	arab	short	auto	hour	1234.5	через ١٬٢٣٤٫٥ ч	через ١ ٢٣٤,٥ ч
+ru	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ дн. назад	١ ٢٣٤,٥ дн. назад
+ru	arab	short	auto	day	1.25	через ١٫٢٥ дн.	через ١,٢٥ дн.
+ru	arab	short	auto	day	1234.5	через ١٬٢٣٤٫٥ дн.	через ١ ٢٣٤,٥ дн.
+ru	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ нед. назад	١ ٢٣٤,٥ нед. назад
+ru	arab	short	auto	week	1.25	через ١٫٢٥ нед.	через ١,٢٥ нед.
+ru	arab	short	auto	week	1234.5	через ١٬٢٣٤٫٥ нед.	через ١ ٢٣٤,٥ нед.
+ru	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ мес. назад	١ ٢٣٤,٥ мес. назад
+ru	arab	short	auto	month	1.25	через ١٫٢٥ мес.	через ١,٢٥ мес.
+ru	arab	short	auto	month	1234.5	через ١٬٢٣٤٫٥ мес.	через ١ ٢٣٤,٥ мес.
+ru	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ кв. назад	١ ٢٣٤,٥ кв. назад
+ru	arab	short	auto	quarter	1.25	через ١٫٢٥ кв.	через ١,٢٥ кв.
+ru	arab	short	auto	quarter	1234.5	через ١٬٢٣٤٫٥ кв.	через ١ ٢٣٤,٥ кв.
+ru	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ г. назад	١ ٢٣٤,٥ г. назад
+ru	arab	short	auto	year	1.25	через ١٫٢٥ г.	через ١,٢٥ г.
+ru	arab	short	auto	year	1234.5	через ١٬٢٣٤٫٥ г.	через ١ ٢٣٤,٥ г.
+ru	arab	narrow	always	second	-1234.5	-١٬٢٣٤٫٥ с	-١ ٢٣٤,٥ с
+ru	arab	narrow	always	second	1.25	+١٫٢٥ с	+١,٢٥ с
+ru	arab	narrow	always	second	1234.5	+١٬٢٣٤٫٥ с	+١ ٢٣٤,٥ с
+ru	arab	narrow	always	minute	-1234.5	-١٬٢٣٤٫٥ мин	-١ ٢٣٤,٥ мин
+ru	arab	narrow	always	minute	1.25	+١٫٢٥ мин	+١,٢٥ мин
+ru	arab	narrow	always	minute	1234.5	+١٬٢٣٤٫٥ мин	+١ ٢٣٤,٥ мин
+ru	arab	narrow	always	hour	-1234.5	-١٬٢٣٤٫٥ ч	-١ ٢٣٤,٥ ч
+ru	arab	narrow	always	hour	1.25	+١٫٢٥ ч	+١,٢٥ ч
+ru	arab	narrow	always	hour	1234.5	+١٬٢٣٤٫٥ ч	+١ ٢٣٤,٥ ч
+ru	arab	narrow	always	day	-1234.5	-١٬٢٣٤٫٥ дн.	-١ ٢٣٤,٥ дн.
+ru	arab	narrow	always	day	1.25	+١٫٢٥ дн.	+١,٢٥ дн.
+ru	arab	narrow	always	day	1234.5	+١٬٢٣٤٫٥ дн.	+١ ٢٣٤,٥ дн.
+ru	arab	narrow	always	week	-1234.5	-١٬٢٣٤٫٥ нед.	-١ ٢٣٤,٥ нед.
+ru	arab	narrow	always	week	1.25	+١٫٢٥ нед.	+١,٢٥ нед.
+ru	arab	narrow	always	week	1234.5	+١٬٢٣٤٫٥ нед.	+١ ٢٣٤,٥ нед.
+ru	arab	narrow	always	month	-1234.5	-١٬٢٣٤٫٥ мес.	-١ ٢٣٤,٥ мес.
+ru	arab	narrow	always	month	1.25	+١٫٢٥ мес.	+١,٢٥ мес.
+ru	arab	narrow	always	month	1234.5	+١٬٢٣٤٫٥ мес.	+١ ٢٣٤,٥ мес.
+ru	arab	narrow	always	quarter	-1234.5	-١٬٢٣٤٫٥ кв.	-١ ٢٣٤,٥ кв.
+ru	arab	narrow	always	quarter	1.25	+١٫٢٥ кв.	+١,٢٥ кв.
+ru	arab	narrow	always	quarter	1234.5	+١٬٢٣٤٫٥ кв.	+١ ٢٣٤,٥ кв.
+ru	arab	narrow	always	year	-1234.5	-١٬٢٣٤٫٥ г.	-١ ٢٣٤,٥ г.
+ru	arab	narrow	always	year	1.25	+١٫٢٥ г.	+١,٢٥ г.
+ru	arab	narrow	always	year	1234.5	+١٬٢٣٤٫٥ г.	+١ ٢٣٤,٥ г.
+ru	arab	narrow	auto	second	-1234.5	-١٬٢٣٤٫٥ с	-١ ٢٣٤,٥ с
+ru	arab	narrow	auto	second	1.25	+١٫٢٥ с	+١,٢٥ с
+ru	arab	narrow	auto	second	1234.5	+١٬٢٣٤٫٥ с	+١ ٢٣٤,٥ с
+ru	arab	narrow	auto	minute	-1234.5	-١٬٢٣٤٫٥ мин	-١ ٢٣٤,٥ мин
+ru	arab	narrow	auto	minute	1.25	+١٫٢٥ мин	+١,٢٥ мин
+ru	arab	narrow	auto	minute	1234.5	+١٬٢٣٤٫٥ мин	+١ ٢٣٤,٥ мин
+ru	arab	narrow	auto	hour	-1234.5	-١٬٢٣٤٫٥ ч	-١ ٢٣٤,٥ ч
+ru	arab	narrow	auto	hour	1.25	+١٫٢٥ ч	+١,٢٥ ч
+ru	arab	narrow	auto	hour	1234.5	+١٬٢٣٤٫٥ ч	+١ ٢٣٤,٥ ч
+ru	arab	narrow	auto	day	-1234.5	-١٬٢٣٤٫٥ дн.	-١ ٢٣٤,٥ дн.
+ru	arab	narrow	auto	day	1.25	+١٫٢٥ дн.	+١,٢٥ дн.
+ru	arab	narrow	auto	day	1234.5	+١٬٢٣٤٫٥ дн.	+١ ٢٣٤,٥ дн.
+ru	arab	narrow	auto	week	-1234.5	-١٬٢٣٤٫٥ нед.	-١ ٢٣٤,٥ нед.
+ru	arab	narrow	auto	week	1.25	+١٫٢٥ нед.	+١,٢٥ нед.
+ru	arab	narrow	auto	week	1234.5	+١٬٢٣٤٫٥ нед.	+١ ٢٣٤,٥ нед.
+ru	arab	narrow	auto	month	-1234.5	-١٬٢٣٤٫٥ мес.	-١ ٢٣٤,٥ мес.
+ru	arab	narrow	auto	month	1.25	+١٫٢٥ мес.	+١,٢٥ мес.
+ru	arab	narrow	auto	month	1234.5	+١٬٢٣٤٫٥ мес.	+١ ٢٣٤,٥ мес.
+ru	arab	narrow	auto	quarter	-1234.5	-١٬٢٣٤٫٥ кв.	-١ ٢٣٤,٥ кв.
+ru	arab	narrow	auto	quarter	1.25	+١٫٢٥ кв.	+١,٢٥ кв.
+ru	arab	narrow	auto	quarter	1234.5	+١٬٢٣٤٫٥ кв.	+١ ٢٣٤,٥ кв.
+ru	arab	narrow	auto	year	-1234.5	-١٬٢٣٤٫٥ г.	-١ ٢٣٤,٥ г.
+ru	arab	narrow	auto	year	1.25	+١٫٢٥ г.	+١,٢٥ г.
+ru	arab	narrow	auto	year	1234.5	+١٬٢٣٤٫٥ г.	+١ ٢٣٤,٥ г.
+pl	arab	long	always	second	-1234.5	١٢٣٤٫٥ sekundy temu	١٢٣٤,٥ sekundy temu
+pl	arab	long	always	second	1.25	za ١٫٢٥ sekundy	za ١,٢٥ sekundy
+pl	arab	long	always	second	1234.5	za ١٢٣٤٫٥ sekundy	za ١٢٣٤,٥ sekundy
+pl	arab	long	always	minute	-1234.5	١٢٣٤٫٥ minuty temu	١٢٣٤,٥ minuty temu
+pl	arab	long	always	minute	1.25	za ١٫٢٥ minuty	za ١,٢٥ minuty
+pl	arab	long	always	minute	1234.5	za ١٢٣٤٫٥ minuty	za ١٢٣٤,٥ minuty
+pl	arab	long	always	hour	-1234.5	١٢٣٤٫٥ godziny temu	١٢٣٤,٥ godziny temu
+pl	arab	long	always	hour	1.25	za ١٫٢٥ godziny	za ١,٢٥ godziny
+pl	arab	long	always	hour	1234.5	za ١٢٣٤٫٥ godziny	za ١٢٣٤,٥ godziny
+pl	arab	long	always	day	-1234.5	١٢٣٤٫٥ dnia temu	١٢٣٤,٥ dnia temu
+pl	arab	long	always	day	1.25	za ١٫٢٥ dnia	za ١,٢٥ dnia
+pl	arab	long	always	day	1234.5	za ١٢٣٤٫٥ dnia	za ١٢٣٤,٥ dnia
+pl	arab	long	always	week	-1234.5	١٢٣٤٫٥ tygodnia temu	١٢٣٤,٥ tygodnia temu
+pl	arab	long	always	week	1.25	za ١٫٢٥ tygodnia	za ١,٢٥ tygodnia
+pl	arab	long	always	week	1234.5	za ١٢٣٤٫٥ tygodnia	za ١٢٣٤,٥ tygodnia
+pl	arab	long	always	month	-1234.5	١٢٣٤٫٥ miesiąca temu	١٢٣٤,٥ miesiąca temu
+pl	arab	long	always	month	1.25	za ١٫٢٥ miesiąca	za ١,٢٥ miesiąca
+pl	arab	long	always	month	1234.5	za ١٢٣٤٫٥ miesiąca	za ١٢٣٤,٥ miesiąca
+pl	arab	long	always	quarter	-1234.5	١٢٣٤٫٥ kwartału temu	١٢٣٤,٥ kwartału temu
+pl	arab	long	always	quarter	1.25	za ١٫٢٥ kwartału	za ١,٢٥ kwartału
+pl	arab	long	always	quarter	1234.5	za ١٢٣٤٫٥ kwartału	za ١٢٣٤,٥ kwartału
+pl	arab	long	always	year	-1234.5	١٢٣٤٫٥ roku temu	١٢٣٤,٥ roku temu
+pl	arab	long	always	year	1.25	za ١٫٢٥ roku	za ١,٢٥ roku
+pl	arab	long	always	year	1234.5	za ١٢٣٤٫٥ roku	za ١٢٣٤,٥ roku
+pl	arab	long	auto	second	-1234.5	١٢٣٤٫٥ sekundy temu	١٢٣٤,٥ sekundy temu
+pl	arab	long	auto	second	1.25	za ١٫٢٥ sekundy	za ١,٢٥ sekundy
+pl	arab	long	auto	second	1234.5	za ١٢٣٤٫٥ sekundy	za ١٢٣٤,٥ sekundy
+pl	arab	long	auto	minute	-1234.5	١٢٣٤٫٥ minuty temu	١٢٣٤,٥ minuty temu
+pl	arab	long	auto	minute	1.25	za ١٫٢٥ minuty	za ١,٢٥ minuty
+pl	arab	long	auto	minute	1234.5	za ١٢٣٤٫٥ minuty	za ١٢٣٤,٥ minuty
+pl	arab	long	auto	hour	-1234.5	١٢٣٤٫٥ godziny temu	١٢٣٤,٥ godziny temu
+pl	arab	long	auto	hour	1.25	za ١٫٢٥ godziny	za ١,٢٥ godziny
+pl	arab	long	auto	hour	1234.5	za ١٢٣٤٫٥ godziny	za ١٢٣٤,٥ godziny
+pl	arab	long	auto	day	-1234.5	١٢٣٤٫٥ dnia temu	١٢٣٤,٥ dnia temu
+pl	arab	long	auto	day	1.25	za ١٫٢٥ dnia	za ١,٢٥ dnia
+pl	arab	long	auto	day	1234.5	za ١٢٣٤٫٥ dnia	za ١٢٣٤,٥ dnia
+pl	arab	long	auto	week	-1234.5	١٢٣٤٫٥ tygodnia temu	١٢٣٤,٥ tygodnia temu
+pl	arab	long	auto	week	1.25	za ١٫٢٥ tygodnia	za ١,٢٥ tygodnia
+pl	arab	long	auto	week	1234.5	za ١٢٣٤٫٥ tygodnia	za ١٢٣٤,٥ tygodnia
+pl	arab	long	auto	month	-1234.5	١٢٣٤٫٥ miesiąca temu	١٢٣٤,٥ miesiąca temu
+pl	arab	long	auto	month	1.25	za ١٫٢٥ miesiąca	za ١,٢٥ miesiąca
+pl	arab	long	auto	month	1234.5	za ١٢٣٤٫٥ miesiąca	za ١٢٣٤,٥ miesiąca
+pl	arab	long	auto	quarter	-1234.5	١٢٣٤٫٥ kwartału temu	١٢٣٤,٥ kwartału temu
+pl	arab	long	auto	quarter	1.25	za ١٫٢٥ kwartału	za ١,٢٥ kwartału
+pl	arab	long	auto	quarter	1234.5	za ١٢٣٤٫٥ kwartału	za ١٢٣٤,٥ kwartału
+pl	arab	long	auto	year	-1234.5	١٢٣٤٫٥ roku temu	١٢٣٤,٥ roku temu
+pl	arab	long	auto	year	1.25	za ١٫٢٥ roku	za ١,٢٥ roku
+pl	arab	long	auto	year	1234.5	za ١٢٣٤٫٥ roku	za ١٢٣٤,٥ roku
+pl	arab	short	always	second	-1234.5	١٢٣٤٫٥ sek. temu	١٢٣٤,٥ sek. temu
+pl	arab	short	always	second	1.25	za ١٫٢٥ sek.	za ١,٢٥ sek.
+pl	arab	short	always	second	1234.5	za ١٢٣٤٫٥ sek.	za ١٢٣٤,٥ sek.
+pl	arab	short	always	minute	-1234.5	١٢٣٤٫٥ min temu	١٢٣٤,٥ min temu
+pl	arab	short	always	minute	1.25	za ١٫٢٥ min	za ١,٢٥ min
+pl	arab	short	always	minute	1234.5	za ١٢٣٤٫٥ min	za ١٢٣٤,٥ min
+pl	arab	short	always	hour	-1234.5	١٢٣٤٫٥ godz. temu	١٢٣٤,٥ godz. temu
+pl	arab	short	always	hour	1.25	za ١٫٢٥ godz.	za ١,٢٥ godz.
+pl	arab	short	always	hour	1234.5	za ١٢٣٤٫٥ godz.	za ١٢٣٤,٥ godz.
+pl	arab	short	always	day	-1234.5	١٢٣٤٫٥ dnia temu	١٢٣٤,٥ dnia temu
+pl	arab	short	always	day	1.25	za ١٫٢٥ dnia	za ١,٢٥ dnia
+pl	arab	short	always	day	1234.5	za ١٢٣٤٫٥ dnia	za ١٢٣٤,٥ dnia
+pl	arab	short	always	week	-1234.5	١٢٣٤٫٥ tyg. temu	١٢٣٤,٥ tyg. temu
+pl	arab	short	always	week	1.25	za ١٫٢٥ tyg.	za ١,٢٥ tyg.
+pl	arab	short	always	week	1234.5	za ١٢٣٤٫٥ tyg.	za ١٢٣٤,٥ tyg.
+pl	arab	short	always	month	-1234.5	١٢٣٤٫٥ mies. temu	١٢٣٤,٥ mies. temu
+pl	arab	short	always	month	1.25	za ١٫٢٥ mies.	za ١,٢٥ mies.
+pl	arab	short	always	month	1234.5	za ١٢٣٤٫٥ mies.	za ١٢٣٤,٥ mies.
+pl	arab	short	always	quarter	-1234.5	١٢٣٤٫٥ kw. temu	١٢٣٤,٥ kw. temu
+pl	arab	short	always	quarter	1.25	za ١٫٢٥ kw.	za ١,٢٥ kw.
+pl	arab	short	always	quarter	1234.5	za ١٢٣٤٫٥ kw.	za ١٢٣٤,٥ kw.
+pl	arab	short	always	year	-1234.5	١٢٣٤٫٥ roku temu	١٢٣٤,٥ roku temu
+pl	arab	short	always	year	1.25	za ١٫٢٥ roku	za ١,٢٥ roku
+pl	arab	short	always	year	1234.5	za ١٢٣٤٫٥ roku	za ١٢٣٤,٥ roku
+pl	arab	short	auto	second	-1234.5	١٢٣٤٫٥ sek. temu	١٢٣٤,٥ sek. temu
+pl	arab	short	auto	second	1.25	za ١٫٢٥ sek.	za ١,٢٥ sek.
+pl	arab	short	auto	second	1234.5	za ١٢٣٤٫٥ sek.	za ١٢٣٤,٥ sek.
+pl	arab	short	auto	minute	-1234.5	١٢٣٤٫٥ min temu	١٢٣٤,٥ min temu
+pl	arab	short	auto	minute	1.25	za ١٫٢٥ min	za ١,٢٥ min
+pl	arab	short	auto	minute	1234.5	za ١٢٣٤٫٥ min	za ١٢٣٤,٥ min
+pl	arab	short	auto	hour	-1234.5	١٢٣٤٫٥ godz. temu	١٢٣٤,٥ godz. temu
+pl	arab	short	auto	hour	1.25	za ١٫٢٥ godz.	za ١,٢٥ godz.
+pl	arab	short	auto	hour	1234.5	za ١٢٣٤٫٥ godz.	za ١٢٣٤,٥ godz.
+pl	arab	short	auto	day	-1234.5	١٢٣٤٫٥ dnia temu	١٢٣٤,٥ dnia temu
+pl	arab	short	auto	day	1.25	za ١٫٢٥ dnia	za ١,٢٥ dnia
+pl	arab	short	auto	day	1234.5	za ١٢٣٤٫٥ dnia	za ١٢٣٤,٥ dnia
+pl	arab	short	auto	week	-1234.5	١٢٣٤٫٥ tyg. temu	١٢٣٤,٥ tyg. temu
+pl	arab	short	auto	week	1.25	za ١٫٢٥ tyg.	za ١,٢٥ tyg.
+pl	arab	short	auto	week	1234.5	za ١٢٣٤٫٥ tyg.	za ١٢٣٤,٥ tyg.
+pl	arab	short	auto	month	-1234.5	١٢٣٤٫٥ mies. temu	١٢٣٤,٥ mies. temu
+pl	arab	short	auto	month	1.25	za ١٫٢٥ mies.	za ١,٢٥ mies.
+pl	arab	short	auto	month	1234.5	za ١٢٣٤٫٥ mies.	za ١٢٣٤,٥ mies.
+pl	arab	short	auto	quarter	-1234.5	١٢٣٤٫٥ kw. temu	١٢٣٤,٥ kw. temu
+pl	arab	short	auto	quarter	1.25	za ١٫٢٥ kw.	za ١,٢٥ kw.
+pl	arab	short	auto	quarter	1234.5	za ١٢٣٤٫٥ kw.	za ١٢٣٤,٥ kw.
+pl	arab	short	auto	year	-1234.5	١٢٣٤٫٥ roku temu	١٢٣٤,٥ roku temu
+pl	arab	short	auto	year	1.25	za ١٫٢٥ roku	za ١,٢٥ roku
+pl	arab	short	auto	year	1234.5	za ١٢٣٤٫٥ roku	za ١٢٣٤,٥ roku
+pl	arab	narrow	always	second	-1234.5	١٢٣٤٫٥ s temu	١٢٣٤,٥ s temu
+pl	arab	narrow	always	second	1.25	za ١٫٢٥ s	za ١,٢٥ s
+pl	arab	narrow	always	second	1234.5	za ١٢٣٤٫٥ s	za ١٢٣٤,٥ s
+pl	arab	narrow	always	minute	-1234.5	١٢٣٤٫٥ min temu	١٢٣٤,٥ min temu
+pl	arab	narrow	always	minute	1.25	za ١٫٢٥ min	za ١,٢٥ min
+pl	arab	narrow	always	minute	1234.5	za ١٢٣٤٫٥ min	za ١٢٣٤,٥ min
+pl	arab	narrow	always	hour	-1234.5	١٢٣٤٫٥ g. temu	١٢٣٤,٥ g. temu
+pl	arab	narrow	always	hour	1.25	za ١٫٢٥ g.	za ١,٢٥ g.
+pl	arab	narrow	always	hour	1234.5	za ١٢٣٤٫٥ g.	za ١٢٣٤,٥ g.
+pl	arab	narrow	always	day	-1234.5	١٢٣٤٫٥ dnia temu	١٢٣٤,٥ dnia temu
+pl	arab	narrow	always	day	1.25	za ١٫٢٥ dnia	za ١,٢٥ dnia
+pl	arab	narrow	always	day	1234.5	za ١٢٣٤٫٥ dnia	za ١٢٣٤,٥ dnia
+pl	arab	narrow	always	week	-1234.5	١٢٣٤٫٥ tyg. temu	١٢٣٤,٥ tyg. temu
+pl	arab	narrow	always	week	1.25	za ١٫٢٥ tyg.	za ١,٢٥ tyg.
+pl	arab	narrow	always	week	1234.5	za ١٢٣٤٫٥ tyg.	za ١٢٣٤,٥ tyg.
+pl	arab	narrow	always	month	-1234.5	١٢٣٤٫٥ mies. temu	١٢٣٤,٥ mies. temu
+pl	arab	narrow	always	month	1.25	za ١٫٢٥ mies.	za ١,٢٥ mies.
+pl	arab	narrow	always	month	1234.5	za ١٢٣٤٫٥ mies.	za ١٢٣٤,٥ mies.
+pl	arab	narrow	always	quarter	-1234.5	١٢٣٤٫٥ kw. temu	١٢٣٤,٥ kw. temu
+pl	arab	narrow	always	quarter	1.25	za ١٫٢٥ kw.	za ١,٢٥ kw.
+pl	arab	narrow	always	quarter	1234.5	za ١٢٣٤٫٥ kw.	za ١٢٣٤,٥ kw.
+pl	arab	narrow	always	year	-1234.5	١٢٣٤٫٥ roku temu	١٢٣٤,٥ roku temu
+pl	arab	narrow	always	year	1.25	za ١٫٢٥ roku	za ١,٢٥ roku
+pl	arab	narrow	always	year	1234.5	za ١٢٣٤٫٥ roku	za ١٢٣٤,٥ roku
+pl	arab	narrow	auto	second	-1234.5	١٢٣٤٫٥ s temu	١٢٣٤,٥ s temu
+pl	arab	narrow	auto	second	1.25	za ١٫٢٥ s	za ١,٢٥ s
+pl	arab	narrow	auto	second	1234.5	za ١٢٣٤٫٥ s	za ١٢٣٤,٥ s
+pl	arab	narrow	auto	minute	-1234.5	١٢٣٤٫٥ min temu	١٢٣٤,٥ min temu
+pl	arab	narrow	auto	minute	1.25	za ١٫٢٥ min	za ١,٢٥ min
+pl	arab	narrow	auto	minute	1234.5	za ١٢٣٤٫٥ min	za ١٢٣٤,٥ min
+pl	arab	narrow	auto	hour	-1234.5	١٢٣٤٫٥ g. temu	١٢٣٤,٥ g. temu
+pl	arab	narrow	auto	hour	1.25	za ١٫٢٥ g.	za ١,٢٥ g.
+pl	arab	narrow	auto	hour	1234.5	za ١٢٣٤٫٥ g.	za ١٢٣٤,٥ g.
+pl	arab	narrow	auto	day	-1234.5	١٢٣٤٫٥ dnia temu	١٢٣٤,٥ dnia temu
+pl	arab	narrow	auto	day	1.25	za ١٫٢٥ dnia	za ١,٢٥ dnia
+pl	arab	narrow	auto	day	1234.5	za ١٢٣٤٫٥ dnia	za ١٢٣٤,٥ dnia
+pl	arab	narrow	auto	week	-1234.5	١٢٣٤٫٥ tyg. temu	١٢٣٤,٥ tyg. temu
+pl	arab	narrow	auto	week	1.25	za ١٫٢٥ tyg.	za ١,٢٥ tyg.
+pl	arab	narrow	auto	week	1234.5	za ١٢٣٤٫٥ tyg.	za ١٢٣٤,٥ tyg.
+pl	arab	narrow	auto	month	-1234.5	١٢٣٤٫٥ mies. temu	١٢٣٤,٥ mies. temu
+pl	arab	narrow	auto	month	1.25	za ١٫٢٥ mies.	za ١,٢٥ mies.
+pl	arab	narrow	auto	month	1234.5	za ١٢٣٤٫٥ mies.	za ١٢٣٤,٥ mies.
+pl	arab	narrow	auto	quarter	-1234.5	١٢٣٤٫٥ kw. temu	١٢٣٤,٥ kw. temu
+pl	arab	narrow	auto	quarter	1.25	za ١٫٢٥ kw.	za ١,٢٥ kw.
+pl	arab	narrow	auto	quarter	1234.5	za ١٢٣٤٫٥ kw.	za ١٢٣٤,٥ kw.
+pl	arab	narrow	auto	year	-1234.5	١٢٣٤٫٥ roku temu	١٢٣٤,٥ roku temu
+pl	arab	narrow	auto	year	1.25	za ١٫٢٥ roku	za ١,٢٥ roku
+pl	arab	narrow	auto	year	1234.5	za ١٢٣٤٫٥ roku	za ١٢٣٤,٥ roku
+zh-TW	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-TW	arab	long	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-TW	arab	long	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-TW	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-TW	arab	long	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-TW	arab	long	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-TW	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-TW	arab	long	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-TW	arab	long	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-TW	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ 天前	١,٢٣٤.٥ 天前
+zh-TW	arab	long	always	day	1.25	١٫٢٥ 天後	١.٢٥ 天後
+zh-TW	arab	long	always	day	1234.5	١٬٢٣٤٫٥ 天後	١,٢٣٤.٥ 天後
+zh-TW	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ 週前	١,٢٣٤.٥ 週前
+zh-TW	arab	long	always	week	1.25	١٫٢٥ 週後	١.٢٥ 週後
+zh-TW	arab	long	always	week	1234.5	١٬٢٣٤٫٥ 週後	١,٢٣٤.٥ 週後
+zh-TW	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-TW	arab	long	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-TW	arab	long	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-TW	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-TW	arab	long	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-TW	arab	long	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-TW	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-TW	arab	long	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-TW	arab	long	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-TW	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-TW	arab	long	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-TW	arab	long	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-TW	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-TW	arab	long	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-TW	arab	long	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-TW	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-TW	arab	long	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-TW	arab	long	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-TW	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ 天前	١,٢٣٤.٥ 天前
+zh-TW	arab	long	auto	day	1.25	١٫٢٥ 天後	١.٢٥ 天後
+zh-TW	arab	long	auto	day	1234.5	١٬٢٣٤٫٥ 天後	١,٢٣٤.٥ 天後
+zh-TW	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ 週前	١,٢٣٤.٥ 週前
+zh-TW	arab	long	auto	week	1.25	١٫٢٥ 週後	١.٢٥ 週後
+zh-TW	arab	long	auto	week	1234.5	١٬٢٣٤٫٥ 週後	١,٢٣٤.٥ 週後
+zh-TW	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-TW	arab	long	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-TW	arab	long	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-TW	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-TW	arab	long	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-TW	arab	long	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-TW	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-TW	arab	long	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-TW	arab	long	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-TW	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-TW	arab	short	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-TW	arab	short	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-TW	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-TW	arab	short	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-TW	arab	short	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-TW	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-TW	arab	short	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-TW	arab	short	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-TW	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ 天前	١,٢٣٤.٥ 天前
+zh-TW	arab	short	always	day	1.25	١٫٢٥ 天後	١.٢٥ 天後
+zh-TW	arab	short	always	day	1234.5	١٬٢٣٤٫٥ 天後	١,٢٣٤.٥ 天後
+zh-TW	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ 週前	١,٢٣٤.٥ 週前
+zh-TW	arab	short	always	week	1.25	١٫٢٥ 週後	١.٢٥ 週後
+zh-TW	arab	short	always	week	1234.5	١٬٢٣٤٫٥ 週後	١,٢٣٤.٥ 週後
+zh-TW	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-TW	arab	short	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-TW	arab	short	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-TW	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-TW	arab	short	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-TW	arab	short	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-TW	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-TW	arab	short	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-TW	arab	short	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-TW	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-TW	arab	short	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-TW	arab	short	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-TW	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-TW	arab	short	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-TW	arab	short	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-TW	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-TW	arab	short	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-TW	arab	short	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-TW	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ 天前	١,٢٣٤.٥ 天前
+zh-TW	arab	short	auto	day	1.25	١٫٢٥ 天後	١.٢٥ 天後
+zh-TW	arab	short	auto	day	1234.5	١٬٢٣٤٫٥ 天後	١,٢٣٤.٥ 天後
+zh-TW	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ 週前	١,٢٣٤.٥ 週前
+zh-TW	arab	short	auto	week	1.25	١٫٢٥ 週後	١.٢٥ 週後
+zh-TW	arab	short	auto	week	1234.5	١٬٢٣٤٫٥ 週後	١,٢٣٤.٥ 週後
+zh-TW	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-TW	arab	short	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-TW	arab	short	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-TW	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-TW	arab	short	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-TW	arab	short	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-TW	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-TW	arab	short	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-TW	arab	short	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-TW	arab	narrow	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-TW	arab	narrow	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-TW	arab	narrow	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-TW	arab	narrow	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-TW	arab	narrow	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-TW	arab	narrow	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-TW	arab	narrow	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-TW	arab	narrow	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-TW	arab	narrow	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-TW	arab	narrow	always	day	-1234.5	١٬٢٣٤٫٥ 天前	١,٢٣٤.٥ 天前
+zh-TW	arab	narrow	always	day	1.25	١٫٢٥ 天後	١.٢٥ 天後
+zh-TW	arab	narrow	always	day	1234.5	١٬٢٣٤٫٥ 天後	١,٢٣٤.٥ 天後
+zh-TW	arab	narrow	always	week	-1234.5	١٬٢٣٤٫٥ 週前	١,٢٣٤.٥ 週前
+zh-TW	arab	narrow	always	week	1.25	١٫٢٥ 週後	١.٢٥ 週後
+zh-TW	arab	narrow	always	week	1234.5	١٬٢٣٤٫٥ 週後	١,٢٣٤.٥ 週後
+zh-TW	arab	narrow	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-TW	arab	narrow	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-TW	arab	narrow	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-TW	arab	narrow	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-TW	arab	narrow	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-TW	arab	narrow	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-TW	arab	narrow	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-TW	arab	narrow	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-TW	arab	narrow	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-TW	arab	narrow	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-TW	arab	narrow	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-TW	arab	narrow	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-TW	arab	narrow	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-TW	arab	narrow	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-TW	arab	narrow	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-TW	arab	narrow	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-TW	arab	narrow	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-TW	arab	narrow	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-TW	arab	narrow	auto	day	-1234.5	١٬٢٣٤٫٥ 天前	١,٢٣٤.٥ 天前
+zh-TW	arab	narrow	auto	day	1.25	١٫٢٥ 天後	١.٢٥ 天後
+zh-TW	arab	narrow	auto	day	1234.5	١٬٢٣٤٫٥ 天後	١,٢٣٤.٥ 天後
+zh-TW	arab	narrow	auto	week	-1234.5	١٬٢٣٤٫٥ 週前	١,٢٣٤.٥ 週前
+zh-TW	arab	narrow	auto	week	1.25	١٫٢٥ 週後	١.٢٥ 週後
+zh-TW	arab	narrow	auto	week	1234.5	١٬٢٣٤٫٥ 週後	١,٢٣٤.٥ 週後
+zh-TW	arab	narrow	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-TW	arab	narrow	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-TW	arab	narrow	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-TW	arab	narrow	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-TW	arab	narrow	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-TW	arab	narrow	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-TW	arab	narrow	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-TW	arab	narrow	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-TW	arab	narrow	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-HK	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-HK	arab	long	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-HK	arab	long	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-HK	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-HK	arab	long	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-HK	arab	long	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-HK	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-HK	arab	long	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-HK	arab	long	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-HK	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-HK	arab	long	always	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-HK	arab	long	always	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-HK	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-HK	arab	long	always	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-HK	arab	long	always	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-HK	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-HK	arab	long	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-HK	arab	long	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-HK	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-HK	arab	long	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-HK	arab	long	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-HK	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-HK	arab	long	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-HK	arab	long	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-HK	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-HK	arab	long	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-HK	arab	long	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-HK	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-HK	arab	long	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-HK	arab	long	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-HK	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-HK	arab	long	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-HK	arab	long	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-HK	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-HK	arab	long	auto	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-HK	arab	long	auto	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-HK	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-HK	arab	long	auto	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-HK	arab	long	auto	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-HK	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-HK	arab	long	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-HK	arab	long	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-HK	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-HK	arab	long	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-HK	arab	long	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-HK	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-HK	arab	long	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-HK	arab	long	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-HK	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-HK	arab	short	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-HK	arab	short	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-HK	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-HK	arab	short	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-HK	arab	short	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-HK	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-HK	arab	short	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-HK	arab	short	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-HK	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-HK	arab	short	always	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-HK	arab	short	always	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-HK	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-HK	arab	short	always	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-HK	arab	short	always	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-HK	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-HK	arab	short	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-HK	arab	short	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-HK	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-HK	arab	short	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-HK	arab	short	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-HK	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-HK	arab	short	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-HK	arab	short	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-HK	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-HK	arab	short	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-HK	arab	short	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-HK	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-HK	arab	short	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-HK	arab	short	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-HK	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-HK	arab	short	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-HK	arab	short	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-HK	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-HK	arab	short	auto	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-HK	arab	short	auto	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-HK	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-HK	arab	short	auto	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-HK	arab	short	auto	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-HK	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-HK	arab	short	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-HK	arab	short	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-HK	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-HK	arab	short	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-HK	arab	short	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-HK	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-HK	arab	short	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-HK	arab	short	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-HK	arab	narrow	always	second	-1234.5	١٬٢٣٤٫٥秒前	١,٢٣٤.٥秒前
+zh-HK	arab	narrow	always	second	1.25	١٫٢٥秒後	١.٢٥秒後
+zh-HK	arab	narrow	always	second	1234.5	١٬٢٣٤٫٥秒後	١,٢٣٤.٥秒後
+zh-HK	arab	narrow	always	minute	-1234.5	١٬٢٣٤٫٥分前	١,٢٣٤.٥分前
+zh-HK	arab	narrow	always	minute	1.25	١٫٢٥分後	١.٢٥分後
+zh-HK	arab	narrow	always	minute	1234.5	١٬٢٣٤٫٥分後	١,٢٣٤.٥分後
+zh-HK	arab	narrow	always	hour	-1234.5	١٬٢٣٤٫٥小時前	١,٢٣٤.٥小時前
+zh-HK	arab	narrow	always	hour	1.25	١٫٢٥小時後	١.٢٥小時後
+zh-HK	arab	narrow	always	hour	1234.5	١٬٢٣٤٫٥小時後	١,٢٣٤.٥小時後
+zh-HK	arab	narrow	always	day	-1234.5	١٬٢٣٤٫٥日前	١,٢٣٤.٥日前
+zh-HK	arab	narrow	always	day	1.25	١٫٢٥日後	١.٢٥日後
+zh-HK	arab	narrow	always	day	1234.5	١٬٢٣٤٫٥日後	١,٢٣٤.٥日後
+zh-HK	arab	narrow	always	week	-1234.5	١٬٢٣٤٫٥星期前	١,٢٣٤.٥星期前
+zh-HK	arab	narrow	always	week	1.25	١٫٢٥星期後	١.٢٥星期後
+zh-HK	arab	narrow	always	week	1234.5	١٬٢٣٤٫٥星期後	١,٢٣٤.٥星期後
+zh-HK	arab	narrow	always	month	-1234.5	١٬٢٣٤٫٥個月前	١,٢٣٤.٥個月前
+zh-HK	arab	narrow	always	month	1.25	١٫٢٥個月後	١.٢٥個月後
+zh-HK	arab	narrow	always	month	1234.5	١٬٢٣٤٫٥個月後	١,٢٣٤.٥個月後
+zh-HK	arab	narrow	always	quarter	-1234.5	-١٬٢٣٤٫٥Q	-١,٢٣٤.٥Q
+zh-HK	arab	narrow	always	quarter	1.25	+١٫٢٥Q	+١.٢٥Q
+zh-HK	arab	narrow	always	quarter	1234.5	+١٬٢٣٤٫٥Q	+١,٢٣٤.٥Q
+zh-HK	arab	narrow	always	year	-1234.5	١٬٢٣٤٫٥年前	١,٢٣٤.٥年前
+zh-HK	arab	narrow	always	year	1.25	١٫٢٥年後	١.٢٥年後
+zh-HK	arab	narrow	always	year	1234.5	١٬٢٣٤٫٥年後	١,٢٣٤.٥年後
+zh-HK	arab	narrow	auto	second	-1234.5	١٬٢٣٤٫٥秒前	١,٢٣٤.٥秒前
+zh-HK	arab	narrow	auto	second	1.25	١٫٢٥秒後	١.٢٥秒後
+zh-HK	arab	narrow	auto	second	1234.5	١٬٢٣٤٫٥秒後	١,٢٣٤.٥秒後
+zh-HK	arab	narrow	auto	minute	-1234.5	١٬٢٣٤٫٥分前	١,٢٣٤.٥分前
+zh-HK	arab	narrow	auto	minute	1.25	١٫٢٥分後	١.٢٥分後
+zh-HK	arab	narrow	auto	minute	1234.5	١٬٢٣٤٫٥分後	١,٢٣٤.٥分後
+zh-HK	arab	narrow	auto	hour	-1234.5	١٬٢٣٤٫٥小時前	١,٢٣٤.٥小時前
+zh-HK	arab	narrow	auto	hour	1.25	١٫٢٥小時後	١.٢٥小時後
+zh-HK	arab	narrow	auto	hour	1234.5	١٬٢٣٤٫٥小時後	١,٢٣٤.٥小時後
+zh-HK	arab	narrow	auto	day	-1234.5	١٬٢٣٤٫٥日前	١,٢٣٤.٥日前
+zh-HK	arab	narrow	auto	day	1.25	١٫٢٥日後	١.٢٥日後
+zh-HK	arab	narrow	auto	day	1234.5	١٬٢٣٤٫٥日後	١,٢٣٤.٥日後
+zh-HK	arab	narrow	auto	week	-1234.5	١٬٢٣٤٫٥星期前	١,٢٣٤.٥星期前
+zh-HK	arab	narrow	auto	week	1.25	١٫٢٥星期後	١.٢٥星期後
+zh-HK	arab	narrow	auto	week	1234.5	١٬٢٣٤٫٥星期後	١,٢٣٤.٥星期後
+zh-HK	arab	narrow	auto	month	-1234.5	١٬٢٣٤٫٥個月前	١,٢٣٤.٥個月前
+zh-HK	arab	narrow	auto	month	1.25	١٫٢٥個月後	١.٢٥個月後
+zh-HK	arab	narrow	auto	month	1234.5	١٬٢٣٤٫٥個月後	١,٢٣٤.٥個月後
+zh-HK	arab	narrow	auto	quarter	-1234.5	-١٬٢٣٤٫٥Q	-١,٢٣٤.٥Q
+zh-HK	arab	narrow	auto	quarter	1.25	+١٫٢٥Q	+١.٢٥Q
+zh-HK	arab	narrow	auto	quarter	1234.5	+١٬٢٣٤٫٥Q	+١,٢٣٤.٥Q
+zh-HK	arab	narrow	auto	year	-1234.5	١٬٢٣٤٫٥年前	١,٢٣٤.٥年前
+zh-HK	arab	narrow	auto	year	1.25	١٫٢٥年後	١.٢٥年後
+zh-HK	arab	narrow	auto	year	1234.5	١٬٢٣٤٫٥年後	١,٢٣٤.٥年後
+zh-Hant-HK	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-Hant-HK	arab	long	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-Hant-HK	arab	long	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-Hant-HK	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-Hant-HK	arab	long	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-Hant-HK	arab	long	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-Hant-HK	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-Hant-HK	arab	long	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-Hant-HK	arab	long	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-Hant-HK	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-Hant-HK	arab	long	always	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-Hant-HK	arab	long	always	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-Hant-HK	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-Hant-HK	arab	long	always	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-Hant-HK	arab	long	always	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-Hant-HK	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-Hant-HK	arab	long	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-Hant-HK	arab	long	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-Hant-HK	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-Hant-HK	arab	long	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-Hant-HK	arab	long	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-Hant-HK	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-Hant-HK	arab	long	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-Hant-HK	arab	long	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-Hant-HK	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-Hant-HK	arab	long	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-Hant-HK	arab	long	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-Hant-HK	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-Hant-HK	arab	long	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-Hant-HK	arab	long	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-Hant-HK	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-Hant-HK	arab	long	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-Hant-HK	arab	long	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-Hant-HK	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-Hant-HK	arab	long	auto	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-Hant-HK	arab	long	auto	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-Hant-HK	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-Hant-HK	arab	long	auto	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-Hant-HK	arab	long	auto	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-Hant-HK	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-Hant-HK	arab	long	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-Hant-HK	arab	long	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-Hant-HK	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-Hant-HK	arab	long	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-Hant-HK	arab	long	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-Hant-HK	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-Hant-HK	arab	long	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-Hant-HK	arab	long	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-Hant-HK	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-Hant-HK	arab	short	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-Hant-HK	arab	short	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-Hant-HK	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-Hant-HK	arab	short	always	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-Hant-HK	arab	short	always	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-Hant-HK	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-Hant-HK	arab	short	always	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-Hant-HK	arab	short	always	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-Hant-HK	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-Hant-HK	arab	short	always	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-Hant-HK	arab	short	always	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-Hant-HK	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-Hant-HK	arab	short	always	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-Hant-HK	arab	short	always	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-Hant-HK	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-Hant-HK	arab	short	always	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-Hant-HK	arab	short	always	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-Hant-HK	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-Hant-HK	arab	short	always	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-Hant-HK	arab	short	always	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-Hant-HK	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-Hant-HK	arab	short	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-Hant-HK	arab	short	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-Hant-HK	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+zh-Hant-HK	arab	short	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+zh-Hant-HK	arab	short	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+zh-Hant-HK	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ 分鐘前	١,٢٣٤.٥ 分鐘前
+zh-Hant-HK	arab	short	auto	minute	1.25	١٫٢٥ 分鐘後	١.٢٥ 分鐘後
+zh-Hant-HK	arab	short	auto	minute	1234.5	١٬٢٣٤٫٥ 分鐘後	١,٢٣٤.٥ 分鐘後
+zh-Hant-HK	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ 小時前	١,٢٣٤.٥ 小時前
+zh-Hant-HK	arab	short	auto	hour	1.25	١٫٢٥ 小時後	١.٢٥ 小時後
+zh-Hant-HK	arab	short	auto	hour	1234.5	١٬٢٣٤٫٥ 小時後	١,٢٣٤.٥ 小時後
+zh-Hant-HK	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+zh-Hant-HK	arab	short	auto	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+zh-Hant-HK	arab	short	auto	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+zh-Hant-HK	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ 星期前	١,٢٣٤.٥ 星期前
+zh-Hant-HK	arab	short	auto	week	1.25	١٫٢٥ 星期後	١.٢٥ 星期後
+zh-Hant-HK	arab	short	auto	week	1234.5	١٬٢٣٤٫٥ 星期後	١,٢٣٤.٥ 星期後
+zh-Hant-HK	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ 個月前	١,٢٣٤.٥ 個月前
+zh-Hant-HK	arab	short	auto	month	1.25	١٫٢٥ 個月後	١.٢٥ 個月後
+zh-Hant-HK	arab	short	auto	month	1234.5	١٬٢٣٤٫٥ 個月後	١,٢٣٤.٥ 個月後
+zh-Hant-HK	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ 季前	١,٢٣٤.٥ 季前
+zh-Hant-HK	arab	short	auto	quarter	1.25	١٫٢٥ 季後	١.٢٥ 季後
+zh-Hant-HK	arab	short	auto	quarter	1234.5	١٬٢٣٤٫٥ 季後	١,٢٣٤.٥ 季後
+zh-Hant-HK	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+zh-Hant-HK	arab	short	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+zh-Hant-HK	arab	short	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+zh-Hant-HK	arab	narrow	always	second	-1234.5	١٬٢٣٤٫٥秒前	١,٢٣٤.٥秒前
+zh-Hant-HK	arab	narrow	always	second	1.25	١٫٢٥秒後	١.٢٥秒後
+zh-Hant-HK	arab	narrow	always	second	1234.5	١٬٢٣٤٫٥秒後	١,٢٣٤.٥秒後
+zh-Hant-HK	arab	narrow	always	minute	-1234.5	١٬٢٣٤٫٥分前	١,٢٣٤.٥分前
+zh-Hant-HK	arab	narrow	always	minute	1.25	١٫٢٥分後	١.٢٥分後
+zh-Hant-HK	arab	narrow	always	minute	1234.5	١٬٢٣٤٫٥分後	١,٢٣٤.٥分後
+zh-Hant-HK	arab	narrow	always	hour	-1234.5	١٬٢٣٤٫٥小時前	١,٢٣٤.٥小時前
+zh-Hant-HK	arab	narrow	always	hour	1.25	١٫٢٥小時後	١.٢٥小時後
+zh-Hant-HK	arab	narrow	always	hour	1234.5	١٬٢٣٤٫٥小時後	١,٢٣٤.٥小時後
+zh-Hant-HK	arab	narrow	always	day	-1234.5	١٬٢٣٤٫٥日前	١,٢٣٤.٥日前
+zh-Hant-HK	arab	narrow	always	day	1.25	١٫٢٥日後	١.٢٥日後
+zh-Hant-HK	arab	narrow	always	day	1234.5	١٬٢٣٤٫٥日後	١,٢٣٤.٥日後
+zh-Hant-HK	arab	narrow	always	week	-1234.5	١٬٢٣٤٫٥星期前	١,٢٣٤.٥星期前
+zh-Hant-HK	arab	narrow	always	week	1.25	١٫٢٥星期後	١.٢٥星期後
+zh-Hant-HK	arab	narrow	always	week	1234.5	١٬٢٣٤٫٥星期後	١,٢٣٤.٥星期後
+zh-Hant-HK	arab	narrow	always	month	-1234.5	١٬٢٣٤٫٥個月前	١,٢٣٤.٥個月前
+zh-Hant-HK	arab	narrow	always	month	1.25	١٫٢٥個月後	١.٢٥個月後
+zh-Hant-HK	arab	narrow	always	month	1234.5	١٬٢٣٤٫٥個月後	١,٢٣٤.٥個月後
+zh-Hant-HK	arab	narrow	always	quarter	-1234.5	-١٬٢٣٤٫٥Q	-١,٢٣٤.٥Q
+zh-Hant-HK	arab	narrow	always	quarter	1.25	+١٫٢٥Q	+١.٢٥Q
+zh-Hant-HK	arab	narrow	always	quarter	1234.5	+١٬٢٣٤٫٥Q	+١,٢٣٤.٥Q
+zh-Hant-HK	arab	narrow	always	year	-1234.5	١٬٢٣٤٫٥年前	١,٢٣٤.٥年前
+zh-Hant-HK	arab	narrow	always	year	1.25	١٫٢٥年後	١.٢٥年後
+zh-Hant-HK	arab	narrow	always	year	1234.5	١٬٢٣٤٫٥年後	١,٢٣٤.٥年後
+zh-Hant-HK	arab	narrow	auto	second	-1234.5	١٬٢٣٤٫٥秒前	١,٢٣٤.٥秒前
+zh-Hant-HK	arab	narrow	auto	second	1.25	١٫٢٥秒後	١.٢٥秒後
+zh-Hant-HK	arab	narrow	auto	second	1234.5	١٬٢٣٤٫٥秒後	١,٢٣٤.٥秒後
+zh-Hant-HK	arab	narrow	auto	minute	-1234.5	١٬٢٣٤٫٥分前	١,٢٣٤.٥分前
+zh-Hant-HK	arab	narrow	auto	minute	1.25	١٫٢٥分後	١.٢٥分後
+zh-Hant-HK	arab	narrow	auto	minute	1234.5	١٬٢٣٤٫٥分後	١,٢٣٤.٥分後
+zh-Hant-HK	arab	narrow	auto	hour	-1234.5	١٬٢٣٤٫٥小時前	١,٢٣٤.٥小時前
+zh-Hant-HK	arab	narrow	auto	hour	1.25	١٫٢٥小時後	١.٢٥小時後
+zh-Hant-HK	arab	narrow	auto	hour	1234.5	١٬٢٣٤٫٥小時後	١,٢٣٤.٥小時後
+zh-Hant-HK	arab	narrow	auto	day	-1234.5	١٬٢٣٤٫٥日前	١,٢٣٤.٥日前
+zh-Hant-HK	arab	narrow	auto	day	1.25	١٫٢٥日後	١.٢٥日後
+zh-Hant-HK	arab	narrow	auto	day	1234.5	١٬٢٣٤٫٥日後	١,٢٣٤.٥日後
+zh-Hant-HK	arab	narrow	auto	week	-1234.5	١٬٢٣٤٫٥星期前	١,٢٣٤.٥星期前
+zh-Hant-HK	arab	narrow	auto	week	1.25	١٫٢٥星期後	١.٢٥星期後
+zh-Hant-HK	arab	narrow	auto	week	1234.5	١٬٢٣٤٫٥星期後	١,٢٣٤.٥星期後
+zh-Hant-HK	arab	narrow	auto	month	-1234.5	١٬٢٣٤٫٥個月前	١,٢٣٤.٥個月前
+zh-Hant-HK	arab	narrow	auto	month	1.25	١٫٢٥個月後	١.٢٥個月後
+zh-Hant-HK	arab	narrow	auto	month	1234.5	١٬٢٣٤٫٥個月後	١,٢٣٤.٥個月後
+zh-Hant-HK	arab	narrow	auto	quarter	-1234.5	-١٬٢٣٤٫٥Q	-١,٢٣٤.٥Q
+zh-Hant-HK	arab	narrow	auto	quarter	1.25	+١٫٢٥Q	+١.٢٥Q
+zh-Hant-HK	arab	narrow	auto	quarter	1234.5	+١٬٢٣٤٫٥Q	+١,٢٣٤.٥Q
+zh-Hant-HK	arab	narrow	auto	year	-1234.5	١٬٢٣٤٫٥年前	١,٢٣٤.٥年前
+zh-Hant-HK	arab	narrow	auto	year	1.25	١٫٢٥年後	١.٢٥年後
+zh-Hant-HK	arab	narrow	auto	year	1234.5	١٬٢٣٤٫٥年後	١,٢٣٤.٥年後
+ja	arab	long	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+ja	arab	long	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+ja	arab	long	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+ja	arab	long	always	minute	-1234.5	١٬٢٣٤٫٥ 分前	١,٢٣٤.٥ 分前
+ja	arab	long	always	minute	1.25	١٫٢٥ 分後	١.٢٥ 分後
+ja	arab	long	always	minute	1234.5	١٬٢٣٤٫٥ 分後	١,٢٣٤.٥ 分後
+ja	arab	long	always	hour	-1234.5	١٬٢٣٤٫٥ 時間前	١,٢٣٤.٥ 時間前
+ja	arab	long	always	hour	1.25	١٫٢٥ 時間後	١.٢٥ 時間後
+ja	arab	long	always	hour	1234.5	١٬٢٣٤٫٥ 時間後	١,٢٣٤.٥ 時間後
+ja	arab	long	always	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+ja	arab	long	always	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+ja	arab	long	always	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+ja	arab	long	always	week	-1234.5	١٬٢٣٤٫٥ 週間前	١,٢٣٤.٥ 週間前
+ja	arab	long	always	week	1.25	١٫٢٥ 週間後	١.٢٥ 週間後
+ja	arab	long	always	week	1234.5	١٬٢٣٤٫٥ 週間後	١,٢٣٤.٥ 週間後
+ja	arab	long	always	month	-1234.5	١٬٢٣٤٫٥ か月前	١,٢٣٤.٥ か月前
+ja	arab	long	always	month	1.25	١٫٢٥ か月後	١.٢٥ か月後
+ja	arab	long	always	month	1234.5	١٬٢٣٤٫٥ か月後	١,٢٣٤.٥ か月後
+ja	arab	long	always	quarter	-1234.5	١٬٢٣٤٫٥ 四半期前	١,٢٣٤.٥ 四半期前
+ja	arab	long	always	quarter	1.25	١٫٢٥ 四半期後	١.٢٥ 四半期後
+ja	arab	long	always	quarter	1234.5	١٬٢٣٤٫٥ 四半期後	١,٢٣٤.٥ 四半期後
+ja	arab	long	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+ja	arab	long	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+ja	arab	long	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+ja	arab	long	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+ja	arab	long	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+ja	arab	long	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+ja	arab	long	auto	minute	-1234.5	١٬٢٣٤٫٥ 分前	١,٢٣٤.٥ 分前
+ja	arab	long	auto	minute	1.25	١٫٢٥ 分後	١.٢٥ 分後
+ja	arab	long	auto	minute	1234.5	١٬٢٣٤٫٥ 分後	١,٢٣٤.٥ 分後
+ja	arab	long	auto	hour	-1234.5	١٬٢٣٤٫٥ 時間前	١,٢٣٤.٥ 時間前
+ja	arab	long	auto	hour	1.25	١٫٢٥ 時間後	١.٢٥ 時間後
+ja	arab	long	auto	hour	1234.5	١٬٢٣٤٫٥ 時間後	١,٢٣٤.٥ 時間後
+ja	arab	long	auto	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+ja	arab	long	auto	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+ja	arab	long	auto	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+ja	arab	long	auto	week	-1234.5	١٬٢٣٤٫٥ 週間前	١,٢٣٤.٥ 週間前
+ja	arab	long	auto	week	1.25	١٫٢٥ 週間後	١.٢٥ 週間後
+ja	arab	long	auto	week	1234.5	١٬٢٣٤٫٥ 週間後	١,٢٣٤.٥ 週間後
+ja	arab	long	auto	month	-1234.5	١٬٢٣٤٫٥ か月前	١,٢٣٤.٥ か月前
+ja	arab	long	auto	month	1.25	١٫٢٥ か月後	١.٢٥ か月後
+ja	arab	long	auto	month	1234.5	١٬٢٣٤٫٥ か月後	١,٢٣٤.٥ か月後
+ja	arab	long	auto	quarter	-1234.5	١٬٢٣٤٫٥ 四半期前	١,٢٣٤.٥ 四半期前
+ja	arab	long	auto	quarter	1.25	١٫٢٥ 四半期後	١.٢٥ 四半期後
+ja	arab	long	auto	quarter	1234.5	١٬٢٣٤٫٥ 四半期後	١,٢٣٤.٥ 四半期後
+ja	arab	long	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+ja	arab	long	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+ja	arab	long	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+ja	arab	short	always	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+ja	arab	short	always	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+ja	arab	short	always	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+ja	arab	short	always	minute	-1234.5	١٬٢٣٤٫٥ 分前	١,٢٣٤.٥ 分前
+ja	arab	short	always	minute	1.25	١٫٢٥ 分後	١.٢٥ 分後
+ja	arab	short	always	minute	1234.5	١٬٢٣٤٫٥ 分後	١,٢٣٤.٥ 分後
+ja	arab	short	always	hour	-1234.5	١٬٢٣٤٫٥ 時間前	١,٢٣٤.٥ 時間前
+ja	arab	short	always	hour	1.25	١٫٢٥ 時間後	١.٢٥ 時間後
+ja	arab	short	always	hour	1234.5	١٬٢٣٤٫٥ 時間後	١,٢٣٤.٥ 時間後
+ja	arab	short	always	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+ja	arab	short	always	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+ja	arab	short	always	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+ja	arab	short	always	week	-1234.5	١٬٢٣٤٫٥ 週間前	١,٢٣٤.٥ 週間前
+ja	arab	short	always	week	1.25	١٫٢٥ 週間後	١.٢٥ 週間後
+ja	arab	short	always	week	1234.5	١٬٢٣٤٫٥ 週間後	١,٢٣٤.٥ 週間後
+ja	arab	short	always	month	-1234.5	١٬٢٣٤٫٥ か月前	١,٢٣٤.٥ か月前
+ja	arab	short	always	month	1.25	١٫٢٥ か月後	١.٢٥ か月後
+ja	arab	short	always	month	1234.5	١٬٢٣٤٫٥ か月後	١,٢٣٤.٥ か月後
+ja	arab	short	always	quarter	-1234.5	١٬٢٣٤٫٥ 四半期前	١,٢٣٤.٥ 四半期前
+ja	arab	short	always	quarter	1.25	١٫٢٥ 四半期後	١.٢٥ 四半期後
+ja	arab	short	always	quarter	1234.5	١٬٢٣٤٫٥ 四半期後	١,٢٣٤.٥ 四半期後
+ja	arab	short	always	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+ja	arab	short	always	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+ja	arab	short	always	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+ja	arab	short	auto	second	-1234.5	١٬٢٣٤٫٥ 秒前	١,٢٣٤.٥ 秒前
+ja	arab	short	auto	second	1.25	١٫٢٥ 秒後	١.٢٥ 秒後
+ja	arab	short	auto	second	1234.5	١٬٢٣٤٫٥ 秒後	١,٢٣٤.٥ 秒後
+ja	arab	short	auto	minute	-1234.5	١٬٢٣٤٫٥ 分前	١,٢٣٤.٥ 分前
+ja	arab	short	auto	minute	1.25	١٫٢٥ 分後	١.٢٥ 分後
+ja	arab	short	auto	minute	1234.5	١٬٢٣٤٫٥ 分後	١,٢٣٤.٥ 分後
+ja	arab	short	auto	hour	-1234.5	١٬٢٣٤٫٥ 時間前	١,٢٣٤.٥ 時間前
+ja	arab	short	auto	hour	1.25	١٫٢٥ 時間後	١.٢٥ 時間後
+ja	arab	short	auto	hour	1234.5	١٬٢٣٤٫٥ 時間後	١,٢٣٤.٥ 時間後
+ja	arab	short	auto	day	-1234.5	١٬٢٣٤٫٥ 日前	١,٢٣٤.٥ 日前
+ja	arab	short	auto	day	1.25	١٫٢٥ 日後	١.٢٥ 日後
+ja	arab	short	auto	day	1234.5	١٬٢٣٤٫٥ 日後	١,٢٣٤.٥ 日後
+ja	arab	short	auto	week	-1234.5	١٬٢٣٤٫٥ 週間前	١,٢٣٤.٥ 週間前
+ja	arab	short	auto	week	1.25	١٫٢٥ 週間後	١.٢٥ 週間後
+ja	arab	short	auto	week	1234.5	١٬٢٣٤٫٥ 週間後	١,٢٣٤.٥ 週間後
+ja	arab	short	auto	month	-1234.5	١٬٢٣٤٫٥ か月前	١,٢٣٤.٥ か月前
+ja	arab	short	auto	month	1.25	١٫٢٥ か月後	١.٢٥ か月後
+ja	arab	short	auto	month	1234.5	١٬٢٣٤٫٥ か月後	١,٢٣٤.٥ か月後
+ja	arab	short	auto	quarter	-1234.5	١٬٢٣٤٫٥ 四半期前	١,٢٣٤.٥ 四半期前
+ja	arab	short	auto	quarter	1.25	١٫٢٥ 四半期後	١.٢٥ 四半期後
+ja	arab	short	auto	quarter	1234.5	١٬٢٣٤٫٥ 四半期後	١,٢٣٤.٥ 四半期後
+ja	arab	short	auto	year	-1234.5	١٬٢٣٤٫٥ 年前	١,٢٣٤.٥ 年前
+ja	arab	short	auto	year	1.25	١٫٢٥ 年後	١.٢٥ 年後
+ja	arab	short	auto	year	1234.5	١٬٢٣٤٫٥ 年後	١,٢٣٤.٥ 年後
+ja	arab	narrow	always	second	-1234.5	١٬٢٣٤٫٥秒前	١,٢٣٤.٥秒前
+ja	arab	narrow	always	second	1.25	١٫٢٥秒後	١.٢٥秒後
+ja	arab	narrow	always	second	1234.5	١٬٢٣٤٫٥秒後	١,٢٣٤.٥秒後
+ja	arab	narrow	always	minute	-1234.5	١٬٢٣٤٫٥分前	١,٢٣٤.٥分前
+ja	arab	narrow	always	minute	1.25	١٫٢٥分後	١.٢٥分後
+ja	arab	narrow	always	minute	1234.5	١٬٢٣٤٫٥分後	١,٢٣٤.٥分後
+ja	arab	narrow	always	hour	-1234.5	١٬٢٣٤٫٥時間前	١,٢٣٤.٥時間前
+ja	arab	narrow	always	hour	1.25	١٫٢٥時間後	١.٢٥時間後
+ja	arab	narrow	always	hour	1234.5	١٬٢٣٤٫٥時間後	١,٢٣٤.٥時間後
+ja	arab	narrow	always	day	-1234.5	١٬٢٣٤٫٥日前	١,٢٣٤.٥日前
+ja	arab	narrow	always	day	1.25	١٫٢٥日後	١.٢٥日後
+ja	arab	narrow	always	day	1234.5	١٬٢٣٤٫٥日後	١,٢٣٤.٥日後
+ja	arab	narrow	always	week	-1234.5	١٬٢٣٤٫٥週間前	١,٢٣٤.٥週間前
+ja	arab	narrow	always	week	1.25	١٫٢٥週間後	١.٢٥週間後
+ja	arab	narrow	always	week	1234.5	١٬٢٣٤٫٥週間後	١,٢٣٤.٥週間後
+ja	arab	narrow	always	month	-1234.5	١٬٢٣٤٫٥か月前	١,٢٣٤.٥か月前
+ja	arab	narrow	always	month	1.25	١٫٢٥か月後	١.٢٥か月後
+ja	arab	narrow	always	month	1234.5	١٬٢٣٤٫٥か月後	١,٢٣٤.٥か月後
+ja	arab	narrow	always	quarter	-1234.5	١٬٢٣٤٫٥四半期前	١,٢٣٤.٥四半期前
+ja	arab	narrow	always	quarter	1.25	١٫٢٥四半期後	١.٢٥四半期後
+ja	arab	narrow	always	quarter	1234.5	١٬٢٣٤٫٥四半期後	١,٢٣٤.٥四半期後
+ja	arab	narrow	always	year	-1234.5	١٬٢٣٤٫٥年前	١,٢٣٤.٥年前
+ja	arab	narrow	always	year	1.25	١٫٢٥年後	١.٢٥年後
+ja	arab	narrow	always	year	1234.5	١٬٢٣٤٫٥年後	١,٢٣٤.٥年後
+ja	arab	narrow	auto	second	-1234.5	١٬٢٣٤٫٥秒前	١,٢٣٤.٥秒前
+ja	arab	narrow	auto	second	1.25	١٫٢٥秒後	١.٢٥秒後
+ja	arab	narrow	auto	second	1234.5	١٬٢٣٤٫٥秒後	١,٢٣٤.٥秒後
+ja	arab	narrow	auto	minute	-1234.5	١٬٢٣٤٫٥分前	١,٢٣٤.٥分前
+ja	arab	narrow	auto	minute	1.25	١٫٢٥分後	١.٢٥分後
+ja	arab	narrow	auto	minute	1234.5	١٬٢٣٤٫٥分後	١,٢٣٤.٥分後
+ja	arab	narrow	auto	hour	-1234.5	١٬٢٣٤٫٥時間前	١,٢٣٤.٥時間前
+ja	arab	narrow	auto	hour	1.25	١٫٢٥時間後	١.٢٥時間後
+ja	arab	narrow	auto	hour	1234.5	١٬٢٣٤٫٥時間後	١,٢٣٤.٥時間後
+ja	arab	narrow	auto	day	-1234.5	١٬٢٣٤٫٥日前	١,٢٣٤.٥日前
+ja	arab	narrow	auto	day	1.25	١٫٢٥日後	١.٢٥日後
+ja	arab	narrow	auto	day	1234.5	١٬٢٣٤٫٥日後	١,٢٣٤.٥日後
+ja	arab	narrow	auto	week	-1234.5	١٬٢٣٤٫٥週間前	١,٢٣٤.٥週間前
+ja	arab	narrow	auto	week	1.25	١٫٢٥週間後	١.٢٥週間後
+ja	arab	narrow	auto	week	1234.5	١٬٢٣٤٫٥週間後	١,٢٣٤.٥週間後
+ja	arab	narrow	auto	month	-1234.5	١٬٢٣٤٫٥か月前	١,٢٣٤.٥か月前
+ja	arab	narrow	auto	month	1.25	١٫٢٥か月後	١.٢٥か月後
+ja	arab	narrow	auto	month	1234.5	١٬٢٣٤٫٥か月後	١,٢٣٤.٥か月後
+ja	arab	narrow	auto	quarter	-1234.5	١٬٢٣٤٫٥四半期前	١,٢٣٤.٥四半期前
+ja	arab	narrow	auto	quarter	1.25	١٫٢٥四半期後	١.٢٥四半期後
+ja	arab	narrow	auto	quarter	1234.5	١٬٢٣٤٫٥四半期後	١,٢٣٤.٥四半期後
+ja	arab	narrow	auto	year	-1234.5	١٬٢٣٤٫٥年前	١,٢٣٤.٥年前
+ja	arab	narrow	auto	year	1.25	١٫٢٥年後	١.٢٥年後
+ja	arab	narrow	auto	year	1234.5	١٬٢٣٤٫٥年後	١,٢٣٤.٥年後
