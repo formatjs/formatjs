@@ -286,7 +286,8 @@ const originalCharCodeAt = String.prototype.charCodeAt,
   originalSlice = String.prototype.slice
 const originalApply = Reflect.apply,
   originalGet = WeakMap.prototype.get,
-  originalSet = WeakMap.prototype.set
+  originalSet = WeakMap.prototype.set,
+  originalSetPrototypeOf = Object.setPrototypeOf
 const prototypeFields = ['0', 'type', 'value', 'get', 'set']
 const previousFields = prototypeFields.map(name =>
   Object.getOwnPropertyDescriptor(Object.prototype, name)
@@ -373,6 +374,7 @@ try {
   Reflect.apply = poisoned
   WeakMap.prototype.get = poisoned
   WeakMap.prototype.set = poisoned
+  Object.setPrototypeOf = poisoned
   equal(
     new Native('en').format(['\ud800', 'B']),
     '\ud800 and B',
@@ -396,6 +398,7 @@ try {
   Reflect.apply = originalApply
   WeakMap.prototype.get = originalGet
   WeakMap.prototype.set = originalSet
+  Object.setPrototypeOf = originalSetPrototypeOf
 }
 root.print(
   stringify({

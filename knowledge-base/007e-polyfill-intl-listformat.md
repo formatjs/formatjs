@@ -119,3 +119,8 @@ list before a single Rust negotiation/construction call. No JS option getters
 exist in that path. Explicit options retain the separate resolution step before
 reading type/style, including inherited getters. The additive C ABI accepts
 canonical locale-list JSON and returns an independently owned handle.
+
+The private copy of iterable input drops its array prototype on the first valid
+element. Direct index writes then bypass inherited setters without per-element
+descriptors. Real iteration and validation still control IteratorClose. Empty
+inputs avoid prototype mutation; public parts arrays and records stay ordinary.

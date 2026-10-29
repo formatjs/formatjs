@@ -69,45 +69,45 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-29, pinned to CPU 0 on every host,
-including retained constructor tables, direct private-option serialization and
-the earlier optimizations. All hosts use high-resolution `__now()`.
-[Raw results, controls and profiles](plural-constructor-results.json).
+including prototype-free private list input copies and the earlier optimizations.
+All hosts use high-resolution `__now()`.
+[Raw results, size controls and profiles](list-private-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.07 |       1.11 |
-| `Locale.maximize`                    |        0.26 |       2.17 |
-| `PluralRules.select`                 |        0.36 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.41 |       0.46 |
-| `PluralRules.select(string)`         |        0.51 |       0.91 |
+| `getCanonicalLocales`                |        0.07 |       1.10 |
+| `Locale.maximize`                    |        0.26 |       2.12 |
+| `PluralRules.select`                 |        0.37 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.42 |       0.46 |
+| `PluralRules.select(string)`         |        0.51 |       0.92 |
 | `PluralRules.select(ordinal)`        |        0.38 |       0.45 |
-| `PluralRules.select(ru)`             |        0.41 |       0.51 |
+| `PluralRules.select(ru)`             |        0.40 |       0.50 |
 | `PluralRules.selectRange`            |        0.78 |       0.90 |
-| `ListFormat.format`                  |        1.09 |       0.54 |
-| `ListFormat.formatToParts`           |        3.28 |       3.24 |
-| `RelativeTimeFormat.format`          |        0.99 |       0.73 |
-| `RelativeTimeFormat.formatToParts`   |        1.76 |       2.18 |
-| `RelativeTimeFormat.format(decimal)` |        1.35 |       0.79 |
-| `RelativeTimeFormat.format(auto)`    |        0.46 |       0.60 |
-| `Locale.new`                         |        0.35 |       0.93 |
-| `Locale.new(options)`                |        1.80 |       4.93 |
+| `ListFormat.format`                  |        0.95 |       0.53 |
+| `ListFormat.formatToParts`           |        3.17 |       3.26 |
+| `RelativeTimeFormat.format`          |        0.96 |       0.71 |
+| `RelativeTimeFormat.formatToParts`   |        1.79 |       2.18 |
+| `RelativeTimeFormat.format(decimal)` |        1.29 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.45 |       0.60 |
+| `Locale.new`                         |        0.35 |       0.94 |
+| `Locale.new(options)`                |        1.82 |       4.90 |
 | `Locale.new(zh-HK)`                  |        0.36 |       1.35 |
-| `Locale.new.language`                |        0.44 |       1.28 |
-| `Locale.new.toString`                |        0.41 |       1.01 |
-| `Locale.language`                    |        0.08 |       0.09 |
-| `Locale.new(Locale)`                 |        0.33 |       0.99 |
-| `Locale.new(diverse)`                |        2.87 |       1.45 |
-| `Locale.new(long)`                   |        4.38 |       3.87 |
-| `PluralRules.new`                    |        1.97 |       4.69 |
-| `PluralRules.new(options)`           |        5.19 |       5.29 |
-| `ListFormat.new`                     |        1.30 |       2.79 |
-| `ListFormat.new(default)`            |        1.03 |       2.57 |
-| `ListFormat.new(array)`              |        1.67 |       2.91 |
-| `ListFormat.new(options)`            |        2.86 |       2.75 |
-| `ListFormat.new(fallback)`           |        2.15 |       3.77 |
-| `ListFormat.new(unsupported)`        |        2.24 |       3.92 |
-| `RelativeTimeFormat.new`             |        4.29 |       4.94 |
-| `RelativeTimeFormat.new(fallback)`   |        5.39 |       5.60 |
+| `Locale.new.language`                |        0.43 |       1.28 |
+| `Locale.new.toString`                |        0.41 |       0.99 |
+| `Locale.language`                    |        0.08 |       0.08 |
+| `Locale.new(Locale)`                 |        0.33 |       0.95 |
+| `Locale.new(diverse)`                |        2.81 |       1.43 |
+| `Locale.new(long)`                   |        4.63 |       3.80 |
+| `PluralRules.new`                    |        1.99 |       4.59 |
+| `PluralRules.new(options)`           |        5.27 |       5.04 |
+| `ListFormat.new`                     |        1.40 |       2.62 |
+| `ListFormat.new(default)`            |        1.06 |       2.59 |
+| `ListFormat.new(array)`              |        1.72 |       2.89 |
+| `ListFormat.new(options)`            |        2.91 |       2.75 |
+| `ListFormat.new(fallback)`           |        2.15 |       3.65 |
+| `ListFormat.new(unsupported)`        |        2.24 |       3.77 |
+| `RelativeTimeFormat.new`             |        4.31 |       4.65 |
+| `RelativeTimeFormat.new(fallback)`   |        5.25 |       5.69 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -517,3 +517,29 @@ shift to this optimization.
 All 342 value checks pass. Hermes source/bytecode, Test262 and the pinned
 ICU4C/J/X matrix pass; intrinsic-poisoning coverage now includes replacing
 Function.prototype.bind after installation. The SDK's nine API smoke scripts pass.
+
+ListFormat's private iterable copy drops its array prototype on the first valid
+string, then appends with direct index writes. This removes per-element descriptor
+calls while retaining actual iteration, IteratorClose and inherited-setter
+protection. Empty lists avoid prototype mutation. Public parts arrays/records
+retain ordinary prototypes and descriptors.
+
+Three complete optimized CPU-0-pinned runs reduce three-item strings from 1.091
+to 0.955 µs (12.5%) and parts from 3.241 to 3.175 µs. Magrinj measures 0.532
+and 3.255 µs. Size controls cover 0/1/3/32/256 items; 32 items improve from
+5.779 to 4.354 µs and 256 from 39.439 to 27.651 µs. Strings remain slower than
+magrinj at every size. Empty/single-item medians improve from 0.282/0.514 to
+0.259/0.474 µs.
+
+Unchanged constructor paths shift too: omitted-option construction from 0.972
+to 1.057 µs and explicit options from 2.859 to 2.905 µs. All raw cases remain
+recorded; this run does not establish absence of constructor regressions. Rust
+sources and the C++ bridge are unchanged. Plain-format profiles remove the
+`objectDefineProperty` frame (205 before samples); remaining time concentrates
+in the host call and iterable copying. Public parts still need descriptor writes.
+
+All 387 values match across complete runs, canonical/Locale controls and size
+controls, with only the previously documented default-locale comparator choices.
+Hermes source/bytecode, Test262, the ICU4C/J/X list matrices and nine SDK API
+smokes pass. Intrinsic poisoning now also replaces Object.setPrototypeOf after
+installation.
