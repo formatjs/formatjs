@@ -40,8 +40,33 @@
   const getSlot = WeakMap.prototype.get.bind(slots) as (
     receiver: unknown
   ) => object | undefined
-  const setSlot = WeakMap.prototype.set
+  const setSlot = WeakMap.prototype.set.bind(slots)
   const categories = ['zero', 'one', 'two', 'few', 'many', 'other']
+  const matchers = ['lookup', 'best fit'] as const
+  const types = ['cardinal', 'ordinal'] as const
+  const notations = [
+    'standard',
+    'scientific',
+    'engineering',
+    'compact',
+  ] as const
+  const compactDisplays = ['short', 'long'] as const
+  const priorities = ['auto', 'morePrecision', 'lessPrecision'] as const
+  const trailingZeros = ['auto', 'stripIfInteger'] as const
+  const roundingModes = [
+    'ceil',
+    'floor',
+    'expand',
+    'trunc',
+    'halfCeil',
+    'halfFloor',
+    'halfExpand',
+    'halfTrunc',
+    'halfEven',
+  ] as const
+  const increments = [
+    1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
+  ] as const
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -73,7 +98,7 @@
   function option(
     options: any,
     name: string,
-    values: string[],
+    values: readonly string[],
     fallback: string
   ): string {
     const value = options[name]
@@ -102,7 +127,7 @@
   ): object {
     const handle = nativeCreate(locale, options)
     if (typeof handle === 'number') decoded(handle)
-    apply(setSlot, slots, [receiver, handle])
+    setSlot(receiver, handle)
     return receiver
   }
   function slot(receiver: unknown): object {
@@ -211,31 +236,26 @@
       // ResolveOptions 1–4: locale-list access precedes option coercion/getters.
       // PluralRules has no relevant Unicode extension keys or resolution options.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L303-L318
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const opts = options(optionsInput)
-      const matcher = option(
-        opts,
-        'localeMatcher',
-        ['lookup', 'best fit'],
-        'best fit'
-      )
+      const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
       const locale = match(requested, matcher === 'lookup', false) as string
       // Undefined options expose no getters; Rust resolves all defaults.
       if (optionsInput === undefined) return initialize(receiver, locale, '{}')
       // Constructor 7–13: each enum's coercion/validation precedes the next Get.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
       const values: Record<string, string | number | undefined> = create(null)
-      values.type = option(opts, 'type', ['cardinal', 'ordinal'], 'cardinal')
+      values.type = option(opts, 'type', types, 'cardinal')
       const notation = (values.notation = option(
         opts,
         'notation',
-        ['standard', 'scientific', 'engineering', 'compact'],
+        notations,
         'standard'
       ))
       values.compactDisplay = option(
         opts,
         'compactDisplay',
-        ['short', 'long'],
+        compactDisplays,
         'short'
       )
       // SetNumberFormatDigitOptions 1–11: validate minimumInteger/increment as
@@ -252,9 +272,6 @@
         5000,
         1
       )!)
-      const increments = [
-        1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
-      ]
       let valid = false
       for (let index = 0; index < increments.length; index++)
         if (increment === increments[index]) valid = true
@@ -262,29 +279,19 @@
       values.roundingMode = option(
         opts,
         'roundingMode',
-        [
-          'ceil',
-          'floor',
-          'expand',
-          'trunc',
-          'halfCeil',
-          'halfFloor',
-          'halfExpand',
-          'halfTrunc',
-          'halfEven',
-        ],
+        roundingModes,
         'halfExpand'
       )
       const priority = (values.roundingPriority = option(
         opts,
         'roundingPriority',
-        ['auto', 'morePrecision', 'lessPrecision'],
+        priorities,
         'auto'
       ))
       values.trailingZeroDisplay = option(
         opts,
         'trailingZeroDisplay',
-        ['auto', 'stripIfInteger'],
+        trailingZeros,
         'auto'
       )
       // Active precision: inactive values never undergo ToNumber. Validate
@@ -329,11 +336,11 @@
       // supportedLocalesOf 1–3 and FilterLocales: canonicalize before options;
       // Rust returns requested tags, including their Unicode extensions.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L62-L64
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const matcher = option(
         options(optionsInput),
         'localeMatcher',
-        ['lookup', 'best fit'],
+        matchers,
         'best fit'
       )
       return match(requested, matcher === 'lookup', true)
