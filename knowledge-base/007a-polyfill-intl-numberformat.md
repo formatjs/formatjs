@@ -227,3 +227,9 @@ then emits integer chunks from the leading group forward. No pattern-group or
 chunk vectors are needed. Minimum-grouping policy, digit mapping and symbols
 still use the common formatting path. Keep primary/secondary boundaries and
 exact parts intact when changing this traversal.
+
+The borrowed number-piece visitor serves both owned parts and decimal text with
+plural selection. Latin digits use immutable global identity mapping; locale
+symbols are borrowed and other digit systems keep owned mapping. The plain
+`#,##0.###` string path shares rendered rounding/category state with parts;
+other decimal patterns retain the general fallback.
