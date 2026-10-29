@@ -221,3 +221,9 @@ allocation replaces temporary digit strings and floating-point parsing. Validati
 still rejects non-digits, leading integer zeros and trailing fraction zeros from
 this path. General normalization handles exponents, radix literals and other
 forms; BigInt retains its separate arbitrary-length handling.
+
+Number grouping reads primary/secondary intervals with a reverse split iterator,
+then emits integer chunks from the leading group forward. No pattern-group or
+chunk vectors are needed. Minimum-grouping policy, digit mapping and symbols
+still use the common formatting path. Keep primary/secondary boundaries and
+exact parts intact when changing this traversal.

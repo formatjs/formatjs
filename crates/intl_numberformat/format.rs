@@ -309,16 +309,19 @@ impl NumberFormat {
             .split_once('.')
             .map(|(integer, fraction)| (integer, Some(fraction)))
             .unwrap_or((&number.text, None));
-        let groups: Vec<_> = pattern.split('.').next().unwrap().split(',').collect();
-        let primary = if groups.len() > 1 {
-            groups.last().unwrap().len()
-        } else {
-            3
-        };
-        let secondary = if groups.len() > 2 {
-            groups[groups.len() - 2].len()
-        } else {
-            primary
+        let mut groups = pattern.split('.').next().unwrap().rsplit(',');
+        let last = groups.next().unwrap();
+        let (primary, secondary) = match groups.next() {
+            None => (3, 3),
+            Some(previous) => {
+                let primary = last.len();
+                let secondary = if groups.next().is_some() {
+                    previous.len()
+                } else {
+                    primary
+                };
+                (primary, secondary)
+            }
         };
         let grouping = self.resolved.use_grouping;
         let minimum = if grouping == Grouping::Min2 {
@@ -331,25 +334,34 @@ impl NumberFormat {
             && (grouping == Grouping::Always || integer.len() >= primary + minimum);
         let mut parts = Vec::new();
         if grouped {
-            let mut chunks = Vec::new();
-            let mut end = integer.len();
-            let mut size = primary;
-            while end > 0 {
-                let start = end.saturating_sub(size);
-                chunks.push(&integer[start..end]);
-                end = start;
-                size = secondary;
+            if primary == 0 || secondary == 0 {
+                return Err(Error::InvalidData("Empty number grouping interval".into()));
             }
+            let leading = integer.len().saturating_sub(primary);
+            let first = if leading == 0 {
+                integer.len()
+            } else {
+                1 + (leading - 1) % secondary
+            };
             let separator = if self.resolved.style == "currency" {
                 symbols.currency_group.as_ref().unwrap_or(&symbols.group)
             } else {
                 &symbols.group
             };
-            for (index, chunk) in chunks.iter().rev().enumerate() {
-                if index > 0 {
+            let mut start = 0;
+            let mut end = first;
+            while start < integer.len() {
+                if start != 0 {
                     parts.push(Part::new("group", separator.clone()));
                 }
-                parts.push(Part::new("integer", self.mapped(chunk)?));
+                parts.push(Part::new("integer", self.mapped(&integer[start..end])?));
+                start = end;
+                let remaining = integer.len() - start;
+                end += if remaining > primary {
+                    secondary
+                } else {
+                    remaining
+                };
             }
         } else {
             parts.push(Part::new("integer", self.mapped(integer)?));
