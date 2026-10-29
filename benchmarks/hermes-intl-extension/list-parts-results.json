@@ -1,0 +1,117 @@
+{
+  "parentCommit": "c2bbdf541acb7b11045e880a43d59160e118f5bc",
+  "hermesCommit": "393a539e6",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "build": "C++ Release -O3; FormatJS Rust Bazel -c opt; magrinj release opt-level=z, LTO",
+  "methodology": "Three alternating before/after/magrinj runs; seven calibrated rounds per case; parts case reads array length. Full suite serializes parts and checks output against TS.",
+  "results": {
+    "ListFormat.format": {
+      "before": {
+        "samplesUs": [1.129150390625, 1.15966796875, 1.0986328125],
+        "medianUs": 1.129150390625,
+        "value": "one, two, and three"
+      },
+      "after": {
+        "samplesUs": [1.0986328125, 1.03759765625, 1.03759765625],
+        "medianUs": 1.03759765625,
+        "value": "one, two, and three"
+      },
+      "magrinj": {
+        "samplesUs": [
+          0.6982356717344373, 0.6832223807577975, 0.6864773895358667
+        ],
+        "medianUs": 0.6864773895358667,
+        "value": "one, two, and three"
+      }
+    },
+    "ListFormat.formatToParts": {
+      "before": {
+        "samplesUs": [4.638671875, 4.638671875, 4.5166015625],
+        "medianUs": 4.638671875,
+        "value": 5
+      },
+      "after": {
+        "samplesUs": [3.173828125, 3.11279296875, 3.0517578125],
+        "medianUs": 3.11279296875,
+        "value": 5
+      },
+      "magrinj": {
+        "samplesUs": [4.383565450552851, 4.339272330980748, 4.31835581548512],
+        "medianUs": 4.339272330980748,
+        "value": 5
+      }
+    }
+  },
+  "fullSuite": [
+    {
+      "name": "getCanonicalLocales",
+      "nativeNs": [793.45703125, 805.6640625, 793.45703125],
+      "typescriptNs": [4394.53125, 4394.53125, 4394.53125]
+    },
+    {
+      "name": "supportedValuesOf",
+      "nativeNs": [1806.640625, 1806.640625, 1806.640625],
+      "typescriptNs": [60156.25, 58593.75, 58593.75]
+    },
+    {
+      "name": "Locale.maximize",
+      "nativeNs": [4052.734375, 3613.28125, 3515.625],
+      "typescriptNs": [33203.125, 33203.125, 33203.125]
+    },
+    {
+      "name": "PluralRules.select",
+      "nativeNs": [646.97265625, 634.765625, 646.97265625],
+      "typescriptNs": [125000, 123437.5, 126562.5]
+    },
+    {
+      "name": "ListFormat.format",
+      "nativeNs": [1147.4609375, 1135.25390625, 1135.25390625],
+      "typescriptNs": [4345.703125, 4345.703125, 4345.703125]
+    },
+    {
+      "name": "ListFormat.formatToParts",
+      "nativeNs": [4589.84375, 4492.1875, 4541.015625],
+      "typescriptNs": [6152.34375, 5859.375, 6054.6875]
+    },
+    {
+      "name": "DisplayNames.of",
+      "nativeNs": [1513.671875, 1513.671875, 1538.0859375],
+      "typescriptNs": [7910.15625, 7812.5, 8007.8125]
+    },
+    {
+      "name": "Segmenter.segment",
+      "nativeNs": [6054.6875, 6054.6875, 6152.34375],
+      "typescriptNs": [8886.71875, 8886.71875, 8984.375]
+    },
+    {
+      "name": "Collator.compare",
+      "nativeNs": [1611.328125, 1611.328125, 1635.7421875],
+      "typescriptNs": [3320.3125, 3173.828125, 3222.65625]
+    },
+    {
+      "name": "NumberFormat.format",
+      "nativeNs": [2490.234375, 2441.40625, 2392.578125],
+      "typescriptNs": [343750, 350000, 350000]
+    },
+    {
+      "name": "RelativeTimeFormat.format",
+      "nativeNs": [1098.6328125, 1086.42578125, 1098.6328125],
+      "typescriptNs": [425000, 406250, 406250]
+    },
+    {
+      "name": "RelativeTimeFormat.formatToParts",
+      "nativeNs": [4003.90625, 3906.25, 3906.25],
+      "typescriptNs": [412500, 406250, 406250]
+    },
+    {
+      "name": "DateTimeFormat.format",
+      "nativeNs": [4248.046875, 4150.390625, 4150.390625],
+      "typescriptNs": [1025000, 1012500, 1012500]
+    },
+    {
+      "name": "DurationFormat.format",
+      "nativeNs": [4199.21875, 3955.078125, 3955.078125],
+      "typescriptNs": [925000, 887500, 887500]
+    }
+  ]
+}

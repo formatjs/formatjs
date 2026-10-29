@@ -287,6 +287,52 @@ const originalCharCodeAt = String.prototype.charCodeAt,
 const originalApply = Reflect.apply,
   originalGet = WeakMap.prototype.get,
   originalSet = WeakMap.prototype.set
+const prototypeFields = ['0', 'type', 'value', 'get', 'set']
+const previousFields = prototypeFields.map(name =>
+  Object.getOwnPropertyDescriptor(Object.prototype, name)
+)
+const inheritedTrap = Object.create(null)
+inheritedTrap.configurable = true
+inheritedTrap.get = inheritedTrap.set = () => {
+  throw new Error('Inherited parts property accessed')
+}
+let safeParts: any[] = []
+try {
+  for (const name of prototypeFields)
+    Object.defineProperty(Object.prototype, name, inheritedTrap)
+  safeParts = formatter.formatToParts(['A', 'B'])
+} finally {
+  for (let index = 0; index < prototypeFields.length; index++) {
+    const saved = previousFields[index]
+    if (saved)
+      Object.defineProperty(Object.prototype, prototypeFields[index], saved)
+    else delete (Object.prototype as any)[prototypeFields[index]]
+  }
+}
+equal(
+  safeParts,
+  [
+    {type: 'element', value: 'A'},
+    {type: 'literal', value: ' and '},
+    {type: 'element', value: 'B'},
+  ],
+  'parts bypass inherited setters and getters'
+)
+for (const part of safeParts) {
+  check(
+    Object.getPrototypeOf(part) === Object.prototype,
+    'ordinary part prototype'
+  )
+  equal(Object.keys(part), ['type', 'value'], 'part property order')
+  for (const name of ['type', 'value']) {
+    const own = Object.getOwnPropertyDescriptor(part, name)!
+    check(
+      own.writable && own.enumerable && own.configurable && !('get' in own),
+      'part data descriptor'
+    )
+  }
+}
+
 function poisoned(): never {
   throw new Error('tampered intrinsic called')
 }

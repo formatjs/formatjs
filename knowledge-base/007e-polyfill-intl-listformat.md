@@ -108,3 +108,8 @@ outputs remain checked. See `conformance-tests/icu4c/README.md`.
 An independent ICU4X ListFormatter also checks 2,772 scalar-string cases.
 Its 66 exact differences are pinned separately; it cannot represent the 99
 lone-surrogate cases, which remain covered by ICU4C/J and Hermes.
+
+Hermes constructs parts as ordinary data-record literals. Private append
+descriptors have null prototypes and are reused within each call, bypassing
+inherited array setters and descriptor `get`/`set` properties without sharing
+returned records.

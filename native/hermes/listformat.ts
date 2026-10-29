@@ -119,15 +119,18 @@
     // Validate during iteration so non-string values close the iterator.
     if (input === undefined) return []
     const result: string[] = []
+    const descriptor = {
+      __proto__: null,
+      value: undefined as unknown,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    }
     for (const value of input as Iterable<unknown>) {
       if (typeof value !== 'string')
         throw new BadReceiver('Iterable yielded a non-string value')
-      define(result, result.length, {
-        value,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
+      descriptor.value = value
+      define(result, result.length, descriptor)
     }
     return result
   }
@@ -211,6 +214,13 @@
       const handle = slot(this)
       const packed = nativeParts(handle, listValues(list))
       const parts: object[] = []
+      const descriptor = {
+        __proto__: null,
+        value: undefined as unknown,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      }
       for (let offset = 0; offset < packed.length;) {
         const kind = apply(charCodeAt, packed, [offset++])
         const length =
@@ -218,15 +228,9 @@
           apply(charCodeAt, packed, [offset++])
         const value = apply(slice, packed, [offset, offset + length])
         offset += length
-        const part = create(objectPrototype)
-        property(part, 'type', kind === 0 ? 'element' : 'literal', true)
-        property(part, 'value', value, true)
-        define(parts, parts.length, {
-          value: part,
-          writable: true,
-          enumerable: true,
-          configurable: true,
-        })
+        const part = {type: kind === 0 ? 'element' : 'literal', value}
+        descriptor.value = part
+        define(parts, parts.length, descriptor)
       }
       return parts
     },
