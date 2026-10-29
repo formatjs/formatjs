@@ -287,7 +287,8 @@ const originalCharCodeAt = String.prototype.charCodeAt,
 const originalApply = Reflect.apply,
   originalGet = WeakMap.prototype.get,
   originalSet = WeakMap.prototype.set,
-  originalSetPrototypeOf = Object.setPrototypeOf
+  originalSetPrototypeOf = Object.setPrototypeOf,
+  originalBind = Function.prototype.bind
 const prototypeFields = ['0', 'type', 'value', 'get', 'set']
 const previousFields = prototypeFields.map(name =>
   Object.getOwnPropertyDescriptor(Object.prototype, name)
@@ -375,10 +376,16 @@ try {
   WeakMap.prototype.get = poisoned
   WeakMap.prototype.set = poisoned
   Object.setPrototypeOf = poisoned
+  Function.prototype.bind = poisoned
   equal(
     new Native('en').format(['\ud800', 'B']),
     '\ud800 and B',
     'captured intrinsics'
+  )
+  equal(
+    new Native('en', {type: 'disjunction', style: 'long'}).format(['A', 'B']),
+    'A or B',
+    'captured explicit constructor intrinsics'
   )
   equal(
     formatter.formatToParts(['A', 'B']),
@@ -399,6 +406,7 @@ try {
   WeakMap.prototype.get = originalGet
   WeakMap.prototype.set = originalSet
   Object.setPrototypeOf = originalSetPrototypeOf
+  Function.prototype.bind = originalBind
 }
 root.print(
   stringify({

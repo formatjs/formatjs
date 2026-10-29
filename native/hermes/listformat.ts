@@ -33,8 +33,13 @@
   const BadReceiver = TypeError
   const BadOption = RangeError
   const slots = new WeakMap<object, object>()
-  const getSlot = WeakMap.prototype.get
-  const setSlot = WeakMap.prototype.set
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    receiver: unknown
+  ) => object | undefined
+  const setSlot = WeakMap.prototype.set.bind(slots)
+  const matchers = ['lookup', 'best fit'] as const
+  const types = ['conjunction', 'disjunction', 'unit'] as const
+  const styles = ['long', 'short', 'narrow'] as const
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -62,7 +67,7 @@
   function option(
     options: any,
     name: string,
-    choices: string[],
+    choices: readonly string[],
     fallback: string
   ): string {
     const value = options[name]
@@ -79,7 +84,7 @@
     )
   }
   function slot(receiver: unknown): object {
-    const handle = apply(getSlot, slots, [receiver])
+    const handle = getSlot(receiver)
     if (!handle) throw new BadReceiver('Incompatible Intl.ListFormat receiver')
     return handle
   }
@@ -108,7 +113,7 @@
   }
   function initialize(receiver: object, handle: object | number): ListFormat {
     if (typeof handle === 'number') decoded(handle)
-    apply(setSlot, slots, [receiver, handle])
+    setSlot(receiver, handle as object)
     return receiver
   }
   function property(
@@ -151,30 +156,20 @@
       const receiver = create(
         isObject(requestedPrototype) ? requestedPrototype : prototype
       )
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       // Missing options have no getters; Rust can negotiate and create together.
       if (optionsInput === undefined)
         return initialize(receiver, nativeCreateDefault(strings(requested)))
       const opts = constructorOptions(optionsInput)
-      const matcher = option(
-        opts,
-        'localeMatcher',
-        ['lookup', 'best fit'],
-        'best fit'
-      )
+      const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
       const locale = match(requested, matcher === 'lookup', false) as string
       // Steps 7–14: get/validate type before reading style; Rust selects templates.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L27-L34
-      const type = option(
-        opts,
-        'type',
-        ['conjunction', 'disjunction', 'unit'],
-        'conjunction'
-      )
-      const style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
+      const type = option(opts, 'type', types, 'conjunction')
+      const style = option(opts, 'style', styles, 'long')
       const handle = nativeCreate(
         locale,
-        '{"type":' + quote(type) + ',"style":' + quote(style) + '}'
+        '{"type":"' + type + '","style":"' + style + '"}'
       )
       return initialize(receiver, handle)
     }
@@ -184,11 +179,11 @@
     ): string[] {
       // CanonicalizeLocaleList precedes FilterLocales and its option accesses.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L61-L63
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const matcher = option(
         options(optionsInput),
         'localeMatcher',
-        ['lookup', 'best fit'],
+        matchers,
         'best fit'
       )
       return match(requested, matcher === 'lookup', true)
