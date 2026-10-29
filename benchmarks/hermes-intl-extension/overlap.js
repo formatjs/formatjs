@@ -1,4 +1,13 @@
 ;(function () {
+  function pluralSelection(name, locale, value, options) {
+    var rules = new Intl.PluralRules(locale, options)
+    return [
+      name,
+      function () {
+        return rules.select(value)
+      },
+    ]
+  }
   var cases = [
     [
       'getCanonicalLocales',
@@ -15,12 +24,17 @@
         }
       })(),
     ],
+    pluralSelection('PluralRules.select', 'en', 1),
+    pluralSelection('PluralRules.select(decimal)', 'en', 1.25),
+    pluralSelection('PluralRules.select(string)', 'en', '1.25'),
+    pluralSelection('PluralRules.select(ordinal)', 'en', 21, {type: 'ordinal'}),
+    pluralSelection('PluralRules.select(ru)', 'ru', 22),
     [
-      'PluralRules.select',
+      'PluralRules.selectRange',
       (function () {
-        var x = new Intl.PluralRules('en')
+        var rules = new Intl.PluralRules('en')
         return function () {
-          return x.select(1)
+          return rules.selectRange(1, 2)
         }
       })(),
     ],
@@ -106,6 +120,15 @@
     },
   ])
   cases.push([
+    'PluralRules.new(options)',
+    function () {
+      return new Intl.PluralRules('en', {
+        type: 'ordinal',
+        minimumFractionDigits: 2,
+      })
+    },
+  ])
+  cases.push([
     'ListFormat.new',
     function () {
       return new Intl.ListFormat('en')
@@ -146,6 +169,7 @@
     var name = cases[c][0],
       f = cases[c][1]
     var value = f()
+    if (name.indexOf('PluralRules.new') === 0) value = value.select(1)
     if (name.indexOf('Locale.new') === 0) value = value.toString()
     if (name.indexOf('ListFormat.new(') === 0)
       value = value.resolvedOptions().locale

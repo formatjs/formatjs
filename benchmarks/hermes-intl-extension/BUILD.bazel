@@ -33,3 +33,34 @@ rolldown_bundle(
         "//packages/intl-relativetimeformat:locale-data/en.js",
     ],
 )
+
+genrule(
+    name = "overlap_bytecode",
+    srcs = ["overlap.js"],
+    outs = ["overlap.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath overlap.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
+    name = "magrinj_bootstrap_bytecode",
+    srcs = [
+        "magrinj.LICENSE",
+        "@magrinj_hermes_intl_bootstrap//file",
+    ],
+    outs = [
+        "magrinj-bootstrap.LICENSE",
+        "magrinj-bootstrap.hbc",
+    ],
+    cmd = """
+(
+  echo '(function (module) {'
+  cat $(execpath @magrinj_hermes_intl_bootstrap//file)
+  echo 'return module.exports;'
+  echo '})({})'
+) > $(@D)/magrinj-bootstrap-wrapper.js
+$(execpath @hermes//:hermesc) -O -emit-binary -out $(@D)/magrinj-bootstrap.hbc $(@D)/magrinj-bootstrap-wrapper.js
+cp $(execpath magrinj.LICENSE) $(@D)/magrinj-bootstrap.LICENSE
+""",
+    tools = ["@hermes//:hermesc"],
+)
