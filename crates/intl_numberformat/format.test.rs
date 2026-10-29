@@ -13,6 +13,34 @@ fn options(value: Value) -> Options {
 }
 
 #[test]
+fn standard_decimal_signs_precede_finite_and_special_parts() {
+    let number = registry()
+        .create(
+            &["en".into()],
+            &options(json!({"signDisplay":"always","useGrouping":false})),
+        )
+        .unwrap();
+    for (value, sign, symbol, kind, text) in [
+        ("3", "plusSign", "+", "integer", "3"),
+        ("-3", "minusSign", "-", "integer", "3"),
+        ("0", "plusSign", "+", "integer", "0"),
+        ("-0", "minusSign", "-", "integer", "0"),
+        ("Infinity", "plusSign", "+", "infinity", "∞"),
+        ("-Infinity", "minusSign", "-", "infinity", "∞"),
+        ("NaN", "plusSign", "+", "nan", "NaN"),
+    ] {
+        assert_eq!(
+            serde_json::to_value(number.format_to_parts(value).unwrap()).unwrap(),
+            json!([
+                {"type":sign,"value":symbol},
+                {"type":kind,"value":text}
+            ]),
+            "{value}"
+        );
+    }
+}
+
+#[test]
 fn shared_plural_selection_keeps_visible_fraction_digits() {
     let registry = registry();
     let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
