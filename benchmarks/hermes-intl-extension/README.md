@@ -20,20 +20,20 @@ the median of three complete benchmark invocations:
 
 | Operation                          | Native µs | TypeScript µs | Native speedup |
 | ---------------------------------- | --------: | ------------: | -------------: |
-| `getCanonicalLocales`              |      0.81 |          4.44 |          5.52x |
-| `supportedValuesOf`                |      1.81 |         59.38 |         32.86x |
-| `Locale.maximize`                  |      3.32 |         32.81 |          9.88x |
-| `PluralRules.select`               |      0.63 |        121.88 |        192.00x |
-| `ListFormat.format`                |      1.17 |          3.91 |          3.33x |
-| `ListFormat.formatToParts`         |      6.05 |          5.57 |          0.92x |
-| `DisplayNames.of`                  |      1.51 |          7.71 |          5.10x |
-| `Segmenter.segment`                |      5.86 |          8.89 |          1.52x |
-| `Collator.compare`                 |      1.61 |          3.17 |          1.97x |
-| `NumberFormat.format`              |      2.39 |        343.75 |        143.67x |
-| `RelativeTimeFormat.format`        |      1.09 |        400.00 |        368.18x |
-| `RelativeTimeFormat.formatToParts` |      3.91 |        393.75 |        100.80x |
-| `DateTimeFormat.format`            |      4.10 |       1000.00 |        243.81x |
-| `DurationFormat.format`            |      3.86 |        875.00 |        226.84x |
+| `getCanonicalLocales`              |      0.79 |          4.39 |          5.54x |
+| `supportedValuesOf`                |      1.81 |         58.59 |         32.43x |
+| `Locale.maximize`                  |      3.61 |         33.20 |          9.19x |
+| `PluralRules.select`               |      0.65 |        125.00 |        193.21x |
+| `ListFormat.format`                |      1.14 |          4.35 |          3.83x |
+| `ListFormat.formatToParts`         |      4.54 |          6.05 |          1.33x |
+| `DisplayNames.of`                  |      1.51 |          7.91 |          5.23x |
+| `Segmenter.segment`                |      6.05 |          8.89 |          1.47x |
+| `Collator.compare`                 |      1.61 |          3.22 |          2.00x |
+| `NumberFormat.format`              |      2.44 |        350.00 |        143.36x |
+| `RelativeTimeFormat.format`        |      1.10 |        406.25 |        369.78x |
+| `RelativeTimeFormat.formatToParts` |      3.91 |        406.25 |        104.00x |
+| `DateTimeFormat.format`            |      4.15 |       1012.50 |        243.95x |
+| `DurationFormat.format`            |      3.96 |        887.50 |        224.40x |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -57,8 +57,8 @@ Bazel `-c opt`, magrinj Rust uses its release profile (`opt-level="z"`, LTO):
 | `getCanonicalLocales`                |        0.76 |       1.42 |
 | `Locale.maximize`                    |        3.85 |       2.55 |
 | `PluralRules.select`                 |        0.60 |       0.56 |
-| `ListFormat.format`                  |        1.08 |       0.69 |
-| `ListFormat.formatToParts`           |        4.58 |       4.31 |
+| `ListFormat.format`                  |        1.04 |       0.69 |
+| `ListFormat.formatToParts`           |        3.11 |       4.34 |
 | `RelativeTimeFormat.format`          |        1.07 |       0.95 |
 | `RelativeTimeFormat.formatToParts`   |        3.05 |       2.91 |
 | `RelativeTimeFormat.format(decimal)` |        1.46 |       1.03 |
@@ -121,3 +121,10 @@ surrogate replacement. Eighteen ICU4J differences and 66 ICU4X differences are
 recorded separately; the latter API cannot represent 99 lone-surrogate cases.
 Three alternating English runs show no measurable timing change: formatting
 1.10 µs, parts 4.52 µs. [Raw results](list-context-results.json).
+
+ListFormat parts now use ordinary `{type, value}` records. Private null-prototype
+append descriptors are reused within each call; inherited `get`/`set` cannot
+interfere with input or output arrays. Three alternating optimized runs cut
+parts from 4.64 to 3.11 µs, versus magrinj's 4.34 µs (28% faster). Formatting
+fell from 1.13 to 1.04 µs. Fresh records, descriptors, property order, poisoned
+prototypes and all ICU outputs stay checked. [Raw samples](list-parts-results.json).
