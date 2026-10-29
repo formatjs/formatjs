@@ -190,6 +190,28 @@ for (const options of [
   {numberingSystem: 'a'},
 ])
   throws(() => new Native('en', options), RangeError, 'invalid option')
+for (const numberingSystem of [
+  'latn","style":"narrow',
+  'latn\\arab',
+  'latn\narab',
+  'latn\0arab',
+  'latn\ud800',
+]) {
+  let styleReads = 0
+  throws(
+    () =>
+      new Native('en', {
+        numberingSystem,
+        get style() {
+          styleReads++
+          return 'narrow'
+        },
+      }),
+    RangeError,
+    'invalid numbering system before later options'
+  )
+  equal(styleReads, 0, 'invalid numbering system skips style getter')
+}
 for (const receiver of [undefined, null, {}, Native.prototype])
   throws(
     () => Native.prototype.resolvedOptions.call(receiver),

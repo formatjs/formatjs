@@ -71,21 +71,6 @@
       result += (index ? ',' : '') + quote(values[index])
     return result + ']'
   }
-  function record(
-    values: Record<string, string | undefined>,
-    names: string[]
-  ): string {
-    let result = '{',
-      separator = ''
-    for (let index = 0; index < names.length; index++) {
-      const name = names[index],
-        value = values[name]
-      if (value === undefined) continue
-      result += separator + quote(name) + ':' + quote(value)
-      separator = ','
-    }
-    return result + '}'
-  }
   function options(value: unknown): any {
     if (value === undefined) return create(null)
     if (value === null) throw new BadReceiver('options must not be null')
@@ -184,43 +169,46 @@
           : prototype
       )
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
-      const opts = options(optionsInput),
-        values = create(null)
-      values.localeMatcher = option(
+      const opts = options(optionsInput)
+      const localeMatcher = option(
         opts,
         'localeMatcher',
         ['lookup', 'best fit'],
         'best fit'
       )
-      values.numberingSystem = option(
+      const numberingSystem = option(
         opts,
         'numberingSystem',
         undefined,
         undefined
       )
-      if (
-        values.numberingSystem !== undefined &&
-        !unicodeType(values.numberingSystem)
-      )
+      if (numberingSystem !== undefined && !unicodeType(numberingSystem))
         throw new BadOption('Invalid numberingSystem')
       const resolution = nativeResolve(
         '{"locales":' +
           requested +
-          ',"options":' +
-          record(values, ['localeMatcher', 'numberingSystem']) +
-          '}'
+          ',"options":{"localeMatcher":"' +
+          localeMatcher +
+          '"' +
+          (numberingSystem === undefined
+            ? ''
+            : ',"numberingSystem":"' + numberingSystem + '"') +
+          '}}'
       )
       if (typeof resolution === 'number') decoded(resolution)
       // Fields are fetched after these getters, using the earlier locale/nu.
       // https://tc39.es/ecma402/#sec-intl-relativetimeformat-constructor
-      values.style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
-      values.numeric = option(opts, 'numeric', ['always', 'auto'], 'always')
+      const style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
+      const numeric = option(opts, 'numeric', ['always', 'auto'], 'always')
+      // Enum choices and Unicode type validation exclude JSON escapes.
       const handle = nativeCreate(
         '{"resolution":' +
           resolution +
-          ',"options":' +
-          record(values, ['style', 'numeric']) +
-          '}'
+          ',"options":{"style":"' +
+          style +
+          '","numeric":"' +
+          numeric +
+          '"}}'
       )
       if (typeof handle === 'number') decoded(handle)
       apply(setSlot, slots, [receiver, handle])
