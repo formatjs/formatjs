@@ -245,3 +245,16 @@ temporary mathematical-value record, retaining negative zero and non-finite
 values. Other inputs keep the observable ToPrimitive path. Default metadata and
 selection are compared with TS across the existing 13-locale fixture set;
 source/bytecode, intrinsic-poisoning and test262 guards remain in place.
+
+## Native range bridge
+
+Hermes passes already-coerced endpoint text and BigInt flags directly to Rust;
+category indexes return without JSON. Both endpoint conversions still finish
+before Rust rejects NaN; undefined endpoints fail before either conversion.
+Rust retains parsing, clamping, rounding and range resolution.
+
+The pinned ICU4J oracle emits 224 cardinal ranges over 14 locales, independently
+checked by ICU4C and ICU4X and consumed by both Hermes installer modes. Equal
+formatted endpoints use ECMA-402's single category; the fixture keeps the raw
+ICU range category separately. Ordinal/rounding/BigInt cases remain covered by
+TS differential tests rather than this default-digit cardinal matrix.

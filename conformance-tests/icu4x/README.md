@@ -15,3 +15,11 @@ is normalized. Unlisted differences, changed outputs and unused rows fail.
 ```sh
 bazel test -c opt //conformance-tests/icu4c:intl_relativetimeformat_conformance_test //conformance-tests/icu4j:intl_relativetimeformat_conformance_test //conformance-tests/icu4x:intl_relativetimeformat_conformance_test
 ```
+
+PluralRules includes 720 single-value cardinal/ordinal cases plus 224 cardinal
+ranges across 14 locales, including zh-TW, zh-HK and zh-Hant-HK. The range matrix
+uses default 0–3 fraction digits and covers equal, reversed, negative and decimal
+endpoints. ICU4J generates the fixtures; ICU4C and ICU4X independently verify
+them, and Hermes source/bytecode checks the ECMA results. Raw ICU range categories
+remain separate from ECMA-402's single-value rule for equal formatted endpoints.
+The matrix does not cover ordinal ranges or every rounding configuration.

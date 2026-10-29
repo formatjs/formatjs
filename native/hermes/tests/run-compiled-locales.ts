@@ -15,6 +15,7 @@ function main() {
     ['LOCALE_FORMAT_FIXTURES', '__LOCALE_FORMAT_FIXTURES'],
     ['LIST_FORMAT_FIXTURES', '__LIST_FORMAT_FIXTURES'],
     ['PLURAL_RULES_FIXTURES', '__PLURAL_RULES_FIXTURES'],
+    ['PLURAL_RANGE_FIXTURES', '__PLURAL_RANGE_FIXTURES'],
   ]) {
     const source = process.env[variable]
     if (!source) continue

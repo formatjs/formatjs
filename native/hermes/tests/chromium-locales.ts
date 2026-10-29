@@ -119,4 +119,16 @@ if (api.PluralRules?.polyfilled) {
     equal(new api.PluralRules(locale, {type}).select(Number(value)), expected)
   }
 }
+if (api.PluralRules?.polyfilled) {
+  const rows = (globalThis as any).__PLURAL_RANGE_FIXTURES as string[][]
+  equal(rows.length, 224)
+  for (const [locale, start, end, , expected] of rows) {
+    formatter = `PluralRules range ${locale}/${start}/${end}`
+    equal(
+      new api.PluralRules(locale).selectRange(Number(start), Number(end)),
+      expected
+    )
+  }
+}
+
 print(JSON.stringify({type: 'compiled-locales', kinds, assertions}))

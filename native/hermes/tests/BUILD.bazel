@@ -671,11 +671,13 @@ js_test(
         "//:node_modules/@bazel/runfiles",
         "//conformance-tests/icu4j:list_format_fixtures",
         "//conformance-tests/icu4j:locale_format_fixtures",
+        "//conformance-tests/icu4j:plural_range_fixtures",
         "//conformance-tests/icu4j:plural_rules_fixtures",
         "//native/hermes:extension_bundle_bytecode",
     ],
     entry_point = "run-compiled-locales.ts",
     env = {
+        "PLURAL_RANGE_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_range_fixtures)",
         "PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)",
         "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale_format_fixtures)",
         "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
