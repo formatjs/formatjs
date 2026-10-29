@@ -111,7 +111,9 @@ impl Registry {
                         .chain(parts[2..].iter().copied())
                         .collect::<Vec<_>>()
                         .join("-");
-                    self.insert(scriptless, selected.clone(), false);
+                    let replace = !self.explicit.contains(&scriptless)
+                        && formatjs_intl_locale::matcher::is_likely_script(&scriptless, parts[1]);
+                    self.insert(scriptless, selected.clone(), replace);
                 }
                 parts.pop();
                 self.insert(parts.join("-"), selected.clone(), false);

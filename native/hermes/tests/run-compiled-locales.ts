@@ -1,5 +1,7 @@
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
+import {readFileSync, writeFileSync} from 'node:fs'
+import {join} from 'node:path'
 
 function main() {
   const resolve = (path: string) =>
@@ -8,6 +10,20 @@ function main() {
   const suite = kinds[0]?.startsWith('--suite=')
     ? kinds.shift()!.slice('--suite='.length)
     : 'compiled_locales_suite.js'
+  const fixtures: string[] = []
+  if (process.env.LOCALE_FORMAT_FIXTURES) {
+    const rows = readFileSync(process.env.LOCALE_FORMAT_FIXTURES, 'utf8')
+      .trimEnd()
+      .split('\n')
+      .slice(1)
+      .map(row => row.split('\t'))
+    const path = join(process.env.TEST_TMPDIR!, 'locale-format-fixtures.js')
+    writeFileSync(
+      path,
+      'globalThis.__LOCALE_FORMAT_FIXTURES = ' + JSON.stringify(rows)
+    )
+    fixtures.push(path)
+  }
   for (const mode of ['source', 'bytecode']) {
     const args =
       mode === 'source'
@@ -15,7 +31,7 @@ function main() {
         : [`--extensions=${resolve('native/hermes/extensions.hbc')}`]
     const result = spawnSync(
       resolve('native/hermes/hermes_runner'),
-      [...args, resolve(`native/hermes/tests/${suite}`)],
+      [...args, ...fixtures, resolve(`native/hermes/tests/${suite}`)],
       {encoding: 'utf8', timeout: 60_000}
     )
     if (result.error) throw result.error
