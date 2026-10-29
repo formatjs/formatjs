@@ -11,17 +11,19 @@ function main() {
     ? kinds.shift()!.slice('--suite='.length)
     : 'compiled_locales_suite.js'
   const fixtures: string[] = []
-  if (process.env.LOCALE_FORMAT_FIXTURES) {
-    const rows = readFileSync(process.env.LOCALE_FORMAT_FIXTURES, 'utf8')
+  for (const [variable, name] of [
+    ['LOCALE_FORMAT_FIXTURES', '__LOCALE_FORMAT_FIXTURES'],
+    ['LIST_FORMAT_FIXTURES', '__LIST_FORMAT_FIXTURES'],
+  ]) {
+    const source = process.env[variable]
+    if (!source) continue
+    const rows = readFileSync(source, 'utf8')
       .trimEnd()
       .split('\n')
       .slice(1)
       .map(row => row.split('\t'))
-    const path = join(process.env.TEST_TMPDIR!, 'locale-format-fixtures.js')
-    writeFileSync(
-      path,
-      'globalThis.__LOCALE_FORMAT_FIXTURES = ' + JSON.stringify(rows)
-    )
+    const path = join(process.env.TEST_TMPDIR!, `${variable}.js`)
+    writeFileSync(path, `globalThis.${name} = ` + JSON.stringify(rows))
     fixtures.push(path)
   }
   for (const mode of ['source', 'bytecode']) {

@@ -452,6 +452,14 @@ http_archive(
 
 ######### ICU4J for conformance testing #########
 
+http_archive(
+    name = "icu4c_linux_x86_64",
+    build_file = "//conformance-tests/icu4c:icu.BUILD.bazel",
+    sha256 = "eeb150b28f824f645433ebacbbda8e8bac855bd3d98d0eea2b2e781b07ae1a37",
+    strip_prefix = "icu/usr/local",
+    urls = ["https://github.com/unicode-org/icu/releases/download/release-78.1/icu4c-78.1-Ubuntu22.04-x64.tgz"],
+)
+
 http_file(
     name = "icu4j_jar",
     downloaded_file_path = "icu4j-78.1.jar",

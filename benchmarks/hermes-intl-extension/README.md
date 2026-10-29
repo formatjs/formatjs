@@ -112,3 +112,12 @@ case from 8.30 to 6.10 µs (26%), `zh-HK` from 7.69 to 5.13 µs (33%), and
 operations and the magrinj comparison. An isolated Rust stage probe measured
 constructor cost at 1.03 µs before and 0.34 µs after; properties JSON cost fell
 from 1.38 to 0.35 µs.
+
+The [three-oracle list matrix](../../conformance-tests/icu4c/README.md) exposed
+108 output differences against the selected ICU4C behavior in the previous
+FormatJS build; contextual Spanish/Hebrew joins reduce that count to zero over
+2,871 inputs. Magrinj has 222 differences in the same matrix, including lone
+surrogate replacement. Eighteen ICU4J differences and 66 ICU4X differences are
+recorded separately; the latter API cannot represent 99 lone-surrogate cases.
+Three alternating English runs show no measurable timing change: formatting
+1.10 µs, parts 4.52 µs. [Raw results](list-context-results.json).

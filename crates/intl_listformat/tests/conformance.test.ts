@@ -39,6 +39,30 @@ it('matches every CLDR locale, type and style against the TS implementation', ()
     ['\ud800\u0000', '\udc00', '😀'],
     ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
   ]
+  const oracleRows = readFileSync(
+    resolve('conformance-tests/icu4j/list-format-fixtures.tsv'),
+    'utf8'
+  )
+    .trimEnd()
+    .split('\n')
+    .slice(1)
+  const inputs = new Set<string>()
+  for (const row of oracleRows) inputs.add(row.split('\t')[3])
+  for (const encoded of inputs) {
+    lists.push(
+      encoded === '-'
+        ? []
+        : encoded.split(',').map(value => {
+            if (value === '_') return ''
+            let text = ''
+            for (let index = 0; index < value.length; index += 4)
+              text += String.fromCharCode(
+                parseInt(value.slice(index, index + 4), 16)
+              )
+            return text
+          })
+    )
+  }
   const records = files.flatMap(file => {
     const pack = readFileSync(join(directory, file), 'utf8')
     const {locale} = JSON.parse(pack) as {locale: string}

@@ -1,0 +1,23 @@
+# gazelle:ignore
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+
+exports_files(["icu.BUILD.bazel"])
+
+cc_test(
+    name = "intl_locale_formatting_conformance_test",
+    size = "small",
+    srcs = ["locale_formatting.cc"],
+    data = [
+        "//conformance-tests/icu4j:list_format_fixtures",
+        "//conformance-tests/icu4j:locale-format-fixtures.tsv",
+    ],
+    env = {
+        "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
+        "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-format-fixtures.tsv)",
+    },
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)

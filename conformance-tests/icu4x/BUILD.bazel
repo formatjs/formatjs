@@ -1,0 +1,21 @@
+# gazelle:ignore
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+formatjs_rust_test(
+    name = "intl_listformat_conformance_test",
+    srcs = ["listformat.test.rs"],
+    crate_name = "icu4x_listformat_conformance_test",
+    data = [
+        "list-format-icu-differences.tsv",
+        "//conformance-tests/icu4j:list_format_fixtures",
+    ],
+    edition = "2024",
+    env = {
+        "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
+        "ICU4X_LIST_DIFFERENCES": "$(rootpath list-format-icu-differences.tsv)",
+    },
+    deps = [
+        "@crates//:icu_list-2.3.0",
+        "@crates//:icu_locale",
+    ],
+)

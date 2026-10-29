@@ -51,6 +51,7 @@ rust_library(
         "//crates/intl_data",
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",
+        "@crates//:icu_properties-2.3.0",
         "@crates//:serde",
         "@crates//:serde_json",
     ],
@@ -60,6 +61,7 @@ COMPILED_DEPS = [
     "//crates/intl_data",
     "//crates/intl_getcanonicallocales",
     "//crates/intl_locale",
+    "@crates//:icu_properties-2.3.0",
     "@crates//:serde",
     "@crates//:serde_json",
 ]

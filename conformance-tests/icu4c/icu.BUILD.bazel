@@ -1,0 +1,21 @@
+load("@rules_cc//cc:cc_import.bzl", "cc_import")
+
+cc_import(
+    name = "data",
+    shared_library = "lib/libicudata.so.78",
+)
+
+cc_import(
+    name = "common",
+    hdrs = glob(["include/unicode/*.h"]),
+    includes = ["include"],
+    shared_library = "lib/libicuuc.so.78",
+    deps = [":data"],
+)
+
+cc_import(
+    name = "icu",
+    shared_library = "lib/libicui18n.so.78",
+    visibility = ["//visibility:public"],
+    deps = [":common"],
+)
