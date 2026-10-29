@@ -68,47 +68,46 @@ within paired runs using the same clock. Clock resolution checks are retained.
 Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
-Three alternating optimized runs on 2026-10-29, including the optimizations
-below, direct captured-intrinsic calls, Rust part-buffer reuse and direct parts
-arguments in RTF.
+Three alternating optimized runs on 2026-10-29, pinned to CPU 0 on every host,
+including direct PluralRules range arguments and the earlier optimizations.
 All hosts use high-resolution `__now()`.
-[Raw results, controls and profiles](relative-parts-input-results.json).
+[Raw results, controls and profiles](plural-range-input-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.07 |       1.11 |
-| `Locale.maximize`                    |        0.26 |       2.12 |
-| `PluralRules.select`                 |        0.50 |       0.46 |
+| `getCanonicalLocales`                |        0.07 |       1.10 |
+| `Locale.maximize`                    |        0.27 |       2.10 |
+| `PluralRules.select`                 |        0.51 |       0.45 |
 | `PluralRules.select(decimal)`        |        0.58 |       0.46 |
 | `PluralRules.select(string)`         |        0.68 |       0.92 |
-| `PluralRules.select(ordinal)`        |        0.54 |       0.47 |
+| `PluralRules.select(ordinal)`        |        0.53 |       0.46 |
 | `PluralRules.select(ru)`             |        0.55 |       0.50 |
-| `PluralRules.selectRange`            |        2.17 |       0.89 |
-| `ListFormat.format`                  |        1.09 |       0.53 |
-| `ListFormat.formatToParts`           |        3.30 |       3.25 |
-| `RelativeTimeFormat.format`          |        0.97 |       0.72 |
-| `RelativeTimeFormat.formatToParts`   |        1.74 |       2.18 |
-| `RelativeTimeFormat.format(decimal)` |        1.30 |       0.80 |
+| `PluralRules.selectRange`            |        1.07 |       0.89 |
+| `ListFormat.format`                  |        1.08 |       0.53 |
+| `ListFormat.formatToParts`           |        3.23 |       3.25 |
+| `RelativeTimeFormat.format`          |        0.97 |       0.71 |
+| `RelativeTimeFormat.formatToParts`   |        1.71 |       2.16 |
+| `RelativeTimeFormat.format(decimal)` |        1.30 |       0.79 |
 | `RelativeTimeFormat.format(auto)`    |        0.46 |       0.60 |
 | `Locale.new`                         |        0.35 |       0.93 |
-| `Locale.new(options)`                |        1.76 |       4.88 |
-| `Locale.new(zh-HK)`                  |        0.36 |       1.33 |
-| `Locale.new.language`                |        0.43 |       1.25 |
-| `Locale.new.toString`                |        0.40 |       0.99 |
+| `Locale.new(options)`                |        1.80 |       4.89 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.34 |
+| `Locale.new.language`                |        0.43 |       1.26 |
+| `Locale.new.toString`                |        0.40 |       1.00 |
 | `Locale.language`                    |        0.08 |       0.09 |
 | `Locale.new(Locale)`                 |        0.32 |       0.95 |
-| `Locale.new(diverse)`                |        4.14 |       1.43 |
-| `Locale.new(long)`                   |        5.91 |       3.77 |
-| `PluralRules.new`                    |        2.14 |       4.35 |
-| `PluralRules.new(options)`           |        5.47 |       4.75 |
-| `ListFormat.new`                     |        1.50 |       2.68 |
-| `ListFormat.new(default)`            |        1.18 |       2.47 |
-| `ListFormat.new(array)`              |        1.74 |       2.81 |
-| `ListFormat.new(options)`            |        2.72 |       2.59 |
-| `ListFormat.new(fallback)`           |        2.24 |       3.44 |
-| `ListFormat.new(unsupported)`        |        2.33 |       3.58 |
-| `RelativeTimeFormat.new`             |        4.41 |       4.60 |
-| `RelativeTimeFormat.new(fallback)`   |        5.24 |       5.34 |
+| `Locale.new(diverse)`                |        2.75 |       1.43 |
+| `Locale.new(long)`                   |        4.52 |       3.79 |
+| `PluralRules.new`                    |        2.17 |       4.57 |
+| `PluralRules.new(options)`           |        5.86 |       5.04 |
+| `ListFormat.new`                     |        1.31 |       2.80 |
+| `ListFormat.new(default)`            |        1.03 |       2.56 |
+| `ListFormat.new(array)`              |        1.65 |       2.80 |
+| `ListFormat.new(options)`            |        2.91 |       2.78 |
+| `ListFormat.new(fallback)`           |        2.13 |       3.63 |
+| `ListFormat.new(unsupported)`        |        2.24 |       3.78 |
+| `RelativeTimeFormat.new`             |        4.20 |       4.66 |
+| `RelativeTimeFormat.new(fallback)`   |        5.26 |       5.60 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -444,3 +443,26 @@ reverses that result: 2.97 to 2.82 µs; long Locale is 4.47 to 4.40 µs.
 Locale sources are unchanged. All trials remain recorded; timing-context
 sensitivity is unresolved, so these results do not establish absence of a
 Locale regression across environments.
+
+PluralRules ranges now pass mathematical endpoint text and BigInt flags directly
+to Rust and return a category index. JS still brands the receiver, rejects either
+undefined endpoint before conversion, then coerces start and end in order. Rust
+still parses, clamps Number inputs, rounds and rejects NaN after both conversions.
+
+Three complete optimized comparisons pinned to CPU 0 reduce range selection
+from 2.178 to 1.067 µs (51%); magrinj is 0.892 µs. Other single-value cases move
+by roughly 1% or less. All 342 output checks pass. Fresh paired million-call
+profiles drop from 2,030 to 1,106 samples; per-call JSON request/result work is
+gone. The remaining profile concentrates in the native host call (74%) and
+`mathematical` (11%). Samples aggregate C++ and Rust.
+
+CPU affinity differs from historical unpinned tables. Compare changes within
+this paired run; all raw cases and isolated Locale controls remain recorded.
+The diverse Locale control is 2.86 versus 2.75 µs and long Locale 4.52 versus
+4.53 µs. Neither Locale implementation changed.
+
+Conformance adds 224 cardinal ranges over 14 locales. ICU4J fixtures are checked
+independently by ICU4C and ICU4X, then consumed by actual Hermes source/bytecode
+installers. Eighteen raw differences remain explicit, including equal endpoints
+and missing-pair fallback; no outputs are normalized. Default-digit cardinal
+coverage does not replace the broader TS ordinal/rounding/BigInt differential.

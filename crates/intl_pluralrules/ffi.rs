@@ -357,16 +357,52 @@ pub unsafe extern "C" fn formatjs_plural_select(
         let category = unsafe { &(*handle).0 }
             .select_mathematical(value, bigint)
             .map_err(status)?;
-        let index = match category {
-            "zero" => 0,
-            "one" => 1,
-            "two" => 2,
-            "few" => 3,
-            "many" => 4,
-            "other" => 5,
-            _ => return Err(3),
-        };
-        unsafe { out.write(index) };
+        unsafe { out.write(category_index(category)?) };
+        Ok(())
+    })
+}
+
+fn category_index(category: &str) -> Result<u8, i32> {
+    match category {
+        "zero" => Ok(0),
+        "one" => Ok(1),
+        "two" => Ok(2),
+        "few" => Ok(3),
+        "many" => Ok(4),
+        "other" => Ok(5),
+        _ => Err(3),
+    }
+}
+
+/// Select a range category from already coerced mathematical text.
+/// Category order: zero, one, two, few, many, other. Errors leave out=255.
+/// # Safety
+/// Handle live; endpoint bytes readable for their lengths; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_select_range(
+    handle: *const PluralHandle,
+    start: *const u8,
+    start_len: usize,
+    start_bigint: bool,
+    end: *const u8,
+    end_len: usize,
+    end_bigint: bool,
+    out: *mut u8,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(255) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let start = unsafe { input(start, start_len)? };
+        let end = unsafe { input(end, end_len)? };
+        let category = unsafe { &(*handle).0 }
+            .select_range_mathematical(start, end, start_bigint, end_bigint)
+            .map_err(status)?;
+        unsafe { out.write(category_index(category)?) };
         Ok(())
     })
 }

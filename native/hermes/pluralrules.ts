@@ -6,6 +6,13 @@
   nativeCreate: (locale: string, options: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeSelect: (handle: object, value: string, bigint: boolean) => number
+  nativeSelectRange: (
+    handle: object,
+    start: string,
+    end: string,
+    startBigint: boolean,
+    endBigint: boolean
+  ) => number
 }) {
   'use strict'
   const {
@@ -15,6 +22,7 @@
     nativeCreate,
     nativeQuery,
     nativeSelect,
+    nativeSelectRange,
   } = native
   const apply = Reflect.apply
   const create = Object.create
@@ -373,20 +381,15 @@
         throw new BadReceiver('Range endpoints must be defined')
       const first = mathematical(start),
         last = mathematical(end)
-      return decoded(
-        nativeQuery(
-          handle,
-          '{"method":"selectRange","mathematical":true,"start":' +
-            quote(first.text) +
-            ',"end":' +
-            quote(last.text) +
-            ',"startBigint":' +
-            first.bigint +
-            ',"endBigint":' +
-            last.bigint +
-            '}'
-        )
+      const result = nativeSelectRange(
+        handle,
+        first.text,
+        last.text,
+        first.bigint,
+        last.bigint
       )
+      if (result < 0) decoded(-result)
+      return categories[result]
     },
     resolvedOptions(this: unknown): object {
       // resolvedOptions 1–6: fresh ordinary object, fresh category array, and

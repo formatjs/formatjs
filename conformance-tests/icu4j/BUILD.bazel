@@ -143,3 +143,12 @@ genrule(
     tools = [":intl_pluralrules_oracle"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "plural_range_fixtures",
+    testonly = True,
+    outs = ["plural-range-fixtures.tsv"],
+    cmd = "$(execpath :intl_pluralrules_oracle) $@ --ranges",
+    tools = [":intl_pluralrules_oracle"],
+    visibility = ["//visibility:public"],
+)

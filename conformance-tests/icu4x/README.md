@@ -15,3 +15,21 @@ is normalized. Unlisted differences, changed outputs and unused rows fail.
 ```sh
 bazel test -c opt //conformance-tests/icu4c:intl_relativetimeformat_conformance_test //conformance-tests/icu4j:intl_relativetimeformat_conformance_test //conformance-tests/icu4x:intl_relativetimeformat_conformance_test
 ```
+
+PluralRules includes 720 single-value cardinal/ordinal cases plus 224 cardinal
+ranges across 14 locales, including zh-TW, zh-HK and zh-Hant-HK. The range matrix
+uses default 0–3 fraction digits and covers equal, reversed, negative and decimal
+endpoints. ICU4J generates the fixtures; ICU4C and ICU4X independently verify
+them, and Hermes source/bytecode checks the ECMA results. Raw ICU range categories
+remain separate from ECMA-402's single-value rule for equal formatted endpoints.
+The matrix does not cover ordinal ranges or every rounding configuration.
+
+[18 exact range differences](plural-range-icu-differences.tsv) retain
+ICU4C/J raw and identity-adjusted results, ICU4X raw results, and preferred ECMA
+results. Eight concern equal endpoints before identity handling. Ten reflect
+missing range-pair fallback: FormatJS and ICU4X use the end category, as specified
+by [CLDR](https://unicode.org/reports/tr35/tr35-numbers.html#Plural_Ranges);
+ICU4C/J use `other`. Changed outputs, unknown differences and unused rows fail.
+
+CLDR leaves negative and non-increasing ranges undefined; those cases pin each
+implementation's choice rather than establish a universal required category.
