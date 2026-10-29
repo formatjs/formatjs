@@ -133,12 +133,12 @@ impl Collator {
         let request = index
             .map(|mut index| {
                 if options.locale_matcher == LocaleMatcher::BestFit {
-                    // TS BestFitMatcher's base-tag map retains the last Unicode
+                    // Keep the first matching request's Unicode
                     // extension when multiple requests share a base tag.
                     let base = matcher::without_unicode_extension(&requested[index]);
                     index = requested
                         .iter()
-                        .rposition(|tag| matcher::without_unicode_extension(tag) == base)
+                        .position(|tag| matcher::without_unicode_extension(tag) == base)
                         .unwrap_or(index);
                 }
                 Locale::new(&requested[index], &Default::default())

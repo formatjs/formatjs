@@ -102,3 +102,11 @@ Five selection differences in the recorded workloads:
 - `full_unseen`: distance `en`; ICU4X fallback `und`.
 
 These timings do not establish an equivalent ICU4X distance-matching result.
+
+## Native adapter
+
+`native-adapter-results.json` records three alternating warm samples against
+main's native matcher (`f6103eb58`) on an Apple M4 Max. Exact matching cost
+increased from 62–712 ns to 88–1,997 ns in these cases. Regional and fuzzy
+matches fell from about 164 µs to 0.65 µs. Fuzzy results can differ because
+the new matcher follows ICU distances.

@@ -103,7 +103,7 @@ impl Renderer {
                     let base = matcher::without_unicode_extension(&requested[index]);
                     &requested[requested
                         .iter()
-                        .rposition(|tag| matcher::without_unicode_extension(tag) == base)
+                        .position(|tag| matcher::without_unicode_extension(tag) == base)
                         .unwrap_or(index)]
                 }
             })

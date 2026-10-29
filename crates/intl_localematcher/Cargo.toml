@@ -6,7 +6,7 @@ authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ICU-compatible CLDR locale matching"
 license = "BSD-3-Clause"
 repository = "https://github.com/formatjs/formatjs"
-publish = false
+publish = true
 
 [dependencies]
 icu_locale = "2.3.1"

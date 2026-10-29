@@ -102,3 +102,52 @@ fn winning_request_index_keeps_the_matching_unicode_extension() {
     assert_eq!(matched, Some((1, "en".into())));
     assert_eq!(best_fit(&available, &requested).unwrap(), Some("en".into()));
 }
+
+#[test]
+fn shared_matcher_keeps_icu_priority_and_variant_ties() {
+    for (available, requested, expected) in [
+        (vec!["en", "sv"], vec!["en-GB", "sv"], Some("en")),
+        (vec!["be-tarask", "be"], vec!["be"], Some("be-tarask")),
+        (vec!["en-US", "en"], vec!["en"], Some("en")),
+        (vec!["gsw"], vec!["de"], None),
+        (vec!["en", "und"], vec!["und-u-nu-arab"], Some("und")),
+        (vec!["zh"], vec!["ug"], None),
+        (
+            vec!["en-XA", "en-psaccent"],
+            vec!["en-psaccent"],
+            Some("en-psaccent"),
+        ),
+    ] {
+        let available = tags(&available);
+        let requested = tags(&requested);
+        for _ in 0..2 {
+            assert_eq!(
+                best_fit(&available, &requested).unwrap().as_deref(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn supported_cache_uses_contents_after_same_length_replacement() {
+    let mut available = tags(&["fr", "en-GB"]);
+    let requested = tags(&["en-AU"]);
+    assert_eq!(
+        best_fit(&available, &requested).unwrap().as_deref(),
+        Some("en-GB")
+    );
+    available[1] = "en-US".into();
+    assert_eq!(
+        best_fit(&available, &requested).unwrap().as_deref(),
+        Some("en-US")
+    );
+}
+
+#[test]
+fn accepts_unknown_eight_letter_language() {
+    assert_eq!(
+        best_fit(&tags(&["en"]), &tags(&["fullwide"])).unwrap(),
+        None
+    );
+}

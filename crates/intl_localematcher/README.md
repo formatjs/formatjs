@@ -2,8 +2,8 @@
 
 Standalone CLDR best-fit matching with ICU4C/J 78 defaults. ICU4X supplies locale
 parsing, canonicalization, and likely-subtag expansion. Distance tables share the
-TypeScript matcher's CLDR generator. This unpublished crate is independent of
-`intl_locale`'s existing native matcher and `formatjs_intl` catalog fallback.
+TypeScript matcher's CLDR generator. The native `intl_locale` matcher shares this implementation.
+`formatjs_intl` catalog fallback remains independent.
 
 ```rust
 use formatjs_intl_localematcher::LocaleMatcher;

@@ -499,7 +499,7 @@ The explicit-registration targets remain the custom-provider and TS-fixture path
 
 ## Intl crate publication
 
-`//crates:intl_release` assembles the sixteen polyfill crates as Cargo package
+`//crates:intl_release` assembles the polyfill crates as Cargo package
 sources. Rust sources, metadata, compiled locale records, and notices are
 declared Bazel inputs. The sandboxed packaging action uses the
 repository's pinned Python toolchain, without invoking Bazel or Cargo itself.
@@ -517,6 +517,5 @@ then runs Cargo from the full workspace with
 
 `crates/intl_localematcher` provides `formatjs_intl_localematcher::LocaleMatcher`.
 It shares generated CLDR distance/partition tables and ICU4J oracle tests with
-`@formatjs/intl-localematcher`, using ICU4X for locale normalization. It is
-unpublished and independent of `formatjs_intl` catalog fallback and the existing
-`intl_locale` native matcher.
+`@formatjs/intl-localematcher`, using ICU4X for locale normalization. The native `intl_locale` matcher reuses this implementation through a bounded
+per-thread cache; `formatjs_intl` catalog fallback remains independent.

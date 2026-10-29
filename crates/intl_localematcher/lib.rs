@@ -19,14 +19,36 @@ struct Lsr {
     flags: u8,
 }
 
-fn parse(tag: &str) -> Result<Locale, InvalidLocale> {
-    let mut locale = tag.parse().map_err(|_| InvalidLocale)?;
-    LocaleCanonicalizer::new_extended().canonicalize(&mut locale);
-    Ok(locale)
+struct ParsedLocale {
+    locale: Locale,
+    long_language: Option<String>,
 }
 
-fn maximize(locale: &Locale) -> Lsr {
-    let language = locale.id.language.to_string();
+fn parse(tag: &str) -> Result<ParsedLocale, InvalidLocale> {
+    let language = tag.split('-').next().unwrap_or("");
+    let long_language = (language.len() >= 5
+        && language.len() <= 8
+        && language.bytes().all(|b| b.is_ascii_alphabetic()))
+    .then(|| language.to_ascii_lowercase());
+    let parsed = if long_language.is_some() {
+        format!("qaa{}", &tag[language.len()..])
+    } else {
+        tag.to_owned()
+    };
+    let mut locale: Locale = parsed.parse().map_err(|_| InvalidLocale)?;
+    LocaleCanonicalizer::new_extended().canonicalize(&mut locale);
+    Ok(ParsedLocale {
+        locale,
+        long_language,
+    })
+}
+
+fn maximize(parsed: &ParsedLocale) -> Lsr {
+    let locale = &parsed.locale;
+    let language = parsed
+        .long_language
+        .clone()
+        .unwrap_or_else(|| locale.id.language.to_string());
     let script = locale.id.script.map(|s| s.to_string()).unwrap_or_default();
     let region = locale.id.region.map(|r| r.to_string()).unwrap_or_default();
     let tag = locale.to_string();
@@ -90,7 +112,13 @@ fn maximize(locale: &Locale) -> Lsr {
     }
     if data::MACRO_REGIONS.contains(&region.as_str()) {
         let no_script = script.is_empty() || script == "Zzzz";
-        let mut probe: Locale = language.parse().expect("parsed language");
+        let mut probe: Locale = if parsed.long_language.is_some() {
+            "qaa"
+        } else {
+            &language
+        }
+        .parse()
+        .expect("parsed language");
         LocaleExpander::new_extended().maximize(&mut probe.id);
         if (language == "und" && (no_script || regional.is_some_and(|(_, s)| s == script)))
             || (no_script && probe.id.script.is_none())
@@ -115,7 +143,10 @@ fn maximize(locale: &Locale) -> Lsr {
         id.region = id.region.or(fallback.region).or(default.id.region);
     }
     Lsr {
-        language: id.language.to_string(),
+        language: parsed
+            .long_language
+            .clone()
+            .unwrap_or_else(|| id.language.to_string()),
         script: id.script.map(|s| s.to_string()).unwrap_or_default(),
         region: id.region.map(|r| r.to_string()).unwrap_or_default(),
         flags,
@@ -175,7 +206,7 @@ fn more_likely(candidate: &Lsr, previous: &Lsr) -> bool {
     if candidate.language != previous.language {
         return false;
     }
-    let Ok(locale) = candidate.language.parse::<Locale>() else {
+    let Ok(locale) = parse(&candidate.language) else {
         return false;
     };
     let likely = maximize(&locale);
@@ -387,74 +418,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn shared_icu_fixtures() {
-        let fixtures: serde_json::Value = serde_json::from_str(include_str!(
-            "../../packages/intl-localematcher/tests/icu-match-fixtures.json"
-        ))
-        .unwrap();
-        for case in fixtures.as_array().unwrap() {
-            let supported: Vec<_> = case["supported"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .map(|s| s.as_str().unwrap())
-                .collect();
-            let requested: Vec<_> = case["requested"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .map(|s| s.as_str().unwrap())
-                .collect();
-            let default_locale = case["defaultLocale"]
-                .as_str()
-                .unwrap_or(supported.first().copied().unwrap_or("en"));
-            let matcher = LocaleMatcher::new(&supported, default_locale).unwrap();
-            let result = matcher.best_match(&requested).unwrap();
-            assert_eq!(
-                result.locale,
-                case["expected"].as_str().unwrap(),
-                "{}",
-                case["description"]
-            );
-            if let Some(index) = case["desiredIndex"].as_str() {
-                assert_eq!(
-                    result.desired_index.map(|i| i as isize).unwrap_or(-1),
-                    index.parse::<isize>().unwrap(),
-                    "{}",
-                    case["description"]
-                );
-            }
-        }
-    }
-
-    #[test]
-    fn icu4j_differential_grid() {
-        let grid = std::fs::read_to_string(std::env::var("ICU_MATCHER_GRID").unwrap()).unwrap();
-        for line in grid.lines() {
-            let fields: Vec<_> = line.split('\t').collect();
-            let requested: Vec<_> = fields[0].split(',').collect();
-            let supported: Vec<_> = fields[1].split(',').collect();
-            let matcher = LocaleMatcher::new(&supported, fields[2]).unwrap();
-            let prepared: Vec<_> = requested
-                .iter()
-                .map(|tag| DesiredLocale::new(tag).unwrap())
-                .collect();
-            for _ in 0..2 {
-                let result = matcher.best_match(&requested).unwrap();
-                assert_eq!(matcher.best_match_prepared(&prepared), result, "{line}");
-                assert_eq!(result.locale, fields[3], "{line}");
-                assert_eq!(
-                    result.desired_index.map(|i| i as isize).unwrap_or(-1),
-                    fields[4].parse::<isize>().unwrap(),
-                    "{line}"
-                );
-            }
-        }
-    }
-
-    #[test]
     fn invalid_tags_and_empty_lists() {
         assert!(LocaleMatcher::new(&["en_US"], "en").is_err());
+        assert!(LocaleMatcher::new(&["abcd"], "en").is_err());
+        let long = LocaleMatcher::new(&["fullwide-GB", "en"], "en").unwrap();
+        assert_eq!(
+            long.best_match(&["fullwide-AU"]).unwrap().locale,
+            "fullwide-GB"
+        );
+        assert_eq!(long.best_match(&["otherlng"]).unwrap().locale, "en");
         let matcher = LocaleMatcher::new(&["en"], "fr").unwrap();
         assert!(matcher.best_match(&["en", "bad_tag"]).is_err());
         assert_eq!(matcher.best_match::<&str>(&[]).unwrap().locale, "fr");

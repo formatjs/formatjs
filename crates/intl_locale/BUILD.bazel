@@ -45,6 +45,7 @@ rust_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_getcanonicallocales",
+        "//crates/intl_localematcher",
         "@crates//:serde",
         "@crates//:serde_json",
     ],
