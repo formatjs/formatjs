@@ -44,6 +44,14 @@ genrule(
 )
 
 genrule(
+    name = "canonical_tag_control_bytecode",
+    srcs = ["canonical-tag-control.js"],
+    outs = ["canonical-tag-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath canonical-tag-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
     name = "magrinj_bootstrap_bytecode",
     srcs = [
         "magrinj.LICENSE",

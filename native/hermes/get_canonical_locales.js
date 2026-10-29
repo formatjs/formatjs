@@ -23,6 +23,30 @@
     })
   }
   var localeToString = intl.Locale && intl.Locale.prototype.toString
+  var tagCache = new Map()
+  var cachedTag = Map.prototype.get.bind(tagCache)
+  var storeTag = Map.prototype.set.bind(tagCache)
+  var clearTags = Map.prototype.clear.bind(tagCache)
+  var cacheSize = 0
+
+  function canonicalTag(tag) {
+    var shortTag = tag.length <= 128
+    var result = shortTag ? cachedTag(tag) : undefined
+    if (result === undefined) {
+      result = canonicalize(tag)
+      // Compiled canonicalization data is immutable. Retain only short,
+      // successful string results; coercion and public arrays remain per-call.
+      if (shortTag && result !== null && result.length <= 128) {
+        if (cacheSize === 64) {
+          clearTags()
+          cacheSize = 0
+        }
+        storeTag(tag, result)
+        cacheSize++
+      }
+    }
+    return result
+  }
 
   // CanonicalizeLocaleList 3, 7.c.iii–iii.1: the trusted Locale intrinsic
   // supplies its brand and tag without reading overridden instance properties.
@@ -98,7 +122,7 @@
         var tag = localeString(value)
         if (tag === undefined) tag = toString(value)
         // CanonicalizeLocaleList 7.c.v–vi: Rust validates, then canonicalizes.
-        var canonical = canonicalize(tag)
+        var canonical = canonicalTag(tag)
         if (canonical === null)
           throw new RangeErrorIntrinsic('Invalid language tag: ' + tag)
         // CanonicalizeLocaleList 7.c.vii: append only the first canonical tag.

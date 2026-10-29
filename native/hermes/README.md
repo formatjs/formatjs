@@ -24,8 +24,10 @@ macOS arm64; the Android SDK ships arm64 and x86_64 archives. Consumers compile
 its C++ adapter against their matching JSI headers.
 
 Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
-buffer after copying it into a JSI string. Canonicalization retains no runtime
-cache. Locale instances use owned Rust handles managed by JSI garbage collection.
+buffer after copying it into a JSI string. The JS factory retains at most 64
+validated tag strings, with input/output lengths at most 128 UTF-16 units.
+Coercion and list traversal still run every call; public result arrays remain
+fresh. Locale instances use owned Rust handles managed by JSI garbage collection.
 
 ## Locale, supported values and plural rules
 

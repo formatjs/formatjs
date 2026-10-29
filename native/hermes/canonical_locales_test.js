@@ -29,6 +29,46 @@
   equal(canonicalize({0: 'en', 2: 'fr', length: 3.9}), ['en', 'fr'])
   equal(canonicalize(Object.create({0: 'iw', length: 1})), ['he'])
   equal(canonicalize(12), [])
+  var mutableTag = 'EN'
+  var conversions = 0
+  var mutable = {
+    toString: function () {
+      conversions++
+      return mutableTag
+    },
+  }
+  equal(canonicalize([mutable, mutable]), ['en'])
+  mutableTag = 'FR'
+  equal(canonicalize([mutable]), ['fr'])
+  equal(conversions, 3)
+  var changed = canonicalize('EN')
+  changed[0] = 'fr'
+  changed.push('de')
+  equal(canonicalize('EN'), ['en'])
+  throws(RangeError, function () {
+    canonicalize(['EN', 'en_US'])
+  })
+  var mapGet = Map.prototype.get
+  var mapSet = Map.prototype.set
+  var mapClear = Map.prototype.clear
+  Map.prototype.get =
+    Map.prototype.set =
+    Map.prototype.clear =
+      function () {
+        throw new Error('replacement Map method called')
+      }
+  try {
+    equal(canonicalize('EN'), ['en'])
+    for (var variant = 0; variant < 150; variant++) {
+      var diverseTag = 'en-x-n' + variant
+      equal(canonicalize(diverseTag), [diverseTag])
+    }
+    equal(canonicalize('EN'), ['en'])
+  } finally {
+    Map.prototype.get = mapGet
+    Map.prototype.set = mapSet
+    Map.prototype.clear = mapClear
+  }
   equal(
     canonicalize([
       {

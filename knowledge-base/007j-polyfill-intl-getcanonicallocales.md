@@ -27,7 +27,10 @@ consumers, so this target alone is not a binary-size measurement.
 `native/hermes` exposes the Rust library through a C ABI and a C++ JSI
 installer. The JS wrapper owns observable locale-list coercion, property
 access, exceptions, and ordered de-duplication. Rust owns tag validation and
-canonicalization. Install before application scripts. The adapter uses public
+canonicalization. The JS factory caches at most 64 successful short tag strings
+against immutable compiled canonicalization data. Input coercion, full list
+traversal and fresh result arrays remain per-call. Long strings bypass admission.
+Install before application scripts. The adapter uses public
 JSI APIs, with no Hermes VM changes.
 
 ### Standalone SDK and extension installation
