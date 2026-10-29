@@ -27,20 +27,23 @@
   const parse = JSON.parse,
     stringify = JSON.stringify,
     charCodeAt = String.prototype.charCodeAt
-  const getSlot = WeakMap.prototype.get,
-    setSlot = WeakMap.prototype.set
   const SetConstructor = Set,
     setAdd = Set.prototype.add
   const BadReceiver = TypeError,
     BadOption = RangeError
   const slots = new WeakMap<object, object>()
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    receiver: unknown
+  ) => object | undefined
+  const setSlot = WeakMap.prototype.set.bind(slots)
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
-  const canonicalize = intl.getCanonicalLocales
-  if (typeof canonicalize !== 'function')
+  const canonicalizer = intl.getCanonicalLocales
+  if (typeof canonicalizer !== 'function')
     throw new BadReceiver(
       'Install Intl.getCanonicalLocales before RelativeTimeFormat'
     )
+  const canonicalize = canonicalizer.bind(intl)
   function decoded(value: string | number): any {
     if (typeof value === 'number')
       throw new BadOption(
@@ -112,7 +115,7 @@
     return length >= 3 && length <= 8
   }
   function slot(receiver: unknown): object {
-    const handle = apply(getSlot, slots, [receiver])
+    const handle = getSlot(receiver)
     if (!handle)
       throw new BadReceiver('Incompatible Intl.RelativeTimeFormat receiver')
     return handle
@@ -168,7 +171,7 @@
           ? requestedPrototype
           : prototype
       )
-      const requested = tags(apply(canonicalize, intl, [locales]) as string[])
+      const requested = tags(canonicalize(locales) as string[])
       const opts = options(optionsInput)
       const localeMatcher = option(
         opts,
@@ -211,14 +214,14 @@
           '"}}'
       )
       if (typeof handle === 'number') decoded(handle)
-      apply(setSlot, slots, [receiver, handle])
+      setSlot(receiver, handle)
       return receiver
     }
     static supportedLocalesOf(
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
-      const requested = tags(apply(canonicalize, intl, [locales]) as string[])
+      const requested = tags(canonicalize(locales) as string[])
       option(
         options(optionsInput),
         'localeMatcher',
