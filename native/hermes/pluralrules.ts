@@ -244,15 +244,9 @@
       if (optionsInput === undefined) return initialize(receiver, locale, '{}')
       // Constructor 7–13: each enum's coercion/validation precedes the next Get.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
-      const values: Record<string, string | number | undefined> = create(null)
-      values.type = option(opts, 'type', types, 'cardinal')
-      const notation = (values.notation = option(
-        opts,
-        'notation',
-        notations,
-        'standard'
-      ))
-      values.compactDisplay = option(
+      const kind = option(opts, 'type', types, 'cardinal')
+      const notation = option(opts, 'notation', notations, 'standard')
+      const compactDisplay = option(
         opts,
         'compactDisplay',
         compactDisplays,
@@ -261,34 +255,24 @@
       // SetNumberFormatDigitOptions 1–11: validate minimumInteger/increment as
       // read, but retain the four precision values without coercing them yet.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L108
-      values.minimumIntegerDigits = number(opts.minimumIntegerDigits, 1, 21, 1)
+      const minimumInteger = number(opts.minimumIntegerDigits, 1, 21, 1)!
       const minFraction = opts.minimumFractionDigits,
         maxFraction = opts.maximumFractionDigits
       const minSignificant = opts.minimumSignificantDigits,
         maxSignificant = opts.maximumSignificantDigits
-      const increment = (values.roundingIncrement = number(
-        opts.roundingIncrement,
-        1,
-        5000,
-        1
-      )!)
+      const increment = number(opts.roundingIncrement, 1, 5000, 1)!
       let valid = false
       for (let index = 0; index < increments.length; index++)
         if (increment === increments[index]) valid = true
       if (!valid) throw new BadOption('Invalid roundingIncrement')
-      values.roundingMode = option(
+      const roundingMode = option(
         opts,
         'roundingMode',
         roundingModes,
         'halfExpand'
       )
-      const priority = (values.roundingPriority = option(
-        opts,
-        'roundingPriority',
-        priorities,
-        'auto'
-      ))
-      values.trailingZeroDisplay = option(
+      const priority = option(opts, 'roundingPriority', priorities, 'auto')
+      const trailingZeroDisplay = option(
         opts,
         'trailingZeroDisplay',
         trailingZeros,
@@ -305,29 +289,49 @@
       const needFraction =
         priority !== 'auto' ||
         !(hasSignificant || (!hasFraction && notation === 'compact'))
+      let digits = ''
       if (needSignificant) {
-        const minimum = (values.minimumSignificantDigits = number(
-          minSignificant,
-          1,
-          21,
-          1
-        )!)
-        values.maximumSignificantDigits = number(
-          maxSignificant,
-          minimum,
-          21,
-          21
-        )
+        const minimum = number(minSignificant, 1, 21, 1)!
+        const maximum = number(maxSignificant, minimum, 21, 21)!
+        digits +=
+          ',"minimumSignificantDigits":' +
+          minimum +
+          ',"maximumSignificantDigits":' +
+          maximum
       }
       if (needFraction) {
-        values.minimumFractionDigits = number(minFraction, 0, 100, undefined)
-        values.maximumFractionDigits = number(maxFraction, 0, 100, undefined)
+        const minimum = number(minFraction, 0, 100, undefined)
+        const maximum = number(maxFraction, 0, 100, undefined)
+        if (minimum !== undefined)
+          digits += ',"minimumFractionDigits":' + minimum
+        if (maximum !== undefined)
+          digits += ',"maximumFractionDigits":' + maximum
       }
-      // Resolve rounding type/priority and increment restrictions in
-      // Rust. Install the private brand only after successful initialization.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L140-L161
-      // Private options hold validated primitives and cannot inherit toJSON.
-      return initialize(receiver, locale, stringify(values)!)
+      // Enums are validated ASCII and digit values are bounded integers.
+      // Omit undefined digits so Rust retains its default/priority resolution.
+      return initialize(
+        receiver,
+        locale,
+        '{"type":"' +
+          kind +
+          '","notation":"' +
+          notation +
+          '","compactDisplay":"' +
+          compactDisplay +
+          '","minimumIntegerDigits":' +
+          minimumInteger +
+          ',"roundingIncrement":' +
+          increment +
+          ',"roundingMode":"' +
+          roundingMode +
+          '","roundingPriority":"' +
+          priority +
+          '","trailingZeroDisplay":"' +
+          trailingZeroDisplay +
+          '"' +
+          digits +
+          '}'
+      )
     }
     static supportedLocalesOf(
       locales: unknown,
