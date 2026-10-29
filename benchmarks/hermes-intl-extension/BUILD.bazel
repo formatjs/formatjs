@@ -140,3 +140,11 @@ rust_binary(
         ),
     ]
 ]
+
+genrule(
+    name = "list_size_control_bytecode",
+    srcs = ["list-size-control.js"],
+    outs = ["list-size-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath list-size-control.js)",
+    tools = ["@hermes//:hermesc"],
+)

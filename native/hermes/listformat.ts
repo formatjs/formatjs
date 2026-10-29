@@ -129,18 +129,13 @@
     // Validate during iteration so non-string values close the iterator.
     if (input === undefined) return []
     const result: string[] = []
-    const descriptor = {
-      __proto__: null,
-      value: undefined as unknown,
-      writable: true,
-      enumerable: true,
-      configurable: true,
-    }
     for (const value of input as Iterable<unknown>) {
       if (typeof value !== 'string')
         throw new BadReceiver('Iterable yielded a non-string value')
-      descriptor.value = value
-      define(result, result.length, descriptor)
+      const index = result.length
+      // This copy stays private; no inherited index setter can observe appends.
+      if (index === 0) setPrototypeOf(result, null)
+      result[index] = value
     }
     return result
   }
