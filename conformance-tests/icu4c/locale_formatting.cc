@@ -2,6 +2,8 @@
 #include <unicode/measfmt.h>
 #include <unicode/measure.h>
 #include <unicode/measunit.h>
+#include <unicode/plurrule.h>
+#include <unicode/numberformatter.h>
 #include <unicode/reldatefmt.h>
 #include <unicode/smpdtfmt.h>
 #include <unicode/timezone.h>
@@ -73,8 +75,38 @@ static bool checkLists(const char *path) {
   return checks == 2871 && matches;
 }
 
+static bool checkPlurals(const char *path) {
+  if (!path) return false;
+  std::ifstream input(path);
+  if (!input) return false;
+  std::string row;
+  std::getline(input, row);
+  size_t checked = 0;
+  while (std::getline(input, row)) {
+    std::istringstream fields(row);
+    std::vector<std::string> values;
+    for (std::string value; std::getline(fields, value, '\t');) values.push_back(value);
+    if (values.size() != 4) return false;
+    UErrorCode status = U_ZERO_ERROR;
+    auto locale = icu::Locale::forLanguageTag(values[0], status);
+    auto type = values[1] == "cardinal" ? UPLURAL_TYPE_CARDINAL : UPLURAL_TYPE_ORDINAL;
+    std::unique_ptr<icu::PluralRules> rules(icu::PluralRules::forLocale(locale, type, status));
+    auto formatted = icu::number::NumberFormatter::withLocale(locale)
+        .precision(icu::number::Precision::minMaxFraction(0, 3))
+        .roundingMode(UNUM_ROUND_HALFUP).formatDouble(std::stod(values[2]), status);
+    if (U_FAILURE(status) || !rules || utf8(rules->select(formatted, status)) != values[3]) {
+      std::cerr << "ICU4C/ICU4J plural mismatch: " << row << '\n';
+      return false;
+    }
+    ++checked;
+  }
+  std::cout << checked << " ICU4C/ICU4J plural checks passed\n";
+  return checked == 720;
+}
+
 int main() {
   if (!checkLists(std::getenv("LIST_FORMAT_FIXTURES"))) return 1;
+  if (!checkPlurals(std::getenv("PLURAL_RULES_FIXTURES"))) return 1;
   const char *path = std::getenv("LOCALE_FORMAT_FIXTURES");
   if (!path) return 1;
   std::ifstream input(path);

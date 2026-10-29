@@ -19,3 +19,17 @@ formatjs_rust_test(
         "@crates//:icu_locale",
     ],
 )
+
+formatjs_rust_test(
+    name = "intl_pluralrules_conformance_test",
+    srcs = ["pluralrules.test.rs"],
+    crate_name = "icu4x_pluralrules_conformance_test",
+    data = ["//conformance-tests/icu4j:plural_rules_fixtures"],
+    edition = "2024",
+    env = {"PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)"},
+    deps = [
+        "@crates//:fixed_decimal",
+        "@crates//:icu_locale",
+        "@crates//:icu_plurals",
+    ],
+)

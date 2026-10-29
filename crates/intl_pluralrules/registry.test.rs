@@ -60,3 +60,21 @@ fn fallback_availability_is_canonical_and_registration_is_atomic() {
         assert_eq!(registry.default_locale(), Some("sr-Latn"));
     }
 }
+
+#[test]
+fn traditional_chinese_uses_chinese_rules_before_default_locale() {
+    let mut registry = Registry::default();
+    registry
+        .add_locale_data(r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{}}"#)
+        .unwrap();
+    registry
+        .add_locale_data(r#"{"locale":"zh","cardinal":{},"ordinal":{}}"#)
+        .unwrap();
+    for lookup in [false, true] {
+        let locale = registry.negotiate(&["zh-TW".into()], lookup).unwrap();
+        assert_eq!(locale, "zh");
+        let rules = registry.create(&locale, &Options::default()).unwrap();
+        assert_eq!(rules.select("1").unwrap(), "other");
+    }
+    assert_eq!(registry.negotiate(&["aa".into()], false).unwrap(), "en");
+}
