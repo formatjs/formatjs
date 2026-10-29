@@ -151,3 +151,33 @@ fn accepts_unknown_eight_letter_language() {
         None
     );
 }
+
+#[test]
+fn native_matcher_agrees_with_icu4j_grid() {
+    let grid = std::fs::read_to_string(std::env::var("ICU_MATCHER_GRID").unwrap()).unwrap();
+    let mut checked = 0;
+    for line in grid.lines() {
+        let fields: Vec<_> = line.split('\t').collect();
+        let available = tags(&fields[1].split(',').collect::<Vec<_>>());
+        if fields[2] != available[0] {
+            continue;
+        }
+        let requested = tags(&fields[0].split(',').collect::<Vec<_>>());
+        let expected = fields[4].parse::<isize>().unwrap();
+        let actual =
+            formatjs_intl_locale::matcher::best_fit_requested(&available, &requested).unwrap();
+        assert_eq!(
+            actual
+                .as_ref()
+                .map(|(index, _)| *index as isize)
+                .unwrap_or(-1),
+            expected,
+            "{line}"
+        );
+        if let Some((_, locale)) = actual {
+            assert_eq!(locale, fields[3], "{line}");
+        }
+        checked += 1;
+    }
+    assert!(checked >= 2_640);
+}
