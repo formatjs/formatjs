@@ -5,7 +5,7 @@ pub mod registry;
 pub use data::LocaleData;
 use formatjs_intl_numberformat::NumberFormat;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
+use std::{borrow::Cow, sync::Arc};
 
 #[derive(Clone, Debug, Default, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
@@ -53,7 +53,7 @@ pub struct Part {
 }
 enum Piece<'a> {
     Literal(&'a str),
-    Number(&'a [formatjs_intl_numberformat::Part], &'static str),
+    Number(Cow<'a, [formatjs_intl_numberformat::Part]>, &'static str),
 }
 pub struct RelativeTimeFormat {
     data: Arc<LocaleData>,
@@ -99,7 +99,7 @@ impl RelativeTimeFormat {
         self.visit_pattern(value, unit, |piece| match piece {
             Piece::Literal(value) => result.push_str(value),
             Piece::Number(parts, _) => {
-                for part in parts {
+                for part in parts.iter() {
                     result.push_str(&part.value);
                 }
             }
@@ -114,11 +114,20 @@ impl RelativeTimeFormat {
                 value: value.into(),
                 unit: None,
             }),
-            Piece::Number(parts, unit) => result.extend(parts.iter().map(|part| Part {
-                kind: part.kind,
-                value: part.value.clone(),
-                unit: Some(unit),
-            })),
+            Piece::Number(parts, unit) => {
+                let append = |part: formatjs_intl_numberformat::Part| Part {
+                    kind: part.kind,
+                    value: part.value,
+                    unit: Some(unit),
+                };
+                match parts {
+                    Cow::Borrowed(parts) => result.extend(parts.iter().cloned().map(append)),
+                    Cow::Owned(parts) if result.is_empty() => {
+                        result = parts.into_iter().map(append).collect();
+                    }
+                    Cow::Owned(parts) => result.extend(parts.into_iter().map(append)),
+                }
+            }
         })?;
         Ok(result)
     }
@@ -138,14 +147,14 @@ impl RelativeTimeFormat {
             .find(|known| unit == *known || unit.strip_suffix('s') == Some(*known))
             .ok_or(Error::InvalidUnit)?;
         let key = if self.resolved.style == "long" {
-            unit.into()
+            Cow::Borrowed(unit)
         } else {
-            format!("{unit}-{}", self.resolved.style)
+            Cow::Owned(format!("{unit}-{}", self.resolved.style))
         };
         let field = self
             .data
             .fields
-            .get(&key)
+            .get(key.as_ref())
             .or_else(|| self.data.fields.get(unit))
             .ok_or_else(|| Error::InvalidData("Missing relative field".into()))?;
         // Numeric auto uses ToString(-0) = "0" before choosing past/future.
@@ -166,7 +175,7 @@ impl RelativeTimeFormat {
         } else {
             &field.future
         };
-        let (number, category) = self
+        let (mut number, category) = self
             .number
             .format_decimal_with_plural(
                 value.strip_prefix('-').unwrap_or(value),
@@ -177,9 +186,16 @@ impl RelativeTimeFormat {
             .get(category)
             .or_else(|| patterns.get("other"))
             .ok_or_else(|| Error::InvalidData("Missing relative plural pattern".into()))?;
-        for (index, literal) in pattern.split("{0}").enumerate() {
+        let mut chunks = pattern.split("{0}").enumerate().peekable();
+        while let Some((index, literal)) = chunks.next() {
             if index > 0 {
-                visit(Piece::Number(&number, unit));
+                // Repeated slots borrow; the final slot can transfer its buffer.
+                let parts = if chunks.peek().is_none() {
+                    Cow::Owned(std::mem::take(&mut number))
+                } else {
+                    Cow::Borrowed(number.as_slice())
+                };
+                visit(Piece::Number(parts, unit));
             }
             if !literal.is_empty() {
                 visit(Piece::Literal(literal));

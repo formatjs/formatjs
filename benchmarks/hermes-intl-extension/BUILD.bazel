@@ -101,3 +101,24 @@ rust_binary(
     edition = "2024",
     deps = ["//crates/intl_relativetimeformat:with_compiled_data"],
 )
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["relative-format-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_relative_format_probe",
+        edition = "2024",
+        deps = [
+            "//crates/intl_numberformat:with_compiled_data",
+            "//crates/intl_relativetimeformat:with_compiled_data",
+        ],
+    )
+    for name, features in [
+        ("relative_format_probe", []),
+        (
+            "relative_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]

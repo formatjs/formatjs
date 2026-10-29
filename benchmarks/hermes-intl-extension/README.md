@@ -69,44 +69,45 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-29, including the optimizations
-below and direct captured-intrinsic calls in RTF. All hosts use high-resolution
-`__now()`. [Raw results, controls and profiles](relative-bound-results.json).
+below, direct captured-intrinsic calls and Rust part-buffer reuse in RTF.
+All hosts use high-resolution `__now()`.
+[Raw results, controls and profiles](relative-number-buffer-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
 | `getCanonicalLocales`                |        0.07 |       1.10 |
-| `Locale.maximize`                    |        0.26 |       2.12 |
+| `Locale.maximize`                    |        0.27 |       2.12 |
 | `PluralRules.select`                 |        0.51 |       0.45 |
 | `PluralRules.select(decimal)`        |        0.58 |       0.45 |
 | `PluralRules.select(string)`         |        0.68 |       0.91 |
 | `PluralRules.select(ordinal)`        |        0.54 |       0.45 |
 | `PluralRules.select(ru)`             |        0.55 |       0.50 |
-| `PluralRules.selectRange`            |        2.14 |       0.88 |
-| `ListFormat.format`                  |        1.08 |       0.55 |
-| `ListFormat.formatToParts`           |        3.28 |       3.23 |
-| `RelativeTimeFormat.format`          |        1.03 |       0.71 |
-| `RelativeTimeFormat.formatToParts`   |        3.09 |       2.14 |
-| `RelativeTimeFormat.format(decimal)` |        1.35 |       0.78 |
-| `RelativeTimeFormat.format(auto)`    |        0.49 |       0.60 |
+| `PluralRules.selectRange`            |        2.13 |       0.89 |
+| `ListFormat.format`                  |        1.08 |       0.54 |
+| `ListFormat.formatToParts`           |        3.27 |       3.22 |
+| `RelativeTimeFormat.format`          |        0.99 |       0.71 |
+| `RelativeTimeFormat.formatToParts`   |        3.03 |       2.17 |
+| `RelativeTimeFormat.format(decimal)` |        1.30 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.48 |       0.59 |
 | `Locale.new`                         |        0.35 |       0.92 |
-| `Locale.new(options)`                |        1.76 |       4.86 |
+| `Locale.new(options)`                |        1.76 |       4.87 |
 | `Locale.new(zh-HK)`                  |        0.36 |       1.33 |
 | `Locale.new.language`                |        0.43 |       1.24 |
 | `Locale.new.toString`                |        0.41 |       0.98 |
 | `Locale.language`                    |        0.08 |       0.08 |
-| `Locale.new(Locale)`                 |        0.33 |       0.93 |
-| `Locale.new(diverse)`                |        4.21 |       1.41 |
-| `Locale.new(long)`                   |        6.00 |       3.79 |
-| `PluralRules.new`                    |        2.19 |       4.28 |
-| `PluralRules.new(options)`           |        5.44 |       4.67 |
-| `ListFormat.new`                     |        1.52 |       2.65 |
-| `ListFormat.new(default)`            |        1.22 |       2.44 |
-| `ListFormat.new(array)`              |        1.77 |       2.77 |
-| `ListFormat.new(options)`            |        2.74 |       2.58 |
-| `ListFormat.new(fallback)`           |        2.26 |       3.46 |
-| `ListFormat.new(unsupported)`        |        2.34 |       3.59 |
-| `RelativeTimeFormat.new`             |        4.46 |       4.61 |
-| `RelativeTimeFormat.new(fallback)`   |        5.26 |       5.35 |
+| `Locale.new(Locale)`                 |        0.33 |       0.94 |
+| `Locale.new(diverse)`                |        3.91 |       1.40 |
+| `Locale.new(long)`                   |        5.64 |       3.76 |
+| `PluralRules.new`                    |        2.10 |       4.27 |
+| `PluralRules.new(options)`           |        5.45 |       4.72 |
+| `ListFormat.new`                     |        1.46 |       2.67 |
+| `ListFormat.new(default)`            |        1.17 |       2.51 |
+| `ListFormat.new(array)`              |        1.69 |       2.76 |
+| `ListFormat.new(options)`            |        2.78 |       2.61 |
+| `ListFormat.new(fallback)`           |        2.25 |       3.47 |
+| `ListFormat.new(unsupported)`        |        2.32 |       3.67 |
+| `RelativeTimeFormat.new`             |        4.48 |       4.67 |
+| `RelativeTimeFormat.new(fallback)`   |        5.20 |       5.35 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -394,3 +395,27 @@ hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=selec
 hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=constructor.json benchmarks/hermes-intl-extension/plural-constructor-profile.js
 hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=range.json benchmarks/hermes-intl-extension/plural-range-profile.js
 ```
+
+The standard decimal core retains its numeric part buffer. Relative formatting
+borrows long-style field keys and transfers part strings at the final numeric
+slot, borrowing earlier repeated slots. Integer string/parts allocation calls
+fall from 11/13 to 9/9; grouped decimals from 17/24 to 15/15; large-number
+parts from 50 to 33. Separate Bazel probes count allocations and time the
+uninstrumented core:
+
+```sh
+bazel run -c opt //benchmarks/hermes-intl-extension:relative_allocation_probe
+bazel run -c opt //benchmarks/hermes-intl-extension:relative_format_probe
+```
+
+Three full Hermes runs reduce RTF string formatting from 1.023 to 0.985 µs,
+grouped decimals from 1.343 to 1.303 µs and parts from 3.087 to 3.029 µs.
+Default construction moves from 4.36 to 4.48 µs despite no constructor changes;
+all cases and controls remain in the raw file. Numeric formatting and parts
+remain slower than magrinj. Format profiles still concentrate in the native
+host call; parts also spend heavily in JSON parsing. Profile samples aggregate
+C++ and Rust and do not isolate allocator time.
+
+The paired run checks 342 values with optimized bytecode on all hosts. Focused
+Rust, Hermes, Test262 and pinned ICU4C/J/X relative-time checks pass; explicit
+ICU4X separator differences stay recorded rather than normalized.

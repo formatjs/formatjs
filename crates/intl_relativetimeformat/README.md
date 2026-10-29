@@ -28,6 +28,11 @@ selection; numeric `always` preserves negative-zero past tense. Missing narrow o
 short fields fall back to long, and missing plural categories fall back to other.
 Only number-derived parts carry a singular `unit` property.
 
+Relative pattern traversal borrows numeric parts for repeated slots and transfers
+the buffer at the final slot. Parts move their strings into the result; string
+formatting reads them without cloning. Long-style field lookup borrows the unit
+key. Custom repeated-slot patterns retain their output.
+
 ```sh
 bazel test -c opt //crates/intl_relativetimeformat/...
 ```

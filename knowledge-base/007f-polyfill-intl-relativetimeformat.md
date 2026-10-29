@@ -101,6 +101,11 @@ systems, coercion order, brands, property order and registration during getters.
 The TS class constructor relies on class semantics to require `new`; it must not
 read an instance's `constructor` property during subclass construction.
 
+Relative pattern traversal borrows numeric parts for repeated slots and transfers
+the buffer at the final slot. Parts move their strings into the result; string
+formatting reads them without cloning. Long-style field lookup borrows the unit
+key. Custom repeated-slot patterns retain their output.
+
 ### Native compiled provider
 
 The Hermes SDK now embeds build-selected locale records in Rust rather than
