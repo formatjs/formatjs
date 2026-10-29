@@ -2,6 +2,19 @@
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 
 formatjs_rust_test(
+    name = "intl_collator_conformance_test",
+    srcs = ["collator.test.rs"],
+    crate_name = "icu4x_collator_conformance_test",
+    data = ["//packages/intl-collator:tests/collator-conformance.tsv"],
+    edition = "2024",
+    env = {"COLLATOR_CONFORMANCE_FIXTURES": "$(rootpath //packages/intl-collator:tests/collator-conformance.tsv)"},
+    deps = [
+        "@crates//:icu_collator-2.3.1",
+        "@crates//:icu_locale",
+    ],
+)
+
+formatjs_rust_test(
     name = "intl_listformat_conformance_test",
     srcs = ["listformat.test.rs"],
     crate_name = "icu4x_listformat_conformance_test",

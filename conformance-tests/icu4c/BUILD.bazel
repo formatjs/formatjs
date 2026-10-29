@@ -4,6 +4,19 @@ load("@rules_cc//cc:cc_test.bzl", "cc_test")
 exports_files(["icu.BUILD.bazel"])
 
 cc_test(
+    name = "intl_collator_conformance_test",
+    size = "small",
+    srcs = ["collator.cc"],
+    data = ["//packages/intl-collator:tests/collator-conformance.tsv"],
+    env = {"COLLATOR_CONFORMANCE_FIXTURES": "$(rootpath //packages/intl-collator:tests/collator-conformance.tsv)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
     name = "intl_locale_formatting_conformance_test",
     size = "small",
     srcs = ["locale_formatting.cc"],
