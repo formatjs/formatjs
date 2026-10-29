@@ -66,10 +66,17 @@ bazel test -c opt //conformance-tests/icu4c:intl_collator_conformance_test \
   //crates/intl_collator/tests:conformance_test
 ```
 
-All three ICU implementations check the same 27 ordering fixtures as the
+All three ICU implementations check the same 69 ordering fixtures as the
 FormatJS Rust/TS differential suite. They cover sensitivity, case level,
 case-first preferences, numeric ordering, punctuation and language tailorings.
 ICU4C/J use 78.1; ICU4X Collator uses 2.3.1 with its pinned compiled data.
 The adapters map Intl options onto each API and preserve locale keyword defaults
 when options are omitted. These comparisons allow no output differences; they
 do not establish coverage of every collation type or JS observable behavior.
+
+The 42 root cases cover inherited `emoji` and `eor` sorting for English,
+Turkish, German, Arabic, Japanese and Hong Kong Chinese. They include emoji
+whose CLDR order differs from code-point order and EOR secondary distinctions
+that disappear at base sensitivity. Rust and TS retain one compiled rule set
+for inherited collations; the Hermes source/bytecode differential includes
+those options and inputs.
