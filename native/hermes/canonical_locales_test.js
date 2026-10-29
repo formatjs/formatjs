@@ -48,6 +48,24 @@
   throws(RangeError, function () {
     canonicalize(['EN', 'en_US'])
   })
+  var singletonLocale = Intl.Locale && new Intl.Locale('EN')
+  var zero = Object.getOwnPropertyDescriptor(Array.prototype, '0')
+  Object.defineProperty(Array.prototype, '0', {
+    configurable: true,
+    get: function () {
+      throw new Error('inherited array getter called')
+    },
+    set: function () {
+      throw new Error('inherited array setter called')
+    },
+  })
+  try {
+    equal(canonicalize('EN'), ['en'])
+    if (singletonLocale) equal(canonicalize(singletonLocale), ['en'])
+  } finally {
+    delete Array.prototype[0]
+    if (zero) Object.defineProperty(Array.prototype, '0', zero)
+  }
   var mapGet = Map.prototype.get
   var mapSet = Map.prototype.set
   var mapClear = Map.prototype.clear

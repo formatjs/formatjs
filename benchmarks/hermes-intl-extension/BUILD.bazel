@@ -52,6 +52,14 @@ genrule(
 )
 
 genrule(
+    name = "locale_control_bytecode",
+    srcs = ["locale-control.js"],
+    outs = ["locale-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath locale-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
     name = "magrinj_bootstrap_bytecode",
     srcs = [
         "magrinj.LICENSE",

@@ -5,7 +5,7 @@ embedding runtime's JSI headers with matching ABI and toolchain settings.
 
 `canonical_locales` installs `Intl.getCanonicalLocales` through public JSI.
 The JS wrapper preserves locale-list coercion and property access order; Rust
-validates and canonicalizes each tag using ICU4X and CLDR aliases. No WASM runtime
+validates and canonicalizes tags using ICU4X and CLDR aliases. No WASM runtime
 or asynchronous bridge is involved.
 
 Install before application code:
@@ -26,8 +26,8 @@ its C++ adapter against their matching JSI headers.
 Canonicalization returns Rust-owned UTF-8 buffers; the adapter releases each
 buffer after copying it into a JSI string. The JS factory retains at most 64
 validated tag strings, with input/output lengths at most 128 UTF-16 units.
-Coercion and list traversal still run every call; public result arrays remain
-fresh. Locale instances use owned Rust handles managed by JSI garbage collection.
+Coercion and general list traversal still run every call; strings and branded
+Locale inputs return fresh singleton arrays directly. Locale instances use owned Rust handles managed by JSI garbage collection.
 
 ## Locale, supported values and plural rules
 

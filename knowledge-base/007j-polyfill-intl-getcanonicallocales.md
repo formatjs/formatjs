@@ -28,8 +28,9 @@ consumers, so this target alone is not a binary-size measurement.
 installer. The JS wrapper owns observable locale-list coercion, property
 access, exceptions, and ordered de-duplication. Rust owns tag validation and
 canonicalization. The JS factory caches at most 64 successful short tag strings
-against immutable compiled canonicalization data. Input coercion, full list
-traversal and fresh result arrays remain per-call. Long strings bypass admission.
+against immutable compiled canonicalization data. Input coercion and general list
+traversal remain per-call. Strings and branded Locale inputs return fresh singleton
+arrays directly. Long strings bypass admission.
 Install before application scripts. The adapter uses public
 JSI APIs, with no Hermes VM changes.
 
