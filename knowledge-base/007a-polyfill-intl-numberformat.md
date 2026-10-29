@@ -27,6 +27,8 @@ numeric numbering systems. The resolver applies parent locales, root aliases,
 and same-locale plural fallback; unconfirmed/provisional entries are excluded,
 matching the CLDR JSON threshold. Identical systems share Latin data through
 registration-time aliases without mutating the caller's data.
+When a numbering system has no short compact currency patterns, generation uses
+the locale's Latin patterns while retaining the selected digits and symbols.
 
 `scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
 resolver, numbering-system projection, shared plural helpers, and resolver tests.

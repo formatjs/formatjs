@@ -72,6 +72,33 @@ it('formats percentage with compact notation', () => {
   ).toBe('1M')
 })
 
+it('formats compact currency in a numbering system without compact patterns', () => {
+  const nf = NumberFormat('ar-SS', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+  })
+  expect(nf.format(1234)).toBe('\u200f١٫٢\u00a0ألف\u00a0US$')
+  expect(nf.format(-5_600_000)).toBe('\u061c-\u200f٥٫٦\u00a0مليون\u00a0US$')
+})
+
+it.each([
+  ['latn', '\u200f1.2\u00a0ألف\u00a0US$'],
+  ['arabext', '\u200f۱٫۲\u00a0ألف\u00a0US$'],
+])(
+  'formats compact currency with numbering system %s',
+  (numberingSystem, expected) => {
+    expect(
+      NumberFormat('ar-SS', {
+        style: 'currency',
+        currency: 'USD',
+        notation: 'compact',
+        numberingSystem,
+      }).format(1234)
+    ).toBe(expected)
+  }
+)
+
 it('should lookup locale correctly', function () {
   expect(
     new NumberFormat('en-BS', {

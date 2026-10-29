@@ -136,6 +136,28 @@ const values = [
   '9007199254740993.125',
   9007199254740993n,
 ] as const
+
+it('matches compact currency fallback across numbering systems', () => {
+  compare(
+    ['ar-SS', 'ar-SA', 'ckb'].flatMap(locale =>
+      ['arab', 'arabext', 'latn'].flatMap(numberingSystem =>
+        (['short', 'long'] as const).map(compactDisplay => ({
+          locales: [locale],
+          options: {
+            style: 'currency' as const,
+            currency: 'USD',
+            notation: 'compact' as const,
+            compactDisplay,
+            numberingSystem,
+          },
+          values: [999, 1234, -5_600_000],
+          ranges: [[1234, 5_600_000] as const],
+        }))
+      )
+    )
+  )
+})
+
 it('compares number styles and notations with TS across locale families', () => {
   const options: NumberFormatOptions[] = [
     {},
