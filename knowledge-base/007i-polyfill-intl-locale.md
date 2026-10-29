@@ -130,6 +130,10 @@ with TypeScript, using real NumberFormat/Collator observations. Native builds
 and tests run on Linux. `native/hermes/locale.ts` supplies JS brands, coercion,
 prototype fallback and descriptors; its C++ HostObject owns an opaque Rust handle.
 
+Rust canonicalizes the input once, repeating only after language or Unicode
+options change it. ABI queries serialize typed values directly, avoiding an
+intermediate JSON tree when Hermes reads Locale properties.
+
 `//native/hermes/tests:locale_conformance_test` compares the installed Rust API
 against TS over full records and observable constructor/method behavior. It loads
 Bengali NumberFormat data after creating a Locale, verifying per-call capability

@@ -88,6 +88,18 @@
     },
   ])
   cases.push([
+    'Locale.new(options)',
+    function () {
+      return new Intl.Locale('en', {region: 'GB'})
+    },
+  ])
+  cases.push([
+    'Locale.new(zh-HK)',
+    function () {
+      return new Intl.Locale('zh-HK')
+    },
+  ])
+  cases.push([
     'PluralRules.new',
     function () {
       return new Intl.PluralRules('en')
@@ -134,6 +146,7 @@
     var name = cases[c][0],
       f = cases[c][1]
     var value = f()
+    if (name.indexOf('Locale.new') === 0) value = value.toString()
     if (name.indexOf('ListFormat.new(') === 0)
       value = value.resolvedOptions().locale
     var n = 1

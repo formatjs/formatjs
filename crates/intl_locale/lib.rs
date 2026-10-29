@@ -223,13 +223,38 @@ impl Locale {
         if let Some(variants) = &options.variants {
             locale.id.variants = variants.split('-').map(str::to_owned).collect();
         }
-        // UpdateLanguageId 10–14 canonicalizes the updated language ID before
-        // MakeLocaleRecord applies Unicode options.
+        // UpdateLanguageId 10–14 canonicalizes overrides before Unicode options;
+        // an unchanged language ID is already canonical.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L109-L113
-        locale = Self::parse(
-            canonicalize_locale(&locale.emit_with_id(&locale.id))
-                .map_err(|_| LocaleError::InvalidTag)?,
-        );
+        if [
+            &options.language,
+            &options.script,
+            &options.region,
+            &options.variants,
+        ]
+        .iter()
+        .any(|value| value.is_some())
+        {
+            locale = Self::parse(
+                canonicalize_locale(&locale.emit_with_id(&locale.id))
+                    .map_err(|_| LocaleError::InvalidTag)?,
+            );
+        }
+        // Without Unicode overrides, the parsed extensions are already canonical.
+        if options.numeric.is_none()
+            && [
+                &options.calendar,
+                &options.collation,
+                &options.first_day_of_week,
+                &options.hour_cycle,
+                &options.case_first,
+                &options.numbering_system,
+            ]
+            .iter()
+            .all(|value| value.is_none())
+        {
+            return Ok(locale);
+        }
         let numeric = options.numeric.map(|value| value.to_string());
         let first_day = options
             .first_day_of_week
