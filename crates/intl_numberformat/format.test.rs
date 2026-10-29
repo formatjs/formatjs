@@ -200,3 +200,61 @@ fn option_validation_ignores_only_inactive_digit_limits() {
         Err(Error::Range(_))
     ));
 }
+
+#[test]
+fn grouping_keeps_primary_secondary_and_minimum_boundaries() {
+    for (pattern, cases) in [
+        (
+            "#,##0.###",
+            [
+                ("123", "123"),
+                ("1234", "1,234"),
+                ("1234567.5", "1,234,567.5"),
+            ],
+        ),
+        (
+            "#,##,##0.###",
+            [
+                ("12345", "12,345"),
+                ("123456", "1,23,456"),
+                ("1234567.5", "12,34,567.5"),
+            ],
+        ),
+    ] {
+        let mut pack: Value =
+            serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+        pack["data"]["numbers"]["decimal"]["latn"]["standard"] = json!(pattern);
+        let mut registry = Registry::default();
+        registry.add_locale_data(&pack.to_string()).unwrap();
+        let number = registry
+            .create(&["en".into()], &options(json!({"useGrouping":"always"})))
+            .unwrap();
+        for (input, expected) in cases {
+            assert_eq!(
+                number.format(input).unwrap(),
+                expected,
+                "{pattern}: {input}"
+            );
+        }
+        let minimum = registry
+            .create(&["en".into()], &options(json!({"useGrouping":"min2"})))
+            .unwrap();
+        assert_eq!(minimum.format("1234").unwrap(), "1234");
+        assert_eq!(minimum.format("12345").unwrap(), "12,345");
+        if pattern == "#,##,##0.###" {
+            assert_eq!(
+                serde_json::to_value(number.format_to_parts("-1234567.5").unwrap()).unwrap(),
+                json!([
+                    {"type":"minusSign","value":"-"},
+                    {"type":"integer","value":"12"},
+                    {"type":"group","value":","},
+                    {"type":"integer","value":"34"},
+                    {"type":"group","value":","},
+                    {"type":"integer","value":"567"},
+                    {"type":"decimal","value":"."},
+                    {"type":"fraction","value":"5"}
+                ])
+            );
+        }
+    }
+}
