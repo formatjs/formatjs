@@ -176,6 +176,40 @@ pub unsafe extern "C" fn formatjs_list_create(
     })
 }
 
+/// Negotiate canonical requested tags and create with default type/style.
+/// # Safety
+/// Registry is live; JSON bytes are readable; out writable. Free the handle once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_create_default(
+    registry: *const ListRegistry,
+    data: *const u8,
+    len: usize,
+    out: *mut *mut ListHandle,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe {
+        out.write(ptr::null_mut());
+    }
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let requested: Vec<String> =
+            serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
+        let registry = unsafe { &(*registry).0 };
+        let locale = registry.negotiate(&requested, false).map_err(status)?;
+        let rules = registry
+            .create(&locale, &Options::default())
+            .map_err(status)?;
+        unsafe {
+            out.write(Box::into_raw(Box::new(ListHandle(rules))));
+        }
+        Ok(())
+    })
+}
+
 #[derive(Deserialize)]
 #[serde(tag = "method", rename_all = "camelCase")]
 enum Query {

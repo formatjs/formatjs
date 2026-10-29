@@ -186,6 +186,27 @@
     },
   ])
   cases.push([
+    'ListFormat.new(default)',
+    function () {
+      return new Intl.ListFormat()
+    },
+  ])
+  cases.push([
+    'ListFormat.new(array)',
+    (function () {
+      var locales = ['en']
+      return function () {
+        return new Intl.ListFormat(locales)
+      }
+    })(),
+  ])
+  cases.push([
+    'ListFormat.new(options)',
+    function () {
+      return new Intl.ListFormat('en', {})
+    },
+  ])
+  cases.push([
     'ListFormat.new(fallback)',
     function () {
       return new Intl.ListFormat('en-XX')

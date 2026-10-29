@@ -21,6 +21,10 @@ matching, lazy loading and retained instances.
 
 The owned C ABI exposes per-runtime registries and immutable instances. JSON
 requests carry UTF-16 arrays, keeping lone surrogates outside scalar-text parsing.
+`formatjs_list_create_default` accepts a JSON array of canonical requested tags
+and negotiates/creates an owned default instance in one call. An empty array
+uses the registry default. The existing constructor still accepts a negotiated
+locale and explicit type/style options.
 The Hermes facade performs observable coercion, iteration and brand checks.
 `//native/hermes/tests:listformat_conformance_test` compares source and optimized
 bytecode installers with TS. The SDK includes adapters, selected JSON packs and

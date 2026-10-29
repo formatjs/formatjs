@@ -53,6 +53,8 @@ void installListFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
       "Expected list locale match JSON", results, formatjs_list_registry_match, registry));
   bridge.setProperty(runtime, "nativeCreate", hermes_bridge::create<2, Model>(runtime, "listCreate",
       "Expected list locale and options JSON", {2, "Rust list construction failed"}, formatjs_list_create, registry));
+  bridge.setProperty(runtime, "nativeCreateDefault", hermes_bridge::create<1, Model>(runtime, "listCreateDefault",
+      "Expected canonical list locales JSON", {2, "Rust default list construction failed"}, formatjs_list_create_default, registry));
   hermes_bridge::bind(runtime, bridge, "nativeQuery", "listQuery", 2,
       [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
         if (count != 2 || !args[0].isObject() || !args[1].isString()) throw jsi::JSError(rt, "Expected list record and query JSON");

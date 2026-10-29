@@ -61,41 +61,44 @@ cross-implementation timings; historical FormatJS before/after comparisons remai
 useful. Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
-Three alternating optimized runs on 2026-10-29, including the registry
-snapshot change. [Raw results and profiles](native-matching-results.json).
+Three alternating optimized runs on 2026-10-29, including registry snapshots
+and default ListFormat construction. [Raw results and profiles](list-default-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.78 |       1.10 |
-| `Locale.maximize`                    |        0.26 |       2.10 |
-| `PluralRules.select`                 |        0.52 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.58 |       0.46 |
-| `PluralRules.select(string)`         |        0.68 |       0.92 |
-| `PluralRules.select(ordinal)`        |        0.54 |       0.46 |
-| `PluralRules.select(ru)`             |        0.60 |       0.50 |
+| `getCanonicalLocales`                |        0.79 |       1.10 |
+| `Locale.maximize`                    |        0.26 |       2.09 |
+| `PluralRules.select`                 |        0.53 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.59 |       0.46 |
+| `PluralRules.select(string)`         |        0.69 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.55 |       0.46 |
+| `PluralRules.select(ru)`             |        0.57 |       0.50 |
 | `PluralRules.selectRange`            |        2.20 |       0.89 |
-| `ListFormat.format`                  |        1.10 |       0.53 |
-| `ListFormat.formatToParts`           |        3.36 |       3.24 |
+| `ListFormat.format`                  |        1.11 |       0.53 |
+| `ListFormat.formatToParts`           |        3.36 |       3.26 |
 | `RelativeTimeFormat.format`          |        1.08 |       0.71 |
-| `RelativeTimeFormat.formatToParts`   |        3.30 |       2.17 |
-| `RelativeTimeFormat.format(decimal)` |        1.48 |       0.79 |
-| `RelativeTimeFormat.format(auto)`    |        0.53 |       0.61 |
+| `RelativeTimeFormat.formatToParts`   |        3.30 |       2.16 |
+| `RelativeTimeFormat.format(decimal)` |        1.50 |       0.80 |
+| `RelativeTimeFormat.format(auto)`    |        0.56 |       0.60 |
 | `Locale.new`                         |        0.35 |       0.92 |
-| `Locale.new(options)`                |        1.80 |       4.87 |
-| `Locale.new(zh-HK)`                  |        0.35 |       1.34 |
+| `Locale.new(options)`                |        1.80 |       4.88 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.32 |
 | `Locale.new.language`                |        0.43 |       1.25 |
 | `Locale.new.toString`                |        0.40 |       0.98 |
-| `Locale.language`                    |        0.08 |       0.09 |
+| `Locale.language`                    |        0.08 |       0.08 |
 | `Locale.new(Locale)`                 |        0.32 |       0.94 |
 | `Locale.new(diverse)`                |        4.61 |       1.41 |
-| `Locale.new(long)`                   |        5.98 |       3.79 |
-| `PluralRules.new`                    |        2.87 |       4.34 |
-| `PluralRules.new(options)`           |        6.35 |       4.72 |
-| `ListFormat.new`                     |        3.42 |       2.67 |
-| `ListFormat.new(fallback)`           |        4.27 |       3.52 |
-| `ListFormat.new(unsupported)`        |        4.39 |       3.66 |
-| `RelativeTimeFormat.new`             |       11.11 |       4.59 |
-| `RelativeTimeFormat.new(fallback)`   |       11.96 |       5.37 |
+| `Locale.new(long)`                   |        6.35 |       3.74 |
+| `PluralRules.new`                    |        2.87 |       4.23 |
+| `PluralRules.new(options)`           |        6.23 |       4.71 |
+| `ListFormat.new`                     |        2.20 |       2.66 |
+| `ListFormat.new(default)`            |        1.16 |       2.45 |
+| `ListFormat.new(array)`              |        2.99 |       2.74 |
+| `ListFormat.new(options)`            |        3.48 |       2.54 |
+| `ListFormat.new(fallback)`           |        3.14 |       3.43 |
+| `ListFormat.new(unsupported)`        |        3.17 |       3.62 |
+| `RelativeTimeFormat.new`             |       11.35 |       4.60 |
+| `RelativeTimeFormat.new(fallback)`   |       12.45 |       5.38 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -128,6 +131,23 @@ Bypassing the scan without an index would make that exact path slower, so it is
 not used. The 1 kHz constructor profile reduces `listMatch` from 80% to 26% of
 self samples. Host frames aggregate C++ and Rust; canonicalization, JSON and
 record creation now account for much of the remaining cost.
+
+With constructor options omitted, ListFormat now negotiates locales and creates
+its default record in one Rust call. JS still canonicalizes every requested tag;
+explicit options retain their separate resolution and getter ordering. The
+additive C ABI accepts canonical locale-list JSON and returns an owned handle.
+
+Three alternating runs against `a395be79` reduce string-locale construction from
+3.36 to 2.20 µs, omitted locales from 2.32 to 1.16 µs, fallback from 4.33 to
+3.14 µs and unsupported requests from 4.46 to 3.17 µs. Optimized magrinj measures
+2.66, 2.45, 3.43 and 3.62 µs respectively. Array input improves from 4.27 to
+2.99 µs but trails magrinj's 2.74 µs. Explicit empty options remain 3.48 µs
+versus 2.54 µs. The default-locale controls resolve to en in FormatJS and en-US
+in magrinj; their labels remain different in the raw results.
+
+The constructor profile replaces separate `listMatch` and `listCreate` host
+frames with `listCreateDefault`. Canonicalization and the fused call now dominate;
+profiles aggregate C++ and Rust rather than attributing all host time to Rust.
 
 The [regional fixtures](../../conformance-tests/icu4j/locale-format-fixtures.tsv)
 pin Chinese output against ICU4J 78.1. At the magrinj revision above, `zh-TW`

@@ -4,6 +4,7 @@
   nativeInfo: () => string | number
   nativeMatch: (request: string) => string | number
   nativeCreate: (locale: string, options: string) => object | number
+  nativeCreateDefault: (requested: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeFormat: (handle: object, values: string[]) => string
   nativeParts: (handle: object, values: string[]) => string
@@ -14,6 +15,7 @@
     nativeInfo,
     nativeMatch,
     nativeCreate,
+    nativeCreateDefault,
     nativeQuery,
     nativeFormat,
     nativeParts,
@@ -86,20 +88,28 @@
     lookup: boolean,
     supported: boolean
   ): any {
-    let tags = '['
-    for (let index = 0; index < requested.length; index++)
-      tags += (index ? ',' : '') + quote(requested[index])
     return decoded(
       nativeMatch(
         '{"requested":' +
-          tags +
-          '],"lookup":' +
+          strings(requested) +
+          ',"lookup":' +
           lookup +
           ',"supported":' +
           supported +
           '}'
       )
     )
+  }
+  function strings(requested: string[]): string {
+    let tags = '['
+    for (let index = 0; index < requested.length; index++)
+      tags += (index ? ',' : '') + quote(requested[index])
+    return tags + ']'
+  }
+  function initialize(receiver: object, handle: object | number): ListFormat {
+    if (typeof handle === 'number') decoded(handle)
+    apply(setSlot, slots, [receiver, handle])
+    return receiver
   }
   function property(
     target: object,
@@ -147,6 +157,9 @@
         isObject(requestedPrototype) ? requestedPrototype : prototype
       )
       const requested = apply(canonicalize, intl, [locales]) as string[]
+      // Missing options have no getters; Rust can negotiate and create together.
+      if (optionsInput === undefined)
+        return initialize(receiver, nativeCreateDefault(strings(requested)))
       const opts = constructorOptions(optionsInput)
       const matcher = option(
         opts,
@@ -168,9 +181,7 @@
         locale,
         '{"type":' + quote(type) + ',"style":' + quote(style) + '}'
       )
-      if (typeof handle === 'number') decoded(handle)
-      apply(setSlot, slots, [receiver, handle])
-      return receiver
+      return initialize(receiver, handle)
     }
     static supportedLocalesOf(
       locales: unknown,

@@ -212,3 +212,110 @@ fn direct_format_preserves_unpaired_surrogates_and_rejects_bad_slices() {
         formatjs_list_registry_destroy(registry);
     }
 }
+
+#[test]
+fn default_constructor_negotiates_and_owns_data_without_registry_or_inputs() {
+    unsafe {
+        let mut registry = ptr::null_mut();
+        assert_eq!(formatjs_list_registry_create(&mut registry), 0);
+        let english = pack("{0} and {1}");
+        assert_eq!(
+            formatjs_list_registry_load(registry, english.as_ptr(), english.len()),
+            0
+        );
+        let mut french: Value = serde_json::from_str(&pack("{0} et {1}")).unwrap();
+        french["locale"] = json!("fr");
+        let french = french.to_string();
+        assert_eq!(
+            formatjs_list_registry_load(registry, french.as_ptr(), french.len()),
+            0
+        );
+        let mut retained = Vec::new();
+        for (requested, locale, output) in [
+            (json!([]), "en", "A and B"),
+            (json!(["en-XX"]), "en", "A and B"),
+            (json!(["qzz"]), "en", "A and B"),
+            (json!(["fr-CA", "en"]), "fr", "A et B"),
+            (json!(["qzz", "fr-u-nu-latn"]), "fr", "A et B"),
+        ] {
+            let input = requested.to_string();
+            let mut handle = ptr::null_mut();
+            assert_eq!(
+                formatjs_list_create_default(registry, input.as_ptr(), input.len(), &mut handle),
+                0
+            );
+            retained.push((handle, locale, output));
+        }
+        let replacement = pack("{0} & {1}");
+        assert_eq!(
+            formatjs_list_registry_load(registry, replacement.as_ptr(), replacement.len()),
+            0
+        );
+        formatjs_list_registry_destroy(registry);
+        for (handle, locale, expected) in retained {
+            let query = br#"{"method":"resolvedOptions"}"#;
+            let mut out = empty();
+            assert_eq!(
+                formatjs_list_query(handle, query.as_ptr(), query.len(), &mut out),
+                0
+            );
+            assert_eq!(
+                decoded(out),
+                json!({"locale":locale,"type":"conjunction","style":"long"})
+            );
+            let query = br#"{"method":"format","list":[[65],[66]]}"#;
+            let mut out = empty();
+            assert_eq!(
+                formatjs_list_query(handle, query.as_ptr(), query.len(), &mut out),
+                0
+            );
+            assert_eq!(
+                decoded(out),
+                json!(expected.encode_utf16().collect::<Vec<_>>())
+            );
+            formatjs_list_destroy(handle);
+        }
+    }
+}
+
+#[test]
+fn default_constructor_clears_failed_outputs() {
+    unsafe {
+        let mut registry = ptr::null_mut();
+        assert_eq!(formatjs_list_registry_create(&mut registry), 0);
+        for (requested, expected) in [
+            (b"[]".as_slice(), 1),
+            (b"{}", 2),
+            (b"[17]", 2),
+            (b"null", 2),
+        ] {
+            let mut handle = ptr::dangling_mut();
+            assert_eq!(
+                formatjs_list_create_default(
+                    registry,
+                    requested.as_ptr(),
+                    requested.len(),
+                    &mut handle
+                ),
+                expected
+            );
+            assert!(handle.is_null());
+        }
+        let mut handle = ptr::dangling_mut();
+        assert_eq!(
+            formatjs_list_create_default(ptr::null(), b"[]".as_ptr(), 2, &mut handle),
+            2
+        );
+        assert!(handle.is_null());
+        assert_eq!(
+            formatjs_list_create_default(registry, b"[]".as_ptr(), 2, ptr::null_mut()),
+            2
+        );
+        assert_eq!(
+            formatjs_list_create_default(registry, ptr::null(), 1, &mut handle),
+            2
+        );
+        assert!(handle.is_null());
+        formatjs_list_registry_destroy(registry);
+    }
+}
