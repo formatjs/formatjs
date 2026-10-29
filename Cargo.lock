@@ -612,9 +612,9 @@ checksum = "d45db016d36b838f563236e9193d0ee6ce38f3f68b6c94e914b4929c96bbb890"
 
 [[package]]
 name = "fixed_decimal"
-version = "0.7.2"
+version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79c3c892f121fff406e5dd6b28c1b30096b95111c30701a899d4f2b18da6d1bd"
+checksum = "2214fb00f669ee96bee5bb29dfb1ddabe058b2bc426817efc79afa03c9bc55ae"
 dependencies = [
  "displaydoc",
  "smallvec",
@@ -853,8 +853,8 @@ dependencies = [
 name = "formatjs_intl_locale"
 version = "0.1.0"
 dependencies = [
- "formatjs_intl_localematcher",
  "formatjs_intl_getcanonicallocales",
+ "formatjs_intl_localematcher",
  "serde",
  "serde_json",
 ]
