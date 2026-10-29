@@ -10,8 +10,10 @@ cc_test(
     data = [
         "//conformance-tests/icu4j:list_format_fixtures",
         "//conformance-tests/icu4j:locale-format-fixtures.tsv",
+        "//conformance-tests/icu4j:plural_rules_fixtures",
     ],
     env = {
+        "PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)",
         "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
         "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-format-fixtures.tsv)",
     },

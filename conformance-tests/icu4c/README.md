@@ -44,3 +44,15 @@ ICU4X differs from ICU4C on 66 inputs: Hebrew nonbreaking hyphens and Spanish
 `11` followed by a newline. [Exact outputs](../icu4x/list-format-icu-differences.tsv)
 preserve those differences. The test checks each ICU4X result and the preferred
 ICU4C result without normalization; unused or duplicate entries fail.
+
+## PluralRules
+
+```sh
+bazel test -c opt //conformance-tests/icu4x:intl_pluralrules_conformance_test
+```
+
+ICU4J generates 720 cardinal/ordinal selections over 12 locales, checked by
+ICU4C, ICU4X and Hermes source/bytecode. Inputs fit Intl's default three fraction
+digits. C/J select from formatted-number operands with matching precision and
+rounding; X uses exact decimals. No output differences are allowed in this
+matrix. Custom digit options, ranges and JS semantics retain separate gates.

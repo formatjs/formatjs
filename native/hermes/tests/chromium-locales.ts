@@ -111,4 +111,12 @@ if (api.ListFormat?.polyfilled) {
     )
   }
 }
+if (api.PluralRules?.polyfilled) {
+  const rows = (globalThis as any).__PLURAL_RULES_FIXTURES as string[][]
+  equal(rows.length, 720)
+  for (const [locale, type, value, expected] of rows) {
+    formatter = `PluralRules ${locale}/${type}/${value}`
+    equal(new api.PluralRules(locale, {type}).select(Number(value)), expected)
+  }
+}
 print(JSON.stringify({type: 'compiled-locales', kinds, assertions}))

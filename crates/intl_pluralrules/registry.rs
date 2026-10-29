@@ -39,6 +39,7 @@ impl Registry {
         } else {
             formatjs_intl_locale::matcher::best_fit(&self.available, requested)
                 .map_err(|_| Error::InvalidOption("locales"))?
+                .or_else(|| formatjs_intl_locale::matcher::lookup(&self.available, requested))
         };
         matched
             .or_else(|| self.default.clone())

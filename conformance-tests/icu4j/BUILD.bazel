@@ -115,3 +115,20 @@ genrule(
     tools = [":intl_listformat_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "intl_pluralrules_oracle",
+    testonly = True,
+    srcs = ["IntlPluralRulesOracle.java"],
+    main_class = "IntlPluralRulesOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "plural_rules_fixtures",
+    testonly = True,
+    outs = ["plural-rules-fixtures.tsv"],
+    cmd = "$(execpath :intl_pluralrules_oracle) $@",
+    tools = [":intl_pluralrules_oracle"],
+    visibility = ["//visibility:public"],
+)

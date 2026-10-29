@@ -219,3 +219,16 @@ CLDR data and compiles plural rules at build time; calendar locale patches merge
 into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
 The explicit-registration targets retain custom-provider and TS conformance use.
 See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+### Independent ICU checks
+
+The pinned ICU4J oracle generates 720 default-precision selections across 12
+locales, cardinal/ordinal rules, integers and fractions. ICU4C and ICU4X check
+those same results independently; Hermes checks source and bytecode modes.
+C/J use formatted-number operands with 0–3 fraction digits and half-up rounding,
+avoiding binary-double operand differences. ICU4X receives exact decimals.
+These cases do not replace digit-option, range or JS semantics coverage.
+
+When best fit finds no match, the plural registry tries prefix lookup before
+using its default locale. This keeps `zh-TW` on the available `zh` rules instead
+of English when only a Chinese language payload is shipped.
