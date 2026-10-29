@@ -333,6 +333,34 @@ for (const part of safeParts) {
   }
 }
 
+const inheritedType = Object.getOwnPropertyDescriptor(Object.prototype, 'type')
+let inheritedTypeReads = 0
+try {
+  Object.defineProperty(Object.prototype, 'type', {
+    configurable: true,
+    get() {
+      inheritedTypeReads++
+      return 'unit'
+    },
+  })
+  equal(
+    new Native('en').resolvedOptions().type,
+    'conjunction',
+    'missing options ignore prototype'
+  )
+  equal(inheritedTypeReads, 0, 'missing options read no inherited type')
+  equal(
+    new Native('en', {}).resolvedOptions().type,
+    'unit',
+    'explicit options keep inherited type'
+  )
+  equal(inheritedTypeReads, 1, 'explicit options invoke inherited getter')
+} finally {
+  if (inheritedType)
+    Object.defineProperty(Object.prototype, 'type', inheritedType)
+  else Reflect.deleteProperty(Object.prototype, 'type')
+}
+
 function poisoned(): never {
   throw new Error('tampered intrinsic called')
 }

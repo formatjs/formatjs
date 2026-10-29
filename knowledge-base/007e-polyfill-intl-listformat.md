@@ -113,3 +113,9 @@ Hermes constructs parts as ordinary data-record literals. Private append
 descriptors have null prototypes and are reused within each call, bypassing
 inherited array setters and descriptor `get`/`set` properties without sharing
 returned records.
+
+When constructor options are omitted, Hermes still canonicalizes the full locale
+list before a single Rust negotiation/construction call. No JS option getters
+exist in that path. Explicit options retain the separate resolution step before
+reading type/style, including inherited getters. The additive C ABI accepts
+canonical locale-list JSON and returns an independently owned handle.

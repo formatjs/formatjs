@@ -174,6 +174,9 @@ Link `//native/hermes:listformat` (SDK `:listformat`) and call
 Rust owns patterns, matching and parts. The TS facade supplies receiver brands,
 option access and StringListFromIterable, including IteratorClose. UTF-16 unit
 arrays preserve lone surrogates across the ABI. The native conformance target
+Omitted constructor options use one Rust call for negotiation and default
+construction. Explicit options keep their observable getter order.
+
 `//native/hermes/tests:listformat_conformance_test` compares the public API with
 TS through source and optimized-bytecode installers. `--native-listformat`
 enables the source installer in the development runner.
