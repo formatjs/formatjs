@@ -1,0 +1,53 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "generate_src_file")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+generate_src_file(
+    name = "distance",
+    src = "matching_generated.rs",
+    args = ["--rust"],
+    data = ["//:node_modules/cldr-core"],
+    tool = "//packages/intl-localematcher/scripts:distance-gen",
+)
+
+rust_library(
+    name = "intl_localematcher",
+    srcs = [
+        "lib.rs",
+        "matching_generated.rs",
+    ],
+    crate_name = "formatjs_intl_localematcher",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = ["@crates//:icu_locale"],
+)
+
+formatjs_rust_test(
+    name = "intl_localematcher_test",
+    size = "small",
+    srcs = [
+        "lib.rs",
+        "matching_generated.rs",
+    ],
+    compile_data = ["//packages/intl-localematcher:tests/icu-match-fixtures.json"],
+    crate_name = "formatjs_intl_localematcher",
+    crate_root = "lib.rs",
+    data = ["//conformance-tests/icu4j:locale_matcher_grid"],
+    edition = "2024",
+    env = {"ICU_MATCHER_GRID": "$(rootpath //conformance-tests/icu4j:locale_matcher_grid)"},
+    deps = [
+        "@crates//:icu_locale",
+        "@crates//:serde_json",
+    ],
+)
+
+rust_binary(
+    name = "matcher_bench",
+    srcs = ["benchmark.rs"],
+    crate_name = "matcher_bench",
+    crate_root = "benchmark.rs",
+    edition = "2024",
+    deps = [":intl_localematcher"],
+)

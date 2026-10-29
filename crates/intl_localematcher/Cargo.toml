@@ -1,0 +1,18 @@
+[package]
+name = "formatjs_intl_localematcher"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "ICU-compatible CLDR locale matching"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = false
+
+[dependencies]
+icu_locale = "2.3.1"
+
+[dev-dependencies]
+serde_json = "1.0"
+
+[lib]
+path = "lib.rs"

@@ -1,0 +1,1371 @@
+{
+  "timestamp": "2026-10-29T00:57:37.039569+00:00",
+  "platform": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "icu4c_prefix": "/opt/homebrew/Cellar/icu4c@78/78.3",
+  "processor": "Apple M4 Max",
+  "supported_counts": {
+    "full": 766,
+    "small": 11
+  },
+  "iterations": 100000,
+  "repetitions": 5,
+  "versions": {
+    "rust": "Rust CLDR 48; iterations 100000",
+    "icu4c": "ICU4C 78.3; iterations 100000",
+    "icu4j": "ICU4J 78.1.0.0; Java 17.0.17; iterations 100000",
+    "icu4x_fallback": "ICU4X icu_locale 2.3.1 / icu_locale_fallback 2.3.0; parent fallback, not distance matching; iterations 100000"
+  },
+  "iterations_by_case": {
+    "full_exact": 100000,
+    "full_equivalent": 100000,
+    "full_chinese": 100000,
+    "full_spanish": 100000,
+    "full_serbian": 100000,
+    "full_fuzzy": 100000,
+    "full_multiple": 100000,
+    "full_language_fallback": 100000,
+    "full_regional_fallback": 100000,
+    "full_script_fallback": 100000,
+    "small_exact": 100000,
+    "small_equivalent": 100000,
+    "small_chinese": 100000,
+    "small_spanish": 100000,
+    "small_serbian": 100000,
+    "small_fuzzy": 100000,
+    "small_multiple": 100000,
+    "small_language_fallback": 100000,
+    "small_regional_fallback": 100000,
+    "small_script_fallback": 100000,
+    "full_unseen": 5000
+  },
+  "methodology": {
+    "prepared": "Rust DesiredLocale contains maximized LSRs; ICU4C/J receive reusable locale objects. Rust closest-match cache enabled.",
+    "strings": "Parse, canonicalize, and match on every iteration.",
+    "full_unseen": "Cycle 520 private-use languages; exceeds Rust cache capacity of 256.",
+    "construct": "Parse supported tags and construct matcher; 100 timed constructions after warmup.",
+    "cold_process": "Fresh process startup, read cases, construct full matcher, match en once.",
+    "icu4x_fallback": "LocaleFallbacker plus benchmark membership/default glue; parent fallback, not distance matching; selections may differ.",
+    "jvm": "1000 construction warmups; per-case warmup equals measured iterations; 256 MiB heap, Serial GC."
+  },
+  "cold_process_ms": {
+    "rust": {
+      "median": 7.642167,
+      "samples": [12.044417, 8.131292, 4.944792, 7.642167, 5.163167]
+    },
+    "icu4c": {
+      "median": 10.021541,
+      "samples": [34.4765, 10.021541, 9.244833, 11.143625, 8.58275]
+    },
+    "icu4j": {
+      "median": 182.830708,
+      "samples": [387.760708, 135.126208, 182.830708, 137.940666, 215.272375]
+    },
+    "icu4x_fallback": {
+      "median": 7.024791,
+      "samples": [243.809917, 4.371666, 7.024791, 4.758583, 7.141042]
+    }
+  },
+  "results": [
+    {
+      "runtime": "icu4c",
+      "mode": "construct",
+      "case": "full",
+      "median_ns": 860962.0,
+      "samples_ns": [857353.0, 841671.0, 860962.0, 871319.0, 876320.0]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "construct",
+      "case": "small",
+      "median_ns": 9472.08,
+      "samples_ns": [9456.25, 9615.42, 9105.0, 9568.75, 9472.08]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_chinese",
+      "median_ns": 4388.69,
+      "samples_ns": [4352.93, 4369.0, 4389.7, 4485.8, 4388.69]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_equivalent",
+      "median_ns": 4597.14,
+      "samples_ns": [4507.73, 4597.14, 4930.48, 4579.23, 4692.33]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_exact",
+      "median_ns": 132.997,
+      "samples_ns": [133.611, 125.323, 131.033, 132.997, 134.039]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_fuzzy",
+      "median_ns": 7222.36,
+      "samples_ns": [7437.16, 7291.47, 7197.05, 7222.36, 7142.61]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_language_fallback",
+      "median_ns": 131.76,
+      "samples_ns": [133.245, 139.412, 127.955, 131.392, 131.76]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_multiple",
+      "median_ns": 132.644,
+      "samples_ns": [133.045, 129.862, 137.324, 132.644, 127.433]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_regional_fallback",
+      "median_ns": 133.417,
+      "samples_ns": [133.417, 129.143, 139.646, 136.145, 131.674]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_script_fallback",
+      "median_ns": 136.825,
+      "samples_ns": [137.095, 135.892, 137.48, 134.685, 136.825]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_serbian",
+      "median_ns": 114.32,
+      "samples_ns": [104.698, 114.32, 115.846, 124.362, 114.068]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_spanish",
+      "median_ns": 126.716,
+      "samples_ns": [125.349, 126.716, 128.783, 126.387, 130.133]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "full_unseen",
+      "median_ns": 2143.34,
+      "samples_ns": [2098.43, 2143.34, 2187.28, 2125.74, 2173.74]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_chinese",
+      "median_ns": 362.065,
+      "samples_ns": [360.741, 347.677, 364.805, 362.065, 381.915]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_equivalent",
+      "median_ns": 216.33,
+      "samples_ns": [210.576, 213.125, 242.368, 216.33, 216.343]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_exact",
+      "median_ns": 135.934,
+      "samples_ns": [140.015, 134.633, 142.457, 135.934, 135.017]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_fuzzy",
+      "median_ns": 276.016,
+      "samples_ns": [269.561, 276.016, 286.893, 281.417, 272.551]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_language_fallback",
+      "median_ns": 211.533,
+      "samples_ns": [206.662, 213.557, 214.129, 209.507, 211.533]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_multiple",
+      "median_ns": 131.804,
+      "samples_ns": [131.804, 130.216, 125.918, 134.307, 133.2]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_regional_fallback",
+      "median_ns": 257.178,
+      "samples_ns": [245.188, 252.23, 260.434, 350.17, 257.178]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_script_fallback",
+      "median_ns": 241.745,
+      "samples_ns": [235.117, 234.524, 241.745, 253.608, 247.027]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_serbian",
+      "median_ns": 216.978,
+      "samples_ns": [215.36, 216.978, 247.511, 220.297, 212.136]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "prepared",
+      "case": "small_spanish",
+      "median_ns": 256.235,
+      "samples_ns": [261.807, 243.808, 250.979, 256.235, 258.909]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_chinese",
+      "median_ns": 5031.58,
+      "samples_ns": [4997.7, 5031.58, 5028.08, 5116.95, 5032.3]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_equivalent",
+      "median_ns": 5232.35,
+      "samples_ns": [5079.4, 5202.92, 5644.12, 5232.35, 5235.38]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_exact",
+      "median_ns": 593.936,
+      "samples_ns": [587.791, 593.936, 584.964, 624.441, 606.8]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_fuzzy",
+      "median_ns": 7810.16,
+      "samples_ns": [7810.16, 7964.55, 7752.11, 7821.32, 7577.87]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_language_fallback",
+      "median_ns": 685.466,
+      "samples_ns": [679.823, 682.408, 690.163, 686.677, 685.466]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_multiple",
+      "median_ns": 1195.16,
+      "samples_ns": [1213.13, 1237.21, 1162.5, 1195.16, 1165.75]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_regional_fallback",
+      "median_ns": 822.506,
+      "samples_ns": [989.757, 822.506, 815.712, 814.095, 837.375]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_script_fallback",
+      "median_ns": 824.195,
+      "samples_ns": [823.967, 835.134, 863.303, 819.062, 824.195]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_serbian",
+      "median_ns": 915.779,
+      "samples_ns": [938.491, 924.87, 915.779, 886.327, 888.699]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_spanish",
+      "median_ns": 817.127,
+      "samples_ns": [797.944, 817.127, 820.201, 839.616, 812.193]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "full_unseen",
+      "median_ns": 4360.95,
+      "samples_ns": [4279.55, 4360.95, 4403.1, 6105.72, 4293.34]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_chinese",
+      "median_ns": 938.167,
+      "samples_ns": [938.167, 917.736, 974.231, 905.524, 943.309]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_equivalent",
+      "median_ns": 770.813,
+      "samples_ns": [770.813, 760.288, 806.629, 777.109, 766.427]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_exact",
+      "median_ns": 595.334,
+      "samples_ns": [597.906, 595.113, 616.38, 595.334, 590.99]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_fuzzy",
+      "median_ns": 983.199,
+      "samples_ns": [976.051, 971.459, 1032.22, 986.786, 983.199]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_language_fallback",
+      "median_ns": 771.313,
+      "samples_ns": [746.809, 771.313, 768.129, 837.635, 779.252]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_multiple",
+      "median_ns": 1205.55,
+      "samples_ns": [1197.12, 1205.55, 1193.19, 1207.12, 1212.52]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_regional_fallback",
+      "median_ns": 988.572,
+      "samples_ns": [952.593, 988.572, 950.37, 989.411, 1015.93]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_script_fallback",
+      "median_ns": 959.778,
+      "samples_ns": [910.007, 961.015, 959.778, 1001.34, 950.288]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_serbian",
+      "median_ns": 1027.56,
+      "samples_ns": [1004.95, 1035.72, 1033.05, 1027.56, 1000.86]
+    },
+    {
+      "runtime": "icu4c",
+      "mode": "strings",
+      "case": "small_spanish",
+      "median_ns": 956.467,
+      "samples_ns": [961.594, 956.467, 947.252, 961.948, 944.78]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "construct",
+      "case": "full",
+      "median_ns": 1584252.08,
+      "samples_ns": [1672594.17, 1558851.25, 1584252.08, 1557869.58, 1631708.33]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "construct",
+      "case": "small",
+      "median_ns": 9254.58,
+      "samples_ns": [8455.41, 7974.59, 9302.5, 9254.58, 10089.59]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_chinese",
+      "median_ns": 2689.76,
+      "samples_ns": [2654.48, 2689.76, 2733.78, 2811.94, 2680.55]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_equivalent",
+      "median_ns": 2811.19,
+      "samples_ns": [2754.86, 2811.19, 2811.21, 2755.18, 2862.95]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_exact",
+      "median_ns": 44.67,
+      "samples_ns": [43.78, 42.97, 62.65, 51.54, 44.67]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_fuzzy",
+      "median_ns": 6068.33,
+      "samples_ns": [5734.82, 6068.33, 6002.59, 6764.11, 6598.03]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_language_fallback",
+      "median_ns": 35.86,
+      "samples_ns": [41.25, 36.2, 34.69, 35.86, 35.85]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_multiple",
+      "median_ns": 40.35,
+      "samples_ns": [48.02, 40.35, 39.06, 39.08, 40.73]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_regional_fallback",
+      "median_ns": 41.03,
+      "samples_ns": [44.0, 37.72, 41.35, 38.37, 41.03]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_script_fallback",
+      "median_ns": 41.03,
+      "samples_ns": [51.92, 39.3, 40.08, 41.03, 42.19]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_serbian",
+      "median_ns": 23.97,
+      "samples_ns": [27.1, 22.59, 24.1, 23.82, 23.97]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_spanish",
+      "median_ns": 35.23,
+      "samples_ns": [39.36, 32.59, 35.43, 35.23, 33.59]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "full_unseen",
+      "median_ns": 4031.89,
+      "samples_ns": [3643.6, 4031.89, 4119.81, 4155.95, 4019.28]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_chinese",
+      "median_ns": 169.78,
+      "samples_ns": [177.38, 159.79, 179.45, 169.78, 169.62]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_equivalent",
+      "median_ns": 117.17,
+      "samples_ns": [122.64, 127.3, 111.99, 117.17, 112.69]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_exact",
+      "median_ns": 39.58,
+      "samples_ns": [48.01, 39.04, 39.26, 39.58, 42.8]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_fuzzy",
+      "median_ns": 168.66,
+      "samples_ns": [179.42, 168.66, 166.47, 173.82, 165.89]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_language_fallback",
+      "median_ns": 136.35,
+      "samples_ns": [136.35, 117.33, 137.33, 119.07, 147.17]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_multiple",
+      "median_ns": 40.02,
+      "samples_ns": [44.3, 37.78, 38.62, 40.24, 40.02]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_regional_fallback",
+      "median_ns": 151.62,
+      "samples_ns": [156.85, 151.62, 149.48, 151.31, 163.95]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_script_fallback",
+      "median_ns": 129.53,
+      "samples_ns": [137.16, 127.18, 129.53, 123.89, 133.42]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_serbian",
+      "median_ns": 168.43,
+      "samples_ns": [111.73, 168.43, 177.95, 115.26, 173.02]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "prepared",
+      "case": "small_spanish",
+      "median_ns": 217.74,
+      "samples_ns": [216.81, 219.7, 243.72, 213.38, 217.74]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_chinese",
+      "median_ns": 3237.45,
+      "samples_ns": [3216.02, 3174.71, 3267.24, 3281.24, 3237.45]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_equivalent",
+      "median_ns": 3315.86,
+      "samples_ns": [3283.63, 3482.67, 3278.42, 3315.86, 3377.32]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_exact",
+      "median_ns": 289.6,
+      "samples_ns": [299.94, 271.02, 286.71, 289.6, 307.28]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_fuzzy",
+      "median_ns": 6856.38,
+      "samples_ns": [6686.1, 6801.32, 6856.38, 7255.12, 7334.84]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_language_fallback",
+      "median_ns": 461.2,
+      "samples_ns": [462.59, 448.66, 461.24, 452.32, 461.2]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_multiple",
+      "median_ns": 670.27,
+      "samples_ns": [715.46, 601.39, 670.27, 653.96, 678.78]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_regional_fallback",
+      "median_ns": 752.98,
+      "samples_ns": [825.57, 752.98, 740.05, 730.84, 755.25]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_script_fallback",
+      "median_ns": 583.03,
+      "samples_ns": [623.25, 575.77, 582.74, 599.82, 583.03]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_serbian",
+      "median_ns": 827.46,
+      "samples_ns": [874.38, 802.9, 827.46, 776.14, 844.03]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_spanish",
+      "median_ns": 769.49,
+      "samples_ns": [836.25, 759.18, 821.25, 731.6, 769.49]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "full_unseen",
+      "median_ns": 9081.78,
+      "samples_ns": [8485.44, 9081.78, 9314.21, 8549.19, 9687.43]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_chinese",
+      "median_ns": 659.79,
+      "samples_ns": [698.49, 593.95, 811.77, 603.63, 659.79]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_equivalent",
+      "median_ns": 580.8,
+      "samples_ns": [593.39, 525.54, 584.85, 520.75, 580.8]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_exact",
+      "median_ns": 285.74,
+      "samples_ns": [313.71, 285.74, 271.88, 284.82, 298.11]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_fuzzy",
+      "median_ns": 957.44,
+      "samples_ns": [957.44, 919.77, 976.99, 889.38, 965.91]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_language_fallback",
+      "median_ns": 631.66,
+      "samples_ns": [640.87, 646.36, 631.66, 612.26, 626.76]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_multiple",
+      "median_ns": 650.04,
+      "samples_ns": [720.0, 607.86, 650.04, 643.41, 725.83]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_regional_fallback",
+      "median_ns": 905.45,
+      "samples_ns": [978.41, 899.48, 905.45, 881.7, 955.05]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_script_fallback",
+      "median_ns": 799.6,
+      "samples_ns": [799.6, 801.57, 792.31, 791.35, 806.52]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_serbian",
+      "median_ns": 958.64,
+      "samples_ns": [996.38, 958.64, 925.49, 1001.58, 954.78]
+    },
+    {
+      "runtime": "icu4j",
+      "mode": "strings",
+      "case": "small_spanish",
+      "median_ns": 884.97,
+      "samples_ns": [939.19, 877.07, 928.57, 864.73, 884.97]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "construct",
+      "case": "full",
+      "median_ns": 134329.58,
+      "samples_ns": [208367.92, 130335.41, 138034.16, 133114.58, 134329.58]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "construct",
+      "case": "small",
+      "median_ns": 1739.58,
+      "samples_ns": [2466.25, 1807.08, 1709.17, 1739.58, 1698.33]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_chinese",
+      "median_ns": 168.86,
+      "samples_ns": [176.52, 166.89, 170.39, 167.14, 168.86]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_equivalent",
+      "median_ns": 190.86,
+      "samples_ns": [191.44, 190.86, 193.76, 189.55, 188.72]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_exact",
+      "median_ns": 32.92,
+      "samples_ns": [45.72, 32.92, 37.35, 31.89, 31.99]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_fuzzy",
+      "median_ns": 197.64,
+      "samples_ns": [200.8, 197.64, 194.16, 186.9, 199.72]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_language_fallback",
+      "median_ns": 33.91,
+      "samples_ns": [33.57, 31.66, 34.77, 33.91, 34.86]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_multiple",
+      "median_ns": 94.85,
+      "samples_ns": [94.85, 90.86, 96.58, 92.2, 96.33]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_regional_fallback",
+      "median_ns": 95.47,
+      "samples_ns": [98.96, 93.66, 95.47, 92.96, 96.18]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_script_fallback",
+      "median_ns": 42.25,
+      "samples_ns": [43.91, 41.55, 42.25, 41.46, 42.32]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_serbian",
+      "median_ns": 105.35,
+      "samples_ns": [106.26, 102.81, 106.5, 103.92, 105.35]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_spanish",
+      "median_ns": 94.33,
+      "samples_ns": [94.14, 94.33, 103.31, 92.0, 94.56]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "full_unseen",
+      "median_ns": 108.7,
+      "samples_ns": [117.3, 107.62, 105.98, 109.28, 108.7]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_chinese",
+      "median_ns": 167.24,
+      "samples_ns": [167.24, 171.71, 169.94, 163.09, 166.52]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_equivalent",
+      "median_ns": 188.59,
+      "samples_ns": [195.86, 183.93, 188.59, 188.43, 192.18]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_exact",
+      "median_ns": 32.35,
+      "samples_ns": [32.66, 30.91, 34.89, 31.99, 32.35]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_fuzzy",
+      "median_ns": 195.03,
+      "samples_ns": [195.03, 189.92, 197.17, 189.98, 198.32]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_language_fallback",
+      "median_ns": 102.55,
+      "samples_ns": [103.68, 102.55, 100.14, 103.73, 102.02]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_multiple",
+      "median_ns": 92.97,
+      "samples_ns": [92.97, 98.0, 91.99, 94.54, 92.91]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_regional_fallback",
+      "median_ns": 304.42,
+      "samples_ns": [301.57, 300.58, 308.18, 311.84, 304.42]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_script_fallback",
+      "median_ns": 107.36,
+      "samples_ns": [107.36, 108.67, 106.41, 135.42, 106.98]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_serbian",
+      "median_ns": 175.35,
+      "samples_ns": [177.35, 171.37, 171.3, 175.35, 178.87]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "prepared",
+      "case": "small_spanish",
+      "median_ns": 212.4,
+      "samples_ns": [215.08, 212.4, 210.86, 209.56, 226.61]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_chinese",
+      "median_ns": 259.2,
+      "samples_ns": [266.75, 254.84, 259.2, 259.57, 257.45]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_equivalent",
+      "median_ns": 268.12,
+      "samples_ns": [272.26, 265.85, 268.12, 260.79, 268.94]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_exact",
+      "median_ns": 89.52,
+      "samples_ns": [100.26, 89.52, 94.28, 89.47, 87.12]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_fuzzy",
+      "median_ns": 278.51,
+      "samples_ns": [285.48, 275.83, 278.51, 271.67, 282.42]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_language_fallback",
+      "median_ns": 87.68,
+      "samples_ns": [88.94, 84.32, 87.68, 87.52, 95.15]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_multiple",
+      "median_ns": 206.16,
+      "samples_ns": [207.04, 204.15, 215.7, 200.92, 206.16]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_regional_fallback",
+      "median_ns": 170.05,
+      "samples_ns": [170.05, 166.24, 173.33, 170.03, 175.34]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_script_fallback",
+      "median_ns": 105.51,
+      "samples_ns": [105.51, 102.09, 107.62, 102.75, 115.54]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_serbian",
+      "median_ns": 183.4,
+      "samples_ns": [184.91, 180.36, 183.4, 180.24, 186.7]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_spanish",
+      "median_ns": 171.71,
+      "samples_ns": [171.81, 168.34, 179.29, 165.61, 171.71]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "full_unseen",
+      "median_ns": 189.42,
+      "samples_ns": [184.81, 193.67, 189.42, 196.51, 185.28]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_chinese",
+      "median_ns": 253.4,
+      "samples_ns": [256.98, 253.4, 362.65, 250.98, 250.19]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_equivalent",
+      "median_ns": 269.83,
+      "samples_ns": [270.33, 259.9, 270.96, 269.83, 263.02]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_exact",
+      "median_ns": 86.16,
+      "samples_ns": [84.67, 84.59, 86.89, 86.16, 87.05]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_fuzzy",
+      "median_ns": 277.07,
+      "samples_ns": [277.09, 272.79, 277.07, 281.86, 274.29]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_language_fallback",
+      "median_ns": 161.77,
+      "samples_ns": [161.77, 157.07, 160.11, 164.11, 161.95]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_multiple",
+      "median_ns": 203.4,
+      "samples_ns": [204.3, 200.96, 202.05, 203.4, 205.23]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_regional_fallback",
+      "median_ns": 389.8,
+      "samples_ns": [382.63, 388.74, 391.2, 396.82, 389.8]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_script_fallback",
+      "median_ns": 170.56,
+      "samples_ns": [166.78, 172.81, 170.56, 208.96, 169.68]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_serbian",
+      "median_ns": 260.11,
+      "samples_ns": [271.06, 257.54, 260.11, 256.64, 261.41]
+    },
+    {
+      "runtime": "icu4x_fallback",
+      "mode": "strings",
+      "case": "small_spanish",
+      "median_ns": 289.02,
+      "samples_ns": [293.65, 281.2, 289.02, 281.46, 294.78]
+    },
+    {
+      "runtime": "rust",
+      "mode": "construct",
+      "case": "full",
+      "median_ns": 430586.67,
+      "samples_ns": [429222.5, 430586.67, 433203.34, 447337.92, 425399.58]
+    },
+    {
+      "runtime": "rust",
+      "mode": "construct",
+      "case": "small",
+      "median_ns": 7381.66,
+      "samples_ns": [6971.25, 7518.33, 7372.08, 8312.92, 7381.66]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_chinese",
+      "median_ns": 35.22,
+      "samples_ns": [34.48, 36.85, 38.44, 34.55, 35.22]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_equivalent",
+      "median_ns": 36.37,
+      "samples_ns": [36.37, 34.96, 37.82, 36.52, 35.86]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_exact",
+      "median_ns": 21.07,
+      "samples_ns": [20.61, 21.88, 20.93, 21.07, 21.4]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_fuzzy",
+      "median_ns": 35.28,
+      "samples_ns": [35.96, 34.85, 35.28, 34.65, 36.56]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_language_fallback",
+      "median_ns": 19.69,
+      "samples_ns": [19.54, 19.69, 21.31, 22.83, 19.66]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_multiple",
+      "median_ns": 20.28,
+      "samples_ns": [21.29, 20.14, 19.76, 20.28, 21.26]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_regional_fallback",
+      "median_ns": 21.05,
+      "samples_ns": [19.77, 19.89, 21.68, 21.89, 21.05]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_script_fallback",
+      "median_ns": 20.97,
+      "samples_ns": [28.31, 20.67, 20.97, 21.73, 19.67]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_serbian",
+      "median_ns": 21.18,
+      "samples_ns": [21.18, 23.6, 19.56, 22.49, 20.78]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_spanish",
+      "median_ns": 21.26,
+      "samples_ns": [21.26, 20.58, 23.47, 22.16, 19.66]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "full_unseen",
+      "median_ns": 150.9,
+      "samples_ns": [149.71, 152.42, 150.9, 147.34, 155.59]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_chinese",
+      "median_ns": 36.0,
+      "samples_ns": [36.72, 35.12, 37.21, 34.64, 36.0]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_equivalent",
+      "median_ns": 36.38,
+      "samples_ns": [34.63, 36.36, 36.71, 36.55, 36.38]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_exact",
+      "median_ns": 20.5,
+      "samples_ns": [22.44, 19.87, 21.36, 20.34, 20.5]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_fuzzy",
+      "median_ns": 36.29,
+      "samples_ns": [36.29, 38.41, 35.86, 38.14, 34.69]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_language_fallback",
+      "median_ns": 35.59,
+      "samples_ns": [34.31, 35.51, 38.52, 35.77, 35.59]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_multiple",
+      "median_ns": 21.76,
+      "samples_ns": [21.76, 20.79, 21.96, 19.56, 22.02]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_regional_fallback",
+      "median_ns": 36.08,
+      "samples_ns": [36.25, 34.11, 36.08, 37.24, 35.54]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_script_fallback",
+      "median_ns": 36.7,
+      "samples_ns": [35.09, 37.06, 38.83, 36.7, 36.37]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_serbian",
+      "median_ns": 35.92,
+      "samples_ns": [34.72, 40.33, 35.07, 36.52, 35.92]
+    },
+    {
+      "runtime": "rust",
+      "mode": "prepared",
+      "case": "small_spanish",
+      "median_ns": 35.26,
+      "samples_ns": [34.6, 36.87, 35.59, 35.0, 35.26]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_chinese",
+      "median_ns": 316.64,
+      "samples_ns": [311.6, 320.17, 326.33, 312.41, 316.64]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_equivalent",
+      "median_ns": 305.1,
+      "samples_ns": [300.9, 311.79, 326.27, 305.1, 300.22]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_exact",
+      "median_ns": 217.65,
+      "samples_ns": [215.09, 220.73, 258.96, 217.65, 211.95]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_fuzzy",
+      "median_ns": 307.44,
+      "samples_ns": [298.73, 312.53, 327.36, 304.35, 307.44]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_language_fallback",
+      "median_ns": 215.46,
+      "samples_ns": [213.85, 218.95, 215.46, 220.82, 210.87]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_multiple",
+      "median_ns": 462.6,
+      "samples_ns": [448.87, 462.6, 457.32, 462.96, 464.89]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_regional_fallback",
+      "median_ns": 282.78,
+      "samples_ns": [278.63, 286.66, 282.78, 286.37, 281.53]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_script_fallback",
+      "median_ns": 265.93,
+      "samples_ns": [265.93, 270.8, 264.47, 271.7, 264.24]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_serbian",
+      "median_ns": 296.1,
+      "samples_ns": [290.46, 305.56, 295.89, 296.1, 305.75]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_spanish",
+      "median_ns": 291.59,
+      "samples_ns": [289.92, 300.23, 289.17, 291.59, 298.85]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "full_unseen",
+      "median_ns": 413.32,
+      "samples_ns": [410.0, 420.94, 402.56, 414.79, 413.32]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_chinese",
+      "median_ns": 319.73,
+      "samples_ns": [319.73, 316.36, 321.85, 339.88, 317.75]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_equivalent",
+      "median_ns": 311.94,
+      "samples_ns": [303.97, 311.94, 305.13, 329.45, 315.07]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_exact",
+      "median_ns": 219.9,
+      "samples_ns": [225.28, 236.68, 218.85, 219.9, 217.88]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_fuzzy",
+      "median_ns": 318.2,
+      "samples_ns": [303.09, 318.2, 311.78, 329.45, 320.03]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_language_fallback",
+      "median_ns": 248.8,
+      "samples_ns": [235.59, 252.08, 248.8, 253.91, 247.13]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_multiple",
+      "median_ns": 468.82,
+      "samples_ns": [454.88, 476.3, 468.82, 486.47, 460.91]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_regional_fallback",
+      "median_ns": 326.74,
+      "samples_ns": [306.78, 318.32, 327.88, 328.17, 326.74]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_script_fallback",
+      "median_ns": 297.7,
+      "samples_ns": [291.11, 297.56, 297.7, 305.18, 298.29]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_serbian",
+      "median_ns": 326.3,
+      "samples_ns": [323.66, 325.25, 328.52, 333.1, 326.3]
+    },
+    {
+      "runtime": "rust",
+      "mode": "strings",
+      "case": "small_spanish",
+      "median_ns": 324.46,
+      "samples_ns": [396.49, 318.67, 318.78, 340.14, 324.46]
+    }
+  ],
+  "selections": {
+    "full_exact": "en",
+    "full_equivalent": "en",
+    "full_chinese": "zh-Hant",
+    "full_spanish": "es-MX",
+    "full_serbian": "sr-Latn-BA",
+    "full_fuzzy": "en",
+    "full_multiple": "en-GB",
+    "full_language_fallback": "br",
+    "full_regional_fallback": "en-AU",
+    "full_script_fallback": "sr-Cyrl",
+    "small_exact": "en",
+    "small_equivalent": "en",
+    "small_chinese": "zh-Hant",
+    "small_spanish": "es-419",
+    "small_serbian": "sr-Latn",
+    "small_fuzzy": "en",
+    "small_multiple": "en-GB",
+    "small_language_fallback": "fr",
+    "small_regional_fallback": "en-GB",
+    "small_script_fallback": "sr-Latn",
+    "full_unseen": "en"
+  },
+  "icu4x_fallback_selections": {
+    "full_exact": "en",
+    "full_equivalent": "en",
+    "full_chinese": "zh-Hant",
+    "full_spanish": "es-MX",
+    "full_serbian": "sr-Latn-BA",
+    "full_fuzzy": "en",
+    "full_multiple": "en-GB",
+    "full_language_fallback": "br",
+    "full_regional_fallback": "en-AU",
+    "full_script_fallback": "sr",
+    "small_exact": "en",
+    "small_equivalent": "en",
+    "small_chinese": "zh-Hant",
+    "small_spanish": "es-419",
+    "small_serbian": "sr-Latn",
+    "small_fuzzy": "en",
+    "small_multiple": "en-GB",
+    "small_language_fallback": "en",
+    "small_regional_fallback": "en",
+    "small_script_fallback": "en",
+    "full_unseen": "und"
+  },
+  "icu4x_fallback_differences": {
+    "full_script_fallback": {
+      "distance": "sr-Cyrl",
+      "icu4x_fallback": "sr"
+    },
+    "small_language_fallback": {
+      "distance": "fr",
+      "icu4x_fallback": "en"
+    },
+    "small_regional_fallback": {
+      "distance": "en-GB",
+      "icu4x_fallback": "en"
+    },
+    "small_script_fallback": {
+      "distance": "sr-Latn",
+      "icu4x_fallback": "en"
+    },
+    "full_unseen": {
+      "distance": "en",
+      "icu4x_fallback": "und"
+    }
+  }
+}

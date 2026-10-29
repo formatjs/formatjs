@@ -512,3 +512,11 @@ workflow manage these crates and the existing parser/message crates. The workflo
 exports release sources with `git archive`, overlays Bazel package sources,
 then runs Cargo from the full workspace with
 `--locked --all-features`. Cargo handles selected Intl crates in dependency order.
+
+## Standalone locale matching
+
+`crates/intl_localematcher` provides `formatjs_intl_localematcher::LocaleMatcher`.
+It shares generated CLDR distance/partition tables and ICU4J oracle tests with
+`@formatjs/intl-localematcher`, using ICU4X for locale normalization. It is
+unpublished and independent of `formatjs_intl` catalog fallback and the existing
+`intl_locale` native matcher.

@@ -22,13 +22,20 @@ export function BestFitMatcher(
     (all, l) => {
       const {locale: noExtensionLocale} = splitUnicodeExtension(l)
       noExtensionLocales.push(noExtensionLocale)
-      all[noExtensionLocale] = l
+      all[noExtensionLocale] ??= l
       return all
     },
     {}
   )
 
-  const result = findBestMatch(noExtensionLocales, availableLocales)
+  const defaultLocale = getDefaultLocale()
+  const result = findBestMatch(
+    noExtensionLocales,
+    availableLocales,
+    undefined,
+    defaultLocale,
+    false
+  )
   if (result.matchedSupportedLocale && result.matchedDesiredLocale) {
     foundLocale = result.matchedSupportedLocale
     extension = splitUnicodeExtension(
@@ -37,7 +44,7 @@ export function BestFitMatcher(
   }
 
   if (!foundLocale) {
-    return {locale: getDefaultLocale()}
+    return {locale: defaultLocale}
   }
 
   return {

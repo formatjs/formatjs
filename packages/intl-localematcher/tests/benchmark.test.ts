@@ -54,3 +54,21 @@ describe('performance regression check', () => {
     expect(ms).toBeLessThan(0.5)
   })
 })
+
+// Exercise the public path too: ResolveLocale must preserve supported-list caches.
+const largeLocales = Array.from(
+  {length: 676},
+  (_, i) => `fr-${String.fromCharCode(65 + Math.floor(i / 26), 65 + (i % 26))}`
+)
+const publicLocales = ['en', 'zh-Hant', ...largeLocales]
+
+test('public exact and maximized matching with 678 locales < 0.1ms', async () => {
+  const {match} = await import('#packages/intl-localematcher/index.js')
+  for (const desired of ['en', 'zh-TW']) {
+    const ms = measure(() => {
+      match([desired], publicLocales, 'en')
+    })
+    console.log(`  Public ${desired}, 678 locales: ${(ms * 1000).toFixed(1)}μs`)
+    expect(ms).toBeLessThan(0.1)
+  }
+})

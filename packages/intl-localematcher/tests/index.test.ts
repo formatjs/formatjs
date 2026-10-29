@@ -257,3 +257,19 @@ test('supported locale filtering preserves requested tags and order', () => {
     )
   ).toEqual(['sr-Thai-RS', 'de-u-co-phonebk', 'zh-CN'])
 })
+
+test('preserves legacy RegExp statics across matching paths', () => {
+  for (const [requested, supported] of [
+    [['en'], ['en', 'fr']],
+    [['zh-TW'], ['zh', 'zh-Hant']],
+    [['en-XZ'], ['en', 'en-GB']],
+    [['br'], ['de', 'fr']],
+    [['de-x-psaccent'], ['de-1901', 'de']],
+  ]) {
+    ;/sent(inel)/.exec('sentinel')
+    const before = [RegExp.lastMatch, RegExp.$1]
+    match(requested, supported, 'en')
+    const after = [RegExp.lastMatch, RegExp.$1]
+    expect(after).toEqual(before)
+  }
+})

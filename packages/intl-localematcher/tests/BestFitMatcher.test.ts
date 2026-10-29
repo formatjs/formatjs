@@ -91,3 +91,12 @@ test('respects Unicode extension boundaries', () => {
     })
   }
 })
+
+test('first equivalent request keeps its Unicode extension', () => {
+  expect(
+    BestFitMatcher(['de'], ['de-u-co-phonebk', 'de-u-co-emoji'], () => 'en')
+  ).toEqual({
+    locale: 'de',
+    extension: '-u-co-phonebk',
+  })
+})
