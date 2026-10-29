@@ -423,13 +423,12 @@ impl NumberFormat {
             && options.notation == "standard"
             && self.data.numbers.decimal[&self.system].standard == "#,##0.###"
         {
-            let mut parts = Vec::new();
+            let mut parts = self.number_parts(number, "#,##0.###", false)?;
             if number.sign < 0 {
-                parts.push(Part::new("minusSign", symbols.minus_sign.clone()));
+                parts.insert(0, Part::new("minusSign", symbols.minus_sign.clone()));
             } else if number.sign > 0 {
-                parts.push(Part::new("plusSign", symbols.plus_sign.clone()));
+                parts.insert(0, Part::new("plusSign", symbols.plus_sign.clone()));
             }
-            parts.extend(self.number_parts(number, "#,##0.###", false)?);
             return Ok(parts);
         }
         let compact = if options.notation == "compact" && number.magnitude != 0 {
