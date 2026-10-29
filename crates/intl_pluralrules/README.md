@@ -56,7 +56,10 @@ checks on-demand loading on Linux and the cross-built macOS executable.
 Mathematical-input entry points parse numeric strings/radix literals exactly,
 apply Number overflow/underflow clamping, and keep BigInt outside that clamp.
 Arbitrary-length integers use string rounding when ICU's magnitude range is too
-small. The mathematical conformance suite compares TS selection and ranges,
+small. Canonical plain decimals up to 308 bytes already represent a finite
+Number value, so normalization reuses that text without temporary digit strings
+or a floating-point parse. Exponents, radix literals and other forms use the
+general normalization path. The mathematical conformance suite compares TS selection and ranges,
 including 40,000-digit BigInt and long halfway fractions.
 
 Hermes selection calls pass mathematical text and BigInt flags directly through

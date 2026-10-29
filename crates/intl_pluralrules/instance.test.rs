@@ -145,3 +145,44 @@ fn primitive_text_normalization_preserves_exact_values_and_number_range() {
         "one"
     );
 }
+
+#[test]
+fn canonical_mathematical_text_matches_exponent_path_at_number_boundaries() {
+    use formatjs_intl_pluralrules::mathematical::to_mathematical_value;
+    let boundary_integer = "9".repeat(308);
+    let boundary_fraction = "0.".to_owned() + &"0".repeat(305) + "1";
+    let negative_fraction = "-0.".to_owned() + &"0".repeat(304) + "1";
+    for input in [
+        "0",
+        "-0",
+        "3",
+        "-3",
+        "1234.5",
+        "-0.001",
+        "9007199254740993",
+        boundary_integer.as_str(),
+        boundary_fraction.as_str(),
+        negative_fraction.as_str(),
+    ] {
+        assert_eq!(to_mathematical_value(input, false), input);
+        assert_eq!(to_mathematical_value(&format!("{input}e0"), false), input);
+    }
+    for (input, expected) in [
+        ("00", "0"),
+        ("-00.0", "-0"),
+        ("01.25", "1.25"),
+        ("1.250", "1.25"),
+        ("1.", "1"),
+        (".25", "0.25"),
+        ("+1.25", "1.25"),
+        ("1..2", "NaN"),
+        ("-", "NaN"),
+        ("1e309", "Infinity"),
+        ("-1e-9999", "-0"),
+    ] {
+        assert_eq!(to_mathematical_value(input, false), expected, "{input}");
+    }
+    assert_eq!(to_mathematical_value(&"9".repeat(309), false), "Infinity");
+    let finite_long = "1".to_owned() + &"0".repeat(308);
+    assert_eq!(to_mathematical_value(&finite_long, false), finite_long);
+}

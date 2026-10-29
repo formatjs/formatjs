@@ -258,3 +258,10 @@ checked by ICU4C and ICU4X and consumed by both Hermes installer modes. Equal
 formatted endpoints use ECMA-402's single category; the fixture keeps the raw
 ICU range category separately. Ordinal/rounding/BigInt cases remain covered by
 TS differential tests rather than this default-digit cardinal matrix.
+
+Native mathematical normalization returns canonical plain decimals up to 308
+bytes directly. Such text cannot overflow or underflow Number; a single output
+allocation replaces temporary digit strings and floating-point parsing. Validation
+still rejects non-digits, leading integer zeros and trailing fraction zeros from
+this path. General normalization handles exponents, radix literals and other
+forms; BigInt retains its separate arbitrary-length handling.
