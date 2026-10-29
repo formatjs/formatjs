@@ -8,6 +8,7 @@
   var toObject = Object
   var toString = String
   var apply = Reflect.apply
+  var isArray = Array.isArray
   var floor = Math.floor
   var TypeErrorIntrinsic = TypeError
   var RangeErrorIntrinsic = RangeError
@@ -31,7 +32,9 @@
       value !== null &&
       (typeof value === 'object' || typeof value === 'function')
     ) {
-      if (localeToString) {
+      // Arrays cannot carry Locale internal slots. Avoid a thrown brand error
+      // for locale lists while preserving their later HasProperty/Get steps.
+      if (localeToString && !isArray(value)) {
         try {
           return apply(localeToString, value, [])
         } catch {}

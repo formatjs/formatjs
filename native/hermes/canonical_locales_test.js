@@ -102,6 +102,39 @@
   )
   equal(canonicalize(proxy), ['en'])
   equal(order, ['get:length', 'has:0', 'get:0'])
+  order = []
+  var sparse = ['EN']
+  sparse[2] = 'fr'
+  var arrayProxy = new Proxy(sparse, {
+    get: function (target, key) {
+      order.push('get:' + key)
+      return target[key]
+    },
+    has: function (target, key) {
+      order.push('has:' + key)
+      return key in target
+    },
+  })
+  equal(canonicalize(arrayProxy), ['en', 'fr'])
+  equal(order, ['get:length', 'has:0', 'get:0', 'has:1', 'has:2', 'get:2'])
+  throws(RangeError, function () {
+    canonicalize(['en', 'en_US'])
+  })
+  var revoked = Proxy.revocable([], {})
+  revoked.revoke()
+  throws(TypeError, function () {
+    canonicalize(revoked.proxy)
+  })
+  var isArray = Array.isArray
+  Array.isArray = function () {
+    throw new Error('replacement isArray called')
+  }
+  try {
+    equal(canonicalize(['EN']), ['en'])
+    equal(canonicalize([['FR']]), ['fr'])
+  } finally {
+    Array.isArray = isArray
+  }
   var push = Array.prototype.push
   Array.prototype.push = function () {
     throw new Error('push called')
@@ -157,6 +190,7 @@
     else delete Intl.Locale
   }
   if (Intl.Locale) {
+    equal(canonicalize(Reflect.construct(Intl.Locale, ['EN'], Array)), ['en'])
     var locale = new Intl.Locale('EN')
     locale.toString = function () {
       throw new Error('own toString called')
