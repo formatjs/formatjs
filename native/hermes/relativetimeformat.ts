@@ -38,12 +38,11 @@
   const setSlot = WeakMap.prototype.set.bind(slots)
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
-  const canonicalizer = intl.getCanonicalLocales
-  if (typeof canonicalizer !== 'function')
+  const canonicalize = intl.getCanonicalLocales
+  if (typeof canonicalize !== 'function')
     throw new BadReceiver(
       'Install Intl.getCanonicalLocales before RelativeTimeFormat'
     )
-  const canonicalize = canonicalizer.bind(intl)
   function decoded(value: string | number): any {
     if (typeof value === 'number')
       throw new BadOption(
