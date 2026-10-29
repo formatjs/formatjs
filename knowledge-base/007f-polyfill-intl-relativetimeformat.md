@@ -81,7 +81,10 @@ their owned data independently of global JS formatter registrations.
 
 Locale/nu resolution precedes style/numeric reads. Fields are fetched afterward,
 matching the TS initialization order when a getter replaces locale data. Existing
-instances keep their prior records. Numeric text is already a JS Number: the host
+instances keep their prior records. Each immutable pack also keeps a bounded
+cache of internal NumberFormat records, keyed by resolved locale and numbering
+system. Style/numeric validation still runs before reuse; new data gets a fresh
+cache. Formatting reads its shared number record without locking. Numeric text is already a JS Number: the host
 owns observable ToNumber/ToString ordering, BigInt/Symbol rejection and brands.
 Rust preserves negative zero, named auto forms, style fallback, sparse plural
 fallback and unit annotations on number parts. The owned ABI uses separate resolution/final creation calls and serializes

@@ -251,6 +251,13 @@ crate.annotation(
 )
 use_repo(crate, "crates")
 
+# Pinned relative-time oracle; production formatters do not depend on this crate.
+crate.annotation(
+    crate = "icu_experimental",
+    crate_features = ["compiled_data"],
+    repositories = ["crates"],
+)
+
 rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
 

@@ -1,6 +1,23 @@
 # gazelle:ignore
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 
+exports_files(["relative-icu4x-differences.tsv"])
+
+formatjs_rust_test(
+    name = "intl_relativetimeformat_conformance_test",
+    srcs = ["relativetimeformat.test.rs"],
+    crate_name = "icu4x_relativetimeformat_conformance_test",
+    data = ["relative-icu4x-differences.tsv"],
+    edition = "2024",
+    env = {"RELATIVE_TIME_DIFFERENCES": "$(rootpath relative-icu4x-differences.tsv)"},
+    deps = [
+        "//crates/intl_relativetimeformat:with_compiled_data",
+        "@crates//:fixed_decimal",
+        "@crates//:icu_experimental-0.6.0",
+        "@crates//:icu_locale",
+    ],
+)
+
 formatjs_rust_test(
     name = "intl_collator_conformance_test",
     srcs = ["collator.test.rs"],

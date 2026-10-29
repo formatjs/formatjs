@@ -77,3 +77,11 @@ rust_binary(
         "//crates/intl_localematcher",
     ],
 )
+
+rust_binary(
+    name = "relative_constructor_probe",
+    srcs = ["relative-constructor-probe.rs"],
+    crate_name = "hermes_relative_constructor_probe",
+    edition = "2024",
+    deps = ["//crates/intl_relativetimeformat:with_compiled_data"],
+)

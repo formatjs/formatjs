@@ -15,6 +15,12 @@ when another pack replaces a locale.
 current fields afterward, matching TS when later style/numeric getters register
 replacement data. Hosts must preserve that phase boundary.
 
+Immutable packs reuse internal NumberFormat records by resolved locale and
+numbering system, with at most 64 short keys per pack. Each RelativeTimeFormat
+retains its own options and shares an owned number record. Formatting takes no
+cache lock; replacing a pack creates a separate cache and leaves old instances
+intact.
+
 `format` and `format_to_parts` accept normalized Number text after host ToNumber,
 including a distinct `-0`, plus singular/plural unit identifiers. Nonfinite values
 and invalid units reject. Numeric `auto` uses named forms before past/future
