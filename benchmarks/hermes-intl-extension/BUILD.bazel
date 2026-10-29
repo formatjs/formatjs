@@ -166,3 +166,11 @@ genrule(
         ),
     ]
 ]
+
+genrule(
+    name = "list_constructor_control_bytecode",
+    srcs = ["list-constructor-control.js"],
+    outs = ["list-constructor-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath list-constructor-control.js)",
+    tools = ["@hermes//:hermesc"],
+)

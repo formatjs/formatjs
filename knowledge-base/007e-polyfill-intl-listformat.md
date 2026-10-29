@@ -130,3 +130,8 @@ separator stream borrowed UTF-16 slices without arena/task allocations, includin
 contextual Spanish/Hebrew joins. Reversed, prefixed or suffixed patterns retain
 the general traversal. Empty separators add no literal record; empty input strings
 still produce element records. String output reserves its input-length lower bound.
+
+The Hermes facade binds its private WeakMap methods and retains option enum
+arrays at installation. Validated type/style values serialize directly; locale
+tags still use captured JSON quoting. Keep option getter order and real iterable
+validation when changing this path.
