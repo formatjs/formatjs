@@ -11,6 +11,12 @@ if (!new Intl.Locale('de').getCollations().includes('phonebk'))
   throw new Error('Locale must enumerate installed Collator types')
 print('phonebk')
 // CHECK: phonebk
+print(new Intl.Locale('en').getCollations().join(','))
+// CHECK: emoji,eor
+if (
+  Intl.supportedValuesOf('collation').some(type => type.startsWith('private-'))
+)
+  throw new Error('Private collation types must stay internal')
 print(new Intl.PluralRules('en').select(1))
 // CHECK: one
 print(new Intl.ListFormat('en').format(['A', 'B']))

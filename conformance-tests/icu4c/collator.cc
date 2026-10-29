@@ -58,5 +58,5 @@ int main() {
     ++checked;
   }
   std::cout << checked << " ICU4C collator comparisons checked\n";
-  return checked == 27 && matches ? 0 : 1;
+  return checked == 69 && matches ? 0 : 1;
 }

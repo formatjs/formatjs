@@ -56,6 +56,11 @@ const pairs = [
   ['中文', '汉字'],
   ['あ', 'ア'],
   ['😀', '😃'],
+  ['🤣', '😂'],
+  ['🤩', '😘'],
+  ['🧑', '👨'],
+  ['b', 'ɓ'],
+  ['z', 'ʒ'],
   ['\ud800', '\udc00'],
   ['\ud800', '\ufffd'],
   ['Å', 'A\u030a'],
@@ -63,6 +68,16 @@ const pairs = [
   ['å', 'A\u030a'],
 ] as const
 const requests: {locale: string; options: CollatorOptions}[] = []
+for (const locale of ['en', 'tr', 'de', 'ar', 'ja', 'zh-HK'])
+  for (const collation of ['emoji', 'eor']) {
+    for (const sensitivity of ['base', 'variant'] as const)
+      requests.push({locale, options: {collation, sensitivity}})
+    equal(
+      new Native(locale, {collation}).resolvedOptions().collation,
+      collation,
+      'Inherited collation accepted'
+    )
+  }
 for (const locale of [
   'en',
   'de',

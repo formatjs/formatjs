@@ -174,16 +174,16 @@ pub fn tailoring(
     let packed = data
         .tailorings
         .get(locale)
-        .and_then(|values| values.get(collation))
-        .or_else(|| {
-            (collation == "search")
-                .then(|| {
-                    data.tailorings
-                        .get("root")
-                        .and_then(|values| values.get("search"))
-                })
-                .flatten()
-        });
+        .and_then(|values| values.get(collation));
+    if packed.is_none() && locale != "root" {
+        let parent = locale.rsplit_once('-').map_or("root", |(parent, _)| parent);
+        let entries = tailoring(data, parent, collation, visited);
+        data.cache
+            .lock()
+            .expect("collation cache poisoned")
+            .insert(key, entries.clone());
+        return entries;
+    }
     let mut entries = Vec::new();
     if let Some(packed) = packed {
         let mut reset: Option<&Vec<Value>> = None;
