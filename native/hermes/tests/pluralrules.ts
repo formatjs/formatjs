@@ -157,6 +157,21 @@ for (const locale of [
   'es',
   'ja',
 ]) {
+  const nativeDefault = new Native(locale),
+    referenceDefault = new TypeScriptPluralRules(locale)
+  equal(
+    nativeDefault.resolvedOptions(),
+    referenceDefault.resolvedOptions(),
+    `${locale} default options`
+  )
+  for (const value of values) {
+    cases++
+    equal(
+      nativeDefault.select(value),
+      referenceDefault.select(value),
+      `${locale} default select ${String(value)}`
+    )
+  }
   for (const options of configurations)
     for (const type of ['cardinal', 'ordinal'] as const) {
       const native = new Native(locale, {...options, type}),

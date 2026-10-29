@@ -232,3 +232,16 @@ These cases do not replace digit-option, range or JS semantics coverage.
 When best fit finds no match, the plural registry tries prefix lookup before
 using its default locale. This keeps `zh-TW` on the available `zh` rules instead
 of English when only a Chinese language payload is shipped.
+
+### Hermes hot paths
+
+Omitted constructor options use Rust's validated defaults directly; explicit
+options still undergo JS getter access, coercion and validation in spec order.
+The private options record has a null prototype and primitive values, so one
+captured `JSON.stringify` call cannot invoke inherited `toJSON` hooks.
+
+Selection binds the captured WeakMap getter once. Primitive Numbers bypass the
+temporary mathematical-value record, retaining negative zero and non-finite
+values. Other inputs keep the observable ToPrimitive path. Default metadata and
+selection are compared with TS across the existing 13-locale fixture set;
+source/bytecode, intrinsic-poisoning and test262 guards remain in place.

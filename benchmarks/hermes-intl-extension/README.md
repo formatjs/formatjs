@@ -18,22 +18,22 @@ median time per call.
 Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Table uses
 the median of three complete benchmark invocations:
 
-| Operation                          | Native µs | TypeScript µs | Native speedup |
-| ---------------------------------- | --------: | ------------: | -------------: |
-| `getCanonicalLocales`              |      0.79 |          4.39 |          5.54x |
-| `supportedValuesOf`                |      1.81 |         58.59 |         32.43x |
-| `Locale.maximize`                  |      3.61 |         33.20 |          9.19x |
-| `PluralRules.select`               |      0.65 |        125.00 |        193.21x |
-| `ListFormat.format`                |      1.14 |          4.35 |          3.83x |
-| `ListFormat.formatToParts`         |      4.54 |          6.05 |          1.33x |
-| `DisplayNames.of`                  |      1.51 |          7.91 |          5.23x |
-| `Segmenter.segment`                |      6.05 |          8.89 |          1.47x |
-| `Collator.compare`                 |      1.61 |          3.22 |          2.00x |
-| `NumberFormat.format`              |      2.44 |        350.00 |        143.36x |
-| `RelativeTimeFormat.format`        |      1.10 |        406.25 |        369.78x |
-| `RelativeTimeFormat.formatToParts` |      3.91 |        406.25 |        104.00x |
-| `DateTimeFormat.format`            |      4.15 |       1012.50 |        243.95x |
-| `DurationFormat.format`            |      3.96 |        887.50 |        224.40x |
+| Operation                          | Native µs |   TS µs | TS/native |
+| ---------------------------------- | --------: | ------: | --------: |
+| `getCanonicalLocales`              |      0.82 |    4.44 |      5.43 |
+| `supportedValuesOf`                |      1.81 |   58.59 |     32.43 |
+| `Locale.maximize`                  |      3.32 |   33.20 |     10.00 |
+| `PluralRules.select`               |      0.54 |  121.88 |    226.91 |
+| `ListFormat.format`                |      1.14 |    4.30 |      3.78 |
+| `ListFormat.formatToParts`         |      4.64 |    5.86 |      1.28 |
+| `DisplayNames.of`                  |      1.54 |    7.71 |      5.02 |
+| `Segmenter.segment`                |      6.05 |    8.89 |      1.47 |
+| `Collator.compare`                 |      1.61 |    3.17 |      1.97 |
+| `NumberFormat.format`              |      2.39 |  343.75 |    143.67 |
+| `RelativeTimeFormat.format`        |      1.10 |  400.00 |    364.09 |
+| `RelativeTimeFormat.formatToParts` |      3.96 |  400.00 |    101.14 |
+| `DateTimeFormat.format`            |      4.10 | 1000.00 |    243.81 |
+| `DurationFormat.format`            |      3.86 |  875.00 |    226.84 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -63,28 +63,28 @@ list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
 | `getCanonicalLocales`                |        0.78 |       1.09 |
-| `Locale.maximize`                    |        4.09 |       2.09 |
-| `PluralRules.select`                 |        0.61 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.68 |       0.46 |
-| `PluralRules.select(string)`         |        0.70 |       0.91 |
-| `PluralRules.select(ordinal)`        |        0.64 |       0.46 |
-| `PluralRules.select(ru)`             |        0.66 |       0.50 |
-| `PluralRules.selectRange`            |        2.11 |       0.89 |
+| `Locale.maximize`                    |        3.97 |       2.09 |
+| `PluralRules.select`                 |        0.50 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.57 |       0.46 |
+| `PluralRules.select(string)`         |        0.67 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.53 |       0.46 |
+| `PluralRules.select(ru)`             |        0.55 |       0.50 |
+| `PluralRules.selectRange`            |        2.04 |       0.89 |
 | `ListFormat.format`                  |        1.04 |       0.53 |
-| `ListFormat.formatToParts`           |        3.23 |       3.22 |
-| `RelativeTimeFormat.format`          |        1.05 |       0.71 |
+| `ListFormat.formatToParts`           |        3.17 |       3.22 |
+| `RelativeTimeFormat.format`          |        1.07 |       0.71 |
 | `RelativeTimeFormat.formatToParts`   |        3.05 |       2.16 |
-| `RelativeTimeFormat.format(decimal)` |        1.40 |       0.79 |
+| `RelativeTimeFormat.format(decimal)` |        1.48 |       0.79 |
 | `RelativeTimeFormat.format(auto)`    |        0.52 |       0.60 |
 | `Locale.new`                         |        4.52 |       0.91 |
-| `Locale.new(options)`                |        6.04 |       4.83 |
-| `Locale.new(zh-HK)`                  |        5.13 |       1.33 |
-| `PluralRules.new`                    |        7.57 |       4.39 |
-| `PluralRules.new(options)`           |        8.18 |       4.77 |
+| `Locale.new(options)`                |        5.98 |       4.83 |
+| `Locale.new(zh-HK)`                  |        5.07 |       1.33 |
+| `PluralRules.new`                    |        2.87 |       4.39 |
+| `PluralRules.new(options)`           |        6.23 |       4.77 |
 | `ListFormat.new`                     |        3.42 |       2.74 |
-| `ListFormat.new(fallback)`           |       16.60 |       3.58 |
-| `ListFormat.new(unsupported)`        |       12.45 |       3.78 |
-| `RelativeTimeFormat.new`             |       11.60 |       4.86 |
+| `ListFormat.new(fallback)`           |       16.85 |       3.58 |
+| `ListFormat.new(unsupported)`        |       12.70 |       3.78 |
+| `RelativeTimeFormat.new`             |       11.35 |       4.86 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -173,3 +173,30 @@ FORMATJS_BENCH_BOOTSTRAP="$formatjs_src/$bootstrap" /tmp/hi-host-optimized "$wor
 
 The bootstrap target emits its upstream MIT notice alongside bytecode. Run the
 same workload on alternating hosts; keep builds and profiling outside timing runs.
+
+PluralRules binds its private WeakMap getter once, avoids the temporary
+mathematical-value record for Number inputs, delegates omitted options to Rust,
+and serializes explicit private options in one captured JSON call. Its null
+prototype preserves inherited `toJSON` protection.
+
+Across complete optimized runs, selection fell from 0.61 to 0.50 µs, default
+construction from 7.57 to 2.87 µs and explicit options from 8.18 to 6.23 µs.
+Optimized magrinj measured 0.45, 4.39 and 4.77 µs respectively. FormatJS wins
+on default construction and string selection; numeric/decimal/ordinal/Russian
+selection, ranges and explicit-options construction remain slower.
+
+[Raw runs, isolated trials and profiles](plural-perf-results.json) include three
+complete optimized comparisons and three complete native/TS runs, with all 14
+output comparisons intact. The numeric-selection profile removes `mathematical`
+and `Reflect.apply`, previously 10.7% and 5.6% of self samples. Before default
+constructor changes, JSON stringification accounted for 16%. Range profiling
+still puts 64% in the host query and 8% in JSON stringification. Host samples
+aggregate C++ and Rust; historical runtime-source comparator runs are labeled.
+
+Reproduce profiles with the same optimized FormatJS host:
+
+```sh
+hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=select.json benchmarks/hermes-intl-extension/plural-select-profile.js
+hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=constructor.json benchmarks/hermes-intl-extension/plural-constructor-profile.js
+hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=range.json benchmarks/hermes-intl-extension/plural-range-profile.js
+```
