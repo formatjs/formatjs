@@ -5,6 +5,7 @@ formatjs_test(
     size = "medium",
     srcs = ["conformance.test.ts"],
     data = [
+        "//conformance-tests/icu4j:list_format_fixtures",
         "//crates/intl_listformat:conformance",
         "//crates/intl_listformat:locale_data",
         "//packages/intl-listformat:cldr-raw",

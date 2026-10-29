@@ -97,3 +97,21 @@ java_test(
     test_class = "LocaleMatcherConformanceTest",
     deps = [":icu4j"],
 )
+
+java_binary(
+    name = "intl_listformat_oracle",
+    testonly = True,
+    srcs = ["IntlListFormatOracle.java"],
+    main_class = "IntlListFormatOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "list_format_fixtures",
+    testonly = True,
+    srcs = ["list-format-icu-differences.tsv"],
+    outs = ["list-format-fixtures.tsv"],
+    cmd = "$(execpath :intl_listformat_oracle) $@ $(location list-format-icu-differences.tsv)",
+    tools = [":intl_listformat_oracle"],
+    visibility = ["//visibility:public"],
+)

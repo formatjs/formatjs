@@ -669,10 +669,14 @@ js_test(
         ":chromium_locales_suite.js",
         ":chromium_runtime",
         "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:list_format_fixtures",
         "//conformance-tests/icu4j:locale_format_fixtures",
         "//native/hermes:extension_bundle_bytecode",
     ],
     entry_point = "run-compiled-locales.ts",
-    env = {"LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale_format_fixtures)"},
+    env = {
+        "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale_format_fixtures)",
+        "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
+    },
     node_options = ["--experimental-transform-types"],
 )

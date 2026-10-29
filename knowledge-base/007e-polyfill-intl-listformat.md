@@ -91,3 +91,20 @@ CLDR data and compiles plural rules at build time; calendar locale patches merge
 into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
 The explicit-registration targets retain custom-provider and TS conformance use.
 See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+### Contextual joins and ICU conformance
+
+Rust and TS select Spanish `e`/`u` and Hebrew hyphenated joins from the next
+item, only for matching pair/end patterns. Hebrew uses Unicode Script rather
+than block membership; empty strings and lone surrogates remain intact.
+
+ICU4J 78.1 generates 2,871 cases spanning 11 locales and all types/styles.
+ICU4C 78.1 checks every result, and the Chromium-locale Hermes test consumes
+the same cases in source and bytecode modes. Eighteen exact C/J differences
+are pinned in `conformance-tests/icu4j/list-format-icu-differences.tsv`; these
+use ICU4C's script-aware behavior and Spanish `11 ` handling. Both oracle
+outputs remain checked. See `conformance-tests/icu4c/README.md`.
+
+An independent ICU4X ListFormatter also checks 2,772 scalar-string cases.
+Its 66 exact differences are pinned separately; it cannot represent the 99
+lone-surrogate cases, which remain covered by ICU4C/J and Hermes.

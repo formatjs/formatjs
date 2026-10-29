@@ -1,6 +1,7 @@
 //! ECMA-402 ListFormat with caller-loaded CLDR patterns. Strings are UTF-16
 //! code units so host adapters preserve ECMAScript lone surrogates exactly.
 
+use icu_properties::{CodePointMapData, props::Script};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::sync::Arc;
@@ -68,8 +69,65 @@ enum Token {
     First,
     Second,
 }
-struct Pattern(Vec<Token>);
+enum Context {
+    SpanishAnd,
+    SpanishOr,
+    Hebrew,
+}
+impl Context {
+    fn matches(&self, text: &[u16]) -> bool {
+        if text.is_empty() {
+            return false;
+        }
+        let ascii = |index| text.get(index).copied().unwrap_or(0) | 0x20;
+        match self {
+            Self::SpanishAnd => {
+                ascii(0) == b'i' as u16
+                    || (ascii(0) == b'h' as u16
+                        && ascii(1) == b'i' as u16
+                        && (text.len() == 2 || ![b'a' as u16, b'e' as u16].contains(&ascii(2))))
+            }
+            Self::SpanishOr => {
+                [b'o' as u16, b'8' as u16].contains(&ascii(0))
+                    || (ascii(0) == b'h' as u16 && ascii(1) == b'o' as u16)
+                    || (text.starts_with(&[b'1' as u16, b'1' as u16])
+                        && (text.len() == 2 || text[2] == b' ' as u16))
+            }
+            Self::Hebrew => !char::decode_utf16(text.iter().copied())
+                .next()
+                .and_then(Result::ok)
+                .is_some_and(|character| {
+                    CodePointMapData::<Script>::new().get(character) == Script::Hebrew
+                }),
+        }
+    }
+}
+struct Pattern {
+    tokens: Vec<Token>,
+    alternate: Option<(Context, Vec<Token>)>,
+}
 impl Pattern {
+    fn contextual(text: &str, language: &str) -> Result<Self, Error> {
+        let mut pattern = Self::parse(text)?;
+        // ICU applies these rules only to exact pair/end patterns.
+        // https://github.com/unicode-org/icu/blob/release-78.1/icu4c/source/i18n/listformatter.cpp#L124-L211
+        let alternate = match (language, text) {
+            ("es", "{0} y {1}") => Some((Context::SpanishAnd, "{0} e {1}")),
+            ("es", "{0} o {1}") => Some((Context::SpanishOr, "{0} u {1}")),
+            ("he" | "iw", "{0} ו{1}") => Some((Context::Hebrew, "{0} ו-{1}")),
+            _ => None,
+        };
+        if let Some((context, text)) = alternate {
+            pattern.alternate = Some((context, Self::parse(text)?.tokens));
+        }
+        Ok(pattern)
+    }
+    fn for_next(&self, text: &[u16]) -> &[Token] {
+        match &self.alternate {
+            Some((context, tokens)) if context.matches(text) => tokens,
+            _ => &self.tokens,
+        }
+    }
     fn parse(text: &str) -> Result<Self, Error> {
         // LocaleData requires each placeholder exactly once. Compile its
         // PartitionPattern result on load; substitution never reparses inputs.
@@ -101,7 +159,10 @@ impl Pattern {
         if !rest.is_empty() {
             tokens.push(Token::Literal(rest.encode_utf16().collect()));
         }
-        Ok(Self(tokens))
+        Ok(Self {
+            tokens,
+            alternate: None,
+        })
     }
 }
 #[derive(Deserialize)]
@@ -117,14 +178,14 @@ struct Templates {
     middle: Pattern,
     end: Pattern,
 }
-impl TryFrom<RawTemplates> for Templates {
-    type Error = Error;
-    fn try_from(raw: RawTemplates) -> Result<Self, Error> {
-        Ok(Self {
-            pair: Pattern::parse(&raw.pair)?,
+impl RawTemplates {
+    fn compile(self, language: &str) -> Result<Templates, Error> {
+        let raw = self;
+        Ok(Templates {
+            pair: Pattern::contextual(&raw.pair, language)?,
             start: Pattern::parse(&raw.start)?,
             middle: Pattern::parse(&raw.middle)?,
-            end: Pattern::parse(&raw.end)?,
+            end: Pattern::contextual(&raw.end, language)?,
         })
     }
 }
@@ -153,14 +214,15 @@ impl LocalePatterns {
         if pack.format_version != 1 {
             return Err(Error::InvalidData("unsupported pack version".into()));
         }
+        let locale = canonical(&pack.locale)?;
+        let language = locale.split('-').next().unwrap();
         let mut templates = BTreeMap::new();
-        // LocaleData has three types, each with all three styles. This port
-        // follows TS's single CLDR template set, including its context choice.
+        // LocaleData has three types, each with all three styles.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L80-L84
         for (kind, styles) in pack.data {
             let mut compiled = BTreeMap::new();
             for (style, raw) in styles {
-                compiled.insert(style, raw.try_into()?);
+                compiled.insert(style, raw.compile(language)?);
             }
             for style in ["long", "short", "narrow"] {
                 if !compiled.contains_key(style) {
@@ -175,7 +237,7 @@ impl LocalePatterns {
             }
         }
         Ok(Self {
-            locale: canonical(&pack.locale)?,
+            locale,
             aliases: pack
                 .aliases
                 .iter()
@@ -274,7 +336,7 @@ impl ListFormat {
                 Task::Node(index) => match &nodes[index] {
                     Node::Element(value) => visit(true, value),
                     Node::Join(pattern, first, second) => {
-                        for token in pattern.0.iter().rev() {
+                        for token in pattern.for_next(list[list.len() - 1].as_ref()).iter().rev() {
                             pending.push(match token {
                                 Token::Literal(value) => Task::Literal(value),
                                 Token::First => Task::Node(*first),
