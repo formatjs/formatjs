@@ -166,7 +166,7 @@ impl LanguageId {
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Extension {
     singleton: String,
-    parts: Vec<String>,
+    value: String,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -324,7 +324,7 @@ impl Locale {
             }
             extensions.push(Extension {
                 singleton: singleton.to_owned(),
-                parts: values.iter().map(|part| (*part).to_owned()).collect(),
+                value: values.join("-"),
             });
             index = end;
         }
@@ -347,15 +347,15 @@ impl Locale {
         let index = existing.unwrap_or_else(|| {
             self.extensions.push(Extension {
                 singleton: "u".to_owned(),
-                parts: Vec::new(),
+                value: String::new(),
             });
             self.extensions.len() - 1
         });
         let mut attributes: Vec<_> = self.extensions[index]
-            .parts
-            .iter()
+            .value
+            .split('-')
             .take_while(|part| part.len() >= 3)
-            .cloned()
+            .map(str::to_owned)
             .collect();
         for (key, value) in &self.keywords {
             attributes.push(key.clone());
@@ -363,7 +363,7 @@ impl Locale {
                 attributes.extend(value.split('-').map(str::to_owned));
             }
         }
-        self.extensions[index].parts = attributes;
+        self.extensions[index].value = attributes.join("-");
         self.extensions
             .sort_by(|left, right| left.singleton.cmp(&right.singleton));
     }
@@ -373,9 +373,9 @@ impl Locale {
         for extension in &self.extensions {
             tag.push('-');
             tag.push_str(&extension.singleton);
-            for part in &extension.parts {
+            if !extension.value.is_empty() {
                 tag.push('-');
-                tag.push_str(part);
+                tag.push_str(&extension.value);
             }
         }
         tag

@@ -50,7 +50,9 @@ Link SDK targets `:locale`, `:supported_values` and `:pluralrules` alongside
 `:canonical_locales`.
 Locale's private WeakMap retains its native handle; JS subclasses and prototype
 changes cannot forge that brand. Information methods query current formatter
-support, so locale data loaded after construction remains visible.
+support, so locale data loaded after construction remains visible. Bounded caches
+share immutable native Locale models and scalar snapshots; constructor and
+transform results remain distinct JS objects. Option getters run on every call.
 
 ## Standalone installation
 

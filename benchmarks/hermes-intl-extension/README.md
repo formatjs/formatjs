@@ -148,6 +148,31 @@ to the scalar query and `JSON.parse`. Reproduce with
 `locale-constructor-profile.js` and the profiling command below. The optimization
 retains eager validation and per-call formatter capability queries.
 
+Locale now shares private immutable backend records across repeated constructors
+and transforms, retaining fresh public receivers. Rust keeps each extension's
+canonical payload in one string. In three optimized 29-case runs against
+`144d5440d`, caching cuts default construction from 1.86 to 0.43 µs, region
+options from 4.15 to 1.86 µs, and maximize from 4.03 to 0.34 µs.
+
+A separate three-run paired trial binds private WeakMap methods, removing
+Reflect.apply argument arrays. Default construction falls again to 0.35 µs,
+maximize to 0.26 µs, and construction plus first `language` access to 0.43 µs
+(originally 3.97). Warm getters fall from 0.11 to 0.077 µs. Optimized magrinj
+measures 0.93, 2.12, 1.25 and 0.086 µs respectively.
+
+Cold/diverse construction initially regresses from 3.97 to 4.52 µs; binding
+removes that regression, reaching 3.78 µs. The control cycles 192 distinct valid
+tags, exceeding cache capacity; magrinj remains faster at 1.44 µs. A long
+private-use tag bypasses caching: 9.52 µs originally, 5.37 with caching/payload
+changes, then 6.23 with binding. The final result improves 35% over baseline,
+still behind magrinj's 3.87 µs. [All raw runs and profiles](locale-model-results.json)
+retain each phase separately, including a rejected first-use admission trial.
+
+The constructor profile observes one model before its loop, matching benchmark
+setup. Host creation falls from 70% to one of 329 self samples (0.3%). Reflect.apply
+accounts for 17% after caching and none after binding. Remaining samples concentrate in JS allocation and WeakMap
+operations. Host samples aggregate C++ and Rust.
+
 The [three-oracle list matrix](../../conformance-tests/icu4c/README.md) exposed
 108 output differences against the selected ICU4C behavior in the previous
 FormatJS build; contextual Spanish/Hebrew joins reduce that count to zero over
