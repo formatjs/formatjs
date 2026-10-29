@@ -29,7 +29,9 @@
   const BadOption = RangeError
   const primitiveKey = Symbol.toPrimitive
   const slots = new WeakMap<object, object>()
-  const getSlot = WeakMap.prototype.get
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    receiver: unknown
+  ) => object | undefined
   const setSlot = WeakMap.prototype.set
   const categories = ['zero', 'one', 'two', 'few', 'many', 'other']
   const root = globalThis as any
@@ -85,27 +87,18 @@
       throw new BadOption('Invalid digit option')
     return floor(numeric)
   }
-  function record(
-    values: Record<string, string | number | undefined>,
-    names: string[]
-  ): string {
-    let result = '{',
-      separator = ''
-    for (let index = 0; index < names.length; index++) {
-      const name = names[index],
-        value = values[name]
-      if (value === undefined) continue
-      result +=
-        separator +
-        quote(name) +
-        ':' +
-        (typeof value === 'string' ? quote(value) : `${value}`)
-      separator = ','
-    }
-    return result + '}'
+  function initialize(
+    receiver: object,
+    locale: string,
+    options: string
+  ): object {
+    const handle = nativeCreate(locale, options)
+    if (typeof handle === 'number') decoded(handle)
+    apply(setSlot, slots, [receiver, handle])
+    return receiver
   }
   function slot(receiver: unknown): object {
-    const value = apply(getSlot, slots, [receiver])
+    const value = getSlot(receiver)
     if (!value) throw new BadReceiver('Incompatible Intl.PluralRules receiver')
     return value
   }
@@ -219,6 +212,8 @@
         'best fit'
       )
       const locale = match(requested, matcher === 'lookup', false) as string
+      // Undefined options expose no getters; Rust resolves all defaults.
+      if (optionsInput === undefined) return initialize(receiver, locale, '{}')
       // Constructor 7–13: each enum's coercion/validation precedes the next Get.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
       const values: Record<string, string | number | undefined> = create(null)
@@ -316,26 +311,8 @@
       // Resolve rounding type/priority and increment restrictions in
       // Rust. Install the private brand only after successful initialization.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L140-L161
-      const handle = nativeCreate(
-        locale,
-        record(values, [
-          'type',
-          'notation',
-          'compactDisplay',
-          'minimumIntegerDigits',
-          'minimumFractionDigits',
-          'maximumFractionDigits',
-          'minimumSignificantDigits',
-          'maximumSignificantDigits',
-          'roundingIncrement',
-          'roundingMode',
-          'roundingPriority',
-          'trailingZeroDisplay',
-        ])
-      )
-      if (typeof handle === 'number') decoded(handle)
-      apply(setSlot, slots, [receiver, handle])
-      return receiver
+      // Private options hold validated primitives and cannot inherit toJSON.
+      return initialize(receiver, locale, stringify(values)!)
     }
     static supportedLocalesOf(
       locales: unknown,
@@ -372,9 +349,18 @@
     select(this: unknown, value: unknown): string {
       // select 1–4: receiver brand precedes ToIntlMathematicalValue.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L220-L223
-      const handle = slot(this),
-        number = mathematical(value)
-      const result = nativeSelect(handle, number.text, number.bigint)
+      const handle = slot(this)
+      let result: number
+      if (typeof value === 'number') {
+        result = nativeSelect(
+          handle,
+          value === 0 && 1 / value === -Infinity ? '-0' : `${value}`,
+          false
+        )
+      } else {
+        const number = mathematical(value)
+        result = nativeSelect(handle, number.text, number.bigint)
+      }
       if (result < 0) decoded(-result)
       return categories[result]
     },
