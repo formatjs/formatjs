@@ -52,25 +52,39 @@ host. It uses `__now()` when available, otherwise `Date.now()`. Median of three
 runs on the same host. Both C++ hosts use Release `-O3`; FormatJS Rust uses
 Bazel `-c opt`, magrinj Rust uses its release profile (`opt-level="z"`, LTO):
 
+Both factories and workload now use Hermes `-O` bytecode. The upstream comparator
+host evaluates its bootstrap as runtime source, which omits the full optimizer.
+The [host patch](magrinj-host.patch) adds a precompiled-bootstrap input. The
+[pinned optimized baseline](optimized-baseline-results.json) supersedes earlier
+cross-implementation timings; historical FormatJS before/after comparisons remain
+useful. Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
+list matrix; FormatJS has zero differences against the selected ICU4C outputs.
+
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.76 |       1.42 |
-| `Locale.maximize`                    |        3.85 |       2.55 |
-| `PluralRules.select`                 |        0.60 |       0.56 |
-| `ListFormat.format`                  |        1.04 |       0.69 |
-| `ListFormat.formatToParts`           |        3.11 |       4.34 |
-| `RelativeTimeFormat.format`          |        1.07 |       0.95 |
-| `RelativeTimeFormat.formatToParts`   |        3.05 |       2.91 |
-| `RelativeTimeFormat.format(decimal)` |        1.46 |       1.03 |
-| `RelativeTimeFormat.format(auto)`    |        0.51 |       0.85 |
-| `Locale.new`                         |        4.52 |       1.19 |
-| `Locale.new(options)`                |        6.10 |       6.41 |
-| `Locale.new(zh-HK)`                  |        5.13 |       1.62 |
-| `PluralRules.new`                    |        7.45 |       5.51 |
-| `ListFormat.new`                     |        3.36 |       3.25 |
-| `ListFormat.new(fallback)`           |       16.36 |       4.14 |
-| `ListFormat.new(unsupported)`        |       12.70 |       4.15 |
-| `RelativeTimeFormat.new`             |       11.47 |       4.98 |
+| `getCanonicalLocales`                |        0.78 |       1.09 |
+| `Locale.maximize`                    |        4.09 |       2.09 |
+| `PluralRules.select`                 |        0.61 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.68 |       0.46 |
+| `PluralRules.select(string)`         |        0.70 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.64 |       0.46 |
+| `PluralRules.select(ru)`             |        0.66 |       0.50 |
+| `PluralRules.selectRange`            |        2.11 |       0.89 |
+| `ListFormat.format`                  |        1.04 |       0.53 |
+| `ListFormat.formatToParts`           |        3.23 |       3.22 |
+| `RelativeTimeFormat.format`          |        1.05 |       0.71 |
+| `RelativeTimeFormat.formatToParts`   |        3.05 |       2.16 |
+| `RelativeTimeFormat.format(decimal)` |        1.40 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.52 |       0.60 |
+| `Locale.new`                         |        4.52 |       0.91 |
+| `Locale.new(options)`                |        6.04 |       4.83 |
+| `Locale.new(zh-HK)`                  |        5.13 |       1.33 |
+| `PluralRules.new`                    |        7.57 |       4.39 |
+| `PluralRules.new(options)`           |        8.18 |       4.77 |
+| `ListFormat.new`                     |        3.42 |       2.74 |
+| `ListFormat.new(fallback)`           |       16.60 |       3.58 |
+| `ListFormat.new(unsupported)`        |       12.45 |       3.78 |
+| `RelativeTimeFormat.new`             |       11.60 |       4.86 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -125,6 +139,37 @@ Three alternating English runs show no measurable timing change: formatting
 ListFormat parts now use ordinary `{type, value}` records. Private null-prototype
 append descriptors are reused within each call; inherited `get`/`set` cannot
 interfere with input or output arrays. Three alternating optimized runs cut
-parts from 4.64 to 3.11 µs, versus magrinj's 4.34 µs (28% faster). Formatting
+parts from 4.64 to 3.11 µs. That historical run used magrinj's runtime-source
+bootstrap (4.34 µs); optimized comparisons appear above. Formatting
 fell from 1.13 to 1.04 µs. Fresh records, descriptors, property order, poisoned
 prototypes and all ICU outputs stay checked. [Raw samples](list-parts-results.json).
+
+Reproduce the optimized comparison with the pinned magrinj checkout and clean
+Hermes `393a539e6` source/build. Build Hermes in Release with contrib extensions
+off and magrinj's Rust archive with its upstream shipping release profile first.
+The Linux host links those existing artifacts:
+
+```sh
+set -e
+formatjs_src="$PWD"
+magrinj_src=/path/to/magrinj-hermes-intl
+hermes_src=/path/to/hermes
+hermes_build=/path/to/hermes-build
+magrinj_rust=/path/to/release/libhermes_intl.a
+git -C "$magrinj_src" apply "$formatjs_src/benchmarks/hermes-intl-extension/magrinj-host.patch"
+c++ -std=c++20 -O3 -DNDEBUG \
+  "-DHERMES_INTL_BOOTSTRAP=\"$magrinj_src/js/bootstrap.js\"" \
+  -I"$magrinj_src/cpp" -I"$hermes_src/API" -I"$hermes_src/API/jsi" -I"$hermes_src/public" \
+  "$magrinj_src/host/main.cpp" "$magrinj_src/cpp/hermes_intl.cpp" \
+  "$magrinj_rust" "$hermes_build/lib/libhermesvm_a.a" \
+  "$hermes_build/external/boost/boost_1_86_0/libs/context/libboost_context.a" \
+  "$hermes_build/jsi/libjsi.a" -lpthread -ldl -lm -o /tmp/hi-host-optimized
+bazel build -c opt //benchmarks/hermes-intl-extension:overlap_bytecode //benchmarks/hermes-intl-extension:magrinj_bootstrap_bytecode
+workload=$(bazel cquery -c opt //benchmarks/hermes-intl-extension:overlap_bytecode --output=files)
+bootstrap=$(bazel cquery -c opt //benchmarks/hermes-intl-extension:magrinj_bootstrap_bytecode --output=files | rg '\.hbc$')
+/path/to/formatjs-hermes "$workload"
+FORMATJS_BENCH_BOOTSTRAP="$formatjs_src/$bootstrap" /tmp/hi-host-optimized "$workload"
+```
+
+The bootstrap target emits its upstream MIT notice alongside bytecode. Run the
+same workload on alternating hosts; keep builds and profiling outside timing runs.

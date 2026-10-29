@@ -367,6 +367,13 @@ http_archive(
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_file(
+    name = "magrinj_hermes_intl_bootstrap",
+    downloaded_file_path = "bootstrap.js",
+    sha256 = "9f36950747a9261c9f2365e1b7455050b64177cd3b02c645bbc9952176d956cf",
+    url = "https://raw.githubusercontent.com/magrinj/hermes-intl/7cd12b68fb6f707192426065cec1dba4ced68d5a/js/bootstrap.js",
+)
+
+http_file(
     name = "DerivedCombiningClass",
     sha256 = "191463abfbd202703c6fd6776a92a23ac44ec65e0476a7f95aa91ca492cef29b",
     url = "https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedCombiningClass.txt",
