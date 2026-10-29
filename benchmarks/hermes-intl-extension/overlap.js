@@ -114,6 +114,36 @@
     },
   ])
   cases.push([
+    'Locale.new.language',
+    function () {
+      return new Intl.Locale('en').language
+    },
+  ])
+  cases.push([
+    'Locale.new.toString',
+    function () {
+      return new Intl.Locale('en').toString()
+    },
+  ])
+  cases.push([
+    'Locale.language',
+    (function () {
+      var locale = new Intl.Locale('en')
+      return function () {
+        return locale.language
+      }
+    })(),
+  ])
+  cases.push([
+    'Locale.new(Locale)',
+    (function () {
+      var locale = new Intl.Locale('en')
+      return function () {
+        return new Intl.Locale(locale)
+      }
+    })(),
+  ])
+  cases.push([
     'PluralRules.new',
     function () {
       return new Intl.PluralRules('en')

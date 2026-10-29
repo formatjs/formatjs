@@ -24,10 +24,11 @@
   const stringify = JSON.stringify
   const BadReceiver = TypeError
   const BadOption = RangeError
-  const slots = new WeakMap<
-    object,
-    {handle: object; properties: Record<string, any>}
-  >()
+  interface Slot {
+    handle: object
+    properties: Record<string, any> | null
+  }
+  const slots = new WeakMap<object, Slot>()
   const getSlot = WeakMap.prototype.get
   const setSlot = WeakMap.prototype.set
   const root = globalThis as any
@@ -38,16 +39,25 @@
   function slot(receiver: unknown) {
     const value = apply(getSlot, slots, [receiver])
     if (!value) throw new BadReceiver('Incompatible Intl.Locale receiver')
-    return value as {handle: object; properties: Record<string, any>}
+    return value as Slot
   }
   function query(record: {handle: object}, request: string): any {
     return parse(nativeQuery(record.handle, request))
   }
+  function properties(record: Slot): Record<string, any> {
+    // Rust records are immutable; serialize their scalar metadata only on demand.
+    return (record.properties ??= query(record, '{"method":"properties"}'))
+  }
+  function initialize(receiver: object, tag: string, options: string): Locale {
+    const handle = nativeCreate(tag, options)
+    if (handle === null) throw new BadOption('Invalid language tag or options')
+    apply(setSlot, slots, [receiver, {handle, properties: null}])
+    return receiver
+  }
   function transform(receiver: unknown, kind: number): Locale {
     const handle = nativeTransform(slot(receiver).handle, kind)
     const result = create(prototype)
-    const properties = query({handle}, '{"method":"properties"}')
-    apply(setSlot, slots, [result, {handle, properties}])
+    apply(setSlot, slots, [result, {handle, properties: null}])
     return result
   }
   function quote(value: string): string {
@@ -87,7 +97,7 @@
       )
         throw new BadReceiver('tag must be a string or object')
       const existing = apply(getSlot, slots, [tag])
-      if (existing) tag = existing.properties.locale
+      if (existing) tag = properties(existing).locale
       else {
         let intrinsicTag: string | undefined
         if (typeof previousToString === 'function' && typeof tag !== 'string') {
@@ -102,8 +112,10 @@
       // Steps 10–14: options coercion precedes tag validation; canonicalization
       // precedes every language override getter. Rust owns tag syntax/aliases.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L32-L36
-      const options: any =
-        optionsInput === undefined ? create(null) : optionsInput
+      // Without option getters, Rust can validate/canonicalize in one call.
+      if (optionsInput === undefined)
+        return initialize(receiver, tag as string, '{}')
+      const options: any = optionsInput
       if (
         options === null ||
         (typeof options !== 'object' && typeof options !== 'function')
@@ -145,12 +157,7 @@
       // MakeLocaleRecord + constructor 36–46: Rust canonicalizes the overrides;
       // only successful initialization installs the private JS brand.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L62-L78
-      const handle = nativeCreate(canonical, encoded + '}')
-      if (handle === null)
-        throw new BadOption('Invalid language tag or options')
-      const properties = query({handle}, '{"method":"properties"}')
-      apply(setSlot, slots, [receiver, {handle, properties}])
-      return receiver
+      return initialize(receiver, canonical, encoded + '}')
     }
   }
   const target = Locale
@@ -158,7 +165,7 @@
   Object.setPrototypeOf(prototype, Object.prototype)
 
   function property(receiver: unknown, name: string): any {
-    const value = slot(receiver).properties[name]
+    const value = properties(slot(receiver))[name]
     return value === null ? undefined : value
   }
   const members = {
@@ -199,7 +206,7 @@
       return property(this, 'numberingSystem')
     },
     toString() {
-      return slot(this).properties.locale
+      return properties(slot(this)).locale
     },
     // These methods create %Intl.Locale% instances, independent of a receiver's
     // constructor property, preserving variants and extensions in Rust.
@@ -235,19 +242,20 @@
     },
     getNumberingSystems() {
       const record = slot(this)
+      const metadata = properties(record)
       let defaultSystem: string | undefined
       // NumberingSystemsOfLocale 1–5: query the actual formatter at call time.
       // Explicit nu bypasses the formatter, and unsupported locales use latn.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L715-L727
-      if (record.properties.numberingSystem === null) {
+      if (metadata.numberingSystem === null) {
         const NumberFormat = intl.NumberFormat
         if (
           typeof NumberFormat === 'function' &&
-          NumberFormat.supportedLocalesOf([record.properties.locale], {
+          NumberFormat.supportedLocalesOf([metadata.locale], {
             localeMatcher: 'lookup',
           }).length
         ) {
-          defaultSystem = new NumberFormat(record.properties.locale, {
+          defaultSystem = new NumberFormat(metadata.locale, {
             localeMatcher: 'lookup',
           }).resolvedOptions().numberingSystem
         }
@@ -261,6 +269,7 @@
     },
     getCollations() {
       const record = slot(this)
+      const metadata = properties(record)
       let candidates: string[] = [],
         accepted = '['
       let matched = false,
@@ -268,11 +277,11 @@
       // CollationsOfLocale 1–6: explicit co restricts; otherwise intersect global
       // candidates with this locale's actual Collator support. No capability cache.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L661-L674
-      if (record.properties.collation === null) {
+      if (metadata.collation === null) {
         const Collator = intl.Collator
         matched =
           typeof Collator === 'function' &&
-          !!Collator.supportedLocalesOf([record.properties.locale], {
+          !!Collator.supportedLocalesOf([metadata.locale], {
             localeMatcher: 'lookup',
           }).length
         if (matched) {
@@ -283,7 +292,7 @@
           for (let index = 0; index < candidates.length; index++) {
             const collation = candidates[index]
             if (
-              new Collator(record.properties.locale, {
+              new Collator(metadata.locale, {
                 collation,
                 localeMatcher: 'lookup',
               }).resolvedOptions().collation === collation
