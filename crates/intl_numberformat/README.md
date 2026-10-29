@@ -55,7 +55,9 @@ Both handles own their data and survive registry destruction.
 Queries accept primitive text plus a BigInt flag after the host performs
 ToPrimitive. The shared mathematical parser handles exact radix/decimal strings,
 Number overflow/underflow and negative zero. The host rejects Symbols and missing
-range endpoints before calling Rust. Status 1 maps to RangeError, 4 to TypeError;
+range endpoints before calling Rust. Canonical plain decimal text up to 308 bytes
+uses the shared mathematical parser's direct normalization path, avoiding
+intermediate strings while preserving exact mathematical values. Status 1 maps to RangeError, 4 to TypeError;
 2 signals invalid ABI input and 3 a caught Rust panic. Destroy each handle and free
 each successful byte result exactly once.
 

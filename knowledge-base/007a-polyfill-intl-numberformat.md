@@ -214,3 +214,10 @@ CLDR data and compiles plural rules at build time; calendar locale patches merge
 into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
 The explicit-registration targets retain custom-provider and TS conformance use.
 See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+Native mathematical normalization returns canonical plain decimals up to 308
+bytes directly. Such text cannot overflow or underflow Number; a single output
+allocation replaces temporary digit strings and floating-point parsing. Validation
+still rejects non-digits, leading integer zeros and trailing fraction zeros from
+this path. General normalization handles exponents, radix literals and other
+forms; BigInt retains its separate arbitrary-length handling.

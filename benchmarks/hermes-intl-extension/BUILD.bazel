@@ -122,3 +122,21 @@ rust_binary(
         ),
     ]
 ]
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["mathematical-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_mathematical_probe",
+        edition = "2024",
+        deps = ["//crates/intl_pluralrules:with_compiled_data"],
+    )
+    for name, features in [
+        ("mathematical_probe", []),
+        (
+            "mathematical_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]
