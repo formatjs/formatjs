@@ -20,7 +20,7 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 | `cldr-numbers-full`  | Number formatting for date components                        |
 | `cldr-core`          | Hour cycle preferences and metazone mappings                 |
 | `cldr-bcp47`         | Locale validation                                            |
-| IANA tzdata (v2026e) | Timezone transitions, links/aliases                          |
+| IANA tzdata (v2026f) | Timezone transitions, links/aliases                          |
 
 ### Date/Time Extraction (`scripts/extract-dates.ts`)
 
@@ -36,10 +36,9 @@ Processes ~680 locales in parallel:
 
 ### Timezone Pipeline
 
-IANA tzdb 2026e keeps `America/Winnipeg` (and `Canada/Central`) on UTC-05
-after Manitoba ends seasonal clock changes in 2026. It also corrects Ireland’s
-1925 fallback to September 20. The version and both archive checksums are pinned
-in `MODULE.bazel`.
+IANA tzdb 2026f keeps `America/Havana` (and `Cuba`) on UTC-04 through
+November 7, 2027, and corrects Brazil's 1965 and 1966 transitions. The version
+and both archive checksums are pinned in `MODULE.bazel`.
 
 This is unique to DateTimeFormat — no other polyfill processes timezone data.
 
