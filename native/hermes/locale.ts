@@ -26,38 +26,85 @@
   const BadOption = RangeError
   interface Slot {
     handle: object
-    properties: Record<string, any> | null
+    properties: Readonly<Record<string, any>> | null
   }
   const slots = new WeakMap<object, Slot>()
-  const getSlot = WeakMap.prototype.get
-  const setSlot = WeakMap.prototype.set
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    key: unknown
+  ) => Slot | undefined
+  const setSlot = WeakMap.prototype.set.bind(slots)
+  function boundedCache<K, V>() {
+    const cache = new Map<K, V>()
+    const get = Map.prototype.get.bind(cache) as (key: K) => V | undefined
+    const set = Map.prototype.set.bind(cache)
+    const clear = Map.prototype.clear.bind(cache)
+    let size = 0
+    return {
+      get,
+      set(key: K, value: V) {
+        if (get(key) === undefined) {
+          if (size === 64) {
+            clear()
+            size = 0
+          }
+          size++
+        }
+        set(key, value)
+      },
+    }
+  }
+  const constructors = boundedCache<string, Slot>()
+  const transforms = boundedCache<Slot, [Slot | undefined, Slot | undefined]>()
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const previousToString = intl.Locale?.prototype?.toString
   const enumerate = intl.supportedValuesOf
 
   function slot(receiver: unknown) {
-    const value = apply(getSlot, slots, [receiver])
+    const value = getSlot(receiver)
     if (!value) throw new BadReceiver('Incompatible Intl.Locale receiver')
     return value as Slot
   }
   function query(record: {handle: object}, request: string): any {
     return parse(nativeQuery(record.handle, request))
   }
-  function properties(record: Slot): Record<string, any> {
-    // Rust records are immutable; serialize their scalar metadata only on demand.
+  function properties(record: Slot): Readonly<Record<string, any>> {
+    // Only immutable scalars are shared; capability queries still run per call.
     return (record.properties ??= query(record, '{"method":"properties"}'))
   }
   function initialize(receiver: object, tag: string, options: string): Locale {
-    const handle = nativeCreate(tag, options)
-    if (handle === null) throw new BadOption('Invalid language tag or options')
-    apply(setSlot, slots, [receiver, {handle, properties: null}])
+    const key =
+      tag.length + options.length > 128
+        ? undefined
+        : options === '{}'
+          ? '0:' + tag
+          : '1:' + tag + ':' + options
+    let record = key === undefined ? undefined : constructors.get(key)
+    if (record === undefined) {
+      const handle = nativeCreate(tag, options)
+      if (handle === null)
+        throw new BadOption('Invalid language tag or options')
+      record = {handle, properties: null}
+      if (key !== undefined) constructors.set(key, record)
+    }
+    setSlot(receiver, record)
     return receiver
   }
   function transform(receiver: unknown, kind: number): Locale {
-    const handle = nativeTransform(slot(receiver).handle, kind)
+    const source = slot(receiver)
+    let values = transforms.get(source)
+    let record = values?.[kind]
+    if (record === undefined) {
+      const handle = nativeTransform(source.handle, kind)
+      record = {handle, properties: null}
+      if (values === undefined) {
+        values = [undefined, undefined]
+        transforms.set(source, values)
+      }
+      values[kind] = record
+    }
     const result = create(prototype)
-    apply(setSlot, slots, [result, {handle, properties: null}])
+    setSlot(result, record)
     return result
   }
   function quote(value: string): string {
@@ -96,7 +143,7 @@
         (tag === null || (typeof tag !== 'object' && typeof tag !== 'function'))
       )
         throw new BadReceiver('tag must be a string or object')
-      const existing = apply(getSlot, slots, [tag])
+      const existing = getSlot(tag)
       if (existing) tag = properties(existing).locale
       else {
         let intrinsicTag: string | undefined

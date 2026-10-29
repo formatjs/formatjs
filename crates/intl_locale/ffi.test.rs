@@ -60,6 +60,28 @@ impl Drop for Handle {
 }
 
 #[test]
+fn extension_payloads_survive_transforms_and_unicode_updates() {
+    let tag = "en-a-first-second-u-attr-ca-buddhist-kn-x-one-two";
+    let locale = Handle::new(tag, json!({"calendar": "gregory", "numeric": false}));
+    let suffix = "-a-first-second-u-attr-ca-gregory-kn-false-x-one-two";
+    assert_eq!(
+        locale.query(json!({"method": "properties"}))["locale"],
+        format!("en{suffix}")
+    );
+    let maximized = locale.transform(0);
+    assert_eq!(
+        maximized.query(json!({"method": "properties"}))["locale"],
+        format!("en-Latn-US{suffix}")
+    );
+    assert_eq!(
+        maximized
+            .transform(1)
+            .query(json!({"method": "properties"}))["locale"],
+        format!("en{suffix}")
+    );
+}
+
+#[test]
 fn owned_record_preserves_canonical_properties() {
     let locale = Handle::new("iw-BU", json!({"calendar":"islamicc", "numeric":true}));
     let properties = locale.query(json!({"method":"properties"}));

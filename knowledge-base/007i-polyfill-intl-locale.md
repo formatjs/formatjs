@@ -134,6 +134,15 @@ Rust canonicalizes the input once, repeating only after language or Unicode
 options change it. ABI queries serialize typed values directly, avoiding an
 intermediate JSON tree when Hermes reads Locale properties.
 
+Hermes retains up to 64 constructor backend records for tag/options keys no
+longer than 128 code units, plus 64 transform sources with at most two results
+each. Every public constructor or transform result is still a fresh ordinary
+object. Only backend handles and their immutable scalar snapshots are shared;
+option getters still run before lookup. Eviction cannot invalidate live instances.
+
+Rust stores each extension payload as one canonical string, avoiding an allocation
+for every private-use subtag. Unicode edits split and rebuild only that payload.
+
 Hermes snapshots scalar properties on first access and retains them with the
 immutable Rust handle. Constructor validation stays eager. Omitted options use
 one Rust construction call; explicit options still canonicalize before reading

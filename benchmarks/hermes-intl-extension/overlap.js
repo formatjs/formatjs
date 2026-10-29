@@ -144,6 +144,27 @@
     })(),
   ])
   cases.push([
+    'Locale.new(diverse)',
+    (function () {
+      var tags = [],
+        index = 0
+      for (var i = 0; i < 192; i++) tags.push('en-x-bench-' + i)
+      return function () {
+        return new Intl.Locale(tags[index++ % tags.length])
+      }
+    })(),
+  ])
+  cases.push([
+    'Locale.new(long)',
+    (function () {
+      var tag = 'en-x-abcdefgh'
+      for (var i = 0; i < 19; i++) tag += '-abcdefgh'
+      return function () {
+        return new Intl.Locale(tag)
+      }
+    })(),
+  ])
+  cases.push([
     'PluralRules.new',
     function () {
       return new Intl.PluralRules('en')
