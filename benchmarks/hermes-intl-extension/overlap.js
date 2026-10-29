@@ -203,6 +203,12 @@
       return new Intl.RelativeTimeFormat('en', {numeric: 'always'})
     },
   ])
+  cases.push([
+    'RelativeTimeFormat.new(fallback)',
+    function () {
+      return new Intl.RelativeTimeFormat('en-XX', {numeric: 'always'})
+    },
+  ])
   var now = typeof __now === 'function' ? __now : Date.now
   var sink = ''
   function run(f, n) {
@@ -222,7 +228,10 @@
     var value = f()
     if (name.indexOf('PluralRules.new') === 0) value = value.select(1)
     if (name.indexOf('Locale.new') === 0) value = value.toString()
-    if (name.indexOf('ListFormat.new(') === 0)
+    if (
+      name.indexOf('ListFormat.new') === 0 ||
+      name.indexOf('RelativeTimeFormat.new') === 0
+    )
       value = value.resolvedOptions().locale
     var n = 1
     while (n < 10000000 && run(f, n) < 50) n *= 2

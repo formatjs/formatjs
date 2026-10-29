@@ -54,6 +54,10 @@ support, so locale data loaded after construction remains visible. Bounded cache
 share immutable native Locale models and scalar snapshots; constructor and
 transform results remain distinct JS objects. Option getters run on every call.
 
+Native formatter registries prepare best-fit matching lazily. Registering new
+locale IDs refreshes their matcher; replacing existing locale data keeps the
+same matching index. Existing formatter instances retain their data.
+
 ## Standalone installation
 
 Build and extract the SDK on Linux:

@@ -196,3 +196,28 @@ fn lazy_packs_aliases_replacement_and_owned_instances() {
     );
     assert_eq!(new.resolved_options().locale, "en-US");
 }
+
+#[test]
+fn late_locale_registration_changes_nonexact_best_fit() {
+    let mut registry = Registry::default();
+    registry
+        .add_locale_data(&pack("en-US", "{0} and {1}").to_string())
+        .unwrap();
+    let requested = ["en-AU".into()];
+    assert_eq!(registry.negotiate(&requested, false).unwrap(), "en-US");
+    let retained = registry.create("en-US", &Options::default()).unwrap();
+    registry
+        .add_locale_data(&pack("en-GB", "{0} plus {1}").to_string())
+        .unwrap();
+    let matched = registry.negotiate(&requested, false).unwrap();
+    assert_eq!(matched, "en-GB");
+    let fresh = registry.create(&matched, &Options::default()).unwrap();
+    assert_eq!(
+        String::from_utf16(&fresh.format(&units(&["A", "B"]))).unwrap(),
+        "A plus B"
+    );
+    assert_eq!(
+        String::from_utf16(&retained.format(&units(&["A", "B"]))).unwrap(),
+        "A and B"
+    );
+}
