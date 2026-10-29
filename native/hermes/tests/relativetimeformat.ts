@@ -286,6 +286,36 @@ equal(model.resolvedOptions().locale, 'en', 'fresh options')
 const available = Native.availableLocales
 available.clear()
 check(Native.availableLocales.has('en'), 'fresh available locales')
+const savedGet = WeakMap.prototype.get,
+  savedSet = WeakMap.prototype.set,
+  savedBind = Function.prototype.bind,
+  savedCanonical = Intl.getCanonicalLocales
+function poisonedIntrinsic(): never {
+  throw new Error('replacement intrinsic called')
+}
+WeakMap.prototype.get = WeakMap.prototype.set = poisonedIntrinsic
+Function.prototype.bind = poisonedIntrinsic
+Intl.getCanonicalLocales = poisonedIntrinsic
+try {
+  const captured = new Native('en')
+  equal(
+    captured.format(-3, 'day'),
+    '3 days ago',
+    'captured constructor intrinsics'
+  )
+  equal(model.format(-1, 'day'), '1 day ago', 'captured existing slots')
+  equal(Native.supportedLocalesOf(['en']), ['en'], 'captured canonicalizer')
+  throws(
+    () => Native.prototype.format.call({}, 1, 'day'),
+    TypeError,
+    'captured slot brand'
+  )
+} finally {
+  WeakMap.prototype.get = savedGet
+  WeakMap.prototype.set = savedSet
+  Function.prototype.bind = savedBind
+  Intl.getCanonicalLocales = savedCanonical
+}
 // Relative fields follow style/numeric getters; existing instances retain their data.
 const old = new Native('en'),
   replacement = JSON.parse(fixtures.packs[0])

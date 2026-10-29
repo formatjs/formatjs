@@ -58,49 +58,55 @@ host evaluates its bootstrap as runtime source, which omits the full optimizer.
 The [host patch](magrinj-host.patch) adds a precompiled-bootstrap input. The
 [pinned optimized baseline](optimized-baseline-results.json) supersedes earlier
 cross-implementation timings; historical FormatJS before/after comparisons remain
-useful. Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
+useful.
+
+The native benchmark console now uses [native-clock.patch](native-clock.patch)
+to expose monotonic `steady_clock` milliseconds through `__now()`, matching the
+comparator's clock contract. Rebuild both native variants with that patch.
+Historical native hosts used the `Date.now()` fallback; assess small changes
+within paired runs using the same clock. Clock resolution checks are retained.
+Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
-Three alternating optimized runs on 2026-10-29, including registry snapshots,
-default ListFormat construction, array locale lists, reused RTF number records,
-direct RTF option serialization and cached canonical tags with singleton results.
-[Raw results, controls and profiles](canonical-tag-results.json).
+Three alternating optimized runs on 2026-10-29, including the optimizations
+below and direct captured-intrinsic calls in RTF. All hosts use high-resolution
+`__now()`. [Raw results, controls and profiles](relative-bound-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.07 |       1.11 |
-| `Locale.maximize`                    |        0.27 |       2.13 |
-| `PluralRules.select`                 |        0.52 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.59 |       0.46 |
-| `PluralRules.select(string)`         |        0.69 |       0.92 |
-| `PluralRules.select(ordinal)`        |        0.55 |       0.46 |
-| `PluralRules.select(ru)`             |        0.56 |       0.51 |
-| `PluralRules.selectRange`            |        2.20 |       0.91 |
-| `ListFormat.format`                  |        1.11 |       0.54 |
-| `ListFormat.formatToParts`           |        3.36 |       3.30 |
-| `RelativeTimeFormat.format`          |        1.10 |       0.73 |
-| `RelativeTimeFormat.formatToParts`   |        3.23 |       2.19 |
-| `RelativeTimeFormat.format(decimal)` |        1.48 |       0.80 |
-| `RelativeTimeFormat.format(auto)`    |        0.55 |       0.61 |
-| `Locale.new`                         |        0.35 |       0.93 |
-| `Locale.new(options)`                |        1.86 |       4.94 |
-| `Locale.new(zh-HK)`                  |        0.36 |       1.35 |
-| `Locale.new.language`                |        0.43 |       1.27 |
-| `Locale.new.toString`                |        0.40 |       1.00 |
-| `Locale.language`                    |        0.08 |       0.09 |
-| `Locale.new(Locale)`                 |        0.33 |       0.95 |
-| `Locale.new(diverse)`                |        4.61 |       1.42 |
-| `Locale.new(long)`                   |        6.84 |       3.81 |
-| `PluralRules.new`                    |        2.26 |       4.34 |
-| `PluralRules.new(options)`           |        5.68 |       4.83 |
-| `ListFormat.new`                     |        1.59 |       2.68 |
-| `ListFormat.new(default)`            |        1.25 |       2.43 |
-| `ListFormat.new(array)`              |        1.80 |       2.76 |
-| `ListFormat.new(options)`            |        2.87 |       2.58 |
-| `ListFormat.new(fallback)`           |        2.35 |       3.43 |
-| `ListFormat.new(unsupported)`        |        2.47 |       3.67 |
-| `RelativeTimeFormat.new`             |        4.70 |       4.65 |
-| `RelativeTimeFormat.new(fallback)`   |        5.68 |       5.43 |
+| `getCanonicalLocales`                |        0.07 |       1.10 |
+| `Locale.maximize`                    |        0.26 |       2.12 |
+| `PluralRules.select`                 |        0.51 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.58 |       0.45 |
+| `PluralRules.select(string)`         |        0.68 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.54 |       0.45 |
+| `PluralRules.select(ru)`             |        0.55 |       0.50 |
+| `PluralRules.selectRange`            |        2.14 |       0.88 |
+| `ListFormat.format`                  |        1.08 |       0.55 |
+| `ListFormat.formatToParts`           |        3.28 |       3.23 |
+| `RelativeTimeFormat.format`          |        1.03 |       0.71 |
+| `RelativeTimeFormat.formatToParts`   |        3.09 |       2.14 |
+| `RelativeTimeFormat.format(decimal)` |        1.35 |       0.78 |
+| `RelativeTimeFormat.format(auto)`    |        0.49 |       0.60 |
+| `Locale.new`                         |        0.35 |       0.92 |
+| `Locale.new(options)`                |        1.76 |       4.86 |
+| `Locale.new(zh-HK)`                  |        0.36 |       1.33 |
+| `Locale.new.language`                |        0.43 |       1.24 |
+| `Locale.new.toString`                |        0.41 |       0.98 |
+| `Locale.language`                    |        0.08 |       0.08 |
+| `Locale.new(Locale)`                 |        0.33 |       0.93 |
+| `Locale.new(diverse)`                |        4.21 |       1.41 |
+| `Locale.new(long)`                   |        6.00 |       3.79 |
+| `PluralRules.new`                    |        2.19 |       4.28 |
+| `PluralRules.new(options)`           |        5.44 |       4.67 |
+| `ListFormat.new`                     |        1.52 |       2.65 |
+| `ListFormat.new(default)`            |        1.22 |       2.44 |
+| `ListFormat.new(array)`              |        1.77 |       2.77 |
+| `ListFormat.new(options)`            |        2.74 |       2.58 |
+| `ListFormat.new(fallback)`           |        2.26 |       3.46 |
+| `ListFormat.new(unsupported)`        |        2.34 |       3.59 |
+| `RelativeTimeFormat.new`             |        4.46 |       4.61 |
+| `RelativeTimeFormat.new(fallback)`   |        5.26 |       5.35 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -219,6 +225,23 @@ All 342 final values are checked. The same 50,000-RTF-constructor profile has
 24 of 200 samples in native canonicalization before, and none of 173 after.
 Resolution and final record creation now dominate host samples. These frames
 still aggregate C++ and Rust.
+
+RTF now binds private WeakMap methods once and calls the captured
+`getCanonicalLocales` directly. The intrinsic ignores its receiver. This removes
+per-call reflective argument arrays. Poisoning WeakMap methods, Function.bind
+and the public canonicalizer after installation cannot change formatting or brands.
+
+With the same console clock patch on both native hosts, three paired runs reduce
+numeric formatting from 1.07 to 1.03 µs, decimals from 1.39 to 1.35 µs, auto forms
+from 0.53 to 0.49 µs and parts from 3.14 to 3.09 µs. Constructors stay near
+4.46/5.26 µs, versus magrinj's 4.61/5.35 µs. Numeric formatting and parts still
+trail magrinj's 0.71/2.14 µs. The fully bound prototype and all 342 final values
+remain in the results file.
+
+Locale's long control again reverses between workloads: mixed 6.64 to 6.00 µs,
+isolated 5.94 to 6.37 µs. Both remain recorded; no causal explanation is claimed.
+The steady-format profile removes `Reflect.apply` samples; native formatting
+still accounts for most time and includes C++ plus Rust work.
 
 The [regional fixtures](../../conformance-tests/icu4j/locale-format-fixtures.tsv)
 pin Chinese output against ICU4J 78.1. At the magrinj revision above, `zh-TW`
