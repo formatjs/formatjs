@@ -375,6 +375,7 @@ fn category_index(category: &str) -> Result<u8, i32> {
 }
 
 /// Select a range category from already coerced mathematical text.
+/// Category order: zero, one, two, few, many, other. Errors leave out=255.
 /// # Safety
 /// Handle live; endpoint bytes readable for their lengths; out writable.
 #[unsafe(no_mangle)]

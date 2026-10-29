@@ -37,7 +37,7 @@ public class IntlPluralRulesOracle {
     }
     private static void ranges(String output) throws Exception {
         List<String> rows = new ArrayList<>();
-        rows.add("locale\tstart\tend\ticuRangeCategory\tecmaCategory");
+        rows.add("locale\tstart\tend\ticu4cJRaw\ticu4cJIdentity");
         String[][] pairs = {{"0","1"},{"1","2"},{"2","3"},{"3","5"},{"1","1"},{"2","2"},{"0","0"},{"1","1.001"},{"1.001","2.1"},{"2.1","5"},{"-3","-1"},{"10","20"},{"21","101"},{"1.1","2.1"},{"2","1"},{"0.1","0.2"}};
         for (String tag : new String[]{"en","fr","ar","ru","pl","cs","sl","lt","lv","he","ja","zh-TW","zh-HK","zh-Hant-HK"}) {
             ULocale locale = ULocale.forLanguageTag(tag);
