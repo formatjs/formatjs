@@ -202,3 +202,10 @@ Canonicalization creates list elements directly without calling an overridden
 
 Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
 Extension singleton matching is case-insensitive, including duplicate detection.
+
+The Rust canonicalizer borrows the language identifier before its first
+extension. A first private-use extension can be copied and lowercased after
+full structural validation; it has no aliases or internal ordering. Other
+extensions retain the existing canonicalization path. Independent ICU4C/J/X
+private-use fixtures cover casing, aliases, long suffixes and preceding Unicode
+extensions. Keep validation before this shortcut.
