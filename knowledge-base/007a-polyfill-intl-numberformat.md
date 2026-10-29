@@ -180,6 +180,10 @@ exponent-formatted magnitude. Sparse translated currency-name maps fall back to
 the currency code. Both fixes have TS/Rust coverage; tiny values also match native
 Intl formatting and parts.
 
+The standard decimal fast path retains its numeric part buffer and inserts any
+sign before it. RelativeTimeFormat shares this path, avoiding a second vector
+without changing sign order or nonfinite-number handling.
+
 ## Benchmarks
 
 Run `bazel run //packages/intl-numberformat/benchmark:benchmark` for formatting
