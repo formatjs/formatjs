@@ -69,45 +69,45 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-29, pinned to CPU 0 on every host,
-including direct PluralRules range arguments and the earlier optimizations.
+including shared canonical-decimal normalization and the earlier optimizations.
 All hosts use high-resolution `__now()`.
-[Raw results, controls and profiles](plural-range-input-results.json).
+[Raw results, controls, Rust probes and profiles](canonical-decimal-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.07 |       1.10 |
-| `Locale.maximize`                    |        0.27 |       2.10 |
-| `PluralRules.select`                 |        0.51 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.58 |       0.46 |
-| `PluralRules.select(string)`         |        0.68 |       0.92 |
-| `PluralRules.select(ordinal)`        |        0.53 |       0.46 |
-| `PluralRules.select(ru)`             |        0.55 |       0.50 |
-| `PluralRules.selectRange`            |        1.07 |       0.89 |
+| `getCanonicalLocales`                |        0.07 |       1.09 |
+| `Locale.maximize`                    |        0.27 |       2.11 |
+| `PluralRules.select`                 |        0.36 |       0.45 |
+| `PluralRules.select(decimal)`        |        0.41 |       0.45 |
+| `PluralRules.select(string)`         |        0.51 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.39 |       0.45 |
+| `PluralRules.select(ru)`             |        0.40 |       0.50 |
+| `PluralRules.selectRange`            |        0.78 |       0.89 |
 | `ListFormat.format`                  |        1.08 |       0.53 |
-| `ListFormat.formatToParts`           |        3.23 |       3.25 |
+| `ListFormat.formatToParts`           |        3.22 |       3.25 |
 | `RelativeTimeFormat.format`          |        0.97 |       0.71 |
-| `RelativeTimeFormat.formatToParts`   |        1.71 |       2.16 |
-| `RelativeTimeFormat.format(decimal)` |        1.30 |       0.79 |
-| `RelativeTimeFormat.format(auto)`    |        0.46 |       0.60 |
+| `RelativeTimeFormat.formatToParts`   |        1.72 |       2.17 |
+| `RelativeTimeFormat.format(decimal)` |        1.30 |       0.80 |
+| `RelativeTimeFormat.format(auto)`    |        0.45 |       0.60 |
 | `Locale.new`                         |        0.35 |       0.93 |
-| `Locale.new(options)`                |        1.80 |       4.89 |
-| `Locale.new(zh-HK)`                  |        0.35 |       1.34 |
-| `Locale.new.language`                |        0.43 |       1.26 |
+| `Locale.new(options)`                |        1.80 |       4.88 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.36 |
+| `Locale.new.language`                |        0.43 |       1.27 |
 | `Locale.new.toString`                |        0.40 |       1.00 |
 | `Locale.language`                    |        0.08 |       0.09 |
-| `Locale.new(Locale)`                 |        0.32 |       0.95 |
-| `Locale.new(diverse)`                |        2.75 |       1.43 |
-| `Locale.new(long)`                   |        4.52 |       3.79 |
-| `PluralRules.new`                    |        2.17 |       4.57 |
-| `PluralRules.new(options)`           |        5.86 |       5.04 |
-| `ListFormat.new`                     |        1.31 |       2.80 |
-| `ListFormat.new(default)`            |        1.03 |       2.56 |
-| `ListFormat.new(array)`              |        1.65 |       2.80 |
-| `ListFormat.new(options)`            |        2.91 |       2.78 |
+| `Locale.new(Locale)`                 |        0.33 |       0.95 |
+| `Locale.new(diverse)`                |        3.17 |       1.43 |
+| `Locale.new(long)`                   |        4.53 |       3.81 |
+| `PluralRules.new`                    |        2.16 |       4.57 |
+| `PluralRules.new(options)`           |        5.81 |       5.05 |
+| `ListFormat.new`                     |        1.36 |       2.64 |
+| `ListFormat.new(default)`            |        1.03 |       2.68 |
+| `ListFormat.new(array)`              |        1.67 |       2.83 |
+| `ListFormat.new(options)`            |        2.90 |       2.72 |
 | `ListFormat.new(fallback)`           |        2.13 |       3.63 |
-| `ListFormat.new(unsupported)`        |        2.24 |       3.78 |
-| `RelativeTimeFormat.new`             |        4.20 |       4.66 |
-| `RelativeTimeFormat.new(fallback)`   |        5.26 |       5.60 |
+| `ListFormat.new(unsupported)`        |        2.20 |       3.77 |
+| `RelativeTimeFormat.new`             |        4.03 |       4.89 |
+| `RelativeTimeFormat.new(fallback)`   |        5.15 |       5.55 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -466,3 +466,30 @@ independently by ICU4C and ICU4X, then consumed by actual Hermes source/bytecode
 installers. Eighteen raw differences remain explicit, including equal endpoints
 and missing-pair fallback; no outputs are normalized. Default-digit cardinal
 coverage does not replace the broader TS ordinal/rounding/BigInt differential.
+
+Shared mathematical normalization now returns canonical ASCII plain decimals
+of at most 308 bytes directly. Such text cannot overflow or underflow Number,
+and already has the general parser's output form. This saves temporary digit
+strings and floating-point parsing without changing mathematical values.
+Normalization allocation calls fall from 4 to 1, ordinary plural selection from
+5 to 2 and ranges from 12 to 6. Separate instrumented and timing probes retain
+noncanonical, exponent and 308/309-byte boundary controls:
+
+```sh
+bazel run -c opt //benchmarks/hermes-intl-extension:mathematical_allocation_probe
+bazel run -c opt //benchmarks/hermes-intl-extension:mathematical_probe
+```
+
+Three complete optimized CPU-0-pinned comparisons reduce numeric plural
+selection from 0.507 to 0.365 µs, decimals from 0.582 to 0.415 µs and ranges
+from 1.072 to 0.776 µs. All six measured steady-state plural cases now beat
+magrinj (0.451, 0.455 and 0.886 µs for those three cases). Explicit-options
+construction remains slower, 5.81 versus 5.05 µs. Default construction shifts
+from 2.08 to 2.16 µs; all raw cases remain recorded. Isolated diverse/long Locale
+controls are 2.93/4.43 versus 2.76/4.40 µs.
+
+Fresh profiles reduce the single-selection host samples from 3,538 to 2,411
+and range host samples from 791 to 537 for fixed workloads. Ten focused checks
+pass, including both NumberFormat/PluralRules Test262 suites, mathematical and
+digit differentials, and the inherited ICU4C/J/X matrix. All 342 benchmark values
+match; neither numeric output caching nor changed coercion is involved.
