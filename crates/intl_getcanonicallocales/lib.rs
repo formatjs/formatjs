@@ -496,26 +496,30 @@ fn canonicalize_with(
     // CanonicalizeLocaleList 7.c.v: structural validation precedes canonicalization.
     validate(tag)?;
     // CanonicalizeLocaleList 7.c.vi / CanonicalizeUnicodeLocaleId 1–3.
-    if !tag.split('-').any(|part| part.len() == 1) {
+    let mut offset = 0;
+    let extension = tag.split('-').find_map(|part| {
+        let start = offset;
+        offset += part.len() + 1;
+        (part.len() == 1).then_some((start, part))
+    });
+    let Some((extension_start, singleton)) = extension else {
         return canonicalize_language_id(canonicalizer, tag);
+    };
+    let mut result = canonicalize_language_id(canonicalizer, &tag[..extension_start - 1])?;
+    result.reserve(tag.len() - extension_start + 1);
+    result.push('-');
+    if singleton.eq_ignore_ascii_case("x") {
+        // Private use has no aliases or internal ordering; validation proved ASCII.
+        result.push_str(&tag[extension_start..]);
+        let start = result.len() - (tag.len() - extension_start);
+        result[start..].make_ascii_lowercase();
+        return Ok(result);
     }
     // UnicodeExtensionComponents 1 assertion: canonical extension input is ASCII-lowercase.
-    let lower = tag.to_ascii_lowercase();
+    let lower = tag[extension_start..].to_ascii_lowercase();
     let parts: Vec<_> = lower.split('-').collect();
-    let extension_start = parts
-        .iter()
-        .position(|part| part.len() == 1)
-        .unwrap_or(parts.len());
-    if extension_start == parts.len() {
-        return canonicalize_language_id(canonicalizer, tag);
-    }
-    let mut result = canonicalize_language_id(canonicalizer, &parts[..extension_start].join("-"))?;
-    result.push('-');
     // CanonicalizeUnicodeLocaleId 2.g–3: replace the extension and return the tag.
-    result.push_str(&canonicalize_extensions(
-        canonicalizer,
-        &parts[extension_start..],
-    )?);
+    result.push_str(&canonicalize_extensions(canonicalizer, &parts)?);
     Ok(result)
 }
 
@@ -596,6 +600,10 @@ mod tests {
         for (input, expected) in [
             ("EN-latn-us", "en-Latn-US"),
             ("iw-BU", "he-MM"),
+            ("IW-latn-bu-X-aBcD-U-cA", "he-Latn-MM-x-abcd-u-ca"),
+            ("en-X-X-u-U", "en-x-x-u-u"),
+            ("ABcde-Latn-BU-X-foo", "abcde-Latn-MM-x-foo"),
+            ("en-u-ca-gregory-X-AbCd", "en-u-ca-gregory-x-abcd"),
             ("sh", "sr-Latn"),
             ("posix", "posix"),
             ("GERMAN", "german"),

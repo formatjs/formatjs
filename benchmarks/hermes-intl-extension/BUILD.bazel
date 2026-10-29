@@ -174,3 +174,24 @@ genrule(
     cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath list-constructor-control.js)",
     tools = ["@hermes//:hermesc"],
 )
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["canonical-extension-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_canonical_extension_probe",
+        edition = "2024",
+        deps = [
+            "//crates/intl_getcanonicallocales",
+            "//crates/intl_locale",
+        ],
+    )
+    for name, features in [
+        ("canonical_extension_probe", []),
+        (
+            "canonical_extension_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]

@@ -51,3 +51,16 @@ cc_test(
     ],
     deps = ["@icu4c_linux_x86_64//:icu"],
 )
+
+cc_test(
+    name = "intl_canonical_private_conformance_test",
+    size = "small",
+    srcs = ["canonical_private.cc"],
+    data = ["//conformance-tests/icu4j:canonical-private-fixtures.tsv"],
+    env = {"CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
