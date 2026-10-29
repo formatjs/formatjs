@@ -23,6 +23,32 @@
     })
   }
   var localeToString = intl.Locale && intl.Locale.prototype.toString
+  var tagCache = new Map()
+  var cachedTag = Map.prototype.get.bind(tagCache)
+  var storeTag = Map.prototype.set.bind(tagCache)
+  var clearTags = Map.prototype.clear.bind(tagCache)
+  var cacheSize = 0
+
+  function canonicalTag(tag) {
+    var shortTag = tag.length <= 128
+    var result = shortTag ? cachedTag(tag) : undefined
+    if (result === undefined) {
+      result = canonicalize(tag)
+      if (result === null)
+        throw new RangeErrorIntrinsic('Invalid language tag: ' + tag)
+      // Compiled canonicalization data is immutable. Retain only short,
+      // successful string results; coercion and public arrays remain per-call.
+      if (shortTag && result.length <= 128) {
+        if (cacheSize === 64) {
+          clearTags()
+          cacheSize = 0
+        }
+        storeTag(tag, result)
+        cacheSize++
+      }
+    }
+    return result
+  }
 
   // CanonicalizeLocaleList 3, 7.c.iii–iii.1: the trusted Locale intrinsic
   // supplies its brand and tag without reading overridden instance properties.
@@ -53,16 +79,13 @@
       // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L5679-L5701
       if (locales === null)
         throw new TypeErrorIntrinsic('Cannot convert null to an object')
+      if (typeof locales === 'string') return [canonicalTag(locales)]
       // CanonicalizeLocaleList 3–4.a: singleton array for a string/Locale tag;
       // otherwise box with ToObject. Array literals create own elements.
       // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6493-L6511
       var single = localeString(locales)
-      var list =
-        typeof locales === 'string'
-          ? [locales]
-          : single !== undefined
-            ? [single]
-            : toObject(locales)
+      if (single !== undefined) return [canonicalTag(single)]
+      var list = toObject(locales)
       // CanonicalizeLocaleList 5: LengthOfArrayLike reads/coerces length once,
       // then ToLength truncates and clamps to 2^53 - 1. Unary + rejects BigInt.
       // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6513-L6526
@@ -98,9 +121,7 @@
         var tag = localeString(value)
         if (tag === undefined) tag = toString(value)
         // CanonicalizeLocaleList 7.c.v–vi: Rust validates, then canonicalizes.
-        var canonical = canonicalize(tag)
-        if (canonical === null)
-          throw new RangeErrorIntrinsic('Invalid language tag: ' + tag)
+        var canonical = canonicalTag(tag)
         // CanonicalizeLocaleList 7.c.vii: append only the first canonical tag.
         var duplicate = false
         for (var i = 0; i < result.length; i++) {
