@@ -30,12 +30,12 @@ fn parse(tag: &str) -> Result<ParsedLocale, InvalidLocale> {
         && language.len() <= 8
         && language.bytes().all(|b| b.is_ascii_alphabetic()))
     .then(|| language.to_ascii_lowercase());
-    let parsed = if long_language.is_some() {
-        format!("qaa{}", &tag[language.len()..])
+    let mut locale: Locale = if long_language.is_some() {
+        format!("qaa{}", &tag[language.len()..]).parse()
     } else {
-        tag.to_owned()
-    };
-    let mut locale: Locale = parsed.parse().map_err(|_| InvalidLocale)?;
+        tag.parse()
+    }
+    .map_err(|_| InvalidLocale)?;
     LocaleCanonicalizer::new_extended().canonicalize(&mut locale);
     Ok(ParsedLocale {
         locale,
