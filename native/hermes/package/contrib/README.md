@@ -24,6 +24,10 @@ prebuilt Rust archive. Hermes embeds the copied JS fragments during its bytecode
 build, then calls the installer before user scripts. The DateTimeFormat guard is
 held by JSI runtime data until runtime teardown.
 
+The installer prepares `supportedValuesOf` before Locale captures it, then
+observes formatter locale loaders after all constructors are installed. This
+keeps `getCollations()` and cached supported values consistent with those backends.
+
 Run `test/hermes/contrib/formatjs-intl.js` with Hermes Lit tests. Rebuild the SDK
 to select different compiled locales. Do not mix JS and native files from
 different SDK versions.

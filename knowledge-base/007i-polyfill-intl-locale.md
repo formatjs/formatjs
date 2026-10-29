@@ -150,3 +150,8 @@ Linux and is cross-built there for macOS smoke-only execution.
 Install canonicalization, trusted formatter backends, supportedValuesOf, Locale,
 then reinstall canonicalization to capture the new Locale brand. No global
 formatter capability cache is retained.
+
+The contrib installer prepares supported-value enumeration before Locale and
+finishes observing formatter loaders after installing the remaining APIs. Locale
+retains that enumerator; loader observation must finish before application code
+can retain methods that mutate locale data.

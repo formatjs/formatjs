@@ -143,7 +143,11 @@
     enumerable: false,
     configurable: true,
   })
-  // Capture loaders before application code can retain their original methods.
-  for (const name of ['DateTimeFormat', 'Collator', 'NumberFormat'])
-    watch((root.Intl as any)[name], name)
+  function watchFormatters() {
+    // Capture loaders before application code can retain their original methods.
+    for (const name of ['DateTimeFormat', 'Collator', 'NumberFormat'])
+      watch((root.Intl as any)[name], name)
+  }
+  watchFormatters()
+  return watchFormatters
 })
