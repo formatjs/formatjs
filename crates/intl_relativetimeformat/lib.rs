@@ -51,9 +51,9 @@ pub struct Part {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit: Option<&'static str>,
 }
-enum Piece<'a> {
+enum Piece<'a, N> {
     Literal(&'a str),
-    Number(Cow<'a, [formatjs_intl_numberformat::Part]>, &'static str),
+    Number(&'a mut N, &'static str, bool),
 }
 pub struct RelativeTimeFormat {
     data: Arc<LocaleData>,
@@ -96,46 +96,62 @@ impl RelativeTimeFormat {
     }
     pub fn format(&self, value: &str, unit: &str) -> Result<String, Error> {
         let mut result = String::with_capacity(32);
-        self.visit_pattern(value, unit, |piece| match piece {
-            Piece::Literal(value) => result.push_str(value),
-            Piece::Number(parts, _) => {
-                for part in parts.iter() {
-                    result.push_str(&part.value);
-                }
-            }
-        })?;
+        self.visit_pattern(
+            value,
+            unit,
+            |value| {
+                self.number
+                    .format_decimal_string_with_plural(value, &self.data.plurals)
+            },
+            |piece| match piece {
+                Piece::Literal(value) => result.push_str(value),
+                Piece::Number(text, _, _) => result.push_str(text),
+            },
+        )?;
         Ok(result)
     }
     pub fn format_to_parts(&self, value: &str, unit: &str) -> Result<Vec<Part>, Error> {
         let mut result = Vec::new();
-        self.visit_pattern(value, unit, |piece| match piece {
-            Piece::Literal(value) => result.push(Part {
-                kind: "literal",
-                value: value.into(),
-                unit: None,
-            }),
-            Piece::Number(parts, unit) => {
-                let append = |part: formatjs_intl_numberformat::Part| Part {
-                    kind: part.kind,
-                    value: part.value,
-                    unit: Some(unit),
-                };
-                match parts {
-                    Cow::Borrowed(parts) => result.extend(parts.iter().cloned().map(append)),
-                    Cow::Owned(parts) if result.is_empty() => {
-                        result = parts.into_iter().map(append).collect();
+        self.visit_pattern(
+            value,
+            unit,
+            |value| {
+                self.number
+                    .format_decimal_with_plural(value, &self.data.plurals)
+            },
+            |piece| match piece {
+                Piece::Literal(value) => result.push(Part {
+                    kind: "literal",
+                    value: value.into(),
+                    unit: None,
+                }),
+                Piece::Number(parts, unit, last) => {
+                    let append = |part: formatjs_intl_numberformat::Part| Part {
+                        kind: part.kind,
+                        value: part.value,
+                        unit: Some(unit),
+                    };
+                    if last {
+                        let parts = std::mem::take(parts);
+                        if result.is_empty() {
+                            result = parts.into_iter().map(append).collect();
+                        } else {
+                            result.extend(parts.into_iter().map(append));
+                        }
+                    } else {
+                        result.extend(parts.iter().cloned().map(append));
                     }
-                    Cow::Owned(parts) => result.extend(parts.into_iter().map(append)),
                 }
-            }
-        })?;
+            },
+        )?;
         Ok(result)
     }
-    fn visit_pattern(
+    fn visit_pattern<N>(
         &self,
         value: &str,
         unit: &str,
-        mut visit: impl FnMut(Piece<'_>),
+        format_number: impl FnOnce(&str) -> Result<(N, &'static str), formatjs_intl_numberformat::Error>,
+        mut visit: impl FnMut(Piece<'_, N>),
     ) -> Result<(), Error> {
         let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
         if !numeric.is_finite() {
@@ -175,12 +191,7 @@ impl RelativeTimeFormat {
         } else {
             &field.future
         };
-        let (mut number, category) = self
-            .number
-            .format_decimal_with_plural(
-                value.strip_prefix('-').unwrap_or(value),
-                &self.data.plurals,
-            )
+        let (mut number, category) = format_number(value.strip_prefix('-').unwrap_or(value))
             .map_err(|error| Error::InvalidData(error.to_string()))?;
         let pattern = patterns
             .get(category)
@@ -190,12 +201,7 @@ impl RelativeTimeFormat {
         while let Some((index, literal)) = chunks.next() {
             if index > 0 {
                 // Repeated slots borrow; the final slot can transfer its buffer.
-                let parts = if chunks.peek().is_none() {
-                    Cow::Owned(std::mem::take(&mut number))
-                } else {
-                    Cow::Borrowed(number.as_slice())
-                };
-                visit(Piece::Number(parts, unit));
+                visit(Piece::Number(&mut number, unit, chunks.peek().is_none()));
             }
             if !literal.is_empty() {
                 visit(Piece::Literal(literal));

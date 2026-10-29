@@ -10,7 +10,7 @@ use icu_properties::{
     props::{GeneralCategory, GeneralCategoryGroup},
 };
 use regex::Regex;
-use std::sync::LazyLock;
+use std::{borrow::Cow, sync::LazyLock};
 
 static NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[#0](?:[.,][#0]+)*").unwrap());
 static QUOTED: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"'(.)'").unwrap());
@@ -273,10 +273,13 @@ impl NumberFormat {
             sign,
         })
     }
-    fn mapped(&self, input: &str) -> Result<String, Error> {
+    fn mapped<'a>(&self, input: &'a str) -> Result<Cow<'a, str>, Error> {
+        if self.resolved.numbering_system == "latn" {
+            return Ok(Cow::Borrowed(input));
+        }
         let metadata = metadata::load()?;
         let Some(digits) = metadata.digits.get(&self.resolved.numbering_system) else {
-            return Ok(input.to_owned());
+            return Ok(Cow::Borrowed(input));
         };
         let mut output = String::new();
         for value in input.chars() {
@@ -289,19 +292,21 @@ impl NumberFormat {
                 output.push(value);
             }
         }
-        Ok(output)
+        Ok(Cow::Owned(output))
     }
-    fn number_parts(
+    fn visit_number_parts(
         &self,
         number: &Rendered,
         pattern: &str,
         compact: bool,
-    ) -> Result<Vec<Part>, Error> {
+        mut visit: impl FnMut(&'static str, Cow<'_, str>),
+    ) -> Result<(), Error> {
         if let Some(special) = number.rounded.special {
-            return Ok(vec![Part::new(
+            visit(
                 if special == "NaN" { "nan" } else { "infinity" },
-                number.text.clone(),
-            )]);
+                Cow::Borrowed(&number.text),
+            );
+            return Ok(());
         }
         let symbols = &self.data.numbers.symbols[&self.system];
         let (integer, fraction) = number
@@ -332,7 +337,6 @@ impl NumberFormat {
         let grouped = !compact
             && grouping != Grouping::Disabled
             && (grouping == Grouping::Always || integer.len() >= primary + minimum);
-        let mut parts = Vec::new();
         if grouped {
             if primary == 0 || secondary == 0 {
                 return Err(Error::InvalidData("Empty number grouping interval".into()));
@@ -352,9 +356,9 @@ impl NumberFormat {
             let mut end = first;
             while start < integer.len() {
                 if start != 0 {
-                    parts.push(Part::new("group", separator.clone()));
+                    visit("group", Cow::Borrowed(separator));
                 }
-                parts.push(Part::new("integer", self.mapped(&integer[start..end])?));
+                visit("integer", self.mapped(&integer[start..end])?);
                 start = end;
                 let remaining = integer.len() - start;
                 end += if remaining > primary {
@@ -364,7 +368,7 @@ impl NumberFormat {
                 };
             }
         } else {
-            parts.push(Part::new("integer", self.mapped(integer)?));
+            visit("integer", self.mapped(integer)?);
         }
         if let Some(fraction) = fraction {
             let separator = if self.resolved.style == "currency" {
@@ -375,22 +379,34 @@ impl NumberFormat {
             } else {
                 &symbols.decimal
             };
-            parts.push(Part::new("decimal", separator.clone()));
-            parts.push(Part::new("fraction", self.mapped(fraction)?));
+            visit("decimal", Cow::Borrowed(separator));
+            visit("fraction", self.mapped(fraction)?);
         }
         if matches!(
             self.resolved.notation.as_str(),
             "scientific" | "engineering"
         ) {
-            parts.push(Part::new("exponentSeparator", symbols.exponential.clone()));
+            visit("exponentSeparator", Cow::Borrowed(&symbols.exponential));
             if number.exponent < 0 {
-                parts.push(Part::new("exponentMinusSign", symbols.minus_sign.clone()));
+                visit("exponentMinusSign", Cow::Borrowed(&symbols.minus_sign));
             }
-            parts.push(Part::new(
+            visit(
                 "exponentInteger",
                 self.mapped(&number.exponent.unsigned_abs().to_string())?,
-            ));
+            );
         }
+        Ok(())
+    }
+    fn number_parts(
+        &self,
+        number: &Rendered,
+        pattern: &str,
+        compact: bool,
+    ) -> Result<Vec<Part>, Error> {
+        let mut parts = Vec::new();
+        self.visit_number_parts(number, pattern, compact, |kind, value| {
+            parts.push(Part::new(kind, value));
+        })?;
         Ok(parts)
     }
     pub(crate) fn partition(
@@ -410,6 +426,41 @@ impl NumberFormat {
         value: &str,
         rules: &formatjs_intl_pluralrules::LocaleRules,
     ) -> Result<(Vec<Part>, &'static str), Error> {
+        let (number, category) = self.decimal_with_plural(value, rules)?;
+        Ok((self.partition_rendered(&number, false)?, category))
+    }
+
+    /// Avoid owned number parts when the consumer only needs text and its plural.
+    pub fn format_decimal_string_with_plural(
+        &self,
+        value: &str,
+        rules: &formatjs_intl_pluralrules::LocaleRules,
+    ) -> Result<(String, &'static str), Error> {
+        let (number, category) = self.decimal_with_plural(value, rules)?;
+        let mut text = String::with_capacity(32);
+        if self.data.numbers.decimal[&self.system].standard == "#,##0.###" {
+            let symbols = &self.data.numbers.symbols[&self.system];
+            if number.sign < 0 {
+                text.push_str(&symbols.minus_sign);
+            } else if number.sign > 0 {
+                text.push_str(&symbols.plus_sign);
+            }
+            self.visit_number_parts(&number, "#,##0.###", false, |_, value| {
+                text.push_str(&value);
+            })?;
+        } else {
+            for part in self.partition_rendered(&number, false)? {
+                text.push_str(&part.value);
+            }
+        }
+        Ok((text, category))
+    }
+
+    fn decimal_with_plural(
+        &self,
+        value: &str,
+        rules: &formatjs_intl_pluralrules::LocaleRules,
+    ) -> Result<(Rendered, &'static str), Error> {
         if self.resolved.style != "decimal" || self.resolved.notation != "standard" {
             return Err(Error::Range("Expected standard decimal formatting"));
         }
@@ -417,7 +468,7 @@ impl NumberFormat {
         let category = rules
             .select_rounded(number.rounded.special.unwrap_or(&number.text), 0, false)
             .map_err(|error| Error::InvalidData(error.to_string()))?;
-        Ok((self.partition_rendered(&number, false)?, category))
+        Ok((number, category))
     }
 
     fn partition_rendered(
