@@ -3,178 +3,87 @@ import {
   findMatchingDistance,
 } from '#packages/intl-localematcher/abstract/utils.js'
 import {expect, test} from 'vitest'
-test('findMatchingDistance', () => {
-  expect(findMatchingDistance('es-CO', 'es')).toBe(49)
-  expect(findMatchingDistance('es-CO', 'es-419')).toBe(39)
-  expect(findMatchingDistance('en-US', 'en-US')).toBe(0)
-  expect(findMatchingDistance('zh-TW', 'zh-Hant')).toBe(0)
-  expect(findMatchingDistance('zh-HK', 'zh-NO')).toBe(540)
-  /**
-   * zh-Hant-HK -> zh-Hant-TW, the value of $cnsar is 'HK+MO'
-   * HK belongs to $cnsar, TW doesn't
-   * the distance rule should be zh_Hant_* <-> zh_Hant_* (distance: 5*10)
-   * instead of zh_Hant_$!cnsar <-> zh_Hant_$!cnsar(distance 4*10)
-   */
-  expect(findMatchingDistance('zh-HK', 'zh-Hant')).toBe(50)
-  expect(findMatchingDistance('vi', 'fr')).toBe(840)
-  expect(findMatchingDistance('es', 'fr')).toBe(838)
-  expect(findMatchingDistance('es', 'en')).toBe(840)
-  expect(findMatchingDistance('fr', 'fr')).toBe(0)
-  expect(findMatchingDistance('fr', 'br')).toBe(200)
-  expect(findMatchingDistance('sr-Latn-BA', 'sr-Latn-RS')).toBe(40)
-  expect(findMatchingDistance('sr-Latn-BA', 'bs-Latn-BA')).toBe(800)
+test.each([
+  ['es-CO', 'es', 5],
+  ['es-CO', 'es-419', 4],
+  ['en-US', 'en-US', 0],
+  ['en-US', 'en', 0.125],
+  ['zh-TW', 'zh-Hant', 0.375],
+  ['zh-HK', 'zh-NO', 54],
+  ['zh-HK', 'zh-Hant', 5],
+  ['vi', 'fr', 84],
+  ['es', 'fr', 84],
+  ['fr', 'fr', 0],
+  ['br', 'fr', 20],
+  ['fr', 'br', 80],
+  ['sr-Latn-BA', 'sr-Latn-RS', 4],
+  ['sr-Latn-BA', 'bs-Latn-BA', 80],
+])('ICU distance %s to %s', (desired, supported, expected) => {
+  expect(findMatchingDistance(desired as string, supported as string)).toBe(
+    expected
+  )
 })
-test('findBestMatch', () => {
-  expect(findBestMatch(['en-US'], ['en-US'])).toEqual({
-    distances: {
-      'en-US': {
-        'en-US': 0,
-      },
-    },
-    matchedDesiredLocale: 'en-US',
-    matchedSupportedLocale: 'en-US',
-  })
 
+test('distance diagnostics retain original tags and requested order', () => {
   expect(findBestMatch(['sr-Latn-BA'], ['bs', 'sh'])).toEqual({
-    distances: {
-      'sr-Latn-BA': {
-        bs: 800,
-        sh: 40,
-      },
-    },
+    distances: {'sr-Latn-BA': {bs: 80, sh: 4}},
     matchedDesiredLocale: 'sr-Latn-BA',
     matchedSupportedLocale: 'sh',
   })
+  const result = findBestMatch(['de-DE', 'fr-FR'], ['en', 'fr-FR'])
+  expect(result.matchedSupportedLocale).toBe('fr-FR')
+  expect(result.distances['fr-FR']['fr-FR']).toBe(5)
+})
 
-  // With fallback matching, fr-XX → fr uses fallback penalty (Tier 3 also runs)
-  const frResult = findBestMatch(['fr-XX'], ['fr', 'en'])
-  expect(frResult.matchedDesiredLocale).toEqual('fr-XX')
-  expect(frResult.matchedSupportedLocale).toEqual('fr')
-  expect(frResult.distances['fr-XX'].fr).toBeLessThan(100) // Tier 3 calculates accurate distance
-
-  // With fallback + maximization: zh-TW → zh-Hant-TW → zh-Hant (distance 0)
-  // This correctly finds the linguistically optimal match
-  expect(findBestMatch(['zh-TW'], ['zh', 'zh-Hant'])).toEqual({
-    distances: {
-      'zh-TW': {
-        'zh-Hant': 0, // Maximized match: zh-TW → zh-Hant-TW → zh-Hant
-      },
-    },
-    matchedDesiredLocale: 'zh-TW',
-    matchedSupportedLocale: 'zh-Hant',
-  })
-
-  expect(findBestMatch(['th-u-ca-gregory'], ['th'])).toEqual({
-    distances: {
-      'th-u-ca-gregory': {
-        th: 0,
-      },
-    },
-    matchedDesiredLocale: 'th-u-ca-gregory',
-    matchedSupportedLocale: 'th',
-  })
-
-  // With fallback matching, es-co → es uses fallback penalty instead of full distance calc
-  expect(findBestMatch(['es-co'], ['en', 'es-419'])).toEqual({
-    distances: {
-      'es-co': {
-        en: 839,
-        'es-419': 39,
-      },
-    },
-    matchedDesiredLocale: 'es-co',
-    matchedSupportedLocale: 'es-419',
-  })
-
-  // es-co → es-419 (CLDR distance 39) is closer than es (distance 49)
-  // Latin American locales should match es-419 via CLDR paradigm locale rules
-  expect(findBestMatch(['es-co'], ['en', 'es', 'es-419'])).toEqual({
-    distances: {
-      'es-co': {
-        en: 839,
-        es: 49,
-        'es-419': 39,
-      },
-    },
-    matchedDesiredLocale: 'es-co',
-    matchedSupportedLocale: 'es-419',
-  })
-
-  expect(findBestMatch(['pt-mz'], ['pt-PT', 'pt-BR'])).toEqual({
-    distances: {
-      'pt-mz': {
-        'pt-BR': 49,
-        'pt-PT': 39,
-      },
-    },
-    matchedDesiredLocale: 'pt-mz',
-    matchedSupportedLocale: 'pt-PT',
-  })
-
-  // de-DE → de (fallback) is not in supported list, falls through to full distance calculation
-  // fr-FR is exact match
-  const multiResult = findBestMatch(
-    ['de-DE', 'fr-FR'],
-    ['en', 'en-US', 'fr-FR']
-  )
-  expect(multiResult.matchedDesiredLocale).toEqual('fr-FR')
-  expect(multiResult.matchedSupportedLocale).toEqual('fr-FR')
-  expect(multiResult.distances['fr-FR']['fr-FR']).toEqual(40) // Second requested locale, position penalty 1 × 40
+test('exclusive thresholds apply to exact and distance matches', () => {
+  expect(
+    findBestMatch(['en'], ['en'], 0).matchedSupportedLocale
+  ).toBeUndefined()
+  expect(
+    findBestMatch(['es-CO'], ['es'], 5).matchedSupportedLocale
+  ).toBeUndefined()
+  expect(findBestMatch(['es-CO'], ['es'], 6).matchedSupportedLocale).toBe('es')
 })
 
 test('Fallback matching - single level subtag removal', () => {
-  // Test that 'en-US' falls back to 'en' (Tier 3 also runs for accuracy)
   const result1 = findBestMatch(['en-US'], ['en', 'fr', 'de'])
   expect(result1.matchedDesiredLocale).toEqual('en-US')
   expect(result1.matchedSupportedLocale).toEqual('en')
-  // Tier 3 calculates accurate distance
   expect(result1.distances['en-US'].en).toBeLessThan(100)
 
-  // Test with position penalty - en-US → en (position 1) wins over fr-CA (no fallback match)
   const result2 = findBestMatch(['fr-CA', 'en-US'], ['en', 'de'])
   expect(result2.matchedDesiredLocale).toEqual('en-US')
   expect(result2.matchedSupportedLocale).toEqual('en')
-  // Tier 3 calculates accurate distance
   expect(result2.distances['en-US'].en).toBeLessThan(100)
 })
 
 test('Fallback matching - two level subtag removal', () => {
-  // Test that 'zh-Hans-CN' falls back to 'zh-Hans' (Tier 3 also runs)
   const result1 = findBestMatch(['zh-Hans-CN'], ['zh-Hans', 'en'])
   expect(result1.matchedDesiredLocale).toEqual('zh-Hans-CN')
   expect(result1.matchedSupportedLocale).toEqual('zh-Hans')
-  // Tier 3 calculates distance 0 after canonicalization
-  expect(result1.distances['zh-Hans-CN']['zh-Hans']).toEqual(0)
+  expect(result1.distances['zh-Hans-CN']['zh-Hans']).toEqual(0.125)
 
-  // Test that 'zh-Hans-CN' matches 'zh' (Tier 3 calculates accurate distance)
   const result2 = findBestMatch(['zh-Hans-CN'], ['zh', 'en'])
   expect(result2.matchedDesiredLocale).toEqual('zh-Hans-CN')
   expect(result2.matchedSupportedLocale).toEqual('zh')
-  // Tier 3 calculates distance based on CLDR data
   expect(result2.distances['zh-Hans-CN'].zh).toBeLessThan(100) // Should match zh over en
 })
 
 test('Fallback matching - multi-level with extensions', () => {
-  // Test that extensions are removed in fallback
-  // 'en-US-x-custom' → 'en-US' → 'en' (maximization drops extensions, then fallback)
   const result = findBestMatch(['en-US-x-custom'], ['en', 'fr'])
   expect(result.matchedDesiredLocale).toEqual('en-US-x-custom')
   expect(result.matchedSupportedLocale).toEqual('en')
-  // Tier 3 calculates accurate distance
   expect(result.distances['en-US-x-custom'].en).toBeLessThan(100)
 })
 
 test('Fallback matching - preferred over distant languages', () => {
-  // Fallback to 'en' should be preferred over unrelated language
   const result = findBestMatch(['en-US'], ['ja', 'en', 'ko'])
   expect(result.matchedDesiredLocale).toBe('en-US')
   expect(result.matchedSupportedLocale).toBe('en')
-  // Tier 3 calculates accurate distance
   expect(result.distances['en-US'].en).toBeLessThan(100)
 })
 
 test('Fallback matching - does not override exact match', () => {
-  // Exact match should still be distance 0
   expect(findBestMatch(['en-US'], ['en-US', 'en'])).toEqual({
     distances: {
       'en-US': {
@@ -187,28 +96,20 @@ test('Fallback matching - does not override exact match', () => {
 })
 
 test('Fallback matching - multiple requested locales', () => {
-  // Test with actual fallback scenario
   const result = findBestMatch(['en-US', 'fr-CA'], ['en', 'fr'])
   expect(result.matchedDesiredLocale).toBe('en-US')
   expect(result.matchedSupportedLocale).toBe('en')
-  // Tier 3 calculates accurate distance (should be better than fr-CA → fr due to position penalty)
-  expect(result.distances['en-US'].en).toBeLessThan(
-    result.distances['fr-CA'].fr
-  )
+  expect(result.distances['en-US'].en).toBe(0.125)
+  expect(result.distances['fr-CA']).toBeUndefined()
 })
 
 test('Fallback matching - falls through to distance calculation when no fallback', () => {
-  // When no exact or fallback match exists, use full distance calculation
-  // However, if distance exceeds threshold (838), no match is returned
   const result = findBestMatch(['en-XZ'], ['fr', 'es'])
-  // en-XZ → en (not in supported), falls through to full distance calculation
-  // Distance from en to fr/es is 838+, which exceeds threshold
   expect(result.matchedDesiredLocale).toBeUndefined()
   expect(result.matchedSupportedLocale).toBeUndefined()
 })
 
 test('GH #4936 - Fast path with many locales', () => {
-  // Exact match should be O(1) with Set lookup even with 700+ locales
   const manyLocales = [
     'af',
     'ar',
@@ -279,7 +180,6 @@ test('GH #4936 - Fast path with many locales', () => {
     'zh',
   ]
 
-  // Exact match should be instant
   expect(findBestMatch(['en'], manyLocales)).toEqual({
     distances: {
       en: {
@@ -290,17 +190,13 @@ test('GH #4936 - Fast path with many locales', () => {
     matchedSupportedLocale: 'en',
   })
 
-  // Fallback should also be fast
   const fallbackResult = findBestMatch(['en-US'], manyLocales)
   expect(fallbackResult.matchedDesiredLocale).toBe('en-US')
   expect(fallbackResult.matchedSupportedLocale).toBe('en')
-  // Tier 3 calculates accurate distance
   expect(fallbackResult.distances['en-US'].en).toBeLessThan(100)
 })
 
 test('GH #4267 - exact match with many locales', function () {
-  // With fallback optimization, fr is an exact match so it returns immediately
-  // without calculating distances to all other locales
   const manyLocales = [
     'af',
     'af-NA',
@@ -877,8 +773,6 @@ test('GH #4267 - exact match with many locales', function () {
 
   const result = findBestMatch(['fr'], manyLocales)
 
-  // With the fast-path optimization, exact match returns immediately
-  // without calculating distances to all other locales
   expect(result).toEqual({
     distances: {
       fr: {

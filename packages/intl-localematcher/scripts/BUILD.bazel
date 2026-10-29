@@ -2,6 +2,15 @@
 load("//tools:index.bzl", "ts_binary")
 
 ts_binary(
+    name = "distance-gen",
+    entry_point = "distance-gen.ts",
+    visibility = [
+        "//crates/intl_localematcher:__pkg__",
+        "//packages/intl-getcanonicallocales:__pkg__",
+    ],
+)
+
+ts_binary(
     name = "regions-gen",
     entry_point = "regions-gen.ts",
     visibility = [

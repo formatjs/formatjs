@@ -72,6 +72,7 @@
   "crates/intl_hermes": "0.1.0",
   "crates/intl_listformat": "0.1.0",
   "crates/intl_locale": "0.1.0",
+  "crates/intl_localematcher": "0.1.0",
   "crates/intl_numberformat": "0.1.0",
   "crates/intl_pluralrules": "0.1.0",
   "crates/intl_relativetimeformat": "0.1.0",

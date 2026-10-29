@@ -418,7 +418,7 @@ impl Registry {
                     let base = matcher::without_unicode_extension(&requested[index]);
                     requested
                         .iter()
-                        .rposition(|tag| matcher::without_unicode_extension(tag) == base)
+                        .position(|tag| matcher::without_unicode_extension(tag) == base)
                         .unwrap_or(index)
                 };
                 Locale::new(&requested[index], &Default::default())

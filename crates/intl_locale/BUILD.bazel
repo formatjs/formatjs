@@ -45,6 +45,7 @@ rust_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_getcanonicallocales",
+        "//crates/intl_localematcher",
         "@crates//:serde",
         "@crates//:serde_json",
     ],
@@ -59,7 +60,9 @@ formatjs_rust_test(
     ],
     compile_data = ["//packages/intl-localematcher:tests/locale-match-fixtures.json"],
     crate_name = "intl_locale_test",
+    data = ["//conformance-tests/icu4j:locale_matcher_grid"],
     edition = "2024",
+    env = {"ICU_MATCHER_GRID": "$(rootpath //conformance-tests/icu4j:locale_matcher_grid)"},
     rustc_env = {"FORMATJS_LOCALE_MATCH_FIXTURES": "$(execpath //packages/intl-localematcher:tests/locale-match-fixtures.json)"},
     deps = [
         ":intl_locale",

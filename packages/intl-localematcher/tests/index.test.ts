@@ -257,3 +257,39 @@ test('supported locale filtering preserves requested tags and order', () => {
     )
   ).toEqual(['sr-Thai-RS', 'de-u-co-phonebk', 'zh-CN'])
 })
+
+test('preserves legacy RegExp statics across matching paths', () => {
+  for (const [requested, supported] of [
+    [['en'], ['en', 'fr']],
+    [['zh-TW'], ['zh', 'zh-Hant']],
+    [['en-XZ'], ['en', 'en-GB']],
+    [['br'], ['de', 'fr']],
+    [['de-x-psaccent'], ['de-1901', 'de']],
+  ]) {
+    ;/sent(inel)/.exec('sentinel')
+    const before = [RegExp.lastMatch, RegExp.$1]
+    match(requested, supported, 'en')
+    const after = [RegExp.lastMatch, RegExp.$1]
+    expect(after).toEqual(before)
+  }
+})
+
+test.each(['0', '1'])('internal arrays ignore inherited setter %s', key => {
+  let actual: string | undefined
+  let error: unknown
+  Object.defineProperty(Object.prototype, key, {
+    configurable: true,
+    set() {
+      throw new Error('Inherited numeric setter')
+    },
+  })
+  try {
+    actual = match(['de-1901', 'fr'], ['en', 'fr', 'de'], 'en')
+  } catch (caught) {
+    error = caught
+  } finally {
+    delete (Object.prototype as Record<string, unknown>)[key]
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toBe('de')
+})

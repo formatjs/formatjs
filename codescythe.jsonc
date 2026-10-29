@@ -77,6 +77,8 @@
     "packages/intl-locale/polyfill-force.ts",
     "packages/intl-locale/should-polyfill.ts",
     "packages/intl-localematcher/index.ts",
+    // Native Locale's Bazel generator imports this legacy data dynamically.
+    "packages/intl-localematcher/abstract/languageMatching.ts",
     "packages/intl-messageformat/index.ts",
     "packages/intl-numberformat/index.ts",
     "packages/intl-numberformat/polyfill.ts",

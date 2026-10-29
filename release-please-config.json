@@ -817,6 +817,13 @@
       "include-v-in-release-name": false,
       "tag-separator": "_v"
     },
+    "crates/intl_localematcher": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
     "crates/intl_numberformat": {
       "release-type": "rust",
       "include-component-in-tag": true,

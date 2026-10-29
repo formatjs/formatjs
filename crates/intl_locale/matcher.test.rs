@@ -102,3 +102,82 @@ fn winning_request_index_keeps_the_matching_unicode_extension() {
     assert_eq!(matched, Some((1, "en".into())));
     assert_eq!(best_fit(&available, &requested).unwrap(), Some("en".into()));
 }
+
+#[test]
+fn shared_matcher_keeps_icu_priority_and_variant_ties() {
+    for (available, requested, expected) in [
+        (vec!["en", "sv"], vec!["en-GB", "sv"], Some("en")),
+        (vec!["be-tarask", "be"], vec!["be"], Some("be-tarask")),
+        (vec!["en-US", "en"], vec!["en"], Some("en")),
+        (vec!["gsw"], vec!["de"], None),
+        (vec!["en", "und"], vec!["und-u-nu-arab"], Some("und")),
+        (vec!["zh"], vec!["ug"], None),
+        (
+            vec!["en-XA", "en-psaccent"],
+            vec!["en-psaccent"],
+            Some("en-psaccent"),
+        ),
+    ] {
+        let available = tags(&available);
+        let requested = tags(&requested);
+        for _ in 0..2 {
+            assert_eq!(
+                best_fit(&available, &requested).unwrap().as_deref(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn supported_cache_uses_contents_after_same_length_replacement() {
+    let mut available = tags(&["fr", "en-GB"]);
+    let requested = tags(&["en-AU"]);
+    assert_eq!(
+        best_fit(&available, &requested).unwrap().as_deref(),
+        Some("en-GB")
+    );
+    available[1] = "en-US".into();
+    assert_eq!(
+        best_fit(&available, &requested).unwrap().as_deref(),
+        Some("en-US")
+    );
+}
+
+#[test]
+fn accepts_unknown_eight_letter_language() {
+    assert_eq!(
+        best_fit(&tags(&["en"]), &tags(&["fullwide"])).unwrap(),
+        None
+    );
+}
+
+#[test]
+fn native_matcher_agrees_with_icu4j_grid() {
+    let grid = std::fs::read_to_string(std::env::var("ICU_MATCHER_GRID").unwrap()).unwrap();
+    let mut checked = 0;
+    for line in grid.lines() {
+        let fields: Vec<_> = line.split('\t').collect();
+        let available = tags(&fields[1].split(',').collect::<Vec<_>>());
+        if fields[2] != available[0] {
+            continue;
+        }
+        let requested = tags(&fields[0].split(',').collect::<Vec<_>>());
+        let expected = fields[4].parse::<isize>().unwrap();
+        let actual =
+            formatjs_intl_locale::matcher::best_fit_requested(&available, &requested).unwrap();
+        assert_eq!(
+            actual
+                .as_ref()
+                .map(|(index, _)| *index as isize)
+                .unwrap_or(-1),
+            expected,
+            "{line}"
+        );
+        if let Some((_, locale)) = actual {
+            assert_eq!(locale, fields[3], "{line}");
+        }
+        checked += 1;
+    }
+    assert!(checked >= 2_640);
+}

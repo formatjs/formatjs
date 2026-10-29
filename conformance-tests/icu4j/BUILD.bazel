@@ -1,5 +1,5 @@
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
-load("@rules_java//java:defs.bzl", "java_import", "java_test")
+load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
 
 exports_files(["locale-format-fixtures.tsv"])
 
@@ -9,18 +9,42 @@ copy_to_bin(
     visibility = ["//native/hermes/tests:__pkg__"],
 )
 
+java_binary(
+    name = "locale_matcher_oracle",
+    testonly = True,
+    srcs = [
+        "ICUConformanceTest.java",
+        "LocaleMatcherConformanceTest.java",
+    ],
+    main_class = "LocaleMatcherConformanceTest",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "locale_matcher_grid",
+    testonly = True,
+    outs = ["locale-matcher-grid.tsv"],
+    cmd = "$(execpath :locale_matcher_oracle) --grid $@",
+    tools = [":locale_matcher_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_import(
     name = "icu4j",
     jars = ["@icu4j_jar//file"],
+    visibility = ["//benchmarks/locale-matching:__pkg__"],
 )
 
 java_test(
     name = "icu_conformance_test",
     size = "small",
-    srcs = ["ICUConformanceTest.java"],
-    data = ["//packages/intl-localematcher:tests/locale-match-fixtures.json"],
+    srcs = [
+        "ICUConformanceTest.java",
+        "LocaleMatcherConformanceTest.java",
+    ],
+    data = ["//packages/intl-localematcher:tests/icu-match-fixtures.json"],
     env = {
-        "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/locale-match-fixtures.json)",
+        "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/icu-match-fixtures.json)",
     },
     main_class = "ICUConformanceTest",
     test_class = "ICUConformanceTest",
@@ -57,5 +81,19 @@ java_test(
     },
     main_class = "IntlCollatorConformanceTest",
     test_class = "IntlCollatorConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_test(
+    name = "locale_matcher_conformance_test",
+    size = "small",
+    srcs = [
+        "ICUConformanceTest.java",
+        "LocaleMatcherConformanceTest.java",
+    ],
+    data = ["//packages/intl-localematcher:tests/icu-match-fixtures.json"],
+    env = {"LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/icu-match-fixtures.json)"},
+    main_class = "LocaleMatcherConformanceTest",
+    test_class = "LocaleMatcherConformanceTest",
     deps = [":icu4j"],
 )
