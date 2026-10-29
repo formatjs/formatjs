@@ -46,6 +46,9 @@ The ABI in `relativetimeformat.h` separates locale/nu resolution from final
 creation, preserving the field lookup phase after host getters. Handles survive
 registry destruction. Queries carry normalized Number text plus original UTF-16
 unit codes; lone surrogate units produce RangeError instead of an ABI error.
+Direct `formatjs_relative_format` and `formatjs_relative_format_to_parts` calls
+accept numeric UTF-8 text and UTF-16 unit codes without a JSON request. The
+former returns text, the latter JSON parts. Both share Rust unit validation.
 Byte serialization preserves type/value/unit part property order. Status 1 maps
 to RangeError; 2 reports invalid ABI input and 3 a caught panic. Hosts own
 ToNumber/ToString sequencing and BigInt/Symbol TypeErrors. Destroy each handle
