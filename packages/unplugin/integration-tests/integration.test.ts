@@ -59,6 +59,7 @@ async function buildWithVite(
     return (chunk?.code ?? '')
       .replace(/var _jsxFileName = "[^"]*"/g, 'var _jsxFileName = "<source>"')
       .replace(/^\/\/#region .*\/fixtures\//gm, '//#region fixtures/')
+      .replace(/^\/\/ .*\/fixtures\//gm, '// fixtures/')
   }
   throw new Error('Unexpected Vite build result')
 }
