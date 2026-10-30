@@ -151,6 +151,10 @@
     for (const value of input as Iterable<unknown>) {
       if (typeof value !== 'string')
         throw new BadReceiver('Iterable yielded a non-string value')
+      if (values !== undefined) {
+        values[length++] = value
+        continue
+      }
       switch (length) {
         case 0:
           first = value
@@ -165,12 +169,10 @@
           fourth = value
           break
         default:
-          if (length === 4) {
-            values = [first, second, third, fourth]
-            // Larger copies stay private; inherited index setters cannot observe them.
-            setPrototypeOf(values, null)
-          }
-          values![length] = value
+          values = [first, second, third, fourth]
+          // Larger copies stay private; inherited index setters cannot observe them.
+          setPrototypeOf(values, null)
+          values[length] = value
       }
       length++
     }
