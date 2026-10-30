@@ -13,7 +13,7 @@ generate_package_json(
     },
     bugs = "https://github.com/formatjs/formatjs/issues",
     dependency_version_overrides = {
-        "@glimmer/syntax": "^0.84.3 || ^0.95.0",
+        "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.97.0",
     },
     description = "A CLI for formatjs.",
     engines = {
