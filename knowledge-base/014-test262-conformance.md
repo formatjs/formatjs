@@ -144,6 +144,35 @@ Combined suites use four harness workers with matching CPU reservations. This
 keeps full-suite execution within CI time limits while preserving per-test
 process isolation and the complete test selection.
 
+Combined suites select DateTimeFormat data by use. DateTimeFormat keeps the full
+shared locale set; the other eleven suites load only its English locale data.
+Both profiles install all twelve polyfills, every calendar implementation, and
+complete timezone data. Other polyfills' locale data and all upstream selections
+and baselines stay unchanged. Retain the full DateTimeFormat profile: locale
+metadata does not cover every locale requested inside test bodies, and fallback
+can leave a reduced-data test green without exercising the intended patterns.
+
+`//tools/test262:combined-supportedvaluesof-full-data` is a manual full-data
+benchmark control for `:combined-supportedvaluesof`. Both use the same 50
+executions, baseline, four harness workers, and CPU/memory reservations. Run them
+separately with `--nocache_test_results --local_test_jobs=1`, alternate order,
+and compare test durations after building both. See the
+[benchmark commands](../tools/test262/README.md#comparing-startup-cost).
+
+On 2026-10-30, three alternating uncached pairs on an Apple M4 Max (36 GiB,
+Node 26.8.1) measured these test durations. Both targets were built first and ran
+separately with one test action and four workers. Each run executed all 50 cases
+with no failures.
+
+| DateTimeFormat data | Runs (seconds)         | Median (seconds) |
+| ------------------- | ---------------------- | ---------------: |
+| Full locale set     | 83.998, 78.355, 82.347 |           82.347 |
+| English             | 15.776, 15.561, 15.923 |           15.776 |
+
+The median improved 5.22x (80.8% less time). The combined prelude shrank from
+72,971,420 to 25,422,442 bytes. This is a local single-suite comparison, not a
+full-suite or RBE measurement.
+
 Dynamic Test262 preludes share `tools/test262/locales.bzl`, covering upstream
 locale metadata and parent locales. This includes Indian English grouping and
 Polish NumberFormat data used by RelativeTimeFormat in combined installation.

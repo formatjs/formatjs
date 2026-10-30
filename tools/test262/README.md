@@ -56,6 +56,29 @@ Baselines cover both individual and combined polyfill installations. Run
 `//tools/test262:combined` for all twelve combined suites. Dependencies may use
 native Intl in individual suites; combined suites install all twelve polyfills.
 
+Combined DateTimeFormat keeps the full shared locale set. Other combined suites
+load English DateTimeFormat locale data: their cross-API checks use default
+construction or enumerate calendars, numbering systems, and timezones in English.
+All calendar implementations and timezone data remain installed in both profiles,
+including in child realms. Other polyfills keep their existing locale data.
+Do not narrow DateTimeFormat's own suite from locale metadata alone: tests also
+request locales inside their bodies, and fallback can hide lost locale coverage.
+
+### Comparing startup cost
+
+The manual `:combined-supportedvaluesof-full-data` control runs the same 50
+executions, baseline, and four workers as `:combined-supportedvaluesof`, with the
+full DateTimeFormat locale set. Build both first, then run them separately:
+
+```sh
+bazel build //tools/test262:combined-supportedvaluesof //tools/test262:combined-supportedvaluesof-full-data
+bazel test --nocache_test_results --local_test_jobs=1 //tools/test262:combined-supportedvaluesof-full-data
+bazel test --nocache_test_results --local_test_jobs=1 //tools/test262:combined-supportedvaluesof
+```
+
+Alternate order across repeated pairs and compare test execution durations.
+This measures one cross-API suite; it does not establish a full-suite or RBE speedup.
+
 ## Bazel execution
 
 Realm preludes are deterministic generated inputs. Harness execution and report

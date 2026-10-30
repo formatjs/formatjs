@@ -169,6 +169,12 @@ COMBINED_PRELUDES = [
     "//packages/intl-supportedvaluesof:test262-polyfill.js",
 ]
 
+# Other suites construct DateTimeFormat with defaults or enumerate its English data.
+COMBINED_DEFAULT_PRELUDES = [
+    "//packages/intl-datetimeformat:test262-en-polyfill.js" if prelude == "//packages/intl-datetimeformat:test262-polyfill.js" else prelude
+    for prelude in COMBINED_PRELUDES
+]
+
 INTL_SUITES = [
     ("getcanonicallocales", "Intl/getCanonicalLocales"),
     ("locale", "Locale"),
@@ -195,12 +201,27 @@ INTL_SUITES = [
             "@com_github_tc39_test262//:test262-" + name + "-copy",
             "@com_github_tc39_test262//:test262-harness-copy",
         ],
-        prelude = COMBINED_PRELUDES,
+        prelude = COMBINED_PRELUDES if name == "datetimeformat" else COMBINED_DEFAULT_PRELUDES,
         suite = "intl402/" + suite,
         threads = 4,
     )
     for name, suite in INTL_SUITES
 ]
+
+# Same cases and resources as combined-supportedvaluesof, for startup comparisons.
+test262_test(
+    name = "combined-supportedvaluesof-full-data",
+    timeout = "eternal",
+    baseline = "baselines/combined-supportedvaluesof.json",
+    data = [
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-supportedvaluesof-copy",
+    ],
+    prelude = COMBINED_PRELUDES,
+    suite = "intl402/Intl/supportedValuesOf",
+    tags = ["manual"],
+    threads = 4,
+)
 
 [
     test262_harness_bin.test262_harness_binary(
