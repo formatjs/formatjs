@@ -1,0 +1,70 @@
+name: Hermes Intl SDK Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build SDK archives without publishing
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hermes-intl-sdk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: bazel-contrib/setup-bazel@0.19.1
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+          disk-cache: hermes-intl-sdk
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - name: Install Android NDK
+        run: |
+          sdkmanager --install 'ndk;27.1.12297006'
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.1.12297006" >> "$GITHUB_ENV"
+      - name: Build SDK archives
+        run: |
+          args=(-c opt --extra_toolchains=@androidndk//:all --spawn_strategy=local)
+          targets=(//native/hermes/package:sdk //native/hermes/package:android_sdk)
+          bazel build "${args[@]}" "${targets[@]}"
+          mkdir artifacts
+          for target in "${targets[@]}"; do
+            archive=$(bazel cquery "${args[@]}" --output=files "$target")
+            cp "$archive" artifacts/
+          done
+          cp native/hermes/version.txt artifacts/version.txt
+          cd artifacts
+          sha256sum *.tar.gz version.txt > checksums.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: formatjs-hermes-intl-sdk
+          path: artifacts/
+      - name: Publish SDK archives
+        if: github.event_name == 'release' || !inputs.dry_run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || github.ref_name }}
+        run: |
+          version=$(cat native/hermes/version.txt)
+          test "$RELEASE_TAG" = "formatjs-hermes-intl_v$version"
+          gh release view "$RELEASE_TAG" > /dev/null
+          gh release upload "$RELEASE_TAG" artifacts/* --clobber

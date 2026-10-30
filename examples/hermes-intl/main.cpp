@@ -1,3 +1,4 @@
+#include <formatjs/hermes/intl.h>
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_listformat.h>
@@ -64,6 +65,7 @@ int main(int argc, char **argv) {
   }
   // JSError retains runtime values until the catch handler finishes.
   std::unique_ptr<facebook::hermes::HermesRuntime> runtime;
+  std::unique_ptr<facebook::hermes::HermesRuntime> installationRuntime;
   try {
     std::ifstream input(argv[1], std::ios::binary);
     if (!input) {
@@ -78,7 +80,7 @@ int main(int argc, char **argv) {
     auto extensions = runtime
                           ->evaluateJavaScript(
                               std::make_shared<facebook::jsi::StringBuffer>(
-                                  std::move(bytecode)),
+                                  bytecode),
                               "formatjs:extensions.hbc")
                           .asObject(*runtime);
     formatjs::installCanonicalLocales(*runtime, extensions);
@@ -231,6 +233,46 @@ int main(int argc, char **argv) {
     durationPassed = runtime->global().getProperty(*runtime, "__SDK_DURATION_PASSED");
     if (!durationPassed.isBool() || !durationPassed.getBool()) throw std::runtime_error("DurationFormat source SDK smoke failed");
     std::cout << "Hermes SDK DurationFormat source passed\n";
+
+
+    for (bool precompiled : {false, true}) {
+      installationRuntime = facebook::hermes::makeHermesRuntime();
+      if (precompiled) {
+        auto setup = installationRuntime->evaluateJavaScript(
+            std::make_shared<facebook::jsi::StringBuffer>(bytecode),
+            "formatjs:extensions.hbc").asObject(*installationRuntime);
+        formatjs::installIntl(*installationRuntime, setup);
+        formatjs::installIntl(*installationRuntime, setup);
+      } else {
+        formatjs::installIntl(*installationRuntime);
+      }
+      installationRuntime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(R"JS(
+        globalThis.__installedIntl = Intl.NumberFormat;
+        globalThis.__installedNumber = new Intl.NumberFormat('en');
+      )JS"), "formatjs:installation-state");
+      formatjs::installIntl(*installationRuntime);
+      installationRuntime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(R"JS(
+        function equal(actual, expected) {
+          if (JSON.stringify(actual) !== JSON.stringify(expected))
+            throw new Error(JSON.stringify(actual));
+        }
+        if (__installedIntl !== Intl.NumberFormat) throw new Error('Installer replaced constructors twice');
+        equal(__installedNumber.format(1234), '1,234');
+        equal(Intl.getCanonicalLocales('en-us'), ['en-US']);
+        equal(new Intl.Locale('en-US').language, 'en');
+        if (!Intl.supportedValuesOf('calendar').includes('gregory')) throw new Error('Missing Gregorian calendar');
+        if (!new Intl.Locale('de').getCollations().includes('phonebk')) throw new Error('Missing installed collations');
+        equal(new Intl.PluralRules('en').select(1), 'one');
+        equal(new Intl.ListFormat('fr').format(['A', 'B']), 'A et B');
+        equal(new Intl.DisplayNames('fr', {type: 'language'}).of('en'), 'anglais');
+        equal(Array.from(new Intl.Segmenter('en').segment('A🙂B'), part => part.segment), ['A', '🙂', 'B']);
+        if (new Intl.Collator('en', {numeric: true}).compare('2', '10') >= 0) throw new Error('Numeric collation');
+        equal(new Intl.RelativeTimeFormat('en').format(-1, 'day'), '1 day ago');
+        equal(new Intl.DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'}).format(0), '1970');
+        equal(new Intl.DurationFormat('en', {style: 'digital'}).format({hours: 1, minutes: 2, seconds: 3}), '1:02:03');
+      )JS"), "formatjs:all-intl-sdk-smoke");
+      std::cout << "Hermes SDK all-Intl " << (precompiled ? "bytecode" : "source") << " passed\n";
+    }
 
 
     return 0;

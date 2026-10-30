@@ -69,6 +69,10 @@ use_repo(
     "test262_nodejs_windows_amd64",
 )
 
+register_toolchains(
+    "//native/hermes/package:android_node_runtime_linux_x86_64",
+)
+
 #################################
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
@@ -150,6 +154,10 @@ bazel_dep(name = "rules_proto", version = "7.1.0")
 
 # Force protobuf's transitive Android rules past Bazel 9 CcInfo compatibility fixes.
 bazel_dep(name = "rules_android", version = "0.7.2")
+bazel_dep(name = "rules_android_ndk", version = "0.1.5")
+
+android_ndk_repository_extension = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension")
+use_repo(android_ndk_repository_extension, "androidndk")
 
 ######### Go + Gazelle #########
 
@@ -215,9 +223,11 @@ crate.from_cargo(
     cargo_toml = "//:Cargo.toml",
     platform_triples = [
         "aarch64-apple-darwin",
+        "aarch64-linux-android",
         "aarch64-unknown-linux-gnu",
         "aarch64-unknown-linux-musl",
         "x86_64-apple-darwin",
+        "x86_64-linux-android",
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "x86_64-unknown-linux-musl",

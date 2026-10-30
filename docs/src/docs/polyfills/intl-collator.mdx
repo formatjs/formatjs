@@ -149,11 +149,11 @@ static, matching this package. The comparison profile retains compact implicit
 weights and CLDR variable-element filtering; it does not claim full ICU Collator
 ordering parity.
 
-Follow the [native SDK guide](/docs/guides/react-native-hermes#rust-collator): link
+Follow the [native SDK guide](/docs/guides/hermes-intl): link
 `:collator`, install after canonicalization, or register `js/37-IntlCollator.js`
 and call the precompiled installer. The SDK ships public headers, C++ adapter
 source, Linux/macOS Rust archives and a typed independent consumer smoke example.
-Android/iOS artifacts and React Native package installation are not included.
+The SDK guide also covers Android archives and the React Native example.
 
 Tests cover all advertised locales/collations, the existing native/TS corpus,
 option combinations, comparator consistency, UTF-16 inputs and Hermes source/
