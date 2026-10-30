@@ -130,11 +130,40 @@ for (const locale of [
   for (const numberingSystem of [undefined, 'latn', 'arab', 'foobar'])
     compare(locale, {numberingSystem}, [0, -1, 1234.5678])
 compare('en', {}, ['-0', ' 0x10 ', null, true])
+const numericEdges = [
+  Number.MIN_VALUE,
+  -Number.MIN_VALUE,
+  2.2250738585072014e-308,
+  1e-6,
+  1e-7,
+  1e20,
+  1e21,
+  Number.MAX_VALUE,
+  -Number.MAX_VALUE,
+  1.2345,
+  1.2345000000000002,
+  1.2344999999999997,
+  0.9995,
+  0.9994999999999999,
+]
+compare('en', {numeric: 'always'}, numericEdges)
+compare('en', {numeric: 'auto'}, numericEdges)
+
 const model = new Native('en')
 for (const method of ['format', 'formatToParts']) {
   for (const value of [NaN, Infinity, -Infinity])
     throws(() => model[method](value, 'day'), RangeError, 'nonfinite ' + method)
-  for (const unit of ['', 'Day', 'dayss', '\ud800', '\udc00', 'day\0'])
+  for (const unit of [
+    '',
+    'Day',
+    'dayss',
+    '__proto__',
+    'constructor',
+    'toString',
+    '\ud800',
+    '\udc00',
+    'day\0',
+  ])
     throws(() => model[method](1, unit), RangeError, 'invalid unit ' + method)
   throws(() => model[method](1n, 'day'), TypeError, 'BigInt ToNumber')
   throws(() => model[method](Symbol(), 'day'), TypeError, 'Symbol ToNumber')

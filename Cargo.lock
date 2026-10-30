@@ -916,6 +916,7 @@ dependencies = [
  "formatjs_intl_locale",
  "formatjs_intl_numberformat",
  "formatjs_intl_pluralrules",
+ "ryu",
  "serde",
  "serde_json",
 ]

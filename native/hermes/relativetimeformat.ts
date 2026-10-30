@@ -6,8 +6,8 @@
   nativeCreate: (request: string) => object | number
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, request: string) => string | number
-  nativeFormat: (handle: object, value: string, unit: string) => string | number
-  nativeParts: (handle: object, value: string, unit: string) => string | number
+  nativeFormat: (handle: object, value: number, unit: string) => string | number
+  nativeParts: (handle: object, value: number, unit: string) => string | number
 }) {
   'use strict'
   const {
@@ -132,15 +132,13 @@
     // https://tc39.es/ecma402/#sec-intl-relativetimeformat.prototype.format
     const numeric = +(value as any)
     const text = `${unit}`
-    const number =
-      numeric === 0 && 1 / numeric === -Infinity ? '-0' : `${numeric}`
     if (method === 'format') {
-      const formatted = nativeFormat(handle, number, text)
+      const formatted = nativeFormat(handle, numeric, text)
       if (typeof formatted === 'number')
         throw new BadOption('Invalid Intl.RelativeTimeFormat value or unit')
       return formatted
     }
-    return decoded(nativeParts(handle, number, text))
+    return decoded(nativeParts(handle, numeric, text))
   }
 
   class RelativeTimeFormat extends null {
