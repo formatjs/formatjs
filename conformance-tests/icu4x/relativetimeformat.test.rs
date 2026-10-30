@@ -147,6 +147,17 @@ fn relative_outputs_match_pinned_icu4x_after_repeated_construction() {
                                 "{tag}\t{}\t{style}\t{numeric}\t{unit}\t{text}",
                                 system.unwrap_or("_")
                             );
+                            let number = text.parse::<f64>().unwrap();
+                            assert_eq!(
+                                model.format_number(number, unit).unwrap(),
+                                actual,
+                                "Numeric path changed: {key}"
+                            );
+                            assert_eq!(
+                                model.format_to_parts_number(number, unit).unwrap(),
+                                model.format_to_parts(text, unit).unwrap(),
+                                "Numeric parts changed: {key}"
+                            );
                             if let Some((preferred, icu4x)) = known.get(&key) {
                                 assert_eq!(actual, *preferred, "Preferred oracle changed: {key}");
                                 assert_eq!(expected, *icu4x, "ICU4X oracle changed: {key}");
