@@ -2,6 +2,7 @@
 #include <formatjs/hermes/intl_listformat.h>
 #include <formatjs/intl/listformat.h>
 
+#include <array>
 #include <vector>
 
 namespace formatjs {
@@ -22,19 +23,29 @@ jsi::Value callList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call
   auto model = hermes_bridge::record<Model>(rt, args[0], "Expected list record", "Invalid list record");
   auto list = args[1].asObject(rt).getArray(rt);
   const auto length = list.size(rt);
-  std::vector<std::u16string> values;
-  values.reserve(length);
+  std::array<std::u16string, 8> inlineValues;
+  std::vector<std::u16string> heapValues;
+  auto *values = inlineValues.data();
+  if (length > inlineValues.size()) {
+    heapValues.resize(length);
+    values = heapValues.data();
+  }
   for (size_t i = 0; i < length; ++i) {
     auto value = list.getValueAtIndex(rt, i);
     if (!value.isString()) throw jsi::JSError(rt, "Expected string list element");
-    values.push_back(value.asString(rt).utf16(rt));
+    values[i] = value.asString(rt).utf16(rt);
   }
-  std::vector<FormatjsListSlice> slices;
-  slices.reserve(values.size());
-  for (const auto &value : values)
-    slices.push_back({reinterpret_cast<const uint16_t *>(value.data()), value.size()});
+  std::array<FormatjsListSlice, 8> inlineSlices;
+  std::vector<FormatjsListSlice> heapSlices;
+  auto *slices = inlineSlices.data();
+  if (length > inlineSlices.size()) {
+    heapSlices.resize(length);
+    slices = heapSlices.data();
+  }
+  for (size_t i = 0; i < length; ++i)
+    slices[i] = {reinterpret_cast<const uint16_t *>(values[i].data()), values[i].size()};
   Units units;
-  auto code = call(model->handle.get(), slices.data(), slices.size(), &units.value);
+  auto code = call(model->handle.get(), slices, length, &units.value);
   if (code != 0) return hermes_bridge::status(rt, code, results.accepted, results.failure);
   return jsi::String::createFromUtf16(rt, reinterpret_cast<const char16_t *>(units.value.data), units.value.len);
 }

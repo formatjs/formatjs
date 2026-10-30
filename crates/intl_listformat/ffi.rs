@@ -5,6 +5,7 @@ use crate::{Error, ListFormat, Options, registry::Registry};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{
+    borrow::Cow,
     panic::{AssertUnwindSafe, catch_unwind},
     ptr, slice, str,
 };
@@ -303,7 +304,11 @@ pub unsafe extern "C" fn formatjs_list_query(
     })
 }
 
-unsafe fn list_values<'a>(items: *const ListSlice, len: usize) -> Result<Vec<&'a [u16]>, i32> {
+unsafe fn list_values<'a>(
+    items: *const ListSlice,
+    len: usize,
+    inline: &'a mut [&'a [u16]; 8],
+) -> Result<Cow<'a, [&'a [u16]]>, i32> {
     if len > isize::MAX as usize / std::mem::size_of::<ListSlice>() || (len != 0 && items.is_null())
     {
         return Err(2);
@@ -313,8 +318,7 @@ unsafe fn list_values<'a>(items: *const ListSlice, len: usize) -> Result<Vec<&'a
     } else {
         unsafe { slice::from_raw_parts(items, len) }
     };
-    let mut values = Vec::with_capacity(len);
-    for item in items {
+    let read = |item: &ListSlice| {
         if item.len > isize::MAX as usize / std::mem::size_of::<u16>()
             || (item.len != 0 && item.data.is_null())
         {
@@ -325,9 +329,20 @@ unsafe fn list_values<'a>(items: *const ListSlice, len: usize) -> Result<Vec<&'a
         } else {
             unsafe { slice::from_raw_parts(item.data, item.len) }
         };
-        values.push(units);
+        Ok(units)
+    };
+    if len <= inline.len() {
+        for (slot, item) in inline.iter_mut().zip(items) {
+            *slot = read(item)?;
+        }
+        Ok(Cow::Borrowed(&inline[..len]))
+    } else {
+        let mut values = Vec::with_capacity(len);
+        for item in items {
+            values.push(read(item)?);
+        }
+        Ok(Cow::Owned(values))
     }
-    Ok(values)
 }
 
 unsafe fn output_units(result: Vec<u16>, out: *mut ListUnits) {
@@ -360,7 +375,8 @@ pub unsafe extern "C" fn formatjs_list_format(
         return 2;
     }
     guarded(|| {
-        let values = unsafe { list_values(items, len)? };
+        let mut inline = [&[][..]; 8];
+        let values = unsafe { list_values(items, len, &mut inline)? };
         let result = unsafe { &(*handle).0 }.format_borrowed(&values);
         unsafe { output_units(result, out) };
         Ok(())
@@ -385,7 +401,8 @@ pub unsafe extern "C" fn formatjs_list_parts(
         return 2;
     }
     guarded(|| {
-        let values = unsafe { list_values(items, len)? };
+        let mut inline = [&[][..]; 8];
+        let values = unsafe { list_values(items, len, &mut inline)? };
         let parts = unsafe { &(*handle).0 }.format_to_parts_borrowed(&values);
         let mut result = Vec::new();
         for part in parts {
