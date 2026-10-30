@@ -74,6 +74,10 @@ lone surrogates. Iterative pattern expansion avoids recursive stack growth and
 quadratic copying. The shared Rust Locale matcher negotiates registered packs;
 late registration leaves existing instances unchanged.
 
+Instances retain their selected compiled templates directly. Pattern bodies cache
+literal UTF-16 lengths, allowing exact output reservation for pair and chain
+patterns, including contextual alternatives and reversed placeholders.
+
 `//crates/intl_listformat:locale_data` wraps the existing TS extraction in
 versioned per-locale JSON packs, including default-content aliases. The
 differential suite compares every locale/type/style against the public TS
