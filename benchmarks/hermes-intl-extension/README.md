@@ -23,24 +23,25 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Current
 full-API results use three CPU-0-pinned invocations on 2026-10-30,
 including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse, Rust-authorized list joins and earlier improvements. Both native and TS code use
 optimized Hermes bytecode and high-resolution `__now()` timing.
-[Paired SDK results, controls and profiles](locale-stream-results.json).
+[Paired SDK results and profiles](segment-records-results.json).
+Both hosts use identical updated TS bytecode, including Segmenter conformance fixes.
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
-| `getCanonicalLocales`              |      0.09 |    4.54 |     48.79 |
-| `supportedValuesOf`                |      1.90 |   60.24 |     31.78 |
-| `Locale.maximize`                  |      0.30 |   35.76 |    119.91 |
-| `PluralRules.select`               |      0.32 |  125.79 |    387.79 |
-| `ListFormat.format`                |      0.50 |    4.64 |      9.33 |
-| `ListFormat.formatToParts`         |      4.33 |    6.35 |      1.47 |
-| `DisplayNames.of`                  |      1.36 |    8.28 |      6.10 |
-| `Segmenter.segment`                |      6.50 |    9.30 |      1.43 |
-| `Collator.compare`                 |      1.67 |    3.31 |      1.98 |
-| `NumberFormat.format`              |      2.03 |  354.25 |    174.32 |
-| `RelativeTimeFormat.format`        |      0.72 |  411.92 |    575.72 |
-| `RelativeTimeFormat.formatToParts` |      2.29 |  412.29 |    179.77 |
-| `DateTimeFormat.format`            |      3.86 | 1043.62 |    270.66 |
-| `DurationFormat.format`            |      3.64 |  895.74 |    245.76 |
+| `getCanonicalLocales`              |      0.09 |    4.42 |     46.70 |
+| `supportedValuesOf`                |      1.87 |   61.17 |     32.75 |
+| `Locale.maximize`                  |      0.29 |   37.68 |    131.17 |
+| `PluralRules.select`               |      0.32 |  127.34 |    397.52 |
+| `ListFormat.format`                |      0.49 |    4.70 |      9.52 |
+| `ListFormat.formatToParts`         |      4.29 |    6.30 |      1.47 |
+| `DisplayNames.of`                  |      1.35 |    8.06 |      5.95 |
+| `Segmenter.segment`                |      4.01 |    8.52 |      2.13 |
+| `Collator.compare`                 |      1.67 |    3.26 |      1.95 |
+| `NumberFormat.format`              |      1.97 |  347.20 |    176.52 |
+| `RelativeTimeFormat.format`        |      0.70 |  405.53 |    575.23 |
+| `RelativeTimeFormat.formatToParts` |      2.37 |  418.92 |    176.95 |
+| `DateTimeFormat.format`            |      3.76 | 1026.83 |    273.41 |
+| `DurationFormat.format`            |      3.54 |  893.93 |    252.30 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -1146,3 +1147,16 @@ assertions, SDK smokes and 24 Locale extension assertions pass.
 New performance work targets the smallest gains over our TS polyfills:
 ListFormat.formatToParts, Segmenter.segment and Collator.compare. Historical
 magrinj results remain recorded, but no longer set the optimization target.
+
+Segmenter records now use object literals with own data properties. Paired SDK
+medians improve 6.43 to 4.01 µs (-37.7%), or 2.13× the corrected TS implementation.
+ListFormat.parts and Collator controls differ by at most 2.4%. This measures
+iteration over graphemes in `A🙂B`, including record creation and string joining.
+
+Rust and TS word classification matches the independent 1,770-case ICU4C/J
+matrix. Full TS Unicode 17 grapheme, word and sentence corpora run without skips.
+Hermes source, bytecode and packaged SDK each pass 3,540 native/TS comparisons
+and 219,613 assertions, including UTF-16 containing(), descriptors and freshness.
+
+SDK sampling profiles attribute 412/1,800 samples to `objectDefineProperty`
+before the change and 0/1,111 afterward; GC and bridge calls remain visible.
