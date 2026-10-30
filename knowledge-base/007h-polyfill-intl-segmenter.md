@@ -66,7 +66,9 @@ export const CLDR_SEGMENTATION_RULES: Record<Granularity, Record<Locale, RuleSet
 - **No dynamic locale loading** — all rules compiled into main bundle
 - Static data structure passed to segmentation engine
 - Segmentation algorithm walks text character by character, applying rules in priority order
-- Known limitation: 35 test cases fail for Regional Indicator + Extend combinations
+- Full Unicode 17 grapheme, word and sentence corpora run without exclusions.
+  Context transparency applies inside repetitions; abbreviation suppressions
+  preserve mandatory paragraph boundaries.
 
 ## Iteration and default locale
 
@@ -96,8 +98,8 @@ Core conformance ports the Unicode 17 grapheme corpus and audits TS records and
 `containing` results across granularities/locales. Word/sentence boundaries and
 word-like classification are implementation-dependent. Tests pin both profiles
 for dictionary words, abbreviation suppressions, Format/Close/Sp handling and
-isolated marks. Unicode letter/number categories supplement ICU word status for
-Indic text. No corpus cases are skipped.
+isolated marks. Unicode Word_Break properties correct ICU word status for
+Indic text, numeric symbols and standalone underscores. No corpus cases are skipped.
 
 The owned ABI retains UTF-16 tables after parent destruction and gives each
 cursor independent progress. Hermes uses private WeakMaps for brands and retains
@@ -106,3 +108,28 @@ iterator prototypes, property order and UTF-16 indices. SDK `:segmenter` include
 public headers, source, `36-IntlSegmenter.js` and a compiled TypeScript smoke example.
 Linux builds/cross-builds the SDK; native runners download and smoke-test artifacts.
 Segmentation data stays static, matching the existing package.
+
+## Independent ICU oracles and record construction
+
+The 1770-case ICU4J 78.1 corpus is independently checked by ICU4C 78.1,
+direct ICU4X `icu_segmenter` 2.3.0 and FormatJS. It covers ten locales,
+all three granularities, dictionary scripts, UTF-16 offsets and lone
+surrogates. FormatJS matches every C/J boundary and word flag. Direct ICU4X
+has 100 pinned word-status differences involving Indic text, underscores and
+Format characters. Rust classifies words from pinned Word_Break/Alphabetic
+properties instead of inheriting ICU4X status. Unknown, changed and unused differences
+fail. Hermes consumes every case in source and bytecode, also checking
+containing() at every code-unit index, property order, descriptors and freshness.
+The TS implementation runs the same matrix in Node and Hermes. Its 42 exact
+dictionary/sentence-suppression choices are recorded separately; unexpected,
+changed, redundant and unused differences fail. Word flags use generated Unicode
+properties rather than host regex Unicode data. Model, segment and cursor state
+stays private; WeakMap brands reject forged receivers before coercion.
+
+Rust delegates boundary selection to ICU4X grapheme, automatic word and sentence
+models with content-locale options. ICU4C/J BreakIterator independently supplies
+boundaries and word statuses. The JS facade supplies ECMA-402 record semantics;
+ICU does not create JS records. Ordinary object literals preserve own writable,
+enumerable and configurable properties without invoking inherited setters.
+Segment records and iterator results use literals; prototype-poisoning tests
+cover both word-status presence and exhausted-result freshness.

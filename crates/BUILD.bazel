@@ -15,6 +15,7 @@ cargo_release(
         "//crates/intl_hermes:cargo_sources",
         "//crates/intl_listformat:cargo_sources",
         "//crates/intl_locale:cargo_sources",
+        "//crates/intl_localematcher:cargo_sources",
         "//crates/intl_numberformat:cargo_sources",
         "//crates/intl_pluralrules:cargo_sources",
         "//crates/intl_relativetimeformat:cargo_sources",

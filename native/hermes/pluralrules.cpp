@@ -36,6 +36,31 @@ void installPluralRules(jsi::Runtime &runtime, jsi::Object &extensions) {
         auto code = formatjs_plural_query(model->handle.get(), hermes_bridge::bytesOf(data), data.size(), &bytes.value);
         return hermes_bridge::result(rt, code, bytes, results.accepted, results.failure);
       });
+  hermes_bridge::bind(runtime, bridge, "nativeSelect", "pluralSelect", 3,
+      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+        if (count != 3 || !args[0].isObject() || !args[1].isString() || !args[2].isBool())
+          throw jsi::JSError(rt, "Expected plural record, mathematical text and BigInt flag");
+        auto model = hermes_bridge::record<Model>(rt, args[0], "Expected plural record", "Invalid plural record");
+        auto value = args[1].asString(rt).utf8(rt);
+        uint8_t category = 255;
+        auto code = formatjs_plural_select(model->handle.get(), hermes_bridge::bytesOf(value), value.size(), args[2].getBool(), &category);
+        if (code != 0) return jsi::Value(-hermes_bridge::status(rt, code, results.accepted, results.failure).asNumber());
+        return jsi::Value(static_cast<double>(category));
+      });
+  hermes_bridge::bind(runtime, bridge, "nativeSelectRange", "pluralSelectRange", 5,
+      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+        if (count != 5 || !args[0].isObject() || !args[1].isString() || !args[2].isString() || !args[3].isBool() || !args[4].isBool())
+          throw jsi::JSError(rt, "Expected plural record, endpoints and BigInt flags");
+        auto model = hermes_bridge::record<Model>(rt, args[0], "Expected plural record", "Invalid plural record");
+        auto start = args[1].asString(rt).utf8(rt);
+        auto end = args[2].asString(rt).utf8(rt);
+        uint8_t category = 255;
+        auto code = formatjs_plural_select_range(model->handle.get(),
+            hermes_bridge::bytesOf(start), start.size(), args[3].getBool(),
+            hermes_bridge::bytesOf(end), end.size(), args[4].getBool(), &category);
+        if (code != 0) return jsi::Value(-hermes_bridge::status(rt, code, results.accepted, results.failure).asNumber());
+        return jsi::Value(static_cast<double>(category));
+      });
   extensions.getPropertyAsFunction(runtime, "IntlPluralRules").call(runtime, bridge);
 }
 

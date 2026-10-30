@@ -69,8 +69,168 @@ impl Handle {
         }
         Ok(value)
     }
+    fn select(&self, value: &str, bigint: bool) -> Result<u8, i32> {
+        let mut category = 255;
+        let status = unsafe {
+            formatjs_plural_select(self.0, value.as_ptr(), value.len(), bigint, &mut category)
+        };
+        if status == 0 {
+            Ok(category)
+        } else {
+            assert_eq!(category, 255);
+            Err(status)
+        }
+    }
+    fn range(
+        &self,
+        start: &str,
+        end: &str,
+        first_bigint: bool,
+        last_bigint: bool,
+    ) -> Result<u8, i32> {
+        let mut category = 255;
+        let status = unsafe {
+            formatjs_plural_select_range(
+                self.0,
+                start.as_ptr(),
+                start.len(),
+                first_bigint,
+                end.as_ptr(),
+                end.len(),
+                last_bigint,
+                &mut category,
+            )
+        };
+        if status == 0 {
+            Ok(category)
+        } else {
+            assert_eq!(category, 255);
+            Err(status)
+        }
+    }
 }
 const EN: &str = r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{"cardinal":{"one_other":"other"}}}"#;
+
+#[test]
+fn direct_select_matches_json_for_mathematical_inputs() {
+    let registry = Registry::new();
+    assert_eq!(registry.load(EN), 0);
+    let handle = registry.create("{}").unwrap();
+    for (value, bigint) in [
+        ("1", false),
+        ("1.0", false),
+        ("1e0", false),
+        ("-0", false),
+        ("NaN", false),
+        ("Infinity", false),
+        ("9007199254740993", true),
+        ("-9007199254740993", true),
+    ] {
+        let expected = handle
+            .query(json!({"method":"select","mathematical":true,"value":value,"bigint":bigint}))
+            .unwrap();
+        let category = ["zero", "one", "two", "few", "many", "other"]
+            [handle.select(value, bigint).unwrap() as usize];
+        assert_eq!(expected, category, "{value} (bigint={bigint})");
+    }
+    let mut out = 0;
+    assert_eq!(
+        unsafe { formatjs_plural_select(ptr::null(), b"1".as_ptr(), 1, false, &mut out) },
+        2
+    );
+    assert_eq!(out, 255);
+}
+
+#[test]
+fn direct_ranges_match_json_including_bigint_flags_and_errors() {
+    let registry = Registry::new();
+    let mut pack: Value = serde_json::from_str(EN).unwrap();
+    pack["ordinal"] = json!({"one":"n % 10 = 1 and n % 100 != 11","two":"n % 10 = 2 and n % 100 != 12","few":"n % 10 = 3 and n % 100 != 13"});
+    assert_eq!(registry.load(&pack.to_string()), 0);
+    let huge = "1".to_owned() + &"0".repeat(39_998) + "1";
+    for options in [
+        "{}",
+        r#"{"type":"ordinal"}"#,
+        r#"{"minimumFractionDigits":2}"#,
+    ] {
+        let handle = registry.create(options).unwrap();
+        for (start, end, first_bigint, last_bigint) in [
+            ("1", "2", false, false),
+            ("2", "1", false, false),
+            ("1.001", "1.002", false, false),
+            ("-0", "0", false, false),
+            ("Infinity", "-Infinity", false, false),
+            ("NaN", "1", false, false),
+            ("1", "NaN", false, false),
+            ("0x10", "0b11", false, false),
+            ("1e-400", "1", false, false),
+            (huge.as_str(), "2", true, false),
+            ("0", huge.as_str(), false, true),
+            ("0", huge.as_str(), false, false),
+        ] {
+            let expected = handle.query(json!({"method":"selectRange","mathematical":true,"start":start,"end":end,"startBigint":first_bigint,"endBigint":last_bigint}));
+            let actual = handle
+                .range(start, end, first_bigint, last_bigint)
+                .map(|i| json!(["zero", "one", "two", "few", "many", "other"][i as usize]));
+            assert_eq!(
+                actual, expected,
+                "options={options}, flags={first_bigint}/{last_bigint}"
+            );
+        }
+    }
+    let handle = registry.create(r#"{"type":"ordinal"}"#).unwrap();
+    assert_eq!(handle.range("0", &huge, false, true), Ok(1));
+    assert_eq!(handle.range("0", &huge, false, false), Ok(5));
+    let mut out = 0;
+    assert_eq!(
+        unsafe {
+            formatjs_plural_select_range(
+                ptr::null(),
+                b"1".as_ptr(),
+                1,
+                false,
+                b"2".as_ptr(),
+                1,
+                false,
+                &mut out,
+            )
+        },
+        2
+    );
+    assert_eq!(out, 255);
+    out = 0;
+    assert_eq!(
+        unsafe {
+            formatjs_plural_select_range(
+                handle.0,
+                ptr::null(),
+                1,
+                false,
+                b"2".as_ptr(),
+                1,
+                false,
+                &mut out,
+            )
+        },
+        2
+    );
+    assert_eq!(out, 255);
+    assert_eq!(
+        unsafe {
+            formatjs_plural_select_range(
+                handle.0,
+                b"1".as_ptr(),
+                1,
+                false,
+                b"2".as_ptr(),
+                1,
+                false,
+                ptr::null_mut(),
+            )
+        },
+        2
+    );
+}
 
 #[test]
 fn abi_handles_own_rules_after_registry_and_input_release() {

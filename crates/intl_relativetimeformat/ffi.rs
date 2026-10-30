@@ -290,6 +290,157 @@ pub unsafe extern "C" fn formatjs_relative_query(
         Ok(())
     })
 }
+
+/// Format pre-coerced numeric text and UTF-16 unit without JSON on the hot path.
+/// # Safety
+/// Handle live; value and unit readable for their lengths; out writable.
+/// Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format(
+    handle: *const RelativeHandle,
+    value: *const u8,
+    value_len: usize,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted(handle, value, value_len, unit, unit_len, out, false) }
+}
+
+/// Format parts from pre-coerced numeric text and UTF-16 unit; output is JSON.
+/// # Safety
+/// Handle live; value and unit readable for their lengths; out writable.
+/// Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format_to_parts(
+    handle: *const RelativeHandle,
+    value: *const u8,
+    value_len: usize,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted(handle, value, value_len, unit, unit_len, out, true) }
+}
+
+/// Format a pre-coerced number without JS numeric-text allocation.
+/// # Safety
+/// Handle live; unit readable for its length; out writable. Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format_number(
+    handle: *const RelativeHandle,
+    value: f64,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted_number(handle, value, unit, unit_len, out, false) }
+}
+
+/// Format number parts without JS numeric-text allocation; output remains JSON.
+/// # Safety
+/// Same handle, unit and output ownership contract as formatjs_relative_format_number.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format_to_parts_number(
+    handle: *const RelativeHandle,
+    value: f64,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted_number(handle, value, unit, unit_len, out, true) }
+}
+
+unsafe fn formatted_number(
+    handle: *const RelativeHandle,
+    value: f64,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+    parts: bool,
+) -> i32 {
+    unsafe {
+        formatted_value(handle, unit, unit_len, out, parts, || {
+            Ok(RelativeValue::Number(value))
+        })
+    }
+}
+
+enum RelativeValue<'a> {
+    Text(&'a str),
+    Number(f64),
+}
+
+unsafe fn formatted(
+    handle: *const RelativeHandle,
+    value: *const u8,
+    value_len: usize,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+    parts: bool,
+) -> i32 {
+    unsafe {
+        formatted_value(handle, unit, unit_len, out, parts, || {
+            input(value, value_len).map(RelativeValue::Text)
+        })
+    }
+}
+
+unsafe fn formatted_value<'a>(
+    handle: *const RelativeHandle,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+    parts: bool,
+    value: impl FnOnce() -> Result<RelativeValue<'a>, i32>,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(RelativeBytes::EMPTY) };
+    if handle.is_null()
+        || unit_len > isize::MAX as usize / std::mem::size_of::<u16>()
+        || (unit_len != 0 && unit.is_null())
+    {
+        return 2;
+    }
+    guarded(|| {
+        let value = value()?;
+        let unit = if unit_len == 0 {
+            &[][..]
+        } else {
+            unsafe { slice::from_raw_parts(unit, unit_len) }
+        };
+        let mut ascii = [0u8; 8];
+        if unit.len() > ascii.len() {
+            return Err(1);
+        }
+        for (out, value) in ascii.iter_mut().zip(unit) {
+            *out = u8::try_from(*value).map_err(|_| 1)?;
+        }
+        let unit = str::from_utf8(&ascii[..unit.len()]).map_err(|_| 1)?;
+        let model = unsafe { &(*handle).0 };
+        let bytes = match (parts, value) {
+            (false, RelativeValue::Text(value)) => {
+                model.format(value, unit).map_err(|_| 1)?.into_bytes()
+            }
+            (true, RelativeValue::Text(value)) => {
+                encode(&model.format_to_parts(value, unit).map_err(|_| 1)?)?
+            }
+            (false, RelativeValue::Number(value)) => model
+                .format_number(value, unit)
+                .map_err(|_| 1)?
+                .into_bytes(),
+            (true, RelativeValue::Number(value)) => {
+                encode(&model.format_to_parts_number(value, unit).map_err(|_| 1)?)?
+            }
+        };
+        unsafe { output(bytes, out) };
+        Ok(())
+    })
+}
+
 /// # Safety
 /// Registry null or live owned handle; no outstanding borrows.
 #[unsafe(no_mangle)]

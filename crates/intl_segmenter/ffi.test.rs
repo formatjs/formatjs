@@ -40,6 +40,14 @@ fn cursors_own_input_survive_parents_and_exhaust_independently() {
         );
         assert_eq!(formatjs_segments_containing(segments, 5, &mut out), 0);
         assert_eq!(decoded(&mut out), Value::Null);
+        let mut span = SegmenterSpan {
+            start: 0,
+            end: 0,
+            word_like: -1,
+        };
+        assert_eq!(formatjs_segments_containing_span(segments, 3, &mut span), 0);
+        assert_eq!((span.start, span.end, span.word_like), (2, 4, -1));
+        assert_eq!(formatjs_segments_containing_span(segments, 5, &mut span), 1);
         let mut first = ptr::null_mut();
         let mut second = ptr::null_mut();
         assert_eq!(formatjs_segments_cursor(segments, &mut first), 0);
@@ -93,6 +101,16 @@ fn word_flags_and_malformed_abi_are_distinct_from_empty_results() {
         for (index, expected) in [(0, true), (1, false)] {
             assert_eq!(formatjs_segments_containing(segments, index, &mut out), 0);
             assert_eq!(decoded(&mut out)["isWordLike"], json!(expected));
+            let mut span = SegmenterSpan {
+                start: 0,
+                end: 0,
+                word_like: -1,
+            };
+            assert_eq!(
+                formatjs_segments_containing_span(segments, index, &mut span),
+                0
+            );
+            assert_eq!(span.word_like, i32::from(expected));
         }
         formatjs_segments_destroy(segments);
         for units in ["[65536]", "[-1]", "[1.5]", "null", "\"abc\""] {
@@ -127,6 +145,47 @@ fn word_flags_and_malformed_abi_are_distinct_from_empty_results() {
         formatjs_segments_destroy(ptr::null_mut());
         formatjs_segment_cursor_destroy(ptr::null_mut());
         formatjs_segmenter_bytes_free(empty());
+    }
+}
+
+#[test]
+fn direct_units_preserve_lone_surrogates() {
+    unsafe {
+        let mut model = ptr::null_mut();
+        assert_eq!(
+            formatjs_segmenter_create(b"en".as_ptr(), 2, b"{}".as_ptr(), 2, &mut model),
+            0
+        );
+        let input = [0xd800, 0x61, 0xd83d, 0xde00, 0xdc00];
+        let mut segments = ptr::null_mut();
+        assert_eq!(
+            formatjs_segmenter_segment_units(model, input.as_ptr(), input.len(), &mut segments),
+            0
+        );
+        let mut out = empty();
+        assert_eq!(formatjs_segments_containing(segments, 4, &mut out), 0);
+        assert_eq!(decoded(&mut out), json!({"index":4,"segment":[0xdc00]}));
+        let mut cursor = ptr::null_mut();
+        assert_eq!(formatjs_segments_cursor(segments, &mut cursor), 0);
+        let mut span = SegmenterSpan {
+            start: 0,
+            end: 0,
+            word_like: -1,
+        };
+        assert_eq!(formatjs_segment_cursor_next_span(cursor, &mut span), 0);
+        assert_eq!((span.start, span.end, span.word_like), (0, 1, -1));
+        for _ in 0..3 {
+            assert_eq!(formatjs_segment_cursor_next_span(cursor, &mut span), 0);
+        }
+        assert_eq!(formatjs_segment_cursor_next_span(cursor, &mut span), 1);
+        formatjs_segment_cursor_destroy(cursor);
+        formatjs_segments_destroy(segments);
+        assert_eq!(
+            formatjs_segmenter_segment_units(model, ptr::null(), 1, &mut segments),
+            2
+        );
+        assert!(segments.is_null());
+        formatjs_segmenter_destroy(model);
     }
 }
 #[test]

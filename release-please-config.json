@@ -8,10 +8,7 @@
   "changelog-type": "default",
   "bootstrap-sha": "482c8e224b2582b554e3f4b0718fe2332c4b5cff",
   "sequential-calls": true,
-  "exclude-paths": [
-    "**/tests/**",
-    "**/*.md"
-  ],
+  "exclude-paths": ["**/tests/**", "**/*.md"],
   "packages": {
     "packages/babel-plugin-formatjs": {
       "component": "babel-plugin-formatjs",
@@ -817,6 +814,13 @@
       "include-v-in-release-name": false,
       "tag-separator": "_v"
     },
+    "crates/intl_localematcher": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
+    },
     "crates/intl_numberformat": {
       "release-type": "rust",
       "include-component-in-tag": true,
@@ -851,6 +855,22 @@
       "include-v-in-tag": false,
       "include-v-in-release-name": false,
       "tag-separator": "_v"
+    },
+    "native/hermes": {
+      "release-type": "simple",
+      "component": "formatjs-hermes-intl",
+      "package-name": "formatjs-hermes-intl",
+      "version-file": "version.txt",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "package/SDK.MODULE.bazel"
+        }
+      ]
     }
   },
   "plugins": [

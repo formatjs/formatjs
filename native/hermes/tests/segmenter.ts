@@ -293,6 +293,157 @@ try {
 } finally {
   delete (Object.prototype as any).isWordLike
 }
+for (const [name, Model] of [
+  ['native', Native],
+  ['typescript', TypeScriptSegmenter],
+] as const) {
+  const model = new Model('en', {granularity: 'grapheme'})
+  for (const receiver of [
+    {},
+    Object.create(Model.prototype),
+    new Proxy(model, {
+      get() {
+        throw new Error('proxy property Get')
+      },
+    }),
+  ]) {
+    let coerced = false
+    throws(
+      () =>
+        Model.prototype.segment.call(receiver, {
+          toString() {
+            coerced = true
+            throw new Error('input coercion')
+          },
+        }),
+      TypeError,
+      name + ' brand before input coercion'
+    )
+    check(!coerced, name + ' invalid brand leaves input untouched')
+  }
+  check(
+    Object.keys(model).length === 0,
+    name + ' model hides implementation state'
+  )
+  const other = Reflect.construct(
+    Model,
+    ['en', {granularity: 'grapheme'}],
+    function Other() {}
+  )
+  equal(
+    Array.from(
+      Model.prototype.segment.call(other, 'a'),
+      (part: any) => part.segment
+    ),
+    ['a'],
+    name + ' brand independent of newTarget prototype'
+  )
+  for (const key of [
+    'rules',
+    'ruleSortedKeys',
+    'mergedSegmentationTypeValue',
+    'breaksAt',
+  ])
+    Object.defineProperty(model, key, {
+      configurable: true,
+      get() {
+        throw new Error('observable model state: ' + key)
+      },
+    })
+  const collection = model.segment('a')
+  const cursor = collection[Symbol.iterator]()
+  equal(
+    cursor.next().value.segment,
+    'a',
+    name + ' ignores user model properties'
+  )
+  check(
+    Object.keys(collection).length === 0 && Object.keys(cursor).length === 0,
+    name + ' segments and cursor hide state'
+  )
+  check(
+    !Object.prototype.hasOwnProperty.call(
+      Object.getPrototypeOf(collection),
+      'constructor'
+    ),
+    name + ' segment constructor stays private'
+  )
+  check(
+    !Object.prototype.hasOwnProperty.call(
+      Object.getPrototypeOf(cursor),
+      'constructor'
+    ),
+    name + ' cursor constructor stays private'
+  )
+}
+// Record creation must bypass inherited accessors, including iterator results.
+const recordModels = [
+  {name: 'native', grapheme, words},
+  {
+    name: 'typescript',
+    grapheme: new TypeScriptSegmenter('en', {granularity: 'grapheme'}),
+    words: new TypeScriptSegmenter('en', {granularity: 'word'}),
+  },
+]
+const poisoned = ['segment', 'index', 'input', 'isWordLike', 'value', 'done']
+for (const name of poisoned) {
+  const descriptor = Object.create(null)
+  descriptor.configurable = true
+  descriptor.get = () => {
+    throw new Error('inherited record getter: ' + name)
+  }
+  descriptor.set = () => {
+    throw new Error('inherited record setter: ' + name)
+  }
+  Object.defineProperty(Object.prototype, name, descriptor)
+}
+try {
+  for (const {name, grapheme, words} of recordModels) {
+    const iterable = grapheme.segment('a')
+    const cursor = iterable[Symbol.iterator]()
+    const first = cursor.next()
+    equal(
+      Object.keys(first),
+      ['value', 'done'],
+      name + ' iterator result key order'
+    )
+    equal(
+      first,
+      {value: {segment: 'a', index: 0, input: 'a'}, done: false},
+      'own segment data under poisoned prototypes'
+    )
+    equal(
+      iterable.containing(0),
+      {segment: 'a', index: 0, input: 'a'},
+      'containing owns data'
+    )
+    equal(
+      words.segment('hello').containing(0),
+      {segment: 'hello', index: 0, input: 'hello', isWordLike: true},
+      'word owns all data'
+    )
+    const done = cursor.next()
+    const again = cursor.next()
+    check(done !== again && done.done && again.done, 'fresh exhausted results')
+    for (const result of [first, done, again]) {
+      check(
+        Object.getPrototypeOf(result) === Object.prototype,
+        'ordinary iterator result'
+      )
+      for (const name of ['value', 'done']) {
+        const descriptor = Object.getOwnPropertyDescriptor(result, name)!
+        check(
+          descriptor.writable &&
+            descriptor.enumerable &&
+            descriptor.configurable,
+          'iterator data property attributes'
+        )
+      }
+    }
+  }
+} finally {
+  for (const name of poisoned) delete (Object.prototype as any)[name]
+}
 ;(globalThis as any).print(
   JSON.stringify({
     type: 'Segmenter-conformance',

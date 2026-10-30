@@ -130,11 +130,40 @@ for (const locale of [
   for (const numberingSystem of [undefined, 'latn', 'arab', 'foobar'])
     compare(locale, {numberingSystem}, [0, -1, 1234.5678])
 compare('en', {}, ['-0', ' 0x10 ', null, true])
+const numericEdges = [
+  Number.MIN_VALUE,
+  -Number.MIN_VALUE,
+  2.2250738585072014e-308,
+  1e-6,
+  1e-7,
+  1e20,
+  1e21,
+  Number.MAX_VALUE,
+  -Number.MAX_VALUE,
+  1.2345,
+  1.2345000000000002,
+  1.2344999999999997,
+  0.9995,
+  0.9994999999999999,
+]
+compare('en', {numeric: 'always'}, numericEdges)
+compare('en', {numeric: 'auto'}, numericEdges)
+
 const model = new Native('en')
 for (const method of ['format', 'formatToParts']) {
   for (const value of [NaN, Infinity, -Infinity])
     throws(() => model[method](value, 'day'), RangeError, 'nonfinite ' + method)
-  for (const unit of ['', 'Day', 'dayss', '\ud800', '\udc00', 'day\0'])
+  for (const unit of [
+    '',
+    'Day',
+    'dayss',
+    '__proto__',
+    'constructor',
+    'toString',
+    '\ud800',
+    '\udc00',
+    'day\0',
+  ])
     throws(() => model[method](1, unit), RangeError, 'invalid unit ' + method)
   throws(() => model[method](1n, 'day'), TypeError, 'BigInt ToNumber')
   throws(() => model[method](Symbol(), 'day'), TypeError, 'Symbol ToNumber')
@@ -190,6 +219,28 @@ for (const options of [
   {numberingSystem: 'a'},
 ])
   throws(() => new Native('en', options), RangeError, 'invalid option')
+for (const numberingSystem of [
+  'latn","style":"narrow',
+  'latn\\arab',
+  'latn\narab',
+  'latn\0arab',
+  'latn\ud800',
+]) {
+  let styleReads = 0
+  throws(
+    () =>
+      new Native('en', {
+        numberingSystem,
+        get style() {
+          styleReads++
+          return 'narrow'
+        },
+      }),
+    RangeError,
+    'invalid numbering system before later options'
+  )
+  equal(styleReads, 0, 'invalid numbering system skips style getter')
+}
 for (const receiver of [undefined, null, {}, Native.prototype])
   throws(
     () => Native.prototype.resolvedOptions.call(receiver),
@@ -264,6 +315,36 @@ equal(model.resolvedOptions().locale, 'en', 'fresh options')
 const available = Native.availableLocales
 available.clear()
 check(Native.availableLocales.has('en'), 'fresh available locales')
+const savedGet = WeakMap.prototype.get,
+  savedSet = WeakMap.prototype.set,
+  savedBind = Function.prototype.bind,
+  savedCanonical = Intl.getCanonicalLocales
+function poisonedIntrinsic(): never {
+  throw new Error('replacement intrinsic called')
+}
+WeakMap.prototype.get = WeakMap.prototype.set = poisonedIntrinsic
+Function.prototype.bind = poisonedIntrinsic
+Intl.getCanonicalLocales = poisonedIntrinsic
+try {
+  const captured = new Native('en')
+  equal(
+    captured.format(-3, 'day'),
+    '3 days ago',
+    'captured constructor intrinsics'
+  )
+  equal(model.format(-1, 'day'), '1 day ago', 'captured existing slots')
+  equal(Native.supportedLocalesOf(['en']), ['en'], 'captured canonicalizer')
+  throws(
+    () => Native.prototype.format.call({}, 1, 'day'),
+    TypeError,
+    'captured slot brand'
+  )
+} finally {
+  WeakMap.prototype.get = savedGet
+  WeakMap.prototype.set = savedSet
+  Function.prototype.bind = savedBind
+  Intl.getCanonicalLocales = savedCanonical
+}
 // Relative fields follow style/numeric getters; existing instances retain their data.
 const old = new Native('en'),
   replacement = JSON.parse(fixtures.packs[0])

@@ -1,5 +1,17 @@
 # @formatjs/intl-collator
 
+The shared 69-case ordering fixture is checked independently by ICU4C 78.1,
+ICU4J 78.1 and ICU4X Collator 2.3.1, as well as the Rust/TS differential suite.
+The ICU adapters preserve locale keyword defaults and explicitly map Intl
+sensitivity, case-first, numeric and punctuation options. See
+`conformance-tests/icu4c/README.md` for targets and coverage limits.
+
+Generated locale metadata includes root `emoji` and `eor` types while excluding
+private LDML types. Runtime tailoring lookup falls back through locale parents
+to root, sharing cached TS rules and Rust `Arc` values across inheriting locales.
+Forty-two fixtures exercise root ordering across six languages, independently
+checked by all three ICU implementations.
+
 **ECMA-402 Section 10** - `Intl.Collator`
 
 ## Current Status
@@ -183,3 +195,9 @@ Sensitivity selects UCA levels after tailoring: primary for base, primary/second
 for accent, primary/case weights for case, all levels for variant. Secondary-only
 accent CEs do not add case weights. This preserves primary distinctions such as
 Swedish ä and German base search expansions.
+
+Hermes bound comparisons pass borrowed UTF-16 slices through
+`formatjs_collator_compare` and receive a scalar ordering. Coercion stays in JS;
+Rust retains normalization, tailoring and ordering. The JSON query ABI remains
+available for existing callers and resolved options. Slice validation rejects
+null, misaligned and oversized buffers while preserving lone surrogates.

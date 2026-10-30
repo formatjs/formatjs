@@ -5,6 +5,7 @@ use crate::{Error, ListFormat, Options, registry::Registry};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{
+    borrow::Cow,
     panic::{AssertUnwindSafe, catch_unwind},
     ptr, slice, str,
 };
@@ -16,6 +17,22 @@ pub struct ListHandle(ListFormat);
 pub struct ListBytes {
     pub data: *mut u8,
     pub len: usize,
+}
+#[repr(C)]
+pub struct ListSlice {
+    pub data: *const u16,
+    pub len: usize,
+}
+#[repr(C)]
+pub struct ListUnits {
+    pub data: *mut u16,
+    pub len: usize,
+}
+impl ListUnits {
+    const EMPTY: Self = Self {
+        data: ptr::null_mut(),
+        len: 0,
+    };
 }
 impl ListBytes {
     const EMPTY: Self = Self {
@@ -160,10 +177,45 @@ pub unsafe extern "C" fn formatjs_list_create(
     })
 }
 
+/// Negotiate canonical requested tags and create with default type/style.
+/// # Safety
+/// Registry is live; JSON bytes are readable; out writable. Free the handle once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_create_default(
+    registry: *const ListRegistry,
+    data: *const u8,
+    len: usize,
+    out: *mut *mut ListHandle,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe {
+        out.write(ptr::null_mut());
+    }
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let requested: Vec<String> =
+            serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
+        let registry = unsafe { &(*registry).0 };
+        let locale = registry.negotiate(&requested, false).map_err(status)?;
+        let rules = registry
+            .create(&locale, &Options::default())
+            .map_err(status)?;
+        unsafe {
+            out.write(Box::into_raw(Box::new(ListHandle(rules))));
+        }
+        Ok(())
+    })
+}
+
 #[derive(Deserialize)]
 #[serde(tag = "method", rename_all = "camelCase")]
 enum Query {
     ResolvedOptions,
+    JoinPlan,
     Format { list: Vec<Vec<u16>> },
     FormatToParts { list: Vec<Vec<u16>> },
 }
@@ -243,6 +295,7 @@ pub unsafe extern "C" fn formatjs_list_query(
             Query::ResolvedOptions => {
                 serde_json::to_value(rules.resolved_options()).map_err(|_| 2)?
             }
+            Query::JoinPlan => serde_json::to_value(rules.join_plan()).map_err(|_| 2)?,
             Query::Format { list } => json!(rules.format(&list)),
             Query::FormatToParts { list } => json!(rules.format_to_parts(&list)),
         };
@@ -251,6 +304,130 @@ pub unsafe extern "C" fn formatjs_list_query(
         }
         Ok(())
     })
+}
+
+unsafe fn list_values<'a>(
+    items: *const ListSlice,
+    len: usize,
+    inline: &'a mut [&'a [u16]; 8],
+) -> Result<Cow<'a, [&'a [u16]]>, i32> {
+    if len > isize::MAX as usize / std::mem::size_of::<ListSlice>() || (len != 0 && items.is_null())
+    {
+        return Err(2);
+    }
+    let items = if len == 0 {
+        &[][..]
+    } else {
+        unsafe { slice::from_raw_parts(items, len) }
+    };
+    let read = |item: &ListSlice| {
+        if item.len > isize::MAX as usize / std::mem::size_of::<u16>()
+            || (item.len != 0 && item.data.is_null())
+        {
+            return Err(2);
+        }
+        let units = if item.len == 0 {
+            &[][..]
+        } else {
+            unsafe { slice::from_raw_parts(item.data, item.len) }
+        };
+        Ok(units)
+    };
+    if len <= inline.len() {
+        for (slot, item) in inline.iter_mut().zip(items) {
+            *slot = read(item)?;
+        }
+        Ok(Cow::Borrowed(&inline[..len]))
+    } else {
+        let mut values = Vec::with_capacity(len);
+        for item in items {
+            values.push(read(item)?);
+        }
+        Ok(Cow::Owned(values))
+    }
+}
+
+unsafe fn output_units(result: Vec<u16>, out: *mut ListUnits) {
+    let result = result.into_boxed_slice();
+    let len = result.len();
+    unsafe {
+        out.write(ListUnits {
+            data: Box::into_raw(result).cast(),
+            len,
+        })
+    };
+}
+
+/// Format validated string values without JSON or Unicode scalar conversion.
+/// # Safety
+/// Handle is live; items and their UTF-16 slices are readable; out writable.
+/// Free successful output exactly once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_format(
+    handle: *const ListHandle,
+    items: *const ListSlice,
+    len: usize,
+    out: *mut ListUnits,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ListUnits::EMPTY) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let mut inline = [&[][..]; 8];
+        let values = unsafe { list_values(items, len, &mut inline)? };
+        let result = unsafe { &(*handle).0 }.format_borrowed(&values);
+        unsafe { output_units(result, out) };
+        Ok(())
+    })
+}
+
+/// Return parts as UTF-16 records: kind, high length, low length, value units.
+/// # Safety
+/// Same input and output ownership contract as formatjs_list_format.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_parts(
+    handle: *const ListHandle,
+    items: *const ListSlice,
+    len: usize,
+    out: *mut ListUnits,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ListUnits::EMPTY) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let mut inline = [&[][..]; 8];
+        let values = unsafe { list_values(items, len, &mut inline)? };
+        let parts = unsafe { &(*handle).0 }.format_to_parts_borrowed(&values);
+        let mut result = Vec::new();
+        for part in parts {
+            let len = u32::try_from(part.value.len()).map_err(|_| 2)?;
+            result.extend_from_slice(&[
+                if part.kind == "element" { 0 } else { 1 },
+                (len >> 16) as u16,
+                len as u16,
+            ]);
+            result.extend(part.value);
+        }
+        unsafe { output_units(result, out) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Value is empty or an unreleased result from formatjs_list_format.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_list_units_free(value: ListUnits) {
+    if !value.data.is_null() {
+        drop(unsafe { Box::from_raw(ptr::slice_from_raw_parts_mut(value.data, value.len)) });
+    }
 }
 
 /// # Safety

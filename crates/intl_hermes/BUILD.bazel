@@ -6,6 +6,22 @@ config_setting(
     flag_values = {"//crates/intl_data:compiled": "true"},
 )
 
+config_setting(
+    name = "android_arm64",
+    constraint_values = [
+        "@platforms//os:android",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "android_x86_64",
+    constraint_values = [
+        "@platforms//os:android",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
 alias(
     name = "intl_hermes",
     actual = select({
@@ -58,6 +74,11 @@ COMPILED_DEPS = [
 rust_static_library(
     name = "with_compiled_data",
     srcs = ["lib.rs"],
+    compile_data = select({
+        ":android_arm64": ["@androidndk//toolchains/llvm/prebuilt/linux-x86_64/sysroot:static_runtime_lib_aarch64-linux-android"],
+        ":android_x86_64": ["@androidndk//toolchains/llvm/prebuilt/linux-x86_64/sysroot:static_runtime_lib_x86_64-linux-android"],
+        "//conditions:default": [],
+    }),
     crate_name = "formatjs_intl_hermes",
     crate_root = "lib.rs",
     edition = "2024",

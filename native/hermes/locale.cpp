@@ -3,6 +3,7 @@
 #include <formatjs/intl/canonicalize.h>
 #include <formatjs/intl/locale.h>
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -47,11 +48,25 @@ void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
         if (formatjs_locale_query(record->handle.get(), bytesOf(request), request.size(), &result.value) != 0) throw jsi::JSError(rt, "Rust locale query failed");
         return jsi::String::createFromUtf8(rt, result.value.data, result.value.len);
       });
+  auto transform = jsi::Function::createFromHostFunction(
+      runtime, jsi::PropNameID::forAscii(runtime, "localeTransform"), 2,
+      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+        if (count != 2 || !args[0].isObject() || !args[1].isNumber()) throw jsi::JSError(rt, "Expected Locale record and transform kind");
+        auto kind = args[1].asNumber();
+        if (kind != 0 && kind != 1) throw jsi::JSError(rt, "Invalid Locale transform kind");
+        auto record = hermes_bridge::record<LocaleRecord>(rt, args[0], "Expected Locale record", "Invalid Locale record");
+        FormatjsLocaleHandle *raw = nullptr;
+        auto status = formatjs_locale_transform(record->handle.get(), static_cast<uint32_t>(kind), &raw);
+        std::unique_ptr<FormatjsLocaleHandle, decltype(&formatjs_locale_destroy)> handle(raw, formatjs_locale_destroy);
+        if (status != 0) throw jsi::JSError(rt, "Rust Locale transform failed");
+        return jsi::Object::createFromHostObject(rt, std::make_shared<LocaleRecord>(std::move(handle)));
+      });
   jsi::Object bridge(runtime);
   bridge.setProperty(runtime, "canonicalTag", std::move(canonicalize));
   bridge.setProperty(runtime, "nativeCreate", std::move(create));
   bridge.setProperty(runtime, "nativeValidate", std::move(validate));
   bridge.setProperty(runtime, "nativeQuery", std::move(query));
+  bridge.setProperty(runtime, "nativeTransform", std::move(transform));
   extensions.getPropertyAsFunction(runtime, "IntlLocale").call(runtime, bridge);
 }
 

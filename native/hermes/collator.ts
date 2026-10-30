@@ -4,9 +4,16 @@
   nativeCreate: (request: string) => object | number
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, query: string) => string | number
+  nativeCompare: (handle: object, left: string, right: string) => number
 }) {
   'use strict'
-  const {nativeResolve, nativeCreate, nativeSupported, nativeQuery} = native
+  const {
+    nativeResolve,
+    nativeCreate,
+    nativeSupported,
+    nativeQuery,
+    nativeCompare,
+  } = native
   const apply = Reflect.apply
   const create = Object.create
   const define = Object.defineProperty
@@ -113,12 +120,6 @@
       }
     }
     return length >= 3 && length <= 8
-  }
-  function units(text: string): string {
-    let result = '['
-    for (let index = 0; index < text.length; index++)
-      result += (index ? ',' : '') + apply(charCodeAt, text, [index])
-    return result + ']'
   }
   function initialize(
     locales: unknown,
@@ -249,20 +250,11 @@
       if (value.bound === undefined) {
         const compare = (x: unknown, y: unknown): number => {
           // ToString(x) precedes ToString(y); Symbols throw. Units preserve
-          // lone surrogates rather than replacing them at the UTF-8 boundary.
+          // lone surrogates through the borrowed UTF-16 boundary.
           // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L216-L224
           const left = `${x}`
           const right = `${y}`
-          return decoded(
-            nativeQuery(
-              state(this).handle,
-              '{"method":"compare","left":' +
-                units(left) +
-                ',"right":' +
-                units(right) +
-                '}'
-            )
-          )
+          return nativeCompare(state(this).handle, left, right)
         }
         property(compare, 'name', '', false, false)
         value.bound = compare

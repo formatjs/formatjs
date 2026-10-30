@@ -1,5 +1,7 @@
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
+import {readFileSync, writeFileSync} from 'node:fs'
+import {join} from 'node:path'
 
 function main() {
   const resolve = (path: string) =>
@@ -8,6 +10,25 @@ function main() {
   const suite = kinds[0]?.startsWith('--suite=')
     ? kinds.shift()!.slice('--suite='.length)
     : 'compiled_locales_suite.js'
+  const fixtures: string[] = []
+  for (const [variable, name] of [
+    ['LOCALE_FORMAT_FIXTURES', '__LOCALE_FORMAT_FIXTURES'],
+    ['LIST_FORMAT_FIXTURES', '__LIST_FORMAT_FIXTURES'],
+    ['PLURAL_RULES_FIXTURES', '__PLURAL_RULES_FIXTURES'],
+    ['PLURAL_RANGE_FIXTURES', '__PLURAL_RANGE_FIXTURES'],
+    ['PLURAL_RANGE_DIFFERENCES', '__PLURAL_RANGE_DIFFERENCES'],
+  ]) {
+    const source = process.env[variable]
+    if (!source) continue
+    const rows = readFileSync(source, 'utf8')
+      .trimEnd()
+      .split('\n')
+      .slice(1)
+      .map(row => row.split('\t'))
+    const path = join(process.env.TEST_TMPDIR!, `${variable}.js`)
+    writeFileSync(path, `globalThis.${name} = ` + JSON.stringify(rows))
+    fixtures.push(path)
+  }
   for (const mode of ['source', 'bytecode']) {
     const args =
       mode === 'source'
@@ -15,7 +36,7 @@ function main() {
         : [`--extensions=${resolve('native/hermes/extensions.hbc')}`]
     const result = spawnSync(
       resolve('native/hermes/hermes_runner'),
-      [...args, resolve(`native/hermes/tests/${suite}`)],
+      [...args, ...fixtures, resolve(`native/hermes/tests/${suite}`)],
       {encoding: 'utf8', timeout: 60_000}
     )
     if (result.error) throw result.error

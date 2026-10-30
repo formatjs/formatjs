@@ -39,6 +39,30 @@ it('matches every CLDR locale, type and style against the TS implementation', ()
     ['\ud800\u0000', '\udc00', '😀'],
     ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
   ]
+  const oracleRows = readFileSync(
+    resolve('conformance-tests/icu4j/list-format-fixtures.tsv'),
+    'utf8'
+  )
+    .trimEnd()
+    .split('\n')
+    .slice(1)
+  const inputs = new Set<string>()
+  for (const row of oracleRows) inputs.add(row.split('\t')[3])
+  for (const encoded of inputs) {
+    lists.push(
+      encoded === '-'
+        ? []
+        : encoded.split(',').map(value => {
+            if (value === '_') return ''
+            let text = ''
+            for (let index = 0; index < value.length; index += 4)
+              text += String.fromCharCode(
+                parseInt(value.slice(index, index + 4), 16)
+              )
+            return text
+          })
+    )
+  }
   const records = files.flatMap(file => {
     const pack = readFileSync(join(directory, file), 'utf8')
     const {locale} = JSON.parse(pack) as {locale: string}
@@ -54,43 +78,50 @@ it('matches every CLDR locale, type and style against the TS implementation', ()
       }))
     )
   })
-  const result = spawnSync(resolve('crates/intl_listformat/conformance'), [], {
-    input:
-      records
-        .map(record =>
-          JSON.stringify({...record, lists: lists.map(list => list.map(units))})
-        )
-        .join('\n') + '\n',
-    encoding: 'utf8',
-    maxBuffer: 128 * 1024 * 1024,
-  })
-  if (result.error) throw result.error
-  expect(result.status, result.stderr).toBe(0)
-  const results = result.stdout
-    .trim()
-    .split('\n')
-    .map(line => JSON.parse(line))
-  expect(results.length).toBe(records.length)
+  const encodedLists = lists.map(list => list.map(units))
   let comparisons = 0
-  for (let index = 0; index < records.length; index++) {
-    const record = records[index]
-    const reference = new ListFormat(record.locale, {
-      ...record.options,
-      localeMatcher: 'lookup',
-    })
-    expect(results[index].options).toEqual(reference.resolvedOptions())
-    for (let j = 0; j < lists.length; j++) {
-      const list = lists[j]
-      expect(
-        results[index].results[j],
-        `${record.locale}/${JSON.stringify(record.options)}/${j}`
-      ).toEqual({
-        formatted: units(reference.format(list)),
-        parts: reference
-          .formatToParts(list)
-          .map(part => ({type: part.type, value: units(part.value)})),
+  // Bound each subprocess response as the shared oracle corpus grows.
+  for (let start = 0; start < records.length; start += 128) {
+    const batch = records.slice(start, start + 128)
+    const result = spawnSync(
+      resolve('crates/intl_listformat/conformance'),
+      [],
+      {
+        input:
+          batch
+            .map(record => JSON.stringify({...record, lists: encodedLists}))
+            .join('\n') + '\n',
+        encoding: 'utf8',
+        maxBuffer: 128 * 1024 * 1024,
+      }
+    )
+    if (result.error) throw result.error
+    expect(result.status, result.stderr).toBe(0)
+    const results = result.stdout
+      .trim()
+      .split('\n')
+      .map(line => JSON.parse(line))
+    expect(results.length).toBe(batch.length)
+    for (let index = 0; index < batch.length; index++) {
+      const record = batch[index]
+      const reference = new ListFormat(record.locale, {
+        ...record.options,
+        localeMatcher: 'lookup',
       })
-      comparisons++
+      expect(results[index].options).toEqual(reference.resolvedOptions())
+      for (let j = 0; j < lists.length; j++) {
+        const list = lists[j]
+        expect(
+          results[index].results[j],
+          `${record.locale}/${JSON.stringify(record.options)}/${j}`
+        ).toEqual({
+          formatted: units(reference.format(list)),
+          parts: reference
+            .formatToParts(list)
+            .map(part => ({type: part.type, value: units(part.value)})),
+        })
+        comparisons++
+      }
     }
   }
   expect(comparisons).toBeGreaterThan(80_000)

@@ -6,7 +6,7 @@ pub use formatjs_intl_getcanonicallocales::{
 };
 pub use formatjs_intl_locale::ffi::{
     formatjs_locale_bytes_free, formatjs_locale_create, formatjs_locale_destroy,
-    formatjs_locale_query, formatjs_locale_validate,
+    formatjs_locale_query, formatjs_locale_transform, formatjs_locale_validate,
 };
 pub use formatjs_intl_pluralrules::ffi::{
     formatjs_plural_bytes_free, formatjs_plural_create, formatjs_plural_destroy,

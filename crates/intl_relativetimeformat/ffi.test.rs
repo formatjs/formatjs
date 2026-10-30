@@ -153,6 +153,130 @@ fn abi_parts_keep_property_order_and_named_forms_omit_unit() {
     );
 }
 #[test]
+fn direct_format_preserves_negative_zero_and_rejects_unpaired_unit() {
+    let (registry, resolution) = loaded();
+    let model = registry.create(&resolution, json!({})).unwrap();
+    let unit: Vec<u16> = "day".encode_utf16().collect();
+    let mut out = RelativeBytes {
+        data: ptr::null_mut(),
+        len: 0,
+    };
+    assert_eq!(
+        unsafe {
+            formatjs_relative_format(
+                model.0,
+                b"-0".as_ptr(),
+                2,
+                unit.as_ptr(),
+                unit.len(),
+                &mut out,
+            )
+        },
+        0
+    );
+    assert_eq!(unsafe { owned(out) }, "0 days ago");
+    let invalid = [0xd800];
+    let mut out = RelativeBytes {
+        data: ptr::dangling_mut(),
+        len: 99,
+    };
+    assert_eq!(
+        unsafe {
+            formatjs_relative_format(model.0, b"1".as_ptr(), 1, invalid.as_ptr(), 1, &mut out)
+        },
+        1
+    );
+    assert!(out.data.is_null());
+    assert_eq!(out.len, 0);
+    assert_eq!(
+        unsafe {
+            formatjs_relative_format(
+                model.0,
+                b"1".as_ptr(),
+                1,
+                invalid.as_ptr(),
+                isize::MAX as usize,
+                &mut out,
+            )
+        },
+        2
+    );
+    assert!(out.data.is_null());
+}
+#[test]
+fn direct_parts_match_query_and_preserve_error_statuses() {
+    let (registry, resolution) = loaded();
+    for options in [json!({}), json!({"numeric":"auto","style":"narrow"})] {
+        let model = registry.create(&resolution, options).unwrap();
+        for (value, unit) in [
+            ("-0", vec![100, 97, 121]),
+            ("-1234.5", "days".encode_utf16().collect()),
+            ("1e+21", "seconds".encode_utf16().collect()),
+            ("-1", "day".encode_utf16().collect()),
+            ("Infinity", "day".encode_utf16().collect()),
+            ("1", vec![0xd800]),
+            ("1", vec![]),
+            ("1", "milliseconds".encode_utf16().collect()),
+        ] {
+            let expected = model.query(json!({"method":"formatToParts","value":value,"unit":unit}));
+            let mut out = RelativeBytes {
+                data: ptr::dangling_mut(),
+                len: 99,
+            };
+            let status = unsafe {
+                formatjs_relative_format_to_parts(
+                    model.0,
+                    value.as_ptr(),
+                    value.len(),
+                    unit.as_ptr(),
+                    unit.len(),
+                    &mut out,
+                )
+            };
+            if status == 0 {
+                let actual: Value = serde_json::from_str(&unsafe { owned(out) }).unwrap();
+                assert_eq!(Ok(actual), expected, "{value} {unit:?}");
+            } else {
+                assert_eq!(expected, Err(status), "{value} {unit:?}");
+                assert!(out.data.is_null());
+                assert_eq!(out.len, 0);
+            }
+        }
+        let mut out = RelativeBytes {
+            data: ptr::dangling_mut(),
+            len: 99,
+        };
+        assert_eq!(
+            unsafe {
+                formatjs_relative_format_to_parts(
+                    model.0,
+                    b"1".as_ptr(),
+                    1,
+                    ptr::null(),
+                    1,
+                    &mut out,
+                )
+            },
+            2
+        );
+        assert!(out.data.is_null());
+        assert_eq!(out.len, 0);
+        assert_eq!(
+            unsafe {
+                formatjs_relative_format_to_parts(
+                    model.0,
+                    b"1".as_ptr(),
+                    1,
+                    ptr::null(),
+                    0,
+                    ptr::null_mut(),
+                )
+            },
+            2
+        );
+    }
+}
+#[test]
 fn abi_errors_leave_outputs_empty_and_reject_invalid_options() {
     let registry = Registry::new();
     assert_eq!(registry.resolve(json!({"locales":["en"]})), Err(1));
@@ -237,4 +361,115 @@ fn abi_supported_locales_and_failed_load_preserve_registry_state() {
             .unwrap(),
         json!("in 1 day")
     );
+}
+
+#[test]
+fn numeric_entry_points_match_js_number_text_and_error_statuses() {
+    let (registry, resolution) = loaded();
+    let unit: Vec<u16> = "day".encode_utf16().collect();
+    for options in [json!({}), json!({"numeric":"auto","style":"narrow"})] {
+        let model = registry.create(&resolution, options).unwrap();
+        for (value, text) in [
+            (0.0, "0"),
+            (-0.0, "-0"),
+            (1.0, "1"),
+            (-1.0, "-1"),
+            (1.2345, "1.2345"),
+            (1.2345000000000002, "1.2345000000000002"),
+            (1.2344999999999997, "1.2344999999999997"),
+            (-1234.5, "-1234.5"),
+            (1e-6, "0.000001"),
+            (1e-7, "1e-7"),
+            (1e20, "100000000000000000000"),
+            (1e21, "1e+21"),
+            (f64::from_bits(1), "5e-324"),
+            (-f64::from_bits(1), "-5e-324"),
+            (f64::MIN_POSITIVE, "2.2250738585072014e-308"),
+            (f64::MAX, "1.7976931348623157e+308"),
+            (f64::NAN, "NaN"),
+            (f64::INFINITY, "Infinity"),
+            (f64::NEG_INFINITY, "-Infinity"),
+        ] {
+            for parts in [false, true] {
+                let mut legacy = RelativeBytes {
+                    data: ptr::dangling_mut(),
+                    len: 99,
+                };
+                let mut numeric = RelativeBytes {
+                    data: ptr::dangling_mut(),
+                    len: 99,
+                };
+                let old = if parts {
+                    formatjs_relative_format_to_parts
+                } else {
+                    formatjs_relative_format
+                };
+                let new = if parts {
+                    formatjs_relative_format_to_parts_number
+                } else {
+                    formatjs_relative_format_number
+                };
+                let expected = unsafe {
+                    old(
+                        model.0,
+                        text.as_ptr(),
+                        text.len(),
+                        unit.as_ptr(),
+                        unit.len(),
+                        &mut legacy,
+                    )
+                };
+                let actual =
+                    unsafe { new(model.0, value, unit.as_ptr(), unit.len(), &mut numeric) };
+                assert_eq!(actual, expected, "{text}: parts={parts}");
+                if actual == 0 {
+                    assert_eq!(
+                        unsafe { owned(numeric) },
+                        unsafe { owned(legacy) },
+                        "{text}: parts={parts}"
+                    );
+                } else {
+                    assert!(numeric.data.is_null() && legacy.data.is_null());
+                    assert_eq!((numeric.len, legacy.len), (0, 0));
+                }
+            }
+        }
+        for call in [
+            formatjs_relative_format_number,
+            formatjs_relative_format_to_parts_number,
+        ] {
+            let invalid = [0xd800];
+            let mut out = RelativeBytes {
+                data: ptr::dangling_mut(),
+                len: 99,
+            };
+            assert_eq!(
+                unsafe { call(model.0, 1.0, invalid.as_ptr(), invalid.len(), &mut out) },
+                1
+            );
+            assert!(out.data.is_null() && out.len == 0);
+            assert_eq!(
+                unsafe {
+                    call(
+                        model.0,
+                        f64::NAN,
+                        invalid.as_ptr(),
+                        isize::MAX as usize,
+                        &mut out,
+                    )
+                },
+                2
+            );
+            assert!(out.data.is_null() && out.len == 0);
+            assert_eq!(
+                unsafe { call(ptr::null(), 1.0, unit.as_ptr(), unit.len(), &mut out) },
+                2
+            );
+            assert!(out.data.is_null() && out.len == 0);
+            assert_eq!(
+                unsafe { call(model.0, 1.0, unit.as_ptr(), unit.len(), ptr::null_mut()) },
+                2
+            );
+        }
+    }
 }

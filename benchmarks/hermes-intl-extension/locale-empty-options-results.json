@@ -1,0 +1,4822 @@
+{
+  "collectedAt": "2026-10-30T03:22:58.913039+00:00",
+  "baselinePullRequest": "https://github.com/formatjs/formatjs/pull/7788",
+  "baselineCommit": "56127e261471b0b4b2b2f958a1af8383ce7449b3",
+  "implementationCommit": "fa55404eccd0b98bf90b3b21a0695ea292b1631a",
+  "implementationCratesTree": "9907a77ec487d0022912c0755763f1c7ca88075e",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "sourceSha256": {
+    "crates/intl_locale/lib.rs": "4a23eb5697461869be227f95f4998eb214fc0b8b9bd93ae0ee960405c5a7aebe",
+    "crates/intl_locale/ffi.rs": "1d81648d484c26e40877b8aeeed656c9a71596ef7d7f05cf70713bb27d843240",
+    "crates/intl_locale/ffi.test.rs": "5afa8dd5b739e9455890f97215254760e06e26ded29c1fb316ed2f940df41b12",
+    "native/hermes/locale.ts": "61d1eabca688dd2862a8d5d3f5acb6941dcdaed86a95d64d84b726fe57aaf9f9",
+    "native/hermes/package/dist.bzl": "3dec507c28d75ad75420ac4452691fa4e625f967a14747511ab0d27747c24a32",
+    "benchmarks/hermes-intl-extension/canonical-extension-probe.rs": "28b3d300fc79b3bf36930cf8fb027c0d5fffc7101921ff8fd466f8aab069b2bf",
+    "benchmarks/hermes-intl-extension/locale-constructor-control.js": "912ec964a5702e3fafead496502ec45070e6b229b51d86a85ca66f8c05cc061a",
+    "benchmarks/hermes-intl-extension/locale-control.js": "d66c90f9a40d20a2be961177579d919cbb4b3b5ff552a08850f80ad8f2a90a3c",
+    "benchmarks/hermes-intl-extension/locale-cold-profile.js": "8ff4a433114ef5badbf935d1fcf842bf5d96c1c8fbfcc6071f032bb3c8cfcc10"
+  },
+  "hostSha256": {
+    "before": "9e9017f3a997cd4edbacccb869df79b0fa6de5d9f7b5d767ce4cd3b4da0887c5",
+    "after": "e58029b52516d67a82a7377ca76a462e05ae6b4acaae7b1891cc407051ef1725",
+    "magrinj": "7f5a07824225b3db9787ed21ea48cd8eb67c7a3d7d6798ba21aa0da0c887136f"
+  },
+  "sdkArchiveSha256": "d5a060ac510bb81080225313acde688a5bd52fc0a4d128f4f1a0b00642b74db0",
+  "workloadSha256": {
+    "hermes-locale-constructor-control.hbc": "23b98fc3ed461054e5d8f469db087cbbcf88e7765b6cab190ae99ea9f1060ba9",
+    "hermes-canonical-locale-control.hbc": "fd346e6e8bda47978c2a56bae7f18e9ddaf3f584d5a0cd06eb446825d8bce30d",
+    "hermes-all-api-optimized.hbc": "f30b339ad9da11a89abfac0781a60f234a546c3d0b36164676a9bf8da25403bc",
+    "hermes-locale-fixed-control.js": "d59092762ffc7da0d24c6b423daade163fb0848fa5beaeb6232b4e1d4e4ed111"
+  },
+  "method": "Both native SDKs: Bazel -c opt, cross-crate ThinLTO; native C++ Release -O3. Comparator retains upstream opt-level=z, full LTO, one codegen unit. All timed processes pinned to CPU 0, reverse host order in alternating rounds; no concurrent builds/profiles. Optimized bytecode warm/cold controls; fixed-work diagnostic runs identical source on each host. Median per invocation, then median across invocations. Full suite asserts native/TS equality internally before timing. Sampling profiles collected separately.",
+  "outputChecks": 120,
+  "fullApiInternalAssertions": 84,
+  "focusedGates": 12,
+  "sdkSmokes": 9,
+  "mediansUs": {
+    "pilot": {
+      "warm": {
+        "Locale.new": {
+          "preLto": 0.3567646290321136,
+          "before": 0.3515480839269003,
+          "after": 0.3536978347256081,
+          "magrinj": 0.9753367921803147
+        },
+        "Locale.new(options)": {
+          "preLto": 1.7902038525789976,
+          "before": 1.7832319281296805,
+          "after": 1.793292147340253,
+          "magrinj": 4.976148571586236
+        },
+        "Locale.new(Locale)": {
+          "preLto": 0.33216422707482707,
+          "before": 0.33014807559084147,
+          "after": 0.33292440821242053,
+          "magrinj": 0.9759056265465915
+        }
+      },
+      "locale": {
+        "Locale.new(diverse)": {
+          "preLto": 2.121856712619774,
+          "before": 1.837462288676761,
+          "after": 2.1801357943331823,
+          "magrinj": 1.4789693741477095
+        },
+        "Locale.new(long)": {
+          "preLto": 3.4686724247876555,
+          "before": 3.3638810709817335,
+          "after": 3.0992325773695484,
+          "magrinj": 3.921834664652124
+        }
+      }
+    },
+    "final": {
+      "fixed": {
+        "Locale.new(diverse,fixed)": {
+          "before": 2.252424462636312,
+          "after": 2.1175097862879437,
+          "magrinj": 1.4372039063771567
+        }
+      },
+      "warm": {
+        "Locale.new": {
+          "before": 0.34612160197866615,
+          "after": 0.34871142634074204,
+          "magrinj": 0.9312647598562762
+        },
+        "Locale.new(options)": {
+          "before": 1.7508471064502373,
+          "after": 1.7669966764515266,
+          "magrinj": 4.864677233854309
+        },
+        "Locale.new(Locale)": {
+          "before": 0.3251294565416174,
+          "after": 0.32537955848965794,
+          "magrinj": 0.9496207421761937
+        }
+      },
+      "locale": {
+        "Locale.new(diverse)": {
+          "before": 1.823440717998892,
+          "after": 1.6704559529898688,
+          "magrinj": 1.4319407055154443
+        },
+        "Locale.new(long)": {
+          "before": 3.073913321713917,
+          "after": 2.7420695405453444,
+          "magrinj": 3.7914454587735236
+        }
+      }
+    }
+  },
+  "rawRuns": {
+    "pilot": {
+      "warm": {
+        "preLto": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3539089648256777,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7934022034751251,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.3319623901916202,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.35824633232550696,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7902038525789976,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.33617534609220456,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3567646290321136,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7848168063210323,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.33216422707482707,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ]
+        ],
+        "before": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3515480839269003,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.787128931027837,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.32937520154519007,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.35394598489801865,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7832319281296805,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.3310052070446545,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3510532460495597,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7815491737565026,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.33014807559084147,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ]
+        ],
+        "after": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3536978347256081,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7934231436811388,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.3318076669529546,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.35327391742612235,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.787366549251601,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.33292440821242053,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.353970268406556,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.793292147340253,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.3338821952638682,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ]
+        ],
+        "magrinj": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.970873654296156,
+              "iterations": 65536,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 4.944224609062076,
+              "iterations": 16384,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.9716364584164694,
+              "iterations": 65536,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.9753367921803147,
+              "iterations": 65536,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 4.976148571586236,
+              "iterations": 16384,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.9843079387792386,
+              "iterations": 65536,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 1.0643826317391358,
+              "iterations": 65536,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 4.987398016965017,
+              "iterations": 16384,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.9759056265465915,
+              "iterations": 65536,
+              "value": "en"
+            }
+          ]
+        ]
+      },
+      "locale": {
+        "preLto": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 2.121856712619774,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.4686724247876555,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 2.529557270463556,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.5668174241436645,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.8913534295279533,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.255207557231188,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ],
+        "before": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.8091203965013847,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.3833890629466623,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 2.1074238029541448,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.3638810709817335,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.837462288676761,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.1324230949394405,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ],
+        "after": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 2.1801357943331823,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.08978880639188,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 2.340804770938121,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.5774882417172194,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.9188713340554386,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.0992325773695484,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ],
+        "magrinj": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.4789693741477095,
+              "iterations": 65536,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.9258771284949034,
+              "iterations": 16384,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.5166162556852214,
+              "iterations": 65536,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.921834664652124,
+              "iterations": 16384,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.4642875466961414,
+              "iterations": 65536,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.8604952569585294,
+              "iterations": 16384,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ]
+      }
+    },
+    "final": {
+      "fixed": {
+        "before": [
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.1933453766504925, 2.2426104577382406, 2.384972647031148,
+                2.2789024273554483, 2.252424462636312, 2.1489060974121093,
+                2.3314765294392905, 2.2032782570521037, 2.3862219270070395
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.1415827306111654, 2.179247530301412, 2.4066669527689615,
+                2.3358598232269285, 2.3107855478922525, 2.061734782854716,
+                2.2539083671569826, 2.2315278402964274, 2.3270480600992838
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.1913607533772788, 2.2290334494908652, 2.468742036819458,
+                2.3882603820165, 2.27413863658905, 2.333938306172689,
+                2.269925956726074, 2.249976388613383, 2.366285409927368
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.055643966992696, 2.1212944555282593, 2.245544630686442,
+                2.3130668528874714, 2.0132488934199015, 2.191277043024699,
+                2.2738516569137572, 2.4262068557739256, 2.4337760623296103
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.1303365437189736, 2.2240155267715456, 2.0659827025731405,
+                2.015900100072225, 2.3439456621805825, 2.2337712907791136,
+                2.2364967966079714, 2.272439816792806, 2.1165785630544027
+              ],
+              "value": "en-x-bench-95"
+            }
+          ]
+        ],
+        "after": [
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.122680519421895, 2.21398721853892, 2.0328412930170696,
+                2.3638939746220906, 2.186329040527344, 1.946879833539327,
+                2.322018410364787, 2.216679197947184, 2.243894747098287
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.0491604963938395, 2.309208787282308, 2.0887697156270346,
+                2.063289006551107, 2.1523814455668133, 2.1400156291325887,
+                2.0385808404286703, 2.1175097862879437, 2.310776081085205
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.0684668668111166, 2.131518653233846, 2.045126042366028,
+                2.024803892771403, 2.102033809026082, 2.0381178442637125,
+                1.9798136043548584, 1.9883546702067056, 2.2445081233978272
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                2.0694646422068277, 2.477828903198242, 1.9511787430445353,
+                2.2034713570276896, 2.3799814939498902, 2.0856424363454185,
+                2.1773756392796835, 2.326749366124471, 2.192012941042582
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                1.9778770192464192, 2.0967732604344684, 1.98102725982666,
+                2.0524176073074343, 2.0863942178090413, 2.3860791476567584,
+                1.916633973121643, 2.150751892725627, 2.240686639149984
+              ],
+              "value": "en-x-bench-95"
+            }
+          ]
+        ],
+        "magrinj": [
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                1.4420013729731243, 1.4303885332743327, 1.4317949708302815,
+                1.4325555499394735, 1.4248410272598266, 1.4298761240641276,
+                1.438893926938375, 1.465732250213623, 1.4473205105463665
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                1.4376560735702515, 1.4331504360834757, 1.4316215229034424,
+                1.4257774702707926, 1.4509955167770385, 1.4372039063771567,
+                1.4296186065673828, 1.4424671030044556, 1.4884232552846273
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                1.4360877799987792, 1.4465223503112794, 1.4345887804031372,
+                1.4360139131546021, 1.4327741209665934, 1.4394973532358806,
+                1.4626182842254638, 1.4713348388671874, 1.4411857334772746
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                1.479102339744568, 1.440119415918986, 1.4301345030466714,
+                1.4337339003880818, 1.4231044340133667, 1.427443979581197,
+                1.4210051075617471, 1.422301902770996, 1.4337343788146972
+              ],
+              "value": "en-x-bench-95"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse,fixed)",
+              "samples": [
+                1.4449718395868938, 1.4394111998875936, 1.4378322060902913,
+                1.439195261001587, 1.4404904397328695, 1.4558340962727865,
+                1.4518606901168822, 1.4375975767771403, 1.4338349135716757
+              ],
+              "value": "en-x-bench-95"
+            }
+          ]
+        ]
+      },
+      "warm": {
+        "before": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3432121975492919,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7531092162244022,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.34389609572826885,
+              "iterations": 131072,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3471631116553908,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7508471064502373,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.3251294565416174,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.34612160197866615,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7428250721422955,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.32379560434492305,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ]
+        ],
+        "after": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.3559400938684121,
+              "iterations": 131072,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.772915871697478,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.3319061506772414,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.34777952714648563,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.7669966764515266,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.32368976644647773,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.34871142634074204,
+              "iterations": 262144,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 1.75134940946009,
+              "iterations": 32768,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.32537955848965794,
+              "iterations": 262144,
+              "value": "en"
+            }
+          ]
+        ],
+        "magrinj": [
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.9615952003514394,
+              "iterations": 65536,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 4.868303629336879,
+              "iterations": 16384,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.9496207421761937,
+              "iterations": 65536,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.9312647598562762,
+              "iterations": 65536,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 4.864677233854309,
+              "iterations": 16384,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.9520263483864255,
+              "iterations": 65536,
+              "value": "en"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new",
+              "us": 0.9311854737461545,
+              "iterations": 65536,
+              "value": "en"
+            },
+            {
+              "name": "Locale.new(options)",
+              "us": 4.8285490775015205,
+              "iterations": 16384,
+              "value": "en-GB"
+            },
+            {
+              "name": "Locale.new(Locale)",
+              "us": 0.9453990278416313,
+              "iterations": 65536,
+              "value": "en"
+            }
+          ]
+        ]
+      },
+      "locale": {
+        "before": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.823440717998892,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 2.9770559776807204,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.9273171783424914,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.073913321713917,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.774301184923388,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.176475438522175,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ],
+        "after": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.6532868321519345,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 2.691708956263028,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.688682401436381,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 2.7420695405453444,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.6704559529898688,
+              "iterations": 32768,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.310961910756305,
+              "iterations": 32768,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ],
+        "magrinj": [
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.4291177067207173,
+              "iterations": 65536,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.7921977054793388,
+              "iterations": 16384,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.4355811872519553,
+              "iterations": 65536,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.7884177290834486,
+              "iterations": 16384,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ],
+          [
+            {
+              "name": "Locale.new(diverse)",
+              "us": 1.4319407055154443,
+              "iterations": 65536,
+              "value": "en-x-bench-0"
+            },
+            {
+              "name": "Locale.new(long)",
+              "us": 3.7914454587735236,
+              "iterations": 16384,
+              "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "fullApiMediansUs": {
+    "getCanonicalLocales": {
+      "before": {
+        "native": 0.09374271830893122,
+        "typescript": 4.432500991970301
+      },
+      "after": {
+        "native": 0.09362615019199438,
+        "typescript": 4.421814880333841
+      }
+    },
+    "supportedValuesOf": {
+      "before": {
+        "native": 1.8177566933445632,
+        "typescript": 58.98290388286114
+      },
+      "after": {
+        "native": 1.819746138062328,
+        "typescript": 59.64071862399578
+      }
+    },
+    "Locale.maximize": {
+      "before": {
+        "native": 0.2848328120307997,
+        "typescript": 34.273953177034855
+      },
+      "after": {
+        "native": 0.2905029119574465,
+        "typescript": 34.78525951504707
+      }
+    },
+    "PluralRules.select": {
+      "before": {
+        "native": 0.3842795093078166,
+        "typescript": 123.47124218940735
+      },
+      "after": {
+        "native": 0.3737818857189268,
+        "typescript": 127.25687697529793
+      }
+    },
+    "ListFormat.format": {
+      "before": {
+        "native": 0.7384885102510452,
+        "typescript": 4.52094238717109
+      },
+      "after": {
+        "native": 0.7566001848317683,
+        "typescript": 4.551950003951788
+      }
+    },
+    "ListFormat.formatToParts": {
+      "before": {
+        "native": 4.322045878507197,
+        "typescript": 6.1250402592122555
+      },
+      "after": {
+        "native": 4.517487995326519,
+        "typescript": 6.163774244487286
+      }
+    },
+    "DisplayNames.of": {
+      "before": {
+        "native": 1.5570253948681056,
+        "typescript": 7.989475782960653
+      },
+      "after": {
+        "native": 1.5707433922216296,
+        "typescript": 7.983513455837965
+      }
+    },
+    "Segmenter.segment": {
+      "before": {
+        "native": 6.412682216614485,
+        "typescript": 8.898819936439395
+      },
+      "after": {
+        "native": 6.308684078976512,
+        "typescript": 8.94953035749495
+      }
+    },
+    "Collator.compare": {
+      "before": {
+        "native": 1.6788910725153983,
+        "typescript": 3.187084081582725
+      },
+      "after": {
+        "native": 1.6104575130157173,
+        "typescript": 3.2111505744978786
+      }
+    },
+    "NumberFormat.format": {
+      "before": {
+        "native": 2.04477192601189,
+        "typescript": 354.6261429786682
+      },
+      "after": {
+        "native": 2.054089424200356,
+        "typescript": 342.81882643699646
+      }
+    },
+    "RelativeTimeFormat.format": {
+      "before": {
+        "native": 0.8434086048509926,
+        "typescript": 400.03727674484253
+      },
+      "after": {
+        "native": 0.8240051101893187,
+        "typescript": 400.4923701286316
+      }
+    },
+    "RelativeTimeFormat.formatToParts": {
+      "before": {
+        "native": 2.322936966083944,
+        "typescript": 401.3927489519119
+      },
+      "after": {
+        "native": 2.306374756153673,
+        "typescript": 405.0225853919983
+      }
+    },
+    "DateTimeFormat.format": {
+      "before": {
+        "native": 3.920210595242679,
+        "typescript": 1025.6313621997833
+      },
+      "after": {
+        "native": 3.9003283716738224,
+        "typescript": 1013.0323350429535
+      }
+    },
+    "DurationFormat.format": {
+      "before": {
+        "native": 3.645190573297441,
+        "typescript": 879.8677980899811
+      },
+      "after": {
+        "native": 3.663659282028675,
+        "typescript": 887.0371341705322
+      }
+    }
+  },
+  "fullApiRawRuns": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 95.06921560387127
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4472.53636084497
+          },
+          "speedup": 47.04505377935237
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1829.2254186235368
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 58982.90388286114
+          },
+          "speedup": 32.244743202423265
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 284.8328120307997
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34658.6000174284
+          },
+          "speedup": 121.68050362709153
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 377.28202587459236
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 123471.24218940735
+          },
+          "speedup": 327.2651059991098
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 744.510960066691
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4520.94238717109
+          },
+          "speedup": 6.072365122423607
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4394.467337988317
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6154.945492744446
+          },
+          "speedup": 1.4006124108688982
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1572.6764337159693
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7983.831502497196
+          },
+          "speedup": 5.076588757442463
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6368.062132969499
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8898.819936439395
+          },
+          "speedup": 1.3974141191819331
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1678.8910725153983
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3187.084081582725
+          },
+          "speedup": 1.8983268978896153
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2057.908952701837
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 380389.53840732574
+          },
+          "speedup": 184.84274433419944
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 834.4740606844425
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 399889.9668455124
+          },
+          "speedup": 479.21197995959193
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2330.141479615122
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 401392.7489519119
+          },
+          "speedup": 172.26110623043002
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3920.210595242679
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1029772.561788559
+          },
+          "speedup": 262.68296989917485
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3645.190573297441
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 878285.7716083527
+          },
+          "speedup": 240.94371856499535
+        },
+        {
+          "checksum": 180528080
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 93.46377701149322
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4432.500991970301
+          },
+          "speedup": 47.42480064148528
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1817.7566933445632
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 59509.81006026268
+          },
+          "speedup": 32.738050300212734
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 288.77972217742354
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34273.953177034855
+          },
+          "speedup": 118.68545657778998
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 389.46501445025206
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 123107.55327343941
+          },
+          "speedup": 316.0939974215949
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 734.8344719503075
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4481.662483885884
+          },
+          "speedup": 6.0988734945860745
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4322.045878507197
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6125.0402592122555
+          },
+          "speedup": 1.4171622494039327
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1532.0192906074226
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8052.2173549979925
+          },
+          "speedup": 5.255950368487468
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6412.682216614485
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 9216.242050752044
+          },
+          "speedup": 1.437189890195069
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1732.2291037999094
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3346.0922073572874
+          },
+          "speedup": 1.9316683919102402
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2044.7719260118902
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 354626.1429786682
+          },
+          "speedup": 173.43065916907844
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 889.3793332390487
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 438255.44714927673
+          },
+          "speedup": 492.76549473348484
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2322.936966083944
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 417016.29161834717
+          },
+          "speedup": 179.52113970675754
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3932.138136588037
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1025631.3621997833
+          },
+          "speedup": 260.83299379958606
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3667.6997551694512
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 897615.3552532196
+          },
+          "speedup": 244.7352332993105
+        },
+        {
+          "checksum": 165782480
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 93.74271830893122
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4393.388424068689
+          },
+          "speedup": 46.86645003817982
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1809.0132507495582
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 58638.97763192654
+          },
+          "speedup": 32.41489668891573
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 280.22020851494744
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 33971.57024592161
+          },
+          "speedup": 121.23169283884644
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 384.2795093078166
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 124948.14693927765
+          },
+          "speedup": 325.14912690593485
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 738.4885102510452
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4532.901220954955
+          },
+          "speedup": 6.138079547661506
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4296.818654984236
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6086.4899307489395
+          },
+          "speedup": 1.4165107768019756
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1557.0253948681056
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7989.475782960653
+          },
+          "speedup": 5.1312430801023865
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6452.619982883334
+          },
+          "typescript": {
+            "callsPerRound": 5120,
+            "nsPerCall": 8873.568288981915
+          },
+          "speedup": 1.3751884215280856
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1633.1563238054514
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3160.868608392775
+          },
+          "speedup": 1.9354354279004777
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1989.613357000053
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 344853.29389572144
+          },
+          "speedup": 173.32678868606544
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 843.4086048509926
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 400037.27674484253
+          },
+          "speedup": 474.3101676268981
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2272.8247800841928
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 397791.33796691895
+          },
+          "speedup": 175.0206797517332
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3843.8818184658885
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1001308.8345527649
+          },
+          "speedup": 260.49417797979856
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3528.21231354028
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 879867.7980899811
+          },
+          "speedup": 249.38062675913736
+        },
+        {
+          "checksum": 164584400
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 93.62615019199438
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4421.675484627485
+          },
+          "speedup": 47.22692832675679
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1812.2100620530546
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 58469.436690211296
+          },
+          "speedup": 32.264160714333094
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 280.67638486390933
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 35853.95775735378
+          },
+          "speedup": 127.74126962885808
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 376.68110744562
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 124185.53456664085
+          },
+          "speedup": 329.68346994830114
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 756.6001848317683
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4836.089885793626
+          },
+          "speedup": 6.391869818098104
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4517.487995326519
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6356.338365003467
+          },
+          "speedup": 1.407051523231339
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1570.7433922216296
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7983.513455837965
+          },
+          "speedup": 5.082633799621615
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6308.684078976512
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8949.53035749495
+          },
+          "speedup": 1.418604933367796
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1618.0354752577841
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3230.8839727193117
+          },
+          "speedup": 1.9967942743681624
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2356.268384028226
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 393563.97688388824
+          },
+          "speedup": 167.02850131658587
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 824.0051101893187
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 398713.5052680969
+          },
+          "speedup": 483.87261236340004
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2299.101243261248
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 397443.63129138947
+          },
+          "speedup": 172.86912982032075
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3848.891193047166
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1002860.8083724976
+          },
+          "speedup": 260.5583681305714
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3571.495716460049
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 887037.1341705322
+          },
+          "speedup": 248.3657281408515
+        },
+        {
+          "checksum": 176841680
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 94.64207760174759
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4476.8651481717825
+          },
+          "speedup": 47.30311571360851
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1860.6436322443187
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 59675.754979252815
+          },
+          "speedup": 32.072640856686554
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 292.45773039292544
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34525.24486929178
+          },
+          "speedup": 118.05208507535812
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 369.5873310789466
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 136124.72862005234
+          },
+          "speedup": 368.3154620659199
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 731.8341580685228
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4338.714922778308
+          },
+          "speedup": 5.9285493508927845
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4577.728407457471
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6010.776478797197
+          },
+          "speedup": 1.3130478577552092
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1549.7530344873667
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7715.980568900704
+          },
+          "speedup": 4.978845272242378
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6109.046097844839
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8865.653118118644
+          },
+          "speedup": 1.4512336256958818
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1606.7352262325585
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3211.1505744978786
+          },
+          "speedup": 1.9985561541631984
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2018.2323292829096
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 342266.1691904068
+          },
+          "speedup": 169.58710066447904
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 835.9176514204592
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 405476.96352005005
+          },
+          "speedup": 485.0680719937313
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2308.134618215263
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 406651.6011953354
+          },
+          "speedup": 176.18192543283018
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3900.3283716738224
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1013032.3350429535
+          },
+          "speedup": 259.7300120677305
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3980.5445354431868
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 884399.3008136749
+          },
+          "speedup": 222.18048132331913
+        },
+        {
+          "checksum": 180528080
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 93.10950626968406
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4421.814880333841
+          },
+          "speedup": 47.490477154141665
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1819.746138062328
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 59640.71862399578
+          },
+          "speedup": 32.774197112736516
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 290.5029119574465
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34785.25951504707
+          },
+          "speedup": 119.74151749687967
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 373.7818857189268
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 127256.87697529793
+          },
+          "speedup": 340.4575819144736
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 820.150098297745
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4551.950003951788
+          },
+          "speedup": 5.550142606090697
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4283.290542662144
+          },
+          "typescript": {
+            "callsPerRound": 5120,
+            "nsPerCall": 6163.774244487286
+          },
+          "speedup": 1.4390278182381686
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1582.191267516464
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8522.16207422316
+          },
+          "speedup": 5.386303318182408
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7174.809416756034
+          },
+          "typescript": {
+            "callsPerRound": 5120,
+            "nsPerCall": 8982.707001268864
+          },
+          "speedup": 1.2519784818661064
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1610.4575130157173
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3186.859958805144
+          },
+          "speedup": 1.978853793440027
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2054.089424200356
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 342818.82643699646
+          },
+          "speedup": 166.8957652953467
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 814.549921778962
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 400492.3701286316
+          },
+          "speedup": 491.67320433100485
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2306.374756153673
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 405022.5853919983
+          },
+          "speedup": 175.61004962933777
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4006.9909766316414
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1018609.0648174286
+          },
+          "speedup": 254.20797569993337
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3663.659282028675
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 896041.9416427612
+          },
+          "speedup": 244.57567493738028
+        },
+        {
+          "checksum": 172418000
+        }
+      ]
+    ]
+  },
+  "profiles": {
+    "before": {
+      "totalSamples": 1673,
+      "selfSamples": {
+        "[Host Function] localeCreate": 971,
+        "[Native] weakMapPrototypeSet": 151,
+        "[GC Young Gen]": 141,
+        "initialize": 102,
+        "Locale": 81,
+        "[Native] mapPrototypeGet": 53,
+        "global": 43,
+        "set": 41,
+        "[Native] mapPrototypeSet": 41,
+        "[Native] stringPrototypeConcat": 22,
+        "[Native] objectCreate": 17,
+        "[Native] mapPrototypeClear": 5,
+        "[Native] weakMapPrototypeGet": 4,
+        "[root]": 1
+      },
+      "raw": [
+        {
+          "samples": [
+            5, 7, 8, 8, 10, 11, 7, 7, 13, 8, 8, 7, 7, 7, 5, 16, 13, 7, 7, 13,
+            13, 8, 8, 7, 7, 8, 7, 7, 15, 7, 7, 13, 7, 15, 7, 7, 7, 7, 5, 7, 7,
+            7, 13, 7, 7, 7, 7, 17, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 11, 19, 13, 13,
+            8, 7, 15, 7, 7, 7, 7, 7, 20, 7, 13, 7, 7, 11, 7, 7, 11, 7, 7, 21, 7,
+            7, 24, 7, 15, 7, 21, 7, 7, 7, 5, 7, 7, 7, 7, 7, 5, 7, 7, 17, 19, 11,
+            7, 7, 7, 21, 7, 7, 7, 7, 13, 7, 7, 7, 13, 21, 20, 7, 7, 11, 7, 21,
+            13, 21, 7, 15, 7, 11, 7, 21, 7, 7, 8, 20, 21, 7, 7, 7, 23, 7, 11, 7,
+            7, 7, 7, 8, 7, 7, 7, 11, 7, 23, 7, 25, 25, 8, 7, 7, 7, 7, 27, 7, 7,
+            7, 7, 27, 13, 7, 7, 7, 7, 7, 7, 20, 20, 7, 7, 7, 8, 5, 8, 7, 7, 7,
+            7, 7, 8, 7, 15, 8, 13, 7, 25, 25, 7, 7, 11, 23, 7, 7, 13, 7, 8, 7,
+            7, 23, 15, 7, 7, 7, 7, 13, 7, 17, 11, 13, 7, 7, 5, 7, 7, 7, 23, 7,
+            7, 7, 7, 5, 23, 8, 7, 20, 7, 7, 13, 21, 7, 7, 7, 13, 7, 7, 7, 7, 7,
+            7, 7, 17, 7, 7, 13, 7, 7, 13, 7, 7, 15, 7, 11, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 20, 15, 15, 15, 15, 10, 7, 7, 7, 7, 7, 13, 7, 7, 10, 7, 7,
+            7, 7, 7, 7, 7, 24, 19, 7, 7, 8, 13, 7, 7, 7, 7, 7, 27, 13, 17, 17,
+            7, 10, 7, 7, 7, 8, 7, 7, 7, 7, 5, 13, 7, 7, 8, 13, 13, 13, 13, 13,
+            13, 13, 13, 13, 13, 13, 13, 13, 7, 7, 8, 28, 7, 7, 7, 5, 7, 7, 7, 7,
+            8, 27, 23, 21, 7, 7, 8, 7, 17, 10, 7, 7, 7, 11, 7, 7, 7, 23, 7, 11,
+            7, 7, 7, 7, 7, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 7, 11, 7,
+            7, 7, 7, 7, 7, 7, 8, 7, 11, 7, 7, 7, 7, 7, 7, 20, 13, 7, 7, 7, 11,
+            5, 7, 7, 8, 7, 7, 7, 7, 7, 15, 7, 13, 7, 7, 13, 7, 13, 7, 7, 7, 7,
+            7, 7, 7, 8, 8, 7, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
+            17, 7, 21, 7, 7, 7, 7, 21, 7, 7, 8, 27, 7, 7, 11, 7, 7, 7, 7, 20, 7,
+            7, 7, 8, 7, 7, 7, 7, 7, 7, 11, 11, 13, 7, 7, 13, 13, 7, 17, 7, 7, 8,
+            8, 7, 7, 13, 7, 7, 7, 7, 7, 19, 7, 7, 7, 7, 7, 8, 11, 7, 8, 7, 7,
+            13, 7, 7, 7, 7, 13, 8, 20, 7, 7, 7, 13, 7, 7, 15, 7, 7, 7, 11, 11,
+            7, 7, 11, 7, 28, 25, 11, 11, 7, 5, 7, 7, 7, 7, 11, 7, 7, 8, 8, 7, 7,
+            13, 7, 7, 28, 11, 15, 15, 13, 7, 7, 7, 7
+          ],
+          "timeDeltas": [
+            0, 1121, 1683, 752, 1154, 1549, 798, 1156, 775, 1279, 1039, 218,
+            281, 959, 932, 618, 1870, 1097, 1201, 306, 1047, 1100, 1237, 715,
+            1481, 1213, 1305, 2061, 904, 559, 765, 1280, 1663, 815, 618, 1245,
+            2114, 755, 996, 270, 1799, 812, 1432, 1341, 1041, 503, 1667, 428,
+            1587, 660, 1033, 1447, 1656, 1608, 679, 931, 1793, 1550, 2226, 354,
+            1171, 2360, 1754, 1645, 760, 1044, 1079, 1575, 910, 1192, 259, 2833,
+            1504, 1475, 530, 1699, 1966, 117, 577, 1183, 1038, 737, 1428, 1170,
+            634, 1938, 965, 672, 1538, 719, 946, 1243, 2001, 1248, 487, 1808,
+            1299, 792, 366, 693, 1216, 709, 1436, 1169, 695, 1157, 1120, 1222,
+            766, 2483, 1799, 1397, 858, 502, 1143, 456, 1712, 217, 977, 2161,
+            728, 1182, 1478, 763, 1258, 435, 1111, 1831, 1359, 771, 1114, 1293,
+            614, 1593, 790, 515, 2318, 2532, 1261, 770, 1272, 222, 1569, 306,
+            900, 322, 555, 189, 1355, 582, 609, 1551, 1659, 580, 707, 750, 0,
+            1371, 342, 1761, 659, 1778, 775, 860, 801, 2077, 1429, 741, 862,
+            1808, 60, 496, 629, 272, 1127, 1258, 0, 2616, 1400, 392, 366, 1745,
+            1366, 823, 1412, 877, 1081, 1463, 663, 1078, 855, 1474, 171, 982,
+            277, 0, 1816, 886, 1454, 2010, 761, 833, 757, 422, 863, 919, 817,
+            738, 868, 264, 1169, 1068, 1345, 532, 927, 519, 1647, 1272, 1398,
+            735, 754, 915, 327, 1192, 1051, 1578, 1423, 1262, 1441, 515, 1499,
+            1060, 858, 128, 2614, 2076, 1172, 1082, 1150, 424, 1231, 745, 1877,
+            1213, 519, 1776, 1190, 874, 1451, 226, 1903, 206, 71, 105, 1013,
+            933, 914, 1193, 650, 901, 675, 663, 1240, 1469, 386, 741, 1329, 532,
+            1449, 730, 1375, 1336, 11445, 9907, 727, 235, 1281, 1279, 1462, 902,
+            572, 8815, 923, 1554, 1025, 1318, 621, 794, 961, 1575, 1183, 1514,
+            1117, 171, 2194, 1444, 1195, 1152, 678, 1450, 1806, 2257, 2071,
+            1640, 1292, 1577, 1153, 0, 1491, 802, 1149, 1171, 304, 1543, 1002,
+            1761, 1702, 1568, 1083, 1987, 694, 223, 795, 2731, 1311, 1144, 1665,
+            1340, 1352, 2117, 1167, 885, 1110, 1187, 1257, 889, 714, 1085, 1676,
+            178, 1444, 256, 651, 1145, 851, 1047, 759, 863, 1781, 1787, 779,
+            1623, 1190, 1647, 471, 927, 281, 5431, 1106, 784, 2274, 903, 1049,
+            544, 1146, 988, 739, 1149, 823, 1910, 1326, 2223, 1140, 1009, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 11544, 1444, 1086, 597, 1068, 1391, 949,
+            1672, 660, 1213, 981, 671, 1895, 622, 500, 1299, 112, 278, 311,
+            2462, 673, 2527, 1517, 1365, 535, 1313, 504, 996, 477, 901, 1404,
+            1715, 651, 2596, 738, 1303, 2383, 707, 756, 1762, 262, 545, 1534,
+            309, 931, 1753, 417, 332, 1181, 1324, 1130, 304, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 14962, 1082, 1088, 1108, 456, 848, 913, 61, 256,
+            754, 1242, 1517, 1135, 567, 1423, 1288, 1109, 1882, 516, 9297, 1099,
+            1290, 1413, 700, 455, 592, 748, 284, 275, 1647, 132, 818, 811, 1448,
+            625, 2157, 1704, 1031, 2072, 950, 589, 1220, 835, 1423, 1418, 1158,
+            206, 1560, 1014, 1417, 1644, 1227, 635, 9127, 2186, 1841, 1839,
+            2066, 993, 358, 999, 1191, 582, 439, 647, 315, 1908, 447, 833, 696,
+            2645, 7619, 839, 780, 723, 972, 552, 88, 1506, 699, 1303, 1196,
+            1641, 1343, 677, 689, 1178, 2134, 224, 3086, 911, 1534, 553, 1013,
+            359, 1402, 2022, 876, 262, 665, 422, 64, 1828, 684, 1604, 532, 1054,
+            1417, 1050, 1265, 274, 2233, 990, 770, 1529
+          ],
+          "nodes": [
+            {
+              "id": 1,
+              "callFrame": {
+                "functionName": "[root]",
+                "scriptId": "0",
+                "url": "[root]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [2, 21]
+            },
+            {
+              "id": 2,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 5,
+                "columnNumber": 25
+              },
+              "children": [3, 9, 11, 22]
+            },
+            {
+              "id": 3,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [4, 6, 8, 12, 26]
+            },
+            {
+              "id": 4,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [5, 14, 18]
+            },
+            {
+              "id": 5,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 12
+            },
+            {
+              "id": 14,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [15]
+            },
+            {
+              "id": 15,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [16],
+              "hitCount": 16
+            },
+            {
+              "id": 16,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 18,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [19]
+            },
+            {
+              "id": 19,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 4
+            },
+            {
+              "id": 6,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [7]
+            },
+            {
+              "id": 7,
+              "callFrame": {
+                "functionName": "[Host Function] localeCreate",
+                "scriptId": "0",
+                "url": "[host]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [20],
+              "hitCount": 332
+            },
+            {
+              "id": 20,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 10
+            },
+            {
+              "id": 8,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [28],
+              "hitCount": 37
+            },
+            {
+              "id": 28,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 3
+            },
+            {
+              "id": 12,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [13]
+            },
+            {
+              "id": 13,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 51
+            },
+            {
+              "id": 26,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [27]
+            },
+            {
+              "id": 27,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 5
+            },
+            {
+              "id": 9,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [10]
+            },
+            {
+              "id": 10,
+              "callFrame": {
+                "functionName": "[Native] objectCreate",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [17],
+              "hitCount": 5
+            },
+            {
+              "id": 17,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 21
+            },
+            {
+              "id": 11,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [25],
+              "hitCount": 28
+            },
+            {
+              "id": 25,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 16
+            },
+            {
+              "id": 22,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [23]
+            },
+            {
+              "id": 23,
+              "callFrame": {
+                "functionName": "[Native] stringPrototypeConcat",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [24],
+              "hitCount": 8
+            },
+            {
+              "id": 24,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 21,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 1,
+                "columnNumber": 1
+              },
+              "hitCount": 12
+            }
+          ],
+          "startTime": 2279438880058,
+          "endTime": 2279439542605
+        },
+        {
+          "samples": [
+            4, 7, 7, 7, 7, 8, 7, 7, 9, 7, 10, 7, 7, 13, 7, 7, 16, 16, 7, 18, 7,
+            20, 7, 18, 22, 7, 7, 18, 20, 7, 7, 23, 7, 7, 7, 7, 7, 7, 10, 7, 7,
+            7, 7, 7, 7, 7, 18, 8, 7, 7, 7, 24, 18, 22, 7, 7, 7, 7, 7, 7, 9, 7,
+            7, 7, 7, 4, 7, 7, 7, 26, 9, 7, 7, 22, 9, 7, 7, 7, 7, 18, 27, 13, 10,
+            9, 18, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 22, 10, 7, 9, 10, 7, 7, 20,
+            7, 7, 7, 20, 7, 7, 7, 9, 20, 7, 8, 24, 18, 7, 7, 7, 7, 7, 18, 13, 7,
+            22, 7, 7, 7, 7, 7, 7, 27, 7, 7, 7, 10, 10, 7, 13, 18, 8, 7, 7, 18,
+            7, 7, 7, 7, 7, 7, 27, 7, 7, 7, 7, 7, 7, 15, 7, 7, 7, 7, 7, 7, 7, 7,
+            8, 7, 10, 7, 28, 18, 7, 9, 7, 18, 15, 15, 13, 7, 7, 7, 22, 10, 7, 7,
+            7, 8, 27, 7, 7, 7, 7, 7, 7, 15, 7, 7, 9, 9, 26, 7, 20, 7, 8, 7, 7,
+            7, 28, 7, 20, 23, 7, 9, 10, 23, 7, 8, 7, 7, 7, 9, 22, 7, 7, 8, 9, 7,
+            7, 7, 7, 7, 7, 23, 7, 7, 7, 8, 20, 18, 7, 18, 7, 27, 7, 7, 7, 23,
+            18, 7, 7, 15, 18, 7, 7, 7, 7, 13, 7, 24, 13, 18, 7, 18, 23, 7, 7, 7,
+            7, 8, 7, 7, 7, 7, 7, 7, 7, 27, 27, 7, 15, 15, 15, 18, 7, 22, 22, 7,
+            7, 7, 7, 7, 7, 9, 29, 7, 7, 18, 7, 15, 7, 18, 13, 7, 7, 7, 7, 7, 7,
+            7, 7, 9, 7, 24, 24, 7, 7, 7, 7, 10, 10, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+            18, 7, 7, 7, 30, 20, 23, 7, 7, 15, 7, 20, 7, 7, 7, 7, 15, 20, 7, 7,
+            7, 9, 24, 4, 7, 7, 7, 8, 7, 7, 18, 10, 20, 7, 7, 18, 7, 7, 7, 28,
+            28, 28, 28, 28, 28, 7, 7, 7, 7, 7, 7, 13, 7, 7, 7, 13, 7, 7, 7, 8,
+            8, 7, 7, 7, 27, 9, 7, 7, 7, 7, 7, 10, 7, 7, 7, 7, 7, 7, 7, 16, 16,
+            15, 7, 7, 7, 7, 7, 7, 10, 7, 7, 7, 7, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 7, 7, 18, 7, 7, 18, 7, 7, 7, 8, 13, 7, 7, 20, 7, 7, 7, 27,
+            7, 7, 7, 18, 9, 7, 7, 18, 8, 7, 7, 7, 7, 7, 20, 9, 7, 7, 24, 7, 20,
+            7, 7, 7, 8, 7, 7, 7, 23, 8, 9, 9, 7, 22, 7, 7, 7, 13, 7, 7, 7, 8, 9,
+            23, 7, 8, 7, 9, 32, 18, 23, 7, 8, 7, 7, 20, 7, 8, 9, 9, 7, 7, 8, 7,
+            7, 4, 9, 32, 18, 7, 7, 8, 7, 7, 7, 7, 18, 7, 7, 7, 7, 7, 7, 23, 30,
+            9, 32, 32, 7, 15, 18, 7, 7, 7, 18, 9, 1
+          ],
+          "timeDeltas": [
+            0, 773, 489, 1083, 1280, 1701, 338, 1324, 555, 398, 246, 615, 958,
+            860, 944, 927, 158, 0, 2918, 1002, 1780, 1461, 1648, 986, 373, 667,
+            1489, 697, 1328, 548, 848, 1713, 919, 1001, 431, 735, 906, 931,
+            1049, 953, 74, 473, 1227, 1446, 641, 779, 634, 547, 1597, 1657, 991,
+            878, 1655, 1379, 991, 1136, 891, 637, 690, 508, 1138, 700, 671,
+            1296, 1083, 328, 2145, 839, 358, 503, 1413, 1174, 811, 1344, 623,
+            390, 939, 1253, 1213, 1995, 1301, 1363, 1641, 455, 1078, 1296, 1334,
+            939, 719, 593, 1191, 1247, 966, 2934, 684, 1618, 1290, 1122, 978,
+            1228, 1275, 639, 576, 902, 573, 1286, 193, 1689, 1065, 146, 276,
+            785, 1169, 982, 956, 240, 1785, 1347, 1573, 825, 531, 1805, 613,
+            547, 1051, 1116, 1238, 1497, 1202, 918, 1396, 1336, 106, 1494, 950,
+            810, 1290, 635, 854, 599, 1415, 1302, 772, 1191, 647, 1225, 685,
+            1308, 1447, 638, 1292, 590, 1574, 1130, 1309, 1333, 764, 165, 359,
+            1789, 463, 278, 1394, 194, 1807, 603, 1529, 1063, 877, 1604, 691,
+            522, 1275, 638, 1400, 717, 1091, 1353, 728, 931, 221, 1317, 1529,
+            785, 2229, 2069, 1036, 539, 976, 148, 2154, 371, 59, 2082, 1500,
+            1011, 725, 1816, 96, 146, 710, 471, 1471, 995, 463, 1573, 1215,
+            1079, 1258, 566, 1570, 63, 647, 75, 445, 1605, 1188, 2058, 912,
+            1592, 1012, 1243, 1678, 881, 255, 877, 757, 566, 1346, 1528, 1349,
+            612, 1013, 1025, 865, 750, 2389, 923, 823, 1160, 1325, 1540, 2112,
+            1510, 198, 2233, 622, 1376, 992, 1116, 1378, 702, 949, 724, 2041,
+            1180, 1649, 454, 1374, 1211, 1705, 2045, 1242, 1382, 990, 1670, 262,
+            927, 1015, 723, 1197, 160, 1313, 224, 1381, 1073, 1817, 1549, 560,
+            0, 23666, 996, 301, 998, 13426, 701, 777, 786, 1124, 1096, 1097,
+            706, 1523, 1803, 1208, 364, 1972, 1244, 376, 1395, 216, 830, 1003,
+            1497, 1248, 1666, 769, 1215, 550, 837, 2365, 1172, 1110, 810, 631,
+            0, 2175, 511, 1205, 790, 464, 737, 1273, 1264, 695, 1438, 2031,
+            2411, 1180, 68, 1358, 2025, 1510, 104, 850, 919, 856, 1399, 890,
+            1048, 1042, 535, 1003, 1114, 1010, 1135, 1661, 1354, 1246, 1201,
+            1120, 1959, 530, 1431, 1881, 381, 617, 1795, 1314, 528, 703, 740,
+            1402, 1593, 1255, 723, 1458, 657, 303, 976, 995, 7723, 1315, 718,
+            819, 1647, 366, 1587, 1843, 1394, 871, 1112, 1550, 1261, 1089, 1494,
+            730, 414, 0, 0, 0, 0, 0, 7920, 1196, 1029, 3114, 969, 1280, 775,
+            1469, 800, 1541, 1649, 675, 532, 972, 1623, 788, 867, 144, 1249,
+            731, 1829, 1366, 1679, 1358, 1051, 1056, 1601, 602, 478, 1814, 1129,
+            72, 2446, 1231, 449, 0, 1772, 1416, 1681, 1309, 1659, 1122, 1755,
+            1238, 1547, 1591, 1318, 1229, 1574, 0, 0, 0, 0, 0, 0, 0, 0, 15509,
+            1718, 1338, 300, 1368, 559, 405, 1064, 1170, 1387, 170, 1326, 808,
+            1095, 804, 1031, 1678, 1077, 5800, 1292, 663, 3474, 898, 1198, 892,
+            818, 1767, 750, 1321, 1377, 767, 1761, 1350, 1113, 553, 713, 124,
+            1744, 1145, 1677, 848, 1244, 1637, 1071, 588, 109, 1124, 1613, 1421,
+            694, 1696, 1017, 9243, 2539, 698, 1990, 1595, 1952, 1243, 856, 1716,
+            1596, 1231, 1040, 1455, 1161, 1680, 5042, 1241, 1434, 656, 946, 915,
+            990, 1568, 67, 1025, 747, 509, 1591, 874, 1064, 199, 877, 1717, 663,
+            1319, 1020, 629, 1831, 824, 600, 455, 1211, 2203, 247, 1128, 777,
+            1676, 569, 1925, 1812, 57, 1405, 182, 852, 555, 1439, 2645, 841,
+            915, 549, 412, 708, 1606
+          ],
+          "nodes": [
+            {
+              "id": 1,
+              "callFrame": {
+                "functionName": "[root]",
+                "scriptId": "0",
+                "url": "[root]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [2, 10],
+              "hitCount": 1
+            },
+            {
+              "id": 2,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 5,
+                "columnNumber": 25
+              },
+              "children": [3, 5, 9, 21, 25]
+            },
+            {
+              "id": 3,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [4]
+            },
+            {
+              "id": 4,
+              "callFrame": {
+                "functionName": "[Native] objectCreate",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [24],
+              "hitCount": 4
+            },
+            {
+              "id": 24,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 16
+            },
+            {
+              "id": 5,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [6, 8, 11, 17, 19]
+            },
+            {
+              "id": 6,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [7]
+            },
+            {
+              "id": 7,
+              "callFrame": {
+                "functionName": "[Host Function] localeCreate",
+                "scriptId": "0",
+                "url": "[host]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [27],
+              "hitCount": 334
+            },
+            {
+              "id": 27,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 9
+            },
+            {
+              "id": 8,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [30],
+              "hitCount": 24
+            },
+            {
+              "id": 30,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 11,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [12, 14, 23, 31]
+            },
+            {
+              "id": 12,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [13]
+            },
+            {
+              "id": 13,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 12
+            },
+            {
+              "id": 14,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [15]
+            },
+            {
+              "id": 15,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [16],
+              "hitCount": 13
+            },
+            {
+              "id": 16,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 4
+            },
+            {
+              "id": 23,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 11
+            },
+            {
+              "id": 31,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [32]
+            },
+            {
+              "id": 32,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeClear",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 4
+            },
+            {
+              "id": 17,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [18]
+            },
+            {
+              "id": 18,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 51
+            },
+            {
+              "id": 19,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [20]
+            },
+            {
+              "id": 20,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 16
+            },
+            {
+              "id": 9,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [28],
+              "hitCount": 28
+            },
+            {
+              "id": 28,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 8
+            },
+            {
+              "id": 21,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [22]
+            },
+            {
+              "id": 22,
+              "callFrame": {
+                "functionName": "[Native] stringPrototypeConcat",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [29],
+              "hitCount": 10
+            },
+            {
+              "id": 29,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 25,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [26]
+            },
+            {
+              "id": 26,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 10,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 1,
+                "columnNumber": 1
+              },
+              "hitCount": 15
+            }
+          ],
+          "startTime": 2279439580054,
+          "endTime": 2279440251036
+        },
+        {
+          "samples": [
+            5, 5, 5, 5, 5, 5, 5, 5, 9, 5, 10, 5, 12, 5, 5, 5, 5, 5, 14, 17, 16,
+            5, 5, 19, 5, 5, 5, 20, 5, 21, 5, 23, 14, 24, 5, 5, 5, 5, 12, 5, 10,
+            5, 17, 5, 5, 5, 10, 5, 5, 5, 5, 10, 5, 14, 5, 17, 5, 5, 5, 14, 5, 5,
+            5, 10, 5, 5, 5, 14, 5, 5, 5, 5, 24, 10, 5, 26, 20, 5, 5, 5, 27, 27,
+            5, 14, 5, 14, 5, 24, 5, 5, 5, 14, 5, 5, 12, 17, 17, 5, 14, 5, 5, 5,
+            5, 5, 5, 5, 28, 5, 24, 5, 20, 5, 10, 5, 29, 5, 20, 10, 5, 5, 5, 5,
+            10, 5, 5, 8, 5, 10, 5, 29, 29, 5, 10, 5, 10, 5, 5, 5, 5, 5, 14, 5,
+            5, 5, 5, 31, 24, 10, 32, 14, 14, 24, 5, 12, 8, 5, 24, 5, 5, 5, 5,
+            10, 16, 5, 10, 29, 29, 5, 5, 5, 5, 5, 10, 5, 5, 28, 5, 5, 5, 28, 5,
+            10, 28, 5, 5, 5, 10, 5, 5, 5, 5, 24, 5, 19, 14, 10, 5, 28, 20, 5, 5,
+            24, 17, 5, 5, 14, 5, 5, 14, 5, 5, 5, 10, 5, 14, 5, 5, 5, 5, 5, 29,
+            5, 5, 20, 10, 5, 20, 10, 10, 5, 5, 5, 5, 5, 10, 5, 5, 12, 14, 5, 5,
+            17, 5, 14, 23, 5, 5, 5, 10, 5, 5, 5, 5, 5, 5, 31, 10, 5, 24, 29, 29,
+            5, 8, 8, 8, 28, 20, 5, 5, 5, 10, 14, 23, 5, 19, 5, 24, 5, 5, 5, 14,
+            28, 10, 5, 27, 27, 14, 5, 5, 5, 16, 5, 5, 20, 10, 24, 5, 5, 5, 5, 5,
+            5, 5, 5, 5, 17, 17, 14, 5, 5, 5, 10, 19, 5, 5, 28, 5, 5, 5, 5, 5,
+            14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 5, 5, 21, 21, 10, 5,
+            5, 24, 28, 5, 5, 5, 5, 5, 5, 10, 17, 16, 16, 28, 5, 5, 19, 5, 10,
+            10, 8, 5, 5, 5, 10, 5, 32, 32, 32, 32, 32, 32, 32, 20, 5, 5, 28, 5,
+            5, 10, 19, 5, 24, 5, 5, 24, 16, 14, 5, 5, 24, 5, 5, 5, 5, 14, 5, 14,
+            5, 5, 24, 5, 5, 8, 5, 5, 24, 5, 14, 5, 19, 10, 19, 5, 23, 5, 24, 10,
+            17, 17, 17, 17, 17, 17, 17, 17, 17, 14, 5, 5, 10, 5, 5, 24, 5, 28,
+            5, 5, 5, 28, 28, 20, 5, 28, 29, 5, 5, 5, 14, 5, 5, 5, 5, 14, 5, 5,
+            5, 5, 28, 5, 19, 5, 16, 5, 5, 5, 5, 14, 5, 20, 5, 20, 5, 5, 5, 14,
+            29, 5, 5, 14, 5, 5, 20, 5, 12, 24, 5, 5, 20, 5, 5, 10, 5, 5, 5, 5,
+            5, 24, 8, 8, 5, 5, 14, 5, 5, 5, 5, 5, 5, 5, 8, 5, 5, 5, 5, 5, 28, 5,
+            14, 16, 21, 5, 5, 5, 24, 8, 5, 28, 5, 10, 5, 5, 8, 5, 27, 32, 24, 5,
+            5, 14, 24, 20, 12, 14, 14, 5
+          ],
+          "timeDeltas": [
+            0, 1531, 2078, 926, 718, 403, 979, 1807, 1026, 1722, 1034, 1248,
+            999, 350, 1239, 74, 1218, 775, 398, 2074, 879, 893, 1107, 1351, 912,
+            1482, 1771, 1109, 798, 1173, 1554, 1275, 1353, 1008, 887, 673, 1107,
+            786, 1467, 1208, 1316, 798, 1737, 972, 1052, 446, 1226, 1465, 1078,
+            865, 583, 2120, 901, 728, 1240, 1124, 1706, 1063, 996, 791, 1420,
+            974, 430, 1349, 2512, 1591, 1807, 1792, 1407, 238, 985, 682, 1199,
+            1111, 1393, 1516, 1698, 1528, 1388, 829, 1231, 0, 2160, 1527, 399,
+            1772, 1505, 607, 1464, 654, 1342, 1367, 1620, 621, 1066, 2106, 0,
+            1976, 1023, 466, 1378, 400, 950, 1265, 1117, 945, 812, 1770, 1044,
+            763, 954, 1401, 740, 718, 835, 1850, 1506, 1122, 1395, 1438, 980,
+            1460, 843, 1808, 1195, 600, 1817, 820, 1401, 438, 0, 1562, 844,
+            1409, 791, 1666, 621, 1850, 1402, 448, 1459, 882, 1193, 1394, 1583,
+            382, 481, 617, 239, 2454, 979, 958, 1465, 1607, 342, 1013, 1325,
+            922, 1105, 2219, 984, 1187, 162, 217, 1184, 480, 0, 2285, 656, 1742,
+            155, 1050, 1244, 2168, 1215, 649, 1232, 1576, 1276, 868, 580, 1298,
+            402, 1334, 419, 2252, 928, 1210, 829, 931, 162, 1351, 829, 861, 110,
+            624, 811, 1585, 1329, 1547, 140, 950, 611, 1924, 1326, 392, 978,
+            243, 1077, 901, 1096, 379, 1315, 1233, 1552, 1344, 886, 1452, 1132,
+            578, 772, 1448, 973, 1381, 76, 1423, 1010, 207, 610, 1992, 948, 509,
+            68, 1348, 807, 408, 1367, 2149, 673, 472, 1122, 288, 3013, 468,
+            1310, 1554, 1684, 614, 713, 1133, 1603, 1366, 840, 899, 757, 852,
+            797, 449, 778, 319, 0, 10068, 9997, 1057, 571, 990, 1399, 196, 5775,
+            1725, 211, 256, 5294, 1807, 681, 322, 905, 1687, 1313, 1300, 402,
+            825, 197, 499, 832, 0, 1368, 1696, 1451, 1356, 596, 902, 1222, 507,
+            839, 1046, 594, 788, 869, 608, 213, 1777, 492, 460, 1474, 1191, 0,
+            1970, 1491, 1813, 2198, 1541, 1341, 482, 1706, 1308, 1064, 308, 931,
+            1106, 818, 896, 998, 657, 1639, 1313, 1572, 884, 2419, 1726, 1579,
+            1076, 779, 1768, 1330, 1251, 0, 2896, 1411, 1444, 1864, 1440, 1212,
+            890, 1070, 1627, 921, 1101, 476, 921, 2160, 4880, 1329, 1538, 530,
+            1967, 2203, 1562, 764, 682, 708, 881, 1770, 1547, 1017, 131, 0, 0,
+            0, 0, 0, 0, 11249, 1701, 1662, 1160, 1899, 934, 960, 1037, 533,
+            1090, 2053, 1519, 697, 1365, 1582, 2095, 471, 410, 792, 1298, 342,
+            1197, 626, 749, 784, 694, 1457, 1174, 755, 1586, 1638, 1396, 230,
+            1350, 1573, 1698, 876, 2246, 1119, 1143, 1266, 1399, 1366, 1137,
+            655, 201, 0, 0, 0, 0, 0, 0, 0, 0, 13981, 478, 901, 1375, 1024, 1079,
+            1052, 651, 1095, 1208, 1600, 663, 912, 1730, 1240, 1120, 590, 516,
+            8333, 169, 698, 1369, 1598, 2271, 564, 1699, 841, 1086, 1039, 804,
+            463, 1075, 1181, 517, 406, 2204, 1869, 1546, 2158, 1352, 609, 1021,
+            398, 1038, 1156, 2292, 1351, 1102, 159, 568, 5985, 947, 494, 823,
+            3732, 756, 371, 958, 373, 1701, 1296, 1140, 1024, 1120, 1103, 1478,
+            1082, 1452, 780, 985, 647, 1496, 755, 1506, 600, 855, 2512, 1052,
+            574, 1363, 2729, 1010, 1236, 1269, 445, 619, 1699, 712, 1190, 854,
+            1372, 625, 274, 74, 5137, 1587, 702, 1541, 712, 2061, 1078, 802,
+            1159, 774, 1201, 1456, 940, 963, 1434, 3120, 890, 992, 819, 169,
+            1071, 397, 283, 318, 1195
+          ],
+          "nodes": [
+            {
+              "id": 1,
+              "callFrame": {
+                "functionName": "[root]",
+                "scriptId": "0",
+                "url": "[root]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [2, 20]
+            },
+            {
+              "id": 2,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 5,
+                "columnNumber": 25
+              },
+              "children": [3, 15, 22, 24, 30]
+            },
+            {
+              "id": 3,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [4, 6, 10, 13, 18]
+            },
+            {
+              "id": 4,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [5]
+            },
+            {
+              "id": 5,
+              "callFrame": {
+                "functionName": "[Host Function] localeCreate",
+                "scriptId": "0",
+                "url": "[host]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [29],
+              "hitCount": 305
+            },
+            {
+              "id": 29,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 10
+            },
+            {
+              "id": 6,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [7, 11, 25, 28]
+            },
+            {
+              "id": 7,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [8]
+            },
+            {
+              "id": 8,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [9],
+              "hitCount": 12
+            },
+            {
+              "id": 9,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 11,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [12]
+            },
+            {
+              "id": 12,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 7
+            },
+            {
+              "id": 25,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [26]
+            },
+            {
+              "id": 26,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeClear",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 28,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 18
+            },
+            {
+              "id": 10,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [21],
+              "hitCount": 41
+            },
+            {
+              "id": 21,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 4
+            },
+            {
+              "id": 13,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [14]
+            },
+            {
+              "id": 14,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 49
+            },
+            {
+              "id": 18,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [19]
+            },
+            {
+              "id": 19,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 9
+            },
+            {
+              "id": 15,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [16]
+            },
+            {
+              "id": 16,
+              "callFrame": {
+                "functionName": "[Native] objectCreate",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [17],
+              "hitCount": 8
+            },
+            {
+              "id": 17,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 19
+            },
+            {
+              "id": 22,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [23]
+            },
+            {
+              "id": 23,
+              "callFrame": {
+                "functionName": "[Native] stringPrototypeConcat",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [27],
+              "hitCount": 4
+            },
+            {
+              "id": 27,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 5
+            },
+            {
+              "id": 24,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [32],
+              "hitCount": 25
+            },
+            {
+              "id": 32,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 9
+            },
+            {
+              "id": 30,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [31]
+            },
+            {
+              "id": 31,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 20,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 1,
+                "columnNumber": 1
+              },
+              "hitCount": 16
+            }
+          ],
+          "startTime": 2279440290073,
+          "endTime": 2279440937937
+        }
+      ]
+    },
+    "after": {
+      "totalSamples": 1543,
+      "selfSamples": {
+        "[Host Function] localeCreate": 883,
+        "[GC Young Gen]": 128,
+        "[Native] weakMapPrototypeSet": 126,
+        "initialize": 97,
+        "Locale": 85,
+        "[Native] mapPrototypeGet": 59,
+        "[Native] mapPrototypeSet": 59,
+        "global": 44,
+        "set": 27,
+        "[Native] objectCreate": 14,
+        "[Native] stringPrototypeConcat": 13,
+        "[Native] weakMapPrototypeGet": 4,
+        "[Native] mapPrototypeClear": 2,
+        "[root]": 2
+      },
+      "raw": [
+        {
+          "samples": [
+            6, 8, 8, 8, 8, 11, 8, 8, 8, 10, 8, 8, 8, 8, 14, 15, 17, 8, 8, 8, 8,
+            8, 15, 8, 15, 19, 20, 8, 8, 8, 22, 8, 23, 8, 14, 8, 8, 8, 8, 8, 10,
+            8, 8, 17, 8, 8, 14, 14, 8, 24, 8, 17, 8, 8, 17, 17, 8, 8, 8, 15, 8,
+            8, 8, 8, 8, 20, 8, 6, 8, 24, 20, 8, 8, 8, 8, 8, 8, 8, 8, 8, 17, 8,
+            8, 8, 26, 17, 15, 8, 10, 24, 14, 8, 8, 8, 8, 8, 26, 8, 24, 23, 8, 8,
+            8, 15, 23, 8, 8, 8, 10, 15, 8, 8, 8, 8, 23, 8, 24, 20, 8, 28, 8, 8,
+            8, 8, 8, 8, 8, 8, 8, 8, 8, 23, 8, 8, 8, 8, 8, 8, 17, 6, 15, 20, 15,
+            8, 8, 24, 8, 8, 8, 24, 8, 8, 8, 8, 8, 29, 8, 8, 8, 8, 17, 8, 8, 24,
+            17, 8, 8, 15, 8, 8, 17, 8, 30, 30, 8, 17, 8, 26, 8, 8, 8, 8, 10, 8,
+            8, 8, 8, 24, 8, 8, 8, 17, 23, 8, 8, 8, 8, 8, 8, 15, 8, 29, 29, 17,
+            8, 8, 8, 24, 8, 24, 24, 17, 15, 8, 6, 8, 8, 8, 8, 14, 8, 8, 23, 8,
+            8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 29, 8, 8, 8, 8, 8, 8, 8, 26, 8, 8, 8,
+            8, 15, 8, 8, 8, 20, 31, 31, 8, 26, 8, 23, 8, 8, 6, 8, 8, 13, 8, 6,
+            23, 8, 20, 8, 8, 20, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+            8, 8, 8, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
+            8, 26, 32, 24, 15, 8, 17, 8, 19, 8, 17, 8, 8, 8, 8, 8, 24, 8, 15,
+            14, 14, 13, 19, 8, 8, 15, 8, 26, 8, 17, 15, 8, 8, 24, 8, 10, 8, 30,
+            30, 30, 30, 30, 30, 30, 30, 30, 8, 15, 8, 20, 8, 23, 8, 8, 8, 10, 8,
+            26, 8, 29, 19, 17, 8, 8, 8, 20, 23, 23, 24, 23, 8, 8, 8, 8, 8, 17,
+            17, 8, 20, 8, 24, 8, 8, 24, 6, 8, 8, 8, 24, 8, 26, 8, 14, 14, 14,
+            14, 14, 14, 14, 14, 14, 14, 8, 8, 8, 15, 15, 8, 8, 26, 26, 8, 8, 8,
+            17, 8, 8, 29, 29, 8, 22, 8, 8, 26, 10, 8, 8, 17, 24, 15, 8, 8, 8, 8,
+            8, 8, 8, 14, 8, 8, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 29, 8, 10, 8,
+            8, 8, 8, 8, 8, 8, 24, 8, 20, 15, 8, 8, 8, 10, 29, 29, 24, 10, 10, 8,
+            10, 8, 8, 8, 17, 8, 6, 24, 8, 17, 8, 24, 32, 30, 30, 24, 17, 8, 26,
+            8, 15, 8, 6, 8, 23, 24, 8, 8, 8, 15, 8, 8, 31, 19, 24, 8, 8, 17, 1
+          ],
+          "timeDeltas": [
+            0, 1338, 821, 1529, 1512, 407, 2804, 1782, 113, 1063, 1081, 819,
+            702, 95, 1988, 1883, 1671, 1924, 1456, 1367, 1825, 617, 1083, 202,
+            806, 1257, 646, 971, 1431, 670, 236, 1052, 2008, 1148, 580, 1196,
+            546, 1108, 855, 1204, 229, 1217, 1493, 1178, 1426, 847, 1597, 0,
+            1330, 724, 1116, 1188, 1062, 1008, 999, 1481, 795, 1529, 1540, 1546,
+            1626, 533, 1228, 1768, 1897, 344, 1933, 1045, 63, 1416, 802, 981,
+            1680, 158, 1419, 292, 1809, 695, 515, 1319, 706, 1211, 373, 550,
+            992, 1751, 932, 1399, 1892, 871, 873, 2334, 821, 476, 1148, 830,
+            192, 825, 1465, 494, 1475, 1353, 928, 920, 1292, 2457, 2060, 926,
+            1037, 858, 973, 1257, 1604, 1933, 413, 555, 481, 1215, 638, 688,
+            1041, 267, 479, 1256, 2126, 1363, 527, 1053, 1934, 1894, 578, 1296,
+            1077, 590, 788, 672, 572, 1552, 1023, 847, 1864, 1481, 1823, 81,
+            841, 1681, 1422, 905, 295, 1424, 979, 1074, 1550, 1473, 1636, 563,
+            1453, 859, 641, 1973, 784, 307, 1148, 1176, 1230, 634, 1553, 371,
+            818, 661, 860, 1243, 1797, 0, 2220, 1013, 1058, 1871, 954, 1635,
+            808, 1316, 1041, 1863, 1126, 764, 802, 1092, 1243, 1867, 1798, 1127,
+            1335, 1031, 949, 1853, 1153, 1146, 1559, 854, 858, 962, 0, 1827,
+            2028, 1431, 540, 769, 983, 1180, 1546, 1872, 657, 815, 1134, 411,
+            376, 195, 1637, 807, 2233, 657, 1348, 1046, 613, 1307, 1807, 1272,
+            1146, 2004, 946, 509, 1845, 999, 712, 22200, 544, 1169, 1204, 1276,
+            8864, 4611, 784, 479, 691, 857, 1012, 1485, 592, 824, 234, 453, 97,
+            0, 2245, 1468, 1821, 1266, 1090, 1230, 681, 1607, 71, 1050, 1291,
+            386, 736, 753, 1375, 1115, 483, 376, 1520, 638, 1173, 160, 421, 900,
+            909, 519, 746, 939, 501, 1416, 1439, 512, 1453, 1268, 843, 1383,
+            1026, 1738, 1023, 1270, 638, 1175, 854, 1549, 1260, 599, 955, 1293,
+            1245, 793, 369, 1989, 1125, 785, 1305, 1377, 806, 1135, 1277, 848,
+            1791, 677, 917, 855, 656, 1443, 187, 132, 748, 366, 1703, 1689, 0,
+            6554, 1662, 745, 929, 1187, 662, 651, 683, 705, 628, 1762, 171,
+            2310, 1618, 1188, 864, 805, 0, 0, 0, 0, 0, 0, 0, 0, 11491, 1632,
+            1957, 1694, 2038, 170, 1194, 1456, 907, 1063, 1028, 492, 1093, 1218,
+            1255, 1230, 573, 847, 587, 944, 516, 1265, 1979, 1558, 269, 767,
+            1188, 331, 1594, 1486, 1669, 1420, 998, 366, 1214, 1716, 1245, 540,
+            550, 1601, 933, 1034, 1078, 297, 989, 1381, 1464, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 13260, 1119, 1631, 112, 560, 1229, 859, 1961, 1135, 2033,
+            2064, 1259, 866, 1163, 794, 532, 0, 1855, 1496, 1172, 4389, 1457,
+            220, 857, 901, 840, 1210, 946, 1557, 1151, 1068, 1268, 1363, 1311,
+            701, 1099, 1214, 1152, 651, 1737, 1325, 2031, 1723, 320, 929, 1266,
+            866, 1497, 1820, 310, 1324, 1654, 1231, 745, 5150, 1688, 1329, 1948,
+            950, 785, 784, 672, 1453, 1062, 1095, 912, 1393, 1275, 0, 2015, 828,
+            1148, 933, 4630, 154, 952, 405, 1188, 1017, 1319, 711, 1564, 1326,
+            1277, 1893, 2330, 942, 1884, 2649, 566, 944, 842, 1178, 801, 747,
+            539, 824, 641, 1212, 225, 1151, 1726, 449, 334, 1439, 781, 690,
+            2416, 1350, 1218, 2011, 1647
+          ],
+          "nodes": [
+            {
+              "id": 1,
+              "callFrame": {
+                "functionName": "[root]",
+                "scriptId": "0",
+                "url": "[root]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [2, 23],
+              "hitCount": 1
+            },
+            {
+              "id": 2,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 5,
+                "columnNumber": 25
+              },
+              "children": [3, 12, 18, 24, 27]
+            },
+            {
+              "id": 3,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [4, 7, 15, 16, 25]
+            },
+            {
+              "id": 4,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [5, 9, 20, 21]
+            },
+            {
+              "id": 5,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [6]
+            },
+            {
+              "id": 6,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 9
+            },
+            {
+              "id": 9,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [10]
+            },
+            {
+              "id": 10,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [11],
+              "hitCount": 14
+            },
+            {
+              "id": 11,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 20,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 12
+            },
+            {
+              "id": 21,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [22]
+            },
+            {
+              "id": 22,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeClear",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 7,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [8]
+            },
+            {
+              "id": 8,
+              "callFrame": {
+                "functionName": "[Host Function] localeCreate",
+                "scriptId": "0",
+                "url": "[host]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [29],
+              "hitCount": 306
+            },
+            {
+              "id": 29,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 10
+            },
+            {
+              "id": 15,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [32],
+              "hitCount": 24
+            },
+            {
+              "id": 32,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 16,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [17]
+            },
+            {
+              "id": 17,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 42
+            },
+            {
+              "id": 25,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [26]
+            },
+            {
+              "id": 26,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 13
+            },
+            {
+              "id": 12,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [13]
+            },
+            {
+              "id": 13,
+              "callFrame": {
+                "functionName": "[Native] objectCreate",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [14],
+              "hitCount": 2
+            },
+            {
+              "id": 14,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 19
+            },
+            {
+              "id": 18,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [19]
+            },
+            {
+              "id": 19,
+              "callFrame": {
+                "functionName": "[Native] stringPrototypeConcat",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [31],
+              "hitCount": 5
+            },
+            {
+              "id": 31,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 3
+            },
+            {
+              "id": 24,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [30],
+              "hitCount": 27
+            },
+            {
+              "id": 30,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 13
+            },
+            {
+              "id": 27,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [28]
+            },
+            {
+              "id": 28,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 23,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 1,
+                "columnNumber": 1
+              },
+              "hitCount": 14
+            }
+          ],
+          "startTime": 2279440980063,
+          "endTime": 2279441597439
+        },
+        {
+          "samples": [
+            5, 6, 5, 5, 5, 5, 10, 11, 5, 5, 5, 5, 14, 5, 5, 5, 5, 5, 5, 5, 5,
+            16, 5, 11, 5, 5, 5, 13, 5, 17, 5, 5, 6, 17, 5, 5, 5, 5, 5, 5, 14, 5,
+            5, 5, 5, 5, 5, 5, 5, 19, 5, 19, 17, 11, 5, 21, 5, 21, 16, 5, 5, 5,
+            6, 5, 5, 24, 5, 6, 21, 17, 5, 5, 5, 5, 5, 25, 5, 5, 5, 5, 14, 5, 5,
+            5, 5, 5, 23, 5, 5, 5, 5, 17, 5, 16, 19, 5, 5, 5, 5, 26, 5, 5, 6, 9,
+            11, 5, 5, 5, 5, 5, 5, 5, 26, 26, 5, 5, 5, 16, 5, 5, 16, 5, 5, 5, 6,
+            16, 5, 25, 5, 27, 5, 5, 5, 21, 5, 5, 5, 21, 23, 5, 5, 5, 6, 26, 25,
+            5, 5, 5, 5, 17, 6, 5, 9, 5, 5, 5, 5, 5, 27, 25, 5, 5, 5, 5, 16, 17,
+            5, 5, 5, 5, 6, 5, 17, 5, 17, 19, 5, 14, 5, 16, 5, 5, 5, 5, 5, 6, 5,
+            5, 5, 5, 5, 5, 26, 26, 26, 5, 9, 6, 21, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+            14, 5, 5, 25, 5, 5, 5, 5, 5, 5, 19, 17, 5, 5, 5, 5, 5, 5, 5, 5, 9,
+            9, 9, 9, 5, 5, 5, 5, 5, 6, 5, 11, 5, 5, 5, 5, 6, 24, 5, 5, 16, 5,
+            16, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 16, 19, 5, 16, 5, 5, 5, 5,
+            5, 5, 5, 5, 25, 5, 5, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+            16, 16, 16, 16, 16, 16, 5, 5, 5, 28, 5, 11, 5, 5, 5, 5, 5, 11, 5, 5,
+            6, 5, 5, 5, 21, 14, 13, 9, 5, 5, 5, 5, 11, 5, 5, 5, 21, 19, 5, 5,
+            16, 11, 5, 5, 27, 27, 27, 27, 27, 27, 27, 5, 6, 21, 5, 5, 5, 23, 5,
+            11, 13, 5, 5, 21, 5, 26, 5, 11, 6, 16, 5, 5, 5, 5, 5, 17, 5, 10, 5,
+            5, 5, 5, 17, 11, 6, 6, 5, 5, 16, 5, 30, 6, 17, 17, 17, 14, 14, 14,
+            14, 14, 14, 14, 5, 6, 16, 17, 5, 5, 5, 11, 25, 5, 5, 5, 5, 26, 5, 5,
+            5, 5, 5, 5, 11, 17, 21, 5, 9, 11, 5, 5, 21, 6, 5, 14, 14, 5, 5, 5,
+            6, 5, 17, 5, 5, 11, 5, 5, 17, 5, 5, 6, 5, 23, 5, 9, 6, 5, 6, 5, 5,
+            5, 5, 5, 5, 5, 6, 5, 26, 27, 17, 9, 17, 5, 30, 5, 5, 17, 5, 5, 6, 6,
+            5, 19, 5, 5, 28, 5, 5, 5, 6, 17, 5, 5, 5, 17, 16, 17, 5, 24, 24, 17,
+            5, 5, 25, 5, 1
+          ],
+          "timeDeltas": [
+            0, 1082, 702, 621, 120, 1594, 481, 2598, 2195, 723, 1963, 1589,
+            1451, 1276, 1398, 1346, 1653, 828, 1512, 1151, 1438, 1043, 1512,
+            1462, 968, 1312, 1343, 659, 1002, 1197, 1096, 1950, 1660, 1510,
+            1273, 1562, 1881, 1590, 836, 71, 909, 2754, 558, 2411, 1346, 1577,
+            647, 1421, 1186, 1692, 1848, 1054, 1745, 476, 1073, 1319, 546, 1184,
+            995, 1561, 1352, 741, 1095, 683, 470, 355, 2133, 717, 699, 1320,
+            1132, 882, 1462, 1503, 994, 1029, 1897, 825, 910, 1352, 518, 1244,
+            1648, 982, 663, 1269, 473, 1265, 752, 910, 603, 183, 1601, 1105,
+            903, 812, 1281, 869, 388, 761, 2430, 1798, 2262, 1799, 243, 964,
+            870, 1150, 1381, 772, 1856, 954, 1069, 0, 1959, 886, 737, 851, 956,
+            1602, 1317, 1042, 1079, 1461, 1339, 695, 1342, 463, 1540, 749, 1649,
+            894, 1094, 1116, 1918, 1333, 1199, 1497, 2168, 1334, 757, 1445,
+            1104, 220, 2422, 1719, 1486, 927, 1228, 922, 1515, 1426, 343, 898,
+            1013, 1352, 248, 1702, 490, 1285, 1218, 1139, 1264, 1850, 902, 1165,
+            902, 744, 966, 1413, 358, 516, 983, 293, 648, 751, 723, 467, 1529,
+            1182, 895, 755, 1488, 912, 1044, 1211, 1632, 1523, 1466, 1153, 364,
+            1239, 1354, 0, 0, 1994, 717, 1806, 1150, 932, 912, 1644, 1624, 1871,
+            832, 828, 1120, 1711, 1160, 1927, 679, 538, 1709, 1574, 1327, 876,
+            908, 876, 1522, 963, 1385, 653, 795, 567, 65, 1548, 280, 11292,
+            10009, 628, 724, 8312, 1686, 1003, 866, 2193, 280, 774, 1354, 784,
+            1116, 1210, 1310, 2045, 917, 1208, 1912, 193, 1385, 1626, 1092, 818,
+            539, 1551, 1099, 819, 1502, 873, 1682, 610, 1002, 558, 1377, 1650,
+            2176, 934, 528, 340, 1414, 1805, 1331, 603, 1217, 69, 1071, 1504,
+            1488, 538, 1639, 720, 1038, 1433, 1253, 627, 1810, 675, 1454, 1654,
+            114, 612, 780, 789, 1324, 1144, 1113, 1157, 1645, 76, 840, 1827,
+            700, 274, 139, 1536, 1324, 1156, 1323, 880, 236, 296, 1553, 1298,
+            2325, 804, 1032, 2219, 1336, 451, 4264, 594, 850, 1374, 1556, 975,
+            1503, 633, 768, 1601, 418, 1170, 461, 1317, 1011, 862, 0, 0, 0, 0,
+            0, 0, 8179, 2793, 1357, 1767, 1337, 1230, 709, 524, 1059, 294, 1892,
+            1535, 1688, 1606, 168, 1939, 1301, 1339, 1053, 883, 1761, 929, 1581,
+            2012, 1337, 1065, 1159, 1737, 1281, 1364, 1192, 1317, 1468, 629,
+            1073, 1665, 581, 838, 426, 753, 309, 1428, 1494, 674, 277, 0, 0, 0,
+            0, 0, 0, 14690, 904, 1662, 637, 1482, 1802, 774, 1648, 949, 1049,
+            1256, 1624, 1288, 856, 8907, 1840, 769, 403, 783, 1450, 524, 895,
+            403, 1815, 1198, 542, 673, 1381, 1404, 324, 677, 1298, 0, 1313,
+            1244, 699, 1265, 996, 2086, 443, 908, 1568, 614, 572, 151, 1069,
+            1227, 336, 1552, 835, 9046, 872, 131, 1053, 1286, 1226, 1366, 1202,
+            932, 1301, 1015, 1442, 1139, 1418, 1558, 1622, 1150, 1304, 3348,
+            1355, 4034, 1468, 1214, 1246, 613, 1920, 1495, 1243, 679, 1026, 646,
+            1356, 98, 5232, 2366, 1519, 1003, 580, 1215, 1374, 1386, 681, 1325,
+            1412, 1083, 94, 0, 4694, 888, 1476, 850, 1596, 673
+          ],
+          "nodes": [
+            {
+              "id": 1,
+              "callFrame": {
+                "functionName": "[root]",
+                "scriptId": "0",
+                "url": "[root]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [2, 11],
+              "hitCount": 1
+            },
+            {
+              "id": 2,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 5,
+                "columnNumber": 25
+              },
+              "children": [3, 12, 17, 22, 29]
+            },
+            {
+              "id": 3,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [4, 6, 7, 15, 20]
+            },
+            {
+              "id": 4,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [5]
+            },
+            {
+              "id": 5,
+              "callFrame": {
+                "functionName": "[Host Function] localeCreate",
+                "scriptId": "0",
+                "url": "[host]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [26],
+              "hitCount": 296
+            },
+            {
+              "id": 26,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 10
+            },
+            {
+              "id": 6,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [28],
+              "hitCount": 30
+            },
+            {
+              "id": 28,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 7,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [8, 18, 25]
+            },
+            {
+              "id": 8,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [9]
+            },
+            {
+              "id": 9,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [10],
+              "hitCount": 11
+            },
+            {
+              "id": 10,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 18,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [19]
+            },
+            {
+              "id": 19,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 8
+            },
+            {
+              "id": 25,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 8
+            },
+            {
+              "id": 15,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [16]
+            },
+            {
+              "id": 16,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 34
+            },
+            {
+              "id": 20,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [21]
+            },
+            {
+              "id": 21,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 12
+            },
+            {
+              "id": 12,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [13]
+            },
+            {
+              "id": 13,
+              "callFrame": {
+                "functionName": "[Native] objectCreate",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [14],
+              "hitCount": 3
+            },
+            {
+              "id": 14,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 15
+            },
+            {
+              "id": 17,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [27],
+              "hitCount": 26
+            },
+            {
+              "id": 27,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 10
+            },
+            {
+              "id": 22,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [23]
+            },
+            {
+              "id": 23,
+              "callFrame": {
+                "functionName": "[Native] stringPrototypeConcat",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [24],
+              "hitCount": 4
+            },
+            {
+              "id": 24,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 4
+            },
+            {
+              "id": 29,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [30]
+            },
+            {
+              "id": 30,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 11,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 1,
+                "columnNumber": 1
+              },
+              "hitCount": 16
+            }
+          ],
+          "startTime": 2279441640078,
+          "endTime": 2279442257873
+        },
+        {
+          "samples": [
+            5, 6, 6, 5, 5, 7, 7, 7, 5, 7, 5, 5, 10, 7, 5, 6, 5, 7, 5, 5, 5, 5,
+            5, 5, 12, 5, 7, 5, 12, 5, 6, 5, 5, 5, 5, 15, 7, 5, 12, 5, 17, 5, 12,
+            7, 6, 5, 5, 15, 10, 5, 6, 6, 7, 5, 5, 5, 5, 7, 12, 18, 7, 5, 5, 5,
+            5, 5, 7, 10, 6, 5, 7, 6, 5, 5, 10, 5, 5, 21, 18, 5, 5, 23, 12, 10,
+            5, 5, 5, 6, 5, 6, 5, 5, 17, 7, 5, 5, 12, 5, 5, 5, 5, 18, 5, 5, 25,
+            5, 5, 5, 26, 12, 5, 7, 5, 5, 27, 5, 5, 12, 5, 18, 5, 5, 25, 26, 5,
+            12, 5, 5, 7, 5, 27, 27, 5, 6, 5, 12, 5, 5, 5, 6, 18, 12, 6, 5, 6, 5,
+            5, 5, 28, 7, 7, 5, 5, 5, 18, 5, 7, 12, 12, 5, 20, 5, 5, 6, 5, 27, 5,
+            5, 5, 5, 5, 5, 5, 5, 14, 14, 5, 5, 18, 5, 5, 28, 5, 5, 6, 5, 5, 5,
+            5, 5, 5, 20, 6, 7, 5, 5, 12, 5, 15, 5, 5, 5, 5, 5, 7, 6, 5, 7, 7, 5,
+            5, 26, 5, 7, 5, 5, 5, 6, 5, 7, 12, 17, 7, 5, 10, 5, 26, 5, 15, 14,
+            5, 5, 6, 5, 5, 5, 5, 5, 5, 12, 5, 5, 6, 5, 5, 27, 27, 5, 10, 10, 10,
+            10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 5, 5, 5, 7, 26, 5, 7, 5, 5,
+            18, 5, 5, 5, 5, 21, 5, 5, 14, 5, 5, 14, 6, 7, 12, 7, 5, 18, 7, 10,
+            5, 15, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 12, 12, 12, 12, 12,
+            12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 25, 5, 29, 5, 7, 5, 5,
+            10, 17, 5, 12, 7, 17, 5, 5, 5, 5, 15, 14, 10, 10, 5, 5, 5, 5, 5, 18,
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 5, 5, 17, 5, 28, 28, 28, 28, 28,
+            12, 5, 12, 5, 25, 5, 5, 18, 6, 5, 5, 5, 10, 6, 27, 5, 7, 5, 5, 5, 5,
+            18, 18, 14, 5, 10, 5, 6, 5, 7, 10, 5, 5, 5, 5, 12, 5, 5, 5, 5, 12,
+            5, 15, 15, 15, 15, 15, 15, 15, 15, 15, 5, 12, 5, 6, 18, 14, 5, 5, 7,
+            6, 7, 5, 5, 17, 5, 5, 17, 5, 27, 5, 5, 5, 5, 5, 5, 17, 14, 15, 5, 5,
+            5, 5, 12, 12, 5, 5, 17, 12, 5, 5, 5, 5, 27, 5, 10, 10, 5, 5, 5, 5,
+            5, 5, 12, 5, 5, 12, 5, 5, 20, 5, 5, 5, 5, 5, 27, 6, 10, 5, 5, 5, 5,
+            5, 26, 5, 20, 10, 5, 5, 10, 26, 17, 5, 5, 5, 5, 6, 6, 29, 5, 5, 7,
+            12, 5, 5, 12, 12, 7, 5, 5, 12, 5, 25, 6, 10, 5, 17, 7, 5, 12
+          ],
+          "timeDeltas": [
+            0, 1963, 845, 551, 835, 2039, 311, 504, 1091, 1375, 646, 1040, 394,
+            1539, 497, 1795, 1590, 1244, 1488, 901, 1016, 668, 1781, 1440, 448,
+            353, 1027, 1304, 1458, 1297, 197, 1584, 2349, 1117, 1194, 302, 1921,
+            900, 871, 1573, 574, 1188, 1194, 963, 1581, 936, 731, 669, 1513,
+            569, 699, 710, 969, 1369, 1423, 699, 766, 381, 739, 1559, 808, 829,
+            1247, 1990, 299, 1362, 1445, 142, 2089, 230, 1021, 688, 968, 1329,
+            2061, 1198, 796, 315, 1355, 1187, 1509, 1444, 986, 488, 1094, 1683,
+            1056, 707, 202, 1509, 193, 1089, 932, 881, 557, 2014, 450, 574,
+            1064, 292, 1765, 1445, 122, 1336, 1336, 319, 1168, 1740, 400, 875,
+            1592, 457, 231, 670, 314, 1521, 1331, 1736, 649, 927, 647, 366, 798,
+            1523, 1671, 1226, 1424, 451, 1185, 1102, 1132, 0, 1550, 1352, 133,
+            797, 1307, 1376, 1461, 1447, 798, 1080, 1456, 520, 878, 1107, 1221,
+            818, 666, 2127, 908, 894, 1523, 992, 1215, 936, 1053, 394, 451,
+            1081, 1052, 1202, 837, 1175, 1398, 579, 1308, 1696, 683, 580, 1382,
+            729, 694, 1229, 1190, 1809, 1674, 747, 1352, 925, 356, 1186, 1619,
+            1470, 1052, 1294, 1565, 1524, 917, 517, 1110, 419, 1496, 483, 995,
+            2040, 531, 370, 205, 1577, 1238, 1591, 1213, 1619, 558, 740, 1128,
+            1008, 959, 1872, 129, 1509, 266, 2161, 1744, 1158, 406, 1766, 892,
+            1133, 512, 1417, 923, 1820, 1115, 473, 2208, 1673, 1180, 1630, 2013,
+            1034, 878, 1130, 1398, 1149, 1354, 634, 1068, 798, 1106, 1141, 763,
+            219, 909, 1000, 0, 2734, 985, 493, 805, 704, 1250, 1247, 215, 1299,
+            1490, 1272, 831, 7137, 1422, 559, 948, 842, 1397, 4829, 1402, 4678,
+            2040, 216, 1335, 1725, 1335, 1435, 1239, 117, 1743, 1308, 599, 666,
+            974, 508, 636, 1469, 937, 1537, 696, 1083, 1597, 1110, 1784, 2552,
+            2111, 631, 1161, 1555, 887, 1731, 1289, 1765, 1058, 406, 1477, 654,
+            941, 1832, 880, 216, 553, 786, 264, 1390, 741, 1079, 2200, 826,
+            1507, 2225, 875, 1089, 668, 1136, 1908, 538, 1030, 1281, 1043, 194,
+            177, 734, 1756, 1225, 1712, 984, 1288, 1469, 748, 1430, 2097, 450,
+            1240, 1058, 1591, 366, 377, 3102, 1164, 771, 458, 1018, 344, 428,
+            2653, 1357, 760, 374, 525, 939, 641, 1184, 951, 361, 278, 1291, 661,
+            0, 0, 0, 0, 7338, 1419, 98, 4091, 781, 1296, 1031, 2030, 1609, 852,
+            1338, 1100, 600, 2078, 1637, 1309, 1298, 902, 1540, 671, 1662, 1011,
+            1367, 899, 702, 1401, 882, 853, 502, 1133, 2455, 1045, 830, 1935,
+            1236, 360, 1791, 2435, 1883, 651, 2198, 973, 747, 0, 0, 0, 0, 0, 0,
+            0, 0, 14511, 1569, 108, 461, 1287, 1938, 1073, 903, 748, 500, 975,
+            861, 249, 1901, 1299, 875, 426, 565, 291, 8382, 7468, 1226, 1056,
+            1202, 2125, 742, 1574, 920, 1277, 1124, 1701, 1629, 1451, 966, 229,
+            793, 1648, 657, 647, 1368, 1045, 2059, 273, 1591, 688, 1392, 1943,
+            2255, 1437, 1841, 1482, 423, 1107, 1986, 411, 1802, 1265, 1122, 540,
+            852, 1299, 449, 737, 1067, 1057, 2106, 1084, 755, 1361, 1326, 1356,
+            199, 776, 3358, 912, 1387, 697, 1126, 1124, 1685, 861, 287, 1371,
+            825, 937, 629, 633, 679, 1940, 3522, 1958, 622, 2199, 899, 1427,
+            1172, 1488, 498, 393, 371, 1877, 1590, 845, 867, 2393, 984, 1324,
+            1928, 445
+          ],
+          "nodes": [
+            {
+              "id": 1,
+              "callFrame": {
+                "functionName": "[root]",
+                "scriptId": "0",
+                "url": "[root]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [2, 18]
+            },
+            {
+              "id": 2,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 5,
+                "columnNumber": 25
+              },
+              "children": [3, 6, 13, 19, 22]
+            },
+            {
+              "id": 3,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [4, 7, 8, 11, 16]
+            },
+            {
+              "id": 4,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [5]
+            },
+            {
+              "id": 5,
+              "callFrame": {
+                "functionName": "[Host Function] localeCreate",
+                "scriptId": "0",
+                "url": "[host]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [27],
+              "hitCount": 281
+            },
+            {
+              "id": 27,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 10
+            },
+            {
+              "id": 7,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [29],
+              "hitCount": 43
+            },
+            {
+              "id": 29,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 8,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [9, 24, 26]
+            },
+            {
+              "id": 9,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [10]
+            },
+            {
+              "id": 10,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 34
+            },
+            {
+              "id": 24,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [25]
+            },
+            {
+              "id": 25,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 5
+            },
+            {
+              "id": 26,
+              "callFrame": {
+                "functionName": "set",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 7
+            },
+            {
+              "id": 11,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [12]
+            },
+            {
+              "id": 12,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeSet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 50
+            },
+            {
+              "id": 16,
+              "callFrame": {
+                "functionName": "initialize",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [17]
+            },
+            {
+              "id": 17,
+              "callFrame": {
+                "functionName": "[Native] mapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 12
+            },
+            {
+              "id": 6,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [28],
+              "hitCount": 32
+            },
+            {
+              "id": 28,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 7
+            },
+            {
+              "id": 13,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [14]
+            },
+            {
+              "id": 14,
+              "callFrame": {
+                "functionName": "[Native] objectCreate",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [15],
+              "hitCount": 9
+            },
+            {
+              "id": 15,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 16
+            },
+            {
+              "id": 19,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [20]
+            },
+            {
+              "id": 20,
+              "callFrame": {
+                "functionName": "[Native] stringPrototypeConcat",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [21],
+              "hitCount": 4
+            },
+            {
+              "id": 21,
+              "callFrame": {
+                "functionName": "[GC Young Gen]",
+                "scriptId": "0",
+                "url": "[suspended]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 2
+            },
+            {
+              "id": 22,
+              "callFrame": {
+                "functionName": "Locale",
+                "scriptId": "0",
+                "url": "unknown",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "children": [23]
+            },
+            {
+              "id": 23,
+              "callFrame": {
+                "functionName": "[Native] weakMapPrototypeGet",
+                "scriptId": "0",
+                "url": "[native]",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "hitCount": 1
+            },
+            {
+              "id": 18,
+              "callFrame": {
+                "functionName": "global",
+                "scriptId": "0",
+                "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+                "lineNumber": 1,
+                "columnNumber": 1
+              },
+              "hitCount": 14
+            }
+          ],
+          "startTime": 2279442300068,
+          "endTime": 2279442917780
+        }
+      ]
+    }
+  },
+  "fixedWorkDiagnosticSource": ";(function () {\n var tags = [], last\n for (var i = 0; i < 192; i++) tags.push('en-x-bench-' + i)\n for (var i = 0; i < 10000; i++) last = new Intl.Locale(tags[i % 192])\n var samples = []\n for (var r = 0; r < 9; r++) {\n  var start = __now()\n  for (var i = 0; i < 300000; i++) last = new Intl.Locale(tags[i % 192])\n  samples.push((__now() - start) * 1000 / 300000)\n }\n if (last.toString() !== tags[299999 % 192]) throw new Error('Wrong locale')\n print(JSON.stringify({name: 'Locale.new(diverse,fixed)', samples: samples, value: last.toString()}))\n})()\n",
+  "sdkAbiDiagnostic": {
+    "source": "#include <formatjs/intl/locale.h>\n#include <chrono>\n#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <string>\n\nstatic double run(const char *tag, const char *options) {\n  constexpr int count = 500000;\n  auto start = std::chrono::steady_clock::now();\n  for (int i = 0; i < count; ++i) {\n    FormatjsLocaleHandle *handle = nullptr;\n    auto code = formatjs_locale_create(reinterpret_cast<const uint8_t *>(tag), std::strlen(tag), reinterpret_cast<const uint8_t *>(options), std::strlen(options), &handle);\n    if (code || !handle) std::abort();\n    formatjs_locale_destroy(handle);\n  }\n  return std::chrono::duration<double, std::nano>(std::chrono::steady_clock::now() - start).count() / count;\n}\nint main() {\n  for (int round = 0; round < 5; ++round) {\n    for (auto tag : {\"en\", \"en-x-bench-191\", \"zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191\"}) {\n      for (auto opts : round % 2 ? std::initializer_list<const char *>{\" { } \", \"{}\"} : std::initializer_list<const char *>{\"{}\", \" { } \"}) {\n        std::printf(\"%d %s %s %.3f\\n\", round, tag, opts, run(tag, opts));\n      }\n    }\n  }\n}\n",
+    "cmake": "cmake_minimum_required(VERSION 3.20)\nproject(locale_abi_probe LANGUAGES CXX)\nadd_executable(probe probe.cpp)\ntarget_compile_features(probe PRIVATE cxx_std_17)\ntarget_include_directories(probe PRIVATE ${SDK}/include)\ntarget_link_libraries(probe PRIVATE ${SDK}/lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a gcc_s util rt pthread m dl)\n",
+    "raw": "0 en {} 330.075\n0 en  { }  410.142\n0 en-x-bench-191 {} 466.420\n0 en-x-bench-191  { }  556.341\n0 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191 {} 1698.944\n0 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191  { }  1813.781\n1 en  { }  408.111\n1 en {} 327.263\n1 en-x-bench-191  { }  555.530\n1 en-x-bench-191 {} 464.474\n1 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191  { }  1828.194\n1 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191 {} 1767.368\n2 en {} 327.498\n2 en  { }  410.086\n2 en-x-bench-191 {} 467.565\n2 en-x-bench-191  { }  555.322\n2 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191 {} 1723.973\n2 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191  { }  1919.901\n3 en  { }  415.308\n3 en {} 333.116\n3 en-x-bench-191  { }  561.555\n3 en-x-bench-191 {} 474.459\n3 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191  { }  1880.626\n3 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191 {} 1863.073\n4 en {} 424.643\n4 en  { }  425.278\n4 en-x-bench-191 {} 490.418\n4 en-x-bench-191  { }  561.420\n4 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191 {} 1800.218\n4 zh-Hant-HK-u-ca-chinese-nu-hanidec-x-bench-191  { }  1819.168\n",
+    "method": "One shipped SDK; alternate exact {} fast path and whitespace empty JSON slow path. CPU 0 pinned, 500,000 create/destroy operations per tag/encoding/round; same success/non-null checks. Diagnostic excludes Hermes allocations and GC."
+  },
+  "notes": [
+    "Earlier four-host pilot showed cold diverse-tag regression; retained in full rather than discarded. Final calibrated runs and separate fixed-work runs improve. Run-to-run and GC variance limit low-percent claims.",
+    "Warm construction uses unchanged 64-entry JS cache, so this Rust fast path primarily helps cache misses and long tags.",
+    "Cold diverse construction remains slower than optimized magrinj; correctness and pinned ICU4C/J/X/Test262 coverage remain required."
+  ]
+}

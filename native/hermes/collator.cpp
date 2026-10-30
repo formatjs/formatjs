@@ -29,6 +29,20 @@ void installCollator(jsi::Runtime &runtime, jsi::Object &extensions) {
         auto code = formatjs_collator_query(model->handle.get(), hermes_bridge::bytesOf(data), data.size(), &bytes.value);
         return hermes_bridge::result(rt, code, bytes, results.accepted, results.failure);
       });
+  hermes_bridge::bind(runtime, bridge, "nativeCompare", "collatorCompare", 3,
+      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+        if (count != 3 || !args[0].isObject() || !args[1].isString() || !args[2].isString())
+          throw jsi::JSError(rt, "Expected Collator record and strings");
+        auto model = hermes_bridge::record<Model>(rt, args[0], "Expected Collator record", "Invalid Collator record");
+        auto left = args[1].asString(rt).utf16(rt);
+        auto right = args[2].asString(rt).utf16(rt);
+        int8_t order = 0;
+        auto code = formatjs_collator_compare(model->handle.get(),
+            reinterpret_cast<const uint16_t *>(left.data()), left.size(),
+            reinterpret_cast<const uint16_t *>(right.data()), right.size(), &order);
+        if (code != 0) return hermes_bridge::status(rt, code, 0, results.failure);
+        return jsi::Value(static_cast<double>(order));
+      });
   extensions.getPropertyAsFunction(runtime, "IntlCollator").call(runtime, bridge);
 }
 void installCollator(jsi::Runtime &runtime) {

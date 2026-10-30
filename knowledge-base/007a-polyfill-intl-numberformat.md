@@ -27,6 +27,8 @@ numeric numbering systems. The resolver applies parent locales, root aliases,
 and same-locale plural fallback; unconfirmed/provisional entries are excluded,
 matching the CLDR JSON threshold. Identical systems share Latin data through
 registration-time aliases without mutating the caller's data.
+When a numbering system has no short compact currency patterns, generation uses
+the locale's Latin patterns while retaining the selected digits and symbols.
 
 `scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
 resolver, numbering-system projection, shared plural helpers, and resolver tests.
@@ -178,6 +180,10 @@ exponent-formatted magnitude. Sparse translated currency-name maps fall back to
 the currency code. Both fixes have TS/Rust coverage; tiny values also match native
 Intl formatting and parts.
 
+The standard decimal fast path retains its numeric part buffer and inserts any
+sign before it. RelativeTimeFormat shares this path, avoiding a second vector
+without changing sign order or nonfinite-number handling.
+
 ## Benchmarks
 
 Run `bazel run //packages/intl-numberformat/benchmark:benchmark` for formatting
@@ -208,3 +214,22 @@ CLDR data and compiles plural rules at build time; calendar locale patches merge
 into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
 The explicit-registration targets retain custom-provider and TS conformance use.
 See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+Native mathematical normalization returns canonical plain decimals up to 308
+bytes directly. Such text cannot overflow or underflow Number; a single output
+allocation replaces temporary digit strings and floating-point parsing. Validation
+still rejects non-digits, leading integer zeros and trailing fraction zeros from
+this path. General normalization handles exponents, radix literals and other
+forms; BigInt retains its separate arbitrary-length handling.
+
+Number grouping reads primary/secondary intervals with a reverse split iterator,
+then emits integer chunks from the leading group forward. No pattern-group or
+chunk vectors are needed. Minimum-grouping policy, digit mapping and symbols
+still use the common formatting path. Keep primary/secondary boundaries and
+exact parts intact when changing this traversal.
+
+The borrowed number-piece visitor serves both owned parts and decimal text with
+plural selection. Latin digits use immutable global identity mapping; locale
+symbols are borrowed and other digit systems keep owned mapping. The plain
+`#,##0.###` string path shares rendered rounding/category state with parts;
+other decimal patterns retain the general fallback.

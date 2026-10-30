@@ -11,7 +11,7 @@ use std::{
 pub struct Registry {
     data: BTreeMap<String, Data<LocaleData>>,
     explicit: BTreeSet<String>,
-    available: Vec<String>,
+    available: formatjs_intl_locale::matcher::AvailableLocales,
     default: Option<String>,
 }
 impl Registry {
@@ -52,11 +52,12 @@ impl Registry {
             .transpose()?;
         let matched = if lookup {
             requested.iter().enumerate().find_map(|(index, tag)| {
-                matcher::lookup(&self.available, std::slice::from_ref(tag))
+                matcher::lookup(self.available.as_slice(), std::slice::from_ref(tag))
                     .map(|locale| (index, locale))
             })
         } else {
-            matcher::best_fit_requested(&self.available, &requested)
+            self.available
+                .best_fit_requested(&requested)
                 .map_err(|_| Error::InvalidLocale)?
         };
         let (index, data_locale) = matched
@@ -73,7 +74,7 @@ impl Registry {
                 let base = matcher::without_unicode_extension(&requested[index]);
                 requested
                     .iter()
-                    .rposition(|tag| matcher::without_unicode_extension(tag) == base)
+                    .position(|tag| matcher::without_unicode_extension(tag) == base)
                     .unwrap_or(index)
             };
             let locale = Locale::new(&requested[index], &Default::default())
@@ -181,7 +182,9 @@ impl Registry {
                         .chain(parts[2..].iter().copied())
                         .collect::<Vec<_>>()
                         .join("-");
-                    self.insert(scriptless, selected.clone(), false);
+                    let replace = !self.explicit.contains(&scriptless)
+                        && formatjs_intl_locale::matcher::is_likely_script(&scriptless, parts[1]);
+                    self.insert(scriptless, selected.clone(), replace);
                 }
                 parts.pop();
                 self.insert(parts.join("-"), selected.clone(), false);
@@ -193,10 +196,10 @@ impl Registry {
     }
 
     pub fn supported_locales(&self, requested: &[String]) -> Vec<String> {
-        matcher::supported(&self.available, requested)
+        matcher::supported(self.available.as_slice(), requested)
     }
     pub fn available_locales(&self) -> &[String] {
-        &self.available
+        self.available.as_slice()
     }
     pub fn default_locale(&self) -> Option<&str> {
         self.default.as_deref()

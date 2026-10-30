@@ -13,6 +13,73 @@ fn options(value: Value) -> Options {
 }
 
 #[test]
+fn standard_decimal_signs_precede_finite_and_special_parts() {
+    let number = registry()
+        .create(
+            &["en".into()],
+            &options(json!({"signDisplay":"always","useGrouping":false})),
+        )
+        .unwrap();
+    for (value, sign, symbol, kind, text) in [
+        ("3", "plusSign", "+", "integer", "3"),
+        ("-3", "minusSign", "-", "integer", "3"),
+        ("0", "plusSign", "+", "integer", "0"),
+        ("-0", "minusSign", "-", "integer", "0"),
+        ("Infinity", "plusSign", "+", "infinity", "∞"),
+        ("-Infinity", "minusSign", "-", "infinity", "∞"),
+        ("NaN", "plusSign", "+", "nan", "NaN"),
+    ] {
+        assert_eq!(
+            serde_json::to_value(number.format_to_parts(value).unwrap()).unwrap(),
+            json!([
+                {"type":sign,"value":symbol},
+                {"type":kind,"value":text}
+            ]),
+            "{value}"
+        );
+    }
+}
+
+#[test]
+fn shared_plural_selection_keeps_visible_fraction_digits() {
+    let registry = registry();
+    let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
+        r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
+    )
+    .unwrap();
+    let number = registry
+        .create(&["en".into()], &options(json!({"minimumFractionDigits":2})))
+        .unwrap();
+    let (parts, category) = number.format_decimal_with_plural("1", &rules).unwrap();
+    assert_eq!(category, "other");
+    assert_eq!(
+        number
+            .format_decimal_string_with_plural("1", &rules)
+            .unwrap(),
+        ("1.00".into(), "other")
+    );
+    assert_eq!(
+        serde_json::to_value(parts).unwrap(),
+        json!([
+            {"type":"integer","value":"1"},
+            {"type":"decimal","value":"."},
+            {"type":"fraction","value":"00"}
+        ])
+    );
+    for options in [json!({"style":"percent"}), json!({"notation":"scientific"})] {
+        let number = registry
+            .create(&["en".into()], &serde_json::from_value(options).unwrap())
+            .unwrap();
+        assert!(number.format_decimal_with_plural("1", &rules).is_err());
+        assert!(
+            number
+                .format_decimal_string_with_plural("1", &rules)
+                .is_err()
+        );
+    }
+}
+
+#[test]
 fn huge_integer_rounding_retains_sticky_digits_and_directed_sign() {
     let registry = registry();
     let input = format!("1{}1", "0".repeat(40_000));
@@ -143,4 +210,136 @@ fn option_validation_ignores_only_inactive_digit_limits() {
         registry.create(&["en".into()], &inactive),
         Err(Error::Range(_))
     ));
+}
+
+#[test]
+fn grouping_keeps_primary_secondary_and_minimum_boundaries() {
+    for (pattern, cases) in [
+        (
+            "#,##0.###",
+            [
+                ("123", "123"),
+                ("1234", "1,234"),
+                ("1234567.5", "1,234,567.5"),
+            ],
+        ),
+        (
+            "#,##,##0.###",
+            [
+                ("12345", "12,345"),
+                ("123456", "1,23,456"),
+                ("1234567.5", "12,34,567.5"),
+            ],
+        ),
+    ] {
+        let mut pack: Value =
+            serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+        pack["data"]["numbers"]["decimal"]["latn"]["standard"] = json!(pattern);
+        let mut registry = Registry::default();
+        registry.add_locale_data(&pack.to_string()).unwrap();
+        let number = registry
+            .create(&["en".into()], &options(json!({"useGrouping":"always"})))
+            .unwrap();
+        for (input, expected) in cases {
+            assert_eq!(
+                number.format(input).unwrap(),
+                expected,
+                "{pattern}: {input}"
+            );
+        }
+        let minimum = registry
+            .create(&["en".into()], &options(json!({"useGrouping":"min2"})))
+            .unwrap();
+        assert_eq!(minimum.format("1234").unwrap(), "1234");
+        assert_eq!(minimum.format("12345").unwrap(), "12,345");
+        if pattern == "#,##,##0.###" {
+            assert_eq!(
+                serde_json::to_value(number.format_to_parts("-1234567.5").unwrap()).unwrap(),
+                json!([
+                    {"type":"minusSign","value":"-"},
+                    {"type":"integer","value":"12"},
+                    {"type":"group","value":","},
+                    {"type":"integer","value":"34"},
+                    {"type":"group","value":","},
+                    {"type":"integer","value":"567"},
+                    {"type":"decimal","value":"."},
+                    {"type":"fraction","value":"5"}
+                ])
+            );
+        }
+    }
+}
+
+#[test]
+fn decimal_text_preserves_grouping_thresholds_and_multibyte_symbols() {
+    let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
+        r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
+    )
+    .unwrap();
+    let mut pack: Value = serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+    pack["data"]["numbers"]["minimumGroupingDigits"] = json!(2);
+    pack["data"]["numbers"]["symbols"]["latn"]["decimal"] = json!("٫");
+    pack["data"]["numbers"]["symbols"]["latn"]["group"] = json!(" ");
+    let mut registry = Registry::default();
+    registry.add_locale_data(&pack.to_string()).unwrap();
+    for (settings, input, expected) in [
+        (json!({}), "1234.5", "1234٫5"),
+        (json!({}), "12345.5", "12 345٫5"),
+        (json!({}), "999999.9995", "1 000 000"),
+        (json!({"useGrouping":"min2"}), "1234.5", "1234٫5"),
+        (json!({"useGrouping":"always"}), "1234.5", "1 234٫5"),
+        (json!({"useGrouping":false}), "12345.5", "12345٫5"),
+        (json!({}), "-1234.5", "-1234٫5"),
+        (json!({}), "NaN", "NaN"),
+        (json!({}), "Infinity", "∞"),
+    ] {
+        let number = registry.create(&["en".into()], &options(settings)).unwrap();
+        let (text, category) = number
+            .format_decimal_string_with_plural(input, &rules)
+            .unwrap();
+        assert_eq!(text, expected, "{input}");
+        let (parts, parts_category) = number.format_decimal_with_plural(input, &rules).unwrap();
+        assert_eq!(
+            parts
+                .iter()
+                .map(|part| part.value.as_str())
+                .collect::<String>(),
+            text
+        );
+        assert_eq!(category, parts_category);
+    }
+}
+#[test]
+fn decimal_text_keeps_signs_digit_mapping_rounding_and_pattern_fallback() {
+    let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
+        r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
+    )
+    .unwrap();
+    let registry = registry();
+    for (settings, input, expected, category) in [
+        (json!({}), "1.9996", "2", "other"),
+        (json!({"signDisplay":"always"}), "1", "+1", "one"),
+        (json!({"numberingSystem":"arab"}), "1", "١", "one"),
+    ] {
+        let number = registry.create(&["en".into()], &options(settings)).unwrap();
+        assert_eq!(
+            number
+                .format_decimal_string_with_plural(input, &rules)
+                .unwrap(),
+            (expected.into(), category)
+        );
+    }
+    let mut pack: Value = serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+    pack["data"]["numbers"]["decimal"]["latn"]["standard"] = json!("#,##,##0.###");
+    let mut registry = Registry::default();
+    registry.add_locale_data(&pack.to_string()).unwrap();
+    let number = registry
+        .create(&["en".into()], &Options::default())
+        .unwrap();
+    assert_eq!(
+        number
+            .format_decimal_string_with_plural("-1234567.5", &rules)
+            .unwrap(),
+        ("-12,34,567.5".into(), "other")
+    );
 }

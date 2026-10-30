@@ -1,18 +1,75 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
+
+exports_files(["locale-format-fixtures.tsv"])
+
+java_test(
+    name = "intl_relativetimeformat_conformance_test",
+    size = "small",
+    srcs = ["RelativeTimeConformanceTest.java"],
+    data = ["//conformance-tests/icu4x:relative-icu4x-differences.tsv"],
+    env = {"RELATIVE_TIME_DIFFERENCES": "$(rootpath //conformance-tests/icu4x:relative-icu4x-differences.tsv)"},
+    main_class = "RelativeTimeConformanceTest",
+    test_class = "RelativeTimeConformanceTest",
+    deps = [":icu4j"],
+)
+
+copy_to_bin(
+    name = "locale_format_fixtures",
+    srcs = ["locale-format-fixtures.tsv"],
+    visibility = ["//native/hermes/tests:__pkg__"],
+)
+
+java_binary(
+    name = "locale_matcher_oracle",
+    testonly = True,
+    srcs = [
+        "ICUConformanceTest.java",
+        "LocaleMatcherConformanceTest.java",
+    ],
+    main_class = "LocaleMatcherConformanceTest",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "locale_matcher_grid",
+    testonly = True,
+    outs = ["locale-matcher-grid.tsv"],
+    cmd = "$(execpath :locale_matcher_oracle) --grid $@",
+    tools = [":locale_matcher_oracle"],
+    visibility = ["//visibility:public"],
+)
 
 java_import(
     name = "icu4j",
     jars = ["@icu4j_jar//file"],
+    visibility = ["//benchmarks/locale-matching:__pkg__"],
 )
 
-java_binary(
+java_test(
     name = "icu_conformance_test",
-    srcs = ["ICUConformanceTest.java"],
-    data = ["//packages/intl-localematcher:tests/locale-match-fixtures.json"],
+    size = "small",
+    srcs = [
+        "ICUConformanceTest.java",
+        "LocaleMatcherConformanceTest.java",
+    ],
+    data = ["//packages/intl-localematcher:tests/icu-match-fixtures.json"],
     env = {
-        "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/locale-match-fixtures.json)",
+        "LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/icu-match-fixtures.json)",
     },
     main_class = "ICUConformanceTest",
+    test_class = "ICUConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_test(
+    name = "intl_locale_formatting_conformance_test",
+    size = "small",
+    srcs = ["IntlLocaleFormattingConformanceTest.java"],
+    data = ["locale-format-fixtures.tsv"],
+    env = {"LOCALE_FORMAT_FIXTURES": "$(rootpath locale-format-fixtures.tsv)"},
+    main_class = "IntlLocaleFormattingConformanceTest",
+    test_class = "IntlLocaleFormattingConformanceTest",
     deps = [":icu4j"],
 )
 
@@ -36,4 +93,101 @@ java_test(
     main_class = "IntlCollatorConformanceTest",
     test_class = "IntlCollatorConformanceTest",
     deps = [":icu4j"],
+)
+
+java_test(
+    name = "locale_matcher_conformance_test",
+    size = "small",
+    srcs = [
+        "ICUConformanceTest.java",
+        "LocaleMatcherConformanceTest.java",
+    ],
+    data = ["//packages/intl-localematcher:tests/icu-match-fixtures.json"],
+    env = {"LOCALE_MATCH_FIXTURES": "$(rootpath //packages/intl-localematcher:tests/icu-match-fixtures.json)"},
+    main_class = "LocaleMatcherConformanceTest",
+    test_class = "LocaleMatcherConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_binary(
+    name = "intl_listformat_oracle",
+    testonly = True,
+    srcs = ["IntlListFormatOracle.java"],
+    main_class = "IntlListFormatOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "list_format_fixtures",
+    testonly = True,
+    srcs = ["list-format-icu-differences.tsv"],
+    outs = ["list-format-fixtures.tsv"],
+    cmd = "$(execpath :intl_listformat_oracle) $@ $(location list-format-icu-differences.tsv)",
+    tools = [":intl_listformat_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "intl_pluralrules_oracle",
+    testonly = True,
+    srcs = ["IntlPluralRulesOracle.java"],
+    main_class = "IntlPluralRulesOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "plural_rules_fixtures",
+    testonly = True,
+    outs = ["plural-rules-fixtures.tsv"],
+    cmd = "$(execpath :intl_pluralrules_oracle) $@",
+    tools = [":intl_pluralrules_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "plural_range_fixtures",
+    testonly = True,
+    outs = ["plural-range-fixtures.tsv"],
+    cmd = "$(execpath :intl_pluralrules_oracle) $@ --ranges",
+    tools = [":intl_pluralrules_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+exports_files([
+    "canonical-private-fixtures.tsv",
+    "locale-extension-options-fixtures.tsv",
+])
+
+java_test(
+    name = "intl_canonical_private_conformance_test",
+    size = "small",
+    srcs = ["IntlCanonicalPrivateConformanceTest.java"],
+    data = [
+        "canonical-private-fixtures.tsv",
+        "locale-extension-options-fixtures.tsv",
+    ],
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath locale-extension-options-fixtures.tsv)",
+    },
+    main_class = "IntlCanonicalPrivateConformanceTest",
+    test_class = "IntlCanonicalPrivateConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_binary(
+    name = "intl_segmenter_oracle",
+    testonly = True,
+    srcs = ["IntlSegmenterOracle.java"],
+    main_class = "IntlSegmenterOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "segmenter_fixtures",
+    testonly = True,
+    outs = ["segmenter-fixtures.tsv"],
+    cmd = "$(execpath :intl_segmenter_oracle) $@",
+    tools = [":intl_segmenter_oracle"],
+    visibility = ["//visibility:public"],
 )

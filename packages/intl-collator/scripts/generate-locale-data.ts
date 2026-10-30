@@ -104,6 +104,7 @@ for (const path of resolvedPaths) {
     if (
       collation.type !== 'standard' &&
       collation.type !== 'search' &&
+      !collation.type.startsWith('private-') &&
       collation.type !== defaultType
     ) {
       collationTypes.add(canonicalCollation(collation.type))
@@ -128,6 +129,15 @@ for (const path of resolvedPaths) {
     sensitivity: 'variant',
     ignorePunctuation:
       alternate?.type === 'alternate' && alternate.value === 'shifted',
+  }
+}
+
+// Root collations apply to every language; their rules remain shared.
+const rootTypes = localeData.root?.co || []
+for (const [locale, data] of Object.entries(localeData)) {
+  localeData[locale] = {
+    ...data,
+    co: [...new Set([...rootTypes, ...data.co])].sort(),
   }
 }
 

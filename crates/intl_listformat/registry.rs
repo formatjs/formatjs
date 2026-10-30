@@ -13,7 +13,7 @@ use std::sync::Arc;
 pub struct Registry {
     data: BTreeMap<String, Data<LocalePatterns>>,
     explicit: BTreeSet<String>,
-    available: Vec<String>,
+    available: formatjs_intl_locale::matcher::AvailableLocales,
     default: Option<String>,
 }
 
@@ -32,9 +32,10 @@ impl Registry {
     /// Canonical requested tags come from the host's CanonicalizeLocaleList.
     pub fn negotiate(&self, requested: &[String], lookup: bool) -> Result<String, Error> {
         let matched = if lookup {
-            formatjs_intl_locale::matcher::lookup(&self.available, requested)
+            formatjs_intl_locale::matcher::lookup(self.available.as_slice(), requested)
         } else {
-            formatjs_intl_locale::matcher::best_fit(&self.available, requested)
+            self.available
+                .best_fit(requested)
                 .map_err(|_| Error::InvalidOption("locales"))?
         };
         matched
@@ -44,7 +45,7 @@ impl Registry {
 
     /// Inputs are canonical tags from CanonicalizeLocaleList.
     pub fn supported_locales(&self, requested: &[String]) -> Vec<String> {
-        formatjs_intl_locale::matcher::supported(&self.available, requested)
+        formatjs_intl_locale::matcher::supported(self.available.as_slice(), requested)
     }
 
     fn insert(&mut self, tag: String, rules: Data<LocalePatterns>, replace: bool) {
@@ -108,7 +109,9 @@ impl Registry {
                         .chain(parts[2..].iter().copied())
                         .collect::<Vec<_>>()
                         .join("-");
-                    self.insert(scriptless, selected.clone(), false);
+                    let replace = !self.explicit.contains(&scriptless)
+                        && formatjs_intl_locale::matcher::is_likely_script(&scriptless, parts[1]);
+                    self.insert(scriptless, selected.clone(), replace);
                 }
                 parts.pop();
                 self.insert(parts.join("-"), selected.clone(), false);
@@ -121,7 +124,7 @@ impl Registry {
 
     /// Canonical tags, in registration order. Locale matching uses this snapshot.
     pub fn available_locales(&self) -> &[String] {
-        &self.available
+        self.available.as_slice()
     }
 
     pub fn default_locale(&self) -> Option<&str> {
@@ -138,7 +141,7 @@ impl Registry {
             .get()
             .map_err(Error::InvalidData)?;
         Ok(ListFormat {
-            data: rules,
+            templates: Arc::clone(&rules.templates[options.kind.key()][options.style.key()]),
             locale: locale.to_owned(),
             options: options.clone(),
         })

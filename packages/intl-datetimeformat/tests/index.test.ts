@@ -692,6 +692,43 @@ describe('Intl.DateTimeFormat', function () {
       }
     }
   )
+  it.each(['America/Havana', 'Cuba'])(
+    'uses tzdb 2026f Cuba transitions for %s',
+    timeZone => {
+      const formatter = new DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h23',
+        timeZone,
+      })
+      for (const [date, expected] of [
+        ['2026-11-01T04:59:59Z', '00:59:59'],
+        ['2026-11-01T05:00:00Z', '01:00:00'],
+        ['2027-01-15T12:00:00Z', '08:00:00'],
+        ['2027-11-07T04:59:59Z', '00:59:59'],
+        ['2027-11-07T05:00:00Z', '00:00:00'],
+      ]) {
+        expect(formatter.format(new Date(date))).toBe(expected)
+      }
+    }
+  )
+  it.each([
+    ['1965-03-31T03:00:00Z', '01:00:00'],
+    ['1965-04-01T01:59:59Z', '23:59:59'],
+    ['1965-04-01T02:00:00Z', '23:00:00'],
+    ['1966-03-01T02:59:59Z', '00:59:59'],
+    ['1966-03-01T03:00:00Z', '00:00:00'],
+  ])('uses corrected Brazil transitions at %s', (date, expected) => {
+    const formatter = new DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23',
+      timeZone: 'America/Sao_Paulo',
+    })
+    expect(formatter.format(new Date(date))).toBe(expected)
+  })
   it.each([
     ['1925-09-20T01:59:59Z', '02:59:59'],
     ['1925-09-20T02:00:00Z', '02:00:00'],

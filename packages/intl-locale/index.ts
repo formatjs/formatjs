@@ -195,7 +195,8 @@ function applyUnicodeExtensionToTag(
   }
   if (!unicodeExtension) {
     if (keywords.length) {
-      ast.extensions.push({
+      // Private use consumes following subtags; insert before it, then canonicalize.
+      ast.extensions.unshift({
         type: 'u',
         keywords,
         attributes: [],

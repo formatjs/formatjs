@@ -334,6 +334,79 @@ pub unsafe extern "C" fn formatjs_plural_query(
     })
 }
 
+/// Select a plural category from the already coerced mathematical text.
+/// # Safety
+/// Handle is live; value bytes readable; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_select(
+    handle: *const PluralHandle,
+    value: *const u8,
+    len: usize,
+    bigint: bool,
+    out: *mut u8,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(255) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let value = unsafe { input(value, len)? };
+        let category = unsafe { &(*handle).0 }
+            .select_mathematical(value, bigint)
+            .map_err(status)?;
+        unsafe { out.write(category_index(category)?) };
+        Ok(())
+    })
+}
+
+fn category_index(category: &str) -> Result<u8, i32> {
+    match category {
+        "zero" => Ok(0),
+        "one" => Ok(1),
+        "two" => Ok(2),
+        "few" => Ok(3),
+        "many" => Ok(4),
+        "other" => Ok(5),
+        _ => Err(3),
+    }
+}
+
+/// Select a range category from already coerced mathematical text.
+/// Category order: zero, one, two, few, many, other. Errors leave out=255.
+/// # Safety
+/// Handle live; endpoint bytes readable for their lengths; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_select_range(
+    handle: *const PluralHandle,
+    start: *const u8,
+    start_len: usize,
+    start_bigint: bool,
+    end: *const u8,
+    end_len: usize,
+    end_bigint: bool,
+    out: *mut u8,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(255) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let start = unsafe { input(start, start_len)? };
+        let end = unsafe { input(end, end_len)? };
+        let category = unsafe { &(*handle).0 }
+            .select_range_mathematical(start, end, start_bigint, end_bigint)
+            .map_err(status)?;
+        unsafe { out.write(category_index(category)?) };
+        Ok(())
+    })
+}
+
 /// # Safety
 /// Registry is null or a live owned handle. No call may still borrow it.
 #[unsafe(no_mangle)]

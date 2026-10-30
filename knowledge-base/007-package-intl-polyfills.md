@@ -137,3 +137,8 @@ Rust tools validate existing CLDR inputs, compile plural expressions, merge cale
 locale patches, and embed binary records in each native archive. No application JS
 or C++ locale registration is required. Additional locales require a native rebuild.
 Calendar arithmetic/table providers and timezone transitions remain optional resources.
+The Hermes SDK also packages contrib extension sources in `contrib/`: Hermes
+embeds the JavaScript fragments and calls one C++ installer linked to the same
+Rust archive. `native/hermes/package/contrib/README.md` lists the integration edits.
+
+Hermes SDK packaging and release flow: [007m](007m-hermes-distribution.md).

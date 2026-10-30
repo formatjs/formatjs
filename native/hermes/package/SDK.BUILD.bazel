@@ -19,10 +19,77 @@ config_setting(
     ],
 )
 
+config_setting(
+    name = "android_arm64",
+    constraint_values = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:android",
+    ],
+)
+
+config_setting(
+    name = "android_x86_64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:android",
+    ],
+)
+
+config_setting(
+    name = "darwin_x86_64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:macos",
+    ],
+)
+
+config_setting(
+    name = "ios_arm64",
+    constraint_values = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:ios",
+        "@apple_support//constraints:device",
+    ],
+)
+
+config_setting(
+    name = "ios_sim_arm64",
+    constraint_values = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:ios",
+        "@apple_support//constraints:simulator",
+    ],
+)
+
+config_setting(
+    name = "ios_sim_x86_64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:ios",
+        "@apple_support//constraints:simulator",
+    ],
+)
+
+config_setting(
+    name = "macos",
+    constraint_values = ["@platforms//os:macos"],
+)
+
+config_setting(
+    name = "ios",
+    constraint_values = ["@platforms//os:ios"],
+)
+
 cc_import(
     name = "rust_intl",
     static_library = select({
+        ":android_arm64": "lib/aarch64-linux-android/libformatjs_intl_hermes.a",
+        ":android_x86_64": "lib/x86_64-linux-android/libformatjs_intl_hermes.a",
         ":darwin_arm64": "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a",
+        ":darwin_x86_64": "lib/x86_64-apple-darwin/libformatjs_intl_hermes.a",
+        ":ios_arm64": "lib/aarch64-apple-ios/libformatjs_intl_hermes.a",
+        ":ios_sim_arm64": "lib/aarch64-apple-ios-sim/libformatjs_intl_hermes.a",
+        ":ios_sim_x86_64": "lib/x86_64-apple-ios/libformatjs_intl_hermes.a",
         ":linux_x86_64": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a",
     }),
 )
@@ -49,7 +116,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -85,7 +164,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -122,7 +213,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -163,7 +266,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -199,7 +314,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -235,7 +362,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -271,7 +410,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -307,7 +458,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -343,7 +506,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -379,7 +554,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -444,7 +631,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -500,7 +699,19 @@ cc_library(
         "-fexceptions",
     ],
     linkopts = select({
-        ":darwin_arm64": [
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
             "-lSystem",
             "-lresolv",
         ],
@@ -526,3 +737,31 @@ exports_files([
     "js/durationformat-smoke.js",
     "js/41-IntlDurationFormat.js",
 ])
+
+cc_library(
+    name = "intl",
+    srcs = [
+        "src/intl.cpp",
+        "src/intl.inc",
+    ],
+    hdrs = ["include/formatjs/hermes/intl.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    strip_include_prefix = "include",
+    deps = [
+        ":canonical_locales",
+        ":collator",
+        ":datetimeformat",
+        ":displaynames",
+        ":durationformat",
+        ":listformat",
+        ":locale",
+        ":numberformat",
+        ":pluralrules",
+        ":relativetimeformat",
+        ":segmenter",
+        ":supported_values",
+    ],
+)

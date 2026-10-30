@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.8.2...@formatjs/intl-datetimeformat@7.9.0) (2026-10-30)
+
+
+### Features
+
+* **intl_datetimeformat:** port DateTimeFormat to Rust and Hermes ([#7698](https://github.com/formatjs/formatjs/issues/7698)) ([270aa61](https://github.com/formatjs/formatjs/commit/270aa61c835bfc96499843345242710508952777))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** update IANA timezone database to 2026f ([#7748](https://github.com/formatjs/formatjs/issues/7748)) ([a45f09f](https://github.com/formatjs/formatjs/commit/a45f09f4dd5b01f82d8dfdf1c88e91cfcaf3bf98))
+* **intl_datetimeformat:** compile IANA zones for Hermes Test262 ([#7720](https://github.com/formatjs/formatjs/issues/7720)) ([7fc5699](https://github.com/formatjs/formatjs/commit/7fc5699f75795d88b4d5dd63bffd6aa172955b07))
+* release Intl crates through Bazel and shared workflow ([#7727](https://github.com/formatjs/formatjs/issues/7727)) ([53de4af](https://github.com/formatjs/formatjs/commit/53de4af2e5a1b0c9c56a6fde05304274b43f188b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [7.8.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.8.1...@formatjs/intl-datetimeformat@7.8.2) (2026-10-19)
 
 

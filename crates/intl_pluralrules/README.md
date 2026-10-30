@@ -56,8 +56,21 @@ checks on-demand loading on Linux and the cross-built macOS executable.
 Mathematical-input entry points parse numeric strings/radix literals exactly,
 apply Number overflow/underflow clamping, and keep BigInt outside that clamp.
 Arbitrary-length integers use string rounding when ICU's magnitude range is too
-small. The mathematical conformance suite compares TS selection and ranges,
+small. Canonical plain decimals up to 308 bytes already represent a finite
+Number value, so normalization reuses that text without temporary digit strings
+or a floating-point parse. Exponents, radix literals and other forms use the
+general normalization path. The mathematical conformance suite compares TS selection and ranges,
 including 40,000-digit BigInt and long halfway fractions.
+
+Hermes selection calls pass mathematical text and BigInt flags directly through
+`formatjs_plural_select` and `formatjs_plural_select_range`. Rust retains numeric
+parsing, Number clamping, rounding and category resolution; the host preserves
+endpoint coercion order. The JSON query ABI remains available.
+
+Pinned ICU4C/J/X checks cover 224 cardinal ranges across 14 locales. Fixtures
+retain both raw ICU range categories and ECMA-402's equal-endpoint result.
+Hermes source and bytecode run the same cases; ordinal, rounding and BigInt
+ranges retain their broader TS differential coverage.
 
 ## Compiled provider
 

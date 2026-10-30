@@ -164,11 +164,27 @@ fn number(
 }
 impl Digits {
     /// Rounded unsigned text, including BigInt integers beyond ICU's i16
-    /// magnitude range. Ordinary finite values keep the fixed_decimal path.
+    /// magnitude range.
     pub fn format_string(&self, input: &str) -> Result<String, Error> {
         let Some((integer, fraction)) = crate::mathematical::parts(input) else {
             return self.format(input).map(|value| value.formatted_string);
         };
+        // Canonical text within these fraction bounds needs no rounding or padding.
+        if self.kind == Kind::Fraction
+            && self.rounding_increment == 1
+            && self.minimum_integer_digits == 1
+            && self.minimum_fraction_digits == Some(0)
+            && self
+                .maximum_fraction_digits
+                .is_some_and(|maximum| fraction.len() <= usize::from(maximum))
+            && !integer.is_empty()
+            && integer.len() <= i16::MAX as usize - 2
+            && (integer.len() == 1 || !integer.starts_with('0'))
+            && (fraction.is_empty() || !fraction.ends_with('0'))
+            && input.len() == integer.len() + fraction.len() + usize::from(!fraction.is_empty())
+        {
+            return Ok(input.to_owned());
+        }
         let integer = integer.trim_start_matches('0');
         if integer.len() <= i16::MAX as usize - 2 {
             return self.format(input).map(|value| value.formatted_string);

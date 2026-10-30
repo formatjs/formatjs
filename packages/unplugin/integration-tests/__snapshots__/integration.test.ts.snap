@@ -510,7 +510,7 @@ export { __webpack_exports__farewell as farewell, __webpack_exports__greeting as
 
 exports[`@formatjs/unplugin — vite (JSX) > JSX: generates ids and removes descriptions 1`] = `
 "import { jsxDEV } from "react/jsx-dev-runtime";
-//#region fixtures/jsx.tsx
+// fixtures/jsx.tsx
 var _jsxFileName = "<source>";
 function FormattedMessage(_props) {
 	return null;
@@ -536,7 +536,6 @@ function App() {
 		columnNumber: 5
 	}, this);
 }
-//#endregion
 export { App };
 "
 `;
@@ -544,7 +543,7 @@ export { App };
 exports[`@formatjs/unplugin — vite (JSX) > compiled JSX: generates ids and removes descriptions 1`] = `
 "import { FormattedMessage } from "react-intl";
 import { jsx } from "react/jsx-runtime";
-//#region fixtures/compiledJsx.js
+// fixtures/compiledJsx.js
 function App() {
 	return jsx("div", { children: [jsx(FormattedMessage, {
 		id: "wdf0o2",
@@ -554,7 +553,6 @@ function App() {
 		defaultMessage: "Custom ID message"
 	})] });
 }
-//#endregion
 export { App };
 "
 `;
@@ -563,7 +561,7 @@ exports[`@formatjs/unplugin — vite (JSX) > removeDescription for TSX 1`] = `
 "import { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { jsxDEV } from "react/jsx-dev-runtime";
-//#region fixtures/removeDescription.tsx
+// fixtures/removeDescription.tsx
 var _jsxFileName = "<source>";
 var Foo = class extends Component {
 	render() {
@@ -577,13 +575,12 @@ var Foo = class extends Component {
 		}, this);
 	}
 };
-//#endregion
 export { Foo as default };
 "
 `;
 
 exports[`@formatjs/unplugin — vite > ast option pre-parses defaultMessage 1`] = `
-"//#region fixtures/defineMessage.js
+"// fixtures/defineMessage.js
 function defineMessage(msg) {
 	return msg;
 }
@@ -620,13 +617,12 @@ var msg = defineMessage({
 		"pluralType": "cardinal"
 	}]
 });
-//#endregion
 export { msg };
 "
 `;
 
 exports[`@formatjs/unplugin — vite > defineMessages: processes multiple descriptors 1`] = `
-"//#region fixtures/defineMessages.js
+"// fixtures/defineMessages.js
 function defineMessages(msgs) {
 	return msgs;
 }
@@ -640,13 +636,12 @@ var messages = defineMessages({
 		defaultMessage: "Goodbye {name}"
 	}
 });
-//#endregion
 export { messages };
 "
 `;
 
 exports[`@formatjs/unplugin — vite > generates ids and removes descriptions 1`] = `
-"//#region fixtures/formatMessage.js
+"// fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
 	return descriptor.id || descriptor.defaultMessage;
 } };
@@ -658,13 +653,12 @@ var farewell = intl.formatMessage({
 	id: "73dImr",
 	defaultMessage: "Goodbye World"
 });
-//#endregion
 export { farewell, greeting };
 "
 `;
 
 exports[`@formatjs/unplugin — vite > idInterpolationPattern option 1`] = `
-"//#region fixtures/formatMessage.js
+"// fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
 	return descriptor.id || descriptor.defaultMessage;
 } };
@@ -676,13 +670,12 @@ var farewell = intl.formatMessage({
 	id: "ef77489a",
 	defaultMessage: "Goodbye World"
 });
-//#endregion
 export { farewell, greeting };
 "
 `;
 
 exports[`@formatjs/unplugin — vite > overrideIdFn option 1`] = `
-"//#region fixtures/formatMessage.js
+"// fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
 	return descriptor.id || descriptor.defaultMessage;
 } };
@@ -694,19 +687,17 @@ var farewell = intl.formatMessage({
 	id: "custom_Goodbye_World",
 	defaultMessage: "Goodbye World"
 });
-//#endregion
 export { farewell, greeting };
 "
 `;
 
 exports[`@formatjs/unplugin — vite > removeDefaultMessage option 1`] = `
-"//#region fixtures/formatMessage.js
+"// fixtures/formatMessage.js
 var intl = { formatMessage(descriptor) {
 	return descriptor.id || descriptor.defaultMessage;
 } };
 var greeting = intl.formatMessage({ id: "YyDw8T" });
 var farewell = intl.formatMessage({ id: "73dImr" });
-//#endregion
 export { farewell, greeting };
 "
 `;
