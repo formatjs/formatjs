@@ -118,6 +118,76 @@ equal(reads, 1, 'format reads each element once')
 reads = 0
 formatter.formatToParts(observed)
 equal(reads, 1, 'formatToParts reads each element once')
+for (const length of [0, 1, 3, 4, 5, 8, 9]) {
+  const values = Array.from(
+    {length},
+    (_, index) => ['', '\ud800', '東京', '😀', '\udc00'][index % 5]
+  )
+  const reference = new TypeScriptListFormat('en')
+  for (const method of ['format', 'formatToParts'] as const) {
+    const counts = values.map(() => 0)
+    const observed = values.slice()
+    // Hermes source mode shares loop bindings; capture each getter's index separately.
+    for (let index = 0; index < length; index++)
+      Object.defineProperty(observed, index, {
+        get: ((position: number, value: string) => () => {
+          counts[position]++
+          return value
+        })(index, values[index]),
+      })
+    equal(
+      formatter[method](observed),
+      reference[method](values),
+      method + '/buffer boundary'
+    )
+    equal(
+      counts,
+      values.map(() => 1),
+      method + '/single getter read'
+    )
+  }
+}
+for (const method of ['format', 'formatToParts'] as const) {
+  for (const invalidIndex of [3, 4, 8]) {
+    let nextCalls = 0,
+      closeCalls = 0,
+      coercions = 0
+    const input = {
+      [Symbol.iterator]() {
+        return {
+          next() {
+            return {
+              done: false,
+              value:
+                nextCalls++ === invalidIndex
+                  ? {
+                      toString() {
+                        coercions++
+                        return 'invalid'
+                      },
+                    }
+                  : 'valid',
+            }
+          },
+          return() {
+            closeCalls++
+            throw new Error('close error loses to original error')
+          },
+        }
+      },
+    }
+    throws(
+      () => formatter[method](input),
+      TypeError,
+      method + '/invalid buffer element'
+    )
+    equal(
+      [nextCalls, closeCalls, coercions],
+      [invalidIndex + 1, 1, 0],
+      method + '/close at buffer boundary'
+    )
+  }
+}
 for (const value of [null, 1, true, {}, {length: 1, 0: 'A'}])
   throws(() => formatter.format(value), TypeError, 'requires iterable')
 for (const value of [1, null, undefined, {}, new String('A'), Symbol(), 1n])
@@ -289,7 +359,7 @@ const originalApply = Reflect.apply,
   originalSet = WeakMap.prototype.set,
   originalSetPrototypeOf = Object.setPrototypeOf,
   originalBind = Function.prototype.bind
-const prototypeFields = ['0', 'type', 'value', 'get', 'set']
+const prototypeFields = ['0', '4', 'type', 'value', 'get', 'set']
 const previousFields = prototypeFields.map(name =>
   Object.getOwnPropertyDescriptor(Object.prototype, name)
 )
@@ -299,10 +369,14 @@ inheritedTrap.get = inheritedTrap.set = () => {
   throw new Error('Inherited parts property accessed')
 }
 let safeParts: any[] = []
+let safeLargeParts: any[] = [],
+  safeLargeString = ''
 try {
   for (const name of prototypeFields)
     Object.defineProperty(Object.prototype, name, inheritedTrap)
   safeParts = formatter.formatToParts(['A', 'B'])
+  safeLargeParts = formatter.formatToParts(['A', 'B', 'C', 'D', 'E'])
+  safeLargeString = formatter.format(['A', 'B', 'C', 'D', 'E'])
 } finally {
   for (let index = 0; index < prototypeFields.length; index++) {
     const saved = previousFields[index]
@@ -311,6 +385,16 @@ try {
     else delete (Object.prototype as any)[prototypeFields[index]]
   }
 }
+equal(
+  safeLargeString,
+  'A, B, C, D, and E',
+  'large input bypasses inherited index setter'
+)
+equal(
+  safeLargeParts,
+  new TypeScriptListFormat('en').formatToParts(['A', 'B', 'C', 'D', 'E']),
+  'large parts bypass inherited index setter'
+)
 equal(
   safeParts,
   [

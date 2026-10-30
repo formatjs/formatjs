@@ -16,16 +16,12 @@ using Bytes = hermes_bridge::Buffer<FormatjsListBytes, formatjs_list_bytes_free>
 using Units = hermes_bridge::Buffer<FormatjsListUnits, formatjs_list_units_free>;
 using Registry = std::unique_ptr<FormatjsListRegistry, decltype(&formatjs_list_registry_destroy)>;
 constexpr hermes_bridge::Policy results{2, "Rust ListFormat bridge failed"};
-template <typename Call>
-jsi::Value callList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call call) {
-  if (count != 2 || !args[0].isObject() || !args[1].isObject() || !args[1].asObject(rt).isArray(rt))
-    throw jsi::JSError(rt, "Expected list record and string array");
-  auto model = hermes_bridge::record<Model>(rt, args[0], "Expected list record", "Invalid list record");
-  auto list = args[1].asObject(rt).getArray(rt);
-  const auto length = list.size(rt);
+template <typename Call, typename Read>
+jsi::Value callListValues(jsi::Runtime &rt, const std::shared_ptr<Model> &model,
+                         size_t length, Read readValue, Call call) {
   if (length == 0) return jsi::String::createFromUtf16(rt, u"", 0);
   auto read = [&](size_t index) {
-    auto value = list.getValueAtIndex(rt, index);
+    decltype(auto) value = readValue(index);
     if (!value.isString()) throw jsi::JSError(rt, "Expected string list element");
     return value.asString(rt).utf16(rt);
   };
@@ -56,6 +52,23 @@ jsi::Value callList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call
   auto code = call(model->handle.get(), slices, length, &units.value);
   if (code != 0) return hermes_bridge::status(rt, code, results.accepted, results.failure);
   return jsi::String::createFromUtf16(rt, reinterpret_cast<const char16_t *>(units.value.data), units.value.len);
+}
+template <typename Call>
+jsi::Value callList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call call) {
+  if (count != 2 || !args[0].isObject() || !args[1].isObject() || !args[1].asObject(rt).isArray(rt))
+    throw jsi::JSError(rt, "Expected list record and string array");
+  auto model = hermes_bridge::record<Model>(rt, args[0], "Expected list record", "Invalid list record");
+  auto list = args[1].asObject(rt).getArray(rt);
+  return callListValues(rt, model, list.size(rt),
+      [&](size_t index) { return list.getValueAtIndex(rt, index); }, call);
+}
+template <typename Call>
+jsi::Value callSmallList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call call) {
+  if (count < 1 || count > 5 || !args[0].isObject())
+    throw jsi::JSError(rt, "Expected list record and up to four strings");
+  auto model = hermes_bridge::record<Model>(rt, args[0], "Expected list record", "Invalid list record");
+  return callListValues(rt, model, count - 1,
+      [&](size_t index) -> const jsi::Value & { return args[index + 1]; }, call);
 }
 } // namespace
 
@@ -90,6 +103,14 @@ void installListFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
   hermes_bridge::bind(runtime, bridge, "nativeParts", "listParts", 2,
       [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
         return callList(rt, args, count, formatjs_list_parts);
+      });
+  hermes_bridge::bind(runtime, bridge, "nativeFormatSmall", "listFormatSmall", 5,
+      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+        return callSmallList(rt, args, count, formatjs_list_format);
+      });
+  hermes_bridge::bind(runtime, bridge, "nativePartsSmall", "listPartsSmall", 5,
+      [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+        return callSmallList(rt, args, count, formatjs_list_parts);
       });
   extensions.getPropertyAsFunction(runtime, "IntlListFormat").call(runtime, bridge);
 }

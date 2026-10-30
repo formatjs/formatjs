@@ -78,6 +78,11 @@ Instances retain their selected compiled templates directly. Pattern bodies cach
 literal UTF-16 lengths, allowing exact output reservation for pair and chain
 patterns, including contextual alternatives and reversed placeholders.
 
+The facade keeps up to four validated strings in local slots and passes them as
+positional host arguments. A fifth element creates the private null-prototype
+array used by the larger-input path. Both paths keep real iterator traversal and
+share C++ UTF-16 conversion plus the same Rust ABI.
+
 `//crates/intl_listformat:locale_data` wraps the existing TS extraction in
 versioned per-locale JSON packs, including default-content aliases. The
 differential suite compares every locale/type/style against the public TS
