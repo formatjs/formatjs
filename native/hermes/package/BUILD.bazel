@@ -1,10 +1,11 @@
 # gazelle:ignore
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files", "strip_prefix")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
-load(":dist.bzl", "android_archive", "android_x86_64_archive", "darwin_archive", "linux_archive")
+load(":dist.bzl", "android_archive", "android_x86_64_archive", "darwin_archive", "darwin_x86_64_archive", "ios_arm64_archive", "ios_sim_arm64_archive", "ios_sim_x86_64_archive", "linux_archive")
 
 ts_project(
     name = "pluralrules_smoke_typecheck",
@@ -496,6 +497,7 @@ pkg_tar(
     name = "sdk",
     srcs = [
         ":darwin_library",
+        ":darwin_x86_64_library",
         ":datetimeformat_calendar_data",
         ":datetimeformat_timezone_data",
         ":hermes_contrib_sources",
@@ -531,4 +533,164 @@ pkg_tar(
     extension = "tar.gz",
     tags = ["manual"],
     visibility = ["//visibility:public"],
+)
+
+platform(
+    name = "darwin_x86_64",
+    parents = ["@rules_rs//rs/platforms:x86_64-apple-darwin"],
+)
+
+darwin_x86_64_archive(
+    name = "darwin_x86_64_static_library",
+    srcs = ["//crates/intl_hermes:with_compiled_data"],
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "darwin_x86_64_library",
+    srcs = [":darwin_x86_64_static_library"],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {":darwin_x86_64_static_library": "lib/x86_64-apple-darwin/libformatjs_intl_hermes.a"},
+    tags = ["manual"],
+)
+
+platform(
+    name = "ios_arm64",
+    parents = ["@rules_rs//rs/platforms:aarch64-apple-ios"],
+)
+
+ios_arm64_archive(
+    name = "ios_arm64_static_library",
+    srcs = ["//crates/intl_hermes:with_compiled_data"],
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "ios_arm64_library",
+    srcs = [":ios_arm64_static_library"],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {":ios_arm64_static_library": "lib/aarch64-apple-ios/libformatjs_intl_hermes.a"},
+    tags = ["manual"],
+)
+
+platform(
+    name = "ios_sim_arm64",
+    constraint_values = ["@apple_support//constraints:simulator"],
+    parents = ["@rules_rs//rs/platforms:aarch64-apple-ios-sim"],
+)
+
+ios_sim_arm64_archive(
+    name = "ios_sim_arm64_static_library",
+    srcs = ["//crates/intl_hermes:with_compiled_data"],
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "ios_sim_arm64_library",
+    srcs = [":ios_sim_arm64_static_library"],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {":ios_sim_arm64_static_library": "lib/aarch64-apple-ios-sim/libformatjs_intl_hermes.a"},
+    tags = ["manual"],
+)
+
+platform(
+    name = "ios_sim_x86_64",
+    constraint_values = ["@apple_support//constraints:simulator"],
+    parents = ["@rules_rs//rs/platforms:x86_64-apple-ios"],
+)
+
+ios_sim_x86_64_archive(
+    name = "ios_sim_x86_64_static_library",
+    srcs = ["//crates/intl_hermes:with_compiled_data"],
+    tags = ["manual"],
+)
+
+pkg_files(
+    name = "ios_sim_x86_64_library",
+    srcs = [":ios_sim_x86_64_static_library"],
+    attributes = pkg_attributes(mode = "0644"),
+    renames = {":ios_sim_x86_64_static_library": "lib/x86_64-apple-ios/libformatjs_intl_hermes.a"},
+    tags = ["manual"],
+)
+
+toolchain(
+    name = "ios_node_runtime_macos_arm64",
+    exec_compatible_with = [
+        "@platforms//os:macos",
+        "@platforms//cpu:aarch64",
+    ],
+    target_compatible_with = ["@platforms//os:ios"],
+    toolchain = "@nodejs_darwin_arm64//:toolchain",
+    toolchain_type = "@rules_nodejs//nodejs:runtime_toolchain_type",
+)
+
+toolchain(
+    name = "ios_node_runtime_macos_x86_64",
+    exec_compatible_with = [
+        "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
+    ],
+    target_compatible_with = ["@platforms//os:ios"],
+    toolchain = "@nodejs_darwin_amd64//:toolchain",
+    toolchain_type = "@rules_nodejs//nodejs:runtime_toolchain_type",
+)
+
+pkg_tar(
+    name = "apple_sdk",
+    srcs = [
+        ":darwin_library",
+        ":darwin_x86_64_library",
+        ":datetimeformat_calendar_data",
+        ":datetimeformat_timezone_data",
+        ":ios_arm64_library",
+        ":ios_sim_arm64_library",
+        ":ios_sim_x86_64_library",
+        ":sdk_sources",
+    ],
+    out = "formatjs-hermes-intl-apple.tar.gz",
+    extension = "tar.gz",
+    tags = ["manual"],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "apple_link_smoke",
+    srcs = [
+        "apple-link-smoke.cpp",
+        "//crates/intl_getcanonicallocales:canonicalize.h",
+    ],
+    copts = ["-std=c++17"],
+    linkopts = ["-lresolv"],
+    tags = ["manual"],
+    deps = ["//crates/intl_hermes:with_compiled_data"],
+)
+
+ios_arm64_archive(
+    name = "ios_arm64_link_smoke",
+    srcs = [":apple_link_smoke"],
+    tags = ["manual"],
+)
+
+ios_sim_arm64_archive(
+    name = "ios_sim_arm64_link_smoke",
+    srcs = [":apple_link_smoke"],
+    tags = ["manual"],
+)
+
+ios_sim_x86_64_archive(
+    name = "ios_sim_x86_64_link_smoke",
+    srcs = [":apple_link_smoke"],
+    tags = ["manual"],
+)
+
+darwin_archive(
+    name = "macos_arm64_link_smoke",
+    srcs = [":apple_link_smoke"],
+    tags = ["manual"],
+)
+
+darwin_x86_64_archive(
+    name = "macos_x86_64_link_smoke",
+    srcs = [":apple_link_smoke"],
+    tags = ["manual"],
 )

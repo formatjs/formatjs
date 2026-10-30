@@ -63,3 +63,41 @@ android_x86_64_archive, _android_x86_64_archive_internal = with_cfg(native.fileg
     "platforms",
     [Label("//native/hermes/package:android_x86_64")],
 ).build()
+
+darwin_x86_64_archive, _darwin_x86_64_archive_internal = _archive(
+    "//native/hermes/package:darwin_x86_64",
+    "macos_x86_64",
+)
+
+ios_arm64_archive, _ios_arm64_archive_internal = with_cfg(native.filegroup).set(
+    "compilation_mode",
+    "opt",
+).set(
+    Label("@rules_rust//rust/settings:lto"),
+    "thin",
+).set(
+    "platforms",
+    [Label("//native/hermes/package:ios_arm64")],
+).build()
+
+ios_sim_arm64_archive, _ios_sim_arm64_archive_internal = with_cfg(native.filegroup).set(
+    "compilation_mode",
+    "opt",
+).set(
+    Label("@rules_rust//rust/settings:lto"),
+    "thin",
+).set(
+    "platforms",
+    [Label("//native/hermes/package:ios_sim_arm64")],
+).build()
+
+ios_sim_x86_64_archive, _ios_sim_x86_64_archive_internal = with_cfg(native.filegroup).set(
+    "compilation_mode",
+    "opt",
+).set(
+    Label("@rules_rust//rust/settings:lto"),
+    "thin",
+).set(
+    "platforms",
+    [Label("//native/hermes/package:ios_sim_x86_64")],
+).build()
