@@ -1102,3 +1102,24 @@ controls retain small first-call costs: five strings add 0.114 µs (+6.3%),
 21.944 versus magrinj's 20.904 µs. Warm 256-item formatting is 1.6% behind.
 Cold Locale construction remains the main shared gap: 2.393 versus 1.447 µs;
 the isolated control is 1.975 versus 1.463 µs. No overall parity claim.
+
+Direct Locale handle storage was evaluated and rejected.
+[Complete paired SDK results, profiles and discarded probes](locale-handle-results.json)
+retain the prototype from PR #7797. It removes a JS wrapper per constructor miss
+and keeps scalar snapshots in private HostObject data properties.
+
+Optimized shared cold construction moves 2.105 to 2.035 µs (-3.3%); isolated
+cold construction moves 2.127 to 1.885 µs (-11.4%). Shared long tags improve
+3.141 to 2.813 µs (-10.4%). The tradeoff is slower hot operations: language
+75.5 to 86.0 ns (+13.8%), maximize 265.0 to 286.7 ns (+8.2%), and construction
+from Locale objects 324.6 to 344.6 ns (+6.2%). Cold construction still trails
+magrinj's 1.434 µs. The initial source-only 33% gain did not reproduce in the
+final optimized workload, and the final source control regressed 5.5%.
+
+All 702 benchmark/control values and 84 full-API native/TS assertions agree.
+Seventy-four broad gates pass with unchanged pinned ICU4C/J/X expectations.
+Correctness was preserved; the performance/complexity tradeoff was rejected.
+Rust crate sources and shipped archives are identical. Native creation remains
+the largest Hermes profile frame. A compiler inlining hint and stack-backed
+subtag scratch storage were also rejected: fewer allocations did not improve
+the target latency. Raw experiments remain separate from shipping results.
