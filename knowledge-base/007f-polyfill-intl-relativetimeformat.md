@@ -84,7 +84,7 @@ matching the TS initialization order when a getter replaces locale data. Existin
 instances keep their prior records. Each immutable pack also keeps a bounded
 cache of internal NumberFormat records, keyed by resolved locale and numbering
 system. Style/numeric validation still runs before reuse; new data gets a fresh
-cache. Formatting reads its shared number record without locking. Numeric text is already a JS Number: the host
+cache. Formatting reads its shared number record without locking. Numeric input is already a JS Number: the host
 owns observable ToNumber/ToString ordering, BigInt/Symbol rejection and brands.
 Rust preserves negative zero, named auto forms, style fallback, sparse plural
 fallback and unit annotations on number parts. The owned ABI uses separate resolution/final creation calls and serializes
@@ -106,9 +106,11 @@ the buffer at the final slot. Parts move their strings into the result; string
 formatting reads them without cloning. Long-style field lookup borrows the unit
 key. Custom repeated-slot patterns retain their output.
 
-Hermes passes pre-coerced numeric text and UTF-16 unit strings directly for both
-format methods. The Rust ABI validates units; parts output remains JSON. This
-avoids JS code-unit traversal and input JSON parsing without changing coercion
+Hermes passes pre-coerced doubles and UTF-16 unit strings directly for both
+format methods. Rust retains the double for finite checks, direction and named
+forms; numeric templates lazily convert its absolute magnitude using a stack
+`ryu` buffer. The original numeric-text Rust methods and C ABI remain available. The Rust ABI validates units; parts output remains JSON. This
+avoids JS code-unit traversal and input JSON parsing or JS numeric-string allocation without changing coercion
 order or lone-surrogate errors. The JSON query ABI remains available.
 
 ### Native compiled provider
@@ -124,3 +126,8 @@ String formatting requests decimal text and its plural category without owned
 number parts. Part formatting keeps the same shared traversal, cloning repeated
 slots and transferring the final number buffer. Empty named forms and custom
 relative plural rules retain their existing behavior.
+
+The pinned 19,008-case ICU4X matrix exercises both numeric and text paths,
+including exact parts equality. ICU4C/J verify the 1,440 pinned data differences;
+unexpected differences fail. Native source and bytecode also compare numeric
+rounding edges, signed zero, exponent thresholds and subnormals with TypeScript.
