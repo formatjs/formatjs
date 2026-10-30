@@ -451,8 +451,8 @@ importers:
         specifier: 48.2.0
         version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
       cldr-cal-coptic-full:
-        specifier: 48.2.0
-        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+        specifier: 49.0.0
+        version: 49.0.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
       cldr-cal-dangi-full:
         specifier: 48.2.0
         version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
@@ -4561,10 +4561,10 @@ packages:
     peerDependencies:
       cldr-dates-full: 48.2.0
 
-  cldr-cal-coptic-full@48.2.0:
-    resolution: {integrity: sha512-7M5D01WMan8VyISCdZmqMDpjUmaYM/7W7Vry4M5SNejZn5F3RfTxSx67XFtHT8gqPgy6t2TUIypCcKFEsJsm2Q==}
+  cldr-cal-coptic-full@49.0.0:
+    resolution: {integrity: sha512-CZ2i6QrmFcuoIaBHH1043XFIF0fUiIRqP7tlgdCNqF6ByHF8eJ47Y6irgIQXVpFW09xCLKOEvCgMZTU/KyCigQ==}
     peerDependencies:
-      cldr-dates-full: 48.2.0
+      cldr-dates-full: 49.0.0
 
   cldr-cal-dangi-full@48.2.0:
     resolution: {integrity: sha512-4UDwj+PEE9Ki1ydwoz+e9rT98LlVXwLNBzbLI1Rbi6Qn1QIUpbGBZINfbBJ5MFVocVF4/5i7Mceko2XsEt77mw==}
@@ -10956,7 +10956,7 @@ snapshots:
     dependencies:
       cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
 
-  cldr-cal-coptic-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+  cldr-cal-coptic-full@49.0.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
     dependencies:
       cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
 
