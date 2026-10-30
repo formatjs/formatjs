@@ -1,7 +1,8 @@
 # Hermes contrib integration
 
 Use one FormatJS SDK archive for C++, JS, and Rust. Build with Hermes
-`260318099.0.0-393a539e6` and a matching target archive.
+engine `393a539e6` plus the [pinned overlay patches](https://github.com/formatjs/hermes/tree/338ff13ff1e996934ae615952d174f8c621844d9),
+and a matching target archive.
 
 Copy `30-*.js` through `41-*.js` and `FormatJSIntl.cpp/.h` from this directory
 into `API/hermes/extensions/contrib/`. Copy `formatjs-intl.js` into
@@ -24,9 +25,8 @@ prebuilt Rust archive. Hermes embeds the copied JS fragments during its bytecode
 build, then calls the installer before user scripts. The DateTimeFormat guard is
 held by JSI runtime data until runtime teardown.
 
-The installer prepares `supportedValuesOf` before Locale captures it, then
-observes formatter locale loaders after all constructors are installed. This
-keeps `getCollations()` and cached supported values consistent with those backends.
+The contrib dispatcher delegates to `formatjs::installIntl`; source, bytecode,
+and contrib startup share dependency order and runtime ownership.
 
 Run `test/hermes/contrib/formatjs-intl.js` with Hermes Lit tests. Rebuild the SDK
 to select different compiled locales. Do not mix JS and native files from

@@ -1,0 +1,106 @@
+FormatJS provides twelve Rust-backed Intl APIs for Hermes. Download a prebuilt
+SDK, compile its thin C++ adapter against your runtime's JSI headers, and install
+before application JavaScript. Consumers do not need Rust.
+
+## Choose a package
+
+[SDK releases](https://github.com/formatjs/formatjs/releases?q=formatjs-hermes-intl)
+use tags `formatjs-hermes-intl_v<version>` and include checksums.
+
+| Archive                               | Targets                       |
+| ------------------------------------- | ----------------------------- |
+| `formatjs-hermes-intl-desktop.tar.gz` | Linux x86_64 GNU, macOS arm64 |
+| `formatjs-hermes-intl-android.tar.gz` | Android arm64-v8a, x86_64     |
+
+Until the first SDK release is published, use the
+[source build instructions](https://github.com/formatjs/formatjs/tree/main/native/hermes/package#build-from-source).
+iOS and Windows SDKs are not included.
+
+## Install
+
+Extract your archive and set `FORMATJS_HERMES_SDK` to its absolute directory.
+For an existing CMake target that already uses your runtime's JSI headers:
+
+```cmake
+include("${FORMATJS_HERMES_SDK}/cmake/FormatJSIntl.cmake")
+formatjs_intl(appmodules)
+```
+
+Call this on the JavaScript thread, before loading your app:
+
+```cpp
+#include <formatjs/hermes/intl.h>
+
+formatjs::installIntl(runtime);
+```
+
+The installer handles order and native lifetimes. Repeated calls on the same
+runtime do nothing. It replaces existing Intl implementations; JavaScript uses
+standard APIs afterward:
+
+```js
+new Intl.NumberFormat('en', {style: 'currency', currency: 'USD'}).format(12.5)
+// '$12.50'
+new Intl.ListFormat('fr').format(['A', 'B'])
+// 'A et B'
+new Intl.PluralRules('en').select(1)
+// 'one'
+Array.from(new Intl.Segmenter('en').segment('A🙂B'), part => part.segment)
+// ['A', '🙂', 'B']
+```
+
+Included: `getCanonicalLocales`, `supportedValuesOf`, `Locale`, `PluralRules`,
+`ListFormat`, `DisplayNames`, `Segmenter`, `Collator`, `NumberFormat`,
+`RelativeTimeFormat`, `DateTimeFormat`, and `DurationFormat`.
+
+Keep C++, JS, headers, and Rust libraries from the same SDK. CMake 3.17+, C++17,
+and exceptions are required. The SDK links into your existing Hermes runtime.
+An npm import alone cannot install native code.
+
+## Examples
+
+- [React Native Android app](https://github.com/formatjs/hermes-intl): all APIs on
+  one screen, native installer, rendered-text assertions, screenshot comparison.
+- [Standalone Bazel consumer](https://github.com/formatjs/formatjs/tree/main/examples/hermes-intl):
+  source and precompiled setup on real Hermes, without compiling Rust.
+- [Hermes contrib integration](https://github.com/formatjs/formatjs/tree/main/native/hermes/package/contrib):
+  register with Hermes' extension system so installation runs before scripts.
+
+For bytecode-only startup, compile the SDK's `js/extensions.js` with the exact
+`hermesc` version used by your runtime. Evaluate that bytecode into a setup object,
+then call `formatjs::installIntl(runtime, extensions)`.
+
+## Locale data
+
+Default SDKs include locales selected by Chromium desktop's full-data UI language
+filter, plus available regional/script variants. Locale data is already compiled
+into Rust. No locale imports or startup JSON loading needed.
+
+To ship only English and French, build from a FormatJS checkout:
+
+```sh
+bazel build -c opt --//crates/intl_data:locales=en,fr //native/hermes/package:sdk
+```
+
+For Android, install NDK `27.1.12297006`, set `ANDROID_NDK_HOME`, then:
+
+```sh
+bazel build -c opt --extra_toolchains=@androidndk//:all --spawn_strategy=local \
+  --//crates/intl_data:locales=en,fr //native/hermes/package:android_sdk
+```
+
+Use `--//crates/intl_data:locales=\*` for every CLDR locale. Adding locales requires
+rebuilding the SDK, then rebuilding your app. End users downloading the app do
+not compile anything. Segmenter models and Collator/Locale data remain static.
+
+DateTimeFormat starts with Gregorian/ISO 8601 and UTC. Optional calendar tables
+and timezone transitions ship as separate SDK resources; locale names and
+patterns are compiled. See the
+[SDK guide](https://github.com/formatjs/formatjs/tree/main/native/hermes/package)
+for resource loading and individual installers.
+
+## Using react-intl
+
+Install native Intl before your JavaScript entry point imports `react-intl`.
+Use `IntlProvider` and messages normally. To use TypeScript polyfills instead,
+follow [React Native + Hermes](/docs/guides/react-native-hermes).

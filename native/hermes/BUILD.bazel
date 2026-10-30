@@ -50,6 +50,9 @@ ts_project(
 
 exports_files(
     [
+        "version.txt",
+        "intl.cpp",
+        "intl.h",
         "bridge.h",
         "canonical_locales.cpp",
         "canonical_locales.h",
@@ -905,5 +908,13 @@ ts_run_binary(
         "--out=$(rootpath :41-IntlDurationFormat.js)",
     ],
     tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+genrule(
+    name = "intl_wrapper_source",
+    srcs = [":extension_bundle_js"],
+    outs = ["intl.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
     visibility = ["//native/hermes/package:__pkg__"],
 )

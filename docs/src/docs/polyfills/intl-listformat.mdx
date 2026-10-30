@@ -181,10 +181,7 @@ from its language's data, regardless of load order.
 
 ## Rust on Hermes
 
-The experimental [Hermes SDK](../guides/react-native-hermes) includes a Rust
-ListFormat engine, C++ JSI adapter and source/precompiled installers. Link
-`:listformat`, install after canonicalization, then load selected JSON text from
-`locale-data/listformat/<locale>.json` with
-`Intl.ListFormat.__addLocaleData(jsonText)`. Locale packs load independently;
-existing instances retain their data. The SDK is built from this repository;
-Android/iOS binaries and package publication are separate work.
+The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust ListFormat and
+source/bytecode installers. Locale data is compiled into the archive; use the
+build-time locale flag to choose a custom set. Individual consumers can link
+`:listformat` and call `formatjs::installListFormat(runtime)` after canonicalization.

@@ -1,38 +1,24 @@
-# Standalone Hermes SDK consumer
+# Standalone Hermes example
 
-This independent Bazel module consumes the extracted SDK without compiling Rust
-or loading FormatJS build targets. It installs the available Intl extensions and
-runs the SDK's compiled TypeScript smoke scripts through real Hermes.
+Independent Bazel module consuming an extracted FormatJS Intl SDK. No Rust
+compiler required. Tests run all twelve APIs through real Hermes, including
+source/bytecode installation, repeat installation, and native state lifetime.
 
-Locale data comes from the Rust archive. The consumer injects no locale JSON;
-English/French formatting works immediately after installation. Existing smoke
-assertions cover exact numeric inputs, receiver checks and localized results.
-
-Default locales follow Chromium desktop's full-data UI language filter, including regional
-and script variants. Use `--//crates/intl_data:locales=\*` for every CLDR locale.
-Select a custom archive with
-`--//crates/intl_data:locales=en,fr` when building the SDK; rebuild to add locales.
-The full DisplayNames smoke also exercises Afar; include `aa` for that smoke.
-DateTimeFormat retains its guard; calendar providers and timezone transitions
-remain separate resources, with calendar locale names already compiled.
-
-The SDK is built and tested here but is not published. From the FormatJS root
-on Linux:
+Build or download a desktop archive using the [SDK guide](../../native/hermes/package/README.md),
+extract it into this example's `.cache/sdk` directory, then run:
 
 ```sh
-bazel build -c opt //native/hermes/package:sdk
-sdk_archive="$(bazel cquery -c opt --output=files //native/hermes/package:sdk)"
-sdk_dir="$PWD/examples/hermes-intl/.cache/sdk"
-mkdir -p "$sdk_dir"
-tar -xzf "$sdk_archive" -C "$sdk_dir"
-cd examples/hermes-intl
+sdk_dir="$PWD/.cache/sdk"
 bazel test --config=linux \
   --override_module=formatjs_intl_getcanonicallocales_hermes="$sdk_dir" \
   //:smoke_test
 ```
 
-Cross-build the macOS arm64 executable on Linux. `hermesc` remains a Linux
-execution tool; only the application target changes platform:
+Default locale data is already compiled. To test a custom build, select
+`--//crates/intl_data:locales=en,fr,aa` when building the SDK. The existing
+DisplayNames smoke needs Afar (`aa`); the app example uses only English/French.
+
+For macOS arm64, cross-build on Linux using the same override:
 
 ```sh
 bazel build --config=linux \
@@ -40,18 +26,11 @@ bazel build --config=linux \
   //:smoke_macos_arm64 //:extension_bytecode
 bazel cquery --config=linux \
   --override_module=formatjs_intl_getcanonicallocales_hermes="$sdk_dir" \
-  --output=files //:smoke_macos_arm64
-bazel cquery --config=linux \
-  --override_module=formatjs_intl_getcanonicallocales_hermes="$sdk_dir" \
-  --output=files //:extension_bytecode
+  --output=files //:smoke_macos_arm64 //:extension_bytecode
 ```
 
-Copy those two outputs to macOS arm64, then run:
+Copy the executable and bytecode to macOS, then run `./smoke ./extensions.hbc`.
+`hermesc` stays on the execution platform. CI runs the Linux tests and downloaded
+macOS executable. Optional calendar/timezone resources are read from the SDK.
 
-```sh
-./smoke ./extensions.hbc
-```
-
-CI builds and tests on Linux through BuildBuddy. macOS only executes the
-downloaded binary and bytecode. SDK target support currently covers Linux
-x86_64 GNU and macOS arm64; this is not a React Native mobile package.
+For React Native Android, use [formatjs/hermes-intl](https://github.com/formatjs/hermes-intl).

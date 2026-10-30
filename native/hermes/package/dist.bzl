@@ -46,6 +46,9 @@ android_archive, _android_archive_internal = with_cfg(native.filegroup).set(
     "compilation_mode",
     "opt",
 ).set(
+    Label("@rules_rust//rust/settings:lto"),
+    "thin",
+).set(
     "platforms",
     [Label("//native/hermes/package:android_arm64")],
 ).build()
@@ -53,6 +56,9 @@ android_archive, _android_archive_internal = with_cfg(native.filegroup).set(
 android_x86_64_archive, _android_x86_64_archive_internal = with_cfg(native.filegroup).set(
     "compilation_mode",
     "opt",
+).set(
+    Label("@rules_rust//rust/settings:lto"),
+    "thin",
 ).set(
     "platforms",
     [Label("//native/hermes/package:android_x86_64")],

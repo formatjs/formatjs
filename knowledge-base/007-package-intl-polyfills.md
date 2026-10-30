@@ -140,3 +140,5 @@ Calendar arithmetic/table providers and timezone transitions remain optional res
 The Hermes SDK also packages contrib extension sources in `contrib/`: Hermes
 embeds the JavaScript fragments and calls one C++ installer linked to the same
 Rust archive. `native/hermes/package/contrib/README.md` lists the integration edits.
+
+Hermes SDK packaging and release flow: [007m](007m-hermes-distribution.md).

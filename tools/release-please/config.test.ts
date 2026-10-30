@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url)
 const {VERSION} = require('release-please')
 const {Bazel} = require('release-please/build/src/strategies/bazel')
 const {Python} = require('release-please/build/src/strategies/python')
+const {Simple} = require('release-please/build/src/strategies/simple')
 const {Version} = require('release-please/build/src/version')
 const {parse} = require('yaml')
 
@@ -149,3 +150,47 @@ for (const path of pythonPackages) {
 
 assert.equal(checkedPython, 4)
 console.log(`Verified ${checkedPython} Release Please Python package updates`)
+
+const sdkPath = 'native/hermes'
+const sdkConfig = config.packages[sdkPath]
+const sdkStrategy = new Simple({
+  changelogNotes: {buildNotes: async () => '* SDK fixture'},
+  component: sdkConfig.component,
+  extraFiles: sdkConfig['extra-files'],
+  github: {
+    repository: {defaultBranch: 'main', owner: 'formatjs', repo: 'formatjs'},
+  },
+  logger,
+  packageName: sdkConfig['package-name'],
+  path: sdkPath,
+  skipChangelog: true,
+  targetBranch: 'main',
+  versionFile: sdkConfig['version-file'],
+})
+const sdkCandidate = await sdkStrategy.buildReleasePullRequest(
+  [],
+  undefined,
+  false,
+  [],
+  {newVersion: Version.parse(SENTINEL_VERSION)}
+)
+assert(sdkCandidate)
+const sdkVersionUpdate = sdkCandidate.updates.find(
+  update => update.path === 'native/hermes/version.txt'
+)
+assert(sdkVersionUpdate, 'SDK release must update its packaged version')
+assert.equal(
+  sdkVersionUpdate.updater.updateContent('0.1.0\n'),
+  SENTINEL_VERSION + '\n'
+)
+const sdkModuleUpdate = sdkCandidate.updates.find(
+  update => update.path === 'native/hermes/package/SDK.MODULE.bazel'
+)
+assert(sdkModuleUpdate, 'SDK release must update the consumer module version')
+assert.match(
+  sdkModuleUpdate.updater.updateContent(
+    readFileSync('native/hermes/package/SDK.MODULE.bazel', 'utf8')
+  ),
+  new RegExp(`version = "${SENTINEL_VERSION.replaceAll('.', '\\.')}"`)
+)
+console.log('Verified SDK release version propagation')
