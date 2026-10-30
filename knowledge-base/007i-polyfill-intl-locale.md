@@ -143,8 +143,12 @@ option getters still run before lookup. Eviction cannot invalidate live instance
 Rust stores each extension payload as one canonical string, avoiding an allocation
 for every private-use subtag. Unicode edits split and rebuild only that payload.
 
-Hermes snapshots scalar properties on first access and retains them with the
-immutable Rust handle. Constructor validation stays eager. Omitted options use
+Hermes stores opaque handles directly in its private brand and reuse maps,
+avoiding a separate JS wrapper for each constructor miss or transform. Scalar
+properties load lazily into a private symbol property on the HostObject, using
+the captured property-definition intrinsic instead of the HostObject setter.
+Only misses enter the bounded caches; primitive string tags skip weak-brand
+lookup. Object coercion, option ordering and cache limits stay unchanged. Constructor validation stays eager. Omitted options use
 one Rust construction call; explicit options still canonicalize before reading
 their getters. Formatter capability queries remain per-call, so loading data
 after construction still affects numbering systems and collations.

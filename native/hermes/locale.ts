@@ -24,10 +24,8 @@
   const stringify = JSON.stringify
   const BadReceiver = TypeError
   const BadOption = RangeError
-  interface Slot {
-    handle: object
-    properties: Readonly<Record<string, any>> | null
-  }
+  const propertiesKey = Symbol()
+  type Slot = object & {[propertiesKey]?: Readonly<Record<string, any>>}
   const slots = new WeakMap<object, Slot>()
   const getSlot = WeakMap.prototype.get.bind(slots) as (
     key: unknown
@@ -42,13 +40,12 @@
     return {
       get,
       set(key: K, value: V) {
-        if (get(key) === undefined) {
-          if (size === 64) {
-            clear()
-            size = 0
-          }
-          size++
+        // Callers admit only misses; avoid a second lookup of the same key.
+        if (size === 64) {
+          clear()
+          size = 0
         }
+        size++
         set(key, value)
       },
     }
@@ -65,12 +62,20 @@
     if (!value) throw new BadReceiver('Incompatible Intl.Locale receiver')
     return value as Slot
   }
-  function query(record: {handle: object}, request: string): any {
-    return parse(nativeQuery(record.handle, request))
+  function query(record: Slot, request: string): any {
+    return parse(nativeQuery(record, request))
   }
   function properties(record: Slot): Readonly<Record<string, any>> {
     // Only immutable scalars are shared; capability queries still run per call.
-    return (record.properties ??= query(record, '{"method":"properties"}'))
+    const cached = record[propertiesKey]
+    if (cached !== undefined) return cached
+    const result = query(record, '{"method":"properties"}')
+    // HostObject setters reject assignment; define private metadata directly.
+    defineProperty(record, propertiesKey, {
+      __proto__: null,
+      value: result,
+    } as PropertyDescriptor)
+    return result
   }
   function initialize(receiver: object, tag: string, options: string): Locale {
     const key =
@@ -84,7 +89,7 @@
       const handle = nativeCreate(tag, options)
       if (handle === null)
         throw new BadOption('Invalid language tag or options')
-      record = {handle, properties: null}
+      record = handle
       if (key !== undefined) constructors.set(key, record)
     }
     setSlot(receiver, record)
@@ -95,8 +100,8 @@
     let values = transforms.get(source)
     let record = values?.[kind]
     if (record === undefined) {
-      const handle = nativeTransform(source.handle, kind)
-      record = {handle, properties: null}
+      const handle = nativeTransform(source, kind)
+      record = handle
       if (values === undefined) {
         values = [undefined, undefined]
         transforms.set(source, values)
@@ -143,7 +148,7 @@
         (tag === null || (typeof tag !== 'object' && typeof tag !== 'function'))
       )
         throw new BadReceiver('tag must be a string or object')
-      const existing = getSlot(tag)
+      const existing = typeof tag === 'string' ? undefined : getSlot(tag)
       if (existing) tag = properties(existing).locale
       else {
         let intrinsicTag: string | undefined

@@ -430,6 +430,12 @@ const mapGet = Map.prototype.get,
   mapSet = Map.prototype.set,
   mapClear = Map.prototype.clear
 const oldToJSON = Object.getOwnPropertyDescriptor(Object.prototype, 'toJSON')
+const originalDefineProperty = Object.defineProperty
+const descriptorFields = ['get', 'set', 'value']
+const oldDescriptorFields = descriptorFields.map(name =>
+  Object.getOwnPropertyDescriptor(Object.prototype, name)
+)
+
 try {
   JSON.parse = JSON.stringify = (() => {
     throw new Error('changed JSON intrinsic')
@@ -449,6 +455,17 @@ try {
       throw new Error('application toJSON')
     },
   })
+  for (const name of descriptorFields)
+    originalDefineProperty(Object.prototype, name, {
+      __proto__: null,
+      configurable: true,
+      get() {
+        throw new Error('inherited property descriptor accessed')
+      },
+    } as PropertyDescriptor)
+  Object.defineProperty = (() => {
+    throw new Error('changed defineProperty intrinsic')
+  }) as typeof Object.defineProperty
   const value = new NativeLocale('ar', {calendar: 'gregory'})
   for (let index = 0; index < 70; index++)
     new NativeLocale('en-x-poison-' + index).toString()
@@ -458,6 +475,17 @@ try {
   )
   check(value.getWeekInfo().weekend.length > 0, 'private query ignores toJSON')
 } finally {
+  Object.defineProperty = originalDefineProperty
+  for (const name of descriptorFields) delete (Object.prototype as any)[name]
+  for (let index = 0; index < descriptorFields.length; index++) {
+    const previous = oldDescriptorFields[index]
+    if (previous)
+      originalDefineProperty(
+        Object.prototype,
+        descriptorFields[index],
+        previous
+      )
+  }
   JSON.parse = parse
   JSON.stringify = stringify
   WeakMap.prototype.get = weakGet
