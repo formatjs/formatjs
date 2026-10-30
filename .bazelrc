@@ -141,5 +141,4 @@ try-import %workspace%/.bazelrc.user
 
 # iOS SDK archives require Xcode; other builds keep hermetic LLVM.
 build:hermes-apple --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=0
-build:hermes-apple --action_env=DEVELOPER_DIR
 build:hermes-apple --ios_minimum_os=15.1
