@@ -95,65 +95,100 @@ impl RelativeTimeFormat {
         &self.resolved
     }
     pub fn format(&self, value: &str, unit: &str) -> Result<String, Error> {
+        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
+        self.format_with(numeric, unit, || {
+            self.number.format_decimal_string_with_plural(
+                value.strip_prefix('-').unwrap_or(value),
+                &self.data.plurals,
+            )
+        })
+    }
+    /// Format a Number after host coercion, without reparsing its binary value.
+    pub fn format_number(&self, value: f64, unit: &str) -> Result<String, Error> {
+        self.format_with(value, unit, || {
+            let mut buffer = ryu::Buffer::new();
+            let text = buffer.format_finite(value.abs());
+            let text = text.strip_suffix(".0").unwrap_or(text);
+            self.number
+                .format_decimal_string_with_plural(text, &self.data.plurals)
+        })
+    }
+    fn format_with(
+        &self,
+        numeric: f64,
+        unit: &str,
+        format_number: impl FnOnce()
+            -> Result<(String, &'static str), formatjs_intl_numberformat::Error>,
+    ) -> Result<String, Error> {
         let mut result = String::with_capacity(32);
-        self.visit_pattern(
-            value,
-            unit,
-            |value| {
-                self.number
-                    .format_decimal_string_with_plural(value, &self.data.plurals)
-            },
-            |piece| match piece {
-                Piece::Literal(value) => result.push_str(value),
-                Piece::Number(text, _, _) => result.push_str(text),
-            },
-        )?;
+        self.visit_pattern(numeric, unit, format_number, |piece| match piece {
+            Piece::Literal(value) => result.push_str(value),
+            Piece::Number(text, _, _) => result.push_str(text),
+        })?;
         Ok(result)
     }
     pub fn format_to_parts(&self, value: &str, unit: &str) -> Result<Vec<Part>, Error> {
+        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
+        self.parts_with(numeric, unit, || {
+            self.number.format_decimal_with_plural(
+                value.strip_prefix('-').unwrap_or(value),
+                &self.data.plurals,
+            )
+        })
+    }
+    /// Retain the Number for validation and named forms; format decimal text lazily.
+    pub fn format_to_parts_number(&self, value: f64, unit: &str) -> Result<Vec<Part>, Error> {
+        self.parts_with(value, unit, || {
+            let mut buffer = ryu::Buffer::new();
+            let text = buffer.format_finite(value.abs());
+            let text = text.strip_suffix(".0").unwrap_or(text);
+            self.number
+                .format_decimal_with_plural(text, &self.data.plurals)
+        })
+    }
+    fn parts_with(
+        &self,
+        numeric: f64,
+        unit: &str,
+        format_number: impl FnOnce() -> Result<
+            (Vec<formatjs_intl_numberformat::Part>, &'static str),
+            formatjs_intl_numberformat::Error,
+        >,
+    ) -> Result<Vec<Part>, Error> {
         let mut result = Vec::new();
-        self.visit_pattern(
-            value,
-            unit,
-            |value| {
-                self.number
-                    .format_decimal_with_plural(value, &self.data.plurals)
-            },
-            |piece| match piece {
-                Piece::Literal(value) => result.push(Part {
-                    kind: "literal",
-                    value: value.into(),
-                    unit: None,
-                }),
-                Piece::Number(parts, unit, last) => {
-                    let append = |part: formatjs_intl_numberformat::Part| Part {
-                        kind: part.kind,
-                        value: part.value,
-                        unit: Some(unit),
-                    };
-                    if last {
-                        let parts = std::mem::take(parts);
-                        if result.is_empty() {
-                            result = parts.into_iter().map(append).collect();
-                        } else {
-                            result.extend(parts.into_iter().map(append));
-                        }
+        self.visit_pattern(numeric, unit, format_number, |piece| match piece {
+            Piece::Literal(value) => result.push(Part {
+                kind: "literal",
+                value: value.into(),
+                unit: None,
+            }),
+            Piece::Number(parts, unit, last) => {
+                let append = |part: formatjs_intl_numberformat::Part| Part {
+                    kind: part.kind,
+                    value: part.value,
+                    unit: Some(unit),
+                };
+                if last {
+                    let parts = std::mem::take(parts);
+                    if result.is_empty() {
+                        result = parts.into_iter().map(append).collect();
                     } else {
-                        result.extend(parts.iter().cloned().map(append));
+                        result.extend(parts.into_iter().map(append));
                     }
+                } else {
+                    result.extend(parts.iter().cloned().map(append));
                 }
-            },
-        )?;
+            }
+        })?;
         Ok(result)
     }
     fn visit_pattern<N>(
         &self,
-        value: &str,
+        numeric: f64,
         unit: &str,
-        format_number: impl FnOnce(&str) -> Result<(N, &'static str), formatjs_intl_numberformat::Error>,
+        format_number: impl FnOnce() -> Result<(N, &'static str), formatjs_intl_numberformat::Error>,
         mut visit: impl FnMut(Piece<'_, N>),
     ) -> Result<(), Error> {
-        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
         if !numeric.is_finite() {
             return Err(Error::InvalidNumber);
         }
@@ -191,8 +226,8 @@ impl RelativeTimeFormat {
         } else {
             &field.future
         };
-        let (mut number, category) = format_number(value.strip_prefix('-').unwrap_or(value))
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
+        let (mut number, category) =
+            format_number().map_err(|error| Error::InvalidData(error.to_string()))?;
         let pattern = patterns
             .get(category)
             .or_else(|| patterns.get("other"))

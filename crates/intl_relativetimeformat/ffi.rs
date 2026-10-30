@@ -359,19 +359,16 @@ unsafe fn formatted_number(
     out: *mut RelativeBytes,
     parts: bool,
 ) -> i32 {
-    let mut buffer = ryu::Buffer::new();
-    let text = buffer.format(value);
     unsafe {
-        formatted(
-            handle,
-            text.as_ptr(),
-            text.len(),
-            unit,
-            unit_len,
-            out,
-            parts,
-        )
+        formatted_value(handle, unit, unit_len, out, parts, || {
+            Ok(RelativeValue::Number(value))
+        })
     }
+}
+
+enum RelativeValue<'a> {
+    Text(&'a str),
+    Number(f64),
 }
 
 unsafe fn formatted(
@@ -382,6 +379,21 @@ unsafe fn formatted(
     unit_len: usize,
     out: *mut RelativeBytes,
     parts: bool,
+) -> i32 {
+    unsafe {
+        formatted_value(handle, unit, unit_len, out, parts, || {
+            input(value, value_len).map(RelativeValue::Text)
+        })
+    }
+}
+
+unsafe fn formatted_value<'a>(
+    handle: *const RelativeHandle,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+    parts: bool,
+    value: impl FnOnce() -> Result<RelativeValue<'a>, i32>,
 ) -> i32 {
     if out.is_null() {
         return 2;
@@ -394,13 +406,12 @@ unsafe fn formatted(
         return 2;
     }
     guarded(|| {
-        let value = unsafe { input(value, value_len)? };
+        let value = value()?;
         let unit = if unit_len == 0 {
             &[][..]
         } else {
             unsafe { slice::from_raw_parts(unit, unit_len) }
         };
-        // Supported unit names are ASCII and at most eight code units.
         let mut ascii = [0u8; 8];
         if unit.len() > ascii.len() {
             return Err(1);
@@ -410,15 +421,26 @@ unsafe fn formatted(
         }
         let unit = str::from_utf8(&ascii[..unit.len()]).map_err(|_| 1)?;
         let model = unsafe { &(*handle).0 };
-        let bytes = if parts {
-            encode(&model.format_to_parts(value, unit).map_err(|_| 1)?)?
-        } else {
-            model.format(value, unit).map_err(|_| 1)?.into_bytes()
+        let bytes = match (parts, value) {
+            (false, RelativeValue::Text(value)) => {
+                model.format(value, unit).map_err(|_| 1)?.into_bytes()
+            }
+            (true, RelativeValue::Text(value)) => {
+                encode(&model.format_to_parts(value, unit).map_err(|_| 1)?)?
+            }
+            (false, RelativeValue::Number(value)) => model
+                .format_number(value, unit)
+                .map_err(|_| 1)?
+                .into_bytes(),
+            (true, RelativeValue::Number(value)) => {
+                encode(&model.format_to_parts_number(value, unit).map_err(|_| 1)?)?
+            }
         };
         unsafe { output(bytes, out) };
         Ok(())
     })
 }
+
 /// # Safety
 /// Registry null or live owned handle; no outstanding borrows.
 #[unsafe(no_mangle)]
