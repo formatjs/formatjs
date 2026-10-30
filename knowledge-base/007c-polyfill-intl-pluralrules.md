@@ -193,8 +193,10 @@ SDK ships that installer, the C++ adapter and selected per-locale JSON packs;
 its independent consumer verifies lazy loading with downloaded native artifacts.
 
 Mathematical-input normalization handles StringNumericLiteral syntax, radix
-integers, IEEE Number-range clamping and BigInt's early return. Normal finite
-values use fixed_decimal; huge BigInt integers use prefix/suffix string rounding
+integers, IEEE Number-range clamping and BigInt's early return. Canonical unsigned
+text returns directly when fraction precision needs no rounding or padding, with
+increment one and no significant-digit rounding. General finite values use
+fixed_decimal; huge BigInt integers use prefix/suffix string rounding
 to avoid its i16 magnitude limit. Plural operands read decimal text directly.
 TS regression coverage rejects malformed numeric text and preserves exact radix
 values before the shared TS/Rust mathematical conformance comparisons.
