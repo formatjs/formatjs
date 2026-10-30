@@ -135,3 +135,11 @@ The Hermes facade binds its private WeakMap methods and retains option enum
 arrays at installation. Validated type/style values serialize directly; locale
 tags still use captured JSON quoting. Keep option getter order and real iterable
 validation when changing this path.
+
+The ABI validates up to eight borrowed UTF-16 input slices into stack storage;
+larger inputs keep an exactly reserved vector. The JSI bridge stores up to four
+UTF-16 strings and ABI slices on its stack, with heap fallback beyond that.
+Empty lists return empty encoded output before input-buffer setup. These are
+private buffers: actual iteration, single element reads and IteratorClose remain
+in JavaScript. ABI output remains independently owned and preserves lone
+surrogates. Boundary tests check malformed final-slice cleanup on both paths.
