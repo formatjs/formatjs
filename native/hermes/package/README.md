@@ -24,13 +24,14 @@ Download your archive and `checksums.txt` from the same release, then:
 ```sh
 sha256sum --ignore-missing -c checksums.txt
 mkdir formatjs-intl-sdk
-tar -xzf formatjs-hermes-intl-android.tar.gz -C formatjs-intl-sdk
+tar -xmzf formatjs-hermes-intl-android.tar.gz -C formatjs-intl-sdk
 export FORMATJS_HERMES_SDK="$PWD/formatjs-intl-sdk"
 ```
 
 On macOS, check the downloaded desktop archive with
 `grep 'formatjs-hermes-intl-desktop.tar.gz$' checksums.txt | shasum -a 256 -c -`.
-Keep the archive's headers, C++, JS, and Rust library together.
+Keep the archive's headers, C++, JS, and Rust library together. `tar -m` refreshes
+file timestamps so replacing an SDK triggers native rebuilds.
 
 ## Add it to your build
 
@@ -135,7 +136,7 @@ bazel build -c opt //native/hermes/package:sdk
 archive=$(bazel cquery -c opt --output=files //native/hermes/package:sdk)
 sdk_dir="$PWD/examples/hermes-intl/.cache/sdk"
 mkdir -p "$sdk_dir"
-tar -xzf "$archive" -C "$sdk_dir"
+tar -xmzf "$archive" -C "$sdk_dir"
 ```
 
 For Android, install NDK `27.1.12297006`, set `ANDROID_NDK_HOME`, then:
@@ -147,7 +148,7 @@ archive=$(bazel cquery -c opt --extra_toolchains=@androidndk//:all \
   --output=files //native/hermes/package:android_sdk)
 sdk_dir="$PWD/.cache/formatjs-intl-android-sdk"
 mkdir -p "$sdk_dir"
-tar -xzf "$archive" -C "$sdk_dir"
+tar -xmzf "$archive" -C "$sdk_dir"
 ```
 
 Both builds use optimized Rust with ThinLTO. Build custom locales with the flag
