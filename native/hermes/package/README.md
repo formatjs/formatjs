@@ -18,7 +18,7 @@ Native integration; it does not install through npm alone.
 SDK releases use `formatjs-hermes-intl_v<version>` in
 [FormatJS releases](https://github.com/formatjs/formatjs/releases?q=formatjs-hermes-intl).
 Each release includes all three archives, `version.txt`, and `checksums.txt`.
-Until the first SDK release is published, build from source below.
+If release archives are not available yet, build from source below.
 
 Download your archive and `checksums.txt` from the same release, then:
 
