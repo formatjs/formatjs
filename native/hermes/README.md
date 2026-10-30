@@ -3,6 +3,11 @@
 The C++ adapter requires C++17 and exceptions enabled. Compile against the
 embedding runtime's JSI headers with matching ABI and toolchain settings.
 
+Constructor conformance on upstream Hermes `393a539e6` requires the pinned
+[Proxy constructor patch](https://github.com/formatjs/hermes/blob/338ff13ff1e996934ae615952d174f8c621844d9/bcr/modules/hermes/260318099.0.0-393a539e6.bcr.1/patches/proxy_construct_receiver.patch).
+Bazel applies it automatically; SDK consumers building raw Hermes sources must
+apply it too. It prevents an extra observable `newTarget.prototype` read.
+
 `canonical_locales` installs `Intl.getCanonicalLocales` through public JSI.
 The JS wrapper preserves locale-list coercion and property access order; Rust
 validates and canonicalizes tags using ICU4X and CLDR aliases. No WASM runtime
