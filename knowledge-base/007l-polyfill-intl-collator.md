@@ -195,3 +195,9 @@ Sensitivity selects UCA levels after tailoring: primary for base, primary/second
 for accent, primary/case weights for case, all levels for variant. Secondary-only
 accent CEs do not add case weights. This preserves primary distinctions such as
 Swedish ä and German base search expansions.
+
+Hermes bound comparisons pass borrowed UTF-16 slices through
+`formatjs_collator_compare` and receive a scalar ordering. Coercion stays in JS;
+Rust retains normalization, tailoring and ordering. The JSON query ABI remains
+available for existing callers and resolved options. Slice validation rejects
+null, misaligned and oversized buffers while preserving lone surrogates.
