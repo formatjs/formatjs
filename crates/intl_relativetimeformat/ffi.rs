@@ -323,6 +323,57 @@ pub unsafe extern "C" fn formatjs_relative_format_to_parts(
     unsafe { formatted(handle, value, value_len, unit, unit_len, out, true) }
 }
 
+/// Format a pre-coerced number without JS numeric-text allocation.
+/// # Safety
+/// Handle live; unit readable for its length; out writable. Free successful output once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format_number(
+    handle: *const RelativeHandle,
+    value: f64,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted_number(handle, value, unit, unit_len, out, false) }
+}
+
+/// Format number parts without JS numeric-text allocation; output remains JSON.
+/// # Safety
+/// Same handle, unit and output ownership contract as formatjs_relative_format_number.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_format_to_parts_number(
+    handle: *const RelativeHandle,
+    value: f64,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+) -> i32 {
+    unsafe { formatted_number(handle, value, unit, unit_len, out, true) }
+}
+
+unsafe fn formatted_number(
+    handle: *const RelativeHandle,
+    value: f64,
+    unit: *const u16,
+    unit_len: usize,
+    out: *mut RelativeBytes,
+    parts: bool,
+) -> i32 {
+    let mut buffer = ryu::Buffer::new();
+    let text = buffer.format(value);
+    unsafe {
+        formatted(
+            handle,
+            text.as_ptr(),
+            text.len(),
+            unit,
+            unit_len,
+            out,
+            parts,
+        )
+    }
+}
+
 unsafe fn formatted(
     handle: *const RelativeHandle,
     value: *const u8,

@@ -59,6 +59,7 @@ rust_library(
         "//crates/intl_locale",
         "//crates/intl_numberformat",
         "//crates/intl_pluralrules",
+        "@crates//:ryu",
         "@crates//:serde",
         "@crates//:serde_json",
     ],
@@ -70,6 +71,7 @@ COMPILED_DEPS = [
     "//crates/intl_locale",
     "//crates/intl_numberformat:with_compiled_data",
     "//crates/intl_pluralrules:with_compiled_data",
+    "@crates//:ryu",
     "@crates//:serde",
     "@crates//:serde_json",
 ]
