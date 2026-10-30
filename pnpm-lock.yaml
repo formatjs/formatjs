@@ -638,7 +638,7 @@ importers:
         version: 7.8.5
       serialize-javascript:
         specifier: ^7.0.2
-        version: 7.1.2
+        version: 7.1.4
       svelte:
         specifier: ^5.0.0
         version: 5.57.2
@@ -7014,8 +7014,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  serialize-javascript@7.1.2:
-    resolution: {integrity: sha512-GL2BWwVa6JydKO6l/ljVgjAZF4QJ3S7dWDWi53s5GZT8PJzD2fNxi67HANQGKAqPrwEpL5ba7gUBGi0Ls/sEoQ==}
+  serialize-javascript@7.1.4:
+    resolution: {integrity: sha512-FqlEuoTq/zRmA4Lg6aOqyH3lCHbUtCB0bmHCeFniX2GBdDqMJM3FwdvEhlE5Pim1dlt2FfBdVPmUNNiGhhKqpw==}
     engines: {node: '>=20.0.0'}
 
   server-destroy@1.0.1:
@@ -14034,7 +14034,7 @@ snapshots:
 
   semver@7.8.5: {}
 
-  serialize-javascript@7.1.2: {}
+  serialize-javascript@7.1.4: {}
 
   server-destroy@1.0.1: {}
 
