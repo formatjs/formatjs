@@ -211,3 +211,11 @@ genrule(
     cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath relative-control.js)",
     tools = ["@hermes//:hermesc"],
 )
+
+genrule(
+    name = "locale_constructor_control_bytecode",
+    srcs = ["locale-constructor-control.js"],
+    outs = ["locale-constructor-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath locale-constructor-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
