@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.3.16...@formatjs/intl-pluralrules@6.4.0) (2026-10-30)
+
+
+### Features
+
+* **intl_durationformat:** add Rust Hermes duration formatting ([#7707](https://github.com/formatjs/formatjs/issues/7707)) ([c7e5f35](https://github.com/formatjs/formatjs/commit/c7e5f35922fd5018f3ad73f32df29b1d43d01076))
+* **intl_numberformat:** port NumberFormat to Rust and Hermes ([#7696](https://github.com/formatjs/formatjs/issues/7696)) ([9951dec](https://github.com/formatjs/formatjs/commit/9951dec91f7e153fd87e21ed20217d9b8eb805ee))
+* **intl_pluralrules:** port Intl.PluralRules to Rust with Hermes integration ([#7691](https://github.com/formatjs/formatjs/issues/7691)) ([ef5451f](https://github.com/formatjs/formatjs/commit/ef5451fd646969e8b8b10464fd151d8b6c6cbd85))
+* **intl_relativetimeformat:** port RelativeTimeFormat to Rust and Hermes ([#7697](https://github.com/formatjs/formatjs/issues/7697)) ([e777afa](https://github.com/formatjs/formatjs/commit/e777afa74ebfb7062b953dee8a05698314a51b31))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [6.3.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.3.15...@formatjs/intl-pluralrules@6.3.16) (2026-10-19)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-supportedvaluesof",
-  "version": "2.3.11",
+  "version": "2.4.0",
   "description": "Intl.supportedValuesOf polyfill",
   "keywords": [
     "ecma402",

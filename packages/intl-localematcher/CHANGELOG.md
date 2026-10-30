@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.9.0...@formatjs/intl-localematcher@0.10.0) (2026-10-30)
+
+
+### Features
+
+* **intl_pluralrules:** port Intl.PluralRules to Rust with Hermes integration ([#7691](https://github.com/formatjs/formatjs/issues/7691)) ([ef5451f](https://github.com/formatjs/formatjs/commit/ef5451fd646969e8b8b10464fd151d8b6c6cbd85))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** align best fit with ICU defaults ([#7745](https://github.com/formatjs/formatjs/issues/7745)) ([9898211](https://github.com/formatjs/formatjs/commit/98982117414e6e658a141e71f837a0142894673f))
+
 ## [0.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.8.14...@formatjs/intl-localematcher@0.9.0) (2026-09-12)
 
 

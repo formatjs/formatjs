@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_relativetimeformat"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ECMA-402 RelativeTimeFormat with on-demand CLDR locale data"
@@ -15,11 +15,11 @@ path = "lib.rs"
 compiled_data = []
 
 [dependencies]
-formatjs_intl_data = { path = "../intl_data", version = "0.1.0" }
-formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.1.0" }
-formatjs_intl_locale = { path = "../intl_locale", version = "0.1.0" }
-formatjs_intl_numberformat = { path = "../intl_numberformat", version = "0.1.0" }
-formatjs_intl_pluralrules = { path = "../intl_pluralrules", version = "0.1.0" }
+formatjs_intl_data = { path = "../intl_data", version = "0.2.0" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.2.0" }
+formatjs_intl_locale = { path = "../intl_locale", version = "0.2.0" }
+formatjs_intl_numberformat = { path = "../intl_numberformat", version = "0.2.0" }
+formatjs_intl_pluralrules = { path = "../intl_pluralrules", version = "0.2.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 ryu = "1.0.23"

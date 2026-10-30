@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.11.1...@formatjs/intl-durationformat@0.12.0) (2026-10-30)
+
+
+### Features
+
+* **intl_durationformat:** add Rust Hermes duration formatting ([#7707](https://github.com/formatjs/formatjs/issues/7707)) ([c7e5f35](https://github.com/formatjs/formatjs/commit/c7e5f35922fd5018f3ad73f32df29b1d43d01076))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [0.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.11.0...@formatjs/intl-durationformat@0.11.1) (2026-09-12)
 
 

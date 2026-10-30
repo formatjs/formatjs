@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.3.11...@formatjs/intl-supportedvaluesof@2.4.0) (2026-10-30)
+
+
+### Features
+
+* **intl_supportedvaluesof:** add Rust polyfill and Hermes integration ([#7688](https://github.com/formatjs/formatjs/issues/7688)) ([193b196](https://github.com/formatjs/formatjs/commit/193b1961ab1935dc8ce7b618cfbbc9419bc471d8))
+
+
+### Bug Fixes
+
+* **intl_supportedvaluesof:** omit UTC aliases from time zones ([#7718](https://github.com/formatjs/formatjs/issues/7718)) ([cb6de07](https://github.com/formatjs/formatjs/commit/cb6de073e549113302ed78a0053b82d8d7600dee))
+
 ## [2.3.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.3.10...@formatjs/intl-supportedvaluesof@2.3.11) (2026-09-24)
 
 

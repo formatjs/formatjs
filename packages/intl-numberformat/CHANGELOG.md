@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.4.3...@formatjs/intl-numberformat@9.5.0) (2026-10-30)
+
+
+### Features
+
+* **intl_numberformat:** port NumberFormat to Rust and Hermes ([#7696](https://github.com/formatjs/formatjs/issues/7696)) ([9951dec](https://github.com/formatjs/formatjs/commit/9951dec91f7e153fd87e21ed20217d9b8eb805ee))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** use latn compact currency patterns when a numbering system has none ([#7703](https://github.com/formatjs/formatjs/issues/7703)) ([dd0f9fe](https://github.com/formatjs/formatjs/commit/dd0f9fe5b4972a10202ac14276bb2877a1955fc2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [9.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.4.2...@formatjs/intl-numberformat@9.4.3) (2026-09-15)
 
 
